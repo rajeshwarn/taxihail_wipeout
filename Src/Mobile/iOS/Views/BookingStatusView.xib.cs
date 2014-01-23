@@ -17,11 +17,9 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	[MvxViewFor(typeof(BookingStatusViewModel))]
-	public partial class StatusView : BaseViewController<BookingStatusViewModel>
+    public partial class BookingStatusView : BaseViewController<BookingStatusViewModel>
     {
-        public StatusView () 
-			: base("StatusView", null)
+        public BookingStatusView () : base("BookingStatusView", null)
         {
         }
 
@@ -107,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 lblConfirmation.TextColor = AppStyle.GreyText;
                 lblStatus.TextColor = AppStyle.DarkText;
 
-				var set = this.CreateBindingSet<StatusView, BookingStatusViewModel>();
+                var set = this.CreateBindingSet<BookingStatusView, BookingStatusViewModel>();
 
                 set.Bind(lblStatus)
                     .For(v => v.Text)

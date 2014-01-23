@@ -9,8 +9,8 @@ using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	[Register ("StatusView")]
-	partial class StatusView
+    [Register ("BookingStatusView")]
+    partial class BookingStatusView
 	{
 		[Outlet]
 		MonoTouch.UIKit.UIView bottomBar { get; set; }

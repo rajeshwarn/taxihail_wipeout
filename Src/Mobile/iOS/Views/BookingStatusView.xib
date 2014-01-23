@@ -1207,7 +1207,7 @@
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
-				<string key="-1.CustomClassName">StatusView</string>
+				<string key="-1.CustomClassName">BookingStatusView</string>
 				<dictionary class="NSMutableDictionary" key="-1.IBAttributePlaceholdersKey"/>
 				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="-2.CustomClassName">UIResponder</string>
@@ -1308,7 +1308,7 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">StatusView</string>
+					<string key="className">BookingStatusView</string>
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="bottomBar">UIView</string>
@@ -1466,7 +1466,7 @@
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/StatusView.h</string>
+						<string key="minorKey">./Classes/BookingStatusView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

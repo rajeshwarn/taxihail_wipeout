@@ -392,12 +392,6 @@
       <DependentUpon>ResetPasswordView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ResetPasswordView.cs" />
-    <Compile Include="Views\StatusView.xib.cs">
-      <DependentUpon>StatusView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Views\StatusView.xib.designer.cs">
-      <DependentUpon>StatusView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Views\CreditCardAddView.cs" />
     <Compile Include="Views\CreditCardAddView.designer.cs">
       <DependentUpon>CreditCardAddView.cs</DependentUpon>
@@ -490,6 +484,12 @@
       <DependentUpon>ConfirmCarNumberView.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Widgets\PaymentSelector.cs" />
+    <Compile Include="Views\BookingStatusView.xib.cs">
+      <DependentUpon>BookingStatusView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookingStatusView.xib.designer.cs">
+      <DependentUpon>BookingStatusView.xib</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -519,7 +519,6 @@
     <InterfaceDefinition Include="Views\ConfirmationView.xib" />
     <InterfaceDefinition Include="Views\ResetPasswordView.xib" />
     <InterfaceDefinition Include="Order\BookStreetNumberView.xib" />
-    <InterfaceDefinition Include="Views\StatusView.xib" />
     <InterfaceDefinition Include="Views\CreditCardAddView.xib" />
     <InterfaceDefinition Include="Views\CreditCardsListView.xib" />
     <InterfaceDefinition Include="Views\BookEditInformation.xib" />
@@ -535,6 +534,7 @@
     <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.xib" />
     <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.xib" />
     <InterfaceDefinition Include="Views\Payments\ConfirmCarNumberView.xib" />
+    <InterfaceDefinition Include="Views\BookingStatusView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
