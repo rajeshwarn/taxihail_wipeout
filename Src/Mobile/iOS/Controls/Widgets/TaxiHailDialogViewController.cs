@@ -52,11 +52,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public override float GetHeightForHeader(UITableView tableView, int section)
         {
+            if (_willBeContainedInOtherView)
+            {
+                return 0;
+            }
             return 22;
         }
 
         public override float GetHeightForFooter(UITableView tableView, int section)
         {
+            if (_willBeContainedInOtherView)
+            {
+                return 0;
+            }
             return 22;
         }
 
