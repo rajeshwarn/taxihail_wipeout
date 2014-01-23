@@ -410,10 +410,6 @@
     <Compile Include="Extensions\RectangleFExtensions.cs" />
     <Compile Include="Extensions\Helpers\Padding.cs" />
     <Compile Include="Extensions\Helpers\UIHelper.cs" />
-    <Compile Include="Views\Payments\TipSliderControl.cs" />
-    <Compile Include="Views\Payments\DraggableButton.cs" />
-    <Compile Include="Views\Payments\DraggedHandler.cs" />
-    <Compile Include="Views\Payments\ProgressBar.cs" />
     <Compile Include="Views\BookEditInformation.cs" />
     <Compile Include="Views\BookEditInformation.designer.cs">
       <DependentUpon>BookEditInformation.cs</DependentUpon>
@@ -774,6 +770,8 @@
     <BundleResource Include="Default-568h%402x.png" />
     <BundleResource Include="Default.png" />
     <BundleResource Include="Default%402x.png" />
+    <BundleResource Include="Resources\grip.png" />
+    <BundleResource Include="Resources\grip%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

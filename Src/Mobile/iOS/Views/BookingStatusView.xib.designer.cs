@@ -9,38 +9,38 @@ using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    [Register ("BookingStatusView")]
-    partial class BookingStatusView
+	[Register ("BookingStatusView")]
+	partial class BookingStatusView
 	{
 		[Outlet]
 		MonoTouch.UIKit.UIView bottomBar { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnCall { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCall { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnCallDriver { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCallDriver { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnCancel { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCancel { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnChangeBooking { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnNewRide { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnNewRide { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnPay { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnPay { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnRefresh { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnResend { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnResend { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnUnpair { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUnpair { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIImageView imgGrip { get; set; }
@@ -149,6 +149,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnResend = null;
 			}
 
+			if (btnUnpair != null) {
+				btnUnpair.Dispose ();
+				btnUnpair = null;
+			}
+
 			if (imgGrip != null) {
 				imgGrip.Dispose ();
 				imgGrip = null;
@@ -247,11 +252,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (viewLine != null) {
 				viewLine.Dispose ();
 				viewLine = null;
-			}
-
-			if (btnUnpair != null) {
-				btnUnpair.Dispose ();
-				btnUnpair = null;
 			}
 		}
 	}
