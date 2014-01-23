@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 			//Fill
 			var fillRectPath = UIBezierPath.FromRect( rect );
-  			var backgroundColor = UIColor.Black.ColorWithAlpha( 0.2f );
+            var backgroundColor = UIColor.White;
 			backgroundColor.SetFill();
 			fillRectPath.Fill();
 
