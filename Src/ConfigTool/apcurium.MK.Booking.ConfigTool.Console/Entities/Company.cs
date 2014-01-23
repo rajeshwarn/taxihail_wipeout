@@ -8,9 +8,8 @@ namespace CustomerPortal.Web.Entities
     public class Company
     {
         public Company()
-        {
-            
-			CompanySettings = new List<CompanySetting> ();            
+        {            
+			CompanySettings = new List<CompanySetting> ();         
             
         }
 
@@ -21,6 +20,7 @@ namespace CustomerPortal.Web.Entities
 
 		public List<CompanySetting> CompanySettings { get; set; }
 
+		public Style Style { get; set; }
 
     }
     

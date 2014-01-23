@@ -347,7 +347,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
-  <Target Name="BeforeBuild">        
+  <Target Name="BeforeBuild">
   </Target>
   <ItemGroup>
     <EmbeddedResource Include="Style\Style.json" />

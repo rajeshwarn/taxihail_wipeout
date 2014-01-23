@@ -256,7 +256,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="About_fr.html" />
     <None Include="Info.plist" />
     <None Include="Assets\About_en.html" />
     <None Include="Assets\About_fr.html" />
@@ -266,10 +265,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
-    <Compile Include="Order\BookRatingCell.cs" />
-    <Compile Include="Order\BookRatingCell.designer.cs">
-      <DependentUpon>BookRatingCell.cs</DependentUpon>
-    </Compile>
     <Compile Include="Converters\AppConverters.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -286,12 +281,8 @@
     <Compile Include="Controls\LoadingOverlay.cs" />
     <Compile Include="Helper\SerializerHelper.cs" />
     <Compile Include="Helper\NSDefaultHelper.cs" />
-    <Compile Include="Controls\GraphicsUtil.cs" />
-    <Compile Include="Controls\GlassButton.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
-    <Compile Include="Controls\VerticalButtonBar.cs" />
     <Compile Include="Controls\Background.cs" />
-    <Compile Include="Controls\VerticalButton.cs" />
     <Compile Include="Controls\GradientButton.cs" />
     <Compile Include="AppButtons.cs" />
     <Compile Include="Cache\CacheService.cs" />
@@ -301,8 +292,6 @@
     <Compile Include="Controls\BottomBar.cs" />
     <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="Diagnostics\ErrorHandler.cs" />
-    <Compile Include="Controls\AnimatedArrowButton.cs" />
-    <Compile Include="Controls\AnimatedWheelButton.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="Views\BookView.xib.cs">
       <DependentUpon>BookView.xib</DependentUpon>
@@ -312,8 +301,6 @@
     </Compile>
     <Compile Include="Setup.cs" />
     <Compile Include="PhonePresenter.cs" />
-    <Compile Include="Controls\SegmentedButton.cs" />
-    <Compile Include="Controls\SegmentedButtonBar.cs" />
     <Compile Include="Views\AddressSearchView.cs">
       <DependentUpon>AddressSearchView.xib</DependentUpon>
     </Compile>
@@ -352,10 +339,6 @@
       <DependentUpon>LoginView.xib</DependentUpon>
     </Compile>
     <Compile Include="Extensions\UIViewExtensions.cs" />
-    <Compile Include="Order\BookRatingView.cs" />
-    <Compile Include="Order\BookRatingView.designer.cs">
-      <DependentUpon>BookRatingView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\HistoryDetailView.xib.cs">
       <DependentUpon>HistoryDetailView.xib</DependentUpon>
     </Compile>
@@ -373,7 +356,6 @@
     <Compile Include="Views\TutorialView.designer.cs">
       <DependentUpon>TutorialView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\UndelinedLabel.cs" />
     <Compile Include="Views\BookViewActionsView.cs" />
     <Compile Include="Views\RideSettingsView.cs" />
     <Compile Include="Views\RideSettingsView.designer.cs">
@@ -402,12 +384,6 @@
       <DependentUpon>ResetPasswordView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ResetPasswordView.cs" />
-    <Compile Include="Views\StatusView.xib.cs">
-      <DependentUpon>StatusView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Views\StatusView.xib.designer.cs">
-      <DependentUpon>StatusView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Views\CreditCardAddView.cs" />
     <Compile Include="Views\CreditCardAddView.designer.cs">
       <DependentUpon>CreditCardAddView.cs</DependentUpon>
@@ -416,36 +392,19 @@
     <Compile Include="Views\CreditCardsListView.designer.cs">
       <DependentUpon>CreditCardsListView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CreditCardButton.cs" />
     <Compile Include="Controls\TextFieldWithArrow.cs" />
-    <Compile Include="Controls\NavigateTextField.cs" />
-    <Compile Include="Controls\TipButtons.cs" />
-    <Compile Include="Controls\SegmentedGradientButton.cs" />
     <Compile Include="Controls\TextView.cs" />
     <Compile Include="PlatformIntegration\PushNotificationService.cs" />
     <Compile Include="Binding\MvxUITextViewTargetBinding.cs" />
     <Compile Include="Controls\StackView.cs" />
-    <Compile Include="Binding\Binding.cs" />
     <Compile Include="Extensions\UIScrollViewerExtensions.cs" />
-    <Compile Include="Views\Payments\ConfrimCarNumberPage.cs" />
-    <Compile Include="Views\Payments\ConfrimCarNumberPage.designer.cs">
-      <DependentUpon>ConfrimCarNumberPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="Extensions\Helpers\UIViewHelper.cs" />
     <Compile Include="Extensions\RectangleFExtensions.cs" />
     <Compile Include="Extensions\Helpers\Padding.cs" />
     <Compile Include="Extensions\Helpers\UIHelper.cs" />
-    <Compile Include="Views\Payments\TipSliderControl.cs" />
-    <Compile Include="Views\Payments\DraggableButton.cs" />
-    <Compile Include="Views\Payments\DraggedHandler.cs" />
-    <Compile Include="Views\Payments\ProgressBar.cs" />
     <Compile Include="Views\BookEditInformation.cs" />
     <Compile Include="Views\BookEditInformation.designer.cs">
       <DependentUpon>BookEditInformation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Payments\BookPaymentSettingsView.cs" />
-    <Compile Include="Views\Payments\BookPaymentSettingsView.designer.cs">
-      <DependentUpon>BookPaymentSettingsView.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\UIViewPositioningExtensions.cs" />
     <Compile Include="Controls\Binding\CustomBindingsLoader.cs" />
@@ -453,11 +412,6 @@
     <Compile Include="Views\Payments\PayPalView.designer.cs">
       <DependentUpon>PayPalView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\RideSummaryPage.cs" />
-    <Compile Include="Views\RideSummaryPage.designer.cs">
-      <DependentUpon>RideSummaryPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PaymentSelector.cs" />
     <Compile Include="Controls\Binding\PaymentSelectorBinding.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
     <Compile Include="Views\TermsAndConditionsView.cs" />
@@ -481,10 +435,6 @@
     <Compile Include="Controls\Widgets\TwoLinesCell.cs" />
     <Compile Include="Controls\Widgets\CustomCellBackgroundView.cs" />
     <Compile Include="Controls\Widgets\Line.cs" />
-    <Compile Include="Views\Payments\CmtRideLinqChangePaymentView.cs" />
-    <Compile Include="Views\Payments\CmtRideLinqChangePaymentView.designer.cs" />
-    <Compile Include="Views\Payments\CmtRideLinqConfirmPairView.cs" />
-    <Compile Include="Views\Payments\CmtRideLinqConfirmPairView.designer.cs" />
     <Compile Include="Views\HistoryView.cs" />
     <Compile Include="Views\HistoryView.designer.cs">
       <DependentUpon>HistoryView.cs</DependentUpon>
@@ -498,6 +448,11 @@
     <Compile Include="Controls\Widgets\NavigateFlatTextField.cs" />
     <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
     <Compile Include="Controls\Widgets\RadioElementWithId.cs" />
+    <Compile Include="Style\Theme.cs" />
+    <Compile Include="Views\RideSummaryView.cs" />
+    <Compile Include="Views\RideSummaryView.designer.cs">
+      <DependentUpon>RideSummaryView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Widgets\BindableTableViewSource.cs" />
     <Compile Include="Controls\Widgets\SingleLinePictureCell.cs" />
     <Compile Include="Views\AboutUsView.xib.cs">
@@ -505,6 +460,32 @@
     </Compile>
     <Compile Include="Views\AboutUsView.xib.designer.cs">
       <DependentUpon>AboutUsView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookRatingCell.cs" />
+    <Compile Include="Views\BookRatingCell.designer.cs">
+      <DependentUpon>BookRatingCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookRatingView.cs" />
+    <Compile Include="Views\BookRatingView.designer.cs">
+      <DependentUpon>BookRatingView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Payments\PaymentView.cs" />
+    <Compile Include="Views\Payments\PaymentView.designer.cs" />
+    <Compile Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.cs" />
+    <Compile Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.designer.cs" />
+    <Compile Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.cs" />
+    <Compile Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.designer.cs" />
+    <Compile Include="LinkerPleaseInclude.cs" />
+    <Compile Include="Views\Payments\ConfirmCarNumberView.cs" />
+    <Compile Include="Views\Payments\ConfirmCarNumberView.designer.cs">
+      <DependentUpon>ConfirmCarNumberView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Widgets\PaymentSelector.cs" />
+    <Compile Include="Views\BookingStatusView.xib.cs">
+      <DependentUpon>BookingStatusView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookingStatusView.xib.designer.cs">
+      <DependentUpon>BookingStatusView.xib</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
@@ -525,8 +506,6 @@
     <InterfaceDefinition Include="Views\PanelMenuView.xib" />
     <InterfaceDefinition Include="Views\UpdatePasswordView.xib" />
     <InterfaceDefinition Include="Views\LoginView.xib" />
-    <InterfaceDefinition Include="Order\BookRatingView.xib" />
-    <InterfaceDefinition Include="Order\BookRatingCell.xib" />
     <InterfaceDefinition Include="Views\HistoryDetailView.xib" />
     <InterfaceDefinition Include="Views\LocationDetailView.xib" />
     <InterfaceDefinition Include="Views\TutorialView.xib" />
@@ -535,22 +514,24 @@
     <InterfaceDefinition Include="Views\ConfirmationView.xib" />
     <InterfaceDefinition Include="Views\ResetPasswordView.xib" />
     <InterfaceDefinition Include="Order\BookStreetNumberView.xib" />
-    <InterfaceDefinition Include="Views\StatusView.xib" />
     <InterfaceDefinition Include="Views\CreditCardAddView.xib" />
     <InterfaceDefinition Include="Views\CreditCardsListView.xib" />
-    <InterfaceDefinition Include="Views\Payments\ConfrimCarNumberPage.xib" />
     <InterfaceDefinition Include="Views\BookEditInformation.xib" />
-    <InterfaceDefinition Include="Views\Payments\BookPaymentSettingsView.xib" />
     <InterfaceDefinition Include="Views\Payments\PayPalView.xib" />
-    <InterfaceDefinition Include="Views\RideSummaryPage.xib" />
     <InterfaceDefinition Include="Views\ConfirmationView_Thriev.xib" />
     <InterfaceDefinition Include="Views\BookEditInformation_Thriev.xib" />
     <InterfaceDefinition Include="Views\TermsAndConditionsView.xib" />
     <InterfaceDefinition Include="Views\MyLocationsView.xib" />
-    <InterfaceDefinition Include="Views\Payments\CmtRideLinqChangePaymentView.xib" />
-    <InterfaceDefinition Include="Views\Payments\CmtRideLinqConfirmPairView.xib" />
     <InterfaceDefinition Include="Views\HistoryView.xib" />
+    <InterfaceDefinition Include="Views\RideSummaryView.xib" />
     <InterfaceDefinition Include="Views\AboutUsView.xib" />
+    <InterfaceDefinition Include="Views\BookRatingCell.xib" />
+    <InterfaceDefinition Include="Views\BookRatingView.xib" />
+    <InterfaceDefinition Include="Views\Payments\PaymentView.xib" />
+    <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.xib" />
+    <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.xib" />
+    <InterfaceDefinition Include="Views\Payments\ConfirmCarNumberView.xib" />
+    <InterfaceDefinition Include="Views\BookingStatusView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
@@ -615,26 +596,6 @@
     <Content Include="Assets\settings%402x.png" />
     <Content Include="Assets\right_arrow.png" />
     <Content Include="Assets\right_arrow%402x.png" />
-    <Content Include="Assets\Rating\ecstatic.png" />
-    <Content Include="Assets\Rating\ecstatic%402x.png" />
-    <Content Include="Assets\Rating\ecstatic-selected.png" />
-    <Content Include="Assets\Rating\ecstatic-selected%402x.png" />
-    <Content Include="Assets\Rating\happy.png" />
-    <Content Include="Assets\Rating\happy%402x.png" />
-    <Content Include="Assets\Rating\happy-selected.png" />
-    <Content Include="Assets\Rating\happy-selected%402x.png" />
-    <Content Include="Assets\Rating\mad.png" />
-    <Content Include="Assets\Rating\mad%402x.png" />
-    <Content Include="Assets\Rating\mad-selected.png" />
-    <Content Include="Assets\Rating\mad-selected%402x.png" />
-    <Content Include="Assets\Rating\neutral.png" />
-    <Content Include="Assets\Rating\neutral%402x.png" />
-    <Content Include="Assets\Rating\neutral-selected.png" />
-    <Content Include="Assets\Rating\neutral-selected%402x.png" />
-    <Content Include="Assets\Rating\unhappy.png" />
-    <Content Include="Assets\Rating\unhappy%402x.png" />
-    <Content Include="Assets\Rating\unhappy-selected.png" />
-    <Content Include="Assets\Rating\unhappy-selected%402x.png" />
     <Content Include="Assets\pin_cab.png" />
     <Content Include="Assets\pin_cab%402x.png" />
     <Content Include="Assets\pin_destination.png" />
@@ -789,6 +750,28 @@
     <BundleResource Include="Default-568h%402x.png" />
     <BundleResource Include="Default.png" />
     <BundleResource Include="Default%402x.png" />
+    <BundleResource Include="Resources\grip.png" />
+    <BundleResource Include="Resources\grip%402x.png" />
+    <BundleResource Include="Resources\ecstatic-selected.png" />
+    <BundleResource Include="Resources\ecstatic-selected%402x.png" />
+    <BundleResource Include="Resources\ecstatic.png" />
+    <BundleResource Include="Resources\ecstatic%402x.png" />
+    <BundleResource Include="Resources\happy-selected.png" />
+    <BundleResource Include="Resources\happy-selected%402x.png" />
+    <BundleResource Include="Resources\happy.png" />
+    <BundleResource Include="Resources\happy%402x.png" />
+    <BundleResource Include="Resources\mad-selected.png" />
+    <BundleResource Include="Resources\mad-selected%402x.png" />
+    <BundleResource Include="Resources\mad.png" />
+    <BundleResource Include="Resources\mad%402x.png" />
+    <BundleResource Include="Resources\neutral-selected.png" />
+    <BundleResource Include="Resources\neutral-selected%402x.png" />
+    <BundleResource Include="Resources\neutral.png" />
+    <BundleResource Include="Resources\neutral%402x.png" />
+    <BundleResource Include="Resources\unhappy-selected.png" />
+    <BundleResource Include="Resources\unhappy-selected%402x.png" />
+    <BundleResource Include="Resources\unhappy.png" />
+    <BundleResource Include="Resources\unhappy%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
@@ -808,5 +791,10 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Controls\Widgets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Style\Theme.xml">
+      <LogicalName>Theme.xml</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

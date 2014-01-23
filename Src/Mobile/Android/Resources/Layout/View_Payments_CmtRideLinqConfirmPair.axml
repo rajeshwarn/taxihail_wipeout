@@ -1,137 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:focusable="true"
     android:focusableInTouchMode="true">
     <LinearLayout
+        android:layout_margin="0dp"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:padding="10dp"
-        android:orientation="vertical"
-        android:gravity="fill">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="15dip"
-            android:paddingRight="15dip"
-            android:paddingTop="15dip"
+            android:background="@color/top_bar_color"
             android:orientation="horizontal">
             <TextView
-                android:layout_width="145dp"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:textColor="@color/gray"
-                android:text="@string/CmtCarNumber"
-                android:paddingRight="8dip"
-                android:gravity="right" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4585"
-                android:textSize="24dp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                local:MvxBind="{'Text':{'Path':'CarNumber'}}" />
+                android:text="Confirm Ridelinq Pair"
+                style="@style/TopTitleText"
+                android:layout_gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/top_bar_title_height"
+                android:gravity="center" />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="15dip"
-            android:paddingRight="15dip"
-            android:paddingTop="15dip"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="145dp"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:textColor="@color/gray"
-                android:text="@string/CmtCardNumber"
-                android:paddingRight="8dip"
-                android:gravity="right" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No Card"
-                android:textSize="24dp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                local:MvxBind="{'Text':{'Path':'CardNumber'}}" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="15dip"
-            android:paddingRight="15dip"
-            android:paddingTop="15dip"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="145dp"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:textColor="@color/gray"
-                android:text="@string/CmtTipAmount"
-                android:paddingRight="8dip"
-                android:gravity="right" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24dp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                local:MvxBind="{'Text':{'Path':'TipAmountInPercent'}}" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="100dip"
-            android:padding="10dp"
             android:orientation="vertical"
-            android:gravity="fill"
-            android:layout_alignParentBottom="true" />
-        <apcurium.mk.booking.mobile.client.controls.StyledButton
-            local:ButtonStyle="Green"
-            android:id="@+id/ConfirmPaymentBtn"
-            style="@style/ButtonText"
-            android:background="@drawable/green_button"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="8dp"
             android:layout_width="fill_parent"
-            android:layout_height="40dip"
-            android:text="@string/CmtConfirmPayment"
-            android:layout_marginRight="5dp"
-            local:MvxBind="{'Click': {'Path': 'ConfirmPayment'}}"
-            android:layout_gravity="bottom"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="false"
-            android:layout_alignParentBottom="true" />
-        <apcurium.mk.booking.mobile.client.controls.StyledButton
-            local:ButtonStyle="Green"
-            android:id="@+id/ChangePaymentInfoBtn"
-            style="@style/ButtonText"
-            android:background="@drawable/gray_button"
-            android:layout_width="fill_parent"
-            android:text="@string/CmtChangePaymentInfo"
-            android:layout_marginRight="5dp"
-            local:MvxBind="{'Click': {'Path': 'ChangePaymentInfo'}}"
-            android:layout_gravity="bottom"
-            android:layout_height="40dip"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="false"
-            android:layout_alignParentBottom="true" />
-        <apcurium.mk.booking.mobile.client.controls.StyledButton
-            local:ButtonStyle="Green"
-            android:id="@+id/CancelPaymentBtn"
-            style="@style/ButtonText"
-            android:background="@drawable/red_button"
-            android:layout_width="fill_parent"
-            android:text="@string/CmtCancelPayment"
-            android:layout_marginRight="5dp"
-            local:MvxBind="{'Click': {'Path': 'CancelPayment'}}"
-            android:layout_gravity="bottom"
-            android:layout_height="40dip"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="false"
-            android:layout_alignParentBottom="true" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="center_horizontal">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip"
+                android:paddingTop="15dip"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="145dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textColor="@color/gray"
+                    android:text="@string/CmtCarNumber"
+                    android:paddingRight="8dip"
+                    android:gravity="right" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4585"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    local:MvxBind="{'Text':{'Path':'CarNumber'}}" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip"
+                android:paddingTop="15dip"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="145dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textColor="@color/gray"
+                    android:text="@string/CmtCardNumber"
+                    android:paddingRight="8dip"
+                    android:gravity="right" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No Card"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    local:MvxBind="{'Text':{'Path':'CardNumber'}}" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip"
+                android:paddingTop="15dip"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="145dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textColor="@color/gray"
+                    android:text="@string/CmtTipAmount"
+                    android:paddingRight="8dip"
+                    android:gravity="right" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    local:MvxBind="{'Text':{'Path':'TipAmountInPercent'}}" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="100dip"
+                android:padding="10dp"
+                android:orientation="vertical"
+                android:gravity="fill"
+                android:layout_alignParentBottom="true" />
+            <Button
+                style="@style/ButtonActionGreenStyle"
+                android:id="@+id/ConfirmPaymentBtn"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightButton"
+                android:text="@string/CmtConfirmPayment"
+                local:MvxBind="{'Click': {'Path': 'ConfirmPayment'}}" />
+            <Button
+                style="@style/ButtonActionGrayStyle"
+                android:id="@+id/ChangePaymentInfoBtn"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightButton"
+                android:text="@string/CmtChangePaymentInfo"
+                local:MvxBind="{'Click': {'Path': 'ChangePaymentInfo'}}" />
+            <Button
+                style="@style/ButtonActionRedStyle"
+                android:id="@+id/CancelPaymentBtn"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightButton"
+                android:text="@string/CmtCancelPayment"
+                local:MvxBind="{'Click': {'Path': 'CancelPayment'}}" />
+        </LinearLayout>
     </LinearLayout>
-</apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
+</RelativeLayout>

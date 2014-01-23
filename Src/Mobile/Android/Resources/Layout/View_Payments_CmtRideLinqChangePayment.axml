@@ -1,24 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:focusable="true"
     android:focusableInTouchMode="true">
-    <ScrollView
-        android:scrollbarStyle="outsideInset"
+    <LinearLayout
+        android:layout_margin="0dp"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:paddingLeft="15dip"
-            android:paddingRight="15dip"
-            android:paddingTop="15dip"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:background="@color/top_bar_color"
+            android:orientation="horizontal">
+            <TextView
+                android:text="Change Payment Infos"
+                style="@style/TopTitleText"
+                android:layout_gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/top_bar_title_height"
+                android:gravity="center" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="8dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="center_horizontal">
             <TextView
                 android:layout_width="fill_parent"
                 android:id="@+id/lblCC"
@@ -42,30 +60,32 @@
                     android:text="@string/PaymentDetails.TipAmountLabel"
                     style="@style/FormLabelText" />
             </LinearLayout>
-            <apcurium.mk.booking.mobile.client.controls.TipSlider
+        <!--<apcurium.mk.booking.mobile.client.controls.TipSlider
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:id="@+id/tipSlider"
                 android:layout_marginRight="-4dp"
-                local:MvxBind="{'Percent': {'Path': 'PaymentPreferences.Tip', 'Mode':'TwoWay'}}" />
+                local:MvxBind="{'Percent': {'Path': 'PaymentPreferences.Tip', 'Mode':'TwoWay'}}" />-->
+            <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                android:id="@+id/tipPicker"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightEditTextFlat"
+                android:layout_marginBottom="10dip"
+                local:MvxBind="Text PaymentPreferences.TipAmount; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip" />
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingTop="15dip"
                 android:background="@color/transparent">
-                <apcurium.mk.booking.mobile.client.controls.StyledButton
-                    local:ButtonStyle="Green"
+                <Button
                     android:id="@+id/SaveSettingsButton"
-                    style="@style/ButtonText"
-                    android:background="@drawable/green_button"
+                    style="@style/ButtonActionRedStyle"
                     android:layout_width="fill_parent"
-                    android:layout_height="40dip"
                     android:layout_weight="0.33"
-                    android:singleLine="true"
-                    android:lines="1"
+                    android:layout_height="@dimen/HeightButton"
                     android:text="@string/CmtRideLinqSaveChanges"
                     local:MvxBind="{'Click': {'Path': 'SaveCommand'}}" />
                 <LinearLayout
@@ -74,20 +94,15 @@
                     android:orientation="vertical"
                     android:paddingTop="15dip"
                     android:background="@color/transparent">
-                    <apcurium.mk.booking.mobile.client.controls.StyledButton
-                        local:ButtonStyle="Green"
-                        android:id="@+id/CancelSettingsButton"
-                        style="@style/ButtonText"
-                        android:background="@drawable/red_button"
+                    <Button
+                        style="@style/ButtonActionRedStyle"
                         android:layout_width="fill_parent"
-                        android:layout_height="40dip"
-                        android:layout_weight="0.33"
-                        android:singleLine="true"
-                        android:lines="1"
+                        android:layout_height="@dimen/HeightButton"
+                        android:id="@+id/CancelSettingsButton"
                         android:text="@string/CmtRideLinqCancelChanges"
                         local:MvxBind="{'Click': {'Path': 'CancelCommand'}}" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
-</apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
+    </LinearLayout>
+</RelativeLayout>

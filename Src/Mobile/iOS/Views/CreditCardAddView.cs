@@ -43,9 +43,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.CreditCardCompanies[3].Image = "visa_electron.png";
 			ViewModel.CreditCardCompanies[4].Image = "credit_card_generic.png";
 
-            txtCategory.Configure(Localize.GetValue("CreditCardCategory"), () => ViewModel.CardCategories.ToArray(), (int?)ViewModel.CreditCardCategory, x => ViewModel.CreditCardCategory =  x.Id.GetValueOrDefault());
-            txtExpMonth.Configure(Localize.GetValue("CreditCardExpMonth"), () => ViewModel.ExpirationMonths.ToArray(), ViewModel.ExpirationMonth, x => ViewModel.ExpirationMonth = x.Id);
-            txtExpYear.Configure(Localize.GetValue("CreditCardExpYear"), () => ViewModel.ExpirationYears.ToArray(), ViewModel.ExpirationYear, x => ViewModel.ExpirationYear = x.Id);
+            txtCategory.Configure(Localize.GetValue("CreditCardCategory"), () => ViewModel.CardCategories.ToArray(), () => (int?)ViewModel.CreditCardCategory, x => ViewModel.CreditCardCategory =  x.Id.GetValueOrDefault());
+            txtExpMonth.Configure(Localize.GetValue("CreditCardExpMonth"), () => ViewModel.ExpirationMonths.ToArray(), () => ViewModel.ExpirationMonth, x => ViewModel.ExpirationMonth = x.Id);
+            txtExpYear.Configure(Localize.GetValue("CreditCardExpYear"), () => ViewModel.ExpirationYears.ToArray(), () => ViewModel.ExpirationYear, x => ViewModel.ExpirationYear = x.Id);
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(UIBarButtonSystemItem.Save, null, null);
 

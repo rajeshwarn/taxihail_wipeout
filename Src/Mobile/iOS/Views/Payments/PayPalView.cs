@@ -7,18 +7,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
 	public partial class PayPalView : BaseViewController<PayPalViewModel>
     {
-        public PayPalView() 
-			: base("PayPalView", null)
+        public PayPalView() : base("PayPalView", null)
         {
         }
 		
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+
+            // Hide navigation bar, full screen height is required for displaying paypal page
+            NavigationController.NavigationBarHidden = true;
+        }
+
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-            ViewModel.OnViewLoaded();
-
-			// Hide navigation bar, full screen height is required for displaying paypal page
-			NavigationController.NavigationBarHidden = true;
 
             webView.ShouldStartLoad = LoadHook;
 			var request = new NSUrlRequest (new NSUrl (ViewModel.Url));
