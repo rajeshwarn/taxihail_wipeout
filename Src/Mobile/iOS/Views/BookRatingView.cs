@@ -33,8 +33,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 
 			View.BackgroundColor = UIColor.FromRGB (239,239,239);
 
-			FlatButtonStyle.Green.ApplyTo(submitRatingBtn);
-            submitRatingBtn.SetTitle(Localize.GetValue("Submit"), UIControlState.Normal);
+			FlatButtonStyle.Green.ApplyTo(btnSubmit);
+			btnSubmit.SetTitle(Localize.GetValue("Submit"), UIControlState.Normal);
 
 			var source = new MvxActionBasedTableViewSource(
 				ratingTableView,
@@ -52,14 +52,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 					
             var set = this.CreateBindingSet<BookRatingView, BookRatingViewModel>();
 
-            set.Bind(submitRatingBtn)
+			 set.Bind(btnSubmit)
                 .For("TouchUpInside")
                 .To(vm => vm.RateOrder);
-            set.Bind(submitRatingBtn)
+            set.Bind(btnSubmit)
                 .For(v => v.Hidden)
                 .To(vm => vm.CanRating)
                 .WithConversion("BoolInverter");
-            set.Bind(submitRatingBtn)
+            set.Bind(btnSubmit)
                 .For(v => v.Enabled)
                 .To(vm => vm.CanSubmit);
 

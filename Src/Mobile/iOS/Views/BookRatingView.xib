@@ -6,8 +6,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BookRatingView">
             <connections>
+                <outlet property="btnSubmit" destination="14" id="N7w-lG-0wT"/>
                 <outlet property="ratingTableView" destination="17" id="18"/>
-                <outlet property="submitRatingBtn" destination="14" id="15"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
