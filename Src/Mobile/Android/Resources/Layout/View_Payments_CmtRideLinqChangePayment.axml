@@ -20,7 +20,7 @@
             android:background="@color/top_bar_color"
             android:orientation="horizontal">
             <TextView
-                android:text="Confirm Ridelinq Pair"
+                android:text="Change Payment Infos"
                 style="@style/TopTitleText"
                 android:layout_gravity="center"
                 android:layout_width="fill_parent"
