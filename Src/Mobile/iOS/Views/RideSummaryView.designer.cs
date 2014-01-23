@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnPay { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnRateRide { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnRateRide { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnReSendConfirmation { get; set; }
@@ -32,19 +32,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (lblTitle != null) {
-				lblTitle.Dispose ();
-				lblTitle = null;
-			}
-
-			if (lblSubTitle != null) {
-				lblSubTitle.Dispose ();
-				lblSubTitle = null;
-			}
-
-			if (btnSendReceipt != null) {
-				btnSendReceipt.Dispose ();
-				btnSendReceipt = null;
+			if (btnPay != null) {
+				btnPay.Dispose ();
+				btnPay = null;
 			}
 
 			if (btnRateRide != null) {
@@ -52,14 +42,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnRateRide = null;
 			}
 
-			if (btnPay != null) {
-				btnPay.Dispose ();
-				btnPay = null;
-			}
-
 			if (btnReSendConfirmation != null) {
 				btnReSendConfirmation.Dispose ();
 				btnReSendConfirmation = null;
+			}
+
+			if (btnSendReceipt != null) {
+				btnSendReceipt.Dispose ();
+				btnSendReceipt = null;
+			}
+
+			if (lblSubTitle != null) {
+				lblSubTitle.Dispose ();
+				lblSubTitle = null;
+			}
+
+			if (lblTitle != null) {
+				lblTitle.Dispose ();
+				lblTitle = null;
 			}
 		}
 	}
