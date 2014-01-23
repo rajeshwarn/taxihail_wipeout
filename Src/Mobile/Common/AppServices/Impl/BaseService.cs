@@ -6,6 +6,7 @@ using Cirrious.CrossCore;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -76,6 +77,32 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             return default(TResult);
         }
+
+		protected async Task UseServiceClientAsync<TService>(Func<TService, Task> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where TService : class
+		{
+			var service = TinyIoCContainer.Current.Resolve<TService>();
+
+			try
+			{
+				using(Logger.StartStopwatch("*************************************   UseServiceClient : " + method))
+				{
+					await action(service).ConfigureAwait(false);
+				}
+			}
+			catch (Exception ex)
+			{                    
+				Logger.LogError(ex);
+				if (errorHandler == null)
+				{
+					TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
+				}
+				else
+				{
+					errorHandler (ex);
+				} 
+				throw;
+			}
+		}
 
         protected TResult UseServiceClientAsync<TService, TResult>(Func<TService, Task<TResult>> action, [CallerMemberName] string method = "")
             where TResult : class
