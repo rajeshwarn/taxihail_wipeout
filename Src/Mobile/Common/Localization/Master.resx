@@ -1086,7 +1086,7 @@
   <data name="ViewRatingBtn" xml:space="preserve">
     <value>View ratings</value>
   </data>
-  <data name="View_RatePage" xml:space="preserve">
+  <data name="View_BookRating" xml:space="preserve">
     <value>Rate your trip</value>
   </data>
   <data name="ResetPasswordSucessMessage" xml:space="preserve">

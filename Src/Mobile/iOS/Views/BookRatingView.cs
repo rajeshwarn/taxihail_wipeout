@@ -7,22 +7,33 @@ using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.Client.Views;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
-	public partial class BookRatingView : MvxViewController
+	public partial class BookRatingView : BaseViewController<BookRatingViewModel>
 	{
 		public BookRatingView() 
 			: base("BookRatingView", null)
 		{
 		}
 		
-		
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+
+			NavigationItem.HidesBackButton = false;
+			NavigationItem.Title = Localize.GetValue("View_BookRating");
+		}
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 
-			View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+			View.BackgroundColor = UIColor.FromRGB (239,239,239);
+
+			FlatButtonStyle.Green.ApplyTo(submitRatingBtn);
             submitRatingBtn.SetTitle(Localize.GetValue("Submit"), UIControlState.Normal);
 
 			var source = new MvxActionBasedTableViewSource(
@@ -36,6 +47,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 			{
 				return BookRatingCell.LoadFromNib(tableView);
 			};
+
+			ratingTableView.Source = source;
 					
             var set = this.CreateBindingSet<BookRatingView, BookRatingViewModel>();
 
@@ -55,14 +68,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
                 .To(vm => vm.RatingList);
 
             set.Apply();
-
-            ratingTableView.BackgroundColor = UIColor.Clear;
-            ratingTableView.BackgroundView = new UIView();
-			ratingTableView.Source = source;
-			ratingTableView.ReloadData();
-
-            View.ApplyAppFont ();
-
 		}
 	}
 }
