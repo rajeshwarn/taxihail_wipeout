@@ -459,7 +459,7 @@
   <data name="CreateAccountPassword" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="CreateAccountPasswordConfrimation" xml:space="preserve">
+  <data name="CreateAccountPasswordConfirmation" xml:space="preserve">
     <value>Confirm password</value>
   </data>
   <data name="SettingViewLoginInfo" xml:space="preserve">
@@ -1233,7 +1233,7 @@
   <data name="NoCreditCardSelected" xml:space="preserve">
     <value>Please select a credit card</value>
   </data>
-  <data name="View_PaymentCreditCardsOnFile" xml:space="preserve">
+  <data name="PaymentView" xml:space="preserve">
     <value>Payment Info</value>
   </data>
   <data name="BackButton" xml:space="preserve">
@@ -1442,8 +1442,8 @@
   <data name="CmtChangePaymentInfo" xml:space="preserve">
     <value>Change Payment Settings</value>
   </data>
-  <data name="CmtConfirmBookingInfo" xml:space="preserve">
-    <value>Confirm payment information</value>
+  <data name="CmtRideLinqConfirmPairView" xml:space="preserve">
+    <value>Confirm Payment Information</value>
   </data>
   <data name="CmtConfirmPayment" xml:space="preserve">
     <value>Confirm</value>
@@ -1487,5 +1487,13 @@
   <data name="GooglePlayServicesNotAvailableMessage" xml:space="preserve">
     <value>You need to update Google Play Services in order to use this application.</value>
   </data>
-
+  <data name="PaymentViewTotalText" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="PaymentViewTipText" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="PaymentViewMeterAmountText" xml:space="preserve">
+    <value>Meter Amount</value>
+  </data>
 </root>

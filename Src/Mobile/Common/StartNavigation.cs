@@ -4,14 +4,17 @@ using System.Threading.Tasks;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Entity;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
-
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -27,7 +30,6 @@ namespace apcurium.MK.Booking.Mobile
 
             Task.Factory.SafeStartNew( () => TinyIoCContainer.Current.Resolve<ICacheService>().Set<string>( "Client.NumberOfCharInRefineAddress", TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.NumberOfCharInRefineAddress" )));
 
-
             if (TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount == null)
 			{
 				ShowViewModel<LoginViewModel>();
@@ -41,13 +43,12 @@ namespace apcurium.MK.Booking.Mobile
                 var orderStatus = bookingService.GetOrderStatus (orderId);
 				var order = accountService.GetHistoryOrder(orderId);
                 
-				if (order != null && orderStatus != null) {
-                    
+				if (order != null && orderStatus != null) 
+                {
 					ShowViewModel<BookingStatusViewModel>(new Dictionary<string, string> {
 						{"order", order.ToJson()},
                         {"orderStatus", orderStatus.ToJson()},
                     });
-                    
                 }
             }
             else
@@ -57,11 +58,11 @@ namespace apcurium.MK.Booking.Mobile
 
             TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Startup with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);
         }
+
         public bool ApplicationCanOpenBookmarks
         {
             get { return true; }
         }
     }
-
 }
 

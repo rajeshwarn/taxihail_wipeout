@@ -5,7 +5,7 @@ using MonoTouch.Foundation;
 using System.Drawing;
 using MonoTouch.CoreAnimation;
 
-namespace apcurium.MK.Booking.Mobile.Client.Controls
+namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
 	[Register("PaymentSelector")]
 	public class PaymentSelector : UIView

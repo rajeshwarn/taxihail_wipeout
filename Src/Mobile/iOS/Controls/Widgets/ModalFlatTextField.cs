@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
-        public void Configure<T>(string title, Func<ListItem<T>[]> getValues,  Nullable<T> selectedId, Action<ListItem<T>> onItemSelected) where T : struct
+        public void Configure<T>(string title, Func<ListItem<T>[]> getValues, Func<Nullable<T>> selectedId, Action<ListItem<T>> onItemSelected) where T : struct
         {
             Button.TouchUpInside += (sender, e) => {
                 var values = getValues();
@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                             controller.NavigationController.PopViewControllerAnimated(true);
                     };
                     section.Add(item);
-                    if (selectedId.Equals(value.Id))
+                    if (selectedId().Equals(value.Id))
                     {
                         selected = Array.IndexOf(values, value);
                     }
