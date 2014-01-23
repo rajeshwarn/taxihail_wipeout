@@ -29,8 +29,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			DismissKeyboardOnReturn(txtEmail);
 
-			lblTitle.Text = Localize.GetValue ("ResetPasswordTitleLabel");
-			lblSubTitle.Text = Localize.GetValue ("ResetPasswordSubtitleLabel");
+			lblTitle.Text = Localize.GetValue ("ResetPasswordTitleText");
+			lblSubTitle.Text = Localize.GetValue ("ResetPasswordSubtitleText");
 			txtEmail.Placeholder = Localize.GetValue("ResetPasswordEmailPlaceHolder");
 			btnReset.SetTitle(Localize.GetValue("Reset"), UIControlState.Normal);
 			btnCancel.SetTitle(Localize.GetValue("Cancel"), UIControlState.Normal);

@@ -527,10 +527,12 @@
   <string name="PanelMenuViewUpdateProfileText">Update Account</string>
   <string name="PanelMenuViewCallDispatchText">Call</string>
   <string name="PanelMenuViewReportProblemText">Report A Problem</string>
-  <string name="PaymentViewTipText">Tip</string>
-  <string name="PaymentView">Payment Info</string>
-  <string name="PaymentViewMeterAmountText">Meter Amount</string>
-  <string name="PaymentViewTotalText">Total</string>
-  <string name="CreateAccountPasswordConfirmation">Confirm password</string>
-  <string name="CmtRideLinqConfirmPairView">Confirm Payment Information</string>
+  <string name="RideSummarySubTitleText">Thank you for riding with {0}, we look forward to serving you again soon.</string>
+  <string name="RideSummaryTitleText">Thank you</string>
+  <string name="ReSendConfirmation">Notify driver of payment</string>
+  <string name="View_RideSummary">Ride Summary</string>
+  <string name="ReceiptSent">Receipt sent</string>
+  <string name="RateRide">Rate my ride</string>
+  <string name="ResetPasswordTitleText">Forgot your password?</string>
+  <string name="ResetPasswordSubtitleText">Enter your email and we\'ll send you a new one.</string>
 </resources>
