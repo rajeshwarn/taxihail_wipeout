@@ -45,25 +45,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblSubTitle.Text = String.Format(Localize.GetValue ("RideSummarySubTitleText"), this.Services().Settings.ApplicationName);
 
 			if (ViewModel.IsSendReceiptButtonShown)
-			{
 				btnSendReceipt.RemoveFromSuperview();
-			}
+			else
+				btnSendReceipt.SetTitle(Localize.GetValue("SendReceipt"), UIControlState.Normal);
+
 			if (ViewModel.IsRatingButtonShown)
-			{
 				btnRateRide.RemoveFromSuperview();
-			}
+			else
+				btnRateRide.SetTitle(Localize.GetValue("RateRide"), UIControlState.Normal);
+
 			if (ViewModel.IsPayButtonShown)
-			{
 				btnPay.RemoveFromSuperview();
-			}
+			else
+				btnPay.SetTitle(Localize.GetValue("PayNow"), UIControlState.Normal);
+
 			if (ViewModel.IsResendConfirmationButtonShown)
-			{
 				btnReSendConfirmation.RemoveFromSuperview();
-			}
-			btnSendReceipt.SetTitle(Localize.GetValue("SendReceipt"), UIControlState.Normal);
-			btnRateRide.SetTitle(Localize.GetValue("RateRide"), UIControlState.Normal);
-			btnPay.SetTitle(Localize.GetValue("PayNow"), UIControlState.Normal);
-			btnReSendConfirmation.SetTitle(Localize.GetValue("ReSendConfirmation"), UIControlState.Normal);
+			else
+				btnReSendConfirmation.SetTitle(Localize.GetValue("ReSendConfirmation"), UIControlState.Normal);
 
 			var set = this.CreateBindingSet<RideSummaryView, RideSummaryViewModel> ();
 
@@ -89,7 +88,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 if(ViewModel.ReceiptSent)
                 {
-					FlatButtonStyle.Gray.ApplyTo(btnSendReceipt);
 					btnSendReceipt.SetTitle(Localize.GetValue("ReceiptSent"), UIControlState.Normal);
 					btnSendReceipt.Enabled = false;
                 }
