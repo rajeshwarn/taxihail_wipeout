@@ -22,27 +22,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             set
 			{ 
 				_creditCards = value;
-				RaisePropertyChanged(); }
+				RaisePropertyChanged(); 
+				RaisePropertyChanged(() => HasCards);
+			}
         }
-
-        private bool _hasCards;
+		
         public bool HasCards
         {
             get
             {
-                return _hasCards;
-            }
-            set
-            {
-                if (value != _hasCards)
-                {
-                    _hasCards = value;
-					RaisePropertyChanged();
-                }
+				return _creditCards.Any();
             }
         }
-
-
 
 		public override void Start()
         {
@@ -78,13 +69,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                         InvokeOnMainThread(() => CreditCards.Remove(creditCardToRemove));
 						RaisePropertyChanged("CreditCards");
                     }
-                    CreditCards[0].IsFirst = true;
 
-                    if (CreditCards.Count.Equals(1))
-                    {
-                        CreditCards[0].IsLast = true;
-                        CreditCards[0].IsAddNew = true;
-                    }
                     CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
                 },
                 this.Services().Localize["CancelButton"],
@@ -97,21 +82,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             return Task.Factory.StartNew(() =>
             {
                 var creditCards = this.Services().Account.GetCreditCards().ToList();
-                creditCards.Add(new CreditCardDetails
+				creditCards.Insert(0, new CreditCardDetails
                 {
                     FriendlyName = this.Services().Localize["AddCreditCardTitle"],
                 });
                 CreditCards = new ObservableCollection<CreditCardViewModel>(creditCards.Select(x => new CreditCardViewModel
                 {
                     CreditCardDetails = x,
-                    IsAddNew = x.CreditCardId.IsNullOrEmpty(),
-                    ShowPlusSign = x.CreditCardId.IsNullOrEmpty(),
-                    IsFirst = x.Equals(creditCards.First()),
-                    IsLast = x.Equals(creditCards.Last()),
-                    Picture = x.CreditCardCompany,
+                    Picture = x.CreditCardCompany
                 }));
-                //todo utiliser une propriété calculée
-                HasCards = CreditCards.Any();
             });
         }
 
@@ -141,7 +120,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 {
                     InvokeOnMainThread(()=>
                     {
-                         CreditCards.Insert(CreditCards.Count-1,new CreditCardViewModel
+						 CreditCards.Add(new CreditCardViewModel
                          {
                              CreditCardDetails = new CreditCardDetails
                              {
@@ -153,14 +132,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                              Picture = newCreditCard.CreditCardCompany
                         });
 						RaisePropertyChanged("CreditCards");
-                    });                                                                                         
-                    CreditCards[0].IsFirst=true;
-                    CreditCards.Last().IsFirst=false;                        
-                    CreditCards.Last().IsLast = true;
-                    CreditCards.Last().IsAddNew = true;
+                    });                                                                                         		
                     CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
                  }));
-                
             }
         }
 

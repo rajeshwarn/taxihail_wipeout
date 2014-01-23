@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     Text = _last4Digits,
                     BackgroundColor = UIColor.Clear,
                     TextColor = UIColor.FromRGB(133, 133, 133),
-                    Font = AppStyle.NormalTextFont,
+                    Font = UIFont.FromName(FontName.HelveticaNeueMedium, 32/2)
                 };
 
                 RightViewMode = UITextFieldViewMode.Always;

@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
             CreditCardCompanies = new List<ListItem>
             {
-                new ListItem {Display = Visa, Id = 0},
+				new ListItem {Display = Visa, Id = 0},
                 new ListItem {Display = MasterCard, Id = 1},
                 new ListItem {Display = Amex, Id = 2},
                 new ListItem {Display = VisaElectron, Id = 3},

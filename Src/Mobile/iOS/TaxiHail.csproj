@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -286,13 +286,6 @@
     <Compile Include="Controls\LoadingOverlay.cs" />
     <Compile Include="Helper\SerializerHelper.cs" />
     <Compile Include="Helper\NSDefaultHelper.cs" />
-    <Compile Include="Controls\Binding\Binding.cs" />
-    <Compile Include="Settings\AboutUsView.xib.cs">
-      <DependentUpon>AboutUsView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\AboutUsView.xib.designer.cs">
-      <DependentUpon>AboutUsView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Controls\GraphicsUtil.cs" />
     <Compile Include="Controls\GlassButton.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
@@ -327,9 +320,6 @@
     <Compile Include="Views\AddressSearchView.designer.cs">
       <DependentUpon>AddressSearchView.xib</DependentUpon>
     </Compile>
-    <Compile Include="InfoTableView\SingleLineCell.cs" />
-    <Compile Include="InfoTableView\TableViewDelegate.cs" />
-    <Compile Include="InfoTableView\TableViewDataSource.cs" />
     <Compile Include="Animations\SlideViewAnimation.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="Views\PanelMenuView.cs">
@@ -338,7 +328,6 @@
     <Compile Include="Views\PanelMenuView.designer.cs">
       <DependentUpon>PanelMenuView.xib</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PanelView.cs" />
     <Compile Include="Controls\TextProgressButton.cs" />
     <Compile Include="Controls\SearchTextField.cs" />
     <Compile Include="Controls\TouchMap.cs" />
@@ -367,7 +356,6 @@
     <Compile Include="Order\BookRatingView.designer.cs">
       <DependentUpon>BookRatingView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Binding\BindableCommandTableViewSource.cs" />
     <Compile Include="Views\HistoryDetailView.xib.cs">
       <DependentUpon>HistoryDetailView.xib</DependentUpon>
     </Compile>
@@ -428,7 +416,6 @@
     <Compile Include="Views\CreditCardsListView.designer.cs">
       <DependentUpon>CreditCardsListView.cs</DependentUpon>
     </Compile>
-    <Compile Include="InfoTableView\SingleLinePictureCell.cs" />
     <Compile Include="Controls\CreditCardButton.cs" />
     <Compile Include="Controls\TextFieldWithArrow.cs" />
     <Compile Include="Controls\NavigateTextField.cs" />
@@ -462,7 +449,6 @@
     </Compile>
     <Compile Include="Extensions\UIViewPositioningExtensions.cs" />
     <Compile Include="Controls\Binding\CustomBindingsLoader.cs" />
-    <Compile Include="Controls\Binding\TipSliderBinding.cs" />
     <Compile Include="Views\Payments\PayPalView.cs" />
     <Compile Include="Views\Payments\PayPalView.designer.cs">
       <DependentUpon>PayPalView.cs</DependentUpon>
@@ -491,8 +477,6 @@
     <Compile Include="Controls\Widgets\TwoLinesCell.cs" />
     <Compile Include="Controls\Widgets\CustomCellBackgroundView.cs" />
     <Compile Include="Controls\Widgets\Line.cs" />
-    <Compile Include="InfoTableView\CustomCellBackgroundView.cs" />
-    <Compile Include="InfoTableView\TwoLinesCell.cs" />
     <Compile Include="Views\Payments\CmtRideLinqChangePaymentView.cs" />
     <Compile Include="Views\Payments\CmtRideLinqChangePaymentView.designer.cs" />
     <Compile Include="Views\Payments\CmtRideLinqConfirmPairView.cs" />
@@ -505,6 +489,7 @@
     <Compile Include="Controls\Widgets\TaxiHailDialogViewController.cs" />
     <Compile Include="Controls\Widgets\RoundedCornerView.cs" />
     <Compile Include="FontName.cs" />
+    <Compile Include="Controls\Widgets\PanelMenuCell.cs" />
     <Compile Include="Controls\Widgets\ModalFlatTextField.cs" />
     <Compile Include="Controls\Widgets\NavigateFlatTextField.cs" />
     <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
@@ -513,6 +498,14 @@
     <Compile Include="Views\RideSummaryView.cs" />
     <Compile Include="Views\RideSummaryView.designer.cs">
       <DependentUpon>RideSummaryView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Widgets\BindableTableViewSource.cs" />
+    <Compile Include="Controls\Widgets\SingleLinePictureCell.cs" />
+    <Compile Include="Views\AboutUsView.xib.cs">
+      <DependentUpon>AboutUsView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AboutUsView.xib.designer.cs">
+      <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
@@ -528,7 +521,6 @@
   <ItemGroup />
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" />
-    <InterfaceDefinition Include="Settings\AboutUsView.xib" />
     <InterfaceDefinition Include="Views\BookView.xib" />
     <InterfaceDefinition Include="Views\AddressSearchView.xib" />
     <InterfaceDefinition Include="Views\PanelMenuView.xib" />
@@ -559,13 +551,11 @@
     <InterfaceDefinition Include="Views\Payments\CmtRideLinqConfirmPairView.xib" />
     <InterfaceDefinition Include="Views\HistoryView.xib" />
     <InterfaceDefinition Include="Views\RideSummaryView.xib" />
+    <InterfaceDefinition Include="Views\AboutUsView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
     <Content Include="app%402x.png" />
-    <Content Include="app.png" />
-    <Content Include="Default.png" />
-    <Content Include="Default%402x.png" />
     <Content Include="Assets\Button\btnBookIt_en.png" />
     <Content Include="Assets\Button\btnBookIt_en%402x.png" />
     <Content Include="Assets\Button\btnBookIt_fr.png" />
@@ -588,8 +578,6 @@
     <Content Include="Assets\Button\btnPickup_on_fr%402x.png" />
     <Content Include="Assets\VerticalButtonBar\rightArrow.png" />
     <Content Include="Assets\VerticalButtonBar\rightArrow%402x.png" />
-    <Content Include="Assets\apcuriumLogo.png" />
-    <Content Include="Assets\apcuriumLogo%402x.png" />
     <Content Include="Assets\background.png" />
     <Content Include="Assets\background%402x.png" />
     <Content Include="Assets\background_full.png" />
@@ -628,7 +616,6 @@
     <Content Include="Assets\settings%402x.png" />
     <Content Include="Assets\right_arrow.png" />
     <Content Include="Assets\right_arrow%402x.png" />
-    <Content Include="Default-568h%402x.png" />
     <Content Include="Assets\Rating\ecstatic.png" />
     <Content Include="Assets\Rating\ecstatic%402x.png" />
     <Content Include="Assets\Rating\ecstatic-selected.png" />
@@ -754,22 +741,9 @@
     <BundleResource Include="Assets\Social\FB\facebook-icon%402x.png" />
     <BundleResource Include="Assets\Social\TW\twitter.png" />
     <BundleResource Include="Assets\Social\TW\twitter%402x.png" />
-    <BundleResource Include="Resources\twitter_icon.png" />
-    <BundleResource Include="Resources\twitter_icon%402x.png" />
-    <BundleResource Include="Resources\facebook_icon.png" />
-    <BundleResource Include="Resources\facebook_icon%402x.png" />
-    <BundleResource Include="Resources\add_location.png" />
-    <BundleResource Include="Resources\add_location%402x.png" />
-    <BundleResource Include="Resources\favorites.png" />
-    <BundleResource Include="Resources\favorites%402x.png" />
-    <BundleResource Include="Resources\history.png" />
-    <BundleResource Include="Resources\history%402x.png" />
-    <BundleResource Include="Resources\right_arrow.png" />
-    <BundleResource Include="Resources\right_arrow%402x.png" />
-    <BundleResource Include="Resources\th_logo.png" />
-    <BundleResource Include="Resources\th_logo%402x.png" />
     <BundleResource Include="Assets\Logo.png" />
     <BundleResource Include="Assets\Logo%402x.png" />
+    <BundleResource Include="app.png" />
     <BundleResource Include="Resources\clearButton.png" />
     <BundleResource Include="Resources\left_arrow.png" />
     <BundleResource Include="Resources\left_arrow%402x.png" />
@@ -795,6 +769,27 @@
     <BundleResource Include="Resources\visa_electron%402x.png" />
     <BundleResource Include="Resources\delete_card_btn.png" />
     <BundleResource Include="Resources\delete_card_btn%402x.png" />
+    <BundleResource Include="Resources\add_btn.png" />
+    <BundleResource Include="Resources\add_btn%402x.png" />
+    <BundleResource Include="Resources\add_location.png" />
+    <BundleResource Include="Resources\add_location%402x.png" />
+    <BundleResource Include="Resources\apc_logo_menu.png" />
+    <BundleResource Include="Resources\apc_logo_menu%402x.png" />
+    <BundleResource Include="Resources\facebook_icon.png" />
+    <BundleResource Include="Resources\facebook_icon%402x.png" />
+    <BundleResource Include="Resources\favorites.png" />
+    <BundleResource Include="Resources\favorites%402x.png" />
+    <BundleResource Include="Resources\history.png" />
+    <BundleResource Include="Resources\history%402x.png" />
+    <BundleResource Include="Resources\right_arrow.png" />
+    <BundleResource Include="Resources\right_arrow%402x.png" />
+    <BundleResource Include="Resources\th_logo.png" />
+    <BundleResource Include="Resources\th_logo%402x.png" />
+    <BundleResource Include="Resources\twitter_icon.png" />
+    <BundleResource Include="Resources\twitter_icon%402x.png" />
+    <BundleResource Include="Default-568h%402x.png" />
+    <BundleResource Include="Default.png" />
+    <BundleResource Include="Default%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
