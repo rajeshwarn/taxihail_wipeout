@@ -53,24 +53,24 @@ EcstaticSelected EcstaticSelected;";
 		
 		private void Initialise()
 		{
-			madBtn.SetImage(UIImage.FromBundle("Assets/Rating/mad"), UIControlState.Normal);
-			madBtn.SetImage(UIImage.FromBundle("Assets/Rating/mad-selected"), UIControlState.Selected);
+			madBtn.SetImage(UIImage.FromFile("mad.png"), UIControlState.Normal);
+			madBtn.SetImage(UIImage.FromFile("mad-selected.png"), UIControlState.Selected);
 			madBtn.TouchUpInside += OnMadBtnTouchUpInside;
 
-			unhappyBtn.SetImage(UIImage.FromBundle("Assets/Rating/unhappy"), UIControlState.Normal);
-			unhappyBtn.SetImage(UIImage.FromBundle("Assets/Rating/unhappy-selected"), UIControlState.Selected);
+			unhappyBtn.SetImage(UIImage.FromFile("unhappy.png"), UIControlState.Normal);
+			unhappyBtn.SetImage(UIImage.FromFile("unhappy-selected.png"), UIControlState.Selected);
 			unhappyBtn.TouchUpInside += OnUnhappyBtnTouchUpInside;
 
-			neutralBtn.SetImage(UIImage.FromBundle("Assets/Rating/neutral"), UIControlState.Normal);
-			neutralBtn.SetImage(UIImage.FromBundle("Assets/Rating/neutral-selected"), UIControlState.Selected);
+			neutralBtn.SetImage(UIImage.FromFile("neutral.png"), UIControlState.Normal);
+			neutralBtn.SetImage(UIImage.FromFile("neutral-selected.png"), UIControlState.Selected);
 			neutralBtn.TouchUpInside += OnNeutralBtnTouchUpInside;
 
-			happyBtn.SetImage(UIImage.FromBundle("Assets/Rating/happy"), UIControlState.Normal);
-			happyBtn.SetImage(UIImage.FromBundle("Assets/Rating/happy-selected"), UIControlState.Selected);
+			happyBtn.SetImage(UIImage.FromFile("happy.png"), UIControlState.Normal);
+			happyBtn.SetImage(UIImage.FromFile("happy-selected.png"), UIControlState.Selected);
 			happyBtn.TouchUpInside += OnHappyBtnTouchUpInside;
 
-			ecstaticBtn.SetImage(UIImage.FromBundle("Assets/Rating/ecstatic"), UIControlState.Normal);
-			ecstaticBtn.SetImage(UIImage.FromBundle("Assets/Rating/ecstatic-selected"), UIControlState.Selected);
+			ecstaticBtn.SetImage(UIImage.FromFile("ecstatic.png"), UIControlState.Normal);
+			ecstaticBtn.SetImage(UIImage.FromFile("ecstatic-selected.png"), UIControlState.Selected);
 			ecstaticBtn.TouchUpInside += OnEcstasticBtnTouchUpInside;
 
 		}	

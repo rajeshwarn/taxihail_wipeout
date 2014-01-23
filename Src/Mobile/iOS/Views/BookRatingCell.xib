@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -13,16 +13,20 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="68"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Politeness" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5">
-                        <rect key="frame" x="20" y="5" width="280" height="21"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Politeness" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5">
+                        <rect key="frame" x="20" y="5" width="80" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="10">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="10">
                         <rect key="frame" x="20" y="25" width="44" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="44" id="U90-wB-jJ3"/>
+                            <constraint firstAttribute="height" constant="44" id="geE-IZ-yB8"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                         <state key="normal">
                             <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -32,9 +36,13 @@
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="11">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="11">
                         <rect key="frame" x="72" y="25" width="44" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="Ec4-ow-ENx"/>
+                            <constraint firstAttribute="width" constant="44" id="aLT-ow-m4F"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                         <state key="normal">
                             <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -44,9 +52,13 @@
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="12">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="12">
                         <rect key="frame" x="124" y="25" width="44" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="44" id="h5C-Vm-Cuo"/>
+                            <constraint firstAttribute="height" constant="44" id="yNN-fs-FcP"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                         <state key="normal">
                             <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -56,9 +68,13 @@
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="13">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="13">
                         <rect key="frame" x="176" y="25" width="44" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="Jv0-bw-XNp"/>
+                            <constraint firstAttribute="width" constant="44" id="ylM-5A-OAE"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                         <state key="normal">
                             <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -68,9 +84,13 @@
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="14">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="14">
                         <rect key="frame" x="228" y="25" width="44" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="44" id="GZT-GR-m86"/>
+                            <constraint firstAttribute="height" constant="44" id="Nhg-pd-lgN"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                         <state key="normal">
                             <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -81,6 +101,20 @@
                         </state>
                     </button>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="13" firstAttribute="top" secondItem="5" secondAttribute="bottom" constant="-1" id="8xm-qM-swi"/>
+                    <constraint firstItem="12" firstAttribute="leading" secondItem="11" secondAttribute="trailing" constant="8" id="CaY-Dp-D5a"/>
+                    <constraint firstItem="11" firstAttribute="leading" secondItem="10" secondAttribute="trailing" constant="8" id="I6U-VL-tUA"/>
+                    <constraint firstItem="5" firstAttribute="top" secondItem="ycq-bM-ghb" secondAttribute="top" constant="5" id="JUI-pl-d2z"/>
+                    <constraint firstItem="12" firstAttribute="top" secondItem="5" secondAttribute="bottom" constant="-1" id="WSP-Hx-7ee"/>
+                    <constraint firstItem="11" firstAttribute="top" secondItem="5" secondAttribute="bottom" constant="-1" id="bEx-BD-IGh"/>
+                    <constraint firstItem="14" firstAttribute="leading" secondItem="13" secondAttribute="trailing" constant="8" id="dpp-Ng-2g8"/>
+                    <constraint firstItem="13" firstAttribute="leading" secondItem="12" secondAttribute="trailing" constant="8" id="mb5-u3-qFV"/>
+                    <constraint firstItem="10" firstAttribute="leading" secondItem="ycq-bM-ghb" secondAttribute="leading" constant="20" id="mle-oz-TEJ"/>
+                    <constraint firstItem="5" firstAttribute="leading" secondItem="ycq-bM-ghb" secondAttribute="leading" constant="20" id="pmJ-vr-lo0"/>
+                    <constraint firstItem="10" firstAttribute="top" secondItem="5" secondAttribute="bottom" constant="-1" id="qQz-mq-DYN"/>
+                    <constraint firstItem="14" firstAttribute="top" secondItem="5" secondAttribute="bottom" constant="-1" id="r3J-bz-2rE"/>
+                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
