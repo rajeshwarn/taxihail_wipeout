@@ -535,4 +535,10 @@
   <string name="RateRide">Rate my ride</string>
   <string name="ResetPasswordTitleText">Forgot your password?</string>
   <string name="ResetPasswordSubtitleText">Enter your email and we\'ll send you a new one.</string>
+  <string name="PaymentViewTipText">Tip</string>
+  <string name="PaymentView">Payment Info</string>
+  <string name="CreateAccountPasswordConfirmation">Confirm password</string>
+  <string name="CmtRideLinqConfirmPairView">Confirm Payment Information</string>
+  <string name="PaymentViewMeterAmountText">Meter Amount</string>
+  <string name="PaymentViewTotalText">Total</string>
 </resources>
