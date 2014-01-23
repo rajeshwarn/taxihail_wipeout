@@ -266,10 +266,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
-    <Compile Include="Order\BookRatingCell.cs" />
-    <Compile Include="Order\BookRatingCell.designer.cs">
-      <DependentUpon>BookRatingCell.cs</DependentUpon>
-    </Compile>
     <Compile Include="Converters\AppConverters.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -352,10 +348,6 @@
       <DependentUpon>LoginView.xib</DependentUpon>
     </Compile>
     <Compile Include="Extensions\UIViewExtensions.cs" />
-    <Compile Include="Order\BookRatingView.cs" />
-    <Compile Include="Order\BookRatingView.designer.cs">
-      <DependentUpon>BookRatingView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\HistoryDetailView.xib.cs">
       <DependentUpon>HistoryDetailView.xib</DependentUpon>
     </Compile>
@@ -506,6 +498,14 @@
     <Compile Include="Views\AboutUsView.xib.designer.cs">
       <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
+    <Compile Include="Views\BookRatingCell.cs" />
+    <Compile Include="Views\BookRatingCell.designer.cs">
+      <DependentUpon>BookRatingCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookRatingView.cs" />
+    <Compile Include="Views\BookRatingView.designer.cs">
+      <DependentUpon>BookRatingView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -525,8 +525,6 @@
     <InterfaceDefinition Include="Views\PanelMenuView.xib" />
     <InterfaceDefinition Include="Views\UpdatePasswordView.xib" />
     <InterfaceDefinition Include="Views\LoginView.xib" />
-    <InterfaceDefinition Include="Order\BookRatingView.xib" />
-    <InterfaceDefinition Include="Order\BookRatingCell.xib" />
     <InterfaceDefinition Include="Views\HistoryDetailView.xib" />
     <InterfaceDefinition Include="Views\LocationDetailView.xib" />
     <InterfaceDefinition Include="Views\TutorialView.xib" />
@@ -551,6 +549,8 @@
     <InterfaceDefinition Include="Views\Payments\CmtRideLinqConfirmPairView.xib" />
     <InterfaceDefinition Include="Views\HistoryView.xib" />
     <InterfaceDefinition Include="Views\AboutUsView.xib" />
+    <InterfaceDefinition Include="Views\BookRatingCell.xib" />
+    <InterfaceDefinition Include="Views\BookRatingView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
