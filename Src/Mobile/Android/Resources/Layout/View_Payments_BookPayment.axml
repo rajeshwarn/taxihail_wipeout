@@ -34,207 +34,212 @@
             android:layout_height="1px"
             android:background="@color/top_bar_separator_color"
             android:orientation="horizontal" />
-        <LinearLayout
-            android:orientation="vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="8dp"
+        <ScrollView
+            android:id="@+id/mainScroll"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:gravity="center_horizontal">
-            <ImageView
-                android:paddingTop="10dp"
-                android:layout_gravity="left"
-                android:scaleType="center"
-                android:src="@drawable/paypal"
-                android:layout_width="115dip"
-                android:layout_height="50dip"
-                local:MvxBind="Visibility PayPalSelected, Converter=Visibility" />
+            android:layout_height="fill_parent">
             <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                local:MvxBind="Visibility PaymentSelectorToggleIsVisible, Converter=Visibility">
-                <Button
-                    style="@style/BigTitleTextBlack"
-                    android:background="@drawable/segmented_button_left"
-                    android:textColor="@drawable/segmented_button_text_color"
-                    android:layout_width="120dip"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    android:text="@string/CreditCard"
-                    android:gravity="center"
-                    android:textSize="@dimen/payment_text_size"
-                    local:MvxBind="Click UseCreditCard; Selected PayPalSelected, Converter=BoolInverter" />
-                <Button
-                    style="@style/BigTitleTextBlack"
-                    android:background="@drawable/segmented_button_right"
-                    android:textColor="@drawable/segmented_button_text_color"
-                    android:layout_width="120dip"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    android:text="@string/View_PayPal"
-                    android:gravity="center"
-                    android:textSize="@dimen/payment_text_size"
-                    local:MvxBind="Click UsePayPal; Selected PayPalSelected" />
-            </LinearLayout>
-            <View
                 android:orientation="vertical"
-                android:layout_width="fill_parent"
-                local:MvxBind="Visibility PaymentSelectorToggleIsVisible, Converter=Visibility"
-                android:layout_height="14dp" />
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                local:MvxBind="Visibility PayPalSelected, Converter=InvertedVisibility">
-                <TextView
-                    android:text="@string/PaymentDetails.CreditCardLabel"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    android:layout_weight="0.3"
-                    android:paddingRight="12dp"
-                    style="@style/BlackTextLabel"
-                    android:textSize="@dimen/payment_text_size"
-                    android:gravity="center_vertical" />
-                <apcurium.mk.booking.mobile.client.controls.CreditCardButton
-                    local:MvxBind="NavigateCommand PaymentPreferences.NavigateToCreditCardsList; Text PaymentPreferences.SelectedCreditCard.FriendlyName; CreditCardCompany PaymentPreferences.SelectedCreditCard.CreditCardCompany; Last4Digits PaymentPreferences.SelectedCreditCard.Last4Digits"
-                    android:layout_width="100dp"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    android:layout_weight="0.7"
-                    android:textSize="@dimen/payment_text_size"
-                    android:inputType="numberDecimal"
-                    android:gravity="center_vertical|right" />
-            </LinearLayout>
-            <View
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                local:MvxBind="Visibility PayPalSelected, Converter=InvertedVisibility"
-                android:layout_height="14dp" />
-            <LinearLayout
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="8dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-                <TextView
-                    android:text="Meter Amount"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    android:layout_weight="0.9"
-                    android:paddingRight="12dp"
-                    style="@style/BlackTextLabel"
-                    android:textSize="@dimen/payment_text_size"
-                    android:gravity="center_vertical" />
-                <EditText
-                    android:id="@+id/meterAmountTextView"
-                    local:MvxBind="Hint PlaceholderAmount, Mode=TwoWay; Text MeterAmount"
-                    android:selectAllOnFocus="true"
-                    android:layout_width="100dp"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    android:layout_weight="0.1"
-                    android:inputType="numberDecimal"
-                    android:textSize="@dimen/payment_text_size"
-                    android:gravity="center_vertical|right" />
-            </LinearLayout>
-            <View
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="14dp" />
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-                <TextView
-                    android:text="Tip"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    android:layout_weight="0.9"
-                    android:paddingRight="12dp"
-                    style="@style/BlackTextLabel"
-                    android:textSize="@dimen/payment_text_size"
-                    android:gravity="center_vertical" />
-                <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
-                    android:id="@+id/tipPicker"
-                    local:MvxBind="Text PaymentPreferences.TipAmount; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip"
-                    android:layout_width="100dp"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    android:layout_weight="0.1"
-                    android:textSize="@dimen/payment_text_size"
-                    android:gravity="center_vertical|right" />
-            </LinearLayout>
-            <View
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="14dp" />
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-                <TextView
-                    android:text="Tip Amount"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    android:layout_weight="0.9"
-                    android:paddingRight="12dp"
-                    style="@style/BlackTextLabel"
-                    android:textSize="@dimen/payment_text_size"
-                    android:gravity="center_vertical" />
-                <EditText
-                    local:MvxBind="Hint PlaceholderAmount, Mode=TwoWay; Text TipAmount"
-                    android:id="@+id/tipAmountTextView"
-                    android:selectAllOnFocus="true"
-                    android:layout_width="100dp"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    android:layout_weight="0.1"
-                    android:inputType="numberDecimal"
-                    android:textSize="@dimen/payment_text_size"
-                    android:gravity="center_vertical|right" />
-            </LinearLayout>
-            <View
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="14dp" />
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    android:layout_weight="0.9"
-                    android:paddingRight="12dp"
-                    android:text="Total"
-                    style="@style/BlackTextLabel"
-                    android:textSize="@dimen/payment_text_size"
-                    android:gravity="center_vertical" />
-                <TextView
-                    android:id="@+id/totalAmountTextView"
-                    local:MvxBind="Text TextAmount, Mode=TwoWay"
-                    style="@style/BlackTextLabel"
-                    android:layout_width="100dp"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="10.0dp"
-                    android:textSize="@dimen/payment_text_size"
-                    android:gravity="center_vertical|right" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <Button
-                    style="@style/ButtonActionGreenStyle"
-                    android:id="@+id/ConfirmBtn"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_horizontal">
+                <ImageView
+                    android:paddingTop="10dp"
+                    android:layout_gravity="left"
+                    android:scaleType="center"
+                    android:src="@drawable/paypal"
+                    android:layout_width="115dip"
+                    android:layout_height="50dip"
+                    local:MvxBind="Visibility PayPalSelected, Converter=Visibility" />
+                <LinearLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    android:text="@string/StatusPayButton"
-                    android:layout_alignParentBottom="true"
-                    local:MvxBind="Click ConfirmOrderCommand" />
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    local:MvxBind="Visibility PaymentSelectorToggleIsVisible, Converter=Visibility">
+                    <Button
+                        style="@style/BigTitleTextBlack"
+                        android:background="@drawable/segmented_button_left"
+                        android:textColor="@drawable/segmented_button_text_color"
+                        android:layout_width="120dip"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:text="@string/CreditCard"
+                        android:gravity="center"
+                        android:textSize="@dimen/payment_text_size"
+                        local:MvxBind="Click UseCreditCard; Selected PayPalSelected, Converter=BoolInverter" />
+                    <Button
+                        style="@style/BigTitleTextBlack"
+                        android:background="@drawable/segmented_button_right"
+                        android:textColor="@drawable/segmented_button_text_color"
+                        android:layout_width="120dip"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:text="@string/View_PayPal"
+                        android:gravity="center"
+                        android:textSize="@dimen/payment_text_size"
+                        local:MvxBind="Click UsePayPal; Selected PayPalSelected" />
+                </LinearLayout>
+                <View
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    local:MvxBind="Visibility PaymentSelectorToggleIsVisible, Converter=Visibility"
+                    android:layout_height="14dp" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    local:MvxBind="Visibility PayPalSelected, Converter=InvertedVisibility">
+                    <TextView
+                        android:text="@string/PaymentDetails.CreditCardLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:layout_weight="0.3"
+                        android:paddingRight="12dp"
+                        style="@style/BlackTextLabel"
+                        android:textSize="@dimen/payment_text_size"
+                        android:gravity="center_vertical" />
+                    <apcurium.mk.booking.mobile.client.controls.CreditCardButton
+                        local:MvxBind="NavigateCommand PaymentPreferences.NavigateToCreditCardsList; Text PaymentPreferences.SelectedCreditCard.FriendlyName; CreditCardCompany PaymentPreferences.SelectedCreditCard.CreditCardCompany; Last4Digits PaymentPreferences.SelectedCreditCard.Last4Digits"
+                        android:layout_width="100dp"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:layout_weight="0.7"
+                        android:textSize="@dimen/payment_text_size"
+                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical|right" />
+                </LinearLayout>
+                <View
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    local:MvxBind="Visibility PayPalSelected, Converter=InvertedVisibility"
+                    android:layout_height="14dp" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:text="Meter Amount"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:layout_weight="0.9"
+                        android:paddingRight="12dp"
+                        style="@style/BlackTextLabel"
+                        android:textSize="@dimen/payment_text_size"
+                        android:gravity="center_vertical" />
+                    <EditText
+                        android:id="@+id/meterAmountTextView"
+                        local:MvxBind="Hint PlaceholderAmount, Mode=TwoWay; Text MeterAmount"
+                        android:selectAllOnFocus="true"
+                        android:layout_width="100dp"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:layout_weight="0.1"
+                        android:inputType="numberDecimal"
+                        android:textSize="@dimen/payment_text_size"
+                        android:gravity="center_vertical|right" />
+                </LinearLayout>
+                <View
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="14dp" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:text="Tip"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:layout_weight="0.9"
+                        android:paddingRight="12dp"
+                        style="@style/BlackTextLabel"
+                        android:textSize="@dimen/payment_text_size"
+                        android:gravity="center_vertical" />
+                    <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                        android:id="@+id/tipPicker"
+                        local:MvxBind="Text PaymentPreferences.TipAmount; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip"
+                        android:layout_width="100dp"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:layout_weight="0.1"
+                        android:textSize="@dimen/payment_text_size"
+                        android:gravity="center_vertical|right" />
+                </LinearLayout>
+                <View
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="14dp" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:text="Tip Amount"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:layout_weight="0.9"
+                        android:paddingRight="12dp"
+                        style="@style/BlackTextLabel"
+                        android:textSize="@dimen/payment_text_size"
+                        android:gravity="center_vertical" />
+                    <EditText
+                        local:MvxBind="Hint PlaceholderAmount, Mode=TwoWay; Text TipAmount"
+                        android:id="@+id/tipAmountTextView"
+                        android:selectAllOnFocus="true"
+                        android:layout_width="100dp"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:layout_weight="0.1"
+                        android:inputType="numberDecimal"
+                        android:textSize="@dimen/payment_text_size"
+                        android:gravity="center_vertical|right" />
+                </LinearLayout>
+                <View
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="14dp" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:layout_weight="0.9"
+                        android:paddingRight="12dp"
+                        android:text="Total"
+                        style="@style/BlackTextLabel"
+                        android:textSize="@dimen/payment_text_size"
+                        android:gravity="center_vertical" />
+                    <TextView
+                        android:id="@+id/totalAmountTextView"
+                        local:MvxBind="Text TextAmount, Mode=TwoWay"
+                        style="@style/BlackTextLabel"
+                        android:layout_width="100dp"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="10.0dp"
+                        android:textSize="@dimen/payment_text_size"
+                        android:gravity="center_vertical|right" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <Button
+                        style="@style/ButtonActionGreenStyle"
+                        android:id="@+id/ConfirmBtn"
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:text="@string/StatusPayButton"
+                        android:layout_alignParentBottom="true"
+                        local:MvxBind="Click ConfirmOrderCommand" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </RelativeLayout>
