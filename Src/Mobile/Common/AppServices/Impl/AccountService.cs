@@ -406,28 +406,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 throw ex; });  
         }
 
-        public bool Register (RegisterAccount data, out string error)
+		public async Task Register (RegisterAccount data)
         {
-            bool isSuccess = false;
-            string lError;
-
             data.AccountId = Guid.NewGuid();
 			data.Language = _localize["LanguageCode"];
-
-            try {
-                lError = UseServiceClient<IAccountServiceClient> (service =>
-                {
-                    service.RegisterAccount (data);
-                    isSuccess = true;
-                }
-                );                
-            } catch (Exception ex) {
-                lError = ex.Message;
-                isSuccess = false;
-            }
-
-            error = lError;
-            return isSuccess;
+			await UseServiceClientAsync<IAccountServiceClient> (service =>  service.RegisterAccount (data)); 
         }
 
         public void DeleteFavoriteAddress (Guid addressId)
