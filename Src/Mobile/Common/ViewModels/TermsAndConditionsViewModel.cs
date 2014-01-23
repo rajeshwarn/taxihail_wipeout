@@ -3,34 +3,18 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class TermsAndConditionsViewModel : BaseSubViewModel<bool>
+    public class TermsAndConditionsViewModel : BaseViewModel
 	{
-		public AsyncCommand RejectTermsAndConditions
-		{
-			get
-			{
-                return GetCommand(() => ReturnResult(false));
-			}
-		}
-
-        public AsyncCommand AcceptTermsAndConditions
-		{
-			get
-			{
-				return GetCommand (() => ReturnResult(true));
-
-			}			
-		}
-
-        private string _text;
-        public string TermsAndConditions { 
+		private string _termsAndConditions;
+        public string TermsAndConditions 
+		{ 
             get 
             { 
-                if (_text.IsNullOrEmpty())
+				if (_termsAndConditions.IsNullOrEmpty())
                 {
-                    _text = this.Services().Terms.GetText();
+					_termsAndConditions = this.Services().Terms.GetText();
                 }
-                return @_text; 
+				return @_termsAndConditions; 
             } 
         }
 	}

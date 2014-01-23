@@ -1,21 +1,22 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using System.Windows.Input;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class CreateAccountViewModel: BaseSubViewModel<RegisterAccount>
 	{
-
 		public RegisterAccount Data { get; set; }
 		public string ConfirmPassword { get; set; }
+		public bool TermsAndConditionsAcknowledged { get; set; }
 
 		public bool HasSocialInfo { get { return Data.FacebookId.HasValue () || Data.TwitterId.HasValue (); } }
-
+		public bool ShowTermsAndConditions { get { return this.Services().Config.GetSetting("Client.ShowTermsAndConditions", false); } }
 
 		public void Init(string twitterId, string facebookId, string name, string email)
 		{
@@ -40,12 +41,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    return (false);
 		}
 
-		public AsyncCommand CreateAccount
+		public ICommand NavigateToTermsAndConditions
+		{
+			get
+			{
+				return GetCommand(() => ShowViewModel<TermsAndConditionsViewModel>());
+			}
+		}
+
+		public ICommand CreateAccount
 		{
 			get
 			{
                 return GetCommand(() =>
-                {
+				{
 					if (!IsEmail(Data.Email))
 					{
                         this.Services().Message.ShowMessage(this.Services().Localize["ResetPasswordInvalidDataTitle"], this.Services().Localize["ResetPasswordInvalidDataMessage"]);
@@ -70,19 +79,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
 						return;
 					}
+
+					if(ShowTermsAndConditions && !TermsAndConditionsAcknowledged)
+					{
+						this.Services().Message.ShowMessage("Error", "not acknowledged");
+						return;
+					}
+
                     Data.Phone= new string(Data.Phone.ToArray().Where( c=> Char.IsDigit( c ) ).ToArray());
 
                     this.Services().Message.ShowProgress(true);
 
 					try
 					{
-                        var showTermsAndConditions = this.Services().Config.GetSetting("Client.ShowTermsAndConditions", false);
-                        if( showTermsAndConditions && !_termsAndConditionsApproved )
-                        {
-							ShowSubViewModel<TermsAndConditionsViewModel, bool>( null, OnTermsAndConditionsCallback);
-                            return;
-                        }
-
 						string error;
 
                         var setting = this.Services().Config.GetSetting("AccountActivationDisabled");
@@ -117,21 +126,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
                         this.Services().Message.ShowProgress(false);
 					}
-				}
-			);
-
+				});
 			}			
 		}
-
-        private bool _termsAndConditionsApproved;
-        private void OnTermsAndConditionsCallback(bool approved)
-        {
-            _termsAndConditionsApproved = approved;
-            if (approved && CreateAccount.CanExecute())
-            {
-                CreateAccount.Execute();
-            }            
-        }
 	}
 }
 
