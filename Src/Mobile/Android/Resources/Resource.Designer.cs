@@ -3358,8 +3358,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0a0211
 			public const int CmtRideLinqCancelChanges = 2131362321;
 			
-			// aapt resource value: 0x7f0a0254
-			public const int CmtRideLinqConfirmPairView = 2131362388;
+			// aapt resource value: 0x7f0a025a
+			public const int CmtRideLinqConfirmPairView = 2131362394;
 			
 			// aapt resource value: 0x7f0a0215
 			public const int CmtRideLinqErrorTitle = 2131362325;
@@ -3508,8 +3508,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0a0106
 			public const int CreateAccountPassword = 2131362054;
 			
-			// aapt resource value: 0x7f0a0253
-			public const int CreateAccountPasswordConfirmation = 2131362387;
+			// aapt resource value: 0x7f0a0259
+			public const int CreateAccountPasswordConfirmation = 2131362393;
 			
 			// aapt resource value: 0x7f0a0231
 			public const int CreateAccountPasswordConfirmationPlaceHolder = 2131362353;
@@ -4183,17 +4183,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0a01ed
 			public const int PaymentScreenTitle = 2131362285;
 			
-			// aapt resource value: 0x7f0a0250
-			public const int PaymentView = 2131362384;
+			// aapt resource value: 0x7f0a0258
+			public const int PaymentView = 2131362392;
 			
-			// aapt resource value: 0x7f0a0251
-			public const int PaymentViewMeterAmountText = 2131362385;
+			// aapt resource value: 0x7f0a025b
+			public const int PaymentViewMeterAmountText = 2131362395;
 			
-			// aapt resource value: 0x7f0a024f
-			public const int PaymentViewTipText = 2131362383;
+			// aapt resource value: 0x7f0a0257
+			public const int PaymentViewTipText = 2131362391;
 			
-			// aapt resource value: 0x7f0a0252
-			public const int PaymentViewTotalText = 2131362386;
+			// aapt resource value: 0x7f0a025c
+			public const int PaymentViewTotalText = 2131362396;
 			
 			// aapt resource value: 0x7f0a00d4
 			public const int PickupDateDisplay = 2131362004;
@@ -4225,11 +4225,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0a011e
 			public const int RateBtn = 2131362078;
 			
+			// aapt resource value: 0x7f0a0254
+			public const int RateRide = 2131362388;
+			
+			// aapt resource value: 0x7f0a0251
+			public const int ReSendConfirmation = 2131362385;
+			
 			// aapt resource value: 0x7f0a01ee
 			public const int ReSendConfirmationButton = 2131362286;
 			
 			// aapt resource value: 0x7f0a022a
 			public const int Rebook = 2131362346;
+			
+			// aapt resource value: 0x7f0a0253
+			public const int ReceiptSent = 2131362387;
 			
 			// aapt resource value: 0x7f0a006d
 			public const int RefineAddressTitle = 2131361901;
@@ -4285,6 +4294,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0a0225
 			public const int ResetPasswordSubtitleLabel = 2131362341;
 			
+			// aapt resource value: 0x7f0a0256
+			public const int ResetPasswordSubtitleText = 2131362390;
+			
 			// aapt resource value: 0x7f0a0131
 			public const int ResetPasswordSucessMessage = 2131362097;
 			
@@ -4293,6 +4305,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0a021a
 			public const int ResetPasswordTitleLabel = 2131362330;
+			
+			// aapt resource value: 0x7f0a0255
+			public const int ResetPasswordTitleText = 2131362389;
 			
 			// aapt resource value: 0x7f0a0168
 			public const int ReturnBookingScreen = 2131362152;
@@ -4329,6 +4344,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0a0243
 			public const int RideSettingsView = 2131362371;
+			
+			// aapt resource value: 0x7f0a024f
+			public const int RideSummarySubTitleText = 2131362383;
+			
+			// aapt resource value: 0x7f0a0250
+			public const int RideSummaryTitleText = 2131362384;
 			
 			// aapt resource value: 0x7f0a00e2
 			public const int RingCode = 2131362018;
@@ -4743,6 +4764,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0a017b
 			public const int View_RideSettings_BtUpdateMyPassword = 2131362171;
+			
+			// aapt resource value: 0x7f0a0252
+			public const int View_RideSummary = 2131362386;
 			
 			// aapt resource value: 0x7f0a01c4
 			public const int View_SearchAddress = 2131362244;
