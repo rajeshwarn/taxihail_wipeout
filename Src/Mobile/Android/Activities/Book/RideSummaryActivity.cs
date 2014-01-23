@@ -1,9 +1,11 @@
+using System;
 using Android.App;
 using Android.Content.PM;
 using Android.Widget;
-using apcurium.MK.Booking.Mobile.Client.Controls;
-
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -19,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_Book_RideSummaryPage);
+            var lblSubTitle = FindViewById<TextView>(Resource.Id.lblSubTitle);
+            lblSubTitle.Text = String.Format(Localize ("RideSummarySubTitleText"), this.Services().Settings.ApplicationName);
 
             ViewModel.PropertyChanged += (sender, e) =>
             {
@@ -30,6 +34,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     sendReceiptBtn.Enabled = false;
                 }
             };
+        }
+
+        private string Localize(string value)
+        {
+            return TinyIoCContainer.Current.Resolve<ILocalization> () [value];
         }
     }
 }

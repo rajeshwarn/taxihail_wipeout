@@ -297,14 +297,9 @@
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardAdd.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardsList.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_BookPayment.axml" />
-    <AndroidResource Include="Resources\Layout\Control_TipSlider.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <Compile Include="Binding\CustomBindings.cs" />
     <Compile Include="Binding\TextViewBinding.cs" />
-    <Compile Include="Binding\TipSliderBinding.cs" />
     <Compile Include="Extensions\ViewExtensions.cs" />
-    <Compile Include="Controls\TipSlider.cs" />
     <Compile Include="Extensions\DisplayExtensions.cs" />
     <Compile Include="Extensions\LayoutParametersExtensions.cs" />
     <AndroidResource Include="Resources\Drawable\sliderYellowBar.png" />
