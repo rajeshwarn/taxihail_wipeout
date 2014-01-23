@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -52,14 +53,49 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             SetFillColor(UIColor.Clear, UIControlState.Selected);
             SetFillColor(UIColor.Clear, UIControlState.Highlighted);
 
-			SetTitleColor(UIColor.White, UIControlState.Normal);
-			SetTitleColor(UIColor.White.ColorWithAlpha(0.5f), UIControlState.Selected);
-			SetTitleColor(UIColor.White.ColorWithAlpha(0.5f), UIControlState.Highlighted);
+			SetTitleColor(Theme.ButtonTextColor, UIControlState.Normal);
+			SetTitleColor(Theme.ButtonTextColor.ColorWithAlpha(0.5f), UIControlState.Selected);
+			SetTitleColor(Theme.ButtonTextColor.ColorWithAlpha(0.5f), UIControlState.Highlighted);
 
             SetStrokeColor(DarkBlue, UIControlState.Normal);
             SetStrokeColor(DarkBlue, UIControlState.Selected);
             SetStrokeColor(DarkBlue, UIControlState.Highlighted);
 		}
+
+        private NSLayoutConstraint[] _hiddenContraints { get; set; }
+
+        public bool HiddenWithConstraints
+        {
+            get
+            {
+                return base.Hidden;
+            }
+            set
+            {
+                if (base.Hidden != value)
+                {
+                    base.Hidden = value;
+                    if (value)
+                    {
+                        _hiddenContraints = this.Superview.Constraints != null 
+                                            ? this.Superview.Constraints.Where(x => x.FirstItem == this || x.SecondItem == this).ToArray()
+                                            : null;
+                        if (_hiddenContraints != null)
+                        {
+                            this.Superview.RemoveConstraints(_hiddenContraints);
+                        }
+                    }
+                    else
+                    {
+                        if (_hiddenContraints != null)
+                        {
+                            this.Superview.AddConstraints(_hiddenContraints);
+                            _hiddenContraints = null;
+                        }
+                    }
+                }
+            }
+        }
 
         public override void Draw (RectangleF rect)
 		{

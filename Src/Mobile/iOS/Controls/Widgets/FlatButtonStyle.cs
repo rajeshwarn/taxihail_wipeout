@@ -1,11 +1,12 @@
 using MonoTouch.UIKit;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
 	public abstract class FlatButtonStyle
 	{
-		UIColor MainColor = UIColor.FromRGB(0, 71, 148);
+		UIColor MainColor = UIColor.Black.ColorWithAlpha(0.15f);
 		UIColor DarkBlue = UIColor.FromRGB(3, 27, 49);
 		UIColor GreenColor = UIColor.FromRGB(31, 191, 33);
 
@@ -24,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public static readonly FlatButtonStyle Clear = new ClearButtonStyle();
         public static readonly FlatButtonStyle Green = new GreenButtonStyle();
         public static readonly FlatButtonStyle Red = new RedButtonStyle();
+        public static readonly FlatButtonStyle Silver = new SilverButtonStyle();
 
         private class MainButtonStyle: FlatButtonStyle
         {
@@ -35,9 +37,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				button.SetFillColor(MainColor, UIControlState.Selected);
 				button.SetFillColor(MainColor, UIControlState.Highlighted);
 
-				button.SetTitleColor(UIColor.White, UIControlState.Normal);
-				button.SetTitleColor(UIColor.White.ColorWithAlpha(0.5f), UIControlState.Selected);
-				button.SetTitleColor(UIColor.White.ColorWithAlpha(0.5f), UIControlState.Highlighted);
+				button.SetTitleColor(Theme.ButtonTextColor, UIControlState.Normal);
+				button.SetTitleColor(Theme.ButtonTextColor.ColorWithAlpha(0.5f), UIControlState.Selected);
+				button.SetTitleColor(Theme.ButtonTextColor.ColorWithAlpha(0.5f), UIControlState.Highlighted);
 
 				button.SetStrokeColor(DarkBlue, UIControlState.Normal);
 				button.SetStrokeColor(DarkBlue.ColorWithAlpha(0.5f), UIControlState.Selected);
@@ -75,13 +77,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				button.SetFillColor(UIColor.Clear, UIControlState.Selected);
 				button.SetFillColor(UIColor.Clear, UIControlState.Highlighted);
 
-				button.SetTitleColor(UIColor.Red, UIControlState.Normal);
-				button.SetTitleColor(UIColor.Red.ColorWithAlpha(0.5f), UIControlState.Selected);
-				button.SetTitleColor(UIColor.Red.ColorWithAlpha(0.5f), UIControlState.Highlighted);
+				button.SetTitleColor(UIColor.Gray, UIControlState.Normal);
+				button.SetTitleColor(UIColor.Gray.ColorWithAlpha(0.5f), UIControlState.Selected);
+				button.SetTitleColor(UIColor.Gray.ColorWithAlpha(0.5f), UIControlState.Highlighted);
 
-				button.SetStrokeColor(UIColor.Red, UIControlState.Normal);
-				button.SetStrokeColor(UIColor.Red, UIControlState.Selected);
-				button.SetStrokeColor(UIColor.Red, UIControlState.Highlighted);
+				button.SetStrokeColor(UIColor.Gray, UIControlState.Normal);
+				button.SetStrokeColor(UIColor.Gray, UIControlState.Selected);
+				button.SetStrokeColor(UIColor.Gray, UIControlState.Highlighted);
+            }
+        }
+
+        private class SilverButtonStyle: FlatButtonStyle
+        {
+            public override void ApplyTo (FlatButton button)
+            {
+                if(button == null) return;
+
+                button.SetFillColor(UIColor.Clear, UIControlState.Normal);
+                button.SetFillColor(UIColor.Clear, UIControlState.Selected);
+                button.SetFillColor(UIColor.Clear, UIControlState.Highlighted);
+
+                button.SetTitleColor(UIColor.FromRGB(90, 90, 90), UIControlState.Normal);
+                button.SetTitleColor(UIColor.FromRGB(90, 90, 90).ColorWithAlpha(0.5f), UIControlState.Selected);
+                button.SetTitleColor(UIColor.FromRGB(90, 90, 90).ColorWithAlpha(0.5f), UIControlState.Highlighted);
+
+                button.SetStrokeColor(UIColor.FromRGB(90, 90, 90), UIControlState.Normal);
+                button.SetStrokeColor(UIColor.FromRGB(90, 90, 90), UIControlState.Selected);
+                button.SetStrokeColor(UIColor.FromRGB(90, 90, 90), UIControlState.Highlighted);
             }
         }
 
@@ -97,9 +119,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				button.SetFillColor(UIColor.Clear, UIControlState.Selected);
 				button.SetFillColor(UIColor.Clear, UIControlState.Highlighted);
 
-				button.SetTitleColor(UIColor.White, UIControlState.Normal);
-				button.SetTitleColor(UIColor.White.ColorWithAlpha(0.5f), UIControlState.Selected);
-				button.SetTitleColor(UIColor.White.ColorWithAlpha(0.5f), UIControlState.Highlighted);
+				button.SetTitleColor(Theme.ButtonTextColor, UIControlState.Normal);
+				button.SetTitleColor(Theme.ButtonTextColor.ColorWithAlpha(0.5f), UIControlState.Selected);
+				button.SetTitleColor(Theme.ButtonTextColor.ColorWithAlpha(0.5f), UIControlState.Highlighted);
 
                 button.SetStrokeColor(UIColor.Clear, UIControlState.Normal);
                 button.SetStrokeColor(UIColor.Clear, UIControlState.Selected);

@@ -13,6 +13,7 @@
 
 	<color name="button_border_color">#031b31</color>
 	<color name="button_text_color">#ffffff</color>
+	<color name="label_text_color">#ffffff</color>
 	<color name="button_pressed_background_color">#70004785</color>
 	<color name="button_pressed_text_color">#70ffffff</color>
 
@@ -22,7 +23,7 @@
 
 	<!--		Main Button Colors -->
 
-  	<color name="button_main_background_color">#004f94</color>	
+  	<color name="button_main_background_color">#14000000</color>	
 
     <color name="button_green_border_color">#1fbf21</color>
     <color name="button_red_border_color">#ff0000</color>
@@ -63,6 +64,7 @@
 	<dimen name="top_bar_title_font_size">18dp</dimen>
   	<dimen name="top_bar_title_height">52dip</dimen>  
   	<dimen name="setting_menu_text_size">20dip</dimen>
+    <dimen name="payment_text_size">16dip</dimen>
 
   	<!--- Styles -->
 

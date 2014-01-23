@@ -45,9 +45,11 @@ namespace apcurium.MK.Booking.ConfigTool
 				SetterAtt(Parent.Config, att);
             }
 
-
-            doc.Save(destPath);
-            
+			using (var writer = new XmlTextWriter(destPath, new UTF8Encoding(false)))
+			{
+				writer.Formatting = Formatting.Indented;
+				doc.Save(writer);
+			}           
             
         }
 

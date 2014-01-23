@@ -41,7 +41,7 @@
 "ConfirmPassengerSettingsTitle"="Passenger Settings";
 "NetworkErrorMessage"="Cannot connect to Internet. Please check your connection settings and try again.";
 "BookPickupLocationButtonTitle"="Pickup";
-"CreateAccountPasswordConfrimation"="Confirm password";
+"CreateAccountPasswordConfirmation"="Confirm password";
 "ResetPasswordCancel"="Cancel";
 "ConfirmPassengersLabel"="Passengers:";
 "WarningEstimateTitle"="Warning";
@@ -527,4 +527,17 @@
 "CreditCardsListView"="Credit Cards";
 "CreditCardAddView"="New Credit Card";
 "View_AboutUs"="About Us";
-"View_BookRating"="Rate your trip";
+"PaymentViewTipText"="Tip";
+"PaymentViewMeterAmountText"="Meter Amount";
+"PaymentViewTotalText"="Total";
+"PaymentView"="Payment Info";
+"CmtRideLinqConfirmPairView"="Confirm Payment Information";
+"RideSummarySubTitleText"="Thank you for riding with {0}, we look forward to serving you again soon.";
+"RideSummaryTitleText"="Thank you";
+"ReSendConfirmation"="Notify driver of payment";
+"View_RideSummary"="Ride Summary";
+"ReceiptSent"="Receipt sent";
+"PayNow"="Pay now";
+"RateRide"="Rate my ride";
+"ResetPasswordTitleText"="Forgot your password?";
+"ResetPasswordSubtitleText"="Enter your email and we'll send you a new one.";

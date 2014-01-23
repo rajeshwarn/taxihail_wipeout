@@ -1480,4 +1480,1502 @@
     <value>You need to update Google Play Services in order to use this application.</value>
   </data>
 
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Language" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="LanguageCode" xml:space="preserve">
+    <value>en</value>
+  </data>
+  <data name="TabBook" xml:space="preserve">
+    <value>Book</value>
+  </data>
+  <data name="TabLocations" xml:space="preserve">
+    <value>Locations</value>
+  </data>
+  <data name="TabHistory" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="TabSearch" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="TabFavorites" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+  <data name="TabContacts" xml:space="preserve">
+    <value>Contacts</value>
+  </data>
+  <data name="TabPlaces" xml:space="preserve">
+    <value>Places</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="GenericTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NoConnectionTitle" xml:space="preserve">
+    <value>Connection error</value>
+  </data>
+  <data name="NoConnectionMessage" xml:space="preserve">
+    <value> The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.</value>
+  </data>
+  <data name="FavoriteLocationsTitle" xml:space="preserve">
+    <value>Favorite locations</value>
+  </data>
+  <data name="NearbyPlacesTitle" xml:space="preserve">
+    <value>Nearby places</value>
+  </data>
+  <data name="BookItLaterButton" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  <data name="LocationHistoryTitle" xml:space="preserve">
+    <value>Locations history</value>
+  </data>
+  <data name="HistoryViewTitle" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="LocationViewTitle" xml:space="preserve">
+    <value>My Locations</value>
+  </data>
+  <data name="SettingsViewTitle" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="DefaultRideSettingsViewTitle" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="EmailLabel" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="PasswordLabel" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="SignIn" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="TermsAndConditionsLabel" xml:space="preserve">
+    <value>Terms and Conditions</value>
+  </data>
+  <data name="TermsAndConditionsAcknowledgment" xml:space="preserve">
+    <value>By clicking Accept, you acknowledge that you have read and understood the Terms and Conditions specified above.</value>
+  </data>
+  <data name="AcceptButton" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="LocationServiceErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="LocationServiceErrorMessage" xml:space="preserve">
+    <value>The location service is not enabled.</value>
+  </data>
+  <data name="app_id" xml:space="preserve">
+    <value>134284363380764</value>
+  </data>
+ 	<data name="ChangeServer" xml:space="preserve">
+    <value>Change server</value>
+  </data>
+  <data name="Facebook" xml:space="preserve">
+    <value>Sign in with Facebook</value>
+  </data>
+  <data name="Twitter" xml:space="preserve">
+    <value>Sign in with Twitter</value>
+  </data>
+  <data name="DontHaveAnAccountLabel" xml:space="preserve">
+    <value>Don't have an account?</value>
+  </data>
+  <data name="LoadingMessage" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="InvalidLoginMessageTitle" xml:space="preserve">
+    <value>Login error</value>
+  </data>
+  <data name="InvalidLoginMessage" xml:space="preserve">
+    <value>The email or/and password is invalid.</value>
+  </data>
+  <data name="AccountDisabled" xml:space="preserve">
+    <value>Your account has been disabled, please contact {0} at {1} to activate your account.</value>
+  </data>
+  <data name="AccountNotActivated" xml:space="preserve">
+    <value>Your account has not been activated. Another activation email was sent to you.</value>
+  </data>
+  <data name="BookItButton" xml:space="preserve">
+    <value>Book Now</value>
+  </data>
+  <data name="BookPickupLabel" xml:space="preserve">
+    <value>Confirm your pickup location</value>
+  </data>
+  <data name="PickupTextPlaceholder" xml:space="preserve">
+    <value>Pickup street address</value>
+  </data>
+  <data name="RingCodeTextPlaceholder" xml:space="preserve">
+    <value>Entry code</value>
+  </data>
+  <data name="PickupDateTextPlaceholder" xml:space="preserve">
+    <value>Date: Today</value>
+  </data>
+  <data name="PickupTimeTextPlaceholder" xml:space="preserve">
+    <value>Time: Now</value>
+  </data>
+  <data name="dummyaaa" xml:space="preserve">
+    <value>xaaa</value>
+  </data>
+  <data name="BookDestinationLabel" xml:space="preserve">
+    <value>Enter your destination</value>
+  </data>
+  <data name="DestinationTextPlaceholder" xml:space="preserve">
+    <value>Destination street address</value>
+  </data>
+  <data name="InvalidBookinInfoTitle" xml:space="preserve">
+    <value>Invalid booking info</value>
+  </data>
+  <data name="InvalidBookinInfo" xml:space="preserve">
+    <value>To book a ride, you need to enter a valid pickup address.</value>
+  </data>
+  <data name="InvalidBookinInfoWhenDestinationIsRequired" xml:space="preserve">
+    <value>To book a ride, you need to enter a valid pickup address and destination address.</value>
+  </data>
+  <data name="InvalidPickupAddress" xml:space="preserve">
+    <value>Please enter a valid pickup address.</value>
+  </data>
+  <data name="DestinationMapTitle" xml:space="preserve">
+    <value>Destination location</value>
+  </data>
+  <data name="PickupMapTitle" xml:space="preserve">
+    <value>Pickup location</value>
+  </data>
+  <data name="HistoryDetailAuthorizationLabel" xml:space="preserve">
+    <value>Authorization:</value>
+  </data>
+	<data name="CancelButton" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+<data name="ResetButton" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="ContinueButton" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="WarningTitle" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="ConfirmButton" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="ConfirmRideInformationTitle" xml:space="preserve">
+    <value>Ride Information</value>
+  </data>
+  <data name="ConfirmOriginLablel" xml:space="preserve">
+    <value>Pickup</value>
+  </data>
+  <data name="ConfirmDestinationLabel" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="ConfirmDateTimeLabel" xml:space="preserve">
+    <value>Date / Time</value>
+  </data>
+  <data name="ConfirmNameLabel" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="ConfirmPhoneLabel" xml:space="preserve">
+    <value>Mobile:</value>
+  </data>
+  <data name="ConfirmCompanyLabel" xml:space="preserve">
+    <value>Company:</value>
+  </data>
+  <data name="ConfirmPassengersLabel" xml:space="preserve">
+    <value>Passengers:</value>
+  </data>
+  <data name="ConfirmVehiculeTypeLabel" xml:space="preserve">
+    <value>Vehicle type</value>
+  </data>
+  <data name="ChargeTypeLabel" xml:space="preserve">
+    <value>Charge type</value>
+  </data>
+  <data name="ConfirmNoApt" xml:space="preserve">
+    <value>No apt.</value>
+  </data>
+  <data name="ConfirmNoRingCode" xml:space="preserve">
+    <value>No code</value>
+  </data>
+  <data name="ConfirmDestinationNotSpecified" xml:space="preserve">
+    <value>Destination not specified</value>
+  </data>
+  <data name="DateToday" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="TimeNow" xml:space="preserve">
+    <value>As soon as possible</value>
+  </data>
+  <data name="StatusViewTitle" xml:space="preserve">
+    <value>Confirmed</value>
+  </data>
+  <data name="StatusDescription" xml:space="preserve">
+    <value>Order #{0}</value>
+  </data>
+  <data name="ChangeBookingSettingsButton" xml:space="preserve">
+    <value>Change booking settings</value>
+  </data>
+  <data name="HistoryViewNoHistoryLabel" xml:space="preserve">
+    <value>No booking history</value>
+  </data>
+  <data name="LocationNoHistory" xml:space="preserve">
+    <value>No history</value>
+  </data>
+  <data name="LocationAddFavoriteTitle" xml:space="preserve">
+    <value>Add location</value>
+  </data>
+  <data name="LocationAddFavoriteSubtitle" xml:space="preserve">
+    <value>Select to add a new location</value>
+  </data>
+
+  <data name="LoginViewEmailPlaceHolder" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="LoginViewPasswordPlaceHolder" xml:space="preserve">
+    <value>Password</value>
+  </data>
+
+
+  <data name="View_LocationDetail" xml:space="preserve">
+    <value>Location Detail</value>
+  </data>
+  <data name="LocationDetailNameLabel" xml:space="preserve">
+    <value>Nickname</value>
+  </data>
+  <data name="LocationDetailAddressLabel" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="LocationDetailApartmentLabel" xml:space="preserve">
+    <value>Apartment</value>
+  </data>
+  <data name="LocationDetailRingCodeLabel" xml:space="preserve">
+    <value>Entry code</value>
+  </data>
+	<data name="Rebook" xml:space="preserve">
+    <value>Rebook trip</value>
+  </data>
+  <data name="ApartmentLabel" xml:space="preserve">
+    <value>Apartment</value>
+  </data>
+  <data name="EntryCodeLabel" xml:space="preserve">
+    <value>Entry code</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="DeleteButton" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+<data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="InvalidAddressTextEdit" xml:space="preserve">
+    <value>Cannot validate adddress</value>
+  </data>
+  <data name="InvalidAddressMessage" xml:space="preserve">
+    <value>The address you provided is invalid. Please verify this information</value>
+  </data>
+  <data name="InvalidAddressTitle" xml:space="preserve">
+    <value>Invalid address</value>
+  </data>
+  <data name="Now" xml:space="preserve">
+    <value>Now</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="CreateAccountEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="CreateAccountTitle" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="CreateAccountFullName" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="CreateAccountPhone" xml:space="preserve">
+    <value>Mobile</value>
+  </data>
+  <data name="CreateAccountMobile" xml:space="preserve">
+    <value>Mobile</value>
+  </data>
+  <data name="CreateAccountLanguage" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="CreateAccountLanguageEn" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="CreateAccountLanguageFr" xml:space="preserve">
+    <value>French</value>
+  </data>
+  <data name="CreateAccountPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="CreateAccountPasswordConfirmation" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="SettingViewLoginInfo" xml:space="preserve">
+    <value>You are currently signed in as : {0}</value>
+  </data>
+  <data name="SettingViewNotSignedIn" xml:space="preserve">
+    <value>Your are currently not signed in. You must be signed in to use this app.</value>
+  </data>
+  <data name="BookItButtonImageName" xml:space="preserve">
+    <value>Assets/Button/btnBookIt_en.png</value>
+  </data>
+  <data name="DeleteBookItButtonImageNamePressed" xml:space="preserve">
+    <value>Assets/Button/btnBookIt-Pressed_en.png</value>
+  </data>
+  <data name="InvalidAccountOnActivatedMessage" xml:space="preserve">
+    <value>Your account cannot be validated, you must log in to use this application</value>
+  </data>
+  <data name="InvalidAccountOnActivatedTitle" xml:space="preserve">
+    <value>Invalid account</value>
+  </data>
+  <data name="SaveAddressEmptyFieldMessage" xml:space="preserve">
+    <value>The data is invalid, friendly name and address fields are required.</value>
+  </data>
+  <data name="SaveAddressEmptyFieldTitle" xml:space="preserve">
+    <value>Friendly name required</value>
+  </data>
+  <data name="DoneButton" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="FavoritesButton" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+  <data name="RideHistoryButton" xml:space="preserve">
+    <value>Ride History</value>
+  </data>
+  <data name="SendErrorLogButton" xml:space="preserve">
+    <value>Send error log</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>v{0}</value>
+  </data>
+  <data name="ServerInfo" xml:space="preserve">
+    <value>({0} v{1})</value>
+  </data>
+  <data name="RideSettingsCannotLoadListMessage" xml:space="preserve">
+    <value>The server cannot be contacted, try again later.</value>
+  </data>
+  <data name="RideSettingsCannotLoadListTitle" xml:space="preserve">
+    <value>Server error</value>
+  </data>
+  <data name="RideSettingsName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="RideSettingsPhone" xml:space="preserve">
+    <value>Mobile</value>
+  </data>
+  <data name="RideSettingsPassengers" xml:space="preserve">
+    <value>Passengers</value>
+  </data>
+  <data name="RideSettingsVehiculeType" xml:space="preserve">
+    <value>Vehicle type</value>
+  </data>
+  <data name="RideSettingsCompany" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="HistoryDetailHideButton" xml:space="preserve">
+    <value>Hide from history</value>
+  </data>
+  <data name="HistoryDetailRebookButton" xml:space="preserve">
+    <value>Rebook trip</value>
+  </data>
+  <data name="HistoryDetailDestinationLabel" xml:space="preserve">
+    <value>Destination:</value>
+  </data>
+  <data name="HistoryDetailRequestedLabel" xml:space="preserve">
+    <value>Requested:</value>
+  </data>
+  <data name="HistoryDetailOriginLabel" xml:space="preserve">
+    <value>Pickup:</value>
+  </data>
+  <data name="HistoryDetailStatusLabel" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="HistoryDetailConfirmationLabel" xml:space="preserve">
+    <value>Order:</value>
+  </data>
+  <data name="StatusStatusLabel" xml:space="preserve">
+    <value>Status: {0}</value>
+  </data>
+  <data name="HistoryDetailPickupDateLabel" xml:space="preserve">
+    <value>Pickup Date:</value>
+  </data>
+  <data name="HistoryDetailAptRingCodeLabel" xml:space="preserve">
+    <value>Apt / Entry code:</value>
+  </data>
+  <data name="HistoryDetailBuildingNameLabel" xml:space="preserve">
+    <value>Building Name:</value>
+  </data>
+  <data name="HistoryDetailBuildingNameNotSpecified" xml:space="preserve">
+    <value>Not specified</value>
+  </data>
+  <data name="DestinationViewDestinationLabel" xml:space="preserve">
+    <value>Destination:</value>
+  </data>
+  <data name="PickupViewPickupLabel" xml:space="preserve">
+    <value>Pickup:</value>
+  </data>
+  <data name="PickupViewDestinationLabel" xml:space="preserve">
+    <value>Destination &gt;&gt;</value>
+  </data>
+  <data name="CallButton" xml:space="preserve">
+    <value>Call</value>
+  </data>
+  <data name="TaxiMapTitle" xml:space="preserve">
+    <value>Your Taxi</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>Unexpected error</value>
+  </data>
+  <data name="StatusActionButton" xml:space="preserve">
+    <value>Call / Book / Cancel</value>
+  </data>
+  <data name="StatusCallButton" xml:space="preserve">
+    <value>Call</value>
+  </data>
+  <data name="StatusCancelButton" xml:space="preserve">
+    <value>Cancel this order</value>
+  </data>
+  <data name="StatusNewRideButton" xml:space="preserve">
+    <value>New Ride</value>
+  </data>
+  <data name="StatusActionCancelButton" xml:space="preserve">
+    <value>Cancel this order</value>
+  </data>
+  <data name="StatusActionBookButton" xml:space="preserve">
+    <value>Book another taxi</value>
+  </data>
+  <data name="StatusConfirmCancelRide" xml:space="preserve">
+    <value>This action will cancel your order, do you want to continue ?</value>
+  </data>
+  <data name="StatusConfirmCancelRideError" xml:space="preserve">
+    <value>The order cannot be canceled, please call to cancel this order.</value>
+  </data>
+  <data name="StatusConfirmCancelRideErrorTitle" xml:space="preserve">
+    <value>Cannot cancel</value>
+  </data>
+  <data name="StatusConfirmNewBooking" xml:space="preserve">
+    <value>Booking a new taxi will keep this order active, do you want to continue ?</value>
+  </data>
+  <data name="YesButton" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="NoButton" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="HistoryViewStatusButton" xml:space="preserve">
+    <value>View Status</value>
+  </data>
+	<data name="ResetPasswordTitleText" xml:space="preserve">
+    	<value>Forgot your password?</value>
+  </data>
+	<data name="ResetPasswordSubtitleText" xml:space="preserve">
+    	<value>Enter your email and we'll send you a new one.</value>
+  </data>
+ <data name="ResetPasswordEmailPlaceHolder" xml:space="preserve">
+    <value>Email</value>
+  </data>
+	<data name="LoginForgotPassword" xml:space="preserve">
+    	<value>Forgot your password?</value>
+  </data>
+	<data name="LoginForgotPasswordDetail" xml:space="preserve">
+    	<value>Enter your email and we'll send you a new one.</value>
+  </data>
+  <data name="TechSupportEmailTitle" xml:space="preserve">
+    <value>Support Application Mobile</value>
+  </data>
+  <data name="PickupOnButtonImageName" xml:space="preserve">
+    <value>Assets/Button/btnPickup_on_en.png</value>
+  </data>
+  <data name="PickupOffButtonImageName" xml:space="preserve">
+    <value>Assets/Button/btnPickup_off_en.png</value>
+  </data>
+  <data name="DestinationOnButtonImageName" xml:space="preserve">
+    <value>Assets/Button/btnDest_on_en.png</value>
+  </data>
+  <data name="DestinationOffButtonImageName" xml:space="preserve">
+    <value>Assets/Button/btnDest_off_en.png</value>
+  </data>
+  <data name="BookViewInvalidDate" xml:space="preserve">
+    <value>The pickup date and pickup time are invalid.</value>
+  </data>
+  <data name="Locating" xml:space="preserve">
+    <value>Finding your position...</value>
+  </data>
+  <data name="OrderNote" xml:space="preserve">
+    <value>Booked on mobile</value>
+  </data>
+  <data name="OrderNoteGPS" xml:space="preserve">
+    <value> using a GPS</value>
+  </data>
+  <data name="OrderNoteGPSApproximate" xml:space="preserve">
+    <value> (approx. address)</value>
+  </data>
+  <data name="StatusInvalid" xml:space="preserve">
+    <value>Status not available</value>
+  </data>
+  <data name="ParameterButton" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="EstimateDistance" xml:space="preserve">
+    <value> ({0})</value>
+  </data>
+  <data name="EstimatePrice" xml:space="preserve">
+    <value>Estimated Fare</value>
+  </data>
+  <data name="EstimatePriceFormat" xml:space="preserve">
+    <value>Estimated Fare : {0}</value>
+  </data>
+  <data name="ApproxPrice" xml:space="preserve">
+    <value>Estimated Fare</value>
+  </data>
+  <data name="NotAvailable" xml:space="preserve">
+    <value>N/A</value>
+  </data>
+  <data name="EstimatedFareNotAvailable" xml:space="preserve">
+    <value>Estimated fare not available</value>
+  </data>
+  <data name="ResetPasswordInvalidDataTitle" xml:space="preserve">
+    <value>Invalid email</value>
+  </data>
+  <data name="ResetPasswordInvalidDataMessage" xml:space="preserve">
+    <value>The email is invalid.</value>
+  </data>
+  <data name="CreateAccountCreate" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="CreateAccountCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="RideSettingsChargeType" xml:space="preserve">
+    <value>Charge type</value>
+  </data>
+  <data name="RideSettingsPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="CreateAccountInvalidPassword" xml:space="preserve">
+    <value>The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.</value>
+  </data>
+  <data name="InvalidPhoneErrorMessage" xml:space="preserve">
+    <value>The mobile number is invalid. It must contain 10 numbers.</value>
+  </data>
+  <data name="CreateAccountEmptyField" xml:space="preserve">
+    <value>The data is invalid, all the fields are required.</value>
+  </data>
+  <data name="CreateAccountInvalidDataTitle" xml:space="preserve">
+    <value>Invalid account info</value>
+  </data>
+  <data name="CreateAccountTitleMr" xml:space="preserve">
+    <value>Mr</value>
+  </data>
+  <data name="CreateAccountTitleMrs" xml:space="preserve">
+    <value>Mrs</value>
+  </data>
+  <data name="CreateAccountLanguageFrench" xml:space="preserve">
+    <value>French</value>
+  </data>
+  <data name="CreateAccountLanguageEnglish" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="CreateAccountErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="CreateAccountErrorMessage" xml:space="preserve">
+    <value>The account cannot be created.</value>
+  </data>
+  <data name="CreateAccountErrorNotSpecified" xml:space="preserve">
+    <value>The server didn't specify why the account could not be created, if the error persist try creating the account from the web site.</value>
+  </data>
+  <data name="WarningEstimate" xml:space="preserve">
+    <value>Please note that the price provided by this App is an estimate only. The fare amount as calculated by the meter, along with any applicable minimums and extras will be charged at the end of the trip.</value>
+  </data>
+  <data name="WarningEstimateTitle" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="WarningEstimateDontShow" xml:space="preserve">
+    <value>Don't warn</value>
+  </data>
+  <data name="ResetPasswordConfirmationTitle" xml:space="preserve">
+    <value>Password sent</value>
+  </data>
+  <data name="ResetPasswordConfirmationMessage" xml:space="preserve">
+    <value>A new password was send by email.</value>
+  </data>
+  <data name="EstimatePriceOver100" xml:space="preserve">
+    <value>Call for price</value>
+  </data>
+  <data name="HistoryInfo" xml:space="preserve">
+    <value>Displaying trips from the last month</value>
+  </data>
+  <data name="CarAssigned" xml:space="preserve">
+    <value>Your taxi {0}</value>
+  </data>
+  <data name="SupportEmail" xml:space="preserve">
+    <value>techsupport@apcurium.com</value>
+  </data>
+  <data name="NoMailClient" xml:space="preserve">
+    <value>There are no email clients installed.</value>
+  </data>
+  <data name="ListPromptSelectOne" xml:space="preserve">
+    <value>Select one</value>
+  </data>
+  <data name="DateTimePickerPickDate" xml:space="preserve">
+    <value>Select your pickup date:</value>
+  </data>
+  <data name="DateTimePickerPickTime" xml:space="preserve">
+    <value>Select your pickup time:</value>
+  </data>
+  <data name="DateTimePickerPickTitle" xml:space="preserve">
+    <value>Pickup date and time</value>
+  </data>
+  <data name="DateTimePickerPickInvalidDateTitle" xml:space="preserve">
+    <value>Invalid date / time</value>
+  </data>
+  <data name="InvalidChoiceTitle" xml:space="preserve">
+    <value>Invalid Choice</value>
+  </data>
+  <data name="DateTimePickerPickInvalidDateMessage" xml:space="preserve">
+    <value>The pickup date must be in the future.</value>
+  </data>
+  <data name="EditButton" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="StatusCannotBeDisplayed" xml:space="preserve">
+    <value>Cannot get status. Please call provider.</value>
+  </data>
+  <data name="UpdateBookingSettingsInvalidDataTitle" xml:space="preserve">
+    <value>Invalid booking settings info.</value>
+  </data>
+  <data name="UpdateBookingSettingsEmptyField" xml:space="preserve">
+    <value>The data is invalid, all the fields are required.</value>
+  </data>
+  <data name="AccountActivationTitle" xml:space="preserve">
+    <value>Confirmation Required</value>
+  </data>
+  <data name="AccountActivationMessage" xml:space="preserve">
+    <value>An email has been sent. Please follow the link in the email to confirm your address.</value>
+  </data>
+  <data name="ServiceErrorCallTitle" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="ServiceErrorDefaultMessage" xml:space="preserve">
+    <value>An error occurred. Please try again.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs" xml:space="preserve">
+    <value>Order cannot be created. Please try again or call us.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_NoProvider" xml:space="preserve">
+    <value>Order cannot be created, no provider specified. Please try again or call us.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
+    <value>Order cannot be created, invalid provider. Please try again or call us.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_VehiculeType" xml:space="preserve">
+    <value>Order cannot be created, invalid vehicle type. Please try again or call us.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
+    <value>No fare estimate available for the ride. Please contact {0} at {1} for further assistance.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
+    <value>No fare estimate available for the ride.</value>
+  </data>
+  <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
+    <value>This email is already in use.</value>
+  </data>
+  <data name="ServiceErrorUnauthorized" xml:space="preserve">
+    <value>Your session has expired, please login to continue.</value>
+  </data>
+  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+    <value>The current password is not valid.</value>
+  </data>
+  <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
+    <value>No account with this email has been found.</value>
+  </data>
+  <data name="BookDateLabel" xml:space="preserve">
+    <value>Pick Me Up Later</value>
+  </data>
+  <data name="OrderHistoryListTitle" xml:space="preserve">
+    <value>Order #{0} ({1:ddd, MMM d}, {1:h:mm tt})</value>
+  </data>
+  <data name="searchHint" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="BookPickupLocationButtonTitle" xml:space="preserve">
+    <value>Pickup</value>
+  </data>
+  <data name="BookDropoffLocationButtonTitle" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="BookPickupLocationEmptyPlaceholder" xml:space="preserve">
+    <value>Tap to choose pickup</value>
+  </data>
+  <data name="BookDropoffLocationEmptyPlaceholder" xml:space="preserve">
+    <value>Tap to choose destination</value>
+  </data>
+  <data name="AddressSearchingText" xml:space="preserve">
+    <value>Searching...</value>
+  </data>
+  <data name="NoFareText" xml:space="preserve">
+    <value>Choose a destination to get a price estimate.</value>
+  </data>
+  <data name="PickupDateDisplay" xml:space="preserve">
+    <value>Reservation for {0:ddd, MMM d} at {0:h:mm tt}</value>
+  </data>
+  <data name="DateTimePickerSetButton" xml:space="preserve">
+    <value>Book</value>
+  </data>
+  <data name="SendEmail" xml:space="preserve">
+    <value>Send mail...</value>
+  </data>
+  <data name="RefineAddressTitle" xml:space="preserve">
+    <value>Refine an address</value>
+  </data>
+  <data name="CannotCancelOrderTitle" xml:space="preserve">
+    <value>Invalid Action</value>
+  </data>
+  <data name="CannotCancelOrderMessage" xml:space="preserve">
+    <value>You can no longer cancel this order.</value>
+  </data>
+  <data name="AptNumber" xml:space="preserve">
+    <value>Apt. No.</value>
+  </data>
+  <data name="RingCode" xml:space="preserve">
+    <value>Entry Code</value>
+  </data>
+  <data name="BuildingName" xml:space="preserve">
+    <value>Building Name / Remark</value>
+  </data>
+  <data name="InvalidLocalContactTitle" xml:space="preserve">
+    <value>Invalid contact</value>
+  </data>
+  <data name="InvalidLocalContactMessage" xml:space="preserve">
+    <value>The address associated to this contact cannot be validated.</value>
+  </data>
+  <data name="ErrorCreatingOrderTitle" xml:space="preserve">
+    <value>Booking cannot be completed</value>
+  </data>
+  <data name="ServiceError_ErrorCreatingOrderMessage" xml:space="preserve">
+    <value>Please contact {0} at {1} for further assistance.</value>
+  </data>
+  <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
+    <value>The order cannot be created.</value>
+  </data>
+  <data name="AccountDisabled_NoCall" xml:space="preserve">
+    <value>Your account has been disabled.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
+    <value>The specified Pickup address lies outside the regular service area. Please contact {0} at {1} for further assistance.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall" xml:space="preserve">
+    <value>The specified Pickup address lies outside the regular service area.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
+    <value>The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall" xml:space="preserve">
+    <value>The order cannot be created because your account is currently inactive.</value>
+  </data>
+  <data name="LocalContactCannotBeResolverTitle" xml:space="preserve">
+    <value>Invalid Contact</value>
+  </data>
+  <data name="LocalContactCannotBeResolverMessage" xml:space="preserve">
+    <value>Cannot find the address associated to this contact.</value>
+  </data>
+  <data name="NetworkErrorTitle" xml:space="preserve">
+    <value>No network connection</value>
+  </data>
+  <data name="NetworkErrorMessage" xml:space="preserve">
+    <value>Cannot connect to Internet. Please check your connection settings and try again.</value>
+  </data>
+  <data name="View_SearchAddress" xml:space="preserve">
+    <value>Address Search</value>
+  </data>
+  <data name="View_AboutUs" xml:space="preserve">
+    <value>About Us</value>
+  </data>
+  <data name="View_BookingDetail" xml:space="preserve">
+    <value>Booking Details</value>
+  </data>
+  <data name="View_BookingStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="View_BookSettingMenu" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="View_HistoryDetail" xml:space="preserve">
+    <value>Order Details</value>
+  </data>
+  <data name="View_History" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="View_MyLocations" xml:space="preserve">
+    <value>Locations</value>
+  </data>
+  <data name="View_SignUp" xml:space="preserve">
+    <value>Create Account</value>
+  </data>
+  <data name="View_TermsAndConditions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="View_SignUp_Label" xml:space="preserve">
+    <value>Create Profile</value>
+  </data>
+  <data name="View_SignIn" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RideSettingsView" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="PanelMenuViewLocationsText" xml:space="preserve">
+    <value>Locations</value>
+  </data>
+  <data name="PanelMenuViewOrderHistoryText" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="PanelMenuViewUpdateProfileText" xml:space="preserve">
+    <value>Update Account</value>
+  </data>
+  <data name="PanelMenuViewTutorialText" xml:space="preserve">
+    <value>View Tutorial</value>
+  </data>
+  <data name="PanelMenuViewCallDispatchText" xml:space="preserve">
+    <value>Call</value>
+  </data>
+  <data name="PanelMenuViewAboutUsText" xml:space="preserve">
+    <value>About Us</value>
+  </data>
+  <data name="PanelMenuViewReportProblemText" xml:space="preserve">
+    <value>Report A Problem</value>
+  </data>
+  <data name="PanelMenuViewSignOutText" xml:space="preserve">
+    <value>Sign Out</value>
+  </data>
+  <data name="View_RefineAddress" xml:space="preserve">
+    <value>Pickup Details</value>
+  </data>
+  <data name="AppNeedUpdateTitle" xml:space="preserve">
+    <value>Update available</value>
+  </data>
+  <data name="AppNeedUpdateMessage" xml:space="preserve">
+    <value>A new version of the application is available, please update the app to continue.</value>
+  </data>
+  <data name="BookingService_MobileBookingNote" xml:space="preserve">
+    <value>Booked mobile device.</value>
+  </data>
+  <data name="BookingService_MobileBookingNoteBuildingName" xml:space="preserve">
+    <value>Building name {0}.</value>
+  </data>
+  <data name="CreateAccount_AccountAlreadyExist" xml:space="preserve">
+    <value>The account cannot be created, this email is already in use.</value>
+  </data>
+  <data name="CurrentPasswordLabel" xml:space="preserve">
+    <value>Current Password</value>
+  </data>
+  <data name="NewPasswordLabel" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="NewPasswordConfirmationLabel" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="ConfirmPassengerSettingsTitle" xml:space="preserve">
+    <value>Passenger Settings</value>
+  </data>
+  <data name="HistoryViewSendReceiptButton" xml:space="preserve">
+    <value>Send Receipt</value>
+  </data>
+  <data name="HistoryViewSendReceiptError" xml:space="preserve">
+    <value>Error sending receipt for this order</value>
+  </data>
+  <data name="View_UpdatePassword" xml:space="preserve">
+    <value>Update Password</value>
+  </data>
+  <data name="NbPassenger" xml:space="preserve">
+    <value> ({0} passenger)</value>
+  </data>
+  <data name="NbPassengers" xml:space="preserve">
+    <value> ({0} passengers)</value>
+  </data>
+  <data name="HistoryDetailSendReceiptButton" xml:space="preserve">
+    <value>Send receipt</value>
+  </data>
+  <data name="CreateAccountTitleArray" xml:space="preserve">
+    <value>MrMrs</value>
+  </data>
+  <data name="View_BookingDetail_TitleRideSettings" xml:space="preserve">
+    <value>Ride Settings</value>
+  </data>
+  <data name="View_BookingDetail_TitlePickupDetails" xml:space="preserve">
+    <value>Pickup Details</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="NotesToDriveLabel" xml:space="preserve">
+    <value>Notes to driver</value>
+  </data>
+  <data name="NotesToDriverHint" xml:space="preserve">
+    <value>Name of business, specific entrance</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="ViewRatingBtn" xml:space="preserve">
+    <value>View ratings</value>
+  </data>
+  <data name="View_RatePage" xml:space="preserve">
+    <value>Rate your trip</value>
+  </data>
+  <data name="ResetPasswordSucessMessage" xml:space="preserve">
+    <value>Password was reset successfully</value>
+  </data>
+  <data name="ResetPasswordSucessTitle" xml:space="preserve">
+    <value>Password reset</value>
+  </data>
+  <data name="ChooseProviderDialogTitle" xml:space="preserve">
+    <value>Pick a provider</value>
+  </data>
+  <data name="ChangePasswordConfirmmation" xml:space="preserve">
+    <value>You password has been updated, please sign in.</value>
+  </data>
+  <data name="Tuto01Bottom" xml:space="preserve">
+    <value>Start by selecting your current position.</value>
+  </data>
+  <data name="Tuto01Top" xml:space="preserve">
+    <value>Here's how to book a ride with just a couple of taps.</value>
+  </data>
+  <data name="Tuto02Bottom" xml:space="preserve">
+    <value>If it's a little off, simply reposition the map to your actual location.</value>
+  </data>
+  <data name="Tuto02Top" xml:space="preserve">
+    <value>We should be able to locate you using the GPS receiver in your mobile device.</value>
+  </data>
+  <data name="Tuto03Bottom" xml:space="preserve">
+    <value>You can search for a specific address or pick one from your favorites, contacts or a list of nearby places.</value>
+  </data>
+  <data name="Tuto03Top" xml:space="preserve">
+    <value>You may also select your pickup location by tapping the pickup address.</value>
+  </data>
+  <data name="Tuto04Bottom" xml:space="preserve">
+    <value>Doing so will provide an estimate for the cost for the trip.</value>
+  </data>
+  <data name="Tuto04Top" xml:space="preserve">
+    <value>If you want, you can also set your destination.</value>
+  </data>
+  <data name="Tuto05Bottom" xml:space="preserve">
+    <value>Or Tap the Later button to schedule your pickup for a future time or date.</value>
+  </data>
+  <data name="Tuto05Top" xml:space="preserve">
+    <value>Tap Book Now and a vehicle will be assigned as soon as possible.</value>
+  </data>
+  <data name="Tuto06Bottom" xml:space="preserve">
+    <value>Tap Confirm when you are ready to go.</value>
+  </data>
+  <data name="Tuto06Top" xml:space="preserve">
+    <value>The confirmation screen allows you to verify your trip details and to change any of your preferences for this specific ride.</value>
+  </data>
+  <data name="Tuto07Bottom" xml:space="preserve">
+    <value>Status updates are provided when the vehicles arrives at the pickup address, when you enter the vehicle, and at the end of the ride.</value>
+  </data>
+  <data name="Tuto07Top" xml:space="preserve">
+    <value>On the Status screen you will see a reservation number confirming your booking. Once a vehicle is assigned, you can watch as it progresses to your pickup location.</value>
+  </data>
+  <data name="Tuto08Bottom" xml:space="preserve">
+    <value>We hope you find this application both convenient and intuitive.</value>
+  </data>
+  <data name="Tuto08Top" xml:space="preserve">
+    <value>You can review your order history at any time, and even rebook a previous trip with the push of a button</value>
+  </data>
+  <data name="StreetNumberTitle" xml:space="preserve">
+    <value>Address Details</value>
+  </data>
+  <data name="StreetNumberLabel" xml:space="preserve">
+    <value>Refine your address</value>
+  </data>
+  <data name="StreetNumberSearchBt" xml:space="preserve">
+    <value>Use a different address</value>
+  </data>
+  <data name="StreetNumberDoneBt" xml:space="preserve">
+    <value>Use This Address</value>
+  </data>
+  <data name="AddReminderMessage" xml:space="preserve">
+    <value>Would you like a reminder added to your calendar for this pick-up time?</value>
+  </data>
+  <data name="AddReminderTitle" xml:space="preserve">
+    <value>Scheduled Pick-Up</value>
+  </data>
+  <data name="View_PaymentPreference" xml:space="preserve">
+    <value>Payment Preference</value>
+  </data>
+  <data name="CreditCardsListView" xml:space="preserve">
+    <value>Credit Cards</value>
+  </data>
+  <data name="PaymentDetails.CreditCardLabel" xml:space="preserve">
+    <value>Cards</value>
+  </data>
+  <data name="PaymentDetails.Optional" xml:space="preserve">
+    <value>(Optional)</value>
+  </data>
+  <data name="PaymentDetails.TipAmountLabel" xml:space="preserve">
+    <value>Tip Amount</value>
+  </data>
+  <data name="PaymentDetails.InvalidTipAmount" xml:space="preserve">
+    <value>Tip amount is invalid</value>
+  </data>
+  <data name="PaymentDetails.InvalidDataTitle" xml:space="preserve">
+    <value>Invalid payment information</value>
+  </data>
+  <data name="CreditCardAddView" xml:space="preserve">
+    <value>New Credit Card</value>
+  </data>
+  <data name="CreditCardName" xml:space="preserve">
+    <value>Name as it appears on card</value>
+  </data>
+  <data name="CreditCardNumber" xml:space="preserve">
+    <value>Card Number</value>
+  </data>
+  <data name="CreditCardCategory" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="CreditCardType" xml:space="preserve">
+    <value>Type of Card</value>
+  </data>
+  <data name="CreditCardExpMonth" xml:space="preserve">
+    <value>Exp. Month</value>
+  </data>
+  <data name="CreditCardExpYear" xml:space="preserve">
+    <value>Exp. Year</value>
+  </data>
+  <data name="CreditCardCCV" xml:space="preserve">
+    <value>CVV</value>
+  </data>
+  <data name="CreditCardZipCode" xml:space="preserve">
+    <value>Zip code</value>
+  </data>
+  <data name="CreditCardErrorTitle" xml:space="preserve">
+    <value>Can't add the Credit Card</value>
+  </data>
+  <data name="CreditCardRequiredFields" xml:space="preserve">
+    <value>All the fields are required</value>
+  </data>
+  <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
+    <value>The Credit Card Number is invalid</value>
+  </data>
+  <data name="AddCreditCardTitle" xml:space="preserve">
+    <value>Add a credit card</value>
+  </data>
+  <data name="ReminderTitle" xml:space="preserve">
+    <value>{0} Booked</value>
+  </data>
+  <data name="ReminderDetails" xml:space="preserve">
+    <value>Reminder: A taxi will pick you up from {0} at {1} on {2}.</value>
+  </data>
+  <data name="ChargeTypeCreditCardFile" xml:space="preserve">
+    <value>Credit Card on File</value>
+  </data>
+  <data name="RemoveCreditCardMessage" xml:space="preserve">
+    <value>Are you sure you want to remove this credit card ?</value>
+  </data>
+  <data name="RemoveCreditCardTitle" xml:space="preserve">
+    <value>Remove credit card</value>
+  </data>
+  <data name="NoCreditCardSelected" xml:space="preserve">
+    <value>Please select a credit card</value>
+  </data>
+  <data name="PaymentView" xml:space="preserve">
+    <value>Payment Info</value>
+  </data>
+  <data name="BackButton" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="NoPreference" xml:space="preserve">
+    <value>No preference</value>
+  </data>
+  <data name="StreetNumberPlacesBt" xml:space="preserve">
+    <value>Search for places</value>
+  </data>
+  <data name="DriverInfoColor" xml:space="preserve">
+    <value>Color:</value>
+  </data>
+  <data name="DriverInfoDriver" xml:space="preserve">
+    <value>Driver:</value>
+  </data>
+  <data name="DriverInfoLicence" xml:space="preserve">
+    <value>Licence #:</value>
+  </data>
+  <data name="DriverInfoMake" xml:space="preserve">
+    <value>Make:</value>
+  </data>
+  <data name="DriverInfoModel" xml:space="preserve">
+    <value>Model:</value>
+  </data>
+  <data name="DriverInfoTaxiType" xml:space="preserve">
+    <value>Taxi Type:</value>
+  </data>
+  <data name="NoPhoneNumberMessage" xml:space="preserve">
+    <value>The phone number is invalid for this driver.</value>
+  </data>
+  <data name="NoPhoneNumberTitle" xml:space="preserve">
+    <value>Invalid phone Number</value>
+  </data>
+  <data name="DeleteAddressBt" xml:space="preserve">
+    <value>Clear Address</value>
+  </data>
+  <data name="PassengerNameLabel" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="PassengerNumberLabel" xml:space="preserve">
+    <value>Passengers</value>
+  </data>
+  <data name="PassengerPhoneLabel" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="LargeBagsLabel" xml:space="preserve">
+    <value>Large Bags</value>
+  </data>
+
+  <data name="View_RideSummary" xml:space="preserve">
+    <value>Ride Summary</value>
+  </data>
+  <data name="PayNow" xml:space="preserve">
+    <value>Pay now</value>
+  </data>
+  <data name="ReSendConfirmation" xml:space="preserve">
+    <value>Notify driver of payment</value>
+  </data>
+  <data name="RideSummaryTitleText" xml:space="preserve">
+    <value>Thank you</value>
+  </data>
+  <data name="RideSummarySubTitleText" xml:space="preserve">
+    <value>Thank you for riding with {0}, we look forward to serving you again soon.</value>
+  </data>
+  <data name="SendReceipt" xml:space="preserve">
+    <value>Send receipt</value>
+  </data>
+  <data name="RateRide" xml:space="preserve">
+    <value>Rate my ride</value>
+  </data>
+  <data name="ReceiptSent" xml:space="preserve">
+    <value>Receipt sent</value>
+  </data>
+
+  <data name="CmtTransactionSuccessMessage" xml:space="preserve">
+    <value>Confirmation sent to the driver (Authorization Code:  {0})</value>
+  </data>
+  <data name="CmtTransactionSuccessTitle" xml:space="preserve">
+    <value>Payment Received</value>
+  </data>
+  <data name="NoAmountSelectedMessage" xml:space="preserve">
+    <value>Please enter the amount</value>
+  </data>
+  <data name="CmtTransactionResendConfirmationButtonText" xml:space="preserve">
+    <value>Resend</value>
+  </data>
+  <data name="PaymentConfirmationMessageToDriver" xml:space="preserve">
+    <value>The passenger has paid {0} (auth : {1})</value>
+  </data>
+  <data name="CmtTransactionErrorMessage" xml:space="preserve">
+    <value>Transaction Denied</value>
+  </data>
+  <data name="SendMessageErrorMessage" xml:space="preserve">
+    <value>Error confirming with driver payment cancelled</value>
+  </data>
+  <data name="PayPalExpressCheckoutCancelTitle" xml:space="preserve">
+    <value>Payment cancelled</value>
+  </data>
+  <data name="PayPalExpressCheckoutCancelMessage" xml:space="preserve">
+    <value>PayPal payment was cancelled. Your account has not been charged.</value>
+  </data>
+  <data name="PayPalExpressCheckoutSuccessTitle" xml:space="preserve">
+    <value>Payment successful</value>
+  </data>
+  <data name="PayPalExpressCheckoutSuccessMessage" xml:space="preserve">
+    <value>PayPal payment was successful. Confirmation sent to the driver.</value>
+  </data>
+  <data name="ConfirmationOfPaymentSent" xml:space="preserve">
+    <value>Confirmation of payment has been sent to the driver.</value>
+  </data>
+  <data name="OkButtonText" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="TaxiServerDownMessage" xml:space="preserve">
+    <value>Can't send message to Taxi</value>
+  </data>
+  <data name="OrderNumber" xml:space="preserve">
+    <value>Order #</value>
+  </data>
+  <data name="NoOrderId" xml:space="preserve">
+    <value>Order Not ready</value>
+  </data>
+  <data name="PayPalButton" xml:space="preserve">
+    <value>Pay with PayPal</value>
+  </data>
+  <data name="January" xml:space="preserve">
+    <value>Jan (01)</value>
+  </data>
+  <data name="View_PayPal" xml:space="preserve">
+    <value>PayPal</value>
+  </data>
+  <data name="February" xml:space="preserve">
+    <value>Feb (02)</value>
+  </data>
+  <data name="March" xml:space="preserve">
+    <value>Mar (03)</value>
+  </data>
+  <data name="April" xml:space="preserve">
+    <value>Apr (04)</value>
+  </data>
+  <data name="May" xml:space="preserve">
+    <value>May (05)</value>
+  </data>
+  <data name="June" xml:space="preserve">
+    <value>Jun (06)</value>
+  </data>
+  <data name="July" xml:space="preserve">
+    <value>Jul (07)</value>
+  </data>
+  <data name="August" xml:space="preserve">
+    <value>Aug (08)</value>
+  </data>
+  <data name="September" xml:space="preserve">
+    <value>Sep (09)</value>
+  </data>
+  <data name="October" xml:space="preserve">
+    <value>Oct (10)</value>
+  </data>
+  <data name="November" xml:space="preserve">
+    <value>Nov (11)</value>
+  </data>
+  <data name="December" xml:space="preserve">
+    <value>Dec (12)</value>
+  </data>
+  <data name="VehicleNumberErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="VehicleNumberErrorMessage" xml:space="preserve">
+    <value>Unable to retrieve vehicle number. Please pay in car.</value>
+  </data>
+  <data name="CreditCard" xml:space="preserve">
+    <value>Credit Card</value>
+  </data>
+  <data name="PaymentErrorTitle" xml:space="preserve">
+    <value>Payment cannot be completed</value>
+  </data>
+  <data name="VehicleNumberInfo" xml:space="preserve">
+    <value>Please confirm your car number with the driver</value>
+  </data>
+  <data name="VehicleNumberNotice" xml:space="preserve">
+    <value>Please note that if the vehicle number presented above does not match the actual car number of your ride, we regret that payment cannot be processed through the Application. Please press the back button to return to the trip status screen, and pay the driver directly.</value>
+  </data>
+  <data name="EmptyString" xml:space="preserve">
+    <value />
+  </data>
+  <data name="EstimatingFare" xml:space="preserve">
+    <value>Estimating your fare...</value>
+  </data>
+  <data name="ConfirmationPaymentAmountOver100Title" xml:space="preserve">
+    <value>Confirmation Required</value>
+  </data>
+  <data name="ConfirmationPaymentAmountOver100" xml:space="preserve">
+    <value>You will be charged {0}. Please confirm the amount. </value>
+  </data>
+  <data name="CmtCancelPayment" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CmtCardNumber" xml:space="preserve">
+    <value>Card Number:</value>
+  </data>
+  <data name="CmtCarNumber" xml:space="preserve">
+    <value>Car Number:</value>
+  </data>
+  <data name="CmtChangePaymentInfo" xml:space="preserve">
+    <value>Change Payment Settings</value>
+  </data>
+  <data name="CmtRideLinqConfirmPairView" xml:space="preserve">
+    <value>Confirm Payment Information</value>
+  </data>
+  <data name="CmtConfirmPayment" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="CmtRideLinqUnpair" xml:space="preserve">
+    <value>Unpair</value>
+  </data>
+  <data name="CmtRideLinqCancelChanges" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CmtRideLinqSaveChanges" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="CmtRideLinqErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="CmtRideLinqGenericErrorMessage" xml:space="preserve">
+    <value>There was an error during pairing, verify your credit card information or try again later.</value>
+  </data>
+  <data name="CmtRideLinqUnpairErrorMessage" xml:space="preserve">
+    <value>There was an error during unpairing, please try again later.</value>
+  </data>
+  <data name="CmtTipAmount" xml:space="preserve">
+    <value>Tip Amount:</value>
+  </data>
+  <data name="View_Payments_CmtRideLinqConfirmPairTitle" xml:space="preserve">
+    <value>Confirm payment information</value>
+  </data>
+  <data name="View_Payments_CmtRideLinqChangePaymentTitle" xml:space="preserve">
+    <value>Change payment info</value>
+  </data>  
+  <data name="GooglePlayServicesNotAvailableTitle" xml:space="preserve">
+    <value>Update required</value>
+  </data>
+  <data name="GooglePlayServicesNotAvailableMessage" xml:space="preserve">
+    <value>You need to update Google Play Services in order to use this application.</value>
+  </data>
+  <data name="GooglePlayServicesNotAvailableTitle" xml:space="preserve">
+    <value>Update required</value>
+  </data>
+  <data name="GooglePlayServicesNotAvailableMessage" xml:space="preserve">
+    <value>You need to update Google Play Services in order to use this application.</value>
+  </data>
+  <data name="PaymentViewTotalText" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="PaymentViewTipText" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="PaymentViewMeterAmountText" xml:space="preserve">
+    <value>Meter Amount</value>
+  </data>
 </root>
