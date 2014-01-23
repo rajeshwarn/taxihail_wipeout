@@ -48,6 +48,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(btnCreate)
 				.For("TouchUpInside")
 				.To(vm => vm.CreateAccount);
+            set.Bind(btnCreate)
+                .For(v => v.Enabled)
+                .To(vm => vm.TermsAndConditionsAcknowledged);
 
 			set.Apply ();
         }

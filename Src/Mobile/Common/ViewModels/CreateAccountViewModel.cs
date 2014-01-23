@@ -79,13 +79,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
 						return;
 					}
-
-					if(ShowTermsAndConditions && !TermsAndConditionsAcknowledged)
-					{
-						this.Services().Message.ShowMessage("Error", "not acknowledged");
-						return;
-					}
-
+					
                     Data.Phone= new string(Data.Phone.ToArray().Where( c=> Char.IsDigit( c ) ).ToArray());
 
                     this.Services().Message.ShowProgress(true);
