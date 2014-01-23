@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             NavigationController.NavigationBar.Hidden = false;
 			NavigationItem.HidesBackButton = false;
+            NavigationItem.Title = Localize.GetValue("RideSummaryTitleText");
 		}
 
 		public override void ViewDidLoad ()
@@ -39,7 +40,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			FlatButtonStyle.Green.ApplyTo(btnReSendConfirmation);
 			FlatButtonStyle.Green.ApplyTo(btnPay);
 
-			lblTitle.Text = Localize.GetValue ("RideSummaryTitleText");
 			lblSubTitle.Text = String.Format(Localize.GetValue ("RideSummarySubTitleText"), this.Services().Settings.ApplicationName);
 
             btnSendReceipt.SetTitle(Localize.GetValue("SendReceipt"), UIControlState.Normal);

@@ -26,9 +26,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblSubTitle { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel lblTitle { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -55,11 +52,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblSubTitle != null) {
 				lblSubTitle.Dispose ();
 				lblSubTitle = null;
-			}
-
-			if (lblTitle != null) {
-				lblTitle.Dispose ();
-				lblTitle = null;
 			}
 		}
 	}
