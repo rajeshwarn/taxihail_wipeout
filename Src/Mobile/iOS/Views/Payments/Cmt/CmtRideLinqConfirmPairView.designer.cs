@@ -13,37 +13,47 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 	partial class CmtRideLinqConfirmPairView
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnCancel { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCancel { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnChangePaymentSettings { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnChangePaymentSettings { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnConfirm { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnConfirm { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.FormLabel lblCardNumber { get; set; }
+		MonoTouch.UIKit.UILabel lblCardNumber { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.FormLabel lblCardNumberValue { get; set; }
+		MonoTouch.UIKit.UILabel lblCardNumberValue { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.FormLabel lblCarNumber { get; set; }
+		MonoTouch.UIKit.UILabel lblCarNumber { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.FormLabel lblCarNumberValue { get; set; }
+		MonoTouch.UIKit.UILabel lblCarNumberValue { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.FormLabel lblTip { get; set; }
+		MonoTouch.UIKit.UILabel lblTip { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.FormLabel lblTipValue { get; set; }
+		MonoTouch.UIKit.UILabel lblTipValue { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnCancel != null) {
+				btnCancel.Dispose ();
+				btnCancel = null;
+			}
+
 			if (btnChangePaymentSettings != null) {
 				btnChangePaymentSettings.Dispose ();
 				btnChangePaymentSettings = null;
+			}
+
+			if (btnConfirm != null) {
+				btnConfirm.Dispose ();
+				btnConfirm = null;
 			}
 
 			if (lblCardNumber != null) {
@@ -74,16 +84,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 			if (lblTipValue != null) {
 				lblTipValue.Dispose ();
 				lblTipValue = null;
-			}
-
-			if (btnConfirm != null) {
-				btnConfirm.Dispose ();
-				btnConfirm = null;
-			}
-
-			if (btnCancel != null) {
-				btnCancel.Dispose ();
-				btnCancel = null;
 			}
 		}
 	}

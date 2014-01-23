@@ -527,4 +527,10 @@
   <string name="PanelMenuViewUpdateProfileText">Update Account</string>
   <string name="PanelMenuViewCallDispatchText">Call</string>
   <string name="PanelMenuViewReportProblemText">Report A Problem</string>
+  <string name="PaymentViewTipText">Tip</string>
+  <string name="PaymentView">Payment Info</string>
+  <string name="PaymentViewMeterAmountText">Meter Amount</string>
+  <string name="PaymentViewTotalText">Total</string>
+  <string name="CreateAccountPasswordConfirmation">Confirm password</string>
+  <string name="CmtRideLinqConfirmPairView">Confirm Payment Information</string>
 </resources>

@@ -19,15 +19,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
         {
             _onEndEdit();
         }
-
     }
 
     public class MvxUITextViewTargetBinding: MvxPropertyInfoTargetBinding<UITextView>
     {
-      
-
-        public MvxUITextViewTargetBinding(object target, PropertyInfo targetPropertyInfo)
-            : base(target, targetPropertyInfo)
+        public MvxUITextViewTargetBinding(object target, PropertyInfo targetPropertyInfo) : base(target, targetPropertyInfo)
         {
             var editText = View;
             if (editText == null)
@@ -36,11 +32,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
             }
             else
             {
-
                 editText.Delegate = new TextViewDelegate( HandleEditTextValueChanged);
             }
         }
-
 
         void HandleEditTextValueChanged ()
         {

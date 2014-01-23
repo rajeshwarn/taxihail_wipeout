@@ -41,7 +41,7 @@
 "ConfirmPassengerSettingsTitle"="Passenger Settings";
 "NetworkErrorMessage"="Cannot connect to Internet. Please check your connection settings and try again.";
 "BookPickupLocationButtonTitle"="Pickup";
-"CreateAccountPasswordConfrimation"="Confirm password";
+"CreateAccountPasswordConfirmation"="Confirm password";
 "ResetPasswordCancel"="Cancel";
 "ConfirmPassengersLabel"="Passengers:";
 "WarningEstimateTitle"="Warning";
@@ -527,3 +527,8 @@
 "CreditCardsListView"="Credit Cards";
 "CreditCardAddView"="New Credit Card";
 "View_AboutUs"="About Us";
+"PaymentViewTipText"="Tip";
+"PaymentViewMeterAmountText"="Meter Amount";
+"PaymentViewTotalText"="Total";
+"PaymentView"="Payment Info";
+"CmtRideLinqConfirmPairView"="Confirm Payment Information";
