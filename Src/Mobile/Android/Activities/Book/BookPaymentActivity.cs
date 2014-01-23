@@ -8,19 +8,18 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "BookPaymentActivity", Theme = "@android:style/Theme.NoTitleBar",
-        ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "BookPaymentActivity", Theme = "@style/MainTheme", ScreenOrientation = ScreenOrientation.Portrait)]
     public class BookPaymentActivity : BaseBindingActivity<PaymentViewModel>
     {
         private LinearLayout _layoutRoot;
         private EditText _meterAmountTextView;
         private EditText _tipAmountTextView;
-        private TipSlider _tipSlider;
+        private EditTextSpinner _tipPicker;
         private TextView _totalAmountTextView;
 
         protected override int ViewTitleResourceId
         {
-            get { return Resource.String.View_PaymentCreditCardsOnFile; }
+            get { return Resource.String.PaymentView; }
         }
 
         public double TipAmount
@@ -44,11 +43,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnStart()
         {
             base.OnStart();
-            _tipSlider = FindViewById<TipSlider>(Resource.Id.tipSlider);
+
+            _layoutRoot = FindViewById<LinearLayout>(Resource.Id.layoutRoot);
+            _tipPicker = FindViewById<EditTextSpinner>(Resource.Id.tipPicker);
             _tipAmountTextView = FindViewById<EditText>(Resource.Id.tipAmountTextView);
             _meterAmountTextView = FindViewById<EditText>(Resource.Id.meterAmountTextView);
             _totalAmountTextView = FindViewById<TextView>(Resource.Id.totalAmountTextView);
-            _layoutRoot = FindViewById<LinearLayout>(Resource.Id.layoutRoot);
 
             UpdateAmounts();
 
@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             _meterAmountTextView.TextChanged += (sender, e) =>
             {
-                TipAmount = MeterAmount*((_tipSlider.Percent/100.00));
+                TipAmount = MeterAmount*GetTip();
                 UpdateAmounts();
             };
 
@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 if (!e.HasFocus)
                 {
-                    TipAmount = MeterAmount*((_tipSlider.Percent/100.00));
+                    TipAmount = MeterAmount * (GetTip());
                     UpdateAmounts();
                 }
             };
@@ -81,6 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 e.Handled = false;
                 TipAmount = TipAmount; //format	
             };
+
             _tipAmountTextView.FocusChange += (sender, e) =>
             {
                 if (!e.HasFocus)
@@ -95,17 +96,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 MeterAmount = MeterAmount; //format				
             };
 
-            _tipSlider.PercentChanged += (sender, e) =>
-            {
-                TipAmount = MeterAmount*((_tipSlider.Percent/100.00));
+            _tipPicker.ItemSelected += (object sender, AdapterView.ItemSelectedEventArgs e) => {
 
+                TipAmount = MeterAmount * ((e.Id / 100.00));
                 _tipAmountTextView.HideKeyboard(this);
-
                 _layoutRoot.RequestFocus();
 
 
                 UpdateAmounts();
+
             };
+                       
+        }
+
+        public double GetTip()
+        {
+            return (double)ViewModel.PaymentPreferences.Tip / 100.00;
         }
 
         public void UpdateAmounts()

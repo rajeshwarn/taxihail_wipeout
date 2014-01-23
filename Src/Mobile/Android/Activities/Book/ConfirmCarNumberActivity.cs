@@ -5,9 +5,9 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "ConfirmCarNumberActivity", Theme = "@style/MainTheme",
+    [Activity(Label = "ConfirmPaymentActivity", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
-    public class ConfirmCarNumberActivity : BaseBindingActivity<ConfirmCarNumberViewModel>
+    public class ConfirmPaymentActivity : BaseBindingActivity<ConfirmCarNumberViewModel>
     {
         protected override int ViewTitleResourceId
         {

@@ -20,7 +20,7 @@
             android:background="@color/top_bar_color"
             android:orientation="horizontal">
             <TextView
-                android:text="Locations"
+                android:text="Confirm Payment"
                 style="@style/TopTitleText"
                 android:layout_gravity="center"
                 android:layout_width="fill_parent"
@@ -33,52 +33,78 @@
             android:layout_height="1px"
             android:background="@color/top_bar_separator_color"
             android:orientation="horizontal" />
-        <TextView
-            android:layout_width="200dp"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/VehicleNumberInfo"
-            style="@style/MultilineFormLabelText"
-            android:gravity="center_horizontal"
-            android:layout_gravity="center_horizontal" />
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="20dp"
-            android:layout_weight="1" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4585"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:gravity="center"
-            local:MvxBind="Text CarNumber"
-            android:width="200dp"
-            android:layout_gravity="center_horizontal" />
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="5dp"
-            android:layout_weight="1" />
-        <TextView
-            android:textSize="13dp"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:text="@string/VehicleNumberNotice"
-            style="@style/BlackTextLabelMultiline"
-            android:gravity="center_horizontal"
-            android:layout_gravity="center_horizontal" />
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="35dp"
-            android:layout_weight="1" />
-        <Button
-            android:id="@+id/ConfirmBtn"
-            android:text="@string/CreateAccountPasswordConfrimation"
-            local:MvxBind="Click ConfirmTaxiNumber"
-            style="@style/ButtonActionGreenStyle"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/HeightButton"
-            android:layout_gravity="bottom"
-            android:layout_alignParentBottom="true" />
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:paddingTop="15dip"
+            android:orientation="vertical">
+            <TextView
+                android:textSize="15dp"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:text="@string/VehicleNumberInfo"
+                style="@style/BlackTextLong"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal" />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="40dip"
+                android:orientation="vertical" />
+            <TextView
+                style="@style/BlackTextLabel"
+                android:textSize="20dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="4585"
+                local:MvxBind="Text CarNumber"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal" />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="60dip"
+                android:orientation="vertical" />
+            <TextView
+                android:textSize="13dp"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:text="@string/VehicleNumberNotice"
+                style="@style/BlackTextLong"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal" />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="40dip"
+                android:orientation="vertical" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="10dp"
+                android:orientation="vertical"
+                android:gravity="fill"
+                android:layout_alignParentBottom="true">
+                <Button
+                    android:id="@+id/ConfirmCarBtn"
+                    android:text="Confirm"
+                    style="@style/ButtonActionGreenStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/HeightButton"
+                    local:MvxBind="Click ConfirmCarNumber"
+                    layout_alignParentBottom="true" />
+                <Button
+                    android:id="@+id/CancelPaymentBtn"
+                    android:text="Cancel"
+                    style="@style/ButtonActionRedStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/HeightButton"
+                    local:MvxBind="Click CloseCommand" />
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="60dip"
+                    android:orientation="vertical" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

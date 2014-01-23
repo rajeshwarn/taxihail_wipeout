@@ -6,7 +6,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
     {
         public Guid? CreditCardId { get; set; }
         public int? TipPercent { get; set; }
-		public double? TipAmount { get; set; }
     }
 }
 
