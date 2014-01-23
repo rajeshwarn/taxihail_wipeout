@@ -430,10 +430,6 @@
     <Compile Include="Views\Payments\PayPalView.designer.cs">
       <DependentUpon>PayPalView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\RideSummaryPage.cs" />
-    <Compile Include="Views\RideSummaryPage.designer.cs">
-      <DependentUpon>RideSummaryPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Binding\PaymentSelectorBinding.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
     <Compile Include="Views\TermsAndConditionsView.cs" />
@@ -470,6 +466,10 @@
     <Compile Include="Controls\Widgets\NavigateFlatTextField.cs" />
     <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
     <Compile Include="Controls\Widgets\RadioElementWithId.cs" />
+    <Compile Include="Views\RideSummaryView.cs" />
+    <Compile Include="Views\RideSummaryView.designer.cs">
+      <DependentUpon>RideSummaryView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Widgets\BindableTableViewSource.cs" />
     <Compile Include="Controls\Widgets\SingleLinePictureCell.cs" />
     <Compile Include="Views\AboutUsView.xib.cs">
@@ -524,12 +524,12 @@
     <InterfaceDefinition Include="Views\CreditCardsListView.xib" />
     <InterfaceDefinition Include="Views\BookEditInformation.xib" />
     <InterfaceDefinition Include="Views\Payments\PayPalView.xib" />
-    <InterfaceDefinition Include="Views\RideSummaryPage.xib" />
     <InterfaceDefinition Include="Views\ConfirmationView_Thriev.xib" />
     <InterfaceDefinition Include="Views\BookEditInformation_Thriev.xib" />
     <InterfaceDefinition Include="Views\TermsAndConditionsView.xib" />
     <InterfaceDefinition Include="Views\MyLocationsView.xib" />
     <InterfaceDefinition Include="Views\HistoryView.xib" />
+    <InterfaceDefinition Include="Views\RideSummaryView.xib" />
     <InterfaceDefinition Include="Views\AboutUsView.xib" />
     <InterfaceDefinition Include="Views\Payments\PaymentView.xib" />
     <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.xib" />
