@@ -196,7 +196,7 @@
     <value>Terms and Conditions</value>
   </data>
   <data name="TermsAndConditionsAcknowledgment" xml:space="preserve">
-    <value>I acknowledge that I have read and understood the Terms and Conditions.</value>
+	<value>I acknowledge that I have read and understood the Terms and Conditions.</value>
   </data>
   <data name="AcceptButton" xml:space="preserve">
     <value>Accept</value>
@@ -285,9 +285,6 @@
   <data name="HistoryDetailAuthorizationLabel" xml:space="preserve">
     <value>Authorization:</value>
   </data>
-	<data name="CancelButton" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>
@@ -336,13 +333,13 @@
   <data name="ChargeTypeLabel" xml:space="preserve">
     <value>Charge type</value>
   </data>
-  <data name="ConfirmNoApt" xml:space="preserve">
+  <data name="NoAptText" xml:space="preserve">
     <value>No apt.</value>
   </data>
-  <data name="ConfirmNoRingCode" xml:space="preserve">
+  <data name="NoRingCodeText" xml:space="preserve">
     <value>No code</value>
   </data>
-  <data name="ConfirmDestinationNotSpecified" xml:space="preserve">
+  <data name="DestinationNotSpecifiedText" xml:space="preserve">
     <value>Destination not specified</value>
   </data>
   <data name="DateToday" xml:space="preserve">
@@ -408,9 +405,6 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
-  <data name="DeleteButton" xml:space="preserve">
-    <value>Delete</value>
-  </data>
 <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
@@ -432,34 +426,19 @@
   <data name="Time" xml:space="preserve">
     <value>Time</value>
   </data>
-  <data name="CreateAccountEmail" xml:space="preserve">
+  <data name="CreateAccountEmailPlaceHolder" xml:space="preserve">
     <value>Email</value>
   </data>
-  <data name="CreateAccountTitle" xml:space="preserve">
-    <value>Title</value>
-  </data>
-  <data name="CreateAccountFullName" xml:space="preserve">
+  <data name="CreateAccountFullNamePlaceHolder" xml:space="preserve">
     <value>Full Name</value>
   </data>
-  <data name="CreateAccountPhone" xml:space="preserve">
+  <data name="CreateAccountPhonePlaceHolder" xml:space="preserve">
     <value>Mobile</value>
   </data>
-  <data name="CreateAccountMobile" xml:space="preserve">
-    <value>Mobile</value>
-  </data>
-  <data name="CreateAccountLanguage" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="CreateAccountLanguageEn" xml:space="preserve">
-    <value>English</value>
-  </data>
-  <data name="CreateAccountLanguageFr" xml:space="preserve">
-    <value>French</value>
-  </data>
-  <data name="CreateAccountPassword" xml:space="preserve">
+  <data name="CreateAccountPasswordPlaceHolder" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="CreateAccountPasswordConfirmation" xml:space="preserve">
+  <data name="CreateAccountPasswordConfirmationPlaceHolder" xml:space="preserve">
     <value>Confirm password</value>
   </data>
   <data name="SettingViewLoginInfo" xml:space="preserve">
@@ -486,7 +465,7 @@
   <data name="SaveAddressEmptyFieldTitle" xml:space="preserve">
     <value>Friendly name required</value>
   </data>
-  <data name="DoneButton" xml:space="preserve">
+  <data name="Done" xml:space="preserve">
     <value>Done</value>
   </data>
   <data name="FavoritesButton" xml:space="preserve">
@@ -525,25 +504,19 @@
   <data name="RideSettingsCompany" xml:space="preserve">
     <value>Company</value>
   </data>
-  <data name="HistoryDetailHideButton" xml:space="preserve">
-    <value>Hide from history</value>
-  </data>
-  <data name="HistoryDetailRebookButton" xml:space="preserve">
-    <value>Rebook trip</value>
-  </data>
   <data name="HistoryDetailDestinationLabel" xml:space="preserve">
     <value>Destination:</value>
   </data>
   <data name="HistoryDetailRequestedLabel" xml:space="preserve">
     <value>Requested:</value>
   </data>
-  <data name="HistoryDetailOriginLabel" xml:space="preserve">
+  <data name="HistoryDetailPickupLabel" xml:space="preserve">
     <value>Pickup:</value>
   </data>
   <data name="HistoryDetailStatusLabel" xml:space="preserve">
     <value>Status:</value>
   </data>
-  <data name="HistoryDetailConfirmationLabel" xml:space="preserve">
+  <data name="HistoryDetailOrderLabel" xml:space="preserve">
     <value>Order:</value>
   </data>
   <data name="StatusStatusLabel" xml:space="preserve">
@@ -963,14 +936,11 @@
   <data name="View_MyLocations" xml:space="preserve">
     <value>Locations</value>
   </data>
-  <data name="View_SignUp" xml:space="preserve">
-    <value>Create Account</value>
+  <data name="View_CreateAccount" xml:space="preserve">
+    <value>Create your account</value>
   </data>
   <data name="View_TermsAndConditions" xml:space="preserve">
     <value />
-  </data>
-  <data name="View_SignUp_Label" xml:space="preserve">
-    <value>Create Profile</value>
   </data>
   <data name="View_SignIn" xml:space="preserve">
     <value />
@@ -1020,13 +990,13 @@
   <data name="CreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>The account cannot be created, this email is already in use.</value>
   </data>
-  <data name="CurrentPasswordLabel" xml:space="preserve">
+  <data name="UpdatePasswordCurrentPasswordLabel" xml:space="preserve">
     <value>Current Password</value>
   </data>
-  <data name="NewPasswordLabel" xml:space="preserve">
+  <data name="UpdatePasswordNewPasswordLabel" xml:space="preserve">
     <value>New Password</value>
   </data>
-  <data name="NewPasswordConfirmationLabel" xml:space="preserve">
+  <data name="UpdatePasswordConfirmationLabel" xml:space="preserve">
     <value>Confirmation</value>
   </data>
   <data name="ConfirmPassengerSettingsTitle" xml:space="preserve">
@@ -1074,7 +1044,7 @@
   <data name="ViewRatingBtn" xml:space="preserve">
     <value>View ratings</value>
   </data>
-  <data name="View_RatePage" xml:space="preserve">
+  <data name="View_BookRating" xml:space="preserve">
     <value>Rate your trip</value>
   </data>
   <data name="ResetPasswordSucessMessage" xml:space="preserve">
