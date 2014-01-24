@@ -1,55 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center_horizontal"
     android:focusable="true"
     android:focusableInTouchMode="true">
     <LinearLayout
+        android:layout_margin="0dp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
-        <TextView
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="@string/TermsAndConditionsLabel"
-            android:paddingLeft="10dip" />
-        <TextView
-            android:id="@+id/TermsAndConditionsTextView"
-            android:background="@drawable/edit_text_rounded"
-            local:MvxBind="{'Text':{'Path':'TermsAndConditions'}}"
-            android:padding="10dip"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:layout_marginBottom="15dip"
-            android:scrollbars="vertical"
+            android:background="@color/top_bar_color"
+            android:orientation="horizontal">
+            <TextView
+                android:text="@string/TermsAndConditionsLabel"
+                style="@style/TopTitleText"
+                android:layout_gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/top_bar_title_height"
+                android:gravity="center" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_margin="0dip"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            style="@style/MultilineFormLabelText.Small" />
-        <Button
-            android:id="@+id/AcceptBtn"
-            android:background="@drawable/gray_button"
-            android:layout_width="180dip"
-            android:layout_height="45dip"
-            android:layout_gravity="center"
-            local:MvxBind="{'Click':{'Path':'AcceptTermsAndConditions'}}"
-            android:text="@string/AcceptButton" />
-        <Button
-            android:id="@+id/CancelBtn"
-            android:background="@drawable/gray_button"
-            android:layout_width="180dip"
-            android:layout_height="45dip"
-            android:layout_gravity="center"
-            local:MvxBind="{'Click':{'Path':'RejectTermsAndConditions'}}"
-            android:text="@string/CancelBoutton" />
-        <TextView
+            android:layout_height="1px"
+            android:background="@color/top_bar_separator_color"
+            android:orientation="horizontal" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="25dip"
-            android:text="@string/TermsAndConditionsAcknowledgment" />
+            android:layout_height="fill_parent">
+            <TextView
+                android:id="@+id/TermsAndConditionsTextView"
+                local:MvxBind="Text TermsAndConditions"
+                android:scrollbars="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                style="@style/BlackTextLong" />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
