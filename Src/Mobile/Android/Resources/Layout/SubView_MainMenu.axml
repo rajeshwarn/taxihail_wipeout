@@ -19,191 +19,206 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_toRightOf="@id/fakeLayout">
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
             <LinearLayout
-                android:id="@+id/mainSettingsLayout"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:orientation="vertical"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="10dip"
-                android:layout_toRightOf="@id/fakeLayout">
-                <ImageView
-                    android:src="@drawable/th_logo"
-                    android:gravity="center_horizontal"
-                    android:id="@+id/imgLogo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
-                <View
-                    android:paddingLeft="16px"
-                    android:paddingRight="16px"
+                android:layout_weight="0.2">
+                <ScrollView
                     android:layout_width="fill_parent"
-                    android:layout_height="10px" />
-                <Button
-                    android:id="@+id/settingsFavorites"
-                    style="@style/SettingItemTitle"
-                    android:background="@drawable/setting_cell"
-                    android:layout_width="fill_parent"
-                    android:layout_height="42dip"
-                    android:text="@string/PanelMenuViewLocationsText"
-                    android:paddingRight="10dip"
-                    android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical"
-                    local:MvxBind="Click Panel.NavigateToMyLocations" />
-                <View
-                    android:background="@color/setting_menu_separator_color"
-                    android:paddingLeft="16px"
-                    android:paddingRight="16px"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1px" />
-                <Button
-                    android:id="@+id/settingsHistory"
-                    style="@style/SettingItemTitle"
-                    android:background="@drawable/setting_cell"
-                    android:layout_width="fill_parent"
-                    android:layout_height="42dip"
-                    android:text="@string/PanelMenuViewOrderHistoryText"
-                    android:paddingRight="10dip"
-                    android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical"
-                    local:MvxBind="Click Panel.NavigateToOrderHistory" />
-                <View
-                    android:background="@color/setting_menu_separator_color"
-                    android:paddingLeft="16px"
-                    android:paddingRight="16px"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1px" />
-                <Button
-                    android:id="@+id/settingsProfile"
-                    local:MvxBind="Click Panel.NavigateToUpdateProfile"
-                    style="@style/SettingItemTitle"
-                    android:background="@drawable/setting_cell"
-                    android:layout_width="fill_parent"
-                    android:layout_height="42dip"
-                    android:text="@string/PanelMenuViewUpdateProfileText"
-                    android:paddingRight="10dip"
-                    android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical" />
-                <View
-                    android:background="@color/setting_menu_separator_color"
-                    android:paddingLeft="16px"
-                    android:paddingRight="16px"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1px" />
-                <Button
-                    android:id="@+id/settingsCallCompany"
-                    local:MvxBind="Click Panel.Call; Visibility Panel.CanCall, Converter=Visibility"
-                    style="@style/SettingItemTitle"
-                    android:background="@drawable/setting_cell"
-                    android:layout_width="fill_parent"
-                    android:layout_height="42dip"
-                    android:text="@string/PanelMenuViewCallDispatchText"
-                    android:paddingRight="10dip"
-                    android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical" />
-                <View
-                    local:MvxBind="Visibility Panel.CanCall, Converter=Visibility"
-                    android:background="@color/setting_menu_separator_color"
-                    android:paddingLeft="16px"
-                    android:paddingRight="16px"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1px" />
-                <Button
-                    android:id="@+id/settingsTutorial"
-                    local:MvxBind="Click Panel.NavigateToTutorial; Visibility Panel.TutorialEnabled, Converter=Visibility"
-                    style="@style/SettingItemTitle"
-                    android:background="@drawable/setting_cell"
-                    android:layout_width="fill_parent"
-                    android:layout_height="42dip"
-                    android:text="@string/PanelMenuViewTutorialText"
-                    android:paddingRight="10dip"
-                    android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical" />
-                <View
-                    local:MvxBind="isibility Panel.TutorialEnabled"
-                    android:background="@color/setting_menu_separator_color"
-                    android:paddingLeft="16px"
-                    android:paddingRight="16px"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1px" />
-                <Button
-                    android:id="@+id/settingsAbout"
-                    local:MvxBind="Click Panel.NavigateToAboutUs"
-                    style="@style/SettingItemTitle"
-                    android:background="@drawable/setting_cell"
-                    android:layout_width="fill_parent"
-                    android:layout_height="42dip"
-                    android:text="@string/PanelMenuViewAboutUsText"
-                    android:paddingRight="10dip"
-                    android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical" />
-                <View
-                    android:background="@color/setting_menu_separator_color"
-                    android:paddingLeft="16px"
-                    android:paddingRight="16px"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1px" />
-                <Button
-                    android:id="@+id/settingsSupport"
-                    local:MvxBind="Click Panel.ReportProblem; Visibility Panel.CanReportProblem, Converter=Visibility"
-                    style="@style/SettingItemTitle"
-                    android:background="@drawable/setting_cell"
-                    android:layout_width="fill_parent"
-                    android:layout_height="42dip"
-                    android:text="@string/PanelMenuViewReportProblemText"
-                    android:paddingRight="10dip"
-                    android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical" />
-                <View
-                    local:MvxBind="Visibility Panel.CanReportProblem, Converter=Visibility"
-                    android:background="@color/setting_menu_separator_color"
-                    android:paddingLeft="16px"
-                    android:paddingRight="16px"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1px" />
-                <Button
-                    android:id="@+id/settingsLogout"
-                    style="@style/SettingItemTitle"
-                    android:background="@drawable/setting_cell"
-                    android:layout_width="fill_parent"
-                    android:layout_height="42dip"
-                    android:text="@string/PanelMenuViewSignOutText"
-                    android:paddingRight="10dip"
-                    android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical" />
+                    android:layout_height="fill_parent">
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical"
+                        android:layout_margin="10dip">
+                        <ImageView
+                            android:src="@drawable/th_logo"
+                            android:gravity="center_horizontal"
+                            android:id="@+id/imgLogo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center" />
+                        <View
+                            android:paddingLeft="16px"
+                            android:paddingRight="16px"
+                            android:layout_width="fill_parent"
+                            android:layout_height="10px" />
+                        <Button
+                            android:id="@+id/settingsFavorites"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewLocationsText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="left|center_vertical"
+                            local:MvxBind="Click Panel.NavigateToMyLocations" />
+                        <View
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="16px"
+                            android:paddingRight="16px"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px" />
+                        <Button
+                            android:id="@+id/settingsHistory"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewOrderHistoryText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="left|center_vertical"
+                            local:MvxBind="Click Panel.NavigateToOrderHistory" />
+                        <View
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="16px"
+                            android:paddingRight="16px"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px" />
+                        <Button
+                            android:id="@+id/settingsProfile"
+                            local:MvxBind="Click Panel.NavigateToUpdateProfile"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewUpdateProfileText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="left|center_vertical" />
+                        <View
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="16px"
+                            android:paddingRight="16px"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px" />
+                        <Button
+                            android:id="@+id/settingsCallCompany"
+                            local:MvxBind="Click Panel.Call; Visibility Panel.CanCall, Converter=Visibility"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewCallDispatchText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="left|center_vertical" />
+                        <View
+                            local:MvxBind="Visibility Panel.CanCall, Converter=Visibility"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="16px"
+                            android:paddingRight="16px"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px" />
+                        <Button
+                            android:id="@+id/settingsTutorial"
+                            local:MvxBind="Click Panel.NavigateToTutorial; Visibility Panel.TutorialEnabled, Converter=Visibility"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewTutorialText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="left|center_vertical" />
+                        <View
+                            local:MvxBind="isibility Panel.TutorialEnabled"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="16px"
+                            android:paddingRight="16px"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px" />
+                        <Button
+                            android:id="@+id/settingsAbout"
+                            local:MvxBind="Click Panel.NavigateToAboutUs"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewAboutUsText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="left|center_vertical" />
+                        <View
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="16px"
+                            android:paddingRight="16px"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px" />
+                        <Button
+                            android:id="@+id/settingsSupport"
+                            local:MvxBind="Click Panel.ReportProblem; Visibility Panel.CanReportProblem, Converter=Visibility"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewReportProblemText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="left|center_vertical" />
+                        <View
+                            local:MvxBind="Visibility Panel.CanReportProblem, Converter=Visibility"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="16px"
+                            android:paddingRight="16px"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px" />
+                        <Button
+                            android:id="@+id/settingsLogout"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewSignOutText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="left|center_vertical" />
+                    </LinearLayout>
+                </ScrollView>
             </LinearLayout>
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/apcuriumLogoLayout"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:orientation="vertical"
                 android:layout_toRightOf="@id/fakeLayout"
-                android:layout_alignParentBottom="true">
+                android:layout_marginTop="0.0dp"
+                android:layout_weight="1">
                 <ImageView
-                    android:id="@+id/apcuriumLogo"
+                    android:id="@+id/mk_logo"
+                    android:src="@drawable/mk_logo"
+                    android:layout_width="220dip"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true" />
+                <ImageView
+                    android:id="@+id/apc_logo_menu"
                     android:src="@drawable/apc_logo_menu"
                     android:layout_width="140dip"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dip"
-                    android:layout_marginRight="20dip"
-                    android:paddingBottom="10dip"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true" />
                 <TextView
                     android:text="v0.0.0"
                     local:MvxBind="Text Panel.Version"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/apcuriumLogo"
+                    android:layout_height="30dip"
+                    android:layout_marginRight="10dip"
+                    android:paddingBottom="10dip"
+                    android:layout_gravity="right"
                     style="@style/FinePrint"
-                    android:gravity="bottom|left"
-                    android:layout_gravity="left" />
-            </RelativeLayout>
-        </RelativeLayout>
+                    android:gravity="bottom|right" />
+            </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/DShadow"
