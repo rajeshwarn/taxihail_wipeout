@@ -19,6 +19,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCreate { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UIButton btnViewTerms { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatCheckBox checkBoxAcknowledged { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.NSLayoutConstraint constraintTableViewHeight { get; set; }
 
 		[Outlet]
@@ -39,6 +45,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnCreate = null;
 			}
 
+			if (constraintTableViewHeight != null) {
+				constraintTableViewHeight.Dispose ();
+				constraintTableViewHeight = null;
+			}
+
 			if (lblTitle != null) {
 				lblTitle.Dispose ();
 				lblTitle = null;
@@ -49,9 +60,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				tableView = null;
 			}
 
-			if (constraintTableViewHeight != null) {
-				constraintTableViewHeight.Dispose ();
-				constraintTableViewHeight = null;
+			if (checkBoxAcknowledged != null) {
+				checkBoxAcknowledged.Dispose ();
+				checkBoxAcknowledged = null;
+			}
+
+			if (btnViewTerms != null) {
+				btnViewTerms.Dispose ();
+				btnViewTerms = null;
 			}
 		}
 	}

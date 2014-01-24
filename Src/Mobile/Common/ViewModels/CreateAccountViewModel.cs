@@ -13,7 +13,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	{
 		public RegisterAccount Data { get; set; }
 		public string ConfirmPassword { get; set; }
-		public bool TermsAndConditionsAcknowledged { get; set; }
 
 		public bool HasSocialInfo { get { return Data.FacebookId.HasValue () || Data.TwitterId.HasValue (); } }
 		public bool ShowTermsAndConditions { get { return this.Services().Config.GetSetting("Client.ShowTermsAndConditions", false); } }
@@ -39,6 +38,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		        return (true);
 		    }
 		    return (false);
+		}
+
+		private bool _termsAndConditionsAcknowledged;
+		public bool TermsAndConditionsAcknowledged 
+		{
+			get { return _termsAndConditionsAcknowledged; }
+			set
+			{
+				_termsAndConditionsAcknowledged = value;
+				RaisePropertyChanged();
+			}
 		}
 
 		public ICommand NavigateToTermsAndConditions
