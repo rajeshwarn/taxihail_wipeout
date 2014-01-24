@@ -229,12 +229,11 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
-
-                <!-- Grey -->
+            <!-- Grey -->
                 <Button
                     android:layout_width="180dip"
                     android:layout_height="40dip"
-                    android:text="@string/EditDetails"
+                    android:text="@string/Edit"
                     android:layout_centerInParent="true"
                     android:layout_marginRight="5dp"
                     local:MvxBind="Click NavigateToEditInformations" />
@@ -277,12 +276,11 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
-
-                <!-- Green -->
+            <!-- Green -->
                 <Button
                     android:layout_width="180dip"
                     android:layout_height="40dip"
-                    android:text="@string/ConfirmButton"
+                    android:text="@string/Confirm"
                     android:layout_centerInParent="true"
                     android:layout_marginRight="5dp"
                     local:MvxBind="Click ConfirmOrderCommand" />

@@ -20,7 +20,7 @@
             android:background="@color/top_bar_color"
             android:orientation="horizontal">
             <TextView
-                android:text="Location Details"
+                android:text="Confirm Payment Informations"
                 style="@style/TopTitleText"
                 android:layout_gravity="center"
                 android:layout_width="fill_parent"
@@ -237,7 +237,7 @@
                         android:id="@+id/ConfirmBtn"
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"
-                        android:text="@string/StatusPayButton"
+                        android:text="@string/PayNow"
                         android:layout_alignParentBottom="true"
                         local:MvxBind="Click ConfirmOrderCommand" />
                 </LinearLayout>

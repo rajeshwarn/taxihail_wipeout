@@ -9,6 +9,7 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -23,6 +24,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewWillAppear (animated);
             NavigationController.NavigationBar.Hidden = false;
+			NavigationController.NavigationBar.BarStyle = Theme.IsLightContent ?
+			                                              UIBarStyle.Black : UIBarStyle.Default;
         }
 
         public override void ViewDidLoad ()
@@ -33,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationItem.HidesBackButton = true;
 
             AppButtons.FormatStandardButton((GradientButton)btnAccept, Localize.GetValue("AcceptButton"), AppStyle.ButtonColor.Grey );
-            AppButtons.FormatStandardButton((GradientButton)btnCancel, Localize.GetValue("CancelBoutton"), AppStyle.ButtonColor.Grey);          
+            AppButtons.FormatStandardButton((GradientButton)btnCancel, Localize.GetValue("Cancel"), AppStyle.ButtonColor.Grey);          
 
             new [] { 
                 lblTitle

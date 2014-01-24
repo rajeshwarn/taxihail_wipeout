@@ -3,6 +3,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -17,13 +18,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			base.ViewWillAppear (animated);
 
 			NavigationController.NavigationBar.Hidden = true;
+			NavigationController.NavigationBar.BarStyle = Theme.IsLightContent ?
+			                                              UIBarStyle.Black : UIBarStyle.Default;
 		}
 
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
 
-			View.BackgroundColor = UIColor.FromRGB(0, 72, 129);
+			View.BackgroundColor = Theme.BackgroundColor;
+			lblTitle.TextColor = Theme.LabelTextColor;
+			lblSubTitle.TextColor = Theme.LabelTextColor;
 
 			FlatButtonStyle.Main.ApplyTo(btnReset); 
 

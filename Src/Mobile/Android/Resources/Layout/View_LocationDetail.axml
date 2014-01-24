@@ -146,21 +146,21 @@
                     style="@style/ButtonActionBlackStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
-                    android:text="@string/SaveButton"
+                    android:text="@string/Save"
                     local:MvxBind="Click SaveAddress" />
                 <Button
                     android:id="@+id/LocationBookBtn"
                     style="@style/ButtonActionGreenStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
-                    android:text="@string/LocationDetailRebookButton"
+                    android:text="@string/Rebook"
                     local:MvxBind="Click RebookOrder;Visibility RebookIsAvailable, Converter=Visibility" />
                 <Button
                     android:id="@+id/LocationDeleteBtn"
                     style="@style/ButtonActionRedStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
-                    android:text="@string/DeleteButton"
+                    android:text="@string/Delete"
                     local:MvxBind="Click DeleteAddress;Visibility IsNew, Converter=InvertedVisibility" />
             </LinearLayout>
         </LinearLayout>

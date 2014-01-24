@@ -15,12 +15,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     {
         private TouchMap _touchMap;
         
-        protected override int ViewTitleResourceId
-        {
-            get { return Resource.String.View_BookingStatus; }
-        }
-
-
         protected override void OnCreate(Bundle bundle)
         {
             try
@@ -34,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             base.OnCreate(bundle);
             _touchMap.OnCreate(bundle);
-	    _touchMap.ViewTreeObserver.AddOnGlobalLayoutListener(new LayoutObserverForMap(_touchMap));			
+	        _touchMap.ViewTreeObserver.AddOnGlobalLayoutListener(new LayoutObserverForMap(_touchMap));			
         }        
 
         protected override void OnViewModelSet()

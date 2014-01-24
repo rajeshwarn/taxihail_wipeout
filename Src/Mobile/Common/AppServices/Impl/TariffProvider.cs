@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 return cached;
             }
-            var result = UseServiceClientAsync<TariffsServiceClient, IEnumerable<Tariff>>(service => service.GetTariffs());
+            var result = UseServiceClientTask<TariffsServiceClient, IEnumerable<Tariff>>(service => service.GetTariffs());
             var enumerable = result as Tariff[] ?? result.ToArray();
             _cacheService.Set(CacheKey, enumerable.ToArray());
             return enumerable;

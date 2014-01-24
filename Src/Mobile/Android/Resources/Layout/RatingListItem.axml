@@ -1,81 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:local="http://schemas.android.com/apk/res-auto"
-  android:orientation="vertical"
-  android:layout_width="fill_parent"
-  android:layout_height="wrap_content"
-  android:paddingTop="2dip"
-  android:paddingBottom="2dip">
-  <TextView
-    android:id="@+id/RatingTypeNameId"
-    android:layout_width="110dp"
-    android:layout_height="wrap_content"
-    local:MvxBind="Text RatingTypeName"
-    android:layout_gravity="center_horizontal"
-    android:gravity="left"
-    android:layout_marginRight="75dip"
-    android:text="salut"
-    android:textAppearance="@style/ListTitle" />
-  <LinearLayout
-    android:orientation="horizontal"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:paddingTop="2dip"
-    android:paddingBottom="2dip"
-    android:gravity="center_horizontal">
-    <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
-      android:id="@+id/RatingScore1"
-      android:background="@drawable/rate_mad_state"
-      android:layout_height="40dip"
-      android:layout_gravity="fill"
-      android:layout_width="40dip"
-      android:padding="7dip"
-      android:layout_marginTop="1dip"
-      android:tag="Mad"
-      local:MvxBind="SelectedChangedCommand SetRateCommand; Selected MadSelected; Enabled CanRating"
-      android:layout_marginRight="15dip" />
-    <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
-      android:id="@+id/RatingScore2"
-      android:background="@drawable/rate_unhappy_state"
-      android:layout_height="40dip"
-      android:layout_gravity="fill"
-      android:layout_width="40dip"
-      android:padding="7dip"
-      android:layout_marginTop="1dip"
-      android:tag="Unhappy"
-      local:MvxBind="SelectedChangedCommand SetRateCommand; Selected UnhappySelected; Enabled CanRating"
-      android:layout_marginRight="15dip" />
-    <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
-      android:id="@+id/RatingScore3"
-      android:background="@drawable/rate_neutral_state"
-      android:layout_height="40dip"
-      android:layout_gravity="fill"
-      android:layout_width="40dip"
-      android:padding="7dip"
-      android:layout_marginTop="1dip"
-      android:tag="Neutral"
-      local:MvxBind="SelectedChangedCommand SetRateCommand; Selected NeutralSelected; Enabled CanRating"
-      android:layout_marginRight="15dip" />
-    <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
-      android:id="@+id/RatingScore4"
-      android:background="@drawable/rate_happy_state"
-      android:layout_height="40dip"
-      android:layout_gravity="fill"
-      android:layout_width="40dip"
-      android:padding="7dip"
-      android:layout_marginTop="1dip"
-      android:tag="Happy"
-      local:MvxBind="SelectedChangedCommand SetRateCommand; Selected HappySelected; Enabled CanRating"
-      android:layout_marginRight="15dip" />
-    <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
-      android:id="@+id/RatingScore5"
-      android:background="@drawable/rate_ecstatic_state"
-      android:layout_height="40dip"
-      android:layout_gravity="fill"
-      android:layout_width="40dip"
-      android:padding="7dip"
-      android:layout_marginTop="1dip"
-      android:tag="Ecstatic"
-      local:MvxBind="SelectedChangedCommand SetRateCommand; Selected EcstaticSelected; Enabled CanRating" />
-  </LinearLayout>
+    android:paddingBottom="2dip">
+    <TextView
+        android:id="@+id/RatingTypeNameId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        local:MvxBind="Text RatingTypeName"
+        android:layout_gravity="center_horizontal"
+        android:gravity="left"
+        android:text=""
+        android:textAppearance="@style/ListTitle" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="2dip"
+        android:paddingBottom="2dip"
+        android:gravity="center_horizontal">
+        <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
+            android:id="@+id/RatingScore1"
+            android:background="@drawable/rate_mad_state"
+            android:layout_height="40dip"
+            android:layout_gravity="fill"
+            android:layout_width="40dip"
+            android:padding="7dip"
+            android:layout_marginTop="1dip"
+            android:tag="Mad"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected MadSelected; Enabled CanRating"
+            android:layout_marginRight="15dip" />
+        <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
+            android:id="@+id/RatingScore2"
+            android:background="@drawable/rate_unhappy_state"
+            android:layout_height="40dip"
+            android:layout_gravity="fill"
+            android:layout_width="40dip"
+            android:padding="7dip"
+            android:layout_marginTop="1dip"
+            android:tag="Unhappy"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected UnhappySelected; Enabled CanRating"
+            android:layout_marginRight="15dip" />
+        <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
+            android:id="@+id/RatingScore3"
+            android:background="@drawable/rate_neutral_state"
+            android:layout_height="40dip"
+            android:layout_gravity="fill"
+            android:layout_width="40dip"
+            android:padding="7dip"
+            android:layout_marginTop="1dip"
+            android:tag="Neutral"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected NeutralSelected; Enabled CanRating"
+            android:layout_marginRight="15dip" />
+        <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
+            android:id="@+id/RatingScore4"
+            android:background="@drawable/rate_happy_state"
+            android:layout_height="40dip"
+            android:layout_gravity="fill"
+            android:layout_width="40dip"
+            android:padding="7dip"
+            android:layout_marginTop="1dip"
+            android:tag="Happy"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected HappySelected; Enabled CanRating"
+            android:layout_marginRight="15dip" />
+        <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
+            android:id="@+id/RatingScore5"
+            android:background="@drawable/rate_ecstatic_state"
+            android:layout_height="40dip"
+            android:layout_gravity="fill"
+            android:layout_width="40dip"
+            android:padding="7dip"
+            android:layout_marginTop="1dip"
+            android:tag="Ecstatic"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected EcstaticSelected; Enabled CanRating" />
+    </LinearLayout>
 </LinearLayout>

@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			txtDestination.Text = Localize.GetValue("DestinationNotSpecifiedText");
 			lblPickupDate.Text = Localize.GetValue("HistoryDetailPickupDateLabel");
 			lblStatus.Text = Localize.GetValue("HistoryDetailStatusLabel");
-			txtStatus.Text = Localize.GetValue("LoadingText");
+            txtStatus.Text = Localize.GetValue("LoadingMessage");
 			lblAuthorization.Text = Localize.GetValue("HistoryDetailAuthorizationLabel");
 
 			btnRebook.SetTitle(Localize.GetValue("Rebook"), UIControlState.Normal);

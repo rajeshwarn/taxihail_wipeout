@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                     CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
                 },
-                this.Services().Localize["CancelButton"],
+                this.Services().Localize["Cancel"],
                 () => { });
                                                                   
         }
@@ -129,7 +129,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                                  FriendlyName = newCreditCard.FriendlyName,
                                  Last4Digits = newCreditCard.Last4Digits
                              },
-                             Picture = newCreditCard.CreditCardCompany
+							 Picture = newCreditCard.CreditCardCompany.ToLower().Replace(" ", "_")
                         });
 						RaisePropertyChanged("CreditCards");
                     });                                                                                         		

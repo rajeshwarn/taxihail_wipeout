@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var cached = Cache.Get<ApplicationInfo>(AppInfoCacheKey);
             if (cached == null)
             {
-                var appInfo = UseServiceClient<ApplicationInfoServiceClient, ApplicationInfo>(service => service.GetAppInfoAsync());
+                var appInfo = UseServiceClientAsync<ApplicationInfoServiceClient, ApplicationInfo>(service => service.GetAppInfoAsync());
                 Cache.Set(AppInfoCacheKey, await appInfo, DateTime.Now.AddHours(1));
                 return await appInfo;
             }

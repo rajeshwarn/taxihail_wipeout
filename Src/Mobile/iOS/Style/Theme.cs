@@ -34,7 +34,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
 			get{ return ToUIColor(_themeValues.ButtonTextColor, ref _buttonTextColor); }
 		}
 
-		static UIColor ToUIColor(string hexaDecimaleValue, ref UIColor color)
+		public static bool IsLightContent
+		{
+			get
+			{
+				var components = BackgroundColor.CGColor.Components;
+				var darknessScore = (((components[0]*255) * 299) + ((components[1]*255) * 587) + ((components[2]*255) * 114)) / 1000;
+
+				if (darknessScore >= 125) {
+					return false;
+				}
+				return true;
+			}
+		}
+
+		private static UIColor ToUIColor(string hexaDecimaleValue, ref UIColor color)
 		{
 			if (color == null)
 			{
