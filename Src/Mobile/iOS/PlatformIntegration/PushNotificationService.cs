@@ -31,15 +31,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             
             if (string.IsNullOrEmpty(oldDeviceToken))
             {
-                UseServiceClient<PushNotificationRegistrationServiceClient>(service => {
-                    service.Register(newDeviceToken, PushNotificationServicePlatform.Apple);
-                });
+				UseServiceClientTask<PushNotificationRegistrationServiceClient>(service => service.Register(newDeviceToken, PushNotificationServicePlatform.Apple));
             }
             else if(!oldDeviceToken.Equals(newDeviceToken))
             {
-                UseServiceClient<PushNotificationRegistrationServiceClient>(service => {
-                    service.Replace(oldDeviceToken, newDeviceToken, PushNotificationServicePlatform.Apple);
-                });
+				UseServiceClientTask<PushNotificationRegistrationServiceClient>(service => service.Replace(oldDeviceToken, newDeviceToken, PushNotificationServicePlatform.Apple));
             }
                         
             //Save device token now
