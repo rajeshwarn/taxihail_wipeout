@@ -421,6 +421,8 @@
     <AndroidResource Include="Resources\Drawable\unchecked.png" />
     <AndroidResource Include="Resources\drawable-hdpi\checked.png" />
     <AndroidResource Include="Resources\drawable-hdpi\unchecked.png" />
+    <AndroidResource Include="Resources\Drawable\mk_logo.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\mk_logo.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
