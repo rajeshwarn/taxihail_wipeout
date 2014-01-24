@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -20,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			BackgroundColor = UIColor.Clear;
 
-			TextLabel.Font = UIFont.FromName (FontName.HelveticaNeueLight, 34 / 2);
+			TextLabel.Font = UIFont.FromName (FontName.HelveticaNeueLight, 36 / 2);
 			TextLabel.TextColor = UIColor.FromRGB (79, 76, 71);
 			TextLabel.BackgroundColor = UIColor.Clear;
 		}
@@ -28,6 +29,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		public override void LayoutSubviews ()
 		{
 			base.LayoutSubviews ();
+
+			TextLabel.SetX(5);
 		}
 
 	}

@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Apply ();
 
 			menuListView.Source = source;
-
+			menuListView.AlwaysBounceVertical = false;
         }
 
         private void AnimateMenu ()
