@@ -487,6 +487,9 @@
     <Compile Include="Views\BookingStatusView.xib.designer.cs">
       <DependentUpon>BookingStatusView.xib</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Widgets\FlatCheckBox.cs" />
+    <Compile Include="Controls\Binding\FlatCheckBoxBinding.cs" />
+    <Compile Include="Controls\Widgets\FlatTextView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -772,6 +775,12 @@
     <BundleResource Include="Resources\unhappy-selected%402x.png" />
     <BundleResource Include="Resources\unhappy.png" />
     <BundleResource Include="Resources\unhappy%402x.png" />
+    <BundleResource Include="Resources\checked.png" />
+    <BundleResource Include="Resources\checked%402x.png" />
+    <BundleResource Include="Resources\unchecked.png" />
+    <BundleResource Include="Resources\unchecked%402x.png" />
+    <BundleResource Include="Resources\left_arrow_white.png" />
+    <BundleResource Include="Resources\left_arrow_white%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

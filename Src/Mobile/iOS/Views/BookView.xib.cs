@@ -16,32 +16,59 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class BookView : MvxViewController
+    public partial class BookView : BaseViewController<BookViewModel>
     {
+        private bool _defaultThemeApplied;
+
         private PanelMenuView _menu;
         private DateTimePicker _dateTimePicker;
         private Action _onDateTimePicked;
         private BookViewActionsView _bottomAction;
 
-        public BookView () 
-			: base("BookView", null)
+        public BookView () : base("BookView", null)
         {
         }
 
-		public new BookViewModel ViewModel
-		{
-			get
-			{
-				return (BookViewModel)DataContext;
-			}
-		}
+        public override void ViewWillAppear (bool animated)
+        {
+            base.ViewWillAppear (animated);
+
+            if (!_defaultThemeApplied)
+            {
+                // reset to default theme for the navigation bar
+                SetDefaultNavigationBarAppearance();
+                _defaultThemeApplied = true;
+            }
+
+            NavigationController.NavigationBar.Hidden = true;
+            NavigationController.NavigationBar.BarStyle = UIBarStyle.Default;
+        }
+
+        public override void ViewDidAppear (bool animated)
+        {
+            base.ViewDidAppear (animated);
+
+            var button = AppButtons.CreateStandardButton( new RectangleF( 0,2,40,40 ) , "", AppStyle.ButtonColor.Black, "Assets/settings.png");
+            button.TouchUpInside += (sender, e) => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
+
+            var offsetView = UIButton.FromType(UIButtonType.Custom);
+            offsetView.Frame = new RectangleF(0, 0, 60, 44);                
+            offsetView.AddSubview ( button );
+            offsetView.TouchUpInside += (sender, e) => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
+
+            var btn = new UIBarButtonItem ( offsetView );
+            navBar.TopItem.LeftBarButtonItem = btn;
+            ViewModel.ShowTutorial.Execute ();
+        }
 
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
+
             navBar.SetBackgroundImage (UIImage.FromFile ("Assets/navBar.png"), UIBarMetrics.Default);
 			navBar.TopItem.Title = string.Empty;
 
@@ -226,39 +253,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             View.InsertSubviewBelow (_menu, bookView);
         }
 
-        private bool _firstStart = true;
-        public override void ViewWillAppear (bool animated)
-        {
-            base.ViewWillAppear (animated);
-            ViewModel.OnViewStarted (_firstStart);
-            _firstStart = false;
-            NavigationController.NavigationBar.Hidden = true;
-			NavigationController.NavigationBar.BarStyle = UIBarStyle.Default;
-        }
-
-        public override void ViewWillDisappear (bool animated)
-        {
-            base.ViewWillDisappear (animated);
-            if(ViewModel!= null) ViewModel.OnViewStopped();
-        }
-        
-        public override void ViewDidAppear (bool animated)
-        {
-            base.ViewDidAppear (animated);
-
-			var button = AppButtons.CreateStandardButton( new RectangleF( 0,2,40,40 ) , "", AppStyle.ButtonColor.Black, "Assets/settings.png");
-            button.TouchUpInside += (sender, e) => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
-
-            var offsetView = UIButton.FromType(UIButtonType.Custom);
-            offsetView.Frame = new RectangleF(0, 0, 60, 44);                
-            offsetView.AddSubview ( button );
-            offsetView.TouchUpInside += (sender, e) => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
-
-            var btn = new UIBarButtonItem ( offsetView );
-			navBar.TopItem.LeftBarButtonItem = btn;
-            ViewModel.ShowTutorial.Execute ();
-        }
-
         private void OnStatusCloseRequested (StatusCloseRequested msg)
         {
             this.Services().Booking.ClearLastOrder();
@@ -267,8 +261,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.Reset ();
             ViewModel.Dropoff.ClearAddress ();        
         }
-
-
     }
 }
 
