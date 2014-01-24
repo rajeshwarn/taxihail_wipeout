@@ -412,13 +412,15 @@
     <AndroidResource Include="Resources\Layout\View_Payments_ConfirmCarNumber.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Drawable\checkbox_round_checked.xml" />
-    <AndroidResource Include="Resources\Drawable\checkbox_round_unchecked.xml" />
-    <AndroidResource Include="Resources\Drawable\checkbox_round.xml" />
     <AndroidResource Include="Resources\Layout\View_CreateAccount.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <Compile Include="Activities\Account\CreateAccountActivity.cs" />
+    <AndroidResource Include="Resources\Drawable\checkbox.xml" />
+    <AndroidResource Include="Resources\Drawable\checked.png" />
+    <AndroidResource Include="Resources\Drawable\unchecked.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\checked.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\unchecked.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

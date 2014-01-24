@@ -61,12 +61,12 @@
                     <CheckBox
                         android:id="@+id/cbTermsAndConditions"
                         local:MvxBind="Selected TermsAndConditionsAcknowledged"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
+                        android:layout_height="32dp"
+                        android:layout_width="38dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="15dp"
                         android:layout_gravity="top|left"
-                        android:button="@drawable/checkbox_round" />
+                        android:button="@drawable/checkbox" />
                     <TextView
                         style="@style/TitleTextMultine"
                         android:id="@+id/lblTermsAndConditions"

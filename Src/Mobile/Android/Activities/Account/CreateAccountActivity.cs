@@ -62,19 +62,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
 			var bindings = this.CreateInlineBindingTarget<CreateAccountViewModel>();
 
-			var email = new EntryElement (null, Localize ("CreateAccountEmail"), null,  "DialogTop") {IsEmail = true};
+            var email = new EntryElement (null, Localize ("CreateAccountEmailPlaceHolder"), null,  "DialogTop") {IsEmail = true};
 			email.Bind(bindings, vm => vm.Data.Email);
 
-            var name = new EntryElement(null, Localize("CreateAccountFullName"), null, "DialogCenter");
+            var name = new EntryElement(null, Localize("CreateAccountFullNamePlaceHolder"), null, "DialogCenter");
 			name.Bind(bindings, vm => vm.Data.Name);
 
-            var phone = new EntryElement(null, Localize("CreateAccountPhone"), null, "DialogCenter") { Numeric = true };
+            var phone = new EntryElement(null, Localize("CreateAccountPhonePlaceHolder"), null, "DialogCenter") { Numeric = true };
 			phone.Bind(bindings, vm => vm.Data.Phone);
 
-            var password = new EntryElement(null, Localize("CreateAccountPassword"), null, "DialogCenter") { Password = true };
+            var password = new EntryElement(null, Localize("CreateAccountPasswordPlaceHolder"), null, "DialogCenter") { Password = true };
 			password.Bind(bindings, vm => vm.Data.Password);
 
-            var passwordConfirm = new EntryElement(null, Localize("CreateAccountPasswordConfirmation"), null, "DialogBottom") { Password = true };
+            var passwordConfirm = new EntryElement(null, Localize("CreateAccountPasswordConfirmationPlaceHolder"), null, "DialogBottom") { Password = true };
 			passwordConfirm.Bind(bindings, vm => vm.ConfirmPassword);
 
 			section.Add (new Element[] { email, name, phone });
