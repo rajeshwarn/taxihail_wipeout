@@ -22,9 +22,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         public override void ViewWillAppear (bool animated)
         {
-            ApplyThemeToNavigationBar();
-
             base.ViewWillAppear (animated);
+
             NavigationItem.HidesBackButton = false;
             NavigationItem.Title = Localize.GetValue("TermsAndConditionsLabel");
             NavigationController.NavigationBar.Hidden = false;

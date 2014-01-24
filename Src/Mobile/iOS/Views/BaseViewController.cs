@@ -189,50 +189,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 scrollView.ScrollIndicatorInsets = contentInsets;
             });
         }
-		
-        public void ApplyThemeToNavigationBar()
+
+        public void SetThemedNavigationBarAppearance()
         {
             var textColor = Theme.IsLightContent 
                             ? UIColor.White
-                            : UIColor.FromRGB(44, 44, 44) ;
+                            : UIColor.FromRGB(44, 44, 44);
 
             // navigation bar
             if (UIHelper.IsOS7orHigher) {
                 NavigationController.NavigationBar.BarTintColor = Theme.BackgroundColor;
                 NavigationController.NavigationBar.TintColor = textColor; //in ios7, this is for the back chevron
+                UINavigationBar.Appearance.BarTintColor = Theme.BackgroundColor;
+                UINavigationBar.Appearance.TintColor = textColor; //in ios7, this is for the back chevron
             } else {
+                UINavigationBar.Appearance.TintColor = Theme.BackgroundColor; //in ios6, this is for the bar color
                 NavigationController.NavigationBar.TintColor = Theme.BackgroundColor; //in ios6, this is for the bar color
 
                 //change the default ios6 back button look to the ios7 look
                 var clearBackground = UIImage.FromFile ("clearButton.png").CreateResizableImage(UIEdgeInsets.Zero);
                 var backBackground = UIImage.FromFile (Theme.IsLightContent ? "left_arrow_white.png" : "left_arrow.png").CreateResizableImage (new UIEdgeInsets (0, 12, 21, 0));
-
-                NavigationItem.BackBarButtonItem.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default);
-                NavigationItem.BackBarButtonItem.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default);
-
-                if (NavigationItem.LeftBarButtonItem != null)
-                {
-                    NavigationItem.LeftBarButtonItem.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default);
-                    NavigationItem.LeftBarButtonItem.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default);
-                }
-
-                if (NavigationItem.RightBarButtonItem != null)
-                {
-                    NavigationItem.RightBarButtonItem.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default);
-                    NavigationItem.RightBarButtonItem.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default);
-                }
+                UIBarButtonItem.Appearance.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default); 
+                UIBarButtonItem.Appearance.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default); 
             }
 
             var titleFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
             var navBarButtonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
 
-            NavigationController.NavigationBar.SetTitleTextAttributes (new UITextAttributes () {
+            // set title color
+            UINavigationBar.Appearance.TintColor = textColor;
+            UINavigationBar.Appearance.SetTitleTextAttributes (new UITextAttributes () {
                 TextColor = textColor,
                 Font = titleFont,
                 TextShadowColor = UIColor.Clear,
                 TextShadowOffset = new UIOffset(0,0)
             });
 
+            // set back/left/right button color
             var buttonTextColor = new UITextAttributes () {
                 Font = navBarButtonFont,
                 TextColor = textColor,
@@ -246,23 +239,63 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 TextShadowOffset = new UIOffset(0,0)
             };
 
-            NavigationItem.BackBarButtonItem.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
-            NavigationItem.BackBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
-            NavigationItem.BackBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
+            UIBarButtonItem.Appearance.TintColor = textColor;
+            UIBarButtonItem.Appearance.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
+            UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
+            UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
+        }
 
-            if (NavigationItem.LeftBarButtonItem != null)
-            {
-                NavigationItem.LeftBarButtonItem.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
-                NavigationItem.LeftBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
-                NavigationItem.LeftBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
+        public void SetDefaultNavigationBarAppearance()
+        {
+            var textColor = UIColor.FromRGB (44, 44, 44);
+
+            // navigation bar
+            if (UIHelper.IsOS7orHigher) {
+                NavigationController.NavigationBar.BarTintColor = UIColor.White;
+                NavigationController.NavigationBar.TintColor = textColor; //in ios7, this is for the back chevron
+                UINavigationBar.Appearance.BarTintColor = UIColor.White;
+                UINavigationBar.Appearance.TintColor = textColor; //in ios7, this is for the back chevron
+            } else {
+                UINavigationBar.Appearance.TintColor = UIColor.White; //in ios6, this is for the bar color
+                NavigationController.NavigationBar.TintColor = UIColor.White; //in ios6, this is for the bar color
+
+                //change the default ios6 back button look to the ios7 look
+                var clearBackground = UIImage.FromFile ("clearButton.png").CreateResizableImage(UIEdgeInsets.Zero);
+                var backBackground = UIImage.FromFile ("left_arrow.png").CreateResizableImage (new UIEdgeInsets (0, 12, 21, 0));
+                UIBarButtonItem.Appearance.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default); 
+                UIBarButtonItem.Appearance.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default); 
             }
 
-            if (NavigationItem.RightBarButtonItem != null)
-            {
-                NavigationItem.RightBarButtonItem.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
-                NavigationItem.RightBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
-                NavigationItem.RightBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
-            }
+            var titleFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
+            var navBarButtonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
+
+            // set title color
+            UINavigationBar.Appearance.TintColor = textColor;
+            UINavigationBar.Appearance.SetTitleTextAttributes (new UITextAttributes () {
+                TextColor = textColor,
+                Font = titleFont,
+                TextShadowColor = UIColor.Clear,
+                TextShadowOffset = new UIOffset(0,0)
+            });
+
+            // set back/left/right button color
+            var buttonTextColor = new UITextAttributes () {
+                Font = navBarButtonFont,
+                TextColor = textColor,
+                TextShadowColor = UIColor.Clear,
+                TextShadowOffset = new UIOffset(0,0)
+            };
+            var selectedButtonTextColor = new UITextAttributes () {
+                Font = navBarButtonFont,
+                TextColor = textColor.ColorWithAlpha(0.5f),
+                TextShadowColor = UIColor.Clear,
+                TextShadowOffset = new UIOffset(0,0)
+            };
+
+            UIBarButtonItem.Appearance.TintColor = textColor;
+            UIBarButtonItem.Appearance.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
+            UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
+            UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
         }
     }
 }
