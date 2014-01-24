@@ -220,7 +220,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void DoSignUp(object registerDataFromSocial = null)
         {
-            ShowSubViewModel<CreateAccountViewModel, RegisterAccount>(registerDataFromSocial, OnAccountCreated);
+			ShowSubViewModel<CreateAccountViewModel, RegisterAccount>(registerDataFromSocial, OnAccountCreated);
         }
 
         private async void OnAccountCreated(RegisterAccount data)

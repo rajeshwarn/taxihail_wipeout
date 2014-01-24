@@ -8,6 +8,8 @@
             <connections>
                 <outlet property="btnCancel" destination="svg-Pw-eY0" id="SsP-g9-MGk"/>
                 <outlet property="btnCreate" destination="Bww-wK-2XM" id="Bge-Nb-arB"/>
+                <outlet property="btnViewTerms" destination="BNe-wB-XqV" id="9pp-eC-3fY"/>
+                <outlet property="checkBoxAcknowledged" destination="yc8-Sc-bcD" id="bmN-6e-PDc"/>
                 <outlet property="constraintTableViewHeight" destination="nfZ-yA-VOU" id="zQy-ll-nGh"/>
                 <outlet property="lblTitle" destination="rzb-cu-MZn" id="eBP-bF-3aT"/>
                 <outlet property="tableView" destination="elq-aW-7GL" id="9SP-28-AVA"/>
@@ -54,8 +56,20 @@
                                         <constraint firstAttribute="width" constant="304" id="qT1-p5-J6I"/>
                                     </constraints>
                                 </view>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="BNe-wB-XqV">
+                                    <rect key="frame" x="47" y="299" width="250" height="26"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="26" id="Y7T-Xd-sxh"/>
+                                        <constraint firstAttribute="width" constant="250" id="hma-7w-RD3"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                    <state key="normal" title="I acknowledge that I have read and understood the Terms and Conditions.">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="svg-Pw-eY0" customClass="FlatButton">
-                                    <rect key="frame" x="8" y="292" width="144" height="41"/>
+                                    <rect key="frame" x="8" y="352" width="144" height="41"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="144" id="g5T-eD-iqD"/>
@@ -66,7 +80,7 @@
                                     </state>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bww-wK-2XM" customClass="FlatButton">
-                                    <rect key="frame" x="168" y="292" width="144" height="41"/>
+                                    <rect key="frame" x="168" y="352" width="144" height="41"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="144" id="SmK-ZK-QYL"/>
@@ -76,23 +90,38 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yc8-Sc-bcD" customClass="FlatCheckBox">
+                                    <rect key="frame" x="12" y="301" width="22" height="22"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="22" id="3Fw-Ql-cLm"/>
+                                        <constraint firstAttribute="height" constant="22" id="Nmh-kZ-KD1"/>
+                                    </constraints>
+                                    <state key="normal" image="checked.png">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="elq-aW-7GL" secondAttribute="trailing" constant="8" id="47U-Io-jgd"/>
+                                <constraint firstItem="svg-Pw-eY0" firstAttribute="top" secondItem="BNe-wB-XqV" secondAttribute="bottom" constant="27" id="BRj-sy-t2b"/>
+                                <constraint firstItem="yc8-Sc-bcD" firstAttribute="leading" secondItem="PAH-Yt-Pge" secondAttribute="leading" constant="12" id="Bov-Ip-aUc"/>
+                                <constraint firstItem="Bww-wK-2XM" firstAttribute="top" secondItem="BNe-wB-XqV" secondAttribute="bottom" constant="27" id="ClB-8Y-ZVY"/>
                                 <constraint firstAttribute="centerX" secondItem="09L-OX-1ub" secondAttribute="centerX" id="IzQ-Ig-sgt"/>
-                                <constraint firstItem="Bww-wK-2XM" firstAttribute="top" secondItem="elq-aW-7GL" secondAttribute="bottom" constant="14" id="LyD-K4-O9c"/>
                                 <constraint firstItem="rzb-cu-MZn" firstAttribute="leading" secondItem="PAH-Yt-Pge" secondAttribute="leading" constant="90" id="Ola-21-GmZ"/>
                                 <constraint firstItem="09L-OX-1ub" firstAttribute="top" secondItem="PAH-Yt-Pge" secondAttribute="top" constant="30" id="YS5-0Z-61y"/>
+                                <constraint firstItem="yc8-Sc-bcD" firstAttribute="top" secondItem="elq-aW-7GL" secondAttribute="bottom" constant="23" id="YWE-4A-Lo5"/>
                                 <constraint firstAttribute="centerX" secondItem="elq-aW-7GL" secondAttribute="centerX" id="d62-KG-WG5"/>
                                 <constraint firstItem="elq-aW-7GL" firstAttribute="top" secondItem="rzb-cu-MZn" secondAttribute="bottom" constant="20" id="dPK-MN-qTD"/>
+                                <constraint firstItem="BNe-wB-XqV" firstAttribute="centerY" secondItem="yc8-Sc-bcD" secondAttribute="centerY" id="hfM-qf-Is6"/>
                                 <constraint firstAttribute="trailing" secondItem="Bww-wK-2XM" secondAttribute="trailing" constant="8" id="iE0-Tv-Qnr"/>
-                                <constraint firstItem="svg-Pw-eY0" firstAttribute="top" secondItem="elq-aW-7GL" secondAttribute="bottom" constant="14" id="l1a-iH-N6p"/>
                                 <constraint firstItem="elq-aW-7GL" firstAttribute="leading" secondItem="PAH-Yt-Pge" secondAttribute="leading" constant="8" id="m8v-ft-TMB"/>
                                 <constraint firstAttribute="height" constant="464" id="rPn-cV-aA7"/>
                                 <constraint firstItem="svg-Pw-eY0" firstAttribute="leading" secondItem="PAH-Yt-Pge" secondAttribute="leading" constant="8" id="ukI-RG-SGo"/>
                                 <constraint firstItem="rzb-cu-MZn" firstAttribute="top" secondItem="09L-OX-1ub" secondAttribute="bottom" constant="12" id="wTA-vB-xmU"/>
                                 <constraint firstAttribute="centerX" secondItem="rzb-cu-MZn" secondAttribute="centerX" id="z1o-6s-BBV"/>
+                                <constraint firstItem="BNe-wB-XqV" firstAttribute="leading" secondItem="yc8-Sc-bcD" secondAttribute="leading" constant="35" id="zPB-LX-8db"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -118,6 +147,7 @@
         </view>
     </objects>
     <resources>
+        <image name="checked.png" width="22" height="22"/>
         <image name="th_logo.png" width="107" height="74"/>
     </resources>
 </document>

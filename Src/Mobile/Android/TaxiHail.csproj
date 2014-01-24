@@ -203,7 +203,6 @@
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Activities\Account\SignUpActivity.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
     <AndroidResource Include="Resources\Layout\IconActionLayout.axml" />
     <AndroidResource Include="Resources\Layout\RatingListItem.axml">
@@ -413,15 +412,21 @@
     <AndroidResource Include="Resources\Layout\View_Payments_ConfirmCarNumber.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Layout\View_CreateAccount.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <Compile Include="Activities\Account\CreateAccountActivity.cs" />
+    <AndroidResource Include="Resources\Drawable\checkbox.xml" />
+    <AndroidResource Include="Resources\Drawable\checked.png" />
+    <AndroidResource Include="Resources\Drawable\unchecked.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\checked.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\unchecked.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
     <AndroidAsset Include="Assets\AppFont_Regular.otf" />
     <AndroidAsset Include="Assets\AppFont_Bold.otf" />
     <AndroidResource Include="Resources\Layout\View_Login.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_SignUp.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_PasswordRecovery.axml">

@@ -1,18 +1,20 @@
 using System;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using MonoTouch.UIKit;
+using TinyIoC;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using TinyIoC;
 using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class LoginView : BaseViewController<LoginViewModel>
     {
+        private bool _themeApplied;
+
 		public LoginView () : base("LoginView", null)
         {
         }
@@ -21,9 +23,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			base.ViewWillAppear (animated);
 
+            if (!_themeApplied)
+            {
+                // set the theme of the company for the navigation bar
+                SetThemedNavigationBarAppearance();
+                _themeApplied = true;
+            }
+
 			NavigationController.NavigationBar.Hidden = true;
-			NavigationController.NavigationBar.BarStyle = Theme.IsLightContent ?
-			                                              UIBarStyle.Black : UIBarStyle.Default;
+            NavigationController.NavigationBar.BarStyle = Theme.IsLightContent 
+                                                          ? UIBarStyle.Black 
+                                                          : UIBarStyle.Default;
 		}
 
         public override void ViewDidLoad ()
