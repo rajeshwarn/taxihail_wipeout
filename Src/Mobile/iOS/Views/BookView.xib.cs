@@ -233,6 +233,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.OnViewStarted (_firstStart);
             _firstStart = false;
             NavigationController.NavigationBar.Hidden = true;
+			NavigationController.NavigationBar.BarStyle = UIBarStyle.Default;
         }
 
         public override void ViewWillDisappear (bool animated)
