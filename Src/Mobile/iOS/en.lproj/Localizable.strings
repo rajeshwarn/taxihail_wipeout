@@ -28,7 +28,7 @@
 "NearbyPlacesTitle"="Nearby places";
 "PickupViewDestinationLabel"="Destination &gt;&gt;";
 "CreditCardsListView"="Credit Cards";
-"ConfirmButton"="Confirm";
+"StatusActionBookButton"="Book another taxi";
 "StatusDescription"="Order #{0}";
 "TabContacts"="Contacts";
 "LoginForgotPassword"="Forgot your password?";
@@ -63,7 +63,7 @@
 "NoCreditCardSelected"="Please select a credit card";
 "PaymentView"="Payment Info";
 "ChargeTypeCreditCardFile"="Credit Card on File";
-"YesButton"="Yes";
+"Edit"="Edit";
 "ServiceErrorDefaultMessage"="An error occurred. Please try again.";
 "PanelMenuViewSignOutText"="Sign Out";
 "UpdateBookingSettingsInvalidDataTitle"="Invalid booking settings info.";
@@ -93,7 +93,6 @@
 "LoginViewPasswordPlaceHolder"="Password";
 "DeleteBookItButtonImageNamePressed"="Assets/Button/btnBookIt-Pressed_en.png";
 "StreetNumberPlacesBt"="Search for places";
-"ContinueButton"="Continue";
 "CreateAccountTitleMr"="Mr";
 "EstimatePriceFormat"="Estimated Fare : {0}";
 "PanelMenuViewOrderHistoryText"="History";
@@ -176,7 +175,6 @@
 "TaxiServerDownMessage"="Can't send message to Taxi";
 "PasswordLabel"="Password";
 "RingCodeTextPlaceholder"="Entry code";
-"BookItLaterButton"="Later";
 "View_SignIn"="";
 "RideSummaryTitleText"="Thank you";
 "StatusViewTitle"="Confirmed";
@@ -201,6 +199,7 @@
 "Now"="Now";
 "NbPassenger"=" ({0} passenger)";
 "LocationViewTitle"="My Locations";
+"Continue"="Continue";
 "HistoryViewSendReceiptError"="Error sending receipt for this order";
 "BookDestinationLabel"="Enter your destination";
 "AddReminderMessage"="Would you like a reminder added to your calendar for this pick-up time?";
@@ -212,13 +211,13 @@
 "CreateAccountFullNamePlaceHolder"="Full Name";
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance.";
 "ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall"="The specified Pickup address lies outside the regular service area.";
-"ResetPasswordConfirmationTitle"="Password sent";
 "ServiceErrorCreateOrder_InvalidProvider"="Order cannot be created, invalid provider. Please try again or call us.";
 "View_BookingStatus"="Status";
 "LocationNoHistory"="No history";
 "Tuto07Top"="On the Status screen you will see a reservation number confirming your booking. Once a vehicle is assigned, you can watch as it progresses to your pickup location.";
 "View_PayPal"="PayPal";
 "CmtRideLinqUnpair"="Unpair";
+"GoogleMapKey"="0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw";
 "Tuto08Top"="You can review your order history at any time, and even rebook a previous trip with the push of a button";
 "July"="Jul (07)";
 "Facebook"="Sign in with Facebook";
@@ -256,6 +255,7 @@
 "CreditCardExpYear"="Exp. Year";
 "ServiceErrorCreateOrder_CannotCreateInIbs_7000"="The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.";
 "RefineAddressTitle"="Refine an address";
+"Confirm"="Confirm";
 "CreditCardCategory"="Category";
 "BookDropoffLocationButtonTitle"="Destination";
 "LocationAddFavoriteSubtitle"="Select to add a new location";
@@ -273,10 +273,9 @@
 "CannotCancelOrderTitle"="Invalid Action";
 "CmtCancelPayment"="Cancel";
 "PayPalExpressCheckoutCancelMessage"="PayPal payment was cancelled. Your account has not been charged.";
-"ServiceErrorResetPassword_AccountNotFound"="No account with this email has been found.";
 "DateToday"="Today";
 "View_UpdatePassword"="Update Password";
-"EditButton"="Edit";
+"BookItLaterButton"="Later";
 "VehicleNumberErrorMessage"="Unable to retrieve vehicle number. Please pay in car.";
 "ResetPasswordInvalidDataTitle"="Invalid email";
 "Version"="v{0}";
@@ -368,12 +367,12 @@
 "TimeNow"="As soon as possible";
 "StatusConfirmCancelRideErrorTitle"="Cannot cancel";
 "CreateAccount_AccountAlreadyExist"="The account cannot be created, this email is already in use.";
-"StatusActionBookButton"="Book another taxi";
+"ServiceErrorResetPassword_AccountNotFound"="No account with this email has been found.";
 "SettingViewNotSignedIn"="Your are currently not signed in. You must be signed in to use this app.";
 "Tuto01Bottom"="Start by selecting your current position.";
 "ServiceErrorCreateOrder_NoProvider"="Order cannot be created, no provider specified. Please try again or call us.";
 "WarningEstimateDontShow"="Don't warn";
-"ResetButton"="Reset";
+"ResetPasswordConfirmationTitle"="Password sent";
 "View_SearchAddress"="Address Search";
 "ApartmentLabel"="Apartment";
 "UpdatePasswordConfirmationLabel"="Confirmation";
@@ -415,10 +414,12 @@
 "TabHistory"="History";
 "View_BookRating"="Rate your trip";
 "PaymentViewMeterAmountText"="Meter Amount";
+"YesButton"="Yes";
 "ConfirmVehiculeTypeLabel"="Vehicle type";
 "ServerInfo"="({0} v{1})";
 "ApproxPrice"="Estimated Fare";
 "RideSettingsVehiculeType"="Vehicle type";
+"ApplicationName"="TaxiHail";
 "WarningEstimateTitle"="Warning";
 "InvalidBookinInfoTitle"="Invalid booking info";
 "March"="Mar (03)";

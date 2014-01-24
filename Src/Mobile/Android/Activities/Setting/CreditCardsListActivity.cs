@@ -12,11 +12,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
         WindowSoftInputMode = SoftInput.AdjustPan, ScreenOrientation = ScreenOrientation.Portrait)]
     public class CreditCardsListActivity : BaseBindingActivity<CreditCardsListViewModel>
     {
-        protected override int ViewTitleResourceId
-        {
-            get { return Resource.String.CreditCardsListView; }
-        }
-
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);

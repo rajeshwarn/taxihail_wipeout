@@ -52,8 +52,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = false;
 
-            AppButtons.FormatStandardButton((GradientButton)btnConfirm, Localize.GetValue("ConfirmButton"), AppStyle.ButtonColor.Green);          
-            AppButtons.FormatStandardButton((GradientButton)btnEdit, Localize.GetValue("EditDetails"), AppStyle.ButtonColor.Grey );          
+            AppButtons.FormatStandardButton((GradientButton)btnConfirm, Localize.GetValue("Confirm"), AppStyle.ButtonColor.Green);          
+            AppButtons.FormatStandardButton((GradientButton)btnEdit, Localize.GetValue("Edit"), AppStyle.ButtonColor.Grey );          
             
             
 

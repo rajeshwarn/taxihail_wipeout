@@ -148,7 +148,7 @@
                         android:layout_height="@dimen/HeightButton"
                         android:paddingTop="5dip"
                         android:paddingBottom="5dip"
-                        android:text="@string/SaveButton"
+                        android:text="@string/Save"
                         local:MvxBind="Click SaveCommand" />
                 </LinearLayout>
             </ScrollView>

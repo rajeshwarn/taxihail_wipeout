@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
     public abstract class BaseActivity : Activity
     {
-        protected abstract int ViewTitleResourceId { get; }
+        protected virtual int ViewTitleResourceId { get { return Resource.String.EmptyString; } }
 
         protected override void OnResume()
         {
@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         where TViewModel : BaseViewModel, IMvxViewModel
     {
         private bool _firstStart = true;
-		protected abstract int ViewTitleResourceId { get; }
+        protected virtual int ViewTitleResourceId { get { return Resource.String.EmptyString; } }
 
 		public new TViewModel ViewModel
 		{

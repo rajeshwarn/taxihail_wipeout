@@ -30,7 +30,7 @@
   <string name="NearbyPlacesTitle">Nearby places</string>
   <string name="PickupViewDestinationLabel">Destination &gt;&gt;</string>
   <string name="CreditCardsListView">Credit Cards</string>
-  <string name="ConfirmButton">Confirm</string>
+  <string name="StatusActionBookButton">Book another taxi</string>
   <string name="StatusDescription">Order #{0}</string>
   <string name="TabContacts">Contacts</string>
   <string name="LoginForgotPassword">Forgot your password?</string>
@@ -65,7 +65,7 @@
   <string name="NoCreditCardSelected">Please select a credit card</string>
   <string name="PaymentView">Payment Info</string>
   <string name="ChargeTypeCreditCardFile">Credit Card on File</string>
-  <string name="YesButton">Yes</string>
+  <string name="Edit">Edit</string>
   <string name="ServiceErrorDefaultMessage">An error occurred. Please try again.</string>
   <string name="PanelMenuViewSignOutText">Sign Out</string>
   <string name="UpdateBookingSettingsInvalidDataTitle">Invalid booking settings info.</string>
@@ -95,7 +95,6 @@
   <string name="LoginViewPasswordPlaceHolder">Password</string>
   <string name="DeleteBookItButtonImageNamePressed">Assets/Button/btnBookIt-Pressed_en.png</string>
   <string name="StreetNumberPlacesBt">Search for places</string>
-  <string name="ContinueButton">Continue</string>
   <string name="CreateAccountTitleMr">Mr</string>
   <string name="EstimatePriceFormat">Estimated Fare : {0}</string>
   <string name="PanelMenuViewOrderHistoryText">History</string>
@@ -178,7 +177,6 @@
   <string name="TaxiServerDownMessage">Can\'t send message to Taxi</string>
   <string name="PasswordLabel">Password</string>
   <string name="RingCodeTextPlaceholder">Entry code</string>
-  <string name="BookItLaterButton">Later</string>
   <string name="View_SignIn"></string>
   <string name="RideSummaryTitleText">Thank you</string>
   <string name="StatusViewTitle">Confirmed</string>
@@ -203,6 +201,7 @@
   <string name="Now">Now</string>
   <string name="NbPassenger"> ({0} passenger)</string>
   <string name="LocationViewTitle">My Locations</string>
+  <string name="Continue">Continue</string>
   <string name="HistoryViewSendReceiptError">Error sending receipt for this order</string>
   <string name="BookDestinationLabel">Enter your destination</string>
   <string name="AddReminderMessage">Would you like a reminder added to your calendar for this pick-up time?</string>
@@ -214,13 +213,13 @@
   <string name="CreateAccountFullNamePlaceHolder">Full Name</string>
   <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall">The specified Pickup address lies outside the regular service area.</string>
-  <string name="ResetPasswordConfirmationTitle">Password sent</string>
   <string name="ServiceErrorCreateOrder_InvalidProvider">Order cannot be created, invalid provider. Please try again or call us.</string>
   <string name="View_BookingStatus">Status</string>
   <string name="LocationNoHistory">No history</string>
   <string name="Tuto07Top">On the Status screen you will see a reservation number confirming your booking. Once a vehicle is assigned, you can watch as it progresses to your pickup location.</string>
   <string name="View_PayPal">PayPal</string>
   <string name="CmtRideLinqUnpair">Unpair</string>
+  <string name="GoogleMapKey">0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</string>
   <string name="Tuto08Top">You can review your order history at any time, and even rebook a previous trip with the push of a button</string>
   <string name="July">Jul (07)</string>
   <string name="Facebook">Sign in with Facebook</string>
@@ -258,6 +257,7 @@
   <string name="CreditCardExpYear">Exp. Year</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_7000">The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.</string>
   <string name="RefineAddressTitle">Refine an address</string>
+  <string name="Confirm">Confirm</string>
   <string name="CreditCardCategory">Category</string>
   <string name="BookDropoffLocationButtonTitle">Destination</string>
   <string name="LocationAddFavoriteSubtitle">Select to add a new location</string>
@@ -275,10 +275,9 @@
   <string name="CannotCancelOrderTitle">Invalid Action</string>
   <string name="CmtCancelPayment">Cancel</string>
   <string name="PayPalExpressCheckoutCancelMessage">PayPal payment was cancelled. Your account has not been charged.</string>
-  <string name="ServiceErrorResetPassword_AccountNotFound">No account with this email has been found.</string>
   <string name="DateToday">Today</string>
   <string name="View_UpdatePassword">Update Password</string>
-  <string name="EditButton">Edit</string>
+  <string name="BookItLaterButton">Later</string>
   <string name="VehicleNumberErrorMessage">Unable to retrieve vehicle number. Please pay in car.</string>
   <string name="ResetPasswordInvalidDataTitle">Invalid email</string>
   <string name="Version">v{0}</string>
@@ -370,12 +369,12 @@
   <string name="TimeNow">As soon as possible</string>
   <string name="StatusConfirmCancelRideErrorTitle">Cannot cancel</string>
   <string name="CreateAccount_AccountAlreadyExist">The account cannot be created, this email is already in use.</string>
-  <string name="StatusActionBookButton">Book another taxi</string>
+  <string name="ServiceErrorResetPassword_AccountNotFound">No account with this email has been found.</string>
   <string name="SettingViewNotSignedIn">Your are currently not signed in. You must be signed in to use this app.</string>
   <string name="Tuto01Bottom">Start by selecting your current position.</string>
   <string name="ServiceErrorCreateOrder_NoProvider">Order cannot be created, no provider specified. Please try again or call us.</string>
   <string name="WarningEstimateDontShow">Don\'t warn</string>
-  <string name="ResetButton">Reset</string>
+  <string name="ResetPasswordConfirmationTitle">Password sent</string>
   <string name="View_SearchAddress">Address Search</string>
   <string name="ApartmentLabel">Apartment</string>
   <string name="UpdatePasswordConfirmationLabel">Confirmation</string>
@@ -417,10 +416,12 @@
   <string name="TabHistory">History</string>
   <string name="View_BookRating">Rate your trip</string>
   <string name="PaymentViewMeterAmountText">Meter Amount</string>
+  <string name="YesButton">Yes</string>
   <string name="ConfirmVehiculeTypeLabel">Vehicle type</string>
   <string name="ServerInfo">({0} v{1})</string>
   <string name="ApproxPrice">Estimated Fare</string>
   <string name="RideSettingsVehiculeType">Vehicle type</string>
+  <string name="ApplicationName">TaxiHail</string>
   <string name="WarningEstimateTitle">Warning</string>
   <string name="InvalidBookinInfoTitle">Invalid booking info</string>
   <string name="March">Mar (03)</string>

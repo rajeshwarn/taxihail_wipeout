@@ -45,7 +45,7 @@
             android:layout_height="45dip"
             android:layout_gravity="center"
             local:MvxBind="{'Click':{'Path':'RejectTermsAndConditions'}}"
-            android:text="@string/CancelBoutton" />
+            android:text="@string/Cancel" />
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

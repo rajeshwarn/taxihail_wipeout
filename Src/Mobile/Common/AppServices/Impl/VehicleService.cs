@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		
 		public Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude)
         {
-			return UseServiceClient<IVehicleClient, AvailableVehicle[]>(service => service
+			return UseServiceClientAsync<IVehicleClient, AvailableVehicle[]>(service => service
 				.GetAvailableVehiclesAsync( latitude, longitude));
         }
     }
