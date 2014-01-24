@@ -3116,11 +3116,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0a0216
 			public const int CmtRideLinqCancelChanges = 2131362326;
 			
+			// aapt resource value: 0x7f0a021a
+			public const int CmtRideLinqErrorTitle = 2131362330;
+			
+			// aapt resource value: 0x7f0a0218
+			public const int CmtRideLinqGenericErrorMessage = 2131362328;
+			
 			// aapt resource value: 0x7f0a0217
 			public const int CmtRideLinqSaveChanges = 2131362327;
 			
 			// aapt resource value: 0x7f0a01d6
 			public const int CmtRideLinqUnpair = 2131362262;
+			
+			// aapt resource value: 0x7f0a0219
+			public const int CmtRideLinqUnpairErrorMessage = 2131362329;
 			
 			// aapt resource value: 0x7f0a0213
 			public const int CmtTipAmount = 2131362323;
