@@ -16,14 +16,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					if (!IsEmail(Email))
 					{
-                        this.Services().Message.ShowMessage(this.Services().Localize["ResetPasswordInvalidDataTitle"], this.Services().Localize["ResetPasswordInvalidDataMessage"]);
+                        this.Services().Message.ShowMessage(this.Services().Localize["ResetPasswordInvalidDataTitle"], 
+															this.Services().Localize["ResetPasswordInvalidDataMessage"]);
 						return;
 					}
 
                     this.Services().Message.ShowProgress(true);
+
 					try{
                         this.Services().Account.ResetPassword(Email);
-                        Close( this );
+						ReturnResult(Email);
+
                      }catch(Exception e)
                      {
                          var msg = this.Services().Localize["ServiceError" + e.Message];

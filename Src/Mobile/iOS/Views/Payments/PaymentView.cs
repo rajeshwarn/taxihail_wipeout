@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             lblTipAmount.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
             lblMeterAmount.Text = Localize.GetValue("PaymentViewMeterAmountText");
             lblTotal.Text = Localize.GetValue("PaymentViewTotalText");
-            btnConfirm.SetTitle(Localize.GetValue("StatusPayButton"), UIControlState.Normal);
+            btnConfirm.SetTitle(Localize.GetValue("PayNow"), UIControlState.Normal);
 
             FlatButtonStyle.Green.ApplyTo(btnConfirm); 
 

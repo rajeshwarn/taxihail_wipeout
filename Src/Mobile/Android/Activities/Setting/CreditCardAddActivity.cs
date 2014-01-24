@@ -10,11 +10,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class CreditCardAddActivity : BaseBindingActivity<CreditCardAddViewModel>
     {
-        protected override int ViewTitleResourceId
-        {
-            get { return Resource.String.CreditCardAddView; }
-        }
-
         protected override void OnViewModelSet()
         {
             ViewModel.CreditCardCompanies[0].Image = Resource.Drawable.visa.ToString(CultureInfo.InvariantCulture);

@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -21,10 +22,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);
-            NavigationController.NavigationBar.Hidden = false;
             NavigationItem.HidesBackButton = false;
-            NavigationItem.Title = Localize.GetValue("TermsAndConditionsLabel");
-            // apply theme color to navbar
+            NavigationController.Title = Localize.GetValue("TermsAndConditionsLabel");
+            NavigationController.NavigationBar.Hidden = false;
+			NavigationController.NavigationBar.BarStyle = Theme.IsLightContent 
+                                                            ? UIBarStyle.Black 
+                                                            : UIBarStyle.Default;
         }
 
         public override void ViewDidLoad ()

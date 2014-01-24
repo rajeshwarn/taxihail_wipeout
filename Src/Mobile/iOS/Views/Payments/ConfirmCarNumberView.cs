@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             lblConfirmDriverInfo.Text = Localize.GetValue("VehicleNumberInfo");
             lblConfirmDriverNotice.Text = Localize.GetValue("VehicleNumberNotice");
-            btnConfirm.SetTitle(Localize.GetValue("ConfirmButton"), UIControlState.Normal);
+            btnConfirm.SetTitle(Localize.GetValue("Confirm"), UIControlState.Normal);
 
             FlatButtonStyle.Green.ApplyTo(btnConfirm);
 

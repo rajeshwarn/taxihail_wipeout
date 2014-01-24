@@ -12,11 +12,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
         WindowSoftInputMode = SoftInput.AdjustPan, ScreenOrientation = ScreenOrientation.Portrait)]
     public class RideSettingsActivity : BaseBindingActivity<RideSettingsViewModel>
     {
-        protected override int ViewTitleResourceId
-        {
-            get { return Resource.String.RideSettingsView; }
-        }
-
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_RideSettings);

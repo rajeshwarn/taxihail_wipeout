@@ -244,7 +244,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
                     android:id="@+id/RateBtn"
-                    android:text="@string/RateBtn"
+                    android:text="@string/RateRide"
                     android:visibility="gone"
                     local:MvxBind="Click NavigateToRatingPage; Enabled ShowRateButton; Visibility ShowRateButton, Converter=Visibility" />
                 <Button

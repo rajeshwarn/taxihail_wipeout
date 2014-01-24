@@ -12,18 +12,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class BaseService: IUseServiceClient
     {
+		[Obsolete("use async version")]
         protected string UseServiceClient<T>(Action<T> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where T : class
         {
 			var service = TinyIoCContainer.Current.Resolve<T>();
             return UseServiceClient(service, action, errorHandler, method);
         }
-
+		[Obsolete("use async version")]
         protected string UseServiceClient<T>( string name, Action<T> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where T : class
         {
 			var service = TinyIoCContainer.Current.Resolve<T>(name);
 			return UseServiceClient(service, action, errorHandler, method);
         }
-
+		[Obsolete("use async version")]
         private string UseServiceClient<T>(T service, Action<T> action, Action<Exception> errorHandler, string method) where T : class
 		{
 			try
@@ -50,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 		}
 
-		protected async Task<TResult> UseServiceClient<TService, TResult>(Func<TService, Task<TResult>> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where TResult : class  where TService : class
+		protected async Task<TResult> UseServiceClientAsync<TService, TResult>(Func<TService, Task<TResult>> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where TResult : class  where TService : class
         {
             var service = TinyIoCContainer.Current.Resolve<TService>();
 
@@ -104,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 		}
 
-        protected TResult UseServiceClientAsync<TService, TResult>(Func<TService, Task<TResult>> action, [CallerMemberName] string method = "")
+        protected TResult UseServiceClientTask<TService, TResult>(Func<TService, Task<TResult>> action, [CallerMemberName] string method = "")
             where TResult : class
             where TService : class
         {

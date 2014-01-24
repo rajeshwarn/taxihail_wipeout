@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<OrderStatusDetail> CreateOrder (CreateOrder order)
         {
-			var orderDetail = await UseServiceClient<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
+			var orderDetail = await UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
 
 			if (orderDetail.IbsOrderId.HasValue
 				&& orderDetail.IbsOrderId > 0)
@@ -156,7 +156,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public Task<OrderStatusDetail> GetOrderStatusAsync (Guid orderId)
 		{
-			return UseServiceClient<OrderServiceClient, OrderStatusDetail>(service => service.GetOrderStatus(orderId));
+			return UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.GetOrderStatus(orderId));
 		}
 
         public bool HasLastOrder {
@@ -174,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     throw new InvalidOperationException ();
                 }
                 var lastOrderId = Cache.Get<string> ("LastOrderId");  // Need to be cached as a string because of a jit error on device
-				return UseServiceClient<OrderServiceClient, OrderStatusDetail>(service => service.GetOrderStatus (new Guid (lastOrderId)));
+				return UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.GetOrderStatus (new Guid (lastOrderId)));
             }
 			catch(Exception e)
 			{
@@ -242,7 +242,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 if (tarifMode != DirectionSetting.TarifMode.AppTarif)
                 {
-					directionInfo = await UseServiceClient<IIbsFareClient, DirectionInfo>(service => service.GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude));                                                            
+					directionInfo = await UseServiceClientAsync<IIbsFareClient, DirectionInfo>(service => service.GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude));                                                            
                 }
 
                 if (tarifMode == DirectionSetting.TarifMode.AppTarif || (tarifMode == DirectionSetting.TarifMode.Both && directionInfo.Price == 0d))
@@ -327,7 +327,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public List<RatingType> GetRatingType ()
         {
             var ratingType =
-            UseServiceClientAsync<OrderServiceClient, List<RatingType>>(service => service.GetRatingTypes());
+            UseServiceClientTask<OrderServiceClient, List<RatingType>>(service => service.GetRatingTypes());
             return ratingType;
         }
 
@@ -341,7 +341,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public Task<OrderRatings> GetOrderRatingAsync (Guid orderId)
 		{
-			return UseServiceClient<OrderServiceClient, OrderRatings> (service => service.GetOrderRatings (orderId));
+			return UseServiceClientAsync<OrderServiceClient, OrderRatings> (service => service.GetOrderRatings (orderId));
 		}
 
         public void SendRatingReview (OrderRatings orderRatings)

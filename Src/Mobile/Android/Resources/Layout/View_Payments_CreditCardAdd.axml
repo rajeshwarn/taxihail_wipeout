@@ -138,7 +138,7 @@
                     android:layout_height="@dimen/HeightButton"
                     android:singleLine="true"
                     android:lines="1"
-                    android:text="@string/SaveButton"
+                    android:text="@string/Save"
                     local:MvxBind="Click AddCreditCardCommand" />
             </LinearLayout>
         </ScrollView>
