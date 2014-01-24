@@ -108,6 +108,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             _cardImage = (ImageView) layout.FindViewById(Resource.Id.creditCardImage);
             SetCreditCardImage();
+            _editText.SetCursorVisible(false);
 
             var button = (Button) layout.FindViewById(Resource.Id.creditCardButton);
             button.Click += (sender, e) =>
