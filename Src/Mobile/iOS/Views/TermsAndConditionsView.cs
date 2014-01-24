@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Style;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -21,20 +22,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         public override void ViewWillAppear (bool animated)
         {
+            ApplyThemeToNavigationBar();
+
             base.ViewWillAppear (animated);
             NavigationItem.HidesBackButton = false;
-            NavigationController.Title = Localize.GetValue("TermsAndConditionsLabel");
+            NavigationItem.Title = Localize.GetValue("TermsAndConditionsLabel");
             NavigationController.NavigationBar.Hidden = false;
-			NavigationController.NavigationBar.BarStyle = Theme.IsLightContent 
-                                                            ? UIBarStyle.Black 
-                                                            : UIBarStyle.Default;
+            NavigationController.NavigationBar.BarStyle = Theme.IsLightContent 
+                                                          ? UIBarStyle.Black 
+                                                          : UIBarStyle.Default;
         }
 
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad();
-
-            View.BackgroundColor = UIColor.FromRGB(239, 239, 239);
 
 			var set = this.CreateBindingSet<TermsAndConditionsView, TermsAndConditionsViewModel> ();
 

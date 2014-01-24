@@ -48,18 +48,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void SetAppearance()
 		{
-			var gray44 = UIColor.FromRGB (44, 44, 44);
+            var textColor = UIColor.FromRGB (44, 44, 44);
 
 			// navigation bar
 			if (UIHelper.IsOS7orHigher) {
 				UINavigationBar.Appearance.BarTintColor = UIColor.White;
-				UINavigationBar.Appearance.TintColor = gray44; //in ios7, this is for the back chevron
+                UINavigationBar.Appearance.TintColor = textColor; //in ios7, this is for the back chevron
 			} else {
 				UINavigationBar.Appearance.TintColor = UIColor.White; //in ios6, this is for the bar color
 
 				//change the default ios6 back button look to the ios7 look
 				var clearBackground = UIImage.FromFile ("clearButton.png").CreateResizableImage(UIEdgeInsets.Zero);
-				var backBackground = UIImage.FromFile ("left_arrow.png").CreateResizableImage (new UIEdgeInsets (0, 8, 15, 0));
+                var backBackground = UIImage.FromFile ("left_arrow.png").CreateResizableImage (new UIEdgeInsets (0, 12, 21, 0));
 				UIBarButtonItem.Appearance.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default); 
 				UIBarButtonItem.Appearance.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default); 
 			}
@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var navBarButtonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
 
 			UINavigationBar.Appearance.SetTitleTextAttributes (new UITextAttributes () {
-				TextColor = gray44,
+                TextColor = textColor,
 				Font = titleFont,
 				TextShadowColor = UIColor.Clear,
 				TextShadowOffset = new UIOffset(0,0)
@@ -76,13 +76,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			var buttonTextColor = new UITextAttributes () {
 				Font = navBarButtonFont,
-				TextColor = gray44,
+                TextColor = textColor,
 				TextShadowColor = UIColor.Clear,
 				TextShadowOffset = new UIOffset(0,0)
 			};
 			var selectedButtonTextColor = new UITextAttributes () {
 				Font = navBarButtonFont,
-				TextColor = gray44.ColorWithAlpha(0.5f),
+                TextColor = textColor.ColorWithAlpha(0.5f),
 				TextShadowColor = UIColor.Clear,
 				TextShadowOffset = new UIOffset(0,0)
 			};
