@@ -14,8 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 {
 	public partial class BookRatingView : BaseViewController<BookRatingViewModel>
 	{
-		public BookRatingView() 
-			: base("BookRatingView", null)
+        public BookRatingView() : base("BookRatingView", null)
 		{
 		}
 		
@@ -31,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 		{
 			base.ViewDidLoad ();
 
-			View.BackgroundColor = UIColor.FromRGB (239,239,239);
+            View.BackgroundColor = UIColor.FromRGB (239, 239, 239);
 
 			FlatButtonStyle.Green.ApplyTo(btnSubmit);
 			btnSubmit.SetTitle(Localize.GetValue("Submit"), UIControlState.Normal);

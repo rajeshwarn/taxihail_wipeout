@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
         string UpdatePassword( Guid accountId, string currentPassword, string newPassword );
         
-        bool Register (RegisterAccount data, out string error);
+		Task Register (RegisterAccount data);
 
         Address FindInAccountAddresses(double latitude, double longitude);
 

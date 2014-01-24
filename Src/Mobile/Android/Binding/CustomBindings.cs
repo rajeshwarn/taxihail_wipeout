@@ -7,7 +7,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
     {
 		public static void Load(IMvxTargetBindingFactoryRegistry registry)
         {
-            TipSliderBinding.Register(registry);
             TextViewBinding.Register(registry);
         }
     }
