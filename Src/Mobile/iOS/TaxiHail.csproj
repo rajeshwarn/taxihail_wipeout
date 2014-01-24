@@ -487,6 +487,7 @@
     <Compile Include="Views\BookingStatusView.xib.designer.cs">
       <DependentUpon>BookingStatusView.xib</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Widgets\PanelMenuSource.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -772,6 +773,8 @@
     <BundleResource Include="Resources\unhappy-selected%402x.png" />
     <BundleResource Include="Resources\unhappy.png" />
     <BundleResource Include="Resources\unhappy%402x.png" />
+    <BundleResource Include="Resources\mk_logo.png" />
+    <BundleResource Include="Resources\mk_logo%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

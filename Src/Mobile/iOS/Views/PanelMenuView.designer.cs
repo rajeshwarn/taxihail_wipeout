@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class PanelMenuView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UILabel lblVersion { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIImageView logoImageView { get; set; }
 
 		[Outlet]
@@ -20,9 +23,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		MonoTouch.UIKit.UITableView menuListView { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel versionLabel { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -41,9 +41,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				menuListView = null;
 			}
 
-			if (versionLabel != null) {
-				versionLabel.Dispose ();
-				versionLabel = null;
+			if (lblVersion != null) {
+				lblVersion.Dispose ();
+				lblVersion = null;
 			}
 		}
 	}

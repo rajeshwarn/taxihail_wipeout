@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
 			menuContainer.BackgroundColor = UIColor.FromRGB (242, 242, 242);
 
-			var source = new MvxActionBasedTableViewSource(
+			var source = new PanelMenuSource(
 				menuListView, 
 				UITableViewCellStyle.Default,
 				new NSString(Cellid), 
@@ -67,6 +67,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			{ 
 				return new PanelMenuCell(Cellid, CellBindingText); 
 			};
+
+			lblVersion.Text = TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version;
 
 			var set = this.CreateBindingSet<PanelMenuView, PanelMenuViewModel>();
 
