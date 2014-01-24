@@ -10,6 +10,8 @@ using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.Style;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -188,6 +190,80 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             });
         }
 		
+        public void ApplyThemeToNavigationBar()
+        {
+            var textColor = Theme.IsLightContent 
+                            ? UIColor.White
+                            : UIColor.FromRGB(44, 44, 44) ;
+
+            // navigation bar
+            if (UIHelper.IsOS7orHigher) {
+                NavigationController.NavigationBar.BarTintColor = Theme.BackgroundColor;
+                NavigationController.NavigationBar.TintColor = textColor; //in ios7, this is for the back chevron
+            } else {
+                NavigationController.NavigationBar.TintColor = Theme.BackgroundColor; //in ios6, this is for the bar color
+
+                //change the default ios6 back button look to the ios7 look
+                var clearBackground = UIImage.FromFile ("clearButton.png").CreateResizableImage(UIEdgeInsets.Zero);
+                var backBackground = UIImage.FromFile (Theme.IsLightContent ? "left_arrow_white.png" : "left_arrow.png").CreateResizableImage (new UIEdgeInsets (0, 12, 21, 0));
+
+                NavigationItem.BackBarButtonItem.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default);
+                NavigationItem.BackBarButtonItem.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default);
+
+                if (NavigationItem.LeftBarButtonItem != null)
+                {
+                    NavigationItem.LeftBarButtonItem.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default);
+                    NavigationItem.LeftBarButtonItem.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default);
+                }
+
+                if (NavigationItem.RightBarButtonItem != null)
+                {
+                    NavigationItem.RightBarButtonItem.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default);
+                    NavigationItem.RightBarButtonItem.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default);
+                }
+            }
+
+            var titleFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
+            var navBarButtonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
+
+            NavigationController.NavigationBar.SetTitleTextAttributes (new UITextAttributes () {
+                TextColor = textColor,
+                Font = titleFont,
+                TextShadowColor = UIColor.Clear,
+                TextShadowOffset = new UIOffset(0,0)
+            });
+
+            var buttonTextColor = new UITextAttributes () {
+                Font = navBarButtonFont,
+                TextColor = textColor,
+                TextShadowColor = UIColor.Clear,
+                TextShadowOffset = new UIOffset(0,0)
+            };
+            var selectedButtonTextColor = new UITextAttributes () {
+                Font = navBarButtonFont,
+                TextColor = textColor.ColorWithAlpha(0.5f),
+                TextShadowColor = UIColor.Clear,
+                TextShadowOffset = new UIOffset(0,0)
+            };
+
+            NavigationItem.BackBarButtonItem.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
+            NavigationItem.BackBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
+            NavigationItem.BackBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
+
+            if (NavigationItem.LeftBarButtonItem != null)
+            {
+                NavigationItem.LeftBarButtonItem.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
+                NavigationItem.LeftBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
+                NavigationItem.LeftBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
+            }
+
+            if (NavigationItem.RightBarButtonItem != null)
+            {
+                NavigationItem.RightBarButtonItem.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
+                NavigationItem.RightBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
+                NavigationItem.RightBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
+            }
+        }
     }
 }
 
