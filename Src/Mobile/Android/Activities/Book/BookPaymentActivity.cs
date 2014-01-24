@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public double TipAmount
         {
-            get { return CultureProvider.ParseCurrency(_tipAmountTextView.Text); }
+            get { return CultureProvider.ParseCurrency( _tipAmountTextView.Text); }
             set { _tipAmountTextView.Text = CultureProvider.FormatCurrency(value); }
         }
 
@@ -93,11 +93,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             _tipPicker.ItemSelected += (object sender, AdapterView.ItemSelectedEventArgs e) => {
 
-                TipAmount = MeterAmount * ((e.Id / 100.00));
+                TipAmount = MeterAmount * GetTip();
                 _tipAmountTextView.HideKeyboard(this);
                 _layoutRoot.RequestFocus();
-
-
                 UpdateAmounts();
 
             };
