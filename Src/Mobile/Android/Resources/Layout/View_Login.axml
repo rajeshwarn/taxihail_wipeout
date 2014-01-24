@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             local:MvxBind="Click ResetPassword"
-            android:text="@string/LoginForgotPasswordButton"
+            android:text="@string/ResetPasswordTitleText"
             android:layout_alignParentRight="true"
             android:layout_gravity="right"
             android:layout_marginRight="3dp" />
@@ -98,7 +98,7 @@
         <Button
             android:id="@+id/FacebookButton"
             local:MvxBind="Click  LoginFacebook"
-            android:text="@string/FacebookButton"
+            android:text="@string/Facebook"
             android:drawableLeft="@drawable/facebook_icon_state"
             android:drawablePadding="-2dip"
             android:layout_gravity="center|left"
@@ -111,7 +111,7 @@
         <Button
             android:id="@+id/TwitterButton"
             local:MvxBind="Click  LoginTwitter"
-            android:text="@string/TwitterButton"
+            android:text="@string/Twitter"
             android:drawableLeft="@drawable/twitter_icon_state"
             android:drawablePadding="-2dip"
             android:layout_width="fill_parent"

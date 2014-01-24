@@ -13,11 +13,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
     {
         private ListView _listView;
 
-        protected override int ViewTitleResourceId
-        {
-            get { return Resource.String.View_History; }
-        }
-
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);

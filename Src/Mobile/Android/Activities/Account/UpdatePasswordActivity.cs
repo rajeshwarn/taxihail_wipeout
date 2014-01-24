@@ -9,11 +9,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class UpdatePasswordActivity : BaseBindingActivity<UpdatePasswordViewModel>
     {
-        protected override int ViewTitleResourceId
-        {
-            get { return Resource.String.View_UpdatePassword; }
-        }
-
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_UpdatePassword);

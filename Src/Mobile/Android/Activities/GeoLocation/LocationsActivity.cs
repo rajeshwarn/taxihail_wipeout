@@ -3,11 +3,11 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Widget;
-using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Droid.Views;
 using TinyIoC;
 using TinyMessenger;
-using Cirrious.MvvmCross.Binding.Droid.Views;
+using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
 {
@@ -16,11 +16,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
     public class LocationListActivity : BaseBindingActivity<MyLocationsViewModel>
     {
         private TinyMessageSubscriptionToken _closeViewToken;
-
-        protected override int ViewTitleResourceId
-        {
-            get { return Resource.String.View_LocationList; }
-        }
 
         protected override void OnCreate(Bundle bundle)
         {

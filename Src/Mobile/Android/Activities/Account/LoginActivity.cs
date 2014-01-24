@@ -58,11 +58,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			_uiHelper.OnActivityResult(requestCode, (int)resultCode, data);
 		}
 
-        protected override int ViewTitleResourceId
-        {
-            get { return Resource.String.View_SignIn; }
-        }
-
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_Login);

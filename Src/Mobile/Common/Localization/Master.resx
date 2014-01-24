@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ApplicationName" xml:space="preserve">
+  	<value>TaxiHail</value>
+  </data>
+  <data name="GoogleMapKey" xml:space="preserve">
+  	<value>0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</value>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>English</value>
   </data>
@@ -291,16 +297,13 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-<data name="ResetButton" xml:space="preserve">
-    <value>Reset</value>
-  </data>
-  <data name="ContinueButton" xml:space="preserve">
+  <data name="Continue" xml:space="preserve">
     <value>Continue</value>
   </data>
   <data name="WarningTitle" xml:space="preserve">
     <value>Warning</value>
   </data>
-  <data name="ConfirmButton" xml:space="preserve">
+  <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
   <data name="ConfirmRideInformationTitle" xml:space="preserve">
@@ -591,20 +594,20 @@
   <data name="HistoryViewStatusButton" xml:space="preserve">
     <value>View Status</value>
   </data>
-	<data name="ResetPasswordTitleText" xml:space="preserve">
-    	<value>Forgot your password?</value>
+  <data name="ResetPasswordTitleText" xml:space="preserve">
+  	<value>Forgot your password?</value>
   </data>
-	<data name="ResetPasswordSubtitleText" xml:space="preserve">
-    	<value>Enter your email and we'll send you a new one.</value>
+  <data name="ResetPasswordSubtitleText" xml:space="preserve">
+   	<value>Enter your email and we'll send you a new one.</value>
   </data>
  <data name="ResetPasswordEmailPlaceHolder" xml:space="preserve">
     <value>Email</value>
   </data>
-	<data name="LoginForgotPassword" xml:space="preserve">
-    	<value>Forgot your password?</value>
+  <data name="LoginForgotPassword" xml:space="preserve">
+   	<value>Forgot your password?</value>
   </data>
-	<data name="LoginForgotPasswordDetail" xml:space="preserve">
-    	<value>Enter your email and we'll send you a new one.</value>
+  <data name="LoginForgotPasswordDetail" xml:space="preserve">
+   	<value>Enter your email and we'll send you a new one.</value>
   </data>
   <data name="TechSupportEmailTitle" xml:space="preserve">
     <value>Support Application Mobile</value>
@@ -762,7 +765,7 @@
   <data name="DateTimePickerPickInvalidDateMessage" xml:space="preserve">
     <value>The pickup date must be in the future.</value>
   </data>
-  <data name="EditButton" xml:space="preserve">
+  <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
   <data name="StatusCannotBeDisplayed" xml:space="preserve">

@@ -20,7 +20,7 @@
             android:background="@color/top_bar_color"
             android:orientation="horizontal">
             <TextView
-                android:text="@string/View_BookingStatus_ThankYouTitle"
+                android:text="@string/RideSummaryTitleText"
                 style="@style/TopTitleText"
                 android:layout_gravity="center"
                 android:layout_width="fill_parent"
@@ -46,7 +46,7 @@
             <TextView
                 style="@style/BlackTextLabelMultiline"
                 android:id="@+id/lblSubTitle"
-                android:text="@string/View_BookingStatus_ThankYouMessage"
+                android:text="@string/RideSummarySubTitleText"
                 android:gravity="center"
                 android:paddingTop="10dp"
                 android:layout_width="250dp"
@@ -57,28 +57,28 @@
                 style="@style/ButtonActionGreenStyle"
                 android:id="@+id/SendReceiptBtn"
                 local:MvxBind="Click SendReceiptCommand; Visibility IsSendReceiptButtonShown, Converter=Visibility"
-                android:text="@string/HistoryDetailSendReceiptButton"
+                android:text="@string/SendReceipt"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/HeightButton"
                 android:layout_marginBottom="10dip" />
             <Button
                 style="@style/ButtonActionGreenStyle"
                 local:MvxBind="Click NavigateToRatingPage; Visibility IsRatingButtonShown, Converter=Visibility"
-                android:text="@string/RateBtn"
+                android:text="@string/RateRide"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/HeightButton"
                 android:layout_marginBottom="10dip" />
             <Button
                 style="@style/ButtonActionGreenStyle"
                 local:MvxBind="Click ResendConfirmationCommand; Visibility IsResendConfirmationButtonShown, Converter=Visibility"
-                android:text="@string/ReSendConfirmationButton"
+                android:text="@string/ReSendConfirmation"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/HeightButton"
                 android:layout_marginBottom="10dip" />
             <Button
                 style="@style/ButtonActionGreenStyle"
                 local:MvxBind="Click PayCommand; Visibility IsPayButtonShown, Converter=Visibility"
-                android:text="@string/StatusPayButton"
+                android:text="@string/PayNow"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/HeightButton"
                 android:layout_marginBottom="10dip" />

@@ -11,11 +11,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class AboutActivity : BaseBindingActivity<AboutUsViewModel>
     {
-        protected override int ViewTitleResourceId
-        {
-            get { return Resource.String.View_About; }
-        }
-
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
