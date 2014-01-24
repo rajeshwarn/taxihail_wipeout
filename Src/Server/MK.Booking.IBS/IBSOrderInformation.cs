@@ -30,6 +30,10 @@ namespace apcurium.MK.Booking.IBS
         public string LastName;
         public string MobilePhone;
 
+        public string ReferenceNumber { get; set; }
+        public string TerminalId { get; set; }
+        public string DriverId { get; set; }
+
         public DateTime? Eta { get; set; }
 
         public override string ToString()
@@ -42,7 +46,7 @@ namespace apcurium.MK.Booking.IBS
             
         }
 
-        public IBSOrderInformation(TOrderStatus orderInfoFromIBS)
+        public IBSOrderInformation(TOrderStatus_2 orderInfoFromIBS)
         {
             Status = orderInfoFromIBS.OrderStatus.ToString();
 
@@ -59,6 +63,11 @@ namespace apcurium.MK.Booking.IBS
 
             VehicleLatitude = orderInfoFromIBS.VehicleCoordinateLat != 0 ? orderInfoFromIBS.VehicleCoordinateLat : VehicleLatitude;
             VehicleLongitude = orderInfoFromIBS.VehicleCoordinateLong != 0 ? orderInfoFromIBS.VehicleCoordinateLong : VehicleLongitude;
+
+            DriverId = orderInfoFromIBS.CallNumber.GetValue(DriverId);
+
+            ReferenceNumber = orderInfoFromIBS.ReferenceNumber.GetValue(ReferenceNumber);
+            TerminalId = orderInfoFromIBS.TerminalId.GetValue( TerminalId );
 
             Fare = orderInfoFromIBS.Fare;
             Tip = orderInfoFromIBS.Tips;
@@ -82,6 +91,11 @@ namespace apcurium.MK.Booking.IBS
             orderStatusDetail.DriverInfos.VehicleRegistration = VehicleRegistration.GetValue(orderStatusDetail.DriverInfos.VehicleRegistration);
             orderStatusDetail.DriverInfos.VehicleType = VehicleType.GetValue(orderStatusDetail.DriverInfos.VehicleType);
             orderStatusDetail.VehicleNumber = VehicleNumber.GetValue(orderStatusDetail.VehicleNumber);
+
+            orderStatusDetail.DriverInfos.DriverId = DriverId.GetValue(orderStatusDetail.DriverInfos.DriverId);
+
+            orderStatusDetail.TerminalId = TerminalId.GetValue(orderStatusDetail.TerminalId);
+            orderStatusDetail.ReferenceNumber = ReferenceNumber.GetValue(orderStatusDetail.ReferenceNumber);
 
             orderStatusDetail.VehicleLatitude = VehicleLatitude ?? orderStatusDetail.VehicleLatitude;
             orderStatusDetail.VehicleLongitude = VehicleLongitude ?? orderStatusDetail.VehicleLongitude;
@@ -107,5 +121,7 @@ namespace apcurium.MK.Booking.IBS
         {
             get { return Status.SoftEqual(VehicleStatuses.Common.Timeout); }
         }
+
+       
     }
 }

@@ -33,6 +33,9 @@ namespace apcurium.MK.Booking.Api.Helpers
                                   VehicleType = "Fake",
                                   FirstName = "FakeName",
                                   LastName = "FakeName",
+                                  DriverId = "FakeDriverId",
+                                  TerminalId = "FakeTerminalId",
+                                  ReferenceNumber = "FakeReferenceNumber",
                                   MobilePhone = "FakePhone",
                                   VehicleLatitude = 45.5134,
                                   VehicleLongitude = -73.5530

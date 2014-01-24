@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.ReadModel
         public string DriverFirstName { get; set; }
 
         public string DriverLastName { get; set; }
-
+        
 
         public  decimal? PaymentMeterAmount  { get; set; }
 

@@ -19,6 +19,8 @@ namespace apcurium.MK.Common.Entity
 
         public string LastName { get; set; }
 
+        public string DriverId { get; set; }
+
         public string FullName 
         {
             get{

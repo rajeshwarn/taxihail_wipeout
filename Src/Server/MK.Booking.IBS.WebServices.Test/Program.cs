@@ -13,7 +13,7 @@ namespace MK.Booking.IBS.WebServices.Test
             //CallGetVehicleTypes("http://mk.drivelinq.com:6929/XDS_IASPI.DLL/soap/");
             //CallGetVehicleTypes("http://mk.drivelinq.com:6928/XDS_IASPI.DLL/soap/");
             //CallGetPriceEstimate("http://thriev.drivelinq.com:6928/xds_iaspi.dll/soap/");
-            CallGetPriceEstimate("http://mk.drivelinq.com:6928/xds_iaspi.dll/soap/");
+            //CallGetPriceEstimate("http://mk.drivelinq.com:6928/xds_iaspi.dll/soap/");
         
             Console.ReadLine();
         }
