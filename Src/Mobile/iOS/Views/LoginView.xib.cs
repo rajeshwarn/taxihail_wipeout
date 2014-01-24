@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (!_themeApplied)
             {
                 // set the theme of the company for the navigation bar
-                SetThemedNavigationBarAppearance();
+                ChangeThemeOfNavigationBar(false);
                 _themeApplied = true;
             }
 

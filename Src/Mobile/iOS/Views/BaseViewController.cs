@@ -12,6 +12,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Helper;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -190,90 +191,53 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             });
         }
 
-        public void SetThemedNavigationBarAppearance()
+        public void ChangeThemeOfNavigationBar(bool applyDefaultTheme)
         {
-            var textColor = Theme.IsLightContent 
-                            ? UIColor.White
-                            : UIColor.FromRGB(44, 44, 44);
+            var titleFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
+            var navBarButtonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
 
-            // navigation bar
-            if (UIHelper.IsOS7orHigher) {
-                NavigationController.NavigationBar.BarTintColor = Theme.BackgroundColor;
-                NavigationController.NavigationBar.TintColor = textColor; //in ios7, this is for the back chevron
-                UINavigationBar.Appearance.BarTintColor = Theme.BackgroundColor;
-                UINavigationBar.Appearance.TintColor = textColor; //in ios7, this is for the back chevron
-            } else {
-                UINavigationBar.Appearance.TintColor = Theme.BackgroundColor; //in ios6, this is for the bar color
-                NavigationController.NavigationBar.TintColor = Theme.BackgroundColor; //in ios6, this is for the bar color
+            var isDefaultColor = applyDefaultTheme || !Theme.IsLightContent;
+
+            var textColor = isDefaultColor
+                                ? UIColor.FromRGB(44, 44, 44)
+                                : UIColor.White;
+
+            var navBarColor = isDefaultColor
+                              ? UIColor.White
+                              : Theme.BackgroundColor;
+
+            // change color of navigation bar
+            if (UIHelper.IsOS7orHigher) 
+            {
+                NavigationController.NavigationBar.BarTintColor = navBarColor;
+                UINavigationBar.Appearance.BarTintColor = navBarColor;
+            } 
+            else 
+            {
+                // change the background color of the nav bar (setting an image gets rid of the gradient look)
+                UIImage clearBackground;
+                if (isDefaultColor)
+                {
+                    clearBackground = UIImage.FromFile("clearButton.png");
+                }
+                else
+                {
+                    clearBackground = ImageHelper.CreateFromColor(navBarColor);
+                }
+                clearBackground = clearBackground.CreateResizableImage(UIEdgeInsets.Zero);
+                UINavigationBar.Appearance.SetBackgroundImage(clearBackground, UIBarMetrics.Default); 
 
                 //change the default ios6 back button look to the ios7 look
-                var clearBackground = UIImage.FromFile ("clearButton.png").CreateResizableImage(UIEdgeInsets.Zero);
-                var backBackground = UIImage.FromFile (Theme.IsLightContent ? "left_arrow_white.png" : "left_arrow.png").CreateResizableImage (new UIEdgeInsets (0, 12, 21, 0));
+                var backBackground = UIImage.FromFile (isDefaultColor ? "left_arrow.png" : "left_arrow_white.png").CreateResizableImage (new UIEdgeInsets (0, 12, 21, 0));
                 UIBarButtonItem.Appearance.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default); 
                 UIBarButtonItem.Appearance.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default); 
             }
 
-            var titleFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
-            var navBarButtonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
-
             // set title color
             UINavigationBar.Appearance.TintColor = textColor;
             UINavigationBar.Appearance.SetTitleTextAttributes (new UITextAttributes () {
-                TextColor = textColor,
                 Font = titleFont,
-                TextShadowColor = UIColor.Clear,
-                TextShadowOffset = new UIOffset(0,0)
-            });
-
-            // set back/left/right button color
-            var buttonTextColor = new UITextAttributes () {
-                Font = navBarButtonFont,
                 TextColor = textColor,
-                TextShadowColor = UIColor.Clear,
-                TextShadowOffset = new UIOffset(0,0)
-            };
-            var selectedButtonTextColor = new UITextAttributes () {
-                Font = navBarButtonFont,
-                TextColor = textColor.ColorWithAlpha(0.5f),
-                TextShadowColor = UIColor.Clear,
-                TextShadowOffset = new UIOffset(0,0)
-            };
-
-            UIBarButtonItem.Appearance.TintColor = textColor;
-            UIBarButtonItem.Appearance.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
-            UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
-            UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
-        }
-
-        public void SetDefaultNavigationBarAppearance()
-        {
-            var textColor = UIColor.FromRGB (44, 44, 44);
-
-            // navigation bar
-            if (UIHelper.IsOS7orHigher) {
-                NavigationController.NavigationBar.BarTintColor = UIColor.White;
-                NavigationController.NavigationBar.TintColor = textColor; //in ios7, this is for the back chevron
-                UINavigationBar.Appearance.BarTintColor = UIColor.White;
-                UINavigationBar.Appearance.TintColor = textColor; //in ios7, this is for the back chevron
-            } else {
-                UINavigationBar.Appearance.TintColor = UIColor.White; //in ios6, this is for the bar color
-                NavigationController.NavigationBar.TintColor = UIColor.White; //in ios6, this is for the bar color
-
-                //change the default ios6 back button look to the ios7 look
-                var clearBackground = UIImage.FromFile ("clearButton.png").CreateResizableImage(UIEdgeInsets.Zero);
-                var backBackground = UIImage.FromFile ("left_arrow.png").CreateResizableImage (new UIEdgeInsets (0, 12, 21, 0));
-                UIBarButtonItem.Appearance.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default); 
-                UIBarButtonItem.Appearance.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default); 
-            }
-
-            var titleFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
-            var navBarButtonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
-
-            // set title color
-            UINavigationBar.Appearance.TintColor = textColor;
-            UINavigationBar.Appearance.SetTitleTextAttributes (new UITextAttributes () {
-                TextColor = textColor,
-                Font = titleFont,
                 TextShadowColor = UIColor.Clear,
                 TextShadowOffset = new UIOffset(0,0)
             });

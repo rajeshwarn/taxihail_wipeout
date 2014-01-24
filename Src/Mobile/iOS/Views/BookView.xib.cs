@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (!_defaultThemeApplied)
             {
                 // reset to default theme for the navigation bar
-                SetDefaultNavigationBarAppearance();
+                ChangeThemeOfNavigationBar(true);
                 _defaultThemeApplied = true;
             }
 

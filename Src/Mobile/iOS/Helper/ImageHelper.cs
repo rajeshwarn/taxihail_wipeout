@@ -3,110 +3,38 @@ using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using System.Drawing;
+using MonoTouch.CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
 	public static class ImageHelper
 	{
+        public static UIImage CreateFromColor(UIColor color)
+        {
+            var rect = new RectangleF(0f, 0f, 1f, 1f);
+            UIGraphics.BeginImageContext(rect.Size);
+
+            var context = UIGraphics.GetCurrentContext();
+            context.SetFillColorWithColor(color.CGColor);
+            context.FillRect(rect);
+
+            var image = UIGraphics.GetImageFromCurrentImageContext();
+            UIGraphics.EndImageContext();
+
+            return image;
+        }
 
 		public static UIImage GetImage ( string imagePath )
 		{
-			
-			if ( !imagePath.HasValue (  ) )
+			if (!imagePath.HasValue())
 			{
-				Logger.LogMessage ( "Value is null!" );
+                Logger.LogMessage (string.Format("Value is null for path {0}", imagePath));
 				return null;
 			}
-			
-			UIImage result;
-			
-			result = UIImage.FromFile ( imagePath );
-			
-			return result;
-			
+
+            return UIImage.FromFile (imagePath);
 		}
-
-		public static void LoadImage ( byte[] image, UIImageView imageView )
-		{
-			
-			LoadImage ( image, imageView, null );
-			
-			
-		}
-
-		public static void LoadImage ( byte[] image, UIImageView imageView, string pathDefault )
-		{
-			
-			ThreadHelper.ExecuteInThread ( (  ) =>
-			{
-				try
-				{
-					
-					var nsImage = NSData.FromArray ( image );
-					UIImage loadedImage = null;
-										
-					if ( nsImage != null )
-					{
-						loadedImage = UIImage.LoadFromData ( nsImage );
-					}
-
-
-					else if ( pathDefault.HasValue (  ) )
-					{
-						loadedImage = UIImage.FromFile ( pathDefault );
-					}
-					
-					imageView.InvokeOnMainThread ( (  ) => imageView.Image = loadedImage );
-				}
-				catch ( Exception ex )
-				{
-					Logger.LogError ( ex );
-				}
-			} );
-			
-			
-		}
-
-		public static void LoadImage ( string path, UIImageView image )
-		{
-			LoadImage ( path, image, null );
-		}
-
-		public static void LoadImage ( string path, UIImageView image, string pathDefault )
-		{
-			
-			ThreadHelper.ExecuteInThread ( (  ) =>
-			{
-				try
-				{
-					NSData data = null;
-					UIImage loadedImage = null;
-					if ( path.HasValue (  ) )
-					{
-						data = NSData.FromUrl ( new NSUrl ( path ) );						
-						if ( data != null )
-						{
-							loadedImage = UIImage.LoadFromData ( data );
-						}
-					}
-					
-					if ( ( ( data == null ) || ( loadedImage == null ) ) && ( pathDefault.HasValue (  ) ) )
-					{
-						loadedImage = UIImage.FromFile ( pathDefault );
-					}
-					
-					image.InvokeOnMainThread ( (  ) => image.Image = loadedImage );
-				}
-// ReSharper disable once EmptyGeneralCatchClause
-				catch
-				{
-					
-				}
-			} );
-			
-			
-		}
-		
 	}
 }
 
