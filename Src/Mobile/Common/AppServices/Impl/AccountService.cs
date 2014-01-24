@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             if (cached == null)
             {
-                var refData = UseServiceClient<ReferenceDataServiceClient, ReferenceData>(service => service.GetReferenceData());
+                var refData = UseServiceClientAsync<ReferenceDataServiceClient, ReferenceData>(service => service.GetReferenceData());
                 Cache.Set(RefDataCacheKey, await refData, DateTime.Now.AddHours(1));
                 return await refData;
 
@@ -132,7 +132,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return cached;
             }
 
-            var result = UseServiceClientAsync<IAccountServiceClient, IList<Address>>(service => service.GetHistoryAddresses (CurrentAccount.Id));
+            var result = UseServiceClientTask<IAccountServiceClient, IList<Address>>(service => service.GetHistoryAddresses (CurrentAccount.Id));
 
             Cache.Set(HistoryAddressesCacheKey, result.ToArray());
             return result;
@@ -154,12 +154,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public Task<Order> GetHistoryOrderAsync (Guid id)
 		{
-			return UseServiceClient<OrderServiceClient, Order> (service => service.GetOrder (id));
+			return UseServiceClientAsync<OrderServiceClient, Order> (service => service.GetOrder (id));
 		}
 
         public OrderStatusDetail[] GetActiveOrdersStatus()
         {
-            var result = UseServiceClientAsync<OrderServiceClient, OrderStatusDetail[]>(service => service.GetActiveOrdersStatus());
+            var result = UseServiceClientTask<OrderServiceClient, OrderStatusDetail[]>(service => service.GetActiveOrdersStatus());
             return result;
         }
 
@@ -170,7 +170,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             if (cached != null) {
                 return cached;
             }
-            var result = UseServiceClientAsync<IAccountServiceClient, IEnumerable<Address>>(service => service.GetFavoriteAddresses());
+            var result = UseServiceClientTask<IAccountServiceClient, IEnumerable<Address>>(service => service.GetFavoriteAddresses());
             var favoriteAddresses = result as Address[] ?? result.ToArray();
             Cache.Set (FavoriteAddressesCacheKey, favoriteAddresses.ToArray ());
             return favoriteAddresses;
@@ -281,7 +281,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			Logger.LogMessage("SignIn with server {0}", _appSettings.ServiceUrl);
             try 
 			{
-				var authResponse = await UseServiceClient<IAuthServiceClient, AuthenticationData>(service => service
+				var authResponse = await UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service
 					.Authenticate (email, password),
 					error => { /* Avoid trigerring global error handler */ });
                 SaveCredentials (authResponse);                
@@ -344,7 +344,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
 			{
-				var authResponse = await UseServiceClient<IAuthServiceClient, AuthenticationData>(service => service.AuthenticateTwitter(twitterId), e => {});
+				var authResponse = await UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service.AuthenticateTwitter(twitterId), e => {});
                 SaveCredentials (authResponse);
 
 				return await GetAccount ();
@@ -366,7 +366,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 Cache.Clear (HistoryAddressesCacheKey);
                 Cache.Clear (FavoriteAddressesCacheKey);
 
-				var account = await UseServiceClient<IAccountServiceClient, Account>(service => service.GetMyAccount ());
+				var account = await UseServiceClientAsync<IAccountServiceClient, Account>(service => service.GetMyAccount ());
                 if (account != null)
 				{
                     CurrentAccount = account;
@@ -390,7 +390,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Account RefreshAccount ()
         {
             try {
-                var account = UseServiceClientAsync<IAccountServiceClient, Account>(service => service.GetMyAccount());
+                var account = UseServiceClientTask<IAccountServiceClient, Account>(service => service.GetMyAccount());
                 CurrentAccount = account;
                 return account;
             } catch {
@@ -527,7 +527,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public IEnumerable<CreditCardDetails> GetCreditCards ()
         {
-            var result = UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(service => service.GetCreditCards());
+            var result = UseServiceClientTask<IAccountServiceClient, IEnumerable<CreditCardDetails>>(service => service.GetCreditCards());
             return result;
         }
 
@@ -541,7 +541,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			try
 			{
-                var response = UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
+                var response = UseServiceClientTask<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
                     creditCard.CardNumber,
                     new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
                     creditCard.CCV));	
