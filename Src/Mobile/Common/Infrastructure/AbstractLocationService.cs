@@ -67,12 +67,10 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
             }
 
             if((falseIfBetter.Time - trueIfBetter.Time).Duration() > ValidCoordinateTime)            
-            {
-                Console.WriteLine("IsBetterThan : too old");
+            {                
                 return false;
             }
-
-            Console.WriteLine( string.Format("IsBetterThan current error {0}, other error {1}", trueIfBetter.Error, falseIfBetter.Error) );
+			            
             return trueIfBetter.Error < falseIfBetter.Error;
         }
     }
