@@ -99,6 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public override void Draw (RectangleF rect)
 		{
+			base.Draw(rect);
 			// fix problem with ios6 using the default font
             // ClearButton needs a bold typeface, otherwise, apply Light font.
             // TODO: Need to understand why we need this specific hack for iSO 6
