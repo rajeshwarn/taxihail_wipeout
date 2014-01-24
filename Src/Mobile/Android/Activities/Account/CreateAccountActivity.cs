@@ -1,5 +1,6 @@
 using Android.App;
 using Android.Content.PM;
+using Android.Text;
 using Android.Widget;
 using Android.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
@@ -9,11 +10,12 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using CrossUI.Droid.Dialog.Elements;
 using CrossUI.Droid.Dialog;
 using CrossUI.Droid;
+using Android.Util;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-	[Activity(Label = "Sign Up", Theme = "@style/LoginTheme", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class SignUpActivity : BaseBindingActivity<CreateAccountViewModel>
+    [Activity(Label = "Create Account", Theme = "@style/LoginTheme", ScreenOrientation = ScreenOrientation.Portrait)]
+    public class CreateAccountActivity : BaseBindingActivity<CreateAccountViewModel>
     {
         protected override int ViewTitleResourceId
         {
@@ -23,21 +25,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         protected override void OnViewModelSet()
         {
 			DroidResources.Initialize (typeof (Resource.Layout));
+            SetContentView(Resource.Layout.View_CreateAccount);
+            ViewGroup registerContainer = (ViewGroup)FindViewById<LinearLayout>(Resource.Id.registerContainer);
+            SetDialog (registerContainer, 0);
+            TextView lblTermsAndConditions = (TextView)FindViewById<TextView>(Resource.Id.lblTermsAndConditions);
 
-			SetContentView(Resource.Layout.View_SignUp);
-
-			ViewGroup mainContainer = (ViewGroup)FindViewById<LinearLayout>(Resource.Id.mainContainer);
-
-			SetDialog (mainContainer, 3);
+            var ResourceAcklowledge =  GetString( Resource.String.TermsAndConditionsAcknowledgment);
+            var ResourceAcklowledgeBold = GetString(Resource.String.TermsAndConditionsLabel);
+            var textWithBold = Html.FromHtml(ResourceAcklowledge.Replace(ResourceAcklowledgeBold, "<b>" + ResourceAcklowledgeBold + "</b>"));
+            lblTermsAndConditions.SetText(textWithBold, TextView.BufferType.Spannable);
         }	
 
-		public void SetDialog(ViewGroup mainContainer, int positionInMainContainer)
+        public void SetDialog(ViewGroup registerContainer, int positionInContainer)
 		{
-			var signMenu = new DialogListView(this);
-			signMenu.LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.FillParent, ViewGroup.LayoutParams.WrapContent);
-			signMenu.Root = InitializeRoot();			
-			mainContainer.AddView(signMenu, positionInMainContainer);
+            var signMenu = new DialogListView(this);
+            signMenu.LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.FillParent,  ViewGroup.LayoutParams.WrapContent);
+            signMenu.LayoutParameters.Height = GetDipInPixels(5 * CellHeightInDip + (ViewModel.HasSocialInfo ? GetDipInPixels(2 * CellHeightInDip) : 0));
+            signMenu.Root = InitializeRoot();			
+            signMenu.SetScrollContainer (false);
+            registerContainer.AddView(signMenu, positionInContainer);
 		}
+
+        private int CellHeightInDip = 42;
+
+        private int GetDipInPixels(int value)
+        {
+            DisplayMetrics dm = new DisplayMetrics();
+            WindowManager.DefaultDisplay.GetMetrics(dm);
+            return (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, value, dm);
+        }
 
 		RootElement InitializeRoot()
 		{
