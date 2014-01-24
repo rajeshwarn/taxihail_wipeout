@@ -22,5 +22,7 @@ namespace apcurium.MK.Booking.IBS
         public string LastName;
         
         public string MobilePhone;
+
+        public string DriverId;
     }
 }

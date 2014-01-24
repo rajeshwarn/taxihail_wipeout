@@ -73,14 +73,19 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 if (orderDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
 
+                var orderStatus = _orderDao.FindOrderStatusById(orderDetail.Id);
+                if (orderStatus == null) throw new HttpError(HttpStatusCode.BadRequest, "Order status not found");
+
                 var request =  new AuthorizationRequest
                     {
                         Amount = (int) (preAuthorizeRequest.Amount*100),
                         CardOnFileToken = preAuthorizeRequest.CardToken,
                         TransactionType = AuthorizationRequest.TransactionTypes.PreAuthorized,
-                        CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,
-                        CustomerReferenceNumber =  orderDetail.IBSOrderId.ToString(),
-                        MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken
+                        CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,                        
+                        MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken,
+                        CustomerReferenceNumber = string.IsNullOrEmpty(orderStatus.ReferenceNumber) ? orderDetail.IBSOrderId.ToString() : orderStatus.ReferenceNumber,
+                        EmployeeId = orderStatus.DriverInfos == null ? "" : orderStatus.DriverInfos.DriverId,
+                        DeviceName = orderStatus.TerminalId
                     };
 
                 var response = CmtPaymentServiceClient.Post(request);
@@ -131,16 +136,23 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 if (orderDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
 
+
+                var orderStatus = _orderDao.FindOrderStatusById(orderDetail.Id);
+                if  ( orderStatus == null )  throw new HttpError(HttpStatusCode.BadRequest, "Order status not found");
+
                 var authRequest = new AuthorizationRequest
                 {
                     Amount = (int)(request.Amount * 100),
                     CardOnFileToken = request.CardToken,
                     TransactionType = AuthorizationRequest.TransactionTypes.PreAuthorized,
-                    CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,
-                    CustomerReferenceNumber = orderDetail.IBSOrderId.ToString(),
-                    MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken
+                    CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,                    
+                    MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken,
+                    CustomerReferenceNumber = string.IsNullOrEmpty(orderStatus.ReferenceNumber) ? orderDetail.IBSOrderId.ToString() : orderStatus.ReferenceNumber,
+                    EmployeeId = orderStatus.DriverInfos == null ? "" : orderStatus.DriverInfos.DriverId,                    
+                    DeviceName = orderStatus.TerminalId,
+                    
                 };
-
+                
                 var authResponse = CmtPaymentServiceClient.Post(authRequest);
                 message = authResponse.ResponseMessage;
 
@@ -268,7 +280,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     CallbackUrl = "",
                     CustomerId = orderStatusDetail.IBSOrderId.ToString(),
                     CustomerName = accountDetail.Name,
-                    DriverId = orderStatusDetail.DriverInfos.FirstName,
+                    DriverId = orderStatusDetail.DriverInfos.DriverId,
                     Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
                     Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
                     Medallion = orderStatusDetail.VehicleNumber,
