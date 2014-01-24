@@ -490,6 +490,7 @@
     <Compile Include="Controls\Widgets\FlatCheckBox.cs" />
     <Compile Include="Controls\Binding\FlatCheckBoxBinding.cs" />
     <Compile Include="Controls\Widgets\FlatTextView.cs" />
+    <Compile Include="Controls\Widgets\PanelMenuSource.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -781,6 +782,8 @@
     <BundleResource Include="Resources\unchecked%402x.png" />
     <BundleResource Include="Resources\left_arrow_white.png" />
     <BundleResource Include="Resources\left_arrow_white%402x.png" />
+    <BundleResource Include="Resources\mk_logo.png" />
+    <BundleResource Include="Resources\mk_logo%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

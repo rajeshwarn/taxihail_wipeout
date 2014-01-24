@@ -12,7 +12,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		public PanelMenuCell (string cellIdentifier, string bindingText)
 			: base (bindingText, UITableViewCellStyle.Default, new NSString (cellIdentifier), UITableViewCellAccessory.None)
 		{
-			SelectionStyle = UITableViewCellSelectionStyle.None;
+			UIView customColorView =  new UIView();
+			customColorView.BackgroundColor = UIColor.White;
+			SelectedBackgroundView =  customColorView;
+
 			Accessory = UITableViewCellAccessory.None;
 
 			BackgroundColor = UIColor.Clear;
