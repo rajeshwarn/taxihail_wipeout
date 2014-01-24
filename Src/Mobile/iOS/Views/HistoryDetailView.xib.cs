@@ -40,9 +40,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			View.BackgroundColor = UIColor.FromRGB(239, 239, 239);
 
 			FlatButtonStyle.Green.ApplyTo(btnRebook);
-			FlatButtonStyle.Green.ApplyTo(btnStatus);
+			FlatButtonStyle.Silver.ApplyTo(btnStatus);
 
-			FlatButtonStyle.Silver.ApplyTo(btnRateRide);
+			FlatButtonStyle.Green.ApplyTo(btnRateRide);
 			FlatButtonStyle.Silver.ApplyTo(btnViewRating);
 
 			FlatButtonStyle.Green.ApplyTo(btnSendReceipt);
@@ -81,66 +81,59 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			var set = this.CreateBindingSet<HistoryDetailView, HistoryDetailViewModel>();
 
-			/*set.Bind(btnRebook)
+			set.Bind(btnRebook)
 				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.RebookIsAvailable)
-				.WithConversion("BoolInverter");*/
+				.WithConversion("BoolInverter");
 			set.Bind(btnRebook)
 				.For("TouchUpInside")
 				.To(vm => vm.RebookOrder);
-			btnRebook.RemoveFromSuperview();
 
-			/*set.Bind(btnStatus)
-				.For(v => v.Hidden)
-				.To(vm => vm.IsCompleted);*/
+			set.Bind(btnStatus)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.IsCompleted);
 			set.Bind(btnStatus)
 				.For("TouchUpInside")
 				.To(vm => vm.NavigateToOrderStatus);
-			//btnStatus.RemoveFromSuperview();
 
-			/*set.Bind(btnRateRide)
+			set.Bind(btnRateRide)
 				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.ShowRateButton)
-				.WithConversion("BoolInverter");*/
+				.WithConversion("BoolInverter");
 			set.Bind(btnRateRide)
 				.For("TouchUpInside")
 				.To(vm => vm.NavigateToRatingPage);
-			btnRateRide.RemoveFromSuperview();
 
-			/*set.Bind(btnViewRating)
-				.For(v => v.Hidden)
+			set.Bind(btnViewRating)
+				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.HasRated)
-				.WithConversion("BoolInverter");*/
+				.WithConversion("BoolInverter");
 			set.Bind(btnViewRating)
 				.For("TouchUpInside")
 				.To(vm => vm.NavigateToRatingPage);
-			//btnViewRating.RemoveFromSuperview();
 
-			/*set.Bind(btnSendReceipt)
-				.For(v => v.Hidden)
+			set.Bind(btnSendReceipt)
+				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.SendReceiptAvailable)
-				.WithConversion("BoolInverter");*/
+				.WithConversion("BoolInverter");
 			set.Bind(btnSendReceipt)
 				.For("TouchUpInside")
 				.To(vm => vm.SendReceipt);
-			//btnSendReceipt.RemoveFromSuperview();
 
-			/*set.Bind(btnDelete)
+			set.Bind(btnDelete)
 				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.IsCompleted)
-				.WithConversion("BoolInverter");*/
+				.WithConversion("BoolInverter");
 			set.Bind(btnDelete)
 				.For("TouchUpInside")
 				.To(vm => vm.CancelOrder);
-			//btnDelete.RemoveFromSuperview();
 
-			/*set.Bind(btnCancel)
-				.For(v => v.Hidden)
-				.To(vm => vm.IsCompleted);*/
+			set.Bind(btnCancel)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.IsCompleted);
 			set.Bind(btnCancel)
 				.For("TouchUpInside")
 				.To(vm => vm.CancelOrder);
-			btnCancel.RemoveFromSuperview();
 
 			set.Bind(txtOrder)
 				.For(v => v.Text)
@@ -169,11 +162,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Text)
 				.To(vm => vm.Status.IbsStatusDescription);
 
-			/*set.Bind(lblAuthorization)
+			set.Bind(lblAuthorization)
 				.For(v => v.Hidden)
 				.To(vm => vm.AuthorizationNumber)
-				.WithConversion("NoValueToTrueConverter");*/
+				.WithConversion("NoValueToTrueConverter");
 
+			set.Bind(txtAthorization)
+				.For(v => v.Hidden)
+				.To(vm => vm.AuthorizationNumber)
+				.WithConversion("NoValueToTrueConverter");
 			set.Bind(txtAthorization)
 				.For(v => v.Text)
 				.To(vm => vm.AuthorizationNumber);
