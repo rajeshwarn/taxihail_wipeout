@@ -12,44 +12,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class BaseService: IUseServiceClient
     {
-		[Obsolete("use async version")]
-        protected string UseServiceClient<T>(Action<T> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where T : class
-        {
-			var service = TinyIoCContainer.Current.Resolve<T>();
-            return UseServiceClient(service, action, errorHandler, method);
-        }
-		[Obsolete("use async version")]
-        protected string UseServiceClient<T>( string name, Action<T> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where T : class
-        {
-			var service = TinyIoCContainer.Current.Resolve<T>(name);
-			return UseServiceClient(service, action, errorHandler, method);
-        }
-		[Obsolete("use async version")]
-        private string UseServiceClient<T>(T service, Action<T> action, Action<Exception> errorHandler, string method) where T : class
-		{
-			try
-			{
-                using(Logger.StartStopwatch("*************************************   UseServiceClient : " + method))
-                {
-				    action(service);
-                }
-				return "";
-			}
-			catch (Exception ex)
-            {   
-				Logger.LogError (ex);
-			    if (errorHandler == null)
-			    {
-					TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
-			    }
-			    else
-			    {
-                   errorHandler (ex);
-                }                 
-				return ex.Message;
-
-			}
-		}
 
 		protected async Task<TResult> UseServiceClientAsync<TService, TResult>(Func<TService, Task<TResult>> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where TResult : class  where TService : class
         {
@@ -76,7 +38,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				} 
                 throw;
             }
-            return default(TResult);
         }
 
 		protected async Task UseServiceClientAsync<TService>(Func<TService, Task> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where TService : class
@@ -105,11 +66,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 		}
 
-        protected TResult UseServiceClientTask<TService, TResult>(Func<TService, Task<TResult>> action, [CallerMemberName] string method = "")
+		[Obsolete("Use Async Version. This one is for legacy code not yet migrated to async / await")]
+		protected TResult UseServiceClientTask<TService, TResult>(Func<TService, Task<TResult>> action,string serviceName = null,[CallerMemberName] string method = "")
             where TResult : class
             where TService : class
         {
-            var service = TinyIoCContainer.Current.Resolve<TService>();
+			var service = serviceName == null ? 
+			              	TinyIoCContainer.Current.Resolve<TService>()
+			              : TinyIoCContainer.Current.Resolve<TService>(serviceName);
 
             try
             {
@@ -132,6 +96,32 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             return default(TResult);
         }
+
+		[Obsolete("Use Async Version. This one is for legacy code not yet migrated to async / await")]
+		protected void UseServiceClientTask<TService>(Func<TService, Task> action, [CallerMemberName] string method = "")
+			where TService : class
+		{
+			var service = TinyIoCContainer.Current.Resolve<TService>();
+
+			try
+			{
+				using (Logger.StartStopwatch("*************************************   UseServiceClient : " + method))
+				{
+					var task = action(service);
+					task.Wait();
+				}
+			}
+			catch (AggregateException ex)
+			{
+				ex.Handle(x =>
+					{
+						Logger.LogError(x);
+						TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(x);
+						return true;
+					});
+
+			}
+		}
 
         private ILogger _logger;
         protected ILogger Logger

@@ -256,10 +256,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 DefaultTipPercent = tipPercent
             };
             
-            UseServiceClient<IAccountServiceClient> (service =>
-                                                 {                     
-                service.UpdateBookingSettings (bsr);
-                
+			UseServiceClientTask<IAccountServiceClient> (service =>                                                 {                     
+				return service.UpdateBookingSettings (bsr);                
             });
             var account = CurrentAccount;
             account.Settings = settings;
@@ -271,7 +269,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
         public string UpdatePassword (Guid accountId, string currentPassword, string newPassword)
         {
-            string response = UseServiceClient<IAccountServiceClient> (service => service.UpdatePassword (new UpdatePassword{ AccountId = accountId, CurrentPassword = currentPassword, NewPassword = newPassword }), ex => { throw ex; });
+			var response = UseServiceClientTask<IAccountServiceClient, string> (service => service.UpdatePassword (new UpdatePassword{ AccountId = accountId, CurrentPassword = currentPassword, NewPassword = newPassword }));
 
             return response;
         }
@@ -400,10 +398,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void ResetPassword (string email)
         {
-            UseServiceClient<IAccountServiceClient> ("NotAuthenticated", service => {               
-                service.ResetPassword (email);               
-            }, ex => {
-                throw ex; });  
+			UseServiceClientTask<IAccountServiceClient> (service => service.ResetPassword (email));  
         }
 
 		public async Task Register (RegisterAccount data)
@@ -420,7 +415,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 
                 RemoveFromCacheArray<Address> (FavoriteAddressesCacheKey, toDelete, (id, a) => a.Id == id);                
 
-                UseServiceClient<IAccountServiceClient> (service => service.RemoveFavoriteAddress (toDelete));
+				UseServiceClientTask<IAccountServiceClient> (service => service.RemoveFavoriteAddress (toDelete));
             }
         }
 
@@ -431,7 +426,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 RemoveFromCacheArray<Address> (HistoryAddressesCacheKey, toDelete, (id, a) => a.Id == id);
 
-                UseServiceClient<IAccountServiceClient> (service => service.RemoveAddress (toDelete));
+				UseServiceClientTask<IAccountServiceClient> (service => service.RemoveAddress (toDelete));
             }
         }
 
@@ -450,7 +445,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             UpdateCacheArray (FavoriteAddressesCacheKey, address, (a1, a2) => a1.Id.Equals (a2.Id));
 
 
-            UseServiceClient<IAccountServiceClient> (service =>
+			UseServiceClientTask<IAccountServiceClient> (service =>
             {
                 var toSave = new SaveAddress
                     {
@@ -461,11 +456,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 var toMove = toSave;
 
                 if (isNew) {                        
-                    service.AddFavoriteAddress (toSave);
+				  return service.AddFavoriteAddress (toSave);
                 } else if (address.IsHistoric) {
-                    service.UpdateFavoriteAddress (toMove);
+				  return service.UpdateFavoriteAddress (toMove);
                 } else {
-                    service.UpdateFavoriteAddress (toSave);
+			      return service.UpdateFavoriteAddress (toSave);
                 }
 
             }
@@ -533,7 +528,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void RemoveCreditCard (Guid creditCardId)
         {
-            UseServiceClient<IAccountServiceClient>(client => client.RemoveCreditCard(creditCardId,""), ex => { throw ex; });
+			UseServiceClientTask<IAccountServiceClient>(client => client.RemoveCreditCard(creditCardId,""));
             
         }
 
@@ -563,8 +558,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 Token = creditCard.Token
             };
             
-            UseServiceClient<IAccountServiceClient> (client => client.AddCreditCard (request), ex => {
-                throw ex; });  
+			UseServiceClientTask<IAccountServiceClient> (client => client.AddCreditCard (request));  
 
 			return true;
 

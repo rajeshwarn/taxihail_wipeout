@@ -65,12 +65,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool IsPaired(Guid orderId)
         {
-            var isPaired = false;
-            UseServiceClient<OrderServiceClient>(service =>
-                {
-                    isPaired = service.GetOrderPairing(orderId) != null;
-                });
-            return isPaired;
+			var isPairedResult = UseServiceClientTask<OrderServiceClient, OrderPairingDetail>(service => service.GetOrderPairing(orderId));
+			return isPairedResult != null;
         }
 
 		public async Task<OrderStatusDetail> CreateOrder (CreateOrder order)
@@ -190,7 +186,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void RemoveFromHistory (Guid orderId)
         {
-            UseServiceClient<OrderServiceClient> (service => service.RemoveFromHistory (orderId));
+			UseServiceClientTask<OrderServiceClient> (service => service.RemoveFromHistory (orderId));
         }
 
         public bool IsCompleted (Guid orderId)
@@ -302,25 +298,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool CancelOrder (Guid orderId)
         {
-            bool isCompleted = false;
-
-            UseServiceClient<OrderServiceClient> (service =>
-            {
-                service.CancelOrder (orderId);
-                isCompleted = true;
-            });
+			bool isCompleted = true;
+			try{
+				UseServiceClientTask<OrderServiceClient> (service => service.CancelOrder (orderId));
+			}catch{
+				isCompleted = false;
+			}
             return isCompleted;
         }
 
         public bool SendReceipt (Guid orderId)
         {
-            bool isCompleted = false;
-
-            UseServiceClient<OrderServiceClient> (service =>
-            {
-                service.SendReceipt (orderId);
-                isCompleted = true;
-            });
+			bool isCompleted = true;
+			try{
+				UseServiceClientTask<OrderServiceClient> (service => service.SendReceipt (orderId));			
+			}catch{
+				isCompleted = false;
+			}
             return isCompleted;
         }
 
@@ -347,7 +341,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public void SendRatingReview (OrderRatings orderRatings)
         {
             var request = new OrderRatingsRequest{ Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
-            UseServiceClient<OrderServiceClient> (service => service.RateOrder (request));
+			UseServiceClientTask<OrderServiceClient> (service => service.RateOrder (request));
         }
 
     }
