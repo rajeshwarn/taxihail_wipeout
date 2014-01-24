@@ -15,11 +15,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 	[Activity(Label = "Sign Up", Theme = "@style/LoginTheme", ScreenOrientation = ScreenOrientation.Portrait)]
     public class SignUpActivity : BaseBindingActivity<CreateAccountViewModel>
     {
-        protected override int ViewTitleResourceId
-        {
-			get { return Resource.String.View_CreateAccount; }
-        }
-
         protected override void OnViewModelSet()
         {
 			DroidResources.Initialize (typeof (Resource.Layout));

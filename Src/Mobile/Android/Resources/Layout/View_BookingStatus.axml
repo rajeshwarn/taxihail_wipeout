@@ -55,7 +55,7 @@
                 android:layout_marginLeft="8dip"
                 android:layout_marginRight="8dip"
                 android:layout_gravity="center_vertical"
-                android:text="@string/StatusPayButton"
+                android:text="@string/PayNow"
                 local:MvxBind="Click PayForOrderCommand; Visibility IsPayButtonVisible, Converter=Visibility" />
             <Button
                 android:id="@+id/ResendBtn"
@@ -66,7 +66,7 @@
                 android:layout_marginLeft="8dip"
                 android:layout_marginRight="8dip"
                 android:layout_gravity="center_vertical"
-                android:text="@string/ReSendConfirmationButton"
+                android:text="@string/ReSendConfirmation"
                 local:MvxBind="Click ResendConfirmationToDriver; Visibility IsResendButtonVisible, Converter=Visibility" />
             <Button
                 android:id="@+id/UnpairBtn"

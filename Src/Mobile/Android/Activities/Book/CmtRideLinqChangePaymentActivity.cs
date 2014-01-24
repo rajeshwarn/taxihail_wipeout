@@ -16,11 +16,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
     [Activity(Label = "CmtRideLinqChangePaymentActivity", Theme = "@style/MainTheme", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class CmtRideLinqChangePaymentActivity : BaseBindingActivity<CmtRideLinqChangePaymentViewModel>
     {
-        protected override int ViewTitleResourceId
-        {
-            get { return Resource.String.View_Payments_CmtRideLinqChangePaymentTitle; }
-        }
-
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_Payments_CmtRideLinqChangePayment);

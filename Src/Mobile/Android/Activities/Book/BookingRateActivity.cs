@@ -13,11 +13,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     {
         private ListView _listView;
 
-        protected override int ViewTitleResourceId
-        {
-            get { return Resource.String.View_RatePage; }
-        }
-
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);

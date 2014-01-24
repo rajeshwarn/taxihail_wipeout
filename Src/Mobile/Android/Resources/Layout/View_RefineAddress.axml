@@ -43,8 +43,7 @@
             android:orientation="vertical"
             android:padding="15dip"
             android:background="@color/transparent">
-
-            <!-- Green -->                    
+        <!-- Green -->
             <Button
                 android:id="@+id/SaveButton"
                 android:layout_width="fill_parent"
@@ -53,7 +52,7 @@
                 android:singleLine="true"
                 android:lines="1"
                 local:MvxBind="Click SaveCommand"
-                android:text="@string/SaveButton" />
+                android:text="@string/Save" />
         </LinearLayout>
     </LinearLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationItem.HidesBackButton = true;
 
             AppButtons.FormatStandardButton((GradientButton)btnAccept, Localize.GetValue("AcceptButton"), AppStyle.ButtonColor.Grey );
-            AppButtons.FormatStandardButton((GradientButton)btnCancel, Localize.GetValue("CancelBoutton"), AppStyle.ButtonColor.Grey);          
+            AppButtons.FormatStandardButton((GradientButton)btnCancel, Localize.GetValue("Cancel"), AppStyle.ButtonColor.Grey);          
 
             new [] { 
                 lblTitle

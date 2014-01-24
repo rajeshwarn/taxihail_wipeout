@@ -1,11 +1,10 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
-
-using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using TinyIoC;
 using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
@@ -14,12 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
     public class HistoryDetailActivity : BaseBindingActivity<HistoryDetailViewModel>
     {
         private TinyMessageSubscriptionToken _closeViewToken;
-
-        protected override int ViewTitleResourceId
-        {
-            get { return Resource.String.View_HistoryDetail; }
-        }
-
+        
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
