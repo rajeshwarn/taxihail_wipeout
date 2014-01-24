@@ -244,7 +244,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public void RefreshOrderStatus (OrderRated orderRated)
 		{
 			if (orderRated.Content == OrderId) {
-				LoadStatus();
+				HasRated = true;
 			}
         }
 
@@ -279,7 +279,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					            	                    {														
 															orderId = OrderId, 
 															canRate = canRate
-														}.ToStringDictionary(),RefreshOrderStatus);
+														}.ToStringDictionary(),
+													RefreshOrderStatus);
                                                });
             }
         }
