@@ -185,7 +185,7 @@
                 <constraint firstItem="65l-5V-CQA" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="pvf-mL-jrP"/>
                 <constraint firstAttribute="trailing" secondItem="65l-5V-CQA" secondAttribute="trailing" id="sMa-Rp-vxW"/>
             </constraints>
-            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
