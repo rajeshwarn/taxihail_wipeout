@@ -39,8 +39,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             
 			View.BackgroundColor = UIColor.FromRGB(239, 239, 239);
 
-			FlatButtonStyle.Red.ApplyTo(btnDelete);
 			FlatButtonStyle.Green.ApplyTo(btnRebook);
+			FlatButtonStyle.Silver.ApplyTo(btnStatus);
+
+			FlatButtonStyle.Green.ApplyTo(btnRateRide);
+			FlatButtonStyle.Silver.ApplyTo(btnViewRating);
+
+			FlatButtonStyle.Green.ApplyTo(btnSendReceipt);
+
+			FlatButtonStyle.Red.ApplyTo(btnDelete);
+			FlatButtonStyle.Red.ApplyTo(btnCancel);
 
 			lblOrder.Text = Localize.GetValue("HistoryDetailOrderLabel");
 			lblRequested.Text = Localize.GetValue("HistoryDetailRequestedLabel");
@@ -52,9 +60,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblPickupDate.Text = Localize.GetValue("HistoryDetailPickupDateLabel");
 			lblStatus.Text = Localize.GetValue("HistoryDetailStatusLabel");
             txtStatus.Text = Localize.GetValue("LoadingMessage");
+			lblAuthorization.Text = Localize.GetValue("HistoryDetailAuthorizationLabel");
 
 			btnRebook.SetTitle(Localize.GetValue("Rebook"), UIControlState.Normal);
+			btnStatus.SetTitle(Localize.GetValue("HistoryViewStatusButton"), UIControlState.Normal);
+
 			btnDelete.SetTitle(Localize.GetValue("Delete"), UIControlState.Normal);
+			btnCancel.SetTitle(Localize.GetValue("Cancel"), UIControlState.Normal);
+
+			btnRateRide.SetTitle(Localize.GetValue("RateRide"), UIControlState.Normal);
+			btnViewRating.SetTitle(Localize.GetValue("ViewRatingBtn"), UIControlState.Normal);
+
+			btnSendReceipt.SetTitle(Localize.GetValue("HistoryViewSendReceiptButton"), UIControlState.Normal);
 
 			if (ViewModel.HideDestination)
 			{
@@ -65,17 +82,56 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			var set = this.CreateBindingSet<HistoryDetailView, HistoryDetailViewModel>();
 
 			set.Bind(btnRebook)
-				.For(v => v.Hidden)
+				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.RebookIsAvailable)
 				.WithConversion("BoolInverter");
 			set.Bind(btnRebook)
 				.For("TouchUpInside")
 				.To(vm => vm.RebookOrder);
 
-			set.Bind(btnDelete)
-				.For(v => v.Hidden)
+			set.Bind(btnStatus)
+				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.IsCompleted);
+			set.Bind(btnStatus)
+				.For("TouchUpInside")
+				.To(vm => vm.NavigateToOrderStatus);
+
+			set.Bind(btnRateRide)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.ShowRateButton)
+				.WithConversion("BoolInverter");
+			set.Bind(btnRateRide)
+				.For("TouchUpInside")
+				.To(vm => vm.NavigateToRatingPage);
+
+			set.Bind(btnViewRating)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.HasRated)
+				.WithConversion("BoolInverter");
+			set.Bind(btnViewRating)
+				.For("TouchUpInside")
+				.To(vm => vm.NavigateToRatingPage);
+
+			set.Bind(btnSendReceipt)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.SendReceiptAvailable)
+				.WithConversion("BoolInverter");
+			set.Bind(btnSendReceipt)
+				.For("TouchUpInside")
+				.To(vm => vm.SendReceipt);
+
 			set.Bind(btnDelete)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.IsCompleted)
+				.WithConversion("BoolInverter");
+			set.Bind(btnDelete)
+				.For("TouchUpInside")
+				.To(vm => vm.CancelOrder);
+
+			set.Bind(btnCancel)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.IsCompleted);
+			set.Bind(btnCancel)
 				.For("TouchUpInside")
 				.To(vm => vm.CancelOrder);
 
@@ -105,6 +161,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(txtStatus)
 				.For(v => v.Text)
 				.To(vm => vm.Status.IbsStatusDescription);
+
+			set.Bind(lblAuthorization)
+				.For(v => v.Hidden)
+				.To(vm => vm.AuthorizationNumber)
+				.WithConversion("NoValueToTrueConverter");
+
+			set.Bind(txtAthorization)
+				.For(v => v.Hidden)
+				.To(vm => vm.AuthorizationNumber)
+				.WithConversion("NoValueToTrueConverter");
+			set.Bind(txtAthorization)
+				.For(v => v.Text)
+				.To(vm => vm.AuthorizationNumber);
 
 			set.Bind(txtPickupDate)
 				.For(v => v.Text)

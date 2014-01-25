@@ -13,10 +13,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class HistoryDetailView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCancel { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnDelete { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnRateRide { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnRebook { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnSendReceipt { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnStatus { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnViewRating { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.NSLayoutConstraint constraintDestinationLabelToAptRingCodeLabelHeight { get; set; }
@@ -26,6 +41,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblAptRingCode { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblAuthorization { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblDestination { get; set; }
@@ -49,6 +67,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UILabel txtAptRingCode { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UILabel txtAthorization { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel txtDestination { get; set; }
 
 		[Outlet]
@@ -68,14 +89,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnCancel != null) {
+				btnCancel.Dispose ();
+				btnCancel = null;
+			}
+
 			if (btnDelete != null) {
 				btnDelete.Dispose ();
 				btnDelete = null;
 			}
 
+			if (btnRateRide != null) {
+				btnRateRide.Dispose ();
+				btnRateRide = null;
+			}
+
 			if (btnRebook != null) {
 				btnRebook.Dispose ();
 				btnRebook = null;
+			}
+
+			if (btnStatus != null) {
+				btnStatus.Dispose ();
+				btnStatus = null;
+			}
+
+			if (btnViewRating != null) {
+				btnViewRating.Dispose ();
+				btnViewRating = null;
+			}
+
+			if (btnSendReceipt != null) {
+				btnSendReceipt.Dispose ();
+				btnSendReceipt = null;
 			}
 
 			if (constraintDestinationLabelToAptRingCodeLabelHeight != null) {
@@ -156,6 +202,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtStatus != null) {
 				txtStatus.Dispose ();
 				txtStatus = null;
+			}
+
+			if (lblAuthorization != null) {
+				lblAuthorization.Dispose ();
+				lblAuthorization = null;
+			}
+
+			if (txtAthorization != null) {
+				txtAthorization.Dispose ();
+				txtAthorization = null;
 			}
 		}
 	}
