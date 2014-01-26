@@ -209,8 +209,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             // change color of navigation bar
             if (UIHelper.IsOS7orHigher) 
             {
-                NavigationController.NavigationBar.BarTintColor = navBarColor;
                 UINavigationBar.Appearance.BarTintColor = navBarColor;
+                NavigationController.NavigationBar.BarTintColor = navBarColor;
+
+                // in ios7, this is for the back arrow, in ios6, it's for the color of the bar.  this is why we have to put it in this if block
+                UIBarButtonItem.Appearance.TintColor = textColor;
+                NavigationController.NavigationBar.TintColor = textColor;
             } 
             else 
             {
@@ -226,6 +230,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 }
                 clearBackground = clearBackground.CreateResizableImage(UIEdgeInsets.Zero);
                 UINavigationBar.Appearance.SetBackgroundImage(clearBackground, UIBarMetrics.Default); 
+                NavigationController.NavigationBar.SetBackgroundImage(clearBackground, UIBarMetrics.Default);
 
                 //change the default ios6 back button look to the ios7 look
                 var backBackground = UIImage.FromFile (isDefaultColor ? "left_arrow.png" : "left_arrow_white.png").CreateResizableImage (new UIEdgeInsets (0, 12, 21, 0));
@@ -257,9 +262,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 TextShadowColor = UIColor.Clear,
                 TextShadowOffset = new UIOffset(0,0)
             };
-
-            UIBarButtonItem.Appearance.TintColor = textColor;
-            NavigationController.NavigationBar.TintColor = textColor;
 
             UIBarButtonItem.Appearance.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
             UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
