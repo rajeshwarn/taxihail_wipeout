@@ -234,13 +234,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
 
             // set title color
-            UINavigationBar.Appearance.TintColor = textColor;
-            UINavigationBar.Appearance.SetTitleTextAttributes (new UITextAttributes () {
+            var titleTextAttributes = new UITextAttributes()
+            {
                 Font = titleFont,
                 TextColor = textColor,
                 TextShadowColor = UIColor.Clear,
-                TextShadowOffset = new UIOffset(0,0)
-            });
+                TextShadowOffset = new UIOffset(0, 0)
+            };
+            UINavigationBar.Appearance.SetTitleTextAttributes (titleTextAttributes); // for the first time the view is created
+            NavigationController.NavigationBar.SetTitleTextAttributes (titleTextAttributes); // when we return to a view, ensures the color has changed
 
             // set back/left/right button color
             var buttonTextColor = new UITextAttributes () {
@@ -257,6 +259,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             };
 
             UIBarButtonItem.Appearance.TintColor = textColor;
+            NavigationController.NavigationBar.TintColor = textColor;
+
             UIBarButtonItem.Appearance.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
             UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
             UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
