@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -27,7 +27,7 @@
                     <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </tableView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="14" customClass="FlatButton">
-                    <rect key="frame" x="15" y="314" width="290" height="41"/>
+                    <rect key="frame" x="8" y="314" width="304" height="41"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="0dV-dz-eYr"/>
@@ -42,8 +42,8 @@
             <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="17" secondAttribute="trailing" id="3cG-s8-Sjy"/>
-                <constraint firstItem="14" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="15" id="Cf8-W9-IUX"/>
-                <constraint firstAttribute="trailing" secondItem="14" secondAttribute="trailing" constant="15" id="YFh-CU-i1P"/>
+                <constraint firstItem="14" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="Cf8-W9-IUX"/>
+                <constraint firstAttribute="trailing" secondItem="14" secondAttribute="trailing" constant="8" id="YFh-CU-i1P"/>
                 <constraint firstItem="17" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="cIy-KW-0By"/>
                 <constraint firstItem="14" firstAttribute="top" secondItem="17" secondAttribute="bottom" constant="20" id="cta-pu-ZTF"/>
                 <constraint firstItem="17" firstAttribute="top" secondItem="1" secondAttribute="top" id="feu-Nh-uTx"/>

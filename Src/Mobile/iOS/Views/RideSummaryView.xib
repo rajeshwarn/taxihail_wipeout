@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -27,7 +27,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6" customClass="FlatButton">
-                    <rect key="frame" x="15" y="108" width="290" height="41"/>
+                    <rect key="frame" x="8" y="108" width="304" height="41"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="yH4-vp-9XA"/>
@@ -39,7 +39,7 @@
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3aA-Yd-tUT" customClass="FlatButton">
-                    <rect key="frame" x="15" y="162" width="290" height="41"/>
+                    <rect key="frame" x="8" y="162" width="304" height="41"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="E6Z-Fa-gU1"/>
@@ -51,7 +51,7 @@
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="13" customClass="FlatButton">
-                    <rect key="frame" x="15" y="216" width="290" height="41"/>
+                    <rect key="frame" x="8" y="216" width="304" height="41"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="uLV-tb-Llr"/>
@@ -63,7 +63,7 @@
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18" customClass="FlatButton">
-                    <rect key="frame" x="15" y="270" width="290" height="41"/>
+                    <rect key="frame" x="8" y="270" width="304" height="41"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="kjc-dh-jfj"/>
@@ -77,26 +77,26 @@
             </subviews>
             <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="3aA-Yd-tUT" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="15" id="69U-dE-coQ"/>
-                <constraint firstAttribute="trailing" secondItem="18" secondAttribute="trailing" constant="15" id="98a-fb-s2L"/>
-                <constraint firstItem="18" firstAttribute="top" secondItem="3aA-Yd-tUT" secondAttribute="bottom" priority="635" constant="13" id="AT5-fk-kPR"/>
-                <constraint firstItem="6" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="15" id="Iq8-KA-sBM"/>
-                <constraint firstAttribute="trailing" secondItem="6" secondAttribute="trailing" constant="15" id="ME5-wv-uYp"/>
-                <constraint firstItem="13" firstAttribute="top" secondItem="4" secondAttribute="bottom" priority="580" constant="28" id="NHc-hp-RAe"/>
+                <constraint firstItem="3aA-Yd-tUT" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="69U-dE-coQ"/>
+                <constraint firstAttribute="trailing" secondItem="18" secondAttribute="trailing" constant="8" id="98a-fb-s2L"/>
+                <constraint firstItem="18" firstAttribute="top" secondItem="3aA-Yd-tUT" secondAttribute="bottom" priority="635" constant="67" id="AT5-fk-kPR"/>
+                <constraint firstItem="6" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="Iq8-KA-sBM"/>
+                <constraint firstAttribute="trailing" secondItem="6" secondAttribute="trailing" constant="8" id="ME5-wv-uYp"/>
+                <constraint firstItem="13" firstAttribute="top" secondItem="4" secondAttribute="bottom" priority="580" constant="136" id="NHc-hp-RAe"/>
                 <constraint firstItem="6" firstAttribute="top" secondItem="4" secondAttribute="bottom" constant="28" id="PLp-fH-J0N"/>
-                <constraint firstItem="13" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="15" id="XOw-aA-ptU"/>
+                <constraint firstItem="13" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="XOw-aA-ptU"/>
                 <constraint firstItem="13" firstAttribute="top" secondItem="3aA-Yd-tUT" secondAttribute="bottom" constant="13" id="Xkc-Di-waO"/>
-                <constraint firstItem="18" firstAttribute="top" secondItem="4" secondAttribute="bottom" priority="536" constant="28" id="YsO-hi-umR"/>
+                <constraint firstItem="18" firstAttribute="top" secondItem="4" secondAttribute="bottom" priority="536" constant="190" id="YsO-hi-umR"/>
                 <constraint firstAttribute="centerX" secondItem="4" secondAttribute="centerX" id="aCe-DA-9xw"/>
-                <constraint firstItem="18" firstAttribute="top" secondItem="6" secondAttribute="bottom" priority="570" constant="13" id="frS-nM-wJI"/>
-                <constraint firstAttribute="trailing" secondItem="13" secondAttribute="trailing" constant="15" id="i2X-oH-YwV"/>
+                <constraint firstItem="18" firstAttribute="top" secondItem="6" secondAttribute="bottom" priority="570" constant="121" id="frS-nM-wJI"/>
+                <constraint firstAttribute="trailing" secondItem="13" secondAttribute="trailing" constant="8" id="i2X-oH-YwV"/>
                 <constraint firstItem="4" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" id="oyS-Ig-Pdv"/>
-                <constraint firstItem="18" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="15" id="qnY-t9-3T5"/>
+                <constraint firstItem="18" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="qnY-t9-3T5"/>
                 <constraint firstItem="18" firstAttribute="top" secondItem="13" secondAttribute="bottom" constant="13" id="rfW-Fc-gd0"/>
                 <constraint firstItem="3aA-Yd-tUT" firstAttribute="top" secondItem="6" secondAttribute="bottom" constant="13" id="tz1-nx-lZ3"/>
-                <constraint firstItem="13" firstAttribute="top" secondItem="6" secondAttribute="bottom" priority="644" constant="13" id="xJd-Ds-54O"/>
-                <constraint firstItem="3aA-Yd-tUT" firstAttribute="top" secondItem="4" secondAttribute="bottom" priority="645" constant="28" id="xfN-Ox-lt8"/>
-                <constraint firstAttribute="trailing" secondItem="3aA-Yd-tUT" secondAttribute="trailing" constant="15" id="z2l-es-kbJ"/>
+                <constraint firstItem="13" firstAttribute="top" secondItem="6" secondAttribute="bottom" priority="644" constant="67" id="xJd-Ds-54O"/>
+                <constraint firstItem="3aA-Yd-tUT" firstAttribute="top" secondItem="4" secondAttribute="bottom" priority="645" constant="82" id="xfN-Ox-lt8"/>
+                <constraint firstAttribute="trailing" secondItem="3aA-Yd-tUT" secondAttribute="trailing" constant="8" id="z2l-es-kbJ"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
