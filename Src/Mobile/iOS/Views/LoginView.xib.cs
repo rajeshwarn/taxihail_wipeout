@@ -41,10 +41,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			btnForgotPassword.SetTitleColor(Theme.LabelTextColor, UIControlState.Normal);
 
 			txtEmail.Placeholder = Localize.GetValue("LoginViewEmailPlaceHolder");
-			txtEmail.ReturnKeyType = UIReturnKeyType.Done;
+            txtEmail.ReturnKeyType = UIReturnKeyType.Next;
 			txtEmail.KeyboardType = UIKeyboardType.EmailAddress;
 			txtEmail.ShouldReturn = delegate {                          
 				txtEmail.ResignFirstResponder ();
+                txtPassword.BecomeFirstResponder();
 				return true;
 			};
 
@@ -52,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			txtPassword.SecureTextEntry = true;
 			txtPassword.ReturnKeyType = UIReturnKeyType.Done;
 			txtPassword.ShouldReturn = delegate {                          
-				txtPassword.ResignFirstResponder ();
+                txtPassword.ResignFirstResponder ();
 				return true;
 			};  
 
@@ -63,6 +64,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			btnSignUp.SetTitle (Localize.GetValue ("Register"), UIControlState.Normal);
 
             var settings = this.Services().AppSettings;;
+
+            btnSignIn.TouchUpInside += (sender, e) => { 
+                KeyboardGetActiveView().ResignFirstResponder();
+            };
 
             var set = this.CreateBindingSet<LoginView, LoginViewModel>();
 
