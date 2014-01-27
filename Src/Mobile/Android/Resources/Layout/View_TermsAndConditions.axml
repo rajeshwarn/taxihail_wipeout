@@ -16,7 +16,7 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/top_bar_color"
+            android:background="@color/login_background_color"
             android:orientation="horizontal">
             <TextView
                 android:text="@string/TermsAndConditionsLabel"
@@ -24,6 +24,7 @@
                 android:layout_gravity="center"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/top_bar_title_height"
+                android:textColor="@color/label_text_color"
                 android:gravity="center" />
         </LinearLayout>
         <LinearLayout
@@ -33,6 +34,7 @@
             android:background="@color/top_bar_separator_color"
             android:orientation="horizontal" />
         <LinearLayout
+            android:background="#ffffff"
             android:orientation="vertical"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"

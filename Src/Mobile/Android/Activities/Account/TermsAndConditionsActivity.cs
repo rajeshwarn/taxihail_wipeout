@@ -6,7 +6,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-    [Activity(Label = "Terms and Conditions", Theme = "@style/MainTheme",
+    [Activity(Label = "Terms and Conditions", Theme = "@style/LoginTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class TermsAndConditionsActivity : BaseBindingActivity<TermsAndConditionsViewModel>
     {
