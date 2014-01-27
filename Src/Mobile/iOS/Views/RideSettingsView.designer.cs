@@ -13,9 +13,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class RideSettingsView
 	{
 		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintContentViewHeight { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UILabel lblChargeType { get; set; }
 
 		[Outlet]
@@ -84,6 +81,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblPhone = null;
 			}
 
+			if (lblTip != null) {
+				lblTip.Dispose ();
+				lblTip = null;
+			}
+
 			if (lblVehicleType != null) {
 				lblVehicleType.Dispose ();
 				lblVehicleType = null;
@@ -114,24 +116,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtPhone = null;
 			}
 
-			if (txtVehicleType != null) {
-				txtVehicleType.Dispose ();
-				txtVehicleType = null;
-			}
-
-			if (lblTip != null) {
-				lblTip.Dispose ();
-				lblTip = null;
-			}
-
 			if (txtTip != null) {
 				txtTip.Dispose ();
 				txtTip = null;
 			}
 
-			if (constraintContentViewHeight != null) {
-				constraintContentViewHeight.Dispose ();
-				constraintContentViewHeight = null;
+			if (txtVehicleType != null) {
+				txtVehicleType.Dispose ();
+				txtVehicleType = null;
 			}
 		}
 	}

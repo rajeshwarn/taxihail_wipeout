@@ -36,13 +36,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (!ViewModel.ShouldDisplayCreditCards) {
                 lblCreditCard.RemoveFromSuperview();
                 txtCreditCard.RemoveFromSuperview();
-                constraintContentViewHeight.Constant -= 80;
             }
 
 			if (!ViewModel.ShouldDisplayTip) {
                 lblTip.RemoveFromSuperview();
                 txtTip.RemoveFromSuperview();
-                constraintContentViewHeight.Constant -= 80;
 			}
 
             lblName.Text = Localize.GetValue("RideSettingsName");

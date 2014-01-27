@@ -6,7 +6,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RideSettingsView">
             <connections>
-                <outlet property="constraintContentViewHeight" destination="47M-E8-ka7" id="dYI-5L-LRF"/>
                 <outlet property="lblChargeType" destination="LEQ-dq-bRV" id="yP7-hg-oui"/>
                 <outlet property="lblCreditCard" destination="0n6-Zc-YNm" id="e5b-Wb-SXX"/>
                 <outlet property="lblName" destination="HWN-Pq-yPZ" id="K04-uw-tT9"/>
@@ -34,7 +33,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="80">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="571"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="554"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HWN-Pq-yPZ">
@@ -179,7 +178,7 @@
                                 </textField>
                             </subviews>
                             <constraints>
-                                <constraint firstAttribute="height" constant="571" id="47M-E8-ka7"/>
+                                <constraint firstAttribute="bottom" secondItem="qOe-Cq-18G" secondAttribute="bottom" priority="1" constant="20" id="7Cb-Ut-BnR"/>
                                 <constraint firstItem="mLf-L5-n69" firstAttribute="top" secondItem="m1K-K7-Ypz" secondAttribute="bottom" constant="6" id="7fM-If-HSc"/>
                                 <constraint firstItem="0n6-Zc-YNm" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="8RC-pe-0qg"/>
                                 <constraint firstItem="qvL-aD-nFd" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="9Be-DK-KaW"/>
@@ -202,7 +201,8 @@
                                 <constraint firstItem="LEQ-dq-bRV" firstAttribute="top" secondItem="Gk7-FK-bNN" secondAttribute="bottom" constant="12" id="aM8-Pd-Q6g"/>
                                 <constraint firstItem="TGv-zj-jdK" firstAttribute="top" secondItem="f9f-Bd-JUM" secondAttribute="bottom" constant="6" id="eJI-kW-ys9"/>
                                 <constraint firstAttribute="trailing" secondItem="qOe-Cq-18G" secondAttribute="trailing" constant="8" id="gbT-pc-geX"/>
-                                <constraint firstItem="f9f-Bd-JUM" firstAttribute="top" secondItem="qOe-Cq-18G" secondAttribute="bottom" priority="1" constant="92" id="j18-NO-lkm"/>
+                                <constraint firstAttribute="bottom" secondItem="TGv-zj-jdK" secondAttribute="bottom" constant="20" id="i9T-uv-CSN"/>
+                                <constraint firstItem="f9f-Bd-JUM" firstAttribute="top" secondItem="qOe-Cq-18G" secondAttribute="bottom" priority="500" constant="92" id="j18-NO-lkm"/>
                                 <constraint firstItem="ncl-SZ-qgo" firstAttribute="top" secondItem="0n6-Zc-YNm" secondAttribute="bottom" constant="6" id="kUA-mP-jJg"/>
                                 <constraint firstAttribute="trailing" secondItem="qvL-aD-nFd" secondAttribute="trailing" constant="8" id="lf9-ex-Ixb"/>
                                 <constraint firstItem="m1K-K7-Ypz" firstAttribute="top" secondItem="qvL-aD-nFd" secondAttribute="bottom" constant="12" id="pER-6b-WIV"/>
@@ -223,7 +223,7 @@
                         <constraint firstItem="80" firstAttribute="top" secondItem="29" secondAttribute="top" id="0JU-jv-7be"/>
                         <constraint firstItem="80" firstAttribute="leading" secondItem="29" secondAttribute="leading" id="3v8-Zt-PXf"/>
                         <constraint firstAttribute="width" secondItem="80" secondAttribute="width" id="Ae0-jJ-5hl"/>
-                        <constraint firstAttribute="bottom" secondItem="80" secondAttribute="bottom" constant="-67" id="Iym-XT-iXT"/>
+                        <constraint firstAttribute="bottom" secondItem="80" secondAttribute="bottom" id="Iym-XT-iXT"/>
                         <constraint firstAttribute="trailing" secondItem="80" secondAttribute="trailing" id="poG-yk-dYI"/>
                     </constraints>
                 </scrollView>
