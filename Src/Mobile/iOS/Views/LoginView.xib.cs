@@ -66,7 +66,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var settings = this.Services().AppSettings;;
 
             btnSignIn.TouchUpInside += (sender, e) => { 
-                KeyboardGetActiveView().ResignFirstResponder();
+                var firstResponder = View.FindFirstResponder();
+                if(firstResponder != null)
+                {
+                    firstResponder.ResignFirstResponder();
+                }
             };
 
             var set = this.CreateBindingSet<LoginView, LoginViewModel>();
