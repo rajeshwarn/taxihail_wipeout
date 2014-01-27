@@ -68,8 +68,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			menuListView.Source = source;
 
-			lblVersion.Text = TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version;
-
 			var set = this.CreateBindingSet<PanelMenuView, PanelMenuViewModel>();
 
 			set.Bind(source)
@@ -79,6 +77,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind (this)
 				.For (v => v.MenuIsOpen)
 				.To (vm => vm.MenuIsOpen);
+
+            set.Bind (lblVersion)
+                .For (v => v.Text)
+                .To (vm => vm.Version);
 
 			set.Apply ();
 		
