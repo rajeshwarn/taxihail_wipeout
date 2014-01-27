@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             tableCardsList.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
             tableCardsList.BackgroundColor = UIColor.Clear;
             tableCardsList.SeparatorColor = UIColor.Clear;
+            tableCardsList.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             
             var source = new BindableTableViewSource(
                 tableCardsList, 

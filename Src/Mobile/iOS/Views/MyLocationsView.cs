@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			tableLocations.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
 			tableLocations.BackgroundColor = UIColor.Clear;
 			tableLocations.SeparatorColor = UIColor.Clear;
+            tableLocations.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 
             var source = new BindableTableViewSource (
 	             tableLocations, 
