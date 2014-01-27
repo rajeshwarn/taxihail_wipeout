@@ -4,15 +4,19 @@ using Params = System.Collections.Generic.Dictionary<string, string>;
 using ServiceStack.Text;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Cirrious.MvvmCross.Plugins.WebBrowser;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class PanelMenuViewModel : BaseViewModel
     {
         private readonly BookViewModel _parent;
-		public PanelMenuViewModel (BookViewModel parent)
+		private IMvxWebBrowserTask _browserTask;
+
+		public PanelMenuViewModel (BookViewModel parent, IMvxWebBrowserTask browserTask)
         {
             _parent = parent;
+			_browserTask = browserTask;
 
 			ItemMenuList = new ObservableCollection<ItemMenuModel>();
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations});
@@ -61,6 +65,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
             }
         }
+
+		public AsyncCommand  ToApcuriumWebsite
+		{
+			get {
+				return new AsyncCommand(() =>
+					{
+						_browserTask.ShowWebPage(this.Services().Localize["apcuriumUrl"]);
+					});
+			}
+		}
+
+		public AsyncCommand  ToMobileKnowledgeWebsite
+		{
+			get {
+				return new AsyncCommand(() =>
+					{
+						_browserTask.ShowWebPage(this.Services().Localize["mobileKnowledgeUrl"]);
+					});
+			}
+		}
 
         public AsyncCommand SignOut
         {

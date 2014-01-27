@@ -36,10 +36,11 @@
                             <color key="sectionIndexColor" red="0.30980392156862746" green="0.29803921568627451" blue="0.27843137254901962" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </tableView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="apc_logo_menu.png" translatesAutoresizingMaskIntoConstraints="NO" id="8">
+                        <imageView contentMode="scaleAspectFit" image="apc_logo_menu.png" translatesAutoresizingMaskIntoConstraints="NO" id="8">
                             <rect key="frame" x="73" y="511" width="121" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <gestureRecognizers/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="121" id="Kmw-RY-Cge"/>
                                 <constraint firstAttribute="height" constant="32" id="sXs-kZ-gZ2"/>
@@ -55,7 +56,7 @@
                             <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <size key="shadowOffset" width="0.0" height="1"/>
                         </label>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mk_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="bYL-3d-p1o">
+                        <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mk_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="bYL-3d-p1o">
                             <rect key="frame" x="42" y="471" width="182" height="27"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
@@ -92,9 +93,10 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <connections>
                 <outlet property="lblVersion" destination="9" id="rYw-pT-kaI"/>
-                <outlet property="logoImageView" destination="8" id="G7d-06-1nU"/>
                 <outlet property="menuContainer" destination="ZSi-EL-Atn" id="Ky0-lg-bc7"/>
                 <outlet property="menuListView" destination="7" id="uyM-Sq-xD0"/>
+                <outlet property="imgLogoApcurium" destination="8" id="4Fa-pJ-RcP"/>
+                <outlet property="imgLogoMobileKnowledge" destination="bYL-3d-p1o" id="nG6-dD-e9k"/>
             </connections>
         </view>
     </objects>

@@ -1475,4 +1475,11 @@
   <data name="BookRatingErrorMessage" xml:space="preserve">
     <value>You need to rate your ride</value>
   </data>
+  <data name="apcuriumUrl" xml:space="preserve">
+    <value>http://www.apcurium.com/</value>
+  </data>
+  <data name="mobileKnowledgeUrl" xml:space="preserve">
+    <value>http://www.mobile-knowledge.com/</value>
+  </data>
+
 </root>

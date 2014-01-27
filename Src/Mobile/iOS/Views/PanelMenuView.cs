@@ -12,6 +12,7 @@ using TinyIoC;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -43,6 +44,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				}
 			}
 		}
+
+        public ICommand ToApcuriumWebsite { get; set; }
+        public ICommand ToMobileKnowledgeWebsite { get; set; }
 
 		public PanelMenuView (IntPtr handle)
 			:base(handle)
@@ -82,7 +86,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For (v => v.Text)
                 .To (vm => vm.Version);
 
+            set.Bind(this)
+                .For(v => v.ToApcuriumWebsite)
+                .To(vm => vm.ToApcuriumWebsite);
+
+            set.Bind(this)
+                .For(v => v.ToMobileKnowledgeWebsite)
+                .To(vm => vm.ToMobileKnowledgeWebsite);
+
 			set.Apply ();
+
+            imgLogoApcurium.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    if(ToApcuriumWebsite != null && ToApcuriumWebsite.CanExecute())
+                    {
+                        ToApcuriumWebsite.Execute();
+                    }
+                }));
+
+            imgLogoMobileKnowledge.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    if(ToMobileKnowledgeWebsite != null && ToMobileKnowledgeWebsite.CanExecute())
+                    {
+                        ToMobileKnowledgeWebsite.Execute();
+                    }
+                }));
 		
 			menuListView.AlwaysBounceVertical = false;
         }

@@ -15,6 +15,7 @@ using System.Globalization;
 using apcurium.MK.Common.Entity;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using Cirrious.MvvmCross.Plugins.WebBrowser;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -23,16 +24,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private readonly IPushNotificationService _pushNotificationService;
         private readonly IPackageInfo _packageInfo;
         private bool _initialized;
+		private IMvxWebBrowserTask _browserTask;
 
         private IEnumerable<CoordinateViewModel> _mapCenter;
         private string _fareEstimate;
 
         private bool _useExistingOrder;
 
-        public BookViewModel(IPushNotificationService pushNotificationService, IPackageInfo packageInfo)
+		public BookViewModel(IPushNotificationService pushNotificationService, IPackageInfo packageInfo, IMvxWebBrowserTask browserTask)
         {
             _pushNotificationService = pushNotificationService;
             _packageInfo = packageInfo;
+			_browserTask = browserTask;
 
             Initialize();
         }
@@ -60,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _initialized = true;
 
-			Panel = new PanelMenuViewModel(this);
+			Panel = new PanelMenuViewModel(this, _browserTask);
 
             this.Services().MessengerHub.Subscribe<AppActivated>(_ => AppActivated());
 
