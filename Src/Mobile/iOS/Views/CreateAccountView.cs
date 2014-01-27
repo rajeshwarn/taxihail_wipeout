@@ -40,8 +40,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     .Replace(Localize.GetValue("TermsAndConditionsLabel"), string.Empty)
                     .Replace(".", string.Empty);
                 var textSecondPart = string.Format("{0}.", Localize.GetValue("TermsAndConditionsLabel"));
-                var attributedText = new NSMutableAttributedString(textFirstPart, foregroundColor: UIColor.White, font: UIFont.FromName(FontName.HelveticaNeueRegular, 28 / 2));
-                attributedText.Append(new NSMutableAttributedString(textSecondPart, foregroundColor: UIColor.White, font: UIFont.FromName(FontName.HelveticaNeueBold, 28 / 2)));
+                var attributedText = new NSMutableAttributedString(textFirstPart, foregroundColor: Theme.LabelTextColor, font: UIFont.FromName(FontName.HelveticaNeueRegular, 28 / 2));
+                attributedText.Append(new NSMutableAttributedString(textSecondPart, foregroundColor: Theme.LabelTextColor, font: UIFont.FromName(FontName.HelveticaNeueBold, 28 / 2)));
                 btnViewTerms.SetAttributedTitle(attributedText, UIControlState.Normal);
             }
             else

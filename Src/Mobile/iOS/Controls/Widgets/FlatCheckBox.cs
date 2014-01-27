@@ -2,6 +2,8 @@ using System;
 using MonoTouch.UIKit;
 using System.Drawing;
 using MonoTouch.Foundation;
+using MonoTouch.CoreGraphics;
+using apcurium.MK.Booking.Mobile.Client.Helper;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -26,8 +28,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-            SetImage(UIImage.FromFile("unchecked.png"), UIControlState.Normal);
-            SetImage(UIImage.FromFile("checked.png"), UIControlState.Selected);
+            SetImage(ImageHelper.ApplyThemeColorToImage("unchecked.png"), UIControlState.Normal);
+            SetImage(ImageHelper.ApplyThemeColorToImage("checked.png"), UIControlState.Selected);
         }
 
         public override bool BeginTracking(UITouch uitouch, UIEvent uievent)

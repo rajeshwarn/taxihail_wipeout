@@ -5,6 +5,7 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using System.Drawing;
 using MonoTouch.CoreGraphics;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
@@ -23,6 +24,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             UIGraphics.EndImageContext();
 
             return image;
+        }
+
+        public static UIImage ApplyThemeColorToImage(string imagePath)
+        {
+            var image = UIImage.FromFile(imagePath);
+
+            var rect = new RectangleF(0f, 0f, image.Size.Width, image.Size.Height);
+            UIGraphics.BeginImageContextWithOptions(rect.Size, false, 0f);
+            var context = UIGraphics.GetCurrentContext();
+            image.Draw(rect);
+            context.SetFillColorWithColor(Theme.LabelTextColor.CGColor);
+            context.SetBlendMode(CGBlendMode.SourceAtop);
+            context.FillRect(rect);
+
+            var resultImage = UIGraphics.GetImageFromCurrentImageContext();
+            UIGraphics.EndImageContext();
+
+            return resultImage;
         }
 
 		public static UIImage GetImage ( string imagePath )
