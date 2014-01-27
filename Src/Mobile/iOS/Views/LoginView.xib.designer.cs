@@ -31,9 +31,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnTwLogin { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintContentViewHeight { get; set; }
-
-		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtEmail { get; set; }
 
 		[Outlet]
@@ -79,11 +76,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtPassword != null) {
 				txtPassword.Dispose ();
 				txtPassword = null;
-			}
-
-			if (constraintContentViewHeight != null) {
-				constraintContentViewHeight.Dispose ();
-				constraintContentViewHeight = null;
 			}
 		}
 	}

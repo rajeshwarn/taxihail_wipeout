@@ -111,16 +111,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.Password);
 
             set.Apply();
-
-			// adjust contentview height
-			if (!btnServer.Hidden)
-				constraintContentViewHeight.Constant = btnServer.Frame.Bottom + BottomPadding;
-			else if (!btnTwLogin.Hidden)
-				constraintContentViewHeight.Constant = btnTwLogin.Frame.Bottom + BottomPadding;
-			else if (!btnFbLogin.Hidden)
-				constraintContentViewHeight.Constant = btnFbLogin.Frame.Bottom + BottomPadding;
-			else
-				constraintContentViewHeight.Constant = btnSignIn.Frame.Bottom + BottomPadding; 
         }
 
         void ChangeServerTouchUpInside (object sender, EventArgs e)
