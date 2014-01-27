@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             cell.TextLabel.BackgroundColor = UIColor.Clear;
             cell.TextLabel.Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);
 
-            cell.BackgroundView = new CustomCellBackgroundView(cell.ContentView.Frame) 
+			cell.BackgroundView = new CustomCellBackgroundView(cell.ContentView.Frame, 10, UIColor.White, UIColor.FromRGB(190, 190, 190)) 
             {
                 HideBottomBar = !_showBottomBar
             };

@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private MvxStandardTableViewCell CellCreator(UITableView tableView, NSIndexPath indexPath, object state)
         {
-            var cell = new SingleLinePictureCell( Cellid, CellBindingText );
+            var cell = new SingleLinePictureCell(Cellid, CellBindingText );
             cell.HideBottomBar = tableView.IsLastCell(indexPath);
             return cell;
         }

@@ -7,16 +7,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	public class CustomCellBackgroundView : UIView
 	{
 		private UIColor _strokeColor = UIColor.FromRGB(190, 190, 190);
-		private UIColor _selectedBackgroundColor = UIColor.FromRGB(190, 190, 190);
-        private UIColor _backgroundColor = UIColor.White;
-
+		private UIColor _selectedBackgroundColor;
+		private UIColor _backgroundColor;
 		private Line _bottomLine;
 
-		public CustomCellBackgroundView(RectangleF rect) : base(rect)
-		{			
+		public CustomCellBackgroundView(RectangleF rect, float padding, UIColor backgroundColor, UIColor SelectedBackgroundColor) : base(rect)
+		{
+			_backgroundColor = backgroundColor;
+			_selectedBackgroundColor = SelectedBackgroundColor;
+
 			BackgroundColor = _backgroundColor;
 
-            _bottomLine = new Line(10, rect.Height, rect.Width - 10, 1, _strokeColor);
+            _bottomLine = Line.CreateHorizontal(padding, rect.Height-1, rect.Width - padding, _strokeColor, 1f);
 			_bottomLine.AutoresizingMask = UIViewAutoresizing.FlexibleWidth;
 			AddSubview(_bottomLine);
 		}

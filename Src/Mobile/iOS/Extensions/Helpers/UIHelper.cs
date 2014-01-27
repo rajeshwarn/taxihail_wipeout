@@ -26,6 +26,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
 				return Convert.ToInt32(first) >= 7;
 			}
 		}
+
+        public static float GetConvertedPixel(float pixel)
+        {
+            if (IsRetinaDisplay)
+            {
+                return pixel / 2f;
+            }
+
+            return pixel;
+        }
     }
 }
 

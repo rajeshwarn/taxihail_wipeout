@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private void Initialize ()
 		{
-			BackgroundView = new CustomCellBackgroundView(  this.ContentView.Frame   ) 
+			BackgroundView = new CustomCellBackgroundView(this.ContentView.Frame, 10, UIColor.White, UIColor.FromRGB(190, 190, 190)) 
 			{
 				HideBottomBar = HideBottomBar,              
 			};

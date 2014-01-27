@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         
         private void Initialize ()
         {
-            BackgroundView = new CustomCellBackgroundView(Frame);
+			BackgroundView = new CustomCellBackgroundView(Frame, 10, UIColor.White, UIColor.FromRGB(190, 190, 190));
            
             _leftText = new UILabel(new RectangleF(65, (Frame.Height - 15)/2, 200, 15));
             _leftText.TextColor = UIColor.Black;

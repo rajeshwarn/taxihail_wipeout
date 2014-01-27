@@ -56,6 +56,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
 			menuContainer.BackgroundColor = UIColor.FromRGB (242, 242, 242);
 
+            var sideLine = Line.CreateVertical(menuContainer.Frame.Width-1, Frame.Height, UIColor.FromRGB(190, 190, 190));
+            AddSubview(sideLine);
+
 			var source = new PanelMenuSource(
 				menuListView, 
 				UITableViewCellStyle.Default,
@@ -63,10 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				CellBindingText,
 				UITableViewCellAccessory.None);
 
-			source.CellCreator = (tview , iPath, state ) =>
-			{ 
-				return new PanelMenuCell(Cellid, CellBindingText); 
-			};
+			menuListView.Source = source;
 
 			lblVersion.Text = TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version;
 
@@ -81,8 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To (vm => vm.MenuIsOpen);
 
 			set.Apply ();
-
-			menuListView.Source = source;
+		
 			menuListView.AlwaysBounceVertical = false;
         }
 
@@ -94,7 +93,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 slideAnimation.Animate ();
             });
         }
-
     }
 }
 

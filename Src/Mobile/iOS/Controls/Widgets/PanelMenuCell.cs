@@ -10,20 +10,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
 	public class PanelMenuCell : MvxStandardTableViewCell
 	{
+		private bool _hideBottomBar;
+
 		public PanelMenuCell (string cellIdentifier, string bindingText)
 			: base (bindingText, UITableViewCellStyle.Default, new NSString (cellIdentifier), UITableViewCellAccessory.None)
 		{
-			UIView customColorView =  new UIView();
-			customColorView.BackgroundColor = UIColor.White;
-			SelectedBackgroundView =  customColorView;
+			BackgroundView = new CustomCellBackgroundView(Frame, 0, UIColor.FromRGB (242, 242, 242), UIColor.White);
 
 			Accessory = UITableViewCellAccessory.None;
 
-			BackgroundColor = UIColor.Clear;
-
 			TextLabel.Font = UIFont.FromName (FontName.HelveticaNeueLight, 36 / 2);
 			TextLabel.TextColor = UIColor.FromRGB (79, 76, 71);
-			TextLabel.BackgroundColor = UIColor.Clear;
 		}
 
 		public override void LayoutSubviews ()
@@ -31,6 +28,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			base.LayoutSubviews ();
 
 			TextLabel.SetX(5);
+		}
+
+		public bool HideBottomBar
+		{
+			get { return _hideBottomBar; }
+			set
+			{ 
+				if (BackgroundView is CustomCellBackgroundView)
+				{
+					((CustomCellBackgroundView)BackgroundView).HideBottomBar = value;
+				}
+				_hideBottomBar = value;
+			}
 		}
 
 	}
