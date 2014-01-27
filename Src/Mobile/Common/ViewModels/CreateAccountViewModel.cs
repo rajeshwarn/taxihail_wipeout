@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool _termsAndConditionsAcknowledged;
 		public bool TermsAndConditionsAcknowledged 
 		{
-			get { return _termsAndConditionsAcknowledged; }
+			get { return !ShowTermsAndConditions || _termsAndConditionsAcknowledged; }
 			set
 			{
 				_termsAndConditionsAcknowledged = value;
