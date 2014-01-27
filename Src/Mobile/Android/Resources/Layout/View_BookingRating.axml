@@ -56,11 +56,8 @@
                 android:layout_below="@id/RatingListView"
                 android:text="@string/Submit"
                 android:layout_height="@dimen/HeightButton"
-                android:layout_gravity="center"
-                android:layout_width="150dip"
-                android:padding="7dip"
-                local:MvxBind="Click RateOrder; Visibility CanRating, Converter=Visibility"
-                android:layout_centerHorizontal="true" />
+                android:layout_width="fill_parent"
+                local:MvxBind="Click RateOrder; Visibility CanRating, Converter=Visibility" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

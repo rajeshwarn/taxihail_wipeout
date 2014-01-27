@@ -130,29 +130,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() =>
-                {
-                    if(_ratingList.All(c => c.Score != 0))
-                    {
-                        var orderRating = new OrderRatings
-                        {
-                            Note = Note,
-                            OrderId = OrderId,
-                            RatingScores =
+				return GetCommand(() =>
+				{
+					if (_ratingList.Any(c => c.Score == 0))
+					{
+							this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
+						return;
+					} 
+
+					var orderRating = new OrderRatings
+					{
+						Note = Note,
+						OrderId = OrderId,
+						RatingScores =
                                 _ratingList.Select(
-                                    c => new RatingScore
-								{ 
-									RatingTypeId = c.RatingTypeId, 
-									Score = c.Score, 
-									Name = c.RatingTypeName
-								}).ToList()
-                        };
+							c => new RatingScore
+							{ 
+								RatingTypeId = c.RatingTypeId, 
+								Score = c.Score, 
+								Name = c.RatingTypeName
+							}).ToList()
+					};
 
-                        this.Services().Booking.SendRatingReview(orderRating);
-						ReturnResult(new OrderRated(this, OrderId));
+					this.Services().Booking.SendRatingReview(orderRating);
+					ReturnResult(new OrderRated(this, OrderId));
 
-                    }
-                });
+                    
+				});
             }
         }
     }
