@@ -18,8 +18,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			base.ViewWillAppear (animated);
 
 			NavigationController.NavigationBar.Hidden = true;
-			NavigationController.NavigationBar.BarStyle = Theme.IsLightContent ?
-			                                              UIBarStyle.Black : UIBarStyle.Default;
 		}
 
         public override void ViewDidLoad ()

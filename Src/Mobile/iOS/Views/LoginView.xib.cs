@@ -26,14 +26,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (!_themeApplied)
             {
                 // set the theme of the company for the navigation bar
-                ChangeThemeOfNavigationBar(false);
+                ChangeThemeOfNavigationBar();
                 _themeApplied = true;
             }
 
 			NavigationController.NavigationBar.Hidden = true;
-            NavigationController.NavigationBar.BarStyle = Theme.IsLightContent 
-                                                          ? UIBarStyle.Black 
-                                                          : UIBarStyle.Default;
 		}
 
         public override void ViewDidLoad ()

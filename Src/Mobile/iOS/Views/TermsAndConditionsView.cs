@@ -27,9 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationItem.HidesBackButton = false;
             NavigationItem.Title = Localize.GetValue("TermsAndConditionsLabel");
             NavigationController.NavigationBar.Hidden = false;
-            NavigationController.NavigationBar.BarStyle = Theme.IsLightContent 
-                                                          ? UIBarStyle.Black 
-                                                          : UIBarStyle.Default;
         }
 
         public override void ViewDidLoad ()
