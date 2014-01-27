@@ -445,3 +445,5 @@
 "PaymentDetails.InvalidDataTitle"="Invalid payment information";
 "PaymentDetails.TipAmountLabel"="Tip Amount";
 "DriverInfoLicence"="Licence #:";
+"BookRatingErrorMessage"="You need to rate your ride";
+"BookRatingErrorTitle"="Error";
