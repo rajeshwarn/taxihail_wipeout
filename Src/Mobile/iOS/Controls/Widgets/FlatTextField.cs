@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	public class FlatTextField : UITextField
 	{
 	    private const float RadiusCorner = 2;
-        private const float Padding = 13f;
+        private const float Padding = 6.5f;
         private UIImageView _leftImageView;
 
 	    public FlatTextField (IntPtr handle) : base (handle)
