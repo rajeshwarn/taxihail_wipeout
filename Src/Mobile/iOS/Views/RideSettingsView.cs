@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
 
-            View.BackgroundColor = UIColor.FromRGB(239, 239, 239);
+            View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
 			if (!ViewModel.ShouldDisplayCreditCards) {
                 lblCreditCard.RemoveFromSuperview();

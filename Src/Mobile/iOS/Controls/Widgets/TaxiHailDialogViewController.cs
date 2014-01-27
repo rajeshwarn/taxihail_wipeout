@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             if (!_willBeContainedInOtherView)
             {
                 Style = UITableViewStyle.Grouped;
-                TableView.BackgroundView = new UIView{ BackgroundColor = UIColor.FromRGB(239, 239, 239) };
+                TableView.BackgroundView = new UIView{ BackgroundColor = UIColor.FromRGB(242, 242, 242) };
                 Title = string.Empty;
             }
             else

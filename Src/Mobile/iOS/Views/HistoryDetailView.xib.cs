@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			base.ViewDidLoad();
 			ViewModel.OnViewLoaded();
             
-			View.BackgroundColor = UIColor.FromRGB(239, 239, 239);
+            View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
 			FlatButtonStyle.Green.ApplyTo(btnRebook);
 			FlatButtonStyle.Silver.ApplyTo(btnStatus);
