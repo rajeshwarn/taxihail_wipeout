@@ -447,4 +447,6 @@
   <string name="PaymentDetails.InvalidDataTitle">Invalid payment information</string>
   <string name="PaymentDetails.TipAmountLabel">Tip Amount</string>
   <string name="DriverInfoLicence">Licence #:</string>
+  <string name="BookRatingErrorMessage">You need to rate your ride</string>
+  <string name="BookRatingErrorTitle">Error</string>
 </resources>
