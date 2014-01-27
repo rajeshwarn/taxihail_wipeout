@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			tableOrders.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
 			tableOrders.BackgroundColor = UIColor.Clear;
 			tableOrders.SeparatorColor = UIColor.Clear;
+            tableOrders.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 
 			lblNoHistory.Text = Localize.GetValue("HistoryViewNoHistoryLabel");
 			lblNoHistory.Hidden = true;
