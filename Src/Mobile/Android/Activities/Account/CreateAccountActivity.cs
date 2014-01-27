@@ -43,10 +43,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             signMenu.LayoutParameters.Height = GetDipInPixels(5 * CellHeightInDip + (ViewModel.HasSocialInfo ? GetDipInPixels(2 * CellHeightInDip) : 0));
             signMenu.Root = InitializeRoot();			
             signMenu.SetScrollContainer (false);
+
             registerContainer.AddView(signMenu, positionInContainer);
 		}
 
-        private int CellHeightInDip = 42;
+        private int CellHeightInDip = 41;
 
         private int GetDipInPixels(int value)
         {
@@ -82,6 +83,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			if (!ViewModel.HasSocialInfo) {
 				section.Add (new Element[] { password, passwordConfirm });
 			}
+
+            root.LayoutName = "fake_rounded";
 
 			root.Add (section);
 

@@ -423,6 +423,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\unchecked.png" />
     <AndroidResource Include="Resources\Drawable\mk_logo.png" />
     <AndroidResource Include="Resources\drawable-hdpi\mk_logo.png" />
+    <AndroidResource Include="Resources\Drawable\dialog_background.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
