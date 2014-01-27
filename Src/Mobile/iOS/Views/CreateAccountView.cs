@@ -51,10 +51,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(checkBoxAcknowledged)
                 .For(v => v.Selected)
                 .To(vm => vm.TermsAndConditionsAcknowledged);
+            set.Bind(checkBoxAcknowledged)
+                .For(v => v.Hidden)
+                .To(vm => vm.ShowTermsAndConditions)
+                .WithConversion("BoolInverter");
 
             set.Bind(btnViewTerms)
                 .For("TouchUpInside")
                 .To(vm => vm.NavigateToTermsAndConditions);
+            set.Bind(btnViewTerms)
+                .For(v => v.Hidden)
+                .To(vm => vm.ShowTermsAndConditions)
+                .WithConversion("BoolInverter");
 
 			set.Bind(btnCancel)
 				.For("TouchUpInside")
