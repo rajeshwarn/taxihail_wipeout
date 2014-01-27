@@ -50,10 +50,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <View
+                    local:MvxBind="Visibility ShowTermsAndConditions, Converter=Visibility"
                     android:orientation="vertical"
                     android:layout_height="16dip"
                     android:layout_width="fill_parent" />
                 <LinearLayout
+                    local:MvxBind="Visibility ShowTermsAndConditions, Converter=Visibility"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
