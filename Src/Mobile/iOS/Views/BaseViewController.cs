@@ -215,10 +215,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                                               ? UIBarStyle.Default
                                                               : UIBarStyle.Black;
             }
-            else
-            {
-                UIApplication.SharedApplication.StatusBarHidden = false;
-            }
 
             // change color of navigation bar
             if (isOS7orHigher) 

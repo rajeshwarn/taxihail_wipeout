@@ -50,6 +50,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             _isStarting = true;
 
+            if (!UIHelper.IsOS7orHigher)
+            {
+                UIApplication.SharedApplication.StatusBarHidden = false;
+            }
+
             Background.Load (window, "Assets/background_full_nologo.png", false);          
 
             var @params = new Dictionary<string, string> ();
