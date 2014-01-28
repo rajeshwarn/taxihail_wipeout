@@ -124,7 +124,7 @@
     <value>Cab {0} is assigned to you</value>
   </data>
   <data name="OrderStatus_OrderDoneFareAvailable" xml:space="preserve">
-    <value>Completed (Total cost : {0})</value>
+    <value>Completed ({0})</value>
   </data>
   <data name="OrderStatus_wosAddrNotValid" xml:space="preserve">
     <value>The address is not valid</value>
