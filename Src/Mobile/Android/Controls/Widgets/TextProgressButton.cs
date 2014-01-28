@@ -162,9 +162,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             DrawText(canvas, TextLine1 ?? "", XPositionText,
                 TextLine2.HasValue() ? YPositionTextL1 : YPositionTextOnlyL1,
                 IsProgressing || IsPlaceHolder ? FontTextL2 : FontTextL1,
-                IsProgressing || IsPlaceHolder ? AppFonts.Italic : AppFonts.Regular,
+                IsProgressing || IsPlaceHolder ? Typeface.DefaultFromStyle(TypefaceStyle.Italic): Typeface.Default,
                 IsProgressing || IsPlaceHolder ? new Color(86, 86, 86, 255) : new Color(50, 50, 50, 255));
-            DrawText(canvas, TextLine2 ?? "", XPositionText, YPositionTextL2, FontTextL2, AppFonts.Regular,
+            DrawText(canvas, TextLine2 ?? "", XPositionText, YPositionTextL2, FontTextL2, Typeface.Default,
                 new Color(86, 86, 86, 255));
         }
 

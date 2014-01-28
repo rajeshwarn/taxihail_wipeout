@@ -49,12 +49,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if (!string.IsNullOrEmpty(TextLeft))
             {
-                DrawText(canvas, TextLeft ?? "", leftTextX, leftTextY, textSize, AppFonts.Bold);
-                DrawText(canvas, TextRight ?? "", leftTextX + leftTextWidth, leftTextY, textSize, AppFonts.Regular);
+                DrawText(canvas, TextLeft ?? "", leftTextX, leftTextY, textSize, Typeface.Default);
+                DrawText(canvas, TextRight ?? "", leftTextX + leftTextWidth, leftTextY, textSize, Typeface.DefaultBold);
             }
             else
             {
-                DrawText(canvas, TextRight ?? "", leftTextX, leftTextY, textSize, AppFonts.Regular);
+                DrawText(canvas, TextRight ?? "", leftTextX, leftTextY, textSize, Typeface.Default);
             }
 
             if (ShowAddSign)

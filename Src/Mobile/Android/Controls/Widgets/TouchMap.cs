@@ -494,7 +494,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             /* Find the width and height of the title*/
             var paintText = new TextPaint(PaintFlags.AntiAlias | PaintFlags.LinearText);
             paintText.SetARGB(255, 0, 0, 0);
-            paintText.SetTypeface(AppFonts.Bold);
+            paintText.SetTypeface(Typeface.DefaultBold);
             paintText.TextSize = textSize;
             paintText.TextAlign = Paint.Align.Center;
 

@@ -89,12 +89,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if (!TextLine1.IsNullOrEmpty())
             {
-                DrawText(canvas, TextLine1, textX, 21.ToPixels(), 16.ToPixels(), AppFonts.Bold, TextColorLine1);
-                DrawText(canvas, TextLine2 ?? "", textX, 41.ToPixels(), 15.ToPixels(), AppFonts.Regular, TextColorLine2);
+                DrawText(canvas, TextLine1, textX, 21.ToPixels(), 16.ToPixels(), Typeface.DefaultBold, TextColorLine1);
+                DrawText(canvas, TextLine2 ?? "", textX, 41.ToPixels(), 15.ToPixels(), Typeface.Default, TextColorLine2);
             }
             else
             {
-                DrawText(canvas, TextLine2 ?? "", textX, 32.ToPixels(), 16.ToPixels(), AppFonts.Regular, TextColorLine2);
+                DrawText(canvas, TextLine2 ?? "", textX, 32.ToPixels(), 16.ToPixels(), Typeface.Default, TextColorLine2);
             }
 
             if (ShowRightArrow)
