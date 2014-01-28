@@ -26,6 +26,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return image;
         }
 
+        public static UIImage ResizeCanvas(this UIImage image, SizeF newSize)
+        {
+            UIGraphics.BeginImageContextWithOptions(newSize, false, 0f);
+
+            var context = UIGraphics.GetCurrentContext();
+            UIGraphics.PushContext(context);
+            image.Draw(new PointF((newSize.Width - image.Size.Width) / 2, (newSize.Height - image.Size.Height) / 2));
+            UIGraphics.PopContext();
+
+            var resultImage = UIGraphics.GetImageFromCurrentImageContext();
+            UIGraphics.EndImageContext();
+
+            image = null;
+
+            return resultImage;
+        }
+
         public static UIImage ApplyThemeColorToImage(string imagePath)
         {
             var image = UIImage.FromFile(imagePath);
