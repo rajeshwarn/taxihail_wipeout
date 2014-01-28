@@ -22,14 +22,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 Style = UITableViewStyle.Grouped;
                 TableView.BackgroundView = new UIView{ BackgroundColor = UIColor.FromRGB(242, 242, 242) };
+                TableView.RowHeight = 44;
                 Title = string.Empty;
             }
             else
             {
                 Style = UITableViewStyle.Plain;
+                TableView.RowHeight = 40;
             }
 
-            TableView.RowHeight = 40;
             TableView.ScrollEnabled = !_willBeContainedInOtherView;
             TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             TableView.BackgroundColor = UIColor.Clear;
