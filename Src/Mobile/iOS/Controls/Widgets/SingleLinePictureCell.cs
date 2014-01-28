@@ -5,6 +5,8 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Helper;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -16,6 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private string _icon;
         private bool _isAddNewCell;
         private ICommand _deleteCommand;
+        private SizeF StandardImageSize = new SizeF(46f, 32f);
 
         public SingleLinePictureCell (IntPtr handle, string bindingText) : base(bindingText, handle)
         {       
@@ -61,13 +64,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _icon = value;
                 if (IsAddNewCell)
                 {
-                    ImageView.Image = UIImage.FromFile("add_list.png");
+                    ImageView.Image = UIImage.FromFile("add_list.png").ResizeCanvas(StandardImageSize);
                 }
                 else
                 {
                     ImageView.Image = value.HasValue() 
                                       ? UIImage.FromFile(string.Format("{0}.png", value)) 
-                                      : UIImage.FromFile(string.Format("credit_card_generic.png", value));
+                                      : UIImage.FromFile("credit_card_generic.png");
                 }
             }
         }
@@ -95,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 AddRemoveButton();
             }
         }
-        
+
         private void Initialize ()
         {
 			BackgroundView = new CustomCellBackgroundView(Frame, 10, UIColor.White, UIColor.FromRGB(190, 190, 190));
