@@ -449,4 +449,6 @@
   <string name="DriverInfoLicence">Licence #:</string>
   <string name="BookRatingErrorMessage">You need to rate your ride</string>
   <string name="BookRatingErrorTitle">Error</string>
+  <string name="apcuriumUrl">http://www.apcurium.com/</string>
+  <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
 </resources>

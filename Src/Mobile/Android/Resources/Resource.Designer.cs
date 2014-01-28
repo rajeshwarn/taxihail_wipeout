@@ -4555,6 +4555,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0a000b
 			public const int abc_shareactionprovider_share_with_application = 2131361803;
 			
+			// aapt resource value: 0x7f0a0201
+			public const int apcuriumUrl = 2131362305;
+			
 			// aapt resource value: 0x7f0a01f9
 			public const int app_id = 2131362297;
 			
@@ -4713,6 +4716,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0a01ba
 			public const int dummyaaa = 2131362234;
+			
+			// aapt resource value: 0x7f0a0202
+			public const int mobileKnowledgeUrl = 2131362306;
 			
 			// aapt resource value: 0x7f0a00fa
 			public const int searchHint = 2131362042;

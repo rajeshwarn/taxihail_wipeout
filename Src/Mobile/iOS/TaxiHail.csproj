@@ -740,10 +740,6 @@
     <BundleResource Include="Resources\visa_electron%402x.png" />
     <BundleResource Include="Resources\delete_card_btn.png" />
     <BundleResource Include="Resources\delete_card_btn%402x.png" />
-    <BundleResource Include="Resources\add_btn.png" />
-    <BundleResource Include="Resources\add_btn%402x.png" />
-    <BundleResource Include="Resources\add_location.png" />
-    <BundleResource Include="Resources\add_location%402x.png" />
     <BundleResource Include="Resources\apc_logo_menu.png" />
     <BundleResource Include="Resources\apc_logo_menu%402x.png" />
     <BundleResource Include="Resources\facebook_icon.png" />
@@ -791,6 +787,8 @@
     <BundleResource Include="Resources\left_arrow_white%402x.png" />
     <BundleResource Include="Resources\mk_logo.png" />
     <BundleResource Include="Resources\mk_logo%402x.png" />
+    <BundleResource Include="Resources\add_list.png" />
+    <BundleResource Include="Resources\add_list%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			get { return _showPlusSign; }
 			set { 
 				_showPlusSign = value;
-				ImageView.Image = value ? UIImage.FromFile("add_location.png") : null;
+                ImageView.Image = value ? UIImage.FromFile("add_list.png") : null;
 			}
 		}
 

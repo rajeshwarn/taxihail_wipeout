@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _icon = value;
                 if (IsAddNewCell)
                 {
-                    ImageView.Image = UIImage.FromFile("add_btn.png");
+                    ImageView.Image = UIImage.FromFile("add_list.png");
                 }
                 else
                 {
