@@ -32,11 +32,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
+            FlatButtonStyle.Green.ApplyTo(btnConfirm);
+
             lblConfirmDriverInfo.Text = Localize.GetValue("VehicleNumberInfo");
             lblConfirmDriverNotice.Text = Localize.GetValue("VehicleNumberNotice");
             btnConfirm.SetTitle(Localize.GetValue("Confirm"), UIControlState.Normal);
-
-            FlatButtonStyle.Green.ApplyTo(btnConfirm);
 
             var set = this.CreateBindingSet<ConfirmCarNumberView, ConfirmCarNumberViewModel>();
 

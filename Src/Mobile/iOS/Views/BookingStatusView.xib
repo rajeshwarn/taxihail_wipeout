@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">13B42</string>
+		<string key="IBDocument.SystemVersion">13A603</string>
 		<string key="IBDocument.InterfaceBuilderVersion">4514</string>
 		<string key="IBDocument.AppKitVersion">1265</string>
-		<string key="IBDocument.HIToolboxVersion">696.00</string>
+		<string key="IBDocument.HIToolboxVersion">695.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">3747</string>
@@ -148,9 +148,6 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<reference key="IBUINormalTitleColor" ref="641982966"/>
-								<reference key="IBUIHighlightedTitleColor" ref="516209594"/>
 								<string key="IBUINormalTitle">Call</string>
 								<reference key="IBUINormalTitleShadowColor" ref="152085505"/>
 								<reference key="IBUIFontDescription" ref="645707862"/>
@@ -166,9 +163,6 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<reference key="IBUINormalTitleColor" ref="641982966"/>
-								<reference key="IBUIHighlightedTitleColor" ref="516209594"/>
 								<string key="IBUINormalTitle">Cancel</string>
 								<reference key="IBUINormalTitleShadowColor" ref="152085505"/>
 								<reference key="IBUIFontDescription" ref="645707862"/>
@@ -184,9 +178,6 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<reference key="IBUINormalTitleColor" ref="641982966"/>
-								<reference key="IBUIHighlightedTitleColor" ref="516209594"/>
 								<string key="IBUINormalTitle">Unpair</string>
 								<reference key="IBUINormalTitleShadowColor" ref="152085505"/>
 								<reference key="IBUIFontDescription" ref="645707862"/>
@@ -202,9 +193,6 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<reference key="IBUINormalTitleColor" ref="641982966"/>
-								<reference key="IBUIHighlightedTitleColor" ref="516209594"/>
 								<string key="IBUINormalTitle">Pay</string>
 								<reference key="IBUINormalTitleShadowColor" ref="152085505"/>
 								<reference key="IBUIFontDescription" ref="645707862"/>
@@ -220,9 +208,6 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<reference key="IBUINormalTitleColor" ref="641982966"/>
-								<reference key="IBUIHighlightedTitleColor" ref="516209594"/>
 								<string key="IBUINormalTitle">New Ride</string>
 								<reference key="IBUINormalTitleShadowColor" ref="152085505"/>
 								<reference key="IBUIFontDescription" ref="645707862"/>
@@ -238,9 +223,6 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<reference key="IBUINormalTitleColor" ref="641982966"/>
-								<reference key="IBUIHighlightedTitleColor" ref="516209594"/>
 								<string key="IBUINormalTitle">Resend</string>
 								<reference key="IBUINormalTitleShadowColor" ref="152085505"/>
 								<reference key="IBUIFontDescription" ref="645707862"/>
@@ -269,7 +251,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="878117533">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">256</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIView" id="936724569">
@@ -678,7 +660,6 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{320, 568}</string>
-				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="936724569"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<reference key="IBUIBackgroundColor" ref="832601740"/>

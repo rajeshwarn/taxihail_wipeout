@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 			 set.Bind(btnSubmit)
                 .For("TouchUpInside")
                 .To(vm => vm.RateOrder);
-            set.Bind(btnSubmit)
+             set.Bind(btnSubmit)
                 .For(v => v.Hidden)
                 .To(vm => vm.CanRate)
                 .WithConversion("BoolInverter");
