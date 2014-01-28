@@ -61,7 +61,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             var btn = new UIBarButtonItem ( offsetView );
             navBar.TopItem.LeftBarButtonItem = btn;
-            ViewModel.ShowTutorial.Execute ();
         }
 
         public override void ViewDidLoad ()
