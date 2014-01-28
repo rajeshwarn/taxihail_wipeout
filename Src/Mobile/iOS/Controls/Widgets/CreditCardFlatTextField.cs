@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             { 
                 if(value != null)
                 {
-                    var image = UIImage.FromFile(value.ToLower() + ".png");
+                    var image = UIImage.FromFile(value.ToLower().Replace(" ", "_") + ".png");
                     if(image != null)
                     {
                         Button.SetImage(image, UIControlState.Normal);
