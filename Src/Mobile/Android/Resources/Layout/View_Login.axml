@@ -84,7 +84,7 @@
                 android:visibility="invisible" />
             <Button
                 local:MvxBind="Click SignInCommand"
-                android:text="Sign In"
+                android:text="@string/SignIn"
                 android:layout_weight=".475"
                 android:layout_width="0dip"
                 android:layout_height="@dimen/HeightButton"

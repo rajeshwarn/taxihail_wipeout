@@ -452,4 +452,6 @@
   <string name="apcuriumUrl">http://www.apcurium.com/</string>
   <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
   <string name="View_ConfirmCarNumber">Confirmation</string>
+  <string name="View_Payment">Payment Info</string>
+  <string name="Create">Create</string>
 </resources>

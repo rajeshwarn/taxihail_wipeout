@@ -20,7 +20,7 @@
             android:background="@color/top_bar_color"
             android:orientation="horizontal">
             <TextView
-                android:text="Confirm Ridelinq Pair"
+                android:text="@string/View_Payments_CmtRideLinqConfirmPairTitle"
                 style="@style/TopTitleText"
                 android:layout_gravity="center"
                 android:layout_width="fill_parent"
@@ -120,7 +120,7 @@
                 android:id="@+id/ConfirmPaymentBtn"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/HeightButton"
-                android:text="@string/CmtConfirmPayment"
+                android:text="@string/Confirm"
                 local:MvxBind="{'Click': {'Path': 'ConfirmPayment'}}" />
             <Button
                 style="@style/ButtonActionGrayStyle"
@@ -134,7 +134,7 @@
                 android:id="@+id/CancelPaymentBtn"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/HeightButton"
-                android:text="@string/CmtCancelPayment"
+                android:text="@string/Cancel"
                 local:MvxBind="{'Click': {'Path': 'CancelPayment'}}" />
         </LinearLayout>
     </LinearLayout>

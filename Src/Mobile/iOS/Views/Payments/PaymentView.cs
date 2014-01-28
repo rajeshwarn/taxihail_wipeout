@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             NavigationController.NavigationBarHidden = false;
             NavigationItem.HidesBackButton = false;
-            NavigationItem.Title = Localize.GetValue("PaymentView");
+            NavigationItem.Title = Localize.GetValue("View_Payment");
         }
 
         public override void ViewDidLoad ()

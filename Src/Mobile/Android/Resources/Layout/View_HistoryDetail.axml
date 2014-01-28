@@ -19,7 +19,7 @@
             android:background="@color/top_bar_color"
             android:orientation="horizontal">
             <TextView
-                android:text="Order Details"
+                android:text="@string/View_HistoryDetail"
                 style="@style/TopTitleText"
                 android:layout_gravity="center"
                 android:layout_width="fill_parent"
@@ -268,7 +268,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
                     android:id="@+id/SendReceiptBtn"
-                    android:text="@string/HistoryDetailSendReceiptButton"
+                    android:text="@string/SendReceipt"
                     android:visibility="gone"
                     local:MvxBind="Enabled SendReceiptAvailable; Visibility SendReceiptAvailable, Converter=Visibility; Click SendReceipt" />
                 <Button

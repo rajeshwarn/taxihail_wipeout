@@ -20,7 +20,7 @@
             android:background="@color/top_bar_color"
             android:orientation="horizontal">
             <TextView
-                android:text="Confirm Payment"
+                android:text="@string/View_ConfirmCarNumber"
                 style="@style/TopTitleText"
                 android:layout_gravity="center"
                 android:layout_width="fill_parent"
@@ -87,7 +87,7 @@
                 android:layout_alignParentBottom="true">
                 <Button
                     android:id="@+id/ConfirmCarBtn"
-                    android:text="Confirm"
+                    android:text="@string/Confirm"
                     style="@style/ButtonActionGreenStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
@@ -95,7 +95,7 @@
                     layout_alignParentBottom="true" />
                 <Button
                     android:id="@+id/CancelPaymentBtn"
-                    android:text="Cancel"
+                    android:text="@string/Cancel"
                     style="@style/ButtonActionRedStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"

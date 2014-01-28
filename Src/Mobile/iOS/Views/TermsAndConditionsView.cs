@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             base.ViewWillAppear (animated);
 
             NavigationItem.HidesBackButton = false;
-            NavigationItem.Title = Localize.GetValue("TermsAndConditionsLabel");
+            NavigationItem.Title = Localize.GetValue("View_TermsAndConditions");
             NavigationController.NavigationBar.Hidden = false;
         }
 

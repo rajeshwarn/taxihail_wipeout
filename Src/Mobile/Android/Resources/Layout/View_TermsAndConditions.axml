@@ -19,7 +19,7 @@
             android:background="@color/login_background_color"
             android:orientation="horizontal">
             <TextView
-                android:text="@string/TermsAndConditionsLabel"
+                android:text="@string/View_TermsAndConditions"
                 style="@style/TopTitleText"
                 android:layout_gravity="center"
                 android:layout_width="fill_parent"

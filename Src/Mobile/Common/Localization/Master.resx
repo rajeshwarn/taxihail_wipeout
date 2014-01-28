@@ -669,11 +669,8 @@
   <data name="ResetPasswordInvalidDataMessage" xml:space="preserve">
     <value>The email is invalid.</value>
   </data>
-  <data name="CreateAccountCreate" xml:space="preserve">
+  <data name="Create" xml:space="preserve">
     <value>Create</value>
-  </data>
-  <data name="CreateAccountCancel" xml:space="preserve">
-    <value>Cancel</value>
   </data>
   <data name="RideSettingsChargeType" xml:space="preserve">
     <value>Charge type</value>
@@ -1020,9 +1017,6 @@
   <data name="NbPassengers" xml:space="preserve">
     <value> ({0} passengers)</value>
   </data>
-  <data name="HistoryDetailSendReceiptButton" xml:space="preserve">
-    <value>Send receipt</value>
-  </data>
   <data name="CreateAccountTitleArray" xml:space="preserve">
     <value>MrMrs</value>
   </data>
@@ -1206,7 +1200,7 @@
   <data name="NoCreditCardSelected" xml:space="preserve">
     <value>Please select a credit card</value>
   </data>
-  <data name="PaymentView" xml:space="preserve">
+  <data name="View_Payment" xml:space="preserve">
     <value>Payment Info</value>
   </data>
   <data name="BackButton" xml:space="preserve">

@@ -32,7 +32,7 @@
             android:gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/Height"
-            android:text="Create your account"
+            android:text="@string/View_CreateAccount"
             style="@style/TitleTextBold" />
         <View
             android:orientation="vertical"
@@ -104,7 +104,7 @@
                     android:orientation="horizontal">
                     <Button
                         local:MvxBind="Click CloseCommand"
-                        android:text="Cancel"
+                        android:text="@string/Cancel"
                         android:layout_weight=".475"
                         android:layout_width="0dip"
                         android:layout_height="@dimen/HeightButton"
@@ -116,7 +116,7 @@
                         android:visibility="invisible" />
                     <Button
                         local:MvxBind="Click CreateAccount"
-                        android:text="@string/CreateAccountCreate"
+                        android:text="@string/Create"
                         android:layout_weight=".475"
                         android:layout_width="0dip"
                         android:layout_height="@dimen/HeightButton"

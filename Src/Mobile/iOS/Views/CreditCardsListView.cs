@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             base.ViewWillAppear (animated);
 
             NavigationController.NavigationBar.Hidden = false;
-            NavigationItem.Title = Localize.GetValue ("CreditCardsListView");
+            NavigationItem.Title = Localize.GetValue ("View_CreditCardsList");
         }
 
         public override void ViewDidLoad ()

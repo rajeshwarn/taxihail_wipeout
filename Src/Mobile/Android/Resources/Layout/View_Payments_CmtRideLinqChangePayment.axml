@@ -20,7 +20,7 @@
             android:background="@color/top_bar_color"
             android:orientation="horizontal">
             <TextView
-                android:text="Change Payment Infos"
+                android:text="@string/View_Payments_CmtRideLinqChangePaymentTitle"
                 style="@style/TopTitleText"
                 android:layout_gravity="center"
                 android:layout_width="fill_parent"
@@ -60,14 +60,6 @@
                     android:text="@string/PaymentDetails.TipAmountLabel"
                     style="@style/FormLabelText" />
             </LinearLayout>
-        <!--<apcurium.mk.booking.mobile.client.controls.TipSlider
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal"
-                android:id="@+id/tipSlider"
-                android:layout_marginRight="-4dp"
-                local:MvxBind="{'Percent': {'Path': 'PaymentPreferences.Tip', 'Mode':'TwoWay'}}" />-->
             <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
                 android:id="@+id/tipPicker"
                 android:layout_width="fill_parent"
@@ -86,7 +78,7 @@
                     android:layout_width="fill_parent"
                     android:layout_weight="0.33"
                     android:layout_height="@dimen/HeightButton"
-                    android:text="@string/CmtRideLinqSaveChanges"
+                    android:text="@string/Save"
                     local:MvxBind="{'Click': {'Path': 'SaveCommand'}}" />
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -99,7 +91,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightButton"
                         android:id="@+id/CancelSettingsButton"
-                        android:text="@string/CmtRideLinqCancelChanges"
+                        android:text="@string/Cancel"
                         local:MvxBind="{'Click': {'Path': 'CancelCommand'}}" />
                 </LinearLayout>
             </LinearLayout>
