@@ -222,7 +222,7 @@
 "July"="Jul (07)";
 "Facebook"="Sign in with Facebook";
 "BookPickupLocationButtonTitle"="Pickup";
-"View_Payments_CmtRideLinqChangePaymentTitle"="Change payment info";
+"View_Payments_CmtRideLinqChangePaymentTitle"="Change Payment Info";
 "TabFavorites"="Favorites";
 "PickupMapTitle"="Pickup location";
 "ReSendConfirmation"="Notify driver of payment";
@@ -283,7 +283,7 @@
 "ChangeServer"="Change server";
 "CreditCardZipCode"="Zip code";
 "View_RideSummary"="Ride Summary";
-"View_Payments_CmtRideLinqConfirmPairTitle"="Confirm payment information";
+"View_Payments_CmtRideLinqConfirmPairTitle"="Confirm Payment Information";
 "StatusNewRideButton"="New Ride";
 "HistoryDetailOrderLabel"="Order:";
 "HistoryDetailBuildingNameLabel"="Building Name:";
@@ -314,7 +314,7 @@
 "NoOrderId"="Order Not ready";
 "TermsAndConditionsLabel"="Terms and Conditions";
 "StatusInvalid"="Status not available";
-"View_CreateAccount"="Create your account";
+"View_CreateAccount"="Create Your Account";
 "ServiceErrorCreateOrder_NoFareEstimateAvailable"="No fare estimate available for the ride. Please contact {0} at {1} for further assistance.";
 "HistoryDetailDestinationLabel"="Destination:";
 "ViewRatingBtn"="View ratings";
@@ -412,7 +412,7 @@
 "InvalidAccountOnActivatedTitle"="Invalid account";
 "LanguageCode"="en";
 "TabHistory"="History";
-"View_BookRating"="Rate your trip";
+"View_BookRating"="Rate Your Trip";
 "PaymentViewMeterAmountText"="Meter Amount";
 "YesButton"="Yes";
 "ConfirmVehiculeTypeLabel"="Vehicle type";
