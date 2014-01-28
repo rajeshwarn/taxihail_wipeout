@@ -13,7 +13,7 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    public class EditTextSpinner : LinearLayout
+    public class EditTextRightSpinner : LinearLayout
     {
         private ListItemAdapter _adapter;
         private ImageView _imageLeftView;
@@ -24,14 +24,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private string _text;
 
         [Register(".ctor", "(Landroid/content/Context;)V", "")]
-        public EditTextSpinner(Context context)
+        public EditTextRightSpinner(Context context)
             : base(context)
         {
             Initialize();
         }
 
         [Register(".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;)V", "")]
-        public EditTextSpinner(Context context, IAttributeSet attrs)
+        public EditTextRightSpinner(Context context, IAttributeSet attrs)
             : base(context, attrs)
         {
             Initialize();
@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             base.OnFinishInflate();
             var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
-            var layout = inflater.Inflate(Resource.Layout.SpinnerCell, this, true);
+            var layout = inflater.Inflate(Resource.Layout.SpinnerCellTextRight, this, true);
 
             _label = (TextView) layout.FindViewById(Resource.Id.label);
             _label.Focusable = false;

@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private LinearLayout _layoutRoot;
         private EditText _meterAmountTextView;
         private EditText _tipAmountTextView;
-        private EditTextSpinner _tipPicker;
+        private EditTextRightSpinner _tipPicker;
         private TextView _totalAmountTextView;
 
         public double TipAmount
@@ -40,12 +40,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.OnStart();
 
             _layoutRoot = FindViewById<LinearLayout>(Resource.Id.layoutRoot);
-            _tipPicker = FindViewById<EditTextSpinner>(Resource.Id.tipPicker);
+            _tipPicker = FindViewById<EditTextRightSpinner>(Resource.Id.tipPicker);
             _tipAmountTextView = FindViewById<EditText>(Resource.Id.tipAmountTextView);
             _meterAmountTextView = FindViewById<EditText>(Resource.Id.meterAmountTextView);
             _totalAmountTextView = FindViewById<TextView>(Resource.Id.totalAmountTextView);
 
             UpdateAmounts();
+
+
 
             _tipAmountTextView.TextChanged += (sender, e) => UpdateAmounts();
             _meterAmountTextView.FocusChange += (sender, e) =>

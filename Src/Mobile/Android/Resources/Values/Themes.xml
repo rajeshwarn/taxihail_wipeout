@@ -66,7 +66,8 @@
 	<dimen name="top_bar_title_font_size">18dp</dimen>
   	<dimen name="top_bar_title_height">52dip</dimen>  
   	<dimen name="setting_menu_text_size">20dip</dimen>
-    <dimen name="payment_text_size">16dip</dimen>
+    <dimen name="payment_text_size">18dip</dimen>
+    <dimen name="payment_text_bold_size">19dip</dimen>
 
   	<!--- Styles -->
 
@@ -95,8 +96,21 @@
       <item name="android:textCursorDrawable">@null</item>
       <item name="android:background">@drawable/edit_text_flat</item>
       <item name="android:textColor">@color/edit_text_foreground_color</item>
+    </style>  
+
+    <!--    Login Theme - TextView based on EditTextFlat -->
+
+    <style name="custom_TextViewStyle" parent="@android:style/Widget.EditText">
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/edit_text_foreground_color</item>
     </style>
-  
+
     <!--	Login Theme Button -->
 
     <style name="custom_ButtonStyle" parent="@android:style/Widget.Button">

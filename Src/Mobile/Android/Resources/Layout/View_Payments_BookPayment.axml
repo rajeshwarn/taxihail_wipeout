@@ -91,25 +91,22 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     local:MvxBind="Visibility PayPalSelected, Converter=InvertedVisibility">
                     <TextView
                         android:text="@string/PaymentDetails.CreditCardLabel"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/HeightEditTextFlat"
-                        android:layout_weight="0.3"
                         android:paddingRight="12dp"
                         style="@style/BlackTextLabel"
                         android:textSize="@dimen/payment_text_size"
                         android:gravity="center_vertical" />
                     <apcurium.mk.booking.mobile.client.controls.CreditCardButton
                         local:MvxBind="NavigateCommand PaymentPreferences.NavigateToCreditCardsList; Text PaymentPreferences.SelectedCreditCard.FriendlyName; CreditCardCompany PaymentPreferences.SelectedCreditCard.CreditCardCompany; Last4Digits PaymentPreferences.SelectedCreditCard.Last4Digits"
-                        android:layout_width="100dp"
+                        android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"
-                        android:layout_weight="0.7"
                         android:textSize="@dimen/payment_text_size"
-                        android:inputType="numberDecimal"
-                        android:gravity="center_vertical|right" />
+                        android:inputType="numberDecimal" />
                 </LinearLayout>
                 <View
                     android:orientation="vertical"
@@ -159,7 +156,7 @@
                         style="@style/BlackTextLabel"
                         android:textSize="@dimen/payment_text_size"
                         android:gravity="center_vertical" />
-                    <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                    <apcurium.mk.booking.mobile.client.controls.EditTextRightSpinner
                         android:id="@+id/tipPicker"
                         local:MvxBind="Text PaymentPreferences.TipAmount; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip"
                         android:layout_width="100dp"
@@ -175,7 +172,6 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
                     android:orientation="horizontal">
                     <TextView
                         android:text="Tip Amount"
@@ -207,25 +203,26 @@
                     android:gravity="center_horizontal"
                     android:orientation="horizontal">
                     <TextView
+                        android:text="Total"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_weight="0.9"
-                        android:paddingRight="12dp"
-                        android:text="Total"
+                        android:layout_gravity="left"
                         style="@style/BlackTextLabel"
-                        android:textSize="@dimen/payment_text_size"
                         android:textStyle="bold"
-                        android:gravity="center_vertical" />
+                        android:textSize="@dimen/payment_text_bold_size"
+                        android:gravity="center_vertical|left" />
                     <TextView
                         android:id="@+id/totalAmountTextView"
                         local:MvxBind="Text TextAmount, Mode=TwoWay"
-                        style="@style/BlackTextLabel"
-                        android:layout_width="100dp"
+                        android:layout_weight="0.9"
+                        android:layout_width="0dp"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_gravity="right"
-                        android:layout_marginRight="10.0dp"
-                        android:textSize="@dimen/payment_text_size"
+                        android:paddingRight="10dip"
+                        style="@style/BlackTextLabel"
                         android:textStyle="bold"
+                        android:textSize="@dimen/payment_text_bold_size"
                         android:gravity="center_vertical|right" />
                 </LinearLayout>
                 <LinearLayout

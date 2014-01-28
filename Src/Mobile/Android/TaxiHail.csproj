@@ -424,6 +424,10 @@
     <AndroidResource Include="Resources\Drawable\mk_logo.png" />
     <AndroidResource Include="Resources\drawable-hdpi\mk_logo.png" />
     <AndroidResource Include="Resources\Drawable\dialog_background.xml" />
+    <AndroidResource Include="Resources\Layout\SpinnerCellTextRight.axml" />
+    <Compile Include="Controls\Widgets\EditTextRightSpinner.cs" />
+    <Compile Include="Controls\Widgets\ListItemAdapter.cs" />
+    <Compile Include="Binding\EditTextRightSpinnerSelectedItemBinding.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
