@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:cacheColorHint="#00ffffff"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent">
     <RelativeLayout
@@ -14,36 +15,40 @@
         android:layout_width="105px"
         android:layout_height="fill_parent" />
     <RelativeLayout
+        android:cacheColorHint="#00ffffff"
         android:layout_marginRight="100px"
         android:id="@+id/HeaderLayoutMenu"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_toRightOf="@id/fakeLayout">
         <LinearLayout
+            android:cacheColorHint="#00ffffff"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
             <LinearLayout
+                android:cacheColorHint="#00ffffff"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
                 android:layout_weight="0.2">
+                <ImageView
+                    android:src="@drawable/th_logo"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/imgLogo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
                 <ScrollView
-                    android:cacheColorHint="#00000000"
+                    android:cacheColorHint="#00ffffff"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
+                        android:id="@+id/listContainer"
                         android:orientation="vertical"
                         android:layout_margin="10dip">
-                        <ImageView
-                            android:src="@drawable/th_logo"
-                            android:gravity="center_horizontal"
-                            android:id="@+id/imgLogo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center" />
                         <View
                             android:paddingLeft="16px"
                             android:paddingRight="16px"

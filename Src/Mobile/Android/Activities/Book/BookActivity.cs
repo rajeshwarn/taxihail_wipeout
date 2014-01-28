@@ -7,6 +7,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Gms.Common;
 using Android.Gms.Maps;
+using Android.Graphics;
 using Android.OS;
 using Android.Views;
 using Android.Views.Animations;
@@ -94,8 +95,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             bigButton.Click -= MainSettingsButtonOnClick;
             bigButton.Click += MainSettingsButtonOnClick;
 
-			//var mainLayoutMenu = FindViewById<RelativeLayout>(Resource.Id.MainLayoutMenu);
-			//var titleText = mainLayoutMenu.FindViewById<TextView>(Resource.Id.ViewTitle);
+            //var mainLayoutMenu = FindViewById<RelativeLayout>(Resource.Id.MainLayoutMenu);
+            //var titleText = mainLayoutMenu.FindViewById<TextView>(Resource.Id.ViewTitle);
             //titleText.Text = GetString(Resource.String.View_BookSettingMenu);
 
             var menu = FindViewById(Resource.Id.BookSettingsMenu);
@@ -113,6 +114,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ViewModel.Panel.PropertyChanged += HandlePropertyChanged;
 
             ViewModel.OnViewLoaded();
+
+            var _listContainer = FindViewById<ViewGroup>(Resource.Id.listContainer);
+
+            for (int i = 0; i < _listContainer.ChildCount; i++)
+            {
+                if (_listContainer.GetChildAt(i).GetType() == typeof(Button))
+                {
+                    try
+                    {
+                        Button child = (Button)_listContainer.GetChildAt(i);
+                        child.SetTypeface(Typeface.Create("sans-serif-light", TypefaceStyle.Normal), TypefaceStyle.Normal);
+                    }
+                    catch
+                    {
+                    
+                    }
+                }
+            }
 
             FindViewById<TouchMap>(Resource.Id.mapPickup).PostInvalidateDelayed(100);
         }
