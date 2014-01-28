@@ -92,6 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
                     TipAmount = MeterAmount * ((double)x.Id/100d);
                     UpdateAmounts(false);
                 });
+            txtTip.TextAlignment = UITextAlignment.Right;
 
             lblCreditCard.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
             lblTip.Text = Localize.GetValue("PaymentViewTipText");

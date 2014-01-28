@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         private RootElement _rootElement;
         private UIButton _button;
+        private bool _isAlignedToRight;
 
         public ModalFlatTextField (IntPtr handle) : base (handle)
         {

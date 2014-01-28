@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	public class FlatTextField : UITextField
 	{
 	    private const float RadiusCorner = 2;
-        private const float Padding = 6.5f;
+        protected const float Padding = 6.5f;
         private UIImageView _leftImageView;
 
 	    public FlatTextField (IntPtr handle) : base (handle)
@@ -92,10 +92,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     AddSubview(_leftImageView);
 
                     // Adjust the left padding of the text for image width
-                    LeftView.Frame = LeftView.Frame.SetWidth(image.Size.Width + 5);
+                    LeftView.Frame = LeftView.Frame.SetWidth(image.Size.Width + Padding);
 
                     // And the right padding
-                    RightView = new UIView(new RectangleF(Frame.Right - 5, 0f, 5, 1f));
+                    RightView = new UIView(new RectangleF(Frame.Right - Padding, 0f, Padding, 1f));
 
                     SetNeedsDisplay();
                 }
@@ -115,7 +115,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     var rightArrow = new UIImageView(new RectangleF(Frame.Width - image.Size.Width - Padding, (Frame.Height - image.Size.Height)/2, image.Size.Width, image.Size.Height));
                     rightArrow.Image = image;
 
-                    RightView.Frame = RightView.Frame.IncrementWidth(image.Size.Width);
+                    RightView.Frame = RightView.Frame.IncrementWidth(image.Size.Width + Padding); // this is to keep the same padding between the end of the text and the right arrow
                     AddSubview(rightArrow);
 
                     SetNeedsDisplay();
