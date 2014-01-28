@@ -11,6 +11,9 @@ using CrossUI.Droid.Dialog.Elements;
 using CrossUI.Droid.Dialog;
 using CrossUI.Droid;
 using Android.Util;
+using Android.Graphics.Drawables;
+using Android.Graphics;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
@@ -30,6 +33,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             var ResourceAcklowledgeBold = GetString(Resource.String.TermsAndConditionsLabel);
             var textWithBold = Html.FromHtml(ResourceAcklowledge.Replace(ResourceAcklowledgeBold, "<b>" + ResourceAcklowledgeBold + "</b>"));
             lblTermsAndConditions.SetText(textWithBold, TextView.BufferType.Spannable);
+
+            var colorTheme = Resources.GetColor(Resource.Color.label_text_color);
+            var checkedIcon = Resources.GetDrawable(Resource.Drawable.@checked_custom);
+            var uncheckedIcon = Resources.GetDrawable(Resource.Drawable.@unchecked_custom);                                
+
+            var list = new StateListDrawable();
+            list.AddState(new int[]{ Android.Resource.Attribute.StateChecked }, checkedIcon);
+            list.AddState(new int[]{ -Android.Resource.Attribute.StateChecked }, uncheckedIcon);
+            list.AddState(new int[]{ Android.Resource.Attribute.StatePressed }, checkedIcon);
+            list.SetColorFilter(colorTheme, PorterDuff.Mode.Multiply); 
+           
+            var checkBox = (CheckBox)FindViewById<CheckBox>(Resource.Id.cbTermsAndConditions);
+            checkBox.SetButtonDrawable(list);
+            checkBox.Invalidate();
         }	
 
         public void SetDialog(ViewGroup registerContainer, int positionInContainer)
