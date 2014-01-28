@@ -4474,6 +4474,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0a017c
 			public const int View_CreateAccount = 2131362172;
 			
+			// aapt resource value: 0x7f0a0206
+			public const int View_CreditCardAdd = 2131362310;
+			
+			// aapt resource value: 0x7f0a0208
+			public const int View_CreditCardsList = 2131362312;
+			
 			// aapt resource value: 0x7f0a00dc
 			public const int View_History = 2131362012;
 			
@@ -4503,6 +4509,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0a00f8
 			public const int View_RefineAddress = 2131362040;
+			
+			// aapt resource value: 0x7f0a0207
+			public const int View_RideSettings = 2131362311;
 			
 			// aapt resource value: 0x7f0a015c
 			public const int View_RideSummary = 2131362140;

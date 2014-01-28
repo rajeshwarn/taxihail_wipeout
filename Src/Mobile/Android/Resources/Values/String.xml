@@ -454,4 +454,7 @@
   <string name="View_ConfirmCarNumber">Confirmation</string>
   <string name="View_Payment">Payment Info</string>
   <string name="Create">Create</string>
+  <string name="View_CreditCardAdd">New Credit Card</string>
+  <string name="View_RideSettings">Profile</string>
+  <string name="View_CreditCardsList">Credit Cards</string>
 </resources>
