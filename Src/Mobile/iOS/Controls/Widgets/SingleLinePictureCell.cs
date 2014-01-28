@@ -85,6 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if (value)
                 {
                     _leftText.TextColor = _rightText.TextColor = UIColor.FromRGB(44, 44, 44);
+                    _leftText.Font = UIFont.FromName(FontName.HelveticaNeueMedium, 32/2);
                 }
             }
         }
@@ -104,13 +105,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			BackgroundView = new CustomCellBackgroundView(Frame, 10, UIColor.White, UIColor.FromRGB(190, 190, 190));
            
             _leftText = new UILabel(new RectangleF(65, (Frame.Height - 15)/2, 200, 15));
-            _leftText.TextColor = UIColor.Black;
-            _leftText.Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);
+            _leftText.TextColor = UIColor.FromRGB(44, 44, 44);
+            _leftText.Font = UIFont.FromName(FontName.HelveticaNeueLight, 32/2);
             _leftText.BackgroundColor = UIColor.Clear;
             AddSubview(_leftText);
 
             _rightText = new UILabel(new RectangleF(190, (Frame.Height - 15)/2, 80, 15));
-            _rightText.TextColor = UIColor.FromRGB(133, 133, 133);
+            _rightText.TextColor = UIColor.FromRGB(44, 44, 44);
             _rightText.Font = UIFont.FromName(FontName.HelveticaNeueMedium, 32/2);
             _rightText.BackgroundColor = UIColor.Clear;
             AddSubview(_rightText);

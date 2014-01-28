@@ -35,9 +35,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
             if(UIHelper.IsOS7orHigher)
 			{
-				TintColor = UIColor.Black; // cursor color
+                TintColor = UIColor.FromRGB(44, 44, 44); // cursor color
 			}
 
+            TextColor = UIColor.FromRGB(44, 44, 44);
 			Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);
 
             //padding

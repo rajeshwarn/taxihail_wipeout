@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
-            FlatButtonStyle.Green.ApplyTo(btnRateRide);
+            FlatButtonStyle.Silver.ApplyTo(btnRateRide);
 			FlatButtonStyle.Green.ApplyTo(btnSendReceipt);
 			FlatButtonStyle.Green.ApplyTo(btnReSendConfirmation);
 			FlatButtonStyle.Green.ApplyTo(btnPay);
