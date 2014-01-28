@@ -191,7 +191,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             });
         }
 
-        public void ChangeThemeOfNavigationBar(bool resetToDefault = false)
+        protected void ChangeThemeOfNavigationBar(bool resetToDefault = false)
         {
             var titleFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
             var navBarButtonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
@@ -276,6 +276,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             UIBarButtonItem.Appearance.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
             UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
             UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
+        }
+
+        protected void ChangeRightBarButtonFontToBold()
+        {
+            if (NavigationItem == null || NavigationItem.RightBarButtonItem == null)
+            {
+                return;
+            }
+
+            var rightBarButtonFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
+            var textColor = UIColor.FromRGB(44, 44, 44);
+
+            var buttonTextColor = new UITextAttributes () {
+                Font = rightBarButtonFont,
+                TextColor = textColor,
+                TextShadowColor = UIColor.Clear,
+                TextShadowOffset = new UIOffset(0,0)
+            };
+            var selectedButtonTextColor = new UITextAttributes () {
+                Font = rightBarButtonFont,
+                TextColor = textColor.ColorWithAlpha(0.5f),
+                TextShadowColor = UIColor.Clear,
+                TextShadowOffset = new UIOffset(0,0)
+            };
+
+            NavigationItem.RightBarButtonItem.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
+            NavigationItem.RightBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
+            NavigationItem.RightBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
         }
     }
 }

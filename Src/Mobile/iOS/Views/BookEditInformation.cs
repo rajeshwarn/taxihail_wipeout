@@ -41,6 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewWillAppear (animated);
             NavigationController.NavigationBar.Hidden = false;
+            ChangeRightBarButtonFontToBold();
         }
 
         public override void ViewDidLoad()

@@ -22,26 +22,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         [UsedImplicitly]
         private string _last4Digits { get; set; }
-        public string Last4Digits {
-            set {
+        public string Last4Digits 
+        {
+            set 
+            {
                 _last4Digits = string.IsNullOrEmpty (value) ? string.Empty : "\u2022\u2022\u2022\u2022 " + value;
-                RightView = new UILabel(new RectangleF(0, 0, 100 - Padding, Bounds.Height))
+                RightView = new UILabel(new RectangleF(0, 0, 100 + Padding, Bounds.Height))
                 {
                     Text = _last4Digits,
                     BackgroundColor = UIColor.Clear,
-                    TextColor = UIColor.FromRGB(133, 133, 133),
-                    Font = UIFont.FromName(FontName.HelveticaNeueMedium, 32/2)
+                    TextColor = UIColor.FromRGB(44, 44, 44),
+                    Font = UIFont.FromName(FontName.HelveticaNeueMedium, 38/2)
                 };
 
                 RightViewMode = UITextFieldViewMode.Always;
             }
-            get {
-                return _last4Digits;
-            }
+            get { return _last4Digits; }
         }
 
         [UsedImplicitly]
-        public string CreditCardCompany{
+        public string CreditCardCompany
+        {
             set
             { 
                 if(value != null)
