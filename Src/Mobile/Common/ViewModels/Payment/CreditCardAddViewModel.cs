@@ -97,6 +97,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			Data.ExpirationMonth = DummyVisa.ExpirationDate.Month+"";
 			Data.ExpirationYear = DummyVisa.ExpirationDate.Year + "";
 			Data.NameOnCard = "Chris";
+			RaisePropertyChanged("CreditCardNumber");
 #endif            
         }
 
