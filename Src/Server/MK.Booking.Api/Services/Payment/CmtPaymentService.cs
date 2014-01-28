@@ -289,6 +289,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
 
                 _logger.LogMessage( "Pairing request : " + pairingRequest.ToJson());
+                _logger.LogMessage("PaymentSettings request : " + _configurationManager.GetPaymentSettings().CmtPaymentSettings.ToJson());
+                
+                
                 var response = CmtMobileServiceClient.Post(pairingRequest);
                 _logger.LogMessage("Pairing response : " + response.ToJson());
                 
@@ -335,6 +338,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
             catch (Exception e)
             {
+                _logger.LogError( e );
                 return new PairingResponse
                 {
                     IsSuccessfull = false,
