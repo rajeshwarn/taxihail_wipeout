@@ -84,6 +84,7 @@
                         android:button="@drawable/checkbox" />
                     <TextView
                         style="@style/TitleTextMultine"
+                        android:textColor="@color/label_text_color"
                         android:id="@+id/lblTermsAndConditions"
                         local:MvxBind="Click NavigateToTermsAndConditions"
                         android:gravity="left"
