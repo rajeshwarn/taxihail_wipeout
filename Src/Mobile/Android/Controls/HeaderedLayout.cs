@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (StyleManager.Current.NavigationTitleColor != null)
             {
                 var txt = FindViewById<TextView>(Resource.Id.ViewTitle);
-                txt.Typeface = AppFonts.Medium;
+
                 txt.SetTextSize(ComplexUnitType.Dip, 16);
                 txt.SetTextColor(new Color(StyleManager.Current.NavigationTitleColor.Red,
                     StyleManager.Current.NavigationTitleColor.Green, StyleManager.Current.NavigationTitleColor.Blue));
@@ -119,23 +119,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     var child = vGroup.GetChildAt(i);
                     LoopAllChildren(child);
-                }
-            }
-            else if (view is TextView)
-            {
-                var tt = ((TextView) view).Typeface;
-
-                if ((tt != null) && (tt.IsBold))
-                {
-                    ((TextView) view).Typeface = AppFonts.Medium;
-                }
-                else if ((tt != null) && (tt.IsItalic))
-                {
-                    ((TextView) view).Typeface = AppFonts.Italic;
-                }
-                else
-                {
-                    ((TextView) view).Typeface = AppFonts.Regular;
                 }
             }
         }

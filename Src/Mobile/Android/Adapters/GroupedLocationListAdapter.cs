@@ -127,15 +127,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
                 int size = adapter.Count + 1;
 
                 // check if position inside this section
-                if (position == 0)
-                {
-                    var header = Headers.GetView(sectionNum, convertView, parent);
-                    if (header is TextView)
-                    {
-                        ((TextView) header).Typeface = AppFonts.Bold;
-                    }
-                    return header;
-                }
                 if (position < size)
                 {
                     return adapter.GetView(position - 1, convertView, parent);
