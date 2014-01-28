@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				new ListItem { Id = 5,  Display = "5%" }, 
 				new ListItem { Id = 10, Display = "10%" }, 
 				new ListItem { Id = 15, Display = "15%" }, 
+				new ListItem { Id = 18, Display = "18%" }, 
 				new ListItem { Id = 20, Display = "20%" },
 				new ListItem { Id = 25, Display = "25%" }
 			};

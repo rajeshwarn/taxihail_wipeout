@@ -78,6 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.NavigateToHistoryDetailPage);
 
 			set.Apply ();
+            ViewModel.OnViewLoaded();
 		}
 
 		private MvxStandardTableViewCell CellCreator(UITableView tableView, NSIndexPath indexPath, object state)
