@@ -13,9 +13,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 	partial class BookRatingView
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnSubmit { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UITableView ratingTableView { get; set; }
 		
 		void ReleaseDesignerOutlets ()
@@ -23,11 +20,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 			if (ratingTableView != null) {
 				ratingTableView.Dispose ();
 				ratingTableView = null;
-			}
-
-			if (btnSubmit != null) {
-				btnSubmit.Dispose ();
-				btnSubmit = null;
 			}
 		}
 	}

@@ -9,6 +9,7 @@ using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Views;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using System.Drawing;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
@@ -32,8 +33,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 
             View.BackgroundColor = UIColor.FromRGB (242, 242, 242);
 
+            var btnSubmit = new FlatButton(new RectangleF(8f, BottomPadding, 304f, 41f));
 			FlatButtonStyle.Green.ApplyTo(btnSubmit);
 			btnSubmit.SetTitle(Localize.GetValue("Submit"), UIControlState.Normal);
+
+            if (ViewModel.CanRate)
+            {
+                // since we can't have dynamic height of tableview, we put a scrollable tableview with a footer containing the submit button
+                var footerView = new UIView(new RectangleF(0f, 0f, 320f, btnSubmit.Frame.Height + BottomPadding * 2));
+                footerView.AddSubview(btnSubmit);
+                ratingTableView.TableFooterView = footerView;
+            }
 
 			var source = new MvxActionBasedTableViewSource(
 				ratingTableView,
@@ -41,14 +51,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 				BookRatingCell.Identifier ,
 				BookRatingCell.BindingText,
 				UITableViewCellAccessory.None);
-			
 			source.CellCreator = (tableView, indexPath, item) =>
 			{
 				return BookRatingCell.LoadFromNib(tableView);
 			};
-
 			ratingTableView.Source = source;
-					
+
             var set = this.CreateBindingSet<BookRatingView, BookRatingViewModel>();
 
 			 set.Bind(btnSubmit)
@@ -56,11 +64,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
                 .To(vm => vm.RateOrder);
             set.Bind(btnSubmit)
                 .For(v => v.Hidden)
-                .To(vm => vm.CanRating)
+                .To(vm => vm.CanRate)
                 .WithConversion("BoolInverter");
-            set.Bind(btnSubmit)
-                .For(v => v.Enabled)
-                .To(vm => vm.CanSubmit);
 
             set.Bind(source)
                 .For(v => v.ItemsSource)

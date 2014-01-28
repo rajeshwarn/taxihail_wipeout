@@ -31,7 +31,7 @@
             android:padding="7dip"
             android:layout_marginTop="1dip"
             android:tag="Mad"
-            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected MadSelected; Enabled CanRating"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected MadSelected; Enabled CanRate"
             android:layout_marginRight="15dip" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore2"
@@ -42,7 +42,7 @@
             android:padding="7dip"
             android:layout_marginTop="1dip"
             android:tag="Unhappy"
-            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected UnhappySelected; Enabled CanRating"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected UnhappySelected; Enabled CanRate"
             android:layout_marginRight="15dip" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore3"
@@ -53,7 +53,7 @@
             android:padding="7dip"
             android:layout_marginTop="1dip"
             android:tag="Neutral"
-            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected NeutralSelected; Enabled CanRating"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected NeutralSelected; Enabled CanRate"
             android:layout_marginRight="15dip" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore4"
@@ -64,7 +64,7 @@
             android:padding="7dip"
             android:layout_marginTop="1dip"
             android:tag="Happy"
-            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected HappySelected; Enabled CanRating"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected HappySelected; Enabled CanRate"
             android:layout_marginRight="15dip" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore5"
@@ -75,6 +75,6 @@
             android:padding="7dip"
             android:layout_marginTop="1dip"
             android:tag="Ecstatic"
-            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected EcstaticSelected; Enabled CanRating" />
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected EcstaticSelected; Enabled CanRate" />
     </LinearLayout>
 </LinearLayout>

@@ -58,9 +58,9 @@ namespace apcurium.MK.Booking.Mobile.Models
             }
         }
 
-        public RatingModel(bool canRate=false)
+		public RatingModel(bool canRate = false)
         {
-            CanRating = canRate;
+			CanRate = canRate;
         }
 
         private enum RatingState { Mad = 1, Unhappy = 2, Neutral = 3, Happy = 4, Ecstatic = 5 }
@@ -74,16 +74,16 @@ namespace apcurium.MK.Booking.Mobile.Models
             MadSelected = false;
         }
 
-        private bool _canRating;
-        public bool CanRating
+		private bool _canRate;
+		public bool CanRate
         {
             get
             {
-                return _canRating;
+				return _canRate;
             }
             set
 			{
-				_canRating = value;
+				_canRate = value;
 				RaisePropertyChanged();
 			}
 
@@ -96,11 +96,10 @@ namespace apcurium.MK.Booking.Mobile.Models
                 return GetCommand<object>(param => param.Maybe(tag =>
                     {
 					RatingState state;
-					if(CanRating
+					if(CanRate
 					   && param != null
 					   && Enum.TryParse(param.ToString(), true, out state))
 					{
-
 						Score = (int)state;
 						DeselectAllState();
 						switch (state)

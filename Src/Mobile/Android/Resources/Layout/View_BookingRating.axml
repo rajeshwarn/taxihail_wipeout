@@ -59,7 +59,7 @@
                 android:layout_gravity="center"
                 android:layout_width="150dip"
                 android:padding="7dip"
-                local:MvxBind="Click RateOrder; Visibility CanRating, Converter=Visibility"
+                local:MvxBind="Click RateOrder; Visibility CanRate, Converter=Visibility"
                 android:layout_centerHorizontal="true" />
         </LinearLayout>
     </LinearLayout>
