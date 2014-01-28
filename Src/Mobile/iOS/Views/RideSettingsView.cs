@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             NavigationController.NavigationBar.Hidden = false;
             NavigationItem.Title = Localize.GetValue("RideSettingsView");
+            ChangeRightBarButtonFontToBold();
         }
 
         public override void ViewDidLoad ()

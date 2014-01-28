@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			NavigationItem.HidesBackButton = false;
 			NavigationItem.Title = Localize.GetValue("View_LocationDetail");
+            ChangeRightBarButtonFontToBold();
 		}
 
         public override void ViewDidLoad()

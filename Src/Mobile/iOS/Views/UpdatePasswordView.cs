@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			NavigationItem.HidesBackButton = false;
 			NavigationItem.Title = Localize.GetValue("View_UpdatePassword");
+            ChangeRightBarButtonFontToBold();
 		}
 
 		public override void ViewDidLoad ()
