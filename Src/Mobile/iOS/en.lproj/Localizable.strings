@@ -450,3 +450,8 @@
 "apcuriumUrl"="http://www.apcurium.com/";
 "mobileKnowledgeUrl"="http://www.mobile-knowledge.com/";
 "View_ConfirmCarNumber"="Confirmation";
+"View_CreditCardAdd"="New Credit Card";
+"View_RideSettings"="Profile";
+"View_Payment"="Payment Info";
+"Create"="Create";
+"View_CreditCardsList"="Credit Cards";
