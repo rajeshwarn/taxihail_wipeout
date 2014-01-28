@@ -28,19 +28,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 	[Activity(Label = "Book", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait, ClearTaskOnLaunch = true,
         FinishOnTaskLaunch = true)]
-    public class BookActivity : MvxActivity
+    public class BookActivity : BaseBindingActivity<BookViewModel>
     {
         private readonly DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
         private int _menuWidth = 400;
         private TouchMap _touchMap;
-
-		public new BookViewModel ViewModel
-		{
-			get
-			{
-				return (BookViewModel)DataContext;
-			}
-		}
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -156,10 +148,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             base.OnResume();
 
-            if (ViewModel.ShowTutorial.CanExecute())
-            {
-                ViewModel.ShowTutorial.Execute();
-            }
             TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
             ViewModel.CenterMap(true);
 
@@ -174,30 +162,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             base.OnPause();
 
-	    _touchMap.Pause();
-        }
-
-        protected override void OnStart()
-        {
-            base.OnStart();
-            if (ViewModel != null) ViewModel.Start();
-        }
-
-        protected override void OnStop()
-        {
-            base.OnStop();
-            if (ViewModel != null) ViewModel.OnViewStopped();
+	        _touchMap.Pause();
         }
 
         protected override void OnDestroy()
         {
-            base.OnDestroy();
-
             if (ViewModel != null)
             {
-                ViewModel.OnViewUnloaded();
                 ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
             }
+
+            base.OnDestroy();
 
             _touchMap.OnDestroy();
         }

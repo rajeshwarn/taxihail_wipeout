@@ -154,6 +154,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public override void OnViewStarted(bool firstTime = false)
         {
 			base.OnViewStarted(firstTime);
+
+			if (firstTime)
+			{
+				ShowTutorial.Execute();
+			}
+
             ObserveAvailableVehicles();
         }
         
@@ -161,7 +167,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             _pushNotificationService.RegisterDeviceForPushNotifications(true);
         }
-
 
         protected readonly CompositeDisposable Subscriptions = new CompositeDisposable ();
         public override void OnViewStopped ()
