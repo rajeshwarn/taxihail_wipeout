@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			BackgroundColor = _backgroundColor;
 
-            _bottomLine = Line.CreateHorizontal(padding, rect.Height-1, rect.Width - padding, _strokeColor, 1f);
+            _bottomLine = Line.CreateHorizontal(padding, rect.Height, rect.Width - padding, _strokeColor, 1f);
 			_bottomLine.AutoresizingMask = UIViewAutoresizing.FlexibleWidth;
 			AddSubview(_bottomLine);
 		}

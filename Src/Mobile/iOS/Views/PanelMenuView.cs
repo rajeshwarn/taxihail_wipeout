@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
 			menuContainer.BackgroundColor = UIColor.FromRGB (242, 242, 242);
 
-            var sideLine = Line.CreateVertical(menuContainer.Frame.Width-1, Frame.Height, UIColor.FromRGB(190, 190, 190));
+            var sideLine = Line.CreateVertical(menuContainer.Frame.Width, Frame.Height, UIColor.FromRGB(190, 190, 190));
             AddSubview(sideLine);
 
 			var source = new PanelMenuSource(

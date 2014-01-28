@@ -19,7 +19,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public static Line CreateHorizontal(float x, float y, float width, UIColor color, float thickness)
         {
-            return new Line(new RectangleF(x, y, width, UIHelper.GetConvertedPixel(thickness)))
+            var convertedThickness = UIHelper.GetConvertedPixel(thickness);
+
+            return new Line(new RectangleF(x, y - convertedThickness, width, convertedThickness))
             {
                 BackgroundColor = color
             };
@@ -37,13 +39,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public static Line CreateVertical(float x, float y, float height, UIColor color, float thickness)
         {
-            return new Line(new RectangleF(x, y, UIHelper.GetConvertedPixel(thickness), height))
+            var convertedThickness = UIHelper.GetConvertedPixel(thickness);
+
+            return new Line(new RectangleF(x - convertedThickness, y, convertedThickness, height))
             {
                 BackgroundColor = color
             };
         }
 
-        public Line(RectangleF rect) : base(rect)
+        private Line(RectangleF rect) : base(rect)
 		{
 		}
 	}
