@@ -11,14 +11,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 	{
 		public static NSString Identifier = new NSString("BookRatingCell");
 		public const string BindingText = @"
-RatingTypeName RatingTypeName;
-SetRateCommand SetRateCommand;
-CanRate CanRating;
-MadSelected MadSelected;
-UnhappySelected UnhappySelected;
-NeutralSelected NeutralSelected;
-HappySelected HappySelected;
-EcstaticSelected EcstaticSelected;";
+            RatingTypeName RatingTypeName;
+            SetRateCommand SetRateCommand;
+            CanRate CanRate;
+            MadSelected MadSelected;
+            UnhappySelected UnhappySelected;
+            NeutralSelected NeutralSelected;
+            HappySelected HappySelected;
+            EcstaticSelected EcstaticSelected;";
 		
 		public static BookRatingCell LoadFromNib(NSObject owner)
 		{
@@ -26,16 +26,15 @@ EcstaticSelected EcstaticSelected;";
 			// basically we create an empty cell in C#, then pass that through a NIB loading, which then magically
 			// gives us a new cell back in MonoTouch again
 			var views = NSBundle.MainBundle.LoadNib("BookRatingCell", owner, null);
-			var cell2 = Runtime.GetNSObject( views.ValueAt(0) ) as BookRatingCell;
-		    if (cell2 != null)
+			var cell = Runtime.GetNSObject( views.ValueAt(0) ) as BookRatingCell;
+		    if (cell != null)
 		    {
-		        cell2.Initialise();
-		        return cell2;
+		        cell.Initialise();
+		        return cell;
 		    }
 		    return null;
 		}
 
-		
 		public BookRatingCell(IntPtr handle)
 			: base(BindingText, handle)
 		{
@@ -72,10 +71,8 @@ EcstaticSelected EcstaticSelected;";
 			ecstaticBtn.SetImage(UIImage.FromFile("ecstatic.png"), UIControlState.Normal);
 			ecstaticBtn.SetImage(UIImage.FromFile("ecstatic-selected.png"), UIControlState.Selected);
 			ecstaticBtn.TouchUpInside += OnEcstasticBtnTouchUpInside;
-
 		}	
 		
-
 		protected override void Dispose (bool disposing)
 		{
 			if (disposing)
@@ -102,12 +99,7 @@ EcstaticSelected EcstaticSelected;";
 			set { if (ratingTypeName != null) ratingTypeName.Text = value; }
 		}
 	
-
-		public ICommand SetRateCommand {
-			get ;
-// ReSharper disable once UnusedAutoPropertyAccessor.Global
-			set ;
-		}
+        public ICommand SetRateCommand { get; set; }
 
 		private bool _canRate = true;
 		public bool CanRate {
@@ -123,27 +115,30 @@ EcstaticSelected EcstaticSelected;";
 		{
 			if (SetRateCommand != null) {
 				SetRateCommand.Execute ("Mad");
-			
 			}
 		}
+
 		private void OnUnhappyBtnTouchUpInside (object sender, EventArgs args)
 		{
 			if (SetRateCommand != null) {
 				SetRateCommand.Execute ("Unhappy");
 			}
 		}
+
 		private void OnNeutralBtnTouchUpInside (object sender, EventArgs args)
 		{
 			if (SetRateCommand != null) {
 				SetRateCommand.Execute ("Neutral");
 			}
 		}
+
 		private void OnHappyBtnTouchUpInside (object sender, EventArgs args)
 		{
 			if (SetRateCommand != null) {
 				SetRateCommand.Execute ("Happy");
 			}
 		}
+
 		private void OnEcstasticBtnTouchUpInside (object sender, EventArgs args)
 		{
 			if (SetRateCommand != null) {
@@ -175,8 +170,6 @@ EcstaticSelected EcstaticSelected;";
 			get{ return ecstaticBtn.Selected;}
 			set{ if(ecstaticBtn != null) ecstaticBtn.Selected = value; }
 		}
-
-	
 	}
 }
 

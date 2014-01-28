@@ -57,7 +57,7 @@
                 android:text="@string/Submit"
                 android:layout_height="@dimen/HeightButton"
                 android:layout_width="fill_parent"
-                local:MvxBind="Click RateOrder; Visibility CanRating, Converter=Visibility" />
+                local:MvxBind="Click RateOrder; Visibility CanRate, Converter=Visibility" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

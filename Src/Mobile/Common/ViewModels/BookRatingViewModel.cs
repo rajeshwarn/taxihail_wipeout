@@ -15,13 +15,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public List<RatingModel> RatingList
         {
             get { return _ratingList; }
-            set { _ratingList = value; 
+            set { 
+				_ratingList = value; 
 				RaisePropertyChanged();
 			}
         }
         
         private string _note;
-
         public string Note
         {
             get { return _note; }
@@ -31,51 +31,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-        private bool _canRating;
-        public bool CanRating
+		private bool _canRate;
+		public bool CanRate
         {
-            get
-            {
-                return _canRating;
-            }
+			get { return _canRate; }
             set {
-				_canRating = value;
+				_canRate = value;
 				RaisePropertyChanged(); 
 			}
-
         }
-
-		private bool _canSubmit;
-		public bool CanSubmit
-		{
-			get
-			{
-				return _canSubmit;
-			}
-			set
-			{
-				if(value != _canSubmit)
-				{
-					_canSubmit = value;
-					RaisePropertyChanged();
-				}
-			}
-			
-		}
 
         private Guid _orderId;
         public Guid OrderId
         {
-            get
-            {
-                return _orderId;
-            }
+			get { return _orderId; }
             set 
 			{
 				_orderId = value; 
 				RaisePropertyChanged(); 
 			}
-
         }
 
 		public void Init(string orderId, bool canRate = false)
@@ -86,7 +60,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					RatingTypeName = c.Name 
 				})
 				.OrderBy(c=>c.RatingTypeId).ToList();
-			CanRating = false;
+
+			CanRate = false;
 
 			if (orderId != null)
 			{
@@ -97,17 +72,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						RatingTypeName = c.Name 
 					}).OrderBy(c=>c.RatingTypeId).ToList();
 
-				foreach (var rating in RatingList) {
-					rating.PropertyChanged += HandleRatingPropertyChanged;
-				}
-
 				Guid id;
 				if (Guid.TryParse (orderId, out id)) {
 					OrderId = id;
 				}
 
-				CanRating = canRate;
-				if(!CanRating)
+				CanRate = canRate;
+				if(!CanRate)
 				{
 					var orderRatings = this.Services().Booking.GetOrderRating(Guid.Parse(orderId));
 					Note = orderRatings.Note;
@@ -119,11 +90,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						}).OrderBy(c=>c.RatingTypeId).ToList();
 				}
 			}
-        }
-
-        void HandleRatingPropertyChanged (object sender, PropertyChangedEventArgs e)
-        {
-			CanSubmit = _ratingList.All(c => c.Score != 0);
         }
 
         public AsyncCommand RateOrder
@@ -154,7 +120,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					this.Services().Booking.SendRatingReview(orderRating);
 					ReturnResult(new OrderRated(this, OrderId));
-
                     
 				});
             }
