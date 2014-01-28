@@ -45,7 +45,7 @@
                 android:layout_width="230dp"
                 android:layout_height="wrap_content"
                 android:text="@string/VehicleNumberInfo"
-                style="@style/BlackTextLong"
+                style="@style/BlackBoldTextLong"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal" />
             <View
@@ -93,13 +93,6 @@
                     android:layout_height="@dimen/HeightButton"
                     local:MvxBind="Click ConfirmCarNumber"
                     layout_alignParentBottom="true" />
-                <Button
-                    android:id="@+id/CancelPaymentBtn"
-                    android:text="@string/Cancel"
-                    style="@style/ButtonActionRedStyle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/HeightButton"
-                    local:MvxBind="Click CloseCommand" />
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="60dip"
