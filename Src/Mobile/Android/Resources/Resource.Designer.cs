@@ -4456,6 +4456,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0a0116
 			public const int View_BookingStatus = 2131362070;
 			
+			// aapt resource value: 0x7f0a0203
+			public const int View_ConfirmCarNumber = 2131362307;
+			
 			// aapt resource value: 0x7f0a017c
 			public const int View_CreateAccount = 2131362172;
 			

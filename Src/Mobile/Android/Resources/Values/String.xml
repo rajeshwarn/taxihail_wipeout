@@ -224,7 +224,7 @@
   <string name="July">Jul (07)</string>
   <string name="Facebook">Sign in with Facebook</string>
   <string name="BookPickupLocationButtonTitle">Pickup</string>
-  <string name="View_Payments_CmtRideLinqChangePaymentTitle">Change payment info</string>
+  <string name="View_Payments_CmtRideLinqChangePaymentTitle">Change Payment Info</string>
   <string name="TabFavorites">Favorites</string>
   <string name="PickupMapTitle">Pickup location</string>
   <string name="ReSendConfirmation">Notify driver of payment</string>
@@ -285,7 +285,7 @@
   <string name="ChangeServer">Change server</string>
   <string name="CreditCardZipCode">Zip code</string>
   <string name="View_RideSummary">Ride Summary</string>
-  <string name="View_Payments_CmtRideLinqConfirmPairTitle">Confirm payment information</string>
+  <string name="View_Payments_CmtRideLinqConfirmPairTitle">Confirm Payment Information</string>
   <string name="StatusNewRideButton">New Ride</string>
   <string name="HistoryDetailOrderLabel">Order:</string>
   <string name="HistoryDetailBuildingNameLabel">Building Name:</string>
@@ -316,7 +316,7 @@
   <string name="NoOrderId">Order Not ready</string>
   <string name="TermsAndConditionsLabel">Terms and Conditions</string>
   <string name="StatusInvalid">Status not available</string>
-  <string name="View_CreateAccount">Create your account</string>
+  <string name="View_CreateAccount">Create Your Account</string>
   <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable">No fare estimate available for the ride. Please contact {0} at {1} for further assistance.</string>
   <string name="HistoryDetailDestinationLabel">Destination:</string>
   <string name="ViewRatingBtn">View ratings</string>
@@ -414,7 +414,7 @@
   <string name="InvalidAccountOnActivatedTitle">Invalid account</string>
   <string name="LanguageCode">en</string>
   <string name="TabHistory">History</string>
-  <string name="View_BookRating">Rate your trip</string>
+  <string name="View_BookRating">Rate Your Trip</string>
   <string name="PaymentViewMeterAmountText">Meter Amount</string>
   <string name="YesButton">Yes</string>
   <string name="ConfirmVehiculeTypeLabel">Vehicle type</string>
@@ -451,4 +451,5 @@
   <string name="BookRatingErrorTitle">Error</string>
   <string name="apcuriumUrl">http://www.apcurium.com/</string>
   <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
+  <string name="View_ConfirmCarNumber">Confirmation</string>
 </resources>

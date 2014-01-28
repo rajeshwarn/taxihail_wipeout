@@ -940,7 +940,7 @@
     <value>Locations</value>
   </data>
   <data name="View_CreateAccount" xml:space="preserve">
-    <value>Create your account</value>
+    <value>Create Your Account</value>
   </data>
   <data name="View_TermsAndConditions" xml:space="preserve">
     <value />
@@ -1048,7 +1048,7 @@
     <value>View ratings</value>
   </data>
   <data name="View_BookRating" xml:space="preserve">
-    <value>Rate your trip</value>
+    <value>Rate Your Trip</value>
   </data>
   <data name="ResetPasswordSucessMessage" xml:space="preserve">
     <value>Password was reset successfully</value>
@@ -1443,10 +1443,10 @@
     <value>Tip Amount:</value>
   </data>
   <data name="View_Payments_CmtRideLinqConfirmPairTitle" xml:space="preserve">
-    <value>Confirm payment information</value>
+    <value>Confirm Payment Information</value>
   </data>
   <data name="View_Payments_CmtRideLinqChangePaymentTitle" xml:space="preserve">
-    <value>Change payment info</value>
+    <value>Change Payment Info</value>
   </data>  
   <data name="GooglePlayServicesNotAvailableTitle" xml:space="preserve">
     <value>Update required</value>
