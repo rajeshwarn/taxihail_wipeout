@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			FlatButtonStyle.Green.ApplyTo(btnRebook);
 			FlatButtonStyle.Silver.ApplyTo(btnStatus);
 
-			FlatButtonStyle.Green.ApplyTo(btnRateRide);
+            FlatButtonStyle.Silver.ApplyTo(btnRateRide);
 			FlatButtonStyle.Silver.ApplyTo(btnViewRating);
 
 			FlatButtonStyle.Green.ApplyTo(btnSendReceipt);
