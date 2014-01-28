@@ -137,7 +137,7 @@
                         android:paddingTop="5dip"
                         android:paddingBottom="5dip"
                         style="@style/BlackTextLabel" />
-                    <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                    <apcurium.mk.booking.mobile.client.controls.EditTextRightSpinner
                         android:id="@+id/tipPicker"
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"

@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             if (!ViewModel.ShouldDisplayTip)
             {
                 FindViewById<TextView>(Resource.Id.tipAmountLabel).Visibility = ViewStates.Gone;
-				FindViewById<EditTextSpinner>(Resource.Id.tipPicker).Visibility = ViewStates.Gone;
+                FindViewById<EditTextRightSpinner>(Resource.Id.tipPicker).Visibility = ViewStates.Gone;
             }
         }
     }
