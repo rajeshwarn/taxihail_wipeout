@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using System.Threading.Tasks;
 using System.Globalization;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -19,8 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public HistoryViewModel()
         {
             HasOrders = true; //Needs to be true otherwise we see the no order for a few seconds
-            _orderDeletedToken = this.Services().MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));
-            LoadOrders ();
+            _orderDeletedToken = this.Services().MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));            
         }
         public ObservableCollection<OrderViewModel> Orders
         {
@@ -72,27 +72,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             });
         }
 
-        public void LoadOrders ()
+		public async override void OnViewLoaded()
 		{
-            this.Services().Account.GetHistoryOrders().Subscribe(orders =>
+			base.OnViewLoaded();
+			await LoadOrders ();
+		}
+
+		public async Task LoadOrders ()
+		{
+			var orders = await this.Services().Account.GetHistoryOrders();
+			if (orders.Any())
 			{
-
-                Orders = new ObservableCollection<OrderViewModel>(orders.Select(x => new OrderViewModel
-                {
-					IBSOrderId = x.IbsOrderId,
-                    Id = x.Id,
-                    CreatedDate = x.CreatedDate,
-                    PickupAddress = x.PickupAddress,
-                    PickupDate = x.PickupDate,
-                    Status = x.Status,
-                    Title = FormatDateTime(x.PickupDate),
-                    IsFirst = x.Equals(orders.First()),
-                    IsLast = x.Equals(orders.Last()),
-                    ShowRightArrow = true
-                }));
-                HasOrders = orders.Any();
-
-			});
+				var firstId = orders.First().Id;
+				var lastId = orders.Last().Id;
+				var ordersViewModels = new List<OrderViewModel>();
+				foreach (var item in orders)
+				{
+					var viewModel = new OrderViewModel
+					{
+						IBSOrderId = item.IbsOrderId,
+						Id = item.Id,
+						CreatedDate = item.CreatedDate,
+						PickupAddress = item.PickupAddress,
+						PickupDate = item.PickupDate,
+						Status = item.Status,
+						Title = FormatDateTime(item.PickupDate),
+						IsFirst = item.Id == firstId,
+						IsLast = item.Id.Equals(lastId),
+						ShowRightArrow = true
+					};
+					ordersViewModels.Add(viewModel);
+				}
+				Orders = new ObservableCollection<OrderViewModel>(ordersViewModels);
+			}
+			HasOrders = orders.Any();
 		}
 
 

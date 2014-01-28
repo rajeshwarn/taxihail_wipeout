@@ -71,6 +71,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:id="@+id/termsAndConditionsLayout"
                     android:orientation="horizontal">
                     <CheckBox
                         android:id="@+id/cbTermsAndConditions"
@@ -79,17 +80,17 @@
                         android:layout_width="38dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_gravity="top|left"
-                        android:button="@drawable/checkbox" />
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="top|left" />
                     <TextView
                         style="@style/TitleTextMultine"
+                        android:textColor="@color/label_text_color"
                         android:id="@+id/lblTermsAndConditions"
                         local:MvxBind="Click NavigateToTermsAndConditions"
                         android:gravity="left"
                         android:layout_alignParentRight="true"
                         android:layout_width="fill_parent"
-                        android:layout_height="50dip"
+                        android:layout_height="wrap_content"
                         android:text=""
                         android:textSize="16dip" />
                 </LinearLayout>
