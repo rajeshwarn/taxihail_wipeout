@@ -398,9 +398,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <Compile Include="Activities\Account\CreateAccountActivity.cs" />
-    <AndroidResource Include="Resources\Drawable\checkbox.xml" />
-    <AndroidResource Include="Resources\Drawable\checked.png" />
-    <AndroidResource Include="Resources\Drawable\unchecked.png" />
     <AndroidResource Include="Resources\Drawable\mk_logo.png" />
     <AndroidResource Include="Resources\Drawable\dialog_background.xml" />
     <AndroidResource Include="Resources\drawable-xhdpi\active.png" />
@@ -414,7 +411,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\bookLaterIcon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\cancel.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\cancelled.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\checked.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\closeButton.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\completed.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\credit_card_generic.png" />
@@ -461,10 +457,13 @@
     <AndroidResource Include="Resources\drawable-xhdpi\target_selected.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\th_logo.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\twitter_icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\unchecked.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\visa.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\visa_electron.png" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
+    <AndroidResource Include="Resources\Drawable\checked_custom.png" />
+    <AndroidResource Include="Resources\Drawable\unchecked_custom.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\checked_custom.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\unchecked_custom.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
