@@ -372,15 +372,15 @@
   <data name="LocationAddFavoriteSubtitle" xml:space="preserve">
     <value>Select to add a new location</value>
   </data>
-
   <data name="LoginViewEmailPlaceHolder" xml:space="preserve">
     <value>Email</value>
   </data>
   <data name="LoginViewPasswordPlaceHolder" xml:space="preserve">
     <value>Password</value>
   </data>
-
-
+  <data name="View_ConfirmCarNumber" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
   <data name="View_LocationDetail" xml:space="preserve">
     <value>Location Detail</value>
   </data>

@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             base.ViewWillAppear(animated);
 
             NavigationController.NavigationBar.Hidden = false;
+            NavigationItem.Title = Localize.GetValue("View_ConfirmCarNumber");
             NavigationItem.HidesBackButton = false;
         }
 
