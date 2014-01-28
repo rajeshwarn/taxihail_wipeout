@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 			base.ViewDidLoad ();
 
             View.BackgroundColor = UIColor.FromRGB (242, 242, 242);
+            ratingTableView.BackgroundColor = UIColor.FromRGB (242, 242, 242);
 
             var btnSubmit = new FlatButton(new RectangleF(8f, BottomPadding, 304f, 41f));
 			FlatButtonStyle.Green.ApplyTo(btnSubmit);
