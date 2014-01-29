@@ -4760,122 +4760,122 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f0b009b
-			public const int BigTextBlack = 2131427483;
-			
-			// aapt resource value: 0x7f0b0094
-			public const int BigTitleText = 2131427476;
-			
-			// aapt resource value: 0x7f0b0097
-			public const int BigTitleTextBlack = 2131427479;
-			
-			// aapt resource value: 0x7f0b00a0
-			public const int BlackBoldTextLong = 2131427488;
-			
 			// aapt resource value: 0x7f0b009d
-			public const int BlackTextLabel = 2131427485;
-			
-			// aapt resource value: 0x7f0b009e
-			public const int BlackTextLabelMultiline = 2131427486;
-			
-			// aapt resource value: 0x7f0b009f
-			public const int BlackTextLong = 2131427487;
-			
-			// aapt resource value: 0x7f0b00b1
-			public const int ButtonActionBlackStyle = 2131427505;
-			
-			// aapt resource value: 0x7f0b00b0
-			public const int ButtonActionGrayStyle = 2131427504;
-			
-			// aapt resource value: 0x7f0b00ae
-			public const int ButtonActionGreenStyle = 2131427502;
-			
-			// aapt resource value: 0x7f0b00af
-			public const int ButtonActionRedStyle = 2131427503;
-			
-			// aapt resource value: 0x7f0b00ad
-			public const int ButtonMainStyle = 2131427501;
-			
-			// aapt resource value: 0x7f0b008a
-			public const int ButtonText = 2131427466;
-			
-			// aapt resource value: 0x7f0b008d
-			public const int ButtonTextGray = 2131427469;
-			
-			// aapt resource value: 0x7f0b008b
-			public const int ButtonTextLarge = 2131427467;
-			
-			// aapt resource value: 0x7f0b0087
-			public const int DataLabelText = 2131427463;
-			
-			// aapt resource value: 0x7f0b00a3
-			public const int DetailText = 2131427491;
+			public const int BigTextBlack = 2131427485;
 			
 			// aapt resource value: 0x7f0b0096
-			public const int FinePrint = 2131427478;
+			public const int BigTitleText = 2131427478;
 			
-			// aapt resource value: 0x7f0b0089
-			public const int FormDataText = 2131427465;
-			
-			// aapt resource value: 0x7f0b0088
-			public const int FormLabelDataText = 2131427464;
-			
-			// aapt resource value: 0x7f0b0083
-			public const int FormLabelText = 2131427459;
-			
-			// aapt resource value: 0x7f0b009c
-			public const int GrayText = 2131427484;
+			// aapt resource value: 0x7f0b0099
+			public const int BigTitleTextBlack = 2131427481;
 			
 			// aapt resource value: 0x7f0b00a2
-			public const int HeaderGroupTitle = 2131427490;
+			public const int BlackBoldTextLong = 2131427490;
 			
-			// aapt resource value: 0x7f0b0082
-			public const int LinkText = 2131427458;
+			// aapt resource value: 0x7f0b009f
+			public const int BlackTextLabel = 2131427487;
 			
-			// aapt resource value: 0x7f0b00a4
-			public const int ListItemLabel = 2131427492;
-			
-			// aapt resource value: 0x7f0b00a6
-			public const int ListItemSpinnerValue = 2131427494;
-			
-			// aapt resource value: 0x7f0b00a5
-			public const int ListItemValue = 2131427493;
-			
-			// aapt resource value: 0x7f0b008f
-			public const int ListSubTitle = 2131427471;
-			
-			// aapt resource value: 0x7f0b008e
-			public const int ListTitle = 2131427470;
-			
-			// aapt resource value: 0x7f0b00b2
-			public const int LoginTheme = 2131427506;
-			
-			// aapt resource value: 0x7f0b00b3
-			public const int MainTheme = 2131427507;
-			
-			// aapt resource value: 0x7f0b0084
-			public const int MultilineFormLabelText = 2131427460;
-			
-			// aapt resource value: 0x7f0b0086
-			public const int MultilineFormLabelText_Medium = 2131427462;
-			
-			// aapt resource value: 0x7f0b0085
-			public const int MultilineFormLabelText_Small = 2131427461;
-			
-			// aapt resource value: 0x7f0b008c
-			public const int SearchButtonText = 2131427468;
-			
-			// aapt resource value: 0x7f0b0098
-			public const int SettingItemTitle = 2131427480;
-			
-			// aapt resource value: 0x7f0b009a
-			public const int SimpleText = 2131427482;
+			// aapt resource value: 0x7f0b00a0
+			public const int BlackTextLabelMultiline = 2131427488;
 			
 			// aapt resource value: 0x7f0b00a1
-			public const int SimpleTextItem = 2131427489;
+			public const int BlackTextLong = 2131427489;
 			
-			// aapt resource value: 0x7f0b0095
-			public const int SmallTitle = 2131427477;
+			// aapt resource value: 0x7f0b00b3
+			public const int ButtonActionBlackStyle = 2131427507;
+			
+			// aapt resource value: 0x7f0b00b2
+			public const int ButtonActionGrayStyle = 2131427506;
+			
+			// aapt resource value: 0x7f0b00b0
+			public const int ButtonActionGreenStyle = 2131427504;
+			
+			// aapt resource value: 0x7f0b00b1
+			public const int ButtonActionRedStyle = 2131427505;
+			
+			// aapt resource value: 0x7f0b00af
+			public const int ButtonMainStyle = 2131427503;
+			
+			// aapt resource value: 0x7f0b008c
+			public const int ButtonText = 2131427468;
+			
+			// aapt resource value: 0x7f0b008f
+			public const int ButtonTextGray = 2131427471;
+			
+			// aapt resource value: 0x7f0b008d
+			public const int ButtonTextLarge = 2131427469;
+			
+			// aapt resource value: 0x7f0b0089
+			public const int DataLabelText = 2131427465;
+			
+			// aapt resource value: 0x7f0b00a5
+			public const int DetailText = 2131427493;
+			
+			// aapt resource value: 0x7f0b0098
+			public const int FinePrint = 2131427480;
+			
+			// aapt resource value: 0x7f0b008b
+			public const int FormDataText = 2131427467;
+			
+			// aapt resource value: 0x7f0b008a
+			public const int FormLabelDataText = 2131427466;
+			
+			// aapt resource value: 0x7f0b0085
+			public const int FormLabelText = 2131427461;
+			
+			// aapt resource value: 0x7f0b009e
+			public const int GrayText = 2131427486;
+			
+			// aapt resource value: 0x7f0b00a4
+			public const int HeaderGroupTitle = 2131427492;
+			
+			// aapt resource value: 0x7f0b0084
+			public const int LinkText = 2131427460;
+			
+			// aapt resource value: 0x7f0b00a6
+			public const int ListItemLabel = 2131427494;
+			
+			// aapt resource value: 0x7f0b00a8
+			public const int ListItemSpinnerValue = 2131427496;
+			
+			// aapt resource value: 0x7f0b00a7
+			public const int ListItemValue = 2131427495;
+			
+			// aapt resource value: 0x7f0b0091
+			public const int ListSubTitle = 2131427473;
+			
+			// aapt resource value: 0x7f0b0090
+			public const int ListTitle = 2131427472;
+			
+			// aapt resource value: 0x7f0b0081
+			public const int LoginTheme = 2131427457;
+			
+			// aapt resource value: 0x7f0b0082
+			public const int MainTheme = 2131427458;
+			
+			// aapt resource value: 0x7f0b0086
+			public const int MultilineFormLabelText = 2131427462;
+			
+			// aapt resource value: 0x7f0b0088
+			public const int MultilineFormLabelText_Medium = 2131427464;
+			
+			// aapt resource value: 0x7f0b0087
+			public const int MultilineFormLabelText_Small = 2131427463;
+			
+			// aapt resource value: 0x7f0b008e
+			public const int SearchButtonText = 2131427470;
+			
+			// aapt resource value: 0x7f0b009a
+			public const int SettingItemTitle = 2131427482;
+			
+			// aapt resource value: 0x7f0b009c
+			public const int SimpleText = 2131427484;
+			
+			// aapt resource value: 0x7f0b00a3
+			public const int SimpleTextItem = 2131427491;
+			
+			// aapt resource value: 0x7f0b0097
+			public const int SmallTitle = 2131427479;
 			
 			// aapt resource value: 0x7f0b0061
 			public const int TextAppearance_AppCompat_Base_CompactMenu_Dialog = 2131427425;
@@ -5036,29 +5036,29 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0b0079
 			public const int Theme_Base_Light = 2131427449;
 			
-			// aapt resource value: 0x7f0b00a8
-			public const int Theme_Modal = 2131427496;
+			// aapt resource value: 0x7f0b00aa
+			public const int Theme_Modal = 2131427498;
 			
-			// aapt resource value: 0x7f0b0081
-			public const int Theme_Splash = 2131427457;
+			// aapt resource value: 0x7f0b0083
+			public const int Theme_Splash = 2131427459;
 			
-			// aapt resource value: 0x7f0b00a7
-			public const int Theme_Transparent = 2131427495;
-			
-			// aapt resource value: 0x7f0b0091
-			public const int TitleText = 2131427473;
-			
-			// aapt resource value: 0x7f0b0090
-			public const int TitleTextBold = 2131427472;
-			
-			// aapt resource value: 0x7f0b0092
-			public const int TitleTextMultine = 2131427474;
-			
-			// aapt resource value: 0x7f0b0099
-			public const int TopTitleText = 2131427481;
+			// aapt resource value: 0x7f0b00a9
+			public const int Theme_Transparent = 2131427497;
 			
 			// aapt resource value: 0x7f0b0093
-			public const int ViewTitleStyle = 2131427475;
+			public const int TitleText = 2131427475;
+			
+			// aapt resource value: 0x7f0b0092
+			public const int TitleTextBold = 2131427474;
+			
+			// aapt resource value: 0x7f0b0094
+			public const int TitleTextMultine = 2131427476;
+			
+			// aapt resource value: 0x7f0b009b
+			public const int TopTitleText = 2131427483;
+			
+			// aapt resource value: 0x7f0b0095
+			public const int ViewTitleStyle = 2131427477;
 			
 			// aapt resource value: 0x7f0b0000
 			public const int Widget_AppCompat_ActionBar = 2131427328;
@@ -5288,17 +5288,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0b0080
 			public const int com_facebook_loginview_silver_style = 2131427456;
 			
-			// aapt resource value: 0x7f0b00ac
-			public const int custom_ButtonStyle = 2131427500;
-			
-			// aapt resource value: 0x7f0b00a9
-			public const int custom_EditTextStyle = 2131427497;
-			
-			// aapt resource value: 0x7f0b00aa
-			public const int custom_FlatEditTextStyle = 2131427498;
+			// aapt resource value: 0x7f0b00ae
+			public const int custom_ButtonStyle = 2131427502;
 			
 			// aapt resource value: 0x7f0b00ab
-			public const int custom_TextViewStyle = 2131427499;
+			public const int custom_EditTextStyle = 2131427499;
+			
+			// aapt resource value: 0x7f0b00ac
+			public const int custom_FlatEditTextStyle = 2131427500;
+			
+			// aapt resource value: 0x7f0b00ad
+			public const int custom_TextViewStyle = 2131427501;
 			
 			static Style()
 			{
