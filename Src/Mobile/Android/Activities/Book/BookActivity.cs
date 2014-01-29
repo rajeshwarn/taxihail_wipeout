@@ -22,17 +22,27 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using TinyIoC;
 using TinyMessenger;
 using Cirrious.MvvmCross.Droid.Views;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
 	[Activity(Label = "Book", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait, ClearTaskOnLaunch = true,
         FinishOnTaskLaunch = true)]
-    public class BookActivity : BaseBindingActivity<BookViewModel>
+    public class BookActivity : MvxActivity
     {
         private readonly DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
         private int _menuWidth = 400;
         private TouchMap _touchMap;
+
+		public new BookViewModel ViewModel
+		{
+			get
+			{
+				return (BookViewModel)DataContext;
+			}
+		}
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -87,6 +97,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             bigButton.Click -= MainSettingsButtonOnClick;
             bigButton.Click += MainSettingsButtonOnClick;
 
+
+            var apc_logo = FindViewById<ImageView>(Resource.Id.apc_logo_menu);
+            var mk_logo = FindViewById<ImageView>(Resource.Id.mk_logo);
+
+
+
+
+
+            apc_logo.Click += (object sender, EventArgs e) => 
+            {
+                ViewModel.Panel.ToApcuriumWebsite.Execute();
+            };
+
+            mk_logo.Click += (object sender, EventArgs e) =>
+            {
+                ViewModel.Panel.ToMobileKnowledgeWebsite.Execute();
+            };
+
             //var mainLayoutMenu = FindViewById<RelativeLayout>(Resource.Id.MainLayoutMenu);
             //var titleText = mainLayoutMenu.FindViewById<TextView>(Resource.Id.ViewTitle);
             //titleText.Text = GetString(Resource.String.View_BookSettingMenu);
@@ -126,6 +154,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
 
             FindViewById<TouchMap>(Resource.Id.mapPickup).PostInvalidateDelayed(100);
+
         }
 
         private void HandleSignOutButtonClick(object sender, EventArgs e)
@@ -148,6 +177,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             base.OnResume();
 
+            if (ViewModel.ShowTutorial.CanExecute())
+            {
+                ViewModel.ShowTutorial.Execute();
+            }
             TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
             ViewModel.CenterMap(true);
 
@@ -161,18 +194,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnPause()
         {
             base.OnPause();
-
 	        _touchMap.Pause();
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+            if (ViewModel != null) ViewModel.Start();
+        }
+
+        protected override void OnStop()
+        {
+            base.OnStop();
+            if (ViewModel != null) ViewModel.OnViewStopped();
         }
 
         protected override void OnDestroy()
         {
+            base.OnDestroy();
+
             if (ViewModel != null)
             {
+                ViewModel.OnViewUnloaded();
                 ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
             }
-
-            base.OnDestroy();
 
             _touchMap.OnDestroy();
         }
@@ -199,17 +244,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var mainLayout = FindViewById(Resource.Id.MainLayout);
             mainLayout.ClearAnimation();
 
+
             var menu = FindViewById(Resource.Id.BookSettingsMenu);
 
             var animation = new SlideAnimation(mainLayout, ViewModel.Panel.MenuIsOpen ? 0 : (_menuWidth),
                 ViewModel.Panel.MenuIsOpen ? (_menuWidth) : 0, _interpolator);
             animation.Duration = 400;
             animation.AnimationStart +=
-                (sender, e) => { if (ViewModel.Panel.MenuIsOpen) menu.Visibility = ViewStates.Visible; };
+                (sender, e) =>
+            {
+                if (ViewModel.Panel.MenuIsOpen)
+                    menu.Visibility = ViewStates.Visible;
+            };
+
             animation.AnimationEnd +=
-                (sender, e) => { if (!ViewModel.Panel.MenuIsOpen) menu.Visibility = ViewStates.Gone; };
+                (sender, e) =>
+            {
+                if (!ViewModel.Panel.MenuIsOpen)
+                {
+                    menu.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+
+                }
+            };
 
             mainLayout.StartAnimation(animation);
+
         }
 
         private void PickDate_Click(object sender, EventArgs e)
