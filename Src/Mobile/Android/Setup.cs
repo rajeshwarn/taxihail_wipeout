@@ -106,5 +106,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			return new TinyIoCProvider(TinyIoCContainer.Current);
 		}
+
+        protected override Cirrious.MvvmCross.Droid.Views.IMvxAndroidViewPresenter CreateViewPresenter()
+        {
+            return new PhonePresenter();
+        }
     }
 }

@@ -114,6 +114,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			base.RaisePropertyChanged(whichProperty);
 		}
+
+		protected void ShowViewModel<TViewModel>(Dictionary<string,string> parameters = null, bool removeFromHistory = false) where TViewModel : IMvxViewModel
+		{
+			parameters = parameters ?? new Dictionary<string,string>();
+			if (removeFromHistory)
+			{
+				parameters.Add("removeFromHistory", "notUsed");
+			}
+			base.ShowViewModel<TViewModel>(parameters);
+		}
+
+
     }
 
 }
