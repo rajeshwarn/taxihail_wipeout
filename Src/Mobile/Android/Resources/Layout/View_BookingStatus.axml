@@ -62,7 +62,7 @@
             <Button
                 android:id="@+id/ResendBtn"
                 style="@style/ButtonActionGreenStyle"
-                android:layout_marginTop="12dip"
+                android:layout_marginTop="13dip"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/HeightButton"
                 android:layout_weight="1"
@@ -74,7 +74,7 @@
             <Button
                 android:id="@+id/UnpairBtn"
                 style="@style/ButtonActionRedStyle"
-                android:layout_marginTop="12dip"
+                android:layout_marginTop="13dip"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/HeightButton"
                 android:layout_weight="1"
@@ -86,7 +86,7 @@
             <Button
                 android:id="@+id/CallBtn"
                 style="@style/ButtonActionBlackStyle"
-                android:layout_marginTop="12dip"
+                android:layout_marginTop="13dip"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/HeightButton"
                 android:layout_weight="1"
@@ -236,7 +236,7 @@
                         local:MvxBind="Click CallTaxi; Visibility IsCallTaxiVisible, Converter=Visibility"
                         android:src="@drawable/phone"
                         style="@style/ButtonActionGrayStyle"
-                        android:layout_marginTop="10dip"
+                        android:layout_marginTop="13dip"
                         android:layout_width="40dip"
                         android:layout_height="@dimen/HeightButton"
                         android:layout_marginRight="10dip"
