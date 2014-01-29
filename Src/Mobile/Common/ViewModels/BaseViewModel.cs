@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             },
             msg => msg.MessageId == messageId);
 
-			return ShowViewModel<TViewModel>(parameterValues);
+			return ShowViewModel<TViewModel>(parameterValues, false);
         }
 
         protected AsyncCommand GetCommand(Action action)
@@ -115,16 +115,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.RaisePropertyChanged(whichProperty);
 		}
 
-		protected void ShowViewModel<TViewModel>(Dictionary<string,string> parameters = null, bool removeFromHistory = false) where TViewModel : IMvxViewModel
+		protected bool ShowViewModel<TViewModel>(object parameter, bool removeFromHistory = false) where TViewModel : IMvxViewModel
+		{
+			return ShowViewModel<TViewModel>(parameter.ToSimplePropertyDictionary(), removeFromHistory);
+		}
+
+		protected bool ShowViewModel<TViewModel>(Dictionary<string,string> parameters = null, bool removeFromHistory = false) where TViewModel : IMvxViewModel
 		{
 			parameters = parameters ?? new Dictionary<string,string>();
 			if (removeFromHistory)
 			{
 				parameters.Add("removeFromHistory", "notUsed");
 			}
-			base.ShowViewModel<TViewModel>(parameters);
+			return base.ShowViewModel<TViewModel>(parameters);
 		}
-
 
     }
 
