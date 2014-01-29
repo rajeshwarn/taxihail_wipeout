@@ -10,10 +10,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class PanelMenuViewModel : BaseViewModel
     {
-        private readonly BookViewModel _parent;
+		private readonly BaseViewModel _parent;
 		private IMvxWebBrowserTask _browserTask;
 
-		public PanelMenuViewModel (BookViewModel parent, IMvxWebBrowserTask browserTask)
+		public PanelMenuViewModel (BaseViewModel parent, IMvxWebBrowserTask browserTask)
         {
             _parent = parent;
 			_browserTask = browserTask;
