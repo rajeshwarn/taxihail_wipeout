@@ -40,7 +40,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public string TextLine2 { get; set; }
 
         public bool ShowRightArrow { get; set; }
-        public bool ShowPlusSign { get; set; }
+
+        //TEST
+        private bool _showPlusSign;
+        public bool ShowPlusSign
+        { 
+            get{ return _showPlusSign;}
+            set
+            {
+                _showPlusSign = value;
+            }
+        }
+        //public bool ShowPlusSign { get; set; }
 
         public string Icon { get; set; }
 // ReSharper restore UnusedAutoPropertyAccessor.Global
@@ -105,7 +116,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if (ShowPlusSign)
             {
-				var bitmapIcon = BitmapFactory.DecodeResource (Resources, Resource.Drawable.add_location);								
+                var bitmapIcon = BitmapFactory.DecodeResource (Resources, Resource.Drawable.add_list);								
 				var offsetIcon = (canvas.Height - bitmapIcon.Height) / 2;
 				canvas.DrawBitmap(bitmapIcon, 10.ToPixels(), offsetIcon, null);
 

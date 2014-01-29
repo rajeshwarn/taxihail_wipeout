@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     CreditCardDetails = x,
 					Picture = x.CreditCardCompany != null 
 							  	? x.CreditCardCompany.ToLower().Replace(" ", "_") 
-							    : string.Empty
+                              : string.Empty,
                 }));
             });
         }

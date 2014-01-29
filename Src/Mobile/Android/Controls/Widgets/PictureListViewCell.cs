@@ -36,7 +36,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public bool IsTop { get; set; }
         public bool IsBottom { get; set; }
-        public bool ShowAddSign { get; set; }
+
+        public bool ShowAddSign { get; set;}
+
 // ReSharper restore UnusedAutoPropertyAccessor.Global
         protected override void OnDraw(Canvas canvas)
         {
@@ -59,8 +61,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if (ShowAddSign)
             {
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_btn), 4.ToPixels(),
-                    7.ToPixels(), null);
+                var bitmapIcon = BitmapFactory.DecodeResource (Resources, Resource.Drawable.add_list);                              
+                var offsetIcon = (canvas.Height - bitmapIcon.Height) / 2;
+                canvas.DrawBitmap(bitmapIcon, 10.ToPixels(), offsetIcon, null);
             }
 
             if (!string.IsNullOrEmpty(Picture))

@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 return "";
             }
         }
+
 		public bool IsAddNew { get { return CreditCardDetails.CreditCardId.IsNullOrEmpty(); } }
         public string Picture { get; set; }
         public AsyncCommand RemoveCreditCards
