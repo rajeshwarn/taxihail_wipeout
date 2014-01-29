@@ -39,10 +39,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
             {
                 control.IsBottom = (bool) value;
             }
-            else if (_property == CellItemBindingProperty.IsTop)
-            {
-                control.IsTop = (bool) value;
-            }
         }
     }
 }

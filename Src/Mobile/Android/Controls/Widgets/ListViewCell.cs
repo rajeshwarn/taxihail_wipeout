@@ -14,7 +14,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     public class ListViewCell : TextView
     {
         private bool _isBottom;
-        private bool _isTop;
 
         public ListViewCell(Context context)
             : base(context)
@@ -57,16 +56,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 // ReSharper restore UnusedAutoPropertyAccessor.Global
 
         public Color TextColorLine1 { get; set; }
-
-        public bool IsTop
-        {
-            get { return _isTop; }
-            set
-            {
-                _isTop = value;
-                Invalidate();
-            }
-        }
 
         public bool IsBottom
         {
@@ -131,13 +120,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
 
-            var d = IsTop && !IsBottom
-                ? Resource.Drawable.cell_top_state
-                : IsBottom && !IsTop
+            var d = IsBottom
                     ? Resource.Drawable.cell_bottom_state
-                    : IsTop && IsBottom
-                        ? Resource.Drawable.cell_full_state
-                        : Resource.Drawable.cell_middle_state;
+                    : Resource.Drawable.cell_middle_state;
 
             SetBackgroundDrawable(Resources.GetDrawable(d));
         }

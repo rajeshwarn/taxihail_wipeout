@@ -6,12 +6,20 @@ using Android.Text;
 using Android.Util;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
-
+using System.Drawing;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class PictureListViewCell : TextView
     {
+        public string TextLeft { get; set; }
+        public string TextRight { get; set; }
+        public string Picture { get; set; }
+        public bool ShowAddSign { get; set; }
+        public bool IsBottom { get; set; }
+
+        private SizeF StandardImageSize = new SizeF(46, 32);
+
         public PictureListViewCell(Context context)
             : base(context)
         {
@@ -27,19 +35,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
         }
 
-
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-        public string TextLeft { get; set; }
-
-        public string TextRight { get; set; }
-        public string Picture { get; set; }
-
-        public bool IsTop { get; set; }
-        public bool IsBottom { get; set; }
-
-        public bool ShowAddSign { get; set;}
-
-// ReSharper restore UnusedAutoPropertyAccessor.Global
         protected override void OnDraw(Canvas canvas)
         {
             base.OnDraw(canvas);
@@ -51,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if (!string.IsNullOrEmpty(TextLeft))
             {
-                DrawText(canvas, TextLeft ?? "", leftTextX, leftTextY, textSize, Typeface.Default);
+                DrawText(canvas, TextLeft ?? "", leftTextX, leftTextY, textSize, ShowAddSign ? Typeface.DefaultBold : Typeface.Default);
                 DrawText(canvas, TextRight ?? "", leftTextX + leftTextWidth, leftTextY, textSize, Typeface.DefaultBold);
             }
             else
@@ -62,8 +57,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (ShowAddSign)
             {
                 var bitmapIcon = BitmapFactory.DecodeResource (Resources, Resource.Drawable.add_list);                              
-                var offsetIcon = (canvas.Height - bitmapIcon.Height) / 2;
-                canvas.DrawBitmap(bitmapIcon, 10.ToPixels(), offsetIcon, null);
+                var offsetTopIcon = (StandardImageSize.Height - bitmapIcon.Height) / 2;
+                var offsetLeftIcon = (StandardImageSize.Width - bitmapIcon.Width) / 2;
+                canvas.DrawBitmap(bitmapIcon, offsetLeftIcon + 10, offsetTopIcon + 10, null);
             }
 
             if (!string.IsNullOrEmpty(Picture))
@@ -71,20 +67,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 var resource = Resources.GetIdentifier(Picture.ToLower(), "drawable", Context.PackageName);
                 if (resource != 0)
                 {
-                    canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, resource), 0.ToPixels(), 3.ToPixels(),
-                        null);
+                    var bitmapIcon = BitmapFactory.DecodeResource(Resources, resource);
+                    var offsetTopIcon = (StandardImageSize.Height - bitmapIcon.Height) / 2;
+                    var offsetLeftIcon = (StandardImageSize.Width - bitmapIcon.Width) / 2;
+                    canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, resource), offsetLeftIcon + 10, offsetTopIcon + 10, null);
                 }
             }
 
-            var d = IsTop && !IsBottom
-                ? Resource.Drawable.cell_top_state
-                : IsBottom && !IsTop
-                    ? Resource.Drawable.cell_bottom_state
-                    : IsTop && IsBottom
-                        ? Resource.Drawable.cell_full_state
-                        : Resource.Drawable.cell_middle_state;
-
-            SetBackgroundDrawable(Resources.GetDrawable(d));
+            SetBackgroundDrawable(Resources.GetDrawable(IsBottom 
+                ? Resource.Drawable.cell_bottom_state 
+                : Resource.Drawable.cell_middle_state));
         }
 
         private void DrawText(Canvas canvas, string text, float x, float y, float textSize,
@@ -106,7 +98,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 ellipsizedText = text;
             }
-
 
             canvas.DrawText(ellipsizedText, x, y, paintText);
         }
