@@ -47,7 +47,7 @@
                 android:layout_width="fill_parent"
                 android:id="@+id/btCC"
                 android:layout_height="wrap_content"
-                local:MvxBind="{'NavigateCommand': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}, 'Text':{'Path':'PaymentPreferences.SelectedCreditCard.FriendlyName'},'Last4Digits': {'Path': 'PaymentPreferences.SelectedCreditCard.Last4Digits'}, 'CreditCardCompany': {'Path': 'PaymentPreferences.SelectedCreditCard.CreditCardCompany'}}" />
+                local:MvxBind="NavigateCommand PaymentPreferences.NavigateToCreditCardsList; Text PaymentPreferences.SelectedCreditCard.FriendlyName; Last4Digits SelectedCreditCard.Last4Digits; CreditCardCompany PaymentPreferences.SelectedCreditCard.CreditCardCompany" />
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
                     android:layout_weight="0.33"
                     android:layout_height="@dimen/HeightButton"
                     android:text="@string/Save"
-                    local:MvxBind="{'Click': {'Path': 'SaveCommand'}}" />
+                    local:MvxBind="Click SaveCommand" />
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
                         android:layout_height="@dimen/HeightButton"
                         android:id="@+id/CancelSettingsButton"
                         android:text="@string/Cancel"
-                        local:MvxBind="{'Click': {'Path': 'CancelCommand'}}" />
+                        local:MvxBind="Click CancelCommand" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
