@@ -36,7 +36,7 @@
             android:orientation="vertical"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:paddingTop="8dp"
+            android:paddingTop="5dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -51,6 +51,7 @@
                 android:gravity="center_vertical">
                 <TextView
                     style="@style/BlackTextLabel"
+                    android:paddingBottom="6dp"
                     android:singleLine="true"
                     android:layout_width="fill_parent"
                     android:text="@string/LocationDetailNameLabel"
@@ -71,6 +72,7 @@
                 android:gravity="center_vertical">
                 <TextView
                     style="@style/BlackTextLabel"
+                    android:paddingBottom="6dp"
                     android:layout_width="fill_parent"
                     android:singleLine="true"
                     android:text="@string/LocationDetailAddressLabel"
@@ -97,6 +99,7 @@
                     android:gravity="center_horizontal">
                     <TextView
                         style="@style/BlackTextLabel"
+                        android:paddingBottom="6dp"
                         android:singleLine="true"
                         android:layout_width="fill_parent"
                         android:text="@string/LocationDetailApartmentLabel"
@@ -121,6 +124,7 @@
                     android:gravity="center_horizontal">
                     <TextView
                         style="@style/BlackTextLabel"
+                        android:paddingBottom="6dp"
                         android:singleLine="true"
                         android:layout_width="fill_parent"
                         android:text="@string/LocationDetailRingCodeLabel"
@@ -137,6 +141,7 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
+                android:layout_marginTop="13dp"
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
