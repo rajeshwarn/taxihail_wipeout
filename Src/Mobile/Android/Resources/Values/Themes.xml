@@ -158,23 +158,4 @@
       <item name="android:background">@drawable/button_action_black_selector</item>
       <item name="android:textColor">@drawable/button_action_black_text_selector</item>      
     </style>
-
-
-
-
-  	<!--- Themes -->
-
-    <style name="LoginTheme" parent="@android:style/Theme.Holo">
-        <item name="android:windowBackground">@color/login_background_color</item>
-      	<item name="android:windowNoTitle">true</item>  
-      	<item name="android:editTextStyle">@style/custom_EditTextStyle</item>              
-      	<item name="android:buttonStyle">@style/custom_ButtonStyle</item>     
-    </style>
-    
-    <style name="MainTheme" parent="@android:style/Theme.Holo">
-        <item name="android:windowBackground">@color/main_background_color</item>
-      	<item name="android:windowNoTitle">true</item>  
-      	<item name="android:editTextStyle">@style/custom_FlatEditTextStyle</item>            
-      	<item name="android:buttonStyle">@style/custom_ButtonStyle</item>     
-    </style>
 </resources>
