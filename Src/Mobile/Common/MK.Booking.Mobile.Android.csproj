@@ -194,7 +194,6 @@
     <Compile Include="Messages\OrderConfirmed.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Models\RideSettingsModel.cs" />
-    <Compile Include="Navigation\INavigationService.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppServices\IAccountService.cs" />

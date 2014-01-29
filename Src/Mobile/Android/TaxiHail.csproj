@@ -464,6 +464,9 @@
     <AndroidResource Include="Resources\drawable-xhdpi\unchecked_custom.png" />
     <AndroidResource Include="Resources\Drawable\add_list.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\add_list.png" />
+    <AndroidResource Include="Resources\Values\SetThemes.xml" />
+    <AndroidResource Include="Resources\values-v11\SetThemes.xml" />
+    <Compile Include="PhonePresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -626,6 +629,7 @@
   </Target>
   <ItemGroup>
     <Folder Include="Resources\drawable-hdpi\" />
+    <Folder Include="Resources\values-v11\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">

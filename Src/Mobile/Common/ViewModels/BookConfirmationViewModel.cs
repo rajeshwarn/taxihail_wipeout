@@ -205,12 +205,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								Settings = Order.Settings
 							};
 		    						
-							ShowViewModel<BookingStatusViewModel>(new
+								ShowViewModel<BookingStatusViewModel>(new
 							        {
 							            order = orderCreated.ToJson(),
 							            orderStatus = orderInfo.ToJson()
-							        });	
-							Close(this);
+									}.ToStringDictionary(), true);	
+							
 	                        this.Services().MessengerHub.Publish(new OrderConfirmed(this, Order, false));
 						}
 						catch

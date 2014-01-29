@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
 using System.Threading;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -384,22 +385,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void GoToSummary(){
 
-			ShowViewModel<RideSummaryViewModel> (new {
-				order = Order.ToJson(),
-				orderStatus = OrderStatusDetail.ToJson()
-			}.ToStringDictionary());
+			ShowViewModel<RideSummaryViewModel> (
+				new {
+					order = Order.ToJson(),
+					orderStatus = OrderStatusDetail.ToJson()
+				}.ToStringDictionary(), true);
 		}
 
         public void GoToBookingScreen(){
+
             if (!_waitingToNavigateAfterTimeOut)
             {
 				Observable.Interval( TimeSpan.FromSeconds (10))
 				.Subscribe(unit => InvokeOnMainThread(() =>
 				{
-			this.Services().Booking.ClearLastOrder();
-                        _waitingToNavigateAfterTimeOut = true;
-                        ShowViewModel<BookViewModel>();
-						Close(this);
+					this.Services().Booking.ClearLastOrder();
+		                        _waitingToNavigateAfterTimeOut = true;
+		                        ShowViewModel<BookViewModel>();
+								Close(this);
                     }));
             }
         }
@@ -469,7 +472,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 if (isSuccess) 
                                 {
                                     this.Services().Booking.ClearLastOrder();
-									ShowViewModel<BookViewModel> ();
+									ShowViewModel<BookViewModel> (null, true);
                                 } 
                                 else 
                                 {

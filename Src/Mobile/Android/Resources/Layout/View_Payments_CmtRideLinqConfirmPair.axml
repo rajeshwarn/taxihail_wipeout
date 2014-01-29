@@ -47,7 +47,7 @@
                 <TextView
                     android:layout_width="145dp"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    style="@style/BlackTextLabel"
                     android:textColor="@color/gray"
                     android:text="@string/CmtCarNumber"
                     android:paddingRight="8dip"
@@ -56,10 +56,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4585"
-                    android:textSize="24dp"
+                    style="@style/BlackTextLabel"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    local:MvxBind="{'Text':{'Path':'CarNumber'}}" />
+                    local:MvxBind="Text CarNumber" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -71,7 +71,7 @@
                 <TextView
                     android:layout_width="145dp"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    style="@style/BlackTextLabel"
                     android:textColor="@color/gray"
                     android:text="@string/CmtCardNumber"
                     android:paddingRight="8dip"
@@ -80,10 +80,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="No Card"
-                    android:textSize="24dp"
+                    style="@style/BlackTextLabel"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    local:MvxBind="{'Text':{'Path':'CardNumber'}}" />
+                    local:MvxBind="Text CardNumber" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -95,7 +95,7 @@
                 <TextView
                     android:layout_width="145dp"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    style="@style/BlackTextLabel"
                     android:textColor="@color/gray"
                     android:text="@string/CmtTipAmount"
                     android:paddingRight="8dip"
@@ -106,7 +106,7 @@
                     android:textSize="24dp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    local:MvxBind="{'Text':{'Path':'TipAmountInPercent'}}" />
+                    local:MvxBind="Text TipAmountInPercent" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -121,21 +121,21 @@
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/HeightButton"
                 android:text="@string/Confirm"
-                local:MvxBind="{'Click': {'Path': 'ConfirmPayment'}}" />
+                local:MvxBind="Click ConfirmPayment" />
             <Button
                 style="@style/ButtonActionGrayStyle"
                 android:id="@+id/ChangePaymentInfoBtn"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/HeightButton"
                 android:text="@string/CmtChangePaymentInfo"
-                local:MvxBind="{'Click': {'Path': 'ChangePaymentInfo'}}" />
+                local:MvxBind="Click ChangePaymentInfo" />
             <Button
                 style="@style/ButtonActionRedStyle"
                 android:id="@+id/CancelPaymentBtn"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/HeightButton"
                 android:text="@string/Cancel"
-                local:MvxBind="{'Click': {'Path': 'CancelPayment'}}" />
+                local:MvxBind="Click CancelPayment" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

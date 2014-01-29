@@ -106,12 +106,13 @@
             android:id="@+id/hiddenTopContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff">
+            android:background="@color/main_background_color">
         <!---android:background="@drawable/driverInfosBackGreyRepeat">-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dip">
+                android:layout_marginBottom="6dip"
+                android:layout_marginTop="6dip">
                 <TextView
                     android:id="@+id/driverLabel"
                     style="@style/BlackTextLabel"
@@ -258,7 +259,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dip"
                 android:paddingRight="10dip"
-                android:background="#ffffff">
+                android:background="@color/main_background_color">
             <!---android:background="@drawable/driverInfosBackGreyRepeat">-->
                 <LinearLayout
                     android:layout_width="match_parent"
