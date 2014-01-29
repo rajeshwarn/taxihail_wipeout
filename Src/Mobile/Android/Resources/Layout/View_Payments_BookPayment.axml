@@ -174,7 +174,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
-                        android:text="PaymentDetails.TipAmountLabel"
+                        android:text="@string/PaymentDetails.TipAmountLabel"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_weight="0.9"
