@@ -231,6 +231,7 @@
                     android:orientation="vertical">
                     <Button
                         style="@style/ButtonActionGreenStyle"
+                        android:layout_marginTop="6dp"
                         android:id="@+id/ConfirmBtn"
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"

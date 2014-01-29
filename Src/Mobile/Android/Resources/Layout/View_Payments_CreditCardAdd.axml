@@ -164,6 +164,7 @@
                     android:lines="1"
                     android:text="@string/Save"
                     local:MvxBind="Click AddCreditCardCommand"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp" />
             </LinearLayout>
         </ScrollView>

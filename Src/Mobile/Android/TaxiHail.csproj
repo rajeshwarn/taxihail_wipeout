@@ -625,7 +625,6 @@
   <Target Name="AfterBuild">
   </Target>
   <ItemGroup>
-    <Folder Include="Resources\Non-Utilise-Drawable\" />
     <Folder Include="Resources\drawable-hdpi\" />
   </ItemGroup>
   <ItemGroup>
