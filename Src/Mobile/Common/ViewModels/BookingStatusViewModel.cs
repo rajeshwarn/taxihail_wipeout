@@ -385,11 +385,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void GoToSummary(){
 
-			ShowViewModel<RideSummaryViewModel> (
+			ShowViewModelAndRemoveFromHistory<RideSummaryViewModel> (
 				new {
 					order = Order.ToJson(),
 					orderStatus = OrderStatusDetail.ToJson()
-				}.ToStringDictionary(), true);
+				}.ToStringDictionary());
 		}
 
         public void GoToBookingScreen(){
@@ -472,7 +472,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 if (isSuccess) 
                                 {
                                     this.Services().Booking.ClearLastOrder();
-									ShowViewModel<BookViewModel> (null, true);
+									ShowViewModelAndRemoveFromHistory<BookViewModel> ();
                                 } 
                                 else 
                                 {
