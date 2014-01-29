@@ -21,7 +21,7 @@
 
 	<!--- 	MainTheme Colors -->
 
-	<color name="main_background_color">#f0f0f0</color>	
+	<color name="main_background_color">#f2f2f2</color>	
 
 	<!--		Main Button Colors -->
 
@@ -114,14 +114,13 @@
     <!--	Login Theme Button -->
 
     <style name="custom_ButtonStyle" parent="@android:style/Widget.Button">
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginBottom">13dip</item>
         <item name="android:singleLine">true</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
         <item name="android:textColor">@drawable/button_text_selector</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>        
-        <item name="android:textSize">20dip</item>
+        <item name="android:textSize">21dip</item>
         <item name="android:background">@drawable/button_selector</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
