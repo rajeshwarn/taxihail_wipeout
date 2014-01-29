@@ -92,6 +92,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Picture = x.CreditCardCompany != null 
 							  	? x.CreditCardCompany.ToLower().Replace(" ", "_") 
                               : string.Empty,
+					IsLast = creditCards.Last().CreditCardId == x.CreditCardId
                 }));
             });
         }
@@ -122,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 {
                     InvokeOnMainThread(()=>
                     {
-						 CreditCards.Add(new CreditCardViewModel
+						 CreditCards.Insert(1, new CreditCardViewModel
                          {
                              CreditCardDetails = new CreditCardDetails
                              {

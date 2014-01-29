@@ -1,10 +1,15 @@
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Android.App;
 using Android.Content.PM;
+using Android.Graphics;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-
+using Cirrious.MvvmCross.Binding.Droid.Views;
+using Java.Lang;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
@@ -15,10 +20,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            var listView = FindViewById<ListView>(Resource.Id.CreditCardsListView);
+            var listView = FindViewById<MvxListView>(Resource.Id.CreditCardsListView);
+            listView.CacheColorHint = Color.White;
             listView.Divider = null;
             listView.DividerHeight = 0;
-            listView.SetPadding(10, 0, 10, 0);
+            listView.SetPadding(0, 0, 0, 0);
         }
 
         protected override void OnViewModelSet()

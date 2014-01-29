@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         }
 
 		public bool IsAddNew { get { return CreditCardDetails.CreditCardId.IsNullOrEmpty(); } }
+		public bool IsLast { get; set; } //needed for android
         public string Picture { get; set; }
         public AsyncCommand RemoveCreditCards
         {
