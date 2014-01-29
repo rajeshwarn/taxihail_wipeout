@@ -464,6 +464,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\unchecked_custom.png" />
     <AndroidResource Include="Resources\Drawable\add_list.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\add_list.png" />
+    <Compile Include="PhonePresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

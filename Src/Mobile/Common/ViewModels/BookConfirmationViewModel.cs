@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Globalization;
-using apcurium.MK.Booking.Mobile.Navigation;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -206,12 +205,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								Settings = Order.Settings
 							};
 		    						
-							ShowViewModel<BookingStatusViewModel>(new
+								ShowViewModel<BookingStatusViewModel>(new
 							        {
 							            order = orderCreated.ToJson(),
 							            orderStatus = orderInfo.ToJson()
-							        });	
-							ChangePresentation(new ClearHistoryPresentationHint());
+									}.ToStringDictionary(), true);	
+							
 	                        this.Services().MessengerHub.Publish(new OrderConfirmed(this, Order, false));
 						}
 						catch
