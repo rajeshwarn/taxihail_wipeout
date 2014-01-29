@@ -51,8 +51,6 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 
         public ICacheService AppCache { get { return _container.Resolve<ICacheService>("AppCache"); } }
 
-        public IAppSettings AppSettings { get { return _container.Resolve<IAppSettings>(); } }
-
         public IApplicationInfoService ApplicationInfo { get { return _container.Resolve<IApplicationInfoService>(); } }
 
         public IGeolocService Geoloc { get { return _container.Resolve<IGeolocService>(); } }

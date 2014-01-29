@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			btnSignIn.SetTitle (Localize.GetValue ("SignIn"), UIControlState.Normal);
 			btnSignUp.SetTitle (Localize.GetValue ("Register"), UIControlState.Normal);
 
-            var settings = this.Services().AppSettings;;
+            var settings = this.Services().Settings;;
 
             btnSignIn.TouchUpInside += (sender, e) => { 
                 var firstResponder = View.FindFirstResponder();
