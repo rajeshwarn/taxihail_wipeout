@@ -194,7 +194,6 @@
     <Compile Include="Style\ShadowDefinition.cs" />
     <Compile Include="ViewModels\BookViewModel.cs" />
     <Compile Include="Style\FontDefinition.cs" />
-    <Compile Include="Navigation\INavigationService.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="TaxiHailApp.cs" />
     <Compile Include="StartNavigation.cs" />
@@ -314,6 +313,7 @@
     <Compile Include="ViewModels\PanelMenuViewModel.cs" />
     <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
+    <Compile Include="Navigation\ClearHistoryPresentationHint.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -376,5 +376,8 @@
       <Version>2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Navigation\" />
   </ItemGroup>
 </Project>
