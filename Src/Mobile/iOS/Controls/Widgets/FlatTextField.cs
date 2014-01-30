@@ -33,6 +33,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize ()
 		{
+            BackgroundColor = UIColor.White;
+
             if(UIHelper.IsOS7orHigher)
 			{
                 TintColor = UIColor.FromRGB(44, 44, 44); // cursor color
@@ -51,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		public override void Draw (RectangleF rect)
 		{   
             var fillColor = State.HasFlag (UIControlState.Normal)
-			                ? UIColor.White 
+                            ? BackgroundColor
 			                : UIColor.Clear;
 
 			var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, RadiusCorner);
@@ -70,6 +72,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				SetNeedsDisplay();
 			}
 		}
+
+        public override UIColor BackgroundColor
+        {
+            get
+            {
+                return base.BackgroundColor;
+            }
+            set
+            {
+                if (value != base.BackgroundColor)
+                {
+                    base.BackgroundColor = value;
+                    SetNeedsDisplay();
+                }
+            }
+        }
 
         private string _imageLeftSource;
         public string ImageLeftSource

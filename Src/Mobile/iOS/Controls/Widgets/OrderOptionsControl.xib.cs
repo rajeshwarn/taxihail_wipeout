@@ -22,11 +22,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             AddSubview(Line.CreateVertical(44f, 8f, 29f, UIColor.FromRGB(112, 112, 112), 1f));
             AddSubview(Line.CreateHorizontal(0f, 44f, Frame.Width, UIColor.FromRGB(178, 178, 178), 1f));
+
+            txtPickupAddress.BackgroundColor = UIColor.Clear;
         }
 
         private void InitializeBinding()
         {
+            var set = this.CreateBindingSet<OrderOptionsControl, HomeViewModel>();
 
+            set.Bind(txtPickupAddress)
+                .To(vm => vm.PickupAddress.DisplayAddress);
+
+            set.Apply();
         }
 
         public override void AwakeFromNib()
@@ -39,6 +46,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             this.DelayBind (() => {
                 InitializeBinding();
             });
+        }
+
+        public override SizeF IntrinsicContentSize
+        {
+            get
+            {
+                return base.IntrinsicContentSize;
+                // try to use this
+//                InvalidateIntrinsicContentSize
+            }
         }
     }
 }
