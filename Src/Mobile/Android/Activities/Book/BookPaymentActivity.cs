@@ -3,7 +3,6 @@ using Android.Content.PM;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
@@ -45,73 +44,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _meterAmountTextView = FindViewById<EditText>(Resource.Id.meterAmountTextView);
             _totalAmountTextView = FindViewById<TextView>(Resource.Id.totalAmountTextView);
 
-            UpdateAmounts();
-
-
-
-            _tipAmountTextView.TextChanged += (sender, e) => UpdateAmounts();
             _meterAmountTextView.FocusChange += (sender, e) =>
             {
-                if (!e.HasFocus)
-                {
-                    MeterAmount = MeterAmount;
-                }
+
             };
 
             _meterAmountTextView.TextChanged += (sender, e) =>
             {
-                TipAmount = MeterAmount*GetTip();
-                UpdateAmounts();
+
             };
 
             _meterAmountTextView.FocusChange += (sender, e) =>
             {
-                if (!e.HasFocus)
-                {
-                    TipAmount = MeterAmount * (GetTip());
-                    UpdateAmounts();
-                }
-            };
 
-            _tipAmountTextView.EditorAction += (sender, e) =>
-            {
-                e.Handled = false;
-                TipAmount = TipAmount; //format	
             };
 
             _tipAmountTextView.FocusChange += (sender, e) =>
             {
                 if (!e.HasFocus)
                 {
-                    TipAmount = TipAmount; //format	
+
                 }
             };
 
             _meterAmountTextView.EditorAction += (sender, e) =>
             {
-                e.Handled = false;
-                MeterAmount = MeterAmount; //format				
+			
             };
 
             _tipPicker.ItemSelected += (object sender, AdapterView.ItemSelectedEventArgs e) => {
-
-                TipAmount = MeterAmount * GetTip();
-                _tipAmountTextView.HideKeyboard(this);
-                _layoutRoot.RequestFocus();
-                UpdateAmounts();
-
+                //_tipAmountTextView.HideKeyboard(this);
             };
                        
-        }
-
-        public double GetTip()
-        {
-            return (double)ViewModel.PaymentPreferences.Tip / 100.00;
-        }
-
-        public void UpdateAmounts()
-        {
-            TotalAmount = MeterAmount + TipAmount;
         }
 
         protected override void OnViewModelSet()

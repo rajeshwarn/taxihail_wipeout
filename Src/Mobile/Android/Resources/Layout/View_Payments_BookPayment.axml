@@ -183,7 +183,7 @@
                         android:textSize="@dimen/payment_text_size"
                         android:gravity="center_vertical" />
                     <EditText
-                        local:MvxBind="Hint PlaceholderAmount, Mode=TwoWay; Text TipAmount"
+                        local:MvxBind="Hint PlaceholderAmount; Text TipAmount, Mode=OneWayToSource; Text TipAmountString, Mode=OneWay; Click ClearTipCommand; FocusText ShowCurrencyCommand"
                         android:id="@+id/tipAmountTextView"
                         android:selectAllOnFocus="true"
                         android:layout_width="100dp"

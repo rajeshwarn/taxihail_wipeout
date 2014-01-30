@@ -35,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             };
 			PaymentPreferences = new PaymentDetailsViewModel();
 			PaymentPreferences.Init(paymentInformation);
+			TipAmount = (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString();
 
             PaymentSelectorToggleIsVisible = IsPayPalEnabled && IsCreditCardEnabled;
             PayPalSelected = !IsCreditCardEnabled;
@@ -74,11 +75,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public bool PaymentSelectorToggleIsVisible { get; set; }
 
+        public bool TipSelectorIsVisible { get; set; }
+
         public AsyncCommand UsePayPal
         {
             get
             {
-                return GetCommand(() => InvokeOnMainThread(delegate
+
+				return GetCommand(() => InvokeOnMainThread(delegate
                 {
                     PayPalSelected = true;
                 }));
@@ -101,19 +105,151 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             get{ return CultureProvider.FormatCurrency(0d); }
         }
 
-        public string TextAmount { get; set; }
-
         public double Amount
         { 
             get
             { 
-                return CultureProvider.ParseCurrency(TextAmount);
+				return CultureProvider.ParseCurrency(TotalAmount);
             }
         }
 
-		public string TipAmount { get; set; }
+		private string _tipAmount;
 
-		public string MeterAmount { get; set; }
+		public string TipAmount 
+		{ 
+			get
+			{				 
+				return (TipCustomized ? _tipAmount : (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString());
+			}
+
+			set
+			{
+				_tipAmount = GetTipAmount(value);
+				TipAmountString = GetCurrency(_tipAmount);
+				RaisePropertyChanged(() => TotalAmount);
+				RaisePropertyChanged(() => TipAmount);
+			}		
+		}
+
+		private string _meterAmount;
+
+		public string MeterAmount 
+		{ 
+			get
+			{
+				return _meterAmount;
+			}
+
+			set
+			{
+				_meterAmount = value;
+				TipAmountString = GetCurrency(TipAmount);
+				RaisePropertyChanged(() => MeterAmount);
+				RaisePropertyChanged(() => TotalAmount);
+				RaisePropertyChanged(() => TipAmountString);
+			}		
+		}
+
+		public string TotalAmount 
+		{ 
+			get
+			{
+				return GetCurrency((CultureProvider.ParseCurrency(MeterAmount) + CultureProvider.ParseCurrency(GetTipAmount(TipAmount))).ToString());
+			}	
+		}
+
+		public string TipAmountString  { get; set;}
+
+		public string GetTipAmount(string value)
+		{
+			var _tip = (TipCustomized ? value : (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString());
+			return _tip;
+		}
+
+		public string GetCurrency(string amount)
+		{
+			return CultureProvider.FormatCurrency((CultureProvider.ParseCurrency(amount)));
+		}
+
+		public bool TipCustomized = false;
+
+		public AsyncCommand ToggleToTipCustom
+		{
+			get
+			{
+				return GetCommand(() =>
+				{ 
+					TipCustomized = true;
+					RaisePropertyChanged(() => TotalAmount);
+				});
+			}
+		}
+
+		public AsyncCommand ToggleToTipSelector
+		{
+			get
+			{
+				return GetCommand(() =>
+					{ 
+						TipCustomized = false;
+						TipAmount = (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString();
+						RaisePropertyChanged(() => TotalAmount);
+						RaisePropertyChanged(() => TipAmountString);
+						ShowCurrencyCommand.Execute();
+					});
+			}
+		}
+
+		public AsyncCommand ClearTipCommand
+		{
+			get
+			{
+				return GetCommand(() =>
+					{ 					
+
+						TipAmountString = TipAmount = "";
+						RaisePropertyChanged(() => TipAmount);
+						RaisePropertyChanged(() => TipAmountString);
+					});
+			}
+		}
+
+		public AsyncCommand ClearMeterCommand
+		{
+			get
+			{
+				return GetCommand(() =>
+				{ 					
+					MeterAmount = "";
+					RaisePropertyChanged(() => MeterAmount);
+				});
+			}
+		}
+
+		public AsyncCommand Testa
+		{
+			get
+			{
+				return GetCommand(() =>
+					{ 					
+						MeterAmount = "";
+						RaisePropertyChanged(() => MeterAmount);
+					});
+			}
+		}
+
+		public AsyncCommand ShowCurrencyCommand
+		{
+			get
+			{
+				return GetCommand(() =>
+				{ 					
+					MeterAmount = GetCurrency(MeterAmount);
+					TipAmountString = GetCurrency(CultureProvider.ParseCurrency(TipAmount).ToString());
+					RaisePropertyChanged(()=>TipAmountString);									
+				});
+			}
+		}
 
 		public PaymentDetailsViewModel PaymentPreferences { get; private set; }
 
@@ -154,7 +290,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             {
                 this.Services().Message.ShowProgress(true);
 
-                _palExpressCheckoutService.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount), Convert.ToDecimal(CultureProvider.ParseCurrency(MeterAmount)), Convert.ToDecimal(CultureProvider.ParseCurrency(TipAmount)))
+				_palExpressCheckoutService.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount), Convert.ToDecimal(CultureProvider.ParseCurrency(MeterAmount)), Convert.ToDecimal(CultureProvider.ParseCurrency(TipAmount)))
 					.ToObservable()
                     // Always Hide progress indicator
                     .Do(_ => this.Services().Message.ShowProgress(false), _ => this.Services().Message.ShowProgress(false))
@@ -182,7 +318,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             {
                 using (this.Services().Message.ShowProgress())
                 {
-                    var response = await this.Services().Payment.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, CultureProvider.ParseCurrency(MeterAmount), CultureProvider.ParseCurrency(TipAmount), Order.Id);
+					var response = await this.Services().Payment.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, CultureProvider.ParseCurrency(MeterAmount), CultureProvider.ParseCurrency(TipAmount), Order.Id);
                     if (!response.IsSuccessfull)
                     {
                         this.Services().Message.ShowProgress(false);
