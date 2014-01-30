@@ -9,7 +9,7 @@
         android:layout_height="@dimen/HeightEditTextFlat"
         android:layout_width="fill_parent"
         android:layout_centerVertical="true"
-        android:paddingLeft="70dip" />
+        android:paddingLeft="53dip" />
     <TextView
         style="@style/custom_TextViewStyle"
         android:textSize="@dimen/payment_text_size"
