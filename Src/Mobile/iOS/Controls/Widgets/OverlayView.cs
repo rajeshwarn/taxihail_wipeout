@@ -7,6 +7,7 @@ using MonoTouch.CoreGraphics;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using MonoTouch.CoreAnimation;
+using Cirrious.MvvmCross.Binding.Touch.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {

@@ -56,13 +56,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For("TouchUpInside")
                 .To(vm => vm.LocateMe);
 
-            set.Bind(txtPickupAddress)
-                .To(vm => vm.PickupAddress.DisplayAddress);
-
             set.Bind(mapView)
                 .For(v => v.DataContext)
                 .To(vm => vm.Map);
 
+            set.Bind(ctrlOrderOptions)
+                .For(v => v.DataContext)
+                .To(vm => vm);
+                
             set.Apply();
         }
 

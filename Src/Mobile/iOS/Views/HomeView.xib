@@ -6,11 +6,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeView">
             <connections>
+                <outlet property="ctrlOrderOptions" destination="HaA-X5-eHm" id="FGC-LG-Yob"/>
                 <outlet property="homeView" destination="73H-fC-yqb" id="U5L-r5-78y"/>
                 <outlet property="locateMeOverlay" destination="vGm-E2-WmB" id="mSm-io-qn1"/>
                 <outlet property="mapView" destination="DgF-jB-8zt" id="ZNk-IP-Ogh"/>
                 <outlet property="test" destination="ZRL-yY-Qem" id="Y0j-4m-iMZ"/>
-                <outlet property="txtPickupAddress" destination="ndP-6A-raY" id="R9X-tG-3g6"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -53,12 +53,15 @@
                                 <constraint firstAttribute="height" constant="39" id="ulf-au-pUA"/>
                             </constraints>
                         </view>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="address" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ndP-6A-raY">
-                            <rect key="frame" x="20" y="44" width="280" height="30"/>
+                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="305" placeholderIntrinsicHeight="96" translatesAutoresizingMaskIntoConstraints="NO" id="HaA-X5-eHm" customClass="OrderOptionsControl">
+                            <rect key="frame" x="8" y="22" width="305" height="96"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
-                        </textField>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="96" id="hBo-Is-5bO"/>
+                                <constraint firstAttribute="width" constant="305" id="pPK-mw-QcC"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
@@ -68,7 +71,9 @@
                         <constraint firstAttribute="trailing" secondItem="vGm-E2-WmB" secondAttribute="trailing" constant="8" id="7L0-Qk-mEQ"/>
                         <constraint firstAttribute="trailing" secondItem="cXg-Q6-nLg" secondAttribute="trailing" id="8Ab-0L-enX"/>
                         <constraint firstAttribute="bottom" secondItem="DgF-jB-8zt" secondAttribute="bottom" id="Aqd-An-C2e"/>
+                        <constraint firstItem="HaA-X5-eHm" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="FRw-GE-bhA"/>
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" id="Mlm-GQ-8rc"/>
+                        <constraint firstAttribute="centerX" secondItem="HaA-X5-eHm" secondAttribute="centerX" id="Pnu-1F-Vfo"/>
                         <constraint firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" id="VBK-AW-R7l"/>
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="ZSI-kr-X81"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="ZRL-yY-Qem" secondAttribute="bottom" constant="13" id="q6f-wg-d8Z"/>
