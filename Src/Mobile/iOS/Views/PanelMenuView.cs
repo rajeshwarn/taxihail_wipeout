@@ -14,10 +14,11 @@ using apcurium.MK.Booking.Mobile.Client.Animations;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using System.Threading;
+using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class PanelMenuView : MvxView
+    public partial class PanelMenuView : BaseBindableView<PanelMenuViewModel>
     {
         private const string CellId = "PanelMenuCell";
 		private const string CellBindingText = @"
@@ -125,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 _closeMenuButton = new UIButton(new RectangleF(0, 0, Frame.Width - menuContainer.Frame.Width, Frame.Height)) { BackgroundColor = UIColor.Clear };
                 _closeMenuButton.TouchUpInside += (s, ex) => {
-                    ((PanelMenuViewModel)DataContext).MenuIsOpen = false;
+                    ViewModel.MenuIsOpen = false;
                 };
                 ViewToAnimate.AddSubview(_closeMenuButton);
             }

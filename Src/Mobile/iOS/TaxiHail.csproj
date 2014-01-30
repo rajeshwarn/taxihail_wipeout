@@ -506,6 +506,13 @@
     </Compile>
     <Compile Include="Controls\Widgets\HomeBar.cs" />
     <Compile Include="Controls\Widgets\OverlayView.cs" />
+    <Compile Include="Controls\Widgets\OrderOptionsControl.xib.cs">
+      <DependentUpon>OrderOptionsControl.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Widgets\OrderOptionsControl.xib.designer.cs">
+      <DependentUpon>OrderOptionsControl.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Binding\BaseBindableView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -552,6 +559,7 @@
     <InterfaceDefinition Include="Views\Payments\ConfirmCarNumberView.xib" />
     <InterfaceDefinition Include="Views\BookingStatusView.xib" />
     <InterfaceDefinition Include="Views\HomeView.xib" />
+    <InterfaceDefinition Include="Controls\Widgets\OrderOptionsControl.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
