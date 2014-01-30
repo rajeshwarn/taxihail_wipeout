@@ -6,13 +6,19 @@ using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.AppServices;
+using System.Windows.Input;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class HomeViewModel : BaseViewModel
     {
-		public HomeViewModel(IMvxWebBrowserTask browserTask) : base()
+		readonly IOrderWorkflowService _orderWorkflowService;
+
+		public HomeViewModel(IOrderWorkflowService orderWorkflowService, IMvxWebBrowserTask browserTask) : base()
 		{
+			_orderWorkflowService = orderWorkflowService;
 			Panel = new PanelMenuViewModel(this, browserTask);
 		}
 
@@ -20,7 +26,44 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 		}
 
+		public override void OnViewStarted(bool firstTime)
+		{
+			base.OnViewStarted(firstTime);
+
+			_orderWorkflowService.GetAndObservePickupAddress()
+				.Subscribe(address => InvokeOnMainThread(() => PickupAddress = address));
+		}
+
 		public PanelMenuViewModel Panel { get; set; }
+
+		private Address _pickupAddress;
+		public Address PickupAddress
+		{
+			get
+			{
+				return _pickupAddress;
+			}
+
+			private set
+			{
+				if(value != _pickupAddress)
+				{
+					_pickupAddress = value;
+					RaisePropertyChanged();
+				}
+			}
+		}
+
+
+		public ICommand LocateMe
+		{
+			get
+			{
+				return this.GetCommand(() =>{
+					_orderWorkflowService.SetPickupAddressToUserLocation();
+				});
+			}
+		}
     }
 }
 

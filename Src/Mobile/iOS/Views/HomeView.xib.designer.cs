@@ -16,7 +16,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UIView homeView { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayView locateMeOverlay { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayView test { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UITextField txtPickupAddress { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -25,9 +31,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				homeView = null;
 			}
 
+			if (locateMeOverlay != null) {
+				locateMeOverlay.Dispose ();
+				locateMeOverlay = null;
+			}
+
 			if (test != null) {
 				test.Dispose ();
 				test = null;
+			}
+
+			if (txtPickupAddress != null) {
+				txtPickupAddress.Dispose ();
+				txtPickupAddress = null;
 			}
 		}
 	}

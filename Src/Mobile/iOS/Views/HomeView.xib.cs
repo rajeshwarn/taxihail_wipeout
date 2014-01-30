@@ -40,6 +40,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btn.TouchUpInside += (sender, e) => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
             test.AddSubview(btn);
 
+            var btn2 = new UIButton(new RectangleF(0, 0, 21, 21));
+            btn2.SetImage(UIImage.FromFile("Assets/gpsRefreshIcon.png"), UIControlState.Normal);
+            locateMeOverlay.AddSubview(btn2);
+
             InstantiatePanel();
 
             var set = this.CreateBindingSet<HomeView, HomeViewModel>();
@@ -47,6 +51,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(_menu)
                 .For(v => v.DataContext)
                 .To(vm => vm.Panel);
+
+            set.Bind(btn2)
+                .For("TouchUpInside")
+                .To(vm => vm.LocateMe);
+
+            set.Bind(txtPickupAddress)
+                .To(vm => vm.PickupAddress.DisplayAddress);
 
             set.Apply();
         }

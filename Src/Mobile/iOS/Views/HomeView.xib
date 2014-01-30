@@ -7,7 +7,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeView">
             <connections>
                 <outlet property="homeView" destination="73H-fC-yqb" id="U5L-r5-78y"/>
+                <outlet property="locateMeOverlay" destination="vGm-E2-WmB" id="mSm-io-qn1"/>
                 <outlet property="test" destination="ZRL-yY-Qem" id="Y0j-4m-iMZ"/>
+                <outlet property="txtPickupAddress" destination="ndP-6A-raY" id="R9X-tG-3g6"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -50,6 +52,12 @@
                                 <constraint firstAttribute="height" constant="39" id="ulf-au-pUA"/>
                             </constraints>
                         </view>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="address" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ndP-6A-raY">
+                            <rect key="frame" x="20" y="44" width="280" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>

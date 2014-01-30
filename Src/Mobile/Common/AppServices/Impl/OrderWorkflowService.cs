@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				Logger.LogMessage("Call SearchAddress finsihed, found {0} addresses", address.Count());
 				if (address.Any())
 				{
-					//Logger.LogMessage(" found {0} addresses", address.Count());
+					Logger.LogMessage(" found {0} addresses", address.Count());
 					_pickupAddressSubject.OnNext(address[0]);
 					//SetAddress(address[0], false);
 				}
