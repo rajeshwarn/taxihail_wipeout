@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			FlatButtonStyle.Green.ApplyTo(btnReSendConfirmation);
 			FlatButtonStyle.Green.ApplyTo(btnPay);
 
-			lblSubTitle.Text = String.Format(Localize.GetValue ("RideSummarySubTitleText"), this.Services().Settings.ApplicationName);
+            lblSubTitle.Text = String.Format(Localize.GetValue ("RideSummarySubTitleText"), this.Services().Settings.Data.ApplicationName);
 
             btnSendReceipt.SetTitle(Localize.GetValue("SendReceipt"), UIControlState.Normal);
             btnRateRide.SetTitle(Localize.GetValue("RateRide"), UIControlState.Normal);

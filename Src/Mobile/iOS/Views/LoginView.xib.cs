@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             var set = this.CreateBindingSet<LoginView, LoginViewModel>();
 
-			if (settings.FacebookEnabled)
+            if (settings.Data.FacebookEnabled)
 			{
 				btnFbLogin.SetLeftImage("facebook_icon.png");
 				btnFbLogin.SetTitle (Localize.GetValue ("Facebook"), UIControlState.Normal);
@@ -83,9 +83,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     .For("TouchUpInside")
                     .To(vm => vm.LoginFacebook);
             }
-            btnFbLogin.Hidden = !settings.FacebookEnabled;
+            btnFbLogin.Hidden = !settings.Data.FacebookEnabled;
 
-            if (settings.TwitterEnabled)
+            if (settings.Data.TwitterEnabled)
 			{
 				btnTwLogin.SetLeftImage("twitter_icon.png");
 				btnTwLogin.SetTitle (Localize.GetValue ("Twitter"), UIControlState.Normal);
@@ -93,11 +93,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     .For("TouchUpInside")
                     .To(vm => vm.LoginTwitter);
             }
-            btnTwLogin.Hidden = !settings.TwitterEnabled;
+            btnTwLogin.Hidden = !settings.Data.TwitterEnabled;
 
 			btnServer.SetTitle (Localize.GetValue ("ChangeServer"), UIControlState.Normal);
             btnServer.TouchUpInside += ChangeServerTouchUpInside;
-			btnServer.Hidden = !settings.CanChangeServiceUrl;
+            btnServer.Hidden = !settings.Data.CanChangeServiceUrl;
 
             set.Bind(btnSignIn)
                 .For("TouchUpInside")
@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         void ChangeServerTouchUpInside (object sender, EventArgs e)
         {
             var popup = new UIAlertView {AlertViewStyle = UIAlertViewStyle.PlainTextInput, Title = "Server Url"};
-            popup.GetTextField (0).Text = TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl;
+            popup.GetTextField (0).Text = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data.ServiceUrl;
 
             var cancelBtnIndex = popup.AddButton ("Cancel");
             var saveBtnIndex = popup.AddButton ("Save");
@@ -134,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             popup.Clicked += delegate(object sender2, UIButtonEventArgs e2) {
                 if (e2.ButtonIndex == saveBtnIndex) {
-                    TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl = popup.GetTextField (0).Text;                 
+                    TinyIoCContainer.Current.Resolve<IAppSettings> ().Data.ServiceUrl = popup.GetTextField (0).Text;                 
                 } else {
                     popup.Dispose ();
                 }

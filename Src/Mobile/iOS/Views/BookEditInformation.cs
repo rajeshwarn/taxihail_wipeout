@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.LoadView();
             var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            var isThriev = appSettings.ApplicationName == "Thriev";
+            var isThriev = appSettings.Data.ApplicationName == "Thriev";
             if (isThriev)
             {
                 NSBundle.MainBundle.LoadNib ("BookEditInformation_Thriev", this, null);

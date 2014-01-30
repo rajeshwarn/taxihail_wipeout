@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			get
 			{
 				var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-				var isThriev = appSettings.ApplicationName == "Thriev";
+                var isThriev = appSettings.Data.ApplicationName == "Thriev";
 				return isThriev
 					? "ConfirmationView_Thriev"
 					: "ConfirmationView";

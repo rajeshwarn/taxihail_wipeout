@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						this.Services().Account.UpdatePassword(this.Services().Account.CurrentAccount.Id, CurrentPassword, NewPassword);
 						this.Services().Account.SignOut();
 						var msg = this.Services().Localize["ChangePasswordConfirmmation"];
-						var title = this.Services().Settings.ApplicationName;
+						var title = this.Services().Settings.Data.ApplicationName;
 						this.Services().Message.ShowMessage(title, msg, () => ShowViewModel<LoginViewModel>(true));
 					}catch(Exception e)
 					{

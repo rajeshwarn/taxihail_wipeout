@@ -4,24 +4,23 @@ using System.ComponentModel.DataAnnotations;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
-	public class TaxiHailSettings
+	public class TaxiHailSetting
     {
-		public TaxiHailSettings()
+		public TaxiHailSetting()
 		{
 			//default values here
 			ApplicationName = "Taxi Hail";	
-			CanChangeServiceUrl = false;
+			ShowEstimateWarning = true;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
 		public string ApplicationName { get; private set; }
-
 		[Display(Name = "Can Change Service Url", Description="Display a button on the login page to change the API server url")]
-		public bool CanChangeServiceUrl { get; private set; }  
-
+		public bool CanChangeServiceUrl { get; private set; }
 		public string ServiceUrl { get; set; }
 		public bool ErrorLogEnabled{ get; private set; }
 		public string DefaultServiceUrl{ get; private set; }
+
 		public bool TwitterEnabled{ get; private set; }       
 		public string TwitterConsumerKey{ get; private set; }
 		public string TwitterCallback{ get; private set; }
@@ -32,6 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 		public bool FacebookEnabled { get; private set; }
 		public string FacebookAppId{ get; private set; }
 
+		[Display(Name = "Hide No Preference Option", Description="Settings to hide the no preference option in vehicule, company list etc.")]
 		public bool HideNoPreference { get; private set; }
 		public bool DestinationIsRequired { get; private set; }
 		public bool HideCallDispactherButton { get; private set; }
@@ -49,6 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 		public bool TutorialEnabled { get; private set; }
 		public bool HideReportProblem { get; private set; }
 
+		[Display(Name = "Place Types", Description="Give a list of Google Maps places types to filter search")]
 		public string PlacesTypes { get; private set; }
 		public string PriceFormat { get; private set; }
 		public string DistanceFormat { get; private set; }

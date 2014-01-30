@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnViewModelSet()
         {
             var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            bool isThriev = appSettings.ApplicationName == "Thriev";
+            bool isThriev = appSettings.Data.ApplicationName == "Thriev";
             SetContentView(isThriev ? Resource.Layout.View_BookingDetail_Thriev : Resource.Layout.View_BookingDetail);
 
             FindViewById<EditText>(Resource.Id.noteEditText).FocusChange += HandleFocusChange;

@@ -217,7 +217,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 							if (CallIsEnabled)
 							{
-	                            var err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], this.Services().Settings.ApplicationName, this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"));
+									var err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], this.Services().Settings.Data.ApplicationName, this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"));
 	                            this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
 							}
 							else

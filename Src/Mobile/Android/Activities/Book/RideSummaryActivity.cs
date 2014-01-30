@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             SetContentView(Resource.Layout.View_Book_RideSummaryPage);
             var lblSubTitle = FindViewById<TextView>(Resource.Id.lblSubTitle);
-            lblSubTitle.Text = String.Format(Localize ("RideSummarySubTitleText"), this.Services().Settings.ApplicationName);
+            lblSubTitle.Text = String.Format(Localize ("RideSummarySubTitleText"), this.Services().Settings.Data.ApplicationName);
 
             ViewModel.PropertyChanged += (sender, e) =>
             {

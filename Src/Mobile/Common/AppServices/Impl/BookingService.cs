@@ -128,8 +128,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			if (CallIsEnabled)
 			{
-				string err = string.Format(message, _appSettings.ApplicationName, _configurationManager.GetSetting("DefaultPhoneNumberDisplay"));
-				_messageService.ShowMessage(title, err, "Call", () => CallCompany(_appSettings.ApplicationName, _configurationManager.GetSetting("DefaultPhoneNumber")), "Cancel", delegate { });
+				string err = string.Format(message, _appSettings.Data.ApplicationName, _configurationManager.GetSetting("DefaultPhoneNumberDisplay"));
+				_messageService.ShowMessage(title, err, "Call", () => CallCompany(_appSettings.Data.ApplicationName, _configurationManager.GetSetting("DefaultPhoneNumber")), "Cancel", delegate { });
 			}
 			else
 			{

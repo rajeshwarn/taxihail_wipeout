@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 locService.Start ();
             }
 
-            ThreadHelper.ExecuteInThread (() => Runtime.StartWWAN( new Uri ( Mvx.Resolve<AppSettings>().ServiceUrl )));
+            ThreadHelper.ExecuteInThread (() => Runtime.StartWWAN( new Uri ( Mvx.Resolve<AppSettings>().Data.ServiceUrl )));
 
             Logger.LogMessage("OnActivated");
 
@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
 			Console.WriteLine(url.ToString());
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-			if (url.AbsoluteString.StartsWith("fb" + settings.FacebookAppId + settings.ApplicationName.ToLower().Replace( " ", string.Empty ) ))
+            if (url.AbsoluteString.StartsWith("fb" + settings.Data.FacebookAppId + settings.Data.ApplicationName.ToLower().Replace( " ", string.Empty ) ))
 			{
                 _callbackFromFb = true;
 				return FBAppCall.HandleOpenURL(url, sourceApplication);

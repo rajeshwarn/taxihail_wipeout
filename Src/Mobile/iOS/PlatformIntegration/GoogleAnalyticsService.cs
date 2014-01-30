@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             GAI.SharedInstance.Debug = true;// Optional: set debug to YES for extra debugging information.
 
             Tracker = GAI.SharedInstance.GetTracker (  "UA-44714416-1" );
-            Tracker.AppName =  settings.ApplicationName.Replace( ' ' , '_' );
+            Tracker.AppName =  settings.Data.ApplicationName.Replace( ' ' , '_' );
             Tracker.AppVersion = packageInfo.Version;
 
 

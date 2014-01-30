@@ -5,111 +5,104 @@ using ServiceStack.Text;
 using System.IO;
 using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore;
+using System.Collections.Generic;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Common.Diagnostic;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
     public class AppSettings : IAppSettings
     {
-        readonly AppSettingsData _data;
-		readonly ICacheService _cacheService;
+        readonly ICacheService _cacheService;
+		readonly ILogger _logger;
+		const string SettingsCacheKey = "TaxiHailSetting";
 
-		public AppSettings (ICacheService cacheService)
+		public AppSettings (ICacheService cacheService, ILogger logger)
         {
+			_logger = logger;
 			_cacheService = cacheService;
-            
+
+			Data = new TaxiHailSetting();
+			//bare minimum for the app to work (server url etc.)
+			LoadSettingsFromFile();
+		}
+
+		public void Load()
+		{
+			LoadSettingsFromCache();
+			RefreshSettingsFromServer();
+		}
+
+		void LoadSettingsFromFile()
+		{
 			using (var stream = GetType().Assembly.GetManifestResourceStream(GetType ().Assembly.GetManifestResourceNames().FirstOrDefault(x => x.Contains("Settings.json")))) 
 			{
-			    if (stream != null)
-			        using (var reader = new StreamReader(stream)) 
-			        {
-			            string serializedData = reader.ReadToEnd ();
-			            _data = JsonSerializer.DeserializeFromString<AppSettingsData> (serializedData);
-			        }
+				if (stream != null)
+				{
+					using (var reader = new StreamReader(stream))
+					{
+						string serializedData = reader.ReadToEnd();
+						Dictionary<string,string> values = JsonObject.Parse(serializedData);
+						SetSettingsValue(values);
+					}
+				}
 			}
-        }
+		}
 
-        public bool ErrorLogEnabled {
-            get { return true; }
-        }
+		void LoadSettingsFromCache()
+		{
+			var data = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);
+			if (data != null)
+			{
+				Data = data;
+			}
+		}
 
-        public string ErrorLog {
-            get { 
-                string path = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
-                return  Path.Combine (path, "errorlog.txt"); 
-            }
-        }
-    
-        public string ApplicationName { get { return _data.ApplicationName; } }
+		void RefreshSettingsFromServer()
+		{
+			var service = TinyIoCContainer.Current.Resolve<IConfigurationManager>();
+			IDictionary<string,string> settingsFromServer = service.GetSettings();
+			SetSettingsValue(settingsFromServer);
+			SaveSettings();			
+		}
 
-		public string DefaultServiceUrl { get { return "http://services.taxihail.com/{0}/api/"; } }
+		void SaveSettings()
+		{
+			_cacheService.Set(SettingsCacheKey, Data);
+		}
 
-		public bool CanChangeServiceUrl { get { return _data.CanChangeServiceUrl; } }
+		void SetSettingsValue(IDictionary<string,string> values)
+		{
+			var typeOfSettings = typeof(TaxiHailSetting); 
+			foreach (KeyValuePair<string,string> item in values)
+			{
+				try
+				{
+					var propertyType = typeOfSettings.GetProperty(item.Key);
+					var targetType = IsNullableType(propertyType.PropertyType) ? 
+					                 		Nullable.GetUnderlyingType(propertyType.PropertyType) 
+					                 		: propertyType.PropertyType;
 
-        public string ServiceUrl {
-            get {
-                string url;
-                try {
-					url = _cacheService.Get<string> ("TaxiHail.ServiceUrl");
-                } catch {
-                    return _data.ServiceUrl;
-                }
-                if (string.IsNullOrEmpty (url)) {
-                    
-                    return _data.ServiceUrl;
-                }
-                return url;
-            }
-            set {
-                if (CanChangeServiceUrl) {
+					var propertyVal = Convert.ChangeType(item.Value, targetType);					 
+					propertyType.SetValue(Data, propertyVal);
+				}
+				catch(Exception e)
+				{
+					_logger.LogError(e);
+					_logger.LogMessage("Error can't set value for property {0}, value was {1}", item.Key, item.Value);
+				}
+			}
+		}
 
-					// TODO: AppSettings should not depend on Configuration Manager
-					Mvx.Resolve<IConfigurationManager>().Reset ();
+		private static bool IsNullableType(Type type)
+		{
+			return type.IsGenericType 
+				&& type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
+		}
 
-                    if (string.IsNullOrEmpty (value)) {
-						_cacheService.Clear ("TaxiHail.ServiceUrl");
-                    } else if (value.ToLower ().StartsWith ("http")) {
-						_cacheService.Set<string> ("TaxiHail.ServiceUrl", value);
-                    } else {
-						_cacheService.Set<string> ("TaxiHail.ServiceUrl", string.Format (DefaultServiceUrl, value));
-                    }
-                }
-            }
-        }
 
-        public bool TwitterEnabled {
-            get { return _data.TwitterEnabled; }
-        }
-
-        public string TwitterConsumerKey {
-            get { return _data.TwitterConsumerKey; }
-        }
-
-        public string TwitterCallback {
-            get { return _data.TwitterCallback; }
-        }
-
-        public string TwitterConsumerSecret {
-            get { return _data.TwitterConsumerSecret; }
-        }
-
-        public string TwitterRequestTokenUrl {
-            get { return _data.TwitterRequestTokenUrl; }
-        }
-
-        public string TwitterAccessTokenUrl {
-            get { return _data.TwitterAccessTokenUrl; }
-        }
-
-        public string TwitterAuthorizeUrl {
-            get { return _data.TwitterAuthorizeUrl; }
-        }
-
-        public bool FacebookEnabled {
-            get { return _data.FacebookEnabled; }
-        }
-
-        public string FacebookAppId {
-            get { return _data.FacebookAppId; }
-        }
+		public TaxiHailSetting Data { get; private set; }
+        
     }
 }

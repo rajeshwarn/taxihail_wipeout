@@ -86,17 +86,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
 
-            var facebookService = new FacebookService(settings.FacebookAppId, () => _container.Resolve<IMvxAndroidCurrentTopActivity>().Activity);
+            var facebookService = new FacebookService(settings.Data.FacebookAppId, () => _container.Resolve<IMvxAndroidCurrentTopActivity>().Activity);
             _container.Register<IFacebookService>(facebookService);
 
 			var oauthConfig = new OAuthConfig
 			{
-				ConsumerKey = settings.TwitterConsumerKey,
-				Callback = settings.TwitterCallback,
-				ConsumerSecret = settings.TwitterConsumerSecret,
-				RequestTokenUrl = settings.TwitterRequestTokenUrl,
-				AccessTokenUrl = settings.TwitterAccessTokenUrl,
-				AuthorizeUrl = settings.TwitterAuthorizeUrl
+                ConsumerKey = settings.Data.TwitterConsumerKey,
+                Callback = settings.Data.TwitterCallback,
+                ConsumerSecret = settings.Data.TwitterConsumerSecret,
+                RequestTokenUrl = settings.Data.TwitterRequestTokenUrl,
+                AccessTokenUrl = settings.Data.TwitterAccessTokenUrl,
+                AuthorizeUrl = settings.Data.TwitterAuthorizeUrl
 			};
 
             _container.Register<ITwitterService>((c,p) => new TwitterServiceMonoDroid( oauthConfig, c.Resolve<IMvxAndroidCurrentTopActivity>()));

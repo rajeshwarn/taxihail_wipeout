@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
                 Tracker = g.GetTracker("UA-44714416-1");
 
-                Tracker.SetAppName(settings.ApplicationName.Replace(' ', '_'));
+                Tracker.SetAppName(settings.Data.ApplicationName.Replace(' ', '_'));
                 Tracker.SetAppVersion(packageInfo.Version);
             }
             catch (Exception ex)

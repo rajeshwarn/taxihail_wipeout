@@ -195,7 +195,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         string message = null;
                         if (CallIsEnabled)
                         {
-                            var companyName = this.Services().Settings.ApplicationName;
+							var companyName = this.Services().Settings.Data.ApplicationName;
                             var phoneNumber = this.Services().Config.GetSetting("DefaultPhoneNumberDisplay");
                             message = string.Format(localize[e.Message], companyName, phoneNumber);
                         }
@@ -271,7 +271,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void SetServerUrl(string serverUrl)
         {
-            this.Services().Settings.ServiceUrl = serverUrl;
+			this.Services().Settings.Data.ServiceUrl = serverUrl;
             this.Services().ApplicationInfo.ClearAppInfo();
             this.Services().Account.ClearReferenceData();
             this.Services().Config.Reset();

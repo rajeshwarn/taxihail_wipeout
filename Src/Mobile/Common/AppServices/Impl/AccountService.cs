@@ -78,14 +78,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void ClearCache ()
         {
-			var serverUrl = _appSettings.ServiceUrl;
+			var serverUrl = _appSettings.Data.ServiceUrl;
 
             Cache.Clear (HistoryAddressesCacheKey);
             Cache.Clear (FavoriteAddressesCacheKey);
             Cache.Clear ("AuthenticationData");
             Cache.ClearAll ();
 			// TODO: Clearing the cache should not clear ServiceUrl
-			_appSettings.ServiceUrl = serverUrl; 
+			_appSettings.Data.ServiceUrl = serverUrl; 
         }
 
         public void SignOut ()
@@ -276,7 +276,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<Account> SignIn (string email, string password)
         {
-			Logger.LogMessage("SignIn with server {0}", _appSettings.ServiceUrl);
+			Logger.LogMessage("SignIn with server {0}", _appSettings.Data.ServiceUrl);
             try 
 			{
 				var authResponse = await UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service

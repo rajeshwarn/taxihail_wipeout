@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
 		public string ApplicationName
 		{
-			get { return this.Services().AppSettings.ApplicationName; }
+            get { return this.Services().Settings.Data.ApplicationName; }
 		}
 
         public override void OnViewLoaded()
@@ -298,7 +298,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 					{
 						InvokeOnMainThread(() =>
 							{
-                                string err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], this.Services().Settings.ApplicationName, this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"));
+                                string err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], this.Services().Settings.Data.ApplicationName, this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"));
                                 this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
 							});
 					}

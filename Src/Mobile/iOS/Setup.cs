@@ -68,7 +68,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             container.Register<AbstractLocationService>(locationService );
             container.Register<IMessageService, MessageService>();
-            container.Register<IAppSettings, AppSettings>();
             container.Register<IPackageInfo>(new PackageInfo());
 
             container.Register<ILocalization, Localize>();
@@ -80,37 +79,50 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<IPhoneService, PhoneService>();
             container.Register<IPushNotificationService, PushNotificationService>();
 
+            container.Register<IAppSettings>(new AppSettings(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
+
             InitializeSocialNetwork();
         }
 
         private void InitializeSocialNetwork()
         {
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-			FBSettings.DefaultAppID = settings.FacebookAppId;
-
-			if (FBSession.ActiveSession.State == FBSessionState.CreatedTokenLoaded)
-			{
-				// If there's one, just open the session silently
-				FBSession.OpenActiveSession(new[] {"basic_info", "email"},
-					allowLoginUI: false,
-					completion:(session, status, error) => {});
-			}
-			TinyIoCContainer.Current.Register<IFacebookService>(new FacebookService());
-            
-			var oauthConfig = new OAuthConfig
+            if (settings.Data.FacebookEnabled)
             {
-                
-                ConsumerKey =  settings.TwitterConsumerKey,
-                Callback = settings.TwitterCallback,
-                ConsumerSecret = settings.TwitterConsumerSecret,
-                RequestTokenUrl = settings.TwitterRequestTokenUrl,
-                AccessTokenUrl = settings.TwitterAccessTokenUrl,
-                AuthorizeUrl = settings.TwitterAuthorizeUrl 
-            };
+                FBSettings.DefaultAppID = settings.Data.FacebookAppId;
 
+                if (FBSession.ActiveSession.State == FBSessionState.CreatedTokenLoaded)
+                {
+                    // If there's one, just open the session silently
+                    FBSession.OpenActiveSession(new[] { "basic_info", "email" },
+                        allowLoginUI: false,
+                        completion: (session, status, error) =>
+                        {
+                        });
+                }
+
+            }
+            TinyIoCContainer.Current.Register<IFacebookService>(new FacebookService());
+
+            var oauthConfig = new OAuthConfig();
+            if (settings.Data.TwitterEnabled)
+            {
+                oauthConfig = new OAuthConfig
+                {
+                
+                    ConsumerKey = settings.Data.TwitterConsumerKey,
+                    Callback = settings.Data.TwitterCallback,
+                    ConsumerSecret = settings.Data.TwitterConsumerSecret,
+                    RequestTokenUrl = settings.Data.TwitterRequestTokenUrl,
+                    AccessTokenUrl = settings.Data.TwitterAccessTokenUrl,
+                    AuthorizeUrl = settings.Data.TwitterAuthorizeUrl 
+                };
+
+
+            }
             var twitterService = new TwitterService(oauthConfig, () => Mvx.Resolve<UINavigationController>());
-            
-			TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
+
+            TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
             
         }
 
