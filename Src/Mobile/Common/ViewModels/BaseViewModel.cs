@@ -10,11 +10,15 @@ using Cirrious.MvvmCross.ViewModels;
 using System.Windows.Input;
 using System.Threading.Tasks;
 using Cirrious.MvvmCross.Platform;
+using System.Reactive.Disposables;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public abstract class BaseViewModel : MvxViewModel 
     {
+		private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
+
         public static Action NoAction = () => { };
 
         public TinyIoCContainer Container
@@ -38,6 +42,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public virtual void OnViewUnloaded()
         {
+			_subscriptions.Dispose();
         }
 
 		protected bool ShowSubViewModel<TViewModel, TResult>(object parameterValuesObject, Action<TResult> onResult)
@@ -123,6 +128,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				parameters.Add("removeFromHistory", "notUsed");
 			}
 			base.ShowViewModel<TViewModel>(parameters);
+		}
+
+		protected TViewModel AddChild<TViewModel>(Func<TViewModel> builder)
+			where TViewModel: ChildViewModel
+		{
+			var viewModel = builder.Invoke();
+			viewModel.DisposeWith(_subscriptions);
+			return viewModel;
+		}
+
+		protected TViewModel AddChild<TViewModel>()
+			where TViewModel: ChildViewModel
+		{
+			return AddChild<TViewModel>(() => Mvx.IocConstruct<TViewModel>());
+		}
+
+		protected void Observe<T>(IObservable<T> observable, Action<T> onNext)
+		{
+			observable
+				.Subscribe(x => InvokeOnMainThread(() => onNext(x)))
+				.DisposeWith(_subscriptions);
 		}
 
 

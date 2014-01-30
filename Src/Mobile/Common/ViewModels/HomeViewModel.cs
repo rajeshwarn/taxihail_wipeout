@@ -20,7 +20,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			_orderWorkflowService = orderWorkflowService;
 			Panel = new PanelMenuViewModel(this, browserTask);
-			Map = new MapViewModel(orderWorkflowService);
 		}
 
 		public void Init()
@@ -31,9 +30,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
+			if (firstTime)
+			{
+				Map = AddChild<MapViewModel>();
 
-			_orderWorkflowService.GetAndObservePickupAddress()
-				.Subscribe(address => InvokeOnMainThread(() => PickupAddress = address));
+				Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
+			}
 		}
 
 		public PanelMenuViewModel Panel { get; set; }

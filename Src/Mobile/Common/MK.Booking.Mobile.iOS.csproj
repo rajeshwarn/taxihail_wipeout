@@ -318,6 +318,7 @@
     <Compile Include="AppServices\Impl\OrderWorkflowService.cs" />
     <Compile Include="ViewModels\Map\MapViewModel.cs" />
     <Compile Include="ViewModels\Map\MapBounds.cs" />
+    <Compile Include="ViewModels\ChildViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

@@ -7,10 +7,9 @@ using System.Reactive.Disposables;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class MapViewModel: MvxNavigatingObject
+	public class MapViewModel: ChildViewModel
     {
 		readonly IOrderWorkflowService _orderWorkflowService;
-		readonly CompositeDisposable _subscriptions = new CompositeDisposable();
 		public MapViewModel(IOrderWorkflowService orderWorkflowService)
         {
 			_orderWorkflowService = orderWorkflowService;
@@ -49,13 +48,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		}
 
-		private void Observe<T>(IObservable<T> observable, Action<T> onNext)
-		{
-			observable
-				.Subscribe(x => InvokeOnMainThread(() => onNext(x)))
-				.DisposeWith(_subscriptions);
-		}
-
 		private void OnPickupAddressChanged()
 		{
 			var deltaLat = 0.002;
@@ -71,10 +63,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					WestBound = PickupAddress.Longitude + deltaLng,
 				};
 			}
-
-
-
-
 		}
     }
 }
