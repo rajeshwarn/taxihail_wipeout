@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             
             View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
+            lblConfirmPairDetail.Text = Localize.GetValue("CmtRideLinqConfirmPairViewConfirmPairDetailText");
             lblCarNumber.Text = Localize.GetValue("CmtCarNumber");
             lblCardNumber.Text = Localize.GetValue("CmtCardNumber");
             lblTip.Text = Localize.GetValue("CmtTipAmount");
