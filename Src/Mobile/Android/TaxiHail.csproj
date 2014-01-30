@@ -466,6 +466,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\add_list.png" />
     <AndroidResource Include="Resources\Values\SetThemes.xml" />
     <AndroidResource Include="Resources\values-v11\SetThemes.xml" />
+    <Compile Include="Binding\EditTextBinding.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

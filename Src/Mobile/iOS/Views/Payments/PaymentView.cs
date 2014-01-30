@@ -18,55 +18,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
         {
         }
 
-        double MeterAmount
-        {
-            get
-            {
-                return CultureProvider.ParseCurrency(txtMeterAmount.Text);
-            }
-            set
-            {
-                txtMeterAmount.Text = CultureProvider.FormatCurrency(value);
-                ViewModel.MeterAmount = CultureProvider.FormatCurrency(value);//Todo ugly binding done in code behind
-            }
-        }
-
-        double TipAmount
-        {
-            get
-            {
-                return CultureProvider.ParseCurrency(txtTipAmount.Text);
-            }
-            set
-            {
-                txtTipAmount.Text = CultureProvider.FormatCurrency(value);
-                ViewModel.TipAmount = CultureProvider.FormatCurrency(value);//Todo ugly binding done in code behind
-            }
-        }
-
-        double TotalAmount
-        {
-            get
-            {
-                return CultureProvider.ParseCurrency(lblTotalValue.Text);
-            }
-            set
-            {
-                lblTotalValue.Text = CultureProvider.FormatCurrency(value);
-                ViewModel.TextAmount = lblTotalValue.Text; //Todo ugly binding done in code behind
-            }
-        }
-
-        public void UpdateAmounts(bool hideKeyboard = true)
-        {
-            if(hideKeyboard)
-            {
-                View.ResignFirstResponderOnSubviews();
-            }
-
-            TotalAmount = TipAmount + MeterAmount;
-        }
-
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);
@@ -86,12 +37,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
                 payPalToggle.RemoveFromSuperview();
 			}
 
-            txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), () => ViewModel.PaymentPreferences.Tips, () => ViewModel.PaymentPreferences.Tip, 
+            txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), () => ViewModel.PaymentPreferences.Tips, () => ViewModel.PaymentPreferences.Tip,  
                 x => {
                     ViewModel.PaymentPreferences.Tip = (int)x.Id;
-                    TipAmount = MeterAmount * ((double)x.Id/100d);
-                    UpdateAmounts(false);
+                    ViewModel.ToggleToTipSelector.Execute();
                 });
+
             txtTip.TextAlignment = UITextAlignment.Right;
 
             lblCreditCard.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
@@ -103,19 +54,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             FlatButtonStyle.Green.ApplyTo(btnConfirm); 
 
-            ClearKeyboardButton.TouchDown+= (sender, e) => {
-                UpdateAmounts();
-                MeterAmount = MeterAmount; //Format
-                TipAmount = TipAmount; //Format
-            };
-
-            txtMeterAmount.ClearsOnBeginEditing = true;
-            txtTipAmount.ClearsOnBeginEditing = true;
-
-            txtTipAmount.EditingChanged+= (sender, e) => {
-                UpdateAmounts(false);
-            };
-
             btnConfirm.TouchDown += (sender, e) =>
 			{
                 if ( txtMeterAmount.IsFirstResponder )
@@ -126,32 +64,86 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				{
                     txtTipAmount.ResignFirstResponder();
 				}
-
-                ViewModel.MeterAmount = txtMeterAmount.Text;//Todo ugly binding done in code behind
-                ViewModel.TipAmount = txtTipAmount.Text;//Todo ugly binding done in code behind
 			};
 
             var set = this.CreateBindingSet<PaymentView, PaymentViewModel>();
+
+            // Bindings for keyboard buttons
+
+            set.Bind(ClearKeyboardButton)
+                .For("TouchUpInside")
+                .To(vm => vm.ShowCurrencyCommand);
 
             set.Bind(btnConfirm)
 				.For("TouchUpInside")
 				.To(vm => vm.ConfirmOrderCommand);
 
+            // Binding for Tip Picker Text
+
             set.Bind(txtTip)
                 .For(v => v.Text)
                 .To(vm => vm.PaymentPreferences.TipAmount);
 
+            // Bindings to clear input when starting to edit
+
+            set.Bind(txtTipAmount)
+                .For("Started")
+                .To(vm => vm.ClearTipCommand);
+
             set.Bind(txtMeterAmount)
-				.For(v => v.Placeholder)
-				.To(vm => vm.PlaceholderAmount);
+                .For("Started")
+                .To(vm => vm.ClearMeterCommand);
+
+            // Bindings to show currency sign when finishing to edit
+
+            set.Bind(txtTipAmount)
+                .For("Ended")
+                .To(vm => vm.ShowCurrencyCommand);
+
+            set.Bind(txtMeterAmount)
+                .For("Ended")
+                .To(vm => vm.ShowCurrencyCommand);
+
+            // Half-duplex binding to distinguish value and display
+
+            set.Bind(txtTipAmount)
+                .For(v => v.Text)
+                .To(vm => vm.TipAmount).OneWayToSource();
+
+            set.Bind(txtTipAmount)
+                .For(v => v.Text)
+                .To(vm => vm.TipAmountString).OneWay();
+
+            // Two-way bindings for Meter and Total
+
+            set.Bind(txtMeterAmount)
+                .For(v => v.Text)
+                .To(vm => vm.MeterAmount);
+
+            set.Bind(lblTotalValue)
+                .For(v => v.Text)
+                .To(vm => vm.TotalAmount);
+
+            // Tip-Mode Togglers
+
+            set.Bind(txtTipAmount)
+                .For("EditingChanged")
+                .To(vm => vm.ToggleToTipCustom); // See txtTip.Configure for the "Toggle to Tip Picker" command
 
             set.Bind(txtTipAmount)
 				.For(v => v.Placeholder)
 				.To(vm => vm.PlaceholderAmount);
 
+            set.Bind(txtMeterAmount)
+                .For(v => v.Placeholder)
+                .To(vm => vm.PlaceholderAmount);
+
+            // Other bindings in layout
+
 			set.Bind(payPalToggle)
 				.For(v => v.PayPalSelected)
 				.To(vm => vm.PayPalSelected);
+
 			set.Bind(payPalToggle)
 				.For(v => v.Hidden)
 				.To(vm => vm.PaymentSelectorToggleIsVisible)
@@ -160,15 +152,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             set.Bind(txtCreditCard)
                 .For(v => v.Text)
 				.To(vm => vm.PaymentPreferences.SelectedCreditCard.FriendlyName);
+
             set.Bind(txtCreditCard)
 				.For(v => v.Last4Digits)
 				.To(vm => vm.PaymentPreferences.SelectedCreditCard.Last4Digits);
+
             set.Bind(txtCreditCard)
 				.For("CreditCardCompany")
 				.To(vm => vm.PaymentPreferences.SelectedCreditCard.CreditCardCompany);
+
             set.Bind(txtCreditCard)
 				.For(v => v.NavigateCommand)
 				.To(vm => vm.PaymentPreferences.NavigateToCreditCardsList);
+
             set.Bind(txtCreditCard)
                 .For(v => v.Hidden)
                 .To(vm => vm.PayPalSelected);
