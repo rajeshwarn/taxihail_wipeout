@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public bool ShowRingCodeField {
             get
             {
-				return this.Services().Settings.ShowRingCodeField;
+				return Settings.ShowRingCodeField;
             }
         }
 
@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 		public bool RebookIsAvailable {
-			get { return !IsNew && !this.Services().Settings.HideRebookOrder; }
+			get { return !IsNew && !Settings.HideRebookOrder; }
 		}
 
         public AsyncCommand ValidateAddress

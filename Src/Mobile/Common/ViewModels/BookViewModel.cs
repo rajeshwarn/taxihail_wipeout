@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             this.Services().MessengerHub.Subscribe<AppActivated>(_ => AppActivated());
 
-			ShowEstimate = this.Services().Settings.ShowEstimate;
+			ShowEstimate = Settings.ShowEstimate;
         }
 
 		public override void OnViewLoaded()
@@ -241,7 +241,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				return this.Services().Settings.DisableFutureBooking;
+				return Settings.DisableFutureBooking;
             }
         }
 
@@ -249,7 +249,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				return this.Services().Settings.HideDestination;
+				return Settings.HideDestination;
             }
         }
         
@@ -388,7 +388,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
 				return GetCommand(async () =>
                 {
-					if (!this.Services().Settings.TutorialEnabled)
+					if (!Settings.TutorialEnabled)
                     {
                         return;
                     }
@@ -553,7 +553,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (!isValid)
                 {
                     Order.PickupDate = null;
-					var destinationIsRequired = this.Services().Settings.DestinationIsRequired;
+					var destinationIsRequired = Settings.DestinationIsRequired;
                     if ( destinationIsRequired )
                     {
                         this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);

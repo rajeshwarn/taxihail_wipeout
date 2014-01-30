@@ -87,17 +87,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool ShowPassengerName
 		{
-			get{ return this.Services().Settings.ShowPassengerName; }
+			get{ return Settings.ShowPassengerName; }
 		}
 
 		public bool ShowPassengerPhone
 		{
-			get{ return this.Services().Settings.ShowPassengerPhone; }
+			get{ return Settings.ShowPassengerPhone; }
 		}
 
 		public bool ShowPassengerNumber
 		{
-			get{ return this.Services().Settings.ShowPassengerNumber; }
+			get{ return Settings.ShowPassengerNumber; }
 		}
 
         public AsyncCommand NavigateToEditInformations
@@ -178,8 +178,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 							if (CallIsEnabled)
 							{
-									var err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], this.Services().Settings.ApplicationName, 
-										this.Services().Settings.DefaultPhoneNumberDisplay);
+									var err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], Settings.ApplicationName, 
+										Settings.DefaultPhoneNumberDisplay);
 	                            this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
 							}
 							else
@@ -197,7 +197,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return !this.Services().Settings.HideCallDispatchButton;
+				return !Settings.HideCallDispatchButton;
 			}
 		}
 
@@ -226,9 +226,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void ShowFareEstimateAlertDialogIfNecessary()
 		{
-			if (this.Services().Settings.ShowEstimate)
+			if (Settings.ShowEstimate)
 			{
-				var estimateEnabled = this.Services().Settings.ShowEstimateWarning;
+				var estimateEnabled = Settings.ShowEstimateWarning;
 
 				if (estimateEnabled &&
                                 this.Services().Cache.Get<string>("WarningEstimateDontShow").IsNullOrEmpty() &&
@@ -280,7 +280,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        if (price.HasValue)
 			{
-				var culture = this.Services().Settings.PriceFormat;
+				var culture = Settings.PriceFormat;
 				return string.Format(new CultureInfo(culture), "{0:C}", price);
 			}
 	        return string.Empty;

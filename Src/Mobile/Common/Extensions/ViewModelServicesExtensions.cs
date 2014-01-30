@@ -1,4 +1,4 @@
-﻿using apcurium.MK.Booking.Mobile.AppServices;
+﻿﻿using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
@@ -39,6 +39,8 @@ namespace apcurium.MK.Booking.Mobile.Extensions
         public ILocalization Localize { get { return _container.Resolve<ILocalization>(); } }
 
         public ITinyMessengerHub MessengerHub { get { return _container.Resolve<ITinyMessengerHub>(); } }
+
+		public TaxiHailSetting Settings { get { return _container.Resolve<IAppSettings>().Data; } }
 
         public IPhoneService Phone { get { return _container.Resolve<IPhoneService>(); } }
 
