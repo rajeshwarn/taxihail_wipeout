@@ -12,7 +12,7 @@ namespace MK.Common.iOS.Configuration
 			ApplicationName = "Taxi Hail";	
 			ShowEstimateWarning = true;
             DefaultRadius = 500;
-            AccountActivationEnabled = true;
+            AccountActivationDisabled = true;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -41,8 +41,8 @@ namespace MK.Common.iOS.Configuration
 		public bool DisableFutureBooking { get; private set; }
 		public bool HideDestination { get; private set; }
 		public bool StreetNumberScreenEnabled { get; private set; }
-		public bool ShowTermAndConditions { get; private set; }
-		public bool SendReceiptAvailable { get; private set; }
+        public bool ShowTermsAndConditions { get; private set; }
+        public bool SendReceiptAvailable { get; private set; }
 		public bool RatingEnabled { get; private set; }
 		public bool ShowEstimateWarning { get; private set; }
 		public bool ShowCallDriver { get; private set; }
@@ -63,7 +63,7 @@ namespace MK.Common.iOS.Configuration
 		public string DefaultPhoneNumber { get; private set; }
         public bool ShowEstimate { get; private set; }
 		public string NumberOfCharInRefineAddress { get; private set; }
-        public bool AccountActivationEnabled { get; private set; }
+        public bool AccountActivationDisabled { get; private set; }
         public bool HideRebookOrder { get; private set; }
         public bool ShowPassengerName { get; private set; }
         public bool ShowPassengerPhone { get; private set; }
