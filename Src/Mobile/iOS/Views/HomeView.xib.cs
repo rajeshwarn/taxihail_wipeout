@@ -63,6 +63,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.DataContext)
                 .To(vm => vm.Map);
 
+            set.Bind(ctrlOrderOptions)
+                .For(v => v.DataContext)
+                .To(vm => vm);
+                
             set.Apply();
         }
 

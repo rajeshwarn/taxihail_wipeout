@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class HomeView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderOptionsControl ctrlOrderOptions { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIView homeView { get; set; }
 
 		[Outlet]
@@ -53,6 +56,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				mapView.Dispose ();
 				mapView = null;
 			}
+			
+			if (ctrlOrderOptions != null) {
+				ctrlOrderOptions.Dispose ();
+				ctrlOrderOptions = null;
+			}
+
 		}
 	}
 }
