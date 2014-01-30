@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using MonoTouch.MapKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -32,13 +33,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     .For(v => v.PickupAddress)
                     .To(vm => vm.PickupAddress);
 
+                set.Bind()
+                    .For(v => v.MapBounds)
+                    .To(vm => vm.MapBounds);
+
                 set.Apply();
 
             });
 
             _pickupAnnotation = new AddressAnnotation(new CLLocationCoordinate2D(),
                 AddressAnnotationType.Pickup,
-                Localize.GetValue("PickupMapTitle"),
+                string.Empty,
                 string.Empty);
         }
 
@@ -50,6 +55,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             { 
                 _pickupAddress = value;
                 OnPickupAddressChanged();
+            }
+        }
+
+        private MapBounds _mapBounds;
+        public MapBounds MapBounds
+        {
+            get
+            {
+                return _mapBounds;
+            }
+
+            set
+            {
+                if (_mapBounds != value)
+                {
+                    _mapBounds = value;
+                    OnMapBoundsChanged();
+                }
             }
         }
 
@@ -66,6 +89,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             else
             {
                 RemoveAnnotation (_pickupAnnotation);
+            }
+        }
+
+        private void OnMapBoundsChanged()
+        {
+            if (MapBounds != null)
+            {
+                var center = MapBounds.GetCenter();
+
+                SetRegion(new MKCoordinateRegion(
+                    new CLLocationCoordinate2D(center.Latitude, center.Longitude),
+                    new MKCoordinateSpan(MapBounds.LatitudeDelta, MapBounds.LongitudeDelta)), true);
             }
         }
     }

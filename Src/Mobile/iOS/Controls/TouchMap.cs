@@ -342,7 +342,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
             SetRegionAndZoom(region, center, deltaLat, deltaLng);
-       
+
         }
 
         private void SetRegionAndZoom(MKCoordinateRegion region, CLLocationCoordinate2D center, double? deltaLat, double? deltaLng)

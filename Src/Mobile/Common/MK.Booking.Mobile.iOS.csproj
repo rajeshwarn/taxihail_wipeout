@@ -316,7 +316,8 @@
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="AppServices\IOrderWorkflowService.cs" />
     <Compile Include="AppServices\Impl\OrderWorkflowService.cs" />
-    <Compile Include="ViewModels\MapViewModel.cs" />
+    <Compile Include="ViewModels\Map\MapViewModel.cs" />
+    <Compile Include="ViewModels\Map\MapBounds.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -379,5 +380,8 @@
       <Version>2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\Map\" />
   </ItemGroup>
 </Project>

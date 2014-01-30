@@ -29,8 +29,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					_pickupAddress = value;
 					RaisePropertyChanged("PickupAddress");
+					OnPickupAddressChanged();
 				}
 			}
+		}
+
+		private MapBounds _mapBounds;
+		public MapBounds MapBounds
+		{
+			get { return _mapBounds; }
+			set
+			{
+				if (value != _mapBounds)
+				{
+					_mapBounds = value;
+					RaisePropertyChanged("MapBounds");
+				}
+			}
+
 		}
 
 		private void Observe<T>(IObservable<T> observable, Action<T> onNext)
@@ -38,6 +54,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			observable
 				.Subscribe(x => InvokeOnMainThread(() => onNext(x)))
 				.DisposeWith(_subscriptions);
+		}
+
+		private void OnPickupAddressChanged()
+		{
+			var deltaLat = 0.002;
+			var deltaLng = 0.002;
+
+			if (PickupAddress.HasValidCoordinate())
+			{
+				MapBounds = new MapBounds
+				{
+					NorthBound = PickupAddress.Latitude + deltaLat,
+					SouthBound = PickupAddress.Latitude - deltaLat,
+					EastBound = PickupAddress.Longitude - deltaLng,
+					WestBound = PickupAddress.Longitude + deltaLng,
+				};
+			}
+
+
+
+
 		}
     }
 }
