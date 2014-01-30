@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		}
 		public async Task SetPickupAddressToUserLocation()
 		{
+            await Task.Delay(20000);
 			//CancelCurrentLocationCommand.Execute ();
 			//TODO: Handle when location services are not available
 			if (_locationService.BestPosition != null)

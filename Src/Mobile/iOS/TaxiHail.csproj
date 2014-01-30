@@ -515,6 +515,7 @@
       <DependentUpon>OrderOptionsControl.xib</DependentUpon>
     </Compile>
     <Compile Include="Controls\Binding\BaseBindableView.cs" />
+    <Compile Include="Controls\CommandButton.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

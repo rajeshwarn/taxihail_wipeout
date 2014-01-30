@@ -5,6 +5,7 @@ using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -40,7 +41,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btn.TouchUpInside += (sender, e) => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
             test.AddSubview(btn);
 
-            var btn2 = new UIButton(new RectangleF(0, 0, 21, 21));
+            var btn2 = new CommandButton(UIButtonType.Custom);
+            btn2.Frame = new RectangleF(0, 0, 21, 21);
             btn2.SetImage(UIImage.FromFile("Assets/gpsRefreshIcon.png"), UIControlState.Normal);
             locateMeOverlay.AddSubview(btn2);
 
@@ -53,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.Panel);
 
             set.Bind(btn2)
-                .For("TouchUpInside")
+                .For(v => v.Command)
                 .To(vm => vm.LocateMe);
 
             set.Bind(mapView)
