@@ -59,6 +59,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(txtPickupAddress)
                 .To(vm => vm.PickupAddress.DisplayAddress);
 
+            set.Bind(mapView)
+                .For(v => v.DataContext)
+                .To(vm => vm.Map);
+
             set.Apply();
         }
 

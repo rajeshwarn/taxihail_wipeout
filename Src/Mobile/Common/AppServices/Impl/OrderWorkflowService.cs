@@ -22,13 +22,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_locationService = locationService;
         	
 		}
-		public void SetPickupAddressToUserLocation()
+		public async Task SetPickupAddressToUserLocation()
 		{
 			//CancelCurrentLocationCommand.Execute ();
 			//TODO: Handle when location services are not available
 			if (_locationService.BestPosition != null)
 			{
-				SearchAddressForCoordinate(_locationService.BestPosition);
+				var address = await SearchAddressForCoordinate(_locationService.BestPosition);
+				_pickupAddressSubject.OnNext(address);
 				return;
 			}
 
@@ -36,12 +37,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			var positionSet = false;
 
 			_locationService.GetNextPosition(TimeSpan.FromSeconds(6), 50).Subscribe(
-				pos =>
+				async pos =>
 				{
 					positionSet = true;
-					SearchAddressForCoordinate(pos);
+					var address = await SearchAddressForCoordinate(pos);
+					_pickupAddressSubject.OnNext(address);
 				},
-				() =>
+				async () =>
 				{  
 					positionSet = false;
 
@@ -55,11 +57,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 							}
 							else
 							{
-								SearchAddressForCoordinate(_locationService.BestPosition);    
+								var address = await SearchAddressForCoordinate(_locationService.BestPosition);    
+								_pickupAddressSubject.OnNext(address);
 							}
 						}
-
-
 					}
 				});
 
@@ -70,36 +71,34 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return _pickupAddressSubject;
 		}
 
-		private async void SearchAddressForCoordinate(Position p)
+		private async Task<Address> SearchAddressForCoordinate(Position p)
 		{
 			//IsExecuting = true;
-			Logger.LogMessage("Start Call SearchAddress : " + p.Latitude.ToString(CultureInfo.InvariantCulture) + ", " + p.Longitude.ToString(CultureInfo.InvariantCulture));
-
-			var accountAddress = _accountService.FindInAccountAddresses(p.Latitude, p.Longitude);
-			if (accountAddress != null)
+			using (Logger.StartStopwatch("SearchAddress : " + p.Latitude.ToString(CultureInfo.InvariantCulture) + ", " + p.Longitude.ToString(CultureInfo.InvariantCulture)))
 			{
-				//Logger.LogMessage("Address found in account");
-				_pickupAddressSubject.OnNext(accountAddress);
-			}
-			else
-			{
-				var address = await Task.Run(() => _geolocService.SearchAddress(p.Latitude, p.Longitude));
-				Logger.LogMessage("Call SearchAddress finsihed, found {0} addresses", address.Count());
-				if (address.Any())
+				var accountAddress = _accountService.FindInAccountAddresses(p.Latitude, p.Longitude);
+				if (accountAddress != null)
 				{
-					Logger.LogMessage(" found {0} addresses", address.Count());
-					_pickupAddressSubject.OnNext(address[0]);
-					//SetAddress(address[0], false);
+					Logger.LogMessage("Address found in account");
+					return accountAddress;
 				}
 				else
 				{
-					Logger.LogMessage(" clear addresses");
-					// TODO: Clarify why we clear address here
-					_pickupAddressSubject.OnNext(new Address());
-					//ClearAddress();
+					var address = await Task.Run(() => _geolocService.SearchAddress(p.Latitude, p.Longitude));
+					Logger.LogMessage("Found {0} addresses", address.Count());
+					if (address.Any())
+					{
+						return address[0];
+					}
+					else
+					{
+						Logger.LogMessage("clear addresses");
+						// TODO: Clarify why we clear address here
+						return new Address();
+					}
 				}
-				Logger.LogMessage("Exiting SearchAddress thread");
 			}
+
 
 			//IsExecuting = false;
 		}

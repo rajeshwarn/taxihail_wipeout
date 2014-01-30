@@ -506,6 +506,8 @@
     </Compile>
     <Compile Include="Controls\Widgets\HomeBar.cs" />
     <Compile Include="Controls\Widgets\OverlayView.cs" />
+    <Compile Include="Views\BindableMapView.cs" />
+    <Compile Include="Views\OrderMapView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

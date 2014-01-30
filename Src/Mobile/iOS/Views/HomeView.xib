@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="homeView" destination="73H-fC-yqb" id="U5L-r5-78y"/>
                 <outlet property="locateMeOverlay" destination="vGm-E2-WmB" id="mSm-io-qn1"/>
+                <outlet property="mapView" destination="DgF-jB-8zt" id="ZNk-IP-Ogh"/>
                 <outlet property="test" destination="ZRL-yY-Qem" id="Y0j-4m-iMZ"/>
                 <outlet property="txtPickupAddress" destination="ndP-6A-raY" id="R9X-tG-3g6"/>
                 <outlet property="view" destination="1" id="3"/>
@@ -22,7 +23,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="DgF-jB-8zt">
+                        <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="DgF-jB-8zt" customClass="OrderMapView">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         </mapView>

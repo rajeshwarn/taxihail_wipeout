@@ -19,6 +19,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayView locateMeOverlay { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Views.OrderMapView mapView { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayView test { get; set; }
 
 		[Outlet]
@@ -44,6 +47,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtPickupAddress != null) {
 				txtPickupAddress.Dispose ();
 				txtPickupAddress = null;
+			}
+
+			if (mapView != null) {
+				mapView.Dispose ();
+				mapView = null;
 			}
 		}
 	}
