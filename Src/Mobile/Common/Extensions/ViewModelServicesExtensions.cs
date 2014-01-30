@@ -33,13 +33,12 @@ namespace apcurium.MK.Booking.Mobile.Extensions
         }
 
         public IConfigurationManager Config { get { return _container.Resolve<IConfigurationManager>(); } }
+
         public IMessageService Message { get { return _container.Resolve<IMessageService>(); } }
 
         public ILocalization Localize { get { return _container.Resolve<ILocalization>(); } }
 
         public ITinyMessengerHub MessengerHub { get { return _container.Resolve<ITinyMessengerHub>(); } }
-
-		public TaxiHailSetting Settings { get { return _container.Resolve<IAppSettings>().Data; } }
 
         public IPhoneService Phone { get { return _container.Resolve<IPhoneService>(); } }
 

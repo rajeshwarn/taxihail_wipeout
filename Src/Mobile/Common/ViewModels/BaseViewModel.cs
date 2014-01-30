@@ -10,6 +10,7 @@ using Cirrious.MvvmCross.ViewModels;
 using System.Windows.Input;
 using System.Threading.Tasks;
 using Cirrious.MvvmCross.Platform;
+using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -23,6 +24,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         protected ILogger Logger { get { return Container.Resolve<ILogger>(); } }
+
+		public TaxiHailSetting Settings { get { return Container.Resolve<IAppSettings>().Data; } }
 
         public virtual void OnViewLoaded()
         {
