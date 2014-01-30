@@ -19,14 +19,16 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IConfigurationManager _configurationManager;
         readonly ICommandBus _commandBus;
         private readonly IOrderPaymentDao _orderPayementDao;
+        private readonly IOrderDao _orderDao;
         static readonly ILog Logger = LogManager.GetLogger(typeof(OrderStatusUpdater));
         readonly dynamic _resources;
 
-        public OrderStatusUpdater(IConfigurationManager configurationManager, ICommandBus commandBus, IOrderPaymentDao orderPayementDao)
+        public OrderStatusUpdater(IConfigurationManager configurationManager, ICommandBus commandBus, IOrderPaymentDao orderPayementDao, IOrderDao orderDao)
         {
             _configurationManager = configurationManager;
             _commandBus = commandBus;
             _orderPayementDao = orderPayementDao;
+            _orderDao = orderDao;
             var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
             _resources = new DynamicResources(applicationKey);
         }
@@ -79,7 +81,12 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 order.Status = OrderStatus.Completed;
 
-                
+                var pairingInfo = _orderDao.FindOrderPairingById(order.OrderId);
+                if ( ( pairingInfo != null) && ( pairingInfo.AutoTipPercentage.HasValue ))
+                {
+                    double tip = pairingInfo.AutoTipPercentage.Value/100;
+                    ibsStatus.Tip = ibsStatus.Fare*(tip);
+                }
 
                 //FormatPrice
                 var total =

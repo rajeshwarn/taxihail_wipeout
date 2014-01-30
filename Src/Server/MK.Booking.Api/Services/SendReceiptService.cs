@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
+using apcurium.MK.Booking.Api.Client.Cmt.Payments.Pair;
+using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt;
 using apcurium.MK.Booking.CommandBuilder;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
@@ -24,7 +29,8 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly IOrderDao _orderDao;
         private readonly IOrderPaymentDao _orderPaymentDao;
-        private readonly IAccountDao _accountDao;        
+        private readonly IAccountDao _accountDao;
+        private readonly IConfigurationManager _configurationManager;
         private readonly ICreditCardDao _creditCardDao;
 
         public SendReceiptService(
@@ -33,13 +39,15 @@ namespace apcurium.MK.Booking.Api.Services
             IOrderDao orderDao,
             IOrderPaymentDao orderPaymentDao,            
             ICreditCardDao creditCardDao,
-            IAccountDao accountDao
+            IAccountDao accountDao, 
+            IConfigurationManager configurationManager
             )
         {
             _bookingWebServiceClient = bookingWebServiceClient;
             _orderDao = orderDao;
             _orderPaymentDao = orderPaymentDao;
-            _accountDao = accountDao;            
+            _accountDao = accountDao;
+            _configurationManager = configurationManager;
             _creditCardDao = creditCardDao;
             _commandBus = commandBus;
         }
@@ -62,11 +70,27 @@ namespace apcurium.MK.Booking.Api.Services
             var ibsOrder = _bookingWebServiceClient.GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
             
             var orderPayment = _orderPaymentDao.FindByOrderId(order.Id);
+            var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
 
             if ((orderPayment != null) && (orderPayment.IsCompleted))
             {
                 var creditCard = orderPayment.CardToken.HasValue() ? _creditCardDao.FindByToken(orderPayment.CardToken) : null;
                 _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber,  Convert.ToDouble( orderPayment.Meter), 0, Convert.ToDouble( orderPayment.Tip),0, orderPayment, creditCard ));
+            }
+            else if ((pairingInfo != null) && (pairingInfo.AutoTipPercentage.HasValue))
+            {                
+                var creditCard = pairingInfo.TokenOfCardToBeUsedForPayment.HasValue() ? _creditCardDao.FindByToken(pairingInfo.TokenOfCardToBeUsedForPayment) : null;
+                var tripData = GetTripData(pairingInfo.PairingToken);
+                if ( (tripData != null) && ( tripData.EndTime.HasValue ))
+                {
+                    _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
+                        ibsOrder.VehicleNumber, tripData.Fare, tripData.Extra, tripData.Tip, tripData.Tax , null, creditCard));
+                }
+                else
+                {
+                    _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
+                        ibsOrder.VehicleNumber, ibsOrder.Fare, ibsOrder.Toll, pairingInfo.AutoTipPercentage / 100,ibsOrder.VAT, null, creditCard));
+                }
             }
             else
             {
@@ -74,6 +98,23 @@ namespace apcurium.MK.Booking.Api.Services
             }
             
             return new HttpResult(HttpStatusCode.OK, "OK");
+        }
+
+        private Trip GetTripData(string pairingToken)
+        {
+            try
+            {
+                var cmtClient = new CmtMobileServiceClient(_configurationManager.GetPaymentSettings().CmtPaymentSettings, null, "TaxiHail");
+                var trip = cmtClient.Get(new TripRequest { Token = pairingToken });
+                
+                return trip;
+            }
+            catch (Exception)
+            {
+                return null;
+                
+            }
+            
         }
 
         //private Commands.SendReceipt GetSendReceiptCommand(OrderDetail order,  IBSOrderDetails ibsOrder, OrderPaymentDetail orderPayment, AccountDetail account)
