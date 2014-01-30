@@ -314,6 +314,8 @@
     <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="AppServices\IOrderWorkflowService.cs" />
+    <Compile Include="AppServices\Impl\OrderWorkflowService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
