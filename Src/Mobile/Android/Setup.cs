@@ -23,6 +23,7 @@ using apcurium.MK.Booking.Mobile.Client.Services.Social;
 using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Mobile.IoC;
 using Cirrious.CrossCore.Droid.Platform;
+using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -60,13 +61,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             _container.Register<AbstractLocationService>(new LocationService());
 
-            _container.Register<IAppSettings, AppSettings>();
 			_container.Register<ILocalization>(new Localize(ApplicationContext,_container.Resolve<ILogger>()));
             _container.Register<IErrorHandler, ErrorHandler>();
             _container.Register<ICacheService>(new CacheService());
             _container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "AppCache");
             _container.Register<IPhoneService>(new PhoneService(ApplicationContext));
             _container.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IConfigurationManager>()));
+
+            _container.Register<IAppSettings>(new AppSettingsService(_container.Resolve<ICacheService>(), _container.Resolve<ILogger>()));
 
 			InitializeSocialNetwork();
         }

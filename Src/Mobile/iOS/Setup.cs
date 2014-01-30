@@ -23,6 +23,7 @@ using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Dialog.Touch;
+using MK.Common.iOS.Configuration;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -79,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<IPhoneService, PhoneService>();
             container.Register<IPushNotificationService, PushNotificationService>();
 
-            container.Register<IAppSettings>(new AppSettings(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
+            container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
 
             InitializeSocialNetwork();
         }

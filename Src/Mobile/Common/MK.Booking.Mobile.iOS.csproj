@@ -132,7 +132,6 @@
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Localization\AppLanguage.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
-    <Compile Include="Infrastructure\IAppSettings.cs" />
     <Compile Include="Infrastructure\ICacheService.cs" />
     <Compile Include="AppServices\Impl\AccountService.cs" />
     <Compile Include="AppServices\Impl\BaseService.cs" />
@@ -187,7 +186,6 @@
     <Compile Include="AppServices\Impl\ApplicationInfoService.cs" />
     <Compile Include="AppServices\IApplicationInfoService.cs" />
     <Compile Include="Infrastructure\IPackageInfo.cs" />
-    <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="Style\StyleManager.cs" />
     <Compile Include="Style\ButtonStyle.cs" />
     <Compile Include="Style\ColorDefinition.cs" />
@@ -313,7 +311,7 @@
     <Compile Include="ViewModels\PanelMenuViewModel.cs" />
     <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
-    <Compile Include="Settings\TaxiHailSetting.cs" />
+    <Compile Include="Settings\AppSettingsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

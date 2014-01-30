@@ -1,6 +1,7 @@
 using System;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using GoogleAnalytics;
+using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {

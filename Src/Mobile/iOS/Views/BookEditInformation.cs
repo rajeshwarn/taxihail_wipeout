@@ -14,6 +14,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Reactive.Linq;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {

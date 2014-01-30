@@ -173,7 +173,6 @@
     <Compile Include="Framework\Null.cs" />
     <Compile Include="Framework\NullDisposable.cs" />
     <Compile Include="Framework\Params.cs" />
-    <Compile Include="Infrastructure\IAppSettings.cs" />
     <Compile Include="Infrastructure\ICacheService.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
@@ -205,7 +204,6 @@
     <Compile Include="AppServices\IGoogleService.cs" />
     <Compile Include="AppServices\IApplicationInfoService.cs" />
     <Compile Include="AppServices\Impl\ApplicationInfoService.cs" />
-    <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="StartCallboxNavigation.cs" />
     <Compile Include="StartNavigation.cs" />
     <Compile Include="Style\ColorDefinition.cs" />
@@ -314,7 +312,7 @@
     <Compile Include="AppServices\Auth\AuthFailure.cs" />
     <Compile Include="Style\ButtonStyle.cs" />
     <Compile Include="ViewModels\PanelMenuViewModel.cs" />
-    <Compile Include="Settings\TaxiHailSetting.cs" />
+    <Compile Include="Settings\AppSettingsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

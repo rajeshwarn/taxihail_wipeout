@@ -12,6 +12,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Provider;
+using MK.Common.iOS.Configuration;
 
 #endregion
 
@@ -20,14 +21,14 @@ namespace apcurium.MK.Booking.Maps.Impl
     public class Places : IPlaces
     {
         private readonly IMapsApiClient _client;
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IAppSettings _appSettings;
         private readonly IPopularAddressProvider _popularAddressProvider;
 
-        public Places(IMapsApiClient client, IConfigurationManager configurationManager,
+        public Places(IMapsApiClient client, IAppSettings appSettings,
             IPopularAddressProvider popularAddressProvider)
         {
             _client = client;
-            _configurationManager = configurationManager;
+            _appSettings = appSettings;
             _popularAddressProvider = popularAddressProvider;
         }
 
@@ -44,13 +45,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
         public Address[] SearchPlaces(string name, double? latitude, double? longitude, int? radius)
         {
-            int defaultRadius;
-            if (
-                !Int32.TryParse(_configurationManager.GetSetting("NearbyPlacesService.DefaultRadius"), out defaultRadius))
-            {
-                //fallback
-                defaultRadius = 500;
-            }
+            int defaultRadius = _appSettings.Data.DefaultRadius;
 
             var popularAddresses = Enumerable.Empty<Address>();
             if (latitude.HasValue && longitude.HasValue)
@@ -85,7 +80,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             }
             else
             {
-                var priceFormat = new RegionInfo(_configurationManager.GetSetting("PriceFormat"));
+                var priceFormat = new RegionInfo(_appSettings.Data.PriceFormat);
 
                 googlePlaces =
                     _client.SearchPlaces(latitude, longitude, name, "en", false,

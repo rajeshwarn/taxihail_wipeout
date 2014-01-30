@@ -67,17 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             this.Services().MessengerHub.Subscribe<AppActivated>(_ => AppActivated());
 
-            var showEstimate = Task.Run(() => Boolean.Parse(this.Services().Config.GetSetting("Client.ShowEstimate")));
-
-            try
-            {
-                ShowEstimate = await showEstimate;
-            }
-            catch
-            {
-                ShowEstimate = true;
-            }
-
+			ShowEstimate = this.Services().Settings.ShowEstimate;
         }
 
 		public override void OnViewLoaded()
@@ -251,7 +241,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return this.Services().Config.GetSetting("Client.DisableFutureBooking", false);
+				return this.Services().Settings.DisableFutureBooking;
             }
         }
 
@@ -259,7 +249,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return this.Services().Config.GetSetting("Client.HideDestination", false);
+				return this.Services().Settings.HideDestination;
             }
         }
         
@@ -398,7 +388,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
 				return GetCommand(async () =>
                 {
-                    if (!this.Services().Config.GetSetting("Client.TutorialEnabled", true))
+					if (!this.Services().Settings.TutorialEnabled)
                     {
                         return;
                     }
@@ -563,7 +553,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (!isValid)
                 {
                     Order.PickupDate = null;
-                    var destinationIsRequired = this.Services().Config.GetSetting("Client.DestinationIsRequired", false);
+					var destinationIsRequired = this.Services().Settings.DestinationIsRequired;
                     if ( destinationIsRequired )
                     {
                         this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);

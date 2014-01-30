@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Style;
+using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -75,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             var set = this.CreateBindingSet<LoginView, LoginViewModel>();
 
-            if (settings.Data.FacebookEnabled)
+            if (settings.FacebookEnabled)
 			{
 				btnFbLogin.SetLeftImage("facebook_icon.png");
 				btnFbLogin.SetTitle (Localize.GetValue ("Facebook"), UIControlState.Normal);
@@ -83,9 +84,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     .For("TouchUpInside")
                     .To(vm => vm.LoginFacebook);
             }
-            btnFbLogin.Hidden = !settings.Data.FacebookEnabled;
+            btnFbLogin.Hidden = !settings.FacebookEnabled;
 
-            if (settings.Data.TwitterEnabled)
+            if (settings.TwitterEnabled)
 			{
 				btnTwLogin.SetLeftImage("twitter_icon.png");
 				btnTwLogin.SetTitle (Localize.GetValue ("Twitter"), UIControlState.Normal);
@@ -93,11 +94,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     .For("TouchUpInside")
                     .To(vm => vm.LoginTwitter);
             }
-            btnTwLogin.Hidden = !settings.Data.TwitterEnabled;
+            btnTwLogin.Hidden = !settings.TwitterEnabled;
 
 			btnServer.SetTitle (Localize.GetValue ("ChangeServer"), UIControlState.Normal);
             btnServer.TouchUpInside += ChangeServerTouchUpInside;
-            btnServer.Hidden = !settings.Data.CanChangeServiceUrl;
+            btnServer.Hidden = !settings.CanChangeServiceUrl;
 
             set.Bind(btnSignIn)
                 .For("TouchUpInside")

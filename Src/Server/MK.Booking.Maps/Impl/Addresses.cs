@@ -9,6 +9,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Provider;
+using MK.Common.iOS.Configuration;
 
 #endregion
 
@@ -17,14 +18,14 @@ namespace apcurium.MK.Booking.Maps.Impl
     public class Addresses : IAddresses
     {
         private readonly IMapsApiClient _client;
-        private readonly IConfigurationManager _configManager;
+        private readonly IAppSettings _appSettings;
         private readonly IPopularAddressProvider _popularAddressProvider;
 
-        public Addresses(IMapsApiClient client, IConfigurationManager configurationManager,
+        public Addresses(IMapsApiClient client, IAppSettings appSettings,
             IPopularAddressProvider popularAddressProvider)
         {
             _client = client;
-            _configManager = configurationManager;
+            _appSettings = appSettings;
             _popularAddressProvider = popularAddressProvider;
         }
 
@@ -53,7 +54,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             IEnumerable<Address> addressesGeocode;
             IEnumerable<Address> addressesPlaces = new Address[0];
 
-            var geoCodingService = new Geocoding(_client, _configManager, _popularAddressProvider);
+            var geoCodingService = new Geocoding(_client, _appSettings, _popularAddressProvider);
 
             var allResults = geoCodingService.Search(name, geoResult);
 
@@ -75,7 +76,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             int n;
             if (!int.TryParse(term + "", out n))
             {
-                var nearbyService = new Places(_client, _configManager, _popularAddressProvider);
+                var nearbyService = new Places(_client, _appSettings, _popularAddressProvider);
                 addressesPlaces = nearbyService.SearchPlaces(name, latitude, longitude, null);
             }
 

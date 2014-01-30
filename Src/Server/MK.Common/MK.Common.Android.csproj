@@ -40,6 +40,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\IConfigurationManager.cs" />
@@ -94,6 +95,8 @@
     <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
+    <Compile Include="Configuration\IAppSettings.cs" />
+    <Compile Include="Configuration\TaxiHailSetting.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

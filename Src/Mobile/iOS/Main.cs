@@ -23,6 +23,7 @@ using MonoTouch.FacebookConnect;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -91,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 locService.Start ();
             }
 
-            ThreadHelper.ExecuteInThread (() => Runtime.StartWWAN( new Uri ( Mvx.Resolve<AppSettings>().Data.ServiceUrl )));
+            ThreadHelper.ExecuteInThread (() => Runtime.StartWWAN( new Uri ( Mvx.Resolve<AppSettingsService>().Data.ServiceUrl )));
 
             Logger.LogMessage("OnActivated");
 

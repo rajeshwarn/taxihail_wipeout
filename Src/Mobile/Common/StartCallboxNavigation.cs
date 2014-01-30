@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Callbox;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using ServiceStack.Text;
+using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile
 {

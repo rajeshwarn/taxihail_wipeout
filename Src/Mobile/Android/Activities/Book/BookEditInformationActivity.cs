@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using TinyIoC;
+using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {

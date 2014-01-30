@@ -79,8 +79,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var sendReceiptAvailable = this.Services().Config.GetSetting("Client.SendReceiptAvailable", false);
-                return (Status != null) && Status.FareAvailable && sendReceiptAvailable;
+				return (Status != null) 
+						&& Status.FareAvailable 
+						&& this.Services().Settings.SendReceiptAvailable;
             }
         }
 
@@ -114,8 +115,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool RebookIsAvailable {
 			get {
-                var setting = this.Services().Config.GetSetting("Client.HideRebookOrder");
-				return IsCompleted && !bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
+                
+				return IsCompleted 
+						&& !this.Services().Settings.HideRebookOrder;
 			}
 		}
 
@@ -123,8 +125,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public bool HasRated
         {
             get {
-                var ratingEnabled = this.Services().Config.GetSetting("Client.RatingEnabled", false);  
-                return ratingEnabled && _hasRated;
+				return !this.Services().Settings.RatingEnabled && _hasRated;
             }
             set { 
 				_hasRated = value; 
@@ -136,9 +137,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public bool ShowRateButton
         {
             get
-            {
-                var ratingEnabled = this.Services().Config.GetSetting("Client.RatingEnabled", false);                
-                    return ratingEnabled && IsDone && !HasRated;
+            {          
+				return !this.Services().Settings.RatingEnabled && IsDone && !HasRated;
             }
         }
 
@@ -207,7 +207,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-                return this.Services().Config.GetSetting("Client.HideDestination", false);
+				return !this.Services().Settings.HideDestination;
 			}
 		}
 

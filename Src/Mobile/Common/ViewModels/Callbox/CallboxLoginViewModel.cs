@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             try
             {
-                Logger.LogMessage("SignIn with server {0}", this.Services().Settings.Data.ServiceUrl);
+                Logger.LogMessage("SignIn with server {0}", this.Services().Settings.ServiceUrl);
 				this.Services().Message.ShowProgress(true);
                 var account = default(Account);
 

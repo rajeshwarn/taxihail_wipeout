@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 using Cirrious.CrossCore;
 using TinyIoC;
 using apcurium.MK.Common.Enumeration;
+using MK.Common.iOS.Configuration;
 
 
 #if IOS
@@ -37,14 +38,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string HistoryAddressesCacheKey = "Account.HistoryAddresses";
         private const string RefDataCacheKey = "Account.ReferenceData";
 
-		readonly IConfigurationManager _configurationManager;
 		readonly IAppSettings _appSettings;
 		readonly IFacebookService _facebookService;
 		readonly ITwitterService _twitterService;
 		readonly ILocalization _localize;
 
-		public AccountService(IConfigurationManager configurationManager,
-			IAppSettings appSettings,
+		public AccountService(IAppSettings appSettings,
 			IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocalization localize)
@@ -53,7 +52,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_twitterService = twitterService;
 			_facebookService = facebookService;
 			_appSettings = appSettings;
-			_configurationManager = configurationManager;
 
 		}
 	
@@ -470,7 +468,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<IList<ListItem>> GetCompaniesList ()
         {
 			var refData = await GetReferenceData();
-			if (!_configurationManager.GetSetting("Client.HideNoPreference", false)
+			if (!_appSettings.Data.HideNoPreference
                 && refData.CompaniesList != null)
             {
 				refData.CompaniesList.Insert(0,
@@ -488,7 +486,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			var refData = await GetReferenceData();
 
-			if (!_configurationManager.GetSetting("Client.HideNoPreference", false)
+			if (!_appSettings.Data.HideNoPreference
                 && refData.VehiclesList != null)
             {
                 refData.VehiclesList.Insert(0,
@@ -506,7 +504,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			var refData = await GetReferenceData();
 		
-			if (!_configurationManager.GetSetting("Client.HideNoPreference", false)
+			if (!_appSettings.Data.HideNoPreference
                 && refData.PaymentsList != null)
             {
                 refData.PaymentsList.Insert(0,

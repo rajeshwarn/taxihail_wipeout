@@ -4,17 +4,17 @@ using apcurium.MK.Booking.Mobile.Data;
 using System.IO;
 using ServiceStack.Text;
 using apcurium.MK.Common.Configuration;
+using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class TutorialService : ITutorialService
     {
-		readonly IConfigurationManager _configurationManager;
+		readonly IAppSettings _settings;
 
-		public TutorialService(IConfigurationManager configurationManager)
+		public TutorialService(IAppSettings settings)
 		{
-			_configurationManager = configurationManager;
-        	
+			_settings = settings;	
 		}
 
         private TutorialContent _content;
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     }
             }
 
-			var disabledSlidesString = _configurationManager.GetSetting("Client.DisabledTutorialSlides");
+			var disabledSlidesString = _settings.Data.DisabledTutorialSlides;
 			if (!string.IsNullOrWhiteSpace(disabledSlidesString))
 			{
 				var disabledSlides = disabledSlidesString

@@ -20,6 +20,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.IoC;
 using apcurium.MK.Booking.Mobile.Messages;
+using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -60,6 +61,10 @@ namespace apcurium.MK.Booking.Mobile
             
 			_container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
 
+			_container.Register<ConfigurationClientService>((c, p) => {
+				return new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<ILogger>(), c.Resolve<IPackageInfo>().UserAgent);
+			});
+
 			_container.Register<IConfigurationManager>((c, p) => {
 				return new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<ILogger>(), c.Resolve<IPackageInfo>().UserAgent);
 			});
@@ -92,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile
 					var baseUrl = c.Resolve<IAppSettings>().Data.ServiceUrl;
                 var sessionId = GetSessionId();
 
-                return new PaymentService(baseUrl, sessionId, c.Resolve<IConfigurationManager>(), c.Resolve<ICacheService>(), c.Resolve<IPackageInfo>());
+					return new PaymentService(baseUrl, sessionId, c.Resolve<IConfigurationManager>(), c.Resolve<ICacheService>(), c.Resolve<IPackageInfo>());
 			});
             
 			_container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
@@ -121,14 +126,12 @@ namespace apcurium.MK.Booking.Mobile
         {
 			_container.Resolve<IApplicationInfoService>().GetAppInfoAsync();
 			_container.Resolve<IAccountService>().GetReferenceData();
-			_container.Resolve<IConfigurationManager>().GetSettings();
         }
 
         private void ClearAppCache()
         {
 			_container.Resolve<IApplicationInfoService>().ClearAppInfo();
 			_container.Resolve<IAccountService>().ClearReferenceData();
-			_container.Resolve<IConfigurationManager>().Reset();
         }
 
         private void RefreshAppData()

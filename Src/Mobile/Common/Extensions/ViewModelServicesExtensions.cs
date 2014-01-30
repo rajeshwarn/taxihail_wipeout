@@ -7,6 +7,7 @@ using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore;
 using TinyIoC;
+using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Extensions
 {
@@ -32,14 +33,13 @@ namespace apcurium.MK.Booking.Mobile.Extensions
         }
 
         public IConfigurationManager Config { get { return _container.Resolve<IConfigurationManager>(); } }
-
         public IMessageService Message { get { return _container.Resolve<IMessageService>(); } }
 
         public ILocalization Localize { get { return _container.Resolve<ILocalization>(); } }
 
         public ITinyMessengerHub MessengerHub { get { return _container.Resolve<ITinyMessengerHub>(); } }
 
-        public IAppSettings Settings { get { return _container.Resolve<IAppSettings>(); } }
+		public TaxiHailSetting Settings { get { return _container.Resolve<IAppSettings>().Data; } }
 
         public IPhoneService Phone { get { return _container.Resolve<IPhoneService>(); } }
 

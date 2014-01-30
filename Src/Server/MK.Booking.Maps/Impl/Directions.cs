@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Google;
 using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
+using MK.Common.iOS.Configuration;
 
 #endregion
 
@@ -22,13 +23,13 @@ namespace apcurium.MK.Booking.Maps.Impl
 
 
         private readonly IMapsApiClient _client;
-        private readonly IConfigurationManager _configManager;
+        private readonly IAppSettings _appSettings;
         private readonly IPriceCalculator _priceCalculator;
 
-        public Directions(IMapsApiClient client, IConfigurationManager configManager, IPriceCalculator priceCalculator)
+        public Directions(IMapsApiClient client, IAppSettings appSettings, IPriceCalculator priceCalculator)
         {
             _client = client;
-            _configManager = configManager;
+            _appSettings = appSettings;
             _priceCalculator = priceCalculator;
         }
 
@@ -64,7 +65,7 @@ namespace apcurium.MK.Booking.Maps.Impl
         {
             if (price.HasValue)
             {
-                var culture = _configManager.GetSetting("PriceFormat");
+                var culture = _appSettings.Data.PriceFormat;
                 return string.Format(new CultureInfo(culture), "{0:C}", price);
             }
             return "";
@@ -74,7 +75,7 @@ namespace apcurium.MK.Booking.Maps.Impl
         {
             if (distance.HasValue)
             {
-                var format = _configManager.GetSetting("DistanceFormat").ToEnum(true, DistanceFormat.Km);
+                var format = _appSettings.Data.DistanceFormat.ToEnum(true, DistanceFormat.Km);
                 if (format == DistanceFormat.Km)
                 {
                     var distanceInKm = Math.Round((double) distance.Value/1000, 1);

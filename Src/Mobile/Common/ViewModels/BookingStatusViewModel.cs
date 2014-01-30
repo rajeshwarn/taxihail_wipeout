@@ -287,7 +287,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Localize["AddReminderMessage"],
                     this.Services().Localize["YesButton"],
                     () => this.Services().Phone.AddEventToCalendarAndReminder(
-						string.Format(this.Services().Localize["ReminderTitle"], this.Services().Settings.Data.ApplicationName), 
+						string.Format(this.Services().Localize["ReminderTitle"], this.Services().Settings.ApplicationName), 
                         string.Format(this.Services().Localize["ReminderDetails"], Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),						              									 
                     Order.PickupAddress.FullAddress, 
                     Order.PickupDate,

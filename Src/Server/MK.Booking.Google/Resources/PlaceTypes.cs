@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 
 #endregion
@@ -11,11 +10,9 @@ namespace apcurium.MK.Booking.Google.Resources
 {
     public class PlaceTypes
     {
-        public PlaceTypes(IConfigurationManager configManager)
+        public PlaceTypes(string placeTypes)
         {
-            var types = configManager.GetSetting("GeoLoc.PlacesTypes");
-
-            Types = types.Split(',').Where(s => s.ToSafeString().Trim().HasValue());
+            Types = placeTypes.Split(',').Where(s => s.ToSafeString().Trim().HasValue());
         }
 
         public IEnumerable<string> Types { get; set; }

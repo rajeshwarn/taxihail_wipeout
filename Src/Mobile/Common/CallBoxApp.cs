@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.IoC;
+using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -48,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile
             
             _container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
 
-            _container.Register<IConfigurationManager>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<ILogger>(), c.Resolve<IPackageInfo>().UserAgent));
+            _container.Register<ConfigurationClientService>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<ILogger>(), c.Resolve<IPackageInfo>().UserAgent));
 
             _container.Register<IAccountService, AccountService>();
             _container.Register<IBookingService, BookingService>();

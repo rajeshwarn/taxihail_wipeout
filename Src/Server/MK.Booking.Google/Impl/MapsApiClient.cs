@@ -9,6 +9,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
+using MK.Common.iOS.Configuration;
 
 #endregion
 
@@ -21,24 +22,24 @@ namespace apcurium.MK.Booking.Google.Impl
         private const string PlacesAutoCompleteServiceUrl = "https://maps.googleapis.com/maps/api/place/autocomplete/";
         private const string MapsServiceUrl = "http://maps.googleapis.com/maps/api/";
 
-        private readonly IConfigurationManager _conifManager;
+        private readonly IAppSettings _settings;
         private readonly ILogger _logger;
 
-        public MapsApiClient(IConfigurationManager conifManager, ILogger logger)
+        public MapsApiClient(IAppSettings settings, ILogger logger)
         {
             _logger = logger;
-            _conifManager = conifManager;
+            _settings = settings;
         }
 
         protected string PlacesApiKey
         {
-            get { return _conifManager.GetSettings()["Map.PlacesApiKey"]; }
+            get { return _settings.Data.PlacesApiKey; }
         }
 
         public Place[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius,
             string pipedTypeList = null)
         {
-            pipedTypeList = pipedTypeList ?? new PlaceTypes(_conifManager).GetPipedTypeList();
+            pipedTypeList = pipedTypeList ?? new PlaceTypes(_settings.Data.PlacesTypes).GetPipedTypeList();
             var client = new JsonServiceClient(PlacesServiceUrl);
 
             var @params = new Dictionary<string, string>

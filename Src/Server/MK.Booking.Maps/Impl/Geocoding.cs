@@ -11,6 +11,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Provider;
+using MK.Common.iOS.Configuration;
 
 #endregion
 
@@ -18,7 +19,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 {
     public class Geocoding : IGeocoding
     {
-        private readonly IConfigurationManager _configManager;
+        private readonly IAppSettings _appSettings;
         private readonly IMapsApiClient _mapApi;
 
         private readonly string[] _otherTypesAllowed =
@@ -29,11 +30,11 @@ namespace apcurium.MK.Booking.Maps.Impl
 
         private readonly IPopularAddressProvider _popularAddressProvider;
 
-        public Geocoding(IMapsApiClient mapApi, IConfigurationManager configManager,
+        public Geocoding(IMapsApiClient mapApi, IAppSettings appSettings,
             IPopularAddressProvider popularAddressProvider)
         {
             _mapApi = mapApi;
-            _configManager = configManager;
+            _appSettings = appSettings;
             _popularAddressProvider = popularAddressProvider;
         }
 
@@ -77,7 +78,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
         private GeoResult SearchUsingName(string name, bool useFilter)
         {
-            var filter = _configManager.GetSetting("GeoLoc.SearchFilter");
+            var filter = _appSettings.Data.SearchFilter;
             if (name != null)
             {
                 if ((filter.HasValue()) && (useFilter))

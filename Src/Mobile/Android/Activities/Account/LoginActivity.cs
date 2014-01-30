@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         {
             SetContentView(Resource.Layout.View_Login);
 
-            var settings = this.Services().Settings.Data;
+            var settings = this.Services().Settings;
 
             if (!settings.FacebookEnabled)
 			{
@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             var input = new EditText(this)
             {
                 InputType = InputTypes.TextFlagNoSuggestions,
-                Text = this.Services().Settings.Data.ServiceUrl
+                Text = this.Services().Settings.ServiceUrl
             };
 
             alert.SetView(input);
