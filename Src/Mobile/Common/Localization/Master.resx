@@ -1475,5 +1475,7 @@
   <data name="mobileKnowledgeUrl" xml:space="preserve">
     <value>http://www.mobile-knowledge.com/</value>
   </data>
-
+  <data name="Estimate" xml:space="preserve">
+    <value>Estimate</value>
+  </data>
 </root>

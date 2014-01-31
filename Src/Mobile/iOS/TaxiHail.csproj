@@ -522,6 +522,7 @@
     <Compile Include="Controls\Widgets\AppBarLabelButton.cs" />
     <Compile Include="Controls\Widgets\AppBarView.cs" />
     <Compile Include="Controls\Widgets\OverlayButton.cs" />
+    <Compile Include="Controls\Widgets\AppBarButton.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -837,6 +838,14 @@
     <BundleResource Include="Resources\menu_icon%402x.png" />
     <BundleResource Include="Resources\menu_icon_pressed.png" />
     <BundleResource Include="Resources\menu_icon_pressed%402x.png" />
+    <BundleResource Include="Resources\estimate_icon.png" />
+    <BundleResource Include="Resources\estimate_icon%402x.png" />
+    <BundleResource Include="Resources\estimate_icon_pressed.png" />
+    <BundleResource Include="Resources\estimate_icon_pressed%402x.png" />
+    <BundleResource Include="Resources\later_icon.png" />
+    <BundleResource Include="Resources\later_icon%402x.png" />
+    <BundleResource Include="Resources\later_icon_pressed.png" />
+    <BundleResource Include="Resources\later_icon_pressed%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
