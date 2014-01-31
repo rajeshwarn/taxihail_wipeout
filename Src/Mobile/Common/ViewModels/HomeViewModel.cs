@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Windows.Input;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -33,11 +34,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (firstTime)
 			{
 				Map = AddChild<MapViewModel>();
-
-				Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
+				OrderOptions = AddChild<OrderOptionsViewModel>();
 			}
-
-			AddressSelectionMode = AddressSelectionMode.PickupSelection;
 		}
 
 		public PanelMenuViewModel Panel { get; set; }
@@ -53,38 +51,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		private AddressSelectionMode _addressSelectionMode;
-		public AddressSelectionMode AddressSelectionMode
-		{
-			get
-			{
-				return _addressSelectionMode;
-			}
-			set
-			{
-				if (_addressSelectionMode != value)
-				{
-					_addressSelectionMode = value;
-					RaisePropertyChanged();
-				}
-			}
-		}
-
-		private Address _pickupAddress;
-		public Address PickupAddress
-		{
-			get
-			{
-				return _pickupAddress;
-			}
-
+		private OrderOptionsViewModel _orderOptions;
+		public OrderOptionsViewModel OrderOptions
+		{ 
+			get { return _orderOptions; }
 			private set
-			{
-				if(value != _pickupAddress)
-				{
-					_pickupAddress = value;
-					RaisePropertyChanged();
-				}
+			{ 
+				_orderOptions = value;
+				RaisePropertyChanged();
 			}
 		}
 

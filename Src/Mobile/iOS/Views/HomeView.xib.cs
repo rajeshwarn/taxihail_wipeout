@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
+
     public partial class HomeView : BaseViewController<HomeViewModel>
     {
         private bool _defaultThemeApplied;
@@ -70,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             set.Bind(ctrlOrderOptions)
                 .For(v => v.DataContext)
-                .To(vm => vm);
+                .To(vm => vm.OrderOptions);
                 
             set.Apply();
         }
@@ -78,20 +79,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void AddButtonsToAppBar()
         {
             // temporary way to add these buttons
-            // TODO change the binding for this button, for example, ShowDestination on ViewModel if SelectionMode is DropoffSelection and bind the OrderOptionsControl with that too
             var btnEstimate = new AppBarButton(Localize.GetValue("Estimate"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "estimate_icon.png", "estimate_icon_pressed.png");
             btnEstimate.Frame = btnEstimate.Frame.IncrementX(4);
-            btnEstimate.TouchUpInside += (sender, e) => {
-                if(ViewModel.AddressSelectionMode == AddressSelectionMode.DropoffSelection)
-                {
-                    btnEstimate.Selected = false;
-                    ViewModel.AddressSelectionMode = AddressSelectionMode.PickupSelection;
-                }
-                else{
-                    btnEstimate.Selected = true;
-                    ViewModel.AddressSelectionMode = AddressSelectionMode.DropoffSelection;
-                }
-            };
+
+            var set = this.CreateBindingSet<HomeView, HomeViewModel>();
+
+            set.Bind(btnEstimate)
+                .For("TouchUpInside")
+                .To(vm => vm.OrderOptions.ChangeSelectionMode);
+            set.Bind(btnEstimate)
+                .For(v => v.Selected)
+                .To(vm => vm.OrderOptions.ShowDestination);
+
+            set.Apply();
 
             var btnBook = new FlatButton(new RectangleF(99, 7, 123, 41));
             FlatButtonStyle.Green.ApplyTo(btnBook);

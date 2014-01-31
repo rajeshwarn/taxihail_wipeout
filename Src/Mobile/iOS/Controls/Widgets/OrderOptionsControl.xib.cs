@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -30,38 +31,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void InitializeBinding()
         {
-            var set = this.CreateBindingSet<OrderOptionsControl, HomeViewModel>();
+            var set = this.CreateBindingSet<OrderOptionsControl, OrderOptionsViewModel>();
 
-            set.Bind(this)
-                .For(v => v.AddressSelectionMode)
-                .To(vm => vm.AddressSelectionMode);
-
+            set.Bind(viewPickup)
+                .For(v => v.IsReadOnly)
+                .To(vm => vm.ShowDestination);
             set.Bind(viewPickup.AddressTextView)
                 .To(vm => vm.PickupAddress.DisplayAddress);
 
-            set.Apply();
-        }
+            set.Bind(viewDestination)
+                .For(v => v.Hidden)
+                .To(vm => vm.ShowDestination)
+                .WithConversion("BoolInverter");
 
-        AddressSelectionMode _addressSelectionMode;
-        public AddressSelectionMode AddressSelectionMode
-        {
-            get { return _addressSelectionMode; }
-            set
-            {
-                _addressSelectionMode = value;
-                if (value == AddressSelectionMode.PickupSelection)
-                {
-                    viewPickup.IsReadOnly = false;
-                    viewDestination.Hidden = true;
-//                    viewVehicleType.ShowEstimate = false;
-                }
-                else
-                {
-                    viewPickup.IsReadOnly = true;
-                    viewDestination.Hidden = false;
-//                    viewVehicleType.ShowEstimate = true;
-                }
-            }
+            set.Apply();
         }
 
         public override void AwakeFromNib()

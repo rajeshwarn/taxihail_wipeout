@@ -27,6 +27,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			GC.SuppressFinalize(this);
 		}
 
+		protected AsyncCommand GetCommand(Action action)
+		{
+			return new AsyncCommand(action);
+		}
+
 		protected virtual void Dispose(bool disposing)
 		{
 			if (disposing) 
