@@ -41,7 +41,7 @@ namespace MK.Common.iOS.Configuration
 		[Display(Name = "Hide No Preference Option", Description="Settings to hide the no preference option in vehicule, company list etc.")]
 		public bool HideNoPreference { get; private set; }
 		public bool DestinationIsRequired { get; private set; }
-		public DirectionSetting.TarifMode TarifMode { get; private set; }
+        public TarifMode TarifMode { get; private set; }
 		public double MaxFareEstimate { get; private set; }
 		public bool DisableFutureBooking { get; private set; }
 		public bool HideDestination { get; private set; }
@@ -79,6 +79,17 @@ namespace MK.Common.iOS.Configuration
         public bool HideCallDispatchButton { get; private set; }
 		public string SupportEmail { get; private set; }
         public string SenderId { get; private set; }
+
+        public bool AllowAddressRange { get; private set; }
+        public bool HideSendReceipt { get; private set; }
+        public bool PushNotificationsEnabled { get; private set; }
+        public double FlateRate { get; private set; }
+        public double RatePerKm { get; private set; }
+        public bool NeedAValidTarif { get; private set; }
+
+        public double DefaultLatitude { get; private set; }
+        public double DefaultLongitude { get; private set; }
+        public double Range { get; private set; }
     }
 }
 

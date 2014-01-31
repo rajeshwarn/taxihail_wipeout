@@ -233,12 +233,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             
             if (pickup.HasValidCoordinate() && destination.HasValidCoordinate())
             {
-                if (tarifMode != DirectionSetting.TarifMode.AppTarif)
+                if (tarifMode != TarifMode.AppTarif)
                 {
 					directionInfo = await UseServiceClientAsync<IIbsFareClient, DirectionInfo>(service => service.GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude));                                                            
                 }
 
-                if (tarifMode == DirectionSetting.TarifMode.AppTarif || (tarifMode == DirectionSetting.TarifMode.Both && directionInfo.Price == 0d))
+                if (tarifMode == TarifMode.AppTarif || (tarifMode == TarifMode.Both && directionInfo.Price == 0d))
                 {
 					directionInfo = await _geolocService.GetDirectionInfo(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude, pickupDate);                    
                 }            
