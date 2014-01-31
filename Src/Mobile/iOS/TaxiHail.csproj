@@ -515,13 +515,13 @@
       <DependentUpon>OrderOptionsControl.xib</DependentUpon>
     </Compile>
     <Compile Include="Controls\Binding\BaseBindableView.cs" />
-    <Compile Include="Controls\CommandButton.cs" />
     <Compile Include="Controls\Widgets\AddressTextBox.cs" />
     <Compile Include="Extensions\UITextFieldExtensions.cs" />
     <Compile Include="Controls\Behavior\NumberAndAddressTextFieldBehavior.cs" />
     <Compile Include="Controls\Widgets\Dot.cs" />
     <Compile Include="Controls\Widgets\AppBarLabelButton.cs" />
     <Compile Include="Controls\Widgets\AppBarView.cs" />
+    <Compile Include="Controls\Widgets\OverlayButton.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -829,6 +829,14 @@
     <BundleResource Include="Resources\taxi_badge_selected%402x.png" />
     <BundleResource Include="Resources\highlight.png" />
     <BundleResource Include="Resources\highlight%402x.png" />
+    <BundleResource Include="Resources\location_icon.png" />
+    <BundleResource Include="Resources\location_icon%402x.png" />
+    <BundleResource Include="Resources\location_icon_pressed.png" />
+    <BundleResource Include="Resources\location_icon_pressed%402x.png" />
+    <BundleResource Include="Resources\menu_icon.png" />
+    <BundleResource Include="Resources\menu_icon%402x.png" />
+    <BundleResource Include="Resources\menu_icon_pressed.png" />
+    <BundleResource Include="Resources\menu_icon_pressed%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
