@@ -86,22 +86,29 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void InitializeSocialNetwork()
 		{
-			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+			
+            _container.Register<IFacebookService>((c,prop) =>  {
 
-            var facebookService = new FacebookService(settings.Data.FacebookAppId, () => _container.Resolve<IMvxAndroidCurrentTopActivity>().Activity);
-            _container.Register<IFacebookService>(facebookService);
+                var settings = c.Resolve<IAppSettings>();
+                var facebookService = new FacebookService(settings.Data.FacebookAppId, () => _container.Resolve<IMvxAndroidCurrentTopActivity>().Activity);
+                return facebookService;
+            });			
 
-			var oauthConfig = new OAuthConfig
-			{
-                ConsumerKey = settings.Data.TwitterConsumerKey,
-                Callback = settings.Data.TwitterCallback,
-                ConsumerSecret = settings.Data.TwitterConsumerSecret,
-                RequestTokenUrl = settings.Data.TwitterRequestTokenUrl,
-                AccessTokenUrl = settings.Data.TwitterAccessTokenUrl,
-                AuthorizeUrl = settings.Data.TwitterAuthorizeUrl
-			};
+            _container.Register<ITwitterService>((c,p) => {
 
-            _container.Register<ITwitterService>((c,p) => new TwitterServiceMonoDroid( oauthConfig, c.Resolve<IMvxAndroidCurrentTopActivity>()));
+                var settings = c.Resolve<IAppSettings>();
+                var oauthConfig = new OAuthConfig
+                {
+                    ConsumerKey = settings.Data.TwitterConsumerKey,
+                    Callback = settings.Data.TwitterCallback,
+                    ConsumerSecret = settings.Data.TwitterConsumerSecret,
+                    RequestTokenUrl = settings.Data.TwitterRequestTokenUrl,
+                    AccessTokenUrl = settings.Data.TwitterAccessTokenUrl,
+                    AuthorizeUrl = settings.Data.TwitterAuthorizeUrl
+                };
+                return new TwitterServiceMonoDroid( oauthConfig, c.Resolve<IMvxAndroidCurrentTopActivity>());
+            
+            });
 		}
 
 		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider()

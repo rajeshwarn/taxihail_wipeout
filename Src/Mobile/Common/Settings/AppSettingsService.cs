@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			{
 				try
 				{
-                    //_logger.LogMessage("setting {0} - value {1}", item.Key, item.Value);
+					_logger.LogMessage("setting {0} - value {1}", item.Key, item.Value);
 					var propertyName = item.Key.Contains(".") ? 
 					                   item.Key.SplitOnLast('.')[1]
 						               : item.Key;

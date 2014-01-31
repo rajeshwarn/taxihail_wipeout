@@ -87,7 +87,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			UIApplication.CheckForIllegalCrossThreadCalls=true;
 
 			//Facebook init
-			FBAppCall.HandleDidBecomeActive();
+            if (TinyIoCContainer.Current.Resolve<IAppSettings>().Data.FacebookEnabled)
+            {
+                FBAppCall.HandleDidBecomeActive();
+            }
 
             var locService = TinyIoCContainer.Current.Resolve<AbstractLocationService>();
             if ( locService != null )

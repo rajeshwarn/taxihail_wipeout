@@ -87,43 +87,51 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void InitializeSocialNetwork()
         {
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            if (settings.Data.FacebookEnabled)
-            {
-                FBSettings.DefaultAppID = settings.Data.FacebookAppId;
 
-                if (FBSession.ActiveSession.State == FBSessionState.CreatedTokenLoaded)
+            TinyIoCContainer.Current.Register<IFacebookService>((c, p) => {
+
+                var settings = c.Resolve<IAppSettings>();
+                if (settings.Data.FacebookEnabled)
                 {
-                    // If there's one, just open the session silently
-                    FBSession.OpenActiveSession(new[] { "basic_info", "email" },
-                        allowLoginUI: false,
-                        completion: (session, status, error) =>
-                        {
-                        });
+                    FBSettings.DefaultAppID = settings.Data.FacebookAppId;
+
+                    if (FBSession.ActiveSession.State == FBSessionState.CreatedTokenLoaded)
+                    {
+                        // If there's one, just open the session silently
+                        FBSession.OpenActiveSession(new[] { "basic_info", "email" },
+                            allowLoginUI: false,
+                            completion: (session, status, error) =>
+                            {
+                            });
+                    }
+
                 }
 
-            }
-            TinyIoCContainer.Current.Register<IFacebookService>(new FacebookService());
+                return new FacebookService();
+            });
 
-            var oauthConfig = new OAuthConfig();
-            if (settings.Data.TwitterEnabled)
-            {
-                oauthConfig = new OAuthConfig
+
+            TinyIoCContainer.Current.Register<ITwitterService>((c, p) => {
+
+                var settings = c.Resolve<IAppSettings>();
+                var oauthConfig = new OAuthConfig();
+                if (settings.Data.TwitterEnabled)
                 {
-                
-                    ConsumerKey = settings.Data.TwitterConsumerKey,
-                    Callback = settings.Data.TwitterCallback,
-                    ConsumerSecret = settings.Data.TwitterConsumerSecret,
-                    RequestTokenUrl = settings.Data.TwitterRequestTokenUrl,
-                    AccessTokenUrl = settings.Data.TwitterAccessTokenUrl,
-                    AuthorizeUrl = settings.Data.TwitterAuthorizeUrl 
-                };
+                    oauthConfig = new OAuthConfig
+                    {
 
+                        ConsumerKey = settings.Data.TwitterConsumerKey,
+                        Callback = settings.Data.TwitterCallback,
+                        ConsumerSecret = settings.Data.TwitterConsumerSecret,
+                        RequestTokenUrl = settings.Data.TwitterRequestTokenUrl,
+                        AccessTokenUrl = settings.Data.TwitterAccessTokenUrl,
+                        AuthorizeUrl = settings.Data.TwitterAuthorizeUrl 
+                    };
 
-            }
-            var twitterService = new TwitterService(oauthConfig, () => Mvx.Resolve<UINavigationController>());
-
-            TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
+                }
+                var twitterService = new TwitterService(oauthConfig, () => Mvx.Resolve<UINavigationController>());
+                return twitterService; 
+            });
             
         }
 
