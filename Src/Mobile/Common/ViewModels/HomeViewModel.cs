@@ -41,7 +41,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		public PanelMenuViewModel Panel { get; set; }
-		public MapViewModel Map { get; private set; }
+
+		private MapViewModel _map;
+		public MapViewModel Map
+		{ 
+			get { return _map; }
+			private set
+			{ 
+				_map = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		private AddressSelectionMode _addressSelectionMode;
 		public AddressSelectionMode AddressSelectionMode
