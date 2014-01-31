@@ -9,10 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     [Register("AppBarView")]
     public class AppBarView : UIView
     {
-        public const float Margin = 6;
-
         protected UIView Line { get; set; }
-        public UIView BackgroundView { get; set;}
 
         public AppBarView (IntPtr ptr):base(ptr)
         {
@@ -30,15 +27,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             Line = new UIView()
             {
-                BackgroundColor = UIColor.Black.ColorWithAlpha(0.548f)
+                Frame = new RectangleF(0, 0, Frame.Width, UIHelper.OnePixel),
+                BackgroundColor = UIColor.FromRGB(140, 140, 140)
             };
 
             AddSubview(Line);
-        }
-
-        public virtual void UpdateView(float bottom, float width)
-        {
-            Line.Frame = new RectangleF(0, 0, Frame.Width, UIHelper.OnePixel);
         }
     }
 }

@@ -24,6 +24,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             viewPickup.BackgroundColor = UIColor.Clear;
             viewDestination.BackgroundColor = UIColor.Clear;
             viewVehicleType.BackgroundColor = UIColor.Clear;
+
+            viewDestination.IsDestination = true;
         }
 
         private void InitializeBinding()

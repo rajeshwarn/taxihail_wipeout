@@ -174,6 +174,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
+        private bool _isDestination;
+        public bool IsDestination
+        {
+            get { return _isDestination; }        
+            set
+            {
+                _isDestination = value;
+                Resize();
+            }
+        }
+
         private void Resize()
         {
             AddressTextView.UserInteractionEnabled = !IsReadOnly;
@@ -190,13 +201,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 AddressTextView.LeftViewMode = UITextFieldViewMode.Never;
 
-                if (this.Frame.Y == 0)
+                if (IsDestination)
                 {
-                    RedRoundedCornerView.Corners = UIRectCorner.TopLeft;
+                    RedRoundedCornerView.Corners = 0;
                 }
                 else
                 {
-                    RedRoundedCornerView.Corners = 0;
+                    RedRoundedCornerView.Corners = UIRectCorner.TopLeft;
                 }
 
                 RedRoundedCornerView.Frame = LoadingWheel.Frame = StreetNumberTextView.Frame;
@@ -210,7 +221,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 StreetNumberTextView.Hidden = true;
                 AddressButton.Frame = AddressTextView.Frame = new RectangleF(2, 0, this.Frame.Width, this.Frame.Height);
-                AddressTextView.LeftView = new Dot(8,  UIColor.FromRGB(0, 192, 49))
+                AddressTextView.LeftView = new Dot(8,  IsDestination ? UIColor.FromRGB(255, 0, 18) : UIColor.FromRGB(0, 192, 49))
                 {
                     Frame = new RectangleF( 0,0, 34 , this.Frame.Height)
                 };
