@@ -98,8 +98,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         IUseServiceClient
     {
         public PushHandlerService()
-            : base(TinyIoCContainer.Current.Resolve<IAppSettings>().Data.SenderId)
+            : base(TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().Data.SenderId)
         {
+
         }
 
 
