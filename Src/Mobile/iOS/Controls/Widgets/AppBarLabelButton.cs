@@ -14,14 +14,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             _label = new UILabel ();
             _label.Text = text;
-            _label.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 34/2);
+            _label.Font = UIFont.FromName(FontName.HelveticaNeueLight, 34/2);
             if(textColor != null)
             {
                 _label.TextColor = textColor;
             }
             else
             {
-                _label.TextColor = UIColor.Red;
+                _label.TextColor = UIColor.Black;
             }
 
             _label.BackgroundColor = UIColor.Clear;
@@ -39,6 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             var height = _label.Frame.Height + padding.Top + padding.Bottom;
             UpdateView(left, top, width, height);
         }
+
         public void UpdateViewRightAligned(float right, float top, Padding padding)
         {
             _label.SizeToFit();
@@ -46,6 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             var height = _label.Frame.Height + padding.Top + padding.Bottom;
             UpdateView(right - width, top, width, height);
         }
+
         public void UpdateView(float left, float top, float width, float height)
         {
             Frame = new RectangleF(left, top, width, height);
