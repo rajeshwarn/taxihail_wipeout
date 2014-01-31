@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class HomeView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarView bottomBar { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderOptionsControl ctrlOrderOptions { get; set; }
 
 		[Outlet]
@@ -52,6 +55,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (test != null) {
 				test.Dispose ();
 				test = null;
+			}
+
+			if (bottomBar != null) {
+				bottomBar.Dispose ();
+				bottomBar = null;
 			}
 		}
 	}

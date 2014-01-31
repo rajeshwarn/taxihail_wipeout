@@ -516,6 +516,12 @@
     </Compile>
     <Compile Include="Controls\Binding\BaseBindableView.cs" />
     <Compile Include="Controls\CommandButton.cs" />
+    <Compile Include="Controls\Widgets\AddressTextBox.cs" />
+    <Compile Include="Extensions\UITextFieldExtensions.cs" />
+    <Compile Include="Controls\Behavior\NumberAndAddressTextFieldBehavior.cs" />
+    <Compile Include="Controls\Widgets\Dot.cs" />
+    <Compile Include="Controls\Widgets\AppBarLabelButton.cs" />
+    <Compile Include="Controls\Widgets\AppBarView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -809,6 +815,20 @@
     <BundleResource Include="Resources\mk_logo%402x.png" />
     <BundleResource Include="Resources\add_list.png" />
     <BundleResource Include="Resources\add_list%402x.png" />
+    <BundleResource Include="Resources\blackcar_badge.png" />
+    <BundleResource Include="Resources\blackcar_badge%402x.png" />
+    <BundleResource Include="Resources\blackcar_badge_selected.png" />
+    <BundleResource Include="Resources\blackcar_badge_selected%402x.png" />
+    <BundleResource Include="Resources\suv_badge.png" />
+    <BundleResource Include="Resources\suv_badge%402x.png" />
+    <BundleResource Include="Resources\suv_badge_selected.png" />
+    <BundleResource Include="Resources\suv_badge_selected%402x.png" />
+    <BundleResource Include="Resources\taxi_badge.png" />
+    <BundleResource Include="Resources\taxi_badge%402x.png" />
+    <BundleResource Include="Resources\taxi_badge_selected.png" />
+    <BundleResource Include="Resources\taxi_badge_selected%402x.png" />
+    <BundleResource Include="Resources\highlight.png" />
+    <BundleResource Include="Resources\highlight%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
@@ -828,6 +848,7 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Controls\Widgets\" />
+    <Folder Include="Controls\Behavior\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Style\Theme.xml">
