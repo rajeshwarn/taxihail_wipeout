@@ -9,19 +9,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     [Register("AppBarView")]
     public class AppBarView : UIView
     {
+        public static SizeF ButtonSize = new SizeF(60, 46);
+
         protected UIView Line { get; set; }
 
         public AppBarView (IntPtr ptr):base(ptr)
         {
-            Ctor ();            
+            Initialize ();            
         }
 
         public AppBarView ()
         {
-            Ctor ();
+            Initialize ();
         }
 
-        void Ctor ()
+        void Initialize ()
         {
             BackgroundColor = UIColor.White;
 

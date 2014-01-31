@@ -28,14 +28,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public AddressTextBox(IntPtr h):base(h)
         {
-            Ctor();
+            Initialize();
         }
         public AddressTextBox ( )
         {
-            Ctor();
+            Initialize();
         }
 
-        private void Ctor()
+        private void Initialize()
         {
             BackgroundColor = UIColor.Clear;
 

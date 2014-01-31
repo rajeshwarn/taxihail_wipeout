@@ -7,6 +7,9 @@ using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -43,14 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnLocateMe.SetImage(UIImage.FromFile("location_icon.png"), UIControlState.Normal);
             btnLocateMe.SetImage(UIImage.FromFile("location_icon_pressed.png"), UIControlState.Highlighted);
 
-            // temporary for testing purpose
-            var btnEstimate = new UIButton(new RectangleF(4, 9, 64, 42));
-            btnEstimate.BackgroundColor = UIColor.Blue;
-            btnEstimate.SetTitle("$", UIControlState.Normal);
-            btnEstimate.TouchUpInside += (sender, e) => ViewModel.AddressSelectionMode = ViewModel.AddressSelectionMode == AddressSelectionMode.DropoffSelection 
-                ? AddressSelectionMode.PickupSelection
-                : AddressSelectionMode.DropoffSelection;
-            bottomBar.AddSubview(btnEstimate);
+            AddButtonsToAppBar();
 
             InstantiatePanel();
 
@@ -77,6 +73,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm);
                 
             set.Apply();
+        }
+
+        private void AddButtonsToAppBar()
+        {
+            // temporary way to add these buttons
+            // TODO change the binding for this button, for example, ShowDestination on ViewModel if SelectionMode is DropoffSelection and bind the OrderOptionsControl with that too
+            var btnEstimate = new AppBarButton(Localize.GetValue("Estimate"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "estimate_icon.png", "estimate_icon_pressed.png");
+            btnEstimate.Frame = btnEstimate.Frame.IncrementX(4);
+            btnEstimate.TouchUpInside += (sender, e) => {
+                if(ViewModel.AddressSelectionMode == AddressSelectionMode.DropoffSelection)
+                {
+                    btnEstimate.Selected = false;
+                    ViewModel.AddressSelectionMode = AddressSelectionMode.PickupSelection;
+                }
+                else{
+                    btnEstimate.Selected = true;
+                    ViewModel.AddressSelectionMode = AddressSelectionMode.DropoffSelection;
+                }
+            };
+
+            var btnBook = new FlatButton(new RectangleF(99, 7, 123, 41));
+            FlatButtonStyle.Green.ApplyTo(btnBook);
+            btnBook.SetTitle(Localize.GetValue("BookItButton"), UIControlState.Normal);
+
+            var btnBookLater = new AppBarButton(Localize.GetValue("BookItLaterButton"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "later_icon.png", "later_icon_pressed.png");
+            btnBookLater.Frame = btnBookLater.Frame.SetX(View.Frame.Width - btnBookLater.Frame.Width - 3);
+            btnBookLater.TouchUpInside += (sender, e) => btnBookLater.Selected = !btnBookLater.Selected;
+
+            bottomBar.AddSubviews(btnEstimate, btnBook, btnBookLater);
         }
 
         private void InstantiatePanel()
