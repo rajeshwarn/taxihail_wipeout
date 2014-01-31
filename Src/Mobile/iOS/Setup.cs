@@ -28,7 +28,7 @@ using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public class Setup: MvxTouchDialogSetup
+    public class Setup : MvxTouchDialogSetup
     {
         public Setup(MvxApplicationDelegate applicationDelegate, UIWindow window)
 			: base(applicationDelegate, window)

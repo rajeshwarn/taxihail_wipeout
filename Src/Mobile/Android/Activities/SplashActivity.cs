@@ -10,6 +10,7 @@ using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
+using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
@@ -35,9 +36,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
         protected override void TriggerFirstNavigate()
         {
+            var appSettingsService = TinyIoCContainer.Current.Resolve<IAppSettings>();
+            appSettingsService.Load();
+
             // Overriden in order to pass params
             var starter = Mvx.Resolve<IMvxAppStart>();
-            starter.Start(_params);
+            starter.Start(_params);           
         }
 
         protected override void OnDestroy()

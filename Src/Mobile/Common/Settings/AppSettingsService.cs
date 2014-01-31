@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
 using MK.Common.iOS.Configuration;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
@@ -31,8 +32,18 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
 		public void Load()
 		{
-			LoadSettingsFromCache();
-			RefreshSettingsFromServer();
+			//check if the cache has already something
+			var data = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);
+			if (data == null)
+			{
+				//first run or cache cleared, fetch settings from server
+				RefreshSettingsFromServer();
+			}
+			else
+			{
+				//already got settings launch async refresh
+				Task.Factory.StartNew(() => RefreshSettingsFromServer());
+			}
 		}
 
 		void LoadSettingsFromFile()
@@ -48,15 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Settings
 						SetSettingsValue(values);
 					}
 				}
-			}
-		}
-
-		void LoadSettingsFromCache()
-		{
-			var data = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);
-			if (data != null)
-			{
-				Data = data;
 			}
 		}
 

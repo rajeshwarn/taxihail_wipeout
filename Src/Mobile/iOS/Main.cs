@@ -70,6 +70,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var setup = new Setup(this, window);
             setup.Initialize();
 
+            var appSettingsService = TinyIoCContainer.Current.Resolve<IAppSettings>();
+            appSettingsService.Load();
+
 			var startup = Mvx.Resolve<IMvxAppStart>();
 			startup.Start(@params);
 
