@@ -109,6 +109,17 @@ namespace apcurium.CMT.Web.Tests
                     PickupDate = DateTime.Now,
                     AccountId = TestAccount.Id
                 });
+
+                context.Set<OrderStatusDetail>().Add(new OrderStatusDetail
+                {
+                    OrderId = orderId,
+                    Status = new OrderStatus(),
+                    DriverInfos = new DriverInfos(),
+                    PickupDate = DateTime.Now,
+
+
+                });
+
                 context.SaveChanges();
             }
             var client = GetPaymentClient();
