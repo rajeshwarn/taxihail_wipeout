@@ -75,14 +75,14 @@
                     <TextView
                         style="@style/BlackTextLabel"
                         android:layout_width="0dp"
-                        android:layout_weight="0.7"
+                        android:layout_weight="0.8"
                         android:layout_height="wrap_content"
                         android:text="@string/CreditCardNumber"
                         android:layout_marginBottom="4dp" />
                     <TextView
                         android:layout_width="0dp"
                         android:layout_marginLeft="10dip"
-                        android:layout_weight="0.3"
+                        android:layout_weight="0.2"
                         android:layout_height="wrap_content"
                         android:text="@string/CreditCardCCV"
                         style="@style/BlackTextLabel"
@@ -96,7 +96,7 @@
                     <apcurium.mk.booking.mobile.client.controls.EditTextLeftImage
                         android:layout_width="0dp"
                         android:layout_height="@dimen/HeightEditTextFlat"
-                        android:layout_weight="0.7"
+                        android:layout_weight="0.8"
                         android:singleLine="true"
                         android:inputType="number"
                         local:MvxBind="CreditCardNumber CreditCardNumber; LeftImage CreditCardImagePath" />
@@ -104,7 +104,7 @@
                         android:layout_width="0dp"
                         android:layout_marginLeft="10dip"
                         android:layout_height="@dimen/HeightEditTextFlat"
-                        android:layout_weight="0.3"
+                        android:layout_weight="0.2"
                         android:inputType="number"
                         android:singleLine="true"
                         local:MvxBind="Text Data.CCV"
@@ -146,14 +146,14 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:inputType="number"
                         android:singleLine="true"
-                        local:MvxBind="Text Data.ExpirationMonth; Data ExpirationMonths; SelectedItem ExpirationMonth" />
+                        local:MvxBind="Text ExpirationMonthDisplay; Data ExpirationMonths; SelectedItem ExpirationMonth" />
                     <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
                         android:layout_width="0dip"
                         android:layout_weight="1"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:inputType="number"
                         android:singleLine="true"
-                        local:MvxBind="Text Data.ExpirationYear; Data ExpirationYears; SelectedItem ExpirationYear" />
+                        local:MvxBind="Text ExpirationYear; Data ExpirationYears; SelectedItem ExpirationYear" />
                 </LinearLayout>
                 <Button
                     style="@style/ButtonActionGreenStyle"

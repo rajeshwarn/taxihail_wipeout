@@ -71,10 +71,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             // Should be an ImeActions.Next binding on MeterAmount EditText:
             _meterAmountTextView.EditorAction += (object sender, TextView.EditorActionEventArgs e) =>  
             {
-                if (e.ActionId == Android.Views.InputMethods.ImeAction.Next)
+                if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
                 {
                     ViewModel.ShowCurrencyCommand.Execute();
-                    _tipAmountTextView.RequestFocus(Android.Views.FocusSearchDirection.Down);
+                    _meterAmountTextView.HideKeyboard(this);
                 }
             };
 
