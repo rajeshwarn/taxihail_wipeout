@@ -3,7 +3,6 @@ using System.Globalization;
 using TinyIoC;
 using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore;
-using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile
 {

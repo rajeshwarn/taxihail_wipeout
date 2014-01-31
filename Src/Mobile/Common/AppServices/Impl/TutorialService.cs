@@ -4,7 +4,6 @@ using apcurium.MK.Booking.Mobile.Data;
 using System.IO;
 using ServiceStack.Text;
 using apcurium.MK.Common.Configuration;
-using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

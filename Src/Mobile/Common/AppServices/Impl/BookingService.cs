@@ -18,7 +18,6 @@ using Direction = apcurium.MK.Common.Entity.DirectionSetting;
 using apcurium.MK.Booking.Api.Client;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
 using Cirrious.CrossCore;
-using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

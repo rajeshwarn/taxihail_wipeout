@@ -27,6 +27,10 @@ namespace apcurium.MK.Common
             container.RegisterInstance<IConfigurationManager>(
                 new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
 
+            container.RegisterInstance<IAppSettings>(
+               new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
+
+
             container.RegisterType<CachingDbContext>(new TransientLifetimeManager(),
                 new InjectionConstructor(
                     container.Resolve<ConnectionStringSettings>(MkConnectionString).ConnectionString));

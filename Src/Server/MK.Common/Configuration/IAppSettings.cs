@@ -1,4 +1,6 @@
-namespace MK.Common.iOS.Configuration
+using MK.Common.Configuration;
+
+namespace apcurium.MK.Common.Configuration
 {
 	public interface IAppSettings
 	{

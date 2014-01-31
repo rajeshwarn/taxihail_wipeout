@@ -23,7 +23,6 @@ using ServiceStack.Text;
 // If it does you will get a very cryptic error in logcat and it will not be obvious why you are crying!
 // So please, for the love of all that is kind on this earth, use a LOWERCASE first letter in your Package Name!!!!
 using TinyIoC;
-using MK.Common.iOS.Configuration;
 
 [assembly: Permission(Name = "@PACKAGE_NAME@.permission.C2D_MESSAGE")]
 //, ProtectionLevel = Android.Content.PM.Protection.Signature)]

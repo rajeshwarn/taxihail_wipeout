@@ -7,8 +7,8 @@ using Android.Widget;
 
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Common.Configuration;
 using TinyIoC;
-using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {

@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Mobile.Client.Cache;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.IoC;
+using apcurium.MK.Common.Configuration;
 using Cirrious.MvvmCross.Touch.Platform;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -23,7 +24,6 @@ using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Dialog.Touch;
-using MK.Common.iOS.Configuration;
 
 
 namespace apcurium.MK.Booking.Mobile.Client

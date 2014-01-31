@@ -7,7 +7,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
-using MK.Common.iOS.Configuration;
 
 #endregion
 

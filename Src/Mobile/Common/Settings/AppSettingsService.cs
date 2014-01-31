@@ -1,15 +1,14 @@
 using System;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using MK.Common.Configuration;
 using ServiceStack.Text;
 using System.IO;
 using apcurium.MK.Common.Configuration;
-using Cirrious.CrossCore;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
-using MK.Common.iOS.Configuration;
 using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Settings

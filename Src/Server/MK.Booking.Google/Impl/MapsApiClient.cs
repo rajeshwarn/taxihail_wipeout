@@ -9,7 +9,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
-using MK.Common.iOS.Configuration;
 
 #endregion
 

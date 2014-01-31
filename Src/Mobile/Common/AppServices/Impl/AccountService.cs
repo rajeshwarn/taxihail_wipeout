@@ -11,7 +11,6 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 using Cirrious.CrossCore;
 using TinyIoC;
 using apcurium.MK.Common.Enumeration;
-using MK.Common.iOS.Configuration;
 
 
 #if IOS

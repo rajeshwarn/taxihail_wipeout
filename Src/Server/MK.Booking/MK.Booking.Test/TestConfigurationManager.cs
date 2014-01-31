@@ -8,13 +8,15 @@ using System.IO;
 using System.Reflection;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
+using ServiceStack.Text;
 
 #endregion
 
 namespace apcurium.MK.Booking.Common.Tests
 {
-    public class TestConfigurationManager : IConfigurationManager
+    public class TestConfigurationManager : IConfigurationManager, IAppSettings
     {
         private readonly Dictionary<string, string> _config;
 
@@ -28,6 +30,39 @@ namespace apcurium.MK.Booking.Common.Tests
             {
                 _config.Add(token.Key, token.Value.ToString());
             }
+            SetSettingsValue(_config);
+        }
+
+        void SetSettingsValue(IDictionary<string, string> values)
+        {
+            var typeOfSettings = typeof(TaxiHailSetting);
+            foreach (KeyValuePair<string, string> item in values)
+            {
+                try
+                {
+                    var propertyName = item.Key.Contains(".")
+                        ? item.Key.SplitOnLast('.')[1]
+                        : item.Key;
+
+                    var propertyType = typeOfSettings.GetProperty(propertyName);
+                    var targetType = IsNullableType(propertyType.PropertyType)
+                        ? Nullable.GetUnderlyingType(propertyType.PropertyType)
+                        : propertyType.PropertyType;
+
+                    var propertyVal = Convert.ChangeType(item.Value, targetType);
+                    propertyType.SetValue(Data, propertyVal);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("can't set {0} : {1}" + e.Message, item.Key, item.Value);
+                }
+            }
+        }
+
+        private static bool IsNullableType(Type type)
+        {
+            return type.IsGenericType
+                && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
         }
 
         public static string AssemblyDirectory
@@ -81,6 +116,12 @@ namespace apcurium.MK.Booking.Common.Tests
         public void SetSetting(string key, string value)
         {
             _config[key] = value;
+        }
+
+        public TaxiHailSetting Data { get; private set; }
+        public void Load()
+        {
+           //done in the ctor
         }
     }
 }

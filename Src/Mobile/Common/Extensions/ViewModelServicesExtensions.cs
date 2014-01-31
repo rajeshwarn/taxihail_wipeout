@@ -2,12 +2,12 @@
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
+using MK.Common.Configuration;
 using TinyMessenger;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore;
 using TinyIoC;
-using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Extensions
 {

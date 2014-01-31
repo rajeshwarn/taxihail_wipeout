@@ -2,7 +2,7 @@ using System;
 using apcurium.MK.Common.Entity;
 using System.ComponentModel.DataAnnotations;
 
-namespace MK.Common.iOS.Configuration
+namespace MK.Common.Configuration
 {
 	public class TaxiHailSetting
     {

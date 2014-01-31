@@ -90,6 +90,7 @@
     <Compile Include="Caching\CacheItem.cs" />
     <Compile Include="Caching\CachingDbContext.cs" />
     <Compile Include="Caching\EFCacheClient.cs" />
+    <Compile Include="Configuration\IAppSettings.cs" />
     <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
     <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\AppSetting.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Configuration\Impl\PayPalSandboxCredentials.cs" />
     <Compile Include="Configuration\Impl\PayPalServerSettings.cs" />
     <Compile Include="Configuration\Impl\ServerPaymentSetting.cs" />
+    <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="CreditCard.cs" />
     <Compile Include="CurencyCodes.cs" />
     <Compile Include="Database\CustomDbConfiguration.cs" />

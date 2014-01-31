@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using apcurium.MK.Common.Configuration;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using TinyIoC;
@@ -14,7 +15,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Reactive.Linq;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {

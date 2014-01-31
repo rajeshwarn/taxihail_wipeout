@@ -3,11 +3,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Reactive.Disposables;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
 using Environment = Android.OS.Environment;
-using MK.Common.iOS.Configuration;
-
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 {
     public static class Logger

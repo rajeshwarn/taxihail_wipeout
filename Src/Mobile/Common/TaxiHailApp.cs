@@ -20,7 +20,6 @@ using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.IoC;
 using apcurium.MK.Booking.Mobile.Messages;
-using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile
 {

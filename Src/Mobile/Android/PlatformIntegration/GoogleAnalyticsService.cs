@@ -1,10 +1,10 @@
 using Android.Content;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using Com.Google.Analytics.Tracking.Android;
 using Java.Lang;
 using Exception = System.Exception;
-using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {

@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.Client.Views;
+using apcurium.MK.Common.Configuration;
 using MonoTouch.Foundation;
 using MonoTouch.ObjCRuntime;
 using MonoTouch.UIKit;
@@ -23,7 +24,6 @@ using MonoTouch.FacebookConnect;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {

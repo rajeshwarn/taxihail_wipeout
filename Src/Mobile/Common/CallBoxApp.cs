@@ -11,7 +11,6 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.IoC;
-using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile
 {

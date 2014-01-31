@@ -15,7 +15,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt;
-using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile
 {

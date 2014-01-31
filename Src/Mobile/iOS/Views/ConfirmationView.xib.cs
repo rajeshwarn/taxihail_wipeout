@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -14,7 +15,6 @@ using TinyIoC;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
