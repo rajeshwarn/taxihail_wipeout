@@ -84,12 +84,13 @@ namespace apcurium.MK.Booking.Api.Services
                 if ( (tripData != null) && ( tripData.EndTime.HasValue ))
                 {
                     _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
-                        ibsOrder.VehicleNumber, tripData.Fare, tripData.Extra, tripData.Tip, tripData.Tax , null, creditCard));
+                        ibsOrder.VehicleNumber, Math.Round(((double)tripData.Fare/100),2), Math.Round(((double)tripData.Extra/2),2), Math.Round(((double)tripData.Tip/100),2), Math.Round(((double)tripData.Tax/100),2) , null, creditCard));
                 }
                 else
                 {
+                    
                     _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
-                        ibsOrder.VehicleNumber, ibsOrder.Fare, ibsOrder.Toll, pairingInfo.AutoTipPercentage / 100,ibsOrder.VAT, null, creditCard));
+                        ibsOrder.VehicleNumber, ibsOrder.Fare, ibsOrder.Toll, Math.Round(((double)pairingInfo.AutoTipPercentage.Value) / 100,2),ibsOrder.VAT, null, creditCard));
                 }
             }
             else

@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Linq;
 using Infrastructure.Messaging;
 using ServiceStack.Text;
@@ -45,6 +46,14 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
 
 
+            var pairingInfo = _orderDao.FindOrderPairingById(order.OrderId);
+            if ((pairingInfo != null) && (pairingInfo.AutoTipPercentage.HasValue))
+            {
+                double tip =  ((double) pairingInfo.AutoTipPercentage.Value) / 100;
+                ibsStatus.Tip =  Math.Round(ibsStatus.Fare * (tip), 2);
+            }
+
+
 
             var command = new ChangeOrderStatus
                               {
@@ -80,14 +89,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             else if (ibsStatus.IsComplete)
             {
                 order.Status = OrderStatus.Completed;
-
-                var pairingInfo = _orderDao.FindOrderPairingById(order.OrderId);
-                if ( ( pairingInfo != null) && ( pairingInfo.AutoTipPercentage.HasValue ))
-                {
-                    double tip = pairingInfo.AutoTipPercentage.Value/100;
-                    ibsStatus.Tip = ibsStatus.Fare*(tip);
-                }
-
+                
                 //FormatPrice
                 var total =
                     Params.Get(ibsStatus.Toll, ibsStatus.Fare, ibsStatus.Tip, ibsStatus.VAT)
@@ -116,6 +118,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                                              ? description
                                              : (string)_resources.GetString("OrderStatus_" + ibsStatus.Status);
 
+            
             _commandBus.Send(command);
         }
 
