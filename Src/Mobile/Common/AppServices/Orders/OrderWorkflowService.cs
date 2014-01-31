@@ -1,22 +1,33 @@
 using System;
-using System.Linq;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using System.Reactive.Subjects;
-using apcurium.MK.Common.Entity;
-using System.Threading.Tasks;
 using System.Globalization;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using System.Threading.Tasks;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.AppServices.Impl;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using System.Reactive.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Extensions;
 
-namespace apcurium.MK.Booking.Mobile.AppServices.Impl
+namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
 	public class OrderWorkflowService: BaseService, IOrderWorkflowService
     {
 		readonly AbstractLocationService _locationService;
 		readonly IAccountService _accountService;
 		readonly IGeolocService _geolocService;
-		readonly ISubject<Address> _pickupAddressSubject = new ReplaySubject<Address>(1);
+		readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
+		readonly IConfigurationManager _configurationManager;
 
-		public OrderWorkflowService(AbstractLocationService locationService, IAccountService accountService, IGeolocService geolocService)
+		public OrderWorkflowService(AbstractLocationService locationService,
+			IAccountService accountService,
+			IGeolocService geolocService,
+			IConfigurationManager configurationManager)
 		{
+			_configurationManager = configurationManager;
 			_geolocService = geolocService;
 			_accountService = accountService;
 			_locationService = locationService;
@@ -64,6 +75,37 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 						}
 					}
 				});
+
+		}
+
+		public async Task ValidatePickupDestinationAndTime()
+		{
+			var pickupAddress = await _pickupAddressSubject.Take(1).ToTask();
+			bool pickupIsValid = pickupAddress.BookAddress.HasValue()
+			                     && pickupAddress.HasValidCoordinate();
+
+			if (!pickupIsValid)
+			{
+				throw new OrderValidationException("Pickup address required", OrderValidationError.PickupAddressRequired);
+			}
+
+			bool destinationIsRequired = _configurationManager.GetSetting<bool>("Client.DestinationIsRequired", false);
+			bool destinationIsValid = false;
+			//TODO: Destination not implemented v0.01pre-alpha
+			// info.DropOffAddress.BookAddress.HasValue () 
+			//&& info.DropOffAddress.HasValidCoordinate ()
+
+			if (destinationIsRequired && !destinationIsValid)
+			{
+				throw new OrderValidationException("Destination address required", OrderValidationError.DestinationAddressRequired);
+			}
+
+			bool pickupDateIsValid = true; // TODO: Not impletmented:  Order.PickupDate.HasValue && Order.PickupDate.Value < DateTime.Now
+
+			if (!pickupDateIsValid)
+			{
+				throw new OrderValidationException("Invalid pickup date", OrderValidationError.InvalidPickupDate);
+			}
 
 		}
 
