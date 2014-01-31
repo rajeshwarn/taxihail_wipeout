@@ -37,6 +37,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad();
 
+            btnMenu.SetImage(UIImage.FromFile("menu_icon.png"), UIControlState.Normal);
+            btnMenu.SetImage(UIImage.FromFile("menu_icon_pressed.png"), UIControlState.Highlighted);
+
+            btnLocateMe.SetImage(UIImage.FromFile("location_icon.png"), UIControlState.Normal);
+            btnLocateMe.SetImage(UIImage.FromFile("location_icon_pressed.png"), UIControlState.Highlighted);
+
             // temporary for testing purpose
             var btnEstimate = new UIButton(new RectangleF(4, 9, 64, 42));
             btnEstimate.BackgroundColor = UIColor.Blue;
@@ -46,16 +52,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 : AddressSelectionMode.DropoffSelection;
             bottomBar.AddSubview(btnEstimate);
 
-            var btn = new UIButton(new RectangleF(0, 0, 21, 21));
-            btn.SetImage(UIImage.FromFile("Assets/settings.png"), UIControlState.Normal);
-            btn.TouchUpInside += (sender, e) => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
-            test.AddSubview(btn);
-
-            var btn2 = new CommandButton(UIButtonType.Custom);
-            btn2.Frame = new RectangleF(0, 0, 21, 21);
-            btn2.SetImage(UIImage.FromFile("Assets/gpsRefreshIcon.png"), UIControlState.Normal);
-            locateMeOverlay.AddSubview(btn2);
-
             InstantiatePanel();
 
             var set = this.CreateBindingSet<HomeView, HomeViewModel>();
@@ -64,7 +60,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.DataContext)
                 .To(vm => vm.Panel);
 
-            set.Bind(btn2)
+            set.Bind(btnMenu)
+                .For(v => v.Command)
+                .To(vm => vm.Panel.OpenOrCloseMenu);
+
+            set.Bind(btnLocateMe)
                 .For(v => v.Command)
                 .To(vm => vm.LocateMe);
 

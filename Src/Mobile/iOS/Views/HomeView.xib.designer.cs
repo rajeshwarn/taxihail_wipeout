@@ -16,22 +16,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarView bottomBar { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayButton btnLocateMe { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayButton btnMenu { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderOptionsControl ctrlOrderOptions { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIView homeView { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayView locateMeOverlay { get; set; }
-
-		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Views.OrderMapView mapView { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayView test { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (bottomBar != null) {
+				bottomBar.Dispose ();
+				bottomBar = null;
+			}
+
+			if (btnMenu != null) {
+				btnMenu.Dispose ();
+				btnMenu = null;
+			}
+
+			if (btnLocateMe != null) {
+				btnLocateMe.Dispose ();
+				btnLocateMe = null;
+			}
+
 			if (ctrlOrderOptions != null) {
 				ctrlOrderOptions.Dispose ();
 				ctrlOrderOptions = null;
@@ -42,24 +57,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				homeView = null;
 			}
 
-			if (locateMeOverlay != null) {
-				locateMeOverlay.Dispose ();
-				locateMeOverlay = null;
-			}
-
 			if (mapView != null) {
 				mapView.Dispose ();
 				mapView = null;
-			}
-
-			if (test != null) {
-				test.Dispose ();
-				test = null;
-			}
-
-			if (bottomBar != null) {
-				bottomBar.Dispose ();
-				bottomBar = null;
 			}
 		}
 	}
