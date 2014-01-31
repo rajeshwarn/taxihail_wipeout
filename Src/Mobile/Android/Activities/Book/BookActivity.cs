@@ -107,12 +107,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             apc_logo.Click += (object sender, EventArgs e) => 
             {
-                ViewModel.Panel.ToApcuriumWebsite.Execute();
+                ViewModel.Panel.ToApcuriumWebsite.Execute(null);
             };
 
             mk_logo.Click += (object sender, EventArgs e) =>
             {
-                ViewModel.Panel.ToMobileKnowledgeWebsite.Execute();
+                ViewModel.Panel.ToMobileKnowledgeWebsite.Execute(null);
             };
 
             //var mainLayoutMenu = FindViewById<RelativeLayout>(Resource.Id.MainLayoutMenu);
@@ -159,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void HandleSignOutButtonClick(object sender, EventArgs e)
         {
-            ViewModel.Panel.SignOut.Execute();
+            ViewModel.Panel.SignOut.Execute(null);
             // Finish the activity, because clearTop does not seem to be enough in this case
             // Finish is delayed 1sec in order to prevent the application from being terminated
             Observable.Return(Unit.Default).Delay(TimeSpan.FromSeconds(1)).Subscribe(x => { Finish(); });

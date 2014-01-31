@@ -467,6 +467,8 @@
     <AndroidResource Include="Resources\Values\SetThemes.xml" />
     <AndroidResource Include="Resources\values-v11\SetThemes.xml" />
     <Compile Include="PhonePresenter.cs" />
+    <Compile Include="Activities\HomeActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_Home.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
