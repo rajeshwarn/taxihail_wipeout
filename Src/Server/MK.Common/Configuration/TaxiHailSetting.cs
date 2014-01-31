@@ -13,6 +13,7 @@ namespace MK.Common.iOS.Configuration
 			ShowEstimateWarning = true;
             DefaultRadius = 500;
             AccountActivationDisabled = true;
+            ShowVehicleInformation = true;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -62,7 +63,7 @@ namespace MK.Common.iOS.Configuration
 		public string DefaultPhoneNumberDisplay { get; private set; }
 		public string DefaultPhoneNumber { get; private set; }
         public bool ShowEstimate { get; private set; }
-		public string NumberOfCharInRefineAddress { get; private set; }
+        public int NumberOfCharInRefineAddress { get; private set; }
         public bool AccountActivationDisabled { get; private set; }
         public bool HideRebookOrder { get; private set; }
         public bool ShowPassengerName { get; private set; }
@@ -70,9 +71,10 @@ namespace MK.Common.iOS.Configuration
         public bool ShowPassengerNumber { get; private set; }
 		public string AboutUsUrl { get; private set; }
         public bool ShowRingCodeField { get; private set; }
-		public string ClientPollingInterval { get; private set; }
+        public int ClientPollingInterval { get; private set; }
         public bool HideCallDispatchButton { get; private set; }
 		public string SupportEmail { get; private set; }
+        public string SenderId { get; private set; }
     }
 }
 

@@ -3,6 +3,7 @@ using System.Globalization;
 using TinyIoC;
 using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore;
+using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -42,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile
         public static string CultureInfoString
         {
             get{
-                var culture = Mvx.Resolve<IConfigurationManager>().GetSetting("PriceFormat");
+				var culture = Mvx.Resolve<IAppSettings>().Data.PriceFormat;
                 if (string.IsNullOrEmpty(culture))
                 {
                     return "en-US";

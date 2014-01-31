@@ -51,5 +51,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             return client;
         }
+
     }
 }

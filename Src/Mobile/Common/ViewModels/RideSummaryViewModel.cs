@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order = order.FromJson<Order> ();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 
-			IsRatingButtonShown = this.Services().Config.GetSetting("Client.RatingEnabled", false);  
+			IsRatingButtonShown = Settings.RatingEnabled;  
 		}
 
         public override void OnViewStarted(bool firstStart = false)
@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-                var setting = this.Services().Config.GetPaymentSettings();
+				var setting = this.Services().Payment.GetPaymentSettings();
 				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 				return isPayEnabled && setting.PaymentMode != PaymentMethod.RideLinqCmt && !this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue; // TODO not sure about this
 			}
@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        get
 	        {
-                var setting = this.Services().Config.GetPaymentSettings();
+				var setting = this.Services().Payment.GetPaymentSettings();
                 var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
                 return isPayEnabled && setting.PaymentMode != PaymentMethod.RideLinqCmt && this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue;
 	        }
@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-                var sendReceiptAvailable = this.Services().Config.GetSetting("Client.SendReceiptAvailable", false);
+				var sendReceiptAvailable = Settings.SendReceiptAvailable;
                 return (OrderStatus != null) && OrderStatus.FareAvailable && sendReceiptAvailable;
 			}
 		}

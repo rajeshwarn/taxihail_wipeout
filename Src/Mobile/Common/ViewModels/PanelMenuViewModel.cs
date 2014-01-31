@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public bool TutorialEnabled {
             get{
-                return this.Services().Config.GetSetting("Client.TutorialEnabled", true);
+				return Settings.TutorialEnabled;
             }
         }
 
@@ -183,14 +183,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
 			{
-                return !this.Services().Config.GetSetting("Client.HideCallDispatchButton", false);
+				return !Settings.HideCallDispatchButton;
 			}
         }
 
         public bool CanReportProblem
         {
             get {
-                return !this.Services().Config.GetSetting("Client.HideReportProblem", false);
+				return !Settings.HideReportProblem;
 			}            
         }
 
@@ -200,9 +200,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    Action call = () => { this.Services().Phone.Call(this.Services().Config.GetSetting("DefaultPhoneNumber")); };
+						Action call = () => { this.Services().Phone.Call(Settings.DefaultPhoneNumber); };
                     this.Services().Message.ShowMessage(string.Empty,
-                                                this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"),
+												Settings.DefaultPhoneNumberDisplay,
                                                this.Services().Localize["CallButton"],
                                                call, this.Services().Localize["Cancel"], 
                                                () => {});

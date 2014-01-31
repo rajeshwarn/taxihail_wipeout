@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
             get 
 			{
-                var culture = new CultureInfo(this.Services().Config.GetSetting("PriceFormat"));
+				var culture = new CultureInfo(Settings.PriceFormat);
                 return culture.NumberFormat.CurrencySymbol;
             }
         }

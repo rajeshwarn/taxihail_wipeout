@@ -19,8 +19,6 @@ namespace apcurium.MK.Booking.Mobile
 		{
 			JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
 
-			TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
-
 			var activeOrderStatusDetails = TinyIoCContainer.Current.Resolve<IAccountService>().GetActiveOrdersStatus();
 
 			if (TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)

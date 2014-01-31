@@ -1,4 +1,4 @@
-﻿﻿using apcurium.MK.Booking.Mobile.AppServices;
+﻿using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
@@ -31,8 +31,6 @@ namespace apcurium.MK.Booking.Mobile.Extensions
         {
             _container = TinyIoCContainer.Current;
         }
-
-        public IConfigurationManager Config { get { return _container.Resolve<IConfigurationManager>(); } }
 
         public IMessageService Message { get { return _container.Resolve<IMessageService>(); } }
 

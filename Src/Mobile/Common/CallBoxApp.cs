@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile
             
             _container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
 
-            _container.Register<ConfigurationClientService>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<ILogger>(), c.Resolve<IPackageInfo>().UserAgent));
+            _container.Register<ConfigurationClientService>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
 
             _container.Register<IAccountService, AccountService>();
             _container.Register<IBookingService, BookingService>();

@@ -298,7 +298,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 					{
 						InvokeOnMainThread(() =>
 							{
-                                string err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], Settings.ApplicationName, this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"));
+                                string err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], Settings.ApplicationName, this.Services().Settings.DefaultPhoneNumberDisplay);
                                 this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
 							});
 					}
