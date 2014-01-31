@@ -73,22 +73,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
-        public override UIColor BackgroundColor
-        {
-            get
-            {
-                return base.BackgroundColor;
-            }
-            set
-            {
-                if (value != base.BackgroundColor)
-                {
-                    base.BackgroundColor = value;
-                    SetNeedsDisplay();
-                }
-            }
-        }
-
         private string _imageLeftSource;
         public string ImageLeftSource
         {
