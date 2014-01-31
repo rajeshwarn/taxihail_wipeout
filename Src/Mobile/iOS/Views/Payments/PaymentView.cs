@@ -82,9 +82,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             set.Bind(txtTip)
                 .For(v => v.Text)
-                .To(vm => vm.PaymentPreferences.TipAmount);
+                .To(vm => vm.PaymentPreferences.TipAmountDisplay);
 
-            // Bindings to clear input when starting to edit
+            // Bindings to clear input when starting to edit, Started = Focus
 
             set.Bind(txtTipAmount)
                 .For("Started")
@@ -127,7 +127,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             // Tip-Mode Togglers
 
             set.Bind(txtTipAmount)
-                .For("EditingChanged")
+                .For("Started")
                 .To(vm => vm.ToggleToTipCustom); // See txtTip.Configure for the "Toggle to Tip Picker" command
 
             set.Bind(txtTipAmount)

@@ -39,6 +39,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
             PaymentSelectorToggleIsVisible = IsPayPalEnabled && IsCreditCardEnabled;
             PayPalSelected = !IsCreditCardEnabled;
+
+            PaymentPreferences.TipListDisabled = false;
         }
 
         public bool IsPayPalEnabled
@@ -119,15 +121,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{ 
 			get
 			{				 
-				return (TipCustomized ? _tipAmount : (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString());
+                return (PaymentPreferences.TipListDisabled ? _tipAmount : (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString());
 			}
 
 			set
 			{
 				_tipAmount = GetTipAmount(value);
 				TipAmountString = GetCurrency(_tipAmount);
-				RaisePropertyChanged(() => TotalAmount);
-				RaisePropertyChanged(() => TipAmount);
+                RaisePropertyChanged(() => TipAmount);
+                RaisePropertyChanged(() => TotalAmount);			
 			}		
 		}
 
@@ -162,7 +164,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public string GetTipAmount(string value)
 		{
-			var _tip = (TipCustomized ? value : (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString());
+            var _tip = (PaymentPreferences.TipListDisabled ? value : (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString());
 			return _tip;
 		}
 
@@ -171,7 +173,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			return CultureProvider.FormatCurrency((CultureProvider.ParseCurrency(amount)));
 		}
 
-		public bool TipCustomized = false;
+        public bool IsResettingTip = false; // For Droid's tip picker
 
 		public AsyncCommand ToggleToTipCustom
 		{
@@ -179,26 +181,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				return GetCommand(() =>
 				{ 
-					TipCustomized = true;
-					RaisePropertyChanged(() => TotalAmount);
+                    if (!PaymentPreferences.TipListDisabled)
+                    {
+                        IsResettingTip = true;
+                        PaymentPreferences.Tip = 0;
+                        PaymentPreferences.TipListDisabled = true;
+					    RaisePropertyChanged(() => TotalAmount);
+                        RaisePropertyChanged(() => PaymentPreferences);
+                        ClearTipCommand.Execute();
+                    }
 				});
 			}
 		}
 
 		public AsyncCommand ToggleToTipSelector
-		{
-			get
-			{
-				return GetCommand(() =>
-					{ 
-						TipCustomized = false;
-						TipAmount = (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString();
-						RaisePropertyChanged(() => TotalAmount);
-						RaisePropertyChanged(() => TipAmountString);
-						ShowCurrencyCommand.Execute();
-					});
-			}
-		}
+        {
+            get
+            {
+                return GetCommand(() =>
+                { 
+                    if (IsResettingTip && PaymentPreferences.Tip == 0 && CultureProvider.ParseCurrency(TipAmount) == 0d)
+                    {
+                        IsResettingTip = false;
+                        return;
+                    }
+                    IsResettingTip = false;
+                    PaymentPreferences.TipListDisabled = false;                                            
+                    TipAmount = (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString();
+                    RaisePropertyChanged(() => TotalAmount);
+                    RaisePropertyChanged(() => TipAmountString);
+                    ShowCurrencyCommand.Execute(); 
+                    RaisePropertyChanged(() => PaymentPreferences);
+                });
+            }
+        }
 
 		public AsyncCommand ClearTipCommand
 		{
@@ -206,9 +222,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				return GetCommand(() =>
 					{ 					
-
-						TipAmountString = TipAmount = "";
-						RaisePropertyChanged(() => TipAmount);
+                        TipAmount = "";	
+                        TipAmountString = "";						
 						RaisePropertyChanged(() => TipAmountString);
 					});
 			}
@@ -226,30 +241,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		public AsyncCommand Testa
-		{
-			get
-			{
-				return GetCommand(() =>
-					{ 					
-						MeterAmount = "";
-						RaisePropertyChanged(() => MeterAmount);
-					});
-			}
-		}
-
 		public AsyncCommand ShowCurrencyCommand
-		{
-			get
-			{
-				return GetCommand(() =>
-				{ 					
-					MeterAmount = GetCurrency(MeterAmount);
-					TipAmountString = GetCurrency(CultureProvider.ParseCurrency(TipAmount).ToString());
-					RaisePropertyChanged(()=>TipAmountString);									
-				});
-			}
-		}
+        {
+            get
+            {
+                return GetCommand(() =>
+                { 										
+                    if (MeterAmount.ToString() != GetCurrency(MeterAmount).ToString())
+                    {
+                        MeterAmount = GetCurrency(MeterAmount);
+                    }
+                    if (TipAmountString != GetCurrency(TipAmountString))
+                    {
+                        TipAmountString = GetCurrency(CultureProvider.ParseCurrency(TipAmount).ToString());
+                    }
+                    RaisePropertyChanged(() => TipAmountString);							
+                });
+            }
+        }
 
 		public PaymentDetailsViewModel PaymentPreferences { get; private set; }
 
