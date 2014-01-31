@@ -36,10 +36,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
 			}
+
+			AddressSelectionMode = AddressSelectionMode.PickupSelection;
 		}
 
 		public PanelMenuViewModel Panel { get; set; }
 		public MapViewModel Map { get; private set; }
+
+		private AddressSelectionMode _addressSelectionMode;
+		public AddressSelectionMode AddressSelectionMode
+		{
+			get
+			{
+				return _addressSelectionMode;
+			}
+			set
+			{
+				if (_addressSelectionMode != value)
+				{
+					_addressSelectionMode = value;
+					RaisePropertyChanged();
+				}
+			}
+		}
 
 		private Address _pickupAddress;
 		public Address PickupAddress
@@ -58,7 +77,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 			}
 		}
-
 
 		public ICommand LocateMe
 		{

@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -35,6 +36,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+
+            // temporary for testing purpose
+            var btnEstimate = new UIButton(new RectangleF(4, 9, 64, 42));
+            btnEstimate.BackgroundColor = UIColor.Blue;
+            btnEstimate.SetTitle("$", UIControlState.Normal);
+            btnEstimate.TouchUpInside += (sender, e) => ViewModel.AddressSelectionMode = ViewModel.AddressSelectionMode == AddressSelectionMode.DropoffSelection 
+                ? AddressSelectionMode.PickupSelection
+                : AddressSelectionMode.DropoffSelection;
+            bottomBar.AddSubview(btnEstimate);
 
             var btn = new UIButton(new RectangleF(0, 0, 21, 21));
             btn.SetImage(UIImage.FromFile("Assets/settings.png"), UIControlState.Normal);

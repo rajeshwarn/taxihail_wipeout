@@ -6,6 +6,8 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -19,21 +21,45 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private void Initialize()
         {
             BackgroundColor = UIColor.Clear;
-
-            AddSubview(Line.CreateVertical(44f, 8f, 29f, UIColor.FromRGB(112, 112, 112), 1f));
-            AddSubview(Line.CreateHorizontal(0f, 44f, Frame.Width, UIColor.FromRGB(178, 178, 178), 1f));
-
-            txtPickupAddress.BackgroundColor = UIColor.Clear;
+            viewPickup.BackgroundColor = UIColor.Clear;
+            viewDestination.BackgroundColor = UIColor.Clear;
+            viewVehicleType.BackgroundColor = UIColor.Clear;
         }
 
         private void InitializeBinding()
         {
             var set = this.CreateBindingSet<OrderOptionsControl, HomeViewModel>();
 
-            set.Bind(txtPickupAddress)
+            set.Bind(this)
+                .For(v => v.AddressSelectionMode)
+                .To(vm => vm.AddressSelectionMode);
+
+            set.Bind(viewPickup.AddressTextView)
                 .To(vm => vm.PickupAddress.DisplayAddress);
 
             set.Apply();
+        }
+
+        AddressSelectionMode _addressSelectionMode;
+        public AddressSelectionMode AddressSelectionMode
+        {
+            get { return _addressSelectionMode; }
+            set
+            {
+                _addressSelectionMode = value;
+                if (value == AddressSelectionMode.PickupSelection)
+                {
+                    viewPickup.IsReadOnly = false;
+                    viewDestination.Hidden = true;
+//                    viewVehicleType.ShowEstimate = false;
+                }
+                else
+                {
+                    viewPickup.IsReadOnly = true;
+                    viewDestination.Hidden = false;
+//                    viewVehicleType.ShowEstimate = true;
+                }
+            }
         }
 
         public override void AwakeFromNib()
@@ -46,16 +72,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             this.DelayBind (() => {
                 InitializeBinding();
             });
-        }
-
-        public override SizeF IntrinsicContentSize
-        {
-            get
-            {
-                return base.IntrinsicContentSize;
-                // try to use this
-//                InvalidateIntrinsicContentSize
-            }
         }
     }
 }

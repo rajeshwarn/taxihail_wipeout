@@ -13,13 +13,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	partial class OrderOptionsControl
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtPickupAddress { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AddressTextBox viewDestination { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AddressTextBox viewPickup { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIView viewVehicleType { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (txtPickupAddress != null) {
-				txtPickupAddress.Dispose ();
-				txtPickupAddress = null;
+			if (viewPickup != null) {
+				viewPickup.Dispose ();
+				viewPickup = null;
+			}
+
+			if (viewDestination != null) {
+				viewDestination.Dispose ();
+				viewDestination = null;
+			}
+
+			if (viewVehicleType != null) {
+				viewVehicleType.Dispose ();
+				viewVehicleType = null;
 			}
 		}
 	}
