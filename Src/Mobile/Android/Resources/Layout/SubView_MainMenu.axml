@@ -155,7 +155,7 @@
                             android:layout_height="1px" />
                         <Button
                             android:id="@+id/settingsSupport"
-                            local:MvxBind="Click Panel.ReportProblem; Visibility Panel.CanReportProblem, Converter=Visibility"
+                            local:MvxBind="Click Panel.NavigateToReportProblem; Visibility Panel.CanReportProblem, Converter=Visibility"
                             style="@style/SettingItemTitle"
                             android:background="@drawable/setting_cell"
                             android:layout_width="fill_parent"

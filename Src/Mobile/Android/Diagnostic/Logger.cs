@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
 using Environment = Android.OS.Environment;
+using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 {
@@ -26,9 +27,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
     {
         public static readonly string BaseDir =
             Path.Combine(Environment.ExternalStorageDirectory.ToString(), "TaxiHail");
-            //System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 
-        public static readonly string LogFilename = Path.Combine(BaseDir, "log.txt");
+        public static string LogFilename;
         private static bool _flushNextWrite;
 
         public void LogError(Exception ex)
@@ -131,6 +131,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
             var msgToLog = message + " by :" + user + " with version " + version;
 
             Console.WriteLine(msgToLog);
+
+            LogFilename = "errorlog.txt";
+            if(TinyIoCContainer.Current.CanResolve<IAppSettings>())
+            {
+                LogFilename = Path.Combine(BaseDir, TinyIoCContainer.Current.Resolve<IAppSettings>().Data.ErrorLogFile);
+            }
 
             if (File.Exists(LogFilename) && _flushNextWrite)
             {

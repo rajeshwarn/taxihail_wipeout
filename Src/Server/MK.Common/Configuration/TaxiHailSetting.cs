@@ -14,6 +14,9 @@ namespace MK.Common.iOS.Configuration
             DefaultRadius = 500;
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;
+            ErrorLogFile = "errorlog.txt";
+            ErrorLogEnabled = true;
+            SupportEmail = "taxihail@apcurium.com";
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -22,6 +25,7 @@ namespace MK.Common.iOS.Configuration
 		public bool CanChangeServiceUrl { get; private set; }
 		public string ServiceUrl { get; set; }
 		public bool ErrorLogEnabled{ get; private set; }
+        public string ErrorLogFile{ get; private set; }
 		public string DefaultServiceUrl{ get; private set; }
 
 		public bool TwitterEnabled{ get; private set; }       

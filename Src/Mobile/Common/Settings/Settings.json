@@ -1,8 +1,5 @@
-{
-   "ApplicationName" : "TaxiHail", 
-   "ServiceUrl" : "http://test.taxihail.biz:8181/taxihaildemo/api/",   
-   "CanChangeServiceUrl" : "true",   
-   "ErrorLogEnabled" : "false",
+{ 
+   "ServiceUrl" : "http://test.taxihail.biz:8181/taxihaildemo/api/",
    "FacebookAppId" : "134284363380764",
    "FacebookEnabled" : "true",
    "TwitterAccessTokenUrl" : "https://api.twitter.com/oauth/access_token",

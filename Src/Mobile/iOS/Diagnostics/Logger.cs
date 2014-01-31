@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
+using MK.Common.iOS.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
 {
@@ -134,44 +135,44 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
 
         private static void Write (string message)
         {
-//            try {
-//                var user = @" N\A with version " + TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version;
-//                var account = TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount;
-//                if (account != null) {
-//                    user = account.Email;                             
-//                }
-//                
-//                Console.WriteLine (message + " by :" + user + " with version " + TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version);            
-//            
-//                if (TinyIoCContainer.Current.Resolve<IAppSettings> ().Data.ErrorLogEnabled) {
-//                    try {
-//                        if (File.Exists (TinyIoCContainer.Current.Resolve<IAppSettings> ().ErrorLog)) {
-//                            var f = new FileInfo (TinyIoCContainer.Current.Resolve<IAppSettings> ().ErrorLog);
-//                            var lenKb = f.Length / 1024;
-//                            if (lenKb > 375) {
-//                                File.Delete (TinyIoCContainer.Current.Resolve<IAppSettings> ().ErrorLog);
-//                            }
-//                        }
-//
-//                        using (var fs = new FileStream (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog, FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
-//                            using (var w = new StreamWriter (fs)) {
-//                                w.BaseStream.Seek (0, SeekOrigin.End);
-//                                w.WriteLine (message + " by :" + user + " with version " + TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version);
-//                                w.Flush ();
-//                                w.Close ();
-//                            }
-//                            fs.Close ();
+            try {
+                var user = @" N\A with version " + TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version;
+                var account = TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount;
+                if (account != null) {
+                    user = account.Email;                             
+                }
+
+                Console.WriteLine (message + " by :" + user + " with version " + TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version);            
+            
+                if (TinyIoCContainer.Current.Resolve<IAppSettings> ().Data.ErrorLogEnabled) {
+                    try {
+                        if (File.Exists (TinyIoCContainer.Current.Resolve<IAppSettings> ().Data.ErrorLogFile)) {
+                            var f = new FileInfo (TinyIoCContainer.Current.Resolve<IAppSettings> ().Data.ErrorLogFile);
+                            var lenKb = f.Length / 1024;
+                            if (lenKb > 375) {
+                                File.Delete (TinyIoCContainer.Current.Resolve<IAppSettings> ().Data.ErrorLogFile);
+                            }
                         }
-// ReSharper disable once EmptyGeneralCatchClause
-//                    } catch {
-//                    
-//                    }
-//                }
-//// ReSharper disable once EmptyGeneralCatchClause
-//            } catch {
-//            }
-//            
-//        }
+
+                        using (var fs = new FileStream (TinyIoCContainer.Current.Resolve<IAppSettings>().Data.ErrorLogFile, FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
+                            using (var w = new StreamWriter (fs)) {
+                                w.BaseStream.Seek (0, SeekOrigin.End);
+                                w.WriteLine (message + " by :" + user + " with version " + TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version);
+                                w.Flush ();
+                                w.Close ();
+                            }
+                            fs.Close ();
+                        }
+
+                    } catch {
+                    
+                    }
+                }
+
+            } catch {
+            }
+            
+        }
     }
 }
 

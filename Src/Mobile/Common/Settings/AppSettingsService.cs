@@ -73,6 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 		void SaveSettings()
 		{
 			_cacheService.Set(SettingsCacheKey, Data);
+			_logger.LogMessage("setting {0}", Data.ToJson());
 		}
 
 		void SetSettingsValue(IDictionary<string,string> values)
@@ -82,9 +83,10 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			{
 				try
 				{
+					_logger.LogMessage("setting {0} - value {1}", item.Key, item.Value);
 					var propertyName = item.Key.Contains(".") ? 
 					                   item.Key.SplitOnLast('.')[1]
-						                   : item.Key;
+						               : item.Key;
 
 					var propertyType = typeOfSettings.GetProperty(propertyName);
 					var targetType = IsNullableType(propertyType.PropertyType) ? 
@@ -98,7 +100,6 @@ namespace apcurium.MK.Booking.Mobile.Settings
 				{
 					_logger.LogError(e);
 					_logger.LogMessage("Error can't set value for property {0}, value was {1}", item.Key, item.Value);
-					Console.WriteLine("Error Settings can't set value for property {0}, value was {1}", item.Key, item.Value);
 				}
 			}
 		}
