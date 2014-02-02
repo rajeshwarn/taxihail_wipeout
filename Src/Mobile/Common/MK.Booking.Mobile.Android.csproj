@@ -322,6 +322,7 @@
     <Compile Include="ViewModels\ChildViewModel.cs" />
     <Compile Include="ViewModels\Map\MapBounds.cs" />
     <Compile Include="ViewModels\Map\MapViewModel.cs" />
+    <Compile Include="ViewModels\Orders\OrderOptionsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -379,5 +380,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppServices\Auth\" />
+    <Folder Include="ViewModels\Orders\" />
   </ItemGroup>
 </Project>
