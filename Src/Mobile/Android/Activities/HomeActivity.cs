@@ -60,6 +60,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 InitMap();
             }        
+
+
+            ImageView iv = new ImageView();
         }
 
         protected override void OnViewModelSet()
@@ -73,7 +76,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             FindViewById<OrderMapView>(Resource.Id.mapPickup).PostInvalidateDelayed(100);
 
-           
+            // TODO: either subclass ImageView to create a generic imageView with a resource binding (set->SetImageResource) for Car selection or do everything here in the activity
+            // To check when viewmodel will integrate it
         }
 
         protected override void OnResume()
