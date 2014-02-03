@@ -61,8 +61,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 InitMap();
             }        
 
-
-            ImageView iv = new ImageView();
         }
 
         protected override void OnViewModelSet()

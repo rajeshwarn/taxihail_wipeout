@@ -103,7 +103,7 @@
                                     android:src="@drawable/taxi_badge" />
                                 <TextView
                                     android:text="TAXI"
-                                    android:style="@drawable/home_car_text_selector"
+                                    style="@drawable/home_car_text_selector"
                                     android:textSize="10dp"
                                     android:gravity="center|center"
                                     android:textColor="#000000"

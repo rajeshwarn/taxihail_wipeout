@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 	<item
     	android:state_pressed="true"
-        android:style="@style/HomeCarTextSelected" />    
+        style="@style/HomeCarTextSelected" />    
     <item
     	android:state_pressed="false"        
-        android:style="@style/HomeCarText" />  
+        style="@style/HomeCarText" />  
 </selector>
