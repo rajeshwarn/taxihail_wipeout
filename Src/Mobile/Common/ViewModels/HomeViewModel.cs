@@ -21,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			_orderWorkflowService = orderWorkflowService;
 			Panel = new PanelMenuViewModel(this, browserTask);
+            // debug:
+            Map = AddChild<MapViewModel>(); //
 		}
 
 		public void Init()

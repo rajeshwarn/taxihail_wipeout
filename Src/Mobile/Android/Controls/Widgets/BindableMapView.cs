@@ -10,37 +10,24 @@ using Android.Util;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    public abstract class BindableMapView: MapView, IMvxBindable
+    public abstract class BindableMapView: IMvxBindable
     {
         public IMvxBindingContext BindingContext { get; set; }
 
-        public BindableMapView(Context context)
-            : base(context)
+        public BindableMapView()
+            : base()
         {
             this.CreateBindingContext();
         }
-
-        public BindableMapView(Context context, IAttributeSet attrs)
-            : base(context, attrs)
-        {
-            this.CreateBindingContext();
-        }
-
-        public BindableMapView(Context context, IAttributeSet attrs, int defStyle)
-            : base(context, attrs, defStyle)
-        {
-            this.CreateBindingContext();
-        }
-
-
-        protected override void Dispose(bool disposing)
-        {
-                 if (disposing)
-            {
-                BindingContext.ClearAllBindings();
-            }
-            base.Dispose(disposing);
-        }
+        // TODO: Dispose properly of resources inside OrderMapView.cs
+//        protected override void Dispose(bool disposing)
+//        {
+//                 if (disposing)
+//            {
+//                BindingContext.ClearAllBindings();
+//            }
+//            base.Dispose(disposing);
+//        }
 
         [MvxSetToNullAfterBinding]
         public object DataContext

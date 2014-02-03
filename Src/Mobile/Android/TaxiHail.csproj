@@ -471,7 +471,6 @@
     <AndroidResource Include="Resources\Layout\View_Home.axml" />
     <Compile Include="Controls\Widgets\BindableMapView.cs" />
     <Compile Include="Controls\Widgets\IMvxBindable.cs" />
-    <Compile Include="Controls\Widgets\OrderMapVIew.cs" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_old.xml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow.xml" />
     <AndroidResource Include="Resources\Drawable\menu_icon.png" />
@@ -505,6 +504,12 @@
     <AndroidResource Include="Resources\Drawable\highlight.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\highlight.png" />
     <AndroidResource Include="Resources\Drawable\home_car_text_selector.xml" />
+    <AndroidResource Include="Resources\Values\String.xml" />
+    <Compile Include="Activities\Utilities\MvxFragmentActivity.cs" />
+    <Compile Include="Activities\Utilities\MvxEventSourceFragmentActivity.cs" />
+    <Compile Include="Activities\Utilities\MvxCreateViewParameters.cs" />
+    <Compile Include="Activities\Utilities\MvxTabsFragmentActivity.cs" />
+    <Compile Include="Controls\Fragments\OrderMapView.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -536,9 +541,6 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_LocationList.axml">
       <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Values\String.xml">
-      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Values\Color.xml" />
     <AndroidResource Include="Resources\Layout\SpinnerText.axml" />
@@ -664,6 +666,8 @@
   <ItemGroup>
     <Folder Include="Resources\drawable-hdpi\" />
     <Folder Include="Resources\values-v11\" />
+    <Folder Include="Activities\Utilities\" />
+    <Folder Include="Controls\Fragments\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">

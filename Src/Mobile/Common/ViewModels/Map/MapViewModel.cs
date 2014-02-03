@@ -45,7 +45,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					RaisePropertyChanged("MapBounds");
 				}
 			}
-
 		}
 
 		private void OnPickupAddressChanged()
