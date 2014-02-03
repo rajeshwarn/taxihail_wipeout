@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 			{
 				return null;
 			}
+
 		    var anv = mapView.DequeueReusableAnnotation ("thislocation") as PinAnnotationView;
 		    if (anv == null) 
 		    {
@@ -37,14 +38,14 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 		    return anv;
 		}
 
+        // TODO verify if we could have a special kind of command that stops itself if called a second time, so we could remove this from the map
 		public override void RegionChanged (MKMapView mapView, bool animated)
 		{
 			if( _regionMovedActivated )
 			{
-				((TouchMap)mapView).OnRegionChanged();
+//				((TouchMap)mapView).OnRegionChanged();
 			}
 		}
-
 	}
 }
 

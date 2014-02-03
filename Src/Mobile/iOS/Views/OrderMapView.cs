@@ -25,6 +25,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void Initialize()
         {
+            Delegate = new AddressMapDelegate ();
+
             this.DelayBind(() => {
 
                 var set = this.CreateBindingSet<OrderMapView, MapViewModel>();
