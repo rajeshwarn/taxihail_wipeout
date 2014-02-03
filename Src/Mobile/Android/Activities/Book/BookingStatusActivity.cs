@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     public class BookingStatusActivity : BaseBindingActivity<BookingStatusViewModel>
     {
         //private TouchMap _touchMap;
-        private OrderMapView _touchMap;
+        private SupportMapFragment _touchMap;
 
         protected override void OnCreate(Bundle bundle)
         {

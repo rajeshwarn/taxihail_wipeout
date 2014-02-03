@@ -24,15 +24,19 @@ using apcurium.MK.Booking.Mobile.Client.Animations;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Models;
+using Android.Support.V4.App;
+using Cirrious.MvvmCross.Droid.Fragging;
+using Cirrious.MvvmCross.ViewModels;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
 	[Activity(Label = "Home", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait, ClearTaskOnLaunch = true,
         FinishOnTaskLaunch = true)]
-    public class HomeActivity : MvxActivity
+    public class HomeActivity : MvxFragmentActivity
     {
-        private OrderMapView _touchMap;
+        private SupportMapFragment _touchMap;
 
         public new HomeViewModel ViewModel
 		{
@@ -45,55 +49,50 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            _touchMap.OnCreate(bundle);     
+
             var errorCode = GooglePlayServicesUtil.IsGooglePlayServicesAvailable(ApplicationContext);
             if (errorCode == ConnectionResult.ServiceMissing
                 || errorCode == ConnectionResult.ServiceVersionUpdateRequired
                 || errorCode == ConnectionResult.ServiceDisabled)
             {
-                //ViewModel.GooglePlayServicesNotAvailable.Execute();
                 var dialog = GooglePlayServicesUtil.GetErrorDialog(errorCode, this, 0);
                 dialog.Show();
                 dialog.DismissEvent += (s, e) => Finish();
             }
-            else
-            {
-                InitMap();
-            }        
-
         }
+
+        public OrderMapView mapFragment; 
 
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_Home);
-
-            _touchMap = FindViewById<OrderMapView>(Resource.Id.mapPickup);
-            _touchMap.SetMapCenterPins(FindViewById<ImageView>(Resource.Id.mapPickupCenterPin), FindViewById<ImageView>(Resource.Id.mapDropoffCenterPin));
-
             ViewModel.OnViewLoaded();
+            _touchMap = (SupportMapFragment)SupportFragmentManager.FindFragmentById(Resource.Id.mapPickup);
 
-            FindViewById<OrderMapView>(Resource.Id.mapPickup).PostInvalidateDelayed(100);
+            // Creating a view controller for MapFragment
+            mapFragment = new OrderMapView(_touchMap);
+            mapFragment.SetMapCenterPins(FindViewById<ImageView>(Resource.Id.mapPickupCenterPin), FindViewById<ImageView>(Resource.Id.mapDropoffCenterPin));
 
-            // TODO: either subclass ImageView to create a generic imageView with a resource binding (set->SetImageResource) for Car selection or do everything here in the activity
-            // To check when viewmodel will integrate it
+            // Home View Bindings
+            var binding = this.CreateBindingSet<HomeActivity, HomeViewModel>();
+            binding.Bind(mapFragment).For("DataContext").To(vm => vm.Map);
+            binding.Apply();
+            mapFragment.ApplyBindings();
         }
 
         protected override void OnResume()
-        {
+        { 
             base.OnResume();
             TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
 
             var mainLayout = FindViewById(Resource.Id.HomeMainLayout);
             mainLayout.Invalidate();
-
-            _touchMap.PostInvalidateDelayed(100);
             _touchMap.OnResume();
         }
 
         protected override void OnPause()
         {
-            base.OnPause();
-	        //_touchMap.Pause();
+            base.OnPause();	        
         }
 
         protected override void OnStart()
@@ -118,19 +117,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
 
             _touchMap.OnDestroy();
-        }
-
-        private void InitMap()
-        {
-            try
-            {
-      MapsInitializer.Initialize(this.ApplicationContext);            ;
-      _touchMap.ViewTreeObserver.AddOnGlobalLayoutListener(new apcurium.MK.Booking.Mobile.Client.Controls.OrderMapView.LayoutObserverForMap(_touchMap));
-            }
-            catch (GooglePlayServicesNotAvailableException e)
-            {
-                Logger.LogError(e);
-            }
         }
 
         protected override void OnSaveInstanceState(Bundle outState)
