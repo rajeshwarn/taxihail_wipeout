@@ -486,6 +486,22 @@
     <AndroidResource Include="Resources\drawable-xhdpi\menu_icon_pressed.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\estimate_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\estimate_icon_pressed.png" />
+    <AndroidResource Include="Resources\Drawable\blackcar_badge.png" />
+    <AndroidResource Include="Resources\Drawable\blackcar_badge_selected.png" />
+    <AndroidResource Include="Resources\Drawable\estimate_icon.png" />
+    <AndroidResource Include="Resources\Drawable\estimate_icon_pressed.png" />
+    <AndroidResource Include="Resources\Drawable\later_icon.png" />
+    <AndroidResource Include="Resources\Drawable\later_icon_pressed.png" />
+    <AndroidResource Include="Resources\Drawable\suv_badge.png" />
+    <AndroidResource Include="Resources\Drawable\suv_badge_selected.png" />
+    <AndroidResource Include="Resources\Drawable\taxi_badge.png" />
+    <AndroidResource Include="Resources\Drawable\taxi_badge_selected.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\blackcar_badge.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\blackcar_badge_selected.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\taxi_badge.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\taxi_badge_selected.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\suv_badge.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\suv_badge_selected.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
