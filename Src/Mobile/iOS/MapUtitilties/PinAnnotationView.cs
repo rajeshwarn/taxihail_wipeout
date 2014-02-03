@@ -8,17 +8,13 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {
 	public class PinAnnotationView : MKAnnotationView
 	{
-	
-		
 		[Export( "initWithCoder:" )]
 		public PinAnnotationView ( NSCoder coder ) : base( coder )
 		{
-			
 		}
 
 		public PinAnnotationView ( IntPtr ptr ) : base( ptr )
 		{
-			
 		}
 
 		public PinAnnotationView ( AddressAnnotation annotation, string id ) : base( annotation, id )
@@ -27,13 +23,6 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 			RefreshPinImage();
 		}
 
-
-		public void SetPinImage( MKPinAnnotationColor color )
-		{
-
-
-		}
-			
 		public override sealed NSObject Annotation
 		{
 			get { return base.Annotation; }
@@ -50,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 		public void RefreshPinImage ()
         {
             var ann = ((AddressAnnotation)Annotation);
-            Image = UIImage.FromFile (ann.GetImageFilename());
+            Image = ann.GetImage();
 
             if (ann.AddressType == AddressAnnotationType.Taxi) {
                 var lblVehicleNumber = new UILabel(new RectangleF(0,0,Image.Size.Width, 16));

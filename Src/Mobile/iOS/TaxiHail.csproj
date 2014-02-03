@@ -846,6 +846,10 @@
     <BundleResource Include="Resources\later_icon%402x.png" />
     <BundleResource Include="Resources\later_icon_pressed.png" />
     <BundleResource Include="Resources\later_icon_pressed%402x.png" />
+    <BundleResource Include="Resources\hail_icon.png" />
+    <BundleResource Include="Resources\hail_icon%402x.png" />
+    <BundleResource Include="Resources\nearby.png" />
+    <BundleResource Include="Resources\nearby%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

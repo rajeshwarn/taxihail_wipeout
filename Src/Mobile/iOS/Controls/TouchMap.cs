@@ -47,6 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
         
         public TouchMap(NSObjectFlag flag)
+           
             : base(flag)
         {
             Initialize();
@@ -71,14 +72,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             ShowsUserLocation = true;
             if (_pickupCenterPin == null) {
-                _pickupCenterPin = new UIImageView(new UIImage(AddressAnnotation.GetImageFilename(AddressAnnotationType.Pickup)));
+                _pickupCenterPin = new UIImageView(AddressAnnotation.GetImage(AddressAnnotationType.Pickup));
                 _pickupCenterPin.BackgroundColor = UIColor.Clear;
                 _pickupCenterPin.ContentMode = UIViewContentMode.Center;
                 AddSubview(_pickupCenterPin);
                 _pickupCenterPin.Hidden = true;                
             }
             if (_dropoffCenterPin == null) {
-                _dropoffCenterPin = new UIImageView(new UIImage(AddressAnnotation.GetImageFilename(AddressAnnotationType.Destination)));
+                _dropoffCenterPin = new UIImageView(AddressAnnotation.GetImage(AddressAnnotationType.Destination));
                 _dropoffCenterPin.BackgroundColor = UIColor.Clear;
                 _dropoffCenterPin.ContentMode = UIViewContentMode.Center;
                 AddSubview(_dropoffCenterPin);
