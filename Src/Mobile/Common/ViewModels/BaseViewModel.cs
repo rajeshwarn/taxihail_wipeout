@@ -1,5 +1,7 @@
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Common.Configuration;
+using MK.Common.Configuration;
 using TinyMessenger;
 using apcurium.MK.Common.Diagnostic;
 using System.Collections.Generic;
@@ -23,6 +25,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         protected ILogger Logger { get { return Container.Resolve<ILogger>(); } }
+
+		public TaxiHailSetting Settings { get { return Container.Resolve<IAppSettings>().Data; } }
 
         public virtual void OnViewLoaded()
         {

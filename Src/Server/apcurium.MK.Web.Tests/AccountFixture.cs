@@ -172,7 +172,6 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual("en", account.Language);
             Assert.IsNotNull(account.Settings);
             Assert.AreEqual(account.Settings.Name, account.Name);
-            Assert.AreEqual(account.Settings.Phone, account.Phone);
         }
 
         [Test]

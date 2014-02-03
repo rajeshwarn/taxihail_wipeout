@@ -59,6 +59,7 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
@@ -82,7 +83,6 @@
     <Compile Include="Params.cs" />
     <Compile Include="Diagnostic\IErrorHandler.cs" />
     <Compile Include="Entity\Address.cs" />
-    <Compile Include="Configuration\IConfigurationManager.cs" />
     <Compile Include="Provider\IPopularAddressProvider.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />
     <Compile Include="Entity\DayOfTheWeek.cs" />
@@ -108,6 +108,8 @@
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Entity\DirectionSetting.cs" />
     <Compile Include="Entity\OrderPairingDetail.cs" />
+    <Compile Include="Configuration\IAppSettings.cs" />
+    <Compile Include="Configuration\TaxiHailSetting.cs" />
   </ItemGroup>
   <ItemGroup />
 </Project>

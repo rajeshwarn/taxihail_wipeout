@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public void Init(string order, string orderStatus, IPayPalExpressCheckoutService palExpressCheckoutService)
         {
-            this.Services().Config.GetPaymentSettings();
+			this.Services().Payment.GetPaymentSettings();
 
             Order = JsonSerializer.DeserializeFromString<Order>(order); 
             OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         { 
             get
             {
-                var payPalSettings = this.Services().Config.GetPaymentSettings().PayPalClientSettings;
+				var payPalSettings = this.Services().Payment.GetPaymentSettings().PayPalClientSettings;
                 return payPalSettings.IsEnabled;
             }
         }
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         { 
             get
             {
-                var setting = this.Services().Config.GetPaymentSettings();
+				var setting = this.Services().Payment.GetPaymentSettings();
                 return setting.IsPayInTaxiEnabled;
             }
         }

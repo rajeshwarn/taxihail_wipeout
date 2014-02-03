@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		    }
 
 #if DEBUG
-            if (this.Services().Config.GetPaymentSettings().PaymentMode == PaymentMethod.Braintree)
+			if (this.Services().Payment.GetPaymentSettings().PaymentMode == PaymentMethod.Braintree)
 			{
 				CreditCardNumber = DummyVisa.BraintreeNumber;
 			}

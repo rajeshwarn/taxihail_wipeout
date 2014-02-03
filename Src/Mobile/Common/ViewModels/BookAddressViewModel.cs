@@ -160,7 +160,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     CancelCurrentLocation();
 
 
-                    if (this.Services().Config.GetSetting("Client.StreetNumberScreenEnabled", true)
+						if (Settings.StreetNumberScreenEnabled
                         && Model.BookAddress.HasValue())
                     {
                         ShowViewModel<BookStreetNumberViewModel>(new

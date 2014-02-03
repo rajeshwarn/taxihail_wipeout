@@ -53,14 +53,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			base.OnViewStarted (firstStart);
 
-            var periodInSettings = this.Services().Config.GetSetting("Client.OrderStatus.ClientPollingInterval");
-            int periodInSettingsValue;
-            if(int.TryParse(periodInSettings, out periodInSettingsValue))
-            {
-                _refreshPeriod = periodInSettingsValue;
-            }
-
-            Task.Factory.StartNew (() =>
+			_refreshPeriod = Settings.ClientPollingInterval;
+            
+			Task.Factory.StartNew (() =>
             {
                 Thread.Sleep( 1000 );     
                 InvokeOnMainThread(RefreshStatus);
@@ -154,21 +149,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public bool IsCallTaxiVisible
         {
             get {
-                var showCallDriver = this.Services().Config.GetSetting("Client.ShowCallDriver", false);
+				var showCallDriver = Settings.ShowCallDriver;
                 return showCallDriver && IsDriverInfoAvailable && OrderStatusDetail.DriverInfos.MobilePhone.HasValue (); }
         }
 
         public bool IsDriverInfoAvailable
         {
             get {
-                var showVehicleInformation = this.Services().Config.GetSetting("Client.ShowVehicleInformation", true);
+				var showVehicleInformation = Settings.ShowVehicleInformation;
 
 				return showVehicleInformation && ( (OrderStatusDetail.IbsStatusId == VehicleStatuses.Common.Assigned) || (OrderStatusDetail.IbsStatusId == VehicleStatuses.Common.Arrived) ) 
                 && ( OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue() || OrderStatusDetail.DriverInfos.LastName.HasValue() || OrderStatusDetail.DriverInfos.FirstName.HasValue()); }
         }
 		
 		public bool IsCallButtonVisible {
-            get { return !bool.Parse(this.Services().Config.GetSetting("Client.HideCallDispatchButton")); }
+			get { return !Settings.HideCallDispatchButton; }
 		}
 
 		public bool VehicleDriverHidden
@@ -275,7 +270,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             this.Services().Cache.Set("OrderReminderWasSeen." + orderId.ToString(), true.ToString());                     
         }
 
-        private bool IsCmtRideLinq { get { return this.Services().Config.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt; } }
+		private bool IsCmtRideLinq { get { return this.Services().Payment.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt; } }
         private void AddReminder (OrderStatusDetail status)
         {
             if (!HasSeenReminderPrompt(status.OrderId )
@@ -287,7 +282,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Localize["AddReminderMessage"],
                     this.Services().Localize["YesButton"],
                     () => this.Services().Phone.AddEventToCalendarAndReminder(
-                        string.Format(this.Services().Localize["ReminderTitle"], this.Services().Settings.ApplicationName), 
+						string.Format(this.Services().Localize["ReminderTitle"], Settings.ApplicationName), 
                         string.Format(this.Services().Localize["ReminderDetails"], Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),						              									 
                     Order.PickupAddress.FullAddress, 
                     Order.PickupDate,
@@ -363,7 +358,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		void UpdatePayCancelButtons (string statusId)
 		{
-            var setting = this.Services().Config.GetPaymentSettings();
+			var setting = this.Services().Payment.GetPaymentSettings();
             var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 
             var isPaired = this.Services().Booking.IsPaired(Order.Id);
@@ -527,9 +522,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand (() =>
                 {
                     this.Services().Message.ShowMessage(string.Empty,
-                                               this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"),
+												Settings.DefaultPhoneNumberDisplay,
                                                this.Services().Localize["CallButton"],
-                                               () => this.Services().Phone.Call(this.Services().Config.GetSetting("DefaultPhoneNumber")),
+							(					) => this.Services().Phone.Call(Settings.DefaultPhoneNumber),
                                                this.Services().Localize["Cancel"], 
                                                () => {});                    
                 });

@@ -60,13 +60,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             _container.Register<AbstractLocationService>(new LocationService());
 
-            _container.Register<IAppSettings, AppSettings>();
 			_container.Register<ILocalization>(new Localize(ApplicationContext,_container.Resolve<ILogger>()));
             _container.Register<IErrorHandler, ErrorHandler>();
             _container.Register<ICacheService>(new CacheService());
             _container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "AppCache");
             _container.Register<IPhoneService>(new PhoneService(ApplicationContext));
-            _container.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IConfigurationManager>()));
+            _container.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IAppSettings>()));
+
+            _container.Register<IAppSettings>(new AppSettingsService(_container.Resolve<ICacheService>(), _container.Resolve<ILogger>()));
 
 			InitializeSocialNetwork();
         }
@@ -84,22 +85,29 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void InitializeSocialNetwork()
 		{
-			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+			
+            _container.Register<IFacebookService>((c,prop) =>  {
 
-            var facebookService = new FacebookService(settings.FacebookAppId, () => _container.Resolve<IMvxAndroidCurrentTopActivity>().Activity);
-            _container.Register<IFacebookService>(facebookService);
+                var settings = c.Resolve<IAppSettings>();
+                var facebookService = new FacebookService(settings.Data.FacebookAppId, () => _container.Resolve<IMvxAndroidCurrentTopActivity>().Activity);
+                return facebookService;
+            });			
 
-			var oauthConfig = new OAuthConfig
-			{
-				ConsumerKey = settings.TwitterConsumerKey,
-				Callback = settings.TwitterCallback,
-				ConsumerSecret = settings.TwitterConsumerSecret,
-				RequestTokenUrl = settings.TwitterRequestTokenUrl,
-				AccessTokenUrl = settings.TwitterAccessTokenUrl,
-				AuthorizeUrl = settings.TwitterAuthorizeUrl
-			};
+            _container.Register<ITwitterService>((c,p) => {
 
-            _container.Register<ITwitterService>((c,p) => new TwitterServiceMonoDroid( oauthConfig, c.Resolve<IMvxAndroidCurrentTopActivity>()));
+                var settings = c.Resolve<IAppSettings>();
+                var oauthConfig = new OAuthConfig
+                {
+                    ConsumerKey = settings.Data.TwitterConsumerKey,
+                    Callback = settings.Data.TwitterCallback,
+                    ConsumerSecret = settings.Data.TwitterConsumerSecret,
+                    RequestTokenUrl = settings.Data.TwitterRequestTokenUrl,
+                    AccessTokenUrl = settings.Data.TwitterAccessTokenUrl,
+                    AuthorizeUrl = settings.Data.TwitterAuthorizeUrl
+                };
+                return new TwitterServiceMonoDroid( oauthConfig, c.Resolve<IMvxAndroidCurrentTopActivity>());
+            
+            });
 		}
 
 		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider()

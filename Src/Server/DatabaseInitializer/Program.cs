@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using DatabaseInitializer.Services;
@@ -82,9 +83,13 @@ namespace DatabaseInitializer
 
                 var creatorDb = new DatabaseCreator();
                 string oldDatabase = null;
-                IConfigurationManager configurationManager = new
+                var container = new UnityContainer();
+                var module = new Module();
+                module.Init(container, connectionString);
+
+                var configurationManager = new
                     ConfigurationManager(
-                    () => new ConfigurationDbContext(connectionString.ConnectionString));
+                    () => new ConfigurationDbContext(connectionString.ConnectionString), container.Resolve<ILogger>());
 
                 IDictionary<string, string> settingsInDb = null;
 
@@ -128,10 +133,7 @@ namespace DatabaseInitializer
                 {
                     creatorDb.CopyEventsAndCacheTables(connStringMaster, oldDatabase, companyName);
                 }
-                //Init container
-                var container = new UnityContainer();
-                var module = new Module();
-                module.Init(container, connectionString);
+                
 
                 //Init data
 

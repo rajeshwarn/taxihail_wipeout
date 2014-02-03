@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.Client.Views;
+using apcurium.MK.Common.Configuration;
 using MonoTouch.Foundation;
 using MonoTouch.ObjCRuntime;
 using MonoTouch.UIKit;
@@ -69,6 +70,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var setup = new Setup(this, window);
             setup.Initialize();
 
+            var appSettingsService = TinyIoCContainer.Current.Resolve<IAppSettings>();
+            appSettingsService.Load();
+
 			var startup = Mvx.Resolve<IMvxAppStart>();
 			startup.Start(@params);
 
@@ -83,7 +87,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			UIApplication.CheckForIllegalCrossThreadCalls=true;
 
 			//Facebook init
-			FBAppCall.HandleDidBecomeActive();
+            if (TinyIoCContainer.Current.Resolve<IAppSettings>().Data.FacebookEnabled)
+            {
+                FBAppCall.HandleDidBecomeActive();
+            }
 
             var locService = TinyIoCContainer.Current.Resolve<AbstractLocationService>();
             if ( locService != null )
@@ -91,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 locService.Start ();
             }
 
-            ThreadHelper.ExecuteInThread (() => Runtime.StartWWAN( new Uri ( Mvx.Resolve<AppSettings>().ServiceUrl )));
+            ThreadHelper.ExecuteInThread (() => Runtime.StartWWAN( new Uri ( Mvx.Resolve<AppSettingsService>().Data.ServiceUrl )));
 
             Logger.LogMessage("OnActivated");
 
@@ -167,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
 			Console.WriteLine(url.ToString());
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-			if (url.AbsoluteString.StartsWith("fb" + settings.FacebookAppId + settings.ApplicationName.ToLower().Replace( " ", string.Empty ) ))
+            if (url.AbsoluteString.StartsWith("fb" + settings.Data.FacebookAppId + settings.Data.ApplicationName.ToLower().Replace( " ", string.Empty ) ))
 			{
                 _callbackFromFb = true;
 				return FBAppCall.HandleOpenURL(url, sourceApplication);

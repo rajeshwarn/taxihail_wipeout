@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return !this.Services().Config.GetSetting("Client.HideCallDispatchButton", false);
+				return !Settings.HideCallDispatchButton;
             }
 
         }
@@ -195,8 +195,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         string message = null;
                         if (CallIsEnabled)
                         {
-                            var companyName = this.Services().Settings.ApplicationName;
-                            var phoneNumber = this.Services().Config.GetSetting("DefaultPhoneNumberDisplay");
+							var companyName = Settings.ApplicationName;
+							var phoneNumber = Settings.DefaultPhoneNumberDisplay;
                             message = string.Format(localize[e.Message], companyName, phoneNumber);
                         }
                         else 
@@ -271,10 +271,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void SetServerUrl(string serverUrl)
         {
-            this.Services().Settings.ServiceUrl = serverUrl;
+			Settings.ServiceUrl = serverUrl;
             this.Services().ApplicationInfo.ClearAppInfo();
             this.Services().Account.ClearReferenceData();
-            this.Services().Config.Reset();
         }
 
         private void OnLoginSuccess()

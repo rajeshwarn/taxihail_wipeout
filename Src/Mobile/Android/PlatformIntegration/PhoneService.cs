@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             Context.StartActivity(callIntent);
         }
 
-        public void SendFeedbackErrorLog(string errorLogPath, string supportEmail, string subject)
+        public void SendFeedbackErrorLog(string supportEmail, string subject)
         {
             var emailIntent = new Intent(Intent.ActionSend);
 
@@ -39,10 +39,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             emailIntent.PutExtra(Intent.ExtraEmail, new[] {supportEmail});
             emailIntent.PutExtra(Intent.ExtraSubject, subject);
 
-            emailIntent.PutExtra(Intent.ExtraStream, Uri.Parse(@"file:///" + LoggerImpl.LogFilename));
-            if (File.Exists(errorLogPath))
+            if (File.Exists(LoggerImpl.LogFilename))
             {
-                emailIntent.PutExtra(Intent.ExtraStream, Uri.Parse(errorLogPath));
+                emailIntent.PutExtra(Intent.ExtraStream, Uri.Parse(LoggerImpl.LogFilename));
             }
             try
             {

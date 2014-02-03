@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using apcurium.MK.Common.Configuration;
 using Cirrious.MvvmCross.Droid.Views;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using Cirrious.MvvmCross.Droid.Platform;
@@ -35,9 +36,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
         protected override void TriggerFirstNavigate()
         {
+            var appSettingsService = TinyIoCContainer.Current.Resolve<IAppSettings>();
+            appSettingsService.Load();
+
             // Overriden in order to pass params
             var starter = Mvx.Resolve<IMvxAppStart>();
-            starter.Start(_params);
+            starter.Start(_params);           
         }
 
         protected override void OnDestroy()

@@ -2,6 +2,7 @@
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
+using MK.Common.Configuration;
 using TinyMessenger;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.ViewModels;
@@ -31,15 +32,13 @@ namespace apcurium.MK.Booking.Mobile.Extensions
             _container = TinyIoCContainer.Current;
         }
 
-        public IConfigurationManager Config { get { return _container.Resolve<IConfigurationManager>(); } }
-
         public IMessageService Message { get { return _container.Resolve<IMessageService>(); } }
 
         public ILocalization Localize { get { return _container.Resolve<ILocalization>(); } }
 
         public ITinyMessengerHub MessengerHub { get { return _container.Resolve<ITinyMessengerHub>(); } }
 
-        public IAppSettings Settings { get { return _container.Resolve<IAppSettings>(); } }
+		public TaxiHailSetting Settings { get { return _container.Resolve<IAppSettings>().Data; } }
 
         public IPhoneService Phone { get { return _container.Resolve<IPhoneService>(); } }
 
@@ -50,8 +49,6 @@ namespace apcurium.MK.Booking.Mobile.Extensions
         public ICacheService Cache { get { return _container.Resolve<ICacheService>(); } }
 
         public ICacheService AppCache { get { return _container.Resolve<ICacheService>("AppCache"); } }
-
-        public IAppSettings AppSettings { get { return _container.Resolve<IAppSettings>(); } }
 
         public IApplicationInfoService ApplicationInfo { get { return _container.Resolve<IApplicationInfoService>(); } }
 

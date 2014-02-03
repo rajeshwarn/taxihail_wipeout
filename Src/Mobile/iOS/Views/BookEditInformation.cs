@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using apcurium.MK.Common.Configuration;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using TinyIoC;
@@ -28,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.LoadView();
             var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            var isThriev = appSettings.ApplicationName == "Thriev";
+            var isThriev = appSettings.Data.ApplicationName == "Thriev";
             if (isThriev)
             {
                 NSBundle.MainBundle.LoadNib ("BookEditInformation_Thriev", this, null);

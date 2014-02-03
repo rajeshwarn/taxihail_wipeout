@@ -40,27 +40,29 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<ITinyMessengerHub, TinyMessengerHub>();
 
 			_container.Register<IAccountServiceClient>((c, p) => 
-                                                      new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null, c.Resolve<IPackageInfo>().UserAgent, c.Resolve<IPaymentService>()),
+				new AccountServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, null, c.Resolve<IPackageInfo>().UserAgent, c.Resolve<IPaymentService>()),
                                                                      "NotAuthenticated");
             
 			_container.Register<IAccountServiceClient>((c, p) =>
-                                                      new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent, c.Resolve<IPaymentService>()),
+				new AccountServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent, c.Resolve<IPaymentService>()),
                                                                      "Authenticate");
             
-			_container.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent,c.Resolve<IPaymentService>()));
+			_container.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent,c.Resolve<IPaymentService>()));
 
-			_container.Register((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
-			_container.Register((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
-			_container.Register((c, p) => new TariffsServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
-			_container.Register((c, p) => new PushNotificationRegistrationServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
+			_container.Register((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
+			_container.Register((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
+			_container.Register((c, p) => new TariffsServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
+			_container.Register((c, p) => new PushNotificationRegistrationServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
 
-			_container.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
+			_container.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
 
-			_container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
+			_container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
             
-			_container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
+			_container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
 
-			_container.Register<IConfigurationManager>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(), c.Resolve<ILogger>(), c.Resolve<IPackageInfo>().UserAgent));
+			_container.Register<ConfigurationClientService>((c, p) => {
+				return new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent);
+			});
 
 			_container.Register<IAccountService, AccountService>();
 			_container.Register<IBookingService, BookingService>();
@@ -83,18 +85,18 @@ namespace apcurium.MK.Booking.Mobile
 
             // ***** PayPal *****
 			_container.Register<IPayPalExpressCheckoutService, PayPalExpressCheckoutService> ();
-			_container.Register ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
+			_container.Register ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
 
 			_container.Register<IPaymentService>((c, p) =>
 			{
-				var baseUrl = c.Resolve<IAppSettings>().ServiceUrl;
+					var baseUrl = c.Resolve<IAppSettings>().Data.ServiceUrl;
                 var sessionId = GetSessionId();
 
-                return new PaymentService(baseUrl, sessionId, c.Resolve<IConfigurationManager>(), c.Resolve<ICacheService>(), c.Resolve<IPackageInfo>());
+                    return new PaymentService(baseUrl, sessionId, c.Resolve<ConfigurationClientService>(), c.Resolve<ICacheService>(), c.Resolve<IPackageInfo>());
 			});
             
-			_container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
-			_container.Register<IIbsFareClient>((c, p) => new IbsFareServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
+			_container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
+			_container.Register<IIbsFareClient>((c, p) => new IbsFareServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
 			
 			_container.Resolve<IMvxLifetime>().LifetimeChanged -= TaxiHailApp_LifetimeChanged;
 			_container.Resolve<IMvxLifetime>().LifetimeChanged += TaxiHailApp_LifetimeChanged;
@@ -119,14 +121,12 @@ namespace apcurium.MK.Booking.Mobile
         {
 			_container.Resolve<IApplicationInfoService>().GetAppInfoAsync();
 			_container.Resolve<IAccountService>().GetReferenceData();
-			_container.Resolve<IConfigurationManager>().GetSettings();
         }
 
         private void ClearAppCache()
         {
 			_container.Resolve<IApplicationInfoService>().ClearAppInfo();
 			_container.Resolve<IAccountService>().ClearReferenceData();
-			_container.Resolve<IConfigurationManager>().Reset();
         }
 
         private void RefreshAppData()

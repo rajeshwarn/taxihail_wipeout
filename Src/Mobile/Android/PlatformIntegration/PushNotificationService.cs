@@ -40,13 +40,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class PushNotificationService : IPushNotificationService
     {
-        private readonly IConfigurationManager _configManager;
+        private readonly IAppSettings _appSettings;
         private readonly Context _context;
 
-        public PushNotificationService(Context context, IConfigurationManager configManager)
+        public PushNotificationService(Context context, IAppSettings appSettings)
         {
             _context = context;
-            _configManager = configManager;
+            _appSettings = appSettings;
         }
 
         public void RegisterDeviceForPushNotifications(bool force = false)
@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 Log.Info(tag, "Registering...");
 
                 //Call to register
-                var registerIdDebug = _configManager.GetSetting("GCM.SenderId");
+                var registerIdDebug = _appSettings.Data.SenderId;
                 PushClient.Register(_context, registerIdDebug);
             }
             else
@@ -97,8 +97,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         IUseServiceClient
     {
         public PushHandlerService()
-            : base(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("GCM.SenderId"))
+            : base(TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().Data.SenderId)
         {
+
         }
 
 
