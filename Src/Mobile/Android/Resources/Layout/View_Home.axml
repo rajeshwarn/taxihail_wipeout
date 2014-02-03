@@ -36,18 +36,30 @@
                     android:background="@drawable/drop_shadow"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:id="@+id/btnSettings"
                     android:layout_marginBottom="13dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_gravity="left|bottom" />
+                    android:layout_gravity="left|bottom">
+                    <ImageView
+                        android:id="@+id/btnSettings"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="center"
+                        android:src="@drawable/menu_icon" />
+                </LinearLayout>
                 <LinearLayout
                     android:background="@drawable/drop_shadow"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:id="@+id/btnBookLater"
                     android:layout_marginBottom="13dp"
                     android:layout_marginRight="10dp"
-                    android:layout_gravity="right|bottom" />
+                    android:layout_gravity="right|bottom">
+                    <ImageView
+                        android:id="@+id/btnBookLater"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="center"
+                        android:src="@drawable/location_icon" />
+                </LinearLayout>
                 <ImageView
                     android:id="@+id/mapPickupCenterPin"
                     android:layout_width="wrap_content"
@@ -92,7 +104,7 @@
                             android:text="Book Now"
                             android:layout_gravity="center_vertical|center_horizontal" />
                     </FrameLayout>
-                    <View
+                    <ImageView
                         android:id="@+id/homeLeftButton"
                         android:layout_width="55dip"
                         android:layout_height="55dip" />
