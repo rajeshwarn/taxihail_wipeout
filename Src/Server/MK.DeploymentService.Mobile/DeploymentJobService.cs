@@ -184,22 +184,34 @@ namespace MK.DeploymentService.Mobile
 
 		private string GetAndroidFile(string apkPath)
 		{
-			return Directory.EnumerateFiles(apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
+			if (Directory.Exists (apkPath)) {
+				return Directory.EnumerateFiles (apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault ();
+			}
+			return null;
 		}
 
 		private string GetAndroidCallboxFile(string apkPathCallBox)
 		{
-			return Directory.EnumerateFiles(apkPathCallBox, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
+			if (Directory.Exists (apkPathCallBox)) {
+				return Directory.EnumerateFiles(apkPathCallBox, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
+			}
+			return null;
 		}
 
 		private string GetiOSAdHocFile(string ipaAdHocPath)
 		{
-			return Directory.EnumerateFiles(ipaAdHocPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+			if (Directory.Exists (ipaAdHocPath)) {
+				return Directory.EnumerateFiles(ipaAdHocPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+			}
+			return null;
 		}
 
 		private string GetiOSAppStoreFile(string ipaAppStorePath)
 		{
-			return Directory.EnumerateFiles(ipaAppStorePath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+			if (Directory.Exists (ipaAppStorePath)) {
+				return Directory.EnumerateFiles(ipaAppStorePath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+			}
+			return null;
 		}
 
 		void Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox)
