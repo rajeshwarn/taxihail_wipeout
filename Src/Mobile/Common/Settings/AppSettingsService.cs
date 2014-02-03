@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using MK.Common.Configuration;
 using ServiceStack.Text;
 using System.IO;
 using apcurium.MK.Common.Configuration;
@@ -10,6 +9,7 @@ using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
 using System.Threading.Tasks;
+using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
@@ -47,7 +47,9 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
 		void LoadSettingsFromFile()
 		{
-			using (var stream = GetType().Assembly.GetManifestResourceStream(GetType ().Assembly.GetManifestResourceNames().FirstOrDefault(x => x.Contains("Settings.json")))) 
+			using (var stream = GetType().Assembly.GetManifestResourceStream(GetType ().Assembly
+														.GetManifestResourceNames()
+														.FirstOrDefault(x => x.Contains("Settings.json")))) 
 			{
 				if (stream != null)
 				{
@@ -91,7 +93,15 @@ namespace apcurium.MK.Booking.Mobile.Settings
 					                 		Nullable.GetUnderlyingType(propertyType.PropertyType) 
 					                 		: propertyType.PropertyType;
 
-					var propertyVal = Convert.ChangeType(item.Value, targetType);					 
+					object propertyVal = null;
+					if(targetType.IsEnum)
+					{
+						propertyVal = Enum.Parse(targetType, item.Value);
+					}
+					else
+					{
+						propertyVal = Convert.ChangeType(item.Value, targetType);	
+					}			 
 					propertyType.SetValue(Data, propertyVal);
 				}
 				catch(Exception e)
