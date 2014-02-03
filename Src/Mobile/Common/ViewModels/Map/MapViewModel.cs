@@ -4,19 +4,25 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Reactive.Disposables;
+using System.Collections.Generic;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class MapViewModel: ChildViewModel
     {
 		readonly IOrderWorkflowService _orderWorkflowService;
-		public MapViewModel(IOrderWorkflowService orderWorkflowService)
+		readonly IVehicleService _vehicleService;
+
+		public MapViewModel(IOrderWorkflowService orderWorkflowService, IVehicleService vehicleService)
         {
 			_orderWorkflowService = orderWorkflowService;
+			_vehicleService = vehicleService;
 
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
+			this.Observe(_vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
         }
-
+		
 		private Address _pickupAddress;
 		public Address PickupAddress
 		{
@@ -43,6 +49,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					_mapBounds = value;
 					RaisePropertyChanged();
 				}
+			}
+		}
+
+		private IEnumerable<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
+		public IEnumerable<AvailableVehicle> AvailableVehicles
+		{
+			get{ return _availableVehicles; }
+			set
+			{ 
+				_availableVehicles = value;
+				RaisePropertyChanged();
 			}
 		}
 

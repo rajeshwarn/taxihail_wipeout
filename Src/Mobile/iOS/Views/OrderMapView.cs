@@ -9,6 +9,11 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using MonoTouch.MapKit;
+using System.Collections.Generic;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using System.Drawing;
+using System.Linq;
+using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -38,6 +43,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 set.Bind()
                     .For(v => v.MapBounds)
                     .To(vm => vm.MapBounds);
+
+                set.Bind()
+                    .For("AvailableVehicles")
+                    .To(vm => vm.AvailableVehicles);
 
                 set.Apply();
 
@@ -78,6 +87,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
+        public IEnumerable<AvailableVehicle> AvailableVehicles
+        {
+            set
+            {
+                ShowAvailableVehicles (Clusterize(value.ToArray()));
+            }
+        }
+
         private void OnPickupAddressChanged()
         {
             if (PickupAddress.HasValidCoordinate())
@@ -104,6 +121,76 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     new CLLocationCoordinate2D(center.Latitude, center.Longitude),
                     new MKCoordinateSpan(MapBounds.LatitudeDelta, MapBounds.LongitudeDelta)), true);
             }
+        }
+
+        private readonly List<MKAnnotation> _availableVehiclePushPins = new List<MKAnnotation> ();
+        private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
+        {
+            // remove currently displayed pushpins
+            foreach (var pushPin in _availableVehiclePushPins)
+            {
+                RemoveAnnotation(pushPin);
+            }
+            _availableVehiclePushPins.Clear ();
+
+            if (vehicles == null)
+                return;
+
+            foreach (var v in vehicles)
+            {
+                var annotationType = (v is AvailableVehicleCluster) 
+                                     ? AddressAnnotationType.NearbyTaxiCluster 
+                                     : AddressAnnotationType.NearbyTaxi;
+
+                var pushPin = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), annotationType, string.Empty, string.Empty);
+                AddAnnotation (pushPin);
+                _availableVehiclePushPins.Add (pushPin);
+            }
+        }
+
+        // TODO Refactor this to share the code between iOS/Android
+        private AvailableVehicle[] Clusterize(AvailableVehicle[] vehicles)
+        {
+            // Divide the map in 25 cells (5*5)
+            const int numberOfRows = 5;
+            const int numberOfColumns = 5;
+            // Maximum number of vehicles in a cell before we start displaying a cluster
+            const int cellThreshold = 1;
+
+            var result = new List<AvailableVehicle>();
+
+            var bounds =  Bounds;
+            var clusterWidth = bounds.Width / numberOfColumns;
+            var clusterHeight = bounds.Height / numberOfRows;
+
+            var list = new List<AvailableVehicle>(vehicles);
+
+            for (var rowIndex = 0; rowIndex < numberOfRows; rowIndex++)
+            {
+                for (var colIndex = 0; colIndex < numberOfColumns; colIndex++)
+                {
+                    var rect = new RectangleF(Bounds.X + colIndex * clusterWidth, Bounds.Y + rowIndex * clusterHeight, clusterWidth, clusterHeight);
+
+                    var vehiclesInRect = list.Where(v => rect.Contains(ConvertCoordinate(new CLLocationCoordinate2D(v.Latitude, v.Longitude), this))).ToArray();
+                    if (vehiclesInRect.Length > cellThreshold)
+                    {
+                        var clusterBuilder = new VehicleClusterBuilder();
+                        foreach (var v in vehiclesInRect)
+                            clusterBuilder.Add(v);
+                        result.Add(clusterBuilder.Build());
+                    }
+                    else
+                    {
+                        result.AddRange(vehiclesInRect);
+                    }
+
+                    foreach (var v in vehiclesInRect)
+                    {
+                        list.Remove(v);
+                    }
+                }
+            }
+            return result.ToArray();
         }
     }
 }

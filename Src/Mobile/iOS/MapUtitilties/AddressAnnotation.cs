@@ -49,18 +49,24 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
         public static UIImage GetImage(AddressAnnotationType addressType)
         {
-            switch (addressType) 
+            var useThemeColorForPickupAndDestination = false;
+
+            switch (addressType)
             {
                 case AddressAnnotationType.Destination:
-                    return ImageHelper.ApplyColorToImage("Assets/pin_destination.png", UIColor.FromRGB(255, 0, 18));
+                    return useThemeColorForPickupAndDestination
+                            ? ImageHelper.ApplyThemeColorToImage("destination_icon.png")
+                            : UIImage.FromFile("destination_icon.png");
                 case AddressAnnotationType.Taxi:
-                    return UIImage.FromFile("Assets/pin_cab.png");
+                    return ImageHelper.ApplyThemeColorToImage("taxi_icon.png");
                 case AddressAnnotationType.NearbyTaxi:
-                    return UIImage.FromFile("nearby.png");
+                    return ImageHelper.ApplyThemeColorToImage("nearby_taxi.png");
                 case AddressAnnotationType.NearbyTaxiCluster:
-                    return UIImage.FromFile("Assets/pin_cluster.png");
+                    return ImageHelper.ApplyThemeColorToImage("cluster.png");
                 default:
-                    return ImageHelper.ApplyColorToImage("hail_icon.png", UIColor.FromRGB(0, 192, 49));
+                    return useThemeColorForPickupAndDestination
+                            ? ImageHelper.ApplyThemeColorToImage("hail_icon.png")
+                            : UIImage.FromFile("hail_icon.png");
             }
         }
 	}

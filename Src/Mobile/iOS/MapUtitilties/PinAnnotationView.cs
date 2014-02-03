@@ -3,6 +3,7 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.MapKit;
 using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {
@@ -42,13 +43,13 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             Image = ann.GetImage();
 
             if (ann.AddressType == AddressAnnotationType.Taxi) {
-                var lblVehicleNumber = new UILabel(new RectangleF(0,0,Image.Size.Width, 16));
+                var lblVehicleNumber = new UILabel(new RectangleF(0, 0, Image.Size.Width, 16));
                 lblVehicleNumber.BackgroundColor = UIColor.Clear;
-                lblVehicleNumber.TextColor = UIColor.Black;
+                lblVehicleNumber.TextColor = Theme.BackgroundColor;
                 lblVehicleNumber.TextAlignment = UITextAlignment.Center;
-                lblVehicleNumber.Font = AppStyle.GetBoldFont(12);
+                lblVehicleNumber.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 34/2);
                 lblVehicleNumber.Text = ((AddressAnnotation)Annotation).Subtitle;
-                AddSubview( lblVehicleNumber );
+                AddSubview(lblVehicleNumber);
             }
 			CenterOffset = new PointF( 0, -Image.Size.Height/2);
 		}

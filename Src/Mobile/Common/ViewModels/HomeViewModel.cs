@@ -36,6 +36,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				Map = AddChild<MapViewModel>();
 				OrderOptions = AddChild<OrderOptionsViewModel>();
 			}
+			this.Services().Vehicle.Start();
+		}
+
+		public override void OnViewStopped()
+		{
+			base.OnViewStopped();
+			this.Services().Vehicle.Stop();
 		}
 
 		public PanelMenuViewModel Panel { get; set; }

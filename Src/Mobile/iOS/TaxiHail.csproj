@@ -851,6 +851,14 @@
     <BundleResource Include="Resources\hail_icon%402x.png" />
     <BundleResource Include="Resources\nearby.png" />
     <BundleResource Include="Resources\nearby%402x.png" />
+    <BundleResource Include="Resources\cluster.png" />
+    <BundleResource Include="Resources\cluster%402x.png" />
+    <BundleResource Include="Resources\destination_icon.png" />
+    <BundleResource Include="Resources\destination_icon%402x.png" />
+    <BundleResource Include="Resources\nearby_taxi.png" />
+    <BundleResource Include="Resources\nearby_taxi%402x.png" />
+    <BundleResource Include="Resources\taxi_icon.png" />
+    <BundleResource Include="Resources\taxi_icon%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
