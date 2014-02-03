@@ -523,6 +523,7 @@
     <Compile Include="Controls\Widgets\AppBarView.cs" />
     <Compile Include="Controls\Widgets\OverlayButton.cs" />
     <Compile Include="Controls\Widgets\AppBarButton.cs" />
+    <Compile Include="Controls\Widgets\CommandButton.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

@@ -6,7 +6,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-    public class AppBarButton : UIButton
+    public class AppBarButton : CommandButton
     {
         UILabel _label;
         UIColor _selectedTextColor;

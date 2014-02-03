@@ -17,7 +17,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
         }
 
-
 		private Address _pickupAddress;
 		public Address PickupAddress
 		{
@@ -27,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if (value != _pickupAddress)
 				{
 					_pickupAddress = value;
-					RaisePropertyChanged("PickupAddress");
+					RaisePropertyChanged();
 					OnPickupAddressChanged();
 				}
 			}
@@ -42,10 +41,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if (value != _mapBounds)
 				{
 					_mapBounds = value;
-					RaisePropertyChanged("MapBounds");
+					RaisePropertyChanged();
 				}
 			}
-
 		}
 
 		private void OnPickupAddressChanged()

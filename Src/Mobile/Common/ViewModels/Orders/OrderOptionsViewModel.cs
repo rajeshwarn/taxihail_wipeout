@@ -14,6 +14,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_orderWorkflowService = orderWorkflowService;
 
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
+			this.Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
+			this.Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), selectionMode => AddressSelectionMode = selectionMode);
 		}
 
 		private Address _pickupAddress;
@@ -30,34 +32,63 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		private AddressSelectionMode AddressSelectionMode = AddressSelectionMode.PickupSelection;
-		public bool ShowDestination
+		private Address _destinationAddress;
+		public Address DestinationAddress
 		{
-			get { return AddressSelectionMode == AddressSelectionMode.DropoffSelection; }
+			get { return _destinationAddress; }
 			set
 			{
-				if (value != ShowDestination)
+				if (value != _destinationAddress)
 				{
-					if (value)
-					{
-						AddressSelectionMode = AddressSelectionMode.DropoffSelection;
-					}
-					else
-					{
-						AddressSelectionMode = AddressSelectionMode.PickupSelection;
-					}
+					_destinationAddress = value;
 					RaisePropertyChanged();
 				}
 			}
 		}
 
-		public ICommand ChangeSelectionMode
+		private AddressSelectionMode _addressSelectionMode;
+		public AddressSelectionMode AddressSelectionMode
 		{
-			get {
-				return GetCommand(() =>
+			get { return _addressSelectionMode; }
+			set 
+			{ 
+				if (value != _addressSelectionMode)
+				{
+					_addressSelectionMode = value;
+					RaisePropertyChanged();
+					RaisePropertyChanged(() => ShowDestination);
+				}
+			} 
+		}
+
+		public bool ShowDestination
+		{
+			get { 
+				return AddressSelectionMode == AddressSelectionMode.DropoffSelection 
+					|| AddressSelectionMode == AddressSelectionMode.None; 
+			}
+		}
+
+		private bool _isConfirmationScreen;
+		public bool IsConfirmationScreen
+		{
+			get { return _isConfirmationScreen; }
+			set
+			{
+				if (value != _isConfirmationScreen)
+				{
+					if (value)
 					{
-						ShowDestination = !ShowDestination;
-					});
+						AddressSelectionMode = AddressSelectionMode.None;
+					}
+					else
+					{
+						AddressSelectionMode = AddressSelectionMode.PickupSelection;
+					}
+
+					_isConfirmationScreen = value;
+					RaisePropertyChanged();
+				}
 			}
 		}
 	}
