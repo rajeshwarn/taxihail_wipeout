@@ -105,6 +105,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
+        public bool TipListDisabled = false;
+
+        public string TipAmountDisplay
+        {
+            get
+            {
+                return TipListDisabled ? "" : Tips.First(x => x.Id == Tip).Display;
+            }
+        }
+
         public ListItem<Guid>[] GetCreditCardListItems ()
         {
             return CreditCards.Select(x=> new ListItem<Guid> { Id = x.CreditCardId, Display = x.FriendlyName }).ToArray();

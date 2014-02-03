@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (resource != 0)
                 {
                     _imageLeftView.SetImageResource(resource);
-                    _textViewLabel.SetPadding(70.ToPixels(), 0, 0, 0);
+                    _textViewLabel.SetPadding(50.ToPixels(), 0, 0, 0);
                 }
             }
         }

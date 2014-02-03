@@ -131,12 +131,20 @@ namespace MK.DeploymentService.Mobile
 			UpdateJob("Creating new version in Customer Portal");
 
 			var ipaAdHocFile = GetiOSAdHocFile(ipaAdHocPath);
-			var ipaAdHocFileName = new FileInfo(ipaAdHocFile).Name;
+			var ipaAdHocFileName = ipaAdHocFile != null ? new FileInfo(ipaAdHocFile).Name : null;
+            var fsIOs = ipaAdHocFile != null ? File.OpenRead(ipaAdHocFile) : null;
 
 			var apkFile = GetAndroidFile(apkPath);
-			var apkFileName = new FileInfo(apkFile).Name;				 
+            var apkFileName = apkFile != null ? new FileInfo(apkFile).Name : null;
+            var fsAndroid = apkFile != null ? File.OpenRead(apkFile) : null;
 
-			var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, _job.Revision.Tag, _job.ServerUrl, ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
+		    var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, 
+                                                                        _job.Revision.Tag, 
+                                                                        _job.ServerUrl, 
+                                                                        ipaAdHocFileName, 
+                                                                        fsIOs, 
+                                                                        apkFileName, 
+                                                                        fsAndroid);
 			UpdateJob (message);
 		}
 
@@ -176,42 +184,34 @@ namespace MK.DeploymentService.Mobile
 
 		private string GetAndroidFile(string apkPath)
 		{
-			if (!Directory.Exists(apkPath))
-			{
-				throw new Exception("Android release dir does not exist, there probably was a problem with the build or a project was added to the solution without being added in the list of projects to build.");
+			if (Directory.Exists (apkPath)) {
+				return Directory.EnumerateFiles (apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault ();
 			}
-
-			return Directory.EnumerateFiles(apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
+			return null;
 		}
 
 		private string GetAndroidCallboxFile(string apkPathCallBox)
 		{
-			if (!Directory.Exists(apkPathCallBox))
-			{
-				throw new Exception("Android callbox release dir does not exist, there probably was a problem with the build or a project was added to the solution without being added in the list of projects to build.");
+			if (Directory.Exists (apkPathCallBox)) {
+				return Directory.EnumerateFiles(apkPathCallBox, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
 			}
-
-			return Directory.EnumerateFiles(apkPathCallBox, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
+			return null;
 		}
 
 		private string GetiOSAdHocFile(string ipaAdHocPath)
 		{
-			if (!Directory.Exists(ipaAdHocPath))
-			{
-				throw new Exception("iOS AdHoc dir does not exist, there probably was a problem with the build or a project was added to the solution without being added in the list of projects to build.");
+			if (Directory.Exists (ipaAdHocPath)) {
+				return Directory.EnumerateFiles(ipaAdHocPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
 			}
-
-			return Directory.EnumerateFiles(ipaAdHocPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+			return null;
 		}
 
 		private string GetiOSAppStoreFile(string ipaAppStorePath)
 		{
-			if (!Directory.Exists(ipaAppStorePath))
-			{
-				throw new Exception("iOS AppStore dir does not exist, there probably was a problem with the build or a project was added to the solution without being added in the list of projects to build.");
+			if (Directory.Exists (ipaAppStorePath)) {
+				return Directory.EnumerateFiles(ipaAppStorePath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
 			}
-
-			return Directory.EnumerateFiles(ipaAppStorePath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+			return null;
 		}
 
 		void Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox)

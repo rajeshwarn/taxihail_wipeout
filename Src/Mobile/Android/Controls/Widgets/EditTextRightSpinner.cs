@@ -87,6 +87,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public event EventHandler<AdapterView.ItemSelectedEventArgs> ItemSelected;
 
+        public event EventHandler SpinnerClicked;
+
+
         private void Initialize()
         {
             _adapter = new ListItemAdapter(Context, Resource.Layout.SpinnerTextWithImage, Resource.Id.labelSpinner,
@@ -114,12 +117,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
             var button = (Button) layout.FindViewById(Resource.Id.openSpinnerButton);
-            button.Click += (sender, e) => { _spinner.PerformClick(); };
+
+            button.Click += (sender, e) =>
+            {                  
+                _spinner.PerformClick(); 
+
+                if (SpinnerClicked!=null)
+                {
+                    SpinnerClicked(this, e);
+                }
+            };
+
             _spinner = (Spinner) layout.FindViewById(Resource.Id.spinner);
             _spinner.Adapter = _adapter;
             SelectItem();
+
             _spinner.ItemSelected -= HandleItemSelected;
             _spinner.ItemSelected += HandleItemSelected;
+
+
 
             _spinner.Prompt = Context.GetString(Resource.String.ListPromptSelectOne);
         }
@@ -131,6 +147,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 ItemSelected(this, e);
             }
         }
+
 
         public Spinner GetSpinner()
         {

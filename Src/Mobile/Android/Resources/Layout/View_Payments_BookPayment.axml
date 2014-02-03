@@ -129,12 +129,13 @@
                         android:gravity="center_vertical" />
                     <EditText
                         android:id="@+id/meterAmountTextView"
-                        local:MvxBind="Hint PlaceholderAmount, Mode=TwoWay; Text MeterAmount"
+                        local:MvxBind="Hint PlaceholderAmount; Text MeterAmount"
                         android:selectAllOnFocus="true"
                         android:layout_width="100dp"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_weight="0.1"
-                        android:inputType="numberDecimal"
+                        android:inputType="numberDecimal|textNoSuggestions"
+                        android:imeOptions="actionDone"
                         android:textSize="@dimen/payment_text_size"
                         android:gravity="center_vertical|right" />
                 </LinearLayout>
@@ -158,7 +159,7 @@
                         android:gravity="center_vertical" />
                     <apcurium.mk.booking.mobile.client.controls.EditTextRightSpinner
                         android:id="@+id/tipPicker"
-                        local:MvxBind="Text PaymentPreferences.TipAmount; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip"
+                        local:MvxBind="Text PaymentPreferences.TipAmountDisplay; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip"
                         android:layout_width="100dp"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_weight="0.1"
@@ -183,14 +184,15 @@
                         android:textSize="@dimen/payment_text_size"
                         android:gravity="center_vertical" />
                     <EditText
-                        local:MvxBind="Hint PlaceholderAmount, Mode=TwoWay; Text TipAmount"
+                        local:MvxBind="Hint PlaceholderAmount; Text TipAmount, Mode=OneWayToSource; Text TipAmountString, Mode=OneWay; Click ToggleToTipCustom"
                         android:id="@+id/tipAmountTextView"
                         android:selectAllOnFocus="true"
                         android:layout_width="100dp"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_weight="0.1"
-                        android:inputType="numberDecimal"
+                        android:inputType="numberDecimal|textNoSuggestions"
                         android:textSize="@dimen/payment_text_size"
+                        android:imeOptions="actionDone"
                         android:gravity="center_vertical|right" />
                 </LinearLayout>
                 <View
@@ -214,7 +216,7 @@
                         android:gravity="center_vertical|left" />
                     <TextView
                         android:id="@+id/totalAmountTextView"
-                        local:MvxBind="Text TextAmount, Mode=TwoWay"
+                        local:MvxBind="Text TotalAmount, Mode=TwoWay"
                         android:layout_weight="0.9"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/HeightEditTextFlat"

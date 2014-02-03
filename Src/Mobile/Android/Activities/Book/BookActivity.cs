@@ -101,10 +101,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var apc_logo = FindViewById<ImageView>(Resource.Id.apc_logo_menu);
             var mk_logo = FindViewById<ImageView>(Resource.Id.mk_logo);
 
-
-
-
-
             apc_logo.Click += (object sender, EventArgs e) => 
             {
                 ViewModel.Panel.ToApcuriumWebsite.Execute();
@@ -114,10 +110,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 ViewModel.Panel.ToMobileKnowledgeWebsite.Execute();
             };
-
-            //var mainLayoutMenu = FindViewById<RelativeLayout>(Resource.Id.MainLayoutMenu);
-            //var titleText = mainLayoutMenu.FindViewById<TextView>(Resource.Id.ViewTitle);
-            //titleText.Text = GetString(Resource.String.View_BookSettingMenu);
 
             var menu = FindViewById(Resource.Id.BookSettingsMenu);
             menu.Visibility = ViewStates.Gone;
@@ -253,20 +245,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             animation.AnimationStart +=
                 (sender, e) =>
             {
-                if (ViewModel.Panel.MenuIsOpen)
-                    menu.Visibility = ViewStates.Visible;
+                menu.Visibility = ViewStates.Gone;
+                menu.Visibility = ViewStates.Visible;                
             };
 
             animation.AnimationEnd +=
                 (sender, e) =>
             {
-                if (!ViewModel.Panel.MenuIsOpen)
-                {
-                    menu.Visibility = ViewStates.Gone;
-                }
-                else
-                {
+                menu.Visibility = ViewStates.Gone;
 
+                if (ViewModel.Panel.MenuIsOpen)
+                {
+                    menu.Visibility = ViewStates.Visible;
                 }
             };
 

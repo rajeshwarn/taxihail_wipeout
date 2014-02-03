@@ -166,11 +166,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								Settings = Order.Settings
 							};
 		    						
-								ShowViewModel<BookingStatusViewModel>(new
+								ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new
 							        {
 							            order = orderCreated.ToJson(),
 							            orderStatus = orderInfo.ToJson()
-									}.ToStringDictionary(), true);	
+									}.ToStringDictionary());	
 							
 	                        this.Services().MessengerHub.Publish(new OrderConfirmed(this, Order, false));
 						}

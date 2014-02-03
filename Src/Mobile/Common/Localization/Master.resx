@@ -1475,5 +1475,7 @@
   <data name="mobileKnowledgeUrl" xml:space="preserve">
     <value>http://www.mobile-knowledge.com/</value>
   </data>
-
+  <data name="CmtRideLinqConfirmPairViewConfirmPairDetailText" xml:space="preserve">
+    <value>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</value>
+  </data>
 </root>
