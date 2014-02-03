@@ -80,12 +80,6 @@
     <Compile Include="Resources\Prediction.cs" />
     <Compile Include="Resources\PredictionResponse.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MK.Common\MK.Common.Android.csproj">
-      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
-      <Name>MK.Common.Android</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -94,4 +88,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <ProjectReference Include="..\MK.Common\MK.Common.Android.csproj">
+      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
+      <Name>MK.Common.Android</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
