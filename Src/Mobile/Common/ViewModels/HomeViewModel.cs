@@ -67,7 +67,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				return this.GetCommand(() =>{
-					_orderWorkflowService.SetPickupAddressToUserLocation();
+					_orderWorkflowService.SetAddressToUserLocation();
+				});
+			}
+		}
+
+		public ICommand ChangeAddressSelectionMode
+		{
+			get
+			{
+				return this.GetCommand(() =>{
+					_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
 				});
 			}
 		}

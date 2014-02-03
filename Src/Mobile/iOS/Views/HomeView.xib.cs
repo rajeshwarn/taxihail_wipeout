@@ -82,24 +82,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var btnEstimate = new AppBarButton(Localize.GetValue("Estimate"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "estimate_icon.png", "estimate_icon_pressed.png");
             btnEstimate.Frame = btnEstimate.Frame.IncrementX(4);
 
-            var set = this.CreateBindingSet<HomeView, HomeViewModel>();
-
-            set.Bind(btnEstimate)
-                .For("TouchUpInside")
-                .To(vm => vm.OrderOptions.ChangeSelectionMode);
-            set.Bind(btnEstimate)
-                .For(v => v.Selected)
-                .To(vm => vm.OrderOptions.ShowDestination);
-
-            set.Apply();
-
             var btnBook = new FlatButton(new RectangleF(99, 7, 123, 41));
             FlatButtonStyle.Green.ApplyTo(btnBook);
             btnBook.SetTitle(Localize.GetValue("BookItButton"), UIControlState.Normal);
 
             var btnBookLater = new AppBarButton(Localize.GetValue("BookItLaterButton"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "later_icon.png", "later_icon_pressed.png");
             btnBookLater.Frame = btnBookLater.Frame.SetX(View.Frame.Width - btnBookLater.Frame.Width - 3);
-            btnBookLater.TouchUpInside += (sender, e) => btnBookLater.Selected = !btnBookLater.Selected;
+            // test to show how the order options control will show up in the confirmation screen
+            btnBookLater.TouchUpInside += (sender, e) => ViewModel.OrderOptions.IsConfirmationScreen = !ViewModel.OrderOptions.IsConfirmationScreen;
+
+            var set = this.CreateBindingSet<HomeView, HomeViewModel>();
+
+            set.Bind(btnEstimate)
+                .For(v => v.Command)
+                .To(vm => vm.ChangeAddressSelectionMode);
+            set.Bind(btnEstimate)
+                .For(v => v.Selected)
+                .To(vm => vm.OrderOptions.ShowDestination);
+
+            set.Apply();
 
             bottomBar.AddSubviews(btnEstimate, btnBook, btnBookLater);
         }

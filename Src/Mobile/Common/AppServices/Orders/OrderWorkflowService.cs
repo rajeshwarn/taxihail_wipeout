@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -19,8 +20,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly AbstractLocationService _locationService;
 		readonly IAccountService _accountService;
 		readonly IGeolocService _geolocService;
-		readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly IConfigurationManager _configurationManager;
+
+		readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
+		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
+		readonly ISubject<AddressSelectionMode> _addressSelectionModeSubject = new BehaviorSubject<AddressSelectionMode>(AddressSelectionMode.PickupSelection);
 
 		public OrderWorkflowService(AbstractLocationService locationService,
 			IAccountService accountService,
@@ -31,16 +35,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_geolocService = geolocService;
 			_accountService = accountService;
 			_locationService = locationService;
-        	
 		}
-		public async Task SetPickupAddressToUserLocation()
+
+		public async Task SetAddressToUserLocation()
 		{
             //CancelCurrentLocationCommand.Execute ();
 			//TODO: Handle when location services are not available
 			if (_locationService.BestPosition != null)
 			{
 				var address = await SearchAddressForCoordinate(_locationService.BestPosition);
-				_pickupAddressSubject.OnNext(address);
+				await SetAddressToCurrentSelection(address);
+
 				return;
 			}
 
@@ -52,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				{
 					positionSet = true;
 					var address = await SearchAddressForCoordinate(pos);
-					_pickupAddressSubject.OnNext(address);
+					await SetAddressToCurrentSelection(address);
 				},
 				async () =>
 				{  
@@ -60,7 +65,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 					if (!positionSet)
 					{
-
 						{
 							if (_locationService.BestPosition == null)
 							{
@@ -69,18 +73,31 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 							else
 							{
 								var address = await SearchAddressForCoordinate(_locationService.BestPosition);    
-								_pickupAddressSubject.OnNext(address);
+								await SetAddressToCurrentSelection(address);
 							}
 						}
 					}
-				});
+				}
+			);
+		}
 
+		public async Task ToggleBetweenPickupAndDestinationSelectionMode()
+		{
+			var currentSelectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
+			if (currentSelectionMode == AddressSelectionMode.PickupSelection)
+			{
+				_addressSelectionModeSubject.OnNext(AddressSelectionMode.DropoffSelection);
+			}
+			else
+			{
+				_addressSelectionModeSubject.OnNext(AddressSelectionMode.PickupSelection);
+			}
 		}
 
 		public async Task ValidatePickupDestinationAndTime()
 		{
 			var pickupAddress = await _pickupAddressSubject.Take(1).ToTask();
-			bool pickupIsValid = pickupAddress.BookAddress.HasValue()
+			var pickupIsValid = pickupAddress.BookAddress.HasValue()
 			                     && pickupAddress.HasValidCoordinate();
 
 			if (!pickupIsValid)
@@ -88,11 +105,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				throw new OrderValidationException("Pickup address required", OrderValidationError.PickupAddressRequired);
 			}
 
-			bool destinationIsRequired = _configurationManager.GetSetting<bool>("Client.DestinationIsRequired", false);
-			bool destinationIsValid = false;
-			//TODO: Destination not implemented v0.01pre-alpha
-			// info.DropOffAddress.BookAddress.HasValue () 
-			//&& info.DropOffAddress.HasValidCoordinate ()
+			var destinationIsRequired = _configurationManager.GetSetting<bool>("Client.DestinationIsRequired", false);
+			var destinationAddress = await _destinationAddressSubject.Take(1).ToTask();
+			var destinationIsValid = destinationAddress.BookAddress.HasValue()
+			                         && destinationAddress.HasValidCoordinate();
 
 			if (destinationIsRequired && !destinationIsValid)
 			{
@@ -105,12 +121,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			{
 				throw new OrderValidationException("Invalid pickup date", OrderValidationError.InvalidPickupDate);
 			}
-
 		}
 
 		public IObservable<Address> GetAndObservePickupAddress()
 		{
 			return _pickupAddressSubject;
+		}
+
+		public IObservable<Address> GetAndObserveDestinationAddress()
+		{
+			return _destinationAddressSubject;
+		}
+
+		public IObservable<AddressSelectionMode> GetAndObserveAddressSelectionMode()
+		{
+			return _addressSelectionModeSubject;
 		}
 
 		private async Task<Address> SearchAddressForCoordinate(Position p)
@@ -141,13 +166,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				}
 			}
 
-
 			//IsExecuting = false;
 		}
 
-
-
-        
+		private async Task SetAddressToCurrentSelection(Address address)
+		{
+			var selectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
+			if (selectionMode == AddressSelectionMode.PickupSelection)
+			{
+				_pickupAddressSubject.OnNext(address);
+			}
+			else
+			{
+				_destinationAddressSubject.OnNext(address);
+			}
+		}
     }
 }
 

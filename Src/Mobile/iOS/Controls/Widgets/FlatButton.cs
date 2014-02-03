@@ -10,7 +10,7 @@ using apcurium.MK.Booking.Mobile.Client.Style;
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     [Register("FlatButton")]
-    public class FlatButton : UIButton
+    public class FlatButton : CommandButton
     {
         UIImage _leftImage;
         private const float RadiusCorner = 2;
@@ -26,7 +26,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
 			ApplyDefaultStyle ();
         }
-        public FlatButton ()
+
+        public FlatButton () : base()
         {
 			ApplyDefaultStyle ();
         }

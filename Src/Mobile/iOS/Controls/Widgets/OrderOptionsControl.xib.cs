@@ -43,6 +43,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Hidden)
                 .To(vm => vm.ShowDestination)
                 .WithConversion("BoolInverter");
+            set.Bind(viewDestination)
+                .For(v => v.IsReadOnly)
+                .To(vm => vm.IsConfirmationScreen);
+            set.Bind(viewDestination.AddressTextView)
+                .To(vm => vm.DestinationAddress.DisplayAddress);
 
             set.Apply();
         }
