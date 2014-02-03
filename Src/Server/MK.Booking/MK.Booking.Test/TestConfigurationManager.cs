@@ -30,6 +30,7 @@ namespace apcurium.MK.Booking.Common.Tests
             {
                 _config.Add(token.Key, token.Value.ToString());
             }
+            Data = new TaxiHailSetting();
             SetSettingsValue(_config);
         }
 

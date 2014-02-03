@@ -22,6 +22,8 @@ namespace apcurium.MK.Common.Configuration.Impl
         {
             _contextFactory = contextFactory;
             _logger = logger;
+            Data = new TaxiHailSetting();
+            Load();
         }
 
         public string GetSetting(string key)
