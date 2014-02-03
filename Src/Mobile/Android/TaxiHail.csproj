@@ -469,6 +469,11 @@
     <Compile Include="PhonePresenter.cs" />
     <Compile Include="Activities\HomeActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Home.axml" />
+    <Compile Include="Controls\Widgets\BindableMapView.cs" />
+    <Compile Include="Controls\Widgets\IMvxBindable.cs" />
+    <Compile Include="Controls\Widgets\OrderMapVIew.cs" />
+    <AndroidResource Include="Resources\Drawable\drop_shadow_old.xml" />
+    <AndroidResource Include="Resources\Drawable\drop_shadow.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -520,9 +525,6 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_HistoryList.axml">
       <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_Book.axml">
-      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_SearchAddress.axml">
       <SubType>Designer</SubType>
@@ -577,7 +579,6 @@
     <AndroidResource Include="Resources\Drawable\bookLaterButton_state.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Drawable\drop_shadow.xml" />
     <AndroidResource Include="Resources\Drawable\location_info.png" />
     <AndroidResource Include="Resources\Drawable\number_icon.png" />
     <AndroidResource Include="Resources\Drawable\cancel.png" />

@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -12,18 +13,17 @@ using Android.OS;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
+using Cirrious.MvvmCross.Droid.Views;
+using TinyIoC;
+using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Animations;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Models;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using TinyIoC;
-using TinyMessenger;
-using Cirrious.MvvmCross.Droid.Views;
-using System.Threading.Tasks;
-using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         FinishOnTaskLaunch = true)]
     public class HomeActivity : MvxActivity
     {
-        private TouchMap _touchMap;
+        private OrderMapView _touchMap;
 
         public new HomeViewModel ViewModel
 		{
@@ -45,40 +45,53 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            _touchMap.OnCreate(bundle);
-            InitMap();        
+            _touchMap.OnCreate(bundle);     
+            var errorCode = GooglePlayServicesUtil.IsGooglePlayServicesAvailable(ApplicationContext);
+            if (errorCode == ConnectionResult.ServiceMissing
+                || errorCode == ConnectionResult.ServiceVersionUpdateRequired
+                || errorCode == ConnectionResult.ServiceDisabled)
+            {
+                //ViewModel.GooglePlayServicesNotAvailable.Execute();
+                var dialog = GooglePlayServicesUtil.GetErrorDialog(errorCode, this, 0);
+                dialog.Show();
+                dialog.DismissEvent += (s, e) => Finish();
+            }
+            else
+            {
+                InitMap();
+            }        
         }
-
-        private void InitMap()
-        {
-		    MapsInitializer.Initialize(this.ApplicationContext);
-		    _touchMap.ViewTreeObserver.AddOnGlobalLayoutListener(new LayoutObserverForMap(_touchMap));
-        }
-
 
         protected override void OnViewModelSet()
         {
-            SetContentView(Resource.Layout.View_Book);
+            SetContentView(Resource.Layout.View_Home);
 
-            _touchMap = FindViewById<TouchMap>(Resource.Id.mapPickup);
+            _touchMap = FindViewById<OrderMapView>(Resource.Id.mapPickup);
             _touchMap.SetMapCenterPins(FindViewById<ImageView>(Resource.Id.mapPickupCenterPin), FindViewById<ImageView>(Resource.Id.mapDropoffCenterPin));
 
             ViewModel.OnViewLoaded();
 
-            FindViewById<TouchMap>(Resource.Id.mapPickup).PostInvalidateDelayed(100);
+            FindViewById<OrderMapView>(Resource.Id.mapPickup).PostInvalidateDelayed(100);
 
+           
         }
 
         protected override void OnResume()
         {
             base.OnResume();
             TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
+
+            var mainLayout = FindViewById(Resource.Id.HomeMainLayout);
+            mainLayout.Invalidate();
+
+            _touchMap.PostInvalidateDelayed(100);
+            _touchMap.OnResume();
         }
 
         protected override void OnPause()
         {
             base.OnPause();
-	        _touchMap.Pause();
+	        //_touchMap.Pause();
         }
 
         protected override void OnStart()
@@ -103,6 +116,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
 
             _touchMap.OnDestroy();
+        }
+
+        private void InitMap()
+        {
+            try
+            {
+      MapsInitializer.Initialize(this.ApplicationContext);            ;
+      _touchMap.ViewTreeObserver.AddOnGlobalLayoutListener(new apcurium.MK.Booking.Mobile.Client.Controls.OrderMapView.LayoutObserverForMap(_touchMap));
+            }
+            catch (GooglePlayServicesNotAvailableException e)
+            {
+                Logger.LogError(e);
+            }
         }
 
         protected override void OnSaveInstanceState(Bundle outState)

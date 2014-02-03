@@ -12,21 +12,92 @@
         android:layout_height="fill_parent"
         android:id="@+id/RelMapLayout">
         <LinearLayout
+            android:id="@+id/bkd"
+            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
-            <apcurium.mk.booking.mobile.client.controls.TouchMap
-                local:mapType="normal"
-                local:uiCompass="false"
-                local:uiZoomControls="false"
-                android:id="@+id/mapPickup"
+            android:layout_height="fill_parent">
+            <FrameLayout
+                android:id="@+id/RelInnerLayout"
+                android:layout_weight="1"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:apiKey="@string/GoogleMapKey"
-                android:enabled="true"
-                android:layout_margin="-20dip"
-                android:clickable="true" />
-        <!--local:MvxBind="Pickup Pickup.Model; Dropoff Dropoff.Model; MapMoved SelectedAddress.SearchCommand; Center MapCenter; AvailableVehicles AvailableVehicles; AddressSelectionMode AddressSelectionMode"-->
+                android:layout_height="fill_parent">
+                <apcurium.mk.booking.mobile.client.controls.OrderMapView
+                    local:mapType="normal"
+                    local:uiCompass="false"
+                    local:uiZoomControls="false"
+                    android:id="@+id/mapPickup"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:apiKey="@string/GoogleMapKey"
+                    android:enabled="true"
+                    local:MvxBind="DataContext Map"
+                    android:clickable="true" />
+                <LinearLayout
+                    android:background="@drawable/drop_shadow"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/btnSettings"
+                    android:layout_marginBottom="13dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="left|bottom" />
+                <LinearLayout
+                    android:background="@drawable/drop_shadow"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/btnBookLater"
+                    android:layout_marginBottom="13dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="right|bottom" />
+                <ImageView
+                    android:id="@+id/mapPickupCenterPin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:src="@drawable/pin_hail"
+                    android:visibility="gone" />
+                <ImageView
+                    android:id="@+id/mapDropoffCenterPin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:src="@drawable/pin_destination"
+                    android:visibility="gone" />
+            </FrameLayout>
+            <LinearLayout
+                android:background="@color/white"
+                android:layout_width="fill_parent"
+                android:id="@+id/bottom_bar"
+                android:layout_height="55dip">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+                    <View
+                        android:id="@+id/homeLeftButton"
+                        android:layout_width="55dip"
+                        android:layout_height="55dip" />
+                    <FrameLayout
+                        android:id="@+id/homeCenterButtons"
+                        android:orientation="horizontal"
+                        android:layout_width="200dp"
+                        android:layout_height="55dip"
+                        android:layout_weight="1">
+                        <Button
+                            android:id="@+id/btnBookNow"
+                            style="@style/ButtonActionGreenStyle"
+                            android:layout_width="123dip"
+                            android:layout_height="44dip"
+                            android:text="Book Now"
+                            android:layout_gravity="center_vertical|center_horizontal" />
+                    </FrameLayout>
+                    <View
+                        android:id="@+id/homeLeftButton"
+                        android:layout_width="55dip"
+                        android:layout_height="55dip" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>
