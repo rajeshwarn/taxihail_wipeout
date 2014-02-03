@@ -502,6 +502,9 @@
     <AndroidResource Include="Resources\drawable-xhdpi\taxi_badge_selected.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\suv_badge.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\suv_badge_selected.png" />
+    <AndroidResource Include="Resources\Drawable\highlight.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\highlight.png" />
+    <AndroidResource Include="Resources\Drawable\drop_shadow_with_borders.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

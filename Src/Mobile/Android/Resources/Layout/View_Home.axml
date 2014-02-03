@@ -47,14 +47,14 @@
                         android:src="@drawable/menu_icon" />
                 </LinearLayout>
                 <LinearLayout
-                    android:background="@drawable/drop_shadow"
+                    android:background="@drawable/drop_shadow_with_borders"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginBottom="13dp"
                     android:layout_marginRight="10dp"
                     android:layout_gravity="right|bottom">
                     <ImageView
-                        android:id="@+id/btnBookLater"
+                        android:id="@+id/btnLocation"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="center"
@@ -86,10 +86,30 @@
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:layout_height="match_parent">
-                    <View
-                        android:id="@+id/homeLeftButton"
-                        android:layout_width="55dip"
-                        android:layout_height="55dip" />
+                    <LinearLayout
+                        android:layout_width="65dip"
+                        android:layout_height="55dip"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical">
+                        <View
+                            android:layout_width="55dip"
+                            android:layout_height="12dip" />
+                        <ImageView
+                            android:id="@+id/homeLeftButton"
+                            android:src="@drawable/estimate_icon"
+                            android:scaleType="center"
+                            android:layout_gravity="center|center"
+                            android:layout_width="24dip"
+                            android:layout_height="24dip" />
+                        <TextView
+                            android:textSize="10dip"
+                            android:textColor="#000000"
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dip"
+                            android:text="Estimate"
+                            android:layout_gravity="center_horizontal" />
+                    </LinearLayout>
                     <FrameLayout
                         android:id="@+id/homeCenterButtons"
                         android:orientation="horizontal"
@@ -105,10 +125,30 @@
                             android:text="Book Now"
                             android:layout_gravity="bottom|center_horizontal" />
                     </FrameLayout>
-                    <ImageView
-                        android:id="@+id/homeLeftButton"
-                        android:layout_width="55dip"
-                        android:layout_height="55dip" />
+                    <LinearLayout
+                        android:layout_width="65dip"
+                        android:layout_height="55dip"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical">
+                        <View
+                            android:layout_width="55dip"
+                            android:layout_height="12dip" />
+                        <ImageView
+                            android:id="@+id/homeRightButton"
+                            android:src="@drawable/later_icon"
+                            android:scaleType="center"
+                            android:layout_gravity="center|center"
+                            android:layout_width="24dip"
+                            android:layout_height="24dip" />
+                        <TextView
+                            android:textSize="10dip"
+                            android:textColor="#000000"
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dip"
+                            android:text="Later"
+                            android:layout_gravity="center_horizontal" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
