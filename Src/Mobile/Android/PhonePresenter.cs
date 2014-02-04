@@ -4,6 +4,8 @@ using Cirrious.MvvmCross.Droid.Views;
 using Android.Content;
 using Android.App;
 using Cirrious.CrossCore.Platform;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -22,6 +24,18 @@ namespace apcurium.MK.Booking.Mobile.Client
             this.Show (intent, removeFromHistory);
         }
 
+        public override void ChangePresentation(Cirrious.MvvmCross.ViewModels.MvxPresentationHint hint)
+        {
+            if (hint is ShowOrderReviewPresentationHint)
+            {
+                TryShowOrderReview();
+            }
+            else
+            {
+                base.ChangePresentation(hint);
+            }
+        }
+
         private void Show (Intent intent, bool removeFromHistory)
         {
             Activity activity = this.Activity;
@@ -35,6 +49,20 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 activity.Finish();
             }
+        }
+
+        private void TryShowOrderReview()
+        {
+            var homeView = Activity as HomeActivity;
+            if (homeView != null)
+            {
+                homeView.ShowOrderReview();
+            }
+            else
+            {
+                MvxTrace.Warning("Can't show order review");
+            }
+
         }
     }
 }

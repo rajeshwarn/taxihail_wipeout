@@ -39,6 +39,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>
     {
         private SupportMapFragment _touchMap;
+        private OrderReview _orderReview;
+        private OrderOptions _orderOptions;
+        private readonly DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
 
         public new HomeViewModel ViewModel
 		{
@@ -65,7 +68,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public OrderMapFragment _mapFragment; 
 
-        public OrderOptions _orderOptions;
 
         protected override void OnViewModelSet()
         {
@@ -73,14 +75,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ViewModel.OnViewLoaded();
             _touchMap = (SupportMapFragment)SupportFragmentManager.FindFragmentById(Resource.Id.mapPickup);
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
+            _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
 
             // Creating a view controller for MapFragment
             _mapFragment = new OrderMapFragment(_touchMap);
 
             // Home View Bindings
             var binding = this.CreateBindingSet<HomeActivity, HomeViewModel>();
+
             binding.Bind(_mapFragment).For("DataContext").To(vm => vm.Map); // Map Fragment View Bindings
             binding.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // Map OrderOptions View Bindings
+
+            var bookNow = FindViewById<Button>(Resource.Id.btnBookNow);
+            binding
+                .Bind(bookNow)
+                .For("Click")
+                .To(vm => vm.BottomBar.BookNow);
+
             binding.Apply();
         }
 
@@ -134,5 +145,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.OnLowMemory();
             _touchMap.OnLowMemory();
         }
+
+        TranslateAnimation _animation;
+
+        public void ShowOrderReview()
+        {
+            _animation = new TranslateAnimation(0, 0, 0, -500);
+            _animation.Duration = 600;
+            _animation.Interpolator = new DecelerateInterpolator();
+            _animation.FillAfter = true;
+            _orderReview.StartAnimation(_animation);
+           
+        }
+
+        void HandleAnimationEnd (object sender, Animation.AnimationEndEventArgs e)
+        {
+
+
+        }
+
+
     }
 }
