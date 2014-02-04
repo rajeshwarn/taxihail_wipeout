@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService = vehicleService;
 
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
+			this.Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
 			this.Observe(_vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
         }
 		
@@ -34,6 +35,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					_pickupAddress = value;
 					RaisePropertyChanged();
 					OnPickupAddressChanged();
+				}
+			}
+		}
+
+		private Address _destinationAddress;
+		public Address DestinationAddress
+		{
+			get { return _destinationAddress; }
+			set
+			{
+				if (value != _destinationAddress)
+				{
+					_destinationAddress = value;
+					RaisePropertyChanged();
+					OnDestinationAddressChanged();
 				}
 			}
 		}
@@ -76,6 +92,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					SouthBound = PickupAddress.Latitude - deltaLat,
 					EastBound = PickupAddress.Longitude - deltaLng,
 					WestBound = PickupAddress.Longitude + deltaLng,
+				};
+			}
+		}
+
+		private void OnDestinationAddressChanged()
+		{
+			var deltaLat = 0.002;
+			var deltaLng = 0.002;
+
+			if (DestinationAddress.HasValidCoordinate())
+			{
+				MapBounds = new MapBounds
+				{
+					NorthBound = DestinationAddress.Latitude + deltaLat,
+					SouthBound = DestinationAddress.Latitude - deltaLat,
+					EastBound = DestinationAddress.Longitude - deltaLng,
+					WestBound = DestinationAddress.Longitude + deltaLng,
 				};
 			}
 		}

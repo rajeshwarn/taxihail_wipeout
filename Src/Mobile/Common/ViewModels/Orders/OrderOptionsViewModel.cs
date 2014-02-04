@@ -64,8 +64,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		public bool ShowDestination
 		{
 			get { 
-				return AddressSelectionMode == AddressSelectionMode.DropoffSelection 
-					|| AddressSelectionMode == AddressSelectionMode.None; 
+				var showDestination = AddressSelectionMode == AddressSelectionMode.DropoffSelection || AddressSelectionMode == AddressSelectionMode.None;
+				if (!showDestination)
+				{
+					_orderWorkflowService.ClearDestinationAddress();
+				}
+
+				return showDestination;
 			}
 		}
 

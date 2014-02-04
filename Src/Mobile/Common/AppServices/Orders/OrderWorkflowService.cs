@@ -81,6 +81,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			);
 		}
 
+		public async Task ClearDestinationAddress()
+		{
+			_destinationAddressSubject.OnNext(new Address());
+		}
+
 		public async Task ToggleBetweenPickupAndDestinationSelectionMode()
 		{
 			var currentSelectionMode = await _addressSelectionModeSubject.Take(1).ToTask();

@@ -8,6 +8,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
     public interface IOrderWorkflowService
     {
 		Task SetAddressToUserLocation();
+		Task ClearDestinationAddress();
 
 		Task ToggleBetweenPickupAndDestinationSelectionMode();
 

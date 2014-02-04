@@ -21,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
     public class OrderMapView: BindableMapView
     {
         private AddressAnnotation _pickupAnnotation;
+        private AddressAnnotation _destinationAnnotation;
+        private List<AddressAnnotation> _availableVehicleAnnotations = new List<AddressAnnotation> ();
 
         public OrderMapView(IntPtr handle)
             :base(handle)
@@ -41,6 +43,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     .To(vm => vm.PickupAddress);
 
                 set.Bind()
+                    .For(v => v.DestinationAddress)
+                    .To(vm => vm.DestinationAddress);
+
+                set.Bind()
                     .For(v => v.MapBounds)
                     .To(vm => vm.MapBounds);
 
@@ -56,6 +62,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 AddressAnnotationType.Pickup,
                 string.Empty,
                 string.Empty);
+            _destinationAnnotation = new AddressAnnotation(new CLLocationCoordinate2D(),
+                AddressAnnotationType.Destination,
+                string.Empty,
+                string.Empty);
         }
 
         private Address _pickupAddress;
@@ -69,14 +79,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
+        private Address _destinationAddress;
+        public Address DestinationAddress
+        {
+            get { return _destinationAddress; }
+            set
+            { 
+                _destinationAddress = value;
+                OnDestinationAddressChanged();
+            }
+        }
+
         private MapBounds _mapBounds;
         public MapBounds MapBounds
         {
-            get
-            {
-                return _mapBounds;
-            }
-
+            get { return _mapBounds; }
             set
             {
                 if (_mapBounds != value)
@@ -100,14 +117,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (PickupAddress.HasValidCoordinate())
             {
                 RemoveAnnotation(_pickupAnnotation);
-
                 _pickupAnnotation.Coordinate = PickupAddress.GetCoordinate();
-
                 AddAnnotation(_pickupAnnotation);
             }
             else
             {
                 RemoveAnnotation (_pickupAnnotation);
+            }
+        }
+
+        private void OnDestinationAddressChanged()
+        {
+            if (DestinationAddress.HasValidCoordinate())
+            {
+                RemoveAnnotation(_destinationAnnotation);
+                _destinationAnnotation.Coordinate = DestinationAddress.GetCoordinate();
+                AddAnnotation(_destinationAnnotation);
+            }
+            else
+            {
+                RemoveAnnotation (_destinationAnnotation);
             }
         }
 
@@ -123,15 +152,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-        private readonly List<MKAnnotation> _availableVehiclePushPins = new List<MKAnnotation> ();
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
         {
             // remove currently displayed pushpins
-            foreach (var pushPin in _availableVehiclePushPins)
+            foreach (var vehicleAnnotation in _availableVehicleAnnotations)
             {
-                RemoveAnnotation(pushPin);
+                RemoveAnnotation(vehicleAnnotation);
             }
-            _availableVehiclePushPins.Clear ();
+            _availableVehicleAnnotations.Clear ();
 
             if (vehicles == null)
                 return;
@@ -142,9 +170,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                      ? AddressAnnotationType.NearbyTaxiCluster 
                                      : AddressAnnotationType.NearbyTaxi;
 
-                var pushPin = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), annotationType, string.Empty, string.Empty);
-                AddAnnotation (pushPin);
-                _availableVehiclePushPins.Add (pushPin);
+                var vehicleAnnotation = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), annotationType, string.Empty, string.Empty);
+                AddAnnotation (vehicleAnnotation);
+                _availableVehicleAnnotations.Add (vehicleAnnotation);
             }
         }
 
