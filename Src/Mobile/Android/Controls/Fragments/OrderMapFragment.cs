@@ -6,25 +6,36 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using Android.Views;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.Extensions;
+using Cirrious.MvvmCross.Binding.Attributes;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    public class OrderMapView: BindableMapView
+    public class OrderMapFragment: IMvxBindable
     {
         public GoogleMap Map { get; set;}
-        private ImageView _pickupCenterPin;
         private Marker _pickupPin;
-        private ImageView _dropoffCenterPin;
         private Marker _dropoffPin;
 
-        public OrderMapView(SupportMapFragment _map)
+        public OrderMapFragment(SupportMapFragment _map)
         {
+            this.CreateBindingContext();
             Map = _map.Map;
+        }
+
+        public IMvxBindingContext BindingContext { get; set; }
+
+        [MvxSetToNullAfterBinding]
+        public object DataContext
+        {
+            get { return BindingContext.DataContext; }
+            set { BindingContext.DataContext = value; }
         }
 
         public void ApplyBindings()
         {
-            var binding = this.CreateBindingSet<OrderMapView, MapViewModel>();
+            var binding = this.CreateBindingSet<OrderMapFragment, MapViewModel>();
 
             binding.Bind()
                 .For(v => v.PickupAddress)
@@ -68,7 +79,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void OnPickupAddressChanged()
         {
-            ShowPickupPin(PickupAddress);           
+            if (PickupAddress == null)
+                return; 
+
+            if (_pickupPin == null)
+            {
+                _pickupPin = Map.AddMarker(new MarkerOptions()
+                                           .SetPosition(new LatLng(0, 0))
+                                           .Anchor(.5f, 1f)
+                                           .InvokeIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.hail_icon))
+                                           .Visible(false));
+            }
+
+            if (PickupAddress.HasValidCoordinate())
+            {
+                _pickupPin.Visible = true;
+                _pickupPin.Position = new LatLng(PickupAddress.Latitude, PickupAddress.Longitude);
+            }
+            else
+            {
+                _pickupPin.Visible = false;
+            }
         }
 
         private void OnMapBoundsChanged()
@@ -78,48 +109,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 var center = MapBounds.GetCenter();
                 Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(center.Latitude, center.Longitude)));
 
-                // SET ZOOM here
 
-                //Map.AnimateCamera(CameraUpdateFactory.
-                //SetRegion(new MKCoordinateRegion(
-                  //  new CLLocationCoordinate2D(center.Latitude, center.Longitude),
-//                    new MKCoordinateSpan(MapBounds.LatitudeDelta, MapBounds.LongitudeDelta)), true);
-
-
+                Map.AnimateCamera(
+                    CameraUpdateFactory.NewLatLngBounds(
+                        new LatLngBounds(new LatLng(center.Latitude - MapBounds.LatitudeDelta, center.Longitude - MapBounds.LongitudeDelta), 
+                                     new LatLng(center.Latitude + MapBounds.LatitudeDelta, center.Longitude + MapBounds.LongitudeDelta)),
+                        DrawHelper.GetPixels(100)));
             }
-        }
-
-        public void SetMapCenterPins(ImageView pickup, ImageView dropoff)
-        {
-            _pickupCenterPin = pickup;
-            _dropoffCenterPin = dropoff;
-
-            //if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
-                _pickupCenterPin.Visibility = ViewStates.Visible;
-            //if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
-           //  _dropoffCenterPin.Visibility = ViewStates.Visible;
-        }
-
-        private void ShowPickupPin(Address address)
-        {
-            if (_pickupPin == null)
-            {
-                _pickupPin = Map.AddMarker(new MarkerOptions()
-                                           .SetPosition(new LatLng(0, 0))
-                                           .Anchor(.5f, 1f)
-                                           .InvokeIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.pin_hail))
-                                           .Visible(false));
-            }
-
-            if (address == null)
-                return;
-
-            if (address.Latitude != 0 && address.Longitude != 0)            
-            {
-                _pickupPin.Position = new LatLng(address.Latitude, address.Longitude);
-                _pickupPin.Visible = true;
-            }
-            if (_pickupCenterPin != null) _pickupCenterPin.Visibility = ViewStates.Gone;
         }
     }
 }

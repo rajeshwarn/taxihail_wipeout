@@ -12,7 +12,6 @@
         android:layout_height="fill_parent"
         android:id="@+id/RelMapLayout">
         <LinearLayout
-            android:id="@+id/bkd"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
@@ -31,138 +30,11 @@
                     android:layout_height="match_parent"
                     android:apiKey="@string/GoogleMapKey"
                     android:enabled="true"
-                    local:MvxBind="DataContext Map"
                     android:clickable="true" />
-                <LinearLayout
-                    android:id="@+id/abc"
-                    android:background="@drawable/drop_shadow"
-                    android:layout_width="fill_parent"
-                    android:layout_height="110dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginRight="6dp"
-                    android:layout_marginBottom="0dp">
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_margin="0px"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent">
-                        <LinearLayout
-                            android:orientation="horizontal"
-                            android:layout_margin="0px"
-                            android:layout_width="fill_parent"
-                            android:layout_height="44dp">
-                            <TextView
-                                android:background="@null"
-                                android:text="#"
-                                android:textSize="19dp"
-                                android:gravity="center|center"
-                                android:textColor="#000000"
-                                android:layout_margin="0px"
-                                android:singleLine="true"
-                                android:layout_width="44dp"
-                                android:layout_height="match_parent" />
-                            <View
-                                android:background="#767676"
-                                android:layout_gravity="center|center"
-                                android:layout_width="1px"
-                                android:layout_height="28dp" />
-                            <EditText
-                                android:background="@null"
-                                android:paddingLeft="10dp"
-                                android:gravity="left|center_vertical"
-                                android:hint="126 5th Ave, New York, NY"
-                                android:textSize="19dp"
-                                android:textColor="#000000"
-                                android:singleLine="true"
-                                android:layout_margin="0px"
-                                android:layout_width="fill_parent"
-                                android:layout_height="match_parent" />
-                        </LinearLayout>
-                        <View
-                            android:background="#767676"
-                            android:layout_width="fill_parent"
-                            android:layout_height="1px" />
-                        <LinearLayout
-                            android:orientation="horizontal"
-                            android:layout_margin="0px"
-                            android:paddingLeft="16dp"
-                            android:paddingRight="16dp"
-                            android:layout_width="fill_parent"
-                            android:layout_height="56dp">
-                            <LinearLayout
-                                android:orientation="vertical"
-                                android:layout_weight="1"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent">
-                                <ImageView
-                                    android:id="@+id/btnCarTaxi"
-                                    android:layout_weight="1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="fill_parent"
-                                    android:scaleType="center"
-                                    android:src="@drawable/taxi_badge" />
-                                <TextView
-                                    android:text="TAXI"
-                                    style="@drawable/home_car_text_selector"
-                                    android:textSize="10dp"
-                                    android:gravity="center|center"
-                                    android:textColor="#000000"
-                                    android:textStyle="bold"
-                                    android:layout_margin="0px"
-                                    android:singleLine="true"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="16dp" />
-                            </LinearLayout>
-                            <LinearLayout
-                                android:orientation="vertical"
-                                android:layout_weight="1"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent">
-                                <ImageView
-                                    android:id="@+id/btnCarBlack"
-                                    android:layout_weight="1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="fill_parent"
-                                    android:scaleType="center"
-                                    android:src="@drawable/blackcar_badge" />
-                                <TextView
-                                    android:text="BLACK CAR"
-                                    android:textSize="10dp"
-                                    android:gravity="center|center"
-                                    android:textColor="#000000"
-                                    android:textStyle="bold"
-                                    android:layout_margin="0px"
-                                    android:singleLine="true"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="16dp" />
-                            </LinearLayout>
-                            <LinearLayout
-                                android:orientation="vertical"
-                                android:layout_weight="1"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent">
-                                <ImageView
-                                    android:id="@+id/btnCarSuv"
-                                    android:layout_weight="1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="fill_parent"
-                                    android:scaleType="center"
-                                    android:src="@drawable/suv_badge" />
-                                <TextView
-                                    android:text="SUV"
-                                    android:textSize="10dp"
-                                    android:gravity="center|center"
-                                    android:textColor="#000000"
-                                    android:textStyle="bold"
-                                    android:layout_margin="0px"
-                                    android:singleLine="true"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="16dp" />
-                            </LinearLayout>
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
+                <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderOptions
+                    android:layout_width="wrap_content"
+                    android:id="@+id/orderOptions"
+                    android:layout_height="wrap_content" />
                 <LinearLayout
                     android:background="@drawable/drop_shadow"
                     android:layout_width="50dp"
@@ -193,22 +65,6 @@
                         local:MvxBind="Click LocateMe"
                         android:src="@drawable/location_icon" />
                 </LinearLayout>
-                <ImageView
-                    android:id="@+id/mapPickupCenterPin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
-                    android:src="@drawable/pin_hail"
-                    android:visibility="gone" />
-                <ImageView
-                    android:id="@+id/mapDropoffCenterPin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
-                    android:src="@drawable/pin_destination"
-                    android:visibility="gone" />
             </FrameLayout>
             <View
                 android:background="#767676"
@@ -238,7 +94,7 @@
                             android:scaleType="center"
                             android:layout_gravity="center|center"
                             android:clickable="true"
-                            local:MvxBind="Click OrderOptions.ChangeSelectionMode"
+                            local:MvxBind="Enabled OrderOptions.ShowDestination; Click OrderOptions.ChangeSelectionMode"
                             android:layout_width="24dip"
                             android:layout_height="24dip" />
                         <TextView

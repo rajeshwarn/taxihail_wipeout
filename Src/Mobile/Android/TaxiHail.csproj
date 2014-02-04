@@ -470,7 +470,6 @@
     <Compile Include="PhonePresenter.cs" />
     <Compile Include="Activities\HomeActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Home.axml" />
-    <Compile Include="Controls\Widgets\BindableMapView.cs" />
     <Compile Include="Controls\Widgets\IMvxBindable.cs" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_old.xml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow.xml" />
@@ -510,7 +509,13 @@
     <Compile Include="Activities\Utilities\MvxEventSourceFragmentActivity.cs" />
     <Compile Include="Activities\Utilities\MvxCreateViewParameters.cs" />
     <Compile Include="Activities\Utilities\MvxTabsFragmentActivity.cs" />
-    <Compile Include="Controls\Fragments\OrderMapView.cs" />
+    <AndroidResource Include="Resources\Drawable\button_estimate_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\destination_icon.png" />
+    <AndroidResource Include="Resources\Drawable\hail_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\destination_icon.png" />
+    <AndroidResource Include="Resources\Layout\Control_OrderOptions.axml" />
+    <Compile Include="Controls\Widgets\OrderOptions.cs" />
+    <Compile Include="Controls\Fragments\OrderMapFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
