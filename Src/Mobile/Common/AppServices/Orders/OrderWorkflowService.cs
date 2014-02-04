@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly AbstractLocationService _locationService;
 		readonly IAccountService _accountService;
 		readonly IGeolocService _geolocService;
-		readonly IConfigurationManager _configurationManager;
+		readonly IAppSettings _configurationManager;
 
 		readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public OrderWorkflowService(AbstractLocationService locationService,
 			IAccountService accountService,
 			IGeolocService geolocService,
-			IConfigurationManager configurationManager)
+			IAppSettings configurationManager)
 		{
 			_configurationManager = configurationManager;
 			_geolocService = geolocService;
@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				throw new OrderValidationException("Pickup address required", OrderValidationError.PickupAddressRequired);
 			}
 
-			var destinationIsRequired = _configurationManager.GetSetting<bool>("Client.DestinationIsRequired", false);
+			var destinationIsRequired = _configurationManager.Data.DestinationIsRequired;
 			var destinationAddress = await _destinationAddressSubject.Take(1).ToTask();
 			var destinationIsValid = destinationAddress.BookAddress.HasValue()
 			                         && destinationAddress.HasValidCoordinate();
