@@ -40,7 +40,7 @@
 "CreateAccountErrorNotSpecified"="The server didn't specify why the account could not be created, if the error persist try creating the account from the web site.";
 "ListPromptSelectOne"="Select one";
 "NetworkErrorTitle"="No network connection";
-"View_TermsAndConditions"="";
+"View_TermsAndConditions"="Terms and Conditions";
 "Tuto02Top"="We should be able to locate you using the GPS receiver in your mobile device.";
 "RideSummarySubTitleText"="Thank you for riding with {0}, we look forward to serving you again soon.";
 "UpdateBookingSettingsEmptyField"="The data is invalid, all the fields are required.";
