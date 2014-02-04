@@ -6,7 +6,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-    public class AppBarLabelButton : UIButton
+    public class AppBarLabelButton : CommandButton
     {
         UILabel _label;
 

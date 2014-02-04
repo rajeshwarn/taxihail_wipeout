@@ -162,7 +162,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
         {
-            // remove currently displayed pushpins
             foreach (var vehicleAnnotation in _availableVehicleAnnotations)
             {
                 RemoveAnnotation(vehicleAnnotation);

@@ -90,8 +90,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					NorthBound = PickupAddress.Latitude + deltaLat,
 					SouthBound = PickupAddress.Latitude - deltaLat,
-					EastBound = PickupAddress.Longitude - deltaLng,
-					WestBound = PickupAddress.Longitude + deltaLng,
+					EastBound = PickupAddress.Longitude + deltaLng,
+					WestBound = PickupAddress.Longitude - deltaLng,
 				};
 			}
 		}
@@ -107,8 +107,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					NorthBound = DestinationAddress.Latitude + deltaLat,
 					SouthBound = DestinationAddress.Latitude - deltaLat,
-					EastBound = DestinationAddress.Longitude - deltaLng,
-					WestBound = DestinationAddress.Longitude + deltaLng,
+					EastBound = DestinationAddress.Longitude + deltaLng,
+					WestBound = DestinationAddress.Longitude - deltaLng,
 				};
 			}
 		}

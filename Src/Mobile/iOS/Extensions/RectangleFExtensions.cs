@@ -33,7 +33,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
             thisRectangleF.Height = value - thisRectangleF.Y;
             return thisRectangleF;
         }
-        
+
+        public static RectangleF SetRight(this RectangleF thisRectangleF, float value)
+        {
+            thisRectangleF.X = value - thisRectangleF.Width;
+            return thisRectangleF;
+        }
+
+        public static RectangleF SetVerticalCenter(this RectangleF thisRectangleF, float value)
+        {
+            thisRectangleF.Y = value - (thisRectangleF.Height/2);
+            return thisRectangleF;
+        }
+
         public static RectangleF Shrink(this RectangleF thisRectangleF, float numberOfPixels)
         {
             thisRectangleF.Y += numberOfPixels;

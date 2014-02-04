@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.ItemsSource)
 				.To(vm => vm.ItemMenuList);
 
-			set.Bind (this)
+			set.Bind ()
 				.For (v => v.MenuIsOpen)
                 .To (vm => vm.MenuIsOpen);
 
@@ -82,11 +82,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For (v => v.Text)
                 .To (vm => vm.Version);
 
-            set.Bind(this)
+            set.Bind()
                 .For(v => v.ToApcuriumWebsite)
                 .To(vm => vm.ToApcuriumWebsite);
 
-            set.Bind(this)
+            set.Bind()
                 .For(v => v.ToMobileKnowledgeWebsite)
                 .To(vm => vm.ToMobileKnowledgeWebsite);
 

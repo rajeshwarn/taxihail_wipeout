@@ -1,23 +1,24 @@
 using System;
 using System.Drawing;
+using Cirrious.MvvmCross.Binding.BindingContext;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
-using Cirrious.MvvmCross.Binding.BindingContext;
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-
     public partial class HomeView : BaseViewController<HomeViewModel>
     {
         private bool _defaultThemeApplied;
         private PanelMenuView _menu;
+        private BookLaterDatePicker _bookLaterDatePicker;
 
         public HomeView() : base("HomeView", null)
         {
@@ -50,12 +51,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             AddButtonsToAppBar();
 
             InstantiatePanel();
+            AddBookLaterDatePicker();
 
             var set = this.CreateBindingSet<HomeView, HomeViewModel>();
 
             set.Bind(_menu)
                 .For(v => v.DataContext)
                 .To(vm => vm.Panel);
+
+            set.Bind(_bookLaterDatePicker)
+                .For(v => v.DataContext)
+                .To(vm => vm.BookLater);
 
             set.Bind(btnMenu)
                 .For(v => v.Command)
@@ -100,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var btnBookLater = new AppBarButton(Localize.GetValue("BookItLaterButton"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "later_icon.png", "later_icon_pressed.png");
             btnBookLater.Frame = btnBookLater.Frame.SetX(View.Frame.Width - btnBookLater.Frame.Width - 3);
             // test to show how the order options control will show up in the confirmation screen
-            btnBookLater.TouchUpInside += (sender, e) => ViewModel.OrderOptions.IsConfirmationScreen = !ViewModel.OrderOptions.IsConfirmationScreen;
+            btnBookLater.TouchUpInside += (sender, e) => _bookLaterDatePicker.Show();
 
             var set = this.CreateBindingSet<HomeView, HomeViewModel>();
 
@@ -127,6 +133,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _menu.ViewToAnimate = homeView;
 
             View.InsertSubviewBelow (_menu, homeView);
+        }
+
+        private void AddBookLaterDatePicker()
+        {
+            _bookLaterDatePicker = new BookLaterDatePicker();            
+            _bookLaterDatePicker.UpdateView(View.Frame.Height, View.Frame.Width);
+            _bookLaterDatePicker.Hide();
+            View.AddSubview(_bookLaterDatePicker);
         }
     }
 }

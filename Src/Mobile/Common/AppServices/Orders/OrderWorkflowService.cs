@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<AddressSelectionMode> _addressSelectionModeSubject = new BehaviorSubject<AddressSelectionMode>(AddressSelectionMode.PickupSelection);
+		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
 
 		public OrderWorkflowService(AbstractLocationService locationService,
 			IAccountService accountService,
@@ -86,6 +87,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_destinationAddressSubject.OnNext(new Address());
 		}
 
+		public async Task SetPickupDate(DateTime? date)
+		{
+			_pickupDateSubject.OnNext(date);
+		}
+
 		public async Task ToggleBetweenPickupAndDestinationSelectionMode()
 		{
 			var currentSelectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
@@ -120,7 +126,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				throw new OrderValidationException("Destination address required", OrderValidationError.DestinationAddressRequired);
 			}
 
-			bool pickupDateIsValid = true; // TODO: Not impletmented:  Order.PickupDate.HasValue && Order.PickupDate.Value < DateTime.Now
+			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
+			bool pickupDateIsValid = !pickupDate.HasValue || (pickupDate.HasValue && pickupDate.Value >= DateTime.Now);
 
 			if (!pickupDateIsValid)
 			{
@@ -142,7 +149,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			return _addressSelectionModeSubject;
 		}
-
+		
 		private async Task<Address> SearchAddressForCoordinate(Position p)
 		{
 			//IsExecuting = true;
