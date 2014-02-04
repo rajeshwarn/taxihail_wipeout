@@ -9,6 +9,7 @@ using MonoTouch.UIKit;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Booking.Mobile.Client;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
@@ -44,6 +45,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
                 });
 
             txtTip.TextAlignment = UITextAlignment.Right;
+
+            ClearKeyboardButton.TouchUpInside += (sender, e) => {
+                this.View.ResignFirstResponderOnSubviews();
+            };
 
             lblCreditCard.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
             lblTip.Text = Localize.GetValue("PaymentViewTipText");
