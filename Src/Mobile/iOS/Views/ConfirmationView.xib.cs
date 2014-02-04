@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -29,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			get
 			{
 				var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-				var isThriev = appSettings.ApplicationName == "Thriev";
+                var isThriev = appSettings.Data.ApplicationName == "Thriev";
 				return isThriev
 					? "ConfirmationView_Thriev"
 					: "ConfirmationView";

@@ -172,49 +172,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             return result;
         }
        
-        public bool ShowPassengerName
-        {
-            get
-            {
-                try
-                {
-                    return Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerName"));
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
-        }
+		public bool ShowPassengerName
+		{
+			get{ return Settings.ShowPassengerName; }
+		}
 
-        public bool ShowPassengerPhone
-        {
-            get
-            {
-                try
-                {
-                    return Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerPhone"));
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
-        }
+		public bool ShowPassengerPhone
+		{
+			get{ return Settings.ShowPassengerPhone; }
+		}
 
-        public bool ShowPassengerNumber
-        {
-            get
-            {
-                try
-                {
-                    return Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerNumber"));
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
-        }
+		public bool ShowPassengerNumber
+		{
+			get{ return Settings.ShowPassengerNumber; }
+		}
     }
 }

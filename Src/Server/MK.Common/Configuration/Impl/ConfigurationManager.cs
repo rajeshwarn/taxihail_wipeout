@@ -5,18 +5,25 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using apcurium.MK.Common.Diagnostic;
+using MK.Common.Configuration;
+using ServiceStack.Text;
 
 #endregion
 
 namespace apcurium.MK.Common.Configuration.Impl
 {
-    public class ConfigurationManager : IConfigurationManager
+    public class ConfigurationManager : IConfigurationManager, IAppSettings
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
+        private readonly ILogger _logger;
 
-        public ConfigurationManager(Func<ConfigurationDbContext> contextFactory)
+        public ConfigurationManager(Func<ConfigurationDbContext> contextFactory, ILogger logger)
         {
             _contextFactory = contextFactory;
+            _logger = logger;
+            Data = new TaxiHailSetting();
+            Load();
         }
 
         public string GetSetting(string key)
@@ -68,5 +75,48 @@ namespace apcurium.MK.Common.Configuration.Impl
                 return settings ?? new ServerPaymentSettings();
             }
         }
+
+        public TaxiHailSetting Data { get; private set; }
+        public void Load()
+        {
+            SetSettingsValue(GetSettings());
+        }
+
+        void SetSettingsValue(IDictionary<string, string> values)
+        {
+            foreach (KeyValuePair<string, string> item in values)
+            {
+                try
+                {
+                    var typeOfSettings = typeof (TaxiHailSetting);
+                
+                        var propertyName = item.Key.Contains(".")
+                            ? item.Key.SplitOnLast('.')[1]
+                            : item.Key;
+
+                        var propertyType = typeOfSettings.GetProperty(propertyName);
+                        var targetType = IsNullableType(propertyType.PropertyType)
+                            ? Nullable.GetUnderlyingType(propertyType.PropertyType)
+                            : propertyType.PropertyType;
+
+                        var propertyVal = Convert.ChangeType(item.Value, targetType);
+                        propertyType.SetValue(Data, propertyVal);
+
+                
+                }
+                catch (Exception e)
+                {
+                    _logger.LogMessage("Error can't set value for property {0}, value was {1}", item.Key, item.Value);
+                    _logger.LogError(e);
+                }
+           }
+        }
+
+        private static bool IsNullableType(Type type)
+        {
+            return type.IsGenericType
+                && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
+        }
+
     }
 }

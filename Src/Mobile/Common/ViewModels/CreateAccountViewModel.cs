@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public string ConfirmPassword { get; set; }
 
 		public bool HasSocialInfo { get { return Data.FacebookId.HasValue () || Data.TwitterId.HasValue (); } }
-		public bool ShowTermsAndConditions { get { return this.Services().Config.GetSetting("Client.ShowTermsAndConditions", false); } }
+		public bool ShowTermsAndConditions { get { return Settings.ShowTermsAndConditions; } }
 
 		public void Init(string twitterId, string facebookId, string name, string email)
 		{
@@ -95,9 +95,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Message.ShowProgress(true);
 
 					try
-					{
-                        var setting = this.Services().Config.GetSetting("AccountActivationDisabled");
-                        Data.AccountActivationDisabled = bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
+					{	
+						Data.AccountActivationDisabled = Settings.AccountActivationDisabled;
 						try{
 
 							await this.Services().Account.Register(Data);

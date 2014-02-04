@@ -87,56 +87,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool ShowPassengerName
 		{
-			get
-			{
-// ReSharper disable once RedundantAssignment
-                var ret = true;
-				try
-				{
-                    ret = Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerName"));
-				}
-				catch (Exception)
-				{
-					return false;
-				}
-				return ret;
-			}
+			get{ return Settings.ShowPassengerName; }
 		}
 
 		public bool ShowPassengerPhone
 		{
-			get
-			{
-// ReSharper disable once RedundantAssignment
-				var ret = true;
-				try
-				{
-                    ret = Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerPhone"));
-				}
-				catch (Exception)
-				{
-					return false;
-				}
-				return ret;
-			}
+			get{ return Settings.ShowPassengerPhone; }
 		}
 
 		public bool ShowPassengerNumber
 		{
-			get
-			{
-// ReSharper disable once RedundantAssignment
-				var ret = true;
-				try
-				{
-                    ret = Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerNumber"));
-				}
-				catch (Exception)
-				{
-					return false;
-				}
-				return ret;
-			}
+			get{ return Settings.ShowPassengerNumber; }
 		}
 
         public AsyncCommand NavigateToEditInformations
@@ -205,11 +166,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								Settings = Order.Settings
 							};
 		    						
-								ShowViewModel<BookingStatusViewModel>(new
+								ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new
 							        {
 							            order = orderCreated.ToJson(),
 							            orderStatus = orderInfo.ToJson()
-									}.ToStringDictionary(), true);	
+									}.ToStringDictionary());	
 							
 	                        this.Services().MessengerHub.Publish(new OrderConfirmed(this, Order, false));
 						}
@@ -217,7 +178,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 							if (CallIsEnabled)
 							{
-	                            var err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], this.Services().Settings.ApplicationName, this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"));
+									var err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], Settings.ApplicationName, 
+										Settings.DefaultPhoneNumberDisplay);
 	                            this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
 							}
 							else
@@ -235,7 +197,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-                return !this.Services().Config.GetSetting("Client.HideCallDispatchButton", false);
+				return !Settings.HideCallDispatchButton;
 			}
 		}
 
@@ -262,30 +224,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        //todo refactorer a, avec un getdefault value
-		private bool ShowEstimate
+        private void ShowFareEstimateAlertDialogIfNecessary()
 		{
-			get
+			if (Settings.ShowEstimate)
 			{
-// ReSharper disable once RedundantAssignment
-				var ret = true;
-				try
-				{
-                    ret = Boolean.Parse(this.Services().Config.GetSetting("Client.ShowEstimate"));
-				}
-				catch (Exception)
-				{
-					return true;
-				}
-				return ret;
-			}
-		}
-
-		private void ShowFareEstimateAlertDialogIfNecessary()
-		{
-			if (ShowEstimate)
-			{
-                var estimateEnabled = this.Services().Config.GetSetting("Client.ShowEstimateWarning", true);
+				var estimateEnabled = Settings.ShowEstimateWarning;
 
 				if (estimateEnabled &&
                                 this.Services().Cache.Get<string>("WarningEstimateDontShow").IsNullOrEmpty() &&
@@ -337,7 +280,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        if (price.HasValue)
 			{
-                var culture = this.Services().Config.GetSetting("PriceFormat");
+				var culture = Settings.PriceFormat;
 				return string.Format(new CultureInfo(culture), "{0:C}", price);
 			}
 	        return string.Empty;

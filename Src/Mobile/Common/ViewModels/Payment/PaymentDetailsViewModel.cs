@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
             get 
 			{
-                var culture = new CultureInfo(this.Services().Config.GetSetting("PriceFormat"));
+				var culture = new CultureInfo(Settings.PriceFormat);
                 return culture.NumberFormat.CurrencySymbol;
             }
         }
@@ -104,6 +104,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				return Tips.First(x => x.Id == Tip).Display;
 			}
 		}
+
+        public bool TipListDisabled = false;
+
+        public string TipAmountDisplay
+        {
+            get
+            {
+                return TipListDisabled ? "" : Tips.First(x => x.Id == Tip).Display;
+            }
+        }
 
         public ListItem<Guid>[] GetCreditCardListItems ()
         {

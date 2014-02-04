@@ -34,6 +34,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		MonoTouch.UIKit.UILabel lblCarNumberValue { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UILabel lblConfirmPairDetail { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblTip { get; set; }
 
 		[Outlet]
@@ -84,6 +87,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 			if (lblTipValue != null) {
 				lblTipValue.Dispose ();
 				lblTipValue = null;
+			}
+
+			if (lblConfirmPairDetail != null) {
+				lblConfirmPairDetail.Dispose ();
+				lblConfirmPairDetail = null;
 			}
 		}
 	}

@@ -35,16 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public int NumberOfCharAllowed
         {
-            get{
-                var max = this.Services().Cache.Get<string>("Client.NumberOfCharInRefineAddress");
-                Task.Factory.SafeStartNew(() => this.Services().Cache.Set("Client.NumberOfCharInRefineAddress", this.Services().Config.GetSetting("Client.NumberOfCharInRefineAddress")));
-                int m;
-                if ( int.TryParse( max , out m ) )
-                {
-                    return m;
-                }
-                return 10;
-            }
+			get{ return Settings.NumberOfCharInRefineAddress;}
         }
 
         string _streetNumberOrBuildingName;

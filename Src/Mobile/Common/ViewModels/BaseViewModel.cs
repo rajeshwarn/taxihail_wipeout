@@ -1,5 +1,7 @@
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Common.Configuration;
+using MK.Common.Configuration;
 using TinyMessenger;
 using apcurium.MK.Common.Diagnostic;
 using System.Collections.Generic;
@@ -27,6 +29,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         protected ILogger Logger { get { return Container.Resolve<ILogger>(); } }
+
+		public TaxiHailSetting Settings { get { return Container.Resolve<IAppSettings>().Data; } }
 
         public virtual void OnViewLoaded()
         {
@@ -120,13 +124,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.RaisePropertyChanged(whichProperty);
 		}
 
-		protected void ShowViewModel<TViewModel>(Dictionary<string,string> parameters = null, bool removeFromHistory = false) where TViewModel : IMvxViewModel
+		protected void ShowViewModelAndRemoveFromHistory<TViewModel>(object parameter) where TViewModel : IMvxViewModel
+		{
+			ShowViewModelAndRemoveFromHistory<TViewModel>(parameter.ToSimplePropertyDictionary());
+		}
+
+		protected void ShowViewModelAndRemoveFromHistory<TViewModel>(Dictionary<string,string> parameters = null) where TViewModel : IMvxViewModel
 		{
 			parameters = parameters ?? new Dictionary<string,string>();
-			if (removeFromHistory)
-			{
-				parameters.Add("removeFromHistory", "notUsed");
-			}
+			parameters.Add("removeFromHistory", "notUsed");
 			base.ShowViewModel<TViewModel>(parameters);
 		}
 
@@ -150,7 +156,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.Subscribe(x => InvokeOnMainThread(() => onNext(x)))
 				.DisposeWith(_subscriptions);
 		}
-
 
     }
 

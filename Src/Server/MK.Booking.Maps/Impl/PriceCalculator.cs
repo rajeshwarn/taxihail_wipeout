@@ -14,13 +14,13 @@ namespace apcurium.MK.Booking.Maps.Impl
 {
     public class PriceCalculator : IPriceCalculator
     {
-        private readonly IConfigurationManager _configManager;
+        private readonly IAppSettings _appSettings;
         private readonly ITariffProvider _tariffProvider;
         private readonly ILogger _logger;
 
-        public PriceCalculator(IConfigurationManager configManager, ITariffProvider tariffProvider, ILogger logger)
+        public PriceCalculator(IAppSettings appSettings, ITariffProvider tariffProvider, ILogger logger)
         {
-            _configManager = configManager;
+            _appSettings = appSettings;
             _tariffProvider = tariffProvider;
             _logger = logger;
         }
@@ -31,8 +31,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             if (tariff == null) return null;
 
-            var maxDistance = double.Parse(_configManager.GetSetting("Direction.MaxDistance"),
-                CultureInfo.InvariantCulture);
+            var maxDistance = _appSettings.Data.MaxDistance;
             double? price = null;
             try
             {

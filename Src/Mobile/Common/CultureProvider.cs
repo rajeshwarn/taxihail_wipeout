@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile
         public static string CultureInfoString
         {
             get{
-                var culture = Mvx.Resolve<IConfigurationManager>().GetSetting("PriceFormat");
+				var culture = Mvx.Resolve<IAppSettings>().Data.PriceFormat;
                 if (string.IsNullOrEmpty(culture))
                 {
                     return "en-US";

@@ -9,6 +9,10 @@ using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
+
+
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
@@ -18,22 +22,32 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class PaymentService : BaseService, IPaymentService
     {
-		readonly IConfigurationManager _configurationManager;
+		readonly ConfigurationClientService _serviceClient;
 		readonly ICacheService _cache;
 		readonly IPackageInfo _packageInfo;
+		private static ClientPaymentSettings _cachedSettings;
 
         string _baseUrl;
         string _sessionId;
         private const string PayedCacheSuffix = "_Payed";
 
-		public PaymentService(string url, string sessionId, IConfigurationManager configurationManager, ICacheService cache, IPackageInfo  packageInfo)
+		public PaymentService(string url, string sessionId, ConfigurationClientService serviceClient, ICacheService cache, IPackageInfo  packageInfo)
         {
 			_packageInfo = packageInfo;
             _baseUrl = url;
             _sessionId = sessionId;
             _cache = cache;
-            _configurationManager = configurationManager;
+			_serviceClient = serviceClient;
         }
+
+		public ClientPaymentSettings GetPaymentSettings(bool cleanCache = false)
+		{
+			if (_cachedSettings == null || cleanCache)
+			{
+				_cachedSettings = _serviceClient.GetPaymentSettings();
+			}
+			return _cachedSettings;
+		}
 
         public double? GetPaymentFromCache(Guid orderId)
         {
@@ -56,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             const string onErrorMessage = "Payment Method not found or unknown";
 
-            var settings = _configurationManager.GetPaymentSettings();
+            var settings = GetPaymentSettings();
             switch (settings.PaymentMode)
             {
                 case PaymentMethod.Braintree:

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using apcurium.MK.Common.Configuration;
 using Cirrious.MvvmCross.Touch.Views.Presenters;
 using MonoTouch.EventKit;
 using MonoTouch.Foundation;
@@ -11,6 +12,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore.Touch.Views;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -50,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
         }
 
-        public void SendFeedbackErrorLog(string errorLogPath, string supportEmail, string subject)
+        public void SendFeedbackErrorLog(string supportEmail, string subject)
         {
             if (!MFMailComposeViewController.CanSendMail)
             {
@@ -58,7 +60,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
             
             var mailComposer = new MFMailComposeViewController ();
-            
+
+            var errorLogPath = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.ErrorLogFile;
             if (File.Exists (errorLogPath))
             {
                 mailComposer.AddAttachmentData (NSData.FromFile (errorLogPath), "text", "errorlog.txt");

@@ -1,4 +1,5 @@
 using System;
+using apcurium.MK.Common.Configuration;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using MonoTouch.UIKit;
 using TinyIoC;
@@ -63,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			btnSignIn.SetTitle (Localize.GetValue ("SignIn"), UIControlState.Normal);
 			btnSignUp.SetTitle (Localize.GetValue ("Register"), UIControlState.Normal);
 
-            var settings = this.Services().AppSettings;;
+            var settings = this.Services().Settings;;
 
             btnSignIn.TouchUpInside += (sender, e) => { 
                 var firstResponder = View.FindFirstResponder();
@@ -75,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             var set = this.CreateBindingSet<LoginView, LoginViewModel>();
 
-			if (settings.FacebookEnabled)
+            if (settings.FacebookEnabled)
 			{
 				btnFbLogin.SetLeftImage("facebook_icon.png");
 				btnFbLogin.SetTitle (Localize.GetValue ("Facebook"), UIControlState.Normal);
@@ -97,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			btnServer.SetTitle (Localize.GetValue ("ChangeServer"), UIControlState.Normal);
             btnServer.TouchUpInside += ChangeServerTouchUpInside;
-			btnServer.Hidden = !settings.CanChangeServiceUrl;
+            btnServer.Hidden = !settings.CanChangeServiceUrl;
 
             set.Bind(btnSignIn)
                 .For("TouchUpInside")
@@ -125,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         void ChangeServerTouchUpInside (object sender, EventArgs e)
         {
             var popup = new UIAlertView {AlertViewStyle = UIAlertViewStyle.PlainTextInput, Title = "Server Url"};
-            popup.GetTextField (0).Text = TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl;
+            popup.GetTextField (0).Text = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data.ServiceUrl;
 
             var cancelBtnIndex = popup.AddButton ("Cancel");
             var saveBtnIndex = popup.AddButton ("Save");
@@ -134,7 +135,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             popup.Clicked += delegate(object sender2, UIButtonEventArgs e2) {
                 if (e2.ButtonIndex == saveBtnIndex) {
-                    TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl = popup.GetTextField (0).Text;                 
+                    TinyIoCContainer.Current.Resolve<IAppSettings> ().Data.ServiceUrl = popup.GetTextField (0).Text;                 
                 } else {
                     popup.Dispose ();
                 }

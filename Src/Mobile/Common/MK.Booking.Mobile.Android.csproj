@@ -114,6 +114,7 @@
     <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.WebBrowser.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
@@ -172,7 +173,6 @@
     <Compile Include="Framework\Null.cs" />
     <Compile Include="Framework\NullDisposable.cs" />
     <Compile Include="Framework\Params.cs" />
-    <Compile Include="Infrastructure\IAppSettings.cs" />
     <Compile Include="Infrastructure\ICacheService.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
@@ -204,8 +204,6 @@
     <Compile Include="AppServices\IGoogleService.cs" />
     <Compile Include="AppServices\IApplicationInfoService.cs" />
     <Compile Include="AppServices\Impl\ApplicationInfoService.cs" />
-    <Compile Include="Settings\AppSettings.cs" />
-    <Compile Include="Settings\AppSettingsData.cs" />
     <Compile Include="StartCallboxNavigation.cs" />
     <Compile Include="StartNavigation.cs" />
     <Compile Include="Style\ColorDefinition.cs" />
@@ -314,6 +312,7 @@
     <Compile Include="AppServices\Auth\AuthFailure.cs" />
     <Compile Include="Style\ButtonStyle.cs" />
     <Compile Include="ViewModels\PanelMenuViewModel.cs" />
+    <Compile Include="Settings\AppSettingsService.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="AppServices\IOrderWorkflowService.cs" />
     <Compile Include="AppServices\Orders\OrderValidationError.cs" />

@@ -37,14 +37,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string HistoryAddressesCacheKey = "Account.HistoryAddresses";
         private const string RefDataCacheKey = "Account.ReferenceData";
 
-		readonly IConfigurationManager _configurationManager;
 		readonly IAppSettings _appSettings;
 		readonly IFacebookService _facebookService;
 		readonly ITwitterService _twitterService;
 		readonly ILocalization _localize;
 
-		public AccountService(IConfigurationManager configurationManager,
-			IAppSettings appSettings,
+		public AccountService(IAppSettings appSettings,
 			IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocalization localize)
@@ -53,7 +51,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_twitterService = twitterService;
 			_facebookService = facebookService;
 			_appSettings = appSettings;
-			_configurationManager = configurationManager;
 
 		}
 	
@@ -78,21 +75,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void ClearCache ()
         {
-			var serverUrl = _appSettings.ServiceUrl;
+			var serverUrl = _appSettings.Data.ServiceUrl;
 
             Cache.Clear (HistoryAddressesCacheKey);
             Cache.Clear (FavoriteAddressesCacheKey);
             Cache.Clear ("AuthenticationData");
             Cache.ClearAll ();
 			// TODO: Clearing the cache should not clear ServiceUrl
-			_appSettings.ServiceUrl = serverUrl; 
+			_appSettings.Data.ServiceUrl = serverUrl; 
         }
 
         public void SignOut ()
         {
             try
 			{
-				_facebookService.Disconnect ();
+				if(_appSettings.Data.FacebookEnabled)
+				{
+					_facebookService.Disconnect ();
+				}
             } 
 			catch( Exception ex )
             {
@@ -101,7 +101,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             try
 			{
-				if (_twitterService.IsConnected)
+				if (_appSettings.Data.TwitterEnabled
+					&& _twitterService.IsConnected)
 				{
 					_twitterService.Disconnect ();
                 }
@@ -276,7 +277,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<Account> SignIn (string email, string password)
         {
-			Logger.LogMessage("SignIn with server {0}", _appSettings.ServiceUrl);
+			Logger.LogMessage("SignIn with server {0}", _appSettings.Data.ServiceUrl);
             try 
 			{
 				var authResponse = await UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service
@@ -470,7 +471,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<IList<ListItem>> GetCompaniesList ()
         {
 			var refData = await GetReferenceData();
-			if (!_configurationManager.GetSetting("Client.HideNoPreference", false)
+			if (!_appSettings.Data.HideNoPreference
                 && refData.CompaniesList != null)
             {
 				refData.CompaniesList.Insert(0,
@@ -488,7 +489,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			var refData = await GetReferenceData();
 
-			if (!_configurationManager.GetSetting("Client.HideNoPreference", false)
+			if (!_appSettings.Data.HideNoPreference
                 && refData.VehiclesList != null)
             {
                 refData.VehiclesList.Insert(0,
@@ -506,7 +507,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			var refData = await GetReferenceData();
 		
-			if (!_configurationManager.GetSetting("Client.HideNoPreference", false)
+			if (!_appSettings.Data.HideNoPreference
                 && refData.PaymentsList != null)
             {
                 refData.PaymentsList.Insert(0,

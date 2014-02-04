@@ -23,7 +23,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class BookingService : BaseService, IBookingService
     {
-		readonly IConfigurationManager _configurationManager;
 		readonly IAccountService _accountService;
 		readonly ILocalization _localize;
 		readonly IMessageService _messageService;
@@ -31,8 +30,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IMvxPhoneCallTask _phoneCallTask;
 		readonly IGeolocService _geolocService;
 
-		public BookingService(IConfigurationManager configurationManager,
-			IAccountService accountService,
+		public BookingService(IAccountService accountService,
 			ILocalization localize,
 			IMessageService messageService,
 			IAppSettings appSettings,
@@ -45,13 +43,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_messageService = messageService;
 			_localize = localize;
 			_accountService = accountService;
-			_configurationManager = configurationManager;
-
 		}
 
         public bool IsValid (CreateOrder info)        
         {
-			var destinationIsRequired = _configurationManager.GetSetting<bool>("Client.DestinationIsRequired", false);
+			var destinationIsRequired = _appSettings.Data.DestinationIsRequired;
 
             return info.PickupAddress.BookAddress.HasValue () 
                 && info.PickupAddress.HasValidCoordinate () && (!destinationIsRequired || (  info.DropOffAddress.BookAddress.HasValue () 
@@ -84,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return orderDetail;
         }
 
-		public bool CallIsEnabled { get{ return !_configurationManager.GetSetting("Client.HideCallDispatchButton", false); } }
+		public bool CallIsEnabled { get{ return !_appSettings.Data.HideCallDispatchButton; } }
 
         private void HandleCreateOrderError (Exception ex)
         {
@@ -128,8 +124,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			if (CallIsEnabled)
 			{
-				string err = string.Format(message, _appSettings.ApplicationName, _configurationManager.GetSetting("DefaultPhoneNumberDisplay"));
-				_messageService.ShowMessage(title, err, "Call", () => CallCompany(_appSettings.ApplicationName, _configurationManager.GetSetting("DefaultPhoneNumber")), "Cancel", delegate { });
+				string err = string.Format(message, _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
+				_messageService.ShowMessage(title, err, "Call", () => CallCompany(_appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumber), "Cancel", delegate { });
 			}
 			else
 			{
@@ -231,17 +227,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<DirectionInfo> GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate)
         {
-			var tarifMode = _configurationManager.GetSetting<DirectionSetting.TarifMode>("Direction.TarifMode", DirectionSetting.TarifMode.AppTarif);            
+			var tarifMode = _appSettings.Data.TarifMode;            
             var directionInfo = new DirectionInfo();
             
             if (pickup.HasValidCoordinate() && destination.HasValidCoordinate())
             {
-                if (tarifMode != DirectionSetting.TarifMode.AppTarif)
+                if (tarifMode != TarifMode.AppTarif)
                 {
 					directionInfo = await UseServiceClientAsync<IIbsFareClient, DirectionInfo>(service => service.GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude));                                                            
                 }
 
-                if (tarifMode == DirectionSetting.TarifMode.AppTarif || (tarifMode == DirectionSetting.TarifMode.Both && directionInfo.Price == 0d))
+                if (tarifMode == TarifMode.AppTarif || (tarifMode == TarifMode.Both && directionInfo.Price == 0d))
                 {
 					directionInfo = await _geolocService.GetDirectionInfo(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude, pickupDate);                    
                 }            
@@ -265,7 +261,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 if (estimatedFare.Price.HasValue && willShowFare)
                 {                    
-					var maxEstimate = _configurationManager.GetSetting<double>("Client.MaxFareEstimate", 100);
+					var maxEstimate = _appSettings.Data.MaxFareEstimate;
 					if (formatString.HasValue() || (estimatedFare.Price.Value > maxEstimate && _localize["EstimatePriceOver100"].HasValue()))
                     {
 						fareEstimate = String.Format(_localize[estimatedFare.Price.Value > maxEstimate 

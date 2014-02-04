@@ -1,5 +1,6 @@
 using Android.Content;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using Com.Google.Analytics.Tracking.Android;
 using Java.Lang;
@@ -22,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
                 Tracker = g.GetTracker("UA-44714416-1");
 
-                Tracker.SetAppName(settings.ApplicationName.Replace(' ', '_'));
+                Tracker.SetAppName(settings.Data.ApplicationName.Replace(' ', '_'));
                 Tracker.SetAppVersion(packageInfo.Version);
             }
             catch (Exception ex)

@@ -939,9 +939,6 @@
   <data name="View_CreateAccount" xml:space="preserve">
     <value>Create Your Account</value>
   </data>
-  <data name="View_TermsAndConditions" xml:space="preserve">
-    <value />
-  </data>
   <data name="View_SignIn" xml:space="preserve">
     <value />
   </data>
@@ -1477,5 +1474,8 @@
   </data>
   <data name="Estimate" xml:space="preserve">
     <value>Estimate</value>
+  </data>
+  <data name="CmtRideLinqConfirmPairViewConfirmPairDetailText" xml:space="preserve">
+    <value>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</value>
   </data>
 </root>

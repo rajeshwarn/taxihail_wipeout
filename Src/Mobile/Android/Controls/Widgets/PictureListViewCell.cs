@@ -39,40 +39,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             base.OnDraw(canvas);
 
-            var leftTextX = 70.ToPixels();
-            var leftTextY = 30.ToPixels();
-            var textSize = 17.ToPixels();
-            var leftTextWidth = 75.ToPixels();
+            var imageLeftX = 8.ToPixels();
+            var imageLeftY = 8.ToPixels();
+            var imageLeftSize = 50.ToPixels();
 
-            if (!string.IsNullOrEmpty(TextLeft))
-            {
-                DrawText(canvas, TextLeft ?? "", leftTextX, leftTextY, textSize, ShowAddSign ? Typeface.DefaultBold : Typeface.Default);
-                DrawText(canvas, TextRight ?? "", leftTextX + leftTextWidth, leftTextY, textSize, Typeface.DefaultBold);
-            }
-            else
-            {
-                DrawText(canvas, TextRight ?? "", leftTextX, leftTextY, textSize, Typeface.Default);
-            }
+            var textY = 31.ToPixels();
+            var leftTextX = (imageLeftX + imageLeftSize) + 10.ToPixels();
+
+            var textFontSize = 17.ToPixels();
+
+            var imageButtonRightSize = 47.ToPixels();
+            var textWidth = 75.ToPixels();
 
             if (ShowAddSign)
             {
                 var bitmapIcon = BitmapFactory.DecodeResource (Resources, Resource.Drawable.add_list);                              
-                var offsetTopIcon = (StandardImageSize.Height - bitmapIcon.Height) / 2;
-                var offsetLeftIcon = (StandardImageSize.Width - bitmapIcon.Width) / 2;
-                canvas.DrawBitmap(bitmapIcon, offsetLeftIcon + 10, offsetTopIcon + 10, null);
+ 
+                canvas.DrawBitmap(bitmapIcon, imageLeftX + 12.ToPixels(), imageLeftY + 7.ToPixels(), null);
             }
-
-            if (!string.IsNullOrEmpty(Picture))
+            else if (!string.IsNullOrEmpty(Picture))
             {
                 var resource = Resources.GetIdentifier(Picture.ToLower(), "drawable", Context.PackageName);
                 if (resource != 0)
                 {
-                    var bitmapIcon = BitmapFactory.DecodeResource(Resources, resource);
-                    var offsetTopIcon = (StandardImageSize.Height - bitmapIcon.Height) / 2;
-                    var offsetLeftIcon = (StandardImageSize.Width - bitmapIcon.Width) / 2;
-                    canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, resource), offsetLeftIcon + 10, offsetTopIcon + 10, null);
+                    canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, resource), imageLeftX, imageLeftY, null);
                 }
             }
+
+            DrawText(canvas, TextLeft ?? "", leftTextX, textY, textFontSize, ShowAddSign ? Typeface.DefaultBold : Typeface.Default);
+
+            if (!string.IsNullOrEmpty(TextRight))
+                DrawText(canvas, TextRight ?? "", canvas.Width - (textWidth + imageButtonRightSize), textY, textFontSize, Typeface.DefaultBold);
 
             SetBackgroundDrawable(Resources.GetDrawable(IsBottom 
                 ? Resource.Drawable.cell_bottom_state 
