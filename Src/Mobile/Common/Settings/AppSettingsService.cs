@@ -33,20 +33,27 @@ namespace apcurium.MK.Booking.Mobile.Settings
 		{
 			//check if the cache has already something
 			var data = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);
-			if (data == null)
+			if (data != null)
 			{
-				//first run or cache cleared, fetch settings from server
-				RefreshSettingsFromServer();
+				Data = data;
 			}
-			else
-			{
-				//already got settings launch async refresh
-				Task.Factory.StartNew(() => RefreshSettingsFromServer());
-			}
+			//launch async refresh from the server
+			Task.Factory.StartNew(() => RefreshSettingsFromServer());
+		}
+
+		public void ChangeServerUrl(string serverUrl)
+		{
+			Data = new TaxiHailSetting();
+			LoadSettingsFromFile();
+			Data.ServiceUrl = serverUrl;
+
+			_cacheService.Clear(SettingsCacheKey);
+			Task.Factory.StartNew(() => RefreshSettingsFromServer());
 		}
 
 		void LoadSettingsFromFile()
 		{
+			_logger.LogMessage("load settings from file");
 			using (var stream = GetType().Assembly.GetManifestResourceStream(GetType ().Assembly
 														.GetManifestResourceNames()
 														.FirstOrDefault(x => x.Contains("Settings.json")))) 
@@ -65,6 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
 		void RefreshSettingsFromServer()
 		{
+			_logger.LogMessage("load settings from server");
 			var service = TinyIoCContainer.Current.Resolve<ConfigurationClientService>();
 			IDictionary<string,string> settingsFromServer = service.GetSettings();
 			SetSettingsValue(settingsFromServer);

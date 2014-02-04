@@ -76,6 +76,7 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         local:MvxBind="Text Phone"
                         android:maxLines="1"
+                        android:inputType="phone"
                         android:singleLine="true" />
                     <TextView
                         android:layout_width="fill_parent"

@@ -2659,8 +2659,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0500a3
 			public const int settingsAbout = 2131034275;
 			
-			// aapt resource value: 0x7f0500a1
-			public const int settingsCallCompany = 2131034273;
+			// aapt resource value: 0x7f0500a2
+			public const int settingsCallCompany = 2131034274;
 			
 			// aapt resource value: 0x7f05009e
 			public const int settingsFavorites = 2131034270;
@@ -2677,8 +2677,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0500a4
 			public const int settingsSupport = 2131034276;
 			
-			// aapt resource value: 0x7f0500a2
-			public const int settingsTutorial = 2131034274;
+			// aapt resource value: 0x7f0500a1
+			public const int settingsTutorial = 2131034273;
 			
 			// aapt resource value: 0x7f050032
 			public const int shortcut = 2131034162;

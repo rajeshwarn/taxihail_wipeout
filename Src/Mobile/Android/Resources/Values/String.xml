@@ -42,7 +42,7 @@
   <string name="CreateAccountErrorNotSpecified">The server didn\'t specify why the account could not be created, if the error persist try creating the account from the web site.</string>
   <string name="ListPromptSelectOne">Select one</string>
   <string name="NetworkErrorTitle">No network connection</string>
-  <string name="View_TermsAndConditions"></string>
+  <string name="View_TermsAndConditions">Terms and Conditions</string>
   <string name="Tuto02Top">We should be able to locate you using the GPS receiver in your mobile device.</string>
   <string name="RideSummarySubTitleText">Thank you for riding with {0}, we look forward to serving you again soon.</string>
   <string name="UpdateBookingSettingsEmptyField">The data is invalid, all the fields are required.</string>

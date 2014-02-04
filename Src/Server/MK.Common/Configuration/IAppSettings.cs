@@ -6,6 +6,7 @@ namespace apcurium.MK.Common.Configuration
 	{
 		TaxiHailSetting Data { get; }
 		void Load();
+        void ChangeServerUrl(string serverUrl);
 	}
 }
 
