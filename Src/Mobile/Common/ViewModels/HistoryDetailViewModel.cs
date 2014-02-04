@@ -138,7 +138,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {          
-				return !Settings.RatingEnabled && IsDone && !HasRated;
+				return Settings.RatingEnabled && IsDone && !HasRated;
             }
         }
 
