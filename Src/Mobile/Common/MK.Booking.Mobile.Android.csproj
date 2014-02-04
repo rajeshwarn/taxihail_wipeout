@@ -323,6 +323,7 @@
     <Compile Include="ViewModels\Map\MapBounds.cs" />
     <Compile Include="ViewModels\Map\MapViewModel.cs" />
     <Compile Include="ViewModels\Orders\OrderOptionsViewModel.cs" />
+    <Compile Include="Data\VehicleClusterHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
