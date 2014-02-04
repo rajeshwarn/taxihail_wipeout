@@ -3,6 +3,7 @@ using Cirrious.MvvmCross.ViewModels;
 using System.Runtime.CompilerServices;
 using System.Reactive.Disposables;
 using apcurium.MK.Booking.Mobile.Extensions;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -43,6 +44,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				_subscriptions.Dispose();
 			}
+		}
+
+		protected TViewModel AddChild<TViewModel>(Func<TViewModel> builder)
+			where TViewModel: ChildViewModel
+		{
+			var viewModel = builder.Invoke();
+			viewModel.DisposeWith(_subscriptions);
+			return viewModel;
+		}
+
+		protected TViewModel AddChild<TViewModel>()
+			where TViewModel: ChildViewModel
+		{
+			return AddChild<TViewModel>(() => Mvx.IocConstruct<TViewModel>());
 		}
     }
 }

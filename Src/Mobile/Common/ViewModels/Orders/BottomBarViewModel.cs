@@ -14,8 +14,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			_orderWorkflowService = orderWorkflowService;
 
+			BookLater = AddChild<BookLaterViewModel>();
+
 			this.Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(),
 				m => EstimateSelected = m == AddressSelectionMode.DropoffSelection);
+		}
+
+		private BookLaterViewModel _bookLater;
+		public BookLaterViewModel BookLater
+		{ 
+			get { return _bookLater; }
+			private set
+			{ 
+				_bookLater = value;
+				RaisePropertyChanged();
+			}
 		}
 
 		private bool _estimateSelected;
