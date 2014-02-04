@@ -35,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				Map = AddChild<MapViewModel>();
 				OrderOptions = AddChild<OrderOptionsViewModel>();
+				BottomBar = AddChild<BottomBarViewModel>();
 			}
 			this.Services().Vehicle.Start();
 		}
@@ -69,6 +70,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		private BottomBarViewModel _bottomBar;
+		public BottomBarViewModel BottomBar
+		{
+			get { return _bottomBar; }
+			set
+			{
+				_bottomBar = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		public ICommand LocateMe
 		{
 			get
@@ -79,15 +91,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public ICommand ChangeAddressSelectionMode
-		{
-			get
-			{
-				return this.GetCommand(() =>{
-					_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
-				});
-			}
-		}
+
     }
 }
 

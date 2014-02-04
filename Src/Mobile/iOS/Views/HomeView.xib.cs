@@ -95,10 +95,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             set.Bind(btnEstimate)
                 .For(v => v.Command)
-                .To(vm => vm.ChangeAddressSelectionMode);
+                .To(vm => vm.BottomBar.ChangeAddressSelectionMode);
             set.Bind(btnEstimate)
                 .For(v => v.Selected)
-                .To(vm => vm.OrderOptions.ShowDestination);
+                .To(vm => vm.BottomBar.EstimateSelected);
+
+            set.Bind(btnBook)
+                .For("TouchUpInside")
+                .To(vm => vm.BottomBar.BookNow);
 
             set.Apply();
 
