@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             base.OnFinishInflate();
             var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
-            var layout = inflater.Inflate(Resource.Layout.Control_OrderOptions, this, true);
+            var layout = inflater.Inflate(Resource.Layout.SubView_OrderOptions, this, true);
             _viewPickup = (LinearLayout) layout.FindViewById(Resource.Id.viewPickup);
             _viewDestination = (LinearLayout) layout.FindViewById(Resource.Id.viewDestination);
             _viewPickupAddressNumber = (EditText) layout.FindViewById(Resource.Id.viewPickupAddressNumber);
