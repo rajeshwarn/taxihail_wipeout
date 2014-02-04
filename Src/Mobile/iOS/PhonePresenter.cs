@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Cirrious.CrossCore;
@@ -6,7 +7,8 @@ using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Touch.Views.Presenters;
 using Cirrious.MvvmCross.ViewModels;
 using MonoTouch.UIKit;
-using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Booking.Mobile.Client.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -34,6 +36,18 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
+        public override void ChangePresentation(MvxPresentationHint hint)
+        {
+            if (hint is ShowOrderReviewPresentationHint)
+            {
+                TryShowOrderReview();
+            }
+            else
+            {
+                base.ChangePresentation(hint);
+            }
+        }
+
         private void RemovePreviousViewFromHistory()
         { 
             var navController = Mvx.Resolve<UINavigationController>();
@@ -48,6 +62,20 @@ namespace apcurium.MK.Booking.Mobile.Client
             else
             {
                 Mvx.Warning("Can't remove previous view, not enough UIViewControllers in the stack");
+            }
+
+        }
+
+        private void TryShowOrderReview()
+        {
+            var homeView = CurrentTopViewController as HomeView;
+            if (homeView != null)
+            {
+                homeView.ShowOrderReview();
+            }
+            else
+            {
+                Mvx.Warning("Can't show order review");
             }
 
         }

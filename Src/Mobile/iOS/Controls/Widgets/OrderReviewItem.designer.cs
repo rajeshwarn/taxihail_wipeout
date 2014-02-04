@@ -25,7 +25,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				ValueLabel = null;
 			}
 
-			if (IconImage != null) {
+            if (IconImage != null)
+            {
 				IconImage.Dispose ();
 				IconImage = null;
 			}

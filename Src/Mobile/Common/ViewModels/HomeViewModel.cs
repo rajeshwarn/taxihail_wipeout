@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		private BottomBarViewModel _bottomBar;
+        private BottomBarViewModel _bottomBar;
 		public BottomBarViewModel BottomBar
 		{
 			get { return _bottomBar; }

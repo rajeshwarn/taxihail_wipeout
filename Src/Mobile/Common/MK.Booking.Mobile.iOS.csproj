@@ -323,6 +323,7 @@
     <Compile Include="ViewModels\Orders\OrderOptionsViewModel.cs" />
     <Compile Include="ViewModels\Orders\BottomBarViewModel.cs" />
     <Compile Include="Data\VehicleClusterHelper.cs" />
+    <Compile Include="ViewModels\Orders\ShowOrderReviewPresentationHint.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -390,5 +391,7 @@
     <Folder Include="ViewModels\Map\" />
     <Folder Include="AppServices\Orders\" />
     <Folder Include="ViewModels\Orders\" />
+    <Folder Include="ViewModels\Orders\ShowOrderReviewPresentationHint.xcassets\" />
+    <Folder Include="ViewModels\Orders\ShowOrderReviewPresentationHint.xcassets\" />
   </ItemGroup>
 </Project>

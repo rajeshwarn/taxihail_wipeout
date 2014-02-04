@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						{
 							// TODO: Display error
 						}
-						ShowViewModel<BookConfirmationViewModel>();
+                        ChangePresentation(new ShowOrderReviewPresentationHint());
 					});
 			}
 		}	

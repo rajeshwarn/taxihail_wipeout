@@ -76,6 +76,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Apply();
         }
 
+        public void ShowOrderReview()
+        {
+
+            UIView.Animate(
+                1.0, 
+                () => {
+                    constraintOrderReviewTopSpace.Constant = 50;
+                    homeView.LayoutIfNeeded();
+                });
+        }
+
         private void AddButtonsToAppBar()
         {
             // temporary way to add these buttons

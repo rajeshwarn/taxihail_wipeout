@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeView">
@@ -9,7 +9,9 @@
                 <outlet property="bottomBar" destination="cXg-Q6-nLg" id="wBh-UX-pyq"/>
                 <outlet property="btnLocateMe" destination="Jqp-iu-ci1" id="Ea5-fR-6Yf"/>
                 <outlet property="btnMenu" destination="MeW-ns-SQv" id="7wz-qB-e5G"/>
+                <outlet property="constraintOrderReviewTopSpace" destination="sVE-Qk-t6A" id="uQG-kW-AR6"/>
                 <outlet property="ctrlOrderOptions" destination="HaA-X5-eHm" id="FGC-LG-Yob"/>
+                <outlet property="ctrlOrderReview" destination="lYS-4q-3Mj" id="jyD-45-zXv"/>
                 <outlet property="homeView" destination="73H-fC-yqb" id="U5L-r5-78y"/>
                 <outlet property="mapView" destination="DgF-jB-8zt" id="ZNk-IP-Ogh"/>
                 <outlet property="view" destination="1" id="3"/>
@@ -28,14 +30,6 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         </mapView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cXg-Q6-nLg" customClass="AppBarView">
-                            <rect key="frame" x="0.0" y="512" width="320" height="56"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="56" id="qLD-mj-Ncy"/>
-                            </constraints>
-                        </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MeW-ns-SQv" userLabel="Menu" customClass="OverlayButton">
                             <rect key="frame" x="8" y="460" width="39" height="39"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -71,6 +65,22 @@
                                 <constraint firstAttribute="width" constant="305" id="pPK-mw-QcC"/>
                             </constraints>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lYS-4q-3Mj" customClass="OrderReview">
+                            <rect key="frame" x="80" y="500" width="160" height="284"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="1" green="0.23529411759999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="284" id="08D-CJ-7qH"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cXg-Q6-nLg" customClass="AppBarView">
+                            <rect key="frame" x="0.0" y="512" width="320" height="56"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="56" id="qLD-mj-Ncy"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
@@ -83,10 +93,13 @@
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" id="Mlm-GQ-8rc"/>
                         <constraint firstAttribute="centerX" secondItem="HaA-X5-eHm" secondAttribute="centerX" id="Pnu-1F-Vfo"/>
                         <constraint firstItem="MeW-ns-SQv" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="Q0C-IM-4L9"/>
+                        <constraint firstAttribute="trailing" secondItem="lYS-4q-3Mj" secondAttribute="trailing" constant="80" id="Syf-T8-VwL"/>
                         <constraint firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" id="VBK-AW-R7l"/>
+                        <constraint firstItem="lYS-4q-3Mj" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="80" id="Z3E-95-Tkk"/>
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="ZSI-kr-X81"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="Jqp-iu-ci1" secondAttribute="bottom" constant="13" id="nTh-8y-wH1"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="MeW-ns-SQv" secondAttribute="bottom" constant="13" id="pen-rq-tIj"/>
+                        <constraint firstItem="lYS-4q-3Mj" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="500" id="sVE-Qk-t6A"/>
                     </constraints>
                 </view>
             </subviews>
