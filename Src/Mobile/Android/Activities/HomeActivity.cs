@@ -253,18 +253,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public void ShowOrderReview()
         {
-            _animation = new TranslateAnimation(0, 0, 0, -500);
+            var delta = _orderOptions.Bottom - _orderReview.Top;
+            _animation = new TranslateAnimation(0, 0, 0, delta);
             _animation.Duration = 600;
             _animation.Interpolator = new DecelerateInterpolator();
             _animation.FillAfter = true;
             _orderReview.StartAnimation(_animation);
            
-        }
-
-        void HandleAnimationEnd (object sender, Animation.AnimationEndEventArgs e)
-        {
-
-
         }
 
 
