@@ -16,12 +16,13 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
 	public class AddressAnnotation : MKAnnotation
 	{
-		public AddressAnnotation (CLLocationCoordinate2D coord, AddressAnnotationType type, string t, string s)
+        public AddressAnnotation (CLLocationCoordinate2D coord, AddressAnnotationType type, string t, string s, bool useThemeColorForIcons)
 		{
 			AddressType = type;
 			_coordinate = coord;
 			_title = t;
 			_subtitle = s;
+            UseThemeColorForIcons = useThemeColorForIcons;
 		}
 		
 		private CLLocationCoordinate2D _coordinate;
@@ -42,6 +43,8 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 		
         public AddressAnnotationType AddressType { get; private set; }
 
+        public static bool UseThemeColorForIcons { get; private set; }
+
         public UIImage GetImage()
         {
             return GetImage(AddressType);
@@ -49,12 +52,10 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
         public static UIImage GetImage(AddressAnnotationType addressType)
         {
-            var useThemeColorForPickupAndDestination = false;
-
             switch (addressType)
             {
                 case AddressAnnotationType.Destination:
-                    return useThemeColorForPickupAndDestination
+                    return UseThemeColorForIcons
                             ? ImageHelper.ApplyThemeColorToImage("destination_icon.png")
                             : UIImage.FromFile("destination_icon.png");
                 case AddressAnnotationType.Taxi:
@@ -64,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                 case AddressAnnotationType.NearbyTaxiCluster:
                     return ImageHelper.ApplyThemeColorToImage("cluster.png");
                 default:
-                    return useThemeColorForPickupAndDestination
+                    return UseThemeColorForIcons
                             ? ImageHelper.ApplyThemeColorToImage("hail_icon.png")
                             : UIImage.FromFile("hail_icon.png");
             }

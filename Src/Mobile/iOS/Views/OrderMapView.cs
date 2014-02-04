@@ -14,6 +14,8 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Drawing;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Data;
+using TinyIoC;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -24,6 +26,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private AddressAnnotation _destinationAnnotation;
         private List<AddressAnnotation> _availableVehicleAnnotations = new List<AddressAnnotation> ();
 
+        private bool UseThemeColorForPickupAndDestinationMapIcons;
+
         public OrderMapView(IntPtr handle)
             :base(handle)
         {
@@ -32,6 +36,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void Initialize()
         {
+            UseThemeColorForPickupAndDestinationMapIcons = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForPickupAndDestinationMapIcons;
+
             Delegate = new AddressMapDelegate ();
 
             this.DelayBind(() => {
@@ -61,11 +67,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _pickupAnnotation = new AddressAnnotation(new CLLocationCoordinate2D(),
                 AddressAnnotationType.Pickup,
                 string.Empty,
-                string.Empty);
+                string.Empty,
+                UseThemeColorForPickupAndDestinationMapIcons);
             _destinationAnnotation = new AddressAnnotation(new CLLocationCoordinate2D(),
                 AddressAnnotationType.Destination,
                 string.Empty,
-                string.Empty);
+                string.Empty,
+                UseThemeColorForPickupAndDestinationMapIcons);
         }
 
         private Address _pickupAddress;
@@ -170,7 +178,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                      ? AddressAnnotationType.NearbyTaxiCluster 
                                      : AddressAnnotationType.NearbyTaxi;
 
-                var vehicleAnnotation = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), annotationType, string.Empty, string.Empty);
+                var vehicleAnnotation = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), annotationType, string.Empty, string.Empty, UseThemeColorForPickupAndDestinationMapIcons);
                 AddAnnotation (vehicleAnnotation);
                 _availableVehicleAnnotations.Add (vehicleAnnotation);
             }
