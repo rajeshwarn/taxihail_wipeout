@@ -1,6 +1,11 @@
 { 
    "FacebookAppId" : "134284363380764",
+   "TwitterAccessTokenUrl" : "https://api.twitter.com/oauth/access_token",
+   "TwitterAuthorizeUrl" : "https://api.twitter.com/oauth/authorize",
+   "TwitterCallback" : "http://www.taxihail.com/oauth",
    "TwitterConsumerKey" : "3nNkJ5EcI7yyi56ifLSAA",
    "TwitterConsumerSecret" : "Th6nCDTgPiI3JPwHxgm8fQheMaLczUeHHG5liHGZRqs",
-   "ServiceUrl" : "http://test.taxihail.biz:8181/taxihaildemo/api/"
+   "TwitterEnabled" : "true",
+   "TwitterRequestTokenUrl" : "https://api.twitter.com/oauth/request_token",
+   "ServiceUrl" : "http://test.taxihail.biz:8181/taxihaildemo/api/",
 }

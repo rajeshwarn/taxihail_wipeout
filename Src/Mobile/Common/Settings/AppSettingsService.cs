@@ -40,6 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			}
 			else
 			{
+				Data = data;
 				//already got settings launch async refresh
 				Task.Factory.StartNew(() => RefreshSettingsFromServer());
 			}
@@ -47,6 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
 		void LoadSettingsFromFile()
 		{
+			_logger.LogMessage("load settings from file");
 			using (var stream = GetType().Assembly.GetManifestResourceStream(GetType ().Assembly
 														.GetManifestResourceNames()
 														.FirstOrDefault(x => x.Contains("Settings.json")))) 
@@ -65,6 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
 		void RefreshSettingsFromServer()
 		{
+			_logger.LogMessage("load settings from server");
 			var service = TinyIoCContainer.Current.Resolve<ConfigurationClientService>();
 			IDictionary<string,string> settingsFromServer = service.GetSettings();
 			SetSettingsValue(settingsFromServer);
