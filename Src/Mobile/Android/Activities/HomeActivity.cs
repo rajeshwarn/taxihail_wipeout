@@ -28,6 +28,8 @@ using Android.Support.V4.App;
 using Cirrious.MvvmCross.Droid.Fragging;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -61,23 +63,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
         }
 
-        public OrderMapView mapFragment; 
+        public OrderMapFragment _mapFragment; 
+
+        public OrderOptions _orderOptions;
 
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_Home);
             ViewModel.OnViewLoaded();
             _touchMap = (SupportMapFragment)SupportFragmentManager.FindFragmentById(Resource.Id.mapPickup);
+            _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
 
             // Creating a view controller for MapFragment
-            mapFragment = new OrderMapView(_touchMap);
-            mapFragment.SetMapCenterPins(FindViewById<ImageView>(Resource.Id.mapPickupCenterPin), FindViewById<ImageView>(Resource.Id.mapDropoffCenterPin));
+            _mapFragment = new OrderMapFragment(_touchMap);
 
             // Home View Bindings
             var binding = this.CreateBindingSet<HomeActivity, HomeViewModel>();
-            binding.Bind(mapFragment).For("DataContext").To(vm => vm.Map);
+            binding.Bind(_mapFragment).For("DataContext").To(vm => vm.Map); // Map Fragment View Bindings
+            binding.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // Map OrderOptions View Bindings
             binding.Apply();
-            mapFragment.ApplyBindings();
+            _mapFragment.ApplyBindings();
         }
 
         protected override void OnResume()
@@ -116,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 ViewModel.OnViewUnloaded();
             }
 
-            _touchMap.OnDestroy();
+            //_touchMap.OnDestroy();
         }
 
         protected override void OnSaveInstanceState(Bundle outState)
