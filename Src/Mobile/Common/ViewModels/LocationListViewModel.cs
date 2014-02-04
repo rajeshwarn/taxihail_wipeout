@@ -11,7 +11,7 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class MyLocationsViewModel: BaseViewModel
+    public class LocationListViewModel: BaseViewModel
     {
         public override void OnViewStarted(bool firstStart = false)
         {

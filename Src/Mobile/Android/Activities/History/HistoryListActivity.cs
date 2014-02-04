@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
 	[Activity(Label = "History", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
-    public class HistoryListActivity : BaseBindingActivity<HistoryViewModel>
+    public class HistoryListActivity : BaseBindingActivity<HistoryListViewModel>
     {
         private ListView _listView;
 

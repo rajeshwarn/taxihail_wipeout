@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
 {
 	[Activity(Label = "Locations", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
-    public class LocationListActivity : BaseBindingActivity<MyLocationsViewModel>
+    public class LocationListActivity : BaseBindingActivity<LocationListViewModel>
     {
         private TinyMessageSubscriptionToken _closeViewToken;
 

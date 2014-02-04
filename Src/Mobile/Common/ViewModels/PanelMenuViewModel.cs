@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    ShowViewModel<HistoryViewModel> ();
+                    ShowViewModel<HistoryListViewModel> ();
                 });
             }
         }
@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    ShowViewModel<MyLocationsViewModel> ();
+                    ShowViewModel<LocationListViewModel> ();
                 });
             }
         }

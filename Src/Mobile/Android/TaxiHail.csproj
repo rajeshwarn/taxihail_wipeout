@@ -200,7 +200,6 @@
     <Compile Include="Helpers\DrawHelper.cs" />
     <Compile Include="Helpers\ThreadHelper.cs" />
     <Compile Include="Helpers\WebRequestHelper.cs" />
-    <Compile Include="Activities\History\HistoryActivity.cs" />
     <Compile Include="Activities\History\HistoryDetailActivity.cs" />
     <Compile Include="Activities\Account\LoginActivity.cs" />
     <Compile Include="Messages\ActivityCompleted.cs" />
@@ -281,8 +280,6 @@
     <AndroidResource Include="Resources\Drawable\address.png" />
     <Compile Include="Binding\CellItemBinding.cs" />
     <AndroidResource Include="Resources\Drawable\visa_electron.png" />
-    <Compile Include="Activities\GeoLocation\LocationDetailActivity.cs" />
-    <Compile Include="Activities\GeoLocation\LocationsActivity.cs" />
     <Compile Include="Activities\Book\BookPaymentActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardAdd.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardsList.axml" />
@@ -468,6 +465,9 @@
     <AndroidResource Include="Resources\Values\SetThemes.xml" />
     <AndroidResource Include="Resources\values-v11\SetThemes.xml" />
     <Compile Include="PhonePresenter.cs" />
+    <Compile Include="Activities\History\HistoryListActivity.cs" />
+    <Compile Include="Activities\Location\LocationDetailActivity.cs" />
+    <Compile Include="Activities\Location\LocationListActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

@@ -222,7 +222,6 @@
     <Compile Include="ViewModels\Callbox\CallboxOrderListViewModel.cs" />
     <Compile Include="ViewModels\Callbox\CallboxOrderViewModel.cs" />
     <Compile Include="ViewModels\enum\ColorEnum.cs" />
-    <Compile Include="ViewModels\HistoryViewModel.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\AddressSearchViewModel.cs" />
@@ -244,7 +243,6 @@
     <Compile Include="ViewModels\BaseSubViewModel.cs" />
     <Compile Include="ViewModels\RideSettingsViewModel.cs" />
     <Compile Include="ViewModels\LocationDetailViewModel.cs" />
-    <Compile Include="ViewModels\MyLocationsViewModel.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Models\TutorialItemModel.cs" />
     <Compile Include="ViewModels\UpdatePasswordViewModel.cs" />
@@ -313,6 +311,8 @@
     <Compile Include="Style\ButtonStyle.cs" />
     <Compile Include="ViewModels\PanelMenuViewModel.cs" />
     <Compile Include="Settings\AppSettingsService.cs" />
+    <Compile Include="ViewModels\HistoryListViewModel.cs" />
+    <Compile Include="ViewModels\LocationListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

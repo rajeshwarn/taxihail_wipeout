@@ -12,7 +12,7 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class MyLocationsView : BaseViewController<MyLocationsViewModel>
+    public partial class LocationListView : BaseViewController<LocationListViewModel>
 	{
 		const string CellId = "LocationCell";
 		const string CellBindingText = @"
@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                    Icon Icon
 				";
 
-		public MyLocationsView () : base ("MyLocationsView", null)
+        public LocationListView () : base ("LocationListView", null)
 		{
 		}
 
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			source.CellCreator = CellCreator;
 			tableLocations.Source = source;
 
-			var set = this.CreateBindingSet<MyLocationsView, MyLocationsViewModel> ();
+            var set = this.CreateBindingSet<LocationListView, LocationListViewModel> ();
 
 			set.Bind(source)
 				.For(v => v.ItemsSource)
