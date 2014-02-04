@@ -325,6 +325,7 @@
     <Compile Include="Data\VehicleClusterHelper.cs" />
     <Compile Include="ViewModels\Orders\BookLaterViewModel.cs" />
     <Compile Include="ViewModels\Orders\BottomBarViewModel.cs" />
+    <Compile Include="ViewModels\Orders\ShowOrderReviewPresentationHint.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
