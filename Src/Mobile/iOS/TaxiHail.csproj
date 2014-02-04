@@ -524,6 +524,7 @@
     <Compile Include="Controls\Widgets\OverlayButton.cs" />
     <Compile Include="Controls\Widgets\AppBarButton.cs" />
     <Compile Include="Controls\Widgets\CommandButton.cs" />
+    <Compile Include="Controls\Widgets\Booking\BookLaterDatePicker.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -879,6 +880,7 @@
     <Folder Include="Resources\" />
     <Folder Include="Controls\Widgets\" />
     <Folder Include="Controls\Behavior\" />
+    <Folder Include="Controls\Widgets\Booking\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Style\Theme.xml">
