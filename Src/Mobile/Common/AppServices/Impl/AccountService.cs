@@ -89,7 +89,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
 			{
-				_facebookService.Disconnect ();
+				if(_appSettings.Data.FacebookEnabled)
+				{
+					_facebookService.Disconnect ();
+				}
             } 
 			catch( Exception ex )
             {
@@ -98,7 +101,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             try
 			{
-				if (_twitterService.IsConnected)
+				if (_appSettings.Data.TwitterEnabled
+					&& _twitterService.IsConnected)
 				{
 					_twitterService.Disconnect ();
                 }
