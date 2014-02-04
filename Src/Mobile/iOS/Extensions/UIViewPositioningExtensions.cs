@@ -31,6 +31,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
             thisView.Frame = thisView.Frame.SetBottom(value);
             return thisView;
         }
+        public static UIView SetRight(this UIView thisView, float value)
+        {
+            thisView.Frame = thisView.Frame.SetRight(value);
+            return thisView;
+        }
+
+        public static UIView SetVerticalCenter(this UIView thisView, float value)
+        {
+            thisView.Frame = thisView.Frame.SetVerticalCenter(value);
+            return thisView;
+        }
         
         public static UIView IncrementHeight(this UIView thisView, float delta)
         {            

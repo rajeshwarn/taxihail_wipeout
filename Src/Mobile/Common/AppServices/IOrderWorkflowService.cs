@@ -10,12 +10,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task SetAddressToUserLocation();
 		Task ClearDestinationAddress();
 
+		Task SetPickupDate(DateTime? date);
+
 		Task ToggleBetweenPickupAndDestinationSelectionMode();
 
 		Task ValidatePickupDestinationAndTime();
 
 		IObservable<Address> GetAndObservePickupAddress();
 		IObservable<Address> GetAndObserveDestinationAddress();
+
 		IObservable<AddressSelectionMode> GetAndObserveAddressSelectionMode();
     }
 }
