@@ -228,6 +228,6 @@
         android:layout_width="4px"
         android:layout_height="fill_parent"
         android:layout_toLeftOf="@id/fakeLayoutRight"
-        android:background="@drawable/drop_shadow"
+        android:background="@drawable/drop_shadow_old"
         android:layout_marginRight="98px" />
 </RelativeLayout>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OrderOptionsControl">
+            <connections>
+                <outlet property="viewDestination" destination="c4Q-op-2pd" id="64Z-qc-ry4"/>
+                <outlet property="viewPickup" destination="sRm-8N-029" id="A6x-pa-AxQ"/>
+                <outlet property="viewVehicleType" destination="lGR-tz-G26" id="qzz-hH-cSD"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1" customClass="OverlayView">
+            <rect key="frame" x="0.0" y="0.0" width="305" height="140"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sRm-8N-029" userLabel="Pickup" customClass="AddressTextBox">
+                    <rect key="frame" x="0.0" y="0.0" width="305" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="305" id="QDY-JJ-O5K"/>
+                        <constraint firstAttribute="height" constant="44" id="qXJ-az-cb2"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c4Q-op-2pd" userLabel="Destination" customClass="AddressTextBox">
+                    <rect key="frame" x="0.0" y="44" width="305" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="F2F-wu-erm"/>
+                        <constraint firstAttribute="width" constant="305" id="LQK-TX-ZPY"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lGR-tz-G26" userLabel="VehicleType/Estimate">
+                    <rect key="frame" x="0.0" y="88" width="305" height="52"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Djv-1t-UkP">
+                            <rect key="frame" x="46" y="5" width="34" height="34"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="blackcar_badge.png">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zi1-gh-xfW">
+                            <rect key="frame" x="135" y="5" width="34" height="34"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="blackcar_badge.png">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iyb-3s-w83">
+                            <rect key="frame" x="225" y="5" width="34" height="34"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="blackcar_badge.png">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="305" id="b2F-uo-ITh"/>
+                        <constraint firstAttribute="height" constant="52" id="iE2-gZ-GZI"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="c4Q-op-2pd" firstAttribute="top" secondItem="sRm-8N-029" secondAttribute="bottom" id="0Pd-V6-rBh"/>
+                <constraint firstAttribute="centerX" secondItem="lGR-tz-G26" secondAttribute="centerX" id="GbD-sH-hPz"/>
+                <constraint firstItem="lGR-tz-G26" firstAttribute="top" secondItem="c4Q-op-2pd" secondAttribute="bottom" id="Tip-MN-wJm"/>
+                <constraint firstItem="lGR-tz-G26" firstAttribute="top" secondItem="sRm-8N-029" secondAttribute="bottom" priority="500" id="X4p-Tl-abu"/>
+                <constraint firstAttribute="centerX" secondItem="c4Q-op-2pd" secondAttribute="centerX" id="akx-zu-1tL"/>
+                <constraint firstAttribute="centerX" secondItem="sRm-8N-029" secondAttribute="centerX" id="fb0-3V-GbH"/>
+                <constraint firstItem="sRm-8N-029" firstAttribute="top" secondItem="1" secondAttribute="top" id="jhk-zV-BdA"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="blackcar_badge.png" width="34" height="34"/>
+    </resources>
+</document>

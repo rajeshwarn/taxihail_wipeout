@@ -39,7 +39,17 @@ namespace apcurium.MK.Booking.Mobile
 
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null || ( !_isExecuting && _canExecute());
+			if (_isExecuting)
+			{
+				return false;
+			}
+
+			if (_canExecute == null)
+			{
+				return true;
+			}
+
+			return _canExecute();
         }
 
         public bool CanExecute()
@@ -160,7 +170,17 @@ namespace apcurium.MK.Booking.Mobile
 
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null || (!_isExecuting && _canExecute((T)parameter));
+			if (_isExecuting)
+			{
+				return false;
+			}
+
+			if (_canExecute == null)
+			{
+				return true;
+			}
+
+			return _canExecute((T)parameter);
         }
 
         public bool CanExecute()

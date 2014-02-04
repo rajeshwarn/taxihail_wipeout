@@ -10,10 +10,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class PanelMenuViewModel : BaseViewModel
     {
-        private readonly BookViewModel _parent;
+		private readonly BaseViewModel _parent;
 		private IMvxWebBrowserTask _browserTask;
 
-		public PanelMenuViewModel (BookViewModel parent, IMvxWebBrowserTask browserTask)
+		public PanelMenuViewModel (BaseViewModel parent, IMvxWebBrowserTask browserTask)
         {
             _parent = parent;
 			_browserTask = browserTask;
@@ -69,33 +69,44 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public AsyncCommand  ToApcuriumWebsite
+		public ICommand OpenOrCloseMenu
 		{
 			get 
-            {
-				return new AsyncCommand(() =>
+			{
+				return GetCommand(() =>
+					{
+						MenuIsOpen = !MenuIsOpen;
+					});
+			}
+		}
+
+		public ICommand  ToApcuriumWebsite
+		{
+			get 
+			{
+				return GetCommand(() =>
 				{
 					_browserTask.ShowWebPage(this.Services().Localize["apcuriumUrl"]);
 				});
 			}
 		}
 
-		public AsyncCommand  ToMobileKnowledgeWebsite
+		public ICommand  ToMobileKnowledgeWebsite
 		{
 			get 
-            {
-				return new AsyncCommand(() =>
+			{
+				return GetCommand(() =>
 				{
 					_browserTask.ShowWebPage(this.Services().Localize["mobileKnowledgeUrl"]);
 				});
 			}
 		}
 
-        public AsyncCommand SignOut
+		public ICommand SignOut
         {
             get 
-            {
-                return new AsyncCommand(() =>
+			{
+				return GetCommand(() =>
                 {
                     MenuIsOpen = false;
                     this.Services().Account.SignOut();         
@@ -106,26 +117,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand NavigateToOrderHistory
+		public ICommand NavigateToOrderHistory
         {
             get 
             {
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    ShowViewModel<HistoryListViewModel> ();
+						ShowViewModel<HistoryListViewModel> ();
                 });
             }
         }
 
-        public AsyncCommand NavigateToMyLocations
+		public ICommand NavigateToMyLocations
         {
             get 
             {
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    ShowViewModel<LocationListViewModel> ();
+						ShowViewModel<LocationListViewModel> ();
                 });
             }
         }
@@ -146,7 +157,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand NavigateToUpdateProfile
+		public ICommand NavigateToUpdateProfile
         {
             get 
             {
@@ -158,7 +169,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand NavigateToAboutUs
+		public ICommand NavigateToAboutUs
         {
             get 
             {
@@ -170,7 +181,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public AsyncCommand NavigateToReportProblem
+		public ICommand NavigateToReportProblem
 		{
 			get 
             {
@@ -182,7 +193,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public AsyncCommand NavigateToTutorial
+		public ICommand NavigateToTutorial
         {
             get 
             {
@@ -213,7 +224,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}            
         }
 
-        public AsyncCommand Call
+		public ICommand Call
         {
             get 
             {

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -498,6 +498,41 @@
     <Compile Include="Views\LocationListView.designer.cs">
       <DependentUpon>LocationListView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\HomeView.xib.cs">
+      <DependentUpon>HomeView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HomeView.xib.designer.cs">
+      <DependentUpon>HomeView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Widgets\HomeBar.cs" />
+    <Compile Include="Controls\Widgets\OverlayView.cs" />
+    <Compile Include="Views\BindableMapView.cs" />
+    <Compile Include="Views\OrderMapView.cs" />
+    <Compile Include="Controls\Widgets\OrderOptionsControl.xib.cs">
+      <DependentUpon>OrderOptionsControl.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Widgets\OrderOptionsControl.xib.designer.cs">
+      <DependentUpon>OrderOptionsControl.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Binding\BaseBindableView.cs" />
+    <Compile Include="Controls\Widgets\AddressTextBox.cs" />
+    <Compile Include="Extensions\UITextFieldExtensions.cs" />
+    <Compile Include="Controls\Behavior\NumberAndAddressTextFieldBehavior.cs" />
+    <Compile Include="Controls\Widgets\Dot.cs" />
+    <Compile Include="Controls\Widgets\AppBarLabelButton.cs" />
+    <Compile Include="Controls\Widgets\AppBarView.cs" />
+    <Compile Include="Controls\Widgets\OverlayButton.cs" />
+    <Compile Include="Controls\Widgets\AppBarButton.cs" />
+    <Compile Include="Controls\Widgets\CommandButton.cs" />
+    <Compile Include="Controls\Widgets\Booking\BookLaterDatePicker.cs" />
+    <Compile Include="Controls\Widgets\OrderReview.cs" />
+    <Compile Include="Controls\Widgets\OrderReview.designer.cs">
+      <DependentUpon>OrderReview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Widgets\OrderReviewItem.cs" />
+    <Compile Include="Controls\Widgets\OrderReviewItem.designer.cs">
+      <DependentUpon>OrderReviewItem.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -543,6 +578,10 @@
     <InterfaceDefinition Include="Views\BookingStatusView.xib" />
     <InterfaceDefinition Include="Views\HistoryListView.xib" />
     <InterfaceDefinition Include="Views\LocationListView.xib" />
+    <InterfaceDefinition Include="Views\HomeView.xib" />
+    <InterfaceDefinition Include="Controls\Widgets\OrderOptionsControl.xib" />
+    <InterfaceDefinition Include="Controls\Widgets\OrderReview.xib" />
+    <InterfaceDefinition Include="Controls\Widgets\OrderReviewItem.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
@@ -789,6 +828,48 @@
     <BundleResource Include="Resources\mk_logo%402x.png" />
     <BundleResource Include="Resources\add_list.png" />
     <BundleResource Include="Resources\add_list%402x.png" />
+    <BundleResource Include="Resources\blackcar_badge.png" />
+    <BundleResource Include="Resources\blackcar_badge%402x.png" />
+    <BundleResource Include="Resources\blackcar_badge_selected.png" />
+    <BundleResource Include="Resources\blackcar_badge_selected%402x.png" />
+    <BundleResource Include="Resources\suv_badge.png" />
+    <BundleResource Include="Resources\suv_badge%402x.png" />
+    <BundleResource Include="Resources\suv_badge_selected.png" />
+    <BundleResource Include="Resources\suv_badge_selected%402x.png" />
+    <BundleResource Include="Resources\taxi_badge.png" />
+    <BundleResource Include="Resources\taxi_badge%402x.png" />
+    <BundleResource Include="Resources\taxi_badge_selected.png" />
+    <BundleResource Include="Resources\taxi_badge_selected%402x.png" />
+    <BundleResource Include="Resources\highlight.png" />
+    <BundleResource Include="Resources\highlight%402x.png" />
+    <BundleResource Include="Resources\location_icon.png" />
+    <BundleResource Include="Resources\location_icon%402x.png" />
+    <BundleResource Include="Resources\location_icon_pressed.png" />
+    <BundleResource Include="Resources\location_icon_pressed%402x.png" />
+    <BundleResource Include="Resources\menu_icon.png" />
+    <BundleResource Include="Resources\menu_icon%402x.png" />
+    <BundleResource Include="Resources\menu_icon_pressed.png" />
+    <BundleResource Include="Resources\menu_icon_pressed%402x.png" />
+    <BundleResource Include="Resources\estimate_icon.png" />
+    <BundleResource Include="Resources\estimate_icon%402x.png" />
+    <BundleResource Include="Resources\estimate_icon_pressed.png" />
+    <BundleResource Include="Resources\estimate_icon_pressed%402x.png" />
+    <BundleResource Include="Resources\later_icon.png" />
+    <BundleResource Include="Resources\later_icon%402x.png" />
+    <BundleResource Include="Resources\later_icon_pressed.png" />
+    <BundleResource Include="Resources\later_icon_pressed%402x.png" />
+    <BundleResource Include="Resources\hail_icon.png" />
+    <BundleResource Include="Resources\hail_icon%402x.png" />
+    <BundleResource Include="Resources\nearby.png" />
+    <BundleResource Include="Resources\nearby%402x.png" />
+    <BundleResource Include="Resources\cluster.png" />
+    <BundleResource Include="Resources\cluster%402x.png" />
+    <BundleResource Include="Resources\destination_icon.png" />
+    <BundleResource Include="Resources\destination_icon%402x.png" />
+    <BundleResource Include="Resources\nearby_taxi.png" />
+    <BundleResource Include="Resources\nearby_taxi%402x.png" />
+    <BundleResource Include="Resources\taxi_icon.png" />
+    <BundleResource Include="Resources\taxi_icon%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
@@ -808,6 +889,8 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Controls\Widgets\" />
+    <Folder Include="Controls\Behavior\" />
+    <Folder Include="Controls\Widgets\Booking\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Style\Theme.xml">

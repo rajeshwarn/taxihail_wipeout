@@ -281,7 +281,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
 
-			ShowViewModel<BookViewModel>();
+			ShowViewModel<HomeViewModel>();
 			if (LoginSucceeded != null)
 			{
 				LoginSucceeded(this, EventArgs.Empty);

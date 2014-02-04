@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile
             }
             else
             {
-				ShowViewModel<BookViewModel>();
+				ShowViewModel<HomeViewModel>();
             }
 
 			TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Startup with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().Data.ServiceUrl);

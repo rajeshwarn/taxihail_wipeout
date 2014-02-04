@@ -62,8 +62,21 @@
     <item name="android:shadowDx">0</item>
     <item name="android:shadowDy">1</item>
     <item name="android:shadowRadius">1</item>    
-  </style>
-  
+  </style>  
+  <style name="HomeCarText">   
+    <item name="android:textSize">10dp</item>
+    <item name="android:lines">1</item>
+    <item name="android:singleLine">true</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textColor">#000000</item>
+  </style>  
+  <style name="HomeCarTextSelected">
+    <item name="android:textSize">10dp</item>
+    <item name="android:lines">1</item>
+    <item name="android:singleLine">true</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textColor">@color/login_background_color</item>
+  </style>  
   <style name="FormDataText">
     <item name="android:lines">1</item>
     <item name="android:singleLine">true</item>

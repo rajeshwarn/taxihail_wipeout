@@ -28,8 +28,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-            SetImage(ImageHelper.ApplyThemeColorToImage("unchecked.png"), UIControlState.Normal);
-            SetImage(ImageHelper.ApplyThemeColorToImage("checked.png"), UIControlState.Selected);
+            SetImage(ImageHelper.ApplyThemeTextColorToImage("unchecked.png"), UIControlState.Normal);
+            SetImage(ImageHelper.ApplyThemeTextColorToImage("checked.png"), UIControlState.Selected);
         }
 
         public override bool BeginTracking(UITouch uitouch, UIEvent uievent)

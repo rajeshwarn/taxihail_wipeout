@@ -1,35 +1,35 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Animations;
-using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.ListViewStructure;
-using apcurium.MK.Booking.Mobile.ViewModels;
+using System.Windows.Input;
+using Cirrious.MvvmCross.Binding.BindingContext;
+using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using TinyIoC;
-using Cirrious.MvvmCross.Binding.Touch.Views;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.ListViewStructure;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Client.Animations;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using Cirrious.MvvmCross.Binding.BindingContext;
-using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using System.Threading;
+using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class PanelMenuView : MvxView
+    public partial class PanelMenuView : BaseBindableView<PanelMenuViewModel>
     {
-		private const string Cellid = "PanelMenuCell";
-
+        private const string CellId = "PanelMenuCell";
 		private const string CellBindingText = @"
                    TitleText Text;
                    SelectedCommand NavigationCommand;
                 ";
+        private UIButton _closeMenuButton;
 
-		public UIView ViewToAnimate
-		{
-			get;
-			set;
-		}
+        public UIView ViewToAnimate { get; set; }
+        public ICommand ToApcuriumWebsite { get; set; }
+        public ICommand ToMobileKnowledgeWebsite { get; set; }
 
 		private bool _menuIsOpen;
 		public bool MenuIsOpen
@@ -45,11 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			}
 		}
 
-        public ICommand ToApcuriumWebsite { get; set; }
-        public ICommand ToMobileKnowledgeWebsite { get; set; }
-
-		public PanelMenuView (IntPtr handle)
-			:base(handle)
+        public PanelMenuView (IntPtr handle) : base(handle)
         {
 			this.DelayBind (() => {
 				InitializeMenu();
@@ -66,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			var source = new PanelMenuSource(
 				menuListView, 
 				UITableViewCellStyle.Default,
-				new NSString(Cellid), 
+                new NSString(CellId), 
 				CellBindingText,
 				UITableViewCellAccessory.None);
 
@@ -78,19 +74,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.ItemsSource)
 				.To(vm => vm.ItemMenuList);
 
-			set.Bind (this)
+			set.Bind ()
 				.For (v => v.MenuIsOpen)
-				.To (vm => vm.MenuIsOpen);
+                .To (vm => vm.MenuIsOpen);
 
             set.Bind (lblVersion)
                 .For (v => v.Text)
                 .To (vm => vm.Version);
 
-            set.Bind(this)
+            set.Bind()
                 .For(v => v.ToApcuriumWebsite)
                 .To(vm => vm.ToApcuriumWebsite);
 
-            set.Bind(this)
+            set.Bind()
                 .For(v => v.ToMobileKnowledgeWebsite)
                 .To(vm => vm.ToMobileKnowledgeWebsite);
 
@@ -119,9 +115,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             InvokeOnMainThread (() =>
             {
-				var slideAnimation = new SlideViewAnimation (ViewToAnimate, new SizeF ((MenuIsOpen ? menuContainer.Frame.Width : -menuContainer.Frame.Width), 0f));
+                var slideAnimation = new SlideViewAnimation (ViewToAnimate, new SizeF ((MenuIsOpen ? menuContainer.Frame.Width : -menuContainer.Frame.Width), 0f), () => AddOrRemoveInvisibleCloseButton());
                 slideAnimation.Animate ();
             });
+        }
+
+        private void AddOrRemoveInvisibleCloseButton()
+        {
+            if(MenuIsOpen && _closeMenuButton == null)
+            {
+                _closeMenuButton = new UIButton(new RectangleF(0, 0, Frame.Width - menuContainer.Frame.Width, Frame.Height)) { BackgroundColor = UIColor.Clear };
+                _closeMenuButton.TouchUpInside += (s, ex) => {
+                    ViewModel.MenuIsOpen = false;
+                };
+                ViewToAnimate.AddSubview(_closeMenuButton);
+            }
+            else
+            {
+                if (_closeMenuButton != null)
+                {
+                    _closeMenuButton.RemoveFromSuperview();
+                    _closeMenuButton = null;
+                }
+            }
         }
     }
 }

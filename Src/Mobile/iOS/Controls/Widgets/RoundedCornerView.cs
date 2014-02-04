@@ -31,6 +31,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			get; set;
 		}
 
+        public UIColor StrokeLineColor
+        {
+            get{ return _strokeLineColor; }
+            set
+            {
+                _strokeLineColor = value;
+                SetNeedsDisplay();
+            }
+        }
+
 		public UIColor BackColor
 		{
 			get{ return _backgroundColor; }

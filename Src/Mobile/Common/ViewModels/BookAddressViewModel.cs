@@ -314,12 +314,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         return;
                     }
 
-                    this.Services().Location.GetNextPosition(TimeSpan.FromSeconds(6), 50).Subscribe(
+					this.Services().Location.GetNextPosition(TimeSpan.FromSeconds(6), 50).Subscribe(
                     pos=>
                     {
                         positionSet =true;
                         InvokeOnMainThread(()=>SearchAddressForCoordinate(pos));
-                    },
+					},
                     ()=>
                     {  
 						positionSet = false;

@@ -6,6 +6,7 @@ using MonoTouch.UIKit;
 using System.Drawing;
 using MonoTouch.CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Style;
+using MonoTouch.CoreImage;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
@@ -43,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return resultImage;
         }
 
-        public static UIImage ApplyThemeColorToImage(string imagePath)
+        public static UIImage ApplyColorToImage(string imagePath, UIColor color)
         {
             var image = UIImage.FromFile(imagePath);
 
@@ -51,14 +52,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             UIGraphics.BeginImageContextWithOptions(rect.Size, false, 0f);
             var context = UIGraphics.GetCurrentContext();
             image.Draw(rect);
-            context.SetFillColorWithColor(Theme.LabelTextColor.CGColor);
-            context.SetBlendMode(CGBlendMode.SourceAtop);
+
+            // translate/flip the graphics context (for transforming from CG* coords to UI* coords)
+            context.TranslateCTM(0, image.Size.Height);
+            context.ScaleCTM(1, -1);
+
+            // apply clip to mask
+            context.ClipToMask(rect, image.CGImage);
+
+            // translate/flip the graphics context (for transforming from UI* coords back to CG* coords)
+            context.TranslateCTM(0, image.Size.Height);
+            context.ScaleCTM(1, -1);
+
+            context.SetFillColorWithColor(color.CGColor);
+            context.SetBlendMode(CGBlendMode.Hue);
+
             context.FillRect(rect);
 
             var resultImage = UIGraphics.GetImageFromCurrentImageContext();
             UIGraphics.EndImageContext();
 
+            image = null;
+
             return resultImage;
+        }
+
+        public static UIImage ApplyThemeColorToImage(string imagePath)
+        {
+            return ApplyColorToImage(imagePath, Theme.BackgroundColor);
+        }
+
+        public static UIImage ApplyThemeTextColorToImage(string imagePath)
+        {
+            return ApplyColorToImage(imagePath, Theme.LabelTextColor);
         }
 
 		public static UIImage GetImage ( string imagePath )

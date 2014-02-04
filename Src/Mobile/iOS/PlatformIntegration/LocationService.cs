@@ -21,7 +21,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
         }
 
-
         public LocationService()
         {
             _locationManager = new CLLocationManager();

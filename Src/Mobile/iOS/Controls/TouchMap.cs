@@ -19,6 +19,8 @@ using MonoTouch.Foundation;
 using MonoTouch.CoreLocation;
 using MonoTouch.MapKit;
 using MonoTouch.UIKit;
+using TinyIoC;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -33,7 +35,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private Address _pickup;
         private Address _dropoff;
         private CancellationTokenSource _cancelToken;
-        
+
+        private bool UseThemeColorForPickupAndDestinationMapIcons;
+
         protected TouchMap(RectangleF rect)
             : base(rect)
         {
@@ -47,6 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
         
         public TouchMap(NSObjectFlag flag)
+           
             : base(flag)
         {
             Initialize();
@@ -68,17 +73,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private void Initialize()
         {   
            // _cancelToken = new CancellationTokenSource();
+            UseThemeColorForPickupAndDestinationMapIcons = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForPickupAndDestinationMapIcons;
 
             ShowsUserLocation = true;
             if (_pickupCenterPin == null) {
-                _pickupCenterPin = new UIImageView(new UIImage(AddressAnnotation.GetImageFilename(AddressAnnotationType.Pickup)));
+                _pickupCenterPin = new UIImageView(AddressAnnotation.GetImage(AddressAnnotationType.Pickup));
                 _pickupCenterPin.BackgroundColor = UIColor.Clear;
                 _pickupCenterPin.ContentMode = UIViewContentMode.Center;
                 AddSubview(_pickupCenterPin);
                 _pickupCenterPin.Hidden = true;                
             }
             if (_dropoffCenterPin == null) {
-                _dropoffCenterPin = new UIImageView(new UIImage(AddressAnnotation.GetImageFilename(AddressAnnotationType.Destination)));
+                _dropoffCenterPin = new UIImageView(AddressAnnotation.GetImage(AddressAnnotationType.Destination));
                 _dropoffCenterPin.BackgroundColor = UIColor.Clear;
                 _dropoffCenterPin.ContentMode = UIViewContentMode.Center;
                 AddSubview(_dropoffCenterPin);
@@ -281,7 +287,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     {
                         coord = new CLLocationCoordinate2D( value.VehicleLatitude.Value , value.VehicleLongitude.Value );
                     }
-                    _taxiLocationPin = new AddressAnnotation(coord, AddressAnnotationType.Taxi, Localize.GetValue("TaxiMapTitle"), value.VehicleNumber);
+                    _taxiLocationPin = new AddressAnnotation(coord, AddressAnnotationType.Taxi, Localize.GetValue("TaxiMapTitle"), value.VehicleNumber, UseThemeColorForPickupAndDestinationMapIcons);
                     AddAnnotation(_taxiLocationPin);
                 }
                 SetNeedsDisplay();
@@ -342,7 +348,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
             SetRegionAndZoom(region, center, deltaLat, deltaLng);
-       
+
         }
 
         private void SetRegionAndZoom(MKCoordinateRegion region, CLLocationCoordinate2D center, double? deltaLat, double? deltaLng)
@@ -413,7 +419,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 // ReSharper disable CompareOfFloatsByEqualityOperator
             if (coords.Latitude != 0 && coords.Longitude != 0) {
 // ReSharper restore CompareOfFloatsByEqualityOperator
-                _dropoffPin = new AddressAnnotation(coords, AddressAnnotationType.Destination, Localize.GetValue("DestinationMapTitle"), address.Display());
+                _dropoffPin = new AddressAnnotation(coords, AddressAnnotationType.Destination, Localize.GetValue("DestinationMapTitle"), address.Display(), UseThemeColorForPickupAndDestinationMapIcons);
                 AddAnnotation (_dropoffPin);
             }
             if( _dropoffCenterPin!= null) _dropoffCenterPin.Hidden = true;
@@ -433,7 +439,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 // ReSharper disable CompareOfFloatsByEqualityOperator
             if (coords.Latitude != 0 && coords.Longitude != 0) {
 // ReSharper restore CompareOfFloatsByEqualityOperator
-                _pickupPin = new AddressAnnotation(coords, AddressAnnotationType.Pickup, Localize.GetValue("PickupMapTitle"), address.Display());
+                _pickupPin = new AddressAnnotation(coords, AddressAnnotationType.Pickup, Localize.GetValue("PickupMapTitle"), address.Display(), UseThemeColorForPickupAndDestinationMapIcons);
                 AddAnnotation (_pickupPin);
             }
             if(_pickupCenterPin != null) _pickupCenterPin.Hidden = true;
@@ -455,7 +461,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             foreach (var v in vehicles)
             {
                 var annotationType = (v is AvailableVehicleCluster) ? AddressAnnotationType.NearbyTaxiCluster : AddressAnnotationType.NearbyTaxi;
-                var pushPin = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), annotationType, string.Empty, string.Empty);
+                var pushPin = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), annotationType, string.Empty, string.Empty, UseThemeColorForPickupAndDestinationMapIcons);
                 AddAnnotation (pushPin);
                 _availableVehiclePushPins.Add (pushPin);
             }
