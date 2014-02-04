@@ -1473,6 +1473,6 @@
     <value>http://www.mobile-knowledge.com/</value>
   </data>
   <data name="CmtRideLinqConfirmPairViewConfirmPairDetailText" xml:space="preserve">
-    <value>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</value>
+    <value>If you are in the vehicle indicated above and would like to use your default credit card and tip, press confirm and your trip will be paid for at the end of the ride automatically. If you would like pay using a different credit card or would like to change your tip amount, press Change Payment Settings. If you are not in the vehicle noted or want to pay using a different form of payment then press cancel.</value>
   </data>
 </root>
