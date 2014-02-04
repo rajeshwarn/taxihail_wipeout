@@ -524,6 +524,14 @@
     <Compile Include="Controls\Widgets\OverlayButton.cs" />
     <Compile Include="Controls\Widgets\AppBarButton.cs" />
     <Compile Include="Controls\Widgets\CommandButton.cs" />
+    <Compile Include="Controls\Widgets\OrderReview.cs" />
+    <Compile Include="Controls\Widgets\OrderReview.designer.cs">
+      <DependentUpon>OrderReview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Widgets\OrderReviewItem.cs" />
+    <Compile Include="Controls\Widgets\OrderReviewItem.designer.cs">
+      <DependentUpon>OrderReviewItem.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -571,6 +579,8 @@
     <InterfaceDefinition Include="Views\BookingStatusView.xib" />
     <InterfaceDefinition Include="Views\HomeView.xib" />
     <InterfaceDefinition Include="Controls\Widgets\OrderOptionsControl.xib" />
+    <InterfaceDefinition Include="Controls\Widgets\OrderReview.xib" />
+    <InterfaceDefinition Include="Controls\Widgets\OrderReviewItem.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

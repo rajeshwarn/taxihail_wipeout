@@ -7,17 +7,25 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Globalization;
+using apcurium.MK.Booking.Mobile.AppServices.Orders;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class BookConfirmationViewModel : BaseViewModel
 	{
-		public void Init(string order)
+		readonly OrderWorkflowService _orderWorkflowService;
+
+		public BookConfirmationViewModel(OrderWorkflowService orderWorkflowService)
 		{
-			Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);
+			_orderWorkflowService = orderWorkflowService;
+        	
+		}
+		public void Init()
+		{
+            //Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);
 			RideSettings = new RideSettingsViewModel();
-			RideSettings.Init(Order.Settings.ToJson());
-			RideSettings.OnPropertyChanged().Subscribe(p => RaisePropertyChanged(() => RideSettings));
+            //RideSettings.Init(Order.Settings.ToJson());
+            //RideSettings.OnPropertyChanged().Subscribe(p => RaisePropertyChanged(() => RideSettings));
 		}
 
 		public override void OnViewLoaded()
