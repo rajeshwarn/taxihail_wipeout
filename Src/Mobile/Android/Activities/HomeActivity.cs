@@ -52,9 +52,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			}
 		}
 
+        private Bundle _mainBundle;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            _mainBundle = bundle;
 
             var errorCode = GooglePlayServicesUtil.IsGooglePlayServicesAvailable(ApplicationContext);
             if (errorCode == ConnectionResult.ServiceMissing
@@ -116,8 +119,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private void PanelMenuSignOutClick(object sender, EventArgs e)
         {
             ViewModel.Panel.SignOut.Execute(null);
-            // Finish the activity, because clearTop does not seem to be enough in this case
-            // Finish is delayed 1sec in order to prevent the application from being terminated
             Observable.Return(Unit.Default).Delay(TimeSpan.FromSeconds(1)).Subscribe(x => { Finish(); });
         }
 
@@ -173,10 +174,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             SetContentView(Resource.Layout.View_Home);
             ViewModel.OnViewLoaded();
-            _touchMap = (SupportMapFragment)SupportFragmentManager.FindFragmentById(Resource.Id.mapPickup);
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
 
             // Creating a view controller for MapFragment
+            Bundle mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
+            _touchMap = (SupportMapFragment)SupportFragmentManager.FindFragmentById(Resource.Id.mapPickup);
+            _touchMap.OnCreate(mapViewSavedInstanceState);
             _mapFragment = new OrderMapFragment(_touchMap);
 
             // Home View Bindings
@@ -229,6 +232,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override void OnSaveInstanceState(Bundle outState)
         {
+            // See http://code.google.com/p/gmaps-api-issues/issues/detail?id=6237 Comment #9
+            // TODO: Adapt solution to C#/mvvm. Currently help to avoid a crash after tombstone but map state isn't saved
+
+            Bundle mapViewSaveState = new Bundle(outState);
+            _touchMap.OnSaveInstanceState(mapViewSaveState);
+            outState.PutBundle("mapViewSaveState", mapViewSaveState);
             base.OnSaveInstanceState(outState);
             _touchMap.OnSaveInstanceState(outState);
         }

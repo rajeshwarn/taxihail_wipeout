@@ -518,6 +518,12 @@
     <Compile Include="Activities\BaseBindingFragmentActivity.cs" />
     <AndroidResource Include="Resources\Layout\SubView_OrderOptions.axml" />
     <AndroidResource Include="Resources\Layout\SubView_MainMenu.axml" />
+    <AndroidResource Include="Resources\Drawable\cluster.png" />
+    <AndroidResource Include="Resources\Drawable\nearby_taxi.png" />
+    <AndroidResource Include="Resources\Drawable\taxi_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\cluster.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\hail_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\taxi_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
