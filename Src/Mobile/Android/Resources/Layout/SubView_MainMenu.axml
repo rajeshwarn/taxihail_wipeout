@@ -102,24 +102,6 @@
                             android:layout_width="fill_parent"
                             android:layout_height="1px" />
                         <Button
-                            android:id="@+id/settingsCallCompany"
-                            local:MvxBind="Click Panel.Call; Visibility Panel.CanCall, Converter=Visibility"
-                            style="@style/SettingItemTitle"
-                            android:background="@drawable/setting_cell"
-                            android:layout_width="fill_parent"
-                            android:layout_height="42dip"
-                            android:text="@string/PanelMenuViewCallDispatchText"
-                            android:paddingRight="10dip"
-                            android:paddingLeft="10dip"
-                            android:gravity="left|center_vertical" />
-                        <View
-                            local:MvxBind="Visibility Panel.CanCall, Converter=Visibility"
-                            android:background="@color/setting_menu_separator_color"
-                            android:paddingLeft="8dip"
-                            android:paddingRight="8dip"
-                            android:layout_width="fill_parent"
-                            android:layout_height="1px" />
-                        <Button
                             android:id="@+id/settingsTutorial"
                             local:MvxBind="Click Panel.NavigateToTutorial; Visibility Panel.TutorialEnabled, Converter=Visibility"
                             style="@style/SettingItemTitle"
@@ -132,6 +114,24 @@
                             android:gravity="left|center_vertical" />
                         <View
                             local:MvxBind="Visibility Panel.TutorialEnabled"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px" />
+                        <Button
+                            android:id="@+id/settingsCallCompany"
+                            local:MvxBind="Click Panel.Call; Visibility Panel.CanCall, Converter=Visibility"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewCallDispatchText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="left|center_vertical" />
+                        <View
+                            local:MvxBind="Visibility Panel.CanCall, Converter=Visibility"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"

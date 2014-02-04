@@ -46,20 +46,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-
         public bool TutorialEnabled {
-            get{
+            get
+            {
 				return Settings.TutorialEnabled;
             }
         }
 
         private bool _menuIsOpen;
         public bool MenuIsOpen {
-            get {
+            get 
+            {
                 return _menuIsOpen;
             }
-            set {
-                if (value != _menuIsOpen) {
+            set 
+            {
+                if (value != _menuIsOpen) 
+                {
                     _menuIsOpen = value;
 					RaisePropertyChanged ();
                 }
@@ -68,27 +71,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public AsyncCommand  ToApcuriumWebsite
 		{
-			get {
+			get 
+            {
 				return new AsyncCommand(() =>
-					{
-						_browserTask.ShowWebPage(this.Services().Localize["apcuriumUrl"]);
-					});
+				{
+					_browserTask.ShowWebPage(this.Services().Localize["apcuriumUrl"]);
+				});
 			}
 		}
 
 		public AsyncCommand  ToMobileKnowledgeWebsite
 		{
-			get {
+			get 
+            {
 				return new AsyncCommand(() =>
-					{
-						_browserTask.ShowWebPage(this.Services().Localize["mobileKnowledgeUrl"]);
-					});
+				{
+					_browserTask.ShowWebPage(this.Services().Localize["mobileKnowledgeUrl"]);
+				});
 			}
 		}
 
         public AsyncCommand SignOut
         {
-            get {
+            get 
+            {
                 return new AsyncCommand(() =>
                 {
                     MenuIsOpen = false;
@@ -102,7 +108,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public AsyncCommand NavigateToOrderHistory
         {
-            get {
+            get 
+            {
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
@@ -113,7 +120,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public AsyncCommand NavigateToMyLocations
         {
-            get {
+            get 
+            {
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
@@ -124,11 +132,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private string _version;
         public string Version {
-            get {
+            get 
+            {
                 return _version;                         
             }
-            set {
-                if (value != _version) {
+            set 
+            {
+                if (value != _version) 
+                {
                     _version = value;
 					RaisePropertyChanged ();
                 }
@@ -137,7 +148,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public AsyncCommand NavigateToUpdateProfile
         {
-            get {
+            get 
+            {
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
@@ -148,29 +160,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public AsyncCommand NavigateToAboutUs
         {
-            get {
-                return GetCommand(() => ShowViewModel<AboutUsViewModel>());
+            get 
+            {
+                return GetCommand(() => 
+                {
+                    MenuIsOpen = false;
+                    ShowViewModel<AboutUsViewModel>();
+                });
             }
         }
 
 		public AsyncCommand NavigateToReportProblem
 		{
-			get {
+			get 
+            {
 				return GetCommand(() =>
-					{
-						MenuIsOpen = false;
-						InvokeOnMainThread(() => this.Services().Phone.SendFeedbackErrorLog(Settings.SupportEmail, this.Services().Localize["TechSupportEmailTitle"]));
-					});
+				{
+					MenuIsOpen = false;
+					InvokeOnMainThread(() => this.Services().Phone.SendFeedbackErrorLog(Settings.SupportEmail, this.Services().Localize["TechSupportEmailTitle"]));
+				});
 			}
 		}
 
         public AsyncCommand NavigateToTutorial
         {
-            get {
+            get 
+            {
                 return GetCommand(() =>
                 {
-
-                        if ( TutorialEnabled )
+                    if ( TutorialEnabled )
                     {
                         MenuIsOpen = false;
                         this.Services().Message.ShowDialogActivity(typeof(TutorialViewModel));
@@ -189,14 +207,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public bool CanReportProblem
         {
-            get {
+            get 
+            {
 				return !Settings.HideReportProblem;
 			}            
         }
 
         public AsyncCommand Call
         {
-            get {
+            get 
+            {
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
