@@ -9,6 +9,10 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Binding.Attributes;
+using System.Collections.Generic;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Data;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -17,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public GoogleMap Map { get; set;}
         private Marker _pickupPin;
         private Marker _destinationPin;
+
+        private List<Marker> _availableVehicleMarkers = new List<Marker> ();
 
         public OrderMapFragment(SupportMapFragment _map)
         {
@@ -52,8 +58,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             binding.Bind()
                 .For(v => v.MapBounds)
                     .To(vm => vm.MapBounds);
+            
+            binding.Bind()
+                .For(v => v.AvailableVehicles)
+                    .To(vm => vm.AvailableVehicles);
 
             binding.Apply();
+
         }
 
         private Address _pickupAddress;
@@ -92,6 +103,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     _mapBounds = value;
                     OnMapBoundsChanged();
+                }
+            }
+        }
+
+        private IEnumerable<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
+        public IEnumerable<AvailableVehicle> AvailableVehicles
+        {
+            get
+            {
+                return _availableVehicles;
+            }
+            set
+            {
+                if (_availableVehicles != value)
+                {
+                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value.ToArray(), MapBounds));
                 }
             }
         }
@@ -155,6 +182,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         new LatLngBounds(new LatLng(MapBounds.SouthBound, MapBounds.WestBound), 
                                      new LatLng(MapBounds.NorthBound, MapBounds.EastBound)),
                         DrawHelper.GetPixels(100)));
+            }
+        }
+
+        private void ShowAvailableVehicles(AvailableVehicle[] vehicles)
+        {
+            foreach (var vehicleMarker in _availableVehicleMarkers)
+            {                
+                vehicleMarker.Remove();
+            }
+
+            _availableVehicleMarkers.Clear();
+
+            if (vehicles == null)
+                return;
+
+            foreach (var v in vehicles)
+            {
+                bool isCluster = (v is AvailableVehicleCluster) 
+                    ? true 
+                        : false;
+
+                var vehicleMarker = 
+                    Map.AddMarker(new MarkerOptions()
+                                  .SetPosition(new LatLng(0, 0))
+                                  .Anchor(.5f, 1f)
+                                  .InvokeIcon(BitmapDescriptorFactory.FromResource(isCluster ? Resource.Drawable.cluster : Resource.Drawable.nearby_taxi))
+                                  .Visible(false));
+
+                _availableVehicleMarkers.Add (vehicleMarker);
             }
         }
     }
