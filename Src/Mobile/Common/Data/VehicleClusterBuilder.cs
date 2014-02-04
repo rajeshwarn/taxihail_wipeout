@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Linq;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Data
 {
-    public class VehicleClusterBuilder
+	public class VehicleClusterBuilder
     {
         private readonly List<AvailableVehicle> _vehicles = new List<AvailableVehicle>();
         public void Add(AvailableVehicle vehicle)
@@ -23,12 +23,11 @@ namespace apcurium.MK.Booking.Mobile.Data
             {
                 Latitude = IsEmpty
                     ? default(double)
-                        : _vehicles.Sum(x => x.Latitude) / _vehicles.Count,
-                        Longitude = IsEmpty
-                        ? default(double)
-                        : _vehicles.Sum(x => x.Longitude) / _vehicles.Count,
+				    : _vehicles.Sum(x => x.Latitude) / _vehicles.Count,
+                Longitude = IsEmpty
+                    ? default(double)
+                    : _vehicles.Sum(x => x.Longitude) / _vehicles.Count,
             };
         }
-
-    }
+	}
 }
