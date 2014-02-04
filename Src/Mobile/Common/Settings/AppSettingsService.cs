@@ -41,6 +41,16 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			Task.Factory.StartNew(() => RefreshSettingsFromServer());
 		}
 
+		public void ChangeServerUrl(string serverUrl)
+		{
+			Data = new TaxiHailSetting();
+			LoadSettingsFromFile();
+			Data.ServiceUrl = serverUrl;
+
+			_cacheService.Clear(SettingsCacheKey);
+			Task.Factory.StartNew(() => RefreshSettingsFromServer());
+		}
+
 		void LoadSettingsFromFile()
 		{
 			_logger.LogMessage("load settings from file");

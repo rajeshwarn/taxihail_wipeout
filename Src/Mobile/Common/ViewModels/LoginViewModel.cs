@@ -14,6 +14,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -271,7 +272,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void SetServerUrl(string serverUrl)
         {
-			Settings.ServiceUrl = serverUrl;
+			this.Container.Resolve<IAppSettings>().ChangeServerUrl(serverUrl);
             this.Services().ApplicationInfo.ClearAppInfo();
             this.Services().Account.ClearReferenceData();
         }
