@@ -5,13 +5,18 @@
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:focusable="true"
-    android:id="@+id/HomeMainLayout"
     android:focusableInTouchMode="true">
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/RelMapLayout">
+        <include
+            android:id="@+id/PanelMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/SubView_MainMenu" />
         <LinearLayout
+            android:id="@+id/HomeLayout"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
@@ -20,7 +25,13 @@
                 android:layout_weight="1"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
-            <!-- Map Control -->
+                <Button
+                    android:id="@+id/BigButtonTransparent"
+                    android:background="@color/transparent"
+                    android:layout_width="50dip"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="left"
+                    local:MvxBind="Visibility Panel.MenuIsOpen, Converter=Visibility" />
                 <fragment
                     class="com.google.android.gms.maps.SupportMapFragment"
                     local:mapType="normal"

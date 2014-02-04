@@ -513,12 +513,13 @@
     <AndroidResource Include="Resources\Drawable\destination_icon.png" />
     <AndroidResource Include="Resources\Drawable\hail_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\destination_icon.png" />
-    <AndroidResource Include="Resources\Layout\Control_OrderOptions.axml" />
     <Compile Include="Controls\Widgets\OrderOptions.cs" />
     <Compile Include="Controls\Fragments\OrderMapFragment.cs" />
     <Compile Include="Activities\BaseBindingFragmentActivity.cs" />
     <Compile Include="Controls\Widgets\OrderReview.cs" />
     <AndroidResource Include="Resources\Layout\Control_OrderReview.axml" />
+    <AndroidResource Include="Resources\Layout\SubView_OrderOptions.axml" />
+    <AndroidResource Include="Resources\Layout\SubView_MainMenu.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -703,11 +704,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\Control_HeaderedLayout.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Layout\SubView_MainMenu.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

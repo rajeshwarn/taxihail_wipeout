@@ -36,12 +36,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 	[Activity(Label = "Home", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait, ClearTaskOnLaunch = true,
         FinishOnTaskLaunch = true)]
+   
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>
     {
         private SupportMapFragment _touchMap;
         private OrderReview _orderReview;
         private OrderOptions _orderOptions;
+        private int _menuWidth = 400;
         private readonly DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
+
 
         public new HomeViewModel ViewModel
 		{
@@ -69,6 +72,104 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         public OrderMapFragment _mapFragment; 
 
 
+        void PanelMenuInit()
+        {
+            var menu = FindViewById(Resource.Id.PanelMenu);
+            menu.Visibility = ViewStates.Gone;
+            _menuWidth = WindowManager.DefaultDisplay.Width - 100;
+
+            var mainSettingsButton = FindViewById<ImageView>(Resource.Id.btnSettings);
+
+            mainSettingsButton.Click -= PanelMenuToggle;
+            mainSettingsButton.Click += PanelMenuToggle;
+
+
+            var signOutButton = FindViewById<View>(Resource.Id.settingsLogout);
+            signOutButton.Click -= PanelMenuSignOutClick;
+            signOutButton.Click += PanelMenuSignOutClick;
+
+            var bigButton = FindViewById<View>(Resource.Id.BigButtonTransparent);
+            bigButton.Click -= PanelMenuToggle;
+            bigButton.Click += PanelMenuToggle;
+
+            ViewModel.Panel.PropertyChanged -= PanelMenuPropertyChanged;
+            ViewModel.Panel.PropertyChanged += PanelMenuPropertyChanged;
+
+            var _listContainer = FindViewById<ViewGroup>(Resource.Id.listContainer);
+
+            for (int i = 0; i < _listContainer.ChildCount; i++)
+            {
+                if (_listContainer.GetChildAt(i).GetType() == typeof(Button))
+                {
+                    try
+                    {
+                        Button child = (Button)_listContainer.GetChildAt(i);
+                        child.SetTypeface(Typeface.Create("sans-serif-light", TypefaceStyle.Normal), TypefaceStyle.Normal);
+                    }
+                    catch
+                    {
+                    
+                    }
+                }
+            }
+        }
+
+        private void PanelMenuSignOutClick(object sender, EventArgs e)
+        {
+            ViewModel.Panel.SignOut.Execute(null);
+            // Finish the activity, because clearTop does not seem to be enough in this case
+            // Finish is delayed 1sec in order to prevent the application from being terminated
+            Observable.Return(Unit.Default).Delay(TimeSpan.FromSeconds(1)).Subscribe(x => { Finish(); });
+        }
+
+        private void PanelMenuToggle(object sender, EventArgs eventArgs)
+        {
+            ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
+        }
+
+        private void PanelMenuPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "MenuIsOpen")
+            {
+                PanelMenuAnimate();
+            }
+        }
+
+        private void PanelMenuAnimate()
+        {
+            var mainLayout = FindViewById(Resource.Id.HomeLayout);
+            mainLayout.ClearAnimation();
+
+
+            var menu = FindViewById(Resource.Id.PanelMenu);
+
+            var animation = new SlideAnimation(mainLayout, ViewModel.Panel.MenuIsOpen ? 0 : (_menuWidth),
+                ViewModel.Panel.MenuIsOpen ? (_menuWidth) : 0, _interpolator);
+            animation.Duration = 400;
+            animation.AnimationStart +=
+                (sender, e) =>
+            {
+                if (ViewModel.Panel.MenuIsOpen)
+                    menu.Visibility = ViewStates.Visible;
+            };
+
+            animation.AnimationEnd +=
+                (sender, e) =>
+            {
+                if (!ViewModel.Panel.MenuIsOpen)
+                {
+                    menu.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+
+                }
+            };
+
+            mainLayout.StartAnimation(animation);
+
+        }
+
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_Home);
@@ -93,6 +194,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 .To(vm => vm.BottomBar.BookNow);
 
             binding.Apply();
+
+            PanelMenuInit();
         }
 
         protected override void OnResume()
@@ -100,7 +203,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.OnResume();
             TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
 
-            var mainLayout = FindViewById(Resource.Id.HomeMainLayout);
+            var mainLayout = FindViewById(Resource.Id.HomeLayout);
             mainLayout.Invalidate();
             _touchMap.OnResume();
         }
