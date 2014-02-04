@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 	[Activity(Label = "Home", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait, ClearTaskOnLaunch = true,
         FinishOnTaskLaunch = true)]
-    public class HomeActivity : MvxFragmentActivity
+    public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>
     {
         private SupportMapFragment _touchMap;
 
@@ -82,7 +82,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             binding.Bind(_mapFragment).For("DataContext").To(vm => vm.Map); // Map Fragment View Bindings
             binding.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // Map OrderOptions View Bindings
             binding.Apply();
-            _mapFragment.ApplyBindings();
         }
 
         protected override void OnResume()

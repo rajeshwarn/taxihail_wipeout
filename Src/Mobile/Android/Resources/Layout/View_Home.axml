@@ -32,7 +32,7 @@
                     android:enabled="true"
                     android:clickable="true" />
                 <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderOptions
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:id="@+id/orderOptions"
                     android:layout_height="wrap_content" />
                 <LinearLayout

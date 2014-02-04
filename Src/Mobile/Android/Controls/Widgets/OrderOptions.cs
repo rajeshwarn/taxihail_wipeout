@@ -58,17 +58,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _viewDestinationAddressNumber = (EditText) layout.FindViewById(Resource.Id.viewDestinationAddressNumber);
             _viewDestinationAddressText = (EditText) layout.FindViewById(Resource.Id.viewDestinationAddressText);
 
-            Initialize();
+            this.DelayBind(() => InitializeBinding());
         }
 
-        void Initialize()
+        void InitializeBinding()
         {
             var set = this.CreateBindingSet<OrderOptions, OrderOptionsViewModel>();
 
-//            set.Bind(_viewPickupAddressText)
-//                .For(v => v.Enabled)
-//                    .To(vm => vm.ShowDestination)
-//                    .WithConversion("BoolInverter");
+            set.Bind(_viewPickupAddressText)
+                .For(v => v.Enabled)
+                    .To(vm => vm.ShowDestination)
+                    .WithConversion("BoolInverter");
 
             set.Bind(_viewPickupAddressText)
                 .To(vm => vm.PickupAddress.DisplayAddress);

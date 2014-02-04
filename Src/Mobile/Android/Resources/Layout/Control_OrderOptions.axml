@@ -18,7 +18,7 @@
             android:orientation="vertical"
             android:id="@+id/viewPickup"
             android:layout_margin="0px"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:orientation="horizontal"
@@ -62,7 +62,7 @@
             android:orientation="vertical"
             android:id="@+id/viewDestination"
             android:layout_margin="0px"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <View
                 android:background="#767676"

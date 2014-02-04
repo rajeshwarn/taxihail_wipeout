@@ -16,12 +16,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     {
         public GoogleMap Map { get; set;}
         private Marker _pickupPin;
-        private Marker _dropoffPin;
+        private Marker _destinationPin;
 
         public OrderMapFragment(SupportMapFragment _map)
         {
             this.CreateBindingContext();
             Map = _map.Map;
+            this.DelayBind(() => InitializeBinding());
         }
 
         public IMvxBindingContext BindingContext { get; set; }
@@ -30,16 +31,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public object DataContext
         {
             get { return BindingContext.DataContext; }
-            set { BindingContext.DataContext = value; }
+            set 
+            { 
+                BindingContext.DataContext = value; 
+            }
         }
 
-        public void ApplyBindings()
+        public void InitializeBinding()
         {
             var binding = this.CreateBindingSet<OrderMapFragment, MapViewModel>();
 
             binding.Bind()
                 .For(v => v.PickupAddress)
                     .To(vm => vm.PickupAddress);
+            
+            binding.Bind()
+                .For(v => v.DestinationAddress)
+                    .To(vm => vm.DestinationAddress);
 
             binding.Bind()
                 .For(v => v.MapBounds)
@@ -56,6 +64,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             { 
                 _pickupAddress = value;
                 OnPickupAddressChanged();
+            }
+        }
+
+        private Address _destinationAddress;
+        public Address DestinationAddress
+        {
+            get { return _destinationAddress; }
+            set
+            { 
+                _destinationAddress = value;
+                OnDestinationAddressChanged();
             }
         }
 
@@ -102,18 +121,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+        private void OnDestinationAddressChanged()
+        {
+            if (DestinationAddress == null)
+                return; 
+
+            if (_destinationPin == null)
+            {
+                _destinationPin = Map.AddMarker(new MarkerOptions()
+                                           .SetPosition(new LatLng(0, 0))
+                                           .Anchor(.5f, 1f)
+                                           .InvokeIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.destination_icon))
+                                           .Visible(false));
+            }
+
+            if (DestinationAddress.HasValidCoordinate())
+            {
+                _destinationPin.Visible = true;
+                _destinationPin.Position = new LatLng(DestinationAddress.Latitude, DestinationAddress.Longitude);
+            }
+            else
+            {
+                _destinationPin.Visible = false;
+            }
+        }
+
         private void OnMapBoundsChanged()
         {
             if (MapBounds != null)
             {
-                var center = MapBounds.GetCenter();
-                Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(center.Latitude, center.Longitude)));
-
-
                 Map.AnimateCamera(
                     CameraUpdateFactory.NewLatLngBounds(
-                        new LatLngBounds(new LatLng(center.Latitude - MapBounds.LatitudeDelta, center.Longitude - MapBounds.LongitudeDelta), 
-                                     new LatLng(center.Latitude + MapBounds.LatitudeDelta, center.Longitude + MapBounds.LongitudeDelta)),
+                        new LatLngBounds(new LatLng(MapBounds.SouthBound, MapBounds.WestBound), 
+                                     new LatLng(MapBounds.NorthBound, MapBounds.EastBound)),
                         DrawHelper.GetPixels(100)));
             }
         }

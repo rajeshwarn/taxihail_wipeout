@@ -516,6 +516,7 @@
     <AndroidResource Include="Resources\Layout\Control_OrderOptions.axml" />
     <Compile Include="Controls\Widgets\OrderOptions.cs" />
     <Compile Include="Controls\Fragments\OrderMapFragment.cs" />
+    <Compile Include="Activities\BaseBindingFragmentActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
