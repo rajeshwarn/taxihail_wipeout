@@ -31,6 +31,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Messages;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -183,7 +184,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             Bundle mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
             _touchMap = (SupportMapFragment)SupportFragmentManager.FindFragmentById(Resource.Id.mapPickup);
             _touchMap.OnCreate(mapViewSavedInstanceState);
-            _mapFragment = new OrderMapFragment(_touchMap);
+            _mapFragment = new OrderMapFragment(_touchMap, Resources);
 
             // Home View Bindings
             var binding = this.CreateBindingSet<HomeActivity, HomeViewModel>();
@@ -203,8 +204,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             FindViewById<View>(Resource.Id.btnBookLaterLayout).Click -= PickDate_Click;
             FindViewById<View>(Resource.Id.btnBookLaterLayout).Click += PickDate_Click;
-            //FindViewById<View>(Resource.Id.btnBookLater).Click -= PickDate_Click;
-            //FindViewById<View>(Resource.Id.btnBookLater).Click += PickDate_Click;
         }
 
         protected override void OnResume()
