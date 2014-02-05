@@ -10,10 +10,11 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using System.Linq;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-    public partial class OrderOptionsControl : MvxView
+    public partial class OrderOptionsControl : BaseBindableChildView<OrderOptionsViewModel>
     {
         public OrderOptionsControl (IntPtr handle) : base(handle)
         {
@@ -26,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             BackgroundColor = UIColor.Clear;
             viewPickup.BackgroundColor = UIColor.Clear;
             viewDestination.BackgroundColor = UIColor.Clear;
-
+            
             viewDestination.IsDestination = true;
 
             // since we don't have the vehicle selection yet, we hardcode this value
@@ -36,6 +37,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void InitializeBinding()
         {
+            // TODO to toggle the AddressSearch, taken from TaxiDiamond
+//            viewPickup.AddressClicked += () => StartAddressSearch (Address.GetFirstPortionOfAddress(viewPickup.Address), address => {
+//                ViewModel.PickupAddress = address.Address;
+//            });
+//
+//            viewDestination.AddressClicked += () => StartAddressSearch (Address.GetFirstPortionOfAddress(viewDestination.Address), address => {
+//                ViewModel.DestinationAddress = address.Address;
+//            });
+
+            viewPickup.AddressUpdated = (streetNumber, fullAddress) =>
+            {
+                var newAddress = ViewModel.PickupAddress.Copy();
+                newAddress.StreetNumber = streetNumber;
+                newAddress.FullAddress = fullAddress;
+
+                ViewModel.PickupAddress = newAddress;
+            };
+
+            viewDestination.AddressUpdated = (streetNumber, fullAddress) =>
+            {
+                var newAddress = ViewModel.DestinationAddress.Copy();
+                newAddress.StreetNumber = streetNumber;
+                newAddress.FullAddress = fullAddress;
+
+                ViewModel.DestinationAddress = newAddress;
+            };
+
             var set = this.CreateBindingSet<OrderOptionsControl, OrderOptionsViewModel>();
 
             set.Bind(viewPickup)

@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				if (value != _pickupAddress)
 				{
 					_pickupAddress = value;
+					_orderWorkflowService.SetAddress(value);
 					RaisePropertyChanged();
 				}
 			}
@@ -42,6 +43,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				if (value != _destinationAddress)
 				{
 					_destinationAddress = value;
+					_orderWorkflowService.SetAddress(value);
 					RaisePropertyChanged();
 				}
 			}
