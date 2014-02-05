@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     public class AppBarView : MvxView
     {
         private UIView _confirmationButtons;
+        private UIView _orderButtons;
         public static SizeF ButtonSize = new SizeF(60, 46);
 
         protected UIView Line { get; set; }
@@ -48,6 +49,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void AddButtonsForBooking()
         {
+            _orderButtons = new UIView(this.Bounds);
+
             var btnEstimate = new AppBarButton(Localize.GetValue("Estimate"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "estimate_icon.png", "estimate_icon_pressed.png");
             btnEstimate.Frame = btnEstimate.Frame.IncrementX(4);
 
@@ -83,27 +86,46 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Apply();
 
-            AddSubviews(btnEstimate, btnBook, btnBookLater);
+            _orderButtons.AddSubviews(btnEstimate, btnBook, btnBookLater);
+            Add(_orderButtons);
         }
 
         private void CreateButtonsForConfirmation()
         {
             _confirmationButtons = new UIView(this.Bounds);
 
+            var btnCancel = new AppBarLabelButton("Cancel");
+            btnCancel.UpdateView(10, 10, 100, 41);
+
             var btnConfirm = new FlatButton(new RectangleF((320 - 123)/2, 7, 123, 41));
             FlatButtonStyle.Green.ApplyTo(btnConfirm);
             btnConfirm.SetTitle(Localize.GetValue("ConfirmButton"), UIControlState.Normal);
 
-            _confirmationButtons.Add(btnConfirm);
+            _confirmationButtons.AddSubviews(btnCancel, btnConfirm);
+
+            var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
+
+            set.Bind(btnCancel)
+                .For(v => v.Command)
+                .To(vm => vm.Cancel);
+
+            set.Apply();
         }
 
-        public void ToConfirmationState()
+        public void ChangeState(OrderReviewPresentationHint hint)
         {
             foreach(var subview in Subviews)
             {
                 subview.RemoveFromSuperview();
             }
-            Add(_confirmationButtons);
+            if (hint.Show)
+            {
+                Add(_confirmationButtons);
+            }
+            else
+            {
+                Add(_orderButtons);
+            }
         }
     }
 }

@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						try
 						{
 							_orderWorkflowService.ValidatePickupDestinationAndTime();
-							ChangePresentation(new ShowOrderReviewPresentationHint());
+							ChangePresentation(new OrderReviewPresentationHint());
 						}
 						catch(OrderValidationException e)
 						{
@@ -131,6 +131,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					}); 
 			}
 		}	
+
+		public ICommand Cancel
+        {
+            get
+			{
+				return GetCommand(() => {
+					ChangePresentation(new OrderReviewPresentationHint(show: false));
+				});
+			}
+        }
     }
 }
 

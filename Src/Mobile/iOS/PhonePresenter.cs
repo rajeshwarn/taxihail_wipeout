@@ -38,9 +38,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void ChangePresentation(MvxPresentationHint hint)
         {
-            if (hint is ShowOrderReviewPresentationHint)
+            if (hint is OrderReviewPresentationHint)
             {
-                TryShowOrderReview();
+                TryChangeOrderReviewPresentation((OrderReviewPresentationHint)hint);
             }
             else
             {
@@ -66,12 +66,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
 
-        private void TryShowOrderReview()
+        private void TryChangeOrderReviewPresentation(OrderReviewPresentationHint hint)
         {
             var homeView = CurrentTopViewController as HomeView;
             if (homeView != null)
             {
-                homeView.ShowOrderReview();
+                homeView.ChangeState(hint);
             }
             else
             {

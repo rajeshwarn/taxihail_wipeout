@@ -260,14 +260,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         TranslateAnimation _animation;
 
-        public void ShowOrderReview()
+        public void ChangeState(OrderReviewPresentationHint hint)
         {
-            var delta = _orderOptions.Bottom - _orderReview.Top;
-            _animation = new TranslateAnimation(0, 0, 0, delta);
-            _animation.Duration = 600;
-            _animation.Interpolator = new DecelerateInterpolator();
-            _animation.FillAfter = true;
-            _orderReview.StartAnimation(_animation);
+            if (hint.Show)
+            {
+                var delta = _orderOptions.Bottom - _orderReview.Top;
+                _animation = new TranslateAnimation(0, 0, 0, delta);
+                _animation.Duration = 600;
+                _animation.Interpolator = new DecelerateInterpolator();
+                _animation.FillAfter = true;
+                _orderReview.StartAnimation(_animation);
+            }
+            else
+            {
+                var delta = _orderOptions.Bottom - _orderReview.Top;
+                _animation = new TranslateAnimation(0, 0, delta, 0);
+                _animation.Duration = 600;
+                _animation.Interpolator = new DecelerateInterpolator();
+                _orderReview.StartAnimation(_animation);
+            }
            
         }
 

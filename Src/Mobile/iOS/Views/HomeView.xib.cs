@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -82,17 +83,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Apply();
         }
 
-        public void ShowOrderReview()
+        public void ChangeState(OrderReviewPresentationHint hint)
         {
+            if (hint.Show)
+            {
+                UIView.Animate(
+                    0.6f, 
+                    () => {
+                        constraintOrderReviewTopSpace.Constant = 170;
+                        homeView.LayoutIfNeeded();
+                    });
+            }
+            else
+            {
+                UIView.Animate(
+                    0.6f, 
+                    () => {
+                        constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
+                        homeView.LayoutIfNeeded();
+                    });
+            }
+           
 
-            UIView.Animate(
-                1.0, 
-                () => {
-                    constraintOrderReviewTopSpace.Constant = 170;
-                    homeView.LayoutIfNeeded();
-                });
-
-            bottomBar.ToConfirmationState();
+            bottomBar.ChangeState(hint);
         }
 
         private void InstantiatePanel()
