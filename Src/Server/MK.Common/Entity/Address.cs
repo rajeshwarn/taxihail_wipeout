@@ -101,21 +101,9 @@ namespace apcurium.MK.Common.Entity
             }
         }
 
-        public void CopyTo(Address address)
+        public Address Copy()
         {
-            if (address == null) return;
-            address.FullAddress = FullAddress;
-            address.Longitude = Longitude;
-            address.Latitude = Latitude;
-            address.Apartment = Apartment;
-            address.RingCode = RingCode;
-            address.BuildingName = BuildingName;
-            address.Street = Street;
-            address.StreetNumber = StreetNumber;
-            address.City = City;
-            address.ZipCode = ZipCode;
-            address.State = State;
-            address.PlaceReference = PlaceReference;
+            return (Address)this.MemberwiseClone();
         }
     }
 }

@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 if (_vehicleType != value)
                 {
-                    SelectedVehicleType.Image = ImageHelper.ApplyColorToImage(string.Format("{0}_badge.png", value.ToLower()), Blue);
+                    SelectedVehicleType.Image = UIImage.FromFile(string.Format("{0}_badge_selected.png", value.ToLower()));
 
                     SelectedVehicleTypeLabel.Text = value.ToUpper();
                     SelectedVehicleTypeLabel.SizeToFit();

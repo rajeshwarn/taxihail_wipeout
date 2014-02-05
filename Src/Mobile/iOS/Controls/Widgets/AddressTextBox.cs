@@ -12,7 +12,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     [Register("AddressTextBox")]
     public class AddressTextBox : UIView
-    {
+    {        
+        private bool _isInStreetNumberEditMode;
+
         public event Action AddressClicked;
         public Action<string,string> AddressUpdated;
 
@@ -218,6 +220,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 }
 
                 RedRoundedCornerView.Frame = LoadingWheel.Frame = StreetNumberTextView.Frame;
+
+                if (_isInStreetNumberEditMode)
+                {
+                    StreetNumberTextView.IncrementWidth(50);
+                }
             }
             else
             {
@@ -253,6 +260,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 RedRoundedCornerView.Hidden = false;
                 VerticalDivider.Hidden = true;
+                _isInStreetNumberEditMode = true;
                 Resize();
             };
 
@@ -260,6 +268,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 RedRoundedCornerView.Hidden = true;
                 VerticalDivider.Hidden = false;
+                _isInStreetNumberEditMode = false;
                 Resize();
             };
         }

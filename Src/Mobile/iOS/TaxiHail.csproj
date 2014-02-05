@@ -534,6 +534,7 @@
       <DependentUpon>OrderReviewItem.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Widgets\VehicleTypeAndEstimateView.cs" />
+    <Compile Include="Controls\Binding\BaseBindableChildView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
