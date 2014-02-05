@@ -49,6 +49,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void AddButtonsForBooking()
         {
+            // - Menu - Book Now - Book Later 
+
             _orderButtons = new UIView(this.Bounds);
 
             var btnEstimate = new AppBarButton(Localize.GetValue("Estimate"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "estimate_icon.png", "estimate_icon_pressed.png");
@@ -92,24 +94,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void CreateButtonsForConfirmation()
         {
+            // - Cancel - Confirm - Edit 
+
             _confirmationButtons = new UIView(this.Bounds);
 
             var btnCancel = new AppBarLabelButton("Cancel");
             btnCancel.TranslatesAutoresizingMaskIntoConstraints = false;
 
-            //btnCancel.UpdateView(10, 10, 100, 41);
+            var btnEdit = new AppBarLabelButton("Edit");
+            btnEdit.TranslatesAutoresizingMaskIntoConstraints = false;
 
             var btnConfirm = new FlatButton(new RectangleF((320 - 123)/2, 7, 123, 41));
             FlatButtonStyle.Green.ApplyTo(btnConfirm);
-            btnConfirm.SetTitle(Localize.GetValue("ConfirmButton"), UIControlState.Normal);
+            btnConfirm.SetTitle("Confirm", UIControlState.Normal);
 
-            _confirmationButtons.AddSubviews(btnCancel, btnConfirm);
+            _confirmationButtons.AddSubviews(btnCancel, btnConfirm, btnEdit);
 
+            // Constraints for Cancel button
             _confirmationButtons.AddConstraints(new []
             {
-                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.Leading, 1, 5f),
+                    NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.Leading, 1, 8f),
                 NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.CenterY, 1, 0),
             });
+
+            // Constraints for Edit button
+            _confirmationButtons.AddConstraints(new []
+                {
+                    NSLayoutConstraint.Create(btnEdit, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.Trailing, 1, -8f),
+                    NSLayoutConstraint.Create(btnEdit, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.CenterY, 1, 0),
+                });
 
             var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
 
