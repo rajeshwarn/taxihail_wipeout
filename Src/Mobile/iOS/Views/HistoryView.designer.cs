@@ -9,8 +9,8 @@ using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	[Register ("HistoryView")]
-	partial class HistoryView
+    [Register ("HistoryListView")]
+    partial class HistoryListView
 	{
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblNoHistory { get; set; }
