@@ -23,6 +23,7 @@ using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
+using ServiceStack.Text;
 
 #endregion
 
@@ -322,7 +323,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
                 if (orderStatusDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
-                if (orderStatusDetail.IbsOrderId == null)
+                if (orderStatusDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
 
                 var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
@@ -330,23 +331,31 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 // send pairing request
 
                 // Determine the root path to the app 
-                //todo waiting for the provider enabled callbackurl
                 //var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
 
-                var response = _cmtMobileServiceClient.Post(new PairingRequest
+                var pairingRequest = new PairingRequest
                 {
                     AutoTipAmount = request.AutoTipAmount,
                     AutoTipPercentage = request.AutoTipPercentage,
                     AutoCompletePayment = true,
-                    //CallbackUrl = new Uri(root + "/api/payments/cmt/callback/" + request.OrderId).AbsoluteUri,
-                    CustomerId = orderStatusDetail.AccountId.ToString(),
+                    CallbackUrl = "",
+                    CustomerId = orderStatusDetail.IBSOrderId.ToString(),
                     CustomerName = accountDetail.Name,
-                    DriverId = orderStatusDetail.DriverInfos.VehicleRegistration,
+                    DriverId = orderStatusDetail.DriverInfos.DriverId,
                     Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
                     Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
                     Medallion = orderStatusDetail.VehicleNumber,
                     CardOnFileId = request.CardToken
-                });
+                };
+
+
+                _logger.LogMessage("Pairing request : " + pairingRequest.ToJson());
+                _logger.LogMessage("PaymentSettings request : " + _configurationManager.GetPaymentSettings().CmtPaymentSettings.ToJson());
+
+
+                var response = _cmtMobileServiceClient.Post(pairingRequest);
+                _logger.LogMessage("Pairing response : " + response.ToJson());
+
 
                 // wait for trip to be updated
                 var watch = new Stopwatch();
@@ -359,6 +368,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                     if (watch.Elapsed.TotalSeconds >= response.TimeoutSeconds)
                     {
+                        _logger.LogMessage("Timeout Exception, Could not be paired with vehicle.");
                         throw new TimeoutException("Could not be paired with vehicle");
                     }
                 }
@@ -368,7 +378,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 {
                     OrderId = request.OrderId,
                     Medallion = response.Medallion,
-                    DriverId = response.DriverId.ToString(CultureInfo.InvariantCulture),
+                    DriverId = response.DriverId.ToString(),
                     PairingToken = response.PairingToken,
                     PairingCode = response.PairingCode,
                     TokenOfCardToBeUsedForPayment = request.CardToken,
@@ -389,6 +399,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
             catch (Exception e)
             {
+                _logger.LogError(e);
                 return new PairingResponse
                 {
                     IsSuccessfull = false,

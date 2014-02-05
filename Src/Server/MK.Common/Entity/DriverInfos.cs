@@ -23,9 +23,14 @@ namespace apcurium.MK.Common.Entity
 
         public string LastName { get; set; }
 
+        public string DriverId { get; set; }
+
         public string FullName
         {
-            get { return Params.Get(FirstName, LastName).Where(s => s.HasValue()).JoinBy(" "); }
+            get
+            {
+                return Params.Get(FirstName, LastName).Where(s => s.HasValue()).JoinBy(" ");
+            }
         }
 
         public string MobilePhone { get; set; }

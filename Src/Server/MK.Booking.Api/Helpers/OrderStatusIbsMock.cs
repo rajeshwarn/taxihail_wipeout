@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Api.Helpers
                 VehicleLatitude = 45.5134,
                 VehicleLongitude = -73.5530
             };
-            switch (orderStatus.IbsStatusId)
+            switch (orderStatus.IBSStatusId)
             {
                 case null:
                 case "":
