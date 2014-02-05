@@ -216,7 +216,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			FareEstimate = this.Services().Localize["EstimatingFare"];
 
-			FareEstimate = await this.Services().Booking.GetFareEstimateDisplay(Order, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
+			FareEstimate = await this.Services().Booking.GetFareEstimateDisplay(Order.PickupAddress, Order.DropOffAddress, Order.PickupDate, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
         }
 
         public void InitializeOrder()

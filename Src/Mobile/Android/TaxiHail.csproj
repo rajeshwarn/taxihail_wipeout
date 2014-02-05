@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{9F666743-C8EE-4553-A079-03FB36F979E0}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
@@ -35,7 +33,6 @@
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <DebugSymbols>True</DebugSymbols>
     <CustomCommands>
       <CustomCommands>
@@ -43,7 +40,7 @@
         <Command type="BeforeBuild" command="&quot;../../LocalizationTool/output/LocalizationTool.exe&quot; -t=android -m=&quot;../../Mobile/Common/Localization/Master.resx&quot; -d=&quot;../Android/Resources/Values/String.xml&quot; -s=&quot;../../Mobile/Common/Settings/Settings.json&quot;" />
       </CustomCommands>
     </CustomCommands>
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -200,7 +197,6 @@
     <Compile Include="Helpers\DrawHelper.cs" />
     <Compile Include="Helpers\ThreadHelper.cs" />
     <Compile Include="Helpers\WebRequestHelper.cs" />
-    <Compile Include="Activities\History\HistoryActivity.cs" />
     <Compile Include="Activities\History\HistoryDetailActivity.cs" />
     <Compile Include="Activities\Account\LoginActivity.cs" />
     <Compile Include="Messages\ActivityCompleted.cs" />
@@ -231,9 +227,6 @@
     <AndroidResource Include="Resources\Drawable\WindowDisplay.xml" />
     <Compile Include="Activities\SelectItemDialogActivity.cs" />
     <Compile Include="PlatformIntegration\PhoneService.cs" />
-    <AndroidResource Include="Resources\Drawable\pin_cab.png" />
-    <AndroidResource Include="Resources\Drawable\pin_destination.png" />
-    <AndroidResource Include="Resources\Drawable\pin_hail.png" />
     <AndroidResource Include="Resources\Drawable\flag.png" />
     <AndroidResource Include="Resources\Drawable\flag_selected.png" />
     <AndroidResource Include="Resources\Drawable\hail.png" />
@@ -281,8 +274,6 @@
     <AndroidResource Include="Resources\Drawable\address.png" />
     <Compile Include="Binding\CellItemBinding.cs" />
     <AndroidResource Include="Resources\Drawable\visa_electron.png" />
-    <Compile Include="Activities\GeoLocation\LocationDetailActivity.cs" />
-    <Compile Include="Activities\GeoLocation\LocationsActivity.cs" />
     <Compile Include="Activities\Book\BookPaymentActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardAdd.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardsList.axml" />
@@ -298,7 +289,6 @@
     <Compile Include="Activities\Book\BookPayPalActivity.cs">
       <DependentUpon>BookPaymentActivity.cs</DependentUpon>
     </Compile>
-    <AndroidResource Include="Resources\Drawable\nearby_cab.png" />
     <Compile Include="Extensions\EditTextExtensions.cs" />
     <Compile Include="Extensions\LocationTimeConverter.cs" />
     <Compile Include="Activities\Book\RideSummaryActivity.cs" />
@@ -316,7 +306,6 @@
     </AndroidResource>
     <Compile Include="Activities\Book\BookEditInformationActivity.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
-    <AndroidResource Include="Resources\Drawable\pin_cluster.png" />
     <AndroidResource Include="Resources\Layout\View_TermsAndConditions.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -433,13 +422,11 @@
     <AndroidResource Include="Resources\drawable-xhdpi\mastercard.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\mk_logo.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\navBar.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\nearby_cab.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\notification_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\number_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\password_cell.9.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\paypal.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\phone.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\pin_cluster.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\rate_ecstatic_selected.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\rate_ecstatic.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\rate_happy_selected.png" />
@@ -468,6 +455,9 @@
     <AndroidResource Include="Resources\Values\SetThemes.xml" />
     <AndroidResource Include="Resources\values-v11\SetThemes.xml" />
     <Compile Include="PhonePresenter.cs" />
+    <Compile Include="Activities\History\HistoryListActivity.cs" />
+    <Compile Include="Activities\Location\LocationDetailActivity.cs" />
+    <Compile Include="Activities\Location\LocationListActivity.cs" />
     <Compile Include="Activities\HomeActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Home.axml" />
     <Compile Include="Controls\Widgets\IMvxBindable.cs" />
@@ -526,6 +516,9 @@
     <AndroidResource Include="Resources\drawable-xhdpi\cluster.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\hail_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\taxi_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\nearby_taxi.png" />
+    <AndroidResource Include="Resources\Drawable\button_booklater_selector.axml" />
+    <AndroidResource Include="Resources\Drawable\button_hightlight_background_selector.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

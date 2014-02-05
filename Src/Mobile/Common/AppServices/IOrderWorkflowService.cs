@@ -20,6 +20,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<Address> GetAndObserveDestinationAddress();
 		IObservable<AddressSelectionMode> GetAndObserveAddressSelectionMode();
 		IObservable<BookingSettings> GetAndObserveBookingSettings();
+
+		IObservable<string> GetAndObserveEstimatedFare();
     }
 }
 

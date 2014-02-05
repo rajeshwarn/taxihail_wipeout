@@ -9,8 +9,8 @@ using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	[Register ("MyLocationsView")]
-	partial class MyLocationsView
+    [Register ("LocationListView")]
+    partial class LocationListView
 	{
 		[Outlet]
 		MonoTouch.UIKit.UITableView tableLocations { get; set; }

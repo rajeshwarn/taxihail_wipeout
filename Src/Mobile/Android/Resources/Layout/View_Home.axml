@@ -101,17 +101,19 @@
                     android:orientation="horizontal"
                     android:layout_height="match_parent">
                     <LinearLayout
+                        android:id="@+id/btnEstimateLayout"
                         android:layout_width="65dip"
                         android:layout_height="55dip"
                         android:layout_gravity="center_vertical"
+                        android:background="@drawable/button_hightlight_background_selector"
                         android:orientation="vertical"
                         android:gravity="center_vertical">
                         <View
                             android:layout_width="55dip"
                             android:layout_height="12dip" />
                         <ImageView
-                            android:id="@+id/homeLeftButton"
-                            android:src="@drawable/estimate_icon"
+                            android:id="@+id/btnEstimate"
+                            android:src="@drawable/button_estimate_selector"
                             android:scaleType="center"
                             android:layout_gravity="center|center"
                             android:clickable="true"
@@ -142,17 +144,19 @@
                             android:layout_gravity="bottom|center_horizontal" />
                     </FrameLayout>
                     <LinearLayout
+                        android:id="@+id/btnBookLaterLayout"
                         android:layout_width="65dip"
                         android:layout_height="55dip"
                         android:layout_gravity="center_vertical"
                         android:orientation="vertical"
+                        android:background="@drawable/button_hightlight_background_selector"
                         android:gravity="center_vertical">
                         <View
                             android:layout_width="55dip"
                             android:layout_height="12dip" />
                         <ImageView
-                            android:id="@+id/homeRightButton"
-                            android:src="@drawable/later_icon"
+                            android:id="@+id/btnBookLater"
+                            android:src="@drawable/button_booklater_selector"
                             android:scaleType="center"
                             android:layout_gravity="center|center"
                             android:layout_width="24dip"

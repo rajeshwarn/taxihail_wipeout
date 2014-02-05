@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -224,7 +224,6 @@
     <Compile Include="AppServices\Impl\PopularAddressProvider.cs" />
     <Compile Include="AppServices\Impl\TariffProvider.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
-    <Compile Include="ViewModels\HistoryViewModel.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\BookRatingViewModel.cs" />
     <Compile Include="Models\RatingModel.cs" />
@@ -238,7 +237,6 @@
     <Compile Include="ViewModels\RideSettingsViewModel.cs" />
     <Compile Include="BindingConverter\PhoneNumberConverter.cs" />
     <Compile Include="BindingConverter\EmptyToResourceConverter.cs" />
-    <Compile Include="ViewModels\MyLocationsViewModel.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
     <Compile Include="ViewModels\AboutUsViewModel.cs" />
     <Compile Include="Messages\OrderDeleted.cs" />
@@ -312,6 +310,8 @@
     <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
     <Compile Include="Settings\AppSettingsService.cs" />
+    <Compile Include="ViewModels\HistoryListViewModel.cs" />
+    <Compile Include="ViewModels\LocationListViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="AppServices\IOrderWorkflowService.cs" />
     <Compile Include="ViewModels\Map\MapViewModel.cs" />

@@ -40,6 +40,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
             return thisRectangleF;
         }
 
+        public static RectangleF SetHorizontalCenter(this RectangleF thisRectangleF, float value)
+        {
+            thisRectangleF.X = value - (thisRectangleF.Width/2);
+            return thisRectangleF;
+        }
+
         public static RectangleF SetVerticalCenter(this RectangleF thisRectangleF, float value)
         {
             thisRectangleF.Y = value - (thisRectangleF.Height/2);

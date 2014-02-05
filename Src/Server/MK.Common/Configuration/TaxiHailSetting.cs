@@ -97,8 +97,8 @@ namespace MK.Common.Configuration
         public bool ShowEstimateWarning { get; private set; }
         [Display(Name = "Show Estimate", Description="Show an estimate")]
         public bool ShowEstimate { get; private set; }
-        [Display(Name = "Use Theme Color On Pickup/Destination Map Icons", Description="Use company color for pickup and destination map icons")]
-        public bool UseThemeColorForPickupAndDestinationMapIcons { get; private set; }
+        [Display(Name = "Use Theme Color On Map Icons", Description="Use company color for pickup and destination map icons")]
+        public bool UseThemeColorForMapIcons { get; private set; }
 
         [Display(Name = "Show Passenger Name", Description="Show the passenger name field in confirmation")]
         public bool ShowPassengerName { get; private set; }

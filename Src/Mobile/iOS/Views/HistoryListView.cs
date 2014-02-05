@@ -12,7 +12,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class HistoryView : BaseViewController<HistoryViewModel>
+    public partial class HistoryListView : BaseViewController<HistoryListViewModel>
 	{
 		const string CellId = "HistoryCell";
 		const string CellBindingText = @"
@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                    Icon Status, Converter=OrderStatusToImageNameConverter
 				"; 
 
-		public HistoryView () : base ("HistoryView", null)
+        public HistoryListView () : base ("HistoryListView", null)
 		{
 		}
 
@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			source.CellCreator = CellCreator;
 			tableOrders.Source = source;
 
-			var set = this.CreateBindingSet<HistoryView, HistoryViewModel> ();
+            var set = this.CreateBindingSet<HistoryListView, HistoryListViewModel> ();
 
 			set.Bind(tableOrders)
 				.For(v => v.Hidden)

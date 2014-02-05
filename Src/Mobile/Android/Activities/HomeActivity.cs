@@ -30,6 +30,7 @@ using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Booking.Mobile.Client.Messages;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -199,6 +200,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             binding.Apply();
 
             PanelMenuInit();
+
+            FindViewById<View>(Resource.Id.btnBookLater).Click -= PickDate_Click;
+            FindViewById<View>(Resource.Id.btnBookLater).Click += PickDate_Click;
         }
 
         protected override void OnResume()
@@ -249,7 +253,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap.OnSaveInstanceState(mapViewSaveState);
             outState.PutBundle("mapViewSaveState", mapViewSaveState);
             base.OnSaveInstanceState(outState);
-            _touchMap.OnSaveInstanceState(outState);
+            //_touchMap.OnSaveInstanceState(outState);
+        }
+
+        private void PickDate_Click(object sender, EventArgs e)
+        {
+            ViewModel.Panel.MenuIsOpen = false;
+            var _btnBookLater = (ImageView) FindViewById(Resource.Id.btnBookLater);
+            var _btnBookLaterLayout = (ImageView) FindViewById(Resource.Id.btnBookLaterLayout);
+            _btnBookLater.Selected = true;
+            _btnBookLaterLayout.Selected = true;
+
+            var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
+            var token = default(TinyMessageSubscriptionToken);           
+
+            token = messengerHub.Subscribe<DateTimePicked>(msg =>
+            {
+                _btnBookLater.Selected = false;
+                _btnBookLaterLayout.Selected = false;
+
+                if (token != null)
+                {
+                    messengerHub.Unsubscribe<DateTimePicked>(token);
+                }
+                ViewModel.BottomBar.BookLater.SetPickupDateAndBook.Execute(msg.Content);
+            });
+
+            var intent = new Intent(this, typeof (DateTimePickerActivity));
+            //intent.PutExtra("SelectedDate", ViewModel.Order.PickupDate.Value.Ticks);
+            //intent.PutExtra("UseAmPmFormat", ViewModel.UseAmPmFormat);
+            StartActivityForResult(intent, (int) ActivityEnum.DateTimePicked);
         }
 
         public override void OnLowMemory()

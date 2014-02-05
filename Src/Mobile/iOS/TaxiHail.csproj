@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -432,18 +432,13 @@
     <Compile Include="Extensions\MvvmCrossExtensions.cs" />
     <Compile Include="Controls\Widgets\FlatButtonStyle.cs" />
     <Compile Include="Controls\Widgets\FlatTextField.cs" />
-    <Compile Include="Views\MyLocationsView.cs" />
-    <Compile Include="Views\MyLocationsView.designer.cs">
-      <DependentUpon>MyLocationsView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Extensions\UITableViewExtensions.cs" />
     <Compile Include="Controls\Widgets\TwoLinesCell.cs" />
     <Compile Include="Controls\Widgets\CustomCellBackgroundView.cs" />
     <Compile Include="Controls\Widgets\Line.cs" />
-    <Compile Include="Views\HistoryView.cs" />
     <Compile Include="Views\HistoryView.designer.cs">
-      <DependentUpon>HistoryView.cs</DependentUpon>
+      <DependentUpon>HistoryListView.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Widgets\TaxiHailEntryElement.cs" />
     <Compile Include="Controls\Widgets\TaxiHailDialogViewController.cs" />
@@ -498,6 +493,11 @@
     <Compile Include="Controls\Widgets\FlatTextView.cs" />
     <Compile Include="Controls\Widgets\PanelMenuSource.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
+    <Compile Include="Views\HistoryListView.cs" />
+    <Compile Include="Views\LocationListView.cs" />
+    <Compile Include="Views\LocationListView.designer.cs">
+      <DependentUpon>LocationListView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\HomeView.xib.cs">
       <DependentUpon>HomeView.xib</DependentUpon>
     </Compile>
@@ -533,6 +533,7 @@
     <Compile Include="Controls\Widgets\OrderReviewItem.designer.cs">
       <DependentUpon>OrderReviewItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Widgets\VehicleTypeAndEstimateView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -567,8 +568,6 @@
     <InterfaceDefinition Include="Views\ConfirmationView_Thriev.xib" />
     <InterfaceDefinition Include="Views\BookEditInformation_Thriev.xib" />
     <InterfaceDefinition Include="Views\TermsAndConditionsView.xib" />
-    <InterfaceDefinition Include="Views\MyLocationsView.xib" />
-    <InterfaceDefinition Include="Views\HistoryView.xib" />
     <InterfaceDefinition Include="Views\RideSummaryView.xib" />
     <InterfaceDefinition Include="Views\AboutUsView.xib" />
     <InterfaceDefinition Include="Views\BookRatingCell.xib" />
@@ -578,6 +577,8 @@
     <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.xib" />
     <InterfaceDefinition Include="Views\Payments\ConfirmCarNumberView.xib" />
     <InterfaceDefinition Include="Views\BookingStatusView.xib" />
+    <InterfaceDefinition Include="Views\HistoryListView.xib" />
+    <InterfaceDefinition Include="Views\LocationListView.xib" />
     <InterfaceDefinition Include="Views\HomeView.xib" />
     <InterfaceDefinition Include="Controls\Widgets\OrderOptionsControl.xib" />
     <InterfaceDefinition Include="Controls\Widgets\OrderReview.xib" />

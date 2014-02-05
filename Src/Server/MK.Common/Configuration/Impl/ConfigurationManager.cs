@@ -118,5 +118,11 @@ namespace apcurium.MK.Common.Configuration.Impl
                 && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
         }
 
+
+
+        public void ChangeServerUrl(string serverUrl)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private void Initialize()
         {   
            // _cancelToken = new CancellationTokenSource();
-            UseThemeColorForPickupAndDestinationMapIcons = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForPickupAndDestinationMapIcons;
+            UseThemeColorForPickupAndDestinationMapIcons = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
 
             ShowsUserLocation = true;
             if (_pickupCenterPin == null) {

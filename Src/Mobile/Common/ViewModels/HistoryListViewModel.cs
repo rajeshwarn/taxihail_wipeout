@@ -11,13 +11,13 @@ using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class HistoryViewModel : BaseViewModel
+    public class HistoryListViewModel : BaseViewModel
     {
 
         private ObservableCollection<OrderViewModel> _orders;
         private readonly TinyMessageSubscriptionToken _orderDeletedToken;
 
-        public HistoryViewModel()
+        public HistoryListViewModel()
         {
             HasOrders = true; //Needs to be true otherwise we see the no order for a few seconds
             _orderDeletedToken = this.Services().MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));            

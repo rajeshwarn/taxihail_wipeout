@@ -21,17 +21,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly IAccountService _accountService;
 		readonly IGeolocService _geolocService;
 		readonly IAppSettings _configurationManager;
+		readonly ILocalization _localize;
+		readonly IBookingService _bookingService;
 
 		readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<AddressSelectionMode> _addressSelectionModeSubject = new BehaviorSubject<AddressSelectionMode>(AddressSelectionMode.PickupSelection);
 		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
         readonly ISubject<BookingSettings> _bookingSettingsSubject;
+		readonly ISubject<string> _estimatedFareSubject;
 
 		public OrderWorkflowService(AbstractLocationService locationService,
 			IAccountService accountService,
 			IGeolocService geolocService,
-			IAppSettings configurationManager)
+			IAppSettings configurationManager,
+			ILocalization localize,
+			IBookingService bookingService)
 		{
 			_configurationManager = configurationManager;
 			_geolocService = geolocService;
@@ -40,6 +45,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			// TODO: Listen to account booking settings changes
 			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(accountService.CurrentAccount.Settings);
+			_localize = localize;
+			_bookingService = bookingService;
+
+			_estimatedFareSubject = new BehaviorSubject<string>(_localize["NoFareText"]);
 		}
 
 		public async Task SetAddressToUserLocation()
@@ -158,6 +167,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			return _bookingSettingsSubject;
 		}
+
+		public IObservable<string> GetAndObserveEstimatedFare()
+		{
+			return _estimatedFareSubject;
+		}
 		
 		private async Task<Address> SearchAddressForCoordinate(Position p)
 		{
@@ -201,6 +215,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			{
 				_destinationAddressSubject.OnNext(address);
 			}
+
+            await CalculateEstimatedFare();
+		}
+
+		private async Task CalculateEstimatedFare()
+		{
+			var pickupAddress = await _pickupAddressSubject.Take(1).ToTask();
+			var destinationAddress = await _destinationAddressSubject.Take(1).ToTask();
+			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
+
+            var estimatedFareString = await _bookingService.GetFareEstimateDisplay(pickupAddress, destinationAddress, pickupDate, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
+
+            _estimatedFareSubject.OnNext(estimatedFareString);
 		}
     }
 }

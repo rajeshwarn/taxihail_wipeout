@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public UIButton AddressButton { get; set; }
         UIActivityIndicatorView LoadingWheel  { get; set; }
         public UIView VerticalDivider { get; set; }
-        public UIView HorizontalDivider { get; set; }
+        public UIView HorizontalDividerTop { get; set; }
         RoundedCornerView RedRoundedCornerView { get; set; }
 
         public AddressTextBox(IntPtr h):base(h)
@@ -79,9 +79,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             VerticalDivider.BackgroundColor = UIColor.FromRGB(118, 118, 118);
             AddSubview(VerticalDivider);
 
-            HorizontalDivider = new UIView();
-            HorizontalDivider.BackgroundColor = UIColor.FromRGB(177, 177, 177);
-            AddSubview(HorizontalDivider);
+            HorizontalDividerTop = new UIView();
+            HorizontalDividerTop.BackgroundColor = UIColor.FromRGB(177, 177, 177);
+            AddSubview(HorizontalDividerTop);
 
             SetBehavior();
 
@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if (base.Hidden != value)
                 {
                     base.Hidden = value;
-                    new [] { VerticalDivider, HorizontalDivider }.Where(c => c != null).ForEach(c => c.Hidden = value);   
+                    new [] { VerticalDivider, HorizontalDividerTop }.Where(c => c != null).ForEach(c => c.Hidden = value);   
                     if (value)
                     {
                         _hiddenContraints = this.Superview.Constraints != null 
@@ -124,6 +124,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                             this.Superview.AddConstraints(_hiddenContraints);
                             _hiddenContraints = null;
                         }
+                    }
+
+                    if (Superview != null)
+                    {
+                        ((OverlayView)Superview).Resize();
                     }
                 }
             }
@@ -196,7 +201,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 StreetNumberTextView.SetHeight(this.Frame.Height).IncrementWidth(10);
 
                 VerticalDivider.Frame = new RectangleF(StreetNumberTextView.Frame.Right, 6, UIHelper.OnePixel, this.Frame.Height - 12);
-                HorizontalDivider.Frame = new RectangleF(0, this.Frame.Height, this.Frame.Width, UIHelper.OnePixel);
+                HorizontalDividerTop.Frame = new RectangleF(0, 0, this.Frame.Width, UIHelper.OnePixel);
                 AddressButton.Frame = AddressTextView.Frame = new RectangleF(VerticalDivider.Frame.Right +6, 0, this.Frame.Width - VerticalDivider.Frame.Right - 12, this.Frame.Height);
 
                 AddressTextView.LeftViewMode = UITextFieldViewMode.Never;
@@ -204,10 +209,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if (IsDestination)
                 {
                     RedRoundedCornerView.Corners = 0;
+                    HorizontalDividerTop.Hidden = false;
                 }
                 else
                 {
                     RedRoundedCornerView.Corners = UIRectCorner.TopLeft;
+                    HorizontalDividerTop.Hidden = true;
                 }
 
                 RedRoundedCornerView.Frame = LoadingWheel.Frame = StreetNumberTextView.Frame;
@@ -221,7 +228,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 StreetNumberTextView.Hidden = true;
                 AddressButton.Frame = AddressTextView.Frame = new RectangleF(2, 0, this.Frame.Width, this.Frame.Height);
-                AddressTextView.LeftView = new Dot(8,  IsDestination ? UIColor.FromRGB(255, 0, 18) : UIColor.FromRGB(0, 192, 49))
+                AddressTextView.LeftView = new Dot(6,  IsDestination ? UIColor.FromRGB(255, 0, 18) : UIColor.FromRGB(0, 192, 49))
                 {
                     Frame = new RectangleF( 0,0, 34 , this.Frame.Height)
                 };
