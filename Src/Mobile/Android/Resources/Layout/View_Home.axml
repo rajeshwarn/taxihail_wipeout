@@ -151,7 +151,7 @@
                             android:layout_width="55dip"
                             android:layout_height="12dip" />
                         <ImageView
-                            android:id="@+id/homeRightButton"
+                            android:id="@+id/btnBookLater"
                             android:src="@drawable/later_icon"
                             android:scaleType="center"
                             android:layout_gravity="center|center"
