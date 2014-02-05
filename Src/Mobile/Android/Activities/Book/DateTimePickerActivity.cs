@@ -9,6 +9,7 @@ using Java.Lang;
 using TinyIoC;
 using TinyMessenger;
 using Boolean = Java.Lang.Boolean;
+using Android.Content;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -76,7 +77,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if (result > DateTime.Now)
             {
-                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new DateTimePicked(this, result));
+                Intent _result = new Intent();              
+                _result.PutExtra("DateTimeResult", result.Ticks);
+                SetResult(Android.App.Result.Ok, _result);
                 Finish();
             }
             else
@@ -85,6 +88,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     Resource.String.DateTimePickerPickInvalidDateMessage);
             }
         }
+
+        public static int Result { get; set;}
 
         private void TimeOnTimeChanged(object sender, TimePicker.TimeChangedEventArgs e)
         {

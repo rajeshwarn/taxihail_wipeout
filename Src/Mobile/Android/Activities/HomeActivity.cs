@@ -201,8 +201,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             PanelMenuInit();
 
-            FindViewById<View>(Resource.Id.btnBookLater).Click -= PickDate_Click;
-            FindViewById<View>(Resource.Id.btnBookLater).Click += PickDate_Click;
+            FindViewById<View>(Resource.Id.btnBookLaterLayout).Click -= PickDate_Click;
+            FindViewById<View>(Resource.Id.btnBookLaterLayout).Click += PickDate_Click;
+            //FindViewById<View>(Resource.Id.btnBookLater).Click -= PickDate_Click;
+            //FindViewById<View>(Resource.Id.btnBookLater).Click += PickDate_Click;
         }
 
         protected override void OnResume()
@@ -256,33 +258,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             //_touchMap.OnSaveInstanceState(outState);
         }
 
+        private void SetSelectedOnBookLater(bool selected)
+        {
+            var _btnBookLater = (ImageView) FindViewById(Resource.Id.btnBookLater);
+            var _txtBookLater = (TextView) FindViewById(Resource.Id.txtBookLater);
+            var _btnBookLaterLayout = (LinearLayout) FindViewById(Resource.Id.btnBookLaterLayout);
+            _btnBookLater.Selected = selected;
+            _txtBookLater.Selected = selected;
+            _btnBookLaterLayout.Selected = selected;
+        }
+
         private void PickDate_Click(object sender, EventArgs e)
         {
             ViewModel.Panel.MenuIsOpen = false;
-            var _btnBookLater = (ImageView) FindViewById(Resource.Id.btnBookLater);
-            var _btnBookLaterLayout = (ImageView) FindViewById(Resource.Id.btnBookLaterLayout);
-            _btnBookLater.Selected = true;
-            _btnBookLaterLayout.Selected = true;
 
-            var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
-            var token = default(TinyMessageSubscriptionToken);           
-
-            token = messengerHub.Subscribe<DateTimePicked>(msg =>
-            {
-                _btnBookLater.Selected = false;
-                _btnBookLaterLayout.Selected = false;
-
-                if (token != null)
-                {
-                    messengerHub.Unsubscribe<DateTimePicked>(token);
-                }
-                ViewModel.BottomBar.BookLater.SetPickupDateAndBook.Execute(msg.Content);
-            });
+            SetSelectedOnBookLater(true);
 
             var intent = new Intent(this, typeof (DateTimePickerActivity));
-            //intent.PutExtra("SelectedDate", ViewModel.Order.PickupDate.Value.Ticks);
-            //intent.PutExtra("UseAmPmFormat", ViewModel.UseAmPmFormat);
-            StartActivityForResult(intent, (int) ActivityEnum.DateTimePicked);
+            StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            if (requestCode == (int)ActivityEnum.DateTimePicked && resultCode == Result.Ok)
+            {             
+                DateTime dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
+                ViewModel.BottomBar.BookLater.SetPickupDateAndBook.Execute(dt);
+            }
+            else
+            {
+                SetSelectedOnBookLater(false);
+            }
         }
 
         public override void OnLowMemory()
