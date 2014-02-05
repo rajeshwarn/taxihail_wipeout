@@ -95,7 +95,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _confirmationButtons = new UIView(this.Bounds);
 
             var btnCancel = new AppBarLabelButton("Cancel");
-            btnCancel.UpdateView(10, 10, 100, 41);
+            btnCancel.TranslatesAutoresizingMaskIntoConstraints = false;
+
+            //btnCancel.UpdateView(10, 10, 100, 41);
 
             var btnConfirm = new FlatButton(new RectangleF((320 - 123)/2, 7, 123, 41));
             FlatButtonStyle.Green.ApplyTo(btnConfirm);
@@ -103,11 +105,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             _confirmationButtons.AddSubviews(btnCancel, btnConfirm);
 
+            _confirmationButtons.AddConstraints(new []
+            {
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.Leading, 1, 5f),
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.CenterY, 1, 0),
+            });
+
             var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
 
             set.Bind(btnCancel)
                 .For(v => v.Command)
                 .To(vm => vm.Cancel);
+
+            set.Bind(btnConfirm)
+                .For(v => v.Command)
+                .To(vm => vm.ConfirmOrder);
 
             set.Apply();
         }
