@@ -37,6 +37,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
             return thisView;
         }
 
+        public static UIView SetHorizontalCenter(this UIView thisView, float value)
+        {
+            thisView.Frame = thisView.Frame.SetHorizontalCenter(value);
+            return thisView;
+        }
         public static UIView SetVerticalCenter(this UIView thisView, float value)
         {
             thisView.Frame = thisView.Frame.SetVerticalCenter(value);

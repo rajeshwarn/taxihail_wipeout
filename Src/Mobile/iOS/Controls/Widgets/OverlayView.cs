@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     [Register("OverlayView")]
     public class OverlayView : UIView
     {
-        private float _radiusCorner = 2f;
+        private float _radiusCorner = 3f;
         private UIView _shadowView = null;
 
         public OverlayView(IntPtr handle) : base(handle)
@@ -83,6 +83,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 this.Superview.InsertSubviewBelow(_shadowView, this);
             }
             _shadowView.Frame = Frame.Copy().Shrink(1);
+        }
+
+        public void Resize()
+        {
+            this.SetHeight(Subviews.Where(x => !x.Hidden).Sum(x => x.Frame.Height));
+            SetNeedsDisplay();
         }
     }
 }
