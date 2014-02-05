@@ -34,7 +34,10 @@
 
     <color name="button_action_text_color">#ffffff</color>
     <color name="button_action_pressed_text_color">#ffffff</color>
-  
+    
+    <color name="button_bottom_selected_border_color">#007aff</color>
+    <color name="button_bottom_selected_background_color">#bb007aff</color>
+      
 	<!--		Settings Item Colors -->
 
     <color name="setting_menu_text_color">#4f4c47</color>    
