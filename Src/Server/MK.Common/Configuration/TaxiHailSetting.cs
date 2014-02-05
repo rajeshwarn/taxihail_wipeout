@@ -119,7 +119,7 @@ namespace MK.Common.Configuration
 		public bool ShowVehicleInformation { get; private set; }
         [Display(Name = "Client Polling Interval", Description="Status refresh interval")]
         public int ClientPollingInterval { get; private set; }
-        [Display(Name = "Hide Call Dispatch Button", Description="Hide button to call disaptcc in panel menu, status screens")]
+        [Display(Name = "Hide Call Dispatch Button", Description="Hide button to call dispatch in panel menu, status screens")]
         public bool HideCallDispatchButton { get; private set; }
 
 		[Display(Name = "Place Types", Description="Give a list of Google Maps places types to filter search")]

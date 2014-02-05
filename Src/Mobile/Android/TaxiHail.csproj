@@ -19,6 +19,8 @@
     <MandroidI18n />
     <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -518,7 +520,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\taxi_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_taxi.png" />
     <AndroidResource Include="Resources\Drawable\button_booklater_selector.axml" />
-    <AndroidResource Include="Resources\Drawable\button_hightlight_background_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_highlight_background_selector.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
