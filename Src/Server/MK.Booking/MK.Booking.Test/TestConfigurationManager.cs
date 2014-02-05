@@ -124,5 +124,10 @@ namespace apcurium.MK.Booking.Common.Tests
         {
            //done in the ctor
         }
+
+        public void ChangeServerUrl(string serverUrl)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
