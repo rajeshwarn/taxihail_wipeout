@@ -520,6 +520,8 @@
     <AndroidResource Include="Resources\drawable-xhdpi\hail_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\taxi_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_taxi.png" />
+    <AndroidResource Include="Resources\Drawable\button_booklater_selector.axml" />
+    <AndroidResource Include="Resources\Drawable\button_hightlight_background_selector.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

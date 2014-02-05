@@ -30,6 +30,7 @@ using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Booking.Mobile.Client.Messages;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -259,18 +260,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             ViewModel.Panel.MenuIsOpen = false;
             var _btnBookLater = (ImageView) FindViewById(Resource.Id.btnBookLater);
+            var _btnBookLaterLayout = (ImageView) FindViewById(Resource.Id.btnBookLaterLayout);
             _btnBookLater.Selected = true;
+            _btnBookLaterLayout.Selected = true;
 
             var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
-            var token = default(TinyMessageSubscriptionToken);
+            var token = default(TinyMessageSubscriptionToken);           
+
             token = messengerHub.Subscribe<DateTimePicked>(msg =>
             {
-                if (token != null)
+                _btnBookLater.Selected = false;
+                _btnBookLaterLayout.Selected = false;
 
+                if (token != null)
                 {
                     messengerHub.Unsubscribe<DateTimePicked>(token);
                 }
-                _btnBookLater.Selected = false;
                 ViewModel.BottomBar.BookLater.SetPickupDateAndBook.Execute(msg.Content);
             });
 
