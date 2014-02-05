@@ -196,7 +196,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var titleFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
             var navBarButtonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
 
-            var isDefaultColor = resetToDefault || !Theme.IsLightContent;
+            var isDefaultColor = false;
 
             var textColor = isDefaultColor
                                 ? UIColor.FromRGB(44, 44, 44)
@@ -286,7 +286,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
 
             var rightBarButtonFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
-            var textColor = UIColor.FromRGB(44, 44, 44);
+            var textColor = UIColor.White;
 
             var buttonTextColor = new UITextAttributes () {
                 Font = rightBarButtonFont,
