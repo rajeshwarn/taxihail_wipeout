@@ -227,9 +227,6 @@
     <AndroidResource Include="Resources\Drawable\WindowDisplay.xml" />
     <Compile Include="Activities\SelectItemDialogActivity.cs" />
     <Compile Include="PlatformIntegration\PhoneService.cs" />
-    <AndroidResource Include="Resources\Drawable\pin_cab.png" />
-    <AndroidResource Include="Resources\Drawable\pin_destination.png" />
-    <AndroidResource Include="Resources\Drawable\pin_hail.png" />
     <AndroidResource Include="Resources\Drawable\flag.png" />
     <AndroidResource Include="Resources\Drawable\flag_selected.png" />
     <AndroidResource Include="Resources\Drawable\hail.png" />
@@ -292,7 +289,6 @@
     <Compile Include="Activities\Book\BookPayPalActivity.cs">
       <DependentUpon>BookPaymentActivity.cs</DependentUpon>
     </Compile>
-    <AndroidResource Include="Resources\Drawable\nearby_cab.png" />
     <Compile Include="Extensions\EditTextExtensions.cs" />
     <Compile Include="Extensions\LocationTimeConverter.cs" />
     <Compile Include="Activities\Book\RideSummaryActivity.cs" />
@@ -310,7 +306,6 @@
     </AndroidResource>
     <Compile Include="Activities\Book\BookEditInformationActivity.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
-    <AndroidResource Include="Resources\Drawable\pin_cluster.png" />
     <AndroidResource Include="Resources\Layout\View_TermsAndConditions.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -427,13 +422,11 @@
     <AndroidResource Include="Resources\drawable-xhdpi\mastercard.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\mk_logo.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\navBar.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\nearby_cab.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\notification_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\number_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\password_cell.9.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\paypal.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\phone.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\pin_cluster.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\rate_ecstatic_selected.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\rate_ecstatic.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\rate_happy_selected.png" />
@@ -513,8 +506,19 @@
     <Compile Include="Controls\Widgets\OrderOptions.cs" />
     <Compile Include="Controls\Fragments\OrderMapFragment.cs" />
     <Compile Include="Activities\BaseBindingFragmentActivity.cs" />
+    <Compile Include="Controls\Widgets\OrderReview.cs" />
+    <AndroidResource Include="Resources\Layout\Control_OrderReview.axml" />
     <AndroidResource Include="Resources\Layout\SubView_OrderOptions.axml" />
     <AndroidResource Include="Resources\Layout\SubView_MainMenu.axml" />
+    <AndroidResource Include="Resources\Drawable\cluster.png" />
+    <AndroidResource Include="Resources\Drawable\nearby_taxi.png" />
+    <AndroidResource Include="Resources\Drawable\taxi_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\cluster.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\hail_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\taxi_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\nearby_taxi.png" />
+    <AndroidResource Include="Resources\Drawable\button_booklater_selector.axml" />
+    <AndroidResource Include="Resources\Drawable\button_hightlight_background_selector.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

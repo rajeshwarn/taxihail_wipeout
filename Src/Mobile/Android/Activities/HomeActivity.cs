@@ -30,6 +30,7 @@ using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Booking.Mobile.Client.Messages;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -40,6 +41,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>
     {
         private SupportMapFragment _touchMap;
+        private OrderReview _orderReview;
+        private OrderOptions _orderOptions;
         private int _menuWidth = 400;
         private readonly DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
 
@@ -52,9 +55,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			}
 		}
 
+        private Bundle _mainBundle;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            _mainBundle = bundle;
 
             var errorCode = GooglePlayServicesUtil.IsGooglePlayServicesAvailable(ApplicationContext);
             if (errorCode == ConnectionResult.ServiceMissing
@@ -69,7 +75,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public OrderMapFragment _mapFragment; 
 
-        public OrderOptions _orderOptions;
 
         void PanelMenuInit()
         {
@@ -116,8 +121,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private void PanelMenuSignOutClick(object sender, EventArgs e)
         {
             ViewModel.Panel.SignOut.Execute(null);
-            // Finish the activity, because clearTop does not seem to be enough in this case
-            // Finish is delayed 1sec in order to prevent the application from being terminated
             Observable.Return(Unit.Default).Delay(TimeSpan.FromSeconds(1)).Subscribe(x => { Finish(); });
         }
 
@@ -173,19 +176,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             SetContentView(Resource.Layout.View_Home);
             ViewModel.OnViewLoaded();
-            _touchMap = (SupportMapFragment)SupportFragmentManager.FindFragmentById(Resource.Id.mapPickup);
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
+            _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
 
             // Creating a view controller for MapFragment
+            Bundle mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
+            _touchMap = (SupportMapFragment)SupportFragmentManager.FindFragmentById(Resource.Id.mapPickup);
+            _touchMap.OnCreate(mapViewSavedInstanceState);
             _mapFragment = new OrderMapFragment(_touchMap);
 
             // Home View Bindings
             var binding = this.CreateBindingSet<HomeActivity, HomeViewModel>();
+
             binding.Bind(_mapFragment).For("DataContext").To(vm => vm.Map); // Map Fragment View Bindings
             binding.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // Map OrderOptions View Bindings
+
+            var bookNow = FindViewById<Button>(Resource.Id.btnBookNow);
+            binding
+                .Bind(bookNow)
+                .For("Click")
+                .To(vm => vm.BottomBar.BookNow);
+
             binding.Apply();
 
             PanelMenuInit();
+
+            FindViewById<View>(Resource.Id.btnBookLater).Click -= PickDate_Click;
+            FindViewById<View>(Resource.Id.btnBookLater).Click += PickDate_Click;
         }
 
         protected override void OnResume()
@@ -229,8 +246,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override void OnSaveInstanceState(Bundle outState)
         {
+            // See http://code.google.com/p/gmaps-api-issues/issues/detail?id=6237 Comment #9
+            // TODO: Adapt solution to C#/mvvm. Currently help to avoid a crash after tombstone but map state isn't saved
+
+            Bundle mapViewSaveState = new Bundle(outState);
+            _touchMap.OnSaveInstanceState(mapViewSaveState);
+            outState.PutBundle("mapViewSaveState", mapViewSaveState);
             base.OnSaveInstanceState(outState);
-            _touchMap.OnSaveInstanceState(outState);
+            //_touchMap.OnSaveInstanceState(outState);
+        }
+
+        private void PickDate_Click(object sender, EventArgs e)
+        {
+            ViewModel.Panel.MenuIsOpen = false;
+            var _btnBookLater = (ImageView) FindViewById(Resource.Id.btnBookLater);
+            var _btnBookLaterLayout = (ImageView) FindViewById(Resource.Id.btnBookLaterLayout);
+            _btnBookLater.Selected = true;
+            _btnBookLaterLayout.Selected = true;
+
+            var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
+            var token = default(TinyMessageSubscriptionToken);           
+
+            token = messengerHub.Subscribe<DateTimePicked>(msg =>
+            {
+                _btnBookLater.Selected = false;
+                _btnBookLaterLayout.Selected = false;
+
+                if (token != null)
+                {
+                    messengerHub.Unsubscribe<DateTimePicked>(token);
+                }
+                ViewModel.BottomBar.BookLater.SetPickupDateAndBook.Execute(msg.Content);
+            });
+
+            var intent = new Intent(this, typeof (DateTimePickerActivity));
+            //intent.PutExtra("SelectedDate", ViewModel.Order.PickupDate.Value.Ticks);
+            //intent.PutExtra("UseAmPmFormat", ViewModel.UseAmPmFormat);
+            StartActivityForResult(intent, (int) ActivityEnum.DateTimePicked);
         }
 
         public override void OnLowMemory()
@@ -238,5 +290,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.OnLowMemory();
             _touchMap.OnLowMemory();
         }
+
+        TranslateAnimation _animation;
+
+        public void ShowOrderReview()
+        {
+            var delta = _orderOptions.Bottom - _orderReview.Top;
+            _animation = new TranslateAnimation(0, 0, 0, delta);
+            _animation.Duration = 600;
+            _animation.Interpolator = new DecelerateInterpolator();
+            _animation.FillAfter = true;
+            _orderReview.StartAnimation(_animation);
+           
+        }
+
+
     }
 }

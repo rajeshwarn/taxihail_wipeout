@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -16,17 +17,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         public OrderOptionsControl (IntPtr handle) : base(handle)
         {
-
         }
 
         private void Initialize()
         {
+            AutoresizingMask = UIViewAutoresizing.FlexibleHeight;
+
             BackgroundColor = UIColor.Clear;
             viewPickup.BackgroundColor = UIColor.Clear;
             viewDestination.BackgroundColor = UIColor.Clear;
-            viewVehicleType.BackgroundColor = UIColor.Clear;
 
             viewDestination.IsDestination = true;
+
+            // since we don't have the vehicle selection yet, we hardcode this value
+            viewVehicleType.ShowEstimate = true;
+            viewVehicleType.VehicleType = "Taxi";
         }
 
         private void InitializeBinding()
@@ -48,6 +53,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .To(vm => vm.IsConfirmationScreen);
             set.Bind(viewDestination.AddressTextView)
                 .To(vm => vm.DestinationAddress.DisplayAddress);
+
+            set.Bind(viewVehicleType)
+                .For(v => v.EstimatedFare)
+                .To(vm => vm.EstimatedFare);
+            set.Bind(viewVehicleType)
+                .For(v => v.Hidden)
+                .To(vm => vm.ShowDestination)
+                .WithConversion("BoolInverter");
 
             set.Apply();
         }
