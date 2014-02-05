@@ -248,13 +248,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return new DirectionInfo();
         }
 
-		public async Task<string> GetFareEstimateDisplay (CreateOrder order, string formatString, string defaultFare, bool includeDistance, string cannotGetFareText)
+		public async Task<string> GetFareEstimateDisplay (Address pickup, Address destination, DateTime? pickupDate, string fareFormat, string noFareText, bool includeDistance, string cannotGetFareText)
         {
-			var fareEstimate = _localize[defaultFare];
+			var fareEstimate = _localize[noFareText];
 
-            if (order != null && order.PickupAddress.HasValidCoordinate() && order.DropOffAddress.HasValidCoordinate())
+			if (pickup.HasValidCoordinate() && destination.HasValidCoordinate())
             {
-				var estimatedFare = await GetFareEstimate(order.PickupAddress, order.DropOffAddress, order.PickupDate)
+				var estimatedFare = await GetFareEstimate(pickup, destination, pickupDate)
 					.ConfigureAwait(false);
 
                 var willShowFare = estimatedFare.Price.HasValue && estimatedFare.Price.Value > 0;                                
@@ -262,11 +262,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 if (estimatedFare.Price.HasValue && willShowFare)
                 {                    
 					var maxEstimate = _appSettings.Data.MaxFareEstimate;
-					if (formatString.HasValue() || (estimatedFare.Price.Value > maxEstimate && _localize["EstimatePriceOver100"].HasValue()))
+					if (fareFormat.HasValue() || (estimatedFare.Price.Value > maxEstimate && _localize["EstimatePriceOver100"].HasValue()))
                     {
 						fareEstimate = String.Format(_localize[estimatedFare.Price.Value > maxEstimate 
                                                                            ? "EstimatePriceOver100"
-                                                                           : formatString], 
+																		   : fareFormat], 
                                                  estimatedFare.FormattedPrice);
                     }
                     else

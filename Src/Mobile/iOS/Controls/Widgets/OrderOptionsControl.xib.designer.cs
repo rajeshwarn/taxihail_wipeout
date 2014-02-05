@@ -19,18 +19,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AddressTextBox viewPickup { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIView viewVehicleType { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.VehicleTypeAndEstimateView viewVehicleType { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (viewPickup != null) {
-				viewPickup.Dispose ();
-				viewPickup = null;
-			}
-
 			if (viewDestination != null) {
 				viewDestination.Dispose ();
 				viewDestination = null;
+			}
+
+			if (viewPickup != null) {
+				viewPickup.Dispose ();
+				viewPickup = null;
 			}
 
 			if (viewVehicleType != null) {

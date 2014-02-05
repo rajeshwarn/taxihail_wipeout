@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
 			this.Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
 			this.Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), selectionMode => AddressSelectionMode = selectionMode);
+			this.Observe(_orderWorkflowService.GetAndObserveEstimatedFare(), fare => EstimatedFare = fare);
 		}
 
 		private Address _pickupAddress;
@@ -71,6 +72,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				}
 
 				return showDestination;
+			}
+		}
+
+		private string _estimatedFare;
+		public string EstimatedFare
+		{
+			get { return _estimatedFare; }
+			set
+			{
+				if (value != _estimatedFare)
+				{
+					_estimatedFare = value;
+					RaisePropertyChanged();
+				}
 			}
 		}
 
