@@ -152,7 +152,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             var btnCancel = new AppBarLabelButton("Cancel");
             btnCancel.TranslatesAutoresizingMaskIntoConstraints = false;
 
-            _editButtons.AddSubviews(btnCancel);
+            var btnSave = new FlatButton(new RectangleF((320 - 123)/2, 7, 123, 41));
+            FlatButtonStyle.Green.ApplyTo(btnSave);
+            btnSave.SetTitle("Save", UIControlState.Normal);
+
+            _editButtons.AddSubviews(btnCancel, btnSave);
 
             // Constraints for Cancel button
             _editButtons.AddConstraints(new []
@@ -166,6 +170,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(btnCancel)
                 .For(v => v.Command)
                 .To(vm => vm.CancelEdit);
+
+            set.Bind(btnSave)
+                .For(v => v.Command)
+                .To(vm => vm.Save);
 
             set.Apply();
         }

@@ -140,6 +140,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Edit));
 				});
 			}
+		}
+
+		public ICommand Save
+		{
+			get
+			{
+				return GetCommand(() => {
+					// TODO: Actually save changes
+					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
+				});
+			}
 		}	
 
 		public ICommand CancelReview
