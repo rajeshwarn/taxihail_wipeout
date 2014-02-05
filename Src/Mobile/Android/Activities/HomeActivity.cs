@@ -291,26 +291,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap.OnLowMemory();
         }
 
-        TranslateAnimation _animation;
-
         public void ChangeState(OrderReviewPresentationHint hint)
         {
             if (hint.Show)
             {
                 var delta = _orderOptions.Bottom - _orderReview.Top;
-                _animation = new TranslateAnimation(0, 0, 0, delta);
-                _animation.Duration = 600;
-                _animation.Interpolator = new DecelerateInterpolator();
-                _animation.FillAfter = true;
-                _orderReview.StartAnimation(_animation);
+                var animation = new TranslateAnimation(0, 0, 0, delta);
+                animation.Duration = 600;
+                animation.Interpolator = new DecelerateInterpolator();
+                animation.FillAfter = true;
+                _orderReview.StartAnimation(animation);
             }
             else
             {
                 var delta = _orderOptions.Bottom - _orderReview.Top;
-                _animation = new TranslateAnimation(0, 0, delta, 0);
-                _animation.Duration = 600;
-                _animation.Interpolator = new DecelerateInterpolator();
-                _orderReview.StartAnimation(_animation);
+                var animation = new TranslateAnimation(0, 0, delta, 0);
+                animation.Duration = 600;
+                animation.Interpolator = new DecelerateInterpolator();
+                _orderReview.StartAnimation(animation);
             }
            
         }

@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         private UIView _confirmationButtons;
         private UIView _orderButtons;
+        private UIView _editButtons;
         public static SizeF ButtonSize = new SizeF(60, 46);
 
         protected UIView Line { get; set; }
@@ -45,6 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             AddButtonsForBooking();
             CreateButtonsForConfirmation();
+            CreateButtonsForEdit();
         }
 
         private void AddButtonsForBooking()
@@ -113,7 +115,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             // Constraints for Cancel button
             _confirmationButtons.AddConstraints(new []
             {
-                    NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.Leading, 1, 8f),
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.Leading, 1, 8f),
                 NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.CenterY, 1, 0),
             });
 
@@ -128,26 +130,61 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Bind(btnCancel)
                 .For(v => v.Command)
-                .To(vm => vm.Cancel);
+                .To(vm => vm.CancelReview);
 
             set.Bind(btnConfirm)
                 .For(v => v.Command)
                 .To(vm => vm.ConfirmOrder);
 
+            set.Bind(btnEdit)
+                .For(v => v.Command)
+                .To(vm => vm.Edit);
+
             set.Apply();
         }
 
-        public void ChangeState(OrderReviewPresentationHint hint)
+        private void CreateButtonsForEdit()
+        {
+            // - Cancel - Save --------- 
+
+            _editButtons = new UIView(this.Bounds);
+
+            var btnCancel = new AppBarLabelButton("Cancel");
+            btnCancel.TranslatesAutoresizingMaskIntoConstraints = false;
+
+            _editButtons.AddSubviews(btnCancel);
+
+            // Constraints for Cancel button
+            _editButtons.AddConstraints(new []
+            {
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _editButtons, NSLayoutAttribute.Leading, 1, 8f),
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _editButtons, NSLayoutAttribute.CenterY, 1, 0),
+            });
+
+            var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
+
+            set.Bind(btnCancel)
+                .For(v => v.Command)
+                .To(vm => vm.CancelEdit);
+
+            set.Apply();
+        }
+
+        public void ChangeState(HomeViewModelPresentationHint hint)
         {
             foreach(var subview in Subviews)
             {
                 subview.RemoveFromSuperview();
             }
-            if (hint.Show)
+            if (hint.State == HomeViewModelState.Review)
             {
                 Add(_confirmationButtons);
             }
-            else
+            else if (hint.State == HomeViewModelState.Edit)
+            {
+                Add(_editButtons);
+            }
+            else if(hint.State == HomeViewModelState.Initial)
             {
                 Add(_orderButtons);
             }

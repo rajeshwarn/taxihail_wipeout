@@ -9,6 +9,7 @@
                 <outlet property="bottomBar" destination="cXg-Q6-nLg" id="wBh-UX-pyq"/>
                 <outlet property="btnLocateMe" destination="Jqp-iu-ci1" id="Ea5-fR-6Yf"/>
                 <outlet property="btnMenu" destination="MeW-ns-SQv" id="7wz-qB-e5G"/>
+                <outlet property="constraintOrderOptionsTopSpace" destination="FRw-GE-bhA" id="PCn-eX-HZW"/>
                 <outlet property="constraintOrderReviewTopSpace" destination="sVE-Qk-t6A" id="uQG-kW-AR6"/>
                 <outlet property="ctrlOrderOptions" destination="HaA-X5-eHm" id="FGC-LG-Yob"/>
                 <outlet property="ctrlOrderReview" destination="lYS-4q-3Mj" id="jyD-45-zXv"/>
@@ -66,7 +67,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lYS-4q-3Mj" customClass="OrderReview">
-                            <rect key="frame" x="80" y="500" width="160" height="284"/>
+                            <rect key="frame" x="80" y="568" width="160" height="284"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="1" green="0.23529411759999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
@@ -99,7 +100,7 @@
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="ZSI-kr-X81"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="Jqp-iu-ci1" secondAttribute="bottom" constant="13" id="nTh-8y-wH1"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="MeW-ns-SQv" secondAttribute="bottom" constant="13" id="pen-rq-tIj"/>
-                        <constraint firstItem="lYS-4q-3Mj" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="500" id="sVE-Qk-t6A"/>
+                        <constraint firstItem="lYS-4q-3Mj" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="568" id="sVE-Qk-t6A"/>
                     </constraints>
                 </view>
             </subviews>

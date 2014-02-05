@@ -3,14 +3,14 @@ using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class OrderReviewPresentationHint: MvxPresentationHint
+	public class HomeViewModelPresentationHint: MvxPresentationHint
     {
-		public OrderReviewPresentationHint(bool show = true)
+		public HomeViewModelPresentationHint(HomeViewModelState state)
         {
-			Show = show;
+			State = state;
         }
 
-		public bool Show
+		public HomeViewModelState State
 		{
 			get;
 			private set;

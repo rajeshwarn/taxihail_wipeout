@@ -83,23 +83,45 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Apply();
         }
 
-        public void ChangeState(OrderReviewPresentationHint hint)
+        public void ChangeState(HomeViewModelPresentationHint hint)
         {
-            if (hint.Show)
+            if (hint.State == HomeViewModelState.Review)
             {
+                // Order Options: Visible
+                // Order Review: Visible
+                // Order Edit: Hidden
                 UIView.Animate(
                     0.6f, 
-                    () => {
+                    () =>
+                    {
                         constraintOrderReviewTopSpace.Constant = 170;
+                        constraintOrderOptionsTopSpace.Constant =  22;
                         homeView.LayoutIfNeeded();
                     });
             }
-            else
+            else if (hint.State == HomeViewModelState.Edit)
             {
+                // Order Options: Hidden
+                // Order Review: Hidden
+                // Order Edit: Visible
                 UIView.Animate(
                     0.6f, 
                     () => {
                         constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
+                        constraintOrderOptionsTopSpace.Constant =  - ctrlOrderOptions.Frame.Height;
+                        homeView.LayoutIfNeeded();
+                    });
+            }
+            else if(hint.State == HomeViewModelState.Initial)
+            {
+                // Order Options: Visible
+                // Order Review: Hidden
+                // Order Edit: Hidden
+                UIView.Animate(
+                    0.6f, 
+                    () => {
+                        constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
+                        constraintOrderOptionsTopSpace.Constant =  22;
                         homeView.LayoutIfNeeded();
                     });
             }
