@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             AddSubview(RedRoundedCornerView);
 
             StreetNumberTextView = new FlatTextField();
-            StreetNumberTextView.BackgroundColor = UIColor.Yellow;
+            StreetNumberTextView.BackgroundColor = UIColor.Clear;
             StreetNumberTextView.Placeholder = "#";
             StreetNumberTextView.SetLeftPadding(15);
             StreetNumberTextView.SetRightPadding(0);
@@ -170,7 +170,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 _isReadOnly = value;
                 StreetNumberTextView.Hidden = value;
-                VerticalDivider.Hidden = value;
                 Resize();
             }
         }
@@ -200,7 +199,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 VerticalDivider.Frame = new RectangleF(StreetNumberTextView.Frame.Right, 6, UIHelper.OnePixel, this.Frame.Height - 12);
                 HorizontalDividerTop.Frame = new RectangleF(0, 0, this.Frame.Width, UIHelper.OnePixel);
-                AddressButton.Frame = AddressTextView.Frame = new RectangleF(VerticalDivider.Frame.Right + 6, 0, this.Frame.Width - VerticalDivider.Frame.Right - 12, this.Frame.Height);
+                AddressButton.Frame = AddressTextView.Frame = new RectangleF(VerticalDivider.Frame.Right + 6, 0, this.Frame.Width - VerticalDivider.Frame.Right, this.Frame.Height);
 
                 AddressTextView.LeftViewMode = UITextFieldViewMode.Never;
 
@@ -223,10 +222,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             else
             {
                 StreetNumberTextView.Hidden = true;
-                AddressButton.Frame = AddressTextView.Frame = new RectangleF(2, 0, this.Frame.Width, this.Frame.Height);
-                AddressTextView.LeftView = new Dot(6, color)
+                AddressButton.Frame = AddressTextView.Frame = new RectangleF(0, 0, this.Frame.Width, this.Frame.Height);
+                AddressTextView.LeftView = new Dot(6, color, -3)
                 {
-                    Frame = new RectangleF( 0,0, 34 , this.Frame.Height)
+                    Frame = new RectangleF(0, 0, VerticalDivider.Frame.Right + 6, this.Frame.Height)
                 };
                 AddressTextView.LeftViewMode = UITextFieldViewMode.Always;
             }

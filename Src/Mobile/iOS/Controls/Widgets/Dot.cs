@@ -8,10 +8,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     { 
         private float _size;
         private UIColor _color;
-        public Dot( float size, UIColor color )
+        private float _horizontalAdjustment;
+
+        public Dot(float size, UIColor color, float horizontalAdjustment = 0f)
         {
             _size = size;
             _color = color;
+            _horizontalAdjustment = horizontalAdjustment;
             BackgroundColor = UIColor.Clear;
         }
 
@@ -19,11 +22,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             base.Draw(rect);
 
-            var x = (this.Bounds.Width - _size) / 2;
+            var x = (this.Bounds.Width - _size) / 2 + _horizontalAdjustment;
             var y = (this.Bounds.Height - _size) / 2;
 
             //// Oval Drawing
-            var ovalPath = UIBezierPath.FromOval(new RectangleF(x,y,_size,_size) );
+            var ovalPath = UIBezierPath.FromOval(new RectangleF(x, y, _size, _size));
             _color.SetFill();
             ovalPath.Fill();
             _color.SetStroke();
