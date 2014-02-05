@@ -45,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             AddSubview(SelectedVehicleTypeLabel);
 
             EstimatedFareLabel = new UILabel();
+            EstimatedFareLabel.Lines = 0;
             EstimatedFareLabel.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 28/2);
             EstimatedFareLabel.TextColor = Theme.BackgroundColor;
             EstimatedFareLabel.ShadowColor = UIColor.Clear;
@@ -91,7 +92,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if (EstimatedFareLabel.Text != value)
                 {
                     EstimatedFareLabel.Text = value;
-                    EstimatedFareLabel.SizeToFit();
+                    var sizeThatFits = EstimatedFareLabel.SizeThatFits(new SizeF(Frame.Width - 56f - 5f, Frame.Height - 10f));
+                    EstimatedFareLabel.SetWidth(sizeThatFits.Width);
+                    EstimatedFareLabel.SetHeight(sizeThatFits.Height);
                     EstimatedFareLabel.SetX(56f);
                     EstimatedFareLabel.SetVerticalCenter(Frame.Height / 2);
                 }
