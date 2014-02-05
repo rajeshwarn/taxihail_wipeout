@@ -524,6 +524,8 @@
     <AndroidResource Include="Resources\Drawable\button_booklater_image_selector.axml" />
     <AndroidResource Include="Resources\Drawable\button_estimate_image_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_highlight_text_selector.axml" />
+    <AndroidResource Include="Resources\Layout\SubView_AppBar.axml" />
+    <Compile Include="Controls\Widgets\AppBar.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

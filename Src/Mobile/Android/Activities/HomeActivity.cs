@@ -43,17 +43,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private SupportMapFragment _touchMap;
         private OrderReview _orderReview;
         private OrderOptions _orderOptions;
+        private AppBar _appBar;
+
         private int _menuWidth = 400;
         private readonly DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
-
-
-        public new HomeViewModel ViewModel
-		{
-			get
-			{
-				return (HomeViewModel)DataContext;
-			}
-		}
 
         private Bundle _mainBundle;
 
@@ -178,6 +171,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ViewModel.OnViewLoaded();
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
+            _appBar = (AppBar) FindViewById(Resource.Id.appBar);
 
             // Creating a view controller for MapFragment
             Bundle mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
@@ -190,19 +184,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             binding.Bind(_mapFragment).For("DataContext").To(vm => vm.Map); // Map Fragment View Bindings
             binding.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // Map OrderOptions View Bindings
+            binding.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
 
-            var bookNow = FindViewById<Button>(Resource.Id.btnBookNow);
-            binding
-                .Bind(bookNow)
-                .For("Click")
-                .To(vm => vm.BottomBar.BookNow);
+
 
             binding.Apply();
 
             PanelMenuInit();
 
-            FindViewById<View>(Resource.Id.btnBookLaterLayout).Click -= PickDate_Click;
-            FindViewById<View>(Resource.Id.btnBookLaterLayout).Click += PickDate_Click;
+            //FindViewById<View>(Resource.Id.btnBookLaterLayout).Click -= PickDate_Click;
+            //FindViewById<View>(Resource.Id.btnBookLaterLayout).Click += PickDate_Click;
             //FindViewById<View>(Resource.Id.btnBookLater).Click -= PickDate_Click;
             //FindViewById<View>(Resource.Id.btnBookLater).Click += PickDate_Click;
         }
@@ -299,9 +290,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap.OnLowMemory();
         }
 
-        public void ChangeState(OrderReviewPresentationHint hint)
+        public void ChangeState(HomeViewModelPresentationHint hint)
         {
-            if (hint.Show)
+            if (hint.State == HomeViewModelState.Review)
             {
                 var delta = _orderOptions.Bottom - _orderReview.Top;
                 var animation = new TranslateAnimation(0, 0, 0, delta);
@@ -318,6 +309,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 animation.Interpolator = new DecelerateInterpolator();
                 _orderReview.StartAnimation(animation);
             }
+            _appBar.ChangePresentation(hint);
            
         }
 

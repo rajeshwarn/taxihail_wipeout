@@ -26,9 +26,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void ChangePresentation(Cirrious.MvvmCross.ViewModels.MvxPresentationHint hint)
         {
-            if (hint is OrderReviewPresentationHint)
+            if (hint is HomeViewModelPresentationHint)
             {
-                TryChangeOrderReviewPresentation(hint);
+                TryChangeHomeViewPresentation((HomeViewModelPresentationHint)hint);
             }
             else
             {
@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        private void TryChangeOrderReviewPresentation(OrderReviewPresentationHint hint)
+        private void TryChangeHomeViewPresentation(HomeViewModelPresentationHint hint)
         {
             var homeView = Activity as HomeActivity;
             if (homeView != null)
@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
             else
             {
-                MvxTrace.Warning("Can't show order review");
+                MvxTrace.Warning("Can't change home view state");
             }
 
         }
