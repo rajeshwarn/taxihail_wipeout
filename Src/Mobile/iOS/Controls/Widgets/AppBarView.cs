@@ -15,6 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     [Register("AppBarView")]
     public class AppBarView : MvxView
     {
+        private UIView _confirmationButtons;
         public static SizeF ButtonSize = new SizeF(60, 46);
 
         protected UIView Line { get; set; }
@@ -42,6 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             AddSubview(Line);
 
             AddButtonsForBooking();
+            CreateButtonsForConfirmation();
         }
 
         private void AddButtonsForBooking()
@@ -82,6 +84,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Apply();
 
             AddSubviews(btnEstimate, btnBook, btnBookLater);
+        }
+
+        private void CreateButtonsForConfirmation()
+        {
+            _confirmationButtons = new UIView(this.Bounds);
+
+            var btnConfirm = new FlatButton(new RectangleF((320 - 123)/2, 7, 123, 41));
+            FlatButtonStyle.Green.ApplyTo(btnConfirm);
+            btnConfirm.SetTitle(Localize.GetValue("ConfirmButton"), UIControlState.Normal);
+
+            _confirmationButtons.Add(btnConfirm);
+        }
+
+        public void ToConfirmationState()
+        {
+            foreach(var subview in Subviews)
+            {
+                subview.RemoveFromSuperview();
+            }
+            Add(_confirmationButtons);
         }
     }
 }

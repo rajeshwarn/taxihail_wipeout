@@ -91,6 +91,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     constraintOrderReviewTopSpace.Constant = 170;
                     homeView.LayoutIfNeeded();
                 });
+
+            bottomBar.ToConfirmationState();
         }
 
         private void InstantiatePanel()

@@ -76,6 +76,60 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						}
 					});
 			}
+		}
+
+		public ICommand ConfirmOrder
+		{
+			get
+			{
+				return GetCommand(async () =>
+					{
+						//TODO: Show Progress
+							try
+							{
+							/*
+								var orderInfo = await this.Services().Booking.CreateOrder(Order);
+
+								if (!orderInfo.IbsOrderId.HasValue || !(orderInfo.IbsOrderId > 0))
+									return;
+
+								var orderCreated = new Order
+								{
+									CreatedDate = DateTime.Now, 
+									DropOffAddress = Order.DropOffAddress, 
+									IbsOrderId = orderInfo.IbsOrderId, 
+									Id = Order.Id, PickupAddress = Order.PickupAddress,
+									Note = Order.Note, 
+									PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now,
+									Settings = Order.Settings
+								};
+								*/
+
+								ShowViewModel<BookingStatusViewModel>(new
+									{
+									//order = orderCreated.ToJson(),
+									//orderStatus = orderInfo.ToJson()
+									});	
+
+							}
+							catch
+							{
+							/*if (CallIsEnabled)
+								{
+									var err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], Settings.ApplicationName, 
+										Settings.DefaultPhoneNumberDisplay);
+									this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
+								}
+								else
+								{
+									this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["ServiceError_ErrorCreatingOrderMessage_NoCall"]);
+								}
+								*/
+							}
+
+
+					}); 
+			}
 		}	
     }
 }
