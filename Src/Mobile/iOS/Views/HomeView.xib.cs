@@ -70,6 +70,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(ctrlOrderOptions)
                 .For(v => v.DataContext)
                 .To(vm => vm.OrderOptions);
+
+            set.Bind(ctrlOrderReview)
+                .For(v => v.DataContext)
+                .To(vm => vm.OrderReview);
                 
             set.Bind(bottomBar)
                 .For(v => v.DataContext)

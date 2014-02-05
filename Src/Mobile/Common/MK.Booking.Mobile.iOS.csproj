@@ -325,6 +325,7 @@
     <Compile Include="Data\VehicleClusterHelper.cs" />
     <Compile Include="ViewModels\Orders\ShowOrderReviewPresentationHint.cs" />
     <Compile Include="ViewModels\Orders\BookLaterViewModel.cs" />
+    <Compile Include="ViewModels\Orders\OrderReviewViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -392,6 +393,5 @@
     <Folder Include="ViewModels\Map\" />
     <Folder Include="AppServices\Orders\" />
     <Folder Include="ViewModels\Orders\" />
-    <Folder Include="ViewModels\Orders\ShowOrderReviewPresentationHint.xcassets\" />
   </ItemGroup>
 </Project>

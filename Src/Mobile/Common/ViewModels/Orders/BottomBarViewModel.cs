@@ -68,12 +68,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						try
 						{
 							_orderWorkflowService.ValidatePickupDestinationAndTime();
+							ChangePresentation(new ShowOrderReviewPresentationHint());
 						}
 						catch(OrderValidationException e)
 						{
 							// TODO: Display error
 						}
-                        ChangePresentation(new ShowOrderReviewPresentationHint());
 					});
 			}
 		}	
