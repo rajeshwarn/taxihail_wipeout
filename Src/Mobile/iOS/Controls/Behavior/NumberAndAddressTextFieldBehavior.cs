@@ -11,8 +11,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
             number.Text = "";
             number.EditingDidBegin += (s, e) => FocusOnNumber(number, address);
             number.EditingDidEnd += (sender, e) => {
-                string newFullAddress = number.Text + " " + address.Text.ToSafeString().Trim();
-                if ( addressUpdated !=null && number != null && address != null)
+                var newFullAddress = number.Text + " " + address.Text.ToSafeString().Trim();
+                if ( addressUpdated != null && number != null && address != null)
                 {
                     addressUpdated( number.Text, newFullAddress );
                 }
@@ -38,6 +38,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
             if(!int.TryParse(value,out dummy)) { return; }
 
             streetNumber.Text = value;
+
+            //setting the text here resets the font and unless you change it to another 
+            //font before setting the correct font, the change won't be visible
+            var originalFont = streetNumber.Font;
+            streetNumber.Font = UIFont.SystemFontOfSize(10);
+            streetNumber.Font = originalFont;
+
             streetNumber.SelectAll(streetNumber);
 
             address.Text = address.Text.Substring(splitPoint).Trim();
