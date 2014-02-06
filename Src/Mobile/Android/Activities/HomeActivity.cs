@@ -279,16 +279,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
+            SetSelectedOnBookLater(false);
+
             base.OnActivityResult(requestCode, resultCode, data);
+
 
             if (requestCode == (int)ActivityEnum.DateTimePicked && resultCode == Result.Ok)
             {             
                 DateTime dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
                 ViewModel.BottomBar.BookLater.SetPickupDateAndBook.Execute(dt);
-            }
-            else
-            {
-                SetSelectedOnBookLater(false);
             }
         }
 
