@@ -31,6 +31,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Messages;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -38,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         ScreenOrientation = ScreenOrientation.Portrait, ClearTaskOnLaunch = true,
         FinishOnTaskLaunch = true)]
    
-    public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>
+    public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
         private SupportMapFragment _touchMap;
         private OrderReview _orderReview;
@@ -299,9 +300,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap.OnLowMemory();
         }
 
-        public void ChangeState(OrderReviewPresentationHint hint)
+        public void ChangeState(HomeViewModelPresentationHint hint)
         {
-            if (hint.Show)
+            if (hint.State == HomeViewModelState.Review)
             {
                 var delta = _orderOptions.Bottom - _orderReview.Top;
                 var animation = new TranslateAnimation(0, 0, 0, delta);
@@ -322,5 +323,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         }
 
 
+        void IChangePresentation.ChangeState(ChangeStatePresentationHint hint)
+        {
+            ChangeState((HomeViewModelPresentationHint)hint);
+        }
     }
 }
