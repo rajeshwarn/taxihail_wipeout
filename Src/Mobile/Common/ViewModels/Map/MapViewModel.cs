@@ -6,6 +6,10 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using System.Reactive.Disposables;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using System.ComponentModel;
+using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -19,7 +23,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_orderWorkflowService = orderWorkflowService;
 			_vehicleService = vehicleService;
 
-			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
+            this.Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), addressSelectionMode => AddressSelectionMode = addressSelectionMode);
+            this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
 			this.Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
 			this.Observe(_vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
         }
@@ -68,6 +73,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+        private MapBounds _userMapBounds;
+        public MapBounds UserMapBounds
+        {
+            get
+            {
+                 return _userMapBounds;
+            }
+
+            set
+            {            
+                _userMapBounds = value;
+                DeltaLongitude = Math.Abs((UserMapBounds.EastBound - UserMapBounds.WestBound) / 2);
+                DeltaLatitude = Math.Abs((UserMapBounds.NorthBound - UserMapBounds.SouthBound) / 2);
+                _orderWorkflowService.SetAddressToCoordinate(new Position() { Latitude = UserMapBounds.GetCenter().Latitude, Longitude =  UserMapBounds.GetCenter().Longitude });
+            }
+        }
+
+        public AddressSelectionMode AddressSelectionMode { get; set;}
+
 		private IEnumerable<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
 		public IEnumerable<AvailableVehicle> AvailableVehicles
 		{
@@ -79,19 +103,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		private void OnPickupAddressChanged()
-		{
-			var deltaLat = 0.002;
-			var deltaLng = 0.002;
+        [DefaultValue(0.002d)]
+        public double DeltaLatitude { get; set; }
 
-			if (PickupAddress.HasValidCoordinate())
+        [DefaultValue(0.002d)]
+        public double DeltaLongitude { get; set; }
+
+        public double DefaultDelta = 0.002d;
+
+		private void OnPickupAddressChanged()
+		{			
+            if (PickupAddress.HasValidCoordinate())
 			{
 				MapBounds = new MapBounds
 				{
-					NorthBound = PickupAddress.Latitude + deltaLat,
-					SouthBound = PickupAddress.Latitude - deltaLat,
-					EastBound = PickupAddress.Longitude + deltaLng,
-					WestBound = PickupAddress.Longitude - deltaLng,
+                    NorthBound = PickupAddress.Latitude + DeltaLatitude,
+                    SouthBound = PickupAddress.Latitude - DeltaLatitude,
+                    EastBound = PickupAddress.Longitude + DeltaLongitude,
+                    WestBound = PickupAddress.Longitude - DeltaLongitude,
 				};
 			}
 		}

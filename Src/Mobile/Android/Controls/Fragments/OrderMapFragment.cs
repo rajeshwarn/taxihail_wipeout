@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -46,6 +48,41 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public void InitializeBinding()
         {
             var binding = this.CreateBindingSet<OrderMapFragment, MapViewModel>();
+
+            Map.CameraChange += (object sender, GoogleMap.CameraChangeEventArgs e) =>
+            {
+                if (bypassCameraChangeEvent)
+                {
+                    bypassCameraChangeEvent = false;
+                    return;
+                }
+
+                var _target = Map.CameraPosition.Target;
+
+                var _bounds =  Map.Projection.VisibleRegion.LatLngBounds;
+
+                UserMapBounds = new MapBounds()
+                { 
+                    SouthBound = _bounds.Southwest.Latitude, 
+                    WestBound = _bounds.Southwest.Longitude, 
+                    NorthBound = _bounds.Northeast.Latitude, 
+                    EastBound = _bounds.Northeast.Longitude
+                };
+
+
+                var handler = UserMapBoundsChanged;
+
+                if (handler != null)
+                    handler(this, EventArgs.Empty);
+            };
+
+            binding.Bind()
+                .For(v => v.UserMapBounds)
+                .To(vm => vm.UserMapBounds);
+
+            binding.Bind()
+                .For(v => v.AddressSelectionMode)
+                .To(vm => vm.AddressSelectionMode);
 
             binding.Bind()
                 .For(v => v.PickupAddress)
@@ -94,7 +131,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             get
             {
-                return _mapBounds;
+                return (_mapBounds == null) ? new MapBounds() : _mapBounds;
             }
 
             set
@@ -106,6 +143,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
         }
+
+        public event EventHandler UserMapBoundsChanged;
+
+        private MapBounds _userMapBounds;
+        public MapBounds UserMapBounds
+        {
+            get
+            {
+                return _userMapBounds;
+            }
+
+            set
+            {
+                if (_userMapBounds != value)
+                {
+                    _userMapBounds = value;
+
+                    if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
+                    {
+                        CreatePins();
+                        _pickupPin.Visible = true;
+                        _pickupPin.Position = new LatLng(_userMapBounds.GetCenter().Latitude, _userMapBounds.GetCenter().Longitude);
+                    }
+                }
+            }
+        }
+
+        public AddressSelectionMode AddressSelectionMode { get; set;}
 
         private IEnumerable<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
         public IEnumerable<AvailableVehicle> AvailableVehicles
@@ -123,28 +188,50 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+        private void CreatePins()
+        {
+            if (_pickupPin == null)
+            {
+                _pickupPin = Map.AddMarker(new MarkerOptions()
+                    .SetPosition(new LatLng(0, 0))
+                    .Anchor(.5f, 1f)
+                    .InvokeIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.hail_icon))
+                    .Visible(false));
+            }     
+
+            if (_destinationPin == null)
+            {
+                _destinationPin = Map.AddMarker(new MarkerOptions()
+                    .SetPosition(new LatLng(0, 0))
+                    .Anchor(.5f, 1f)
+                    .InvokeIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.destination_icon))
+                    .Visible(false));
+            }     
+        }
+
         private void OnPickupAddressChanged()
         {
             if (PickupAddress == null)
                 return; 
 
-            if (_pickupPin == null)
-            {
-                _pickupPin = Map.AddMarker(new MarkerOptions()
-                                           .SetPosition(new LatLng(0, 0))
-                                           .Anchor(.5f, 1f)
-                                           .InvokeIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.hail_icon))
-                                           .Visible(false));
-            }
+            CreatePins();
 
-            if (PickupAddress.HasValidCoordinate())
+            if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
             {
                 _pickupPin.Visible = true;
-                _pickupPin.Position = new LatLng(PickupAddress.Latitude, PickupAddress.Longitude);
+                _pickupPin.Position = new LatLng(MapBounds.GetCenter().Latitude, MapBounds.GetCenter().Longitude);
             }
             else
             {
-                _pickupPin.Visible = false;
+                if (PickupAddress.HasValidCoordinate())
+                {
+                    _pickupPin.Visible = true;
+                    _pickupPin.Position = new LatLng(PickupAddress.Latitude, PickupAddress.Longitude);
+                }
+                else
+                {
+                    _pickupPin.Visible = false;
+                }
             }
         }
 
@@ -152,15 +239,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             if (DestinationAddress == null)
                 return; 
-
-            if (_destinationPin == null)
-            {
-                _destinationPin = Map.AddMarker(new MarkerOptions()
-                                           .SetPosition(new LatLng(0, 0))
-                                           .Anchor(.5f, 1f)
-                                           .InvokeIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.destination_icon))
-                                           .Visible(false));
-            }
 
             if (DestinationAddress.HasValidCoordinate())
             {
@@ -173,15 +251,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+        private bool bypassCameraChangeEvent = false;
+
         private void OnMapBoundsChanged()
         {
             if (MapBounds != null)
             {
+                bypassCameraChangeEvent = true;
                 Map.AnimateCamera(
                     CameraUpdateFactory.NewLatLngBounds(
                         new LatLngBounds(new LatLng(MapBounds.SouthBound, MapBounds.WestBound), 
-                                     new LatLng(MapBounds.NorthBound, MapBounds.EastBound)),
-                        DrawHelper.GetPixels(100)));
+                            new LatLng(MapBounds.NorthBound, MapBounds.EastBound)),
+                        DrawHelper.GetPixels(0)));
             }
         }
 

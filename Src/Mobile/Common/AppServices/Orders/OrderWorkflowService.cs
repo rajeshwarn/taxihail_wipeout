@@ -91,6 +91,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			);
 		}
 
+        public async Task SetAddressToCoordinate(Position userMapBoundsCoordinate)
+		{
+            _locationService.GetNextPosition(TimeSpan.FromSeconds(2), 50).Subscribe(
+				async pos =>
+				{					
+                    var address = await SearchAddressForCoordinate(userMapBoundsCoordinate);
+					await SetAddressToCurrentSelection(address);
+                }
+            );
+		}
+
 		public async Task ClearDestinationAddress()
 		{
 			_destinationAddressSubject.OnNext(new Address());
