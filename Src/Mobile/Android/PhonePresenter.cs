@@ -6,6 +6,7 @@ using Android.App;
 using Cirrious.CrossCore.Platform;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -26,9 +27,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void ChangePresentation(Cirrious.MvvmCross.ViewModels.MvxPresentationHint hint)
         {
-            if (hint is HomeViewModelPresentationHint)
+            if (hint is ChangeStatePresentationHint)
             {
-                TryChangeHomeViewPresentation((HomeViewModelPresentationHint)hint);
+                TryChangeViewPresentation((ChangeStatePresentationHint)hint);
             }
             else
             {
@@ -51,9 +52,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        private void TryChangeHomeViewPresentation(HomeViewModelPresentationHint hint)
+        private void TryChangeViewPresentation(ChangeStatePresentationHint hint)
         {
-            var homeView = Activity as HomeActivity;
+            var homeView = Activity as IChangePresentation;
             if (homeView != null)
             {
                 homeView.ChangeState(hint);
