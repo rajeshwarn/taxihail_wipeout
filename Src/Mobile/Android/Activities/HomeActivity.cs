@@ -31,6 +31,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Messages;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -38,22 +39,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         ScreenOrientation = ScreenOrientation.Portrait, ClearTaskOnLaunch = true,
         FinishOnTaskLaunch = true)]
    
-    public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>
+    public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
         private SupportMapFragment _touchMap;
         private OrderReview _orderReview;
         private OrderOptions _orderOptions;
+        private AppBar _appBar;
+        private HomeViewModelState _presentationState = HomeViewModelState.Initial;
+
         private int _menuWidth = 400;
         private readonly DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
-
-
-        public new HomeViewModel ViewModel
-		{
-			get
-			{
-				return (HomeViewModel)DataContext;
-			}
-		}
 
         private Bundle _mainBundle;
 
@@ -178,6 +173,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ViewModel.OnViewLoaded();
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
+            _appBar = (AppBar) FindViewById(Resource.Id.appBar);
 
             // Creating a view controller for MapFragment
             Bundle mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
@@ -190,19 +186,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             binding.Bind(_mapFragment).For("DataContext").To(vm => vm.Map); // Map Fragment View Bindings
             binding.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // Map OrderOptions View Bindings
+            binding.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
 
-            var bookNow = FindViewById<Button>(Resource.Id.btnBookNow);
-            binding
-                .Bind(bookNow)
-                .For("Click")
-                .To(vm => vm.BottomBar.BookNow);
+
 
             binding.Apply();
 
             PanelMenuInit();
 
-            FindViewById<View>(Resource.Id.btnBookLaterLayout).Click -= PickDate_Click;
-            FindViewById<View>(Resource.Id.btnBookLaterLayout).Click += PickDate_Click;
+            //FindViewById<View>(Resource.Id.btnBookLaterLayout).Click -= PickDate_Click;
+            //FindViewById<View>(Resource.Id.btnBookLaterLayout).Click += PickDate_Click;
             //FindViewById<View>(Resource.Id.btnBookLater).Click -= PickDate_Click;
             //FindViewById<View>(Resource.Id.btnBookLater).Click += PickDate_Click;
         }
@@ -299,19 +292,55 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap.OnLowMemory();
         }
 
-        TranslateAnimation _animation;
-
-        public void ShowOrderReview()
+        public void ChangeState(HomeViewModelPresentationHint hint)
         {
-            var delta = _orderOptions.Bottom - _orderReview.Top;
-            _animation = new TranslateAnimation(0, 0, 0, delta);
-            _animation.Duration = 600;
-            _animation.Interpolator = new DecelerateInterpolator();
-            _animation.FillAfter = true;
-            _orderReview.StartAnimation(_animation);
+            _presentationState = hint.State;
+
+            if (hint.State == HomeViewModelState.Review)
+            {
+                var delta = _orderOptions.Bottom - _orderReview.Top;
+                var animation = new TranslateAnimation(0, 0, 0, delta);
+                animation.Duration = 600;
+                animation.Interpolator = new DecelerateInterpolator();
+                animation.FillAfter = true;
+                _orderReview.StartAnimation(animation);
+            }
+            else
+            {
+                var delta = _orderOptions.Bottom - _orderReview.Top;
+                var animation = new TranslateAnimation(0, 0, delta, 0);
+                animation.Duration = 600;
+                animation.Interpolator = new DecelerateInterpolator();
+                _orderReview.StartAnimation(animation);
+            }
+            _appBar.ChangePresentation(hint);
            
         }
 
+        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
+        {
+            if (keyCode == Keycode.Back)
+            {
+                switch (_presentationState)
+                {
+                    case HomeViewModelState.Review:
+                        ChangeState(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                        return true;
+                    case HomeViewModelState.Edit:
+                        ChangeState(new HomeViewModelPresentationHint(HomeViewModelState.Review));
+                        return true;
+                    default:
+                        break;
+                }
+            }
 
+            return base.OnKeyDown(keyCode, e);
+        }
+
+
+        void IChangePresentation.ChangeState(ChangeStatePresentationHint hint)
+        {
+            ChangeState((HomeViewModelPresentationHint)hint);
+        }
     }
 }

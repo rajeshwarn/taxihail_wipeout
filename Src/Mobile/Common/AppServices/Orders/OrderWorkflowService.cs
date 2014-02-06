@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<AddressSelectionMode> _addressSelectionModeSubject = new BehaviorSubject<AddressSelectionMode>(AddressSelectionMode.PickupSelection);
 		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
+        readonly ISubject<BookingSettings> _bookingSettingsSubject;
 		readonly ISubject<string> _estimatedFareSubject;
 
 		public OrderWorkflowService(AbstractLocationService locationService,
@@ -41,6 +42,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_geolocService = geolocService;
 			_accountService = accountService;
 			_locationService = locationService;
+
+			// TODO: Listen to account booking settings changes
+			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(accountService.CurrentAccount.Settings);
 			_localize = localize;
 			_bookingService = bookingService;
 
@@ -157,6 +161,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public IObservable<AddressSelectionMode> GetAndObserveAddressSelectionMode()
 		{
 			return _addressSelectionModeSubject;
+		}
+
+		public IObservable<BookingSettings> GetAndObserveBookingSettings()
+		{
+			return _bookingSettingsSubject;
 		}
 
 		public IObservable<string> GetAndObserveEstimatedFare()

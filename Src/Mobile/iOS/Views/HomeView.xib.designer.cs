@@ -22,6 +22,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayButton btnMenu { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.NSLayoutConstraint constraintOrderOptionsTopSpace { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.NSLayoutConstraint constraintOrderReviewTopSpace { get; set; }
 
 		[Outlet]
@@ -53,9 +56,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnMenu = null;
 			}
 
+			if (constraintOrderReviewTopSpace != null) {
+				constraintOrderReviewTopSpace.Dispose ();
+				constraintOrderReviewTopSpace = null;
+			}
+
 			if (ctrlOrderOptions != null) {
 				ctrlOrderOptions.Dispose ();
 				ctrlOrderOptions = null;
+			}
+
+			if (ctrlOrderReview != null) {
+				ctrlOrderReview.Dispose ();
+				ctrlOrderReview = null;
 			}
 
 			if (homeView != null) {
@@ -68,14 +81,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				mapView = null;
 			}
 
-			if (constraintOrderReviewTopSpace != null) {
-				constraintOrderReviewTopSpace.Dispose ();
-				constraintOrderReviewTopSpace = null;
-			}
-
-			if (ctrlOrderReview != null) {
-				ctrlOrderReview.Dispose ();
-				ctrlOrderReview = null;
+			if (constraintOrderOptionsTopSpace != null) {
+				constraintOrderOptionsTopSpace.Dispose ();
+				constraintOrderOptionsTopSpace = null;
 			}
 		}
 	}
