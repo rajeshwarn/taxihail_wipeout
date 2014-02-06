@@ -2,6 +2,7 @@
 
 using System;
 using System.IO;
+using System.Diagnostics;
 
 #endregion
 
@@ -31,7 +32,7 @@ namespace DeploymentServiceTools
             {
                 try
                 {
-                    logger("Hg Revert");
+					logger("Hg Revert");
                     hg.Revert();
                     logger("Hg Purge");
                     try
@@ -49,12 +50,15 @@ namespace DeploymentServiceTools
                 {
                     logger("Revert Failed - Deleting all files");
 
-                    foreach (var file in Directory.EnumerateFiles(_sourceDirectory, "*.*", SearchOption.AllDirectories))
-                    {
-                        File.Delete(file);
-                    }
-                    logger("Deleting source dir " + _sourceDirectory);
-                    Directory.Delete(_sourceDirectory);
+					var delete = ProcessEx.GetProcess("rm",string.Format("-r -f {0}", _sourceDirectory));
+					using (var exeProcess = Process.Start(delete))
+					{
+						var output = ProcessEx.GetOutput(exeProcess);
+						if (exeProcess.ExitCode > 0)
+						{
+							throw new Exception("Error during delete sourceFolder" + output);
+						}
+					}
 
                     logger("Full Clone");
                     hg.Clone(revisionNumber);
