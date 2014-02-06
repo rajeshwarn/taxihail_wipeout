@@ -45,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private OrderReview _orderReview;
         private OrderOptions _orderOptions;
         private AppBar _appBar;
+        private HomeViewModelState _presentationState = HomeViewModelState.Initial;
 
         private int _menuWidth = 400;
         private readonly DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
@@ -293,6 +294,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public void ChangeState(HomeViewModelPresentationHint hint)
         {
+            _presentationState = hint.State;
+
             if (hint.State == HomeViewModelState.Review)
             {
                 var delta = _orderOptions.Bottom - _orderReview.Top;
@@ -312,6 +315,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             _appBar.ChangePresentation(hint);
            
+        }
+
+        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
+        {
+            if (keyCode == Keycode.Back)
+            {
+                switch (_presentationState)
+                {
+                    case HomeViewModelState.Review:
+                        ChangeState(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                        return true;
+                    case HomeViewModelState.Edit:
+                        ChangeState(new HomeViewModelPresentationHint(HomeViewModelState.Review));
+                        return true;
+                    default:
+                        break;
+                }
+            }
+
+            return base.OnKeyDown(keyCode, e);
         }
 
 
