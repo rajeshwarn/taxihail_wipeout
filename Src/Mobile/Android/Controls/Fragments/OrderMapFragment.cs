@@ -19,6 +19,7 @@ using Android.Content.Res;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Util;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -40,7 +41,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         void InitDrawables()
         {            
             var useColor = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
-            useColor = true;
             var colorBgTheme = useColor ? (Color?)Resources.GetColor(Resource.Color.login_background_color) : (Color?)null;
 
             var destinationIcon =  Resources.GetDrawable(Resource.Drawable.@destination_icon);
@@ -48,24 +48,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var nearbyClusterIcon = Resources.GetDrawable(Resource.Drawable.@cluster); 
             var hailIcon = Resources.GetDrawable(Resource.Drawable.@hail_icon);                                
 
-            _destinationIcon = DrawableToBitmapDescriptor(destinationIcon, colorBgTheme);
-            _nearbyTaxiIcon = DrawableToBitmapDescriptor(nearbyTaxiIcon, colorBgTheme);
-            _nearbyClusterIcon = DrawableToBitmapDescriptor(nearbyClusterIcon, colorBgTheme);
-            _hailIcon = DrawableToBitmapDescriptor(hailIcon, colorBgTheme);
+            _destinationIcon = DrawHelper.DrawableToBitmapDescriptor(destinationIcon, colorBgTheme);
+            _nearbyTaxiIcon = DrawHelper.DrawableToBitmapDescriptor(nearbyTaxiIcon, colorBgTheme);
+            _nearbyClusterIcon = DrawHelper.DrawableToBitmapDescriptor(nearbyClusterIcon, colorBgTheme);
+            _hailIcon = DrawHelper.DrawableToBitmapDescriptor(hailIcon, colorBgTheme);
         }
 
-        public BitmapDescriptor DrawableToBitmapDescriptor (Drawable drawable, Color? colorFilter = null) 
-        {
-            Bitmap bitmap = Bitmap.CreateBitmap(drawable.IntrinsicWidth, drawable.IntrinsicHeight, Bitmap.Config.Argb8888);
-            Canvas canvas = new Canvas(bitmap); 
-            if (colorFilter != null)
-            {
-                drawable.SetColorFilter(new PorterDuffColorFilter((Color)colorFilter, PorterDuff.Mode.Multiply));
-            }
-            drawable.SetBounds(0, 0, canvas.Width, canvas.Height);
-            drawable.Draw(canvas);
-            return BitmapDescriptorFactory.FromBitmap(bitmap);
-        }
 
         public OrderMapFragment(SupportMapFragment _map, Resources _resources)
         {
