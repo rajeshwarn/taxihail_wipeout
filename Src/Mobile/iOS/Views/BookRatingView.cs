@@ -35,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
             ratingTableView.BackgroundColor = UIColor.Clear;
             ratingTableView.SeparatorColor = UIColor.Clear;
             ratingTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+            ratingTableView.DelaysContentTouches = false;
 
             var btnSubmit = new FlatButton(new RectangleF(8f, BottomPadding, 304f, 41f));
 			FlatButtonStyle.Green.ApplyTo(btnSubmit);
@@ -56,7 +57,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 				UITableViewCellAccessory.None);
 			source.CellCreator = (tableView, indexPath, item) =>
 			{
-				return BookRatingCell.LoadFromNib(tableView);
+                var cell = BookRatingCell.LoadFromNib(tableView);
+                cell.RemoveDelay();
+                return cell;
 			};
 			ratingTableView.Source = source;
 

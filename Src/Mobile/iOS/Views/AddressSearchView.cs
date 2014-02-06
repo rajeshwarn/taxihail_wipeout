@@ -50,7 +50,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                 CellBindingText,
 								UITableViewCellAccessory.None);
 
-            source.CellCreator = (tview , iPath, state ) => { return new apcurium.MK.Booking.Mobile.Client.Controls.Widgets.TwoLinesCell( Cellid, CellBindingText, UITableViewCellAccessory.None ); };
+            source.CellCreator = (tview , iPath, state ) => { 
+                var cell =  new TwoLinesCell( Cellid, CellBindingText, UITableViewCellAccessory.None );
+                cell.RemoveDelay();
+                return cell;
+             };
 
  			var set = this.CreateBindingSet<AddressSearchView, AddressSearchViewModel>();
 			set.Bind(source)
@@ -71,6 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             AddressListView.BackgroundView = new UIView{ BackgroundColor = UIColor.Clear };
             AddressListView.Source = source;
+            AddressListView.DelaysContentTouches = false;
 
             SearchTextField.ReturnKeyType = UIReturnKeyType.Done;
             SearchTextField.ShouldReturn = delegate {

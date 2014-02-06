@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
 
             result.HideBottomBar = tableView.IsLastCell(indexPath);
-
+            result.RemoveDelay();
             return result as UITableViewCell;
         }
        
