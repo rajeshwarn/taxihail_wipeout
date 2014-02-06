@@ -15,6 +15,7 @@ using Cirrious.MvvmCross.Binding.Droid.BindingContext;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Binding.Attributes;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {

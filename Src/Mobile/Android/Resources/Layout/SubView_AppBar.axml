@@ -96,56 +96,62 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/review_buttons"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
         <Button
             android:id="@+id/btnCancelReview"
-            style="@style/ButtonActionBlackStyle"
+            style="@style/ButtonActionLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="44dip"
             android:layout_marginBottom="5dp"
+            android:layout_marginLeft="8dp"
             android:text="@string/Cancel"
-            android:layout_gravity="bottom|left" />
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true" />
         <Button
             android:id="@+id/btnConfirm"
             style="@style/ButtonActionGreenStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="123dp"
             android:layout_height="44dip"
             android:layout_marginBottom="5dp"
             android:text="@string/Confirm"
-            android:layout_gravity="bottom|center_horizontal" />
+            android:layout_centerInParent="true" />
         <Button
             android:id="@+id/btnEdit"
-            style="@style/ButtonActionBlackStyle"
-            android:layout_width="123dip"
+            style="@style/ButtonActionLabelStyle"
+            android:layout_width="wrap_content"
             android:layout_height="44dip"
             android:layout_marginBottom="5dp"
+            android:layout_marginRight="8dp"
             android:text="@string/Edit"
-            android:layout_gravity="bottom|right" />
-    </LinearLayout>
-    <LinearLayout
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+    <RelativeLayout
         android:id="@+id/edit_buttons"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
         <Button
             android:id="@+id/btnCancelEdit"
-            style="@style/ButtonActionBlackStyle"
+            style="@style/ButtonActionLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="44dip"
             android:layout_marginBottom="5dp"
+            android:layout_marginLeft="8dp"
             android:text="@string/Cancel"
-            android:layout_gravity="bottom|left" />
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true" />
         <Button
             android:id="@+id/btnSave"
             style="@style/ButtonActionGreenStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="123dp"
             android:layout_height="44dip"
             android:layout_marginBottom="5dp"
             android:text="@string/Save"
-            android:layout_gravity="bottom|center_horizontal" />
-    </LinearLayout>
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
 </LinearLayout>

@@ -526,6 +526,8 @@
     <AndroidResource Include="Resources\Drawable\button_highlight_text_selector.axml" />
     <AndroidResource Include="Resources\Layout\SubView_AppBar.axml" />
     <Compile Include="Controls\Widgets\AppBar.cs" />
+    <AndroidResource Include="Resources\Drawable\button_action_label_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_action_label_text_selector.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
