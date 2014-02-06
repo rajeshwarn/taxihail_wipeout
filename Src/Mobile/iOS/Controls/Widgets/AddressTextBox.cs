@@ -18,13 +18,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public event Action AddressClicked;
         public Action<string,string> AddressUpdated;
 
-        public FlatTextField StreetNumberTextView { get; set;}
-        public FlatTextField AddressTextView { get; set;}
-        public UIButton AddressButton { get; set; }
-        UIActivityIndicatorView LoadingWheel  { get; set; }
-        public UIView VerticalDivider { get; set; }
-        public UIView HorizontalDividerTop { get; set; }
-        RoundedCornerView RedRoundedCornerView { get; set; }
+        private FlatTextField StreetNumberTextView { get; set; }
+        public FlatTextField AddressTextView { get; set; }
+        private UIButton AddressButton { get; set; }
+        private UIActivityIndicatorView LoadingWheel  { get; set; }
+        private UIView VerticalDivider { get; set; }
+        private UIView HorizontalDividerTop { get; set; }
+        private RoundedCornerView RedRoundedCornerView { get; set; }
 
         public AddressTextBox(IntPtr h):base(h)
         {
@@ -71,7 +71,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             LoadingWheel = new UIActivityIndicatorView();
             LoadingWheel.Color = UIColor.Gray;
             AddSubview(LoadingWheel);
-//            ShowLoadingWheel();
 
             VerticalDivider = new UIView();
             VerticalDivider.BackgroundColor = UIColor.FromRGB(118, 118, 118);
@@ -150,14 +149,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
-        public void ShowLoadingWheel()
+        private void ShowLoadingWheel()
         {
             LoadingWheel.StartAnimating();
             LoadingWheel.Hidden = false;
             StreetNumberTextView.Hidden = true;
         }
 
-        public void HideLoadingWheel()
+        private void HideLoadingWheel()
         {
             LoadingWheel.StopAnimating();
             LoadingWheel.Hidden = true;

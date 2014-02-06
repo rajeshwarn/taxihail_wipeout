@@ -30,8 +30,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             
             viewDestination.IsDestination = true;
 
+            // temporary until we can be notified by the service that we're searching for an address
+            viewPickup.IsLoadingAddress = false;
+            viewDestination.IsLoadingAddress = false;
+
             // since we don't have the vehicle selection yet, we hardcode this value
-            viewVehicleType.ShowEstimate = true;
             viewVehicleType.VehicleType = "Taxi";
         }
 
@@ -39,11 +42,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             // TODO to toggle the AddressSearch, taken from TaxiDiamond
 //            viewPickup.AddressClicked += () => StartAddressSearch (Address.GetFirstPortionOfAddress(viewPickup.Address), address => {
-//                ViewModel.PickupAddress = address.Address;
+//                ViewModel.SetAddress.Execute(address.Address);
 //            });
 //
 //            viewDestination.AddressClicked += () => StartAddressSearch (Address.GetFirstPortionOfAddress(viewDestination.Address), address => {
-//                ViewModel.DestinationAddress = address.Address;
+//                ViewModel.SetAddress.Execute(address.Address);
 //            });
 
             viewPickup.AddressUpdated = (streetNumber, fullAddress) =>
@@ -52,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 newAddress.StreetNumber = streetNumber;
                 newAddress.FullAddress = fullAddress;
 
-                ViewModel.PickupAddress = newAddress;
+                ViewModel.SetAddress.Execute(newAddress);
             };
 
             viewDestination.AddressUpdated = (streetNumber, fullAddress) =>
@@ -61,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 newAddress.StreetNumber = streetNumber;
                 newAddress.FullAddress = fullAddress;
 
-                ViewModel.DestinationAddress = newAddress;
+                ViewModel.SetAddress.Execute(newAddress);
             };
 
             var set = this.CreateBindingSet<OrderOptionsControl, OrderOptionsViewModel>();
@@ -89,6 +92,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Hidden)
                 .To(vm => vm.ShowDestination)
                 .WithConversion("BoolInverter");
+            set.Bind(viewVehicleType)
+                .For(v => v.ShowEstimate)
+                .To(vm => vm.ShowDestination);
 
             set.Apply();
         }
