@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (!_defaultThemeApplied)
             {
                 // reset to default theme for the navigation bar
-                ChangeThemeOfNavigationBar(true);
+                ChangeThemeOfNavigationBar();
                 _defaultThemeApplied = true;
             }
             NavigationController.NavigationBar.BarStyle = UIBarStyle.Default;
@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            ChangeThemeOfNavigationBar(true);
+            ChangeThemeOfNavigationBar();
         }
 
         public override void ViewDidLoad()
