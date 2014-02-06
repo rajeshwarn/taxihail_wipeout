@@ -196,10 +196,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var titleFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
             var navBarButtonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
 
-            var isDefaultColor = resetToDefault || !Theme.IsLightContent;
+            //is false since now we are using the theme color in navbar even when logged in
+            var isDefaultColor = false;
 
             var textColor = isDefaultColor
-                                ? UIColor.FromRGB(44, 44, 44)
+                                ? Theme.LabelTextColor
                                 : UIColor.White;
 
             var navBarColor = isDefaultColor
@@ -286,7 +287,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
 
             var rightBarButtonFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
-            var textColor = UIColor.FromRGB(44, 44, 44);
+            var textColor = UIColor.White;
 
             var buttonTextColor = new UITextAttributes () {
                 Font = rightBarButtonFont,

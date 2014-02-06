@@ -12,10 +12,11 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class HomeView : BaseViewController<HomeViewModel>
+    public partial class HomeView : BaseViewController<HomeViewModel>, IChangePresentation
     {
         private bool _defaultThemeApplied;
         private PanelMenuView _menu;
@@ -34,8 +35,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 ChangeThemeOfNavigationBar(true);
                 _defaultThemeApplied = true;
             }
-
+            NavigationController.NavigationBar.BarStyle = UIBarStyle.Default;
             NavigationController.NavigationBar.Hidden = true;
+        }
+
+        public override void ViewWillDisappear(bool animated)
+        {
+            base.ViewWillDisappear(animated);
+            ChangeThemeOfNavigationBar(true);
         }
 
         public override void ViewDidLoad()
@@ -83,7 +90,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Apply();
         }
 
-        public void ChangeState(HomeViewModelPresentationHint hint)
+        public void ChangeState(ChangeStatePresentationHint hint)
+        {
+            ChangeState((HomeViewModelPresentationHint)hint);
+        }
+
+        void ChangeState(HomeViewModelPresentationHint hint)
         {
             if (hint.State == HomeViewModelState.Review)
             {
