@@ -35,8 +35,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 ChangeThemeOfNavigationBar(true);
                 _defaultThemeApplied = true;
             }
-
+            NavigationController.NavigationBar.BarStyle = UIBarStyle.Default;
             NavigationController.NavigationBar.Hidden = true;
+        }
+
+        public override void ViewWillDisappear(bool animated)
+        {
+            base.ViewWillDisappear(animated);
+            ChangeThemeOfNavigationBar(true);
         }
 
         public override void ViewDidLoad()
