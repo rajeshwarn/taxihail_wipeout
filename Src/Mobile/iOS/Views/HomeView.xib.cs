@@ -11,10 +11,12 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class HomeView : BaseViewController<HomeViewModel>
+    public partial class HomeView : BaseViewController<HomeViewModel>, IChangePresentation
     {
         private bool _defaultThemeApplied;
         private PanelMenuView _menu;
@@ -30,11 +32,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (!_defaultThemeApplied)
             {
                 // reset to default theme for the navigation bar
-                ChangeThemeOfNavigationBar(true);
+                ChangeThemeOfNavigationBar();
                 _defaultThemeApplied = true;
             }
-
+            NavigationController.NavigationBar.BarStyle = UIBarStyle.Default;
             NavigationController.NavigationBar.Hidden = true;
+        }
+
+        public override void ViewWillDisappear(bool animated)
+        {
+            base.ViewWillDisappear(animated);
+            ChangeThemeOfNavigationBar();
         }
 
         public override void ViewDidLoad()
@@ -70,6 +78,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(ctrlOrderOptions)
                 .For(v => v.DataContext)
                 .To(vm => vm.OrderOptions);
+
+            set.Bind(ctrlOrderReview)
+                .For(v => v.DataContext)
+                .To(vm => vm.OrderReview);
                 
             set.Bind(bottomBar)
                 .For(v => v.DataContext)
@@ -78,15 +90,56 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Apply();
         }
 
-        public void ShowOrderReview()
+        public void ChangeState(ChangeStatePresentationHint hint)
         {
+            ChangeState((HomeViewModelPresentationHint)hint);
+        }
 
-            UIView.Animate(
-                1.0, 
-                () => {
-                    constraintOrderReviewTopSpace.Constant = 170;
-                    homeView.LayoutIfNeeded();
-                });
+        void ChangeState(HomeViewModelPresentationHint hint)
+        {
+            if (hint.State == HomeViewModelState.Review)
+            {
+                // Order Options: Visible
+                // Order Review: Visible
+                // Order Edit: Hidden
+                UIView.Animate(
+                    0.6f, 
+                    () =>
+                    {
+                        constraintOrderReviewTopSpace.Constant = 170;
+                        constraintOrderOptionsTopSpace.Constant =  22;
+                        homeView.LayoutIfNeeded();
+                    });
+            }
+            else if (hint.State == HomeViewModelState.Edit)
+            {
+                // Order Options: Hidden
+                // Order Review: Hidden
+                // Order Edit: Visible
+                UIView.Animate(
+                    0.6f, 
+                    () => {
+                        constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
+                        constraintOrderOptionsTopSpace.Constant =  - ctrlOrderOptions.Frame.Height;
+                        homeView.LayoutIfNeeded();
+                    });
+            }
+            else if(hint.State == HomeViewModelState.Initial)
+            {
+                // Order Options: Visible
+                // Order Review: Hidden
+                // Order Edit: Hidden
+                UIView.Animate(
+                    0.6f, 
+                    () => {
+                        constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
+                        constraintOrderOptionsTopSpace.Constant =  22;
+                        homeView.LayoutIfNeeded();
+                    });
+            }
+           
+
+            bottomBar.ChangeState(hint);
         }
 
         private void InstantiatePanel()

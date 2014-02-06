@@ -9,12 +9,16 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     [Register("AppBarView")]
     public class AppBarView : MvxView
     {
+        private UIView _confirmationButtons;
+        private UIView _orderButtons;
+        private UIView _editButtons;
         public static SizeF ButtonSize = new SizeF(60, 46);
 
         protected UIView Line { get; set; }
@@ -42,10 +46,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             AddSubview(Line);
 
             AddButtonsForBooking();
+            CreateButtonsForConfirmation();
+            CreateButtonsForEdit();
         }
 
         private void AddButtonsForBooking()
         {
+            // - Menu - Book Now - Book Later 
+
+            _orderButtons = new UIView(this.Bounds);
+
             var btnEstimate = new AppBarButton(Localize.GetValue("Estimate"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "estimate_icon.png", "estimate_icon_pressed.png");
             btnEstimate.Frame = btnEstimate.Frame.IncrementX(4);
 
@@ -81,7 +91,112 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Apply();
 
-            AddSubviews(btnEstimate, btnBook, btnBookLater);
+            _orderButtons.AddSubviews(btnEstimate, btnBook, btnBookLater);
+            Add(_orderButtons);
+        }
+
+        private void CreateButtonsForConfirmation()
+        {
+            // - Cancel - Confirm - Edit 
+
+            _confirmationButtons = new UIView(this.Bounds);
+
+            var btnCancel = new AppBarLabelButton("Cancel");
+            btnCancel.TranslatesAutoresizingMaskIntoConstraints = false;
+
+            var btnEdit = new AppBarLabelButton("Edit");
+            btnEdit.TranslatesAutoresizingMaskIntoConstraints = false;
+
+            var btnConfirm = new FlatButton(new RectangleF((320 - 123)/2, 7, 123, 41));
+            FlatButtonStyle.Green.ApplyTo(btnConfirm);
+            btnConfirm.SetTitle("Confirm", UIControlState.Normal);
+
+            _confirmationButtons.AddSubviews(btnCancel, btnConfirm, btnEdit);
+
+            // Constraints for Cancel button
+            _confirmationButtons.AddConstraints(new []
+            {
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.Leading, 1, 8f),
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.CenterY, 1, 0),
+            });
+
+            // Constraints for Edit button
+            _confirmationButtons.AddConstraints(new []
+                {
+                    NSLayoutConstraint.Create(btnEdit, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.Trailing, 1, -8f),
+                    NSLayoutConstraint.Create(btnEdit, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.CenterY, 1, 0),
+                });
+
+            var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
+
+            set.Bind(btnCancel)
+                .For(v => v.Command)
+                .To(vm => vm.CancelReview);
+
+            set.Bind(btnConfirm)
+                .For(v => v.Command)
+                .To(vm => vm.ConfirmOrder);
+
+            set.Bind(btnEdit)
+                .For(v => v.Command)
+                .To(vm => vm.Edit);
+
+            set.Apply();
+        }
+
+        private void CreateButtonsForEdit()
+        {
+            // - Cancel - Save --------- 
+
+            _editButtons = new UIView(this.Bounds);
+
+            var btnCancel = new AppBarLabelButton("Cancel");
+            btnCancel.TranslatesAutoresizingMaskIntoConstraints = false;
+
+            var btnSave = new FlatButton(new RectangleF((320 - 123)/2, 7, 123, 41));
+            FlatButtonStyle.Green.ApplyTo(btnSave);
+            btnSave.SetTitle("Save", UIControlState.Normal);
+
+            _editButtons.AddSubviews(btnCancel, btnSave);
+
+            // Constraints for Cancel button
+            _editButtons.AddConstraints(new []
+            {
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _editButtons, NSLayoutAttribute.Leading, 1, 8f),
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _editButtons, NSLayoutAttribute.CenterY, 1, 0),
+            });
+
+            var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
+
+            set.Bind(btnCancel)
+                .For(v => v.Command)
+                .To(vm => vm.CancelEdit);
+
+            set.Bind(btnSave)
+                .For(v => v.Command)
+                .To(vm => vm.Save);
+
+            set.Apply();
+        }
+
+        public void ChangeState(HomeViewModelPresentationHint hint)
+        {
+            foreach(var subview in Subviews)
+            {
+                subview.RemoveFromSuperview();
+            }
+            if (hint.State == HomeViewModelState.Review)
+            {
+                Add(_confirmationButtons);
+            }
+            else if (hint.State == HomeViewModelState.Edit)
+            {
+                Add(_editButtons);
+            }
+            else if(hint.State == HomeViewModelState.Initial)
+            {
+                Add(_orderButtons);
+            }
         }
     }
 }

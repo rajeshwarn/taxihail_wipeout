@@ -50,8 +50,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
             text.InputAccessoryView = new UIView { Frame = new RectangleF(0, 0, 320, 44), BackgroundColor = UIColor.FromRGB(251, 253, 253) };
             var closeButton = new AppBarLabelButton("");
             text.InputAccessoryView.AddSubview(closeButton);
-            closeButton.Text = Localize.GetValue("OkButtonText");           
-            closeButton.UpdateViewRightAligned(320, 2, new Padding(41,9));
+
+            closeButton.SetTitle(Localize.GetValue("OkButtonText"), UIControlState.Normal);           
+            closeButton.TranslatesAutoresizingMaskIntoConstraints = false;
+
+            text.InputAccessoryView.AddConstraints(new [] {
+                NSLayoutConstraint.Create(closeButton, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, text.InputAccessoryView, NSLayoutAttribute.Trailing, 1, -8f),
+                NSLayoutConstraint.Create(closeButton, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, text.InputAccessoryView, NSLayoutAttribute.CenterY, 1, 0),
+            });
 
             if (onClosePressed != null)
             {

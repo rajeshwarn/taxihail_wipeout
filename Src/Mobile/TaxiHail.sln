@@ -404,10 +404,7 @@ Global
 		$2.inheritsSet = VisualStudio
 		$2.inheritsScope = text/plain
 		$0.TextStylePolicy = $3
-		$3.NoTabsAfterNonTabs = True
-		$3.EolMarker = Windows
-		$3.inheritsSet = VisualStudio
-		$3.inheritsScope = text/plain
+		$3.inheritsSet = null
 		$3.scope = text/x-csharp
 		$0.CSharpFormattingPolicy = $4
 		$4.IndentSwitchBody = True

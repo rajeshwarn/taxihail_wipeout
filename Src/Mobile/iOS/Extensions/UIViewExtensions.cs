@@ -65,6 +65,17 @@ namespace apcurium.MK.Booking.Mobile.Client
             return null;
         }
 
+        public static void RemoveDelay(this UIView view)
+        {
+            foreach (var subView in view.Subviews) {
+                var scroll = subView as UIScrollView;
+                if (scroll != null)
+                {
+                    scroll.DelaysContentTouches = false;
+                }
+            }
+        }
+
         public static void StackSubViews (this UIView thisView)
         {
             UIViewHelper.StackSubViews (thisView.Subviews);

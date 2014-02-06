@@ -437,9 +437,6 @@
     <Compile Include="Controls\Widgets\TwoLinesCell.cs" />
     <Compile Include="Controls\Widgets\CustomCellBackgroundView.cs" />
     <Compile Include="Controls\Widgets\Line.cs" />
-    <Compile Include="Views\HistoryView.designer.cs">
-      <DependentUpon>HistoryListView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Widgets\TaxiHailEntryElement.cs" />
     <Compile Include="Controls\Widgets\TaxiHailDialogViewController.cs" />
     <Compile Include="Controls\Widgets\RoundedCornerView.cs" />
@@ -535,6 +532,9 @@
     </Compile>
     <Compile Include="Controls\Widgets\VehicleTypeAndEstimateView.cs" />
     <Compile Include="Controls\Binding\BaseBindableChildView.cs" />
+    <Compile Include="Views\HistoryListView.designer.cs">
+      <DependentUpon>HistoryListView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

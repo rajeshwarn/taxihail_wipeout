@@ -9,6 +9,7 @@ using Cirrious.MvvmCross.ViewModels;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Views;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -38,9 +39,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void ChangePresentation(MvxPresentationHint hint)
         {
-            if (hint is ShowOrderReviewPresentationHint)
+            if (hint is ChangeStatePresentationHint)
             {
-                TryShowOrderReview();
+                TryChangeViewPresentation((ChangeStatePresentationHint)hint);
             }
             else
             {
@@ -66,16 +67,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
 
-        private void TryShowOrderReview()
+        private void TryChangeViewPresentation(ChangeStatePresentationHint hint)
         {
-            var homeView = CurrentTopViewController as HomeView;
-            if (homeView != null)
+            var view = CurrentTopViewController as IChangePresentation;
+            if (view != null)
             {
-                homeView.ShowOrderReview();
+                view.ChangeState(hint);
             }
             else
             {
-                Mvx.Warning("Can't show order review");
+                Mvx.Warning("Can't change presentation, view controller doesn't support IChangePresentation");
             }
 
         }
