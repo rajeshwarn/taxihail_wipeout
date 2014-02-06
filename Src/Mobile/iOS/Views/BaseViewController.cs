@@ -191,30 +191,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             });
         }
 
-        protected void ChangeThemeOfNavigationBar(bool resetToDefault = false)
+        protected void ChangeThemeOfNavigationBar()
         {
             var titleFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
             var navBarButtonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
 
-            //is false since now we are using the theme color in navbar even when logged in
-            var isDefaultColor = false;
-
-            var textColor = isDefaultColor
-                                ? Theme.LabelTextColor
-                                : UIColor.White;
-
-            var navBarColor = isDefaultColor
-                              ? UIColor.White
-                              : Theme.BackgroundColor;
+            var textColor = Theme.LabelTextColor;
+            var navBarColor = Theme.BackgroundColor;
 
             var isOS7orHigher = UIHelper.IsOS7orHigher;
 
             // change color of status bar
             if (isOS7orHigher)
             {
-                NavigationController.NavigationBar.BarStyle = isDefaultColor
-                                                              ? UIBarStyle.Default
-                                                              : UIBarStyle.Black;
+                NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
+                                                              ? UIBarStyle.Black
+                                                              : UIBarStyle.Default;
             }
 
             // change color of navigation bar
@@ -231,20 +223,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 // change the background color of the nav bar (setting an image gets rid of the gradient look)
                 UIImage clearBackground;
-                if (isDefaultColor)
-                {
-                    clearBackground = UIImage.FromFile("clearButton.png");
-                }
-                else
-                {
-                    clearBackground = ImageHelper.CreateFromColor(navBarColor);
-                }
+                clearBackground = ImageHelper.CreateFromColor(navBarColor);
                 clearBackground = clearBackground.CreateResizableImage(UIEdgeInsets.Zero);
                 UINavigationBar.Appearance.SetBackgroundImage(clearBackground, UIBarMetrics.Default); 
                 NavigationController.NavigationBar.SetBackgroundImage(clearBackground, UIBarMetrics.Default);
 
                 //change the default ios6 back button look to the ios7 look
-                var backBackground = UIImage.FromFile (isDefaultColor ? "left_arrow.png" : "left_arrow_white.png").CreateResizableImage (new UIEdgeInsets (0, 12, 21, 0));
+                var backBackground = UIImage.FromFile (Theme.IsLightContent ? "left_arrow.png" : "left_arrow_white.png").CreateResizableImage (new UIEdgeInsets (0, 12, 21, 0));
                 UIBarButtonItem.Appearance.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default); 
                 UIBarButtonItem.Appearance.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default); 
             }
@@ -287,7 +272,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
 
             var rightBarButtonFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
-            var textColor = UIColor.White;
+            var textColor = Theme.ButtonTextColor;
 
             var buttonTextColor = new UITextAttributes () {
                 Font = rightBarButtonFont,
