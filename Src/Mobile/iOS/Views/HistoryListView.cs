@@ -45,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			tableOrders.BackgroundColor = UIColor.Clear;
 			tableOrders.SeparatorColor = UIColor.Clear;
             tableOrders.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+            tableOrders.DelaysContentTouches = false;
 
 			lblNoHistory.Text = Localize.GetValue("HistoryViewNoHistoryLabel");
 			lblNoHistory.Hidden = true;
@@ -85,6 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			var cell = new TwoLinesCell(new NSString(CellId), CellBindingText, UITableViewCellAccessory.Checkmark);
 			cell.HideBottomBar = tableView.IsLastCell(indexPath);
+            cell.RemoveDelay();
 			return cell;
 		}
 	}

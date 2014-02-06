@@ -12,6 +12,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 		}
 
+
+
         public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
         {
             base.RowSelected (tableView, indexPath);
