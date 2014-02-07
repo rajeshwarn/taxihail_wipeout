@@ -138,7 +138,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     });
             }
            
-
+            ctrlOrderOptions.ChangeState(hint);
             bottomBar.ChangeState(hint);
         }
 

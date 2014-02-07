@@ -51,6 +51,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_estimatedFareSubject = new BehaviorSubject<string>(_localize["NoFareText"]);
 		}
 
+		public async Task SetAddress(Address address)
+		{
+			await SetAddressToCurrentSelection(address);
+		}
+
 		public async Task SetAddressToUserLocation()
 		{
             //CancelCurrentLocationCommand.Execute ();

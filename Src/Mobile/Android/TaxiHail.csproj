@@ -528,6 +528,14 @@
     <Compile Include="Controls\Widgets\AppBar.cs" />
     <AndroidResource Include="Resources\Drawable\button_action_label_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_label_text_selector.xml" />
+    <Compile Include="Controls\Widgets\AddressTextBox.cs" />
+    <Compile Include="Extensions\BoolExtensions.cs" />
+    <Compile Include="Controls\Behavior\NumberAndAddressTextFieldBehavior.cs" />
+    <AndroidResource Include="Resources\Layout\Control_AddressTextBox.axml" />
+    <AndroidResource Include="Resources\Drawable\colored_dot.xml" />
+    <AndroidResource Include="Resources\Layout\Control_VehicleTypeAndEstimate.xml" />
+    <Compile Include="Controls\Widgets\VehicleTypeAndEstimateControl.cs" />
+    <Compile Include="Helpers\DrawableHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -686,6 +694,7 @@
     <Folder Include="Resources\values-v11\" />
     <Folder Include="Activities\Utilities\" />
     <Folder Include="Controls\Fragments\" />
+    <Folder Include="Controls\Behavior\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">

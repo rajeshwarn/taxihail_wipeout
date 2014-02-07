@@ -525,6 +525,7 @@
     <Compile Include="Controls\Widgets\CommandButton.cs" />
     <Compile Include="Controls\Widgets\Booking\BookLaterDatePicker.cs" />
     <Compile Include="Controls\Widgets\VehicleTypeAndEstimateView.cs" />
+    <Compile Include="Controls\Binding\BaseBindableChildView.cs" />
     <Compile Include="Views\HistoryListView.designer.cs">
       <DependentUpon>HistoryListView.cs</DependentUpon>
     </Compile>
