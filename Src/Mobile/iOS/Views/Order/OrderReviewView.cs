@@ -16,6 +16,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
     [Register("OrderReviewView")]
     public class OrderReviewView : OverlayView
     {
+        NSLayoutConstraint _heightConstraint;
+
         public OrderReviewView (IntPtr handle) : base(handle)
         {
             Initialize();
@@ -23,6 +25,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
         private void Initialize()
         {
+            BackgroundColor = UIColor.Clear;
+
+            _heightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, 
+                NSLayoutRelation.Equal, 
+                null, 
+                NSLayoutAttribute.NoAttribute, 
+                1.0f, 44.0f);
+
+            this.AddConstraint(_heightConstraint);
+
             var bindings = this.CreateInlineBindingTarget<OrderReviewViewModel>();
 
             var name = new StyledStringElement(null,null, UITableViewCellStyle.Default)
@@ -32,23 +44,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             name.TextColor = UIColor.Black;
             name.Image = UIImage.FromBundle("account");
 
-            var section = new Section
-                {
-                    name                
-                };
+            var section = new Section{ name  };
 
             var root = new RootElement(){ section };
 
-            var dialogViewController = new DialogViewController(root, false);
+            var dialogViewController = new DialogViewController(UITableViewStyle.Plain, root, false);
             var tableView = dialogViewController.TableView;
             tableView.Bounces = false;
             tableView.ScrollEnabled = false;
             tableView.UserInteractionEnabled = false;
             tableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-            tableView.BackgroundColor =  UIColor.Clear; 
-            tableView.SectionFooterHeight = 0;        
-            tableView.Frame = new RectangleF(2, 2, this.Frame.Width - 4, this.Frame.Height - 4);
+            tableView.BackgroundColor =  UIColor.Clear;           
+            tableView.Frame = new RectangleF(2, 2, this.Frame.Width - 4, 300);
             AddSubview(tableView);
+
+            _heightConstraint.Constant = 300;
         }
     }
 }
