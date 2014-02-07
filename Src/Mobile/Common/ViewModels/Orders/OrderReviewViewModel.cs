@@ -13,6 +13,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_orderWorkflowService = orderWorkflowService;
 
 			this.Observe(orderWorkflowService.GetAndObserveBookingSettings(), settings => Settings = settings);
+			this.Observe(orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
+			this.Observe(orderWorkflowService.GetAndObservePickupDate(), date => Date = date);
 		}
 
 		private BookingSettings _settings;
@@ -29,6 +31,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		private Address _address;
+		public Address Address
+		{
+			get { return _address; }
+			set
+			{
+				if (value != _address)
+				{
+					_address = value;
+					RaisePropertyChanged();
+				}
+			}
+		}
+
+		private DateTime? _date;
+		public DateTime? Date
+		{
+			get{ return _date; }
+			set
+			{
+				_date = value;
+				RaisePropertyChanged();
+			}
+		}
     }
 }
 
