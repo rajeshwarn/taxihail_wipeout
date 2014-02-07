@@ -15,14 +15,20 @@ using apcurium.MK.Booking.Mobile.Data;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System;
+using System.Windows.Input;
+using System.Reactive.Linq;
+using System.Threading;
+using System.Reactive.Disposables;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    public class OrderMapFragment: IMvxBindable
+    public class OrderMapFragment: IMvxBindable, IDisposable
     {
         public GoogleMap Map { get; set;}
+        private View _view;
         private Marker _pickupPin;
         private Marker _destinationPin;
+        private CompositeDisposable _subscriptions = new CompositeDisposable();
 
         private List<Marker> _availableVehicleMarkers = new List<Marker> ();
 
@@ -30,6 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             this.CreateBindingContext();
             Map = _map.Map;
+            _view = _map.View;
             this.DelayBind(() => InitializeBinding());
         }
 
@@ -49,7 +56,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             var binding = this.CreateBindingSet<OrderMapFragment, MapViewModel>();
 
-            Map.CameraChange += (object sender, GoogleMap.CameraChangeEventArgs e) =>
+            _view.Touch += (object sender, View.TouchEventArgs e) => 
+            {
+                var _target = Map.CameraPosition.Target;
+            };
+
+
+            Observable
+                .FromEventPattern<GoogleMap.CameraChangeEventArgs>(Map, "CameraChange")
+                .Throttle(TimeSpan.FromMilliseconds(500))
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(e =>
             {
                 if (bypassCameraChangeEvent)
                 {
@@ -61,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                 var _bounds =  Map.Projection.VisibleRegion.LatLngBounds;
 
-                UserMapBounds = new MapBounds()
+                var bounds = new MapBounds()
                 { 
                     SouthBound = _bounds.Southwest.Latitude, 
                     WestBound = _bounds.Southwest.Longitude, 
@@ -69,16 +86,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     EastBound = _bounds.Northeast.Longitude
                 };
 
+                if(UserMovedMap != null && UserMovedMap.CanExecute(bounds))
+                {
+                    UserMovedMap.Execute(bounds);
+                }
 
-                var handler = UserMapBoundsChanged;
+                    }).DisposeWith(_subscriptions);
 
-                if (handler != null)
-                    handler(this, EventArgs.Empty);
-            };
 
             binding.Bind()
-                .For(v => v.UserMapBounds)
-                .To(vm => vm.UserMapBounds);
+                .For(v => v.UserMovedMap)
+                .To(vm => vm.UserMovedMap);
 
             binding.Bind()
                 .For(v => v.AddressSelectionMode)
@@ -143,6 +161,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
         }
+
+        public ICommand UserMovedMap { get; set; }
 
         public event EventHandler UserMapBoundsChanged;
 
@@ -294,5 +314,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _availableVehicleMarkers.Add (vehicleMarker);
             }
         }
+
+        public void Dispose()
+        {
+            _subscriptions.Dispose();
+        }
+
     }
 }

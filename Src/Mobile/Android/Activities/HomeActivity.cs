@@ -242,7 +242,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 ViewModel.OnViewUnloaded();
             }
-
+            _mapFragment.Dispose();
             //_touchMap.OnDestroy();
         }
 

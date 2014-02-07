@@ -3,6 +3,7 @@ using apcurium.MK.Common.Entity;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -11,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task SetAddressToUserLocation();
 		Task ClearDestinationAddress();
 
-        Task SetAddressToCoordinate(Position userMapBoundsCoordinate);
+        Task SetAddressToCoordinate(Position userMapBoundsCoordinate, CancellationToken cancellationToken);
 
 		Task SetPickupDate(DateTime? date);
 
