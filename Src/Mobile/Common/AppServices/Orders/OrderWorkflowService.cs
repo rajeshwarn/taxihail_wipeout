@@ -177,6 +177,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			return _estimatedFareSubject;
 		}
+
+		public IObservable<DateTime?> GetAndObservePickupDate()
+		{
+			return _pickupDateSubject;
+		}
 		
 		private async Task<Address> SearchAddressForCoordinate(Position p)
 		{

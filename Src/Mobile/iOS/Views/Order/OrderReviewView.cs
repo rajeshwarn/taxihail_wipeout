@@ -2,63 +2,85 @@ using System;
 using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using CrossUI.Touch.Dialog.Elements;
-using CrossUI.Touch.Dialog;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
-    [Register("OrderReviewView")]
-    public class OrderReviewView : OverlayView
+    public partial class OrderReviewView : OverlayView
     {
-        NSLayoutConstraint _heightConstraint;
+        private NSLayoutConstraint _heightConstraint;
 
-        public OrderReviewView (IntPtr handle) : base(handle)
+        public OrderReviewView(IntPtr handle) : base(handle)
         {
-            Initialize();
         }
 
         private void Initialize()
         {
-            BackgroundColor = UIColor.Clear;
-
             _heightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, 
                 NSLayoutRelation.Equal, 
                 null, 
                 NSLayoutAttribute.NoAttribute, 
-                1.0f, 44.0f);
+                1.0f, 300.0f);
 
             this.AddConstraint(_heightConstraint);
+            BackgroundColor = UIColor.Clear;
+           
+        }
 
-            var bindings = this.CreateInlineBindingTarget<OrderReviewViewModel>();
+        private void InitializeBinding()
+        {
+            var set = this.CreateBindingSet<OrderReviewView, OrderReviewViewModel>();
 
-            var name = new StyledStringElement(null,null, UITableViewCellStyle.Default)
-                    .Bind(bindings, cell => cell.Caption, vm => vm.Settings.Name);
-            name.BackgroundColor = UIColor.Clear;
-            name.Font = UIFont.FromName(FontName.HelveticaNeueMedium, 38 / 2);
-            name.TextColor = UIColor.Black;
-            name.Image = UIImage.FromBundle("account");
+            set.Bind(lblName)
+                .For(v => v.Text)
+                .To(vm => vm.Settings.Name);
 
-            var section = new Section{ name  };
+            set.Bind(lblPhone)
+                .For(v => v.Text)
+                .To(vm => vm.Settings.Phone);
 
-            var root = new RootElement(){ section };
+            set.Bind(lblNbPassengers)
+                .For(v => v.Text)
+                .To(vm => vm.Settings.Passengers);
 
-            var dialogViewController = new DialogViewController(UITableViewStyle.Plain, root, false);
-            var tableView = dialogViewController.TableView;
-            tableView.Bounces = false;
-            tableView.ScrollEnabled = false;
-            tableView.UserInteractionEnabled = false;
-            tableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-            tableView.BackgroundColor =  UIColor.Clear;           
-            tableView.Frame = new RectangleF(2, 2, this.Frame.Width - 4, 300);
-            AddSubview(tableView);
+            set.Bind(lblDate)
+                .For(v => v.Text)
+                .To(vm => vm.Date);
 
-            _heightConstraint.Constant = 300;
+            set.Bind(lblVehicule)
+                .For(v => v.Text)
+                .To(vm => vm.Settings.VehicleType);
+
+            set.Bind(lblChargeType)
+                .For(v => v.Text)
+                .To(vm => vm.Settings.ChargeType);
+
+            set.Bind(lblApt)
+                .For(v => v.Text)
+                .To(vm => vm.Address.Apartment);
+
+            set.Bind(lblRingCode)
+                .For(v => v.Text)
+                .To(vm => vm.Address.RingCode);
+
+            set.Apply();
+        }
+
+        public override void AwakeFromNib()
+        {
+            base.AwakeFromNib();
+
+            var nib = UINib.FromName ("OrderReviewView", null);
+            var view = (UIView)nib.Instantiate(this, null)[0];
+            AddSubview(view);
+
+            Initialize();
+
+            this.DelayBind (() => {
+                InitializeBinding();
+            });
         }
     }
 }

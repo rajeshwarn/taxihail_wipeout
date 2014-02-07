@@ -530,6 +530,9 @@
       <DependentUpon>HistoryListView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Order\OrderReviewView.cs" />
+    <Compile Include="Views\Order\OrderReviewView.designer.cs">
+      <DependentUpon>OrderReviewView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Order\OrderEditView.cs" />
     <Compile Include="Views\Order\OrderEditView.designer.cs">
       <DependentUpon>OrderEditView.cs</DependentUpon>
@@ -581,6 +584,7 @@
     <InterfaceDefinition Include="Views\LocationListView.xib" />
     <InterfaceDefinition Include="Views\HomeView.xib" />
     <InterfaceDefinition Include="Controls\Widgets\OrderOptionsControl.xib" />
+    <InterfaceDefinition Include="Views\Order\OrderReviewView.xib" />
     <InterfaceDefinition Include="Views\Order\OrderEditView.xib" />
   </ItemGroup>
   <ItemGroup>
@@ -872,6 +876,20 @@
     <BundleResource Include="Resources\taxi_icon%402x.png" />
     <BundleResource Include="Resources\account.png" />
     <BundleResource Include="Resources\account%402x.png" />
+    <BundleResource Include="Resources\apartment.png" />
+    <BundleResource Include="Resources\apartment%402x.png" />
+    <BundleResource Include="Resources\chargetype.png" />
+    <BundleResource Include="Resources\chargetype%402x.png" />
+    <BundleResource Include="Resources\entrycode.png" />
+    <BundleResource Include="Resources\entrycode%402x.png" />
+    <BundleResource Include="Resources\passengers.png" />
+    <BundleResource Include="Resources\passengers%402x.png" />
+    <BundleResource Include="Resources\telephone.png" />
+    <BundleResource Include="Resources\telephone%402x.png" />
+    <BundleResource Include="Resources\time.png" />
+    <BundleResource Include="Resources\time%402x.png" />
+    <BundleResource Include="Resources\vehicle.png" />
+    <BundleResource Include="Resources\vehicle%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
