@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         public Action<string,string> AddressUpdated { get; set; }
 
-        private Color SelectedColor = Resources.GetColor(Resource.Color.orderoptions_pickup_address_color);
+        private Color SelectedColor;
         public EditText AddressTextView;
         private EditText StreetNumberTextView;
         private LinearLayout LoadingWheel;
@@ -32,6 +32,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             base.OnFinishInflate();
             var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
             var layout = inflater.Inflate(Resource.Layout.Control_AddressTextBox, this, true);
+
+            SelectedColor = Resources.GetColor(Resource.Color.orderoptions_pickup_address_color);
 
             StreetNumberTextView = (EditText)layout.FindViewById(Resource.Id.StreetNumberTextView);
             AddressTextView = (EditText)layout.FindViewById(Resource.Id.AddressTextView);
