@@ -329,6 +329,7 @@
     <Compile Include="PresentationHints\HomeViewModelPresentationHint.cs" />
     <Compile Include="PresentationHints\IChangePresentation.cs" />
     <Compile Include="PresentationHints\ChangeStatePresentationHint.cs" />
+    <Compile Include="ViewModels\Orders\OrderEditViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

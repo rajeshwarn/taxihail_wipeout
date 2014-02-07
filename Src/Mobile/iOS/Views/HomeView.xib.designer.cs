@@ -22,6 +22,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayButton btnMenu { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.NSLayoutConstraint constraintOrderEditTrailingSpace { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.NSLayoutConstraint constraintOrderOptionsTopSpace { get; set; }
 
 		[Outlet]
@@ -38,6 +41,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Views.OrderMapView mapView { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Views.Order.OrderEditView orderEdit { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -66,6 +72,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				constraintOrderReviewTopSpace = null;
 			}
 
+			if (constraintOrderEditTrailingSpace != null) {
+				constraintOrderEditTrailingSpace.Dispose ();
+				constraintOrderEditTrailingSpace = null;
+			}
+
 			if (ctrlOrderOptions != null) {
 				ctrlOrderOptions.Dispose ();
 				ctrlOrderOptions = null;
@@ -74,6 +85,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (ctrlOrderReview != null) {
 				ctrlOrderReview.Dispose ();
 				ctrlOrderReview = null;
+			}
+
+			if (orderEdit != null) {
+				orderEdit.Dispose ();
+				orderEdit = null;
 			}
 
 			if (homeView != null) {
