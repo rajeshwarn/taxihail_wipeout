@@ -20,21 +20,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_messageService = messageService;
 			_orderWorkflowService = orderWorkflowService;
 
-			BookLater = AddChild<BookLaterViewModel>();
-
 			this.Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(),
 				m => EstimateSelected = m == AddressSelectionMode.DropoffSelection);
-		}
-
-		private BookLaterViewModel _bookLater;
-		public BookLaterViewModel BookLater
-		{ 
-			get { return _bookLater; }
-			private set
-			{ 
-				_bookLater = value;
-				RaisePropertyChanged();
-			}
 		}
 
 		private bool _estimateSelected;
@@ -64,13 +51,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		public ICommand BookNow
+		public ICommand SetPickupDateAndBook
 		{
 			get
 			{
-				return GetCommand(async() =>
+				return GetCommand<DateTime?>(async date =>
 				{
-					await _orderWorkflowService.SetPickupDate(null);
+					await _orderWorkflowService.SetPickupDate(date);
 					try
 					{
 						await _orderWorkflowService.ValidatePickupDestinationAndTime();
@@ -151,6 +138,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					}); 
 			}
 		}
+
+        public ICommand BookLater
+        {
+            get
+            {
+                return GetCommand(() => {
+                    ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.PickDate));
+                });
+            }
+        }
 
 		public ICommand Edit
 		{
