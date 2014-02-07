@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#7AE6E6E6"
     android:orientation="vertical"
     android:layout_margin="0px"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
+    <View
+        android:id="@+id/HorizontalDivider"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#B1B1B1" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_margin="0px"
@@ -13,8 +21,7 @@
         android:layout_height="52dp">
         <LinearLayout
             android:orientation="vertical"
-            android:layout_weight="0.15"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/vehicleTypeImage"
@@ -36,7 +43,7 @@
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
-            android:layout_weight="0.85"
+            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent">
             <TextView
@@ -48,7 +55,7 @@
                 android:layout_margin="0px"
                 android:singleLine="false"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

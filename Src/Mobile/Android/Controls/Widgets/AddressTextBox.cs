@@ -15,10 +15,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         public Action<string,string> AddressUpdated { get; set; }
 
+        private Color SelectedColor = Color.Rgb(0, 192, 49);
         public EditText AddressTextView;
         private EditText StreetNumberTextView;
         private LinearLayout LoadingWheel;
         private ImageView Dot;
+        private View HorizontalDivider;
 
         public AddressTextBox(Context c, IAttributeSet attr) : base(c, attr)
         {
@@ -35,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             AddressTextView = (EditText)layout.FindViewById(Resource.Id.AddressTextView);
             LoadingWheel = (LinearLayout)layout.FindViewById(Resource.Id.ProgressBar);
             Dot = (ImageView)layout.FindViewById(Resource.Id.Dot);
+            HorizontalDivider = (View)layout.FindViewById(Resource.Id.HorizontalDivider);
 
             StreetNumberTextView.SetSelectAllOnFocus(true);
             StreetNumberTextView.SetSingleLine(true);
@@ -81,8 +84,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if (_isDestination != value)
                 {
                     _isDestination = value;
-                    var color = value ? Color.Rgb(255, 0, 18) : Color.Rgb(0, 192, 49);
-                    Dot.SetColorFilter(color, PorterDuff.Mode.SrcAtop);
+                    if (value)
+                    {
+                        SelectedColor = Color.Rgb(255, 0, 18);
+                    }
+
+                    Dot.SetColorFilter(SelectedColor, PorterDuff.Mode.SrcAtop);
+                    HorizontalDivider.Visibility = value.ToVisibility();
                 }
             }
         }
@@ -130,7 +138,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if(e.HasFocus)
                 {
                     Resize();
-
+                    StreetNumberTextView.SetTextColor(Color.White);
+                    StreetNumberTextView.SetBackgroundColor(SelectedColor);
                     if(_giantInvisibleButton != null)
                     {
                         _giantInvisibleButton.Visibility = ViewStates.Visible;
@@ -139,7 +148,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 else
                 {                    
                     Resize();
-
+                    StreetNumberTextView.SetTextColor(Resources.GetColor(Resource.Color.edit_text_foreground_color));
+                    StreetNumberTextView.SetBackgroundColor(Color.Transparent);
                     if(_giantInvisibleButton != null)
                     {
                         _giantInvisibleButton.Visibility = ViewStates.Gone;

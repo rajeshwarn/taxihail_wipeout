@@ -535,6 +535,7 @@
     <AndroidResource Include="Resources\Drawable\colored_dot.xml" />
     <AndroidResource Include="Resources\Layout\Control_VehicleTypeAndEstimate.xml" />
     <Compile Include="Controls\Widgets\VehicleTypeAndEstimateControl.cs" />
+    <Compile Include="Helpers\DrawableHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

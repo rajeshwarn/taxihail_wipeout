@@ -102,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private bool _isConfirmationScreen;
 		public bool IsConfirmationScreen
 		{
-			get { return _isConfirmationScreen; }
+            get { return _isConfirmationScreen; }
 			set
 			{
 				if (value != _isConfirmationScreen)

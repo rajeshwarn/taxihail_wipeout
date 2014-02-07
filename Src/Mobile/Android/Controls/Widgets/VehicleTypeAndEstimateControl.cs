@@ -4,6 +4,7 @@ using Android.Content;
 using Android.Util;
 using Android.Views;
 using Android.Graphics;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -12,6 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private ImageView SelectedVehicleType { get; set; }
         private TextView SelectedVehicleTypeLabel { get; set; }
         private TextView EstimatedFareLabel { get; set; }
+        private View HorizontalDivider { get; set; }
 
         private Color Blue = Color.Rgb(0, 129, 248);
 
@@ -29,6 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             SelectedVehicleType = (ImageView)layout.FindViewById(Resource.Id.vehicleTypeImage);
             SelectedVehicleTypeLabel = (TextView)layout.FindViewById(Resource.Id.vehicleTypeLabel);
             EstimatedFareLabel = (TextView)layout.FindViewById(Resource.Id.estimateFareLabel);
+            HorizontalDivider = (View)layout.FindViewById(Resource.Id.HorizontalDivider);
         }
 
         private bool _showEstimate;
@@ -53,7 +56,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 if (_vehicleType != value)
                 {
-                    SelectedVehicleType.SetImageDrawable(Resources.GetDrawable(Resource.Drawable.taxi_badge_selected));
+                    _vehicleType = value;
+                    var image = DrawableHelper.GetDrawableFromString(Resources, string.Format("{0}_badge_selected", value.ToLower()));
+
+                    SelectedVehicleType.SetImageDrawable(image);
                     SelectedVehicleTypeLabel.Text = value.ToUpper();
                 }
             }
@@ -75,16 +81,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             if (ShowEstimate)
             {
-//                BackgroundColor = UIColor.FromRGB(230, 230, 230).ColorWithAlpha(0.5f);
-//                HorizontalDividerTop.BackgroundColor = Blue;
+                HorizontalDivider.Background.SetColorFilter(Blue, PorterDuff.Mode.SrcAtop);
                 SelectedVehicleType.Visibility = ViewStates.Visible;
                 SelectedVehicleTypeLabel.Visibility = ViewStates.Visible;
                 EstimatedFareLabel.Visibility = ViewStates.Visible;
             }
             else
             {
-//                BackgroundColor = UIColor.Clear;
-//                HorizontalDividerTop.BackgroundColor = UIColor.FromRGB(177, 177, 177);
+                HorizontalDivider.Background.SetColorFilter(Color.Rgb(177, 177, 177), PorterDuff.Mode.SrcAtop);
                 SelectedVehicleType.Visibility = ViewStates.Gone;
                 SelectedVehicleTypeLabel.Visibility = ViewStates.Gone;
                 EstimatedFareLabel.Visibility = ViewStates.Gone;

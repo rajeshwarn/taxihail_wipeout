@@ -58,20 +58,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             viewPickup.AddressUpdated = (streetNumber, fullAddress) =>
             {
-                var newAddress = ViewModel.PickupAddress.Copy();
-                newAddress.StreetNumber = streetNumber;
-                newAddress.FullAddress = fullAddress;
+                ViewModel.PickupAddress.StreetNumber = streetNumber;
+                ViewModel.PickupAddress.FullAddress = fullAddress;
 
-                ViewModel.SetAddress.Execute(newAddress);
+                ViewModel.SetAddress.Execute(ViewModel.PickupAddress);
             };
 
             viewDestination.AddressUpdated = (streetNumber, fullAddress) =>
             {
-                var newAddress = ViewModel.DestinationAddress.Copy();
-                newAddress.StreetNumber = streetNumber;
-                newAddress.FullAddress = fullAddress;
+                ViewModel.DestinationAddress.StreetNumber = streetNumber;
+                ViewModel.DestinationAddress.FullAddress = fullAddress;
 
-                ViewModel.SetAddress.Execute(newAddress);
+                ViewModel.SetAddress.Execute(ViewModel.DestinationAddress);
             };
 
             var set = this.CreateBindingSet<OrderOptions, OrderOptionsViewModel>();
