@@ -13,17 +13,18 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
-    public partial class OrderReviewView : OverlayView
+    [Register("OrderReviewView")]
+    public class OrderReviewView : OverlayView
     {
         public OrderReviewView (IntPtr handle) : base(handle)
         {
+            Initialize();
         }
 
         private void Initialize()
         {
-            BackgroundColor = UIColor.Green;
-
             var bindings = this.CreateInlineBindingTarget<OrderReviewViewModel>();
+
             var name = new StyledStringElement(null,null, UITableViewCellStyle.Default)
                     .Bind(bindings, cell => cell.Caption, vm => vm.Settings.Name);
             name.BackgroundColor = UIColor.Clear;
@@ -38,26 +39,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
             var root = new RootElement(){ section };
 
-            var tableView = new DialogViewController(root, false).TableView;
+            var dialogViewController = new DialogViewController(root, false);
+            var tableView = dialogViewController.TableView;
             tableView.Bounces = false;
             tableView.ScrollEnabled = false;
             tableView.UserInteractionEnabled = false;
             tableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-            tableView.BackgroundColor =  UIColor.Red;
-            tableView.SectionHeaderHeight = 0;
-            tableView.SectionFooterHeight = 0;
-            tableView.Frame = tableView.Frame.SetWidth(this.Frame.Width - 10);
-            tableView.Frame = tableView.Frame.SetHeight(this.Frame.Height - 10);
+            tableView.BackgroundColor =  UIColor.Clear; 
+            tableView.SectionFooterHeight = 0;        
+            tableView.Frame = new RectangleF(2, 2, this.Frame.Width - 4, this.Frame.Height - 4);
             AddSubview(tableView);
-        }
-
-        public override void AwakeFromNib()
-        {
-            base.AwakeFromNib();
-            var nib = UINib.FromName ("OrderReviewView", null);
-            AddSubview((UIView)nib.Instantiate (this, null)[0]);
-
-            Initialize();
         }
     }
 }

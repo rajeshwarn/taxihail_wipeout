@@ -13,15 +13,23 @@ using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-    public partial class OrderOptionsControl : MvxView
+    public partial class OrderOptionsControl : OverlayView
     {
+        private NSLayoutConstraint _heightConstraint;
+
         public OrderOptionsControl (IntPtr handle) : base(handle)
         {
         }
 
         private void Initialize()
         {
-            AutoresizingMask = UIViewAutoresizing.FlexibleHeight;
+            _heightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, 
+                NSLayoutRelation.Equal, 
+                null, 
+                NSLayoutAttribute.NoAttribute, 
+                1.0f, 44.0f);
+
+            this.AddConstraint(_heightConstraint);
 
             BackgroundColor = UIColor.Clear;
             viewPickup.BackgroundColor = UIColor.Clear;
@@ -68,14 +76,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public override void AwakeFromNib()
         {
             base.AwakeFromNib();
+
             var nib = UINib.FromName ("OrderOptionsControl", null);
-            AddSubview((UIView)nib.Instantiate (this, null)[0]);
+            var view = (UIView)nib.Instantiate(this, null)[0];
+            AddSubview(view);
 
             Initialize();
+
             this.DelayBind (() => {
                 InitializeBinding();
             });
         }
+
+        public void Resize()
+        {
+            _heightConstraint.Constant = Subviews[0].Subviews.Where(x => !x.Hidden).Sum(x => x.Frame.Height);
+            SetNeedsDisplay();
+        }
+
     }
 }
 
