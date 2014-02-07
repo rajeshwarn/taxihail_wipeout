@@ -12,7 +12,7 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     [Register("OverlayView")]
-    public class OverlayView : UIView
+    public class OverlayView : MvxView
     {
         private float _radiusCorner = 3f;
         private UIView _shadowView = null;

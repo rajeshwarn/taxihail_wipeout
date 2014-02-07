@@ -522,17 +522,13 @@
     <Compile Include="Controls\Widgets\AppBarButton.cs" />
     <Compile Include="Controls\Widgets\CommandButton.cs" />
     <Compile Include="Controls\Widgets\Booking\BookLaterDatePicker.cs" />
-    <Compile Include="Controls\Widgets\OrderReview.cs" />
-    <Compile Include="Controls\Widgets\OrderReview.designer.cs">
-      <DependentUpon>OrderReview.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Widgets\OrderReviewItem.cs" />
-    <Compile Include="Controls\Widgets\OrderReviewItem.designer.cs">
-      <DependentUpon>OrderReviewItem.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Widgets\VehicleTypeAndEstimateView.cs" />
     <Compile Include="Views\HistoryListView.designer.cs">
       <DependentUpon>HistoryListView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Order\OrderReviewView.cs" />
+    <Compile Include="Views\Order\OrderReviewView.designer.cs">
+      <DependentUpon>OrderReviewView.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
@@ -581,8 +577,9 @@
     <InterfaceDefinition Include="Views\LocationListView.xib" />
     <InterfaceDefinition Include="Views\HomeView.xib" />
     <InterfaceDefinition Include="Controls\Widgets\OrderOptionsControl.xib" />
-    <InterfaceDefinition Include="Controls\Widgets\OrderReview.xib" />
-    <InterfaceDefinition Include="Controls\Widgets\OrderReviewItem.xib" />
+    <InterfaceDefinition Include="Views\Order\OrderReviewView.xib">
+      <DependentUpon>OrderReviewView.cs</DependentUpon>
+    </InterfaceDefinition>
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
@@ -871,6 +868,8 @@
     <BundleResource Include="Resources\nearby_taxi%402x.png" />
     <BundleResource Include="Resources\taxi_icon.png" />
     <BundleResource Include="Resources\taxi_icon%402x.png" />
+    <BundleResource Include="Resources\account.png" />
+    <BundleResource Include="Resources\account%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
@@ -892,6 +891,7 @@
     <Folder Include="Controls\Widgets\" />
     <Folder Include="Controls\Behavior\" />
     <Folder Include="Controls\Widgets\Booking\" />
+    <Folder Include="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Style\Theme.xml">

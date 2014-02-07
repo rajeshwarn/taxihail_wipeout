@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     0.6f, 
                     () =>
                     {
-                        constraintOrderReviewTopSpace.Constant = 170;
+                        constraintOrderReviewTopSpace.Constant = ctrlOrderOptions.Frame.Height;
                         constraintOrderOptionsTopSpace.Constant =  22;
                         homeView.LayoutIfNeeded();
                     });
