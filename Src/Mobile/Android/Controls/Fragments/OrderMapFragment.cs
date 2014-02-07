@@ -25,19 +25,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     public class OrderMapFragment: IMvxBindable, IDisposable
     {
         public GoogleMap Map { get; set;}
-        private View _view;
+        public TouchableMap _touchableMap { get; set;}
+        private ImageView _pickupOverlay;
         private Marker _pickupPin;
         private Marker _destinationPin;
         private CompositeDisposable _subscriptions = new CompositeDisposable();
 
         private List<Marker> _availableVehicleMarkers = new List<Marker> ();
 
-        public OrderMapFragment(SupportMapFragment _map)
+        public OrderMapFragment(TouchableMap _map)
         {
             this.CreateBindingContext();
             Map = _map.Map;
-            _view = _map.View;
+            _touchableMap = _map;
+            _pickupOverlay = (ImageView)_map.Activity.FindViewById(Resource.Id.pickupOverlay);
+            _pickupOverlay.Visibility = ViewStates.Visible;
+            _pickupOverlay.SetPadding(0, 0, 0, _pickupOverlay.Drawable.IntrinsicHeight / 2);
             this.DelayBind(() => InitializeBinding());
+            CreatePins();
         }
 
         public IMvxBindingContext BindingContext { get; set; }
@@ -56,9 +61,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             var binding = this.CreateBindingSet<OrderMapFragment, MapViewModel>();
 
-            _view.Touch += (object sender, View.TouchEventArgs e) => 
+            _touchableMap.Surface.Touched += (object sender, MotionEvent e) => 
             {
-                var _target = Map.CameraPosition.Target;
+                switch (e.Action)
+                {
+                    case MotionEventActions.Down:
+                        ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
+                        break;                    
+                    case MotionEventActions.Move:
+                        ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
+                        break;                    
+                    default:
+                        break;
+                }               
             };
 
 
@@ -76,17 +91,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                 var _target = Map.CameraPosition.Target;
 
-                var _bounds =  Map.Projection.VisibleRegion.LatLngBounds;
-
-                var bounds = new MapBounds()
-                { 
-                    SouthBound = _bounds.Southwest.Latitude, 
-                    WestBound = _bounds.Southwest.Longitude, 
-                    NorthBound = _bounds.Northeast.Latitude, 
-                    EastBound = _bounds.Northeast.Longitude
-                };
-
-                if(UserMovedMap != null && UserMovedMap.CanExecute(bounds))
+                var bounds = GetMapBoundsFromProjection();
+                                        
+                if (UserMovedMap != null && UserMovedMap.CanExecute(bounds))
                 {
                     UserMovedMap.Execute(bounds);
                 }
@@ -120,6 +127,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             binding.Apply();
 
+        }
+
+        private MapBounds GetMapBoundsFromProjection()
+        {
+            var _bounds = Map.Projection.VisibleRegion.LatLngBounds;
+
+            var bounds = new MapBounds()
+            { 
+                SouthBound = _bounds.Southwest.Latitude, 
+                WestBound = _bounds.Southwest.Longitude, 
+                NorthBound = _bounds.Northeast.Latitude, 
+                EastBound = _bounds.Northeast.Longitude
+            };
+            return bounds;
         }
 
         private Address _pickupAddress;
@@ -164,32 +185,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public ICommand UserMovedMap { get; set; }
 
-        public event EventHandler UserMapBoundsChanged;
-
-        private MapBounds _userMapBounds;
-        public MapBounds UserMapBounds
-        {
-            get
-            {
-                return _userMapBounds;
-            }
-
-            set
-            {
-                if (_userMapBounds != value)
-                {
-                    _userMapBounds = value;
-
-                    if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
-                    {
-                        CreatePins();
-                        _pickupPin.Visible = true;
-                        _pickupPin.Position = new LatLng(_userMapBounds.GetCenter().Latitude, _userMapBounds.GetCenter().Longitude);
-                    }
-                }
-            }
-        }
-
         public AddressSelectionMode AddressSelectionMode { get; set;}
 
         private IEnumerable<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
@@ -233,26 +228,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             if (PickupAddress == null)
                 return; 
-
-            CreatePins();
-
-            if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
-            {
-                _pickupPin.Visible = true;
-                _pickupPin.Position = new LatLng(MapBounds.GetCenter().Latitude, MapBounds.GetCenter().Longitude);
-            }
-            else
-            {
-                if (PickupAddress.HasValidCoordinate())
-                {
-                    _pickupPin.Visible = true;
-                    _pickupPin.Position = new LatLng(PickupAddress.Latitude, PickupAddress.Longitude);
-                }
-                else
-                {
-                    _pickupPin.Visible = false;
-                }
-            }
         }
 
         private void OnDestinationAddressChanged()
@@ -273,15 +248,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private bool bypassCameraChangeEvent = false;
 
+        void StickPickupPinAt(Position position)
+        {
+            _pickupOverlay.Visibility = ViewStates.Invisible;
+            _pickupPin.Visible = true;
+            _pickupPin.Position = new LatLng(position.Latitude, position.Longitude);
+        }
+
+        void ShowPickupOverlay(Position position)
+        {
+            _pickupPin.Visible = false;
+            _pickupOverlay.Visibility = ViewStates.Visible;
+        }
+
         private void OnMapBoundsChanged()
         {
             if (MapBounds != null)
             {
                 bypassCameraChangeEvent = true;
+                var _bounds = MapBounds;
                 Map.AnimateCamera(
                     CameraUpdateFactory.NewLatLngBounds(
-                        new LatLngBounds(new LatLng(MapBounds.SouthBound, MapBounds.WestBound), 
-                            new LatLng(MapBounds.NorthBound, MapBounds.EastBound)),
+                        new LatLngBounds(new LatLng(_bounds.SouthBound, _bounds.WestBound), 
+                            new LatLng(_bounds.NorthBound, _bounds.EastBound)),
                         DrawHelper.GetPixels(0)));
             }
         }

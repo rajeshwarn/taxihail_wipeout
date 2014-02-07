@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
    
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>
     {
-        private SupportMapFragment _touchMap;
+        private TouchableMap _touchMap;
         private OrderReview _orderReview;
         private OrderOptions _orderOptions;
         private int _menuWidth = 400;
@@ -181,7 +181,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             // Creating a view controller for MapFragment
             Bundle mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
-            _touchMap = (SupportMapFragment)SupportFragmentManager.FindFragmentById(Resource.Id.mapPickup);
+            _touchMap = (TouchableMap)SupportFragmentManager.FindFragmentById(Resource.Id.mapPickup);
             _touchMap.OnCreate(mapViewSavedInstanceState);
             _mapFragment = new OrderMapFragment(_touchMap);
 
@@ -203,8 +203,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             FindViewById<View>(Resource.Id.btnBookLaterLayout).Click -= PickDate_Click;
             FindViewById<View>(Resource.Id.btnBookLaterLayout).Click += PickDate_Click;
-            //FindViewById<View>(Resource.Id.btnBookLater).Click -= PickDate_Click;
-            //FindViewById<View>(Resource.Id.btnBookLater).Click += PickDate_Click;
         }
 
         protected override void OnResume()

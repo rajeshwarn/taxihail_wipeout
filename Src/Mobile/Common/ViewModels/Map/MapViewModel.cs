@@ -144,7 +144,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        private class CancellableCommand<TParam>: ICommand
+		public class CancellableCommand<TParam>: ICommand
         {
             private Func<TParam,bool> _canExecute;
             private Func<TParam, CancellationToken, Task> _execute;
