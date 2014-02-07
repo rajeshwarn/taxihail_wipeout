@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         public Action<string,string> AddressUpdated { get; set; }
 
-        private Color SelectedColor = Color.Rgb(0, 192, 49);
+        private Color SelectedColor = Resources.GetColor(Resource.Color.orderoptions_pickup_address_color);
         public EditText AddressTextView;
         private EditText StreetNumberTextView;
         private LinearLayout LoadingWheel;
@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     _isDestination = value;
                     if (value)
                     {
-                        SelectedColor = Color.Rgb(255, 0, 18);
+                        SelectedColor = Resources.GetColor(Resource.Color.orderoptions_destination_address_color);
                     }
 
                     Dot.SetColorFilter(SelectedColor, PorterDuff.Mode.SrcAtop);
@@ -158,8 +158,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             };
         }
 
-        Button _giantInvisibleButton;
-        public void SetInvisilbleButton(Button giantInvisibleButton)
+        private Button _giantInvisibleButton;
+        private void SetInvisibleButton(Button giantInvisibleButton)
         {
             giantInvisibleButton.Touch += (sender, e) => 
             {

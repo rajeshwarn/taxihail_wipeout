@@ -15,8 +15,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private TextView EstimatedFareLabel { get; set; }
         private View HorizontalDivider { get; set; }
 
-        private Color Blue = Color.Rgb(0, 129, 248);
-
         public VehicleTypeAndEstimateControl(Context c, IAttributeSet attr) : base(c, attr)
         {
 
@@ -81,14 +79,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             if (ShowEstimate)
             {
-                HorizontalDivider.Background.SetColorFilter(Blue, PorterDuff.Mode.SrcAtop);
+                HorizontalDivider.Background.SetColorFilter(Resources.GetColor(Resource.Color.orderoptions_estimate_blue), PorterDuff.Mode.SrcAtop);
                 SelectedVehicleType.Visibility = ViewStates.Visible;
                 SelectedVehicleTypeLabel.Visibility = ViewStates.Visible;
                 EstimatedFareLabel.Visibility = ViewStates.Visible;
             }
             else
             {
-                HorizontalDivider.Background.SetColorFilter(Color.Rgb(177, 177, 177), PorterDuff.Mode.SrcAtop);
+                HorizontalDivider.Background.SetColorFilter(Resources.GetColor(Resource.Color.orderoptions_horizontal_divider), PorterDuff.Mode.SrcAtop);
                 SelectedVehicleType.Visibility = ViewStates.Gone;
                 SelectedVehicleTypeLabel.Visibility = ViewStates.Gone;
                 EstimatedFareLabel.Visibility = ViewStates.Gone;
