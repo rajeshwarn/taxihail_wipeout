@@ -47,6 +47,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		public ICommand SetAddress
+		{
+			get
+			{
+				return this.GetCommand<Address>(address => {
+					_orderWorkflowService.SetAddress(address);
+				});
+			}
+		}
+
 		private AddressSelectionMode _addressSelectionMode;
 		public AddressSelectionMode AddressSelectionMode
 		{
@@ -92,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private bool _isConfirmationScreen;
 		public bool IsConfirmationScreen
 		{
-			get { return _isConfirmationScreen; }
+            get { return _isConfirmationScreen; }
 			set
 			{
 				if (value != _isConfirmationScreen)
