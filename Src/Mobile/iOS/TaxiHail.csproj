@@ -531,6 +531,7 @@
       <DependentUpon>OrderReviewItem.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Widgets\VehicleTypeAndEstimateView.cs" />
+    <Compile Include="Controls\Binding\BaseBindableChildView.cs" />
     <Compile Include="Views\HistoryListView.designer.cs">
       <DependentUpon>HistoryListView.cs</DependentUpon>
     </Compile>

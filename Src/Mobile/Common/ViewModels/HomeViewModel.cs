@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				Map = AddChild<MapViewModel>();
 				OrderOptions = AddChild<OrderOptionsViewModel>();
+				OrderReview = AddChild<OrderReviewViewModel>();
 				BottomBar = AddChild<BottomBarViewModel>();
 			}
 			this.Services().Vehicle.Start();
@@ -67,6 +68,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			private set
 			{ 
 				_orderOptions = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		private OrderReviewViewModel _orderReview;
+		public OrderReviewViewModel OrderReview
+		{
+			get { return _orderReview; }
+			set
+			{
+				_orderReview = value;
 				RaisePropertyChanged();
 			}
 		}

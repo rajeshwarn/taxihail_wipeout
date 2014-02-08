@@ -19,6 +19,13 @@ using System.Windows.Input;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Reactive.Disposables;
+using TinyIoC;
+using apcurium.MK.Common.Configuration;
+using Android.Content.Res;
+using Android.Graphics;
+using Android.Graphics.Drawables;
+using Android.Util;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -33,9 +40,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private List<Marker> _availableVehicleMarkers = new List<Marker> ();
 
-        public OrderMapFragment(TouchableMap _map)
+        private BitmapDescriptor _destinationIcon;
+        private BitmapDescriptor _nearbyTaxiIcon;
+        private BitmapDescriptor _nearbyClusterIcon;
+        private BitmapDescriptor _hailIcon;
+
+        private Resources Resources;
+
+        void InitDrawables()
+        {            
+            var useColor = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
+            var colorBgTheme = useColor ? (Color?)Resources.GetColor(Resource.Color.login_background_color) : (Color?)null;
+
+            var destinationIcon =  Resources.GetDrawable(Resource.Drawable.@destination_icon);
+            var nearbyTaxiIcon = Resources.GetDrawable(Resource.Drawable.@nearby_taxi);                                
+            var nearbyClusterIcon = Resources.GetDrawable(Resource.Drawable.@cluster); 
+            var hailIcon = Resources.GetDrawable(Resource.Drawable.@hail_icon);                                
+
+            _destinationIcon = DrawHelper.DrawableToBitmapDescriptor(destinationIcon, colorBgTheme);
+            _nearbyTaxiIcon = DrawHelper.DrawableToBitmapDescriptor(nearbyTaxiIcon, colorBgTheme);
+            _nearbyClusterIcon = DrawHelper.DrawableToBitmapDescriptor(nearbyClusterIcon, colorBgTheme);
+            _hailIcon = DrawHelper.DrawableToBitmapDescriptor(hailIcon, colorBgTheme);
+        }
+
+
+        public OrderMapFragment(TouchableMap _map, Resources _resources)
         {
-            this.CreateBindingContext();
+            Resources = _resources;
+            InitDrawables();
+            this.CreateBindingContext();            
             Map = _map.Map;
             _touchableMap = _map;
             _pickupOverlay = (ImageView)_map.Activity.FindViewById(Resource.Id.pickupOverlay);
@@ -210,7 +243,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _pickupPin = Map.AddMarker(new MarkerOptions()
                     .SetPosition(new LatLng(0, 0))
                     .Anchor(.5f, 1f)
-                    .InvokeIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.hail_icon))
+                                           .InvokeIcon(_hailIcon)
                     .Visible(false));
             }     
 
@@ -219,7 +252,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _destinationPin = Map.AddMarker(new MarkerOptions()
                     .SetPosition(new LatLng(0, 0))
                     .Anchor(.5f, 1f)
-                    .InvokeIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.destination_icon))
+                    .InvokeIcon(_destinationIcon)
                     .Visible(false));
             }     
         }
@@ -297,7 +330,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     Map.AddMarker(new MarkerOptions()
                                   .SetPosition(new LatLng(0, 0))
                                   .Anchor(.5f, 1f)
-                                  .InvokeIcon(BitmapDescriptorFactory.FromResource(isCluster ? Resource.Drawable.cluster : Resource.Drawable.nearby_taxi))
+                                  .InvokeIcon(isCluster ? _nearbyClusterIcon : _nearbyTaxiIcon)
                                   .Visible(false));
 
                 _availableVehicleMarkers.Add (vehicleMarker);

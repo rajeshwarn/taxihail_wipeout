@@ -201,17 +201,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             var isOS7orHigher = UIHelper.IsOS7orHigher;
 
-            // change color of status bar
-            if (isOS7orHigher)
-            {
-                NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
-                                                              ? UIBarStyle.Black
-                                                              : UIBarStyle.Default;
-            }
-
             // change color of navigation bar
             if (isOS7orHigher) 
             {
+                NavigationController.NavigationBar.Translucent = false;
                 UINavigationBar.Appearance.BarTintColor = navBarColor;
                 NavigationController.NavigationBar.BarTintColor = navBarColor;
 
@@ -232,6 +225,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var backBackground = UIImage.FromFile (Theme.IsLightContent ? "left_arrow.png" : "left_arrow_white.png").CreateResizableImage (new UIEdgeInsets (0, 12, 21, 0));
                 UIBarButtonItem.Appearance.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default); 
                 UIBarButtonItem.Appearance.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default); 
+            }
+
+            // change color of status bar
+            if (isOS7orHigher)
+            {
+                NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
+                                                              ? UIBarStyle.Black
+                                                              : UIBarStyle.Default;
             }
 
             // set title color

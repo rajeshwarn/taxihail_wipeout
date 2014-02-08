@@ -9,6 +9,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
     public interface IOrderWorkflowService
     {
+		Task SetAddress(Address address);
 		Task SetAddressToUserLocation();
 		Task ClearDestinationAddress();
 
@@ -22,8 +23,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		IObservable<Address> GetAndObservePickupAddress();
 		IObservable<Address> GetAndObserveDestinationAddress();
-
 		IObservable<AddressSelectionMode> GetAndObserveAddressSelectionMode();
+		IObservable<BookingSettings> GetAndObserveBookingSettings();
 
 		IObservable<string> GetAndObserveEstimatedFare();
     }

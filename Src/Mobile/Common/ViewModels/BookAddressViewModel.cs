@@ -247,7 +247,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                 }
 
-                address.CopyTo(Model);
+				Model = address.Copy();
 
 				RaisePropertyChanged(() => AddressLine1);
 				RaisePropertyChanged(() => AddressLine2);
@@ -266,7 +266,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             InvokeOnMainThread(() =>
             {
                 var clearAddress = new Address();
-                clearAddress.CopyTo(Model);
+				Model = clearAddress.Copy();
 				RaisePropertyChanged(() => AddressLine1);
 				RaisePropertyChanged(() => AddressLine2);
 				RaisePropertyChanged(() => Model);
