@@ -7,10 +7,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
 {
     public static class EditTextExtensions
     {
-        public static void HideKeyboard(this EditText thisControl, Activity parentActivity)
+        public static void HideKeyboard(this EditText thisControl)
         {
-            ((InputMethodManager) parentActivity.GetSystemService(Context.InputMethodService)).HideSoftInputFromWindow(
-                thisControl.WindowToken, 0); //Hide keyboard
+            ((InputMethodManager)thisControl.Context.GetSystemService(Context.InputMethodService)).HideSoftInputFromWindow(thisControl.WindowToken,0);
+        }
+
+        public static void ShowKeyboard(this EditText thisControl)
+        {
+            InputMethodManager inputMethodManager = (InputMethodManager)thisControl.Context.GetSystemService(Context.InputMethodService);
+            inputMethodManager.ToggleSoftInput(ShowFlags.Implicit, HideSoftInputFlags.ImplicitOnly);
         }
     }
 }

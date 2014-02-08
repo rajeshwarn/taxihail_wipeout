@@ -31,6 +31,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Messages;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
@@ -45,6 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private OrderReview _orderReview;
         private OrderOptions _orderOptions;
         private AppBar _appBar;
+        private HomeViewModelState _presentationState = HomeViewModelState.Initial;
 
         private int _menuWidth = 400;
         private readonly DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
@@ -178,7 +180,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             Bundle mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
             _touchMap = (SupportMapFragment)SupportFragmentManager.FindFragmentById(Resource.Id.mapPickup);
             _touchMap.OnCreate(mapViewSavedInstanceState);
-            _mapFragment = new OrderMapFragment(_touchMap);
+            _mapFragment = new OrderMapFragment(_touchMap, Resources);
 
             // Home View Bindings
             var binding = this.CreateBindingSet<HomeActivity, HomeViewModel>();
@@ -257,7 +259,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
+            SetSelectedOnBookLater(false);
+
             base.OnActivityResult(requestCode, resultCode, data);
+
 
             if (requestCode == (int)ActivityEnum.DateTimePicked && resultCode == Result.Ok)
             {             
@@ -279,6 +284,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public void ChangeState(HomeViewModelPresentationHint hint)
         {
+            _presentationState = hint.State;
+
             if (hint.State == HomeViewModelState.PickDate)
             {
                 SetSelectedOnBookLater(true);
@@ -316,6 +323,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             _appBar.ChangePresentation(hint);
            
+        }
+
+        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
+        {
+            if (keyCode == Keycode.Back)
+            {
+                switch (_presentationState)
+                {
+                    case HomeViewModelState.Review:
+                        ChangeState(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                        return true;
+                    case HomeViewModelState.Edit:
+                        ChangeState(new HomeViewModelPresentationHint(HomeViewModelState.Review));
+                        return true;
+                    default:
+                        break;
+                }
+            }
+
+            return base.OnKeyDown(keyCode, e);
         }
 
 

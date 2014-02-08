@@ -45,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             tableCardsList.BackgroundColor = UIColor.Clear;
             tableCardsList.SeparatorColor = UIColor.Clear;
             tableCardsList.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+            tableCardsList.DelaysContentTouches = false;
             
             var source = new BindableTableViewSource(
                 tableCardsList, 
@@ -77,6 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             var cell = new SingleLinePictureCell(Cellid, CellBindingText );
             cell.HideBottomBar = tableView.IsLastCell(indexPath);
+            cell.RemoveDelay();
             return cell;
         }
     }

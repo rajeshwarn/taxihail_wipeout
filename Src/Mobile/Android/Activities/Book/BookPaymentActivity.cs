@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
                 {
                     ViewModel.ShowCurrencyCommand.Execute();
-                    _meterAmountTextView.HideKeyboard(this);
+                    _meterAmountTextView.HideKeyboard();
                 }
             };
 
@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
                 {
                     ViewModel.ShowCurrencyCommand.Execute();
-                    _tipAmountTextView.HideKeyboard(this);
+                    _tipAmountTextView.HideKeyboard();
                 }
             };
 
@@ -135,7 +135,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             // Should remove/migrate this code
             _tipPicker.ItemSelected += (object sender, AdapterView.ItemSelectedEventArgs e) => {
                 ViewModel.ToggleToTipSelector.Execute();
-                //_tipAmountTextView.HideKeyboard(this);
+                //_tipAmountTextView.HideKeyboard();
             };
         }
 

@@ -45,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			tableLocations.BackgroundColor = UIColor.Clear;
 			tableLocations.SeparatorColor = UIColor.Clear;
             tableLocations.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+            tableLocations.DelaysContentTouches = false;
 
             var source = new BindableTableViewSource (
 	             tableLocations, 
@@ -72,6 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			var cell = new TwoLinesCell(new NSString(CellId), CellBindingText, UITableViewCellAccessory.Checkmark);
 			cell.HideBottomBar = tableView.IsLastCell(indexPath);
+            cell.RemoveDelay();
 			return cell;
 		}
 	}
