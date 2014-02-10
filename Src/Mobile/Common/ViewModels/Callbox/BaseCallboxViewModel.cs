@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             get
             {
-                return GetCommand(() => this.Services().Message.ShowMessage(this.Services().Localize["LogoutTitle"],
+                return this.GetCommand(() => this.Services().Message.ShowMessage(this.Services().Localize["LogoutTitle"],
                     this.Services().Localize["LogoutMessage"],
                     this.Services().Localize["Yes"], () =>
                     { }, this.Services().Localize["No"], () => { }));

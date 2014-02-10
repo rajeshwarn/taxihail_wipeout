@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return GetCommand(() => ShowViewModel<TermsAndConditionsViewModel>());
+				return this.GetCommand(() => ShowViewModel<TermsAndConditionsViewModel>());
 			}
 		}
 
@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return GetCommand(async () =>
+				return this.GetCommand(async () =>
 				{
 					if (!IsEmail(Data.Email))
 					{

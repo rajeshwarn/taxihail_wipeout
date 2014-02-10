@@ -166,7 +166,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 		{
 			get
 			{
-				return GetCommand(() => this.Services().Message.ShowEditTextDialog(this.Services().Localize["BookTaxiTitle"],
+				return this.GetCommand(() => this.Services().Message.ShowEditTextDialog(this.Services().Localize["BookTaxiTitle"],
                     this.Services().Localize["BookTaxiPassengerName"],
                     this.Services().Localize["Ok"], 
 					CreateOrder));
@@ -177,7 +177,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 		{
 			get
 			{
-				return GetCommand<Guid>(orderId =>
+				return this.GetCommand<Guid>(orderId =>
                     this.Services().Message.ShowMessage(this.Services().Localize["CancelOrderTitle"],
                         this.Services().Localize["CancelOrderMessage"],
                         this.Services().Localize["Yes"], () => 

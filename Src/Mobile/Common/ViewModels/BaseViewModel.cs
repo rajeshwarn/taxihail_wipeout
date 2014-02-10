@@ -82,42 +82,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			return ShowViewModel<TViewModel>(parameterValues);
         }
-
-        protected AsyncCommand GetCommand(Action action)
-        {
-            return new AsyncCommand(action);
-        }
-
-		protected AsyncCommand GetCommand(Func<Task> action)
-		{
-			return new AsyncCommand(action);
-		}
-
-        protected AsyncCommand<T> GetCommand<T>(Action<T> action)
-        {
-            return new AsyncCommand<T>(action);
-        }
+		       
 		
 		public ICommand CloseCommand
 		{
 			get
 			{
-				return GetCommand(() => Close(this));
+				return this.GetCommand(() => Close(this));
 			}
 		}
 
-        readonly IDictionary<string, AsyncCommand> _commands = new Dictionary<string, AsyncCommand>();
-        protected AsyncCommand GetCommand(Action execute, Func<bool> canExecute, [CallerMemberName] string memberName = null)
-        {
-            if (memberName == null)
-            {
-                throw new ArgumentNullException("memberName");
-            }
-            return _commands.ContainsKey(memberName)
-                ? _commands[memberName]
-                    : (_commands[memberName] = new AsyncCommand(execute, canExecute));
-
-        }
 
 		protected new void RaisePropertyChanged([CallerMemberName]string whichProperty = null)
 		{

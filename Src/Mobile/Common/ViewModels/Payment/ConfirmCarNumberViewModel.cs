@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		public ICommand ConfirmCarNumber 
 		{
 			get {
-				return GetCommand (() =>
+				return this.GetCommand (() =>
 				{ 
 					ShowSubViewModel<PaymentViewModel,object>(
 	                    new { 

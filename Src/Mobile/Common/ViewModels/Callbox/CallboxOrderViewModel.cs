@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             get
             {
-				return GetCommand(() => this.Services().MessengerHub.Publish(new OrderDeleted(this, Id, null)));
+				return this.GetCommand(() => this.Services().MessengerHub.Publish(new OrderDeleted(this, Id, null)));
             }
         }
 

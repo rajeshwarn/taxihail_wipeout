@@ -1,4 +1,5 @@
 using apcurium.MK.Booking.Mobile.Extensions;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -27,10 +28,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-        public AsyncCommand<bool> Finish
+		public ICommand Finish
 		{
 			get{
-				return GetCommand<bool>(ReturnResult);
+				return this.GetCommand<bool>(b => ReturnResult(b));
 			}
 		}
     }

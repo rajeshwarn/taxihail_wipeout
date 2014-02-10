@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Globalization;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -108,11 +109,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get{ return Settings.ShowPassengerNumber; }
 		}
 
-        public AsyncCommand NavigateToEditInformations
+		public ICommand NavigateToEditInformations
 		{
 			get
 			{
-				return GetCommand(() => ShowSubViewModel<BookEditInformationViewModel, Order>(
+				return this.GetCommand(() => ShowSubViewModel<BookEditInformationViewModel, Order>(
 					new
 					{
                     	order = Order.ToJson()
@@ -146,11 +147,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public AsyncCommand ConfirmOrderCommand
+		public ICommand ConfirmOrderCommand
 		{
 			get
 			{
-				return GetCommand(async () =>
+				return this.GetCommand(async () =>
 				{
 					Order.Id = Guid.NewGuid();
 					using(this.Services().Message.ShowProgress())
@@ -209,11 +210,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public AsyncCommand CancelOrderCommand
+		public ICommand CancelOrderCommand
 		{
 			get
 			{
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				{
 					Close(this);
                     this.Services().MessengerHub.Publish(new OrderConfirmed(this, Order, true));

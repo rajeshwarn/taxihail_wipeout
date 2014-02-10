@@ -10,6 +10,7 @@ using apcurium.MK.Common.Entity;
 using System.Reactive.Linq;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -206,10 +207,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             AddressViewModels.Clear ();
         }
 
-        public AsyncCommand<AddressViewModel> RowSelectedCommand
+		public ICommand RowSelectedCommand
         {
             get {
-                return GetCommand<AddressViewModel> (address => ThreadPool.QueueUserWorkItem (o =>
+                return this.GetCommand<AddressViewModel> (address => ThreadPool.QueueUserWorkItem (o =>
                     {
                         if (address.Address == null) return;
 
@@ -245,9 +246,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand CloseViewCommand
+		public ICommand CloseViewCommand
         {
-            get { return GetCommand (() => Close (this)); }
+            get { return this.GetCommand (() => Close (this)); }
         }
 
 

@@ -7,6 +7,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
 using TinyMessenger;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -66,10 +67,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand NavigateToSearch
+		public ICommand NavigateToSearch
         {
             get {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                  {
                      this.Services().MessengerHub.Unsubscribe<AddressSelected>(_token);
                     _token.Dispose ();
@@ -81,10 +82,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand NavigateToPlaces
+		public ICommand NavigateToPlaces
         {
             get {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                                   {
                     this.Services().MessengerHub.Unsubscribe<AddressSelected>(_token);
                     _token.Dispose ();
@@ -95,10 +96,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand DeleteAddressCommand
+		public ICommand DeleteAddressCommand
         {
             get {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                                   {
                     this.Services().MessengerHub.Publish(new AddressSelected(this, null, _ownerId, false));                                                        
                     Close( this );
@@ -113,11 +114,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Close(this);
         }
 
-        public AsyncCommand SaveCommand
+		public ICommand SaveCommand
         {
             get
             {
-                return GetCommand(() => 
+                return this.GetCommand(() => 
                 {
                     Model.UpdateStreetOrNumberBuildingName(StreetNumberOrBuildingName);
                     this.Services().MessengerHub.Publish(new AddressSelected(this, Model, _ownerId, true));                    

@@ -5,6 +5,7 @@ using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Extensions;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -132,12 +133,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand SaveCommand
+		public ICommand SaveCommand
         {
             get
             {
 
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				{ 
 					if (RideSettings.ValidateRideSettings())
 					{

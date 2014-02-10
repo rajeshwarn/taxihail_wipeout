@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -104,10 +105,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return !IsNew && !Settings.HideRebookOrder; }
 		}
 
-        public AsyncCommand ValidateAddress
+		public ICommand ValidateAddress
         {
             get {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {
                     this.Services().Message.ShowProgress(true);
                     var task = Task.Factory.StartNew(() => this.Services().Geoloc.ValidateAddress(_address.FullAddress))
@@ -136,10 +137,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _validateAddressCancellationTokenSource.Cancel();
         }
 
-        public AsyncCommand SaveAddress
+		public ICommand SaveAddress
         {
             get {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {
                     if (!ValidateFields()) return;
                     var progressShowing = true;
@@ -170,10 +171,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand DeleteAddress
+		public ICommand DeleteAddress
         {
             get {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {
                     this.Services().Message.ShowProgress(true);
                 
@@ -193,11 +194,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand RebookOrder
+		public ICommand RebookOrder
 		{
             get
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
 				{
 	                 var order = new Order {PickupAddress = _address};
 

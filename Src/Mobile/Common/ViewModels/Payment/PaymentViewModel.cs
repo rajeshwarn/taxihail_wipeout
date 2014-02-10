@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -79,23 +80,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public bool TipSelectorIsVisible { get; set; }
 
-        public AsyncCommand UsePayPal
+		public ICommand UsePayPal
         {
             get
             {
 
-				return GetCommand(() => InvokeOnMainThread(delegate
+				return this.GetCommand(() => InvokeOnMainThread(delegate
                 {
                     PayPalSelected = true;
                 }));
             }
         }
 
-        public AsyncCommand UseCreditCard
+		public ICommand UseCreditCard
         {
             get
             {
-                return GetCommand(() => InvokeOnMainThread(delegate
+                return this.GetCommand(() => InvokeOnMainThread(delegate
                 {
                     PayPalSelected = false;
                 }));
@@ -175,11 +176,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public bool IsResettingTip = false; // For Droid's tip picker
 
-		public AsyncCommand ToggleToTipCustom
+		public ICommand ToggleToTipCustom
 		{
 			get
 			{
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				{ 
                     if (!PaymentPreferences.TipListDisabled)
                     {
@@ -194,11 +195,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		public AsyncCommand ToggleToTipSelector
+		public ICommand ToggleToTipSelector
         {
             get
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 { 
                     if (IsResettingTip && PaymentPreferences.Tip == 0 && CultureProvider.ParseCurrency(TipAmount) == 0d)
                     {
@@ -216,11 +217,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-		public AsyncCommand ClearTipCommand
+		public ICommand ClearTipCommand
 		{
 			get
 			{
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 					{ 					
                         TipAmount = "";	
                         TipAmountString = "";						
@@ -229,11 +230,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		public AsyncCommand ClearMeterCommand
+		public ICommand ClearMeterCommand
 		{
 			get
 			{
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				{ 					
 					MeterAmount = "";
 					RaisePropertyChanged(() => MeterAmount);
@@ -241,11 +242,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		public AsyncCommand ShowCurrencyCommand
+		public ICommand ShowCurrencyCommand
         {
             get
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 { 										
                     if (MeterAmount.ToString() != GetCurrency(MeterAmount).ToString())
                     {
@@ -262,11 +263,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public PaymentDetailsViewModel PaymentPreferences { get; private set; }
 
-        public AsyncCommand ConfirmOrderCommand
+		public ICommand ConfirmOrderCommand
         {
             get
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {                    
                     Action executePayment = () =>
                     {

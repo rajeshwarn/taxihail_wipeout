@@ -16,6 +16,7 @@ using apcurium.MK.Common.Entity;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -382,11 +383,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 		private bool _canShowTutorial = true;
-        public AsyncCommand ShowTutorial
+		public ICommand ShowTutorial
         {
             get
             {
-				return GetCommand(async () =>
+				return this.GetCommand(async () =>
                 {
 					if (!Settings.TutorialEnabled)
                     {
@@ -404,11 +405,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand ActivatePickup
+		public ICommand ActivatePickup
         {
             get
             {
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				{
 					// Close the menu if it was open
 					Panel.MenuIsOpen = false;
@@ -423,11 +424,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand ActivateDropoff
+		public ICommand ActivateDropoff
         {
             get
             {
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				{
 					// Close the menu if it was open
 					Panel.MenuIsOpen = false;
@@ -482,11 +483,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Task.Factory.SafeStartNew(CalculateEstimate);
         }
 
-        public AsyncCommand<DateTime?> PickupDateSelectedCommand
+		public ICommand PickupDateSelectedCommand
         {
             get
             {
-                return GetCommand<DateTime?>(date =>
+                return this.GetCommand<DateTime?>(date =>
                 {
                     if (date.HasValue && date < DateTime.Now)
                     {
@@ -508,11 +509,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand BookNow
+		public ICommand BookNow
         {
             get
             {
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				{
 					// Ensure PickupDate is null (= now). It will be set to DateTime.Now later
 					Order.PickupDate = null;
@@ -522,21 +523,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand ClosePanelCommand
+		public ICommand ClosePanelCommand
         {
             get
             {
-                return GetCommand(() => {
+                return this.GetCommand(() => {
                     Panel.MenuIsOpen = false;
                 });
             }
         }
 
-        public AsyncCommand GooglePlayServicesNotAvailable
+		public ICommand GooglePlayServicesNotAvailable
 		{
 			get
 			{
-				return GetCommand(() => 
+				return this.GetCommand(() => 
 				{
 					// Android specific
 					// Prevent tutorial from appearing above the message box
@@ -609,11 +610,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-        public AsyncCommand NavigateToRateOrder
+		public ICommand NavigateToRateOrder
         {
             get
             {
-				return GetCommand(() => ShowViewModel<BookRatingViewModel>(new {
+				return this.GetCommand(() => ShowViewModel<BookRatingViewModel>(new {
 					canRate = true,
 				}));
                     

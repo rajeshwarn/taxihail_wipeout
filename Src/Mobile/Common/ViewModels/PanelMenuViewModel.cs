@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get 
 			{
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 					{
 						MenuIsOpen = !MenuIsOpen;
 					});
@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get 
 			{
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				{
 					_browserTask.ShowWebPage(this.Services().Localize["apcuriumUrl"]);
 				});
@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get 
 			{
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				{
 					_browserTask.ShowWebPage(this.Services().Localize["mobileKnowledgeUrl"]);
 				});
@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get 
 			{
-				return GetCommand(() =>
+				return this.GetCommand(() =>
                 {
                     MenuIsOpen = false;
                     this.Services().Account.SignOut();         
@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get 
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {
                     MenuIsOpen = false;
 						ShowViewModel<HistoryListViewModel> ();
@@ -133,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get 
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {
                     MenuIsOpen = false;
 						ShowViewModel<LocationListViewModel> ();
@@ -161,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get 
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {
                     MenuIsOpen = false;
                     ShowViewModel<RideSettingsViewModel>(new { bookingSettings = this.Services().Account.CurrentAccount.Settings.ToJson() });
@@ -173,7 +173,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get 
             {
-                return GetCommand(() => 
+                return this.GetCommand(() => 
                 {
                     MenuIsOpen = false;
                     ShowViewModel<AboutUsViewModel>();
@@ -185,7 +185,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get 
             {
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				{
 					MenuIsOpen = false;
 					InvokeOnMainThread(() => this.Services().Phone.SendFeedbackErrorLog(Settings.SupportEmail, this.Services().Localize["TechSupportEmailTitle"]));
@@ -197,7 +197,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get 
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {
                     if ( TutorialEnabled )
                     {
@@ -228,7 +228,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get 
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {
                     MenuIsOpen = false;
 						Action call = () => { this.Services().Phone.Call(Settings.DefaultPhoneNumber); };

@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Messages;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Entity;
+using System.Windows.Input;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -268,11 +269,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			CanCancel = !IsCompleted;
 		}
 
-        public AsyncCommand NavigateToRatingPage
+		public ICommand NavigateToRatingPage
         {
             get
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                                                {
                                                    var canRate = IsDone && !HasRated;
 													ShowSubViewModel<BookRatingViewModel,OrderRated>(new 
@@ -285,11 +286,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand NavigateToOrderStatus
+		public ICommand NavigateToOrderStatus
         {
             get
             {
-                return GetCommand(() =>                                        
+                return this.GetCommand(() =>                                        
                 {
 					var orderStatus = new OrderStatusDetail
 					{ 
@@ -309,11 +310,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand DeleteOrder
+		public ICommand DeleteOrder
         {
             get
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {
                     if (GuidExtensions.HasValue(OrderId))
                     {
@@ -325,11 +326,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand RebookOrder
+		public ICommand RebookOrder
         {
             get
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {
                     var serialized = JsonSerializer.SerializeToString(Order);
                     ShowViewModel<BookViewModel>(new { order = serialized });
@@ -337,11 +338,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand SendReceipt
+		public ICommand SendReceipt
         {
             get
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {
                     if (OrderId.HasValue())
                     {
@@ -352,11 +353,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand CancelOrder
+		public ICommand CancelOrder
         {
             get
             {
-                return GetCommand(() => this.Services().Message.ShowMessage(string.Empty, this.Services().Localize["StatusConfirmCancelRide"], 
+                return this.GetCommand(() => this.Services().Message.ShowMessage(string.Empty, this.Services().Localize["StatusConfirmCancelRide"], 
                                                                                                    this.Services().Localize["YesButton"], () =>
                 {
 

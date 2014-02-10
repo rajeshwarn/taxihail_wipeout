@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             get
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                                       {
 										 this.Services().Account.ClearCache();
                                           SignIn();

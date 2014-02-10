@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Messages;
 using System.Threading.Tasks;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -109,11 +110,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 
-        public AsyncCommand<OrderViewModel> NavigateToHistoryDetailPage
+		public ICommand NavigateToHistoryDetailPage
         {
             get
             {
-                return GetCommand<OrderViewModel>(vm => ShowViewModel<HistoryDetailViewModel>(
+                return this.GetCommand<OrderViewModel>(vm => ShowViewModel<HistoryDetailViewModel>(
                     new {orderId = vm.Id}));
             }
         }

@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 		{
 			get
 			{
-				return GetCommand(() => 
+				return this.GetCommand(() => 
 					InvokeOnMainThread(()=>
 						{
                             this.Services().Message.ShowEditTextDialog(this.Services().Localize["BookTaxiTitle"],

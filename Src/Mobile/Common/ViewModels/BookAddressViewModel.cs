@@ -10,11 +10,12 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Common;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     // TODO: We don't need a full MvvmCross view model here
-    // Just need NotifyPropertyChanged and GetCommand
+    // Just need NotifyPropertyChanged and this.GetCommand
     public class BookAddressViewModel : BaseViewModel
     {
         private CancellationTokenSource _cancellationToken;
@@ -104,11 +105,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public Address Model { get { return _getAddress(); } set { _setAddress(value); } }
 
-        public AsyncCommand<Address> SearchCommand
+		public ICommand SearchCommand
         {
             get
             {
-                return GetCommand<Address>(coordinate =>
+                return this.GetCommand<Address>(coordinate =>
                 {
                     CancelCurrentLocation();
 
@@ -151,11 +152,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand PickAddress
+		public ICommand PickAddress
         {
             get
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {
                     CancelCurrentLocation();
 
@@ -283,19 +284,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             });
         }
 
-        public AsyncCommand ClearPositionCommand
+		public ICommand ClearPositionCommand
         {
             get
             {
-                return GetCommand(() => ClearAddress());
+                return this.GetCommand(() => ClearAddress());
             }
         }
 
-        public AsyncCommand RequestCurrentLocationCommand
+		public ICommand RequestCurrentLocationCommand
         {
             get
 			{
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {
 
                     CancelCurrentLocationCommand.Execute ();
