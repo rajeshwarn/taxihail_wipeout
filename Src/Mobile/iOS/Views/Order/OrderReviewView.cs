@@ -5,28 +5,22 @@ using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
-    public partial class OrderReviewView : OverlayView
+    public partial class OrderReviewView : BaseBindableChildView<OrderReviewViewModel>
     {
-        private NSLayoutConstraint _heightConstraint;
-
         public OrderReviewView(IntPtr handle) : base(handle)
         {
         }
 
         private void Initialize()
         {
-            _heightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, 
-                NSLayoutRelation.Equal, 
-                null, 
-                NSLayoutAttribute.NoAttribute, 
-                1.0f, 300.0f);
-
-            this.AddConstraint(_heightConstraint);
             BackgroundColor = UIColor.Clear;
-            txtNote.BackgroundColor = new UIColor();
+
+            txtNote.BackgroundColor = UIColor.FromRGB(242, 242, 242);
+            DismissKeyboardOnReturn(txtNote);
         }
 
         private void InitializeBinding()
