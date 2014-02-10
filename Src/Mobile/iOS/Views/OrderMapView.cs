@@ -135,7 +135,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             set
             {
-                ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value.ToArray(), MapBounds));
+                ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value != null ? value.ToArray() : null, MapBounds));
             }
         }
 

@@ -142,7 +142,6 @@
     <Compile Include="AppServices\IGeolocService.cs" />
     <Compile Include="Data\ListItemValue.cs" />
     <Compile Include="Extensions\AddressExtension.cs" />
-    <Compile Include="Extensions\BookingSettingsExtension.cs" />
     <Compile Include="Framework\Extensions\Calendar\ByteTimeSpanExtensions.cs" />
     <Compile Include="Framework\Extensions\Calendar\DayOfWeekExtensions.cs" />
     <Compile Include="Framework\Extensions\Calendar\DoubleTimeSpanExtensions.cs" />
@@ -323,12 +322,12 @@
     <Compile Include="ViewModels\Orders\OrderOptionsViewModel.cs" />
     <Compile Include="ViewModels\Orders\BottomBarViewModel.cs" />
     <Compile Include="Data\VehicleClusterHelper.cs" />
-    <Compile Include="ViewModels\Orders\BookLaterViewModel.cs" />
     <Compile Include="ViewModels\Orders\OrderReviewViewModel.cs" />
     <Compile Include="ViewModels\Orders\HomeViewModelState.cs" />
     <Compile Include="PresentationHints\HomeViewModelPresentationHint.cs" />
     <Compile Include="PresentationHints\IChangePresentation.cs" />
     <Compile Include="PresentationHints\ChangeStatePresentationHint.cs" />
+    <Compile Include="ViewModels\Orders\OrderEditViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

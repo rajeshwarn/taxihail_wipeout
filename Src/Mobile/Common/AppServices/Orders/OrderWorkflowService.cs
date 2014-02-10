@@ -44,8 +44,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_accountService = accountService;
 			_locationService = locationService;
 
-			// TODO: Listen to account booking settings changes
-			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(accountService.CurrentAccount.Settings);
+			// TODO: Listen to account booking settings changes && set default value?
+			var settings = accountService.CurrentAccount.Settings;
+			if (settings.Passengers <= 0)
+			{
+				settings.Passengers = 1;
+			}
+			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(settings);
 			_localize = localize;
 			_bookingService = bookingService;
 
@@ -153,12 +158,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 
 			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
-			bool pickupDateIsValid = !pickupDate.HasValue || (pickupDate.HasValue && pickupDate.Value >= DateTime.Now);
+			bool pickupDateIsValid = !pickupDate.HasValue || (pickupDate.HasValue && pickupDate.Value.ToUniversalTime() >= DateTime.UtcNow);
 
 			if (!pickupDateIsValid)
 			{
 				throw new OrderValidationException("Invalid pickup date", OrderValidationError.InvalidPickupDate);
 			}
+		}
+
+		public async Task SetBookingSettings(BookingSettings bookingSettings)
+		{
+			_bookingSettingsSubject.OnNext(bookingSettings);
 		}
 
 		public IObservable<Address> GetAndObservePickupAddress()
@@ -184,6 +194,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public IObservable<string> GetAndObserveEstimatedFare()
 		{
 			return _estimatedFareSubject;
+		}
+
+		public IObservable<DateTime?> GetAndObservePickupDate()
+		{
+			return _pickupDateSubject;
 		}
 		
 		private async Task<Address> SearchAddressForCoordinate(Position p)

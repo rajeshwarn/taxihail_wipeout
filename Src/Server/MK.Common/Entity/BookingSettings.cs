@@ -12,5 +12,10 @@
         public string ChargeType { get; set; }
         public int NumberOfTaxi { get; set; }
         public int LargeBags { get; set; }
+
+        public BookingSettings Copy()
+        {
+            return (BookingSettings)this.MemberwiseClone();
+        }
     }
 }

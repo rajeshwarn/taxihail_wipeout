@@ -441,7 +441,9 @@
     <Compile Include="Controls\Widgets\TaxiHailDialogViewController.cs" />
     <Compile Include="Controls\Widgets\RoundedCornerView.cs" />
     <Compile Include="FontName.cs" />
-    <Compile Include="Controls\Widgets\PanelMenuCell.cs" />
+    <Compile Include="Controls\Widgets\PanelMenuCell.cs">
+      <DependentUpon>PanelMenuSource.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Widgets\ModalFlatTextField.cs" />
     <Compile Include="Controls\Widgets\NavigateFlatTextField.cs" />
     <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
@@ -522,18 +524,18 @@
     <Compile Include="Controls\Widgets\AppBarButton.cs" />
     <Compile Include="Controls\Widgets\CommandButton.cs" />
     <Compile Include="Controls\Widgets\Booking\BookLaterDatePicker.cs" />
-    <Compile Include="Controls\Widgets\OrderReview.cs" />
-    <Compile Include="Controls\Widgets\OrderReview.designer.cs">
-      <DependentUpon>OrderReview.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Widgets\OrderReviewItem.cs" />
-    <Compile Include="Controls\Widgets\OrderReviewItem.designer.cs">
-      <DependentUpon>OrderReviewItem.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Widgets\VehicleTypeAndEstimateView.cs" />
     <Compile Include="Controls\Binding\BaseBindableChildView.cs" />
     <Compile Include="Views\HistoryListView.designer.cs">
       <DependentUpon>HistoryListView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Order\OrderReviewView.cs" />
+    <Compile Include="Views\Order\OrderReviewView.designer.cs">
+      <DependentUpon>OrderReviewView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Order\OrderEditView.cs" />
+    <Compile Include="Views\Order\OrderEditView.designer.cs">
+      <DependentUpon>OrderEditView.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
@@ -582,8 +584,9 @@
     <InterfaceDefinition Include="Views\LocationListView.xib" />
     <InterfaceDefinition Include="Views\HomeView.xib" />
     <InterfaceDefinition Include="Controls\Widgets\OrderOptionsControl.xib" />
-    <InterfaceDefinition Include="Controls\Widgets\OrderReview.xib" />
-    <InterfaceDefinition Include="Controls\Widgets\OrderReviewItem.xib" />
+    <InterfaceDefinition Include="Views\Order\OrderReviewView.xib" />
+    <InterfaceDefinition Include="Views\Order\OrderEditView.xib" />
+    <InterfaceDefinition Include="Views\Order\OrderEditView_Thriev.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
@@ -769,37 +772,22 @@
     <BundleResource Include="Resources\scheduled%402x.png" />
     <BundleResource Include="Resources\amex.png" />
     <BundleResource Include="Resources\amex%402x.png" />
-    <BundleResource Include="Resources\credit_card_generic.png" />
-    <BundleResource Include="Resources\credit_card_generic%402x.png" />
-    <BundleResource Include="Resources\mastercard.png" />
-    <BundleResource Include="Resources\mastercard%402x.png" />
-    <BundleResource Include="Resources\paypal.png" />
-    <BundleResource Include="Resources\paypal%402x.png" />
-    <BundleResource Include="Resources\visa.png" />
-    <BundleResource Include="Resources\visa%402x.png" />
-    <BundleResource Include="Resources\visa_electron.png" />
-    <BundleResource Include="Resources\visa_electron%402x.png" />
-    <BundleResource Include="Resources\delete_card_btn.png" />
-    <BundleResource Include="Resources\delete_card_btn%402x.png" />
-    <BundleResource Include="Resources\apc_logo_menu.png" />
-    <BundleResource Include="Resources\apc_logo_menu%402x.png" />
-    <BundleResource Include="Resources\facebook_icon.png" />
-    <BundleResource Include="Resources\facebook_icon%402x.png" />
-    <BundleResource Include="Resources\favorites.png" />
-    <BundleResource Include="Resources\favorites%402x.png" />
-    <BundleResource Include="Resources\history.png" />
-    <BundleResource Include="Resources\history%402x.png" />
-    <BundleResource Include="Resources\right_arrow.png" />
-    <BundleResource Include="Resources\right_arrow%402x.png" />
-    <BundleResource Include="Resources\th_logo.png" />
-    <BundleResource Include="Resources\th_logo%402x.png" />
-    <BundleResource Include="Resources\twitter_icon.png" />
-    <BundleResource Include="Resources\twitter_icon%402x.png" />
-    <BundleResource Include="Default-568h%402x.png" />
-    <BundleResource Include="Default.png" />
-    <BundleResource Include="Default%402x.png" />
-    <BundleResource Include="Resources\grip.png" />
-    <BundleResource Include="Resources\grip%402x.png" />
+    <BundleResource Include="Resources\apartment.png" />
+    <BundleResource Include="Resources\apartment%402x.png" />
+    <BundleResource Include="Resources\chargetype.png" />
+    <BundleResource Include="Resources\chargetype%402x.png" />
+    <BundleResource Include="Resources\entrycode.png" />
+    <BundleResource Include="Resources\entrycode%402x.png" />
+    <BundleResource Include="Resources\passengers.png" />
+    <BundleResource Include="Resources\passengers%402x.png" />
+    <BundleResource Include="Resources\telephone.png" />
+    <BundleResource Include="Resources\telephone%402x.png" />
+    <BundleResource Include="Resources\time.png" />
+    <BundleResource Include="Resources\time%402x.png" />
+    <BundleResource Include="Resources\vehicle.png" />
+    <BundleResource Include="Resources\vehicle%402x.png" />
+    <BundleResource Include="Resources\account.png" />
+    <BundleResource Include="Resources\account%402x.png" />
     <BundleResource Include="Resources\ecstatic-selected.png" />
     <BundleResource Include="Resources\ecstatic-selected%402x.png" />
     <BundleResource Include="Resources\ecstatic.png" />
@@ -820,58 +808,89 @@
     <BundleResource Include="Resources\unhappy-selected%402x.png" />
     <BundleResource Include="Resources\unhappy.png" />
     <BundleResource Include="Resources\unhappy%402x.png" />
-    <BundleResource Include="Resources\checked.png" />
-    <BundleResource Include="Resources\checked%402x.png" />
-    <BundleResource Include="Resources\unchecked.png" />
-    <BundleResource Include="Resources\unchecked%402x.png" />
-    <BundleResource Include="Resources\left_arrow_white.png" />
-    <BundleResource Include="Resources\left_arrow_white%402x.png" />
-    <BundleResource Include="Resources\mk_logo.png" />
-    <BundleResource Include="Resources\mk_logo%402x.png" />
-    <BundleResource Include="Resources\add_list.png" />
-    <BundleResource Include="Resources\add_list%402x.png" />
-    <BundleResource Include="Resources\blackcar_badge.png" />
-    <BundleResource Include="Resources\blackcar_badge%402x.png" />
     <BundleResource Include="Resources\blackcar_badge_selected.png" />
     <BundleResource Include="Resources\blackcar_badge_selected%402x.png" />
-    <BundleResource Include="Resources\suv_badge.png" />
-    <BundleResource Include="Resources\suv_badge%402x.png" />
-    <BundleResource Include="Resources\suv_badge_selected.png" />
-    <BundleResource Include="Resources\suv_badge_selected%402x.png" />
-    <BundleResource Include="Resources\taxi_badge.png" />
-    <BundleResource Include="Resources\taxi_badge%402x.png" />
-    <BundleResource Include="Resources\taxi_badge_selected.png" />
-    <BundleResource Include="Resources\taxi_badge_selected%402x.png" />
-    <BundleResource Include="Resources\highlight.png" />
-    <BundleResource Include="Resources\highlight%402x.png" />
-    <BundleResource Include="Resources\location_icon.png" />
-    <BundleResource Include="Resources\location_icon%402x.png" />
-    <BundleResource Include="Resources\location_icon_pressed.png" />
-    <BundleResource Include="Resources\location_icon_pressed%402x.png" />
-    <BundleResource Include="Resources\menu_icon.png" />
-    <BundleResource Include="Resources\menu_icon%402x.png" />
-    <BundleResource Include="Resources\menu_icon_pressed.png" />
-    <BundleResource Include="Resources\menu_icon_pressed%402x.png" />
-    <BundleResource Include="Resources\estimate_icon.png" />
-    <BundleResource Include="Resources\estimate_icon%402x.png" />
-    <BundleResource Include="Resources\estimate_icon_pressed.png" />
-    <BundleResource Include="Resources\estimate_icon_pressed%402x.png" />
-    <BundleResource Include="Resources\later_icon.png" />
-    <BundleResource Include="Resources\later_icon%402x.png" />
-    <BundleResource Include="Resources\later_icon_pressed.png" />
-    <BundleResource Include="Resources\later_icon_pressed%402x.png" />
-    <BundleResource Include="Resources\hail_icon.png" />
-    <BundleResource Include="Resources\hail_icon%402x.png" />
-    <BundleResource Include="Resources\nearby.png" />
-    <BundleResource Include="Resources\nearby%402x.png" />
+    <BundleResource Include="Resources\blackcar_badge.png" />
+    <BundleResource Include="Resources\blackcar_badge%402x.png" />
     <BundleResource Include="Resources\cluster.png" />
     <BundleResource Include="Resources\cluster%402x.png" />
     <BundleResource Include="Resources\destination_icon.png" />
     <BundleResource Include="Resources\destination_icon%402x.png" />
+    <BundleResource Include="Resources\estimate_icon_pressed.png" />
+    <BundleResource Include="Resources\estimate_icon_pressed%402x.png" />
+    <BundleResource Include="Resources\estimate_icon.png" />
+    <BundleResource Include="Resources\estimate_icon%402x.png" />
+    <BundleResource Include="Resources\hail_icon.png" />
+    <BundleResource Include="Resources\hail_icon%402x.png" />
+    <BundleResource Include="Resources\highlight.png" />
+    <BundleResource Include="Resources\highlight%402x.png" />
+    <BundleResource Include="Resources\later_icon_pressed.png" />
+    <BundleResource Include="Resources\later_icon_pressed%402x.png" />
+    <BundleResource Include="Resources\later_icon.png" />
+    <BundleResource Include="Resources\later_icon%402x.png" />
+    <BundleResource Include="Resources\location_icon_pressed.png" />
+    <BundleResource Include="Resources\location_icon_pressed%402x.png" />
+    <BundleResource Include="Resources\location_icon.png" />
+    <BundleResource Include="Resources\location_icon%402x.png" />
+    <BundleResource Include="Resources\menu_icon_pressed.png" />
+    <BundleResource Include="Resources\menu_icon_pressed%402x.png" />
+    <BundleResource Include="Resources\menu_icon.png" />
+    <BundleResource Include="Resources\menu_icon%402x.png" />
     <BundleResource Include="Resources\nearby_taxi.png" />
     <BundleResource Include="Resources\nearby_taxi%402x.png" />
+    <BundleResource Include="Resources\nearby.png" />
+    <BundleResource Include="Resources\nearby%402x.png" />
+    <BundleResource Include="Resources\suv_badge_selected.png" />
+    <BundleResource Include="Resources\suv_badge_selected%402x.png" />
+    <BundleResource Include="Resources\suv_badge.png" />
+    <BundleResource Include="Resources\suv_badge%402x.png" />
+    <BundleResource Include="Resources\taxi_badge_selected.png" />
+    <BundleResource Include="Resources\taxi_badge_selected%402x.png" />
+    <BundleResource Include="Resources\taxi_badge.png" />
+    <BundleResource Include="Resources\taxi_badge%402x.png" />
     <BundleResource Include="Resources\taxi_icon.png" />
     <BundleResource Include="Resources\taxi_icon%402x.png" />
+    <BundleResource Include="Resources\th_logo.png" />
+    <BundleResource Include="Resources\th_logo%402x.png" />
+    <BundleResource Include="Resources\add_list.png" />
+    <BundleResource Include="Resources\add_list%402x.png" />
+    <BundleResource Include="Resources\apc_logo_menu.png" />
+    <BundleResource Include="Resources\apc_logo_menu%402x.png" />
+    <BundleResource Include="Resources\checked.png" />
+    <BundleResource Include="Resources\checked%402x.png" />
+    <BundleResource Include="Resources\credit_card_generic.png" />
+    <BundleResource Include="Resources\credit_card_generic%402x.png" />
+    <BundleResource Include="Resources\delete_card_btn.png" />
+    <BundleResource Include="Resources\delete_card_btn%402x.png" />
+    <BundleResource Include="Resources\facebook_icon.png" />
+    <BundleResource Include="Resources\facebook_icon%402x.png" />
+    <BundleResource Include="Resources\favorites.png" />
+    <BundleResource Include="Resources\favorites%402x.png" />
+    <BundleResource Include="Resources\grip.png" />
+    <BundleResource Include="Resources\grip%402x.png" />
+    <BundleResource Include="Resources\history.png" />
+    <BundleResource Include="Resources\history%402x.png" />
+    <BundleResource Include="Resources\left_arrow_white.png" />
+    <BundleResource Include="Resources\left_arrow_white%402x.png" />
+    <BundleResource Include="Resources\mastercard.png" />
+    <BundleResource Include="Resources\mastercard%402x.png" />
+    <BundleResource Include="Resources\mk_logo.png" />
+    <BundleResource Include="Resources\mk_logo%402x.png" />
+    <BundleResource Include="Resources\paypal.png" />
+    <BundleResource Include="Resources\paypal%402x.png" />
+    <BundleResource Include="Resources\right_arrow.png" />
+    <BundleResource Include="Resources\right_arrow%402x.png" />
+    <BundleResource Include="Resources\twitter_icon.png" />
+    <BundleResource Include="Resources\twitter_icon%402x.png" />
+    <BundleResource Include="Resources\unchecked.png" />
+    <BundleResource Include="Resources\unchecked%402x.png" />
+    <BundleResource Include="Resources\visa_electron.png" />
+    <BundleResource Include="Resources\visa_electron%402x.png" />
+    <BundleResource Include="Resources\visa.png" />
+    <BundleResource Include="Resources\visa%402x.png" />
+    <BundleResource Include="Default.png" />
+    <BundleResource Include="Default%402x.png" />
+    <BundleResource Include="Default-568h%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
@@ -893,6 +912,7 @@
     <Folder Include="Controls\Widgets\" />
     <Folder Include="Controls\Behavior\" />
     <Folder Include="Controls\Widgets\Booking\" />
+    <Folder Include="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Style\Theme.xml">

@@ -21,10 +21,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task ValidatePickupDestinationAndTime();
 
+		Task SetBookingSettings(BookingSettings bookingSettings);
+
 		IObservable<Address> GetAndObservePickupAddress();
 		IObservable<Address> GetAndObserveDestinationAddress();
 		IObservable<AddressSelectionMode> GetAndObserveAddressSelectionMode();
 		IObservable<BookingSettings> GetAndObserveBookingSettings();
+		IObservable<DateTime?> GetAndObservePickupDate();
 
 		IObservable<string> GetAndObserveEstimatedFare();
     }

@@ -98,29 +98,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				}
 			}
 		}
-
-		private bool _isConfirmationScreen;
-		public bool IsConfirmationScreen
-		{
-            get { return _isConfirmationScreen; }
-			set
-			{
-				if (value != _isConfirmationScreen)
-				{
-					if (value)
-					{
-						AddressSelectionMode = AddressSelectionMode.None;
-					}
-					else
-					{
-						AddressSelectionMode = AddressSelectionMode.PickupSelection;
-					}
-
-					_isConfirmationScreen = value;
-					RaisePropertyChanged();
-				}
-			}
-		}
 	}
 }
 

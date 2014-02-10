@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -9,12 +9,15 @@
                 <outlet property="bottomBar" destination="cXg-Q6-nLg" id="wBh-UX-pyq"/>
                 <outlet property="btnLocateMe" destination="Jqp-iu-ci1" id="Ea5-fR-6Yf"/>
                 <outlet property="btnMenu" destination="MeW-ns-SQv" id="7wz-qB-e5G"/>
+                <outlet property="constraintOrderEditTrailingSpace" destination="4Uw-iv-741" id="egd-2Y-fEP"/>
                 <outlet property="constraintOrderOptionsTopSpace" destination="FRw-GE-bhA" id="PCn-eX-HZW"/>
-                <outlet property="constraintOrderReviewTopSpace" destination="sVE-Qk-t6A" id="uQG-kW-AR6"/>
+                <outlet property="constraintOrderReviewTopSpace" destination="JSE-qi-pXl" id="MKv-l1-hGJ"/>
+                <outlet property="constraintOrderReviewVerticalSpace" destination="sK2-B0-UsF" id="F9O-eA-Sw5"/>
                 <outlet property="ctrlOrderOptions" destination="HaA-X5-eHm" id="FGC-LG-Yob"/>
                 <outlet property="ctrlOrderReview" destination="lYS-4q-3Mj" id="jyD-45-zXv"/>
                 <outlet property="homeView" destination="73H-fC-yqb" id="U5L-r5-78y"/>
                 <outlet property="mapView" destination="DgF-jB-8zt" id="ZNk-IP-Ogh"/>
+                <outlet property="orderEdit" destination="Fsx-d8-MLA" id="qQ4-Ns-xYQ"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -57,21 +60,19 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
-                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="305" placeholderIntrinsicHeight="96" translatesAutoresizingMaskIntoConstraints="NO" id="HaA-X5-eHm" customClass="OrderOptionsControl">
-                            <rect key="frame" x="8" y="22" width="305" height="96"/>
+                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="44" translatesAutoresizingMaskIntoConstraints="NO" id="HaA-X5-eHm" customClass="OrderOptionsControl">
+                            <rect key="frame" x="8" y="22" width="305" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="96" id="hBo-Is-5bO"/>
-                                <constraint firstAttribute="width" constant="305" id="pPK-mw-QcC"/>
+                                <constraint firstAttribute="width" constant="305" id="x9x-99-XeZ"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lYS-4q-3Mj" customClass="OrderReview">
-                            <rect key="frame" x="80" y="568" width="160" height="284"/>
+                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="350" translatesAutoresizingMaskIntoConstraints="NO" id="lYS-4q-3Mj" customClass="OrderReviewView">
+                            <rect key="frame" x="8" y="686" width="305" height="350"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="1" green="0.23529411759999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="284" id="08D-CJ-7qH"/>
+                                <constraint firstAttribute="width" constant="305" id="zdm-6b-UEv"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cXg-Q6-nLg" customClass="AppBarView">
@@ -82,25 +83,37 @@
                                 <constraint firstAttribute="height" constant="56" id="qLD-mj-Ncy"/>
                             </constraints>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fsx-d8-MLA" customClass="OrderEditView">
+                            <rect key="frame" x="320" y="22" width="305" height="483"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="305" id="ydp-Fy-CIj"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="Jqp-iu-ci1" secondAttribute="trailing" constant="8" id="1TQ-vn-Vkh"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="1iv-ib-vEh"/>
                         <constraint firstAttribute="trailing" secondItem="DgF-jB-8zt" secondAttribute="trailing" id="1zx-5z-Qo2"/>
+                        <constraint firstItem="Fsx-d8-MLA" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="320" id="4Uw-iv-741"/>
                         <constraint firstAttribute="trailing" secondItem="cXg-Q6-nLg" secondAttribute="trailing" id="8Ab-0L-enX"/>
                         <constraint firstAttribute="bottom" secondItem="DgF-jB-8zt" secondAttribute="bottom" id="Aqd-An-C2e"/>
                         <constraint firstItem="HaA-X5-eHm" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="FRw-GE-bhA"/>
+                        <constraint firstItem="lYS-4q-3Mj" firstAttribute="top" secondItem="HaA-X5-eHm" secondAttribute="bottom" constant="620" id="JSE-qi-pXl"/>
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" id="Mlm-GQ-8rc"/>
                         <constraint firstAttribute="centerX" secondItem="HaA-X5-eHm" secondAttribute="centerX" id="Pnu-1F-Vfo"/>
                         <constraint firstItem="MeW-ns-SQv" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="Q0C-IM-4L9"/>
-                        <constraint firstAttribute="trailing" secondItem="lYS-4q-3Mj" secondAttribute="trailing" constant="80" id="Syf-T8-VwL"/>
+                        <constraint firstAttribute="trailing" secondItem="lYS-4q-3Mj" secondAttribute="trailing" constant="7" id="Syf-T8-VwL"/>
                         <constraint firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" id="VBK-AW-R7l"/>
-                        <constraint firstItem="lYS-4q-3Mj" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="80" id="Z3E-95-Tkk"/>
+                        <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="Fsx-d8-MLA" secondAttribute="bottom" constant="7" id="Vjz-XR-Ktl"/>
+                        <constraint firstItem="Fsx-d8-MLA" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="XF0-qe-pxP"/>
+                        <constraint firstItem="lYS-4q-3Mj" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="Z3E-95-Tkk"/>
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="ZSI-kr-X81"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="Jqp-iu-ci1" secondAttribute="bottom" constant="13" id="nTh-8y-wH1"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="MeW-ns-SQv" secondAttribute="bottom" constant="13" id="pen-rq-tIj"/>
-                        <constraint firstItem="lYS-4q-3Mj" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="568" id="sVE-Qk-t6A"/>
+                        <constraint firstItem="lYS-4q-3Mj" firstAttribute="bottom" secondItem="MeW-ns-SQv" secondAttribute="bottom" priority="500" constant="537" id="sK2-B0-UsF"/>
                     </constraints>
                 </view>
             </subviews>
