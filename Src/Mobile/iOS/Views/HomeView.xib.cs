@@ -83,6 +83,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.DataContext)
                 .To(vm => vm.OrderReview);
                 
+            set.Bind(orderEdit)
+                .For(v => v.DataContext)
+                .To(vm => vm.OrderEdit);
+
             set.Bind(bottomBar)
                 .For(v => v.DataContext)
                 .To(vm => vm.BottomBar);

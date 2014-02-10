@@ -2,6 +2,7 @@ using System;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -19,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			RideSettings.Init(Settings.ToJson());
 		}
 
-		private RideSettingsViewModel RideSettings { get; set; }
+		public RideSettingsViewModel RideSettings { get; set; }
 
 		private BookingSettings _settings;
 		public BookingSettings Settings
