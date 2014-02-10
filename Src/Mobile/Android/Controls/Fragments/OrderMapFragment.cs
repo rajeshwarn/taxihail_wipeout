@@ -25,7 +25,6 @@ using Android.Content.Res;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Util;
-using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -34,6 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public GoogleMap Map { get; set;}
         public TouchableMap _touchableMap { get; set;}
         private ImageView _pickupOverlay;
+        private ImageView _destinationOverlay;
         private Marker _pickupPin;
         private Marker _destinationPin;
         private CompositeDisposable _subscriptions = new CompositeDisposable();
@@ -51,14 +51,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public OrderMapFragment(TouchableMap mapFragment, Resources resources)
         {
             _resources = resources;
+
             InitDrawables();
-            this.CreateBindingContext();            
+
+            this.CreateBindingContext();  
+                      
             Map = mapFragment.Map;
+
             _touchableMap = mapFragment;
+
             _pickupOverlay = (ImageView)mapFragment.Activity.FindViewById(Resource.Id.pickupOverlay);
             _pickupOverlay.Visibility = ViewStates.Visible;
             _pickupOverlay.SetPadding(0, 0, 0, _pickupOverlay.Drawable.IntrinsicHeight / 2);
+
+            _destinationOverlay = (ImageView)mapFragment.Activity.FindViewById(Resource.Id.destinationOverlay);
+            _destinationOverlay.Visibility = ViewStates.Visible;
+            _destinationOverlay.SetPadding(0, 0, 0, _destinationOverlay.Drawable.IntrinsicHeight / 2);
+
             this.DelayBind(() => InitializeBinding());
+
             CreatePins();
         }
 
@@ -84,6 +95,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+        private AddressSelectionMode _addressSelectionMode; 
+        public AddressSelectionMode AddressSelectionMode
+        { 
+            get
+            {
+                return _addressSelectionMode;
+            }
+            set
+            {
+                _addressSelectionMode = value;
+                ShowMarkers();
+            }
+        }
+
         private MapBounds _mapBounds;
         public MapBounds MapBounds
         {
@@ -103,8 +128,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         public ICommand UserMovedMap { get; set; }
-
-        public AddressSelectionMode AddressSelectionMode { get; set;}
 
         private IEnumerable<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
         public IEnumerable<AvailableVehicle> AvailableVehicles
@@ -227,7 +250,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _pickupPin = Map.AddMarker(new MarkerOptions()
                     .SetPosition(new LatLng(0, 0))
                     .Anchor(.5f, 1f)
-                                           .InvokeIcon(_hailIcon)
+                    .InvokeIcon(_hailIcon)
                     .Visible(false));
             }     
 
@@ -244,7 +267,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private void OnPickupAddressChanged()
         {
             if (PickupAddress == null)
-                return; 
+                return;
+
+            if (PickupAddress.HasValidCoordinate())
+            {
+                ShowMarkers();
+            }
         }
 
         private void OnDestinationAddressChanged()
@@ -254,26 +282,53 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if (DestinationAddress.HasValidCoordinate())
             {
-                _destinationPin.Visible = true;
-                _destinationPin.Position = new LatLng(DestinationAddress.Latitude, DestinationAddress.Longitude);
+                ShowMarkers();
+            }
+        }
+
+        void ShowMarkers()
+        {
+            if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
+            {
+                Position position = new Position(){ Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
+
+                if (!DestinationAddress.HasValidCoordinate())
+                {
+                    _destinationPin.Visible = false;
+                }
+
+                _pickupPin.Visible = true;
+                _pickupPin.Position = new LatLng(position.Latitude, position.Longitude);
+                _pickupOverlay.Visibility = ViewStates.Invisible;
+                _destinationOverlay.Visibility = ViewStates.Visible;
+
+                if (PickupAddress.HasValidCoordinate())
+                {
+                    _pickupPin.Visible = true;
+                    _pickupPin.Position = new LatLng(position.Latitude, position.Longitude);
+                }
+                else
+                {
+                    _pickupPin.Visible = false;
+                }
             }
             else
             {
-                _destinationPin.Visible = false;
-            }
-        }
+                _pickupPin.Visible = false;
+                _destinationOverlay.Visibility = ViewStates.Invisible;
+                _pickupOverlay.Visibility = ViewStates.Visible;
 
-        void StickPickupPinAt(Position position)
-        {
-            _pickupOverlay.Visibility = ViewStates.Invisible;
-            _pickupPin.Visible = true;
-            _pickupPin.Position = new LatLng(position.Latitude, position.Longitude);
-        }
-
-        void ShowPickupOverlay(Position position)
-        {
-            _pickupPin.Visible = false;
-            _pickupOverlay.Visibility = ViewStates.Visible;
+                if (DestinationAddress.HasValidCoordinate())
+                {
+                    Position position = new Position(){ Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
+                    _destinationPin.Visible = true;
+                    _destinationPin.Position = new LatLng(position.Latitude, position.Longitude);             
+                }
+                else
+                {
+                    _destinationPin.Visible = false;
+                }
+            }            
         }
 
         private void OnMapBoundsChanged()

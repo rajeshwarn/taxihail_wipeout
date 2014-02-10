@@ -76,7 +76,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 
-        public AddressSelectionMode AddressSelectionMode { get; set;}
+		private AddressSelectionMode _addressSelectionMode; 
+		public AddressSelectionMode AddressSelectionMode
+		{ 
+			get
+			{
+				return _addressSelectionMode;
+			}
+			set
+			{
+				_addressSelectionMode = value;
+				RaisePropertyChanged();
+			}
+		}
+
 
 		private IEnumerable<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
 		public IEnumerable<AvailableVehicle> AvailableVehicles

@@ -52,6 +52,15 @@
                     android:scaleType="center"
                     android:layout_gravity="center"
                     android:src="@drawable/hail_icon" />
+                <ImageView
+                    android:id="@+id/destinationOverlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dip"
+                    android:scaleType="center"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:src="@drawable/destination_icon" />
             <!-- Order Options -->
                 <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderOptions
                     android:layout_width="fill_parent"
