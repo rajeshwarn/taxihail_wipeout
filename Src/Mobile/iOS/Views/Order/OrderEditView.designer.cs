@@ -33,6 +33,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblVehicleType { get; set; }
 
+        [Outlet]
+        MonoTouch.UIKit.UILabel lblLargeBags { get; set; }
+
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtApartment { get; set; }
 
@@ -53,7 +56,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtVehicleType { get; set; }
-		
+
+        [Outlet]
+        apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtLargeBags { get; set; }
+
 		void ReleaseDesignerOutlets ()
 		{
 			if (lblName != null) {
@@ -125,6 +131,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				txtChargeType.Dispose ();
 				txtChargeType = null;
 			}
+
+            if (lblLargeBags != null) {
+                lblLargeBags.Dispose ();
+                lblLargeBags = null;
+            }
+
+            if (txtLargeBags != null) {
+                txtLargeBags.Dispose ();
+                txtLargeBags = null;
+            }
 		}
 	}
 }

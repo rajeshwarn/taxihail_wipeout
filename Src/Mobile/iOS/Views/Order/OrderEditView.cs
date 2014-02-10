@@ -38,8 +38,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 DismissKeyboardOnReturn(textField);
             }
 
-            txtPhone.ShowCloseButtonOnKeyboard();
-            txtPassengers.ShowCloseButtonOnKeyboard();
+            txtPhone.Maybe(x => x.ShowCloseButtonOnKeyboard());
+            txtPassengers.Maybe(x => x.ShowCloseButtonOnKeyboard());
 
             lblName.Maybe(x => x.Text = Localize.GetValue("PassengerNameLabel"));
             lblPhone.Maybe(x => x.Text = Localize.GetValue("PassengerPhoneLabel"));
@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             lblVehicleType.Maybe(x => x.Text = Localize.GetValue("ConfirmVehiculeTypeLabel"));
             lblChargeType.Maybe(x => x.Text = Localize.GetValue("ChargeTypeLabel"));                     
 
-//            lblLargeBags.Maybe(x => x.Text = Localize.GetValue ("LargeBagsLabel"));
+            lblLargeBags.Maybe(x => x.Text = Localize.GetValue ("LargeBagsLabel"));
 
             txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), () => ViewModel.Vehicles.ToArray(), () => ViewModel.VehicleTypeId, x => ViewModel.VehicleTypeId = x.Id);
             txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), () => ViewModel.ChargeTypes.ToArray(), () => ViewModel.ChargeTypeId, x => ViewModel.ChargeTypeId = x.Id);
@@ -86,8 +86,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             set.BindSafe(txtPassengers)
                 .To(vm => vm.BookingSettings.Passengers);
 
-//            set.BindSafe(txtLargeBags)
-//                .To(vm => vm.BookingSettings.LargeBags);
+            set.BindSafe(txtLargeBags)
+                .To(vm => vm.BookingSettings.LargeBags);
 
             set.BindSafe(txtApartment)
                 .To(vm => vm.PickupAddress.Apartment);
