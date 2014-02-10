@@ -10,18 +10,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
 	public class OrderReviewViewModel: ChildViewModel
     {
-		readonly OrderWorkflowService _orderWorkflowService;
+		readonly IOrderWorkflowService _orderWorkflowService;
 		readonly IAccountService _accountService;
         
-		public OrderReviewViewModel(OrderWorkflowService orderWorkflowService,
+		public OrderReviewViewModel(IOrderWorkflowService orderWorkflowService,
 									IAccountService accountService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
+		}
 
-			this.Observe(orderWorkflowService.GetAndObserveBookingSettings(), (settings) => SettingsUpdated(settings));
-			this.Observe(orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
-			this.Observe(orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
+		public void Init()
+		{
+			this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), (settings) => SettingsUpdated(settings));
+			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
+			this.Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
 		}
 
 		private async Task SettingsUpdated(BookingSettings settings)

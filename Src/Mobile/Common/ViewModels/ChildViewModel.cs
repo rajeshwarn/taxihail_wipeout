@@ -18,7 +18,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		protected void Observe<T>(IObservable<T> observable, Action<T> onNext)
 		{
 			observable
-				.Subscribe(x => InvokeOnMainThread(() => onNext(x)))
+				.Subscribe(x => {
+					InvokeOnMainThread(() => onNext(x));
+				})
 				.DisposeWith(_subscriptions);
 		}
 
