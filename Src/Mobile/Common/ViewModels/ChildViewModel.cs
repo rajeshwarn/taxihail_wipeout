@@ -7,14 +7,14 @@ using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class ChildViewModel: MvxNavigatingObject, IDisposable
+	public class ChildViewModel: MvxViewModel, IDisposable
     {
 		readonly CompositeDisposable _subscriptions = new CompositeDisposable();
 		protected new void RaisePropertyChanged([CallerMemberName]string whichProperty = null)
 		{
 			base.RaisePropertyChanged(whichProperty);
 		}
-
+		
 		protected void Observe<T>(IObservable<T> observable, Action<T> onNext)
 		{
 			observable
@@ -50,6 +50,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			where TViewModel: ChildViewModel
 		{
 			var viewModel = builder.Invoke();
+			viewModel.CallBundleMethods("Init", new MvxBundle());
 			viewModel.DisposeWith(_subscriptions);
 			return viewModel;
 		}

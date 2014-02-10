@@ -1,17 +1,17 @@
 using System;
 using System.Drawing;
+using System.Linq;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
-using System.Linq;
-using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
@@ -32,12 +32,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
         {
             BackgroundColor = UIColor.Clear;
 
-            foreach (var textField in ContentView.Subviews.Where(x => x is FlatTextField))
+            foreach (FlatTextField textField in ContentView.Subviews.Where(x => x is FlatTextField))
             {
                 textField.BackgroundColor = UIColor.FromRGB(242, 242, 242);
+                DismissKeyboardOnReturn(textField);
             }
 
-            DismissKeyboardOnReturn(txtApartment, txtEntryCode);
+            txtPhone.ShowCloseButtonOnKeyboard();
+            txtPassengers.ShowCloseButtonOnKeyboard();
 
             lblName.Maybe(x => x.Text = Localize.GetValue("PassengerNameLabel"));
             lblPhone.Maybe(x => x.Text = Localize.GetValue("PassengerPhoneLabel"));
@@ -49,10 +51,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 //            lblLargeBags.Maybe(x => x.Text = Localize.GetValue ("LargeBagsLabel"));
 
-            // TODO values should only be reflected in the workflow service when the user saves
-            // and should not affect account settings
-            txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), () => ViewModel.RideSettings.Vehicles, () => ViewModel.Settings.VehicleTypeId, x => {});//ViewModel.SetVehiculeType.Execute(x.Id));
-            txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), () => ViewModel.RideSettings.Payments, () => ViewModel.Settings.ChargeTypeId, x => {});//ViewModel.SetChargeType.Execute(x.Id));
+            txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), () => ViewModel.Vehicles.ToArray(), () => ViewModel.VehicleTypeId, x => ViewModel.VehicleTypeId = x.Id);
+            txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), () => ViewModel.ChargeTypes.ToArray(), () => ViewModel.ChargeTypeId, x => ViewModel.ChargeTypeId = x.Id);
         }
 
         private void InitializeBinding()
@@ -78,30 +78,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             var set = this.CreateBindingSet<OrderEditView, OrderEditViewModel> ();
 
             set.BindSafe(txtName)
-                .To(vm => vm.Settings.Name);
+                .To(vm => vm.BookingSettings.Name);
 
             set.BindSafe(txtPhone)
-                .To(vm => vm.Settings.Phone);
+                .To(vm => vm.BookingSettings.Phone);
 
             set.BindSafe(txtPassengers)
-                .To(vm => vm.Settings.Passengers);
+                .To(vm => vm.BookingSettings.Passengers);
 
 //            set.BindSafe(txtLargeBags)
-//                .To(vm => vm.Settings.LargeBags);
+//                .To(vm => vm.BookingSettings.LargeBags);
 
-//            set.BindSafe(txtApartment)
-//                .To(vm => vm.PickupAddress.Apartment);
-//
-//            set.BindSafe(txtEntryCode)
-//                .To(vm => vm.PickupAddress.RingCode);
+            set.BindSafe(txtApartment)
+                .To(vm => vm.PickupAddress.Apartment);
+
+            set.BindSafe(txtEntryCode)
+                .To(vm => vm.PickupAddress.RingCode);
 
             set.BindSafe(txtVehicleType)
                 .For("Text")
-                .To(vm => vm.Settings.VehicleType);
+                .To(vm => vm.VehicleTypeName);
 
             set.BindSafe(txtChargeType)
                 .For("Text")
-                .To(vm => vm.Settings.ChargeType);
+                .To(vm => vm.ChargeTypeName);
 
             set.Apply();
         }
