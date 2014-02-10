@@ -269,10 +269,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (PickupAddress == null)
                 return;
 
-            if (PickupAddress.HasValidCoordinate())
-            {
-                ShowMarkers();
-            }
+            ShowMarkers();
         }
 
         private void OnDestinationAddressChanged()
@@ -280,10 +277,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (DestinationAddress == null)
                 return; 
 
-            if (DestinationAddress.HasValidCoordinate())
-            {
-                ShowMarkers();
-            }
+            ShowMarkers();
         }
 
         void ShowMarkers()
@@ -297,8 +291,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     _destinationPin.Visible = false;
                 }
 
-                _pickupPin.Visible = true;
-                _pickupPin.Position = new LatLng(position.Latitude, position.Longitude);
                 _pickupOverlay.Visibility = ViewStates.Invisible;
                 _destinationOverlay.Visibility = ViewStates.Visible;
 
