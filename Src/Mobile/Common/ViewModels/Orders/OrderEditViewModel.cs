@@ -7,6 +7,10 @@ using System.Linq;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.Extensions;
+using System.Reactive.Threading.Tasks;
+using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -28,8 +32,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Vehicles = await _accountService.GetVehiclesList();
 			ChargeTypes = await _accountService.GetPaymentsList();
 
-			this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings);
-			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
+			this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
+			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
 		}
 
 		private BookingSettings _bookingSettings;
@@ -42,7 +46,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					_bookingSettings = value;
 					RaisePropertyChanged();
+					RaisePropertyChanged(() => VehicleTypeId);
 					RaisePropertyChanged(() => VehicleTypeName);
+					RaisePropertyChanged(() => ChargeTypeId);
 					RaisePropertyChanged(() => ChargeTypeName);
 				}
 			}
@@ -62,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		public ICommand SaveSettings
+		public ICommand Save
 		{
 			get
 			{
@@ -70,6 +76,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					_orderWorkflowService.SetBookingSettings(BookingSettings);
 					_orderWorkflowService.SetAddress(PickupAddress);
+
+					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
+				});
+			}
+		}
+
+		public ICommand Cancel
+		{
+			get
+			{
+				return GetCommand(async () =>
+				{
+					var bookingSettings = await _orderWorkflowService.GetAndObserveBookingSettings().Take(1).ToTask();
+					var pickupAddress = await _orderWorkflowService.GetAndObservePickupAddress().Take(1).ToTask();
+
+					BookingSettings = bookingSettings.Copy();
+					PickupAddress = pickupAddress.Copy();
+					
+					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
 				});
 			}
 		}

@@ -38,6 +38,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				OrderReview = AddChild<OrderReviewViewModel>();
 				OrderEdit = AddChild<OrderEditViewModel>();
 				BottomBar = AddChild<BottomBarViewModel>();
+
+				BottomBar.Save = OrderEdit.Save;
+				BottomBar.CancelEdit = OrderEdit.Cancel;
 			}
 			this.Services().Vehicle.Start();
 		}

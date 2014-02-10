@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             if (!Settings.Data.ShowPassengerName)
             {
                 lblName.Maybe(x => x.RemoveFromSuperview());
-                lblName.Maybe(x => x.RemoveFromSuperview());
+                txtName.Maybe(x => x.RemoveFromSuperview());
             }
 
             if (!Settings.Data.ShowPassengerPhone)

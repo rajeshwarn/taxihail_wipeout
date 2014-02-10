@@ -142,7 +142,6 @@
     <Compile Include="AppServices\IGeolocService.cs" />
     <Compile Include="Data\ListItemValue.cs" />
     <Compile Include="Extensions\AddressExtension.cs" />
-    <Compile Include="Extensions\BookingSettingsExtension.cs" />
     <Compile Include="Framework\Extensions\Calendar\ByteTimeSpanExtensions.cs" />
     <Compile Include="Framework\Extensions\Calendar\DayOfWeekExtensions.cs" />
     <Compile Include="Framework\Extensions\Calendar\DoubleTimeSpanExtensions.cs" />
