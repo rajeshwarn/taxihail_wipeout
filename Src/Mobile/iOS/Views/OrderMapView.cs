@@ -1,22 +1,25 @@
 using System;
-using MonoTouch.Foundation;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
-using MonoTouch.CoreLocation;
-using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.BindingContext;
-using MonoTouch.MapKit;
 using System.Collections.Generic;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Drawing;
 using System.Linq;
-using apcurium.MK.Booking.Mobile.Data;
+using Cirrious.MvvmCross.Binding.BindingContext;
+using MonoTouch.CoreLocation;
+using MonoTouch.Foundation;
+using MonoTouch.MapKit;
+using MonoTouch.UIKit;
 using TinyIoC;
-using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -25,7 +28,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
     {
         private AddressAnnotation _pickupAnnotation;
         private AddressAnnotation _destinationAnnotation;
+        private UIImageView _pickupCenterPin;
+        private UIImageView _dropoffCenterPin;
         private List<AddressAnnotation> _availableVehicleAnnotations = new List<AddressAnnotation> ();
+        private TouchGesture _gesture;
+        private ICommand _userMovedMap;
 
         private bool UseThemeColorForPickupAndDestinationMapIcons;
 
@@ -35,11 +42,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             Initialize();
         }
 
+        private bool _useThemeColorForPickupAndDestinationMapIcons;
+
         private void Initialize()
         {
-            UseThemeColorForPickupAndDestinationMapIcons = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
+            _useThemeColorForPickupAndDestinationMapIcons = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
 
-            Delegate = new AddressMapDelegate ();
+            //Delegate = new AddressMapDelegate ();
 
             this.DelayBind(() => {
 
@@ -52,6 +61,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 set.Bind()
                     .For(v => v.DestinationAddress)
                     .To(vm => vm.DestinationAddress);
+
+                set.Bind()
+                    .For(v => v.UserMovedMap)
+                    .To(vm => vm.UserMovedMap);
 
                 set.Bind()
                     .For(v => v.AddressSelectionMode)
@@ -69,13 +82,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             });
 
-            _pickupAnnotation = new AddressAnnotation(new CLLocationCoordinate2D(),
-                AddressAnnotationType.Pickup,
-                string.Empty,
-                string.Empty,
-                UseThemeColorForPickupAndDestinationMapIcons);
-            _destinationAnnotation = new AddressAnnotation(new CLLocationCoordinate2D(),
-                AddressAnnotationType.Destination,
+            _pickupAnnotation = GetAnnotation(new CLLocationCoordinate2D(), AddressAnnotationType.Pickup, _useThemeColorForPickupAndDestinationMapIcons);
+            _destinationAnnotation = GetAnnotation(new CLLocationCoordinate2D(), AddressAnnotationType.Destination, _useThemeColorForPickupAndDestinationMapIcons);
+
+            InitOverlays();
+            InitializeGesture();
+        }
+
+        public AddressAnnotation GetAnnotation(CLLocationCoordinate2D coordinates, AddressAnnotationType addressType, bool useThemeColorForPickupAndDestinationMapIcons)
+        {
+            return new AddressAnnotation(coordinates,
+                addressType,
                 string.Empty,
                 string.Empty,
                 UseThemeColorForPickupAndDestinationMapIcons);
@@ -142,81 +159,88 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void OnPickupAddressChanged()
         {
             ShowMarkers();
-
-            if (PickupAddress.HasValidCoordinate())
-            {
-                RemoveAnnotation(_pickupAnnotation);
-                _pickupAnnotation.Coordinate = PickupAddress.GetCoordinate();
-                AddAnnotation(_pickupAnnotation);
-            }
-            else
-            {
-                RemoveAnnotation (_pickupAnnotation);
-            }
         }
 
         private void OnDestinationAddressChanged()
         {
             ShowMarkers();
+        }
 
-            if (DestinationAddress.HasValidCoordinate())
+        void SetAnnotation(Address address, AddressAnnotation addressAnnotation, bool visible)
+        {
+            if (address.HasValidCoordinate() && visible)
             {
-                RemoveAnnotation(_destinationAnnotation);
-                _destinationAnnotation.Coordinate = DestinationAddress.GetCoordinate();
-                AddAnnotation(_destinationAnnotation);
+                RemoveAnnotation(addressAnnotation);
+                addressAnnotation.Coordinate = address.GetCoordinate(); //= // GetAnnotation(address.GetCoordinate(), AddressAnnotationType.Destination, _useThemeColorForPickupAndDestinationMapIcons);
+                AddAnnotation(addressAnnotation);
             }
             else
             {
-                RemoveAnnotation (_destinationAnnotation);
+                RemoveAnnotation (addressAnnotation);
             }
         }
 
-        void UpdateAnnotation(Address address, AddressAnnotation addressAnnotation)
+        void SetOverlay(UIImageView overlay, bool visible)
         {
+            overlay.Hidden = !visible;
+        }
 
+        void InitOverlays()
+        {
+            _dropoffCenterPin = new UIImageView(AddressAnnotation.GetImage(AddressAnnotationType.Destination));
+            _pickupCenterPin = new UIImageView(AddressAnnotation.GetImage(AddressAnnotationType.Pickup));
+
+            var pinSize = _pickupCenterPin.IntrinsicContentSize;
+
+            _pickupCenterPin.Frame = 
+                _dropoffCenterPin.Frame = 
+                    new RectangleF((this.Bounds.Width / 2) - (pinSize.Width / 2), ((this.Bounds.Height / 2) - pinSize.Height), pinSize.Width, pinSize.Height);
+
+            _pickupCenterPin.BackgroundColor = UIColor.Clear;
+            _pickupCenterPin.ContentMode = UIViewContentMode.Center;
+            AddSubview(_pickupCenterPin);
+            _pickupCenterPin.Hidden = true;                
+            
+            _dropoffCenterPin.BackgroundColor = UIColor.Clear;
+            _dropoffCenterPin.ContentMode = UIViewContentMode.Center;
+            AddSubview(_dropoffCenterPin);
+            _dropoffCenterPin.Hidden = true;    
         }
 
         void ShowMarkers()
         {
             if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
             {
-                Position position = new Position(){ Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
-
                 if (!DestinationAddress.HasValidCoordinate())
                 {
-//                   _destinationPin.Visible = false;
+                    SetAnnotation(DestinationAddress, _destinationAnnotation, false);
                 }
 
-//                _pickupPin.Visible = true;
-//                _pickupPin.Position = new LatLng(position.Latitude, position.Longitude);
-//                _pickupOverlay.Visibility = ViewStates.Invisible;
-//                _destinationOverlay.Visibility = ViewStates.Visible;
-//
+                SetOverlay(_pickupCenterPin, false);
+                SetOverlay(_dropoffCenterPin, true);
+
                 if (PickupAddress.HasValidCoordinate())
                 {
-//                    _pickupPin.Visible = true;
-//                    _pickupPin.Position = new LatLng(position.Latitude, position.Longitude);
+                    SetAnnotation(PickupAddress, _pickupAnnotation, true);
                 }
                 else
                 {
-//                    _pickupPin.Visible = false;
+                    SetAnnotation(PickupAddress, _pickupAnnotation, false);
                 }
             }
             else
             {
-//                _pickupPin.Visible = false;
-//                _destinationOverlay.Visibility = ViewStates.Invisible;
-//                _pickupOverlay.Visibility = ViewStates.Visible;
-//
+                SetAnnotation(PickupAddress, _pickupAnnotation, false);
+                SetOverlay(_dropoffCenterPin, false);
+                SetOverlay(_pickupCenterPin, true);
+
                 if (DestinationAddress.HasValidCoordinate())
                 {
-                    Position position = new Position(){ Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
-//                    _destinationPin.Visible = true;
-//                    _destinationPin.Position = new LatLng(position.Latitude, position.Longitude);             
+                    SetAnnotation(DestinationAddress, _destinationAnnotation, true);
                 }
                 else
                 {
-//                    _destinationPin.Visible = false;
+                    SetAnnotation(DestinationAddress, _destinationAnnotation, false);
                 }
             }            
         }
@@ -230,6 +254,64 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     new CLLocationCoordinate2D(center.Latitude, center.Longitude),
                     new MKCoordinateSpan(MapBounds.LatitudeDelta, MapBounds.LongitudeDelta)), true);
             }
+        }
+
+        public ICommand UserMovedMap { get; set; }
+
+        private void InitializeGesture()
+        {
+            if (_gesture == null)
+            {
+                _gesture = new TouchGesture();              
+                _gesture.TouchMove += HandleTouchMove;
+                _gesture.TouchBegin += HandleTouchBegin;
+                this.RegionChanged += OnRegionChanged;
+                AddGestureRecognizer(_gesture);
+            }
+        }
+
+        public void OnRegionChanged(object sender, MKMapViewChangeEventArgs e)
+        {            
+            try
+            {
+                if (_gesture.GetLastTouchDelay() < 1000)
+                {
+                    var bounds = GetMapBoundsFromProjection();
+                    if (UserMovedMap != null && UserMovedMap.CanExecute(bounds))
+                    {
+                        if (bounds.LatitudeDelta < 0.3)
+                        {
+                            UserMovedMap.Execute(bounds);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private MapBounds GetMapBoundsFromProjection()
+        {
+            var bounds = new MapBounds()
+            { 
+                SouthBound = Region.Center.Latitude - (Region.Span.LatitudeDelta / 2), 
+                WestBound = Region.Center.Longitude - (Region.Span.LongitudeDelta / 2), 
+                NorthBound = Region.Center.Latitude + (Region.Span.LatitudeDelta / 2), 
+                EastBound = Region.Center.Longitude + (Region.Span.LongitudeDelta / 2)
+            };
+
+            return bounds;
+        }
+
+        void HandleTouchMove (object sender, EventArgs e)
+        {
+            ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
+        }
+                             
+        void HandleTouchBegin (object sender, EventArgs e)
+        {
+            ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
         }
 
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
