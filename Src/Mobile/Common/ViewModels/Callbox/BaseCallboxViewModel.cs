@@ -1,10 +1,11 @@
 using apcurium.MK.Booking.Mobile.Extensions;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
     public abstract class BaseCallboxViewModel : BaseViewModel
     {
-		public AsyncCommand Logout
+        public ICommand Logout
         {
             get
             {

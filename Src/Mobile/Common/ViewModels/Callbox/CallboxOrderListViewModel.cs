@@ -12,6 +12,7 @@ using apcurium.MK.Common.Extensions;
 using System.Threading.Tasks;
 using System.Threading;
 using apcurium.MK.Booking.Mobile.Extensions;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
@@ -162,7 +163,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 			_isClosed = true;
 		}
 
-		public AsyncCommand CallTaxi
+        public ICommand CallTaxi
 		{
 			get
 			{
@@ -173,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 			}
 		}
 
-        public AsyncCommand<Guid> CancelOrder
+        public ICommand CancelOrder
 		{
 			get
 			{

@@ -1,11 +1,12 @@
 using System;
 using apcurium.MK.Booking.Mobile.Extensions;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
 	public class CallboxCallTaxiViewModel : BaseCallboxViewModel
 	{
-	    public AsyncCommand CallTaxi
+        public ICommand CallTaxi
 		{
 			get
 			{
