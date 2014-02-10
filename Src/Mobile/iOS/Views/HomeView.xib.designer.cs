@@ -22,22 +22,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayButton btnMenu { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.NSLayoutConstraint constraintOrderEditTrailingSpace { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.NSLayoutConstraint constraintOrderOptionsTopSpace { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.NSLayoutConstraint constraintOrderReviewTopSpace { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.NSLayoutConstraint constraintOrderReviewVerticalSpace { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderOptionsControl ctrlOrderOptions { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderReview ctrlOrderReview { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Views.Order.OrderReviewView ctrlOrderReview { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIView homeView { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Views.OrderMapView mapView { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Views.Order.OrderEditView orderEdit { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -56,9 +65,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnMenu = null;
 			}
 
+			if (constraintOrderEditTrailingSpace != null) {
+				constraintOrderEditTrailingSpace.Dispose ();
+				constraintOrderEditTrailingSpace = null;
+			}
+
+			if (constraintOrderOptionsTopSpace != null) {
+				constraintOrderOptionsTopSpace.Dispose ();
+				constraintOrderOptionsTopSpace = null;
+			}
+
 			if (constraintOrderReviewTopSpace != null) {
 				constraintOrderReviewTopSpace.Dispose ();
 				constraintOrderReviewTopSpace = null;
+			}
+
+			if (constraintOrderReviewVerticalSpace != null) {
+				constraintOrderReviewVerticalSpace.Dispose ();
+				constraintOrderReviewVerticalSpace = null;
 			}
 
 			if (ctrlOrderOptions != null) {
@@ -81,9 +105,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				mapView = null;
 			}
 
-			if (constraintOrderOptionsTopSpace != null) {
-				constraintOrderOptionsTopSpace.Dispose ();
-				constraintOrderOptionsTopSpace = null;
+			if (orderEdit != null) {
+				orderEdit.Dispose ();
+				orderEdit = null;
 			}
 		}
 	}

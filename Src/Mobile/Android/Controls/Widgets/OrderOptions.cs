@@ -13,6 +13,7 @@ using Cirrious.MvvmCross.Binding.Droid.Views;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.Attributes;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -84,9 +85,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Visibility)
                 .To(vm => vm.ShowDestination)
                 .WithConversion("Visibility");
-            set.Bind(viewDestination)
-                .For(v => v.IsReadOnly)
-                .To(vm => vm.IsConfirmationScreen);
             set.Bind(viewDestination.AddressTextView)
                 .To(vm => vm.DestinationAddress.DisplayAddress);
 
@@ -99,6 +97,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .WithConversion("Visibility");
 
             set.Apply();
+        }
+
+        public void ChangePresentation(HomeViewModelPresentationHint hint)
+        {
+            if (hint.State == HomeViewModelState.Review)
+            {
+                viewPickup.IsReadOnly = true;
+                viewDestination.IsReadOnly = true;
+            }
+            else if(hint.State == HomeViewModelState.Initial)
+            {
+                viewPickup.IsReadOnly = ViewModel.ShowDestination;
+                viewDestination.IsReadOnly = false;
+            }
         }
     }
 }

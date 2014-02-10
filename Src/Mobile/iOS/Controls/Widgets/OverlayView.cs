@@ -12,7 +12,7 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     [Register("OverlayView")]
-    public class OverlayView : UIView
+    public class OverlayView : MvxView
     {
         private float _radiusCorner = 3f;
         private UIView _shadowView = null;
@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-            BackgroundColor = UIColor.Clear;
+
         }
 
         public override void Draw (RectangleF rect)
@@ -42,14 +42,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             var context = UIGraphics.GetCurrentContext ();
 
             var fillColor = UIColor.White.ColorWithAlpha(0.8f);
-            var textColor = UIColor.Black;
 
             var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _radiusCorner);
 
             DrawBackground(context, rect, roundedRectanglePath, fillColor.CGColor);
             DrawStroke(fillColor.CGColor);
-
-            SetNeedsDisplay();
         }
 
         void DrawBackground (CGContext context, RectangleF rect, UIBezierPath roundedRectanglePath, CGColor fillColor)
@@ -65,10 +62,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         void DrawStroke(CGColor fillColor)
         {
-            Layer.BorderWidth = 1.0f;
-            Layer.BorderColor = fillColor;
-            Layer.CornerRadius = _radiusCorner;
-
             if (_shadowView == null)
             {
                 _shadowView = new UIView(Frame);
@@ -83,12 +76,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 this.Superview.InsertSubviewBelow(_shadowView, this);
             }
             _shadowView.Frame = Frame.Copy().Shrink(1);
-        }
-
-        public void Resize()
-        {
-            this.SetHeight(Subviews.Where(x => !x.Hidden).Sum(x => x.Frame.Height));
-            SetNeedsDisplay();
         }
     }
 }

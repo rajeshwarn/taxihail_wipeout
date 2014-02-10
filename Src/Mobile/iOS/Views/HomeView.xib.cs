@@ -89,6 +89,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.DataContext)
                 .To(vm => vm.OrderReview);
                 
+            set.Bind(orderEdit)
+                .For(v => v.DataContext)
+                .To(vm => vm.OrderEdit);
+
             set.Bind(bottomBar)
                 .For(v => v.DataContext)
                 .To(vm => vm.BottomBar);
@@ -125,8 +129,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     0.6f, 
                     () =>
                     {
-                        constraintOrderReviewTopSpace.Constant = 170;
+                        constraintOrderReviewTopSpace.Constant = 10;
+                        constraintOrderReviewVerticalSpace.Constant = -50;
                         constraintOrderOptionsTopSpace.Constant =  22;
+                        constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
                         homeView.LayoutIfNeeded();
                     });
             }
@@ -140,7 +146,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     0.6f, 
                     () => {
                         constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
+                        constraintOrderReviewVerticalSpace.Constant = 537;
                         constraintOrderOptionsTopSpace.Constant =  - ctrlOrderOptions.Frame.Height;
+                        constraintOrderEditTrailingSpace.Constant = 8;
                         homeView.LayoutIfNeeded();
                     });
             }
@@ -154,12 +162,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     0.6f, 
                     () => {
                         constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
+                        constraintOrderReviewVerticalSpace.Constant = 537;
                         constraintOrderOptionsTopSpace.Constant =  22;
+                        constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
                         homeView.LayoutIfNeeded();
                     });
             }
            
-
+            ctrlOrderOptions.ChangeState(hint);
             bottomBar.ChangeState(hint);
         }
 

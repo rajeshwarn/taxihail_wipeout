@@ -13,12 +13,12 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 {
     public static class ViewModelServicesExtensions
     {
-		public static ServicesExtensionPoint Services(this IMvxViewModel viewModel)
-        {
-            return new ServicesExtensionPoint();
-        }
-
 		public static ServicesExtensionPoint Services(this IMvxView view)
+		{
+			return new ServicesExtensionPoint();
+		}
+
+		public static ServicesExtensionPoint Services(this MvxNavigatingObject navigatingObject)
 		{
 			return new ServicesExtensionPoint();
 		}

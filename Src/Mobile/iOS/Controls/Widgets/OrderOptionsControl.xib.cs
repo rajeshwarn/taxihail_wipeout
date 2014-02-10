@@ -11,18 +11,27 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using System.Linq;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public partial class OrderOptionsControl : BaseBindableChildView<OrderOptionsViewModel>
     {
+        private NSLayoutConstraint _heightConstraint;
+
         public OrderOptionsControl (IntPtr handle) : base(handle)
         {
         }
 
         private void Initialize()
         {
-            AutoresizingMask = UIViewAutoresizing.FlexibleHeight;
+            _heightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, 
+                NSLayoutRelation.Equal, 
+                null, 
+                NSLayoutAttribute.NoAttribute, 
+                1.0f, 44.0f);
+
+            this.AddConstraint(_heightConstraint);
 
             BackgroundColor = UIColor.Clear;
             viewPickup.BackgroundColor = UIColor.Clear;
@@ -77,9 +86,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Hidden)
                 .To(vm => vm.ShowDestination)
                 .WithConversion("BoolInverter");
-            set.Bind(viewDestination)
-                .For(v => v.IsReadOnly)
-                .To(vm => vm.IsConfirmationScreen);
             set.Bind(viewDestination.AddressTextView)
                 .To(vm => vm.DestinationAddress.DisplayAddress);
 
@@ -100,13 +106,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public override void AwakeFromNib()
         {
             base.AwakeFromNib();
+
             var nib = UINib.FromName ("OrderOptionsControl", null);
-            AddSubview((UIView)nib.Instantiate (this, null)[0]);
+            var view = (UIView)nib.Instantiate(this, null)[0];
+            AddSubview(view);
 
             Initialize();
+
             this.DelayBind (() => {
                 InitializeBinding();
             });
+        }
+
+        public void Resize()
+        {
+            _heightConstraint.Constant = Subviews[0].Subviews.Where(x => !x.Hidden).Sum(x => x.Frame.Height);
+            SetNeedsDisplay();
+        }
+
+        public void ChangeState(HomeViewModelPresentationHint hint)
+        {
+            if (hint.State == HomeViewModelState.Review)
+            {
+                viewPickup.IsReadOnly = true;
+                viewDestination.IsReadOnly = true;
+            }
+            else if(hint.State == HomeViewModelState.Initial)
+            {
+                viewPickup.IsReadOnly = ViewModel.ShowDestination;
+                viewDestination.IsReadOnly = false;
+            }
         }
     }
 }

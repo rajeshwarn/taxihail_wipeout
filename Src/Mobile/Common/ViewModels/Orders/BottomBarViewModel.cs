@@ -159,14 +159,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		private ICommand _save;
 		public ICommand Save
 		{
-			get
+			get { return _save; }
+			set
 			{
-				return GetCommand(() => {
-					// TODO: Actually save changes
-					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
-				});
+				if (value != _save)
+				{
+					_save = value;
+					RaisePropertyChanged();
+				}
 			}
 		}	
 
@@ -180,15 +183,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
         }
 
+		private ICommand _cancelEdit;
 		public ICommand CancelEdit
 		{
-			get
+			get { return _cancelEdit; }
+			set
 			{
-				return GetCommand(() => {
-					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
-				});
+				if (value != _cancelEdit)
+				{
+					_cancelEdit = value;
+					RaisePropertyChanged();
+				}
 			}
-		}
+		}	
     }
 }
 

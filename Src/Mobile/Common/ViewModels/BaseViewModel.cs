@@ -140,6 +140,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			where TViewModel: ChildViewModel
 		{
 			var viewModel = builder.Invoke();
+			viewModel.CallBundleMethods("Init", new MvxBundle());
 			viewModel.DisposeWith(_subscriptions);
 			return viewModel;
 		}
