@@ -45,14 +45,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_accountService = accountService;
 		}
 
-        public bool IsValid (CreateOrder info)        
-        {
-			var destinationIsRequired = _appSettings.Data.DestinationIsRequired;
-
-            return info.PickupAddress.BookAddress.HasValue () 
-                && info.PickupAddress.HasValidCoordinate () && (!destinationIsRequired || (  info.DropOffAddress.BookAddress.HasValue () 
-                                                                                           && info.DropOffAddress.HasValidCoordinate () ) ) ;
-        }
+        
 
         public Task<OrderValidationResult> ValidateOrder (CreateOrder order)
         {

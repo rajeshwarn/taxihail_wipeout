@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task ToggleBetweenPickupAndDestinationSelectionMode();
 
 		Task ValidatePickupDestinationAndTime();
+		Task ConfirmOrder();
 
 		IObservable<Address> GetAndObservePickupAddress();
 		IObservable<Address> GetAndObserveDestinationAddress();

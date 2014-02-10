@@ -12,6 +12,8 @@ using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -151,6 +153,39 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			{
 				throw new OrderValidationException("Invalid pickup date", OrderValidationError.InvalidPickupDate);
 			}
+		}
+
+		public async Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder()
+		{
+			var order = new CreateOrder();
+			order.Id = Guid.NewGuid();
+			order.PickupDate = await _pickupDateSubject.Take(1).ToTask();
+			order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
+			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
+			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
+
+			var orderStatus = await _bookingService.CreateOrder(order);
+
+			if (!orderStatus.IbsOrderId.HasValue || !(orderStatus.IbsOrderId > 0))
+			{
+				// TODO: Handle this case properly
+				return;
+			}
+
+			var orderCreated = new Order
+			{
+				CreatedDate = DateTime.Now, 
+				DropOffAddress = order.DropOffAddress, 
+				IbsOrderId = orderStatus.IbsOrderId, 
+				Id = order.Id, PickupAddress = order.PickupAddress,
+				Note = order.Note, 
+				PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now,
+				Settings = order.Settings
+			};
+
+			// TODO: Refactor so we don't have to return two distinct objects
+			return Tuple.Create(orderCreated, orderStatus);
+
 		}
 
 		public IObservable<Address> GetAndObservePickupAddress()

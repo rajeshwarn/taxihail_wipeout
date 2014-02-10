@@ -549,7 +549,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             using (this.Services().Message.ShowProgress())
 			{
-                bool isValid = this.Services().Booking.IsValid(Order);
+
+				bool isValid = false; //this.Services().Booking.IsValid(Order);
                 if (!isValid)
                 {
                     Order.PickupDate = null;
