@@ -16,6 +16,7 @@ using System.Linq;
 using apcurium.MK.Booking.Mobile.Data;
 using TinyIoC;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -51,6 +52,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 set.Bind()
                     .For(v => v.DestinationAddress)
                     .To(vm => vm.DestinationAddress);
+
+                set.Bind()
+                    .For(v => v.AddressSelectionMode)
+                    .To(vm => vm.AddressSelectionMode);
 
                 set.Bind()
                     .For(v => v.MapBounds)
@@ -98,6 +103,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
+        private AddressSelectionMode _addressSelectionMode; 
+        public AddressSelectionMode AddressSelectionMode
+        { 
+            get
+            {
+                return _addressSelectionMode;
+            }
+            set
+            {
+                _addressSelectionMode = value;
+                ShowMarkers();
+            }
+        }
+
         private MapBounds _mapBounds;
         public MapBounds MapBounds
         {
@@ -122,6 +141,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void OnPickupAddressChanged()
         {
+            ShowMarkers();
+
             if (PickupAddress.HasValidCoordinate())
             {
                 RemoveAnnotation(_pickupAnnotation);
@@ -136,6 +157,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void OnDestinationAddressChanged()
         {
+            ShowMarkers();
+
             if (DestinationAddress.HasValidCoordinate())
             {
                 RemoveAnnotation(_destinationAnnotation);
@@ -148,6 +171,55 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
+        void UpdateAnnotation(Address address, AddressAnnotation addressAnnotation)
+        {
+
+        }
+
+        void ShowMarkers()
+        {
+            if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
+            {
+                Position position = new Position(){ Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
+
+                if (!DestinationAddress.HasValidCoordinate())
+                {
+//                   _destinationPin.Visible = false;
+                }
+
+//                _pickupPin.Visible = true;
+//                _pickupPin.Position = new LatLng(position.Latitude, position.Longitude);
+//                _pickupOverlay.Visibility = ViewStates.Invisible;
+//                _destinationOverlay.Visibility = ViewStates.Visible;
+//
+                if (PickupAddress.HasValidCoordinate())
+                {
+//                    _pickupPin.Visible = true;
+//                    _pickupPin.Position = new LatLng(position.Latitude, position.Longitude);
+                }
+                else
+                {
+//                    _pickupPin.Visible = false;
+                }
+            }
+            else
+            {
+//                _pickupPin.Visible = false;
+//                _destinationOverlay.Visibility = ViewStates.Invisible;
+//                _pickupOverlay.Visibility = ViewStates.Visible;
+//
+                if (DestinationAddress.HasValidCoordinate())
+                {
+                    Position position = new Position(){ Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
+//                    _destinationPin.Visible = true;
+//                    _destinationPin.Position = new LatLng(position.Latitude, position.Longitude);             
+                }
+                else
+                {
+//                    _destinationPin.Visible = false;
+                }
+            }            
+        }
         private void OnMapBoundsChanged()
         {
             if (MapBounds != null)
