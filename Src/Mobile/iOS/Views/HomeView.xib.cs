@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
     {
         private bool _defaultThemeApplied;
         private PanelMenuView _menu;
+        private BookLaterDatePicker _datePicker;
 
         public HomeView() : base("HomeView", null)
         {
@@ -57,6 +58,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             InstantiatePanel();
 
+            _datePicker = new BookLaterDatePicker();            
+            _datePicker.UpdateView(View.Frame.Height, View.Frame.Width);
+            _datePicker.Hide();
+            View.AddSubview(_datePicker);
+
             var set = this.CreateBindingSet<HomeView, HomeViewModel>();
 
             set.Bind(_menu)
@@ -87,6 +93,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.DataContext)
                 .To(vm => vm.BottomBar);
 
+            set.Bind(_datePicker)
+                .For(v => v.DataContext)
+                .To(vm => vm.BottomBar);
+
             set.Apply();
         }
 
@@ -97,11 +107,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         void ChangeState(HomeViewModelPresentationHint hint)
         {
-            if (hint.State == HomeViewModelState.Review)
+            if (hint.State == HomeViewModelState.PickDate)
+            {
+                // Order Options: Visible
+                // Order Review: Hidden
+                // Order Edit: Hidden
+                // Date Picker: Visible
+                _datePicker.Show();
+            }
+            else if (hint.State == HomeViewModelState.Review)
             {
                 // Order Options: Visible
                 // Order Review: Visible
                 // Order Edit: Hidden
+                // Date Picker: Hidden
                 UIView.Animate(
                     0.6f, 
                     () =>
@@ -116,6 +135,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 // Order Options: Hidden
                 // Order Review: Hidden
                 // Order Edit: Visible
+                // Date Picker: Hidden
                 UIView.Animate(
                     0.6f, 
                     () => {
@@ -129,6 +149,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 // Order Options: Visible
                 // Order Review: Hidden
                 // Order Edit: Hidden
+                // Date Picker: Hidden
                 UIView.Animate(
                     0.6f, 
                     () => {

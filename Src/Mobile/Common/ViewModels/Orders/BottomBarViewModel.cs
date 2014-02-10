@@ -4,32 +4,24 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
 	public class BottomBarViewModel: ChildViewModel
     {
 		readonly IOrderWorkflowService _orderWorkflowService;
+		readonly IMessageService _messageService;
+		readonly ILocalization _localize;
 
-		public BottomBarViewModel(IOrderWorkflowService orderWorkflowService)
+		public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, IMessageService messageService, ILocalization localize)
 		{
+			_localize = localize;
+			_messageService = messageService;
 			_orderWorkflowService = orderWorkflowService;
-
-			BookLater = AddChild<BookLaterViewModel>();
 
 			this.Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(),
 				m => EstimateSelected = m == AddressSelectionMode.DropoffSelection);
-		}
-
-		private BookLaterViewModel _bookLater;
-		public BookLaterViewModel BookLater
-		{ 
-			get { return _bookLater; }
-			private set
-			{ 
-				_bookLater = value;
-				RaisePropertyChanged();
-			}
 		}
 
 		private bool _estimateSelected;
@@ -59,23 +51,37 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		public ICommand BookNow
+		public ICommand SetPickupDateAndBook
 		{
 			get
 			{
-				return GetCommand(() =>
+				return GetCommand<DateTime?>(async date =>
+				{
+					await _orderWorkflowService.SetPickupDate(date);
+					try
 					{
-						//TODO: _orderWorkflowService.SetPickupTimeToNow();
-						try
+						await _orderWorkflowService.ValidatePickupDestinationAndTime();
+						ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
+					}
+					catch (OrderValidationException e)
+					{
+						switch (e.Error)
 						{
-							_orderWorkflowService.ValidatePickupDestinationAndTime();
-							ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
+							case OrderValidationError.PickupAddressRequired:
+								_messageService.ShowMessage(_localize["InvalidBookinInfoTitle"], _localize["InvalidBookinInfo"]);
+								break;
+							case OrderValidationError.DestinationAddressRequired:
+								_messageService.ShowMessage(_localize["InvalidBookinInfoTitle"], _localize["InvalidBookinInfoWhenDestinationIsRequired"]);
+								break;
+							case OrderValidationError.InvalidPickupDate:
+								_messageService.ShowMessage(_localize["InvalidBookinInfoTitle"], _localize["BookViewInvalidDate"]);
+								break;
+							default:
+								Logger.LogError(e);
+								break;
 						}
-						catch(OrderValidationException e)
-						{
-							// TODO: Display error
-						}
-					});
+					}
+				});
 			}
 		}
 
@@ -132,6 +138,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					}); 
 			}
 		}
+
+        public ICommand BookLater
+        {
+            get
+            {
+                return GetCommand(() => {
+                    ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.PickDate));
+                });
+            }
+        }
 
 		public ICommand Edit
 		{

@@ -4,6 +4,8 @@ using System.Runtime.CompilerServices;
 using System.Reactive.Disposables;
 using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.CrossCore;
+using apcurium.MK.Common.Diagnostic;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -27,6 +29,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
+
+		protected TinyIoCContainer Container
+		{
+			get { return TinyIoCContainer.Current; }
+		}
+
+		protected ILogger Logger { get { return Container.Resolve<ILogger>(); } }
 
 		protected AsyncCommand GetCommand(Action action)
 		{

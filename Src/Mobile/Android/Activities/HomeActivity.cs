@@ -194,9 +194,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             binding.Apply();
 
             PanelMenuInit();
-
-            //FindViewById<View>(Resource.Id.btnBookLaterLayout).Click -= PickDate_Click;
-            //FindViewById<View>(Resource.Id.btnBookLaterLayout).Click += PickDate_Click;
         }
 
         protected override void OnResume()
@@ -260,16 +257,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _btnBookLaterLayout.Selected = selected;
         }
 
-        private void PickDate_Click(object sender, EventArgs e)
-        {
-            ViewModel.Panel.MenuIsOpen = false;
-
-            SetSelectedOnBookLater(true);
-
-            var intent = new Intent(this, typeof (DateTimePickerActivity));
-            StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
-        }
-
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             SetSelectedOnBookLater(false);
@@ -280,7 +267,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (requestCode == (int)ActivityEnum.DateTimePicked && resultCode == Result.Ok)
             {             
                 DateTime dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
-                ViewModel.BottomBar.BookLater.SetPickupDateAndBook.Execute(dt);
+                ViewModel.BottomBar.SetPickupDateAndBook.Execute(dt);
+            }
+            else
+            {
+                // Activity was cancelled
+                ChangeState(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
             }
         }
 
@@ -294,7 +286,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             _presentationState = hint.State;
 
-            if (hint.State == HomeViewModelState.Review)
+            if (hint.State == HomeViewModelState.PickDate)
+            {
+                SetSelectedOnBookLater(true);
+
+                var intent = new Intent(this, typeof (DateTimePickerActivity));
+                StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
+            }
+            else if (hint.State == HomeViewModelState.Review)
             {
                 var delta = _orderOptions.Bottom - _orderReview.Top;
                 var animation = new TranslateAnimation(0, 0, 0, delta);
@@ -303,13 +302,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 animation.FillAfter = true;
                 _orderReview.StartAnimation(animation);
             }
-            else
+
+            else if (hint.State == HomeViewModelState.Edit)
             {
                 var delta = _orderOptions.Bottom - _orderReview.Top;
                 var animation = new TranslateAnimation(0, 0, delta, 0);
                 animation.Duration = 600;
                 animation.Interpolator = new DecelerateInterpolator();
                 _orderReview.StartAnimation(animation);
+            }
+            else if(hint.State == HomeViewModelState.Initial)
+            {
+                var delta = _orderOptions.Bottom - _orderReview.Top;
+                var animation = new TranslateAnimation(0, 0, delta, 0);
+                animation.Duration = 600;
+                animation.Interpolator = new DecelerateInterpolator();
+                _orderReview.StartAnimation(animation);
+
+                SetSelectedOnBookLater(false);
             }
             _appBar.ChangePresentation(hint);
            

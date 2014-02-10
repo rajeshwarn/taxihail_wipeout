@@ -323,7 +323,6 @@
     <Compile Include="ViewModels\Orders\OrderOptionsViewModel.cs" />
     <Compile Include="ViewModels\Orders\BottomBarViewModel.cs" />
     <Compile Include="Data\VehicleClusterHelper.cs" />
-    <Compile Include="ViewModels\Orders\BookLaterViewModel.cs" />
     <Compile Include="ViewModels\Orders\OrderReviewViewModel.cs" />
     <Compile Include="ViewModels\Orders\HomeViewModelState.cs" />
     <Compile Include="PresentationHints\HomeViewModelPresentationHint.cs" />
