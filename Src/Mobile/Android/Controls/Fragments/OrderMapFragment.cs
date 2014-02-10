@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private Marker _pickupPin;
         private Marker _destinationPin;
         private CompositeDisposable _subscriptions = new CompositeDisposable();
+        private bool bypassCameraChangeEvent = false;
 
         private List<Marker> _availableVehicleMarkers = new List<Marker> ();
 
@@ -45,135 +46,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private BitmapDescriptor _nearbyClusterIcon;
         private BitmapDescriptor _hailIcon;
 
-        private Resources Resources;
+        private Resources _resources;
 
-        void InitDrawables()
-        {            
-            var useColor = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
-            var colorBgTheme = useColor ? (Color?)Resources.GetColor(Resource.Color.login_background_color) : (Color?)null;
-
-            var destinationIcon =  Resources.GetDrawable(Resource.Drawable.@destination_icon);
-            var nearbyTaxiIcon = Resources.GetDrawable(Resource.Drawable.@nearby_taxi);                                
-            var nearbyClusterIcon = Resources.GetDrawable(Resource.Drawable.@cluster); 
-            var hailIcon = Resources.GetDrawable(Resource.Drawable.@hail_icon);                                
-
-            _destinationIcon = DrawHelper.DrawableToBitmapDescriptor(destinationIcon, colorBgTheme);
-            _nearbyTaxiIcon = DrawHelper.DrawableToBitmapDescriptor(nearbyTaxiIcon, colorBgTheme);
-            _nearbyClusterIcon = DrawHelper.DrawableToBitmapDescriptor(nearbyClusterIcon, colorBgTheme);
-            _hailIcon = DrawHelper.DrawableToBitmapDescriptor(hailIcon, colorBgTheme);
-        }
-
-
-        public OrderMapFragment(TouchableMap _map, Resources _resources)
+        public OrderMapFragment(TouchableMap mapFragment, Resources resources)
         {
-            Resources = _resources;
+            _resources = resources;
             InitDrawables();
             this.CreateBindingContext();            
-            Map = _map.Map;
-            _touchableMap = _map;
-            _pickupOverlay = (ImageView)_map.Activity.FindViewById(Resource.Id.pickupOverlay);
+            Map = mapFragment.Map;
+            _touchableMap = mapFragment;
+            _pickupOverlay = (ImageView)mapFragment.Activity.FindViewById(Resource.Id.pickupOverlay);
             _pickupOverlay.Visibility = ViewStates.Visible;
             _pickupOverlay.SetPadding(0, 0, 0, _pickupOverlay.Drawable.IntrinsicHeight / 2);
             this.DelayBind(() => InitializeBinding());
             CreatePins();
-        }
-
-        public IMvxBindingContext BindingContext { get; set; }
-
-        [MvxSetToNullAfterBinding]
-        public object DataContext
-        {
-            get { return BindingContext.DataContext; }
-            set 
-            { 
-                BindingContext.DataContext = value; 
-            }
-        }
-
-        public void InitializeBinding()
-        {
-            var binding = this.CreateBindingSet<OrderMapFragment, MapViewModel>();
-
-            _touchableMap.Surface.Touched += (object sender, MotionEvent e) => 
-            {
-                switch (e.Action)
-                {
-                    case MotionEventActions.Down:
-                        ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
-                        break;                    
-                    case MotionEventActions.Move:
-                        ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
-                        break;                    
-                    default:
-                        break;
-                }               
-            };
-
-
-            Observable
-                .FromEventPattern<GoogleMap.CameraChangeEventArgs>(Map, "CameraChange")
-                .Throttle(TimeSpan.FromMilliseconds(500))
-                .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(e =>
-            {
-                if (bypassCameraChangeEvent)
-                {
-                    bypassCameraChangeEvent = false;
-                    return;
-                }
-
-                var _target = Map.CameraPosition.Target;
-
-                var bounds = GetMapBoundsFromProjection();
-                                        
-                if (UserMovedMap != null && UserMovedMap.CanExecute(bounds))
-                {
-                    UserMovedMap.Execute(bounds);
-                }
-
-                    }).DisposeWith(_subscriptions);
-
-
-            binding.Bind()
-                .For(v => v.UserMovedMap)
-                .To(vm => vm.UserMovedMap);
-
-            binding.Bind()
-                .For(v => v.AddressSelectionMode)
-                .To(vm => vm.AddressSelectionMode);
-
-            binding.Bind()
-                .For(v => v.PickupAddress)
-                    .To(vm => vm.PickupAddress);
-            
-            binding.Bind()
-                .For(v => v.DestinationAddress)
-                    .To(vm => vm.DestinationAddress);
-
-            binding.Bind()
-                .For(v => v.MapBounds)
-                    .To(vm => vm.MapBounds);
-            
-            binding.Bind()
-                .For(v => v.AvailableVehicles)
-                    .To(vm => vm.AvailableVehicles);
-
-            binding.Apply();
-
-        }
-
-        private MapBounds GetMapBoundsFromProjection()
-        {
-            var _bounds = Map.Projection.VisibleRegion.LatLngBounds;
-
-            var bounds = new MapBounds()
-            { 
-                SouthBound = _bounds.Southwest.Latitude, 
-                WestBound = _bounds.Southwest.Longitude, 
-                NorthBound = _bounds.Northeast.Latitude, 
-                EastBound = _bounds.Northeast.Longitude
-            };
-            return bounds;
         }
 
         private Address _pickupAddress;
@@ -236,6 +122,104 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+        public IMvxBindingContext BindingContext { get; set; }
+
+        [MvxSetToNullAfterBinding]
+        public object DataContext
+        {
+            get { return BindingContext.DataContext; }
+            set 
+            { 
+                BindingContext.DataContext = value; 
+            }
+        }
+
+        public void InitializeBinding()
+        {
+            var binding = this.CreateBindingSet<OrderMapFragment, MapViewModel>();
+
+            _touchableMap.Surface.Touched += (object sender, MotionEvent e) => 
+            {
+                switch (e.Action)
+                {
+                    case MotionEventActions.Down:
+                        ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
+                        break;                    
+                    case MotionEventActions.Move:
+                        ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
+                        break;                    
+                    default:
+                        break;
+                }               
+            };
+
+
+            Observable
+                .FromEventPattern<GoogleMap.CameraChangeEventArgs>(Map, "CameraChange")
+                .Throttle(TimeSpan.FromMilliseconds(500))
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(e => OnCameraChanged(e))
+                .DisposeWith(_subscriptions);
+
+
+            binding.Bind()
+                .For(v => v.UserMovedMap)
+                .To(vm => vm.UserMovedMap);
+
+            binding.Bind()
+                .For(v => v.AddressSelectionMode)
+                .To(vm => vm.AddressSelectionMode);
+
+            binding.Bind()
+                .For(v => v.PickupAddress)
+                    .To(vm => vm.PickupAddress);
+            
+            binding.Bind()
+                .For(v => v.DestinationAddress)
+                    .To(vm => vm.DestinationAddress);
+
+            binding.Bind()
+                .For(v => v.MapBounds)
+                    .To(vm => vm.MapBounds);
+            
+            binding.Bind()
+                .For(v => v.AvailableVehicles)
+                    .To(vm => vm.AvailableVehicles);
+
+            binding.Apply();
+
+        }
+
+        private void InitDrawables()
+        {            
+            var useColor = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
+            var colorBgTheme = useColor ? (Color?)_resources.GetColor(Resource.Color.login_background_color) : (Color?)null;
+
+            var destinationIcon =  _resources.GetDrawable(Resource.Drawable.@destination_icon);
+            var nearbyTaxiIcon = _resources.GetDrawable(Resource.Drawable.@nearby_taxi);                                
+            var nearbyClusterIcon = _resources.GetDrawable(Resource.Drawable.@cluster); 
+            var hailIcon = _resources.GetDrawable(Resource.Drawable.@hail_icon);                                
+
+            _destinationIcon = DrawHelper.DrawableToBitmapDescriptor(destinationIcon, colorBgTheme);
+            _nearbyTaxiIcon = DrawHelper.DrawableToBitmapDescriptor(nearbyTaxiIcon, colorBgTheme);
+            _nearbyClusterIcon = DrawHelper.DrawableToBitmapDescriptor(nearbyClusterIcon, colorBgTheme);
+            _hailIcon = DrawHelper.DrawableToBitmapDescriptor(hailIcon, colorBgTheme);
+        }
+
+        private MapBounds GetMapBoundsFromProjection()
+        {
+            var _bounds = Map.Projection.VisibleRegion.LatLngBounds;
+
+            var bounds = new MapBounds()
+            { 
+                SouthBound = _bounds.Southwest.Latitude, 
+                WestBound = _bounds.Southwest.Longitude, 
+                NorthBound = _bounds.Northeast.Latitude, 
+                EastBound = _bounds.Northeast.Longitude
+            };
+            return bounds;
+        }
+
         private void CreatePins()
         {
             if (_pickupPin == null)
@@ -279,8 +263,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        private bool bypassCameraChangeEvent = false;
-
         void StickPickupPinAt(Position position)
         {
             _pickupOverlay.Visibility = ViewStates.Invisible;
@@ -299,12 +281,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (MapBounds != null)
             {
                 bypassCameraChangeEvent = true;
-                var _bounds = MapBounds;
+                var bounds = MapBounds;
                 Map.AnimateCamera(
                     CameraUpdateFactory.NewLatLngBounds(
-                        new LatLngBounds(new LatLng(_bounds.SouthBound, _bounds.WestBound), 
-                            new LatLng(_bounds.NorthBound, _bounds.EastBound)),
+                        new LatLngBounds(new LatLng(bounds.SouthBound, bounds.WestBound), 
+                            new LatLng(bounds.NorthBound, bounds.EastBound)),
                         DrawHelper.GetPixels(0)));
+            }
+        }
+
+        private void OnCameraChanged(GoogleMap.CameraChangeEventArgs e)
+        {
+            if (bypassCameraChangeEvent)
+            {
+                bypassCameraChangeEvent = false;
+                return;
+            }
+
+            var bounds = GetMapBoundsFromProjection();
+            if (UserMovedMap != null && UserMovedMap.CanExecute(bounds))
+            {
+                UserMovedMap.Execute(bounds);
             }
         }
 
