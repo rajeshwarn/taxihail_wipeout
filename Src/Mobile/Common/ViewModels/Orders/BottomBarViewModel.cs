@@ -1,12 +1,14 @@
 using System;
 using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Data;
-using apcurium.MK.Booking.Mobile.AppServices.Orders;
-using apcurium.MK.Booking.Mobile.PresentationHints;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.Extensions;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.AppServices.Orders;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.PresentationHints;
+
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -57,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return GetCommand<DateTime?>(async date =>
+				return this.GetCommand<DateTime?>(async date =>
 				{
 					await _orderWorkflowService.SetPickupDate(date);
 					try
@@ -91,7 +93,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return GetCommand(async () =>
+				return this.GetCommand(async () =>
 				{
 					try
 					{
@@ -132,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-                return GetCommand(() => {
+				return this.GetCommand(() => {
                     ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.PickDate));
                 });
             }
@@ -142,7 +144,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return GetCommand(() => {
+				return this.GetCommand(() => {
 					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Edit));
 				});
 			}
@@ -152,7 +154,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return GetCommand(() => {
+				return this.GetCommand(() => {
 					// TODO: Actually save changes
 					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
 				});
@@ -163,7 +165,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
 			{
-				return GetCommand(() => {
+				return this.GetCommand(() => {
 					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
 				});
 			}
@@ -173,11 +175,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return GetCommand(() => {
+				return this.GetCommand(() => {
 					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
 				});
 			}
 		}
+
     }
 }
 

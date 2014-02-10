@@ -37,16 +37,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		protected ILogger Logger { get { return Container.Resolve<ILogger>(); } }
 
-		protected AsyncCommand GetCommand(Action action)
-		{
-			return new AsyncCommand(action);
-		}
-
-		protected AsyncCommand<T> GetCommand<T>(Action<T> action)
-		{
-			return new AsyncCommand<T>(action);
-		}
-
 		protected virtual void Dispose(bool disposing)
 		{
 			if (disposing) 

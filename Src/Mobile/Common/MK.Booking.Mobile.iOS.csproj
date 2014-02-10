@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{43282000-6BF8-4D70-B7DB-833BA44E34BB}</ProjectGuid>
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
@@ -121,6 +119,7 @@
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Plugins.WebBrowser.Touch.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Windows" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
@@ -328,6 +327,7 @@
     <Compile Include="PresentationHints\HomeViewModelPresentationHint.cs" />
     <Compile Include="PresentationHints\IChangePresentation.cs" />
     <Compile Include="PresentationHints\ChangeStatePresentationHint.cs" />
+    <Compile Include="Extensions\MvxNavigatingObjectExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
