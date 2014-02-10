@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
             this.AddConstraint(_heightConstraint);
             BackgroundColor = UIColor.Clear;
-           
+            txtNote.BackgroundColor = new UIColor();
         }
 
         private void InitializeBinding()
@@ -64,6 +64,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             set.Bind(lblRingCode)
                 .For(v => v.Text)
                 .To(vm => vm.RingCode);
+
+
 
             set.Apply();
         }

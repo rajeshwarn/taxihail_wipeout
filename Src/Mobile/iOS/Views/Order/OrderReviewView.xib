@@ -14,6 +14,7 @@
                 <outlet property="lblPhone" destination="HWR-DD-bhe" id="Jhl-6D-jDD"/>
                 <outlet property="lblRingCode" destination="hmW-5t-iqe" id="KQa-7G-D8y"/>
                 <outlet property="lblVehicule" destination="M8A-gq-5Cj" id="SDS-UY-Ynh"/>
+                <outlet property="txtNote" destination="WIy-xs-5jj" id="NkF-rG-SH8"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

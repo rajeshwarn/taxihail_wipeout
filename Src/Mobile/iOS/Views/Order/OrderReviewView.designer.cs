@@ -35,32 +35,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblVehicule { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtNote { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (lblName != null) {
-				lblName.Dispose ();
-				lblName = null;
-			}
-
-			if (lblPhone != null) {
-				lblPhone.Dispose ();
-				lblPhone = null;
-			}
-
-			if (lblNbPassengers != null) {
-				lblNbPassengers.Dispose ();
-				lblNbPassengers = null;
-			}
-
-			if (lblDate != null) {
-				lblDate.Dispose ();
-				lblDate = null;
-			}
-
-			if (lblVehicule != null) {
-				lblVehicule.Dispose ();
-				lblVehicule = null;
+			if (lblApt != null) {
+				lblApt.Dispose ();
+				lblApt = null;
 			}
 
 			if (lblChargeType != null) {
@@ -68,14 +51,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				lblChargeType = null;
 			}
 
-			if (lblApt != null) {
-				lblApt.Dispose ();
-				lblApt = null;
+			if (lblDate != null) {
+				lblDate.Dispose ();
+				lblDate = null;
+			}
+
+			if (lblName != null) {
+				lblName.Dispose ();
+				lblName = null;
+			}
+
+			if (lblNbPassengers != null) {
+				lblNbPassengers.Dispose ();
+				lblNbPassengers = null;
+			}
+
+			if (lblPhone != null) {
+				lblPhone.Dispose ();
+				lblPhone = null;
 			}
 
 			if (lblRingCode != null) {
 				lblRingCode.Dispose ();
 				lblRingCode = null;
+			}
+
+			if (lblVehicule != null) {
+				lblVehicule.Dispose ();
+				lblVehicule = null;
+			}
+
+			if (txtNote != null) {
+				txtNote.Dispose ();
+				txtNote = null;
 			}
 		}
 	}
