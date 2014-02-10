@@ -134,7 +134,6 @@
     <Compile Include="Data\TutorialContent.cs" />
     <Compile Include="Data\TutorialItem.cs" />
     <Compile Include="Extensions\AddressExtension.cs" />
-    <Compile Include="Extensions\BookingSettingsExtension.cs" />
     <Compile Include="Framework\DisposableAction.cs" />
     <Compile Include="Framework\Extensions\ActionExtensions.cs" />
     <Compile Include="Framework\Extensions\Calendar\ByteTimeSpanExtensions.cs" />
@@ -330,6 +329,7 @@
     <Compile Include="PresentationHints\IChangePresentation.cs" />
     <Compile Include="ViewModels\Orders\HomeViewModelState.cs" />
     <Compile Include="ViewModels\Orders\OrderReviewViewModel.cs" />
+    <Compile Include="ViewModels\Orders\OrderEditViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
