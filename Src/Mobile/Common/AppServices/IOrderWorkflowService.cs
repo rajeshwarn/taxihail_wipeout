@@ -2,6 +2,7 @@ using System;
 using apcurium.MK.Common.Entity;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -16,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task ToggleBetweenPickupAndDestinationSelectionMode();
 
 		Task ValidatePickupDestinationAndTime();
-		Task ConfirmOrder();
+		Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder();
 
 		IObservable<Address> GetAndObservePickupAddress();
 		IObservable<Address> GetAndObserveDestinationAddress();

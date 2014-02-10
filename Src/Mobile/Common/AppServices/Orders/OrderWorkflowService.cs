@@ -168,8 +168,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			if (!orderStatus.IbsOrderId.HasValue || !(orderStatus.IbsOrderId > 0))
 			{
-				// TODO: Handle this case properly
-				return;
+				//TODO: Clarify. When this can happen?
+				throw new Exception("No IbsOrderId, something went wrong while creating the order");
 			}
 
 			var orderCreated = new Order
@@ -182,6 +182,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now,
 				Settings = order.Settings
 			};
+
+			PrepareForNewOrder();
 
 			// TODO: Refactor so we don't have to return two distinct objects
 			return Tuple.Create(orderCreated, orderStatus);
@@ -268,6 +270,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             var estimatedFareString = await _bookingService.GetFareEstimateDisplay(pickupAddress, destinationAddress, pickupDate, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
 
             _estimatedFareSubject.OnNext(estimatedFareString);
+		}
+
+		private void PrepareForNewOrder()
+		{
+			_pickupAddressSubject.OnNext(new Address());
+			_destinationAddressSubject.OnNext(new Address());
+			_addressSelectionModeSubject.OnNext(AddressSelectionMode.PickupSelection);
+			_pickupDateSubject.OnNext(null);
+			_bookingSettingsSubject.OnNext(_accountService.CurrentAccount.Settings);
+			_estimatedFareSubject.OnNext(_localize["NoFareText"]);
 		}
     }
 }
