@@ -1,15 +1,15 @@
 using System;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
-using apcurium.MK.Booking.Mobile.Client.Localization;
+using System.Drawing;
 using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using System.Drawing;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
 {
@@ -40,9 +40,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             BackgroundColor = UIColor.White;
 
             DatePicker = new UIDatePicker();
-            DatePicker.ValueChanged += (sender, e) => {
-                _date = DatePicker.Date;
-            };
 
             CancelButton = new FlatButton();
             OrderButton = new FlatButton();
@@ -60,10 +57,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
 
         private void InitializeBinding()
         {
-            var set = this.CreateBindingSet<BookLaterDatePicker, BookLaterViewModel>();
+            var set = this.CreateBindingSet<BookLaterDatePicker, BottomBarViewModel>();
 
             set.Bind()
-                .For(v => v.BookTaxiCommand)
+                .For(v => v.Command)
                 .To(vm => vm.SetPickupDateAndBook);
 
             set.Apply();
@@ -81,7 +78,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             OrderButton.Frame = new RectangleF(width - buttonWidth - buttonHorizontalPadding, buttonVerticalPadding, buttonWidth, 36f);
 
             OrderButton.TouchUpInside += (sender, e) => {
-                BookTaxiCommand.Execute(_date);
+                Command.Execute((DateTime?)DatePicker.Date);
+                Hide();
             };
 
             DatePicker.SetY(OrderButton.Frame.Bottom + buttonVerticalPadding);
@@ -107,21 +105,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             CommitAnimations();
         }
 
-        public ICommand BookTaxiCommand { get; set; }
+        public ICommand Command { get; set; }
 
-        public DateTime? _date;
         public DateTime? Date 
         {
             get 
             {
-                return _date;
+                return (DateTime?)DatePicker.Date;
             }
             set 
             {
                 if(value == null)
                 {
                     DatePicker.SetDate(DateTime.Now, true);
-                    _date = null;
                 }
                 else
                 {

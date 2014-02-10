@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public AppBar(Context context, IAttributeSet attrs) :
             base(Resource.Layout.SubView_AppBar, context, attrs)
         {
-            this.DelayBind(() =>{
+            this.DelayBind(() => {
 
                 var estimate = Content.FindViewById(Resource.Id.btnEstimateLayout);
                 var bookNow = Content.FindViewById<Button>(Resource.Id.btnBookNow);
@@ -42,9 +42,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 set.Bind(estimate)
                     .For("Click")
                     .To(vm => vm.ChangeAddressSelectionMode);
+
                 set.Bind(bookNow)
                     .For("Click")
-                    .To(vm => vm.BookNow);
+                    .To(vm => vm.SetPickupDateAndBook);
+
                 set.Bind(bookLater)
                     .For("Click")
                     .To(vm => vm.BookLater);
@@ -90,13 +92,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 reviewButtons.Visibility = ViewStates.Gone;
                 editButtons.Visibility = ViewStates.Visible;
             }
-            else if(hint.State == HomeViewModelState.Initial)
+            else if (hint.State == HomeViewModelState.Initial)
             {
                 bookButtons.Visibility = ViewStates.Visible;
                 reviewButtons.Visibility = ViewStates.Gone;
                 editButtons.Visibility = ViewStates.Gone;
             }
+            else if (hint.State == HomeViewModelState.PickDate)
+            {
+                // Do nothing
+                // this state does not affect this control
+            }
         }
+
 
     }
 }

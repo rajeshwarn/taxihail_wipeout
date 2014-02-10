@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     [Register("AppBarView")]
     public class AppBarView : MvxView
     {
-        private UIView _confirmationButtons;
+        private UIView _reviewButtons;
         private UIView _orderButtons;
         private UIView _editButtons;
         public static SizeF ButtonSize = new SizeF(60, 46);
@@ -63,14 +63,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             FlatButtonStyle.Green.ApplyTo(btnBook);
             btnBook.SetTitle(Localize.GetValue("BookItButton"), UIControlState.Normal);
 
-            var _bookLaterDatePicker = new BookLaterDatePicker();            
-            _bookLaterDatePicker.UpdateView(Superview.Frame.Height, Superview.Frame.Width);
-            _bookLaterDatePicker.Hide();
-            Superview.AddSubview(_bookLaterDatePicker);
-
             var btnBookLater = new AppBarButton(Localize.GetValue("BookItLaterButton"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "later_icon.png", "later_icon_pressed.png");
             btnBookLater.Frame = btnBookLater.Frame.SetX(Frame.Width - btnBookLater.Frame.Width - 3);
-            btnBookLater.TouchUpInside += (sender, e) => _bookLaterDatePicker.Show();
 
             var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
 
@@ -81,13 +75,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Selected)
                 .To(vm => vm.EstimateSelected);
 
-            set.Bind(_bookLaterDatePicker)
-                .For(v => v.DataContext)
-                .To(vm => vm.BookLater);
-
             set.Bind(btnBook)
-                .For("TouchUpInside")
-                .To(vm => vm.BookNow);
+                .For(v => v.Command)
+                .To(vm => vm.SetPickupDateAndBook);
+
+            set.Bind(btnBookLater)
+                .For(v => v.Command)
+                .To(vm => vm.BookLater);
 
             set.Apply();
 
@@ -99,7 +93,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             // - Cancel - Confirm - Edit 
 
-            _confirmationButtons = new UIView(this.Bounds);
+            _reviewButtons = new UIView(this.Bounds) { Hidden = true };
 
             var btnCancel = new AppBarLabelButton("Cancel");
             btnCancel.TranslatesAutoresizingMaskIntoConstraints = false;
@@ -111,20 +105,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             FlatButtonStyle.Green.ApplyTo(btnConfirm);
             btnConfirm.SetTitle("Confirm", UIControlState.Normal);
 
-            _confirmationButtons.AddSubviews(btnCancel, btnConfirm, btnEdit);
+            _reviewButtons.AddSubviews(btnCancel, btnConfirm, btnEdit);
 
             // Constraints for Cancel button
-            _confirmationButtons.AddConstraints(new []
+            _reviewButtons.AddConstraints(new []
             {
-                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.Leading, 1, 8f),
-                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.CenterY, 1, 0),
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _reviewButtons, NSLayoutAttribute.Leading, 1, 8f),
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _reviewButtons, NSLayoutAttribute.CenterY, 1, 0),
             });
 
             // Constraints for Edit button
-            _confirmationButtons.AddConstraints(new []
+            _reviewButtons.AddConstraints(new []
                 {
-                    NSLayoutConstraint.Create(btnEdit, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.Trailing, 1, -8f),
-                    NSLayoutConstraint.Create(btnEdit, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _confirmationButtons, NSLayoutAttribute.CenterY, 1, 0),
+                    NSLayoutConstraint.Create(btnEdit, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _reviewButtons, NSLayoutAttribute.Trailing, 1, -8f),
+                    NSLayoutConstraint.Create(btnEdit, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _reviewButtons, NSLayoutAttribute.CenterY, 1, 0),
                 });
 
             var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
@@ -142,13 +136,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .To(vm => vm.Edit);
 
             set.Apply();
+
+            Add(_reviewButtons);
         }
 
         private void CreateButtonsForEdit()
         {
             // - Cancel - Save --------- 
 
-            _editButtons = new UIView(this.Bounds);
+            _editButtons = new UIView(this.Bounds) { Hidden = true };
 
             var btnCancel = new AppBarLabelButton("Cancel");
             btnCancel.TranslatesAutoresizingMaskIntoConstraints = false;
@@ -177,26 +173,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .To(vm => vm.Save);
 
             set.Apply();
+
+            Add(_editButtons);
         }
 
         public void ChangeState(HomeViewModelPresentationHint hint)
-        {
-            foreach(var subview in Subviews)
+        {   
+            if (hint.State == HomeViewModelState.PickDate)
             {
-                subview.RemoveFromSuperview();
+                // This state does not affect this control
+                return;
             }
-            if (hint.State == HomeViewModelState.Review)
-            {
-                Add(_confirmationButtons);
-            }
-            else if (hint.State == HomeViewModelState.Edit)
-            {
-                Add(_editButtons);
-            }
-            else if(hint.State == HomeViewModelState.Initial)
-            {
-                Add(_orderButtons);
-            }
+            _orderButtons.Hidden = hint.State != HomeViewModelState.Initial;
+            _reviewButtons.Hidden = hint.State != HomeViewModelState.Review;
+            _editButtons.Hidden = hint.State != HomeViewModelState.Edit;
         }
     }
 }

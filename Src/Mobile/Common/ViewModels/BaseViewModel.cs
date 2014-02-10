@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public static Action NoAction = () => { };
 
-        public TinyIoCContainer Container
+		protected TinyIoCContainer Container
         {
             get { return TinyIoCContainer.Current; }
         }
