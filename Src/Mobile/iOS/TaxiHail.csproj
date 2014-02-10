@@ -786,6 +786,8 @@
     <BundleResource Include="Resources\time%402x.png" />
     <BundleResource Include="Resources\vehicle.png" />
     <BundleResource Include="Resources\vehicle%402x.png" />
+    <BundleResource Include="Resources\account.png" />
+    <BundleResource Include="Resources\account%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

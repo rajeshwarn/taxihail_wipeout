@@ -13,6 +13,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 	partial class OrderReviewView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIImageView iconNbPasserngers { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIImageView iconPassengerName { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIImageView iconPhone { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblApt { get; set; }
 
 		[Outlet]
@@ -84,6 +93,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (txtNote != null) {
 				txtNote.Dispose ();
 				txtNote = null;
+			}
+
+			if (iconPhone != null) {
+				iconPhone.Dispose ();
+				iconPhone = null;
+			}
+
+			if (iconNbPasserngers != null) {
+				iconNbPasserngers.Dispose ();
+				iconNbPasserngers = null;
+			}
+
+			if (iconPassengerName != null) {
+				iconPassengerName.Dispose ();
+				iconPassengerName = null;
 			}
 		}
 	}
