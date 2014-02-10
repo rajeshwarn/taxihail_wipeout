@@ -290,7 +290,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        private void OnCameraChanged(GoogleMap.CameraChangeEventArgs e)
+        private void OnCameraChanged(System.Reactive.EventPattern<GoogleMap.CameraChangeEventArgs> e)
         {
             if (bypassCameraChangeEvent)
             {
