@@ -86,6 +86,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set
 			{
 				_addressSelectionMode = value;
+
+				if (PickupAddress != null && AddressSelectionMode == AddressSelectionMode.PickupSelection)
+				{
+					DeltaLatitude = DeltaLongitude = DefaultDelta;
+                    var coordinate = new Position() { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
+                    MapBounds = new MapBounds()
+                    {
+                        NorthBound = coordinate.Latitude + (DeltaLatitude) / 2,
+                        SouthBound = coordinate.Latitude - (DeltaLatitude) / 2,
+                        EastBound = coordinate.Longitude + (DeltaLongitude) / 2,
+                        WestBound = coordinate.Longitude - (DeltaLongitude) / 2
+                    };
+				}
+
 				RaisePropertyChanged();
 			}
 		}
@@ -116,9 +130,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new CancellableCommand<MapBounds>(async (bounds, token) =>
                 {
-
-                    DeltaLongitude = Math.Abs((bounds.EastBound - bounds.WestBound) / 2);
-                    DeltaLatitude = Math.Abs((bounds.NorthBound - bounds.SouthBound) / 2);
+						DeltaLongitude = Math.Abs(bounds.EastBound - bounds.WestBound);
+						DeltaLatitude = Math.Abs(bounds.NorthBound - bounds.SouthBound);
                         await _orderWorkflowService.SetAddressToCoordinate(new Position() { Latitude = bounds.GetCenter().Latitude, Longitude = bounds.GetCenter().Longitude },
                             token);
 
@@ -132,27 +145,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				MapBounds = new MapBounds
 				{
-                    NorthBound = PickupAddress.Latitude + DeltaLatitude,
-                    SouthBound = PickupAddress.Latitude - DeltaLatitude,
-                    EastBound = PickupAddress.Longitude + DeltaLongitude,
-                    WestBound = PickupAddress.Longitude - DeltaLongitude,
+					NorthBound = PickupAddress.Latitude + DeltaLatitude / 2,
+					SouthBound = PickupAddress.Latitude - DeltaLatitude / 2,
+					EastBound = PickupAddress.Longitude + DeltaLongitude / 2,
+					WestBound = PickupAddress.Longitude - DeltaLongitude / 2,
 				};
 			}
 		}
 
 		private void OnDestinationAddressChanged()
 		{
-			var deltaLat = 0.002;
-			var deltaLng = 0.002;
-
 			if (DestinationAddress.HasValidCoordinate())
 			{
 				MapBounds = new MapBounds
 				{
-					NorthBound = DestinationAddress.Latitude + deltaLat,
-					SouthBound = DestinationAddress.Latitude - deltaLat,
-					EastBound = DestinationAddress.Longitude + deltaLng,
-					WestBound = DestinationAddress.Longitude - deltaLng,
+					NorthBound = DestinationAddress.Latitude + DeltaLatitude/ 2,
+					SouthBound = DestinationAddress.Latitude - DeltaLatitude/ 2,
+					EastBound = DestinationAddress.Longitude + DeltaLongitude/ 2,
+					WestBound = DestinationAddress.Longitude - DeltaLongitude/ 2,
 				};
 			}
 		}
