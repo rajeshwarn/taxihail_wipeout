@@ -148,15 +148,15 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public IEnumerable<IbsOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds)
+        public IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds)
         {
-            var result = new List<IbsOrderInformation>();
+            var result = new List<IBSOrderInformation>();
             UseService(service =>
             {
-                var status = service.GetOrdersStatus(UserNameApp, PasswordApp, ibsOrdersIds.ToArray());
-                foreach (var orderInfoFromIbs in status)
+                var status = service.GetOrdersStatus_2(UserNameApp, PasswordApp, ibsOrdersIds.ToArray());
+                foreach (var orderInfoFromIBS in status)
                 {
-                    var statusInfos = new IbsOrderInformation(orderInfoFromIbs);
+                    var statusInfos = new IBSOrderInformation(orderInfoFromIBS);
 
                     result.Add(statusInfos);
                 }
@@ -164,6 +164,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             return result;
         }
+
 
         public bool SendMessageToDriver(string message, string carId)
         {

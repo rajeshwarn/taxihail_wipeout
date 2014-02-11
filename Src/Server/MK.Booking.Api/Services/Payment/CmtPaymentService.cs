@@ -23,6 +23,7 @@ using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
+using ServiceStack.Text;
 
 #endregion
 
@@ -89,75 +90,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        public PreAuthorizePaymentResponse Post(PreAuthorizePaymentCmtRequest preAuthorizeRequest)
-        {
-            try
-            {
-                var orderDetail = _orderDao.FindById(preAuthorizeRequest.OrderId);
-                if (orderDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
-                if (orderDetail.IBSOrderId == null)
-                    throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
-
-                var request = new AuthorizationRequest
-                {
-                    Amount = (int) (preAuthorizeRequest.Amount*100),
-                    CardOnFileToken = preAuthorizeRequest.CardToken,
-                    TransactionType = AuthorizationRequest.TransactionTypes.PreAuthorized,
-                    CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,
-                    CustomerReferenceNumber = orderDetail.IBSOrderId.ToString(),
-                    MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken
-                };
-
-                var responseTask = _cmtPaymentServiceClient.PostAsync(request);
-                responseTask.Wait();
-                var response = responseTask.Result;
-
-                var isSuccessful = response.ResponseCode == 1;
-                if (isSuccessful)
-                {
-                    _commandBus.Send(new InitiateCreditCardPayment
-                    {
-                        PaymentId = Guid.NewGuid(),
-                        TransactionId = response.TransactionId.ToString(CultureInfo.InvariantCulture),
-                        Amount = Convert.ToDecimal(preAuthorizeRequest.Amount),
-                        OrderId = preAuthorizeRequest.OrderId,
-                        Tip = Convert.ToDecimal(preAuthorizeRequest.Tip),
-                        Meter = Convert.ToDecimal(preAuthorizeRequest.Meter),
-                        CardToken = preAuthorizeRequest.CardToken,
-                        Provider = PaymentProvider.Cmt,
-                    });
-                }
-
-                return new PreAuthorizePaymentResponse
-                {
-                    IsSuccessfull = isSuccessful,
-                    Message = response.ResponseMessage,
-                    TransactionId = response.TransactionId.ToString(CultureInfo.InvariantCulture),
-                };
-            }
-            catch (AggregateException ex)
-            {
-                ex.Handle(x =>
-                {
-                    _logger.LogError(x);
-                    return true;
-                });
-                return new PreAuthorizePaymentResponse
-                {
-                    IsSuccessfull = false,
-                    Message = ex.InnerExceptions.First().Message,
-                };
-            }
-            catch (Exception e)
-            {
-                return new PreAuthorizePaymentResponse
-                {
-                    IsSuccessfull = false,
-                    Message = e.Message,
-                };
-            }
-        }
-
+        
         public CommitPreauthorizedPaymentResponse Post(PreAuthorizeAndCommitPaymentCmtRequest request)
         {
             try
@@ -171,14 +104,20 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 if (orderDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
 
+                var orderStatus = _orderDao.FindOrderStatusById(orderDetail.Id);
+                if (orderStatus == null) throw new HttpError(HttpStatusCode.BadRequest, "Order status not found");
+
+
                 var authRequest = new AuthorizationRequest
                 {
                     Amount = (int) (request.Amount*100),
                     CardOnFileToken = request.CardToken,
                     TransactionType = AuthorizationRequest.TransactionTypes.PreAuthorized,
-                    CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,
-                    CustomerReferenceNumber = orderDetail.IBSOrderId.ToString(),
-                    MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken
+                    CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,                    
+                    MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken,
+                    CustomerReferenceNumber = string.IsNullOrEmpty(orderStatus.ReferenceNumber) ? orderDetail.IBSOrderId.ToString() : orderStatus.ReferenceNumber,
+                    EmployeeId = orderStatus.DriverInfos == null ? "" : orderStatus.DriverInfos.DriverId,
+                    DeviceName = orderStatus.TerminalId
                 };
 
                 var responseTask = _cmtPaymentServiceClient.PostAsync(authRequest);
@@ -260,61 +199,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        public CommitPreauthorizedPaymentResponse Post(CommitPreauthorizedPaymentCmtRequest request)
-        {
-            try
-            {
-                var payment = _orderPaymentDao.FindByTransactionId(request.TransactionId);
-                if (payment == null) throw new HttpError(HttpStatusCode.NotFound, "Payment not found");
-
-                var responseTask = _cmtPaymentServiceClient.PostAsync(new CaptureRequest
-                {
-                    MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken,
-                    TransactionId = request.TransactionId.ToLong(),
-                });
-                responseTask.Wait();
-                var response = responseTask.Result;
-
-                var isSuccessful = response.ResponseCode == 1;
-                if (isSuccessful)
-                {
-                    _commandBus.Send(new CaptureCreditCardPayment
-                    {
-                        PaymentId = payment.PaymentId,
-                        AuthorizationCode = response.AuthorizationCode,
-                        Provider = PaymentProvider.Cmt,
-                    });
-                }
-
-                return new CommitPreauthorizedPaymentResponse
-                {
-                    IsSuccessfull = isSuccessful,
-                    Message = response.ResponseMessage,
-                    AuthorizationCode = response.AuthorizationCode,
-                };
-            }
-            catch (AggregateException ex)
-            {
-                ex.Handle(x =>
-                {
-                    _logger.LogError(x);
-                    return true;
-                });
-                return new CommitPreauthorizedPaymentResponse
-                {
-                    IsSuccessfull = false,
-                    Message = ex.InnerExceptions.First().Message,
-                };
-            }
-            catch (Exception e)
-            {
-                return new CommitPreauthorizedPaymentResponse
-                {
-                    IsSuccessfull = false,
-                    Message = e.Message,
-                };
-            }
-        }
+  
 
         public PairingResponse Post(PairingRidelinqCmtRequest request)
         {
@@ -322,31 +207,36 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
                 if (orderStatusDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
-                if (orderStatusDetail.IbsOrderId == null)
+                if (orderStatusDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
 
                 var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
 
-                // send pairing request
-
-                // Determine the root path to the app 
-                //todo waiting for the provider enabled callbackurl
-                //var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
-
-                var response = _cmtMobileServiceClient.Post(new PairingRequest
+                // send pairing request                                
+                var pairingRequest = new PairingRequest
                 {
                     AutoTipAmount = request.AutoTipAmount,
                     AutoTipPercentage = request.AutoTipPercentage,
                     AutoCompletePayment = true,
-                    //CallbackUrl = new Uri(root + "/api/payments/cmt/callback/" + request.OrderId).AbsoluteUri,
-                    CustomerId = orderStatusDetail.AccountId.ToString(),
+                    CallbackUrl = "",
+                    CustomerId = orderStatusDetail.IBSOrderId.ToString(),
                     CustomerName = accountDetail.Name,
-                    DriverId = orderStatusDetail.DriverInfos.VehicleRegistration,
+                    DriverId = orderStatusDetail.DriverInfos.DriverId,
                     Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
                     Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
                     Medallion = orderStatusDetail.VehicleNumber,
                     CardOnFileId = request.CardToken
-                });
+                };
+
+
+                _logger.LogMessage("Pairing request : " + pairingRequest.ToJson());
+                _logger.LogMessage("PaymentSettings request : " + _configurationManager.GetPaymentSettings().CmtPaymentSettings.ToJson());
+
+
+                var response = _cmtMobileServiceClient.Post(pairingRequest);
+
+                _logger.LogMessage("Pairing response : " + response.ToJson());
+
 
                 // wait for trip to be updated
                 var watch = new Stopwatch();
@@ -359,6 +249,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                     if (watch.Elapsed.TotalSeconds >= response.TimeoutSeconds)
                     {
+                        _logger.LogMessage("Timeout Exception, Could not be paired with vehicle.");
                         throw new TimeoutException("Could not be paired with vehicle");
                     }
                 }
@@ -368,7 +259,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 {
                     OrderId = request.OrderId,
                     Medallion = response.Medallion,
-                    DriverId = response.DriverId.ToString(CultureInfo.InvariantCulture),
+                    DriverId = response.DriverId.ToString(),
                     PairingToken = response.PairingToken,
                     PairingCode = response.PairingCode,
                     TokenOfCardToBeUsedForPayment = request.CardToken,
@@ -389,6 +280,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
             catch (Exception e)
             {
+                _logger.LogError(e);
                 return new PairingResponse
                 {
                     IsSuccessfull = false,

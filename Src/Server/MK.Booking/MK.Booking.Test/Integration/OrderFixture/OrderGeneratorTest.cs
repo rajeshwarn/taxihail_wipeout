@@ -166,7 +166,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 var dtoDetails = context.Find<OrderStatusDetail>(_orderId);
                 Assert.NotNull(dtoDetails);
                 Assert.AreEqual(OrderStatus.Canceled, dtoDetails.Status);
-                Assert.AreEqual(VehicleStatuses.Common.CancelledDone, dtoDetails.IbsStatusId);
+                Assert.AreEqual(VehicleStatuses.Common.CancelledDone, dtoDetails.IBSStatusId);
             }
         }
 

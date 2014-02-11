@@ -47,26 +47,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             return result;
         }
 
-        public Task<PreAuthorizePaymentResponse> PreAuthorize(string cardToken, double amount, double meterAmount,
-            double tipAmount, Guid orderId)
-        {
-            return Client.PostAsync(new PreAuthorizePaymentCmtRequest
-            {
-                Amount = amount,
-                Meter = meterAmount,
-                Tip = tipAmount,
-                CardToken = cardToken,
-                OrderId = orderId
-            });
-        }
-
-        public Task<CommitPreauthorizedPaymentResponse> CommitPreAuthorized(string transactionId)
-        {
-            return Client.PostAsync(new CommitPreauthorizedPaymentCmtRequest
-            {
-                TransactionId = transactionId,
-            });
-        }
+        
 
         public Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit(string cardToken, double amount,
             double meterAmount, double tipAmount, Guid orderId)
