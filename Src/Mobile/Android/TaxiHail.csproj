@@ -189,7 +189,6 @@
     <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
     <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheService.cs" />
-    <Compile Include="Controls\HeaderedLayout.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
@@ -243,9 +242,6 @@
     <AndroidResource Include="Resources\Layout\Control_EditTextNavigate.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_BookingDetail.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_BookStreetNumber.axml" />
     <AndroidResource Include="Resources\Drawable\closeButton.png" />
     <AndroidResource Include="Resources\Layout\Control_SearchButton.axml">
@@ -296,12 +292,6 @@
     <AndroidResource Include="Resources\drawable-large-nodpi\splash.9.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\splash.9.png" />
     <AndroidResource Include="Resources\Drawable\paypal.png" />
-    <AndroidResource Include="Resources\Layout\View_BookingDetail_Thriev.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_BookEditInformation_Thriev.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
     <AndroidResource Include="Resources\Layout\View_TermsAndConditions.axml">
       <SubType>Designer</SubType>
@@ -502,7 +492,6 @@
     <Compile Include="Controls\Fragments\OrderMapFragment.cs" />
     <Compile Include="Activities\BaseBindingFragmentActivity.cs" />
     <Compile Include="Controls\Widgets\OrderReview.cs" />
-    <AndroidResource Include="Resources\Layout\Control_OrderReview.axml" />
     <AndroidResource Include="Resources\Layout\SubView_OrderOptions.axml" />
     <AndroidResource Include="Resources\Layout\SubView_MainMenu.axml" />
     <AndroidResource Include="Resources\Drawable\cluster.png" />
@@ -532,6 +521,7 @@
     <AndroidResource Include="Resources\Layout\Control_VehicleTypeAndEstimate.xml" />
     <Compile Include="Controls\Widgets\VehicleTypeAndEstimateControl.cs" />
     <Compile Include="Helpers\DrawableHelper.cs" />
+    <AndroidResource Include="Resources\Layout\Control_OrderReview.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -580,9 +570,6 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_HistoryList.axml">
       <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_SearchAddress.axml">
-      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\MenuItem.axml">
       <SubType>Designer</SubType>
@@ -711,16 +698,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Layout\View_RefineAddress.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Layout\Control_HeaderedLayout.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_BookingRating.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -740,11 +717,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\CreditCardListItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Layout\View_BookEditInformation.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
