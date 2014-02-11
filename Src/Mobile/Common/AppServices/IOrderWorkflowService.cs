@@ -31,6 +31,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<string> GetAndObserveEstimatedFare();
 
 		void SetNoteToDriver(string text);
+		Task<bool> ShouldWarnAboutEstimate();
     }
 }
 

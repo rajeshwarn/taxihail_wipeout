@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly IAppSettings _configurationManager;
 		readonly ILocalization _localize;
 		readonly IBookingService _bookingService;
+		readonly ICacheService _cacheService;
 
 		readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
@@ -33,13 +34,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<string> _estimatedFareSubject;
 		string _noteToDriver = null;
 
+
+
 		public OrderWorkflowService(AbstractLocationService locationService,
 			IAccountService accountService,
 			IGeolocService geolocService,
 			IAppSettings configurationManager,
 			ILocalization localize,
-			IBookingService bookingService)
+			IBookingService bookingService,
+			ICacheService cacheService)
 		{
+			_cacheService = cacheService;
 			_configurationManager = configurationManager;
 			_geolocService = geolocService;
 			_accountService = accountService;
@@ -262,6 +267,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public void SetNoteToDriver(string text)
 		{
 			_noteToDriver = text;
+		}
+
+		public async Task<bool> ShouldWarnAboutEstimate()
+		{
+			var destination = await _destinationAddressSubject.Take(1).ToTask();
+			return _configurationManager.Data.ShowEstimateWarning
+					&& !_cacheService.Get<string>("WarningEstimateDontShow").HasValue()
+					&& destination.HasValidCoordinate();
 		}
     }
 }

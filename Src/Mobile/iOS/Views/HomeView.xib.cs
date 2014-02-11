@@ -136,7 +136,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         constraintOrderReviewBottomSpace.Constant = -65;
                         constraintOrderOptionsTopSpace.Constant =  22;
                         constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
-                        homeView.LayoutIfNeeded();                                               
+                        homeView.LayoutIfNeeded();  
+                                                                     
                     },() =>
                     {
                         RedrawSubViews();
@@ -185,6 +186,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             ctrlOrderOptions.ChangeState(hint);
             bottomBar.ChangeState(hint);
+            ctrlOrderReview.ChangeState(hint);
         }
 
         private void RedrawSubViews()

@@ -27,6 +27,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			this.Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
 		}
 
+        public void ReviewStart()
+        {
+			ShowFareEstimateAlertDialogIfNecessary();
+        }
+
 		private async Task SettingsUpdated(BookingSettings settings)
 		{
 			Settings = settings;
@@ -128,6 +133,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				_note = value;
 				_orderWorkflowService.SetNoteToDriver(_note);
+			}
+		}
+
+		async Task ShowFareEstimateAlertDialogIfNecessary()
+		{
+			if (await _orderWorkflowService.ShouldWarnAboutEstimate())
+			{
+				this.Services().Message.ShowMessage(this.Services().Localize["WarningEstimateTitle"], this.Services().Localize["WarningEstimate"],
+					"Ok", delegate{ },
+					this.Services().Localize["WarningEstimateDontShow"], () => this.Services().Cache.Set("WarningEstimateDontShow", "yes"));
+
 			}
 		}
     }
