@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -31,7 +31,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="DgF-jB-8zt" customClass="OrderMapView">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="512"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         </mapView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MeW-ns-SQv" userLabel="Menu" customClass="OverlayButton">
@@ -96,10 +96,10 @@
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="Jqp-iu-ci1" secondAttribute="trailing" constant="8" id="1TQ-vn-Vkh"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="1iv-ib-vEh"/>
+                        <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="DgF-jB-8zt" secondAttribute="bottom" id="1pu-b1-Fgi"/>
                         <constraint firstAttribute="trailing" secondItem="DgF-jB-8zt" secondAttribute="trailing" id="1zx-5z-Qo2"/>
                         <constraint firstItem="Fsx-d8-MLA" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="320" id="4Uw-iv-741"/>
                         <constraint firstAttribute="trailing" secondItem="cXg-Q6-nLg" secondAttribute="trailing" id="8Ab-0L-enX"/>
-                        <constraint firstAttribute="bottom" secondItem="DgF-jB-8zt" secondAttribute="bottom" id="Aqd-An-C2e"/>
                         <constraint firstItem="HaA-X5-eHm" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="FRw-GE-bhA"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="top" secondItem="HaA-X5-eHm" secondAttribute="bottom" constant="620" id="JSE-qi-pXl"/>
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" id="Mlm-GQ-8rc"/>
