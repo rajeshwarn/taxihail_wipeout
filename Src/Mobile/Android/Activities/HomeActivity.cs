@@ -193,6 +193,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             binding.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
 
 
+            binding.Bind(_orderReview).For("DataContext").To(vm => vm.OrderReview); // OrderReview View Bindings
 
             binding.Apply();
 
