@@ -49,7 +49,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private HomeViewModelState _presentationState = HomeViewModelState.Initial;
 
         private int _menuWidth = 400;
-        private readonly DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
 
         private Bundle _mainBundle;
 
@@ -141,8 +140,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             var menu = FindViewById(Resource.Id.PanelMenu);
 
-            var animation = new SlideAnimation(mainLayout, ViewModel.Panel.MenuIsOpen ? 0 : (_menuWidth),
-                ViewModel.Panel.MenuIsOpen ? (_menuWidth) : 0, _interpolator);
+            var animation = new SlideAnimation(mainLayout, 
+                ViewModel.Panel.MenuIsOpen ? 0 : (_menuWidth),
+                ViewModel.Panel.MenuIsOpen ? (_menuWidth) : 0);
             animation.Duration = 400;
             animation.AnimationStart +=
                 (sender, e) =>
@@ -286,8 +286,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             _presentationState = hint.State;
 
+            var display = WindowManager.DefaultDisplay;
+
             if (hint.State == HomeViewModelState.PickDate)
             {
+                // Order Options: Visible
+                // Order Review: Hidden
+                // Order Edit: Hidden
+                // Date Picker: Visible
+
                 SetSelectedOnBookLater(true);
 
                 var intent = new Intent(this, typeof (DateTimePickerActivity));
@@ -295,29 +302,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             else if (hint.State == HomeViewModelState.Review)
             {
-                var delta = _orderOptions.Bottom - _orderReview.Top;
-                var animation = new TranslateAnimation(0, 0, 0, delta);
-                animation.Duration = 600;
-                animation.Interpolator = new DecelerateInterpolator();
-                animation.FillAfter = true;
-                _orderReview.StartAnimation(animation);
-            }
+                // Order Options: Visible
+                // Order Review: Visible
+                // Order Edit: Hidden
+                // Date Picker: Hidden
 
+                ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
+                ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = _orderOptions.Height;
+            }
             else if (hint.State == HomeViewModelState.Edit)
             {
-                var delta = _orderOptions.Bottom - _orderReview.Top;
-                var animation = new TranslateAnimation(0, 0, delta, 0);
-                animation.Duration = 600;
-                animation.Interpolator = new DecelerateInterpolator();
-                _orderReview.StartAnimation(animation);
+                // Order Options: Hidden
+                // Order Review: Hidden
+                // Order Edit: Visible
+                // Date Picker: Hidden
+
+                ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = _orderOptions.Top - _orderOptions.Height;
+                ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = display.Height;
             }
             else if(hint.State == HomeViewModelState.Initial)
             {
-                var delta = _orderOptions.Bottom - _orderReview.Top;
-                var animation = new TranslateAnimation(0, 0, delta, 0);
-                animation.Duration = 600;
-                animation.Interpolator = new DecelerateInterpolator();
-                _orderReview.StartAnimation(animation);
+                // Order Options: Visible
+                // Order Review: Hidden
+                // Order Edit: Hidden
+                // Date Picker: Hidden
+
+                ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = display.Height;
 
                 SetSelectedOnBookLater(false);
             }
