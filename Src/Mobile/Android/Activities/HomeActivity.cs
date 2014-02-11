@@ -189,6 +189,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             binding.Bind(_mapFragment).For("DataContext").To(vm => vm.Map); // Map Fragment View Bindings
             binding.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // Map OrderOptions View Bindings
+            binding.Bind(_orderEdit).For("DataContext").To(vm => vm.OrderEdit); // Map OrderEdit View Bindings
             binding.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
 
 

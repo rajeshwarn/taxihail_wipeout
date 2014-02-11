@@ -539,6 +539,7 @@
     <Compile Include="Helpers\DrawableHelper.cs" />
     <Compile Include="Controls\Widgets\OrderEdit.cs" />
     <AndroidResource Include="Resources\Layout\SubView_OrderEdit.axml" />
+    <Compile Include="Extensions\MvvmCrossExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
