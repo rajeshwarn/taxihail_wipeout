@@ -297,6 +297,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			return order;
 		}
+
+		public void Rebook(Order previous)
+		{
+			_pickupAddressSubject.OnNext(previous.PickupAddress);
+			_destinationAddressSubject.OnNext(previous.DropOffAddress);
+			_bookingSettingsSubject.OnNext(previous.Settings);
+			_noteToDriver = previous.Note;
+		}
     }
 }
 

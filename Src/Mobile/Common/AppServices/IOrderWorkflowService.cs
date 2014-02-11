@@ -35,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<bool> ShouldWarnAboutEstimate();
 
 		Task<OrderValidationResult> ValidateOrder();
+		void Rebook(Order previous);
     }
 }
 

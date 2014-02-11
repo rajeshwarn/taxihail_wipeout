@@ -396,7 +396,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					this.Services().Booking.ClearLastOrder();
 		                        _waitingToNavigateAfterTimeOut = true;
-		                        ShowViewModel<BookViewModel>();
+								ShowViewModel<HomeViewModel>();
 								Close(this);
                     }));
             }
@@ -437,7 +437,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Localize["YesButton"], 
                     () => { 
                         this.Services().Booking.ClearLastOrder();
-                    	ShowViewModel<BookViewModel> ();
+						ShowViewModel<HomeViewModel> ();
                     },
                     this.Services().Localize["NoButton"], NoAction));
             }
@@ -467,7 +467,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 if (isSuccess) 
                                 {
                                     this.Services().Booking.ClearLastOrder();
-									ShowViewModelAndRemoveFromHistory<BookViewModel> ();
+									ShowViewModelAndRemoveFromHistory<HomeViewModel> ();
                                 } 
                                 else 
                                 {

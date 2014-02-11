@@ -5,12 +5,19 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
 using System.Threading;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class LocationDetailViewModel: BaseViewModel
 	{
 	    readonly CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
+		readonly IOrderWorkflowService _orderWorkflowService;
+
+		public LocationDetailViewModel(IOrderWorkflowService orderWorkflowService)
+		{
+			_orderWorkflowService = orderWorkflowService;			
+		}
 
 		public void Init(string address)
 		{
@@ -200,11 +207,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
 				{
 	                 var order = new Order {PickupAddress = _address};
-
 	                 var account = this.Services().Account.CurrentAccount;
 	                 order.Settings = account.Settings;
-	                 var serialized = JsonSerializer.SerializeToString(order);
-					 ShowViewModel<BookViewModel>(new { order = serialized });
+					 _orderWorkflowService.Rebook(order);
+					 ShowViewModel<HomeViewModel>();
 				});
 			}
 		}

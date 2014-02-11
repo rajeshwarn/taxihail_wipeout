@@ -8,12 +8,20 @@ using apcurium.MK.Booking.Mobile.Messages;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class HistoryDetailViewModel : BaseViewModel
     {
+		IOrderWorkflowService _orderWorkflowService;
+
+		public HistoryDetailViewModel(IOrderWorkflowService orderWorkflowService)
+		{
+			_orderWorkflowService = orderWorkflowService;			
+		}
+
 		public void Init(string orderId)
 		{
 			Guid id;
@@ -331,8 +339,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() =>
                 {
-                    var serialized = JsonSerializer.SerializeToString(Order);
-                    ShowViewModel<BookViewModel>(new { order = serialized });
+					_orderWorkflowService.Rebook(Order);
+					ShowViewModel<HomeViewModel>();
                 });
             }
         }
