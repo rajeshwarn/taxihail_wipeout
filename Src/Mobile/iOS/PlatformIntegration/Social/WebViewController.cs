@@ -41,8 +41,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 				new UIBarButtonItem ("Close", UIBarButtonItemStyle.Bordered, (o, e) => { DismissModalViewControllerAnimated (true);} )
 			};
 			
-			backButton = new UIBarButtonItem (UIImage.FromFile ("Assets/Social/TW/back.png"), UIBarButtonItemStyle.Plain, (o, e) => { WebView.GoBack (); });
-			forwardButton = new UIBarButtonItem (UIImage.FromFile ("Assets/Social/TW/forward.png"), UIBarButtonItemStyle.Plain, (o, e) => { WebView.GoForward (); });
+			backButton = new UIBarButtonItem (UIImage.FromFile ("back.png"), UIBarButtonItemStyle.Plain, (o, e) => { WebView.GoBack (); });
+			forwardButton = new UIBarButtonItem (UIImage.FromFile ("forward.png"), UIBarButtonItemStyle.Plain, (o, e) => { WebView.GoForward (); });
 			refreshButton = new UIBarButtonItem (UIBarButtonSystemItem.Refresh, (o, e) => { WebView.Reload (); });
 			stopButton = new UIBarButtonItem (UIBarButtonSystemItem.Stop, (o, e) => { WebView.StopLoading (); });
 			
