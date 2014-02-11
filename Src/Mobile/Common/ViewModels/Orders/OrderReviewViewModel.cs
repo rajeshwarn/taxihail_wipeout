@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using System.Threading.Tasks;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -30,7 +31,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         public void ReviewStart()
         {
 			ShowFareEstimateAlertDialogIfNecessary();
+			PreValidateOrder();
         }
+
+		private async Task PreValidateOrder()
+		{
+			var validationInfo = await _orderWorkflowService.ValidateOrder();
+			if (validationInfo.HasWarning)
+			{
+				this.Services().Message.ShowMessage(this.Services().Localize["WarningTitle"], 
+					validationInfo.Message, 
+					this.Services().Localize["Continue"], 
+					delegate{}, 
+					this.Services().Localize["Cancel"], 
+					() => { ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+					});
+			}
+		}
 
 		private async Task SettingsUpdated(BookingSettings settings)
 		{

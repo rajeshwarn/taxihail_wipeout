@@ -13,6 +13,8 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Data;
 using System.Threading;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Contract.Requests;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -275,6 +277,25 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _configurationManager.Data.ShowEstimateWarning
 					&& !_cacheService.Get<string>("WarningEstimateDontShow").HasValue()
 					&& destination.HasValidCoordinate();
+		}
+
+		public async Task<OrderValidationResult> ValidateOrder()
+		{
+			var orderToValidate = await GetOrder();
+			var validationResult = await _bookingService.ValidateOrder(orderToValidate);
+			return validationResult;
+		}
+
+		private async Task<CreateOrder> GetOrder()
+		{
+			var order = new CreateOrder();
+			order.Id = Guid.NewGuid();
+			order.PickupDate = await _pickupDateSubject.Take(1).ToTask();
+			order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
+			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
+			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
+
+			return order;
 		}
     }
 }
