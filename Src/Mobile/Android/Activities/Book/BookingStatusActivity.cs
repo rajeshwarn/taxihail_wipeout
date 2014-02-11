@@ -28,8 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
 
             base.OnCreate(bundle);
-            _touchMap.OnCreate(bundle);
-	        //_touchMap.ViewTreeObserver.AddOnGlobalLayoutListener(new LayoutObserverForMap(_touchMap));			
+            _touchMap.OnCreate(bundle);	        
         }        
 
         protected override void OnViewModelSet()

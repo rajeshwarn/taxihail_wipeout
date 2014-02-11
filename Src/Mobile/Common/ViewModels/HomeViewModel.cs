@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using System.Windows.Input;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using System.Drawing;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -113,7 +114,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				return this.GetCommand(() =>{
-					_orderWorkflowService.SetAddressToUserLocation();
+                    Map.DeltaLatitude = Map.DeltaLongitude = Map.DefaultDelta;
+                    _orderWorkflowService.SetAddressToUserLocation();
 				});
 			}
 		}

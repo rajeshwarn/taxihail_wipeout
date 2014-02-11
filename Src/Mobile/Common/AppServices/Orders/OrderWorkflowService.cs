@@ -12,6 +12,7 @@ using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Data;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -103,6 +104,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					}
 				}
 			);
+		}
+
+        public async Task SetAddressToCoordinate(Position userMapBoundsCoordinate, CancellationToken cancellationToken)
+		{
+            var address = await SearchAddressForCoordinate(userMapBoundsCoordinate);
+            cancellationToken.ThrowIfCancellationRequested();
+			await SetAddressToCurrentSelection(address);
 		}
 
 		public async Task ClearDestinationAddress()
