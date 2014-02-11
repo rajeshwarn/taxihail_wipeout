@@ -323,7 +323,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = _orderOptions.Top - _orderOptions.Height;
                 ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = display.Height;
                 ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = 0;
-                ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).TopMargin = 0;
             }
             else if(hint.State == HomeViewModelState.Initial)
             {
