@@ -81,60 +81,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             };
         }
 
-        public PreAuthorizePaymentResponse Post(PreAuthorizePaymentBraintreeRequest preAuthorizeRequest)
-        {
-            try
-            {
-                var orderDetail = _orderDao.FindById(preAuthorizeRequest.OrderId);
-                if (orderDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
-                if (orderDetail.IBSOrderId == null)
-                    throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
-
-                var request = new TransactionRequest
-                {
-                    Amount = preAuthorizeRequest.Amount,
-                    PaymentMethodToken = preAuthorizeRequest.CardToken,
-                    OrderId = orderDetail.IBSOrderId.ToString(),
-                    Options = new TransactionOptionsRequest
-                    {
-                        SubmitForSettlement = false
-                    }
-                };
-
-                var result = BraintreeGateway.Transaction.Sale(request);
-                var isSuccessful = result.IsSuccess();
-                if (isSuccessful)
-                {
-                    _commandBus.Send(new InitiateCreditCardPayment
-                    {
-                        PaymentId = Guid.NewGuid(),
-                        Amount = preAuthorizeRequest.Amount,
-                        Meter = preAuthorizeRequest.Meter,
-                        Tip = preAuthorizeRequest.Tip,
-                        TransactionId = result.Target.Id,
-                        OrderId = preAuthorizeRequest.OrderId,
-                        CardToken = preAuthorizeRequest.CardToken,
-                        Provider = PaymentProvider.Braintree,
-                    });
-                }
-
-                return new PreAuthorizePaymentResponse
-                {
-                    TransactionId = result.Target.Id,
-                    IsSuccessfull = isSuccessful,
-                    Message = isSuccessful ? "Success" : "Error"
-                };
-            }
-            catch (Exception e)
-            {
-                return new PreAuthorizePaymentResponse
-                {
-                    IsSuccessfull = false,
-                    Message = e.Message,
-                    TransactionId = null
-                };
-            }
-        }
+        
 
         public CommitPreauthorizedPaymentResponse Post(PreAuthorizeAndCommitPaymentBraintreeRequest request)
         {
@@ -218,43 +165,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        public CommitPreauthorizedPaymentResponse Post(CommitPreauthorizedPaymentBraintreeRequest request)
-        {
-            try
-            {
-                var payment = _orderPaymentDao.FindByTransactionId(request.TransactionId);
-                if (payment == null) throw new HttpError(HttpStatusCode.NotFound, "Payment not found");
-
-                var result = BraintreeGateway.Transaction.SubmitForSettlement(request.TransactionId);
-
-                var isSuccessful = result.IsSuccess() && (result.Target != null) &&
-                                   (result.Target.ProcessorAuthorizationCode.HasValue());
-                if (isSuccessful)
-                {
-                    _commandBus.Send(new CaptureCreditCardPayment
-                    {
-                        PaymentId = payment.PaymentId,
-                        AuthorizationCode = result.Target.ProcessorAuthorizationCode,
-                        Provider = PaymentProvider.Braintree,
-                    });
-                }
-
-                return new CommitPreauthorizedPaymentResponse
-                {
-                    AuthorizationCode = result.Target != null ? result.Target.ProcessorAuthorizationCode : string.Empty,
-                    IsSuccessfull = isSuccessful,
-                    Message = isSuccessful ? "Success" : "Error in commit of transaction"
-                };
-            }
-            catch (Exception e)
-            {
-                return new CommitPreauthorizedPaymentResponse
-                {
-                    IsSuccessfull = false,
-                    Message = e.Message,
-                };
-            }
-        }
+        
 
         private static TokenizedCreditCardResponse TokenizedCreditCard(BraintreeGateway client,
             TokenizeCreditCardBraintreeRequest tokenizeRequest)

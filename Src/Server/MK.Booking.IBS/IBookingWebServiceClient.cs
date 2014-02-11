@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.IBS
 
         bool CancelOrder(int orderId, int accountId, string contactPhone);
 
-        IEnumerable<IbsOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds);
+        IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds);
 
         bool SendMessageToDriver(string message, string carId);
 

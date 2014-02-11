@@ -12,12 +12,7 @@ namespace apcurium.MK.Booking.Api.Client
     {
         Task ResendConfirmationToDriver(Guid orderId);
         Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv);
-        Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken);
-
-        Task<PreAuthorizePaymentResponse> PreAuthorize(string cardToken, double amount, double meterAmount, double tipAmount,
-            Guid orderId);
-
-        Task<CommitPreauthorizedPaymentResponse> CommitPreAuthorized(string transactionId);
+        Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken);        
 
         Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit(string cardToken, double amount, double meterAmount,
             double tipAmount, Guid orderId);

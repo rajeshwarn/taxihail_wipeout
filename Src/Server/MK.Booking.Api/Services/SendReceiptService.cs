@@ -11,6 +11,10 @@ using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
+using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
+using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Pair;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt;
+using apcurium.MK.Common.Configuration;
 
 #endregion
 
@@ -24,6 +28,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICreditCardDao _creditCardDao;
         private readonly IOrderDao _orderDao;
         private readonly IOrderPaymentDao _orderPaymentDao;
+        private readonly IConfigurationManager _configurationManager;
 
         public SendReceiptService(
             ICommandBus commandBus,
@@ -31,9 +36,11 @@ namespace apcurium.MK.Booking.Api.Services
             IOrderDao orderDao,
             IOrderPaymentDao orderPaymentDao,
             ICreditCardDao creditCardDao,
-            IAccountDao accountDao
+            IAccountDao accountDao,
+            IConfigurationManager configurationManager
             )
         {
+            _configurationManager = configurationManager;
             _bookingWebServiceClient = bookingWebServiceClient;
             _orderDao = orderDao;
             _orderPaymentDao = orderPaymentDao;
@@ -57,28 +64,57 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.Unauthorized, "Not your order");
             }
 
-            var ibsOrder = _bookingWebServiceClient.GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId,
-                order.Settings.Phone);
+            var ibsOrder = _bookingWebServiceClient.GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
 
             var orderPayment = _orderPaymentDao.FindByOrderId(order.Id);
+            var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
 
             if ((orderPayment != null) && (orderPayment.IsCompleted))
             {
-                var creditCard = orderPayment.CardToken.HasValue()
-                    ? _creditCardDao.FindByToken(orderPayment.CardToken)
-                    : null;
-                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber,
-                    Convert.ToDouble(orderPayment.Meter), 0, Convert.ToDouble(orderPayment.Tip), 0, orderPayment,
-                    creditCard));
+                var creditCard = orderPayment.CardToken.HasValue() ? _creditCardDao.FindByToken(orderPayment.CardToken) : null;
+                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, Convert.ToDouble(orderPayment.Meter), 0, Convert.ToDouble(orderPayment.Tip), 0, orderPayment, creditCard));
+            }
+            else if ((pairingInfo != null) && (pairingInfo.AutoTipPercentage.HasValue))
+            {
+                var creditCard = pairingInfo.TokenOfCardToBeUsedForPayment.HasValue() ? _creditCardDao.FindByToken(pairingInfo.TokenOfCardToBeUsedForPayment) : null;
+                var tripData = GetTripData(pairingInfo.PairingToken);
+                if ((tripData != null) && (tripData.EndTime.HasValue))
+                {
+                    _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
+                        ibsOrder.VehicleNumber, Math.Round(((double)tripData.Fare / 100), 2), Math.Round(((double)tripData.Extra / 2), 2), Math.Round(((double)tripData.Tip / 100), 2), Math.Round(((double)tripData.Tax / 100), 2), null, creditCard));
+                }
+                else
+                {
+
+                    _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
+                        ibsOrder.VehicleNumber, ibsOrder.Fare, ibsOrder.Toll, Math.Round(((double)pairingInfo.AutoTipPercentage.Value) / 100, 2), ibsOrder.VAT, null, creditCard));
+                }
             }
             else
             {
-                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber,
-                    ibsOrder.Fare, ibsOrder.Toll, ibsOrder.Tip, ibsOrder.VAT));
+                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, ibsOrder.Fare, ibsOrder.Toll, ibsOrder.Tip, ibsOrder.VAT, null, null));
             }
 
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
+
+        private Trip GetTripData(string pairingToken)
+        {
+            try
+            {
+                var cmtClient = new CmtMobileServiceClient(_configurationManager.GetPaymentSettings().CmtPaymentSettings, null, "TaxiHail");
+                var trip = cmtClient.Get(new TripRequest { Token = pairingToken });
+
+                return trip;
+            }
+            catch (Exception)
+            {
+                return null;
+
+            }
+
+        }
+
         
     }
 }

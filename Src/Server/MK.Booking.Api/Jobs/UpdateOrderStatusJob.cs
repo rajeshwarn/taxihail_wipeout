@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 .ToList();
 
 
-            var ibsOrders = new List<IbsOrderInformation>();
+            var ibsOrders = new List<IBSOrderInformation>();
 
             const int take = 5;
             for (var skip = 0; skip < ibsOrdersIds.Count; skip = skip + take)
@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             foreach (var order in orders)
             {
-                var ibsStatus = ibsOrders.FirstOrDefault(status => status.IbsOrderId == order.IBSOrderId);
+                var ibsStatus = ibsOrders.FirstOrDefault(status => status.IBSOrderId == order.IBSOrderId);
 
                 if (ibsStatus == null) continue;
 

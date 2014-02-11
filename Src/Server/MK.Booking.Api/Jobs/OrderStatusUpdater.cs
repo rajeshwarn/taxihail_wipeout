@@ -11,6 +11,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
+using System;
 
 #endregion
 
@@ -21,11 +22,13 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationManager _configurationManager;
         private readonly IOrderPaymentDao _orderPayementDao;
+        private readonly IOrderDao _orderDao;
         private readonly dynamic _resources;
 
         public OrderStatusUpdater(IConfigurationManager configurationManager, ICommandBus commandBus,
-            IOrderPaymentDao orderPayementDao)
+            IOrderPaymentDao orderPayementDao, IOrderDao orderDao)
         {
+            _orderDao = orderDao;
             _configurationManager = configurationManager;
             _commandBus = commandBus;
             _orderPayementDao = orderPayementDao;
@@ -33,16 +36,25 @@ namespace apcurium.MK.Booking.Api.Jobs
             _resources = new DynamicResources(applicationKey);
         }
 
-        public void Update(IbsOrderInformation ibsStatus, OrderStatusDetail order)
+        public void Update(IBSOrderInformation ibsStatus, OrderStatusDetail order)
         {
             var statusChanged = (ibsStatus.Status.HasValue() && order.IBSStatusId != ibsStatus.Status)
-                                || order.VehicleLatitude != ibsStatus.VehicleLatitude
-                                || order.VehicleLongitude != ibsStatus.VehicleLongitude;
+                               || order.VehicleLatitude != ibsStatus.VehicleLatitude
+                               || order.VehicleLongitude != ibsStatus.VehicleLongitude;
 
             if (!statusChanged)
             {
                 return;
             }
+
+
+            var pairingInfo = _orderDao.FindOrderPairingById(order.OrderId);
+            if ((pairingInfo != null) && (pairingInfo.AutoTipPercentage.HasValue))
+            {
+                double tip = ((double)pairingInfo.AutoTipPercentage.Value) / 100;
+                ibsStatus.Tip = Math.Round(ibsStatus.Fare * (tip), 2);
+            }
+
 
 
             var command = new ChangeOrderStatus
@@ -60,20 +72,17 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             if (ibsStatus.IsAssigned)
             {
-                description = string.Format((string) _resources.OrderStatus_CabDriverNumberAssigned,
-                    ibsStatus.VehicleNumber);
+                description = string.Format((string)_resources.OrderStatus_CabDriverNumberAssigned, ibsStatus.VehicleNumber);
 
                 if (ibsStatus.Eta.HasValue)
                 {
-                    description += " - " +
-                                   string.Format((string) _resources.OrderStatus_CabDriverETA,
-                                       ibsStatus.Eta.Value.ToString("t"));
+                    description += " - " + string.Format((string)_resources.OrderStatus_CabDriverETA, ibsStatus.Eta.Value.ToString("t"));
                 }
             }
             else if (ibsStatus.IsCanceled)
             {
                 order.Status = OrderStatus.Canceled;
-                description = (string) _resources.GetString("OrderStatus_" + ibsStatus.Status);
+                description = (string)_resources.GetString("OrderStatus_" + ibsStatus.Status);
             }
             else if (ibsStatus.IsTimedOut)
             {
@@ -83,22 +92,20 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 order.Status = OrderStatus.Completed;
 
-
                 //FormatPrice
                 var total =
                     Params.Get(ibsStatus.Toll, ibsStatus.Fare, ibsStatus.Tip, ibsStatus.VAT)
-                        .Select(amount => amount)
-                        .Sum();
+                            .Select(amount => amount)
+                            .Sum();
 
                 if (total > 0)
                 {
-                    description = string.Format((string) _resources.OrderStatus_OrderDoneFareAvailable,
-                        FormatPrice(total));
+                    description = string.Format((string)_resources.OrderStatus_OrderDoneFareAvailable, FormatPrice(total));
                     order.FareAvailable = true;
                 }
                 else
                 {
-                    description = (string) _resources.OrderStatus_wosDONE;
+                    description = (string)_resources.OrderStatus_wosDONE;
                     order.FareAvailable = false;
                 }
 
@@ -110,8 +117,9 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
 
             order.IBSStatusDescription = description.HasValue()
-                ? description
-                : (string) _resources.GetString("OrderStatus_" + ibsStatus.Status);
+                                             ? description
+                                             : (string)_resources.GetString("OrderStatus_" + ibsStatus.Status);
+
 
             _commandBus.Send(command);
         }
