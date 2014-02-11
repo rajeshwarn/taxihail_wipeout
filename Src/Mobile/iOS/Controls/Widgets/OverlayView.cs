@@ -62,20 +62,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         void DrawStroke(CGColor fillColor)
         {
-            if (_shadowView == null)
+            if (_shadowView != null)
             {
-                _shadowView = new UIView(Frame);
-                _shadowView.BackgroundColor = UIColor.White.ColorWithAlpha(0.7f);
-                _shadowView.Layer.MasksToBounds = false;
-                _shadowView.Layer.ShadowColor = UIColor.FromRGBA(0, 0, 0, 127).CGColor;
-                _shadowView.Layer.ShadowOpacity = 1.0f;
-                _shadowView.Layer.ShadowRadius = _radiusCorner+1;
-                _shadowView.Layer.ShadowOffset = new SizeF(0.3f, 0.3f);
-                _shadowView.Layer.ShouldRasterize = true;        
-
-                this.Superview.InsertSubviewBelow(_shadowView, this);
+                _shadowView.RemoveFromSuperview();
             }
+            _shadowView = new UIView(Frame);
+            _shadowView.BackgroundColor = UIColor.White.ColorWithAlpha(0.7f);
+            _shadowView.Layer.MasksToBounds = false;
+            _shadowView.Layer.ShadowColor = UIColor.FromRGBA(0, 0, 0, 127).CGColor;
+            _shadowView.Layer.ShadowOpacity = 1.0f;
+            _shadowView.Layer.ShadowRadius = _radiusCorner+1;
+            _shadowView.Layer.ShadowOffset = new SizeF(0.3f, 0.3f);
+            _shadowView.Layer.ShouldRasterize = true;        
             _shadowView.Frame = Frame.Copy().Shrink(1);
+
+            this.Superview.InsertSubviewBelow(_shadowView, this);            
+
         }
     }
 }
