@@ -408,7 +408,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\main_settings.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\mastercard.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\mk_logo.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\navBar.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\notification_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\number_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\password_cell.9.png" />
@@ -588,7 +587,6 @@
     <AndroidResource Include="Resources\Drawable\apcuriumLogo.png" />
     <AndroidResource Include="Resources\Drawable\background.png" />
     <AndroidResource Include="Resources\Drawable\header.png" />
-    <AndroidResource Include="Resources\Drawable\backgroundblue.png" />
     <AndroidResource Include="Resources\Drawable\right_arrow.png" />
     <AndroidResource Include="Resources\Drawable\twitter_icon.png" />
     <AndroidResource Include="Resources\Drawable\facebook_icon.png" />
@@ -612,7 +610,6 @@
     <AndroidResource Include="Resources\Drawable\main_settings.png" />
     <AndroidResource Include="Resources\Drawable\bookLaterIcon.png" />
     <AndroidResource Include="Resources\Values\MvxBindingAttributes.xml" />
-    <AndroidResource Include="Resources\Drawable\navBar.png" />
     <AndroidResource Include="Resources\Drawable\bookLater_state.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
