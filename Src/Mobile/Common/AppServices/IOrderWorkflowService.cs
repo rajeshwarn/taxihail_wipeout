@@ -28,8 +28,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<AddressSelectionMode> GetAndObserveAddressSelectionMode();
 		IObservable<BookingSettings> GetAndObserveBookingSettings();
 		IObservable<DateTime?> GetAndObservePickupDate();
-
 		IObservable<string> GetAndObserveEstimatedFare();
+
+		void SetNoteToDriver(string text);
     }
 }
 

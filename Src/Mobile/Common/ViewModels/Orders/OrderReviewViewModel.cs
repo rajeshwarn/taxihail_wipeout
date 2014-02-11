@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private void DateUpdated(DateTime? date)
 		{
 			Date = date.HasValue ?
-			       date.Value.ToShortDateString() + " " + date.Value.ToLongTimeString()
+			       date.Value.ToShortDateString() + " " + date.Value.ToShortTimeString()
 			       : this.Services().Localize["TimeNow"];
 		}
 
@@ -117,6 +117,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				_chargeType = value;
 				RaisePropertyChanged();
+			}
+		}
+
+		string _note;
+		public string Note
+		{
+			get{ return _note; }
+			set
+			{
+				_note = value;
+				_orderWorkflowService.SetNoteToDriver(_note);
 			}
 		}
     }

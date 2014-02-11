@@ -31,6 +31,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
         readonly ISubject<BookingSettings> _bookingSettingsSubject;
 		readonly ISubject<string> _estimatedFareSubject;
+		string _noteToDriver = null;
 
 		public OrderWorkflowService(AbstractLocationService locationService,
 			IAccountService accountService,
@@ -256,6 +257,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             var estimatedFareString = await _bookingService.GetFareEstimateDisplay(pickupAddress, destinationAddress, pickupDate, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
 
             _estimatedFareSubject.OnNext(estimatedFareString);
+		}
+
+		public void SetNoteToDriver(string text)
+		{
+			_noteToDriver = text;
 		}
     }
 }
