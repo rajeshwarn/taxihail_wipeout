@@ -132,25 +132,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             JsConfig.RegisterTypeForAot<GeoObj>();
             JsConfig.RegisterTypeForAot<GeoResult>();
 
-            if (!_callbackFromFb)
+            if (_callbackFromFb)
             {    
-                var navController = Mvx.Resolve<UINavigationController>();
-                if( !_isStarting &&  navController != null && navController.TopViewController is BookView )
-				{
-                    var model = ((BookView)navController.TopViewController).ViewModel;
-                    model.Reset ();
-                    if ( model.AddressSelectionMode != AddressSelectionMode.PickupSelection )
-                    {
-                        model.ActivatePickup.Execute ();
-                    }
-                    model.Pickup.RequestCurrentLocationCommand.Execute ();
-				}
-            }
-            else
-            {
                 _callbackFromFb = false;
-            }           
-
+            }
             _isStarting = false;
         }
 

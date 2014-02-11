@@ -189,12 +189,10 @@
     <Compile Include="Style\ButtonStyle.cs" />
     <Compile Include="Style\ColorDefinition.cs" />
     <Compile Include="Style\ShadowDefinition.cs" />
-    <Compile Include="ViewModels\BookViewModel.cs" />
     <Compile Include="Style\FontDefinition.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="TaxiHailApp.cs" />
     <Compile Include="StartNavigation.cs" />
-    <Compile Include="ViewModels\AddressSearchViewModel.cs" />
     <Compile Include="ListViewStructure\InfoStructure.cs" />
     <Compile Include="ListViewStructure\Section.cs" />
     <Compile Include="ListViewStructure\SectionItem.cs" />
@@ -228,7 +226,6 @@
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Messages\OrderRated.cs" />
     <Compile Include="Messages\StatusCloseRequested.cs" />
-    <Compile Include="ViewModels\BookConfirmationViewModel.cs" />
     <Compile Include="ViewModels\LocationDetailViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\BaseSubViewModel.cs" />
@@ -243,7 +240,6 @@
     <Compile Include="Models\TutorialItemModel.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\TaskFactoryExtension.cs" />
-    <Compile Include="ViewModels\BookStreetNumberViewModel.cs" />
     <Compile Include="AppServices\ITutorialService.cs" />
     <Compile Include="AppServices\Impl\TutorialService.cs" />
     <Compile Include="Data\TutorialItem.cs" />
@@ -256,7 +252,6 @@
     <Compile Include="Messages\RemoveCreditCard.cs" />
     <Compile Include="AppServices\IUseServiceClient.cs" />
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
-    <Compile Include="ViewModels\BookEditInformationViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="Infrastructure\AbstractLocationService.cs" />
     <Compile Include="CultureProvider.cs" />

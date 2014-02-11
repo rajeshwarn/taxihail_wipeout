@@ -299,20 +299,8 @@
     <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="Diagnostics\ErrorHandler.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
-    <Compile Include="Views\BookView.xib.cs">
-      <DependentUpon>BookView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Views\BookView.xib.designer.cs">
-      <DependentUpon>BookView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Setup.cs" />
     <Compile Include="PhonePresenter.cs" />
-    <Compile Include="Views\AddressSearchView.cs">
-      <DependentUpon>AddressSearchView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AddressSearchView.designer.cs">
-      <DependentUpon>AddressSearchView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Animations\SlideViewAnimation.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="Views\PanelMenuView.cs">
@@ -375,17 +363,7 @@
     <Compile Include="Controls\FormLabel.cs" />
     <Compile Include="Views\BaseViewController.cs" />
     <Compile Include="Extensions\UIResponderExtensions.cs" />
-    <Compile Include="Order\BookStreetNumberView.cs" />
-    <Compile Include="Order\BookStreetNumberView.designer.cs">
-      <DependentUpon>BookStreetNumberView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\ValignLabel.cs" />
-    <Compile Include="Views\ConfirmationView.xib.cs">
-      <DependentUpon>ConfirmationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ConfirmationView.xib.designer.cs">
-      <DependentUpon>ConfirmationView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Views\ResetPasswordView.designer.cs">
       <DependentUpon>ResetPasswordView.cs</DependentUpon>
     </Compile>
@@ -408,10 +386,6 @@
     <Compile Include="Extensions\RectangleFExtensions.cs" />
     <Compile Include="Extensions\Helpers\Padding.cs" />
     <Compile Include="Extensions\Helpers\UIHelper.cs" />
-    <Compile Include="Views\BookEditInformation.cs" />
-    <Compile Include="Views\BookEditInformation.designer.cs">
-      <DependentUpon>BookEditInformation.cs</DependentUpon>
-    </Compile>
     <Compile Include="Extensions\UIViewPositioningExtensions.cs" />
     <Compile Include="Controls\Binding\CustomBindingsLoader.cs" />
     <Compile Include="Views\Payments\PayPalView.cs" />
@@ -551,8 +525,6 @@
   <ItemGroup />
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" />
-    <InterfaceDefinition Include="Views\BookView.xib" />
-    <InterfaceDefinition Include="Views\AddressSearchView.xib" />
     <InterfaceDefinition Include="Views\PanelMenuView.xib" />
     <InterfaceDefinition Include="Views\UpdatePasswordView.xib" />
     <InterfaceDefinition Include="Views\LoginView.xib" />
@@ -561,15 +533,10 @@
     <InterfaceDefinition Include="Views\TutorialView.xib" />
     <InterfaceDefinition Include="Views\RideSettingsView.xib" />
     <InterfaceDefinition Include="Views\CreateAccountView.xib" />
-    <InterfaceDefinition Include="Views\ConfirmationView.xib" />
     <InterfaceDefinition Include="Views\ResetPasswordView.xib" />
-    <InterfaceDefinition Include="Order\BookStreetNumberView.xib" />
     <InterfaceDefinition Include="Views\CreditCardAddView.xib" />
     <InterfaceDefinition Include="Views\CreditCardsListView.xib" />
-    <InterfaceDefinition Include="Views\BookEditInformation.xib" />
     <InterfaceDefinition Include="Views\Payments\PayPalView.xib" />
-    <InterfaceDefinition Include="Views\ConfirmationView_Thriev.xib" />
-    <InterfaceDefinition Include="Views\BookEditInformation_Thriev.xib" />
     <InterfaceDefinition Include="Views\TermsAndConditionsView.xib" />
     <InterfaceDefinition Include="Views\RideSummaryView.xib" />
     <InterfaceDefinition Include="Views\AboutUsView.xib" />
