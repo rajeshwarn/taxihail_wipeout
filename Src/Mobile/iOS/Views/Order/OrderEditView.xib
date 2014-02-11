@@ -24,15 +24,15 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="1">
-            <rect key="frame" x="0.0" y="0.0" width="305" height="410"/>
+            <rect key="frame" x="0.0" y="0.0" width="305" height="483"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ck5-Jj-0y6">
-                    <rect key="frame" x="0.0" y="0.0" width="305" height="410"/>
+                    <rect key="frame" x="0.0" y="0.0" width="305" height="483"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UWG-E6-QOn">
-                            <rect key="frame" x="0.0" y="0.0" width="305" height="407"/>
+                            <rect key="frame" x="0.0" y="0.0" width="305" height="392"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BgV-w2-ZOB" userLabel="Name">
@@ -211,7 +211,7 @@
                                 <constraint firstItem="10z-cE-INp" firstAttribute="leading" secondItem="UWG-E6-QOn" secondAttribute="leading" constant="8" id="jFd-6G-GKe"/>
                                 <constraint firstItem="BgV-w2-ZOB" firstAttribute="top" secondItem="UWG-E6-QOn" secondAttribute="top" constant="14" id="lGY-BY-zwM"/>
                                 <constraint firstItem="dqF-j3-PLn" firstAttribute="top" secondItem="UWG-E6-QOn" secondAttribute="top" priority="600" constant="14" id="m39-fT-3lZ"/>
-                                <constraint firstAttribute="bottom" secondItem="qOU-hC-q4U" secondAttribute="bottom" constant="25" id="nkr-RH-mNO"/>
+                                <constraint firstAttribute="bottom" secondItem="qOU-hC-q4U" secondAttribute="bottom" constant="10" id="nkr-RH-mNO"/>
                                 <constraint firstAttribute="trailing" secondItem="10z-cE-INp" secondAttribute="trailing" constant="8" id="npb-V5-zpR"/>
                                 <constraint firstItem="qOU-hC-q4U" firstAttribute="leading" secondItem="UWG-E6-QOn" secondAttribute="leading" constant="8" id="o5A-iY-KjQ"/>
                                 <constraint firstItem="ZrU-4N-hYh" firstAttribute="leading" secondItem="UWG-E6-QOn" secondAttribute="leading" constant="8" id="pSq-LC-2uA"/>
