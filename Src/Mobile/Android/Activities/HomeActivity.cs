@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     {
         private TouchableMap _touchMap;
         private OrderReview _orderReview;
+        private OrderEdit _orderEdit;
         private OrderOptions _orderOptions;
         private AppBar _appBar;
         private HomeViewModelState _presentationState = HomeViewModelState.Initial;
@@ -174,6 +175,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ViewModel.OnViewLoaded();
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
+            _orderEdit = (OrderEdit) FindViewById(Resource.Id.orderEdit);
             _appBar = (AppBar) FindViewById(Resource.Id.appBar);
 
             // Creating a view controller for MapFragment
@@ -309,6 +311,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                 ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
                 ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = _orderOptions.Height;
+                ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = display.Width;
             }
             else if (hint.State == HomeViewModelState.Edit)
             {
@@ -319,6 +322,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                 ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = _orderOptions.Top - _orderOptions.Height;
                 ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = display.Height;
+                ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = 0;
+                ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).TopMargin = 0;
             }
             else if(hint.State == HomeViewModelState.Initial)
             {
