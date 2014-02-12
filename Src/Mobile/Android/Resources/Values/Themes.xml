@@ -9,7 +9,7 @@
 	
     <color name="dialog_background_color">#9b9b9b</color>
 
-	<color name="edit_text_background_color">#ffffff</color>
+	<color name="edit_text_background_color">#ffff00</color>
 	<color name="edit_text_foreground_color">#000000</color>
 	<color name="edit_text_border_color">#ffffff</color>				 
 

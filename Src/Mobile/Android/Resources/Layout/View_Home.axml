@@ -104,6 +104,13 @@
                     android:layout_height="300dp"
                     android:layout_marginTop="500dp"
                     android:id="@+id/orderReview" />
+            <!-- Order Edit -->
+                <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderEdit
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginLeft="10000dp"
+                    android:id="@+id/orderEdit" />
             </FrameLayout>
             <View
                 android:background="#767676"
