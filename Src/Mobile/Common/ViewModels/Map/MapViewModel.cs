@@ -173,11 +173,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			};
 		}	
 
-		public AsyncCommand ZoomToAddress
+		public ICommand ZoomToAddress
 		{
 			get
 			{
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				{
 					Position pos = new Position();
 					if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
