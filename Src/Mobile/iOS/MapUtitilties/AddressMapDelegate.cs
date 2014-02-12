@@ -44,9 +44,14 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 		{
 			if( _regionMovedActivated )
 			{
-                ((OrderMapView)mapView).OnRegionChanged(null, null);
+                ((OrderMapView)mapView).OnRegionChanged(null, new MKMapViewChangeEventArgs(animated));
 			}
 		}
+
+        public override void RegionWillChange(MKMapView mapView, bool animated)
+        {
+            //((OrderMapView)mapView).OnRegionWillChange(null, new MKMapViewChangeEventArgs(animated));
+        }
 	}
 }
 

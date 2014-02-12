@@ -27,9 +27,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void ChangePresentation(Cirrious.MvvmCross.ViewModels.MvxPresentationHint hint)
         {
-            if (hint is ChangeStatePresentationHint)
+            if (hint is ChangePresentationHint)
             {
-                TryChangeViewPresentation((ChangeStatePresentationHint)hint);
+                TryChangeViewPresentation((ChangePresentationHint)hint);
             }
             else
             {
@@ -52,12 +52,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        private void TryChangeViewPresentation(ChangeStatePresentationHint hint)
+        private void TryChangeViewPresentation(ChangePresentationHint hint)
         {
             var homeView = Activity as IChangePresentation;
             if (homeView != null)
             {
-                homeView.ChangeState(hint);
+                homeView.ChangePresentation(hint);
             }
             else
             {
