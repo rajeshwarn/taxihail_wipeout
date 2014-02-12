@@ -62,8 +62,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			var orderDetail = await UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
 
-			if (orderDetail.IbsOrderId.HasValue
-				&& orderDetail.IbsOrderId > 0)
+			if (orderDetail.IBSOrderId.HasValue
+				&& orderDetail.IBSOrderId > 0)
 			{
                 Cache.Set ("LastOrderId", orderDetail.OrderId.ToString ()); // Need to be cached as a string because of a jit error on device
             }
@@ -181,7 +181,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public bool IsCompleted (Guid orderId)
         {
             var status = GetOrderStatus (orderId);
-			return IsStatusCompleted (status.IbsStatusId);
+			return IsStatusCompleted (status.IBSStatusId);
         }
 
         public bool IsStatusTimedOut(string statusId)

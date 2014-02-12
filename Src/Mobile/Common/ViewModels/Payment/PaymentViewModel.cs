@@ -358,7 +358,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 return false;
             }
 
-			if (!Order.IbsOrderId.HasValue)
+			if (!Order.IBSOrderId.HasValue)
             {
                 this.Services().Message.ShowProgress(false);
                 this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], this.Services().Localize["NoOrderId"]);

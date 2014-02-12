@@ -41,29 +41,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 View.BringSubviewToFront (statusBar);
 
+                var textColor = UIColor.FromRGB (86, 86, 86);
+
                 statusBar.Initialize ( topVisibleStatus, topSlidingStatus );
                 lblConfirmation.Text = Localize.GetValue("LoadingMessage");
                 txtDriver.Text = Localize.GetValue("DriverInfoDriver");
-                txtDriver.TextColor = AppStyle.GreyText;
+                txtDriver.TextColor = textColor;
                 txtLicence.Text = Localize.GetValue("DriverInfoLicence");
-                txtLicence.TextColor = AppStyle.GreyText;
+                txtLicence.TextColor = textColor;
                 txtTaxiType.Text = Localize.GetValue("DriverInfoTaxiType");
-                txtTaxiType.TextColor = AppStyle.GreyText;
+                txtTaxiType.TextColor = textColor;
                 txtMake.Text = Localize.GetValue("DriverInfoMake");
-				txtMake.TextColor = AppStyle.GreyText;
+                txtMake.TextColor = textColor;
                 txtModel.Text = Localize.GetValue("DriverInfoModel");
-				txtModel.TextColor = AppStyle.GreyText;
+                txtModel.TextColor = textColor;
                 txtColor.Text = Localize.GetValue("DriverInfoColor");
-                txtColor.TextColor = AppStyle.GreyText;
+                txtColor.TextColor = textColor;
 
                 btnChangeBooking.SetTitle(Localize.GetValue("ChangeBookingSettingsButton"), UIControlState.Normal);
 
-                topSlidingStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-                topVisibleStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/backPickupDestination.png"));
+                topSlidingStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("background.png"));
+                topVisibleStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("backPickupDestination.png"));
 
                 viewLine.Frame = new RectangleF( 0,topSlidingStatus.Bounds.Height -1, topSlidingStatus.Bounds.Width, 1 );
 
-                btnCallDriver.SetImage(UIImage.FromFile("Assets/phone.png"), UIControlState.Normal);
+                btnCallDriver.SetImage(UIImage.FromFile("phone.png"), UIControlState.Normal);
                 btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
                 btnCancel.SetTitle(Localize.GetValue("StatusCancelButton"), UIControlState.Normal);
                 btnNewRide.SetTitle(Localize.GetValue("StatusNewRideButton"), UIControlState.Normal);
@@ -107,15 +109,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     };
                 }
 
-                lblDriver.TextColor = AppStyle.DarkText;
-                lblLicence.TextColor = AppStyle.DarkText;
-                lblTaxiType.TextColor = AppStyle.DarkText;
-                lblMake.TextColor = AppStyle.DarkText;
-                lblModel.TextColor = AppStyle.DarkText;
-                lblColor.TextColor = AppStyle.DarkText;
+                textColor = UIColor.FromRGB (50, 50, 50);
 
-                lblConfirmation.TextColor = AppStyle.GreyText;
-                lblStatus.TextColor = AppStyle.DarkText;
+                lblDriver.TextColor = textColor;
+                lblLicence.TextColor = textColor;
+                lblTaxiType.TextColor = textColor;
+                lblMake.TextColor = textColor;
+                lblModel.TextColor = textColor;
+                lblColor.TextColor = textColor;
+
+                lblConfirmation.TextColor = textColor;
+                lblStatus.TextColor = textColor;
 
                 var set = this.CreateBindingSet<BookingStatusView, BookingStatusViewModel>();
 
@@ -276,6 +280,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 mapStatus.AddressSelectionMode = AddressSelectionMode.None;
 
 				UpdateTopSlidingStatus("OrderStatusDetail"); //initial loading
+                var statusLineDivider = Line.CreateHorizontal(320.0f, UIColor.Black.ColorWithAlpha(0.35f));
+                bottomBar.AddSubview(statusLineDivider);
             
             } catch (Exception ex) {
                 Logger.LogError (ex);

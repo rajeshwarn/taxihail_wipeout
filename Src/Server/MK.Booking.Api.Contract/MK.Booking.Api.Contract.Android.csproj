@@ -11,6 +11,8 @@
     <AssemblyName>MK.Booking.Api.Contract.Android</AssemblyName>
     <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -69,16 +71,12 @@
     <Compile Include="Requests\OrderRatingRequest.cs" />
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
-    <Compile Include="Requests\Payment\Braintree\CommitPreauthorizedPaymentBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\DeleteTokenizedCreditcardBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\PreAuthorizeAndCommitPaymentBraintreeRequest.cs" />
-    <Compile Include="Requests\Payment\Braintree\PreAuthorizePaymentBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
-    <Compile Include="Requests\Payment\Cmt\CommitPreauthorizedPaymentCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\DeleteTokenizedCreditcardCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\PairingRidelinqCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\PreAuthorizeAndCommitPaymentCmtRequest.cs" />
-    <Compile Include="Requests\Payment\Cmt\PreAuthorizePaymentCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\UnpairingRidelinqCmtRequest.cs" />
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\CancelPayPalExpressCheckoutPaymentRequest.cs" />

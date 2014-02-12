@@ -168,7 +168,7 @@ namespace apcurium.MK.Web.Tests
             for (var i = 0; i < 10; i++)
             {
                 status = await sut.GetOrderStatus(_orderId);
-                if (string.IsNullOrEmpty(status.IbsStatusId))
+                if (string.IsNullOrEmpty(status.IBSStatusId))
                 {
                     Thread.Sleep(1000);
                 }
@@ -180,7 +180,7 @@ namespace apcurium.MK.Web.Tests
 
             Assert.NotNull(status);
             Assert.AreEqual(OrderStatus.Canceled, status.Status);
-            Assert.AreEqual(VehicleStatuses.Common.CancelledDone, status.IbsStatusId);
+            Assert.AreEqual(VehicleStatuses.Common.CancelledDone, status.IBSStatusId);
         }
 
         [Test]

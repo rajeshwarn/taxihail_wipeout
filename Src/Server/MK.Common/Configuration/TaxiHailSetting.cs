@@ -21,6 +21,7 @@ namespace MK.Common.Configuration
             ShowPassengerNumber = true;
             ShowPassengerPhone = true;
             ShowRingCodeField = true;
+            TutorialEnabled = true;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]

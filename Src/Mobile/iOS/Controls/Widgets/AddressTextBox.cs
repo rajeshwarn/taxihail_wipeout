@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                     if (Superview != null)
                     {
-                        ((OverlayView)Superview).Resize();
+                        ((OrderOptionsControl)Superview.Superview).Resize();
                     }
                 }
             }

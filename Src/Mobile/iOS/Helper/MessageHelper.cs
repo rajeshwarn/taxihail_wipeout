@@ -140,19 +140,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 				av.Show (  );
 			} );
 			
-		}
-	
-		public static void ShowToast ( string message, int duration )
-		{
-			UIApplication.SharedApplication.InvokeOnMainThread ( delegate 
-			                                                  {
-                var navController = Mvx.Resolve<UINavigationController>(); 								
-                LoadingOverlay.StopAnimatingLoading();
-                var toast = new ToastMessage( navController.TopViewController.View, message );
-				toast.Show(duration);
-			} );
-			
-		}
+		}	
+		
 	}
 }
 

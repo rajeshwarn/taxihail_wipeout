@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using MK.Common.iOS.Patterns;
 using Object = Java.Lang.Object;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -23,7 +24,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public void OnLocationChanged(Location location)
         {
-            var position = new Position
+           
+            var position = new Position()
             {
                 Time = location.Time.ToDateTime(),
                 Error = location.Accuracy,
@@ -31,17 +33,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 Longitude = location.Longitude
             };
 
-            foreach (var observer in _observers.ToArray())
+            try
             {
-                observer.OnNext(position);
-            }
 
-            if (!BestPosition.IsBetterThan(position))
+                foreach (var observer in _observers.ToList())
+                {
+                    observer.OnNext(position);
+                }
+
+                if (!BestPosition.IsBetterThan(position))
+                {
+                    BestPosition = position;
+                }
+
+                LastKnownPosition = position;
+            }
+            catch 
             {
-                BestPosition = position;
+                //hack : crash randomly
             }
-
-            LastKnownPosition = position;
         }
 
         public void OnProviderDisabled(string provider)

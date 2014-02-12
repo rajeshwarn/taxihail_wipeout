@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					var viewModel = new OrderViewModel
 					{
-						IBSOrderId = item.IbsOrderId,
+						IBSOrderId = item.IBSOrderId,
 						Id = item.Id,
 						CreatedDate = item.CreatedDate,
 						PickupAddress = item.PickupAddress,

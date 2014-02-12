@@ -112,7 +112,7 @@
 //                        && value.VehicleLatitude.HasValue
 //                        && value.VehicleLongitude.HasValue
 //                        && !string.IsNullOrEmpty(value.VehicleNumber)
-//                        && VehicleStatuses.ShowOnMapStatuses.Contains(value.IbsStatusId))
+//                        && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
 //                    {
 //                        _taxiLocationPin = Map.AddMarker(new MarkerOptions()
 //                            .Anchor(.5f, 1f)

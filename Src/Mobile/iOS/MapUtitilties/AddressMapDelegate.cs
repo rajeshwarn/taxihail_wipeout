@@ -1,6 +1,7 @@
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
 using MonoTouch.MapKit;
+using apcurium.MK.Booking.Mobile.Client.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {
@@ -39,11 +40,18 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 		}
 
         // TODO verify if we could have a special kind of command that stops itself if called a second time, so we could remove this from the map
-		public override void RegionChanged (MKMapView mapView, bool animated)
+        public override void RegionChanged (MKMapView mapView, bool animated)
 		{
 			if( _regionMovedActivated )
 			{
-//				((TouchMap)mapView).OnRegionChanged();
+                if (mapView is OrderMapView)
+                {
+                    ((OrderMapView)mapView).OnRegionChanged(null, null);
+                }else{
+                    //TODO remove when status is migrated to new map
+                    ((TouchMap)mapView).OnRegionChanged();
+                }
+
 			}
 		}
 	}

@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
    
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
-        private SupportMapFragment _touchMap;
+        private TouchableMap _touchMap;
         private OrderReview _orderReview;
         private OrderOptions _orderOptions;
         private AppBar _appBar;
@@ -178,7 +178,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             // Creating a view controller for MapFragment
             Bundle mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
-            _touchMap = (SupportMapFragment)SupportFragmentManager.FindFragmentById(Resource.Id.mapPickup);
+            _touchMap = (TouchableMap)SupportFragmentManager.FindFragmentById(Resource.Id.mapPickup);
             _touchMap.OnCreate(mapViewSavedInstanceState);
             _mapFragment = new OrderMapFragment(_touchMap, Resources);
 
@@ -231,7 +231,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 ViewModel.OnViewUnloaded();
             }
-
+            _mapFragment.Dispose();
             //_touchMap.OnDestroy();
         }
 
@@ -321,8 +321,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                 SetSelectedOnBookLater(false);
             }
+
             _appBar.ChangePresentation(hint);
-           
+            _orderOptions.ChangePresentation(hint);
         }
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)

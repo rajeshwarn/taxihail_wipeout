@@ -159,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
 				var showVehicleInformation = Settings.ShowVehicleInformation;
 
-				return showVehicleInformation && ( (OrderStatusDetail.IbsStatusId == VehicleStatuses.Common.Assigned) || (OrderStatusDetail.IbsStatusId == VehicleStatuses.Common.Arrived) ) 
+				return showVehicleInformation && ( (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived) ) 
                 && ( OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue() || OrderStatusDetail.DriverInfos.LastName.HasValue() || OrderStatusDetail.DriverInfos.FirstName.HasValue()); }
         }
 		
@@ -306,9 +306,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					status.VehicleNumber = _vehicleNumber;
 				}
 
-                var isDone = this.Services().Booking.IsStatusDone(status.IbsStatusId);
+                var isDone = this.Services().Booking.IsStatusDone(status.IBSStatusId);
 
-				if(status.IbsStatusId.HasValue() && status.IbsStatusId.Equals(VehicleStatuses.Common.Scheduled) )
+				if(status.IBSStatusId.HasValue() && status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled) )
 				{
 					AddReminder(status);
 				}
@@ -317,12 +317,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 //status.IBSStatusId = VehicleStatuses.Common.Arrived;
 #endif
                 IsPayButtonVisible = false;
-                StatusInfoText = status.IbsStatusDescription;                        
+				StatusInfoText = status.IBSStatusDescription;                        
                 OrderStatusDetail = status;
 
                 CenterMap ();
 
-				var isLoaded = status.IbsStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IbsStatusId.Equals(VehicleStatuses.Common.Done);
+				var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
 				if (isLoaded && IsCmtRideLinq && this.Services().Account.CurrentAccount.DefaultCreditCard != null)
 					{
 						var isPaired = this.Services().Booking.IsPaired(Order.Id);
@@ -336,10 +336,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						}
 					}
 
-                UpdatePayCancelButtons(status.IbsStatusId);
+                UpdatePayCancelButtons(status.IBSStatusId);
 
-                if (OrderStatusDetail.IbsOrderId.HasValue) {
-                    ConfirmationNoTxt = string.Format(this.Services().Localize["StatusDescription"], OrderStatusDetail.IbsOrderId.Value + "");
+                if (OrderStatusDetail.IBSOrderId.HasValue) {
+                    ConfirmationNoTxt = string.Format(this.Services().Localize["StatusDescription"], OrderStatusDetail.IBSOrderId.Value + "");
                 }
 
                 if (isDone) 
@@ -347,7 +347,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     GoToSummary();
                 }
 
-                if (this.Services().Booking.IsStatusTimedOut(status.IbsStatusId))
+                if (this.Services().Booking.IsStatusTimedOut(status.IBSStatusId))
                 {
                     GoToBookingScreen();
                 }
@@ -397,7 +397,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					this.Services().Booking.ClearLastOrder();
 		                        _waitingToNavigateAfterTimeOut = true;
-		                        ShowViewModel<BookViewModel>();
+								ShowViewModel<HomeViewModel>();
 								Close(this);
                     }));
             }
@@ -415,7 +415,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void CenterMap ()
         {            
 			var pickup = CoordinateViewModel.Create(Pickup.Model.Latitude, Pickup.Model.Longitude, true);
-			if (OrderStatusDetail.IbsStatusId != VehicleStatuses.Common.Waiting && OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue) 
+			if (OrderStatusDetail.IBSStatusId != VehicleStatuses.Common.Waiting && OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue) 
 			{
                 MapCenter = new[] 
 				{ 
@@ -438,7 +438,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Localize["YesButton"], 
                     () => { 
                         this.Services().Booking.ClearLastOrder();
-                    	ShowViewModel<BookViewModel> ();
+						ShowViewModel<HomeViewModel> ();
                     },
                     this.Services().Localize["NoButton"], NoAction));
             }
@@ -449,7 +449,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return this.GetCommand (() =>
                 {
-				    if ((OrderStatusDetail.IbsStatusId == VehicleStatuses.Common.Done) || (OrderStatusDetail.IbsStatusId == VehicleStatuses.Common.Loaded)) {
+				    if ((OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Done) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded)) {
                         this.Services().Message.ShowMessage(this.Services().Localize["CannotCancelOrderTitle"], this.Services().Localize["CannotCancelOrderMessage"]);
                         return;
                     }
@@ -468,7 +468,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 if (isSuccess) 
                                 {
                                     this.Services().Booking.ClearLastOrder();
-									ShowViewModelAndRemoveFromHistory<BookViewModel> ();
+									ShowViewModelAndRemoveFromHistory<HomeViewModel> ();
                                 } 
                                 else 
                                 {

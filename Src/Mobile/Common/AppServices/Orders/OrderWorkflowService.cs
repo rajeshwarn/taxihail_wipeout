@@ -14,6 +14,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -25,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly IAppSettings _configurationManager;
 		readonly ILocalization _localize;
 		readonly IBookingService _bookingService;
+		readonly ICacheService _cacheService;
 
 		readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
@@ -32,21 +34,31 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
         readonly ISubject<BookingSettings> _bookingSettingsSubject;
 		readonly ISubject<string> _estimatedFareSubject;
+		string _noteToDriver = null;
+
+
 
 		public OrderWorkflowService(AbstractLocationService locationService,
 			IAccountService accountService,
 			IGeolocService geolocService,
 			IAppSettings configurationManager,
 			ILocalization localize,
-			IBookingService bookingService)
+			IBookingService bookingService,
+			ICacheService cacheService)
 		{
+			_cacheService = cacheService;
 			_configurationManager = configurationManager;
 			_geolocService = geolocService;
 			_accountService = accountService;
 			_locationService = locationService;
 
-			// TODO: Listen to account booking settings changes
-			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(accountService.CurrentAccount.Settings);
+			// TODO: Listen to account booking settings changes && set default value?
+			var settings = accountService.CurrentAccount.Settings;
+			if (settings.Passengers <= 0)
+			{
+				settings.Passengers = 1;
+			}
+			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(settings);
 			_localize = localize;
 			_bookingService = bookingService;
 
@@ -100,6 +112,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					}
 				}
 			);
+		}
+
+        public async Task SetAddressToCoordinate(Position userMapBoundsCoordinate, CancellationToken cancellationToken)
+		{
+            var address = await SearchAddressForCoordinate(userMapBoundsCoordinate);
+			address.Latitude = userMapBoundsCoordinate.Latitude;
+			address.Longitude = userMapBoundsCoordinate.Longitude;
+			cancellationToken.ThrowIfCancellationRequested();
+			await SetAddressToCurrentSelection(address);
 		}
 
 		public async Task ClearDestinationAddress()
@@ -157,16 +178,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder()
 		{
-			var order = new CreateOrder();
-			order.Id = Guid.NewGuid();
-			order.PickupDate = await _pickupDateSubject.Take(1).ToTask();
-			order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
-			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
-			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
+			CreateOrder order = await GetOrder();
 
 			var orderStatus = await _bookingService.CreateOrder(order);
 
-			if (!orderStatus.IbsOrderId.HasValue || !(orderStatus.IbsOrderId > 0))
+			if (!orderStatus.IBSOrderId.HasValue || !(orderStatus.IBSOrderId > 0))
 			{
 				//TODO: Clarify. When this can happen?
 				throw new Exception("No IbsOrderId, something went wrong while creating the order");
@@ -176,7 +192,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			{
 				CreatedDate = DateTime.Now, 
 				DropOffAddress = order.DropOffAddress, 
-				IbsOrderId = orderStatus.IbsOrderId, 
+				IBSOrderId = orderStatus.IBSOrderId, 
 				Id = order.Id, PickupAddress = order.PickupAddress,
 				Note = order.Note, 
 				PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now,
@@ -188,6 +204,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			// TODO: Refactor so we don't have to return two distinct objects
 			return Tuple.Create(orderCreated, orderStatus);
 
+		}
+
+		public async Task SetBookingSettings(BookingSettings bookingSettings)
+		{
+			_bookingSettingsSubject.OnNext(bookingSettings);
+		}
+
+		public void SetPickupAddress(Address address)
+		{
+			_pickupAddressSubject.OnNext(address);
 		}
 
 		public IObservable<Address> GetAndObservePickupAddress()
@@ -213,6 +239,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public IObservable<string> GetAndObserveEstimatedFare()
 		{
 			return _estimatedFareSubject;
+		}
+
+		public IObservable<DateTime?> GetAndObservePickupDate()
+		{
+			return _pickupDateSubject;
 		}
 		
 		private async Task<Address> SearchAddressForCoordinate(Position p)
@@ -274,12 +305,54 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		private void PrepareForNewOrder()
 		{
+			_noteToDriver = null;
 			_pickupAddressSubject.OnNext(new Address());
 			_destinationAddressSubject.OnNext(new Address());
 			_addressSelectionModeSubject.OnNext(AddressSelectionMode.PickupSelection);
 			_pickupDateSubject.OnNext(null);
 			_bookingSettingsSubject.OnNext(_accountService.CurrentAccount.Settings);
 			_estimatedFareSubject.OnNext(_localize["NoFareText"]);
+		}
+
+		public void SetNoteToDriver(string text)
+		{
+			_noteToDriver = text;
+		}
+
+		public async Task<bool> ShouldWarnAboutEstimate()
+		{
+			var destination = await _destinationAddressSubject.Take(1).ToTask();
+			return _configurationManager.Data.ShowEstimateWarning
+					&& !_cacheService.Get<string>("WarningEstimateDontShow").HasValue()
+					&& destination.HasValidCoordinate();
+		}
+
+		public async Task<OrderValidationResult> ValidateOrder()
+		{
+			var orderToValidate = await GetOrder();
+			var validationResult = await _bookingService.ValidateOrder(orderToValidate);
+			return validationResult;
+		}
+
+		private async Task<CreateOrder> GetOrder()
+		{
+			var order = new CreateOrder();
+			order.Id = Guid.NewGuid();
+			order.PickupDate = await _pickupDateSubject.Take(1).ToTask();
+			order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
+			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
+			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
+			order.Note = _noteToDriver;
+
+			return order;
+		}
+
+		public void Rebook(Order previous)
+		{
+			_pickupAddressSubject.OnNext(previous.PickupAddress);
+			_destinationAddressSubject.OnNext(previous.DropOffAddress);
+			_bookingSettingsSubject.OnNext(previous.Settings);
+			_noteToDriver = previous.Note;
 		}
     }
 }

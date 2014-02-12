@@ -56,6 +56,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnLocateMe.SetImage(UIImage.FromFile("location_icon.png"), UIControlState.Normal);
             btnLocateMe.SetImage(UIImage.FromFile("location_icon_pressed.png"), UIControlState.Highlighted);
 
+            mapView.Delegate = new AddressMapDelegate (true);
+
             InstantiatePanel();
 
             _datePicker = new BookLaterDatePicker();            
@@ -89,6 +91,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.DataContext)
                 .To(vm => vm.OrderReview);
                 
+            set.Bind(orderEdit)
+                .For(v => v.DataContext)
+                .To(vm => vm.OrderEdit);
+
             set.Bind(bottomBar)
                 .For(v => v.DataContext)
                 .To(vm => vm.BottomBar);
@@ -125,9 +131,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     0.6f, 
                     () =>
                     {
-                        constraintOrderReviewTopSpace.Constant = 170;
+                        orderEdit.SetNeedsDisplay();
+                        constraintOrderReviewTopSpace.Constant = 10;
+                        constraintOrderReviewBottomSpace.Constant = -65;
                         constraintOrderOptionsTopSpace.Constant =  22;
-                        homeView.LayoutIfNeeded();
+                        constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
+                        homeView.LayoutIfNeeded();  
+                                                                     
+                    },() =>
+                    {
+                        RedrawSubViews();
                     });
             }
             else if (hint.State == HomeViewModelState.Edit)
@@ -139,9 +152,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 UIView.Animate(
                     0.6f, 
                     () => {
+
                         constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
+                        constraintOrderReviewBottomSpace.Constant = 468;
                         constraintOrderOptionsTopSpace.Constant =  - ctrlOrderOptions.Frame.Height;
+                        constraintOrderEditTrailingSpace.Constant = 8;
                         homeView.LayoutIfNeeded();
+                        ctrlOrderReview.SetNeedsDisplay();
+                        ctrlOrderOptions.SetNeedsDisplay();
+                    },() =>
+                    {
+                        orderEdit.SetNeedsDisplay();
                     });
             }
             else if(hint.State == HomeViewModelState.Initial)
@@ -153,14 +174,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 UIView.Animate(
                     0.6f, 
                     () => {
+                        RedrawSubViews();
                         constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
+                        constraintOrderReviewBottomSpace.Constant = 468;
                         constraintOrderOptionsTopSpace.Constant =  22;
+                        constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
                         homeView.LayoutIfNeeded();
                     });
-            }
-           
+            } 
 
+
+            ctrlOrderOptions.ChangeState(hint);
             bottomBar.ChangeState(hint);
+            ctrlOrderReview.ChangeState(hint);
+        }
+
+        private void RedrawSubViews()
+        {
+            //redraw the shadows of the controls
+            ctrlOrderReview.SetNeedsDisplay();
+            orderEdit.SetNeedsDisplay();
+            ctrlOrderOptions.SetNeedsDisplay();
         }
 
         private void InstantiatePanel()

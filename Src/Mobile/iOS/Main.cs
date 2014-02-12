@@ -55,9 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             if (!UIHelper.IsOS7orHigher)
             {
                 UIApplication.SharedApplication.StatusBarHidden = false;
-            }
-
-            Background.Load (window, "Assets/background_full_nologo.png", false);          
+            }                     
 
             var @params = new Dictionary<string, string> ();
             if (options != null && options.ContainsKey (new NSString ("UIApplicationLaunchOptionsRemoteNotificationKey"))) {
@@ -133,25 +131,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             JsConfig.RegisterTypeForAot<GeoObj>();
             JsConfig.RegisterTypeForAot<GeoResult>();
 
-            if (!_callbackFromFb)
+            if (_callbackFromFb)
             {    
-                var navController = Mvx.Resolve<UINavigationController>();
-                if( !_isStarting &&  navController != null && navController.TopViewController is BookView )
-				{
-                    var model = ((BookView)navController.TopViewController).ViewModel;
-                    model.Reset ();
-                    if ( model.AddressSelectionMode != AddressSelectionMode.PickupSelection )
-                    {
-                        model.ActivatePickup.Execute ();
-                    }
-                    model.Pickup.RequestCurrentLocationCommand.Execute ();
-				}
-            }
-            else
-            {
                 _callbackFromFb = false;
-            }           
-
+            }
             _isStarting = false;
         }
 

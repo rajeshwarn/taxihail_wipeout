@@ -136,7 +136,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _assignedSlideoutView = slidingView;
 
             UserInteractionEnabled = true;
-            BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/rideStatusBarBackground.png"));
+            BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("rideStatusBarBackground.png"));
             
             ClipsToBounds = false;
             _minHeight = visibleView.Bounds.Height;

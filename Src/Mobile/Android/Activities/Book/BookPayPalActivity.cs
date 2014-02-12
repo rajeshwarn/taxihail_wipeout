@@ -11,11 +11,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class BookPayPalActivity : BaseBindingActivity<PayPalViewModel>
     {
-        protected override int ViewTitleResourceId
-        {
-            get { return Resource.String.PaymentView; }
-        }
-
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);

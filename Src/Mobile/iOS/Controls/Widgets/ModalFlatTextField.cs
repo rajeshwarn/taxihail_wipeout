@@ -8,8 +8,8 @@ using MonoTouch.UIKit;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Client.MonoTouchDialog;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -93,6 +93,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 currentController.View.EndEditing(true);
 
                 var newDvc = new TaxiHailDialogViewController (_rootElement, true, false);
+                currentController.NavigationController.NavigationBar.Hidden = false;
                 currentController.NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
                 currentController.NavigationController.PushViewController(newDvc, true);
             };

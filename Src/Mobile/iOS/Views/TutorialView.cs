@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             base.ViewDidLoad ();
 
             contentView.Layer.CornerRadius = 7;
-            btnClose.SetImage (UIImage.FromFile ("Assets/closeButton.png"), UIControlState.Normal);
+            btnClose.SetImage (UIImage.FromFile ("closeButton.png"), UIControlState.Normal);
             btnClose.SetTitle ("", UIControlState.Normal);
             View.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0.40f);
 
@@ -52,8 +52,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.CloseCommand);
 
 			set.Apply ();
-
-            View.ApplyAppFont ();
         }
 
         private void CreatePanels (TutorialItemModel[] listTutorial)
@@ -67,26 +65,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             for (var i=0; i<count; i++) {
                 var view = new UIView ();
                 view.BackgroundColor = UIColor.Clear;
-                var image = new UIImageView (UIImage.FromFile ("Assets/Tutorial/" + listTutorial [i].ImageUri + ".png"));
+                var image = new UIImageView (UIImage.FromFile (listTutorial[i].ImageUri + ".png"));
 
                 var labelBottom = new ValignLabel ();
                 labelBottom.VerticalAlignment = ValignLabel.VerticalAlignments.Middle;
-                labelBottom.TextColor = AppStyle.GreyText;
+                labelBottom.TextColor = UIColor.FromRGB (86, 86, 86);
                 labelBottom.BackgroundColor = UIColor.Clear;
                 labelBottom.TextAlignment = UITextAlignment.Center;
                 labelBottom.Text = listTutorial [i].BottomText;
-                labelBottom.Font = AppStyle.GetNormalFont ( 16 );
+                labelBottom.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 16.0f);
                 labelBottom.Lines = 0;
                 labelBottom.Frame = new RectangleF( scrollview.Frame.Width * i, scrollview.Frame.Height - 110, scrollview.Frame.Width, 95 );
                 view.AddSubview (labelBottom);
 
                 var labelBottomTitle = new ValignLabel ();
                 labelBottomTitle.VerticalAlignment = ValignLabel.VerticalAlignments.Middle;
-                labelBottomTitle.TextColor = AppStyle.GreyText;
+                labelBottomTitle.TextColor = UIColor.FromRGB (86, 86, 86);
                 labelBottomTitle.BackgroundColor = UIColor.Clear;
                 labelBottomTitle.TextAlignment = UITextAlignment.Center;
                 labelBottomTitle.Text = listTutorial [i].BottomTitle;
-                labelBottomTitle.Font = AppStyle.GetBoldFont ( 18 );
+                labelBottomTitle.Font = UIFont.FromName(FontName.HelveticaNeueBold, 18.0f);
                 labelBottomTitle.Lines = 1;
                 labelBottomTitle.Frame = new RectangleF( scrollview.Frame.Width * i, scrollview.Frame.Height - 40, scrollview.Frame.Width, 30 ); 
                 view.AddSubview (labelBottomTitle);
@@ -94,21 +92,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var labelTop = new ValignLabel ();
                 labelTop.VerticalAlignment = ValignLabel.VerticalAlignments.Middle ;
                 labelTop.BackgroundColor = UIColor.Clear;
-                labelTop.TextColor = AppStyle.DarkText;
+                labelTop.TextColor = UIColor.FromRGB (50, 50, 50);
                 labelTop.TextAlignment = UITextAlignment.Center;
                 labelTop.Text = listTutorial [i].TopText;
-                labelTop.Font = AppStyle.GetNormalFont ( 16 );
+                labelTop.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 16.0f);
                 labelTop.Lines = 0;
                 labelTop.Frame = new RectangleF (scrollview.Frame.Width * i, 10, scrollview.Frame.Width, 110);                
                 view.AddSubview (labelTop);
 
                 var labelTopTitle = new ValignLabel ();
                 labelTopTitle.VerticalAlignment = ValignLabel.VerticalAlignments.Middle;
-                labelTopTitle.TextColor =  AppStyle.DarkText;
+                labelTopTitle.TextColor =  UIColor.FromRGB (50, 50, 50);
                 labelTopTitle.BackgroundColor = UIColor.Clear;
                 labelTopTitle.TextAlignment = UITextAlignment.Center;
                 labelTopTitle.Text = listTutorial [i].TopTitle;
-                labelTopTitle.Font = AppStyle.GetBoldFont ( 18 );
+                labelTopTitle.Font = UIFont.FromName(FontName.HelveticaNeueBold, 18.0f);
                 labelTopTitle.Lines = 1;
                 labelTopTitle.Frame = new RectangleF (scrollview.Frame.Width * i, 20, scrollview.Frame.Width, 30);                
                 view.AddSubview (labelTopTitle);

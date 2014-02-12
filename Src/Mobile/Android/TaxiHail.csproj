@@ -19,6 +19,8 @@
     <MandroidI18n />
     <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -173,13 +175,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
-    <Compile Include="Activities\Book\BookDetailActivity.cs" />
     <Compile Include="Activities\Book\BookingRateActivity.cs" />
-    <Compile Include="Activities\Book\BookActivity.cs" />
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
-    <Compile Include="Activities\Book\SearchAddressActivity.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
     <Compile Include="Activities\ShowDialogActivity.cs" />
     <Compile Include="Activities\TutorialActivity.cs" />
@@ -190,7 +189,6 @@
     <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
     <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheService.cs" />
-    <Compile Include="Controls\HeaderedLayout.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
@@ -244,10 +242,6 @@
     <AndroidResource Include="Resources\Layout\Control_EditTextNavigate.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_BookingDetail.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <Compile Include="Activities\Book\BookStreetNumberActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_BookStreetNumber.axml" />
     <AndroidResource Include="Resources\Drawable\closeButton.png" />
     <AndroidResource Include="Resources\Layout\Control_SearchButton.axml">
@@ -298,13 +292,6 @@
     <AndroidResource Include="Resources\drawable-large-nodpi\splash.9.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\splash.9.png" />
     <AndroidResource Include="Resources\Drawable\paypal.png" />
-    <AndroidResource Include="Resources\Layout\View_BookingDetail_Thriev.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_BookEditInformation_Thriev.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <Compile Include="Activities\Book\BookEditInformationActivity.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
     <AndroidResource Include="Resources\Layout\View_TermsAndConditions.axml">
       <SubType>Designer</SubType>
@@ -421,7 +408,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\main_settings.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\mastercard.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\mk_logo.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\navBar.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\notification_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\number_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\password_cell.9.png" />
@@ -505,7 +491,6 @@
     <Compile Include="Controls\Fragments\OrderMapFragment.cs" />
     <Compile Include="Activities\BaseBindingFragmentActivity.cs" />
     <Compile Include="Controls\Widgets\OrderReview.cs" />
-    <AndroidResource Include="Resources\Layout\Control_OrderReview.axml" />
     <AndroidResource Include="Resources\Layout\SubView_OrderOptions.axml" />
     <AndroidResource Include="Resources\Layout\SubView_MainMenu.axml" />
     <AndroidResource Include="Resources\Drawable\cluster.png" />
@@ -522,6 +507,7 @@
     <AndroidResource Include="Resources\Drawable\button_booklater_image_selector.axml" />
     <AndroidResource Include="Resources\Drawable\button_estimate_image_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_highlight_text_selector.axml" />
+    <Compile Include="Controls\Fragments\TouchableMap.cs" />
     <AndroidResource Include="Resources\Layout\SubView_AppBar.axml" />
     <Compile Include="Controls\Widgets\AppBar.cs" />
     <AndroidResource Include="Resources\Drawable\button_action_label_selector.xml" />
@@ -534,6 +520,7 @@
     <AndroidResource Include="Resources\Layout\Control_VehicleTypeAndEstimate.xml" />
     <Compile Include="Controls\Widgets\VehicleTypeAndEstimateControl.cs" />
     <Compile Include="Helpers\DrawableHelper.cs" />
+    <AndroidResource Include="Resources\Layout\Control_OrderReview.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -583,9 +570,6 @@
     <AndroidResource Include="Resources\Layout\View_HistoryList.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_SearchAddress.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\MenuItem.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -603,7 +587,6 @@
     <AndroidResource Include="Resources\Drawable\apcuriumLogo.png" />
     <AndroidResource Include="Resources\Drawable\background.png" />
     <AndroidResource Include="Resources\Drawable\header.png" />
-    <AndroidResource Include="Resources\Drawable\backgroundblue.png" />
     <AndroidResource Include="Resources\Drawable\right_arrow.png" />
     <AndroidResource Include="Resources\Drawable\twitter_icon.png" />
     <AndroidResource Include="Resources\Drawable\facebook_icon.png" />
@@ -627,7 +610,6 @@
     <AndroidResource Include="Resources\Drawable\main_settings.png" />
     <AndroidResource Include="Resources\Drawable\bookLaterIcon.png" />
     <AndroidResource Include="Resources\Values\MvxBindingAttributes.xml" />
-    <AndroidResource Include="Resources\Drawable\navBar.png" />
     <AndroidResource Include="Resources\Drawable\bookLater_state.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -713,16 +695,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Layout\View_RefineAddress.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Layout\Control_HeaderedLayout.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_BookingRating.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -742,11 +714,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\CreditCardListItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Layout\View_BookEditInformation.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
