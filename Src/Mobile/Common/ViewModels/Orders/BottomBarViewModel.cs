@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					try
 					{
 						var result = await _orderWorkflowService.ConfirmOrder();
-
+						ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
 						ShowViewModel<BookingStatusViewModel>(new
 						{
 							order = result.Item1.ToJson(),
