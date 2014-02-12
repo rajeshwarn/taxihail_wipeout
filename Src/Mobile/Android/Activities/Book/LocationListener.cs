@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using MK.Common.iOS.Patterns;
 using Object = Java.Lang.Object;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
