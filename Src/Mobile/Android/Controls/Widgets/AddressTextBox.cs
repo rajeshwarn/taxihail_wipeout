@@ -135,7 +135,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 }
             });
 
-            StreetNumberTextView.FocusChange+= (sender, e) => 
+            StreetNumberTextView.FocusChange += (sender, e) => 
             {
                 if(e.HasFocus)
                 {
@@ -161,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         }
 
         private Button _giantInvisibleButton;
-        private void SetInvisibleButton(Button giantInvisibleButton)
+        public void SetInvisibleButton(Button giantInvisibleButton)
         {
             giantInvisibleButton.Touch += (sender, e) => 
             {

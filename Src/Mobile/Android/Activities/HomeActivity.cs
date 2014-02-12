@@ -33,6 +33,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Messages;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -42,6 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
    
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
+        private Button _bigButton;
         private TouchableMap _touchMap;
         private OrderReview _orderReview;
         private OrderEdit _orderEdit;
@@ -72,7 +74,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public OrderMapFragment _mapFragment; 
 
-
         void PanelMenuInit()
         {
             var menu = FindViewById(Resource.Id.PanelMenu);
@@ -84,14 +85,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             mainSettingsButton.Click -= PanelMenuToggle;
             mainSettingsButton.Click += PanelMenuToggle;
 
-
             var signOutButton = FindViewById<View>(Resource.Id.settingsLogout);
             signOutButton.Click -= PanelMenuSignOutClick;
             signOutButton.Click += PanelMenuSignOutClick;
 
-            var bigButton = FindViewById<View>(Resource.Id.BigButtonTransparent);
-            bigButton.Click -= PanelMenuToggle;
-            bigButton.Click += PanelMenuToggle;
+            _bigButton.Touch += (sender, e) => 
+            {
+                if(e.Event.Action == MotionEventActions.Up)
+                {
+                    if(ViewModel.Panel.MenuIsOpen)
+                    {
+                        ViewModel.Panel.MenuIsOpen = false;
+                    }
+                }
+            };
 
             ViewModel.Panel.PropertyChanged -= PanelMenuPropertyChanged;
             ViewModel.Panel.PropertyChanged += PanelMenuPropertyChanged;
@@ -139,46 +146,47 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var mainLayout = FindViewById(Resource.Id.HomeLayout);
             mainLayout.ClearAnimation();
 
-
             var menu = FindViewById(Resource.Id.PanelMenu);
 
             var animation = new SlideAnimation(mainLayout, 
                 ViewModel.Panel.MenuIsOpen ? 0 : (_menuWidth),
                 ViewModel.Panel.MenuIsOpen ? (_menuWidth) : 0);
             animation.Duration = 400;
-            animation.AnimationStart +=
-                (sender, e) =>
+            animation.AnimationStart += (sender, e) =>
             {
                 if (ViewModel.Panel.MenuIsOpen)
                     menu.Visibility = ViewStates.Visible;
             };
 
-            animation.AnimationEnd +=
-                (sender, e) =>
+            animation.AnimationEnd += (sender, e) =>
             {
                 if (!ViewModel.Panel.MenuIsOpen)
                 {
                     menu.Visibility = ViewStates.Gone;
+                    _bigButton.Visibility = ViewStates.Gone;
                 }
                 else
                 {
-
+                    _bigButton.Visibility = ViewStates.Visible;
                 }
             };
 
             mainLayout.StartAnimation(animation);
-
         }
 
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_Home);
             ViewModel.OnViewLoaded();
+            _bigButton = (Button) FindViewById(Resource.Id.BigButtonTransparent);
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
             _orderEdit = (OrderEdit) FindViewById(Resource.Id.orderEdit);
             _appBar = (AppBar) FindViewById(Resource.Id.appBar);
             _frameLayout = (FrameLayout) FindViewById(Resource.Id.RelInnerLayout);
+
+            // attach big invisible button to the OrderOptions to be able to pass it to the address text box and clear focus when clicking outside
+            _orderOptions.BigInvisibleButton = _bigButton;
 
             ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
             ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = WindowManager.DefaultDisplay.Height;

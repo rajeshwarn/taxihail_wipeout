@@ -26,13 +26,6 @@
                 android:layout_width="fill_parent"
                 android:gravity="center"
                 android:layout_height="fill_parent">
-                <Button
-                    android:id="@+id/BigButtonTransparent"
-                    android:background="@color/transparent"
-                    android:layout_width="50dip"
-                    android:layout_height="fill_parent"
-                    android:layout_gravity="left"
-                    local:MvxBind="Visibility Panel.MenuIsOpen, Converter=Visibility" />
                 <fragment
                     class="apcurium.mk.booking.mobile.client.controls.TouchableMap"
                     local:mapType="normal"
@@ -111,6 +104,12 @@
                     android:layout_marginTop="0dp"
                     android:layout_marginLeft="10000dp"
                     android:id="@+id/orderEdit" />
+                <Button
+                    android:id="@+id/BigButtonTransparent"
+                    android:visibility="gone"
+                    android:background="@null"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" />
             </FrameLayout>
             <View
                 android:background="#767676"
