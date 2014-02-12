@@ -181,6 +181,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_bookingSettingsSubject.OnNext(bookingSettings);
 		}
 
+		public void SetPickupAddress(Address address)
+		{
+			_pickupAddressSubject.OnNext(address);
+		}
+
 		public IObservable<Address> GetAndObservePickupAddress()
 		{
 			return _pickupAddressSubject;
