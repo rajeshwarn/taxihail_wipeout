@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
@@ -43,11 +44,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             }
         }
 
-        public AsyncCommand SignInCommand
+        public ICommand SignInCommand
         {
             get
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                                       {
 										 this.Services().Account.ClearCache();
                                           SignIn();

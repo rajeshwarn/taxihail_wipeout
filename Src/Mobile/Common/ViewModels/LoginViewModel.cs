@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				return GetCommand(async () =>
+				return this.GetCommand(async () =>
                 {
                     this.Services().Account.ClearCache();
 					await SignIn();
@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() => DoSignUp());
+                return this.GetCommand(() => DoSignUp());
             }
         }
 
@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() => ShowSubViewModel<ResetPasswordViewModel, string>(null, email =>
+                return this.GetCommand(() => ShowSubViewModel<ResetPasswordViewModel, string>(null, email =>
                     {
                         if (email.HasValue())
                         {
@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {
                     if (_twitterService.IsConnected)
                     {
@@ -144,7 +144,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(async () =>
+                return this.GetCommand(async () =>
                 {
                     try
                     {

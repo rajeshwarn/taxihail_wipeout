@@ -194,7 +194,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             _pickupCenterPin.Frame = 
                 _dropoffCenterPin.Frame = 
-                    new RectangleF((this.Bounds.Width / 2) - (pinSize.Width / 2), ((this.Bounds.Height / 2) - pinSize.Height), pinSize.Width, pinSize.Height);
+                    new RectangleF((this.Bounds.Width / 2) - (pinSize.Width / 2), (((this.Bounds.Height / 2) - pinSize.Height) - 3), pinSize.Width, pinSize.Height);
 
             _pickupCenterPin.BackgroundColor = UIColor.Clear;
             _pickupCenterPin.ContentMode = UIViewContentMode.Center;

@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Bind(btnBook)
                 .For(v => v.Command)
-                .To(vm => vm.SetPickupDateAndBook);
+                .To(vm => vm.SetPickupDateAndReviewOrder);
 
             set.Bind(btnBookLater)
                 .For(v => v.Command)

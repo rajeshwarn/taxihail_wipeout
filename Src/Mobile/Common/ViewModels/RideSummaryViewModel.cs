@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public ICommand SendReceiptCommand
         {
 			get {
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				{
 					this.Services().Booking.SendReceipt(Order.Id);
                     ReceiptSent = true;
@@ -100,7 +100,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public ICommand NavigateToRatingPage
         {
 			get {
-				return GetCommand(() => 
+				return this.GetCommand(() => 
 					ShowSubViewModel<BookRatingViewModel, OrderRated>(
 						new 
 						{
@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public ICommand ResendConfirmationCommand
         {
             get {
-				return GetCommand(() =>
+				return this.GetCommand(() =>
                 {
 					this.Services().Message.ShowMessage("Confirmation", this.Services().Localize["ConfirmationOfPaymentSent"]);
                     this.Services().Payment.ResendConfirmationToDriver(Order.Id);
@@ -124,7 +124,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public ICommand PayCommand
         {
 			get {
-				return GetCommand(() => 
+				return this.GetCommand(() => 
 					ShowViewModel<ConfirmCarNumberViewModel>(
 					    new 
 					    { 

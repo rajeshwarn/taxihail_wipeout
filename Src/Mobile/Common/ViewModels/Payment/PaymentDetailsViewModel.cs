@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -120,11 +121,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             return CreditCards.Select(x=> new ListItem<Guid> { Id = x.CreditCardId, Display = x.FriendlyName }).ToArray();
         }
 
-        public AsyncCommand NavigateToCreditCardsList
+		public ICommand NavigateToCreditCardsList
         {
 			get 
 			{
-			    return GetCommand (()=>
+			    return this.GetCommand (()=>
 				{
 					if(CreditCards.Count == 0)
 					{

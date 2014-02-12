@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Common;
 using System.Threading;
 using Cirrious.MvvmCross.ViewModels;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -234,10 +235,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public AsyncCommand CallTaxi
+		public ICommand CallTaxi
         {
             get { 
-				return GetCommand(() =>
+				return this.GetCommand(() =>
                 {
                     if (!string.IsNullOrEmpty(OrderStatusDetail.DriverInfos.MobilePhone))
                     {
@@ -428,10 +429,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		#region Commands
 
-        public AsyncCommand NewRide
+		public ICommand NewRide
         {
             get {
-                return GetCommand(() => this.Services().Message.ShowMessage(
+                return this.GetCommand(() => this.Services().Message.ShowMessage(
                     this.Services().Localize["StatusNewRideButton"], 
                     this.Services().Localize["StatusConfirmNewBooking"],
                     this.Services().Localize["YesButton"], 
@@ -443,10 +444,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand CancelOrder
+		public ICommand CancelOrder
         {
             get {
-                return GetCommand (() =>
+                return this.GetCommand (() =>
                 {
 				    if ((OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Done) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded)) {
                         this.Services().Message.ShowMessage(this.Services().Localize["CannotCancelOrderTitle"], this.Services().Localize["CannotCancelOrderMessage"]);
@@ -484,11 +485,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand PayForOrderCommand
+		public ICommand PayForOrderCommand
         {
             get
             {
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {
 #if DEBUG
 #else
@@ -516,10 +517,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand CallCompany
+		public ICommand CallCompany
         {
             get {
-                return GetCommand (() =>
+                return this.GetCommand (() =>
                 {
                     this.Services().Message.ShowMessage(string.Empty,
 												Settings.DefaultPhoneNumberDisplay,
@@ -531,11 +532,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public AsyncCommand ResendConfirmationToDriver
+		public ICommand ResendConfirmationToDriver
 		{
 			get
 			{
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 					{
 						if (this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue)
 						{
@@ -545,11 +546,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public AsyncCommand Unpair
+		public ICommand Unpair
 		{
 			get
 			{
-				return GetCommand(async () =>
+				return this.GetCommand(async () =>
 					{
 						using(this.Services().Message.ShowProgress())
 						{
