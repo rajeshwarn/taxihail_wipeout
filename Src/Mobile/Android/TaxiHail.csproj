@@ -553,7 +553,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\unhappy.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\unhappy_selected.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\vehicle.png" />
-    <AndroidResource Include="Resources\Layout\Control_OrderReview.axml" />
+    <AndroidResource Include="Resources\Layout\SubView_OrderReview.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

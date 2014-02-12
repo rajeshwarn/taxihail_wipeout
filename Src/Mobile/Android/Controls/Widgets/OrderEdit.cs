@@ -9,6 +9,7 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using Android.Widget;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -16,14 +17,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         private IAppSettings Settings;
 
-        private EditText txtName;
-        private EditText txtPhone;
-        private EditText txtPassengers;
-        private EditText txtLargeBags;
-        private EditText txtApartment;
-        private EditText txtEntryCode;
-        private EditTextSpinner txtVehicleType;
-        private EditTextSpinner txtChargeType;
+        private TextView _lblName;
+        private TextView _lblPhone;
+        private TextView _lblPassengers;
+        private EditText _txtName;
+        private EditText _txtPhone;
+        private EditText _txtPassengers;
+        private EditText _txtLargeBags;
+        private EditText _txtApartment;
+        private EditText _txtEntryCode;
+        private EditTextSpinner _txtVehicleType;
+        private EditTextSpinner _txtChargeType;
 
         public OrderEdit(Context context, IAttributeSet attrs) : base(Resource.Layout.SubView_OrderEdit, context, attrs)
         {
@@ -31,86 +35,93 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             this.DelayBind(() => 
                 {
-                    txtName = Content.FindViewById<EditText>(Resource.Id.txtName);
-                    txtPhone = Content.FindViewById<EditText>(Resource.Id.txtPhone);
-                    txtPassengers = Content.FindViewById<EditText>(Resource.Id.txtPassengers);
-//                    txtLargeBags = Content.FindViewById<EditText>(Resource.Id.txtLargeBags);
-                    txtApartment = Content.FindViewById<EditText>(Resource.Id.txtApartment);
-                    txtEntryCode = Content.FindViewById<EditText>(Resource.Id.txtEntryCode);
-                    txtVehicleType = Content.FindViewById<EditTextSpinner>(Resource.Id.txtVehicleType);
-                    txtChargeType = Content.FindViewById<EditTextSpinner>(Resource.Id.txtChargeType);
+                    _lblName = Content.FindViewById<TextView>(Resource.Id.lblName);
+                    _lblPhone = Content.FindViewById<TextView>(Resource.Id.lblPhone);
+                    _lblPassengers = Content.FindViewById<TextView>(Resource.Id.lblPassengers);
+                    _txtName = Content.FindViewById<EditText>(Resource.Id.txtName);
+                    _txtPhone = Content.FindViewById<EditText>(Resource.Id.txtPhone);
+                    _txtPassengers = Content.FindViewById<EditText>(Resource.Id.txtPassengers);
+//                    _txtLargeBags = Content.FindViewById<EditText>(Resource.Id.txtLargeBags);
+                    _txtApartment = Content.FindViewById<EditText>(Resource.Id.txtApartment);
+                    _txtEntryCode = Content.FindViewById<EditText>(Resource.Id.txtEntryCode);
+                    _txtVehicleType = Content.FindViewById<EditTextSpinner>(Resource.Id.txtVehicleType);
+                    _txtChargeType = Content.FindViewById<EditTextSpinner>(Resource.Id.txtChargeType);
 
                     InitializeBinding();
                 });
         }
 
+        private OrderEditViewModel ViewModel { get { return (OrderEditViewModel)DataContext; } }
+
         private void InitializeBinding()
         {
-//            if (!Settings.Data.ShowPassengerName)
-//            {
-//                lblName.Maybe(x => x.RemoveFromSuperview());
-//                txtName.Maybe(x => x.RemoveFromSuperview());
-//            }
-//
-//            if (!Settings.Data.ShowPassengerPhone)
-//            {
-//                lblPhone.Maybe(x => x.RemoveFromSuperview());
-//                txtPhone.Maybe(x => x.RemoveFromSuperview());
-//            }
-//
-//            if (!Settings.Data.ShowPassengerNumber)
-//            {
-//                lblPassengers.Maybe(x => x.RemoveFromSuperview());
-//                txtPassengers.Maybe(x => x.RemoveFromSuperview());
-//            }
+            if (!Settings.Data.ShowPassengerName)
+            {
+                _lblName.Maybe(x => x.Visibility = ViewStates.Gone);
+                _txtName.Maybe(x => x.Visibility = ViewStates.Gone);
+            }
+
+            if (!Settings.Data.ShowPassengerPhone)
+            {
+                _lblPhone.Maybe(x => x.Visibility = ViewStates.Gone);
+                _txtPhone.Maybe(x => x.Visibility = ViewStates.Gone);
+            }
+
+            if (!Settings.Data.ShowPassengerNumber)
+            {
+                _lblPassengers.Maybe(x => x.Visibility = ViewStates.Gone);
+                _txtPassengers.Maybe(x => x.Visibility = ViewStates.Gone);
+            }
+
+            var test = ViewModel.BookingSettings.Name;
 
             var set = this.CreateBindingSet<OrderEdit, OrderEditViewModel> ();
 
-            set.BindSafe(txtName)
+            set.BindSafe(_txtName)
+                .For(v => v.Text)
                 .To(vm => vm.BookingSettings.Name);
 
-            set.BindSafe(txtPhone)
+            set.BindSafe(_txtPhone)
+                .For(v => v.Text)
                 .To(vm => vm.BookingSettings.Phone);
 
-            set.BindSafe(txtPassengers)
+            set.BindSafe(_txtPassengers)
+                .For(v => v.Text)
                 .To(vm => vm.BookingSettings.Passengers);
 
-            set.BindSafe(txtLargeBags)
-                .To(vm => vm.BookingSettings.LargeBags);
+//            set.BindSafe(_txtLargeBags)
+//                .For(v => v.Text)
+//                .To(vm => vm.BookingSettings.LargeBags);
 
-            set.BindSafe(txtApartment)
+            set.BindSafe(_txtApartment)
+                .For(v => v.Text)
                 .To(vm => vm.PickupAddress.Apartment);
 
-            set.BindSafe(txtEntryCode)
+            set.BindSafe(_txtEntryCode)
+                .For(v => v.Text)
                 .To(vm => vm.PickupAddress.RingCode);
 
-            set.BindSafe(txtVehicleType)
+            set.BindSafe(_txtVehicleType)
                 .For("Text")
                 .To(vm => vm.VehicleTypeName);
+            set.BindSafe(_txtVehicleType)
+                .For("Data")
+                .To(vm => vm.Vehicles);
+            set.BindSafe(_txtVehicleType)
+                .For("SelectedItem")
+                .To(vm => vm.VehicleTypeId);
 
-            set.BindSafe(txtChargeType)
+            set.BindSafe(_txtChargeType)
                 .For("Text")
                 .To(vm => vm.ChargeTypeName);
+            set.BindSafe(_txtChargeType)
+                .For("Data")
+                .To(vm => vm.ChargeTypes);
+            set.BindSafe(_txtChargeType)
+                .For("SelectedItem")
+                .To(vm => vm.ChargeTypeId);
 
             set.Apply();
-        }
-
-        protected override void OnFinishInflate()
-        {
-            base.OnFinishInflate();
-            var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
-
-            var isThriev = Settings.Data.ApplicationName == "Thriev";
-
-            View layout;
-            if (isThriev)
-            {
-//                layout = inflater.Inflate(Resource.Layout.SubView_OrderEdit_Thriev, this, true);
-            }
-            else
-            {
-                layout = inflater.Inflate(Resource.Layout.SubView_OrderEdit, this, true);
-            }
         }
     }
 }

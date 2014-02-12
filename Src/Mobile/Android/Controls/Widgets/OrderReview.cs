@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {    
         private IAppSettings _settings;
 
-        public OrderReview(Context context, IAttributeSet attrs) : base (Resource.Layout.Control_OrderReview, context, attrs)
+        public OrderReview(Context context, IAttributeSet attrs) : base (Resource.Layout.SubView_OrderReview, context, attrs)
         {
             _settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
 
@@ -49,8 +49,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void InitializeBinding()
         {
-
-
             var set = this.CreateBindingSet<OrderReview, OrderReviewViewModel>();
 
             set.Bind(_lblName)
