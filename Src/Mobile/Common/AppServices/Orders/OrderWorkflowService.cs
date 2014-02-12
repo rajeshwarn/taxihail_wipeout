@@ -117,7 +117,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
         public async Task SetAddressToCoordinate(Position userMapBoundsCoordinate, CancellationToken cancellationToken)
 		{
             var address = await SearchAddressForCoordinate(userMapBoundsCoordinate);
-            cancellationToken.ThrowIfCancellationRequested();
+			address.Latitude = userMapBoundsCoordinate.Latitude;
+			address.Longitude = userMapBoundsCoordinate.Longitude;
+			cancellationToken.ThrowIfCancellationRequested();
 			await SetAddressToCurrentSelection(address);
 		}
 
