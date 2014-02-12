@@ -32,9 +32,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private UIImageView _dropoffCenterPin;
         private List<AddressAnnotation> _availableVehicleAnnotations = new List<AddressAnnotation> ();
         private TouchGesture _gesture;
-        private ICommand _userMovedMap;
-
-        private bool UseThemeColorForPickupAndDestinationMapIcons;
 
         public OrderMapView(IntPtr handle)
             :base(handle)
@@ -115,7 +112,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 addressType,
                 string.Empty,
                 string.Empty,
-                UseThemeColorForPickupAndDestinationMapIcons);
+                useThemeColorForPickupAndDestinationMapIcons);
         }
 
         private Address _pickupAddress;
@@ -351,7 +348,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                      ? AddressAnnotationType.NearbyTaxiCluster 
                                      : AddressAnnotationType.NearbyTaxi;
 
-                var vehicleAnnotation = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), annotationType, string.Empty, string.Empty, UseThemeColorForPickupAndDestinationMapIcons);
+                var vehicleAnnotation = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), annotationType, string.Empty, string.Empty, _useThemeColorForPickupAndDestinationMapIcons);
                 AddAnnotation (vehicleAnnotation);
                 _availableVehicleAnnotations.Add (vehicleAnnotation);
             }

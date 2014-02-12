@@ -162,7 +162,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		private MapBounds GetMapBoundsFromCoordinateAndDelta(Position coordinate, double deltaLatitude, double deltaLongitude)
+		public static MapBounds GetMapBoundsFromCoordinateAndDelta(Position coordinate, double deltaLatitude, double deltaLongitude)
 		{
 			return new MapBounds()
 			{
@@ -180,18 +180,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return this.GetCommand(() =>
 				{
 					Position pos = new Position();
+					Address currentAddress = new Address();					
+
 					if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
 					{
-						pos = new Position() { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
+						currentAddress = PickupAddress;						
 					}
 					else if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
 					{
-						pos = new Position() { Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
+						currentAddress = DestinationAddress;						
 					}
-					
+							
+					var nearbyAddress =	this.Services().Account.FindInAccountAddresses(currentAddress.Latitude, currentAddress.Longitude);
+					if (nearbyAddress != null)
+					{
+						currentAddress = nearbyAddress;
+					}
+
+					pos = new Position() { Latitude = currentAddress.Latitude, Longitude = currentAddress.Longitude };
 					MapBounds = GetMapBoundsFromCoordinateAndDelta(pos, 0.002d, 0.002d);
 				});
 			}
+		}
+
+		public static Position PositionFromAddress(Address address)
+		{
+			return new Position() { Latitude = address.Latitude, Longitude = address.Longitude };
 		}
 
 		public class CancellableCommand<TParam>: ICommand
