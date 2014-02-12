@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				{
 					_orderWorkflowService.SetBookingSettings(BookingSettings);
 					_orderWorkflowService.SetPickupAddress(PickupAddress);
@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return GetCommand(async () =>
+				return this.GetCommand(async () =>
 				{
 					var bookingSettings = await _orderWorkflowService.GetAndObserveBookingSettings().Take(1).ToTask();
 					var pickupAddress = await _orderWorkflowService.GetAndObservePickupAddress().Take(1).ToTask();

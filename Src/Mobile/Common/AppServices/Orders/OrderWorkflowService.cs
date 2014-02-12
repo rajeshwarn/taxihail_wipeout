@@ -12,9 +12,9 @@ using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Data;
-using System.Threading;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -176,6 +176,36 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
+		public async Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder()
+		{
+			CreateOrder order = await GetOrder();
+
+			var orderStatus = await _bookingService.CreateOrder(order);
+
+			if (!orderStatus.IBSOrderId.HasValue || !(orderStatus.IBSOrderId > 0))
+			{
+				//TODO: Clarify. When this can happen?
+				throw new Exception("No IbsOrderId, something went wrong while creating the order");
+			}
+
+			var orderCreated = new Order
+			{
+				CreatedDate = DateTime.Now, 
+				DropOffAddress = order.DropOffAddress, 
+				IBSOrderId = orderStatus.IBSOrderId, 
+				Id = order.Id, PickupAddress = order.PickupAddress,
+				Note = order.Note, 
+				PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now,
+				Settings = order.Settings
+			};
+
+			PrepareForNewOrder();
+
+			// TODO: Refactor so we don't have to return two distinct objects
+			return Tuple.Create(orderCreated, orderStatus);
+
+		}
+
 		public async Task SetBookingSettings(BookingSettings bookingSettings)
 		{
 			_bookingSettingsSubject.OnNext(bookingSettings);
@@ -273,6 +303,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             _estimatedFareSubject.OnNext(estimatedFareString);
 		}
 
+		private void PrepareForNewOrder()
+		{
+			_noteToDriver = null;
+			_pickupAddressSubject.OnNext(new Address());
+			_destinationAddressSubject.OnNext(new Address());
+			_addressSelectionModeSubject.OnNext(AddressSelectionMode.PickupSelection);
+			_pickupDateSubject.OnNext(null);
+			_bookingSettingsSubject.OnNext(_accountService.CurrentAccount.Settings);
+			_estimatedFareSubject.OnNext(_localize["NoFareText"]);
+		}
+
 		public void SetNoteToDriver(string text)
 		{
 			_noteToDriver = text;
@@ -301,6 +342,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
 			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
 			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
+			order.Note = _noteToDriver;
 
 			return order;
 		}

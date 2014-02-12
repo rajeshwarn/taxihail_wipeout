@@ -1,6 +1,7 @@
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Extensions;
 using System;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -53,11 +54,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						&& NewPasswordIsConfirmed; }
 		}
 
-		public AsyncCommand UpdateCommand
+		public ICommand UpdateCommand
 		{
 			get
 			{
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				                  {
 					if (!CanUpdatePassword)
 					{

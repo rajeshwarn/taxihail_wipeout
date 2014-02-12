@@ -2,17 +2,20 @@ using System;
 using System.Text.RegularExpressions;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using System.Windows.Input;
+
+
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class ResetPasswordViewModel : BaseSubViewModel<string>
 	{
 		public string Email { get; set; }
 
-		public AsyncCommand ResetPassword
+		public ICommand ResetPassword
 		{
 			get
 			{
-                return GetCommand(() =>
+                return this.GetCommand(() =>
                 {
 					if (!IsEmail(Email))
 					{

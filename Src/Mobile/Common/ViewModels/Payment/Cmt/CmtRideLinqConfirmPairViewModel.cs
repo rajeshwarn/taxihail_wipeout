@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 		public ICommand ConfirmPayment
 		{
 			get {
-				return GetCommand (async () =>
+				return this.GetCommand (async () =>
 					{         
 						using(this.Services().Message.ShowProgress())
 						{   
@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 		{
 			get
 			{
-				return GetCommand(() => ShowSubViewModel<CmtRideLinqChangePaymentViewModel, PaymentInformation>(
+				return this.GetCommand(() => ShowSubViewModel<CmtRideLinqChangePaymentViewModel, PaymentInformation>(
 				    new
 				    {
 				        currentPaymentInformation = new PaymentInformation
@@ -130,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 		{
 			get
 			{
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 					{
 						this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id, CmtRideLinqPairingState.Canceled);
 						Close(this);                

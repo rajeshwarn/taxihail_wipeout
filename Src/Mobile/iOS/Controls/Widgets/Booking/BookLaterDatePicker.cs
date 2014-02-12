@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
 
             set.Bind()
                 .For(v => v.Command)
-                .To(vm => vm.SetPickupDateAndBook);
+                .To(vm => vm.SetPickupDateAndReviewOrder);
 
             set.Apply();
         }

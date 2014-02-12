@@ -280,6 +280,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 mapStatus.AddressSelectionMode = AddressSelectionMode.None;
 
 				UpdateTopSlidingStatus("OrderStatusDetail"); //initial loading
+                var statusLineDivider = Line.CreateHorizontal(320.0f, UIColor.Black.ColorWithAlpha(0.35f));
+                bottomBar.AddSubview(statusLineDivider);
             
             } catch (Exception ex) {
                 Logger.LogError (ex);

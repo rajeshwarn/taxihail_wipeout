@@ -2,6 +2,7 @@ using System;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Extensions;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
@@ -25,11 +26,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             get { return IBSOrderId.ToString(); }
         }
 
-        public AsyncCommand CancelOrder
+        public ICommand CancelOrder
         {
             get
             {
-				return GetCommand(() => this.Services().MessengerHub.Publish(new OrderDeleted(this, Id, null)));
+				return this.GetCommand(() => this.Services().MessengerHub.Publish(new OrderDeleted(this, Id, null)));
             }
         }
 

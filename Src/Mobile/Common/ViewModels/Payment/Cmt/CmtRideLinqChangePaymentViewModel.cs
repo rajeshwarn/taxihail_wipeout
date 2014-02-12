@@ -19,11 +19,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 		public PaymentInformation DefaultPaymentInformations { get; set ; }
 		public PaymentDetailsViewModel PaymentPreferences { get; private set; }
 
-		public AsyncCommand CancelCommand
+		public ICommand CancelCommand
         {
             get
             {
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				{
 					ReturnResult(new PaymentInformation
 					{
@@ -34,11 +34,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
             }
         }
 
-		public AsyncCommand SaveCommand
+		public ICommand SaveCommand
         {
             get
             {
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				{
                     if (this.Services().Account.CurrentAccount.DefaultCreditCard == null)
 					{

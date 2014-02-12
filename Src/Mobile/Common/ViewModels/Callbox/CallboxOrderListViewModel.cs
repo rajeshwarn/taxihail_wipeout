@@ -12,6 +12,7 @@ using apcurium.MK.Common.Extensions;
 using System.Threading.Tasks;
 using System.Threading;
 using apcurium.MK.Booking.Mobile.Extensions;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
@@ -162,22 +163,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 			_isClosed = true;
 		}
 
-		public AsyncCommand CallTaxi
+        public ICommand CallTaxi
 		{
 			get
 			{
-				return GetCommand(() => this.Services().Message.ShowEditTextDialog(this.Services().Localize["BookTaxiTitle"],
+				return this.GetCommand(() => this.Services().Message.ShowEditTextDialog(this.Services().Localize["BookTaxiTitle"],
                     this.Services().Localize["BookTaxiPassengerName"],
                     this.Services().Localize["Ok"], 
 					CreateOrder));
 			}
 		}
 
-        public AsyncCommand<Guid> CancelOrder
+        public ICommand CancelOrder
 		{
 			get
 			{
-				return GetCommand<Guid>(orderId =>
+				return this.GetCommand<Guid>(orderId =>
                     this.Services().Message.ShowMessage(this.Services().Localize["CancelOrderTitle"],
                         this.Services().Localize["CancelOrderMessage"],
                         this.Services().Localize["Yes"], () => 

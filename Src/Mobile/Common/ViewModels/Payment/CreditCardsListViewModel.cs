@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
 using TinyMessenger;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -97,11 +98,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             });
         }
 
-        public AsyncCommand<CreditCardViewModel> NavigateToAddOrSelect
+		public ICommand NavigateToAddOrSelect
         {
             get
             {
-                return GetCommand<CreditCardViewModel>(creditCard =>
+                return this.GetCommand<CreditCardViewModel>(creditCard =>
                 {
                     if (creditCard.IsAddNew)
                     {
@@ -115,11 +116,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-        public AsyncCommand NavigateToAddCreditCard
+		public ICommand NavigateToAddCreditCard
         {
             get
             {
-				return GetCommand(() => ShowSubViewModel<CreditCardAddViewModel,CreditCardInfos>(null, newCreditCard =>
+				return this.GetCommand(() => ShowSubViewModel<CreditCardAddViewModel,CreditCardInfos>(null, newCreditCard =>
                 {
                     InvokeOnMainThread(()=>
                     {
@@ -143,11 +144,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-        public AsyncCommand<Guid> SelectCreditCardAndBackToSettings
+		public ICommand SelectCreditCardAndBackToSettings
         {
             get
             {
-                return GetCommand<Guid>(ReturnResult);
+				return this.GetCommand<Guid>(guid => ReturnResult(guid));
             }
         }
     }

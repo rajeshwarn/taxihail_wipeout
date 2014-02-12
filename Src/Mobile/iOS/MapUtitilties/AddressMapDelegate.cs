@@ -44,7 +44,14 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 		{
 			if( _regionMovedActivated )
 			{
-                ((OrderMapView)mapView).OnRegionChanged(null, null);
+                if (mapView is OrderMapView)
+                {
+                    ((OrderMapView)mapView).OnRegionChanged(null, null);
+                }else{
+                    //TODO remove when status is migrated to new map
+                    ((TouchMap)mapView).OnRegionChanged();
+                }
+
 			}
 		}
 	}
