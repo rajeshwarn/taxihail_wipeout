@@ -325,6 +325,7 @@
     <Compile Include="PresentationHints\ChangeStatePresentationHint.cs" />
     <Compile Include="Extensions\MvxNavigatingObjectExtensions.cs" />
     <Compile Include="ViewModels\Orders\OrderEditViewModel.cs" />
+    <Compile Include="ViewModels\Orders\AddressPickerViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

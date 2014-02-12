@@ -490,6 +490,10 @@
       <DependentUpon>OrderEditView.cs</DependentUpon>
     </Compile>
     <Compile Include="Style\FontName.cs" />
+    <Compile Include="Views\AddressPicker\AddressPickerView.cs" />
+    <Compile Include="Views\AddressPicker\GroupedAddressTableViewSource.cs" />
+    <Compile Include="Views\AddressPicker\TouchTableView.cs" />
+    <Compile Include="Views\AddressPicker\BindableCommandTableViewSource.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -727,6 +731,8 @@
     <BundleResource Include="Resources\tutorial_screen07%402x.png" />
     <BundleResource Include="Resources\tutorial_screen08.png" />
     <BundleResource Include="Resources\tutorial_screen08%402x.png" />
+    <BundleResource Include="Resources\poweredby.png" />
+    <BundleResource Include="Resources\poweredByGoogle.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
@@ -749,6 +755,7 @@
     <Folder Include="Controls\Behavior\" />
     <Folder Include="Controls\Widgets\Booking\" />
     <Folder Include="Views\Order\" />
+    <Folder Include="Views\AddressPicker\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Style\Theme.xml">

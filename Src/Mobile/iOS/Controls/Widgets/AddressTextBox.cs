@@ -15,7 +15,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {        
         private bool _isInStreetNumberEditMode;
 
-        public event Action AddressClicked;
+        public event EventHandler AddressClicked;
+
         public Action<string,string> AddressUpdated;
 
         private FlatTextField StreetNumberTextView { get; set; }
@@ -63,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             AddressButton.TouchDown += (sender, e) => {
                 if(!IsReadOnly && AddressClicked!= null)
                 {
-                    AddressClicked();
+                    AddressClicked(this, null);
                 }
             };
             AddSubview(AddressButton);

@@ -57,6 +57,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged();
             }
         }
+
+		public AddressType Type { get; set; }
+
+		public bool IsSearchResult { get; set; }
+	}
+
+	public enum AddressType
+	{
+		Favorites,
+		Places,
+		History,
 	}
 }
 

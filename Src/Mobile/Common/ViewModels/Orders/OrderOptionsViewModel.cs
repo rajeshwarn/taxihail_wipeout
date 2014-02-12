@@ -4,6 +4,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -97,6 +98,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					_estimatedFare = value;
 					RaisePropertyChanged();
 				}
+			}
+		}
+
+		public ICommand ShowSearchAddress
+		{
+			get
+			{
+				return this.GetCommand(() => {
+					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.AddressSearch));
+				});
 			}
 		}
 	}
