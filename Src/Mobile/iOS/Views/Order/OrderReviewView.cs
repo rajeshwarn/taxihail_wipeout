@@ -109,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             });
         }
 
-        public override void ChangeState(ChangeStatePresentationHint hint)
+        public override void ChangeState(ChangePresentationHint hint)
         {
             base.ChangeState(hint);
             var hintHome = hint as HomeViewModelPresentationHint;

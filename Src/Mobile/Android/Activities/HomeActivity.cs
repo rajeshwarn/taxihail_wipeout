@@ -456,7 +456,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         }
 
 
-        void IChangePresentation.ChangeState(ChangeStatePresentationHint hint)
+        void IChangePresentation.ChangePresentation(ChangePresentationHint hint)
         {
             ChangeState((HomeViewModelPresentationHint)hint);
         }
