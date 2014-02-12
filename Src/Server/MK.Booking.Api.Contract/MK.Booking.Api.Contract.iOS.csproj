@@ -116,13 +116,9 @@
     <Compile Include="Requests\Messages\SendMessageToDriverRequest.cs" />
     <Compile Include="Requests\Messages\SendMessageToDriverResponse.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
-    <Compile Include="Requests\Payment\Braintree\CommitPreauthorizedPaymentBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\DeleteTokenizedCreditcardBraintreeRequest.cs" />
-    <Compile Include="Requests\Payment\Braintree\PreAuthorizePaymentBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
-    <Compile Include="Requests\Payment\Cmt\CommitPreauthorizedPaymentCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\DeleteTokenizedCreditcardCmtRequest.cs" />
-    <Compile Include="Requests\Payment\Cmt\PreAuthorizePaymentCmtRequest.cs" />
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
     <Compile Include="Resources\Payments\BasePaymentResponse.cs" />
     <Compile Include="Resources\Payments\CommitPreauthoriedPaymentResponse.cs" />

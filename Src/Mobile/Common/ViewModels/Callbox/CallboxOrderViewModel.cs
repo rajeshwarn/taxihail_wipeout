@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
     {
         public Guid Id { get; set; }
 
-        public int? IbsOrderId { get; set; }
+        public int? IBSOrderId { get; set; }
 
         public DateTime CreatedDate { get; set; }
 
@@ -20,9 +20,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             get {  return CreatedDate.ToShortTimeString(); }
         }
 
-        public string IbsOrderIdString
+        public string IBSOrderIdString
         {
-            get { return IbsOrderId.ToString(); }
+            get { return IBSOrderId.ToString(); }
         }
 
         public AsyncCommand CancelOrder
@@ -35,16 +35,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
         public bool CanBeCancelled
         {
-			get { return !this.Services().Booking.IsCallboxStatusCompleted(OrderStatus.IbsStatusId); }
+			get { return !this.Services().Booking.IsCallboxStatusCompleted(OrderStatus.IBSStatusId); }
         }
 
         public ColorEnum TextColor
         {
             get
             {
-				if (OrderStatus.IbsStatusId != null)
+				if (OrderStatus.IBSStatusId != null)
                 {
-					switch (OrderStatus.IbsStatusId)
+					switch (OrderStatus.IBSStatusId)
                     {
                         case "wosWAITING":
                             return ColorEnum.LightGray;
@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             get
             {
-				if (OrderStatus.IbsStatusId != null && OrderStatus.IbsStatusId.Equals("wosARRIVED"))
+				if (OrderStatus.IBSStatusId != null && OrderStatus.IBSStatusId.Equals("wosARRIVED"))
                 {
                     return 25;
                 }

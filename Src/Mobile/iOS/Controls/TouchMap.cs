@@ -283,7 +283,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         && value.VehicleLatitude.Value !=0
 // ReSharper restore CompareOfFloatsByEqualityOperator
                         && !string.IsNullOrEmpty(value.VehicleNumber) 
-						&& VehicleStatuses.ShowOnMapStatuses.Contains(value.IbsStatusId))
+						&& VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
                     {
                         coord = new CLLocationCoordinate2D( value.VehicleLatitude.Value , value.VehicleLongitude.Value );
                     }
