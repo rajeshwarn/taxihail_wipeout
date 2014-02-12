@@ -182,7 +182,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
             ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = WindowManager.DefaultDisplay.Height;
-
+            ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = WindowManager.DefaultDisplay.Width;
 
             // Creating a view controller for MapFragment
             Bundle mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
@@ -194,12 +194,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var binding = this.CreateBindingSet<HomeActivity, HomeViewModel>();
 
             binding.Bind(_mapFragment).For("DataContext").To(vm => vm.Map); // Map Fragment View Bindings
-            binding.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // Map OrderOptions View Bindings
-            binding.Bind(_orderEdit).For("DataContext").To(vm => vm.OrderEdit); // Map OrderEdit View Bindings
-            binding.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
-
-
+            binding.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // OrderOptions View Bindings
+            binding.Bind(_orderEdit).For("DataContext").To(vm => vm.OrderEdit); // OrderEdit View Bindings
             binding.Bind(_orderReview).For("DataContext").To(vm => vm.OrderReview); // OrderReview View Bindings
+            binding.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
 
             binding.Apply();
 

@@ -26,6 +26,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:id="@+id/lblName"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="5dip"
@@ -53,6 +54,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal">
                         <TextView
+                            android:id="@+id/lblPhone"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="5dip"
@@ -78,6 +80,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal">
                         <TextView
+                            android:id="@+id/lblPassengers"
                             style="@style/BlackTextLabel"
                             android:paddingBottom="6dp"
                             android:singleLine="true"
