@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                 lblVehicleNumber.Text = ((AddressAnnotation)Annotation).Subtitle;
                 AddSubview(lblVehicleNumber);
             }
-			CenterOffset = new PointF( 0, -Image.Size.Height/2);
+            CenterOffset = new PointF( 0, 0);
 		}
 		
 	}
