@@ -47,6 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private OrderEdit _orderEdit;
         private OrderOptions _orderOptions;
         private AppBar _appBar;
+        private FrameLayout _frameLayout;
         private HomeViewModelState _presentationState = HomeViewModelState.Initial;
 
         private int _menuWidth = 400;
@@ -177,7 +178,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
             _orderEdit = (OrderEdit) FindViewById(Resource.Id.orderEdit);
             _appBar = (AppBar) FindViewById(Resource.Id.appBar);
-
+            _frameLayout = (FrameLayout) FindViewById(Resource.Id.RelInnerLayout);
 
             ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
             ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = WindowManager.DefaultDisplay.Height;
@@ -319,17 +320,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                 var animation = new TranslateAnimation(0, 0, display.Height, 0);
 				animation.Duration = 600;
-				animation.Interpolator = new DecelerateInterpolator();				
+				animation.Interpolator = new DecelerateInterpolator();		
+                animation.AnimationStart += (sender, e) => 
+                {
+                    ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height = _frameLayout.Height - _orderOptions.Height;
+                };
                 animation.AnimationEnd += (object sender, Animation.AnimationEndEventArgs e) =>
                 {
-                    _orderEdit.Visibility = ViewStates.Gone;
-                    _orderReview.Visibility = ViewStates.Visible;;
-                    ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
+                    _orderReview.Visibility = ViewStates.Visible;
                     ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = _orderOptions.Height;
-                    ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = display.Width;
                 };
-                _orderReview.StartAnimation(animation);
-
 
                 var animation2 = new TranslateAnimation(((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin, display.Width, 0, 0);
                 animation2.Duration = 600;
@@ -337,15 +337,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 animation2.AnimationEnd += (object sender, Animation.AnimationEndEventArgs e) =>
                 {
                     _orderEdit.Visibility = ViewStates.Gone;
-                    _orderReview.Visibility = ViewStates.Visible;
-                    ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
                     ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = display.Width;
-
                 };
+
+                var animation3 = new TranslateAnimation(0, 0, ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin, 0);
+                animation3.Duration = 600;
+                animation3.Interpolator = new DecelerateInterpolator();
+                animation3.AnimationEnd += (object sender, Animation.AnimationEndEventArgs e) =>
+                {
+                    ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
+                };
+
+                _orderReview.StartAnimation(animation);
                 _orderEdit.StartAnimation(animation2);
-
-
-
+                _orderOptions.StartAnimation(animation3);
             }
             else if (hint.State == HomeViewModelState.Edit)
             {
@@ -353,22 +358,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 // Order Review: Hidden
                 // Order Edit: Visible
                 // Date Picker: Hidden
-                                                                     
-
-                var animation2 = new TranslateAnimation(display.Width, 0, 0, 0);
-                animation2.Duration = 600;
-                animation2.Interpolator = new DecelerateInterpolator();
-                animation2.AnimationEnd += (object sender, Animation.AnimationEndEventArgs e) =>
-                {
-                    _orderReview.Visibility = ViewStates.Gone;
-                    ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = 0;
-                    _orderEdit.Visibility = ViewStates.Visible;
-                    _orderEdit.BringToFront();
-                    _orderEdit.RequestFocus();
-                };
-                _orderEdit.StartAnimation(animation2);
-
-
 
                 var animation = new TranslateAnimation(0, 0, 0, display.Height);
                 animation.Duration = 600;
@@ -378,9 +367,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     _orderReview.Visibility = ViewStates.Gone;
                     ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = display.Height;
                 };
+
+                var animation2 = new TranslateAnimation(display.Width, 0, 0, 0);
+                animation2.Duration = 600;
+                animation2.Interpolator = new DecelerateInterpolator();
+                animation2.AnimationEnd += (object sender, Animation.AnimationEndEventArgs e) =>
+                {
+                    ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = 0;
+                    _orderEdit.Visibility = ViewStates.Visible;
+                    _orderEdit.BringToFront();
+                    _orderEdit.RequestFocus();
+                };
+
+                var animation3 = new TranslateAnimation(0, 0, 0, -display.Height);
+                animation3.Duration = 600;
+                animation3.Interpolator = new DecelerateInterpolator();
+                animation3.AnimationEnd += (object sender, Animation.AnimationEndEventArgs e) =>
+                {
+                    ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = -display.Height;
+                };
+
                 _orderReview.StartAnimation(animation);
-
-
+                _orderEdit.StartAnimation(animation2);
+                _orderOptions.StartAnimation(animation3);
             }
             else if(hint.State == HomeViewModelState.Initial)
             {
@@ -400,9 +409,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     _orderEdit.Visibility = ViewStates.Gone;
                     ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = display.Height;
                 };
-                _orderReview.StartAnimation(animation);
-
-
 
                 var animation2 = new TranslateAnimation(((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin, display.Width, 0, 0);
                 animation2.Duration = 600;
@@ -411,12 +417,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 animation2.AnimationEnd += (object sender, Animation.AnimationEndEventArgs e) =>
                 {
                     ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = display.Width;
-
                 };
+
+                _orderReview.StartAnimation(animation);
                 _orderEdit.StartAnimation(animation2);
-
-
-
 
                 SetSelectedOnBookLater(false);
             }
