@@ -75,8 +75,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				return GetCommand(() =>
 				{
 					_orderWorkflowService.SetBookingSettings(BookingSettings);
-					_orderWorkflowService.SetAddress(PickupAddress);
-
+					_orderWorkflowService.SetPickupAddress(PickupAddress);
 					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
 				});
 			}
