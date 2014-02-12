@@ -73,8 +73,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _txtPassengers.Maybe(x => x.Visibility = ViewStates.Gone);
             }
 
-            var test = ViewModel.BookingSettings.Name;
-
             var set = this.CreateBindingSet<OrderEdit, OrderEditViewModel> ();
 
             set.BindSafe(_txtName)
