@@ -32,9 +32,9 @@ namespace apcurium.MK.Booking.Api.Helpers
                 {
                     OrderId = orderId,
                     Status = OrderStatus.Created,
-                    IbsOrderId = 0,
-                    IbsStatusId = "",
-                    IbsStatusDescription = "Processing your order"
+                    IBSOrderId =  0,
+                    IBSStatusId = "",
+                    IBSStatusDescription = "Processing your order"
                 };
             }
 

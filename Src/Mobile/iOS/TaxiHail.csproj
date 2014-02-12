@@ -263,10 +263,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
-    <None Include="Assets\About_en.html" />
-    <None Include="Assets\About_fr.html" />
-    <None Include="Assets\Info.plist" />
-    <None Include="Assets\VerticalButtonBar\.DS_Store" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -275,7 +271,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Main.cs" />
-    <Compile Include="AppStyle.cs" />
     <Compile Include="MainWindow.xib.designer.cs">
       <DependentUpon>MainWindow.xib</DependentUpon>
     </Compile>
@@ -288,31 +283,13 @@
     <Compile Include="Helper\SerializerHelper.cs" />
     <Compile Include="Helper\NSDefaultHelper.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
-    <Compile Include="Controls\Background.cs" />
-    <Compile Include="Controls\GradientButton.cs" />
-    <Compile Include="AppButtons.cs" />
     <Compile Include="Cache\CacheService.cs" />
-    <Compile Include="Controls\TextField.cs" />
     <Compile Include="Extensions\LocationDataExtension.cs" />
-    <Compile Include="MonoTouchDialog\CustomRootElement.cs" />
-    <Compile Include="Controls\BottomBar.cs" />
     <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="Diagnostics\ErrorHandler.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
-    <Compile Include="Views\BookView.xib.cs">
-      <DependentUpon>BookView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Views\BookView.xib.designer.cs">
-      <DependentUpon>BookView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Setup.cs" />
     <Compile Include="PhonePresenter.cs" />
-    <Compile Include="Views\AddressSearchView.cs">
-      <DependentUpon>AddressSearchView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AddressSearchView.designer.cs">
-      <DependentUpon>AddressSearchView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Animations\SlideViewAnimation.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="Views\PanelMenuView.cs">
@@ -321,15 +298,11 @@
     <Compile Include="Views\PanelMenuView.designer.cs">
       <DependentUpon>PanelMenuView.xib</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TextProgressButton.cs" />
-    <Compile Include="Controls\SearchTextField.cs" />
     <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="MapUtitilties\AddressAnnotation.cs" />
     <Compile Include="MapUtitilties\AddressMapDelegate.cs" />
     <Compile Include="Controls\TouchGesture.cs" />
     <Compile Include="MapUtitilties\PinAnnotationView.cs" />
-    <Compile Include="Controls\DateTimePicker.cs" />
-    <Compile Include="Controls\ToastMessage.cs" />
     <Compile Include="PlatformIntegration\LocationService.cs" />
     <Compile Include="PlatformIntegration\LocationManagerDelegate.cs" />
     <Compile Include="Views\UpdatePasswordView.cs">
@@ -362,30 +335,17 @@
     <Compile Include="Views\TutorialView.designer.cs">
       <DependentUpon>TutorialView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\BookViewActionsView.cs" />
     <Compile Include="Views\RideSettingsView.cs" />
     <Compile Include="Views\RideSettingsView.designer.cs">
       <DependentUpon>RideSettingsView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ModalTextField.cs" />
     <Compile Include="Views\CreateAccountView.cs" />
     <Compile Include="Views\CreateAccountView.designer.cs">
       <DependentUpon>CreateAccountView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FormLabel.cs" />
     <Compile Include="Views\BaseViewController.cs" />
     <Compile Include="Extensions\UIResponderExtensions.cs" />
-    <Compile Include="Order\BookStreetNumberView.cs" />
-    <Compile Include="Order\BookStreetNumberView.designer.cs">
-      <DependentUpon>BookStreetNumberView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\ValignLabel.cs" />
-    <Compile Include="Views\ConfirmationView.xib.cs">
-      <DependentUpon>ConfirmationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ConfirmationView.xib.designer.cs">
-      <DependentUpon>ConfirmationView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Views\ResetPasswordView.designer.cs">
       <DependentUpon>ResetPasswordView.cs</DependentUpon>
     </Compile>
@@ -398,20 +358,13 @@
     <Compile Include="Views\CreditCardsListView.designer.cs">
       <DependentUpon>CreditCardsListView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TextFieldWithArrow.cs" />
-    <Compile Include="Controls\TextView.cs" />
     <Compile Include="PlatformIntegration\PushNotificationService.cs" />
     <Compile Include="Binding\MvxUITextViewTargetBinding.cs" />
-    <Compile Include="Controls\StackView.cs" />
     <Compile Include="Extensions\UIScrollViewerExtensions.cs" />
     <Compile Include="Extensions\Helpers\UIViewHelper.cs" />
     <Compile Include="Extensions\RectangleFExtensions.cs" />
     <Compile Include="Extensions\Helpers\Padding.cs" />
     <Compile Include="Extensions\Helpers\UIHelper.cs" />
-    <Compile Include="Views\BookEditInformation.cs" />
-    <Compile Include="Views\BookEditInformation.designer.cs">
-      <DependentUpon>BookEditInformation.cs</DependentUpon>
-    </Compile>
     <Compile Include="Extensions\UIViewPositioningExtensions.cs" />
     <Compile Include="Controls\Binding\CustomBindingsLoader.cs" />
     <Compile Include="Views\Payments\PayPalView.cs" />
@@ -440,7 +393,6 @@
     <Compile Include="Controls\Widgets\TaxiHailEntryElement.cs" />
     <Compile Include="Controls\Widgets\TaxiHailDialogViewController.cs" />
     <Compile Include="Controls\Widgets\RoundedCornerView.cs" />
-    <Compile Include="FontName.cs" />
     <Compile Include="Controls\Widgets\PanelMenuCell.cs">
       <DependentUpon>PanelMenuSource.cs</DependentUpon>
     </Compile>
@@ -537,6 +489,7 @@
     <Compile Include="Views\Order\OrderEditView.designer.cs">
       <DependentUpon>OrderEditView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Style\FontName.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -551,8 +504,6 @@
   <ItemGroup />
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" />
-    <InterfaceDefinition Include="Views\BookView.xib" />
-    <InterfaceDefinition Include="Views\AddressSearchView.xib" />
     <InterfaceDefinition Include="Views\PanelMenuView.xib" />
     <InterfaceDefinition Include="Views\UpdatePasswordView.xib" />
     <InterfaceDefinition Include="Views\LoginView.xib" />
@@ -561,15 +512,10 @@
     <InterfaceDefinition Include="Views\TutorialView.xib" />
     <InterfaceDefinition Include="Views\RideSettingsView.xib" />
     <InterfaceDefinition Include="Views\CreateAccountView.xib" />
-    <InterfaceDefinition Include="Views\ConfirmationView.xib" />
     <InterfaceDefinition Include="Views\ResetPasswordView.xib" />
-    <InterfaceDefinition Include="Order\BookStreetNumberView.xib" />
     <InterfaceDefinition Include="Views\CreditCardAddView.xib" />
     <InterfaceDefinition Include="Views\CreditCardsListView.xib" />
-    <InterfaceDefinition Include="Views\BookEditInformation.xib" />
     <InterfaceDefinition Include="Views\Payments\PayPalView.xib" />
-    <InterfaceDefinition Include="Views\ConfirmationView_Thriev.xib" />
-    <InterfaceDefinition Include="Views\BookEditInformation_Thriev.xib" />
     <InterfaceDefinition Include="Views\TermsAndConditionsView.xib" />
     <InterfaceDefinition Include="Views\RideSummaryView.xib" />
     <InterfaceDefinition Include="Views\AboutUsView.xib" />
@@ -591,119 +537,6 @@
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
     <Content Include="app%402x.png" />
-    <Content Include="Assets\Button\btnBookIt_en.png" />
-    <Content Include="Assets\Button\btnBookIt_en%402x.png" />
-    <Content Include="Assets\Button\btnBookIt_fr.png" />
-    <Content Include="Assets\Button\btnBookIt_fr%402x.png" />
-    <Content Include="Assets\Button\btnDest_off_en.png" />
-    <Content Include="Assets\Button\btnDest_off_en%402x.png" />
-    <Content Include="Assets\Button\btnDest_off_fr.png" />
-    <Content Include="Assets\Button\btnDest_off_fr%402x.png" />
-    <Content Include="Assets\Button\btnDest_on_en.png" />
-    <Content Include="Assets\Button\btnDest_on_en%402x.png" />
-    <Content Include="Assets\Button\btnDest_on_fr.png" />
-    <Content Include="Assets\Button\btnDest_on_fr%402x.png" />
-    <Content Include="Assets\Button\btnPickup_off_en.png" />
-    <Content Include="Assets\Button\btnPickup_off_en%402x.png" />
-    <Content Include="Assets\Button\btnPickup_off_fr.png" />
-    <Content Include="Assets\Button\btnPickup_off_fr%402x.png" />
-    <Content Include="Assets\Button\btnPickup_on_en.png" />
-    <Content Include="Assets\Button\btnPickup_on_en%402x.png" />
-    <Content Include="Assets\Button\btnPickup_on_fr.png" />
-    <Content Include="Assets\Button\btnPickup_on_fr%402x.png" />
-    <Content Include="Assets\VerticalButtonBar\rightArrow.png" />
-    <Content Include="Assets\VerticalButtonBar\rightArrow%402x.png" />
-    <Content Include="Assets\background.png" />
-    <Content Include="Assets\background%402x.png" />
-    <Content Include="Assets\background_full.png" />
-    <Content Include="Assets\background_full%402x.png" />
-    <Content Include="Assets\background_full_nologo.png" />
-    <Content Include="Assets\background_full_nologo%402x.png" />
-    <Content Include="Assets\location.png" />
-    <Content Include="Assets\location%402x.png" />
-    <Content Include="Assets\navBar.png" />
-    <Content Include="Assets\navBar%402x.png" />
-    <Content Include="Assets\Social\FB\login.png" />
-    <Content Include="Assets\Social\FB\login_down.png" />
-    <Content Include="Assets\Social\FB\logout.png" />
-    <Content Include="Assets\Social\FB\logout_down.png" />
-    <Content Include="Assets\Social\TW\login.png" />
-    <Content Include="Assets\Social\TW\login_down.png" />
-    <Content Include="Assets\Social\TW\logout.png" />
-    <Content Include="Assets\Social\TW\logout_down.png" />
-    <Content Include="Assets\Cells\rightArrow.png" />
-    <Content Include="Assets\Cells\rightArrow%402x.png" />
-    <Content Include="Assets\VerticalButtonBar\wheel.png" />
-    <Content Include="Assets\VerticalButtonBar\wheel%402x.png" />
-    <Content Include="Assets\rideStatusBarBackground.png" />
-    <Content Include="Assets\rideStatusBarBackground%402x.png" />
-    <Content Include="Assets\gpsRefreshIcon.png" />
-    <Content Include="Assets\gpsRefreshIcon%402x.png" />
-    <Content Include="Assets\bookLaterIcon.png" />
-    <Content Include="Assets\bookLaterIcon%402x.png" />
-    <Content Include="Assets\backPickupDestination.png" />
-    <Content Include="Assets\backPickupDestination%402x.png" />
-    <Content Include="Assets\Search\SearchIcon.png" />
-    <Content Include="Assets\Search\SearchIcon%402x.png" />
-    <Content Include="Assets\locationSelected.png" />
-    <Content Include="Assets\locationSelected%402x.png" />
-    <Content Include="Assets\settings.png" />
-    <Content Include="Assets\settings%402x.png" />
-    <Content Include="Assets\right_arrow.png" />
-    <Content Include="Assets\right_arrow%402x.png" />
-    <Content Include="Assets\pin_cab.png" />
-    <Content Include="Assets\pin_cab%402x.png" />
-    <Content Include="Assets\pin_destination.png" />
-    <Content Include="Assets\pin_destination%402x.png" />
-    <Content Include="Assets\pin_hail.png" />
-    <Content Include="Assets\pin_hail%402x.png" />
-    <Content Include="Assets\flag.png" />
-    <Content Include="Assets\flag%402x.png" />
-    <Content Include="Assets\hail.png" />
-    <Content Include="Assets\hail%402x.png" />
-    <Content Include="Assets\flag_selected.png" />
-    <Content Include="Assets\flag_selected%402x.png" />
-    <Content Include="Assets\hail_selected.png" />
-    <Content Include="Assets\hail_selected%402x.png" />
-    <Content Include="Assets\closeButton.png" />
-    <Content Include="Assets\closeButton%402x.png" />
-    <Content Include="Assets\Tutorial\tutorial_background.png" />
-    <Content Include="Assets\Tutorial\tutorial_screen01.png" />
-    <Content Include="Assets\Tutorial\tutorial_screen02.png" />
-    <Content Include="Assets\Tutorial\tutorial_screen03.png" />
-    <Content Include="Assets\Tutorial\tutorial_screen04.png" />
-    <Content Include="Assets\Tutorial\tutorial_screen05.png" />
-    <Content Include="Assets\Tutorial\tutorial_screen06.png" />
-    <Content Include="Assets\Tutorial\tutorial_screen07.png" />
-    <Content Include="Assets\Tutorial\tutorial_screen08.png" />
-    <Content Include="Assets\Tutorial\tutorial_screen01%402x.png" />
-    <Content Include="Assets\Tutorial\tutorial_screen02%402x.png" />
-    <Content Include="Assets\Tutorial\tutorial_screen03%402x.png" />
-    <Content Include="Assets\Tutorial\tutorial_screen04%402x.png" />
-    <Content Include="Assets\Tutorial\tutorial_screen05%402x.png" />
-    <Content Include="Assets\Tutorial\tutorial_screen06%402x.png" />
-    <Content Include="Assets\Tutorial\tutorial_screen07%402x.png" />
-    <Content Include="Assets\Tutorial\tutorial_screen08%402x.png" />
-    <Content Include="Assets\CreditCard\amex.png" />
-    <Content Include="Assets\CreditCard\amex%402x.png" />
-    <Content Include="Assets\CreditCard\mastercard.png" />
-    <Content Include="Assets\CreditCard\mastercard%402x.png" />
-    <Content Include="Assets\CreditCard\visa.png" />
-    <Content Include="Assets\CreditCard\visa%402x.png" />
-    <Content Include="Assets\CreditCard\delete_card_btn.png" />
-    <Content Include="Assets\CreditCard\delete_card_btn%402x.png" />
-    <Content Include="Assets\Cells\add_btn.png" />
-    <Content Include="Assets\Cells\add_btn%402x.png" />
-    <Content Include="Assets\phone.png" />
-    <Content Include="Assets\phone%402x.png" />
-    <Content Include="Assets\Search\SearchPlace.png" />
-    <Content Include="Assets\Search\SearchPlace%402x.png" />
-    <Content Include="Assets\Search\cancel.png" />
-    <Content Include="Assets\Search\cancel%402x.png" />
-    <Content Include="Assets\CreditCard\visa_electron.png" />
-    <Content Include="Assets\CreditCard\visa_electron%402x.png" />
-    <Content Include="Assets\nearby-cab%402x.png" />
-    <Content Include="Assets\nearby-cab.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
@@ -728,36 +561,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Assets\AppFont_Regular.otf" />
-    <BundleResource Include="Assets\AppFont_Bold.otf" />
-    <BundleResource Include="Assets\AppFont_Italic.otf" />
-    <BundleResource Include="Assets\AppFont_Medium.otf" />
-    <BundleResource Include="Assets\sliderGrayBar.png" />
-    <BundleResource Include="Assets\sliderHandle.png" />
-    <BundleResource Include="Assets\sliderYellowBar.png" />
-    <BundleResource Include="Assets\sliderGrayBar%402x.png" />
-    <BundleResource Include="Assets\sliderHandle%402x.png" />
-    <BundleResource Include="Assets\sliderYellowBar%402x.png" />
-    <BundleResource Include="Assets\sliderGrayBarBody.png" />
-    <BundleResource Include="Assets\sliderGrayBarBody%402x.png" />
-    <BundleResource Include="Assets\sliderYellowBarBody.png" />
-    <BundleResource Include="Assets\sliderYellowBarBody%402x.png" />
-    <BundleResource Include="Assets\CreditCard\paypal.png" />
-    <BundleResource Include="Assets\CreditCard\paypal%402x.png" />
-    <BundleResource Include="Assets\pin_cluster%402x.png" />
-    <BundleResource Include="Assets\pin_cluster.png" />
-    <BundleResource Include="Assets\CreditCard\credit_card_generic.png" />
-    <BundleResource Include="Assets\CreditCard\credit_card_generic%402x.png" />
-    <BundleResource Include="Assets\Social\TW\back.png" />
-    <BundleResource Include="Assets\Social\TW\back%402x.png" />
-    <BundleResource Include="Assets\Social\TW\forward.png" />
-    <BundleResource Include="Assets\Social\TW\forward%402x.png" />
-    <BundleResource Include="Assets\Social\FB\facebook-icon.png" />
-    <BundleResource Include="Assets\Social\FB\facebook-icon%402x.png" />
-    <BundleResource Include="Assets\Social\TW\twitter.png" />
-    <BundleResource Include="Assets\Social\TW\twitter%402x.png" />
-    <BundleResource Include="Assets\Logo.png" />
-    <BundleResource Include="Assets\Logo%402x.png" />
     <BundleResource Include="app.png" />
     <BundleResource Include="Resources\clearButton.png" />
     <BundleResource Include="Resources\left_arrow.png" />
@@ -891,6 +694,39 @@
     <BundleResource Include="Default.png" />
     <BundleResource Include="Default%402x.png" />
     <BundleResource Include="Default-568h%402x.png" />
+    <BundleResource Include="Resources\background.png" />
+    <BundleResource Include="Resources\background%402x.png" />
+    <BundleResource Include="Resources\backPickupDestination.png" />
+    <BundleResource Include="Resources\backPickupDestination%402x.png" />
+    <BundleResource Include="Resources\bookLaterIcon.png" />
+    <BundleResource Include="Resources\bookLaterIcon%402x.png" />
+    <BundleResource Include="Resources\closeButton.png" />
+    <BundleResource Include="Resources\closeButton%402x.png" />
+    <BundleResource Include="Resources\phone.png" />
+    <BundleResource Include="Resources\phone%402x.png" />
+    <BundleResource Include="Resources\rideStatusBarBackground.png" />
+    <BundleResource Include="Resources\rideStatusBarBackground%402x.png" />
+    <BundleResource Include="Resources\back.png" />
+    <BundleResource Include="Resources\back%402x.png" />
+    <BundleResource Include="Resources\forward.png" />
+    <BundleResource Include="Resources\forward%402x.png" />
+    <BundleResource Include="Resources\tutorial_background.png" />
+    <BundleResource Include="Resources\tutorial_screen01.png" />
+    <BundleResource Include="Resources\tutorial_screen01%402x.png" />
+    <BundleResource Include="Resources\tutorial_screen02.png" />
+    <BundleResource Include="Resources\tutorial_screen02%402x.png" />
+    <BundleResource Include="Resources\tutorial_screen03.png" />
+    <BundleResource Include="Resources\tutorial_screen03%402x.png" />
+    <BundleResource Include="Resources\tutorial_screen04.png" />
+    <BundleResource Include="Resources\tutorial_screen04%402x.png" />
+    <BundleResource Include="Resources\tutorial_screen05.png" />
+    <BundleResource Include="Resources\tutorial_screen05%402x.png" />
+    <BundleResource Include="Resources\tutorial_screen06.png" />
+    <BundleResource Include="Resources\tutorial_screen06%402x.png" />
+    <BundleResource Include="Resources\tutorial_screen07.png" />
+    <BundleResource Include="Resources\tutorial_screen07%402x.png" />
+    <BundleResource Include="Resources\tutorial_screen08.png" />
+    <BundleResource Include="Resources\tutorial_screen08%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

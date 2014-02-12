@@ -8,12 +8,20 @@ using apcurium.MK.Booking.Mobile.Messages;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class HistoryDetailViewModel : BaseViewModel
     {
+		IOrderWorkflowService _orderWorkflowService;
+
+		public HistoryDetailViewModel(IOrderWorkflowService orderWorkflowService)
+		{
+			_orderWorkflowService = orderWorkflowService;			
+		}
+
 		public void Init(string orderId)
 		{
 			Guid id;
@@ -28,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.Start();
 			_status = new OrderStatusDetail
 			{
-				IbsStatusDescription = this.Services().Localize["LoadingMessage"]
+				IBSStatusDescription = this.Services().Localize["LoadingMessage"]
 			};
 		}
 
@@ -162,7 +170,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (Order != null)
                 {
-					return Order.IbsOrderId.HasValue ? Order.IbsOrderId.Value.ToString(CultureInfo.InvariantCulture) : "Error";
+					return Order.IBSOrderId.HasValue ? Order.IBSOrderId.Value.ToString(CultureInfo.InvariantCulture) : "Error";
                 }
                 return null;
             }
@@ -262,8 +270,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			HasRated = (await ratings).RatingScores.Any();
 			Status = await status;
-			IsCompleted = bookingService.IsStatusCompleted(Status.IbsStatusId);
-			IsDone = bookingService.IsStatusDone(Status.IbsStatusId);
+			IsCompleted = bookingService.IsStatusCompleted(Status.IBSStatusId);
+			IsDone = bookingService.IsStatusDone(Status.IBSStatusId);
             
 			CanCancel = !IsCompleted;
 		}
@@ -293,9 +301,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					var orderStatus = new OrderStatusDetail
 					{ 
-							IbsOrderId = Order.IbsOrderId,
-							IbsStatusDescription = this.Services().Localize["LoadingMessage"],
-							IbsStatusId = "",
+							IBSOrderId = Order.IBSOrderId,
+							IBSStatusDescription = this.Services().Localize["LoadingMessage"],
+							IBSStatusId = "",
 							OrderId = OrderId,
 							Status = OrderStatus.Unknown,
 							VehicleLatitude = null,
@@ -331,8 +339,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() =>
                 {
-                    var serialized = JsonSerializer.SerializeToString(Order);
-                    ShowViewModel<BookViewModel>(new { order = serialized });
+					_orderWorkflowService.Rebook(Order);
+					ShowViewModel<HomeViewModel>();
                 });
             }
         }

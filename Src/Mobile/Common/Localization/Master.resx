@@ -612,18 +612,6 @@
   <data name="TechSupportEmailTitle" xml:space="preserve">
     <value>Support Application Mobile</value>
   </data>
-  <data name="PickupOnButtonImageName" xml:space="preserve">
-    <value>Assets/Button/btnPickup_on_en.png</value>
-  </data>
-  <data name="PickupOffButtonImageName" xml:space="preserve">
-    <value>Assets/Button/btnPickup_off_en.png</value>
-  </data>
-  <data name="DestinationOnButtonImageName" xml:space="preserve">
-    <value>Assets/Button/btnDest_on_en.png</value>
-  </data>
-  <data name="DestinationOffButtonImageName" xml:space="preserve">
-    <value>Assets/Button/btnDest_off_en.png</value>
-  </data>
   <data name="BookViewInvalidDate" xml:space="preserve">
     <value>The pickup date and pickup time are invalid.</value>
   </data>

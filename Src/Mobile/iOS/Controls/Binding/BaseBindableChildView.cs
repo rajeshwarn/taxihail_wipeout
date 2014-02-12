@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 {
@@ -126,6 +127,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
                 scrollView.ContentInset = contentInsets;
                 scrollView.ScrollIndicatorInsets = contentInsets;
             });
+        }
+
+        public virtual void ChangeState(ChangeStatePresentationHint hint)
+        { 
         }
 
         protected override void Dispose(bool disposing)

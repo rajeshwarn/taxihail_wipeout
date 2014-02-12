@@ -13,6 +13,8 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Data;
 using System.Threading;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Contract.Requests;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -24,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly IAppSettings _configurationManager;
 		readonly ILocalization _localize;
 		readonly IBookingService _bookingService;
+		readonly ICacheService _cacheService;
 
 		readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
@@ -31,14 +34,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
         readonly ISubject<BookingSettings> _bookingSettingsSubject;
 		readonly ISubject<string> _estimatedFareSubject;
+		string _noteToDriver = null;
+
+
 
 		public OrderWorkflowService(AbstractLocationService locationService,
 			IAccountService accountService,
 			IGeolocService geolocService,
 			IAppSettings configurationManager,
 			ILocalization localize,
-			IBookingService bookingService)
+			IBookingService bookingService,
+			ICacheService cacheService)
 		{
+			_cacheService = cacheService;
 			_configurationManager = configurationManager;
 			_geolocService = geolocService;
 			_accountService = accountService;
@@ -256,6 +264,46 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             var estimatedFareString = await _bookingService.GetFareEstimateDisplay(pickupAddress, destinationAddress, pickupDate, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
 
             _estimatedFareSubject.OnNext(estimatedFareString);
+		}
+
+		public void SetNoteToDriver(string text)
+		{
+			_noteToDriver = text;
+		}
+
+		public async Task<bool> ShouldWarnAboutEstimate()
+		{
+			var destination = await _destinationAddressSubject.Take(1).ToTask();
+			return _configurationManager.Data.ShowEstimateWarning
+					&& !_cacheService.Get<string>("WarningEstimateDontShow").HasValue()
+					&& destination.HasValidCoordinate();
+		}
+
+		public async Task<OrderValidationResult> ValidateOrder()
+		{
+			var orderToValidate = await GetOrder();
+			var validationResult = await _bookingService.ValidateOrder(orderToValidate);
+			return validationResult;
+		}
+
+		private async Task<CreateOrder> GetOrder()
+		{
+			var order = new CreateOrder();
+			order.Id = Guid.NewGuid();
+			order.PickupDate = await _pickupDateSubject.Take(1).ToTask();
+			order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
+			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
+			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
+
+			return order;
+		}
+
+		public void Rebook(Order previous)
+		{
+			_pickupAddressSubject.OnNext(previous.PickupAddress);
+			_destinationAddressSubject.OnNext(previous.DropOffAddress);
+			_bookingSettingsSubject.OnNext(previous.Settings);
+			_noteToDriver = previous.Note;
 		}
     }
 }

@@ -8,6 +8,8 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using TinyIoC;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
@@ -25,6 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
             txtNote.BackgroundColor = UIColor.FromRGB(242, 242, 242);
             DismissKeyboardOnReturn(txtNote);
+            txtNote.Placeholder = Localize.GetValue("NotesToDriveLabel");
         }
 
         private void InitializeBinding()
@@ -63,6 +66,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .For(v => v.Text)
                 .To(vm => vm.RingCode);
 
+            set.Bind(txtNote)
+                .For(v => v.Text)
+                .To(vm => vm.Note);
+
             if (!_settings.Data.ShowPassengerName)
             {
                 lblName.RemoveFromSuperview();
@@ -100,6 +107,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             this.DelayBind (() => {
                 InitializeBinding();
             });
+        }
+
+        public override void ChangeState(ChangeStatePresentationHint hint)
+        {
+            base.ChangeState(hint);
+            var hintHome = hint as HomeViewModelPresentationHint;
+            if (hintHome != null
+                && hintHome.State == HomeViewModelState.Review)
+            {
+                ViewModel.ReviewStart();
+            }
         }
     }
 }

@@ -26,9 +26,9 @@ namespace apcurium.MK.Booking.Api.Helpers
         {
             var orderStatus = base.GetOrderStatus(orderId, session);
 
-            var ibsInfo = new IbsOrderInformation
+            var ibsInfo = new IBSOrderInformation
             {
-                IbsOrderId = 9999,
+                IBSOrderId = 9999,
                 VehicleMake = "FakeMake",
                 VehicleColor = "FakeColor",
                 VehicleModel = "FakeModel",
@@ -38,10 +38,13 @@ namespace apcurium.MK.Booking.Api.Helpers
                 FirstName = "FakeName",
                 LastName = "FakeName",
                 MobilePhone = "FakePhone",
+                DriverId = "FakeDriverId",
+                TerminalId = "FakeTerminalId",
+                ReferenceNumber = "FakeReferenceNumber",
                 VehicleLatitude = 45.5134,
                 VehicleLongitude = -73.5530
             };
-            switch (orderStatus.IbsStatusId)
+            switch (orderStatus.IBSStatusId)
             {
                 case null:
                 case "":

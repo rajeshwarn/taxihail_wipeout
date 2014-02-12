@@ -87,17 +87,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 					return;
 				}
 
-                var orderStatus = this.Services().Account.GetActiveOrdersStatus().ToList().OrderByDescending(o => o.IbsOrderId).Where(status => this.Services().Booking.IsCallboxStatusActive(status.IbsStatusId));
+                var orderStatus = this.Services().Account.GetActiveOrdersStatus().ToList().OrderByDescending(o => o.IBSOrderId).Where(status => this.Services().Booking.IsCallboxStatusActive(status.IBSStatusId));
 				InvokeOnMainThread(() =>
 					{
 						Orders.Clear();
 
 					    var orderStatusDetails = orderStatus as OrderStatusDetail[] ?? orderStatus.ToArray();
-					    if ( ( _orderToCreate != null ) && ( _orderToCreate.Order != null ) && orderStatusDetails.Any( os=>os.IbsOrderId == _orderToCreate.Order.IbsOrderId ) )
+					    if ( ( _orderToCreate != null ) && ( _orderToCreate.Order != null ) && orderStatusDetails.Any( os=>os.IBSOrderId == _orderToCreate.Order.IBSOrderId ) )
 						{
 							_orderToCreate = null;
 						}
-						else if (  ( _orderToCreate != null ) && ( _orderToCreate.Order != null ) && orderStatusDetails.None( os=>os.IbsOrderId == _orderToCreate.Order.IbsOrderId ) )
+						else if (  ( _orderToCreate != null ) && ( _orderToCreate.Order != null ) && orderStatusDetails.None( os=>os.IBSOrderId == _orderToCreate.Order.IBSOrderId ) )
 						{
 							Orders.Add(_orderToCreate.Order);
 						}
@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 							{
 								OrderStatus = status,
 								CreatedDate = status.PickupDate,
-								IbsOrderId = status.IbsOrderId,
+								IBSOrderId = status.IBSOrderId,
 								Id = status.OrderId
 							}));
 
@@ -116,7 +116,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 							Close();
 						}
 
-						if(Orders.None(x => this.Services().Booking.IsCallboxStatusCompleted(x.OrderStatus.IbsStatusId)))
+						if(Orders.None(x => this.Services().Booking.IsCallboxStatusCompleted(x.OrderStatus.IBSStatusId)))
 						{
 							NoMoreTaxiWaiting(this, null);
 						}
@@ -124,9 +124,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 						{
 							foreach (var order in Orders)
 							{
-								if (this.Services().Booking.IsCallboxStatusCompleted(order.OrderStatus.IbsStatusId) && !_orderNotified.Any(c => c != null && c.Value.Equals(order.IbsOrderId)))
+								if (this.Services().Booking.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId) && !_orderNotified.Any(c => c != null && c.Value.Equals(order.IBSOrderId)))
 								{
-									_orderNotified.Add(order.IbsOrderId);
+									_orderNotified.Add(order.IBSOrderId);
 									OrderCompleted(this, null);
 								}
 							}
@@ -214,7 +214,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 		{
 			var orderToRemove = Orders.FirstOrDefault(o => o.Id.Equals(orderId));
 
-			if (orderToRemove != null && ((_orderToCreate != null) && ( _orderToCreate.Order != null ) && (orderToRemove.IbsOrderId == _orderToCreate.Order.IbsOrderId )))
+			if (orderToRemove != null && ((_orderToCreate != null) && ( _orderToCreate.Order != null ) && (orderToRemove.IBSOrderId == _orderToCreate.Order.IBSOrderId )))
 			{
 				_orderToCreate = null;             
 			}
@@ -269,13 +269,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 							{                    
 								if (pickupAddress != null)
 								{
-									if (orderInfo.IbsOrderId.HasValue && orderInfo.IbsOrderId > 0)
+									if (orderInfo.IBSOrderId.HasValue && orderInfo.IBSOrderId > 0)
 									{
 										orderInfo.Name = newOrderCreated.Settings.Name;
 										var o = new CallboxOrderViewModel
 										{
 											CreatedDate = DateTime.Now,
-											IbsOrderId = orderInfo.IbsOrderId,
+											IBSOrderId = orderInfo.IBSOrderId,
 											Id = newOrderCreated.Id,
 											OrderStatus = orderInfo                                            
 										};

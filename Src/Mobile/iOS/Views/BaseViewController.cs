@@ -222,7 +222,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 NavigationController.NavigationBar.SetBackgroundImage(clearBackground, UIBarMetrics.Default);
 
                 //change the default ios6 back button look to the ios7 look
-                var backBackground = UIImage.FromFile (Theme.IsLightContent ? "left_arrow.png" : "left_arrow_white.png").CreateResizableImage (new UIEdgeInsets (0, 12, 21, 0));
+                var backBackground = UIImage.FromFile (Theme.IsLightContent ? "left_arrow_white.png" : "left_arrow.png").CreateResizableImage (new UIEdgeInsets (0, 12, 21, 0));
                 UIBarButtonItem.Appearance.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default); 
                 UIBarButtonItem.Appearance.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default); 
             }

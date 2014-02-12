@@ -97,14 +97,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							/*
 								var orderInfo = await this.Services().Booking.CreateOrder(Order);
 
-								if (!orderInfo.IbsOrderId.HasValue || !(orderInfo.IbsOrderId > 0))
+								if (!orderInfo.IBSOrderId.HasValue || !(orderInfo.IBSOrderId > 0))
 									return;
 
 								var orderCreated = new Order
 								{
 									CreatedDate = DateTime.Now, 
 									DropOffAddress = Order.DropOffAddress, 
-									IbsOrderId = orderInfo.IbsOrderId, 
+									IBSOrderId = orderInfo.IBSOrderId, 
 									Id = Order.Id, PickupAddress = Order.PickupAddress,
 									Note = Order.Note, 
 									PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now,

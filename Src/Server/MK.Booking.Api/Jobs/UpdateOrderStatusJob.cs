@@ -34,13 +34,13 @@ namespace apcurium.MK.Booking.Api.Jobs
                 .Where(
                     statusDetail =>
                         statusDetail.PickupDate >= DateTime.Now.AddDays(-1) ||
-                        statusDetail.IbsStatusId == VehicleStatuses.Common.Scheduled)
-                .Where(statusDetail => statusDetail.IbsOrderId.HasValue)
-                .Select(statusDetail => statusDetail.IbsOrderId != null ? statusDetail.IbsOrderId.Value : 0)
+                        statusDetail.IBSStatusId == VehicleStatuses.Common.Scheduled)
+                .Where(statusDetail => statusDetail.IBSOrderId.HasValue)
+                .Select(statusDetail => statusDetail.IBSOrderId != null ? statusDetail.IBSOrderId.Value : 0)
                 .ToList();
 
 
-            var ibsOrders = new List<IbsOrderInformation>();
+            var ibsOrders = new List<IBSOrderInformation>();
 
             const int take = 5;
             for (var skip = 0; skip < ibsOrdersIds.Count; skip = skip + take)
@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             foreach (var order in orders)
             {
-                var ibsStatus = ibsOrders.FirstOrDefault(status => status.IbsOrderId == order.IbsOrderId);
+                var ibsStatus = ibsOrders.FirstOrDefault(status => status.IBSOrderId == order.IBSOrderId);
 
                 if (ibsStatus == null) continue;
 

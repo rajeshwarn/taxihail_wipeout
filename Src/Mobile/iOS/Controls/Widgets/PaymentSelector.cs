@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		void Initialize ()
 		{
 			var borderRadius = 5f;
-			var font = AppStyle.GetNormalFont (14f);
+            var font = UIFont.FromName(FontName.HelveticaNeueRegular, 14.0f);
 
 			BackgroundColor = UIColor.Clear;
 			this.RoundCorners(borderRadius, 1.5f, UIColor.FromRGB(115, 117, 112));

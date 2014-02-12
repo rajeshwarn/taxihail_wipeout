@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using System.Threading.Tasks;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -25,6 +26,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), (settings) => SettingsUpdated(settings));
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
 			this.Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
+		}
+
+        public void ReviewStart()
+        {
+			ShowFareEstimateAlertDialogIfNecessary();
+			PreValidateOrder();
+        }
+
+		private async Task PreValidateOrder()
+		{
+			var validationInfo = await _orderWorkflowService.ValidateOrder();
+			if (validationInfo.HasWarning)
+			{
+				this.Services().Message.ShowMessage(this.Services().Localize["WarningTitle"], 
+					validationInfo.Message, 
+					this.Services().Localize["Continue"], 
+					delegate{}, 
+					this.Services().Localize["Cancel"], 
+					() => { ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+					});
+			}
 		}
 
 		private async Task SettingsUpdated(BookingSettings settings)
@@ -83,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private void DateUpdated(DateTime? date)
 		{
 			Date = date.HasValue ?
-			       date.Value.ToShortDateString() + " " + date.Value.ToLongTimeString()
+			       date.Value.ToShortDateString() + " " + date.Value.ToShortTimeString()
 			       : this.Services().Localize["TimeNow"];
 		}
 
@@ -117,6 +139,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				_chargeType = value;
 				RaisePropertyChanged();
+			}
+		}
+
+		string _note;
+		public string Note
+		{
+			get{ return _note; }
+			set
+			{
+				_note = value;
+				_orderWorkflowService.SetNoteToDriver(_note);
+			}
+		}
+
+		async Task ShowFareEstimateAlertDialogIfNecessary()
+		{
+			if (await _orderWorkflowService.ShouldWarnAboutEstimate())
+			{
+				this.Services().Message.ShowMessage(this.Services().Localize["WarningEstimateTitle"], this.Services().Localize["WarningEstimate"],
+					"Ok", delegate{ },
+					this.Services().Localize["WarningEstimateDontShow"], () => this.Services().Cache.Set("WarningEstimateDontShow", "yes"));
+
 			}
 		}
     }

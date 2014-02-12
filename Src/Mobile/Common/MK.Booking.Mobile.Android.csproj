@@ -211,8 +211,6 @@
     <Compile Include="Style\StyleManager.cs" />
     <Compile Include="TaxiHailApp.cs" />
     <Compile Include="ViewModels\AboutUsViewModel.cs" />
-    <Compile Include="ViewModels\BookConfirmationViewModel.cs" />
-    <Compile Include="ViewModels\BookEditInformationViewModel.cs" />
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\BookRatingViewModel.cs" />
     <Compile Include="ViewModels\Callbox\BaseCallboxViewModel.cs" />
@@ -223,11 +221,9 @@
     <Compile Include="ViewModels\enum\ColorEnum.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
-    <Compile Include="ViewModels\AddressSearchViewModel.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BookAddressViewModel.cs" />
-    <Compile Include="ViewModels\BookViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqChangePaymentViewModel.cs" />
@@ -246,7 +242,6 @@
     <Compile Include="Models\TutorialItemModel.cs" />
     <Compile Include="ViewModels\UpdatePasswordViewModel.cs" />
     <Compile Include="Extensions\TaskFactoryExtension.cs" />
-    <Compile Include="ViewModels\BookStreetNumberViewModel.cs" />
     <Compile Include="Extensions\DisposableExtensions.cs" />
     <Compile Include="Data\AddressSelectionMode.cs" />
     <Compile Include="BindingConverter\EnumToBoolConverter.cs" />

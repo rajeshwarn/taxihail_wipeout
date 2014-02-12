@@ -67,6 +67,9 @@ namespace apcurium.MK.Web.Tests
                     OrderId = orderId,
                     VehicleNumber = "vehicle",
                     PickupDate = DateTime.Now,
+                    DriverInfos = new DriverInfos(),
+                    Status = new OrderStatus(),
+
                     AccountId = TestAccount.Id
                 });
                 context.SaveChanges();
@@ -81,10 +84,8 @@ namespace apcurium.MK.Web.Tests
             const double meter = 11.25;
             const double tip = 1.50;
 
-            var authorization = await client.PreAuthorize(token, amount, meter, tip, orderId);
-            Assert.True(authorization.IsSuccessfull, authorization.Message);
-
-            var response = await client.CommitPreAuthorized(authorization.TransactionId);
+            
+            var response = await client.PreAuthorizeAndCommit(token, amount, meter, tip, orderId);
             Assert.True(response.IsSuccessfull, response.Message);
 
             await client.ResendConfirmationToDriver(orderId);
@@ -135,10 +136,8 @@ namespace apcurium.MK.Web.Tests
             const double meter = 21.25;
             const double tip = 1.25;
 
-            var authorization = await client.PreAuthorize(token, amount, meter, tip, orderId);
-            Assert.True(authorization.IsSuccessfull, authorization.Message);
-
-            var response = await client.CommitPreAuthorized(authorization.TransactionId);
+            
+            var response = await client.PreAuthorizeAndCommit(token, amount, meter, tip, orderId);
             Assert.True(response.IsSuccessfull, response.Message);
         }
 
@@ -154,35 +153,7 @@ namespace apcurium.MK.Web.Tests
             Assert.True(response.IsSuccessfull, response.Message);
         }
 
-        [Test]
-        public async void when_preauthorizing_a_credit_card_payment()
-        {
-            var orderId = Guid.NewGuid();
-            using (var context = ContextFactory.Invoke())
-            {
-                context.Set<OrderDetail>().Add(new OrderDetail
-                {
-                    Id = orderId,
-                    IBSOrderId = 1234,
-                    CreatedDate = DateTime.Now,
-                    PickupDate = DateTime.Now,
-                    AccountId = TestAccount.Id
-                });
-                context.SaveChanges();
-            }
-            var client = GetPaymentClient();
-
-            var tokenizeResponse = await client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate, TestCreditCards.Mastercard.AvcCvvCvv2 + "");
-            var token = tokenizeResponse.CardOnFileToken;
-
-            const double amount = 22.75;
-            const double meter = 21.25;
-            const double tip = 1.25;
-
-            var response = await client.PreAuthorize(token, amount, meter, tip, orderId);
-            Assert.True(response.IsSuccessfull);
-        }
-
+   
         [Test]
         public async void when_preauthorizing_and_capturing_a_credit_card_payment()
         {

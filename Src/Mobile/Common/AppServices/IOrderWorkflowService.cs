@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Threading;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -28,8 +29,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<AddressSelectionMode> GetAndObserveAddressSelectionMode();
 		IObservable<BookingSettings> GetAndObserveBookingSettings();
 		IObservable<DateTime?> GetAndObservePickupDate();
-
 		IObservable<string> GetAndObserveEstimatedFare();
+
+		void SetNoteToDriver(string text);
+		Task<bool> ShouldWarnAboutEstimate();
+
+		Task<OrderValidationResult> ValidateOrder();
+		void Rebook(Order previous);
     }
 }
 

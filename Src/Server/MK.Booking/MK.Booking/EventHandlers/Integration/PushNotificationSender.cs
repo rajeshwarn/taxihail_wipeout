@@ -36,14 +36,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderStatusChanged @event)
         {
-            var shouldSendPushNotification = @event.Status.IbsStatusId == VehicleStatuses.Common.Assigned ||
-                                             @event.Status.IbsStatusId == VehicleStatuses.Common.Arrived ||
-                                             @event.Status.IbsStatusId == VehicleStatuses.Common.Timeout;
+            var shouldSendPushNotification = @event.Status.IBSStatusId == VehicleStatuses.Common.Assigned ||
+                                             @event.Status.IBSStatusId == VehicleStatuses.Common.Arrived ||
+                                             @event.Status.IBSStatusId == VehicleStatuses.Common.Timeout;
 
             if (shouldSendPushNotification)
             {
                 string alert;
-                switch (@event.Status.IbsStatusId)
+                switch (@event.Status.IBSStatusId)
                 {
                     case VehicleStatuses.Common.Assigned:
                         alert = string.Format((string) _resources.PushNotification_wosASSIGNED,
@@ -66,8 +66,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     var devices =
                         context.Set<DeviceDetail>().Where(x => x.AccountId == order.AccountId);
                     var data = new Dictionary<string, object>();
-                    if (@event.Status.IbsStatusId == VehicleStatuses.Common.Assigned ||
-                        @event.Status.IbsStatusId == VehicleStatuses.Common.Arrived)
+                    if (@event.Status.IBSStatusId == VehicleStatuses.Common.Assigned ||
+                        @event.Status.IBSStatusId == VehicleStatuses.Common.Arrived)
                     {
                         data.Add("orderId", order.Id);
                     }

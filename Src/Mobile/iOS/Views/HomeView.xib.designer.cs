@@ -28,10 +28,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.NSLayoutConstraint constraintOrderOptionsTopSpace { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintOrderReviewTopSpace { get; set; }
+		MonoTouch.UIKit.NSLayoutConstraint constraintOrderReviewBottomSpace { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintOrderReviewVerticalSpace { get; set; }
+		MonoTouch.UIKit.NSLayoutConstraint constraintOrderReviewTopSpace { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderOptionsControl ctrlOrderOptions { get; set; }
@@ -80,9 +80,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				constraintOrderReviewTopSpace = null;
 			}
 
-			if (constraintOrderReviewVerticalSpace != null) {
-				constraintOrderReviewVerticalSpace.Dispose ();
-				constraintOrderReviewVerticalSpace = null;
+			if (constraintOrderReviewBottomSpace != null) {
+				constraintOrderReviewBottomSpace.Dispose ();
+				constraintOrderReviewBottomSpace = null;
 			}
 
 			if (ctrlOrderOptions != null) {
