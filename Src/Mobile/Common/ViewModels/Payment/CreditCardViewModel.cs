@@ -2,6 +2,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -23,11 +24,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		public bool IsAddNew { get { return CreditCardDetails.CreditCardId.IsNullOrEmpty(); } }
 		public bool IsLast { get; set; } //needed for android
         public string Picture { get; set; }
-        public AsyncCommand RemoveCreditCards
+		public ICommand RemoveCreditCards
         {
             get
             {
-                return GetCommand(() => this.Services().MessengerHub.Publish(new RemoveCreditCard(this, CreditCardDetails.CreditCardId)));
+                return this.GetCommand(() => this.Services().MessengerHub.Publish(new RemoveCreditCard(this, CreditCardDetails.CreditCardId)));
             }
         }
     }

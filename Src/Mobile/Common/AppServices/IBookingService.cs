@@ -15,9 +15,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
        
 		Task<string> GetFareEstimateDisplay(Address pickup, Address destination, DateTime? pickupDate, string fareFormat, string noFareText, bool includeDistance, string cannotGetFareText);
 
-        bool IsValid(CreateOrder info);
-				
-		bool IsCompleted(Guid orderId);
+        bool IsCompleted(Guid orderId);
 
         bool IsStatusCompleted(string statusId);
 

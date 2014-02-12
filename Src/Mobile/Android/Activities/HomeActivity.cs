@@ -285,7 +285,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (requestCode == (int)ActivityEnum.DateTimePicked && resultCode == Result.Ok)
             {             
                 DateTime dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
-                ViewModel.BottomBar.SetPickupDateAndBook.Execute(dt);
+                ViewModel.BottomBar.SetPickupDateAndReviewOrder.Execute(dt);
             }
             else
             {

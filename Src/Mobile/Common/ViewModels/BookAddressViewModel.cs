@@ -10,11 +10,12 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Common;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     // TODO: We don't need a full MvvmCross view model here
-    // Just need NotifyPropertyChanged and GetCommand
+    // Just need NotifyPropertyChanged and this.GetCommand
     public class BookAddressViewModel : BaseViewModel
     {
         private CancellationTokenSource _cancellationToken;

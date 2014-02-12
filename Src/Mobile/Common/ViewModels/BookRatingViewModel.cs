@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Entity;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -92,11 +93,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-        public AsyncCommand RateOrder
+		public ICommand RateOrder
         {
             get
             {
-				return GetCommand(() =>
+				return this.GetCommand(() =>
 				{
 					if (_ratingList.Any(c => c.Score == 0))
 					{

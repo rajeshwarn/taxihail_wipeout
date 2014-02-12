@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -32,10 +33,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand<AddressViewModel> NavigateToLocationDetailPage
+		public ICommand NavigateToLocationDetailPage
         {
             get{
-                return GetCommand<AddressViewModel>(a =>
+                return this.GetCommand<AddressViewModel>(a =>
                 {
 
                     if(a.Address.Id == Guid.Empty)

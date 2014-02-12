@@ -2,6 +2,7 @@ using System;
 using System.Windows.Input;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Models
 {
@@ -93,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.Models
         {
             get
             {
-                return GetCommand<object>(param => param.Maybe(tag =>
+                return this.GetCommand<object>(param => param.Maybe(tag =>
                     {
 					RatingState state;
 					if(CanRate

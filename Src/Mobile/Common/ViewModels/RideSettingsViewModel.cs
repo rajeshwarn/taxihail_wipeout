@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -198,30 +199,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand<int?> SetVehiculeType
+		public ICommand SetVehiculeType
         {
             get
             {
-                return GetCommand<int?>(id =>
+                return this.GetCommand<int?>(id =>
                 {
                     VehicleTypeId = id;
                 });
             }
         }
 
-        public AsyncCommand NavigateToUpdatePassword
+		public ICommand NavigateToUpdatePassword
         {
             get
             {
-                return GetCommand(() => ShowViewModel<UpdatePasswordViewModel>());
+                return this.GetCommand(() => ShowViewModel<UpdatePasswordViewModel>());
             }
         }
 
-        public AsyncCommand<int?> SetChargeType
+		public ICommand SetChargeType
         {
             get
             {
-                return GetCommand<int?>(id =>
+                return this.GetCommand<int?>(id =>
                 {
                     ChargeTypeId = id;
                 });
@@ -236,22 +237,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand<int?> SetCompany
+		public ICommand SetCompany
         {
             get
             {
-                return GetCommand<int?>(id =>
+                return this.GetCommand<int?>(id =>
                 {
                     _bookingSettings.ProviderId = id;
                 });
             }
         }
 
-        public AsyncCommand SaveCommand
+		public ICommand SaveCommand
         {
             get
             {
-                return GetCommand(() => 
+                return this.GetCommand(() => 
                 {
                     if (ValidateRideSettings())
                     {

@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 set.Bind(bookNow)
                     .For("Click")
-                    .To(vm => vm.SetPickupDateAndBook);
+                    .To(vm => vm.SetPickupDateAndReviewOrder);
 
                 set.Bind(bookLater)
                     .For("Click")

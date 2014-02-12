@@ -1,10 +1,14 @@
 using System;
 using System.Windows.Input;
+using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
-using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.PresentationHints;
+
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -51,11 +55,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		public ICommand SetPickupDateAndBook
+		public ICommand SetPickupDateAndReviewOrder
 		{
 			get
 			{
-				return GetCommand<DateTime?>(async date =>
+				return this.GetCommand<DateTime?>(async date =>
 				{
 					await _orderWorkflowService.SetPickupDate(date);
 					try
@@ -89,53 +93,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return GetCommand(async () =>
+				return this.GetCommand(async () =>
+				{
+					try
 					{
-						//TODO: Show Progress
-							try
-							{
-							/*
-								var orderInfo = await this.Services().Booking.CreateOrder(Order);
+						var result = await _orderWorkflowService.ConfirmOrder();
+						ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+						ShowViewModel<BookingStatusViewModel>(new
+						{
+							order = result.Item1.ToJson(),
+							orderStatus = result.Item2.ToJson()
+						});
 
-								if (!orderInfo.IBSOrderId.HasValue || !(orderInfo.IBSOrderId > 0))
-									return;
+					}
+					catch(Exception e)
+					{
+						Logger.LogError(e);
 
-								var orderCreated = new Order
-								{
-									CreatedDate = DateTime.Now, 
-									DropOffAddress = Order.DropOffAddress, 
-									IBSOrderId = orderInfo.IBSOrderId, 
-									Id = Order.Id, PickupAddress = Order.PickupAddress,
-									Note = Order.Note, 
-									PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now,
-									Settings = Order.Settings
-								};
-								*/
-
-								ShowViewModel<BookingStatusViewModel>(new
-									{
-									//order = orderCreated.ToJson(),
-									//orderStatus = orderInfo.ToJson()
-									});	
-
-							}
-							catch
-							{
-							/*if (CallIsEnabled)
-								{
-									var err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], Settings.ApplicationName, 
-										Settings.DefaultPhoneNumberDisplay);
-									this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
-								}
-								else
-								{
-									this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["ServiceError_ErrorCreatingOrderMessage_NoCall"]);
-								}
-								*/
-							}
+						var settings = this.Services().Settings;
+						var callIsEnabled = !settings.HideCallDispatchButton;
+						if (callIsEnabled)
+						{
+							var errorMessage = string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"],
+								settings.ApplicationName, 
+								settings.DefaultPhoneNumberDisplay);
+							_messageService.ShowMessage(_localize["ErrorCreatingOrderTitle"], errorMessage);
+						}
+						else
+						{
+							_messageService.ShowMessage(_localize["ErrorCreatingOrderTitle"], _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"]);
+						}
+					}
 
 
-					}); 
+				});
 			}
 		}
 
@@ -143,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-                return GetCommand(() => {
+				return this.GetCommand(() => {
                     ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.PickDate));
                 });
             }
@@ -153,7 +144,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return GetCommand(() => {
+				return this.GetCommand(() => {
 					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Edit));
 				});
 			}
@@ -177,7 +168,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
 			{
-				return GetCommand(() => {
+				return this.GetCommand(() => {
 					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
 				});
 			}
