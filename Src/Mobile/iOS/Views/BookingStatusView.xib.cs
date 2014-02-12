@@ -15,6 +15,10 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Booking.Mobile.Client.Style;
+
+
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -24,12 +28,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
         }
 
-        public override void ViewWillAppear(bool animated)
+        public override void ViewWillAppear (bool animated)
         {
-            base.ViewWillAppear(animated);
-
+            base.ViewWillAppear (animated);
+            NavigationController.NavigationBar.Hidden = false;
+            NavigationItem.Title = Localize.GetValue("View_BookingStatus");
             NavigationItem.HidesBackButton = false;
-            NavigationItem.Title = Localize.GetValue("GenericTitle");
+            if (UIHelper.IsOS7orHigher)
+            {
+                NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
+                                                              ? UIBarStyle.Black
+                                                              : UIBarStyle.Default;
+            }
         }
 
         public override void ViewDidLoad ()
