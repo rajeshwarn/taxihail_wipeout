@@ -1,30 +1,30 @@
-using Android.Gms.Maps;
-using Android.Gms.Maps.Model;
-using Android.Widget;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Droid.Views;
-using Android.Views;
-using Cirrious.MvvmCross.Binding.BindingContext;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
-using apcurium.MK.Booking.Mobile.Extensions;
-using Cirrious.MvvmCross.Binding.Attributes;
-using System.Collections.Generic;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Data;
-using System.Linq;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using System;
-using System.Windows.Input;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
-using System.Reactive.Disposables;
-using TinyIoC;
-using apcurium.MK.Common.Configuration;
+using System.Windows.Input;
 using Android.Content.Res;
+using Android.Gms.Maps;
+using Android.Gms.Maps.Model;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Util;
+using Android.Views;
+using Android.Widget;
+using Cirrious.MvvmCross.Binding.Attributes;
+using Cirrious.MvvmCross.Binding.BindingContext;
+using Cirrious.MvvmCross.Binding.Droid.Views;
+using TinyIoC;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -38,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private Marker _destinationPin;
         private CompositeDisposable _subscriptions = new CompositeDisposable();
         private bool bypassCameraChangeEvent = false;
+        public event EventHandler IsZoomingChanged;       
 
         private List<Marker> _availableVehicleMarkers = new List<Marker> ();
 
@@ -126,6 +127,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
         }
+                        
+        private Position _mapCenter;
+        public Position MapCenter
+        {
+            get { return _mapCenter; }
+            set
+            {
+                if (value != _mapCenter && !bypassCameraChangeEvent)
+                {
+                    _mapCenter = value;
+
+                    if (!IsZooming)
+                    {
+                        MapBounds = ChangeMapBoundsCenter(_mapCenter);
+                    }
+                }
+            }
+        }
 
         public ICommand UserMovedMap { get; set; }
 
@@ -163,6 +182,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             _touchableMap.Surface.Touched += (object sender, MotionEvent e) => 
             {
+                IsZooming = false;
+
                 switch (e.Action)
                 {
                     case MotionEventActions.Down:
@@ -176,7 +197,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }               
             };
 
-
             Observable
                 .FromEventPattern<GoogleMap.CameraChangeEventArgs>(Map, "CameraChange")
                 .Throttle(TimeSpan.FromMilliseconds(500))
@@ -184,10 +204,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 .Subscribe(e => OnCameraChanged(e))
                 .DisposeWith(_subscriptions);
 
-
             binding.Bind()
                 .For(v => v.UserMovedMap)
                 .To(vm => vm.UserMovedMap);
+
+            binding.Bind()
+                .For(v => v.IsZooming)
+                .To(vm => vm.IsZooming);
 
             binding.Bind()
                 .For(v => v.AddressSelectionMode)
@@ -204,7 +227,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             binding.Bind()
                 .For(v => v.MapBounds)
                     .To(vm => vm.MapBounds);
-            
+
+            binding.Bind()
+                .For(v => v.MapCenter)
+                .To(vm => vm.MapCenter);
+
             binding.Bind()
                 .For(v => v.AvailableVehicles)
                     .To(vm => vm.AvailableVehicles);
@@ -240,6 +267,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 NorthBound = _bounds.Northeast.Latitude, 
                 EastBound = _bounds.Northeast.Longitude
             };
+            return bounds;
+        }
+
+        private MapBounds ChangeMapBoundsCenter(Position newCenter)
+        {
+            var _bounds = Map.Projection.VisibleRegion.LatLngBounds;
+            var _center = _bounds.Center;
+            var diffLat = newCenter.Latitude - _center.Latitude;
+            var diffLng = newCenter.Longitude - _center.Longitude;
+
+            var bounds = new MapBounds()
+            { 
+                SouthBound = _bounds.Southwest.Latitude + diffLat, 
+                WestBound = _bounds.Southwest.Longitude + diffLng, 
+                NorthBound = _bounds.Northeast.Latitude + diffLat, 
+                EastBound = _bounds.Northeast.Longitude + diffLng
+            };
+
             return bounds;
         }
 
@@ -337,12 +382,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+
+
+        private bool _isZooming;
+        public bool IsZooming
+        {
+            get { return _isZooming; }
+            set
+            {
+                if (value != _isZooming)
+                {
+                    _isZooming = value;
+                    IsZoomingChanged(null, null);
+                }
+            }
+        }
+
         private void OnCameraChanged(System.Reactive.EventPattern<GoogleMap.CameraChangeEventArgs> e)
         {
             if (bypassCameraChangeEvent)
             {
                 bypassCameraChangeEvent = false;
                 return;
+            }
+
+            if (GetMapBoundsFromProjection().LatitudeDelta < 0.003) // Checks if RegionChange results from a zoom
+            {
+                IsZooming = false; // Stops to auto-zoom in MapViewModel when address changed
             }
 
             var bounds = GetMapBoundsFromProjection();
