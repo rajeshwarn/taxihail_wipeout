@@ -152,7 +152,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if (_shadowView == null)
                 {
                     _shadowView = new UIView(Frame);
-                    _shadowView.BackgroundColor = UIColor.White;
+                    _shadowView.BackgroundColor = UIColor.White.ColorWithAlpha(0.7f);
                     _shadowView.Layer.MasksToBounds = false;
                     _shadowView.Layer.ShadowColor = UIColor.FromRGBA(0, 0, 0, 127).CGColor;
                     _shadowView.Layer.ShadowOpacity = 1.0f;
