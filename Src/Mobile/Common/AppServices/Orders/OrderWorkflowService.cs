@@ -269,7 +269,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					{
 						Logger.LogMessage("clear addresses");
 						// TODO: Clarify why we clear address here
-						return new Address();
+						return new Address(){ Latitude = p.Latitude, Longitude = p.Longitude };
 					}
 				}
 			}
