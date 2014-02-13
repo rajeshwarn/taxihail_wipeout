@@ -554,6 +554,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\unhappy_selected.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\vehicle.png" />
     <AndroidResource Include="Resources\Layout\SubView_OrderReview.axml" />
+    <Compile Include="Helpers\AnimationHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
