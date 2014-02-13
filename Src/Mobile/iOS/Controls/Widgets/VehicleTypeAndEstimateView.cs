@@ -20,8 +20,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private UILabel SelectedVehicleTypeLabel { get; set; }
         private UILabel EstimatedFareLabel { get; set; }
 
-        private UIColor Blue = UIColor.FromRGB(0, 129, 248);
-
         public VehicleTypeAndEstimateView(IntPtr h):base(h)
         {
             Initialize();
@@ -34,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private void Initialize()
         {
             HorizontalDividerTop = new UIView(new RectangleF(0, 0, Frame.Width, UIHelper.OnePixel));
-            HorizontalDividerTop.BackgroundColor = Blue;
+            HorizontalDividerTop.BackgroundColor = Theme.BackgroundColor;
             AddSubview(HorizontalDividerTop);
 
             SelectedVehicleType = new UIImageView(new RectangleF(7f, 4f, 34f, 34f));
@@ -42,14 +40,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             SelectedVehicleTypeLabel = new UILabel();
             SelectedVehicleTypeLabel.Font = UIFont.FromName(FontName.HelveticaNeueBold, 18/2);
-            SelectedVehicleTypeLabel.TextColor = Blue;
+            SelectedVehicleTypeLabel.TextColor = Theme.BackgroundColor;
             SelectedVehicleTypeLabel.ShadowColor = UIColor.Clear;
             AddSubview(SelectedVehicleTypeLabel);
 
             EstimatedFareLabel = new UILabel();
             EstimatedFareLabel.Lines = 0;
             EstimatedFareLabel.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 28/2);
-            EstimatedFareLabel.TextColor = Blue;
+            EstimatedFareLabel.TextColor = Theme.BackgroundColor;
             EstimatedFareLabel.ShadowColor = UIColor.Clear;
             AddSubview(EstimatedFareLabel);
         }
@@ -76,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 if (_vehicleType != value)
                 {
-                    SelectedVehicleType.Image = UIImage.FromFile(string.Format("{0}_badge_selected.png", value.ToLower()));
+                    SelectedVehicleType.Image = ImageHelper.ApplyThemeColorToImage(string.Format("{0}_badge_selected.png", value.ToLower()));
 
                     SelectedVehicleTypeLabel.Text = value.ToUpper();
                     SelectedVehicleTypeLabel.SizeToFit();
@@ -107,8 +105,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             if (ShowEstimate)
             {
-                BackgroundColor = UIColor.FromRGB(230, 230, 230).ColorWithAlpha(0.5f);
-                HorizontalDividerTop.BackgroundColor = Blue;
+                BackgroundColor = UIColor.FromRGB(200, 200, 200).ColorWithAlpha(0.5f);
+                HorizontalDividerTop.BackgroundColor = Theme.BackgroundColor;
                 SelectedVehicleType.Hidden = false;
                 SelectedVehicleTypeLabel.Hidden = false;
                 EstimatedFareLabel.Hidden = false;
