@@ -29,6 +29,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
             };
         }
 
+        public static IObservable<string> OnKeyDown(this UITextField text)
+        {
+            return Observable.FromEventPattern<EventHandler, EventArgs>(
+                ev => text.EditingChanged += ev,
+                ev => text.EditingChanged -= ev)
+                    .Select(e=>text.Text);        
+        }
+
         public static void SetLeftPadding( this UITextField text, float padding )
         {
             var btn = new UIButton(new RectangleF(0, 0, padding, text.Bounds.Height));

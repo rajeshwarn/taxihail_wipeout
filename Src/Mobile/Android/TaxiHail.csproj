@@ -555,6 +555,8 @@
     <AndroidResource Include="Resources\drawable-xhdpi\vehicle.png" />
     <AndroidResource Include="Resources\Layout\SubView_OrderReview.axml" />
     <Compile Include="Helpers\AnimationHelper.cs" />
+    <AndroidResource Include="Resources\Drawable\places.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\places.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

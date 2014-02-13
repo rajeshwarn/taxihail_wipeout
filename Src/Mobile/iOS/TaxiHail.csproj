@@ -645,8 +645,6 @@
     <BundleResource Include="Resources\menu_icon%402x.png" />
     <BundleResource Include="Resources\nearby_taxi.png" />
     <BundleResource Include="Resources\nearby_taxi%402x.png" />
-    <BundleResource Include="Resources\nearby.png" />
-    <BundleResource Include="Resources\nearby%402x.png" />
     <BundleResource Include="Resources\suv_badge_selected.png" />
     <BundleResource Include="Resources\suv_badge_selected%402x.png" />
     <BundleResource Include="Resources\suv_badge.png" />
@@ -733,6 +731,8 @@
     <BundleResource Include="Resources\tutorial_screen08%402x.png" />
     <BundleResource Include="Resources\poweredby.png" />
     <BundleResource Include="Resources\poweredByGoogle.png" />
+    <BundleResource Include="Resources\places.png" />
+    <BundleResource Include="Resources\places%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
