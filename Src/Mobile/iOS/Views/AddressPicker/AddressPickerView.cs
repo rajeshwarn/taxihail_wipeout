@@ -48,6 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
             AddressEditText = new FlatTextField 
             { 
+                ShowShadow = true,
                 Frame = new RectangleF(8, 22, 214, 44),
                 VerticalAlignment = UIControlContentVerticalAlignment.Center,
                 ClearButtonMode = UITextFieldViewMode.Always,
