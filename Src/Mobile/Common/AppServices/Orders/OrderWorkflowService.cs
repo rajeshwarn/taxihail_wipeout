@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading;
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -23,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly AbstractLocationService _locationService;
 		readonly IAccountService _accountService;
 		readonly IGeolocService _geolocService;
-		readonly IAppSettings _configurationManager;
+		readonly IAppSettings _appSettings;
 		readonly ILocalization _localize;
 		readonly IBookingService _bookingService;
 		readonly ICacheService _cacheService;
@@ -47,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			ICacheService cacheService)
 		{
 			_cacheService = cacheService;
-			_configurationManager = configurationManager;
+			_appSettings = configurationManager;
 			_geolocService = geolocService;
 			_accountService = accountService;
 			_locationService = locationService;
@@ -157,7 +158,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				throw new OrderValidationException("Pickup address required", OrderValidationError.PickupAddressRequired);
 			}
 
-			var destinationIsRequired = _configurationManager.Data.DestinationIsRequired;
+			var destinationIsRequired = _appSettings.Data.DestinationIsRequired;
 			var destinationAddress = await _destinationAddressSubject.Take(1).ToTask();
 			var destinationIsValid = destinationAddress.BookAddress.HasValue()
 			                         && destinationAddress.HasValidCoordinate();
@@ -178,31 +179,68 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder()
 		{
+			bool callIsEnabled = !_appSettings.Data.HideCallDispatchButton;
+
 			CreateOrder order = await GetOrder();
 
-			var orderStatus = await _bookingService.CreateOrder(order);
-
-			if (!orderStatus.IBSOrderId.HasValue || !(orderStatus.IBSOrderId > 0))
+			try
 			{
-				//TODO: Clarify. When this can happen?
-				throw new Exception("No IbsOrderId, something went wrong while creating the order");
+				var orderStatus = await _bookingService.CreateOrder(order);
+
+				var orderCreated = new Order
+				{
+					CreatedDate = DateTime.Now, 
+					DropOffAddress = order.DropOffAddress, 
+					IBSOrderId = orderStatus.IBSOrderId, 
+					Id = order.Id, PickupAddress = order.PickupAddress,
+					Note = order.Note, 
+					PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now,
+					Settings = order.Settings
+				};
+
+
+				PrepareForNewOrder();
+
+				// TODO: Refactor so we don't have to return two distinct objects
+				return Tuple.Create(orderCreated, orderStatus);
 			}
-
-			var orderCreated = new Order
+			catch(WebServiceException e)
 			{
-				CreatedDate = DateTime.Now, 
-				DropOffAddress = order.DropOffAddress, 
-				IBSOrderId = orderStatus.IBSOrderId, 
-				Id = order.Id, PickupAddress = order.PickupAddress,
-				Note = order.Note, 
-				PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now,
-				Settings = order.Settings
-			};
+				string message = callIsEnabled
+					? _localize["ServiceError_ErrorCreatingOrderMessage"]
+					: _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"];
 
-			PrepareForNewOrder();
+				if (e.ErrorCode == ErrorCode.CreateOrder_RuleDisable.ToString())
+				{
+					// Order creation is temporarily disabled by rules
+					message = e.Message;
+				}
+				else
+				{
+					// Miscellaneous error
+					var messageKey = "ServiceError" + e.ErrorCode;
+					if (_localize.Exists(messageKey))
+					{
+						// Message when call is enabled
+						message = _localize[messageKey];
+					}
+						
+					messageKey += "_NoCall";
+					if (!callIsEnabled
+						&& _localize.Exists(messageKey))
+					{
+						// messasge when call is disabled
+						message = _localize[messageKey];
+					}
+				}
 
-			// TODO: Refactor so we don't have to return two distinct objects
-			return Tuple.Create(orderCreated, orderStatus);
+				if (callIsEnabled)
+				{
+					message = string.Format(message, _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
+				}
+
+				throw new OrderCreationException(message);
+			}
 
 		}
 
@@ -322,7 +360,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public async Task<bool> ShouldWarnAboutEstimate()
 		{
 			var destination = await _destinationAddressSubject.Take(1).ToTask();
-			return _configurationManager.Data.ShowEstimateWarning
+			return _appSettings.Data.ShowEstimateWarning
 					&& !_cacheService.Get<string>("WarningEstimateDontShow").HasValue()
 					&& destination.HasValidCoordinate();
 		}

@@ -3,7 +3,7 @@ using MonoTouch.Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Localization
 {
-	public class Localize : ILocalization
+    public class Localize : ILocalization
 	{
 		public static string GetValue (string key)
 		{
@@ -15,6 +15,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
 	    {
             get { return GetValue(key); }
 	    }
+
+        public bool Exists(string key)
+        {
+            const string Undefined = "UNDEFINED";
+            return NSBundle.MainBundle.LocalizedString(key, Undefined, string.Empty) != Undefined;
+        }
 	}
 }
 
