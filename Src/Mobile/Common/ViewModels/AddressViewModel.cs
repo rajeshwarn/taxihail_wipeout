@@ -23,7 +23,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public Address Address { get; set; }
         public bool ShowRightArrow { get; set; }
         public bool ShowPlusSign { get; set; }
-        public string Icon { get; set; }	
         public bool IsAddNew { get; set; }
 
         private bool _isFirst;
@@ -55,8 +54,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		
-        public bool IsFirst { get{return _isFirst;} 
+		public string Icon
+		{
+			get
+			{
+				switch (Type)
+				{
+					case AddressType.Favorites:
+						return "favorites";
+						break;
+					case AddressType.History:
+						return "history";
+						break;
+					case AddressType.Places:
+						return "places";
+						break;
+					default:
+						return null;
+				}
+			}
+		}
+
+        public bool IsFirst 
+		{ 
+			get { return _isFirst; } 
             set 
             {
                 _isFirst = value;
@@ -64,7 +85,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public bool IsLast { get{return _isLast;} 
+        public bool IsLast 
+		{ 
+			get { return _isLast; } 
             set 
             {
                 _isLast = value;
@@ -81,6 +104,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return this.Address != null ? 
 						new Position(this.Address.Latitude, this.Address.Longitude)
 						: new Position();
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				int hash = 17;
+				hash = hash * 23 + DisplayLine1.ToSafeString().GetHashCode();
+				hash = hash * 23 + DisplayLine2.ToSafeString().GetHashCode();
+				hash = hash * 23 + Type.GetHashCode();
+				return hash;
+			}
+		}
+
+		public override bool Equals(object obj)
+		{
+			var other = (AddressViewModel)obj;
+
+			var equal = (DisplayLine1 == other.DisplayLine1)
+			            && (DisplayLine2 == other.DisplayLine2)
+			            && (Type == other.Type);
+
+			return equal;
 		}
 	}
 
