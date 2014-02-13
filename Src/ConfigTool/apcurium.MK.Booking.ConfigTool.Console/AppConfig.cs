@@ -61,7 +61,6 @@ namespace apcurium.MK.Booking.ConfigTool
 
                     /**TaxiHail **/
                     new ConfigFile(this){ Source="Settings.json", Destination=@"Mobile\Common\Settings\Settings.json" },
-                    new ConfigFile(this){ Source="Style.json", Destination=@"Mobile\Common\Style\Style.json" },
 
                     new ConfigFile(this){ Source="public.keystore", Destination=@"Mobile\Android\public.keystore" },
 				    new ConfigSplash(this,"splash.png",@"Mobile\Android\Resources\","splash.png"),
