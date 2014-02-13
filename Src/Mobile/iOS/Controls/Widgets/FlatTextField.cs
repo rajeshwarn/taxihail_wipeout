@@ -48,7 +48,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             LeftView = new UIView(new RectangleF(0f, 0f, Padding, 1f)); 
 			LeftViewMode = UITextFieldViewMode.Always;
             RightView = new UIView(new RectangleF(Frame.Right - Padding, 0f, Padding, 1f));
-            RightViewMode = UITextFieldViewMode.Always;
+            RightViewMode = UITextFieldViewMode.UnlessEditing;
+            ClearButtonMode = UITextFieldViewMode.WhileEditing;
 		}
 
 		public override void Draw (RectangleF rect)
@@ -164,6 +165,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _shadowView.Frame = Frame.Copy().Shrink(1);
             }
 		}
+
+        protected virtual void DrawText(CGContext context, RectangleF rect, CGColor textColor)
+        {
+            //Hook?
+        }
 	}
 }
 

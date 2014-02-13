@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                    Icon Icon;
                    HideBottomBar IsLast";
 
-        const float Margin = 6;
+        const float Margin = 8;
         const float Margin2x = Margin * 2;
 
         public AddressPickerView(IntPtr h) : base(h)
@@ -49,14 +49,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             AddressEditText = new FlatTextField 
             { 
                 ShowShadow = true,
-                Frame = new RectangleF(8, 22, 214, 44),
+                Frame = new RectangleF(Margin, 22, 214, 44),
                 VerticalAlignment = UIControlContentVerticalAlignment.Center,
-                ClearButtonMode = UITextFieldViewMode.Always,
                 AutocapitalizationType = UITextAutocapitalizationType.None,
                 AutocorrectionType = UITextAutocorrectionType.No
             };
 
-            CancelButton = new FlatButton() { Frame = new RectangleF(AddressEditText.Frame.Right + 9, 22, 81, 44) };
+            CancelButton = new FlatButton() { Frame = new RectangleF(AddressEditText.Frame.Right + 9, AddressEditText.Frame.Y, UIScreen.MainScreen.Bounds.Width - AddressEditText.Frame.Width - 9 - Margin2x, 44) };
             CancelButton.SetTitle(Localize.GetValue("Cancel"), UIControlState.Normal);
             FlatButtonStyle.Red.ApplyTo(CancelButton);
 
