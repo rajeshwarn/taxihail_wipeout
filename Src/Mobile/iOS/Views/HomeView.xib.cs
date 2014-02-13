@@ -179,6 +179,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             else if (hint.State == HomeViewModelState.AddressSearch)
             {
                 ctrlAddressPicker.Open();
+                ViewModel.AddressPicker.LoadAddresses();
             }
             else if(hint.State == HomeViewModelState.Initial)
             {
@@ -190,6 +191,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     0.6f, 
                     () => {
                         RedrawSubViews();
+                        ctrlAddressPicker.Close();
                         constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
                         constraintOrderReviewBottomSpace.Constant = 468;
                         constraintOrderOptionsTopSpace.Constant =  22;

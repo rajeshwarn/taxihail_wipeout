@@ -2,10 +2,24 @@ using System.Linq;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Maps.Geo;
+
+
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class AddressViewModel : BaseViewModel
 	{
+		public AddressViewModel()
+		{
+			
+		}
+
+		public AddressViewModel(Address address, AddressType type)
+		{
+			Address = address;
+			Type = type;
+		}
+
         public Address Address { get; set; }
         public bool ShowRightArrow { get; set; }
         public bool ShowPlusSign { get; set; }
@@ -61,6 +75,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public AddressType Type { get; set; }
 
 		public bool IsSearchResult { get; set; }
+
+		public Position ToPosition()
+		{
+			return this.Address != null ? 
+						new Position(this.Address.Latitude, this.Address.Longitude)
+						: new Position();
+		}
 	}
 
 	public enum AddressType

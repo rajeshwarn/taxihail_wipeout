@@ -14,19 +14,18 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 {
     [Register("AddressPickerView")]
     public class AddressPickerView : BaseBindableChildView<AddressPickerViewModel>
     {
+
         const string CellBindingText = @"
-                {
-                   'FirstLine':{'Path':'Line1'},                   
-                   'SecondLine':{'Path':'Line2'},                   
-                   'Icon':{'Path':'Icon'},            
-                    'HideBottomBar':{'Path':'IsLast'},            
-                }";
+                   FirstLine DisplayLine1;
+                   SecondLine DisplayLine2;
+                   Icon Icon"; 
 
 
         const float Margin = 6;
@@ -59,23 +58,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
             CancelButton = new FlatButton();
             CancelButton.SetTitle(Localize.GetValue("CancelButton"), UIControlState.Normal);
+            FlatButtonStyle.Red.ApplyTo(CancelButton);
 
             TableView = new UITableView(  new RectangleF(0,0,320,1000), UITableViewStyle.Grouped);
             TableView.SectionHeaderHeight = 10;
             TableView.BackgroundView = new  UIView { BackgroundColor = UIColor.Clear };
             TableView.BackgroundColor = UIColor.Clear;
             TableView.RowHeight = 45;
-            TableView.AddGestureRecognizer( GetHideKeyboardOnTouchGesture()  );
-
+            TableView.AddGestureRecognizer(GetHideKeyboardOnTouchGesture());
             TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 
-            TableViewSource = new GroupedAddressTableViewSource(TableView, UITableViewCellStyle.Subtitle, new NSString("AdrsCell"), CellBindingText, UITableViewCellAccessory.None);
+            TableViewSource = new GroupedAddressTableViewSource(TableView, 
+                                                                UITableViewCellStyle.Subtitle, 
+                                                                new NSString("AdrsCell"), 
+                                                                CellBindingText, 
+                                                                UITableViewCellAccessory.None);
 
             TableView.Source = TableViewSource;
             TableViewSource.CellCreator = CellCreator;
                            
 
             AddSubviews(AddressEditText,CancelButton,TableView);
+
+            var set = this.CreateBindingSet<AddressPickerView, AddressPickerViewModel> ();
+
+            set.Bind(TableViewSource)
+                .For(v => v.ItemsSource)
+                .To(vm => vm.AllAddresses);
+
+            set.Bind(TableViewSource)
+                .For(v => v.SelectedCommand)
+                .To(vm => vm.AddressSelected);
+
+            set.Bind(AddressEditText)
+                .For("TouchUpInside")
+                .To(vm => vm.TextSearchCommand);
+
+            set.Apply ();
         }
 
         private MvxStandardTableViewCell CellCreator(UITableView tableView, NSIndexPath indexPath, object state)
@@ -96,7 +115,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             public HideKeyboardOnTouchGesture( UITextField textField ) : base(  r=> r.ShouldRecognizeSimultaneously = (e,s) => true )
             {
                 _textField = textField;
-
             }
 
             public override void TouchesBegan(NSSet touches, UIEvent evt)
@@ -108,16 +126,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                 }
             }
         } 
-
-        //Todo not sure about this
-        protected void AddBindings(object source)
-        {
-//            this.AddBindings(source, new Dictionary<object, string>
-//            {
-//                { TableViewSource , "{'ItemsSource': {'Path': 'AllAddresses'}}" },
-//                    { this , "{'SearchCommand': {'Path': 'TextSearchCommand'}}" },                
-//                });
-        }
 
         public void UpdateView(float width, float height)
         {
@@ -133,7 +141,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             AddressEditText.SetNeedsDisplay();
         }  
 
-        void Close()
+        public void Close()
         {
             Hidden = true;
             this.ResignFirstResponderOnSubviews();
