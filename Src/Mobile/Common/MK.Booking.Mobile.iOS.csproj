@@ -7,8 +7,6 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile</RootNamespace>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -326,6 +324,7 @@
     <Compile Include="Extensions\MvxNavigatingObjectExtensions.cs" />
     <Compile Include="ViewModels\Orders\OrderEditViewModel.cs" />
     <Compile Include="ViewModels\Orders\AddressPickerViewModel.cs" />
+    <Compile Include="AppServices\Orders\OrderCreationException.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

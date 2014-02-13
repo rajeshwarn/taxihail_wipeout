@@ -29,5 +29,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
                 return _context.Resources.GetString(identifier);
             }
         }
+
+        public bool Exists(string key)
+        {
+            var identifier = _context.Resources.GetIdentifier(key, "string", _context.PackageName);
+            return identifier != 0;
+        }
     }
 }

@@ -12,8 +12,6 @@
     <FileAlignment>512</FileAlignment>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -326,6 +324,7 @@
     <Compile Include="ViewModels\Orders\OrderReviewViewModel.cs" />
     <Compile Include="Extensions\MvxNavigatingObjectExtensions.cs" />
     <Compile Include="ViewModels\Orders\OrderEditViewModel.cs" />
+    <Compile Include="AppServices\Orders\OrderCreationException.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

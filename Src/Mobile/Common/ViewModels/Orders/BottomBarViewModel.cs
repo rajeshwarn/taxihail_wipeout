@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using Cirrious.MvvmCross.Plugins.PhoneCall;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
@@ -17,9 +18,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		readonly IOrderWorkflowService _orderWorkflowService;
 		readonly IMessageService _messageService;
 		readonly ILocalization _localize;
+		readonly IMvxPhoneCallTask _phone;
 
-		public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, IMessageService messageService, ILocalization localize)
+		public BottomBarViewModel(IOrderWorkflowService orderWorkflowService,
+			IMessageService messageService,
+			ILocalization localize,
+			IMvxPhoneCallTask phone)
 		{
+			_phone = phone;
 			_localize = localize;
 			_messageService = messageService;
 			_orderWorkflowService = orderWorkflowService;
@@ -106,23 +112,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						});
 
 					}
-					catch(Exception e)
+					catch(OrderCreationException e)
 					{
 						Logger.LogError(e);
 
 						var settings = this.Services().Settings;
 						var callIsEnabled = !settings.HideCallDispatchButton;
+						var title = _localize["ErrorCreatingOrderTitle"];
+
 						if (callIsEnabled)
 						{
-							var errorMessage = string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"],
-								settings.ApplicationName, 
-								settings.DefaultPhoneNumberDisplay);
-							_messageService.ShowMessage(_localize["ErrorCreatingOrderTitle"], errorMessage);
+							_messageService.ShowMessage(title,
+								e.Message,
+								"Call",
+								() => _phone.MakePhoneCall (settings.ApplicationName, settings.DefaultPhoneNumber),
+								"Cancel",
+								delegate { });
 						}
 						else
 						{
-							_messageService.ShowMessage(_localize["ErrorCreatingOrderTitle"], _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"]);
+							_messageService.ShowMessage(title, e.Message);
 						}
+					}
+					catch(Exception e)
+					{
+						Logger.LogError(e);
 					}
 
 
@@ -186,7 +200,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					RaisePropertyChanged();
 				}
 			}
-		}	
+		}
+
     }
 }
 

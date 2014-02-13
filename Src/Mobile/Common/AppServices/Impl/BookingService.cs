@@ -75,57 +75,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public bool CallIsEnabled { get{ return !_appSettings.Data.HideCallDispatchButton; } }
 
-        private void HandleCreateOrderError (Exception ex)
-        {
-			var title = _localize["ErrorCreatingOrderTitle"];
-
-			string message = _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"];
-
-			if (CallIsEnabled)
-			{
-				message = _localize["ServiceError_ErrorCreatingOrderMessage"];
-			}
-
-            try {
-                if (ex is WebServiceException) {
-                    if (((WebServiceException)ex).ErrorCode ==ErrorCode.CreateOrder_RuleDisable.ToString ()) {
-                        message = ((WebServiceException)ex).ErrorMessage;
-                    } else {
-                        
-						var messageKey = "ServiceError" + ((WebServiceException)ex).ErrorCode;
-						var errorMessage = _localize[messageKey];
-						if(errorMessage != messageKey)
-						{
-							message = errorMessage;
-						}
-
-						if ( !CallIsEnabled )
-						{
-							messageKey += "_NoCall";
-							errorMessage = _localize[messageKey];
-							if(errorMessage != messageKey)
-							{
-								message = errorMessage;
-							}
-						}
-                    }
-                }
-            } catch (Exception exe)
-            {
-                Logger.LogError(exe);
-            }
-
-			if (CallIsEnabled)
-			{
-				string err = string.Format(message, _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
-				_messageService.ShowMessage(title, err, "Call", () => CallCompany(_appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumber), "Cancel", delegate { });
-			}
-			else
-			{
-				_messageService.ShowMessage(title, message);
-			}
-        }
-
         private void CallCompany (string name, string number)
         {
 			_phoneCallTask.MakePhoneCall (name, number);
