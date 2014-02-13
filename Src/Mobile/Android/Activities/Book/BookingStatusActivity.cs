@@ -13,8 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     [Activity(Label = "Book Status", Theme = "@style/MainTheme", ScreenOrientation = ScreenOrientation.Portrait)]
     public class BookingStatusActivity : BaseBindingActivity<BookingStatusViewModel>
     {
-        //private TouchMap _touchMap;
-        private SupportMapFragment _touchMap;
+        private TouchMap _touchMap;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -28,14 +27,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
 
             base.OnCreate(bundle);
-            _touchMap.OnCreate(bundle);	        
+            _touchMap.OnCreate(bundle);
+            _touchMap.ViewTreeObserver.AddOnGlobalLayoutListener(new LayoutObserverForMap(_touchMap));	        
         }        
 
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_BookingStatus);
-            //_touchMap = FindViewById<OrderMapView>(Resource.Id.mapStatus);
-
+            _touchMap = FindViewById<TouchMap>(Resource.Id.mapStatus);
             ViewModel.OnViewLoaded();
         }
 
@@ -49,8 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnPause()
         {
             base.OnPause();
-
-	    //_touchMap.Pause();
+            _touchMap.Pause();
         }
 
         protected override void OnDestroy()

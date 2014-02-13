@@ -75,6 +75,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		private Position _mapCenter;
+		public Position MapCenter
+		{
+			get { return _mapCenter; }
+			set
+			{
+				if (value != _mapCenter)
+				{
+					_mapCenter = value;
+					RaisePropertyChanged();
+				}
+			}
+		}
+
 
 		private AddressSelectionMode _addressSelectionMode; 
 		public AddressSelectionMode AddressSelectionMode
@@ -90,20 +104,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if (PickupAddress != null && AddressSelectionMode == AddressSelectionMode.PickupSelection)
 				{
 					DeltaLatitude = DeltaLongitude = DefaultDelta;
-                    var coordinate = new Position() { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
-                    MapBounds = new MapBounds()
-                    {
-                        NorthBound = coordinate.Latitude + (DeltaLatitude) / 2,
-                        SouthBound = coordinate.Latitude - (DeltaLatitude) / 2,
-                        EastBound = coordinate.Longitude + (DeltaLongitude) / 2,
-                        WestBound = coordinate.Longitude - (DeltaLongitude) / 2
-                    };
+                    var coordinate = new Position() { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };                   
+					MapCenter = coordinate;
 				}
 
 				RaisePropertyChanged();
 			}
 		}
-
 
 		private IEnumerable<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
 		public IEnumerable<AvailableVehicle> AvailableVehicles
@@ -130,8 +137,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new CancellableCommand<MapBounds>(async (bounds, token) =>
                 {
-						DeltaLongitude = Math.Abs(bounds.EastBound - bounds.WestBound);
-						DeltaLatitude = Math.Abs(bounds.NorthBound - bounds.SouthBound);
                         await _orderWorkflowService.SetAddressToCoordinate(new Position() { Latitude = bounds.GetCenter().Latitude, Longitude = bounds.GetCenter().Longitude },
                             token);
 
@@ -143,13 +148,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{			
             if (PickupAddress.HasValidCoordinate())
 			{
-				MapBounds = new MapBounds
-				{
-					NorthBound = PickupAddress.Latitude + DeltaLatitude / 2,
-					SouthBound = PickupAddress.Latitude - DeltaLatitude / 2,
-					EastBound = PickupAddress.Longitude + DeltaLongitude / 2,
-					WestBound = PickupAddress.Longitude - DeltaLongitude / 2,
-				};
+				var coordinate = new Position() { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
+				MapCenter = coordinate;
 			}
 		}
 
@@ -157,14 +157,55 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			if (DestinationAddress.HasValidCoordinate())
 			{
-				MapBounds = new MapBounds
-				{
-					NorthBound = DestinationAddress.Latitude + DeltaLatitude/ 2,
-					SouthBound = DestinationAddress.Latitude - DeltaLatitude/ 2,
-					EastBound = DestinationAddress.Longitude + DeltaLongitude/ 2,
-					WestBound = DestinationAddress.Longitude - DeltaLongitude/ 2,
-				};
+				var coordinate = new Position() { Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
+				MapCenter = coordinate;
 			}
+		}
+
+		public static MapBounds GetMapBoundsFromCoordinateAndDelta(Position coordinate, double deltaLatitude, double deltaLongitude)
+		{
+			return new MapBounds()
+			{
+				NorthBound = coordinate.Latitude + deltaLatitude / 2,
+				SouthBound = coordinate.Latitude - deltaLatitude / 2,
+				EastBound = coordinate.Longitude + deltaLongitude / 2,
+				WestBound = coordinate.Longitude - deltaLongitude / 2
+			};
+		}	
+
+		public ICommand ZoomToAddress
+		{
+			get
+			{
+				return this.GetCommand(() =>
+				{
+					Position pos = new Position();
+					Address currentAddress = new Address();					
+
+					if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
+					{
+						currentAddress = PickupAddress;						
+					}
+					else if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
+					{
+						currentAddress = DestinationAddress;						
+					}
+							
+					var nearbyAddress =	this.Services().Account.FindInAccountAddresses(currentAddress.Latitude, currentAddress.Longitude);
+					if (nearbyAddress != null)
+					{
+						currentAddress = nearbyAddress;
+					}
+
+					pos = new Position() { Latitude = currentAddress.Latitude, Longitude = currentAddress.Longitude };
+					MapBounds = GetMapBoundsFromCoordinateAndDelta(pos, 0.002d, 0.002d);
+				});
+			}
+		}
+
+		public static Position PositionFromAddress(Address address)
+		{
+			return new Position() { Latitude = address.Latitude, Longitude = address.Longitude };
 		}
 
 		public class CancellableCommand<TParam>: ICommand
@@ -205,7 +246,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         var source = new CancellationTokenSource();
                         await _execute((TParam)parameter, token);
                     }
-                    catch(Exception e)
+                    catch(Exception)
                     {
                     }
 

@@ -19,26 +19,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public class OrderOptions : MvxFrameControl
     {
-        private AddressTextBox viewPickup;
-        private AddressTextBox viewDestination;
-        private VehicleTypeAndEstimateControl viewVehicleType;
+        private AddressTextBox ViewPickup;
+        private AddressTextBox ViewDestination;
+        private VehicleTypeAndEstimateControl ViewVehicleType;
+
+        public Button BigInvisibleButton { get; set; }
 
         public OrderOptions(Context context, IAttributeSet attrs) : base (Resource.Layout.SubView_OrderOptions, context, attrs)
         {
             this.DelayBind(() => 
             {
-                viewPickup = Content.FindViewById<AddressTextBox>(Resource.Id.viewPickup);
-                viewDestination = Content.FindViewById<AddressTextBox>(Resource.Id.viewDestination);
-                viewVehicleType = Content.FindViewById<VehicleTypeAndEstimateControl>(Resource.Id.viewEstimate);
+                ViewPickup = Content.FindViewById<AddressTextBox>(Resource.Id.viewPickup);
+                ViewDestination = Content.FindViewById<AddressTextBox>(Resource.Id.viewDestination);
+                ViewVehicleType = Content.FindViewById<VehicleTypeAndEstimateControl>(Resource.Id.viewEstimate);
 
-                viewDestination.IsDestination = true;
+                ViewDestination.IsDestination = true;
 
                 // temporary until we can be notified by the service that we're searching for an address
-                viewPickup.IsLoadingAddress = false;
-                viewDestination.IsLoadingAddress = false;
+                ViewPickup.IsLoadingAddress = false;
+                ViewDestination.IsLoadingAddress = false;
 
                 // since we don't have the vehicle selection yet, we hardcode this value
-                viewVehicleType.VehicleType = "Taxi";
+                ViewVehicleType.VehicleType = "Taxi";
+
+                ViewPickup.SetInvisibleButton(BigInvisibleButton);
+                ViewDestination.SetInvisibleButton(BigInvisibleButton);
 
                 InitializeBinding();
             });
@@ -57,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 //                ViewModel.SetAddress.Execute(address.Address);
 //            });
 
-            viewPickup.AddressUpdated = (streetNumber, fullAddress) =>
+            ViewPickup.AddressUpdated = (streetNumber, fullAddress) =>
             {
                 ViewModel.PickupAddress.StreetNumber = streetNumber;
                 ViewModel.PickupAddress.FullAddress = fullAddress;
@@ -65,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ViewModel.SetAddress.Execute(ViewModel.PickupAddress);
             };
 
-            viewDestination.AddressUpdated = (streetNumber, fullAddress) =>
+            ViewDestination.AddressUpdated = (streetNumber, fullAddress) =>
             {
                 ViewModel.DestinationAddress.StreetNumber = streetNumber;
                 ViewModel.DestinationAddress.FullAddress = fullAddress;
@@ -75,23 +80,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             var set = this.CreateBindingSet<OrderOptions, OrderOptionsViewModel>();
 
-            set.Bind(viewPickup)
+            set.Bind(ViewPickup)
                 .For(v => v.IsReadOnly)
                 .To(vm => vm.ShowDestination);
-            set.Bind(viewPickup.AddressTextView)
+            set.Bind(ViewPickup.AddressTextView)
                 .To(vm => vm.PickupAddress.DisplayAddress);
 
-            set.Bind(viewDestination)
+            set.Bind(ViewDestination)
                 .For(v => v.Visibility)
                 .To(vm => vm.ShowDestination)
                 .WithConversion("Visibility");
-            set.Bind(viewDestination.AddressTextView)
+            set.Bind(ViewDestination.AddressTextView)
                 .To(vm => vm.DestinationAddress.DisplayAddress);
 
-            set.Bind(viewVehicleType)
+            set.Bind(ViewVehicleType)
                 .For(v => v.EstimatedFare)
                 .To(vm => vm.EstimatedFare);
-            set.Bind(viewVehicleType)
+            set.Bind(ViewVehicleType)
                 .For(v => v.Visibility)
                 .To(vm => vm.ShowDestination)
                 .WithConversion("Visibility");
@@ -103,13 +108,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             if (hint.State == HomeViewModelState.Review)
             {
-                viewPickup.IsReadOnly = true;
-                viewDestination.IsReadOnly = true;
+                ViewPickup.IsReadOnly = true;
+                ViewDestination.IsReadOnly = true;
             }
             else if(hint.State == HomeViewModelState.Initial)
             {
-                viewPickup.IsReadOnly = ViewModel.ShowDestination;
-                viewDestination.IsReadOnly = false;
+                ViewPickup.IsReadOnly = ViewModel.ShowDestination;
+                ViewDestination.IsReadOnly = false;
             }
         }
     }

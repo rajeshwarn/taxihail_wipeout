@@ -106,9 +106,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Apply();
         }
 
-        public void ChangeState(ChangeStatePresentationHint hint)
-        {
-            ChangeState((HomeViewModelPresentationHint)hint);
+
+
+
+        public void ChangePresentation(ChangePresentationHint hint)
+        {            
+            if (hint is HomeViewModelPresentationHint)
+            {
+                ChangeState((HomeViewModelPresentationHint)hint);
+            }
         }
 
         void ChangeState(HomeViewModelPresentationHint hint)

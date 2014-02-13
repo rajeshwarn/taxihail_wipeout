@@ -33,6 +33,8 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Messages;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -42,14 +44,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
    
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
+        private Button _bigButton;
         private TouchableMap _touchMap;
         private OrderReview _orderReview;
+        private OrderEdit _orderEdit;
         private OrderOptions _orderOptions;
         private AppBar _appBar;
+        private FrameLayout _frameLayout;
         private HomeViewModelState _presentationState = HomeViewModelState.Initial;
 
         private int _menuWidth = 400;
-        private readonly DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
 
         private Bundle _mainBundle;
 
@@ -71,7 +75,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public OrderMapFragment _mapFragment; 
 
-
         void PanelMenuInit()
         {
             var menu = FindViewById(Resource.Id.PanelMenu);
@@ -83,14 +86,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             mainSettingsButton.Click -= PanelMenuToggle;
             mainSettingsButton.Click += PanelMenuToggle;
 
-
             var signOutButton = FindViewById<View>(Resource.Id.settingsLogout);
             signOutButton.Click -= PanelMenuSignOutClick;
             signOutButton.Click += PanelMenuSignOutClick;
 
-            var bigButton = FindViewById<View>(Resource.Id.BigButtonTransparent);
-            bigButton.Click -= PanelMenuToggle;
-            bigButton.Click += PanelMenuToggle;
+            _bigButton.Touch += (sender, e) => 
+            {
+                if(e.Event.Action == MotionEventActions.Up)
+                {
+                    if(ViewModel.Panel.MenuIsOpen)
+                    {
+                        ViewModel.Panel.MenuIsOpen = false;
+                    }
+                }
+            };
 
             ViewModel.Panel.PropertyChanged -= PanelMenuPropertyChanged;
             ViewModel.Panel.PropertyChanged += PanelMenuPropertyChanged;
@@ -138,43 +147,53 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var mainLayout = FindViewById(Resource.Id.HomeLayout);
             mainLayout.ClearAnimation();
 
-
             var menu = FindViewById(Resource.Id.PanelMenu);
 
-            var animation = new SlideAnimation(mainLayout, ViewModel.Panel.MenuIsOpen ? 0 : (_menuWidth),
-                ViewModel.Panel.MenuIsOpen ? (_menuWidth) : 0, _interpolator);
+            var animation = new SlideAnimation(mainLayout, 
+                ViewModel.Panel.MenuIsOpen ? 0 : (_menuWidth),
+                ViewModel.Panel.MenuIsOpen ? (_menuWidth) : 0);
             animation.Duration = 400;
-            animation.AnimationStart +=
-                (sender, e) =>
+            animation.AnimationStart += (sender, e) =>
             {
                 if (ViewModel.Panel.MenuIsOpen)
                     menu.Visibility = ViewStates.Visible;
             };
 
-            animation.AnimationEnd +=
-                (sender, e) =>
+            animation.AnimationEnd += (sender, e) =>
             {
                 if (!ViewModel.Panel.MenuIsOpen)
                 {
                     menu.Visibility = ViewStates.Gone;
+                    _bigButton.Visibility = ViewStates.Gone;
                 }
                 else
                 {
-
+                    _bigButton.Visibility = ViewStates.Visible;
                 }
             };
 
             mainLayout.StartAnimation(animation);
-
         }
 
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_Home);
             ViewModel.OnViewLoaded();
+            _bigButton = (Button) FindViewById(Resource.Id.BigButtonTransparent);
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
+            _orderEdit = (OrderEdit) FindViewById(Resource.Id.orderEdit);
             _appBar = (AppBar) FindViewById(Resource.Id.appBar);
+            _frameLayout = (FrameLayout) FindViewById(Resource.Id.RelInnerLayout);
+
+            // attach big invisible button to the OrderOptions to be able to pass it to the address text box and clear focus when clicking outside
+            _orderOptions.BigInvisibleButton = _bigButton;
+
+            ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
+            ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = WindowManager.DefaultDisplay.Height;
+            ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = WindowManager.DefaultDisplay.Width;
+            _orderReview.Visibility = ViewStates.Gone;
+            _orderEdit.Visibility = ViewStates.Gone;
 
             // Creating a view controller for MapFragment
             Bundle mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
@@ -186,10 +205,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var binding = this.CreateBindingSet<HomeActivity, HomeViewModel>();
 
             binding.Bind(_mapFragment).For("DataContext").To(vm => vm.Map); // Map Fragment View Bindings
-            binding.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // Map OrderOptions View Bindings
+            binding.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // OrderOptions View Bindings
+            binding.Bind(_orderEdit).For("DataContext").To(vm => vm.OrderEdit); // OrderEdit View Bindings
+            binding.Bind(_orderReview).For("DataContext").To(vm => vm.OrderReview); // OrderReview View Bindings
             binding.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
-
-
 
             binding.Apply();
 
@@ -284,10 +303,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public void ChangeState(HomeViewModelPresentationHint hint)
         {
-            _presentationState = hint.State;
-
             if (hint.State == HomeViewModelState.PickDate)
             {
+                // Order Options: Visible
+                // Order Review: Hidden
+                // Order Edit: Hidden
+                // Date Picker: Visible
+
+                ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
+
                 SetSelectedOnBookLater(true);
 
                 var intent = new Intent(this, typeof (DateTimePickerActivity));
@@ -295,29 +319,65 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             else if (hint.State == HomeViewModelState.Review)
             {
-                var delta = _orderOptions.Bottom - _orderReview.Top;
-                var animation = new TranslateAnimation(0, 0, 0, delta);
-                animation.Duration = 600;
-                animation.Interpolator = new DecelerateInterpolator();
-                animation.FillAfter = true;
-                _orderReview.StartAnimation(animation);
-            }
+                // Order Options: Visible
+                // Order Review: Visible
+                // Order Edit: Hidden
+                // Date Picker: Hidden
 
+                var animation = AnimationHelper.GetForYTranslation(_orderReview, _orderOptions.Height);
+                animation.AnimationStart += (sender, e) => 
+                {
+                    var desiredHeight = _frameLayout.Height - _orderOptions.Height;
+                    if(((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height != desiredHeight)
+                    {
+                        ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height = desiredHeight;
+                    }
+                };
+
+                var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width);
+                animation2.AnimationStart += (sender, e) => 
+                {
+                    if(((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).Width != _frameLayout.Width)
+                    {
+                        ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).Width = _frameLayout.Width;
+                    }
+                };
+
+                var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, 0);
+
+                _orderReview.StartAnimation(animation);
+                _orderEdit.StartAnimation(animation2);
+                _orderOptions.StartAnimation(animation3);
+            }
             else if (hint.State == HomeViewModelState.Edit)
             {
-                var delta = _orderOptions.Bottom - _orderReview.Top;
-                var animation = new TranslateAnimation(0, 0, delta, 0);
-                animation.Duration = 600;
-                animation.Interpolator = new DecelerateInterpolator();
+                // Order Options: Hidden
+                // Order Review: Hidden
+                // Order Edit: Visible
+                // Date Picker: Hidden
+
+                var animation = AnimationHelper.GetForYTranslation(_orderReview, WindowManager.DefaultDisplay.Height);
+                var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, 0);
+                var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, -_orderOptions.Height);
+
                 _orderReview.StartAnimation(animation);
+                _orderEdit.StartAnimation(animation2);
+                _orderOptions.StartAnimation(animation3);
             }
             else if(hint.State == HomeViewModelState.Initial)
             {
-                var delta = _orderOptions.Bottom - _orderReview.Top;
-                var animation = new TranslateAnimation(0, 0, delta, 0);
-                animation.Duration = 600;
-                animation.Interpolator = new DecelerateInterpolator();
+                // Order Options: Visible
+                // Order Review: Hidden
+                // Order Edit: Hidden
+                // Date Picker: Hidden
+
+                var animation = AnimationHelper.GetForYTranslation(_orderReview, WindowManager.DefaultDisplay.Height);
+                var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width);
+                var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, 0);
+
                 _orderReview.StartAnimation(animation);
+                _orderEdit.StartAnimation(animation2);
+                _orderOptions.StartAnimation(animation3);
 
                 SetSelectedOnBookLater(false);
             }
@@ -347,7 +407,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         }
 
 
-        void IChangePresentation.ChangeState(ChangeStatePresentationHint hint)
+        void IChangePresentation.ChangePresentation(ChangePresentationHint hint)
         {
             ChangeState((HomeViewModelPresentationHint)hint);
         }

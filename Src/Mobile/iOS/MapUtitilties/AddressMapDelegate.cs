@@ -41,19 +41,25 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
         // TODO verify if we could have a special kind of command that stops itself if called a second time, so we could remove this from the map
         public override void RegionChanged (MKMapView mapView, bool animated)
-		{
-			if( _regionMovedActivated )
-			{
+        {
+            if (_regionMovedActivated)
+            {
                 if (mapView is OrderMapView)
                 {
-                    ((OrderMapView)mapView).OnRegionChanged(null, null);
-                }else{
+                    ((OrderMapView)mapView).OnRegionChanged(mapView, new MKMapViewChangeEventArgs(animated));
+                }
+                else
+                {
                     //TODO remove when status is migrated to new map
                     ((TouchMap)mapView).OnRegionChanged();
                 }
+            }
+        }
 
-			}
-		}
+        public override void RegionWillChange(MKMapView mapView, bool animated)
+        {
+            //((OrderMapView)mapView).OnRegionWillChange(null, new MKMapViewChangeEventArgs(animated));
+        }
 	}
 }
 

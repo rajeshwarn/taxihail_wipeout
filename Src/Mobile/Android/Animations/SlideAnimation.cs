@@ -5,23 +5,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Animations
 {
     public sealed class SlideAnimation : Animation
     {
-        private readonly int _mChange;
-        private readonly int _mStart;
+        private readonly int _mChangeX;
+        private readonly int _mStartX;
         private readonly View _mView;
 
-        public SlideAnimation(View v, int marginStart, int marginEnd, IInterpolator i)
+        public SlideAnimation(View v, int marginStartX, int marginEndX)
         {
-            _mStart = marginStart;
+            _mStartX = marginStartX;
             _mView = v;
 
-            _mChange = marginEnd - _mStart;
-            Interpolator = i;
+            _mChangeX = marginEndX - _mStartX;
+            Interpolator = new DecelerateInterpolator(0.9f);
         }
+
         protected override void ApplyTransformation(float interpolatedTime, Transformation t)
         {
-            var change = _mChange*interpolatedTime;
+            var changeX = _mChangeX * interpolatedTime;
 
-            _mView.ScrollTo((int) -(_mStart + change), 0);
+            _mView.ScrollTo((int) -(_mStartX + changeX), 0);
 
             base.ApplyTransformation(interpolatedTime, t);
         }

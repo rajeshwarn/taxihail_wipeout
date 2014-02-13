@@ -11,6 +11,8 @@ using System.Windows.Input;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -42,6 +44,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				BottomBar.Save = OrderEdit.Save;
 				BottomBar.CancelEdit = OrderEdit.Cancel;
+
+				Position initialPosition = new Position() { Latitude = this.Services().Settings.DefaultLatitude, Longitude = this.Services().Settings.DefaultLongitude };
+				Map.MapBounds = MapViewModel.GetMapBoundsFromCoordinateAndDelta(initialPosition, 0.16d, 0.16d);
+				LocateMe.Execute();
 			}
 			this.Services().Vehicle.Start();
 		}
@@ -113,9 +119,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return this.GetCommand(() =>{
-                    Map.DeltaLatitude = Map.DeltaLongitude = Map.DefaultDelta;
-                    _orderWorkflowService.SetAddressToUserLocation();
+				return this.GetCommand(async () =>
+				{
+					await _orderWorkflowService.SetAddressToUserLocation();
+					Map.ZoomToAddress.Execute();
 				});
 			}
 		}
