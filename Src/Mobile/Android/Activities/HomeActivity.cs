@@ -192,6 +192,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
             ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = WindowManager.DefaultDisplay.Height;
             ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = WindowManager.DefaultDisplay.Width;
+            _orderReview.Visibility = ViewStates.Gone;
+            _orderEdit.Visibility = ViewStates.Gone;
 
             // Creating a view controller for MapFragment
             Bundle mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;

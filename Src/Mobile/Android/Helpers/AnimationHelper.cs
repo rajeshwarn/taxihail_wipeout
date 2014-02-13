@@ -3,6 +3,7 @@ using Android.Views.Animations;
 using Android.Views;
 using Android.Widget;
 using Android.App;
+using Android.OS;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
@@ -22,6 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
         {
             view.ClearAnimation();
 
+            var isAndroid23 = (int)Build.VERSION.SdkInt <= 10;
             var layoutParams = (LinearLayout.MarginLayoutParams)view.LayoutParameters;
 
             int deltaX = 0;
@@ -44,6 +46,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
                 Interpolator = new DecelerateInterpolator()
             };
 
+            if(!isAndroid23)
+            {
+                // after 2.3, the views are always visible, just moved away from the screen
+                // otherwise it causes a flicker
+                view.Visibility = ViewStates.Visible;
+            }
+
+            var willBeVisible = (desiredX.HasValue && desiredX.Value >= 0 && desiredX.Value < Application.Context.Resources.DisplayMetrics.WidthPixels)
+                                || (desiredY.HasValue && desiredY.Value >= 0 && desiredY.Value < Application.Context.Resources.DisplayMetrics.HeightPixels);
+
+            if (isAndroid23)
+            {
+                animation.AnimationStart += (sender, e) => 
+                {
+                    if(isAndroid23)
+                    {
+                        // show the view if it's visible at the end
+                        if (willBeVisible)
+                        {
+                            if (view.Visibility != ViewStates.Visible)
+                            {
+                                view.Visibility = ViewStates.Visible;
+                            }
+                        }
+                    }
+                };
+            }
+
             animation.AnimationEnd += (sender, e) => 
             {
                 if(desiredX.HasValue && deltaX != 0)
@@ -54,6 +84,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
                 if(desiredY.HasValue && deltaY != 0)
                 {
                     layoutParams.TopMargin = (int)desiredY.Value;
+                }
+
+                if(isAndroid23)
+                {
+                    // hide the view if it's not visible at the end
+                    if (!willBeVisible)
+                    {
+                        if (view.Visibility != ViewStates.Gone)
+                        {
+                            view.Visibility = ViewStates.Gone;
+                        }
+                    }
                 }
 
                 view.LayoutParameters = layoutParams;
