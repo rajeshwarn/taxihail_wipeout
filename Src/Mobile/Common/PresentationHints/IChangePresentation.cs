@@ -4,7 +4,7 @@ namespace apcurium.MK.Booking.Mobile.PresentationHints
 {
     public interface IChangePresentation
     {
-		void ChangeState(ChangeStatePresentationHint hint);
+		void ChangePresentation(ChangePresentationHint hint);
     }
 }
 

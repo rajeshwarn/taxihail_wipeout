@@ -129,7 +129,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
             });
         }
 
-        public virtual void ChangeState(ChangeStatePresentationHint hint)
+        public virtual void ChangeState(ChangePresentationHint hint)
         { 
         }
 

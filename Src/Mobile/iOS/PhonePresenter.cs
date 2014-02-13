@@ -39,9 +39,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void ChangePresentation(MvxPresentationHint hint)
         {
-            if (hint is ChangeStatePresentationHint)
+            if (hint is ChangePresentationHint)
             {
-                TryChangeViewPresentation((ChangeStatePresentationHint)hint);
+                TryChangeViewPresentation((ChangePresentationHint)hint);
             }
             else
             {
@@ -67,12 +67,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
 
-        private void TryChangeViewPresentation(ChangeStatePresentationHint hint)
+        private void TryChangeViewPresentation(ChangePresentationHint hint)
         {
             var view = CurrentTopViewController as IChangePresentation;
             if (view != null)
             {
-                view.ChangeState(hint);
+                view.ChangePresentation(hint);
             }
             else
             {
