@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private List<AddressAnnotation> _availableVehicleAnnotations = new List<AddressAnnotation> ();
         private TouchGesture _gesture;
 
-        public event EventHandler LocateRequestChanged;       
+        public event EventHandler IsZoomingChanged;       
 
         public OrderMapView(IntPtr handle)
             :base(handle)
@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     .To(vm => vm.UserMovedMap);
 
                 set.Bind()
-                    .For(v => v.LocateRequest)
+                    .For(v => v.IsZooming)
                     .To(vm => vm.IsZooming);
 
                 set.Bind()
@@ -157,16 +157,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-        private bool _locateRequest;
-        public bool LocateRequest
+        private bool _isZooming;
+        public bool IsZooming
         {
-            get { return _locateRequest; }
+            get { return _isZooming; }
             set
             {
-                if (value != _locateRequest)
+                if (value != _isZooming)
                 {
-                    _locateRequest = value;
-                    LocateRequestChanged(null, null);
+                    IsZooming = value;
+                    IsZoomingChanged(null, null);
                 }
             }
         }
@@ -194,7 +194,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 if (value != _mapCenter)
                 {
                     _mapCenter = value;
-                    if (!LocateRequest)
+                    if (!IsZooming)
                     {
                         SetCenterCoordinate(new CLLocationCoordinate2D(MapCenter.Latitude, MapCenter.Longitude), true);
                     }
@@ -334,7 +334,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 if (GetMapBoundsFromProjection().LatitudeDelta < 0.003) // Checks if RegionChange results from a zoom
                 {
-                    LocateRequest = false; // Stops to auto-zoom in MapViewModel when address changed
+                    IsZooming = false; // Stops to auto-zoom in MapViewModel when address changed
                 }
             }
             catch (Exception)
@@ -344,7 +344,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         void HandleTouchBegin (object sender, EventArgs e)
         {
-            LocateRequest = false;
+            IsZooming = false;
         }
 
         private MapBounds GetMapBoundsFromProjection()
@@ -362,7 +362,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         void HandleTouchMove (object sender, EventArgs e)
         {
-            LocateRequest = false;
+            IsZooming = false;
             ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
         }
 
