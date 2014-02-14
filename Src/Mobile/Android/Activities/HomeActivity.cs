@@ -44,7 +44,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         ClearTaskOnLaunch = true, 
         WindowSoftInputMode = SoftInput.AdjustPan, 
         FinishOnTaskLaunch = true, 
-        LaunchMode = LaunchMode.SingleInstance)]
+        LaunchMode = LaunchMode.SingleTask
+    )]
    
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
@@ -307,7 +308,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public void ChangeState(HomeViewModelPresentationHint hint)
         {
-            if (hint.State == HomeViewModelState.PickDate)
+            _presentationState = hint.State;
+
+            if (_presentationState == HomeViewModelState.PickDate)
             {
                 // Order Options: Visible
                 // Order Review: Hidden
@@ -321,7 +324,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 var intent = new Intent(this, typeof (DateTimePickerActivity));
                 StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
             }
-            else if (hint.State == HomeViewModelState.Review)
+            else if (_presentationState == HomeViewModelState.Review)
             {
                 // Order Options: Visible
                 // Order Review: Visible
@@ -353,7 +356,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 _orderEdit.StartAnimation(animation2);
                 _orderOptions.StartAnimation(animation3);
             }
-            else if (hint.State == HomeViewModelState.Edit)
+            else if (_presentationState == HomeViewModelState.Edit)
             {
                 // Order Options: Hidden
                 // Order Review: Hidden
@@ -368,7 +371,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 _orderEdit.StartAnimation(animation2);
                 _orderOptions.StartAnimation(animation3);
             }
-            else if(hint.State == HomeViewModelState.Initial)
+            else if(_presentationState == HomeViewModelState.Initial)
             {
                 // Order Options: Visible
                 // Order Review: Hidden
@@ -401,6 +404,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         return true;
                     case HomeViewModelState.Edit:
                         ChangeState(new HomeViewModelPresentationHint(HomeViewModelState.Review));
+                        return true;
+                    case HomeViewModelState.PickDate:
+                        ChangeState(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                        return true;
+                    case HomeViewModelState.AddressSearch:
+                        ChangeState(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
                         return true;
                     default:
                         break;
