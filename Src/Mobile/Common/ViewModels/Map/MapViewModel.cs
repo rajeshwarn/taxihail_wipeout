@@ -12,6 +12,7 @@ using System.ComponentModel;
 using apcurium.MK.Booking.Mobile.Data;
 using System.Threading.Tasks;
 using System.Threading;
+using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -30,8 +31,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			this.Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
 			this.Observe(_vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
         }
-		
-		private Address _pickupAddress;
+
+        private Address _pickupAddress;
 		public Address PickupAddress
         {
             get { return _pickupAddress; }
@@ -66,7 +67,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private MapBounds _mapBounds;
 		public MapBounds MapBounds
 		{
-			get { return _mapBounds; }
+			get 
+			{ 
+				return _mapBounds; 
+			}
 			set
 			{
 				if (value != _mapBounds)
@@ -80,7 +84,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private Position _mapCenter;
 		public Position MapCenter
 		{
-			get { return _mapCenter; }
+			get { 
+				return _mapCenter; 
+			}
 			set
 			{
 				if (value != _mapCenter)
@@ -91,15 +97,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        private bool _locateRequest;
-        public bool LocateRequest
+		private bool _isZooming;
+        public bool IsZooming
         {
-            get { return _locateRequest; }
+			get { return _isZooming; }
             set
             {
-                if (value != _locateRequest)
+				if (value != _isZooming)
                 {
-                    _locateRequest = value;
+					_isZooming = value;
                     RaisePropertyChanged();
                 }
             }
@@ -157,7 +163,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void OnPickupAddressChanged()
 		{			
-            if (PickupAddress.HasValidCoordinate() && !LocateRequest)
+            if (PickupAddress.HasValidCoordinate() && !IsZooming)
 			{
 				var coordinate = new Position() { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
 				MapCenter = coordinate;
@@ -166,7 +172,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void OnDestinationAddressChanged()
 		{
-            if (DestinationAddress.HasValidCoordinate() && !LocateRequest)
+            if (DestinationAddress.HasValidCoordinate() && !IsZooming)
 			{
 				var coordinate = new Position() { Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
 				MapCenter = coordinate;
@@ -180,7 +186,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return;
             }
 
-            if (LocateRequest)
+            if (IsZooming)
             {
                 MapBounds = GetMapBoundsFromCoordinateAndDelta(PositionFromAddress(address), 0.002d, 0.002d);
                 return;

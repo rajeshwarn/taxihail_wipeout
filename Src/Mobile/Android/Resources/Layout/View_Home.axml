@@ -31,8 +31,6 @@
                     local:mapType="normal"
                     local:uiCompass="false"
                     local:uiZoomControls="false"
-                    local:cameraTargetLat="@string/DefaultLat"
-                    local:cameraTargetLng="@string/DefaultLng"
                     local:cameraZoom="6"
                     android:id="@+id/mapPickup"
                     android:layout_width="fill_parent"

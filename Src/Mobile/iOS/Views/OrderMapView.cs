@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 set.Bind()
                     .For(v => v.LocateRequest)
-                    .To(vm => vm.LocateRequest);
+                    .To(vm => vm.IsZooming);
 
                 set.Bind()
                     .For(v => v.AddressSelectionMode)
