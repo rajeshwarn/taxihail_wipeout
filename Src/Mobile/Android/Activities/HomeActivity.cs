@@ -35,6 +35,8 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using Android.Graphics.Drawables;
+using System.Drawing;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -47,9 +49,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     {
         private Button _bigButton;
         private TouchableMap _touchMap;
+        private LinearLayout _mapOverlay;
+        private LinearLayout _mapContainer;
         private OrderReview _orderReview;
         private OrderEdit _orderEdit;
         private OrderOptions _orderOptions;
+        private ImageView _btnLocation; 
+        private ImageView _btnSettings;
         private AppBar _appBar;
         private FrameLayout _frameLayout;
         private HomeViewModelState _presentationState = HomeViewModelState.Initial;
@@ -82,10 +88,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             menu.Visibility = ViewStates.Gone;
             _menuWidth = WindowManager.DefaultDisplay.Width - 100;
 
-            var mainSettingsButton = FindViewById<ImageView>(Resource.Id.btnSettings);
-
-            mainSettingsButton.Click -= PanelMenuToggle;
-            mainSettingsButton.Click += PanelMenuToggle;
+            _btnSettings.Click -= PanelMenuToggle;
+            _btnSettings.Click += PanelMenuToggle;
 
             var signOutButton = FindViewById<View>(Resource.Id.settingsLogout);
             signOutButton.Click -= PanelMenuSignOutClick;
@@ -186,6 +190,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _orderEdit = (OrderEdit) FindViewById(Resource.Id.orderEdit);
             _appBar = (AppBar) FindViewById(Resource.Id.appBar);
             _frameLayout = (FrameLayout) FindViewById(Resource.Id.RelInnerLayout);
+            _mapOverlay = (LinearLayout) FindViewById(Resource.Id.mapOverlay);
+            _mapContainer = (LinearLayout) FindViewById(Resource.Id.mapContainer);
+            _btnSettings = FindViewById<ImageView>(Resource.Id.btnSettings);
+            _btnLocation = FindViewById<ImageView>(Resource.Id.btnSettings);
 
             // attach big invisible button to the OrderOptions to be able to pass it to the address text box and clear focus when clicking outside
             _orderOptions.BigInvisibleButton = _bigButton;
@@ -302,10 +310,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap.OnLowMemory();
         }
 
+        private void SetMapEnabled(bool state)
+        {
+            //_mapContainer = (LinearLayout) FindViewById(Resource.Id.mapContainer);
+            _touchMap.Map.UiSettings.SetAllGesturesEnabled(state);
+            _btnLocation.Enabled = state;
+            _btnSettings.Enabled = state;
+
+            if (!state)
+            {
+                var _size = new Size(((View)_mapContainer).Width, ((View)_mapContainer).Height);
+                //if (blurryImage==null) blurryImage = new BitmapDrawable(DrawHelper.Blur(DrawHelper.LoadBitmapFromView(_mapContainer, _size)));
+                //_mapOverlay.Visibility = ViewStates.Visible;
+                //_mapOverlay.SetBackgroundDrawable(blurryImage);
+                //ViewGroup parent = (ViewGroup)_mapOverlay.Parent;               
+                //parent.RemoveView(_mapOverlay);
+                //parent.AddView(_mapOverlay, 1);
+
+            }
+            else
+            {
+                //_mapOverlay.SetBackgroundDrawable(null);
+                //_mapOverlay.Visibility = ViewStates.Gone;
+            }
+        }
+
+        BitmapDrawable blurryImage = null;
+
         public void ChangeState(HomeViewModelPresentationHint hint)
         {
+            SetMapEnabled(true);
+
             if (hint.State == HomeViewModelState.PickDate)
             {
+                SetMapEnabled(false);
                 // Order Options: Visible
                 // Order Review: Hidden
                 // Order Edit: Hidden
@@ -320,7 +358,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             else if (hint.State == HomeViewModelState.Review)
             {
-                // Order Options: Visible
+                SetMapEnabled(false);
+                    // Order Options: Visible
                 // Order Review: Visible
                 // Order Edit: Hidden
                 // Date Picker: Hidden
@@ -352,6 +391,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             else if (hint.State == HomeViewModelState.Edit)
             {
+                SetMapEnabled(false);
+
                 // Order Options: Hidden
                 // Order Review: Hidden
                 // Order Edit: Visible
@@ -367,6 +408,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             else if(hint.State == HomeViewModelState.Initial)
             {
+                SetMapEnabled(true);
                 // Order Options: Visible
                 // Order Review: Hidden
                 // Order Edit: Hidden

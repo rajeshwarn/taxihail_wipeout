@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Mobile.Style;
 using System;
 using Android.Gms.Maps.Model;
 using Android.Graphics.Drawables;
+using Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
@@ -79,6 +80,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
                 }
             }
 
+            return b;
+        }
+
+        public static Bitmap Blur(Bitmap src) 
+        {
+            if (src != null)
+            {
+                int w = src.Width;
+                int h = src.Height;
+                RectF rectF = new RectF(-100, -100, w + 100, h + 100);
+                float blurRadius = w;
+                Bitmap bitmapResult = Bitmap.CreateBitmap(w, h, Bitmap.Config.Argb8888);
+                Canvas canvasResult = new Canvas(bitmapResult);
+                Paint blurPaintInner = new Paint();
+                blurPaintInner.Color = new Color(0, 0, 0, 100);
+                blurPaintInner.SetMaskFilter(new BlurMaskFilter(blurRadius, BlurMaskFilter.Blur.Normal));
+                canvasResult.DrawRect(rectF, blurPaintInner);
+                return bitmapResult;
+            }
+            return src; 
+        }
+
+        public static Bitmap LoadBitmapFromView(View v, System.Drawing.Size size) {
+            Bitmap b = Bitmap.CreateBitmap(size.Width , size.Height, Bitmap.Config.Argb8888);
+            Canvas c = new Canvas(b);
+            v.Layout(0, 0, size.Width, size.Height);
+            v.Draw(c);
             return b;
         }
 

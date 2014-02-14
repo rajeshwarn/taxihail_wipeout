@@ -26,18 +26,31 @@
                 android:layout_width="fill_parent"
                 android:gravity="center"
                 android:layout_height="fill_parent">
-                <fragment
-                    class="apcurium.mk.booking.mobile.client.controls.TouchableMap"
-                    local:mapType="normal"
-                    local:uiCompass="false"
-                    local:uiZoomControls="false"
-                    local:cameraZoom="6"
-                    android:id="@+id/mapPickup"
+                <LinearLayout
+                    android:id="@+id/mapContainer"
                     android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:apiKey="@string/GoogleMapKey"
-                    android:enabled="true"
-                    android:clickable="true" />
+                    android:layout_height="fill_parent"
+                    android:clickable="true"
+                    android:visibility="visible">
+                    <fragment
+                        class="apcurium.mk.booking.mobile.client.controls.TouchableMap"
+                        local:mapType="normal"
+                        local:uiCompass="false"
+                        local:uiZoomControls="false"
+                        local:cameraZoom="6"
+                        android:id="@+id/mapPickup"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:apiKey="@string/GoogleMapKey"
+                        android:enabled="true"
+                        android:clickable="true" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/mapOverlay"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:clickable="true"
+                    android:visibility="visible" />
                 <ImageView
                     android:id="@+id/pickupOverlay"
                     android:layout_width="wrap_content"
