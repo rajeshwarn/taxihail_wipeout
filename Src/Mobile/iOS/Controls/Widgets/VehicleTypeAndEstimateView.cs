@@ -33,25 +33,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-            HorizontalDividerTop = new UIView(new RectangleF(0, 0, Frame.Width, UIHelper.OnePixel));
-            HorizontalDividerTop.BackgroundColor = Blue;
-            AddSubview(HorizontalDividerTop);
+            HorizontalDividerTop = new UIView(new RectangleF(0, 0, Frame.Width, UIHelper.OnePixel)) 
+            { 
+                BackgroundColor = Blue 
+            };
 
             SelectedVehicleType = new UIImageView(new RectangleF(7f, 4f, 34f, 34f));
-            AddSubview(SelectedVehicleType);
 
-            SelectedVehicleTypeLabel = new UILabel();
-            SelectedVehicleTypeLabel.Font = UIFont.FromName(FontName.HelveticaNeueBold, 18/2);
-            SelectedVehicleTypeLabel.TextColor = Blue;
-            SelectedVehicleTypeLabel.ShadowColor = UIColor.Clear;
-            AddSubview(SelectedVehicleTypeLabel);
+            SelectedVehicleTypeLabel = new UILabel
+            {
+                BackgroundColor = UIColor.Clear,
+                Font = UIFont.FromName(FontName.HelveticaNeueBold, 18 / 2),
+                TextColor = Blue,
+                ShadowColor = UIColor.Clear
+            };
 
-            EstimatedFareLabel = new UILabel();
-            EstimatedFareLabel.Lines = 0;
-            EstimatedFareLabel.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 28/2);
-            EstimatedFareLabel.TextColor = Blue;
-            EstimatedFareLabel.ShadowColor = UIColor.Clear;
-            AddSubview(EstimatedFareLabel);
+            EstimatedFareLabel = new UILabel
+            {
+                BackgroundColor = UIColor.Clear,
+                Lines = 0,
+                Font = UIFont.FromName(FontName.HelveticaNeueRegular, 28 / 2),
+                TextColor = Blue,
+                ShadowColor = UIColor.Clear
+            };
+
+            AddSubviews(HorizontalDividerTop, SelectedVehicleType, SelectedVehicleTypeLabel, EstimatedFareLabel);
         }
 
         private bool _showEstimate;

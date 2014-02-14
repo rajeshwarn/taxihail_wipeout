@@ -12,7 +12,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 {
-    public class GroupedAddressTableViewSource : BindableCommandTableViewSource
+    public class GroupedAddressTableViewSource : BindableTableViewSource
     {
         private static UIImage PoweredByGoogleImage = UIImage.FromFile("poweredByGoogle.png");
         private float NearZero = 0.000001f; // iOS doesn't accept 0 for the height
@@ -144,7 +144,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             }
 
             var container = new UIView() { Frame = new RectangleF(0, 0, tableView.Frame.Width, tableView.RowHeight) };
-            container.BackgroundColor = UIColor.Red;
+            container.BackgroundColor = UIColor.Clear;
 
             if (showLoadMore)
             {
