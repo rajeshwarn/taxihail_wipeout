@@ -62,11 +62,7 @@
 	<color name="top_bar_separator_color">#666666</color>		
 	<color name="top_bar_title_color">#ffffff</color>	
 
-    <!-- Default coordinates -->
-    <string name="DefaultLat">45.4980</string>
-    <string name="DefaultLng">-73.6226</string>
-
-	<!--- Dimensions -->
+    <!--- Dimensions -->
 
   	<dimen name="Height">41dip</dimen>
   	<dimen name="HeightButton">41dip</dimen>
