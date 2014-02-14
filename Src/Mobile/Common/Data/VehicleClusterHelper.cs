@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Maps.Geo;
 
 namespace apcurium.MK.Booking.Mobile.Data
 {
@@ -12,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Data
 		public static AvailableVehicle[] Clusterize(AvailableVehicle[] vehicles, MapBounds mapBounds)
 		{
 			var result = new List<AvailableVehicle>();
-			if (vehicles != null && vehicles.Count() > 0)
+			if (vehicles != null && vehicles.Any())
 			{
 				// Divide the map in 25 cells (5*5)
 				const int numberOfRows = 5;
@@ -20,8 +21,8 @@ namespace apcurium.MK.Booking.Mobile.Data
 				// Maximum number of vehicles in a cell before we start displaying a cluster
 				const int cellThreshold = 1;
 
-				var clusterWidth = mapBounds.LongitudeDelta / numberOfColumns;
-				var clusterHeight = mapBounds.LatitudeDelta / numberOfRows;
+				var clusterWidth = (float)mapBounds.LongitudeDelta / numberOfColumns;
+				var clusterHeight = (float)mapBounds.LatitudeDelta / numberOfRows;
 
 				var list = new List<AvailableVehicle>(vehicles);
 
@@ -29,9 +30,8 @@ namespace apcurium.MK.Booking.Mobile.Data
 				{
 					for (var colIndex = 0; colIndex < numberOfColumns; colIndex++)
 					{
-						var rect = new RectangleF((float)mapBounds.WestBound + colIndex * (float)clusterWidth, (float)mapBounds.NorthBound + rowIndex * (float)clusterHeight, (float)clusterWidth, (float)clusterHeight);
-
-						var vehiclesInRect = list.Where(v => rect.Contains(new PointF((float)v.Latitude, (float)v.Longitude))).ToArray();
+						var vehiclesInRect = list.Where(v => IsVehicleInBounds(mapBounds, v)).ToArray();
+						Console.WriteLine("Vehicles found: " + vehiclesInRect.Length);
 						if (vehiclesInRect.Length > cellThreshold)
 						{
 							var clusterBuilder = new VehicleClusterBuilder();
@@ -52,6 +52,11 @@ namespace apcurium.MK.Booking.Mobile.Data
 				}
 			}
 			return result.ToArray();
+		}
+
+		static bool IsVehicleInBounds(MapBounds rect, AvailableVehicle v)
+		{
+			return true;
 		}
 	}
 }

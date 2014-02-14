@@ -330,6 +330,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     }
                 }
 
+                MapBounds = GetMapBoundsFromProjection();
+
                 if (GetMapBoundsFromProjection().LatitudeDelta < 0.003) // Checks if RegionChange results from a zoom
                 {
                     LocateRequest = false; // Stops to auto-zoom in MapViewModel when address changed
