@@ -32,6 +32,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			this.Observe(_vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
         }
 
+		public TaxiHailSetting Settings 
+		{ 
+			get 
+			{ 
+				return this.Services().Settings; 
+			} 
+		}
+
         private Address _pickupAddress;
 		public Address PickupAddress
         {
@@ -69,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get 
 			{ 
-				return _mapBounds; 
+				return (_mapBounds == null) ? GetMapBoundsFromCoordinateAndDelta(new Position() { Latitude = Settings.DefaultLatitude, Longitude = Settings.DefaultLongitude }, 0.04, 0.04) : _mapBounds;
 			}
 			set
 			{
@@ -84,8 +92,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private Position _mapCenter;
 		public Position MapCenter
 		{
-			get { 
-				return _mapCenter; 
+			get 
+			{ 
+				return _mapCenter;
 			}
 			set
 			{
