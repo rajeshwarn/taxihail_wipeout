@@ -46,8 +46,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				BottomBar.Save = OrderEdit.Save;
 				BottomBar.CancelEdit = OrderEdit.Cancel;
 
-				Position initialPosition = new Position() { Latitude = this.Services().Settings.DefaultLatitude, Longitude = this.Services().Settings.DefaultLongitude };
-				Map.MapBounds = MapViewModel.GetMapBoundsFromCoordinateAndDelta(initialPosition, 0.16d, 0.16d);
 				LocateMe.Execute();
 			}
 			this.Services().Vehicle.Start();
@@ -133,13 +131,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(async () =>
 				{
-					await _orderWorkflowService.SetAddressToUserLocation();
-					Map.ZoomToAddress.Execute();
+                        Map.IsZooming = true;
+                        await _orderWorkflowService.SetAddressToUserLocation();						
 				});
 			}
 		}
-
-
     }
 }
-

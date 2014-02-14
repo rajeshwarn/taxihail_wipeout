@@ -33,6 +33,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private List<AddressAnnotation> _availableVehicleAnnotations = new List<AddressAnnotation> ();
         private TouchGesture _gesture;
 
+        public event EventHandler LocateRequestChanged;       
+
         public OrderMapView(IntPtr handle)
             :base(handle)
         {
@@ -79,6 +81,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 set.Bind()
                     .For(v => v.UserMovedMap)
                     .To(vm => vm.UserMovedMap);
+
+                set.Bind()
+                    .For(v => v.LocateRequest)
+                    .To(vm => vm.LocateRequest);
 
                 set.Bind()
                     .For(v => v.AddressSelectionMode)
@@ -151,6 +157,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
+        private bool _locateRequest;
+        public bool LocateRequest
+        {
+            get { return _locateRequest; }
+            set
+            {
+                if (value != _locateRequest)
+                {
+                    _locateRequest = value;
+                    LocateRequestChanged(null, null);
+                }
+            }
+        }
+
         private MapBounds _mapBounds;
         public MapBounds MapBounds
         {
@@ -174,7 +194,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 if (value != _mapCenter)
                 {
                     _mapCenter = value;
-                    SetCenterCoordinate(new CLLocationCoordinate2D(MapCenter.Latitude, MapCenter.Longitude), true);
+                    if (!LocateRequest)
+                    {
+                        SetCenterCoordinate(new CLLocationCoordinate2D(MapCenter.Latitude, MapCenter.Longitude), true);
+                    }
                 }
             }
         }
@@ -269,12 +292,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 var center = MapBounds.GetCenter();
 
-                var temp1 = MapBounds.LatitudeDelta;
-                var temp2 = MapBounds.LongitudeDelta;
-
                 SetRegion(new MKCoordinateRegion(
                     new CLLocationCoordinate2D(center.Latitude, center.Longitude),
                     new MKCoordinateSpan(MapBounds.LatitudeDelta, MapBounds.LongitudeDelta)), true);
+
             }
         }
 
@@ -285,6 +306,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (_gesture == null)
             {
                 _gesture = new TouchGesture();              
+                _gesture.TouchBegin += HandleTouchBegin;
                 _gesture.TouchMove += HandleTouchMove;
                 this.RegionChanged += OnRegionChanged;
                 AddGestureRecognizer(_gesture);
@@ -307,10 +329,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         }
                     }
                 }
+
+                if (GetMapBoundsFromProjection().LatitudeDelta < 0.003) // Checks if RegionChange results from a zoom
+                {
+                    LocateRequest = false; // Stops to auto-zoom in MapViewModel when address changed
+                }
             }
             catch (Exception)
             {
             }
+        }
+
+        void HandleTouchBegin (object sender, EventArgs e)
+        {
+            LocateRequest = false;
         }
 
         private MapBounds GetMapBoundsFromProjection()
@@ -328,6 +360,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         void HandleTouchMove (object sender, EventArgs e)
         {
+            LocateRequest = false;
             ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
         }
 
@@ -355,4 +388,3 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         }
     }
 }
-
