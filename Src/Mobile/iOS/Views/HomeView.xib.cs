@@ -178,6 +178,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 UIView.Animate(
                     0.6f, 
                     () => {
+                        constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height;
                         homeView.LayoutIfNeeded();
                     }, () =>
                     {

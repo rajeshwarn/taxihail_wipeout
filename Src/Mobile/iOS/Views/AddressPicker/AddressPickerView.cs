@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
         void Initialize()
         {
             BackgroundColor = UIColor.FromRGB(242, 242, 242);
+            //BackgroundColor = UIColor.Clear; TODO change to this when the blur of the map is done
             Hidden = true;
 
             AddressEditText = new FlatTextField 

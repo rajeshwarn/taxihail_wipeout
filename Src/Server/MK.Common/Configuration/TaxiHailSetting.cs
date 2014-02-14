@@ -107,7 +107,7 @@ namespace MK.Common.Configuration
         public bool ShowPassengerPhone { get; private set; }
         [Display(Name = "Show Passenger Number", Description="Show the passenger number field in confirmation")]
         public bool ShowPassengerNumber { get; private set; }
-        [Display(Name = "Show Rinde Code", Description="Show the ring code field in confirmation")]
+        [Display(Name = "Show Ring Code", Description="Show the ring code field in confirmation")]
         public bool ShowRingCodeField { get; private set; }
 
         [Display(Name = "Send Receipt Available", Description="Can the user send a receipt for the order")]
