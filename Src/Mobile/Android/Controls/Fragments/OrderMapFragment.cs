@@ -208,9 +208,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 .For(v => v.UserMovedMap)
                 .To(vm => vm.UserMovedMap);
 
-            binding.Bind()
-                .For(v => v.IsZooming)
-                .To(vm => vm.IsZooming);
+//            binding.Bind()
+//                .For(v => v.IsZooming)
+//                .To(vm => vm.IsZooming);
 
             binding.Bind()
                 .For(v => v.AddressSelectionMode)
