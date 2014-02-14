@@ -38,10 +38,13 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-	[Activity(Label = "Home", Theme = "@style/MainTheme",
-        ScreenOrientation = ScreenOrientation.Portrait, ClearTaskOnLaunch = true,
-        WindowSoftInputMode = SoftInput.AdjustPan,
-        FinishOnTaskLaunch = true)]
+    [Activity(Label = "Home", 
+        Theme = "@style/MainTheme", 
+        ScreenOrientation = ScreenOrientation.Portrait, 
+        ClearTaskOnLaunch = true, 
+        WindowSoftInputMode = SoftInput.AdjustPan, 
+        FinishOnTaskLaunch = true, 
+        LaunchMode = LaunchMode.SingleInstance)]
    
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
