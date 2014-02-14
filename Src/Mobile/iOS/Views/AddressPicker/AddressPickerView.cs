@@ -39,7 +39,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
         FlatTextField AddressEditText { get; set; }
         FlatButton CancelButton { get; set;}
-        public GroupedAddressTableViewSource TableViewSource { get; set; }
         UITableView TableView {get; set;}
 
         void Initialize()
@@ -62,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
             var yPositionForTableView = AddressEditText.Frame.Bottom + 13;
 
-            TableView = new UITableView(new RectangleF(0, yPositionForTableView, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - yPositionForTableView), UITableViewStyle.Grouped);
+            TableView = new UITableView(new RectangleF(0, yPositionForTableView, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - yPositionForTableView), UITableViewStyle.Plain);
             TableView.BackgroundView = new  UIView { BackgroundColor = UIColor.Clear };
             TableView.BackgroundColor = UIColor.Clear;
             TableView.SeparatorColor = UIColor.Clear;
@@ -71,15 +70,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             TableView.SectionHeaderHeight = 15;
             TableView.AddGestureRecognizer(GetHideKeyboardOnTouchGesture());
 
-            TableViewSource = new GroupedAddressTableViewSource(TableView, 
-                                                                UITableViewCellStyle.Subtitle, 
-                                                                new NSString(CellId), 
-                                                                CellBindingText, 
-                                                                UITableViewCellAccessory.None);
+            var source = new GroupedAddressTableViewSource(
+                TableView, 
+                UITableViewCellStyle.Subtitle, 
+                new NSString(CellId), 
+                CellBindingText, 
+                UITableViewCellAccessory.None
+            );
+            source.CellCreator = CellCreator;
+            TableView.Source = source;
 
-            TableView.Source = TableViewSource;
-            TableViewSource.CellCreator = CellCreator;
-              
             AddSubviews(AddressEditText, CancelButton, TableView);
 
             AddressEditText.OnKeyDown()
@@ -88,11 +88,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
             var set = this.CreateBindingSet<AddressPickerView, AddressPickerViewModel> ();
 
-            set.Bind(TableViewSource)
+            set.Bind(source)
                 .For(v => v.ItemsSource)
                 .To(vm => vm.AllAddresses);
 
-            set.Bind(TableViewSource)
+            set.Bind(source)
                 .For(v => v.SelectedCommand)
                 .To(vm => vm.AddressSelected);
 
