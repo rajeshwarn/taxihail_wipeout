@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             DrawStroke(fillColor.CGColor);
         }
 
-        void DrawBackground (CGContext context, RectangleF rect, UIBezierPath roundedRectanglePath, CGColor fillColor)
+        protected virtual void DrawBackground (CGContext context, RectangleF rect, UIBezierPath roundedRectanglePath, CGColor fillColor)
         {
             context.SaveState ();
             context.BeginTransparencyLayer (null);
@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             context.RestoreState ();
         }
 
-        void DrawStroke(CGColor fillColor)
+        protected virtual void DrawStroke(CGColor fillColor)
         {
             if (_shadowView != null)
             {

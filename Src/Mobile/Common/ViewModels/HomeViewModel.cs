@@ -41,6 +41,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				OrderReview = AddChild<OrderReviewViewModel>();
 				OrderEdit = AddChild<OrderEditViewModel>();
 				BottomBar = AddChild<BottomBarViewModel>();
+				AddressPicker = AddChild<AddressPickerViewModel>();
 
 				BottomBar.Save = OrderEdit.Save;
 				BottomBar.CancelEdit = OrderEdit.Cancel;
@@ -109,6 +110,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set
 			{
 				_bottomBar = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		private AddressPickerViewModel _addressPickerViewModel;
+		public AddressPickerViewModel AddressPicker
+		{
+			get { return _addressPickerViewModel; }
+			set
+			{
+				_addressPickerViewModel = value;
 				RaisePropertyChanged();
 			}
 		}

@@ -78,8 +78,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     AllAddresses.AddRange(t[1].Result);
                 }
 
-           
-
                 AllAddresses.ForEach ( a=> 
                                            {
                     a.IsFirst = a.Equals(AllAddresses.First());
@@ -102,7 +100,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     IsAddNew =  a.Id.IsNullOrEmpty(),
                     ShowPlusSign = a.Id.IsNullOrEmpty(),
                     ShowRightArrow = !a.Id.IsNullOrEmpty(),
-                    Icon = "favorites"
+					Type = AddressType.Favorites
                 }).ToArray();
             }).HandleErrors();
         }
@@ -116,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     Address = a,
                     ShowPlusSign = a.Id.IsNullOrEmpty(),
                     ShowRightArrow = !a.Id.IsNullOrEmpty(),
-                    Icon = "history"
+					Type = AddressType.History
                 }).ToArray();
             }).HandleErrors();
         }

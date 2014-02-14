@@ -15,6 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	    private const float RadiusCorner = 2;
         protected const float Padding = 6.5f;
         private UIImageView _leftImageView;
+        private UIView _shadowView = null;
 
 	    public FlatTextField (IntPtr handle) : base (handle)
 		{
@@ -47,7 +48,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             LeftView = new UIView(new RectangleF(0f, 0f, Padding, 1f)); 
 			LeftViewMode = UITextFieldViewMode.Always;
             RightView = new UIView(new RectangleF(Frame.Right - Padding, 0f, Padding, 1f));
-            RightViewMode = UITextFieldViewMode.Always;
+            RightViewMode = UITextFieldViewMode.UnlessEditing;
+            ClearButtonMode = UITextFieldViewMode.WhileEditing;
 		}
 
 		public override void Draw (RectangleF rect)
@@ -63,15 +65,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			SetNeedsDisplay();
 		}
 
-		public override bool Enabled {
-			get {
-				return base.Enabled;
-			}
-			set {
+		public override bool Enabled 
+        {
+            get { return base.Enabled; }
+			set 
+            {
 				base.Enabled = value;
 				SetNeedsDisplay();
 			}
 		}
+
+        public bool ShowShadow { get; set; }
 
         private string _imageLeftSource;
         public string ImageLeftSource
@@ -143,7 +147,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			Layer.BorderWidth = 1.0f;
 			Layer.BorderColor = fillColor;
 			Layer.CornerRadius = RadiusCorner;
+
+            if (ShowShadow)
+            {
+                if (_shadowView == null)
+                {
+                    _shadowView = new UIView(Frame);
+                    _shadowView.BackgroundColor = UIColor.White.ColorWithAlpha(0.7f);
+                    _shadowView.Layer.MasksToBounds = false;
+                    _shadowView.Layer.ShadowColor = UIColor.FromRGBA(0, 0, 0, 127).CGColor;
+                    _shadowView.Layer.ShadowOpacity = 1.0f;
+                    _shadowView.Layer.ShadowRadius = RadiusCorner + 1;
+                    _shadowView.Layer.ShadowOffset = new SizeF(0.3f, 0.3f);
+                    _shadowView.Layer.ShouldRasterize = true;             
+                    this.Superview.InsertSubviewBelow(_shadowView, this);
+                }
+                _shadowView.Frame = Frame.Copy().Shrink(1);
+            }
 		}
+
+        protected virtual void DrawText(CGContext context, RectangleF rect, CGColor textColor)
+        {
+            //Hook?
+        }
 	}
 }
 

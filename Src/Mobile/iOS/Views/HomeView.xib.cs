@@ -87,6 +87,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.DataContext)
                 .To(vm => vm.OrderOptions);
 
+            set.Bind(ctrlAddressPicker)
+                .For(v => v.DataContext)
+                .To(vm => vm.AddressPicker);
+
             set.Bind(ctrlOrderReview)
                 .For(v => v.DataContext)
                 .To(vm => vm.OrderReview);
@@ -105,9 +109,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             set.Apply();
         }
-
-
-
 
         public void ChangePresentation(ChangePresentationHint hint)
         {            
@@ -140,14 +141,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         orderEdit.SetNeedsDisplay();
                         constraintOrderReviewTopSpace.Constant = 10;
                         constraintOrderReviewBottomSpace.Constant = -65;
-                        constraintOrderOptionsTopSpace.Constant =  22;
+                        constraintOrderOptionsTopSpace.Constant = 22;
                         constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
                         homeView.LayoutIfNeeded();  
                                                                      
-                    },() =>
-                    {
-                        RedrawSubViews();
-                    });
+                    }, () =>
+                {
+                    RedrawSubViews();
+                });
             }
             else if (hint.State == HomeViewModelState.Edit)
             {
@@ -157,19 +158,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 // Date Picker: Hidden
                 UIView.Animate(
                     0.6f, 
-                    () => {
-
+                    () =>
+                    {
                         constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
                         constraintOrderReviewBottomSpace.Constant = 468;
-                        constraintOrderOptionsTopSpace.Constant =  - ctrlOrderOptions.Frame.Height;
+                        constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height;
                         constraintOrderEditTrailingSpace.Constant = 8;
                         homeView.LayoutIfNeeded();
                         ctrlOrderReview.SetNeedsDisplay();
                         ctrlOrderOptions.SetNeedsDisplay();
-                    },() =>
+                    }, () =>
+                {
+                    orderEdit.SetNeedsDisplay();
+                });
+            }
+            else if (hint.State == HomeViewModelState.AddressSearch)
+            {
+                // Order Options: Hidden
+                UIView.Animate(
+                    0.6f, 
+                    () => {
+                        constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height;
+                        homeView.LayoutIfNeeded();
+                    }, () =>
                     {
-                        orderEdit.SetNeedsDisplay();
+                        RedrawSubViews();
                     });
+
+                ctrlAddressPicker.Open();
+                ViewModel.AddressPicker.LoadAddresses();
             }
             else if(hint.State == HomeViewModelState.Initial)
             {
@@ -180,15 +197,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 UIView.Animate(
                     0.6f, 
                     () => {
-                        RedrawSubViews();
+                        ctrlOrderReview.SetNeedsDisplay();
+                        ctrlAddressPicker.Close();
                         constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
                         constraintOrderReviewBottomSpace.Constant = 468;
                         constraintOrderOptionsTopSpace.Constant =  22;
                         constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
                         homeView.LayoutIfNeeded();
+                    }, () =>
+                    {
+                        RedrawSubViews();
                     });
             } 
-
 
             ctrlOrderOptions.ChangeState(hint);
             bottomBar.ChangeState(hint);

@@ -323,6 +323,7 @@
     <Compile Include="PresentationHints\ChangeStatePresentationHint.cs" />
     <Compile Include="Extensions\MvxNavigatingObjectExtensions.cs" />
     <Compile Include="ViewModels\Orders\OrderEditViewModel.cs" />
+    <Compile Include="ViewModels\Orders\AddressPickerViewModel.cs" />
     <Compile Include="AppServices\Orders\OrderCreationException.cs" />
   </ItemGroup>
   <ItemGroup>

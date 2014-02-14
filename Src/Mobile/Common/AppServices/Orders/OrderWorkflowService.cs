@@ -269,6 +269,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _addressSelectionModeSubject;
 		}
 
+		public async Task<Address> GetCurrentAddress()
+		{
+			var currentSelectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
+			if (currentSelectionMode == AddressSelectionMode.PickupSelection)
+			{
+				return await _pickupAddressSubject.Take(1).ToTask();
+			}
+			else
+			{
+				return await _destinationAddressSubject.Take(1).ToTask();
+			}
+		}
+
 		public IObservable<BookingSettings> GetAndObserveBookingSettings()
 		{
 			return _bookingSettingsSubject;

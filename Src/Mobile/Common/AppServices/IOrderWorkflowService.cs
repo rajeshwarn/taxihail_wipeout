@@ -39,6 +39,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<OrderValidationResult> ValidateOrder();
 		void Rebook(Order previous);
+
+		Task<Address> GetCurrentAddress();
     }
 }
 

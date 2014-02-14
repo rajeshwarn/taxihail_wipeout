@@ -101,6 +101,18 @@ namespace apcurium.MK.Common.Entity
             }
         }
 
+        public string GetFirstPortionOfAddress()
+        {
+            if ( (DisplayAddress.HasValue()) && ( DisplayAddress.Contains( "," ) ) )
+            {
+                return DisplayAddress.Split(',').First();
+            }
+            else
+            {
+                return DisplayAddress;
+            }
+        }
+
         public Address Copy()
         {
             return (Address)this.MemberwiseClone();

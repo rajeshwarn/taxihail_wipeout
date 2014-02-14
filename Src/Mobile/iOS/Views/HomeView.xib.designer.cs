@@ -34,6 +34,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.NSLayoutConstraint constraintOrderReviewTopSpace { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Views.AddressPicker.AddressPickerView ctrlAddressPicker { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderOptionsControl ctrlOrderOptions { get; set; }
 
 		[Outlet]
@@ -50,6 +53,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (ctrlAddressPicker != null) {
+				ctrlAddressPicker.Dispose ();
+				ctrlAddressPicker = null;
+			}
+
 			if (bottomBar != null) {
 				bottomBar.Dispose ();
 				bottomBar = null;
@@ -75,14 +83,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				constraintOrderOptionsTopSpace = null;
 			}
 
-			if (constraintOrderReviewTopSpace != null) {
-				constraintOrderReviewTopSpace.Dispose ();
-				constraintOrderReviewTopSpace = null;
-			}
-
 			if (constraintOrderReviewBottomSpace != null) {
 				constraintOrderReviewBottomSpace.Dispose ();
 				constraintOrderReviewBottomSpace = null;
+			}
+
+			if (constraintOrderReviewTopSpace != null) {
+				constraintOrderReviewTopSpace.Dispose ();
+				constraintOrderReviewTopSpace = null;
 			}
 
 			if (ctrlOrderOptions != null) {

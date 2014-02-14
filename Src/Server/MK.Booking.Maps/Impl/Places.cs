@@ -112,7 +112,6 @@ namespace apcurium.MK.Booking.Maps.Impl
             var hidePlaceType = (string.IsNullOrWhiteSpace(placeType) || typesToHide.Contains(placeType));
             var displayPlaceType = hidePlaceType ? "" : " (" + txtInfo.ToTitleCase(placeType.Replace("_", " ")) + ")";
 
-
             //string diplay = placeType//
 
             var address = new Address
@@ -132,8 +131,14 @@ namespace apcurium.MK.Booking.Maps.Impl
                 var firstWordStreetNumber = address.FullAddress.Split(' ')[0];
                 if (firstWordStreetNumber.Contains("-"))
                 {
-                    var newStreetNUmber = firstWordStreetNumber.Split('-')[0].Trim();
-                    address.FullAddress = address.FullAddress.Replace(firstWordStreetNumber, newStreetNUmber);
+                    int notImportant;
+                    var isNumber = int.TryParse(firstWordStreetNumber.Split('-')[0].Trim(), out notImportant);
+
+                    if (isNumber)
+                    {
+                        var newStreetNUmber = firstWordStreetNumber.Split('-')[0].Trim();
+                        address.FullAddress = address.FullAddress.Replace(firstWordStreetNumber, newStreetNUmber);
+                    }
                 }
             }
 

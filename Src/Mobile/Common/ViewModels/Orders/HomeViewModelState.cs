@@ -19,7 +19,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		/// <summary>
 		/// Edit some settings (Name, Passengers, Apartment...)
 		/// </summary>
-		Edit
+		Edit,
+		/// <summary>
+		/// Addresss search (favoriyes, history, etc...)
+		/// </summary>
+		AddressSearch,
     }
 }
 
