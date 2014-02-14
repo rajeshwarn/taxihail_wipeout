@@ -22,6 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
     [Register("AddressPickerView")]
     public class AddressPickerView : BaseBindableChildView<AddressPickerViewModel>
     {
+        const string CellId = "AdrsCell";
         const string CellBindingText = @"
                    FirstLine DisplayLine1;
                    SecondLine DisplayLine2;
@@ -49,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             AddressEditText = new FlatTextField 
             { 
                 ShowShadow = true,
-                Frame = new RectangleF(Margin, 22, 214, 44),
+                Frame = new RectangleF(Margin, UIHelper.IsOS7orHigher ? 22 : 5, 214, 44),
                 VerticalAlignment = UIControlContentVerticalAlignment.Center,
                 AutocapitalizationType = UITextAutocapitalizationType.None,
                 AutocorrectionType = UITextAutocorrectionType.No
@@ -62,16 +63,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             var yPositionForTableView = AddressEditText.Frame.Bottom + 13;
 
             TableView = new UITableView(new RectangleF(0, yPositionForTableView, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - yPositionForTableView), UITableViewStyle.Grouped);
-            TableView.SectionHeaderHeight = 15;
             TableView.BackgroundView = new  UIView { BackgroundColor = UIColor.Clear };
             TableView.BackgroundColor = UIColor.Clear;
-            TableView.RowHeight = 44;
-            TableView.AddGestureRecognizer(GetHideKeyboardOnTouchGesture());
+            TableView.SeparatorColor = UIColor.Clear;
             TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+            TableView.RowHeight = 44;
+            TableView.SectionHeaderHeight = 15;
+            TableView.AddGestureRecognizer(GetHideKeyboardOnTouchGesture());
 
             TableViewSource = new GroupedAddressTableViewSource(TableView, 
                                                                 UITableViewCellStyle.Subtitle, 
-                                                                new NSString("AdrsCell"), 
+                                                                new NSString(CellId), 
                                                                 CellBindingText, 
                                                                 UITableViewCellAccessory.None);
 
@@ -107,7 +109,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
         private MvxStandardTableViewCell CellCreator(UITableView tableView, NSIndexPath indexPath, object state)
         {
-            var cell = new TwoLinesCell( new NSString("AdrsCell"), CellBindingText, UITableViewCellAccessory.None );
+            var cell = new TwoLinesCell(new NSString(CellId), CellBindingText, UITableViewCellAccessory.None);
+            cell.RemoveDelay();
             return cell;
         }
 
@@ -120,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
         {
             private UITextField _textField;
 
-            public HideKeyboardOnTouchGesture( UITextField textField ) : base(  r=> r.ShouldRecognizeSimultaneously = (e,s) => true )
+            public HideKeyboardOnTouchGesture( UITextField textField ) : base(r => r.ShouldRecognizeSimultaneously = (e,s) => true )
             {
                 _textField = textField;
             }
