@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			try
 			{
-				using(this.Services().Message.ShowProgress())
+				using(this.Services().Message.ShowProgressNonModal())
 				{
 					AllAddresses.Clear();
 
@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		void LoadDefaultList()
 		{            
-			using (this.Services().Message.ShowProgress())
+			using (this.Services().Message.ShowProgressNonModal())
 			{
 				AllAddresses.Clear();
 				ShowDefaultResults = true;
@@ -176,7 +176,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{                
 				InvokeOnMainThread(() =>
 					{
-						this.Services().Message.ShowProgress(true);
+						this.Services().Message.ShowProgressNonModal(true);
 						ShowDefaultResults = false;
 						AllAddresses.Clear();
 					});
@@ -212,7 +212,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 				InvokeOnMainThread(() =>
 					{
-						this.Services().Message.ShowProgress(false);
+						this.Services().Message.ShowProgressNonModal(false);
 					});
 			}
 			else

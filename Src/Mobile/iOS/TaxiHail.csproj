@@ -494,6 +494,7 @@
     <Compile Include="Views\AddressPicker\GroupedAddressTableViewSource.cs" />
     <Compile Include="Views\AddressPicker\TouchTableView.cs" />
     <Compile Include="Views\AddressPicker\BindableCommandTableViewSource.cs" />
+    <Compile Include="Controls\Message\LoadingBar.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -756,6 +757,7 @@
     <Folder Include="Controls\Widgets\Booking\" />
     <Folder Include="Views\Order\" />
     <Folder Include="Views\AddressPicker\" />
+    <Folder Include="Controls\Message\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Style\Theme.xml">

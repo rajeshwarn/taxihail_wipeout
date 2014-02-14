@@ -137,20 +137,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
         public void Close()
         {
-            Hidden = true;
             this.ResignFirstResponderOnSubviews();
-            UIView.Animate(0.4f, () => this.Alpha = 0);
+            UIView.Animate(0.3f, () => this.Alpha = 0, () => this.Hidden = true);
         }
 
         public void Open()
         {
             this.Alpha = 0;
-            UIView.Animate(0.4f, () => this.Alpha = 1);
-            Hidden = false;
+            this.Hidden = false;
+            UIView.Animate(0.3f, () => this.Alpha = 1);
 
             Task.Factory.StartNew(() =>
                 {
-                    Thread.Sleep(400);
                     InvokeOnMainThread(() => AddressEditText.BecomeFirstResponder());
                 }
              );

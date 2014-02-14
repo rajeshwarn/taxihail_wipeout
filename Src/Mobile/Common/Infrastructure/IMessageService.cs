@@ -11,8 +11,10 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction);
         void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction);
         void ShowMessage(string title, string message, List<KeyValuePair<string,Action>> additionalButton);
-		void ShowProgress( bool show );
+		void ShowProgress(bool show);
+		void ShowProgressNonModal(bool show);
 		IDisposable ShowProgress ();
+		IDisposable ShowProgressNonModal ();
 
         
         void ShowDialogActivity(Type type);

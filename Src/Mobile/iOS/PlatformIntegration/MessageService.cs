@@ -10,6 +10,7 @@ using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Cirrious.MvvmCross.Touch.Views.Presenters;
 using Cirrious.MvvmCross.ViewModels;
+using apcurium.MK.Booking.Mobile.Client.Controls.Message;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -52,28 +53,52 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             MessageHelper.Show( title, message,additionalButton);
         }
 
-		public void ShowProgress( bool show )
+		public void ShowProgress(bool show)
 		{
-            if( show )
+            if(show)
             {
                 UIApplication.SharedApplication.InvokeOnMainThread ( () =>
-                                                                    {               
-                    LoadingOverlay.StartAnimatingLoading(   LoadingOverlayPosition.Center, null, 130, 30, null );
+                {               
+                    LoadingOverlay.StartAnimatingLoading(LoadingOverlayPosition.Center, null, 130, 30, null);
                 });
             }
             else
             {
                 UIApplication.SharedApplication.InvokeOnMainThread ( () =>
-                                                                    {
-                    LoadingOverlay.StopAnimatingLoading(  );
+                {
+                    LoadingOverlay.StopAnimatingLoading();
                 });
             }
 		}
+
+        public void ShowProgressNonModal(bool show)
+        {
+            if(show)
+            {
+                UIApplication.SharedApplication.InvokeOnMainThread ( () =>
+                {     
+                    LoadingBar.Show();
+                });
+            }
+            else
+            {
+                UIApplication.SharedApplication.InvokeOnMainThread ( () =>
+                {
+                    LoadingBar.Hide();
+                });
+            }
+        }
 
         public IDisposable ShowProgress()
         {
             ShowProgress (true);
             return Disposable.Create (() => ShowProgress(false));
+        }
+
+        public IDisposable ShowProgressNonModal()
+        {
+            ShowProgressNonModal (true);
+            return Disposable.Create (() => ShowProgressNonModal(false));
         }
 
         public void ShowDialogActivity(Type type)

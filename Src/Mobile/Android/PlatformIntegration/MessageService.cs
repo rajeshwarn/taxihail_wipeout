@@ -16,6 +16,8 @@ using TinyMessenger;
 using Cirrious.MvvmCross.Droid.Views;
 using Cirrious.CrossCore.Droid.Platform;
 using Cirrious.MvvmCross.ViewModels;
+using Android.Views;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -212,10 +214,57 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             });
         }
 
+        public void ShowProgressNonModal(bool show)
+        {
+            var topActivity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>();
+            var rootView = topActivity.Activity.Window.DecorView.RootView as ViewGroup;
+
+            if (rootView != null)
+            {
+                ProgressBar progress = rootView.FindViewWithTag("Progress") as ProgressBar;
+
+                if ((progress == null) && (show))
+                {
+                    var contentView = rootView.GetChildAt(0);
+                    rootView.RemoveView(contentView);
+
+                    var relLayout = new RelativeLayout(topActivity.Activity.ApplicationContext);
+                    relLayout.LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
+                    relLayout.AddView(contentView);
+
+
+                    var b = new ProgressBar(topActivity.Activity.ApplicationContext, null, Android.Resource.Attribute.ProgressBarStyleHorizontal)
+                    {
+                        Progress = 25,
+                        LayoutParameters =
+                            new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.WrapContent)
+                        };
+
+                    b.Indeterminate = true;
+                    ((RelativeLayout.LayoutParams)b.LayoutParameters).TopMargin = 75.ToPixels();
+                    b.Tag = "Progress";
+                    relLayout.AddView(b);
+                    rootView.AddView(relLayout);
+                }               
+                else if  ( progress != null  )
+                {
+                    progress.Visibility = show ? ViewStates.Visible : ViewStates.Gone;
+                    progress.Indeterminate = true;
+                    progress.Enabled = true;
+                }
+            }
+        }
+
         public IDisposable ShowProgress()
         {
             ShowProgress(true);
             return Disposable.Create(() => ShowProgress(false));
+        }
+
+        public IDisposable ShowProgressNonModal()
+        {
+            ShowProgressNonModal (true);
+            return Disposable.Create (() => ShowProgressNonModal(false));
         }
 
         public void ShowToast(string message, ToastDuration duration)
