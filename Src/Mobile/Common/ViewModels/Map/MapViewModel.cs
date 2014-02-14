@@ -32,14 +32,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			this.Observe(_vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
         }
 
-		public TaxiHailSetting Settings 
-		{ 
-			get 
-			{ 
-				return this.Services().Settings; 
-			} 
-		}
-
         private Address _pickupAddress;
 		public Address PickupAddress
         {
@@ -77,7 +69,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get 
 			{ 
-				return (_mapBounds == null) ? GetMapBoundsFromCoordinateAndDelta(new Position() { Latitude = Settings.DefaultLatitude, Longitude = Settings.DefaultLongitude }, 0.04, 0.04) : _mapBounds;
+				return (_mapBounds == null)
+					? GetMapBoundsFromCoordinateAndDelta(new Position
+						{ 
+							Latitude = this.Services().Settings.DefaultLatitude, 
+							Longitude = this.Services().Settings.DefaultLongitude
+						}, 0.04, 0.04)
+					: _mapBounds;
 			}
 			set
 			{
@@ -92,10 +90,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private Position _mapCenter;
 		public Position MapCenter
 		{
-			get 
+			get { return _mapCenter; }
 			{ 
-				return _mapCenter;
-			}
 			set
 			{
 				if (value != _mapCenter)
@@ -120,14 +116,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-
 		private AddressSelectionMode _addressSelectionMode; 
 		public AddressSelectionMode AddressSelectionMode
 		{ 
-			get
-			{
-				return _addressSelectionMode;
-			}
+			get { return _addressSelectionMode; }
 			set
 			{
 				_addressSelectionMode = value;
@@ -153,18 +145,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public double DeltaLatitude { get; set; }
-
-        public double DeltaLongitude { get; set; }
-
         public ICommand UserMovedMap
         {
             get
             {
                 return new CancellableCommand<MapBounds>(async (bounds, token) =>
                 {
-                        await _orderWorkflowService.SetAddressToCoordinate(new Position() { Latitude = bounds.GetCenter().Latitude, Longitude = bounds.GetCenter().Longitude },
-                            token);
+                	await _orderWorkflowService.SetAddressToCoordinate(
+						new Position 
+							{ 
+								Latitude = bounds.GetCenter().Latitude, 
+								Longitude = bounds.GetCenter().Longitude 
+							},
+                        token);
 
                 }, _ => true);
             }
@@ -259,7 +252,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     catch(Exception)
                     {
                     }
-
                 }
             }
 
