@@ -91,6 +91,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public Position MapCenter
 		{
 			get { return _mapCenter; }
+			{ 
 			set
 			{
 				if (value != _mapCenter)

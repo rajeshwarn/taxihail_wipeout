@@ -455,7 +455,7 @@
 "View_Payment"="Payment Info";
 "Create"="Create";
 "View_CreditCardsList"="Credit Cards";
-"CmtRideLinqConfirmPairViewConfirmPairDetailText"="If you are in the vehicle indicated above and would like to use your default credit card and tip, press confirm and your trip will be paid for at the end of the ride automatically. If you would like pay using a different credit card or would like to change your tip amount, press Change Payment Settings. If you are not in the vehicle noted or want to pay using a different form of payment then press cancel.";
+"CmtRideLinqConfirmPairViewConfirmPairDetailText"="Check that you are in the vehicle indicated above. If you confirm this ride will be paid automatically using your default payment settings.";
 "Estimate"="Estimate";
 "ViewAll"="View All";
 "Collapse"="Collapse";
