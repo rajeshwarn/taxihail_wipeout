@@ -9,20 +9,20 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Entity;
 using log4net;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace DatabaseInitializer.Services
 {
     public class EventsMigrator : IEventsMigrator
     {
-        private readonly IAddresses _addressesService;
+        
         private readonly Func<EventStoreDbContext> _contextFactory;
         private readonly JsonSerializer _serializer;
         private readonly JsonSerializer _deserializer;
         private ILog _loggger;
 
-        public EventsMigrator(IAddresses addressesService, Func<EventStoreDbContext> contextFactory)
+        public EventsMigrator(Func<EventStoreDbContext> contextFactory)
         {
-            _addressesService = addressesService;
             _contextFactory = contextFactory;
             //deserailize without type
             _deserializer = new JsonSerializer();
@@ -33,107 +33,21 @@ namespace DatabaseInitializer.Services
 
         public void Do(string version)
         {
-            //parse version i.e. x.y.z to get y and z
-            var versionNumbers = version.Split('.');
-            var versionNumber = int.Parse(versionNumbers[1]);
-           
-
-
-            if (versionNumber < 3)
-            {
-
-                using (var context = _contextFactory.Invoke())
-                {
-                    var orderCreatedEvent =
-                        context.Set<Event>().Where(x => x.EventType == typeof (OrderCreated).FullName).ToList();
-                    foreach (var message in orderCreatedEvent)
-                    {
-                        var @event = Deserialize<OrderCreated>(message.Payload);
-                        FillAdress(@event.PickupAddress, @event.PickupAddress.FullAddress);
-                        message.Payload = Serialize(@event);
-
-                    }
-                    context.SaveChanges();
-                }
-
+         
                 using (var context = _contextFactory.Invoke())
                 {
                     var events =
-                        context.Set<Event>().Where(x => x.EventType == typeof (FavoriteAddressAdded).FullName).ToList();
+                        context.Set<Event>().Where(x =>x.EventType == typeof(PaymentSettingUpdated).FullName ).ToList();
                     foreach (var message in events)
-                    {
-                        var @event = Deserialize<OldEvents.FavoriteAddressAddedv1>(message.Payload);
-                        if (@event.Address == null)
-                        {
-                            var newEvent = new FavoriteAddressAdded
-                            {
-                                SourceId = @event.SourceId,
-                                Version = @event.Version,
-                                Address =
-                                    new Address
-                                    {
-                                        Id = @event.AddressId,
-                                        FullAddress = @event.FullAddress,
-                                        Latitude = @event.Latitude,
-                                        Longitude = @event.Longitude
-                                    }
-                            };
-                            FillAdress(newEvent.Address, @event.FullAddress);
-                            message.Payload = Serialize(newEvent);
-                        }
+                    { 
+                        message.Payload = message.Payload.Replace("apcurium.MK.Common.Configuration.BraintreeClientSettings" , "apcurium.MK.Common.Configuration.Impl.BraintreeClientSettings");                         
                     }
                     context.SaveChanges();
                 }
 
-                using (var context = _contextFactory.Invoke())
-                {
-                    var events =
-                        context.Set<Event>()
-                               .Where(x => x.EventType == typeof (FavoriteAddressUpdated).FullName)
-                               .ToList();
-                    foreach (var message in events)
-                    {
-                        var @event = Deserialize<OldEvents.FavoriteAddressUpdatedv1>(message.Payload);
-                        if (@event.Address == null)
-                        {
-                            var newEvent = new FavoriteAddressUpdated
-                            {
-                                SourceId = @event.SourceId,
-                                Version = @event.Version,
-                                Address =
-                                    new Address
-                                    {
-                                        Id = @event.AddressId,
-                                        FullAddress = @event.FullAddress,
-                                        Latitude = @event.Latitude,
-                                        Longitude = @event.Longitude
-                                    }
-                            };
-                            FillAdress(newEvent.Address, @event.FullAddress);
-                            message.Payload = Serialize(newEvent);
-                        }
-                    }
-                    context.SaveChanges();
-                }
-            }
+              
         }
 
-        private bool FillAdress(Address toBeCompleted, string fullAdress)
-        {
-            var addresses = _addressesService.Search(fullAdress, toBeCompleted.Latitude, toBeCompleted.Longitude);
-            if (addresses != null && addresses.Any())
-            {
-                var address = addresses.First();
-                toBeCompleted.StreetNumber = address.StreetNumber;
-                toBeCompleted.Street = address.Street;
-                toBeCompleted.City = address.City;
-                toBeCompleted.ZipCode = address.ZipCode;
-                toBeCompleted.State = address.State;
-                return true;
-            }
-            _loggger.Debug("Can't geocode + " + fullAdress);
-            return false;
-        }
 
         
         public string Serialize<T>(T data)

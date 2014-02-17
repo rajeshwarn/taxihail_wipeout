@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OldEvents\FavoriteAddressv1.cs" />
+    <Compile Include="Services\EventsMigrator.cs" />
     <Compile Include="Services\IEventsMigrator.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Program.cs" />
