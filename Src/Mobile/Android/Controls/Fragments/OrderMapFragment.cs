@@ -176,15 +176,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             binding.Bind()
                 .For(v => v.PickupAddress)
-                    .To(vm => vm.PickupAddress);
+                .To(vm => vm.PickupAddress);
             
             binding.Bind()
                 .For(v => v.DestinationAddress)
-                    .To(vm => vm.DestinationAddress);
+                .To(vm => vm.DestinationAddress);
 
             binding.Bind()
                 .For(v => v.AvailableVehicles)
-                    .To(vm => vm.AvailableVehicles);
+                .To(vm => vm.AvailableVehicles);
 
             binding.Apply();
 
@@ -333,14 +333,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 bool isCluster = (v is AvailableVehicleCluster) 
                     ? true 
-                        : false;
+                    : false;
 
                 var vehicleMarker = 
                     Map.AddMarker(new MarkerOptions()
-                                  .SetPosition(new LatLng(0, 0))
-                                  .Anchor(.5f, 1f)
-                                  .InvokeIcon(isCluster ? _nearbyClusterIcon : _nearbyTaxiIcon)
-                                  .Visible(false));
+                      .SetPosition(new LatLng(v.Latitude, v.Longitude))
+                      .Anchor(.5f, 1f)
+                      .InvokeIcon(isCluster ? _nearbyClusterIcon : _nearbyTaxiIcon));
 
                 _availableVehicleMarkers.Add (vehicleMarker);
             }
@@ -366,6 +365,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(centerHint.Latitude, centerHint.Longitude)));
             }
         }
-
     }
 }

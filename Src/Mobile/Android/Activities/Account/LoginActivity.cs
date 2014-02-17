@@ -72,10 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             if (settings.CanChangeServiceUrl)
             {
                 FindViewById<Button>(Resource.Id.ServerButton).Click += delegate { PromptServer(); };
-            }
-            else
-            {
-                FindViewById<Button>(Resource.Id.ServerButton).Visibility = ViewStates.Invisible;
+                FindViewById<Button>(Resource.Id.ServerButton).Visibility = ViewStates.Visible;
             }
 
             if (!settings.TwitterEnabled)
