@@ -169,7 +169,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 if (value != _isZooming)
                 {
-                    IsZooming = value;
+                    _isZooming = value;
                     IsZoomingChanged(null, null);
                 }
             }
