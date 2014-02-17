@@ -41,16 +41,16 @@ namespace apcurium.MK.Common.Configuration.Impl
             if (string.IsNullOrWhiteSpace(value)) return defaultValue;
             var converter = TypeDescriptor.GetConverter(defaultValue);
             if (converter == null)
-                throw new InvalidOperationException("Type " + typeof (T).Name + " has no type converter");
+                throw new InvalidOperationException("Type " + typeof(T).Name + " has no type converter");
             try
             {
                 var convertFromInvariantString = converter.ConvertFromInvariantString(value);
                 if (convertFromInvariantString != null)
-                    return (T) convertFromInvariantString;
+                    return (T)convertFromInvariantString;
             }
             catch
             {
-                Trace.WriteLine("Could not convert setting " + key + " to " + typeof (T).Name);
+                Trace.WriteLine("Could not convert setting " + key + " to " + typeof(T).Name);
             }
             return defaultValue;
         }
@@ -88,28 +88,40 @@ namespace apcurium.MK.Common.Configuration.Impl
             {
                 try
                 {
-                    var typeOfSettings = typeof (TaxiHailSetting);
-                
-                        var propertyName = item.Key.Contains(".")
-                            ? item.Key.SplitOnLast('.')[1]
-                            : item.Key;
+                    var typeOfSettings = typeof(TaxiHailSetting);
 
-                        var propertyType = typeOfSettings.GetProperty(propertyName);
-                        var targetType = IsNullableType(propertyType.PropertyType)
+                    var propertyName = item.Key.Contains(".")
+                        ? item.Key.SplitOnLast('.')[1]
+                        : item.Key;
+
+                    var propertyType = typeOfSettings.GetProperty(propertyName);
+
+                    var targetType = IsNullableType(propertyType.PropertyType)
                             ? Nullable.GetUnderlyingType(propertyType.PropertyType)
                             : propertyType.PropertyType;
 
+                    if (targetType.IsEnum)
+                    {
+                        var propertyVal = Enum.Parse(targetType, item.Value);
+                        propertyType.SetValue(Data, propertyVal);
+                    }
+                    else
+                    {
                         var propertyVal = Convert.ChangeType(item.Value, targetType);
                         propertyType.SetValue(Data, propertyVal);
+                    }
 
-                
+
+
+
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine("Error can't set value for property {0}, value was {1}", item.Key, item.Value);
                     _logger.LogMessage("Error can't set value for property {0}, value was {1}", item.Key, item.Value);
                     _logger.LogError(e);
                 }
-           }
+            }
         }
 
         private static bool IsNullableType(Type type)
