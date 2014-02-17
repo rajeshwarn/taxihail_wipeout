@@ -323,13 +323,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _btnSettings.Enabled = state;
 
             if (!state)
-            {
-                var _size = new Size(((View)_mapContainer).Width, ((View)_mapContainer).Height);
-                if (blurryImage == null)
-                {
-                    blurryImage = new BitmapDrawable(DrawHelper.Blur(DrawHelper.LoadBitmapFromView(_mapContainer, _size)));
-                    _mapOverlay.SetBackgroundDrawable(blurryImage);
-                }
+            {                
+//                var _size = new Size(((View)_mapContainer).Width, ((View)_mapContainer).Height);
+//                if (blurryImage == null)
+//                {
+//                    blurryImage = new BitmapDrawable(DrawHelper.Blur(DrawHelper.LoadBitmapFromView(_mapContainer, _size)));
+//                    _mapOverlay.SetBackgroundDrawable(blurryImage);
+//                }
                     
                 _mapOverlay.Visibility = ViewStates.Visible;
                 ViewGroup parent = (ViewGroup)_mapOverlay.Parent;               
