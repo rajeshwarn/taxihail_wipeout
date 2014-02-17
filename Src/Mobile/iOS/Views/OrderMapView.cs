@@ -20,6 +20,9 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Booking.Mobile.Client.Helper;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -30,6 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private AddressAnnotation _destinationAnnotation;
         private UIImageView _pickupCenterPin;
         private UIImageView _dropoffCenterPin;
+        private UIImageView _mapBlurOverlay;
         private List<AddressAnnotation> _availableVehicleAnnotations = new List<AddressAnnotation> ();
         private TouchGesture _gesture;
 
@@ -387,6 +391,66 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 AddAnnotation (vehicleAnnotation);
                 _availableVehicleAnnotations.Add (vehicleAnnotation);
             }
+        }
+
+
+        public void SetEnabled(bool state)
+        {
+            this.ZoomEnabled = state;
+            this.ScrollEnabled = state;
+            this.UserInteractionEnabled = state;                       
+
+            if (_mapBlurOverlay == null)
+            {
+                var _size = this.Bounds.Size;
+                _mapBlurOverlay = new UIImageView(new RectangleF(new PointF(0, 0), new SizeF(_size.Width, _size.Height)));
+                _mapBlurOverlay.ContentMode = UIViewContentMode.ScaleToFill;
+                _mapBlurOverlay.Frame = this.Frame;
+                this.AddSubview(_mapBlurOverlay);
+            }
+
+            if (!state)
+            {
+                _mapBlurOverlay.Image = ImageHelper.CreateBlurImageFromView(this);            
+            }
+
+            _mapBlurOverlay.Hidden = state;
+        }
+
+        void ChangeState(HomeViewModelPresentationHint hint)
+        {
+            SetEnabled(true);
+
+            if (hint.State == HomeViewModelState.PickDate)
+            {
+                SetEnabled(false);
+
+            }
+            else if (hint.State == HomeViewModelState.Review)
+            {
+                SetEnabled(false);
+
+            }
+            else if (hint.State == HomeViewModelState.Edit)
+            {
+                SetEnabled(false);
+
+            }
+            else if (hint.State == HomeViewModelState.AddressSearch)
+            {
+                SetEnabled(false);
+
+            }
+            else if(hint.State == HomeViewModelState.Initial)
+            {
+                SetEnabled(true);
+            } 
+        }
+
+        public void ChangeState(ChangePresentationHint hint)
+        {
+            var hintHome = hint as HomeViewModelPresentationHint;
+            ChangeState(hintHome);
         }
     }
 }

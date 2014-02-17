@@ -210,6 +210,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     });
             } 
 
+            mapView.ChangeState(hint);
             ctrlOrderOptions.ChangeState(hint);
             bottomBar.ChangeState(hint);
             ctrlOrderReview.ChangeState(hint);
