@@ -316,7 +316,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void SetMapEnabled(bool state)
         {
-            //_mapContainer = (LinearLayout) FindViewById(Resource.Id.mapContainer);
+
+            _mapContainer = (LinearLayout) FindViewById(Resource.Id.mapContainer);
             _touchMap.Map.UiSettings.SetAllGesturesEnabled(state);
             _btnLocation.Enabled = state;
             _btnSettings.Enabled = state;
@@ -324,18 +325,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (!state)
             {
                 var _size = new Size(((View)_mapContainer).Width, ((View)_mapContainer).Height);
-                //if (blurryImage==null) blurryImage = new BitmapDrawable(DrawHelper.Blur(DrawHelper.LoadBitmapFromView(_mapContainer, _size)));
-                //_mapOverlay.Visibility = ViewStates.Visible;
-                //_mapOverlay.SetBackgroundDrawable(blurryImage);
-                //ViewGroup parent = (ViewGroup)_mapOverlay.Parent;               
-                //parent.RemoveView(_mapOverlay);
-                //parent.AddView(_mapOverlay, 1);
+                if (blurryImage == null)
+                {
+                    blurryImage = new BitmapDrawable(DrawHelper.Blur(DrawHelper.LoadBitmapFromView(_mapContainer, _size)));
+                    _mapOverlay.SetBackgroundDrawable(blurryImage);
+                }
+                    
+                _mapOverlay.Visibility = ViewStates.Visible;
+                ViewGroup parent = (ViewGroup)_mapOverlay.Parent;               
+                parent.RemoveView(_mapOverlay);
+                parent.AddView(_mapOverlay, 1);
 
             }
             else
             {
                 //_mapOverlay.SetBackgroundDrawable(null);
-                //_mapOverlay.Visibility = ViewStates.Gone;
+                _mapOverlay.Visibility = ViewStates.Gone;
             }
         }
 

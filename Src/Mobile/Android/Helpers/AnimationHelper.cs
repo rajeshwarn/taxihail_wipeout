@@ -21,8 +21,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 
         private static TranslateAnimation GetAnimationFor(View view, float? desiredX, float? desiredY)
         {
-            view.ClearAnimation();
-
             var isAndroid23 = (int)Build.VERSION.SdkInt <= 10;
             var layoutParams = (LinearLayout.MarginLayoutParams)view.LayoutParameters;
 
