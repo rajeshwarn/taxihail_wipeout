@@ -22,6 +22,7 @@ namespace MK.Common.Configuration
             ShowPassengerPhone = true;
             ShowRingCodeField = true;
             TutorialEnabled = true;
+            CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink";
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -155,8 +156,14 @@ namespace MK.Common.Configuration
         public string SenderId { get; private set; }
         [Display(Name = "Push Notifications Enabled", Description="Enable push notificaiton for status changes")]
         public bool PushNotificationsEnabled { get; private set; }
-        [Display(Name = "Hide Send Receipt", Description="???")]
+        [Display(Name = "Hide Send Receipt", Description="Hides the send receipt button in the app")]
         public bool HideSendReceipt { get; private set; }
+
+        [Display(Name = "Company Settings", Description = "List of settings that can be modified by the taxi company")]
+        public string CompanySettings { get; private set; }
+
+
+        
 
     }
 }

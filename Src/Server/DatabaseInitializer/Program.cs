@@ -178,6 +178,15 @@ namespace DatabaseInitializer
                     appSettings[token.Key] = token.Value.ToString();
                 }
 
+                if (isUpdate)
+                {
+                    Console.WriteLine("Migrating events...");
+                    //migrate events
+                    var migrator = container.Resolve<IEventsMigrator>();
+
+                    migrator.Do(appSettings["TaxiHail.Version"]);
+                }
+
                 //Save settings so that next calls to referenceDataService has the IBS Url
                 AddOrUpdateAppSettings(commandBus, appSettings);
 
@@ -185,19 +194,13 @@ namespace DatabaseInitializer
                 if (isUpdate)
                 {
                     Console.WriteLine("Playing events...");
-                    //migrate events
-                    var migrators = container.ResolveAll<IEventsMigrator>();
-                    foreach (var eventsMigrator in migrators)
-                    {
-                        eventsMigrator.Do(appSettings["TaxiHail.Version"]);
-                    }
 
                     //replay events
                     var replayService = container.Resolve<IEventsPlayBackService>();
                     replayService.ReplayAllEvents();
 
                     var tariffs = new TariffDao(() => new BookingDbContext(connectionString.ConnectionString));
-                    if (tariffs.GetAll().All(x => x.Type != (int) TariffType.Default))
+                    if (tariffs.GetAll().All(x => x.Type != (int)TariffType.Default))
                     {
                         // Default rate does not exist for this company 
                         CreateDefaultTariff(configurationManager, commandBus);
