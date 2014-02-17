@@ -56,8 +56,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnLocateMe.SetImage(UIImage.FromFile("location_icon.png"), UIControlState.Normal);
             btnLocateMe.SetImage(UIImage.FromFile("location_icon_pressed.png"), UIControlState.Highlighted);
 
-            mapView.Delegate = new AddressMapDelegate (true);
-
             InstantiatePanel();
 
             _datePicker = new BookLaterDatePicker();            
@@ -116,6 +114,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 ChangeState((HomeViewModelPresentationHint)hint);
             }
+            mapView.ChangePresentation(hint);
         }
 
         void ChangeState(HomeViewModelPresentationHint hint)
@@ -210,7 +209,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     });
             } 
 
-            mapView.ChangeState(hint);
             ctrlOrderOptions.ChangeState(hint);
             bottomBar.ChangeState(hint);
             ctrlOrderReview.ChangeState(hint);

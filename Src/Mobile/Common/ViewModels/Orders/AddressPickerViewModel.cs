@@ -142,6 +142,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				return this.GetCommand<AddressViewModel>(vm => {
 					_orderWorkflowService.SetAddress(vm.Address);
 					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+					ChangePresentation(new ZoomToStreetLevelPresentationHint(vm.Address.Latitude, vm.Address.Longitude));
 				}); 
 			}
 		}

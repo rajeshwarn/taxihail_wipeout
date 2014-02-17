@@ -131,7 +131,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(async () =>
 				{
-                    //Map.IsZooming = true;
 					var address = await _orderWorkflowService.SetAddressToUserLocation();
 					if(address.HasValidCoordinate())
 					{

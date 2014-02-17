@@ -121,11 +121,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return result;
 		}
 
-        public async Task SetAddressToCoordinate(Position userMapBoundsCoordinate, CancellationToken cancellationToken)
+        public async Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken)
 		{
-            var address = await SearchAddressForCoordinate(userMapBoundsCoordinate);
-			address.Latitude = userMapBoundsCoordinate.Latitude;
-			address.Longitude = userMapBoundsCoordinate.Longitude;
+            var address = await SearchAddressForCoordinate(coordinate);
+			address.Latitude = coordinate.Latitude;
+			address.Longitude = coordinate.Longitude;
 			cancellationToken.ThrowIfCancellationRequested();
 			await SetAddressToCurrentSelection(address);
 		}

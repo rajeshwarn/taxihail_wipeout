@@ -10,8 +10,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private Stopwatch _stopWatch;
 
         public event EventHandler TouchBegin;
-
         public event EventHandler TouchMove;
+        public event EventHandler TouchEndOrCancel;
 
         public TouchGesture ()
         {
@@ -78,6 +78,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             UserIsTouching = false;
             _stopWatch.Start();
+
+            if (TouchEndOrCancel != null)
+            {
+                TouchEndOrCancel(this, EventArgs.Empty);
+            }
+
             base.TouchesCancelled (touches, evt);
         }
         
@@ -87,6 +93,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             UserIsTouching = false;
             _stopWatch.Reset();
             _stopWatch.Start();
+
+            if (TouchEndOrCancel != null)
+            {
+                TouchEndOrCancel(this, EventArgs.Empty);
+            }
             
             base.TouchesEnded (touches, evt);
         
