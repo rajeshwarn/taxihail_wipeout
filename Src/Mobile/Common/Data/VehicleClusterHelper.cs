@@ -30,8 +30,15 @@ namespace apcurium.MK.Booking.Mobile.Data
 				{
 					for (var colIndex = 0; colIndex < numberOfColumns; colIndex++)
 					{
-						var vehiclesInRect = list.Where(v => IsVehicleInBounds(mapBounds, v)).ToArray();
-						Console.WriteLine("Vehicles found: " + vehiclesInRect.Length);
+						var bounds = new MapBounds()
+						{
+							NorthBound = mapBounds.NorthBound + clusterHeight * rowIndex,
+							SouthBound = mapBounds.NorthBound - clusterHeight * (rowIndex + 1),
+							WestBound = mapBounds.WestBound + clusterWidth * colIndex,
+							EastBound = mapBounds.WestBound + clusterWidth * (colIndex + 1)
+						};
+
+						var vehiclesInRect = list.Where(v => IsVehicleInBounds(bounds, v)).ToArray();
 						if (vehiclesInRect.Length > cellThreshold)
 						{
 							var clusterBuilder = new VehicleClusterBuilder();
@@ -54,9 +61,23 @@ namespace apcurium.MK.Booking.Mobile.Data
 			return result.ToArray();
 		}
 
-		static bool IsVehicleInBounds(MapBounds rect, AvailableVehicle v)
+		static bool IsVehicleInBounds(MapBounds mapBounds, AvailableVehicle v)
 		{
-			return true;
+			if (mapBounds.NorthBound >= v.Latitude && v.Latitude >= mapBounds.SouthBound)
+			{
+				if(mapBounds.WestBound <= mapBounds.EastBound && mapBounds.WestBound <= v.Longitude && v.Longitude <= mapBounds.EastBound)
+				{
+					return true;
+				}
+				else 
+				{
+					if (mapBounds.WestBound > mapBounds.EastBound && (mapBounds.WestBound <= v.Longitude || v.Longitude <= mapBounds.EastBound))
+					{
+						return true;
+					}
+				}
+			}
+			return false;
 		}
 	}
 }
