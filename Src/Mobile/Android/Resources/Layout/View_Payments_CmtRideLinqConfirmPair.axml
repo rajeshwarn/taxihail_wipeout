@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_margin="0dp"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:gravity="center_horizontal"
@@ -33,7 +33,7 @@
             android:paddingRight="15dp"
             android:paddingTop="22dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:gravity="center_horizontal">
@@ -116,32 +116,36 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="100dip"
+                android:layout_height="fill_parent"
                 android:padding="10dp"
                 android:orientation="vertical"
-                android:gravity="fill"
-                android:layout_alignParentBottom="true" />
-            <Button
-                style="@style/ButtonActionGreenStyle"
-                android:id="@+id/ConfirmPaymentBtn"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/HeightButton"
-                android:text="@string/Confirm"
-                local:MvxBind="Click ConfirmPayment" />
-            <Button
-                style="@style/ButtonActionGrayStyle"
-                android:id="@+id/ChangePaymentInfoBtn"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/HeightButton"
-                android:text="@string/CmtChangePaymentInfo"
-                local:MvxBind="Click ChangePaymentInfo" />
-            <Button
-                style="@style/ButtonActionRedStyle"
-                android:id="@+id/CancelPaymentBtn"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/HeightButton"
-                android:text="@string/Cancel"
-                local:MvxBind="Click CancelPayment" />
+                android:layout_alignParentBottom="true"
+                android:gravity="bottom">
+                <Button
+                    style="@style/ButtonActionGreenStyle"
+                    android:id="@+id/ConfirmPaymentBtn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/HeightButton"
+                    android:layout_gravity="bottom"
+                    android:text="@string/Confirm"
+                    local:MvxBind="Click ConfirmPayment" />
+                <Button
+                    style="@style/ButtonActionGrayStyle"
+                    android:id="@+id/ChangePaymentInfoBtn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/HeightButton"
+                    android:layout_gravity="bottom"
+                    android:text="@string/CmtChangePaymentInfo"
+                    local:MvxBind="Click ChangePaymentInfo" />
+                <Button
+                    style="@style/ButtonActionRedStyle"
+                    android:id="@+id/CancelPaymentBtn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/HeightButton"
+                    android:layout_gravity="bottom"
+                    android:text="@string/Cancel"
+                    local:MvxBind="Click CancelPayment" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
