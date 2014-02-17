@@ -34,10 +34,6 @@
                     android:visibility="visible">
                     <fragment
                         class="apcurium.mk.booking.mobile.client.controls.TouchableMap"
-                        local:mapType="normal"
-                        local:uiCompass="false"
-                        local:uiZoomControls="false"
-                        local:cameraZoom="6"
                         android:id="@+id/mapPickup"
                         android:layout_width="fill_parent"
                         android:layout_height="match_parent"
@@ -49,6 +45,7 @@
                     android:id="@+id/mapOverlay"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:background="#99ffffff"
                     android:clickable="true"
                     android:visibility="gone" />
                 <ImageView
