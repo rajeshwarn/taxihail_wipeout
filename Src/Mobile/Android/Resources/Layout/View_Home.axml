@@ -45,6 +45,7 @@
                     android:id="@+id/mapOverlay"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:background="#99ffffff"
                     android:clickable="true"
                     android:visibility="gone" />
                 <ImageView
