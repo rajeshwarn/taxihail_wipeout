@@ -468,7 +468,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         void IChangePresentation.ChangePresentation(ChangePresentationHint hint)
         {
-            ChangeState((HomeViewModelPresentationHint)hint);
+            if (hint is HomeViewModelPresentationHint)
+            {
+                ChangeState((HomeViewModelPresentationHint)hint);
+            }
+
+            ((IChangePresentation)_mapFragment).ChangePresentation(hint);
+
         }
     }
 }

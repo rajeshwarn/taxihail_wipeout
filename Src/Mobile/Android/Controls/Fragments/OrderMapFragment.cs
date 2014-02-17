@@ -25,10 +25,11 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    public class OrderMapFragment: IMvxBindable, IDisposable
+    public class OrderMapFragment: IMvxBindable, IDisposable, IChangePresentation
     {
         public GoogleMap Map { get; set;}
         public TouchableMap _touchableMap { get; set;}
@@ -450,6 +451,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public void Dispose()
         {
             _subscriptions.Dispose();
+        }
+
+
+        void IChangePresentation.ChangePresentation(ChangePresentationHint hint)
+        {
+            var zoomHint = hint as ZoomToStreetLevelPresentationHint;
+            if (hint != null)
+            {
+                Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(zoomHint.Latitude, zoomHint.Longitude), 18));
+            }
         }
 
     }

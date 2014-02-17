@@ -20,6 +20,7 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -82,9 +83,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     .For(v => v.UserMovedMap)
                     .To(vm => vm.UserMovedMap);
 
-                set.Bind()
+                /*set.Bind()
                     .For(v => v.IsZooming)
-                    .To(vm => vm.IsZooming);
+                    .To(vm => vm.IsZooming);*/
 
                 set.Bind()
                     .For(v => v.AddressSelectionMode)
@@ -388,5 +389,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 _availableVehicleAnnotations.Add (vehicleAnnotation);
             }
         }
+
+
     }
 }

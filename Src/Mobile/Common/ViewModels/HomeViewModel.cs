@@ -131,8 +131,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(async () =>
 				{
-                        Map.IsZooming = true;
-                        await _orderWorkflowService.SetAddressToUserLocation();						
+                    //Map.IsZooming = true;
+					var address = await _orderWorkflowService.SetAddressToUserLocation();
+					if(address.HasValidCoordinate())
+					{
+                        this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
+					}
 				});
 			}
 		}

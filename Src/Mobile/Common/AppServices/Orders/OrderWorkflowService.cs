@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			await SetAddressToCurrentSelection(address);
 		}
 
-		public async Task SetAddressToUserLocation()
+		public async Task<Address> SetAddressToUserLocation()
 		{
             //CancelCurrentLocationCommand.Execute ();
 			//TODO: Handle when location services are not available
@@ -80,11 +80,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				var address = await SearchAddressForCoordinate(_locationService.BestPosition);
 				await SetAddressToCurrentSelection(address);
 
-				return;
+				return address;
 			}
 
 			//IsExecuting = true;
 			var positionSet = false;
+
+			Address result = new Address();
 
 			_locationService.GetNextPosition(TimeSpan.FromSeconds(6), 50).Subscribe(
 				async pos =>
@@ -92,6 +94,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					positionSet = true;
 					var address = await SearchAddressForCoordinate(pos);
 					await SetAddressToCurrentSelection(address);
+					result = address;
 				},
 				async () =>
 				{  
@@ -108,11 +111,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 							{
 								var address = await SearchAddressForCoordinate(_locationService.BestPosition);    
 								await SetAddressToCurrentSelection(address);
+								result = address;
 							}
 						}
 					}
 				}
 			);
+
+			return result;
 		}
 
         public async Task SetAddressToCoordinate(Position userMapBoundsCoordinate, CancellationToken cancellationToken)
