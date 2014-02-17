@@ -12,6 +12,11 @@ using Android.Widget;
 using Android.Gms.Maps;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using Android.Gms.Maps.Model;
+using apcurium.MK.Common.Configuration;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -24,6 +29,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public override View OnCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState)
         {
             mOriginalContentView = base.OnCreateView(inflater, parent, savedInstanceState);
+
+            var latitude = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.DefaultLatitude;
+            var longitude = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.DefaultLongitude;
+            Map.MapType = GoogleMap.MapTypeNormal;
+            Map.UiSettings.CompassEnabled = false;
+            Map.UiSettings.ZoomControlsEnabled = false;
+            Map.MoveCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(latitude, longitude) , 11f));
+
             Surface = new TouchableWrapper(Activity);
             Surface.AddView(mOriginalContentView);
             return Surface;                          
