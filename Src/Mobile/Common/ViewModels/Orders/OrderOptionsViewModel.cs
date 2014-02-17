@@ -49,15 +49,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		public ICommand SetAddress
-		{
-			get
-			{
-				return this.GetCommand<Address>(address => {
-					_orderWorkflowService.SetAddress(address);
-				});
-			}
-		}
+		
 
 		private AddressSelectionMode _addressSelectionMode;
 		public AddressSelectionMode AddressSelectionMode
@@ -69,21 +61,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					_addressSelectionMode = value;
 					RaisePropertyChanged();
-					RaisePropertyChanged(() => ShowDestination);
+					OnAddressSelectionModeChanged();
 				}
 			} 
 		}
 
+		private bool _showDestination;
 		public bool ShowDestination
 		{
-			get { 
-				var showDestination = AddressSelectionMode == AddressSelectionMode.DropoffSelection || AddressSelectionMode == AddressSelectionMode.None;
-				if (!showDestination)
-				{
-					_orderWorkflowService.ClearDestinationAddress();
-				}
-
-				return showDestination;
+			get
+			{ 
+				return _showDestination;
+			}
+			private set
+			{
+                _showDestination = value;
+				RaisePropertyChanged();
 			}
 		}
 
@@ -101,6 +94,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+        public ICommand SetAddress
+        {
+            get
+            {
+                return this.GetCommand<Address>(address => {
+                    _orderWorkflowService.SetAddress(address);
+                });
+            }
+        }
+
 		public ICommand ShowSearchAddress
 		{
 			get
@@ -109,6 +112,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.AddressSearch));
 				});
 			}
+		}
+
+		void OnAddressSelectionModeChanged()
+		{
+			ShowDestination = AddressSelectionMode == AddressSelectionMode.DropoffSelection;
+            if (!ShowDestination)
+            {
+                _orderWorkflowService.ClearDestinationAddress();
+            }
 		}
 	}
 }

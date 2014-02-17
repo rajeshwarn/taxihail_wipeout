@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		/// </summary>
 		Edit,
 		/// <summary>
-		/// Addresss search (favoriyes, history, etc...)
+        /// Addresss search (favorites, history, etc...)
 		/// </summary>
 		AddressSearch,
     }

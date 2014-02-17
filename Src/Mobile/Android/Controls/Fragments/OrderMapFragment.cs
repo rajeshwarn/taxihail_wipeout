@@ -110,20 +110,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-                        
-        private Position _mapCenter;
-        public Position MapCenter
-        {
-            get { return _mapCenter; }
-            set
-            {
-                if (value != _mapCenter && !bypassCameraChangeEvent)
-                {
-                    _mapCenter = value;
-                }
-            }
-        }
-
         public ICommand UserMovedMap { get; set; }
 
         private IEnumerable<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
@@ -195,10 +181,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             binding.Bind()
                 .For(v => v.DestinationAddress)
                     .To(vm => vm.DestinationAddress);
-
-            binding.Bind()
-                .For(v => v.MapCenter)
-                .To(vm => vm.MapCenter);
 
             binding.Bind()
                 .For(v => v.AvailableVehicles)
@@ -373,9 +355,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         void IChangePresentation.ChangePresentation(ChangePresentationHint hint)
         {
             var zoomHint = hint as ZoomToStreetLevelPresentationHint;
-            if (hint != null)
+            if (zoomHint != null)
             {
                 Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(zoomHint.Latitude, zoomHint.Longitude), 18));
+            }
+
+            var centerHint = hint as CenterMapPresentationHint;
+            if(centerHint != null)
+            {
+                Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(centerHint.Latitude, centerHint.Longitude)));
             }
         }
 

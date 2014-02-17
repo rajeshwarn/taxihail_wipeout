@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Mobile.Data;
 using System.Threading.Tasks;
 using System.Threading;
 using MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -42,7 +43,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     _pickupAddress = value;					
                     RaisePropertyChanged();		
-                    OnPickupAddressChanged();
                 }
             }
         }
@@ -57,21 +57,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					_destinationAddress = value;
 					RaisePropertyChanged();
-                    OnDestinationAddressChanged();                
-				}
-			}
-		}
-
-		private Position _mapCenter;
-		public Position MapCenter
-		{
-			get { return _mapCenter; } 
-			set
-			{
-				if (value != _mapCenter)
-				{
-					_mapCenter = value;
-					RaisePropertyChanged();
 				}
 			}
 		}
@@ -84,10 +69,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				_addressSelectionMode = value;
 
-				if (PickupAddress != null && AddressSelectionMode == AddressSelectionMode.PickupSelection)
+				if (PickupAddress.HasValidCoordinate() && AddressSelectionMode == AddressSelectionMode.PickupSelection)
 				{					
-                    var coordinate = new Position() { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };                   
-					MapCenter = coordinate;
+					ChangePresentation(new CenterMapPresentationHint(PickupAddress.Latitude, PickupAddress.Longitude));
 				}
 
 				RaisePropertyChanged();
@@ -123,23 +107,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		private void OnPickupAddressChanged()
-		{			
-            if (PickupAddress.HasValidCoordinate())
-			{
-				var coordinate = new Position() { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
-				MapCenter = coordinate;
-			}
-		}
-
-		private void OnDestinationAddressChanged()
-		{
-            if (DestinationAddress.HasValidCoordinate())
-			{
-				var coordinate = new Position() { Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
-				MapCenter = coordinate;
-			}
-		}
 
 		public class CancellableCommand<TParam>: ICommand
         {

@@ -95,10 +95,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     .To(vm => vm.AddressSelectionMode);
 
                 set.Bind()
-                    .For(v => v.MapCenter)
-                    .To(vm => vm.MapCenter);
-
-                set.Bind()
                     .For("AvailableVehicles")
                     .To(vm => vm.AvailableVehicles);
 
@@ -167,21 +163,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 _addressSelectionMode = value;
                 ShowMarkers();
-            }
-        }
-
-
-        private Position _mapCenter;
-        public Position MapCenter
-        {
-            get { return _mapCenter; }
-            set
-            {
-                if (value != _mapCenter)
-                {
-                    _mapCenter = value;
-                    SetCenterCoordinate(new CLLocationCoordinate2D(_mapCenter.Latitude, _mapCenter.Longitude), true);
-                }
             }
         }
 
@@ -408,6 +389,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (zoomHint != null)
             {
                 SetRegion(new MKCoordinateRegion(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), new MKCoordinateSpan(0.002, 0.002)), true);
+            }
+
+            var centerHint = hint as CenterMapPresentationHint;
+            if (centerHint != null)
+            {
+                SetRegion(new MKCoordinateRegion(new CLLocationCoordinate2D(centerHint.Latitude, centerHint.Longitude), new MKCoordinateSpan(0.002, 0.002)), true);
             }
         }
 
