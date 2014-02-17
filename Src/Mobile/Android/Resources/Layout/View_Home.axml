@@ -113,6 +113,11 @@
                     android:layout_width="500dp"
                     android:layout_height="fill_parent"
                     android:id="@+id/orderEdit" />
+            <!-- Address Search -->
+                <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.SearchAddress
+                    android:layout_width="fill_parent"
+                    android:id="@+id/searchAddressControl"
+                    android:layout_height="wrap_content" />
                 <Button
                     android:id="@+id/BigButtonTransparent"
                     android:visibility="gone"

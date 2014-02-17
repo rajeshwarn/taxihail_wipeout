@@ -58,6 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private OrderReview _orderReview;
         private OrderEdit _orderEdit;
         private OrderOptions _orderOptions;
+        private SearchAddress _searchAddress;
         private ImageView _btnLocation; 
         private ImageView _btnSettings;
         private AppBar _appBar;
@@ -192,12 +193,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
             _orderEdit = (OrderEdit) FindViewById(Resource.Id.orderEdit);
+            _searchAddress = (SearchAddress) FindViewById(Resource.Id.searchAddressControl);
             _appBar = (AppBar) FindViewById(Resource.Id.appBar);
             _frameLayout = (FrameLayout) FindViewById(Resource.Id.RelInnerLayout);
             _mapOverlay = (LinearLayout) FindViewById(Resource.Id.mapOverlay);
             _mapContainer = (LinearLayout) FindViewById(Resource.Id.mapContainer);
             _btnSettings = FindViewById<ImageView>(Resource.Id.btnSettings);
-            _btnLocation = FindViewById<ImageView>(Resource.Id.btnSettings);
+            _btnLocation = FindViewById<ImageView>(Resource.Id.btnLocation);
 
             // attach big invisible button to the OrderOptions to be able to pass it to the address text box and clear focus when clicking outside
             _orderOptions.BigInvisibleButton = _bigButton;
@@ -207,6 +209,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = WindowManager.DefaultDisplay.Width;
             _orderReview.Visibility = ViewStates.Gone;
             _orderEdit.Visibility = ViewStates.Gone;
+            _searchAddress.Visibility = ViewStates.Gone;
 
             // Creating a view controller for MapFragment
             Bundle mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
@@ -221,6 +224,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             binding.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // OrderOptions View Bindings
             binding.Bind(_orderEdit).For("DataContext").To(vm => vm.OrderEdit); // OrderEdit View Bindings
             binding.Bind(_orderReview).For("DataContext").To(vm => vm.OrderReview); // OrderReview View Bindings
+            binding.Bind(_searchAddress).For("DataContext").To(vm => vm.AddressPicker); // OrderReview View Bindings
             binding.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
 
             binding.Apply();
@@ -363,31 +367,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                 SetSelectedOnBookLater(true);
 
-                var intent = new Intent(this, typeof (DateTimePickerActivity));
+                var intent = new Intent(this, typeof(DateTimePickerActivity));
                 StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
             }
             else if (_presentationState == HomeViewModelState.Review)
             {
                 SetMapEnabled(false);
-                    // Order Options: Visible
+                // Order Options: Visible
                 // Order Review: Visible
                 // Order Edit: Hidden
                 // Date Picker: Hidden
 
                 var animation = AnimationHelper.GetForYTranslation(_orderReview, _orderOptions.Height);
-                animation.AnimationStart += (sender, e) => 
+                animation.AnimationStart += (sender, e) =>
                 {
                     var desiredHeight = _frameLayout.Height - _orderOptions.Height;
-                    if(((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height != desiredHeight)
+                    if (((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height != desiredHeight)
                     {
                         ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height = desiredHeight;
                     }
                 };
 
                 var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width);
-                animation2.AnimationStart += (sender, e) => 
+                animation2.AnimationStart += (sender, e) =>
                 {
-                    if(((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).Width != _frameLayout.Width)
+                    if (((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).Width != _frameLayout.Width)
                     {
                         ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).Width = _frameLayout.Width;
                     }
@@ -416,6 +420,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 _orderEdit.StartAnimation(animation2);
                 _orderOptions.StartAnimation(animation3);
             }
+            else if (_presentationState == HomeViewModelState.AddressSearch)
+            {
+                SetMapEnabled(false);
+                _searchAddress.Visibility = ViewStates.Visible;
+
+            } 
             else if(_presentationState == HomeViewModelState.Initial)
             {
                 SetMapEnabled(true);
