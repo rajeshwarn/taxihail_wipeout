@@ -77,6 +77,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return resultImage;
         }
 
+        public static UIImage CreateBlurImageFromView(UIView view)
+        {
+            var _size = view.Bounds.Size;
+            //view = new UIImageView(new RectangleF(new PointF(0, 0), _size));
+            UIGraphics.BeginImageContext(view.Bounds.Size);
+            view.Layer.RenderInContext(UIGraphics.GetCurrentContext());
+            UIImage viewImage = UIGraphics.GetImageFromCurrentImageContext();
+
+            // Blur Image
+            CIImage imageToBlur = CIImage.FromCGImage(viewImage.CGImage);
+            CIFilter gaussianBlurFilter = CIFilter.FromName("CIGaussianBlur");
+            gaussianBlurFilter.SetValueForKey(imageToBlur,new NSString("inputImage"));
+            gaussianBlurFilter.SetValueForKey(new NSNumber(2f),new NSString("inputRadius"));
+            CIImage resultImage = (CIImage) gaussianBlurFilter.ValueForKey(new NSString("outputImage"));
+
+            var croppedImage = resultImage.ImageByCroppingToRect(new RectangleF(2f, 2f, _size.Width - 4f, _size.Height - 2f));              
+            var transformFilter = new CIAffineTransform();
+            var affineTransform = CGAffineTransform.MakeTranslation (-2f, 2f);
+            transformFilter.Transform = affineTransform;
+            transformFilter.Image = croppedImage;
+            CIImage transformedImage = transformFilter.OutputImage;
+
+            UIImage finalImage = new UIImage(transformedImage);
+            UIImageView  imageView = new UIImageView(view.Bounds);
+            imageView.Image = finalImage;
+            return finalImage;
+        }
+
         public static UIImage ApplyThemeColorToImage(string imagePath)
         {
             return ApplyColorToImage(imagePath, Theme.BackgroundColor);
