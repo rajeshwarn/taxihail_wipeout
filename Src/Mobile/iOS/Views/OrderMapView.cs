@@ -400,7 +400,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var centerHint = hint as CenterMapPresentationHint;
             if (centerHint != null)
             {
-                SetRegion(new MKCoordinateRegion(new CLLocationCoordinate2D(centerHint.Latitude, centerHint.Longitude), new MKCoordinateSpan(0.002, 0.002)), true);
+                // Set the new region center, but keep current span
+                var currentRegion = Region;
+                SetRegion(new MKCoordinateRegion(new CLLocationCoordinate2D(centerHint.Latitude, centerHint.Longitude), Region.Span), true);
             }
         }
 

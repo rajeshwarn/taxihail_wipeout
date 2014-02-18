@@ -73,8 +73,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<Address> SetAddressToUserLocation()
 		{
-            //CancelCurrentLocationCommand.Execute ();
-			//TODO: Handle when location services are not available
+			// TODO: Location service refactoring is needed in order
+			// to simplify this method
+
+			// TODO: Handle when location services are not available
+
 			if (_locationService.BestPosition != null)
 			{
 				var address = await SearchAddressForCoordinate(_locationService.BestPosition);
@@ -83,42 +86,31 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				return address;
 			}
 
-			//IsExecuting = true;
-			var positionSet = false;
+			var position = await _locationService
+				.GetNextPosition(TimeSpan.FromSeconds(6), 50)
+				.Take(1)
+				.DefaultIfEmpty() // Will return null in case of a timeout
+				.ToTask();
 
-			Address result = new Address();
+			if (position != null)
+			{
+				var address = await SearchAddressForCoordinate(position);
+				await SetAddressToCurrentSelection(address);
+				return address;
+			}
 
-			_locationService.GetNextPosition(TimeSpan.FromSeconds(6), 50).Subscribe(
-				async pos =>
-				{
-					positionSet = true;
-					var address = await SearchAddressForCoordinate(pos);
-					await SetAddressToCurrentSelection(address);
-					result = address;
-				},
-				async () =>
-				{  
-					positionSet = false;
+			if (_locationService.BestPosition == null)
+			{
+				//this.Services().Message.ShowToast("Cant find location, please try again", ToastDuration.Short);
+				return new Address();
+			}
+			else
+			{
+				var address = await SearchAddressForCoordinate(_locationService.BestPosition);    
+				await SetAddressToCurrentSelection(address);
+				return address;
+			}
 
-					if (!positionSet)
-					{
-						{
-							if (_locationService.BestPosition == null)
-							{
-								//this.Services().Message.ShowToast("Cant find location, please try again", ToastDuration.Short);
-							}
-							else
-							{
-								var address = await SearchAddressForCoordinate(_locationService.BestPosition);    
-								await SetAddressToCurrentSelection(address);
-								result = address;
-							}
-						}
-					}
-				}
-			);
-
-			return result;
 		}
 
         public async Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken)
