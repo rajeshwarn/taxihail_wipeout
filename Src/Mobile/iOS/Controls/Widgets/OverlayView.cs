@@ -41,12 +41,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {           
             var context = UIGraphics.GetCurrentContext ();
 
-            var fillColor = UIColor.White.ColorWithAlpha(0.8f);
+            var fillColor = UIColor.White.ColorWithAlpha(0.9f);
 
             var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _radiusCorner);
 
             DrawBackground(context, rect, roundedRectanglePath, fillColor.CGColor);
-            DrawStroke(fillColor.CGColor);
+            DrawStroke(fillColor.CGColor, rect);
         }
 
         protected virtual void DrawBackground (CGContext context, RectangleF rect, UIBezierPath roundedRectanglePath, CGColor fillColor)
@@ -60,24 +60,42 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             context.RestoreState ();
         }
 
-        protected virtual void DrawStroke(CGColor fillColor)
+        protected virtual void DrawStroke(CGColor fillColor, RectangleF rect)
         {
             if (_shadowView != null)
             {
                 _shadowView.RemoveFromSuperview();
             }
+
+            var biggerRect = Bounds.Copy().Shrink(-10);
+            var holeRect = rect.Copy().Shrink(1);
+
+            var roundedRectanglePath = UIBezierPath.FromRoundedRect (holeRect, _radiusCorner);
+
+            var maskPath = new UIBezierPath();
+            maskPath.MoveTo(new PointF(biggerRect.GetMinX(), biggerRect.GetMinY()));
+            maskPath.AddLineTo(new PointF(biggerRect.GetMinX(), biggerRect.GetMaxY()));
+            maskPath.AddLineTo(new PointF(biggerRect.GetMaxX(), biggerRect.GetMaxY()));
+            maskPath.AddLineTo(new PointF(biggerRect.GetMaxX(), biggerRect.GetMinY()));
+            maskPath.AddLineTo(new PointF(biggerRect.GetMinX(), biggerRect.GetMinY()));
+            maskPath.AppendPath(roundedRectanglePath);
+
+            var maskWithHole = new CAShapeLayer();
+            maskWithHole.Path = maskPath.CGPath;
+            maskWithHole.FillRule = CAShapeLayer.FillRuleEvenOdd;
+
             _shadowView = new UIView(Frame);
             _shadowView.BackgroundColor = UIColor.White.ColorWithAlpha(0.7f);
             _shadowView.Layer.MasksToBounds = false;
             _shadowView.Layer.ShadowColor = UIColor.FromRGBA(0, 0, 0, 127).CGColor;
             _shadowView.Layer.ShadowOpacity = 1.0f;
-            _shadowView.Layer.ShadowRadius = _radiusCorner+1;
+            _shadowView.Layer.ShadowRadius = _radiusCorner + 1;
             _shadowView.Layer.ShadowOffset = new SizeF(0.3f, 0.3f);
-            _shadowView.Layer.ShouldRasterize = true;        
+            _shadowView.Layer.ShouldRasterize = true;     
+            _shadowView.Layer.Mask = maskWithHole;
             _shadowView.Frame = Frame.Copy().Shrink(1);
 
             this.Superview.InsertSubviewBelow(_shadowView, this);            
-
         }
     }
 }

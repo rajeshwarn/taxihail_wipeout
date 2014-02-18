@@ -321,6 +321,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         public void SetEnabled(bool state)
         {
+            if (this.ZoomEnabled == state)
+            {
+                // already in the good state, no need to change
+                return;
+            }
+
             this.ZoomEnabled = state;
             this.ScrollEnabled = state;
             this.UserInteractionEnabled = state;                       
@@ -336,10 +342,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             if (!state)
             {
-                _mapBlurOverlay.Image = ImageHelper.CreateBlurImageFromView(this);            
-            }
+                _mapBlurOverlay.Image = ImageHelper.CreateBlurImageFromView(this);    
 
-            _mapBlurOverlay.Hidden = state;
+                _mapBlurOverlay.Alpha = 0;
+                _mapBlurOverlay.Hidden = false;
+                UIView.Animate(0.3f, () => _mapBlurOverlay.Alpha = 1);       
+            }
+            else
+            {
+                UIView.Animate(0.3f, () => _mapBlurOverlay.Alpha = 0, () => _mapBlurOverlay.Hidden = true);
+            }
         }
 
         private void CancelAddressSearch()
@@ -350,27 +362,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         void ChangeState(HomeViewModelPresentationHint hint)
         {
-            SetEnabled(true);
-
             if (hint.State == HomeViewModelState.PickDate)
             {
                 SetEnabled(false);
-
             }
             else if (hint.State == HomeViewModelState.Review)
             {
                 SetEnabled(false);
-
             }
             else if (hint.State == HomeViewModelState.Edit)
             {
                 SetEnabled(false);
-
             }
             else if (hint.State == HomeViewModelState.AddressSearch)
             {
                 SetEnabled(false);
-
             }
             else if(hint.State == HomeViewModelState.Initial)
             {

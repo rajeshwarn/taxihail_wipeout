@@ -158,7 +158,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
              );
         }        
 
-        protected override void DrawStroke(MonoTouch.CoreGraphics.CGColor fillColor)
+        protected override void DrawStroke(MonoTouch.CoreGraphics.CGColor fillColor, RectangleF rect)
         {
             //nothing here, no shadow
         }

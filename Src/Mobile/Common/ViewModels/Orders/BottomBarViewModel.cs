@@ -188,6 +188,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
         }
 
+		public ICommand CancelBookLater
+		{
+			get
+			{
+				return this.GetCommand(() => {
+					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+				});
+			}
+		}
+
 		private ICommand _cancelEdit;
 		public ICommand CancelEdit
 		{

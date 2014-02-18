@@ -557,6 +557,8 @@
     <Compile Include="Helpers\AnimationHelper.cs" />
     <AndroidResource Include="Resources\Drawable\places.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\places.png" />
+    <AndroidResource Include="Resources\Layout\SubView_SearchAddress.axml" />
+    <Compile Include="Controls\Widgets\SearchAddress.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

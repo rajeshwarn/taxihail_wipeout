@@ -83,6 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(ViewPickup)
                 .For(v => v.IsReadOnly)
                 .To(vm => vm.ShowDestination);
+
             set.Bind(ViewPickup.AddressTextView)
                 .To(vm => vm.PickupAddress.DisplayAddress);
 
@@ -90,6 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Visibility)
                 .To(vm => vm.ShowDestination)
                 .WithConversion("Visibility");
+           
             set.Bind(ViewDestination.AddressTextView)
                 .To(vm => vm.DestinationAddress.DisplayAddress);
 
@@ -100,6 +102,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Visibility)
                 .To(vm => vm.ShowDestination)
                 .WithConversion("Visibility");
+
+
+            set.Bind(ViewPickup.AddressTextView)
+                .For("Click")
+                .To(vm => vm.ShowSearchAddress);
+
+            set.Bind(ViewPickup.AddressTextView)
+                .For("Click")
+                .To(vm => vm.ShowSearchAddress);
+
 
             set.Apply();
         }
