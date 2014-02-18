@@ -123,6 +123,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ViewPickup.IsReadOnly = true;
                 ViewDestination.IsReadOnly = true;
             }
+            else if(hint.State == HomeViewModelState.PickDate)
+            {
+                ViewPickup.IsReadOnly = true;
+                ViewDestination.IsReadOnly = true;
+            }
             else if(hint.State == HomeViewModelState.Initial)
             {
                 ViewPickup.IsReadOnly = ViewModel.ShowDestination;

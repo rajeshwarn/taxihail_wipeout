@@ -218,16 +218,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _mapFragment = new OrderMapFragment(_touchMap, Resources);
 
             // Home View Bindings
-            var binding = this.CreateBindingSet<HomeActivity, HomeViewModel>();
+            var set = this.CreateBindingSet<HomeActivity, HomeViewModel>();
 
-            binding.Bind(_mapFragment).For("DataContext").To(vm => vm.Map); // Map Fragment View Bindings
-            binding.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // OrderOptions View Bindings
-            binding.Bind(_orderEdit).For("DataContext").To(vm => vm.OrderEdit); // OrderEdit View Bindings
-            binding.Bind(_orderReview).For("DataContext").To(vm => vm.OrderReview); // OrderReview View Bindings
-            binding.Bind(_searchAddress).For("DataContext").To(vm => vm.AddressPicker); // OrderReview View Bindings
-            binding.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
+            set.Bind(_mapFragment).For("DataContext").To(vm => vm.Map); // Map Fragment View Bindings
+            set.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // OrderOptions View Bindings
+            set.Bind(_orderEdit).For("DataContext").To(vm => vm.OrderEdit); // OrderEdit View Bindings
+            set.Bind(_orderReview).For("DataContext").To(vm => vm.OrderReview); // OrderReview View Bindings
+            set.Bind(_searchAddress).For("DataContext").To(vm => vm.AddressPicker); // OrderReview View Bindings
+            set.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
 
-            binding.Apply();
+            set.Apply();
 
             PanelMenuInit();
         }
