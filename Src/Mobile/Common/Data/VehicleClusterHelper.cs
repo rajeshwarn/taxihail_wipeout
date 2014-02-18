@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Data
 							EastBound = mapBounds.WestBound + clusterWidth * (colIndex + 1)
 						};
 
-						var vehiclesInRect = list.Where(v => IsVehicleInBounds(bounds, v)).ToArray();
+						var vehiclesInRect = list.Where(v => bounds.Contains(v.Latitude, v.Longitude)).ToArray();
 						if (vehiclesInRect.Length > cellThreshold)
 						{
 							var clusterBuilder = new VehicleClusterBuilder();
@@ -59,25 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Data
 				}
 			}
 			return result.ToArray();
-		}
-
-		static bool IsVehicleInBounds(MapBounds mapBounds, AvailableVehicle v)
-		{
-			if (mapBounds.NorthBound >= v.Latitude && v.Latitude >= mapBounds.SouthBound)
-			{
-				if(mapBounds.WestBound <= mapBounds.EastBound && mapBounds.WestBound <= v.Longitude && v.Longitude <= mapBounds.EastBound)
-				{
-					return true;
-				}
-				else 
-				{
-					if (mapBounds.WestBound > mapBounds.EastBound && (mapBounds.WestBound <= v.Longitude || v.Longitude <= mapBounds.EastBound))
-					{
-						return true;
-					}
-				}
-			}
-			return false;
 		}
 	}
 }

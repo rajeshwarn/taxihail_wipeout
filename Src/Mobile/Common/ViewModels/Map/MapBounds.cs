@@ -38,6 +38,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			public double Latitude { get; set; }
 			public double Longitude { get; set; }
 		}
+
+		public bool Contains(double latitude, double longitude)
+		{
+			if (NorthBound >= latitude && latitude >= SouthBound)
+			{
+				if(WestBound <= EastBound && WestBound <= longitude && longitude <= EastBound)
+				{
+					return true;
+				}
+				else 
+				{
+					if (WestBound > EastBound && (WestBound <= longitude || longitude <= EastBound))
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
 	}
 }
 
