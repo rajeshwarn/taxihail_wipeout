@@ -11,6 +11,8 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
 		public AddressMapDelegate (bool regionMovedActivated = true )
 		{
+            // TODO: Get rid of this class when refactoring StatusView
+            // Instead use MKMapView events and delegates (like MKMapView.GetViewForAnnotation)
 			_regionMovedActivated = regionMovedActivated;
 		}
 
@@ -44,15 +46,8 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
         {
             if (_regionMovedActivated)
             {
-                if (mapView is OrderMapView)
-                {
-                    // Do nothing
-                }
-                else
-                {
-                    //TODO remove when status is migrated to new map
-                    ((TouchMap)mapView).OnRegionChanged();
-                }
+                //TODO remove when status is migrated to new map
+                ((TouchMap)mapView).OnRegionChanged();
             }
         }
 

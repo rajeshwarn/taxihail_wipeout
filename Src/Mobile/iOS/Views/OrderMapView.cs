@@ -105,8 +105,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _pickupAnnotation = GetAnnotation(new CLLocationCoordinate2D(), AddressAnnotationType.Pickup, _useThemeColorForPickupAndDestinationMapIcons);
             _destinationAnnotation = GetAnnotation(new CLLocationCoordinate2D(), AddressAnnotationType.Destination, _useThemeColorForPickupAndDestinationMapIcons);
 
+            // TODO: When refactoring StatusView, get rid of AddressMapDelegate
+            // and use helper class to get GetViewForAnnotation delegate
+            this.GetViewForAnnotation = new AddressMapDelegate(true).GetViewForAnnotation;
+
             InitializeGesture();
         }
+                  
 
         private void InitializeGesture()
         {
@@ -405,7 +410,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 SetRegion(new MKCoordinateRegion(new CLLocationCoordinate2D(centerHint.Latitude, centerHint.Longitude), Region.Span), true);
             }
         }
-
 
     }
 }

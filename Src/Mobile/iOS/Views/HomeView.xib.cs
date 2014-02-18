@@ -56,8 +56,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnLocateMe.SetImage(UIImage.FromFile("location_icon.png"), UIControlState.Normal);
             btnLocateMe.SetImage(UIImage.FromFile("location_icon_pressed.png"), UIControlState.Highlighted);
 
-            mapView.Delegate = new AddressMapDelegate (true);
-
             InstantiatePanel();
 
             _datePicker = new BookLaterDatePicker();            
