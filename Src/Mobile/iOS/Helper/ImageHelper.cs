@@ -7,6 +7,7 @@ using System.Drawing;
 using MonoTouch.CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using MonoTouch.CoreImage;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
@@ -79,30 +80,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
         public static UIImage CreateBlurImageFromView(UIView view)
         {
+            var blurRadius = 2f;
+
             var _size = view.Bounds.Size;
-            //view = new UIImageView(new RectangleF(new PointF(0, 0), _size));
-            UIGraphics.BeginImageContext(view.Bounds.Size);
-            view.Layer.RenderInContext(UIGraphics.GetCurrentContext());
-            UIImage viewImage = UIGraphics.GetImageFromCurrentImageContext();
+
+            UIGraphics.BeginImageContext(_size);
+            if (UIHelper.IsOS7orHigher)
+            {
+                // use faster approach available on iOS7
+                view.DrawViewHierarchy(view.Bounds, false);
+            }
+            else
+            {
+                view.Layer.RenderInContext(UIGraphics.GetCurrentContext());
+            }
+            var viewImage = UIGraphics.GetImageFromCurrentImageContext();
 
             // Blur Image
-            CIImage imageToBlur = CIImage.FromCGImage(viewImage.CGImage);
-            CIFilter gaussianBlurFilter = CIFilter.FromName("CIGaussianBlur");
-            gaussianBlurFilter.SetValueForKey(imageToBlur,new NSString("inputImage"));
-            gaussianBlurFilter.SetValueForKey(new NSNumber(2f),new NSString("inputRadius"));
-            CIImage resultImage = (CIImage) gaussianBlurFilter.ValueForKey(new NSString("outputImage"));
+            var gaussianBlurFilter = new CIGaussianBlur();
+            gaussianBlurFilter.Image = CIImage.FromCGImage(viewImage.CGImage);
+            gaussianBlurFilter.Radius = blurRadius;
+            var resultImage = gaussianBlurFilter.OutputImage;
 
-            var croppedImage = resultImage.ImageByCroppingToRect(new RectangleF(2f, 2f, _size.Width - 4f, _size.Height - 2f));              
+            var croppedImage = resultImage.ImageByCroppingToRect(new RectangleF(blurRadius, blurRadius, _size.Width - 2*blurRadius, _size.Height - 2*blurRadius));              
             var transformFilter = new CIAffineTransform();
-            var affineTransform = CGAffineTransform.MakeTranslation (-2f, 2f);
+            var affineTransform = CGAffineTransform.MakeTranslation (-blurRadius, blurRadius);
             transformFilter.Transform = affineTransform;
             transformFilter.Image = croppedImage;
-            CIImage transformedImage = transformFilter.OutputImage;
+            var transformedImage = transformFilter.OutputImage;
 
-            UIImage finalImage = new UIImage(transformedImage);
-            UIImageView  imageView = new UIImageView(view.Bounds);
-            imageView.Image = finalImage;
-            return finalImage;
+            return new UIImage(transformedImage);
         }
 
         public static UIImage ApplyThemeColorToImage(string imagePath)
