@@ -279,7 +279,6 @@
     <Compile Include="Helper\MessageHelper.cs" />
     <Compile Include="Helper\ThreadHelper.cs" />
     <Compile Include="Localization\Localize.cs" />
-    <Compile Include="Controls\LoadingOverlay.cs" />
     <Compile Include="Helper\SerializerHelper.cs" />
     <Compile Include="Helper\NSDefaultHelper.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
@@ -493,6 +492,8 @@
     <Compile Include="Views\AddressPicker\AddressPickerView.cs" />
     <Compile Include="Views\AddressPicker\GroupedAddressTableViewSource.cs" />
     <Compile Include="Controls\Message\LoadingBar.cs" />
+    <Compile Include="Controls\Message\CircularProgressView.cs" />
+    <Compile Include="Controls\Message\LoadingOverlay.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -732,6 +733,8 @@
     <BundleResource Include="Resources\poweredByGoogle.png" />
     <BundleResource Include="Resources\places.png" />
     <BundleResource Include="Resources\places%402x.png" />
+    <BundleResource Include="Resources\taxi_progress.png" />
+    <BundleResource Include="Resources\taxi_progress%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
