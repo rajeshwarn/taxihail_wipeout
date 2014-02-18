@@ -178,7 +178,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public void InitializeBinding()
         {
-            var binding = this.CreateBindingSet<OrderMapFragment, MapViewModel>();
+            var set = this.CreateBindingSet<OrderMapFragment, MapViewModel>();
 
             _touchableMap.Surface.Touched += (object sender, MotionEvent e) => 
             {
@@ -204,39 +204,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 .Subscribe(e => OnCameraChanged(e))
                 .DisposeWith(_subscriptions);
 
-            binding.Bind()
+            set.Bind()
                 .For(v => v.UserMovedMap)
                 .To(vm => vm.UserMovedMap);
 
-            binding.Bind()
+            set.Bind()
                 .For(v => v.IsZooming)
                 .To(vm => vm.IsZooming);
 
-            binding.Bind()
+            set.Bind()
                 .For(v => v.AddressSelectionMode)
                 .To(vm => vm.AddressSelectionMode);
 
-            binding.Bind()
+            set.Bind()
                 .For(v => v.PickupAddress)
                 .To(vm => vm.PickupAddress);
             
-            binding.Bind()
+            set.Bind()
                 .For(v => v.DestinationAddress)
                 .To(vm => vm.DestinationAddress);
 
-            binding.Bind()
+            set.Bind()
                 .For(v => v.MapBounds)
                 .To(vm => vm.MapBounds);
 
-            binding.Bind()
+            set.Bind()
                 .For(v => v.MapCenter)
                 .To(vm => vm.MapCenter);
 
-            binding.Bind()
+            set.Bind()
                 .For(v => v.AvailableVehicles)
                 .To(vm => vm.AvailableVehicles);
 
-            binding.Apply();
+            set.Apply();
 
         }
 
