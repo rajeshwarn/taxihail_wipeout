@@ -41,12 +41,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {           
             var context = UIGraphics.GetCurrentContext ();
 
-            var fillColor = UIColor.White.ColorWithAlpha(0.8f);
+            var fillColor = UIColor.White.ColorWithAlpha(0.9f);
 
             var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _radiusCorner);
 
             DrawBackground(context, rect, roundedRectanglePath, fillColor.CGColor);
-            DrawStroke(fillColor.CGColor, roundedRectanglePath);
+            DrawStroke(fillColor.CGColor, rect);
         }
 
         protected virtual void DrawBackground (CGContext context, RectangleF rect, UIBezierPath roundedRectanglePath, CGColor fillColor)
@@ -60,20 +60,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             context.RestoreState ();
         }
 
-        protected virtual void DrawStroke(CGColor fillColor, UIBezierPath roundedRectanglePath)
+        protected virtual void DrawStroke(CGColor fillColor, RectangleF rect)
         {
             if (_shadowView != null)
             {
                 _shadowView.RemoveFromSuperview();
             }
 
-            var expandedFrame = Bounds.Copy().Shrink(-10);
+            var biggerRect = Bounds.Copy().Shrink(-10);
+            var holeRect = rect.Copy().Shrink(1);
 
-            var maskWithHole = new CAShapeLayer();
-
-            // Both frames are defined in the same coordinate system
-            var biggerRect = expandedFrame;
-            var smallerRect = Bounds;
+            var roundedRectanglePath = UIBezierPath.FromRoundedRect (holeRect, _radiusCorner);
 
             var maskPath = new UIBezierPath();
             maskPath.MoveTo(new PointF(biggerRect.GetMinX(), biggerRect.GetMinY()));
@@ -81,13 +78,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             maskPath.AddLineTo(new PointF(biggerRect.GetMaxX(), biggerRect.GetMaxY()));
             maskPath.AddLineTo(new PointF(biggerRect.GetMaxX(), biggerRect.GetMinY()));
             maskPath.AddLineTo(new PointF(biggerRect.GetMinX(), biggerRect.GetMinY()));
+            maskPath.AppendPath(roundedRectanglePath);
 
-            maskPath.MoveTo(new PointF(smallerRect.GetMinX(), smallerRect.GetMinY()));
-            maskPath.AddLineTo(new PointF(smallerRect.GetMinX(), smallerRect.GetMaxY()));
-            maskPath.AddLineTo(new PointF(smallerRect.GetMaxX(), smallerRect.GetMaxY()));
-            maskPath.AddLineTo(new PointF(smallerRect.GetMaxX(), smallerRect.GetMinY()));
-            maskPath.AddLineTo(new PointF(smallerRect.GetMinX(), smallerRect.GetMinY()));
-
+            var maskWithHole = new CAShapeLayer();
             maskWithHole.Path = maskPath.CGPath;
             maskWithHole.FillRule = CAShapeLayer.FillRuleEvenOdd;
 
