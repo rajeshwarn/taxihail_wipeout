@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
             {
                 Start();
             }
-            return Positions.Where(p => p.Error <= maxAccuracy).Take(timeout).Take(1);
+			return Positions.Where(p => p.Error <= maxAccuracy).Take(timeout).Take(1);
         }
 
         public abstract Position LastKnownPosition { get; }

@@ -25,10 +25,11 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    public class OrderMapFragment: IMvxBindable, IDisposable
+    public class OrderMapFragment: IMvxBindable, IDisposable, IChangePresentation
     {
         public GoogleMap Map { get; set;}
         public TouchableMap _touchableMap { get; set;}
@@ -38,7 +39,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private Marker _destinationPin;
         private CompositeDisposable _subscriptions = new CompositeDisposable();
         private bool bypassCameraChangeEvent = false;
-        public event EventHandler IsZoomingChanged;       
 
         private List<Marker> _availableVehicleMarkers = new List<Marker> ();
 
@@ -110,42 +110,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        private MapBounds _mapBounds;
-        public MapBounds MapBounds
-        {
-            get
-            {
-                return _mapBounds;
-            }
-
-            set
-            {
-                if (_mapBounds != value)
-                {
-                    _mapBounds = value;
-                    OnMapBoundsChanged();
-                }
-            }
-        }
-                        
-        private Position _mapCenter;
-        public Position MapCenter
-        {
-            get { return _mapCenter; }
-            set
-            {
-                if (value != _mapCenter && !bypassCameraChangeEvent)
-                {
-                    _mapCenter = value;
-
-                    if (!IsZooming)
-                    {
-                        MapBounds = ChangeMapBoundsCenter(_mapCenter);
-                    }
-                }
-            }
-        }
-
         public ICommand UserMovedMap { get; set; }
 
         private IEnumerable<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
@@ -159,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 if (_availableVehicles != value)
                 {
-                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value.ToArray(), MapBounds));
+                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value.ToArray(), GetMapBoundsFromProjection()));
                 }
             }
         }
@@ -182,8 +146,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             _touchableMap.Surface.Touched += (object sender, MotionEvent e) => 
             {
-                IsZooming = false;
-
                 switch (e.Action)
                 {
                     case MotionEventActions.Down:
@@ -209,10 +171,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 .To(vm => vm.UserMovedMap);
 
             binding.Bind()
-                .For(v => v.IsZooming)
-                .To(vm => vm.IsZooming);
-
-            binding.Bind()
                 .For(v => v.AddressSelectionMode)
                 .To(vm => vm.AddressSelectionMode);
 
@@ -223,14 +181,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             binding.Bind()
                 .For(v => v.DestinationAddress)
                 .To(vm => vm.DestinationAddress);
-
-            binding.Bind()
-                .For(v => v.MapBounds)
-                .To(vm => vm.MapBounds);
-
-            binding.Bind()
-                .For(v => v.MapCenter)
-                .To(vm => vm.MapCenter);
 
             binding.Bind()
                 .For(v => v.AvailableVehicles)
@@ -270,23 +220,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             return bounds;
         }
 
-        private MapBounds ChangeMapBoundsCenter(Position newCenter)
-        {
-            var _bounds = Map.Projection.VisibleRegion.LatLngBounds;
-            var _center = _bounds.Center;
-            var diffLat = newCenter.Latitude - _center.Latitude;
-            var diffLng = newCenter.Longitude - _center.Longitude;
-
-            var bounds = new MapBounds()
-            { 
-                SouthBound = _bounds.Southwest.Latitude + diffLat, 
-                WestBound = _bounds.Southwest.Longitude + diffLng, 
-                NorthBound = _bounds.Northeast.Latitude + diffLat, 
-                EastBound = _bounds.Northeast.Longitude + diffLng
-            };
-
-            return bounds;
-        }
 
         private void CreatePins()
         {
@@ -368,35 +301,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }            
         }
 
-        private void OnMapBoundsChanged()
-        {
-            if (MapBounds != null)
-            {
-                bypassCameraChangeEvent = true;
-                var bounds = MapBounds;
-                Map.AnimateCamera(
-                    CameraUpdateFactory.NewLatLngBounds(
-                        new LatLngBounds(new LatLng(bounds.SouthBound, bounds.WestBound), 
-                            new LatLng(bounds.NorthBound, bounds.EastBound)),
-                        DrawHelper.GetPixels(0)));
-            }
-        }
-
-
-
-        private bool _isZooming;
-        public bool IsZooming
-        {
-            get { return _isZooming; }
-            set
-            {
-                if (value != _isZooming)
-                {
-                    _isZooming = value;
-                    IsZoomingChanged(null, null);
-                }
-            }
-        }
 
         private void OnCameraChanged(System.Reactive.EventPattern<GoogleMap.CameraChangeEventArgs> e)
         {
@@ -404,11 +308,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 bypassCameraChangeEvent = false;
                 return;
-            }
-
-            if (GetMapBoundsFromProjection().LatitudeDelta < 0.003) // Checks if RegionChange results from a zoom
-            {
-                IsZooming = false; // Stops to auto-zoom in MapViewModel when address changed
             }
 
             var bounds = GetMapBoundsFromProjection();
@@ -449,6 +348,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public void Dispose()
         {
             _subscriptions.Dispose();
+        }
+
+
+        void IChangePresentation.ChangePresentation(ChangePresentationHint hint)
+        {
+            var zoomHint = hint as ZoomToStreetLevelPresentationHint;
+            if (zoomHint != null)
+            {
+                Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(zoomHint.Latitude, zoomHint.Longitude), 18));
+            }
+
+            var centerHint = hint as CenterMapPresentationHint;
+            if(centerHint != null)
+            {
+                Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(centerHint.Latitude, centerHint.Longitude)));
+            }
         }
     }
 }

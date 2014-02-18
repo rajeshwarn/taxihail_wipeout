@@ -512,6 +512,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			_mapReady = false;
 		}
 
+
     }
 
 	public class LayoutObserverForMap : Java.Lang.Object, ViewTreeObserver.IOnGlobalLayoutListener

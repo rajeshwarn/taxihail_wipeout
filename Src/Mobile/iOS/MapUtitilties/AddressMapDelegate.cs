@@ -11,55 +11,46 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
 		public AddressMapDelegate (bool regionMovedActivated = true )
 		{
+            // TODO: Get rid of this class when refactoring StatusView
+            // Instead use MKMapView events and delegates (like MKMapView.GetViewForAnnotation)
 			_regionMovedActivated = regionMovedActivated;
 		}
 
-		public override MKAnnotationView GetViewForAnnotation (MKMapView mapView, NSObject annotation)
-		{
-			var ann = annotation as AddressAnnotation;
-			
-			if (ann == null) 
-			{
-				return null;
-			}
+        public override MKAnnotationView GetViewForAnnotation (MKMapView mapView, NSObject annotation)
+        {
+            var ann = annotation as AddressAnnotation;
 
-		    var anv = mapView.DequeueReusableAnnotation ("thislocation") as PinAnnotationView;
-		    if (anv == null) 
-		    {
-		        anv = new PinAnnotationView (ann, "thislocation");	
-		    } 
-		    else 
-		    {
-		        anv.Annotation = ann;
-		        anv.RefreshPinImage();
-		    }
+            if (ann == null) 
+            {
+                return null;
+            }
 
-		    anv.CanShowCallout = ann.AddressType != AddressAnnotationType.Taxi;
+            var anv = mapView.DequeueReusableAnnotation ("thislocation") as PinAnnotationView;
+            if (anv == null) 
+            {
+                anv = new PinAnnotationView (ann, "thislocation");  
+            } 
+            else 
+            {
+                anv.Annotation = ann;
+                anv.RefreshPinImage();
+            }
 
-		    return anv;
-		}
+            anv.CanShowCallout = ann.AddressType != AddressAnnotationType.Taxi;
 
-        // TODO verify if we could have a special kind of command that stops itself if called a second time, so we could remove this from the map
+            return anv;
+        }
+        	
+
         public override void RegionChanged (MKMapView mapView, bool animated)
         {
             if (_regionMovedActivated)
             {
-                if (mapView is OrderMapView)
-                {
-                    ((OrderMapView)mapView).OnRegionChanged(mapView, new MKMapViewChangeEventArgs(animated));
-                }
-                else
-                {
-                    //TODO remove when status is migrated to new map
-                    ((TouchMap)mapView).OnRegionChanged();
-                }
+                //TODO remove when status is migrated to new map
+                ((TouchMap)mapView).OnRegionChanged();
             }
         }
 
-        public override void RegionWillChange(MKMapView mapView, bool animated)
-        {
-            //((OrderMapView)mapView).OnRegionWillChange(null, new MKMapViewChangeEventArgs(animated));
-        }
 	}
 }
 

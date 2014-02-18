@@ -319,7 +319,6 @@
     <Compile Include="ViewModels\Orders\OrderOptionsViewModel.cs" />
     <Compile Include="Data\VehicleClusterHelper.cs" />
     <Compile Include="ViewModels\Orders\BottomBarViewModel.cs" />
-    <Compile Include="PresentationHints\ChangeStatePresentationHint.cs" />
     <Compile Include="PresentationHints\HomeViewModelPresentationHint.cs" />
     <Compile Include="PresentationHints\IChangePresentation.cs" />
     <Compile Include="ViewModels\Orders\HomeViewModelState.cs" />
@@ -328,6 +327,9 @@
     <Compile Include="ViewModels\Orders\OrderEditViewModel.cs" />
     <Compile Include="AppServices\Orders\OrderCreationException.cs" />
     <Compile Include="ViewModels\Orders\AddressPickerViewModel.cs" />
+    <Compile Include="PresentationHints\ZoomToStreetLevelPresentationHint.cs" />
+    <Compile Include="PresentationHints\ChangePresentationHint.cs" />
+    <Compile Include="PresentationHints\CenterMapPresentationHint.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Mobile.Data;
 using System.Threading.Tasks;
 using System.Threading;
 using MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -42,8 +43,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     _pickupAddress = value;					
                     RaisePropertyChanged();		
-                    OnAddressChanged(PickupAddress);
-                    OnPickupAddressChanged();
                 }
             }
         }
@@ -58,62 +57,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					_destinationAddress = value;
 					RaisePropertyChanged();
-                    OnDestinationAddressChanged();                
-                    OnAddressChanged(DestinationAddress);
 				}
 			}
 		}
-
-		private MapBounds _mapBounds;
-		public MapBounds MapBounds
-		{
-			get 
-			{ 
-				return (_mapBounds == null)
-					? GetMapBoundsFromCoordinateAndDelta(new Position
-						{ 
-							Latitude = this.Services().Settings.DefaultLatitude, 
-							Longitude = this.Services().Settings.DefaultLongitude
-						}, 0.04, 0.04)
-					: _mapBounds;
-			}
-			set
-			{
-				if (value != _mapBounds)
-				{
-					_mapBounds = value;
-					RaisePropertyChanged();
-				}
-			}
-		}
-
-		private Position _mapCenter;
-		public Position MapCenter
-		{
-			get { return _mapCenter; } 
-			set
-			{
-				if (value != _mapCenter)
-				{
-					_mapCenter = value;
-					RaisePropertyChanged();
-				}
-			}
-		}
-
-		private bool _isZooming;
-        public bool IsZooming
-        {
-			get { return _isZooming; }
-            set
-            {
-				if (value != _isZooming)
-                {
-					_isZooming = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
 
 		private AddressSelectionMode _addressSelectionMode; 
 		public AddressSelectionMode AddressSelectionMode
@@ -123,10 +69,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				_addressSelectionMode = value;
 
-				if (PickupAddress != null && AddressSelectionMode == AddressSelectionMode.PickupSelection)
+				if (PickupAddress.HasValidCoordinate() && AddressSelectionMode == AddressSelectionMode.PickupSelection)
 				{					
-                    var coordinate = new Position() { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };                   
-					MapCenter = coordinate;
+					ChangePresentation(new CenterMapPresentationHint(PickupAddress.Latitude, PickupAddress.Longitude));
 				}
 
 				RaisePropertyChanged();
@@ -162,53 +107,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		private void OnPickupAddressChanged()
-		{			
-            if (PickupAddress.HasValidCoordinate() && !IsZooming)
-			{
-				var coordinate = new Position() { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
-				MapCenter = coordinate;
-			}
-		}
-
-		private void OnDestinationAddressChanged()
-		{
-            if (DestinationAddress.HasValidCoordinate() && !IsZooming)
-			{
-				var coordinate = new Position() { Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
-				MapCenter = coordinate;
-			}
-		}
-
-        private void OnAddressChanged(Address address)
-        {
-            if (!address.HasValidCoordinate())
-            {
-                return;
-            }
-
-            if (IsZooming)
-            {
-                MapBounds = GetMapBoundsFromCoordinateAndDelta(PositionFromAddress(address), 0.002d, 0.002d);
-                return;
-            }
-        }
-
-		public static MapBounds GetMapBoundsFromCoordinateAndDelta(Position coordinate, double deltaLatitude, double deltaLongitude)
-		{
-			return new MapBounds()
-			{
-				NorthBound = coordinate.Latitude + deltaLatitude / 2,
-				SouthBound = coordinate.Latitude - deltaLatitude / 2,
-				EastBound = coordinate.Longitude + deltaLongitude / 2,
-				WestBound = coordinate.Longitude - deltaLongitude / 2
-			};
-		}	
-
-		public static Position PositionFromAddress(Address address)
-		{
-			return new Position() { Latitude = address.Latitude, Longitude = address.Longitude };
-		}
 
 		public class CancellableCommand<TParam>: ICommand
         {
