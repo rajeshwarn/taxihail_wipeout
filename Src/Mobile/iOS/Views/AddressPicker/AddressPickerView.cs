@@ -43,8 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
         void Initialize()
         {
-            BackgroundColor = UIColor.FromRGB(242, 242, 242);
-            //BackgroundColor = UIColor.Clear; TODO change to this when the blur of the map is done
+            BackgroundColor = UIColor.Clear;
             Hidden = true;
 
             AddressEditText = new FlatTextField 
@@ -64,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
             TableView = new UITableView(new RectangleF(0, yPositionForTableView, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - yPositionForTableView), UITableViewStyle.Plain);
             TableView.BackgroundView = new  UIView { BackgroundColor = UIColor.Clear };
-            TableView.BackgroundColor = UIColor.Clear;
+            TableView.BackgroundColor = UIColor.FromRGB(242, 242, 242);
             TableView.SeparatorColor = UIColor.Clear;
             TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             TableView.RowHeight = 44;

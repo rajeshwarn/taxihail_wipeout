@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
         public GroupedAddressTableViewSource (UITableView tableView, UITableViewCellStyle cellStyle, NSString identifier, string bindingText, UITableViewCellAccessory accessory ) : 
         base( tableView, cellStyle, identifier, bindingText, accessory)
         {
-            _collapseItemCount = UIScreen.MainScreen.Bounds.Height > 500 ? 3 : 2;            
+            _collapseItemCount = UIHelper.Is4InchDisplay ? 3 : 2;            
         }
 
         public override int NumberOfSections(MonoTouch.UIKit.UITableView tableView)
