@@ -317,7 +317,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					else
 					{
 						Logger.LogMessage("clear addresses");
-						// TODO: Clarify why we clear address here
+
+						// TODO: Refactor. We should probably throw an exception here.
+						// Error should be handled by the caller.
 						return new Address(){ Latitude = p.Latitude, Longitude = p.Longitude };
 					}
 				}
