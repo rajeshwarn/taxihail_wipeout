@@ -493,6 +493,7 @@
     <Compile Include="Views\AddressPicker\AddressPickerView.cs" />
     <Compile Include="Views\AddressPicker\GroupedAddressTableViewSource.cs" />
     <Compile Include="Controls\Message\LoadingBar.cs" />
+    <Compile Include="MapUtitilties\MKMapViewExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

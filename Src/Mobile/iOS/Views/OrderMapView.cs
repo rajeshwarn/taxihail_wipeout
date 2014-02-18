@@ -399,7 +399,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var zoomHint = hint as ZoomToStreetLevelPresentationHint;
             if (zoomHint != null)
             {
-                SetRegion(new MKCoordinateRegion(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), new MKCoordinateSpan(0.002, 0.002)), true);
+                this.SetCenterCoordinate(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), 18, true); 
             }
 
             var centerHint = hint as CenterMapPresentationHint;
