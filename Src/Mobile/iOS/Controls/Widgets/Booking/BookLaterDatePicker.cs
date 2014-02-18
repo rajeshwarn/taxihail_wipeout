@@ -48,10 +48,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             FlatButtonStyle.Red.ApplyTo(CancelButton);
             FlatButtonStyle.Green.ApplyTo(OrderButton);
 
-            CancelButton.TouchUpInside += (sender, e) => {
-                Hide();
-            };
-
             AddSubviews(DatePicker, CancelButton, OrderButton);
         }
 
@@ -63,6 +59,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
                 .For(v => v.Command)
                 .To(vm => vm.SetPickupDateAndReviewOrder);
 
+            set.Bind(CancelButton)
+                .For("TouchUpInside")
+                .To(vm => vm.CancelBookLater);
+                
             set.Apply();
         }
 
@@ -78,8 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             OrderButton.Frame = new RectangleF(width - buttonWidth - buttonHorizontalPadding, buttonVerticalPadding, buttonWidth, 36f);
 
             OrderButton.TouchUpInside += (sender, e) => {
-                Command.Execute((DateTime?)DatePicker.Date);
-                Hide();
+                Command.Execute(Date);
             };
 
             DatePicker.SetY(OrderButton.Frame.Bottom + buttonVerticalPadding);

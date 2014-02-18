@@ -299,7 +299,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             base.OnActivityResult(requestCode, resultCode, data);
 
-
             if (requestCode == (int)ActivityEnum.DateTimePicked && resultCode == Result.Ok)
             {             
                 DateTime dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
@@ -307,8 +306,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             else
             {
-                // Activity was cancelled
-                ChangeState(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                ViewModel.BottomBar.CancelBookLater.Execute();
             }
         }
 
