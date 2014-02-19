@@ -18,6 +18,7 @@ using Cirrious.CrossCore.Droid.Platform;
 using Cirrious.MvvmCross.ViewModels;
 using Android.Views;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Controls.Message;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -186,30 +187,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
                 if (show)
                 {
-                    var progress = new ProgressDialog(activity);
-                    _progressDialogs.Push(progress);
-                    progress.SetTitle(string.Empty);
-                    progress.SetMessage(activity.GetString(Resource.String.LoadingMessage));
-                    progress.Show();
+                    LoadingOverlay.StartAnimatingLoading(activity);
                 }
                 else
                 {
-                    if (_progressDialogs.Any())
-                    {
-                        var progressPrevious = _progressDialogs.Pop();
-                        if (progressPrevious != null
-                            && progressPrevious.IsShowing)
-                        {
-                            try
-                            {
-                                progressPrevious.Dismiss();
-                            }
-// ReSharper disable once EmptyGeneralCatchClause
-                            catch
-                            {
-                            } // on peut avoir une exception ici si activity est plus présente, pas grave
-                        }
-                    }
+                    LoadingOverlay.StopAnimatingLoading();
                 }
             });
         }

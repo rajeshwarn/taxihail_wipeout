@@ -576,6 +576,7 @@
     <AndroidResource Include="Resources\Drawable\Controls_AddressBar_StreetNumberEditText_Background_State.xml" />
     <AndroidResource Include="Resources\Drawable\Controls_AddressBar_StreetNumberEditText_TextColor_State.xml" />
     <AndroidResource Include="Resources\Drawable\Controls_AddressBar_TariffBackground.xml" />
+    <Compile Include="Controls\Message\LoadingOverlay.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -730,6 +731,7 @@
     <Folder Include="Activities\Utilities\" />
     <Folder Include="Controls\Fragments\" />
     <Folder Include="Controls\Behavior\" />
+    <Folder Include="Controls\Message\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
