@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
+using System.Threading.Tasks;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
@@ -16,18 +17,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	public class BottomBarViewModel: ChildViewModel
     {
 		readonly IOrderWorkflowService _orderWorkflowService;
-		readonly IMessageService _messageService;
-		readonly ILocalization _localize;
 		readonly IMvxPhoneCallTask _phone;
 
-		public BottomBarViewModel(IOrderWorkflowService orderWorkflowService,
-			IMessageService messageService,
-			ILocalization localize,
-			IMvxPhoneCallTask phone)
+		public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, IMvxPhoneCallTask phone)
 		{
 			_phone = phone;
-			_localize = localize;
-			_messageService = messageService;
 			_orderWorkflowService = orderWorkflowService;
 
 			this.Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(),
@@ -67,24 +61,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand<DateTime?>(async date =>
 				{
-					await _orderWorkflowService.SetPickupDate(date);
 					try
 					{
-						await _orderWorkflowService.ValidatePickupDestinationAndTime();
-						ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
+						using(this.Services().Message.ShowProgress())
+						{
+							await _orderWorkflowService.SetPickupDate(date);
+							await _orderWorkflowService.ValidatePickupDestinationAndTime();
+							ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
+						}
 					}
 					catch (OrderValidationException e)
 					{
 						switch (e.Error)
 						{
 							case OrderValidationError.PickupAddressRequired:
-								_messageService.ShowMessage(_localize["InvalidBookinInfoTitle"], _localize["InvalidBookinInfo"]);
+								this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]);
 								break;
 							case OrderValidationError.DestinationAddressRequired:
-								_messageService.ShowMessage(_localize["InvalidBookinInfoTitle"], _localize["InvalidBookinInfoWhenDestinationIsRequired"]);
+								this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);
 								break;
 							case OrderValidationError.InvalidPickupDate:
-								_messageService.ShowMessage(_localize["InvalidBookinInfoTitle"], _localize["BookViewInvalidDate"]);
+								this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["BookViewInvalidDate"]);
 								break;
 							default:
 								Logger.LogError(e);
@@ -118,11 +115,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 						var settings = this.Services().Settings;
 						var callIsEnabled = !settings.HideCallDispatchButton;
-						var title = _localize["ErrorCreatingOrderTitle"];
+						var title = this.Services().Localize["ErrorCreatingOrderTitle"];
 
 						if (callIsEnabled)
 						{
-							_messageService.ShowMessage(title,
+							this.Services().Message.ShowMessage(title,
 								e.Message,
 								"Call",
 								() => _phone.MakePhoneCall (settings.ApplicationName, settings.DefaultPhoneNumber),
@@ -131,7 +128,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						}
 						else
 						{
-							_messageService.ShowMessage(title, e.Message);
+							this.Services().Message.ShowMessage(title, e.Message);
 						}
 					}
 					catch(Exception e)

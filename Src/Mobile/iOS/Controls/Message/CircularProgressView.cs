@@ -101,10 +101,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 {
                     _progress = value;
 
-                    if (_progress == 1f) {
-                        ProgressCompleted();
-                    }
-
                     if (_progress == 0f) {
                         _progressBackgroundLayer.FillColor = BackgroundColor.CGColor;
                     }
@@ -114,19 +110,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             }
         }
 
-        void ProgressCompleted()
+        async void ProgressCompleted()
         {
-            UIView.Animate(
-                0.5, 
-                () =>
-                {
-                    // nothing?
-                }, 
-                async () => 
-                {
-                    await Task.Delay(TimeSpan.FromSeconds(0.5));
-                    OnCompleted.Invoke();
-                });
+            await Task.Delay(TimeSpan.FromSeconds(0.5));
+            OnCompleted.Invoke();
         }
 
         public Action OnCompleted { get; set; }
@@ -195,6 +182,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             ReadyIconView.Hidden = true;
             RunningIconView.Hidden = true;
             CompletedIconView.Hidden = false;
+
+            ProgressCompleted();
         }
 
         void AddNewIcon(UIView value)

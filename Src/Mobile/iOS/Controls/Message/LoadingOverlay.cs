@@ -106,16 +106,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             var slowestSpeed = 0.00001f;
 
-            // multistage progress
+            // multistage progress speed
             if (currentProgress <= 0.2f)
             {
-                _progressView.Progress += slowestSpeed * 50f;
+                _progressView.Progress += slowestSpeed * 25f;
                 return;
             }
 
             if (currentProgress < 0.8f)
             {
-                _progressView.Progress += slowestSpeed * 5f;
+                _progressView.Progress += slowestSpeed * 5.5f;
                 return;
             }
 
