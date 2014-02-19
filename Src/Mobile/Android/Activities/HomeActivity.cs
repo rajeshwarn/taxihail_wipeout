@@ -37,6 +37,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using Android.Graphics.Drawables;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -58,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private OrderReview _orderReview;
         private OrderEdit _orderEdit;
         private OrderOptions _orderOptions;
-        private SearchAddress _searchAddress;
+        private AddressPicker _searchAddress;
         private ImageView _btnLocation; 
         private ImageView _btnSettings;
         private AppBar _appBar;
@@ -193,7 +194,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
             _orderEdit = (OrderEdit) FindViewById(Resource.Id.orderEdit);
-            _searchAddress = (SearchAddress) FindViewById(Resource.Id.searchAddressControl);
+            _searchAddress = (AddressPicker) FindViewById(Resource.Id.searchAddressControl);
             _appBar = (AppBar) FindViewById(Resource.Id.appBar);
             _frameLayout = (FrameLayout) FindViewById(Resource.Id.RelInnerLayout);
             _mapOverlay = (LinearLayout) FindViewById(Resource.Id.mapOverlay);
@@ -353,6 +354,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         public void ChangeState(HomeViewModelPresentationHint hint)
         {
             _presentationState = hint.State;
+
             SetMapEnabled(true);
 
             if (_presentationState == HomeViewModelState.PickDate)
@@ -423,7 +425,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             else if (_presentationState == HomeViewModelState.AddressSearch)
             {
                 SetMapEnabled(false);
-                _searchAddress.Visibility = ViewStates.Visible;
+                _searchAddress.Open();
 
             } 
             else if(_presentationState == HomeViewModelState.Initial)

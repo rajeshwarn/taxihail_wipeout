@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#f2f2f2"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dip"
+        android:layout_marginRight="8dip"
+        android:layout_marginTop="12dip"
+        android:layout_marginBottom="16dp">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/HeightButton">
+            <EditText
+                android:background="@drawable/drop_shadow"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/HeightButton"
+                android:paddingLeft="12dp"
+                android:id="@+id/addressEditText"
+                android:hint="Address"
+                android:gravity="left|center" />
+        </LinearLayout>
+        <Button
+            style="@style/ButtonActionRedStyle"
+            android:text="Cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/HeightButton"
+            android:id="@+id/cancelButton"
+            android:textColor="@color/red" />
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/SearchList">
+                <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses.AddressListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/SearchResultsAddressList"
+                    android:layout_marginBottom="16dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/DefaultList">
+                <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses.AddressListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/FavoriteAddressList"
+                    android:layout_marginBottom="16dp" />
+                <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses.AddressListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/RecentAddressList"
+                    android:layout_marginBottom="16dp" />
+                <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses.AddressListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/NearbyAddressList"
+                    android:layout_marginBottom="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

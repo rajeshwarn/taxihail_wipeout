@@ -34,7 +34,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			AllAddresses = new ObservableCollection<AddressViewModel>();
 		}
 
-		public ObservableCollection<AddressViewModel> AllAddresses { get; set; }
+		public ObservableCollection<AddressViewModel> AllAddresses 
+		{ 
+			get; 
+			set; 
+		}
 
 		private AddressViewModel[] _defaultHistoryAddresses = new AddressViewModel[0];
 		private AddressViewModel[] _defaultFavoriteAddresses = new AddressViewModel[0];
