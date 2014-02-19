@@ -15,22 +15,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
 	public class AddressPickerViewModel : ChildViewModel
 	{
-		readonly IAccountService _accountService;
 		readonly IOrderWorkflowService _orderWorkflowService;
 		readonly IPlaces _placeService;
 		readonly IGeolocService _geoCoding;
 
 		Address _currentAddress;
 
-		public AddressPickerViewModel(IAccountService accountService, 
-			IOrderWorkflowService orderWorkflowService,
+		public AddressPickerViewModel(IOrderWorkflowService orderWorkflowService,
 			IPlaces placeService,
 			IGeolocService geoCoding)
 		{
 			_geoCoding = geoCoding;
 			_placeService = placeService;
 			_orderWorkflowService = orderWorkflowService;
-			_accountService = accountService;
 			AllAddresses = new ObservableCollection<AddressViewModel>();
 		}
 
@@ -52,8 +49,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			var neabyPlaces = Task.Factory.StartNew(() => _placeService.SearchPlaces(null, 
 																_currentAddress.Latitude, 
 																_currentAddress.Longitude, null));
-			var favoritePlaces = Task.Factory.StartNew(() => _accountService.GetFavoriteAddresses().ToArray());
-			var historyPlaces = Task.Factory.StartNew(() => _accountService.GetHistoryAddresses().ToArray());
+			var favoritePlaces = Task.Factory.StartNew(() => this.Services().Account.GetFavoriteAddresses().ToArray());
+			var historyPlaces = Task.Factory.StartNew(() => this.Services().Account.GetHistoryAddresses().ToArray());
 
 			try
 			{
@@ -246,8 +243,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		protected AddressViewModel[] SearchFavoriteAndHistoryAddresses(string criteria)
 		{
-			var addresses = _accountService.GetFavoriteAddresses();
-			var historicAddresses = _accountService.GetHistoryAddresses();
+			var addresses = this.Services().Account.GetFavoriteAddresses();
+			var historicAddresses = this.Services().Account.GetHistoryAddresses();
 
 			Func<Address, bool> predicate = c => true;
 

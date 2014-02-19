@@ -307,7 +307,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             else
             {
-                ViewModel.BottomBar.CancelBookLater.Execute();
+                ViewModel.BottomBar.CancelBookLater.Execute(null);
             }
         }
 

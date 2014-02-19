@@ -17,20 +17,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	public class OrderEditViewModel: ChildViewModel
 	{
 		readonly IOrderWorkflowService _orderWorkflowService;
-		readonly IAccountService _accountService;
-		readonly ILocalization _localize;
 
-		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, ILocalization localize)
+		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService)
 		{
 			_orderWorkflowService = orderWorkflowService;
-			_accountService = accountService;
-			_localize = localize;
 		}
 
 		public async Task Init()
 		{
-			Vehicles = await _accountService.GetVehiclesList();
-			ChargeTypes = await _accountService.GetPaymentsList();
+			Vehicles = await this.Services().Account.GetVehiclesList();
+			ChargeTypes = await this.Services().Account.GetPaymentsList();
 
 			this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
@@ -157,7 +153,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				if (!VehicleTypeId.HasValue)
 				{
-					return _localize["NoPreference"];
+					return this.Services().Localize["NoPreference"];
 				}
 
 				if (Vehicles == null)
@@ -195,7 +191,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				if (!ChargeTypeId.HasValue)
 				{
-					return _localize["NoPreference"];
+					return this.Services().Localize["NoPreference"];
 				}
 
 				if (ChargeTypes == null)
