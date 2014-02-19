@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 UIApplication.SharedApplication.InvokeOnMainThread ( () =>
                 {               
-                    LoadingOverlay.StartAnimatingLoading(LoadingOverlayPosition.Center, null, 130, 30, null);
+                    LoadingOverlay.StartAnimatingLoading();
                 });
             }
             else
