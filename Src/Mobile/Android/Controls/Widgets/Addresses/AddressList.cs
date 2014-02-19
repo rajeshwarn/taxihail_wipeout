@@ -18,67 +18,72 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 {
-    public class AddressListView : MvxFrameControl
+    public class AddressListView : LinearLayout
     {
-        public AddressListView(Context context, IAttributeSet attrs)
-            : base(Resource.Layout.Control_AddressList, context, attrs)
+        public AddressListView(Context c, IAttributeSet attr) : base(c, attr)
         {
-            this.DelayBind(() =>
+
+        }
+
+        protected override void OnFinishInflate()
+        {
+            base.OnFinishInflate();
+            var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
+            var layout = inflater.Inflate(Resource.Layout.Control_AddressList, this, true);
+
+            _listLinearLayout = (LinearLayout)FindViewById<LinearLayout>(Resource.Id.ListLinearLayout);
+            _viewAllButton = (Button)FindViewById<Button>(Resource.Id.ViewAllButton);
+
+
+            Addresses = new ObservableCollection<AddressViewModel>();
+            AddressLines = new AddressLine[0];
+
+            Addresses.CollectionChanged += (sender, e) =>
             {
-                _listLinearLayout = (LinearLayout)FindViewById<LinearLayout>(Resource.Id.ListLinearLayout);
-                _viewAllButton = (Button)FindViewById<Button>(Resource.Id.ViewAllButton);
 
-
-                Addresses = new ObservableCollection<AddressViewModel>();
-                AddressLines = new AddressLine[0];
-
-                Addresses.CollectionChanged += (sender, e) =>
+                var newItems = new AddressViewModel[0];
+                if (e.NewItems != null)
                 {
+                    newItems = e.NewItems.OfType<AddressViewModel>().ToArray();
+                }
 
-                    var newItems = new AddressViewModel[0];
-                    if (e.NewItems != null)
-                    {
-                        newItems = e.NewItems.OfType<AddressViewModel>().ToArray();
-                    }
-
-                    switch (e.Action)
-                    {
-                        case NotifyCollectionChangedAction.Replace:
-                            {
-                                AddressLines = newItems.Select(a => new AddressLine(Context, a, OnSelectAddress)).ToArray();
-                                break;
-                            }
-                        case NotifyCollectionChangedAction.Add:
-                            {                                    
-                                AddressLines = AddressLines.Concat(newItems.Select(a => new AddressLine(Context, a, OnSelectAddress))).ToArray();
-                                break;
-                            }
-                        case NotifyCollectionChangedAction.Reset:
-                            {
-                                AddressLines = new AddressLine[0];
-                                break;
-                            }
-                        default:
-                            {
-                                throw new ArgumentOutOfRangeException("Not supported " + e.Action);
-                            }
-                    }   
-                };
-
-                Update();
-
-                _viewAllButton.Click += (s, e) =>
+                switch (e.Action)
                 {
-                    if (!isCollapsed)
-                    {
-                        Collapse();
-                    }
-                    else
-                    {
-                        Expand();
-                    }
-                };                    
-            });                
+                    case NotifyCollectionChangedAction.Replace:
+                        {
+                            AddressLines = newItems.Select(a => new AddressLine(Context, a, OnSelectAddress)).ToArray();
+                            break;
+                        }
+                    case NotifyCollectionChangedAction.Add:
+                        {                                    
+                            AddressLines = AddressLines.Concat(newItems.Select(a => new AddressLine(Context, a, OnSelectAddress))).ToArray();
+                            break;
+                        }
+                    case NotifyCollectionChangedAction.Reset:
+                        {
+                            AddressLines = new AddressLine[0];
+                            break;
+                        }
+                    default:
+                        {
+                            throw new ArgumentOutOfRangeException("Not supported " + e.Action);
+                        }
+                }   
+            };
+
+            Update();
+
+            _viewAllButton.Click += (s, e) =>
+            {
+                if (!isCollapsed)
+                {
+                    Collapse();
+                }
+                else
+                {
+                    Expand();
+                }
+            };      
         }
 
         bool isCollapsed;
@@ -122,7 +127,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
         public void Expand()
         {
             _listLinearLayout.RemoveAllViews();
-            _viewAllButton.Text = Localize("Collapse");
+            //_viewAllButton.Text = Localize["Collapse"];
+            // TODO: Use the good localize approach
+            _viewAllButton.Text = "Collapse";
             var i = 0;
 
             foreach (var line in AddressLines)
@@ -144,11 +151,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             return v;
         }
 
-        private string Localize(string value)
-        {
-            return TinyIoCContainer.Current.Resolve<ILocalization> () [value];
-        }
-
         public void Collapse()
         {
             if(HideViewAllButton)
@@ -157,7 +159,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                 return;
             }
             _listLinearLayout.RemoveAllViews();
-            _viewAllButton.Text = Localize("ViewAll");
+            //_viewAllButton.Text = Localize["ViewAll"];
+            // TODO: Use the good localize approach
+            _viewAllButton.Text = "View All";
             var i = 0;
             foreach (var line in AddressLines.Take(3))
             {

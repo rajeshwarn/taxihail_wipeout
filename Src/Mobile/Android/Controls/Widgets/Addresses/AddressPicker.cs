@@ -89,43 +89,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             this.DelayBind(() =>
             {
 
-                _searchList = FindViewById<LinearLayout>(Resource.Id.SearchList); 
+                _searchList = FindViewById<LinearLayout>(Resource.Id.SearchList);                
+                _defaultList = FindViewById<LinearLayout>(Resource.Id.DefaultList); 
+                _favoriteAddressList = FindViewById<AddressListView>(Resource.Id.FavoriteAddressList); 
+                _recentAddressList = FindViewById<AddressListView>(Resource.Id.RecentAddressList); 
+                _nearbyAddressList = FindViewById<AddressListView>(Resource.Id.NearbyAddressList); 
+                _searchResultsAddressList = FindViewById<AddressListView>(Resource.Id.SearchResultsAddressList);
+                _addressEditText = FindViewById<EditText>(Resource.Id.addressEditText); 
+                _scrollView = FindViewById<ScrollView>(Resource.Id.scrollView); 
+                _cancelButton = FindViewById<Button>(Resource.Id.cancelButton); 
 
-                _defaultList= FindViewById<LinearLayout>(Resource.Id.DefaultList); 
-
-
-                _favoriteAddressList= FindViewById<AddressListView>(Resource.Id.FavoriteAddressList); 
-
-
-                _recentAddressList= FindViewById<AddressListView>(Resource.Id.RecentAddressList); 
-
-
-                _nearbyAddressList=FindViewById<AddressListView>(Resource.Id.NearbyAddressList); 
-
-
-                _searchResultsAddressList= FindViewById<AddressListView>(Resource.Id.SearchResultsAddressList);
-
-
-                 _addressEditText =             FindViewById<EditText>(Resource.Id.addressEditText); 
-
-
-                _scrollView= FindViewById<ScrollView>(Resource.Id.scrollView); 
-
-
-                _cancelButton= FindViewById<Button>(Resource.Id.cancelButton); 
-
-
-                Observable
-                    .FromEventPattern<AfterTextChangedEventArgs>(_addressEditText, "AfterTextChanged")
-                    .Where(_ => !ignoreTextChange)
-                    .Throttle(TimeSpan.FromMilliseconds(700))
-                    .ObserveOn(SynchronizationContext.Current)
-                    .Subscribe(e => ViewModel.TextSearchCommand.Execute(String.Concat(e.EventArgs.Editable)))
-                    .DisposeWith(_subscriptions);
+                _addressEditText.OnKeyDown()
+                    .Where(_=>!ignoreTextChange)
+                    .Throttle(TimeSpan.FromMilliseconds(500))
+                    .Subscribe (text => ExecuteSearchCommand(text));
 
                 _addressEditText.EditorAction += (sender, args) =>
                 {
-                    if (args.ActionId != ImeAction.Go) return;
+                    if (args.ActionId != ImeAction.Go)
+                    {
+                        return;
+                    }
 
                     Close();
                 };
@@ -135,6 +119,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                     _addressEditText.HideKeyboard();
                     e.Handled = false;
                 };
+
+                InitializeBinding();
 
                 _searchResultsAddressList.HideViewAllButton = true;
                 _nearbyAddressList.HideViewAllButton = _recentAddressList.HideViewAllButton = _favoriteAddressList.HideViewAllButton = false;
@@ -146,15 +132,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                     Close();
                 };
 
-                ViewModel.AllAddresses.CollectionChanged += (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) => 
+                ViewModel.AllAddresses.CollectionChanged += (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) =>
                 {
+                    AddAddresses(ViewModel.AllAddresses);
+
                     var newItems = new AddressViewModel[0];
-                    if(e.NewItems != null)
+                    if (e.NewItems != null)
                     {
                         newItems = e.NewItems.OfType<AddressViewModel>().ToArray();
                     }
 
-                    switch(e.Action)
+                    switch (e.Action)
                     {
                         case NotifyCollectionChangedAction.Add:
                             {                                    
@@ -168,14 +156,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                             }
                         default:
                             {
-                                throw new ArgumentOutOfRangeException("Not supported "+ e.Action);
+                                throw new ArgumentOutOfRangeException("Not supported " + e.Action);
                             }
                     }   
                 };
 
-                InitializeBinding();
+
 
             });
+        }
+
+        public ICommand SearchCommand { get; set; }
+
+        void ExecuteSearchCommand(string text)
+        {        
+            if (SearchCommand != null && SearchCommand.CanExecute())
+            {
+                SearchCommand.Execute(text);
+            }
         }
 
         void ClearAddresses()
@@ -190,9 +188,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
         {
             if (ShowDefaultResults)
             {
-                _favoriteAddressList.Addresses.AddMultiple(addresses.Where(a=>a.Type == AddressType.Favorites));
-                _recentAddressList.Addresses.AddMultiple(addresses.Where(a=>a.Type == AddressType.History));
-                _nearbyAddressList.Addresses.AddMultiple(addresses.Where(a=>a.Type == AddressType.Places));
+                _favoriteAddressList.Addresses.AddMultiple(addresses.Where(a => a.Type == AddressType.Favorites));
+                _recentAddressList.Addresses.AddMultiple(addresses.Where(a => a.Type == AddressType.History));
+                _nearbyAddressList.Addresses.AddMultiple(addresses.Where(a => a.Type == AddressType.Places));
             }
             else
             {                
@@ -209,12 +207,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             _nearbyAddressList.Addresses.Remove(address);
         }
 
-
-        private AddressPickerViewModel ViewModel { get { return (AddressPickerViewModel)DataContext; } }
+        private AddressPickerViewModel ViewModel 
+        { 
+            get 
+            { 
+                return (AddressPickerViewModel)DataContext; 
+            } 
+        }
 
         private void InitializeBinding()
         {
             var set = this.CreateBindingSet<AddressPicker, AddressPickerViewModel>();
+
+            set.Bind()
+                .For(v => v.SearchCommand)
+                .To(vm => vm.TextSearchCommand);
 
             set.Bind()
                 .For(v => v.SelectedCommand)
@@ -246,26 +253,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
         private Button _cancelButton;
 
         public void Open()
-        {
-        
-            ViewModel.LoadAddresses(
-//                ()=>{
-//
-//                AddressEditText.Text = GetFirstPortionOfAddress(startingAddress.DisplayAddress);
-//                AddressEditText.SelectAll();
-//
-//
-//            }
-            );
-
-            //_callback = callback;
-
-
+        {        
 
             Visibility = ViewStates.Visible;
         } 
-
-        private Action<AddressViewModel> _callback;
 
         private void Close()
         {
@@ -274,7 +265,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             _favoriteAddressList.Collapse();
             _recentAddressList.Collapse();
             _nearbyAddressList.Collapse();
-
         }
 
         bool ignoreTextChange = false;

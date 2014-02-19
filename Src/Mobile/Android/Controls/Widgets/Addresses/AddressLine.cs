@@ -15,40 +15,51 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 {
     //todo rename to AddressLineView
-    public sealed class AddressLine : MvxFrameControl
+    public sealed class AddressLine : LinearLayout
     {
         public AddressViewModel _address;
 
-        public AddressLine(Context c, AddressViewModel address, Action<AddressViewModel> select)
-            : base(Resource.Layout.Control_AddressLine, c, null)
+        public AddressLine(Context c, AddressViewModel address, Action<AddressViewModel> select) : base(c, null)
         {
-            this.DelayBind(() =>
+            _address = address;
+            _select = select;
+            LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FillParent, ViewGroup.LayoutParams.WrapContent);
+        }
+
+        protected override void OnFinishInflate()
+        {
+            base.OnFinishInflate();
+            var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
+            var layout = inflater.Inflate(Resource.Layout.Control_AddressLine, this, true);
+            Initialize();
+
+        }
+
+        Action<AddressViewModel> _select;
+
+        void Initialize()
+        {
+
+            _button = FindViewById<Button>(Resource.Id.CellButton);         
+
+            _imageView = FindViewById<ImageView>(Resource.Id.ImageView); 
+
+            _nameTextView = FindViewById<TextView>(Resource.Id.NameTextView); 
+
+            _addressTextView = FindViewById<TextView>(Resource.Id.AddressTextView);
+
+            _nameTextView.Text = _address.Address.FriendlyName;
+            _addressTextView.Text = _address.Address.FullAddress;
+
+            if (string.IsNullOrWhiteSpace(_address.Address.FriendlyName))
             {
-                LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FillParent, ViewGroup.LayoutParams.WrapContent);
+                _nameTextView.Visibility = ViewStates.Gone;
+            }
 
-                _button = FindViewById<Button>(Resource.Id.CellButton);         
+            var imageSrc = AddressTypeToDrawableConverter.GetDrawable(_address.Type);
+            _imageView.SetImageResource(imageSrc);
 
-                _imageView = FindViewById<ImageView>(Resource.Id.ImageView); 
-
-                _nameTextView = FindViewById<TextView>(Resource.Id.NameTextView); 
-
-                _addressTextView = FindViewById<TextView>(Resource.Id.AddressTextView);
-
-                _address = address;
-
-                _nameTextView.Text = _address.Address.FriendlyName;
-                _addressTextView.Text = _address.Address.FullAddress;
-
-                if (string.IsNullOrWhiteSpace(_address.Address.FriendlyName))
-                {
-                    _nameTextView.Visibility = ViewStates.Gone;
-                }
-
-                var imageSrc = AddressTypeToDrawableConverter.GetDrawable(_address.Type);
-                _imageView.SetImageResource(imageSrc);
-
-                _button.Click += (sender, args) => select(_address);
-            });
+            _button.Click += (sender, args) => _select(_address);
         }
 
         private Button _button;

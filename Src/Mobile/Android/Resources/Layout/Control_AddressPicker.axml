@@ -15,23 +15,31 @@
         android:layout_marginBottom="16dp">
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/HeightButton">
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
             <EditText
                 android:background="@drawable/drop_shadow"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/HeightButton"
+                android:layout_width="fill_parent"
+                android:layout_height="49dip"
                 android:paddingLeft="12dp"
                 android:id="@+id/addressEditText"
                 android:hint="Address"
-                android:gravity="left|center" />
+                android:gravity="left|center"
+                android:layout_gravity="clip_vertical" />
         </LinearLayout>
-        <Button
-            style="@style/ButtonActionRedStyle"
-            android:text="Cancel"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/HeightButton"
-            android:id="@+id/cancelButton"
-            android:textColor="@color/red" />
+            android:paddingTop="2dip"
+            android:layout_height="50dip">
+            <Button
+                style="@style/ButtonActionRedStyle"
+                android:text="Cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="44dip"
+                android:id="@+id/cancelButton"
+                android:layout_gravity="right"
+                android:textColor="@color/red" />
+        </LinearLayout>
     </LinearLayout>
     <ScrollView
         android:layout_width="fill_parent"

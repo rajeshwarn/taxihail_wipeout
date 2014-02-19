@@ -561,12 +561,9 @@
     <AndroidResource Include="Resources\Layout\Control_AddressLine.axml" />
     <AndroidResource Include="Resources\Layout\Control_AddressList.axml" />
     <AndroidResource Include="Resources\Layout\Control_AddressPicker.axml" />
-    <AndroidResource Include="Resources\Layout\Control_AddressTextBox1.axml" />
-    <Compile Include="Controls\Widgets\Addresses\AddressBar.cs" />
     <Compile Include="Controls\Widgets\Addresses\AddressLine.cs" />
     <Compile Include="Controls\Widgets\Addresses\AddressList.cs" />
     <Compile Include="Controls\Widgets\Addresses\AddressPicker.cs" />
-    <Compile Include="Controls\Widgets\Addresses\AddressTextBox.cs" />
     <Compile Include="Controls\Widgets\Addresses\AddressTypeToDrawableConverter.cs" />
     <AndroidResource Include="Resources\Drawable\Control_AddressLine_Background.xml" />
     <AndroidResource Include="Resources\Drawable\Controls_AddressBar_AddressEditText_Background.xml" />
