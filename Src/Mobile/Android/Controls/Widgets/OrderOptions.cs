@@ -53,15 +53,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         void InitializeBinding()
         {
-            // TODO to toggle the AddressSearch, taken from TaxiDiamond
-//            viewPickup.AddressClicked += () => StartAddressSearch (Address.GetFirstPortionOfAddress(viewPickup.Address), address => {
-//                ViewModel.SetAddress.Execute(address.Address);
-//            });
-//
-//            viewDestination.AddressClicked += () => StartAddressSearch (Address.GetFirstPortionOfAddress(viewDestination.Address), address => {
-//                ViewModel.SetAddress.Execute(address.Address);
-//            });
-
             ViewPickup.AddressUpdated = (streetNumber, fullAddress) =>
             {
                 ViewModel.PickupAddress.StreetNumber = streetNumber;
