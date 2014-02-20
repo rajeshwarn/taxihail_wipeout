@@ -86,12 +86,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 .Subscribe(_ => Observable.Timer(TimeSpan.FromSeconds(2))
                     .Subscribe(__ => RunOnUiThread(Finish)));
 
-			// There is no other way to clean the typeface for password hint
-			// http://stackoverflow.com/questions/3406534/password-hint-font-in-android
-
 			EditText password = FindViewById<EditText>(Resource.Id.Password);
 			password.SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
 
+            if (ShouldUseClipboardManager())
+            {
+                EditText username = FindViewById<EditText>(Resource.Id.Username);
+                username.Click += (object sender, EventArgs e) => 
+                {
+                    ClipboardManager cm = (ClipboardManager) Application.Context.GetSystemService(Context.ClipboardService);
+                    cm.Text = username.Text;
+                };
+            }
+        }
+
+        public bool ShouldUseClipboardManager()
+        {
+            return (int) Build.VERSION.SdkInt <= 8;
         }
 
         private void PromptServer()
