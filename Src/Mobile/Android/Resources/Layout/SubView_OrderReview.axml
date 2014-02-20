@@ -34,7 +34,7 @@
                 android:paddingLeft="8dp"
                 android:textColor="#000000"
                 android:text="text"
-                android:textSize="22dp"
+                android:textSize="19dip"
                 android:textStyle="bold"
                 android:id="@+id/lblName" />
         </LinearLayout>
@@ -60,7 +60,7 @@
                     android:paddingLeft="8dp"
                     android:textColor="#000000"
                     android:text="text"
-                    android:textSize="22dp"
+                    android:textSize="19dip"
                     android:id="@+id/lblPhone" />
             </LinearLayout>
             <LinearLayout
@@ -81,7 +81,7 @@
                     android:paddingLeft="8dp"
                     android:textColor="#000000"
                     android:text="text"
-                    android:textSize="22dp"
+                    android:textSize="19dp"
                     android:id="@+id/lblNbPassengers" />
             </LinearLayout>
         </LinearLayout>
@@ -101,7 +101,7 @@
                 android:paddingLeft="8dp"
                 android:textColor="#000000"
                 android:text="text"
-                android:textSize="22dp"
+                android:textSize="19dip"
                 android:id="@+id/lblDate" />
         </LinearLayout>
         <LinearLayout
@@ -124,7 +124,7 @@
                     android:paddingLeft="8dp"
                     android:textColor="#000000"
                     android:text="text"
-                    android:textSize="22dp"
+                    android:textSize="19dip"
                     android:gravity="left|center"
                     android:id="@+id/lblVehicule" />
             </LinearLayout>
@@ -145,7 +145,7 @@
                     android:paddingLeft="8dp"
                     android:textColor="#000000"
                     android:text="text"
-                    android:textSize="22dp"
+                    android:textSize="19dip"
                     android:id="@+id/lblChargeType" />
             </LinearLayout>
         </LinearLayout>
@@ -170,7 +170,7 @@
                     android:paddingLeft="8dp"
                     android:textColor="#000000"
                     android:text="text"
-                    android:textSize="22dp"
+                    android:textSize="19dip"
                     android:id="@+id/lblApt" />
             </LinearLayout>
             <LinearLayout
@@ -190,7 +190,7 @@
                     android:paddingLeft="8dp"
                     android:textColor="#000000"
                     android:text="text"
-                    android:textSize="22dp"
+                    android:textSize="19dip"
                     android:id="@+id/lblRingCode" />
             </LinearLayout>
         </LinearLayout>
