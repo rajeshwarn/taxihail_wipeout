@@ -9,7 +9,7 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {
-    public class LoadingOverlay : UIView
+    public class LoadingOverlay
     {
         private static UIView _modalBackgroundView;
         private static UIView _dialogView;
@@ -159,26 +159,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 _imageView.RemoveFromSuperview();
                 _imageView = null;
             });
-        }
-
-        public LoadingOverlay(IntPtr handle) : base(handle)
-        {
-            Initialize();
-        }
-
-        [Export("initWithCoder:")]
-        public LoadingOverlay(NSCoder coder) : base(coder)
-        {
-            Initialize();
-        }
-
-        public LoadingOverlay() : base()
-        {
-            Initialize();
-        }
-
-        private void Initialize()
-        {
         }
     }
 }

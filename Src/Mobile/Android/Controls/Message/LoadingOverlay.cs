@@ -12,6 +12,7 @@ using System.Drawing;
 using TinyIoC;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {
@@ -32,6 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         public static void StartAnimatingLoading(Activity activity)
         {
             _activity = activity;
+
             _progressBar = new Dialog(_activity);
             _progressBar.RequestWindowFeature((int)WindowFeatures.NoTitle);
             _progressBar.SetCancelable(false);
@@ -133,18 +135,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 }
                 else
                 {
-                    Progress = 100;
-                    _activity.RunOnUiThread(() =>
+                    try
                     {
-                        _layoutImage.SetBackgroundDrawable(GetCircleForProgress());
-                    });
+                        Progress = 100;
+                        _activity.RunOnUiThread(() =>
+                        {
+                            _layoutImage.SetBackgroundDrawable(GetCircleForProgress());
+                        });
 
-                    Thread.Sleep(500);
+                        Thread.Sleep(500);
 
-                    _activity.RunOnUiThread(() =>
+                        _activity.RunOnUiThread(() =>
+                        {
+                            _progressBar.Dismiss();
+                        });
+                    }
+                    catch
                     {
-                        _progressBar.Dismiss();
-                    });
+                        // on peut avoir une exception ici si activity est plus présente, pas grave
+                    }
                 }
             }
         }

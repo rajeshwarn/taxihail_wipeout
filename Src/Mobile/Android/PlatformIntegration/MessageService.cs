@@ -24,8 +24,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class MessageService : IMessageService
     {
-        private readonly Stack<ProgressDialog> _progressDialogs = new Stack<ProgressDialog>();
-        
         public MessageService(Context context)
         {
             Context = context;
