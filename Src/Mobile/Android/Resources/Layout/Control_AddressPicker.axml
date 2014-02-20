@@ -23,14 +23,13 @@
                 android:layout_height="54dip"
                 android:paddingLeft="12dp"
                 android:id="@+id/addressEditText"
-                android:hint="Address"
                 android:gravity="left|center"
                 android:layout_gravity="clip_vertical" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
-            android:paddingTop="2dip"
-            android:layout_height="50dip">
+            android:paddingTop="5dip"
+            android:layout_height="wrap_content">
             <Button
                 style="@style/ButtonActionRedStyle"
                 android:text="Cancel"

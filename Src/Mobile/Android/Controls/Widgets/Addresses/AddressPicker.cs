@@ -43,41 +43,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
         private Button _cancelButton;
 
         private CompositeDisposable _subscriptions = new CompositeDisposable();
-
         private AddressPickerViewModel ViewModel 
         { 
             get { return (AddressPickerViewModel)DataContext; } 
         }
 
-        bool _showDefaultResults;
-        public bool ShowDefaultResults
-        {
-            get
-            {
-                return _showDefaultResults;
-            }
-            set{
-                _showDefaultResults = value;
-
-                _searchList.Visibility = value
-                    ? ViewStates.Gone
-                    : ViewStates.Visible;
-
-                _defaultList.Visibility = value
-                    ? ViewStates.Visible
-                    : ViewStates.Gone;
-
-                ClearAddresses();
-                AddAddresses(ViewModel.AllAddresses);
-            }
-        }
-
         public ICommand SelectedCommand { get; set; }
 
-        public AddressPicker(Context context, IAttributeSet attrs)
-            : base(Resource.Layout.Control_AddressPicker, context, attrs)
+        public AddressPicker(Context context, IAttributeSet attrs) : base(Resource.Layout.Control_AddressPicker, context, attrs)
         {
-
             this.DelayBind(() =>
             {
                 _searchList = Content.FindViewById<LinearLayout>(Resource.Id.SearchList);                
@@ -89,6 +63,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                 _addressEditText = Content.FindViewById<EditText>(Resource.Id.addressEditText); 
                 _scrollView = Content.FindViewById<ScrollView>(Resource.Id.scrollView); 
                 _cancelButton = Content.FindViewById<Button>(Resource.Id.cancelButton); 
+
+                _addressEditText.SetSelectAllOnFocus(true);
 
                 _addressEditText.OnKeyDown()
                     .Throttle(TimeSpan.FromMilliseconds(700))
@@ -127,61 +103,54 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
         private void AddAddresses(IEnumerable<AddressViewModel> addresses)
         {
-            if (ShowDefaultResults)
+            if (ViewModel.ShowDefaultResults)
             {
                 _favoriteAddressList.Addresses.AddMultiple(addresses.Where(a => a.Type == AddressType.Favorites));
                 _recentAddressList.Addresses.AddMultiple(addresses.Where(a => a.Type == AddressType.History));
                 _nearbyAddressList.Addresses.AddMultiple(addresses.Where(a => a.Type == AddressType.Places));
+
+                _searchList.Visibility = ViewStates.Gone;
+                _defaultList.Visibility = ViewStates.Visible;
             }
             else
             {                
                 _searchResultsAddressList.Addresses.AddMultiple(addresses);
+
+                _searchList.Visibility = ViewStates.Visible;
+                _defaultList.Visibility = ViewStates.Gone;
             }
         }
 
         private void InitializeBinding()
         {
-            ViewModel.PropertyChanged += (sender, e) => 
-            {
-                if(e.PropertyName == "AllAddresses")
+            ViewModel.AllAddresses.CollectionChanged += (sender, e) => {
+
+                var newItems = new AddressViewModel[0];
+                if(e.NewItems != null)
                 {
-                    AddAddresses(ViewModel.AllAddresses);
-
-                    ViewModel.AllAddresses.CollectionChanged += (sender2, e2) => {
-
-                        var newItems = new AddressViewModel[0];
-                        if(e2.NewItems != null)
-                        {
-                            newItems = e2.NewItems.OfType<AddressViewModel>().ToArray();
-                        }
-
-                        switch(e2.Action)
-                        {
-                            case NotifyCollectionChangedAction.Add:
-                            {                                    
-                                AddAddresses(newItems);
-                                break;
-                            }
-                            case NotifyCollectionChangedAction.Reset:
-                            {
-                                ClearAddresses();
-                                break;
-                            }
-                            default:
-                            {
-                                throw new ArgumentOutOfRangeException("Not supported "+ e2.Action);
-                            }
-                        }   
-                    };
+                    newItems = e.NewItems.OfType<AddressViewModel>().ToArray();
                 }
+
+                switch(e.Action)
+                {
+                    case NotifyCollectionChangedAction.Add:
+                    {                                    
+                        AddAddresses(newItems);
+                        break;
+                    }
+                    case NotifyCollectionChangedAction.Reset:
+                    {
+                        ClearAddresses();
+                        break;
+                    }
+                    default:
+                    {
+                        throw new ArgumentOutOfRangeException("Not supported "+ e.Action);
+                    }
+                }   
             };
 
             var set = this.CreateBindingSet<AddressPicker, AddressPickerViewModel>();
-
-            set.Bind()
-                .For(v => v.ShowDefaultResults)
-                .To(vm => vm.ShowDefaultResults)
-                .OneWay();
 
             set.Bind()
                 .For(v => v.SelectedCommand)
@@ -200,8 +169,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
         public void Open()
         {        
-            _addressEditText.SelectAll();
-
             Visibility = ViewStates.Visible;
         } 
 
