@@ -577,6 +577,10 @@
     <AndroidResource Include="Resources\Drawable\Controls_AddressBar_StreetNumberEditText_TextColor_State.xml" />
     <AndroidResource Include="Resources\Drawable\Controls_AddressBar_TariffBackground.xml" />
     <Compile Include="Controls\Message\LoadingOverlay.cs" />
+    <AndroidResource Include="Resources\Drawable\taxi_progress.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\taxi_progress.png" />
+    <AndroidResource Include="Resources\Layout\Control_LoadingOverlay.axml" />
+    <AndroidResource Include="Resources\Drawable\loading_overlay.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
