@@ -28,22 +28,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_geoCoding = geoCoding;
 			_placeService = placeService;
 			_orderWorkflowService = orderWorkflowService;
+
+            IgnoreTextChange = true;
 			AllAddresses = new ObservableCollection<AddressViewModel>();
 		}
 			
-		private ObservableCollection<AddressViewModel> _allAddresses;
-		public ObservableCollection<AddressViewModel> AllAddresses
-		{
-			get
-			{
-				return _allAddresses;
-			}
-			set
-			{
-				_allAddresses = value;
-				RaisePropertyChanged();
-			}
-		}
+        public ObservableCollection<AddressViewModel> AllAddresses { get; set; }
+        public bool IgnoreTextChange { get; set; }
 
 		private AddressViewModel[] _defaultHistoryAddresses = new AddressViewModel[0];
 		private AddressViewModel[] _defaultFavoriteAddresses = new AddressViewModel[0];
@@ -51,12 +42,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public async void LoadAddresses()
 		{            
+            IgnoreTextChange = true;
 			ShowDefaultResults = true;
 			_currentAddress = await _orderWorkflowService.GetCurrentAddress();
 			StartingText = _currentAddress.GetFirstPortionOfAddress();
-			var neabyPlaces = Task.Factory.StartNew(() => _placeService.SearchPlaces(null, 
-																_currentAddress.Latitude, 
-																_currentAddress.Longitude, null));
+
+			var neabyPlaces = Task.Factory.StartNew(() => _placeService.SearchPlaces(null, _currentAddress.Latitude, _currentAddress.Longitude, null));
 			var favoritePlaces = Task.Factory.StartNew(() => this.Services().Account.GetFavoriteAddresses().ToArray());
 			var historyPlaces = Task.Factory.StartNew(() => this.Services().Account.GetHistoryAddresses().ToArray());
 
@@ -88,6 +79,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				Logger.LogError(e);
 			}
+            finally
+            {
+                IgnoreTextChange = false;
+            }
 		}
 
 		private AddressViewModel[] OnAddressesArrived(Address[] addresses, AddressType type)
@@ -128,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		void LoadDefaultList()
 		{            
-			using (this.Services().Message.ShowProgressNonModal())
+            using (this.Services().Message.ShowProgressNonModal())
 			{
 				AllAddresses.Clear();
 				ShowDefaultResults = true;
@@ -182,6 +177,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public void SearchAddress(string criteria)
 		{
+            if (IgnoreTextChange)
+            {
+                return;
+            }
+
 			if (criteria.HasValue())
 			{                
 				InvokeOnMainThread(() =>

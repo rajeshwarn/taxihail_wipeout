@@ -203,7 +203,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             if (rootView != null)
             {
-                ProgressBar progress = rootView.FindViewWithTag("Progress") as ProgressBar;
+                var progress = rootView.FindViewWithTag("Progress") as ProgressBar;
 
                 if ((progress == null) && (show))
                 {
@@ -214,21 +214,19 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                     relLayout.LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
                     relLayout.AddView(contentView);
 
-
                     var b = new ProgressBar(topActivity.Activity.ApplicationContext, null, Android.Resource.Attribute.ProgressBarStyleHorizontal)
                     {
                         Progress = 25,
-                        LayoutParameters =
-                            new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.WrapContent)
-                        };
-
-                    b.Indeterminate = true;
-                    ((RelativeLayout.LayoutParams)b.LayoutParameters).TopMargin = 75.ToPixels();
-                    b.Tag = "Progress";
+                        LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.WrapContent),
+                        Indeterminate = true,
+                        Tag = "Progress"
+                    };
+                            
+                    ((RelativeLayout.LayoutParams)b.LayoutParameters).TopMargin = 92.ToPixels();
                     relLayout.AddView(b);
                     rootView.AddView(relLayout);
                 }               
-                else if  ( progress != null  )
+                else if (progress != null)
                 {
                     progress.Visibility = show ? ViewStates.Visible : ViewStates.Gone;
                     progress.Indeterminate = true;
