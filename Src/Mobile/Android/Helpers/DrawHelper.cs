@@ -45,8 +45,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
         }
 
 
+        public static Bitmap DrawableToBitmap (Drawable drawable, Color? colorFilter = null) 
+        {
+            Bitmap bitmap = Bitmap.CreateBitmap(drawable.IntrinsicWidth, drawable.IntrinsicHeight, Bitmap.Config.Argb8888);
+            Canvas canvas = new Canvas(bitmap); 
+
+            drawable.SetBounds(0, 0, canvas.Width, canvas.Height);
+            drawable.Draw(canvas);
+
+            if (colorFilter != null)
+            {
+                bitmap = Colorize(bitmap, (Color)colorFilter);
+            }
+
+            return bitmap;
+        }
+
         public static BitmapDescriptor DrawableToBitmapDescriptor (Drawable drawable, Color? colorFilter = null) 
         {
+            // Refactorize to use Drawable to bitmap
             Bitmap bitmap = Bitmap.CreateBitmap(drawable.IntrinsicWidth, drawable.IntrinsicHeight, Bitmap.Config.Argb8888);
             Canvas canvas = new Canvas(bitmap); 
 

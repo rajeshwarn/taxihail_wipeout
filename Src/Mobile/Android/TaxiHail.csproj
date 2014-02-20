@@ -579,6 +579,11 @@
     <AndroidResource Include="Resources\Values\AddressLineAttributes.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+
+    <AndroidResource Include="Resources\Drawable\taxi_progress.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\taxi_progress.png" />
+    <AndroidResource Include="Resources\Layout\Control_LoadingOverlay.axml" />
+    <AndroidResource Include="Resources\Drawable\loading_overlay.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
