@@ -36,14 +36,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                         _dialogView = new UIView();
                         _dialogView.BackgroundColor = UIColor.White;
 
+                        var colorOfCarAndWheel = UIColor.FromRGB(0, 125, 249);
+
                         if(_imageView == null)
                         {
-                            _imageView = new UIImageView(UIImage.FromFile("taxi_progress.png"));
+                            _imageView = new UIImageView(UIImage.FromFile("taxi_progress.png")); // TODO MKTAXI-1519 Apply color to image with ImageHelper
                             _imageView.SizeToFit();
                             _imageView.Hidden = true;
                         }
 
-                        _progressView = new CircularProgressView(new RectangleF(0, 0, 67, 67));
+                        _progressView = new CircularProgressView(new RectangleF(0, 0, 67, 67), colorOfCarAndWheel);
                         _progressView.OnCompleted = () => CloseOverlay();
                         _progressView.LineWidth = 1.5f;
                         _progressView.Hidden = true;

@@ -15,12 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         private CAShapeLayer _progressLayer;
         private CAShapeLayer _iconLayer;
 
-        public CircularProgressView(RectangleF frame) : base(frame)
-        {
-            Initialize();
-        }
-
-        void Initialize()
+        public CircularProgressView(RectangleF frame, UIColor color) : base(frame)
         {
             _runningIconView = new UIView();
             _readyIconView = new UIView();
@@ -50,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _iconLayer.FillRule = CAShapeLayer.FillRuleNonZero;
             Layer.AddSublayer(_iconLayer);      
 
-            Color = UIColor.FromRGB(0, 125, 249);
+            Color = color;
         }
 
         float _lineWidth;
