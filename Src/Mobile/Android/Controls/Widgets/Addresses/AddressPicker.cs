@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
                 _addressEditText.OnKeyDown()
                     .Throttle(TimeSpan.FromMilliseconds(700))
-                    .Subscribe(text => ViewModel.TextSearchCommand.Execute(text));
+                    .Subscribe(text => ExecuteSearchCommand(text));
 
                 _addressEditText.EditorAction += (sender, args) =>
                 {
@@ -91,6 +91,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                     SelectedCommand.Execute(address);
                 };
             });
+        }
+
+        private void ExecuteSearchCommand(string text)
+        {
+            if (ViewModel != null && ViewModel.TextSearchCommand != null)
+            {
+                ViewModel.TextSearchCommand.Execute(text);
+            }
         }
 
         private void ClearAddresses()
