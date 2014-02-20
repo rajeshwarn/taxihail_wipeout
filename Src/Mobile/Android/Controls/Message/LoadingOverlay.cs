@@ -22,13 +22,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         private static Activity _activity;
         private static float Progress;
         private static Size _windowSize;
-        private static RectF _zone;
         private static RectF _zoneCircle;
         private static Bitmap _car;
         private static Bitmap _progressImage;
         private static LinearLayout _layoutCenter;
         private static LinearLayout _layoutImage;
-        private static Android.Graphics.Color _colorBgTheme;
+        private static Android.Graphics.Color _colorToUse = Android.Graphics.Color.ParseColor("#0378ff");
 
         public static void StartAnimatingLoading(Activity activity)
         {
@@ -36,7 +35,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _progressBar = new Dialog(_activity);
             _progressBar.RequestWindowFeature((int)WindowFeatures.NoTitle);
             _progressBar.SetCancelable(false);
-            _progressBar.SetContentView(Resource.Layout.Control_LoadingOverlay);
             _progressBar.Window.SetBackgroundDrawable(_activity.Resources.GetDrawable(Resource.Drawable.loading_overlay));
             _progressBar.Window.DecorView.Invalidate();
 
@@ -78,9 +76,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _layoutCenter.ClearAnimation();
             _layoutImage.SetBackgroundDrawable(null);
 
-            var displaySize = _activity.Resources.DisplayMetrics;
-            _windowSize = new Size(displaySize.WidthPixels, 120);
-
             if (_car != null)
             {
                 _car.Recycle();
@@ -93,6 +88,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 
             _car = BitmapFactory.DecodeResource(_activity.Resources, Resource.Drawable.taxi_progress);
 
+            var displaySize = _activity.Resources.DisplayMetrics;
+            var windowHeight = (int)(_car.Width * 1.4f);
+            _windowSize = new Size(displaySize.WidthPixels, windowHeight);
+
             var _radius = _car.Width * 1.3f;
 
             Progress = 0;
@@ -101,16 +100,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             _isLoading = true;
 
-            var useColor = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
-
-            if (useColor != null && useColor)
-            {
-                _car = DrawHelper.Colorize(_car, (Android.Graphics.Color)_activity.Resources.GetColor(Resource.Color.login_background_color));
-            }
-            else
-            {
-                _colorBgTheme = Android.Graphics.Color.ParseColor("#0378ff");
-            }
+            // TODO if this is necessary, do it, but it slows down the animation
+//            var useColor = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
+//            if (useColor)
+//            {
+//                _colorToUse = (Android.Graphics.Color)_activity.Resources.GetColor(Resource.Color.login_background_color);
+//                _car = DrawHelper.Colorize(_car, _colorToUse);
+//            }
 
             ThreadPool.QueueUserWorkItem(d =>
             {
@@ -132,19 +128,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             {
                 if (_isLoading)
                 {
-                    IncreaseProgress();
+                    IncreaseProgressDependingOnCurrentProgress();
                     Animate();
                 }
                 else
                 {
                     Progress = 100;
+                    _activity.RunOnUiThread(() =>
+                    {
+                        _layoutImage.SetBackgroundDrawable(GetCircleForProgress());
+                    });
 
                     Thread.Sleep(500);
-
-                    if (_activity != _progressBar.OwnerActivity)
-                    {
-
-                    }
 
                     _activity.RunOnUiThread(() =>
                     {
@@ -158,39 +153,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         {
             var nextProgress = Progress + increment;
 
+            if(nextProgress >= 99)
+            {
+                return;
+            }
+
             if (nextProgress < 20)
             {
                 Thread.Sleep(20);
-                Progress = nextProgress;
             }
-            else if (nextProgress < 80)
+            else
             {
-                if(nextProgress >= 99)
-                {
-                    return;
-                }
-
                 Thread.Sleep(50);
-                Progress = nextProgress;
-            } 
+            }
+
+            Progress = nextProgress;
 
             _activity.RunOnUiThread(() =>
             {
-                _layoutImage.SetBackgroundDrawable(getCircleForProgress());                                    
+                _layoutImage.SetBackgroundDrawable(GetCircleForProgress());                                    
             });                
         }
 
-        private static void IncreaseProgress()
+        private static void IncreaseProgressDependingOnCurrentProgress()
         {
             var currentProgress = Progress;
 
             float speed = 1f;
 
-            if (currentProgress <= 20)
-            {
-                IncrementProgress(speed);
-            }
-            else if (currentProgress > 20 && currentProgress <= 80)
+            if (currentProgress <= 80)
             {
                 IncrementProgress(speed);
             }
@@ -200,57 +191,52 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             }                
         }
 
-        private static BitmapDrawable getCircleForProgress()
+        private static BitmapDrawable GetCircleForProgress()
         {
-            Bitmap.Config conf = Bitmap.Config.Argb4444;
+            var conf = Bitmap.Config.Argb4444;
 
-            DateTime dt = DateTime.Now;
             _progressImage = Bitmap.CreateBitmap(_windowSize.Width, _windowSize.Height, conf);
 
-            Canvas canvas = new Canvas(_progressImage);
-            Paint paint = new Paint();
-            Paint paintRec = new Paint();
-            paintRec.SetStyle(Paint.Style.Fill);
-            paintRec.Color = Android.Graphics.Color.White;
+            var canvas = new Canvas(_progressImage);
+            var paint = new Paint();
             paint.SetStyle(Paint.Style.Stroke);
             paint.StrokeWidth = 3;
             paint.AntiAlias = true;
-            paint.Color = _colorBgTheme;
-            canvas.DrawPaint(new Paint() { Color = Android.Graphics.Color.Argb(100, 0, 0, 0) });
-            var _radius = _car.Width * 1.3f;
+            paint.Color = _colorToUse;
+            canvas.DrawPaint(new Paint() { Color = Android.Graphics.Color.White });
 
             if (Progress > 20)
             {
                 _activity.RunOnUiThread(() =>
                 {
                     var ll = _layoutCenter.LayoutParameters;
-                    if (ll.Height != 120)
+                    if (ll.Height != _windowSize.Height)
                     {
-                        ll.Height = 120;
+                        ll.Height = _windowSize.Height;
                         _layoutCenter.LayoutParameters = ll;
                         _layoutCenter.RequestFocus();
                     }
                 });
-
-                _zone = new RectF(0, 0, _windowSize.Width, _windowSize.Height);            
-                canvas.DrawRect(_zone, paintRec);
+                    
                 canvas.DrawBitmap(_car, _zoneCircle.CenterX() - _car.Width / 2f, _zoneCircle.CenterY() - _car.Height / 2f, null);
-                canvas.DrawArc(_zoneCircle, 0f, ((Progress - 20f) / 80f) * 360f, false, paint);
+
+                var startAngle = -90f;
+                var sweepingAngle = ((Progress - 20f) / 80f) * 360f;
+                canvas.DrawArc(_zoneCircle, startAngle, sweepingAngle, false, paint);
             }
             else
             {
                 _activity.RunOnUiThread(() =>
                 {
                     var ll = _layoutCenter.LayoutParameters;
-                    ll.Height = (int)(((float)Progress / 20f) * 120f);
+                    ll.Height = (int)(((float)Progress / 20f) * _windowSize.Height);
                     _layoutCenter.LayoutParameters = ll;
                     _layoutCenter.RequestLayout();
                 });
             }
-            DateTime de = DateTime.Now;
-            TimeSpan ts = de - dt;
+
             _layoutCenter.RequestLayout();
-            var ms = ts.TotalMilliseconds;
+
             return new BitmapDrawable(_progressImage);
         }
     }
