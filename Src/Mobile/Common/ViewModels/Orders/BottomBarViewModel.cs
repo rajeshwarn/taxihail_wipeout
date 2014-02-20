@@ -63,7 +63,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					try
 					{
-						//this.Services().Message.ShowProgress(true);
 						using(this.Services().Message.ShowProgress())
 						{
 							await _orderWorkflowService.SetPickupDate(date);
