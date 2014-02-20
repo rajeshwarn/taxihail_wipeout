@@ -565,7 +565,6 @@
     <Compile Include="Controls\Widgets\Addresses\AddressList.cs" />
     <Compile Include="Controls\Widgets\Addresses\AddressPicker.cs" />
     <Compile Include="Controls\Widgets\Addresses\AddressTypeToDrawableConverter.cs" />
-    <AndroidResource Include="Resources\Drawable\Control_AddressLine_Background.xml" />
     <AndroidResource Include="Resources\Drawable\Controls_AddressBar_AddressEditText_Background.xml" />
     <AndroidResource Include="Resources\Drawable\controls_addressbar_addressedittext_greendot.xml" />
     <AndroidResource Include="Resources\Drawable\controls_addressbar_addressedittext_progress.xml" />
@@ -577,6 +576,9 @@
     <AndroidResource Include="Resources\Drawable\Controls_AddressBar_StreetNumberEditText_TextColor_State.xml" />
     <AndroidResource Include="Resources\Drawable\Controls_AddressBar_TariffBackground.xml" />
     <Compile Include="Controls\Message\LoadingOverlay.cs" />
+    <AndroidResource Include="Resources\Values\AddressLineAttributes.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

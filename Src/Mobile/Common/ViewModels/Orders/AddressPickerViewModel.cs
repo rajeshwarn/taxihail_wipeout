@@ -30,11 +30,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_orderWorkflowService = orderWorkflowService;
 			AllAddresses = new ObservableCollection<AddressViewModel>();
 		}
-
-		public ObservableCollection<AddressViewModel> AllAddresses 
-		{ 
-			get; 
-			set; 
+			
+		private ObservableCollection<AddressViewModel> _allAddresses;
+		public ObservableCollection<AddressViewModel> AllAddresses
+		{
+			get
+			{
+				return _allAddresses;
+			}
+			set
+			{
+				_allAddresses = value;
+				RaisePropertyChanged();
+			}
 		}
 
 		private AddressViewModel[] _defaultHistoryAddresses = new AddressViewModel[0];

@@ -319,7 +319,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void SetMapEnabled(bool state)
         {
-
+            // TODO this should be done on the ChangePresentation of the map itself, like iOS
             _mapContainer = (LinearLayout) FindViewById(Resource.Id.mapContainer);
             _touchMap.Map.UiSettings.SetAllGesturesEnabled(state);
             _btnLocation.Enabled = state;
@@ -351,6 +351,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public void ChangeState(HomeViewModelPresentationHint hint)
         {
+            if (_presentationState == hint.State)
+            {
+                return;
+            }
+
             _presentationState = hint.State;
 
             SetMapEnabled(true);
@@ -425,7 +430,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 SetMapEnabled(false);
                 _searchAddress.Open();
                 ViewModel.AddressPicker.LoadAddresses();
-
             } 
             else if(_presentationState == HomeViewModelState.Initial)
             {
@@ -443,9 +447,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 _orderEdit.StartAnimation(animation2);
                 _orderOptions.StartAnimation(animation3);
 
+                _searchAddress.Close();
+
                 SetSelectedOnBookLater(false);
             }
-
+                
             _appBar.ChangePresentation(hint);
             _orderOptions.ChangePresentation(hint);
         }

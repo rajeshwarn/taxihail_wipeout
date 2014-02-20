@@ -20,7 +20,7 @@
             <EditText
                 android:background="@drawable/drop_shadow"
                 android:layout_width="fill_parent"
-                android:layout_height="49dip"
+                android:layout_height="54dip"
                 android:paddingLeft="12dp"
                 android:id="@+id/addressEditText"
                 android:hint="Address"
@@ -58,6 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/SearchResultsAddressList"
+                    local:HideViewAllButton="true"
                     android:layout_marginBottom="16dp" />
             </LinearLayout>
             <LinearLayout
@@ -69,16 +70,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/FavoriteAddressList"
+                    local:HideViewAllButton="false"
                     android:layout_marginBottom="16dp" />
                 <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses.AddressListView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/RecentAddressList"
+                    local:HideViewAllButton="false"
                     android:layout_marginBottom="16dp" />
                 <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses.AddressListView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/NearbyAddressList"
+                    local:HideViewAllButton="false"
                     android:layout_marginBottom="16dp" />
             </LinearLayout>
         </LinearLayout>

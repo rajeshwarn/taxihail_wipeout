@@ -18,11 +18,22 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 {
-    public class AddressListView : LinearLayout
+    public class AddressListView : MvxFrameControl
     {
+        private bool isCollapsed;
+        private bool HideViewAllButton;
+        private LinearLayout _listLinearLayout;
+        private Button _viewAllButton;
+
         public AddressListView(Context c, IAttributeSet attr) : base(c, attr)
         {
+            HideViewAllButton = GetAttributeBool(attr, Resource.Attribute.HideViewAllButton);
+        }
 
+        private bool GetAttributeBool(IAttributeSet attr, int id)
+        {
+            var att = Context.ObtainStyledAttributes(attr, new int[] { id }, 0, 0);
+            return att.GetBoolean(0, true);
         }
 
         protected override void OnFinishInflate()
@@ -31,16 +42,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
             var layout = inflater.Inflate(Resource.Layout.Control_AddressList, this, true);
 
-            _listLinearLayout = (LinearLayout)FindViewById<LinearLayout>(Resource.Id.ListLinearLayout);
-            _viewAllButton = (Button)FindViewById<Button>(Resource.Id.ViewAllButton);
-
+            _listLinearLayout = (LinearLayout)layout.FindViewById<LinearLayout>(Resource.Id.ListLinearLayout);
+            _viewAllButton = (Button)layout.FindViewById<Button>(Resource.Id.ViewAllButton);
 
             Addresses = new ObservableCollection<AddressViewModel>();
             AddressLines = new AddressLine[0];
 
             Addresses.CollectionChanged += (sender, e) =>
             {
-
                 var newItems = new AddressViewModel[0];
                 if (e.NewItems != null)
                 {
@@ -49,25 +58,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
                 switch (e.Action)
                 {
-                    case NotifyCollectionChangedAction.Replace:
-                        {
-                            AddressLines = newItems.Select(a => new AddressLine(Context, a, OnSelectAddress)).ToArray();
-                            break;
-                        }
                     case NotifyCollectionChangedAction.Add:
-                        {                                    
-                            AddressLines = AddressLines.Concat(newItems.Select(a => new AddressLine(Context, a, OnSelectAddress))).ToArray();
-                            break;
-                        }
+                    {                                    
+                        AddressLines = AddressLines.Concat(newItems.Select(a => new AddressLine(Context, a, OnSelectAddress))).ToArray();
+                        break;
+                    }
                     case NotifyCollectionChangedAction.Reset:
-                        {
-                            AddressLines = new AddressLine[0];
-                            break;
-                        }
+                    {
+                        AddressLines = new AddressLine[0];
+                        break;
+                    }
                     default:
-                        {
-                            throw new ArgumentOutOfRangeException("Not supported " + e.Action);
-                        }
+                    {
+                        throw new ArgumentOutOfRangeException("Not supported " + e.Action);
+                    }
                 }   
             };
 
@@ -86,16 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             };      
         }
 
-        bool isCollapsed;
-
-        public bool HideViewAllButton { get; set; }
-
-        private LinearLayout _listLinearLayout;
-
-        private Button _viewAllButton;
-
-        public ObservableCollection<AddressViewModel> Addresses    { get; set; }
-
+        public ObservableCollection<AddressViewModel> Addresses { get; set; }
         public Action<AddressViewModel> OnSelectAddress { get; set; }
 
         private AddressLine[] _addresses;
@@ -116,8 +111,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                 Visibility = ViewStates.Gone;
                 return;
             }
-            Visibility = ViewStates.Visible;
 
+            Visibility = ViewStates.Visible;
 
             Collapse();
 
@@ -127,11 +122,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
         public void Expand()
         {
             _listLinearLayout.RemoveAllViews();
-            //_viewAllButton.Text = Localize["Collapse"];
             // TODO: Use the good localize approach
             _viewAllButton.Text = "Collapse";
-            var i = 0;
 
+            var i = 0;
             foreach (var line in AddressLines)
             {
                 _listLinearLayout.AddView(line);
@@ -158,10 +152,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                 Expand();
                 return;
             }
+
             _listLinearLayout.RemoveAllViews();
-            //_viewAllButton.Text = Localize["ViewAll"];
             // TODO: Use the good localize approach
             _viewAllButton.Text = "View All";
+
             var i = 0;
             foreach (var line in AddressLines.Take(3))
             {

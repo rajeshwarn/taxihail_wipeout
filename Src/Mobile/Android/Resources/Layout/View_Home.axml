@@ -134,7 +134,7 @@
             </LinearLayout>
         <!-- Address Search -->
             <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses.AddressPicker
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:id="@+id/searchAddressControl"
                 android:layout_height="match_parent" />
         </FrameLayout>

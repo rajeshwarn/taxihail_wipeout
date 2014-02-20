@@ -32,29 +32,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 {
     public class AddressPicker : MvxFrameControl
     {
+        private LinearLayout _searchList;
+        private LinearLayout _defaultList;
+        private AddressListView _favoriteAddressList;
+        private AddressListView _recentAddressList;
+        private AddressListView _nearbyAddressList;
+        private AddressListView _searchResultsAddressList;    
+        private EditText _addressEditText;
+        private ScrollView _scrollView;
+        private Button _cancelButton;
+
         private CompositeDisposable _subscriptions = new CompositeDisposable();
 
-        private ObservableCollection<AddressViewModel> _allAddresses;       
-        public ObservableCollection<AddressViewModel> AllAddresses
-        {
-            set
-            {
-                if (value == null)
-                    return;
-
-                _allAddresses = value;
-
-                _searchResultsAddressList.Addresses = _allAddresses;
-
-                _favoriteAddressList.Addresses = new ObservableCollection<AddressViewModel>( value.Cast<AddressViewModel>().Where(x => x.Type == AddressType.Favorites));
-                _recentAddressList.Addresses =new ObservableCollection<AddressViewModel>( value.Cast<AddressViewModel>().Where(x => x.Type == AddressType.History));
-                _favoriteAddressList.Addresses = new ObservableCollection<AddressViewModel>(value.Cast<AddressViewModel>().Where(x => x.Type == AddressType.Places));
-            }
-
-            get
-            {
-                return _allAddresses;
-            }
+        private AddressPickerViewModel ViewModel 
+        { 
+            get { return (AddressPickerViewModel)DataContext; } 
         }
 
         bool _showDefaultResults;
@@ -88,21 +80,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
             this.DelayBind(() =>
             {
-
-                _searchList = FindViewById<LinearLayout>(Resource.Id.SearchList);                
-                _defaultList = FindViewById<LinearLayout>(Resource.Id.DefaultList); 
-                _favoriteAddressList = FindViewById<AddressListView>(Resource.Id.FavoriteAddressList); 
-                _recentAddressList = FindViewById<AddressListView>(Resource.Id.RecentAddressList); 
-                _nearbyAddressList = FindViewById<AddressListView>(Resource.Id.NearbyAddressList); 
-                _searchResultsAddressList = FindViewById<AddressListView>(Resource.Id.SearchResultsAddressList);
-                _addressEditText = FindViewById<EditText>(Resource.Id.addressEditText); 
-                _scrollView = FindViewById<ScrollView>(Resource.Id.scrollView); 
-                _cancelButton = FindViewById<Button>(Resource.Id.cancelButton); 
+                _searchList = Content.FindViewById<LinearLayout>(Resource.Id.SearchList);                
+                _defaultList = Content.FindViewById<LinearLayout>(Resource.Id.DefaultList); 
+                _favoriteAddressList = Content.FindViewById<AddressListView>(Resource.Id.FavoriteAddressList); 
+                _recentAddressList = Content.FindViewById<AddressListView>(Resource.Id.RecentAddressList); 
+                _nearbyAddressList = Content.FindViewById<AddressListView>(Resource.Id.NearbyAddressList); 
+                _searchResultsAddressList = Content.FindViewById<AddressListView>(Resource.Id.SearchResultsAddressList);
+                _addressEditText = Content.FindViewById<EditText>(Resource.Id.addressEditText); 
+                _scrollView = Content.FindViewById<ScrollView>(Resource.Id.scrollView); 
+                _cancelButton = Content.FindViewById<Button>(Resource.Id.cancelButton); 
 
                 _addressEditText.OnKeyDown()
-                    .Where(_=>!ignoreTextChange)
-                    .Throttle(TimeSpan.FromMilliseconds(500))
-                    .Subscribe (text => ExecuteSearchCommand(text));
+                    .Throttle(TimeSpan.FromMilliseconds(700))
+                    .Subscribe(text => ViewModel.TextSearchCommand.Execute(text));
 
                 _addressEditText.EditorAction += (sender, args) =>
                 {
@@ -110,8 +100,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                     {
                         return;
                     }
-
-                    Close();
                 };
 
                 _scrollView.Touch += (s, e) =>
@@ -122,61 +110,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
                 InitializeBinding();
 
-                _searchResultsAddressList.HideViewAllButton = true;
-                _nearbyAddressList.HideViewAllButton = _recentAddressList.HideViewAllButton = _favoriteAddressList.HideViewAllButton = false;
-                _cancelButton.Click += (sender, args) => Close();
-
                 _searchResultsAddressList.OnSelectAddress = _nearbyAddressList.OnSelectAddress = _recentAddressList.OnSelectAddress = _favoriteAddressList.OnSelectAddress = address =>
                 {                    
                     SelectedCommand.Execute(address);
-                    Close();
                 };
-
-                ViewModel.AllAddresses.CollectionChanged += (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) =>
-                {
-                    AddAddresses(ViewModel.AllAddresses);
-
-                    var newItems = new AddressViewModel[0];
-                    if (e.NewItems != null)
-                    {
-                        newItems = e.NewItems.OfType<AddressViewModel>().ToArray();
-                    }
-
-                    switch (e.Action)
-                    {
-                        case NotifyCollectionChangedAction.Add:
-                            {                                    
-                                AddAddresses(newItems);
-                                break;
-                            }
-                        case NotifyCollectionChangedAction.Reset:
-                            {
-                                ClearAddresses();
-                                break;
-                            }
-                        default:
-                            {
-                                throw new ArgumentOutOfRangeException("Not supported " + e.Action);
-                            }
-                    }   
-                };
-
-
-
             });
         }
 
-        public ICommand SearchCommand { get; set; }
-
-        void ExecuteSearchCommand(string text)
-        {        
-            if (SearchCommand != null && SearchCommand.CanExecute())
-            {
-                SearchCommand.Execute(text);
-            }
-        }
-
-        void ClearAddresses()
+        private void ClearAddresses()
         {
             _searchResultsAddressList.Addresses.Clear();
             _favoriteAddressList.Addresses.Clear();
@@ -196,69 +137,75 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             {                
                 _searchResultsAddressList.Addresses.AddMultiple(addresses);
             }
-
-        }
-
-        private void AddRemove(AddressViewModel address)
-        {
-            _searchResultsAddressList.Addresses.Remove(address);
-            _favoriteAddressList.Addresses.Remove(address);
-            _recentAddressList.Addresses.Remove(address);
-            _nearbyAddressList.Addresses.Remove(address);
-        }
-
-        private AddressPickerViewModel ViewModel 
-        { 
-            get 
-            { 
-                return (AddressPickerViewModel)DataContext; 
-            } 
         }
 
         private void InitializeBinding()
         {
+            ViewModel.PropertyChanged += (sender, e) => 
+            {
+                if(e.PropertyName == "AllAddresses")
+                {
+                    AddAddresses(ViewModel.AllAddresses);
+
+                    ViewModel.AllAddresses.CollectionChanged += (sender2, e2) => {
+
+                        var newItems = new AddressViewModel[0];
+                        if(e2.NewItems != null)
+                        {
+                            newItems = e2.NewItems.OfType<AddressViewModel>().ToArray();
+                        }
+
+                        switch(e2.Action)
+                        {
+                            case NotifyCollectionChangedAction.Add:
+                            {                                    
+                                AddAddresses(newItems);
+                                break;
+                            }
+                            case NotifyCollectionChangedAction.Reset:
+                            {
+                                ClearAddresses();
+                                break;
+                            }
+                            default:
+                            {
+                                throw new ArgumentOutOfRangeException("Not supported "+ e2.Action);
+                            }
+                        }   
+                    };
+                }
+            };
+
             var set = this.CreateBindingSet<AddressPicker, AddressPickerViewModel>();
 
             set.Bind()
-                .For(v => v.SearchCommand)
-                .To(vm => vm.TextSearchCommand);
+                .For(v => v.ShowDefaultResults)
+                .To(vm => vm.ShowDefaultResults)
+                .OneWay();
 
             set.Bind()
                 .For(v => v.SelectedCommand)
                 .To(vm => vm.AddressSelected);
 
-            set.Bind()
-                .For(v => v.ShowDefaultResults)
-                .To(vm => vm.ShowDefaultResults);
+            set.Bind(_addressEditText)
+                .For(v => v.Text)
+                .To(vm => vm.StartingText);
+
+            set.Bind(_cancelButton)
+                .For("Click")
+                .To(vm => vm.Cancel);
 
             set.Apply();
         }
 
-        private LinearLayout _searchList;
-
-        private LinearLayout _defaultList;
-
-        private AddressListView _favoriteAddressList;
-       
-        private AddressListView _recentAddressList;
-
-        private AddressListView _nearbyAddressList;
-
-        private AddressListView _searchResultsAddressList;    
-
-        private EditText _addressEditText;
-
-        private ScrollView _scrollView;
-
-        private Button _cancelButton;
-
         public void Open()
         {        
+            _addressEditText.SelectAll();
 
             Visibility = ViewStates.Visible;
         } 
 
-        private void Close()
+        public void Close()
         {
             Visibility = ViewStates.Gone;
             _addressEditText.HideKeyboard();
@@ -266,25 +213,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             _recentAddressList.Collapse();
             _nearbyAddressList.Collapse();
         }
-
-        bool ignoreTextChange = false;
-
-        private string GetFirstPortionOfAddress( string fullAddress )
+ 
+        protected override void Dispose(bool disposing)
         {
-            if ( (fullAddress.HasValue()) && ( fullAddress.Contains( "," ) ) )
+            if (disposing)
             {
-                return fullAddress.Split(',')[0];
-            }
-            else
-            {
-                return fullAddress;
+                _subscriptions.Dispose();
             }
 
-        }
-            
-        public void Dispose()
-        {
-            _subscriptions.Dispose();
+            base.Dispose(disposing);
         }
     }
 }
