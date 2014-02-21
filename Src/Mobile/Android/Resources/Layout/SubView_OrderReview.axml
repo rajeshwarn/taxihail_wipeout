@@ -198,10 +198,11 @@
             android:background="#eeeeee"
             android:id="@+id/txtNotes"
             android:hint="Notes to driver"
+            android:paddingTop="10dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_alignParentLeft="true"
-            android:gravity="left|center_vertical"
+            android:gravity="left|top"
             android:layout_marginTop="16dip"
             android:minHeight="44dip" />
     </LinearLayout>

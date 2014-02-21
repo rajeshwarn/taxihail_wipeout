@@ -10,6 +10,7 @@ using TinyIoC;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
@@ -26,8 +27,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             BackgroundColor = UIColor.Clear;
 
             txtNote.BackgroundColor = UIColor.FromRGB(242, 242, 242);
-            DismissKeyboardOnReturn(txtNote);
+            txtNote.Font = UIFont.FromName(FontName.HelveticaNeueLight, 18f);
             txtNote.Placeholder = Localize.GetValue("NotesToDriveLabel");
+            txtNote.TapAnywhereToClose(() => this.Superview);
         }
 
         private void InitializeBinding()
@@ -90,7 +92,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
             set.Apply();
         }
-
 
         public override void AwakeFromNib()
         {
