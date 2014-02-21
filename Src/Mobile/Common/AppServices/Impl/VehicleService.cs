@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 	public class VehicleService : BaseService, IVehicleService
     {
 		// TODO use the pickup address in the orderWorkflowService instead
-		private AbstractLocationService _locationService;
+		private ILocationService _locationService;
 
 		readonly ISubject<AvailableVehicle[]> _availableVehiclesSubject = new BehaviorSubject<AvailableVehicle[]>(new AvailableVehicle[0]);
 
@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				return;
 			}
 
-			_locationService = TinyIoCContainer.Current.Resolve<AbstractLocationService>();
+			_locationService = TinyIoCContainer.Current.Resolve<ILocationService>();
 
 			_isStarted = true;
 

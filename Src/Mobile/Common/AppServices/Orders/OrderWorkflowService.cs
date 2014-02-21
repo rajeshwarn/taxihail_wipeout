@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
 	public class OrderWorkflowService: BaseService, IOrderWorkflowService
     {
-		readonly AbstractLocationService _locationService;
+		readonly ILocationService _locationService;
 		readonly IAccountService _accountService;
 		readonly IGeolocService _geolocService;
 		readonly IAppSettings _appSettings;
@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<string> _estimatedFareSubject;
 		readonly ISubject<string> _noteToDriverSubject = new BehaviorSubject<string>(string.Empty);
 
-		public OrderWorkflowService(AbstractLocationService locationService,
+		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
 			IGeolocService geolocService,
 			IAppSettings configurationManager,

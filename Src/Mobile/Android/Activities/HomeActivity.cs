@@ -236,8 +236,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnResume()
         { 
             base.OnResume();
-            TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
-
             var mainLayout = FindViewById(Resource.Id.HomeLayout);
             mainLayout.Invalidate();
             _touchMap.OnResume();
