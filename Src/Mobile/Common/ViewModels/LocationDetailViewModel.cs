@@ -115,12 +115,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public ICommand ValidateAddress
         {
             get {
-                return this.GetCommand(() =>
+				return this.GetCommand<string>(text =>
                 {
-                    this.Services().Message.ShowProgress(true);
-                    var task = Task.Factory.StartNew(() => this.Services().Geoloc.ValidateAddress(_address.FullAddress))
+					this.Services().Message.ShowProgress(true);
+					var task = Task.Factory.StartNew(() => this.Services().Geoloc.ValidateAddress(text))
                         .HandleErrors();
-                    task.ContinueWith(t => this.Services().Message.ShowProgress(false));
+					task.ContinueWith(t => this.Services().Message.ShowProgress(false));
                     task.ContinueWith(t=>{
                         var location = t.Result;
                         if ((location == null) || string.IsNullOrWhiteSpace(location.FullAddress) || !location.HasValidCoordinate ()) {
@@ -131,7 +131,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         InvokeOnMainThread (() =>
                         {
 							location.CopyTo(_address);
-							RaisePropertyChanged(()=>BookAddress);
+							RaisePropertyChanged(() => BookAddress);
                         });
                         
                     }, TaskContinuationOptions.OnlyOnRanToCompletion);

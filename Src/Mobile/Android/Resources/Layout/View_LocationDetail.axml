@@ -81,7 +81,7 @@
                     android:id="@+id/LocationAddress"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightEditTextFlat"
-                    local:MvxBind="Text BookAddress" />
+                    local:MvxBind="Text BookAddress, Mode=OneWay" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
