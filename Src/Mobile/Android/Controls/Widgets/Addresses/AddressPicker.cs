@@ -178,6 +178,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
         public void Open()
         {        
             Visibility = ViewStates.Visible;
+            _addressEditText.PostDelayed(() => 
+            {
+                _addressEditText.RequestFocusFromTouch();
+                _addressEditText.ShowKeyboard();
+                _addressEditText.SetCursorAtEnd();
+            }, 400);
         } 
 
         public void Close()
