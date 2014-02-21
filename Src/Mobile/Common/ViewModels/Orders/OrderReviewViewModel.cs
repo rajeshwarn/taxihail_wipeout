@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -24,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), (settings) => SettingsUpdated(settings));
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
 			this.Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
+			this.Observe(_orderWorkflowService.GetAndObserveNoteToDriver(), note => Note = note);
 		}
 
 		public async void ReviewStart()
@@ -144,14 +146,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		string _note;
+		private string _note;
 		public string Note
 		{
-			get{ return _note; }
+			get { return _note; }
 			set
 			{
-				_note = value;
-				_orderWorkflowService.SetNoteToDriver(_note);
+				if (_note != value)
+				{
+					_note = value;
+					_orderWorkflowService.SetNoteToDriver(value);
+					RaisePropertyChanged();
+				}
 			}
 		}
 

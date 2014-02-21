@@ -10,8 +10,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     public class FlatTextView : UITextView
     {
         NSMutableParagraphStyle _paragraphStyle;
-        UIColor DefaultFontColor = UIColor.FromRGB(44, 44, 44);
-        UIColor PlaceholderFontColor = UIColor.FromRGB(200, 200, 200);
+        static UIColor DefaultFontColor = UIColor.FromRGB(44, 44, 44);
+        static UIColor PlaceholderFontColor = UIColor.FromRGB(200, 200, 200);
+
+        private static bool _showPlaceholder = true;
 
         public FlatTextView (IntPtr handle) : base (handle)
         {
@@ -34,9 +36,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _paragraphStyle.LineHeightMultiple = 20f;
             _paragraphStyle.MinimumLineHeight = 20f;
             _paragraphStyle.MaximumLineHeight = 20f;
-
-            Font = UIFont.FromName(FontName.HelveticaNeueRegular, 14f);
-            FontColor = DefaultFontColor;
         }
 
         public void TapAnywhereToClose(Func<UIView> owner)
@@ -51,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 if (Text == Placeholder)
                 {
-                    FontColor = DefaultFontColor;
+                    _showPlaceholder = false;
                     Text = string.Empty;
                 }
                 return true;
@@ -60,9 +59,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {           
                 giantInvisibleButton.RemoveFromSuperview();
 
+                _showPlaceholder = true;
                 if (string.IsNullOrWhiteSpace(Text))
                 {
-                    FontColor = PlaceholderFontColor;
                     Text = Placeholder;
                 }
                 return true;
@@ -74,28 +73,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             };
         }
 
-        private UIFont _font;
-        public override UIFont Font
-        {
-            get { return _font; }
-            set
-            {
-                _font = value;
-                Text = Text;
-            }
-        }
-
-        private UIColor _fontColor;
-        public UIColor FontColor
-        {
-            get { return _fontColor; }
-            set
-            {
-                _fontColor = value;
-                Text = Text;
-            }
-        }
-
         public override string Text
         {
             get
@@ -104,7 +81,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
             set
             {
-                var attributedText = new NSMutableAttributedString(value, font: Font, foregroundColor: FontColor, paragraphStyle: _paragraphStyle);
+                if (string.IsNullOrWhiteSpace(value) && _showPlaceholder)
+                {
+                    value = Placeholder;
+                }
+
+                if (value == Placeholder)
+                {
+                    TextColor = PlaceholderFontColor;
+                }
+                else
+                {
+                    TextColor = DefaultFontColor;
+                }
+
+                var attributedText = new NSMutableAttributedString(value, font: Font, foregroundColor: TextColor, paragraphStyle: _paragraphStyle);
                 base.AttributedText = attributedText;
             }
         }
@@ -118,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _placeholder = value;
                 if (string.IsNullOrWhiteSpace(Text))
                 {
-                    FontColor = PlaceholderFontColor;
+                    _showPlaceholder = true;
                     Text = value;
                 }
             }
