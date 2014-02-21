@@ -199,9 +199,10 @@
             android:id="@+id/txtNotes"
             android:hint="Notes to driver"
             android:layout_width="fill_parent"
-            android:layout_height="44dip"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:gravity="left|center_vertical"
-            android:layout_marginTop="16dip" />
+            android:layout_marginTop="16dip"
+            android:minHeight="44dip" />
     </LinearLayout>
 </LinearLayout>
