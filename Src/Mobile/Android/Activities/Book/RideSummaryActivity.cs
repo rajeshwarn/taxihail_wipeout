@@ -30,6 +30,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             };
         }
 
+        public override void OnBackPressed()
+        {
+            base.OnBackPressed();
+
+            ViewModel.PrepareNewOrder.Execute(null);
+        }
+
         private string Localize(string value)
         {
             return TinyIoCContainer.Current.Resolve<ILocalization> () [value];
