@@ -13,18 +13,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task SetAddress(Address address);
 		void SetPickupAddress(Address address);
 		Task<Address> SetAddressToUserLocation();
-		Task ClearDestinationAddress();
+		void ClearDestinationAddress();
 
         Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken);
 
-		Task SetPickupDate(DateTime? date);
+		void SetPickupDate(DateTime? date);
 
 		Task ToggleBetweenPickupAndDestinationSelectionMode();
 
 		Task ValidatePickupDestinationAndTime();
 		Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder();
 
-		Task SetBookingSettings(BookingSettings bookingSettings);
+		void SetBookingSettings(BookingSettings bookingSettings);
+		void SetNoteToDriver(string text);
 
 		IObservable<Address> GetAndObservePickupAddress();
 		IObservable<Address> GetAndObserveDestinationAddress();
@@ -32,14 +33,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<BookingSettings> GetAndObserveBookingSettings();
 		IObservable<DateTime?> GetAndObservePickupDate();
 		IObservable<string> GetAndObserveEstimatedFare();
+		IObservable<string> GetAndObserveNoteToDriver();
 
-		void SetNoteToDriver(string text);
 		Task<bool> ShouldWarnAboutEstimate();
 
 		Task<OrderValidationResult> ValidateOrder();
 		void Rebook(Order previous);
 
 		Task<Address> GetCurrentAddress();
+
+		void ResetOrderSettings();
     }
 }
 
