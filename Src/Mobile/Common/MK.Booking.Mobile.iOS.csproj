@@ -200,7 +200,6 @@
     <Compile Include="ListViewStructure\TwoLinesAddressItem.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ListViewStructure\SingleLineItem.cs" />
-    <Compile Include="ViewModels\BookAddressViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\CreateAccountViewModel.cs" />
     <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqChangePaymentViewModel.cs" />

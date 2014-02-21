@@ -37,16 +37,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			StatusInfoText = string.Format(this.Services().Localize["StatusStatusLabel"], this.Services().Localize["LoadingMessage"]);
 
-			Pickup = new BookAddressViewModel(){
-				EmptyAddressPlaceholder = this.Services().Localize["BookPickupLocationEmptyPlaceholder"]
-			};
-			Pickup.Init(() => Order.PickupAddress, address => Order.PickupAddress = address);
-
-			Dropoff = new BookAddressViewModel(){
-				EmptyAddressPlaceholder = this.Services().Localize["BookPickupLocationEmptyPlaceholder"]
-			};
-			Dropoff.Init(() => Order.DropOffAddress, address => Order.DropOffAddress = address);
-
             CenterMap ();
         }
 
@@ -82,28 +72,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			private set {
 				_mapCenter = value;
 				RaisePropertyChanged ();
-			}
-		}
-		
-		BookAddressViewModel _pickupViewModel;
-		public BookAddressViewModel Pickup {
-			get {
-				return _pickupViewModel;
-			}
-			set {
-				_pickupViewModel = value;
-				RaisePropertyChanged (); 
-			}
-		}
-		
-		BookAddressViewModel _dropoffViewModel;
-		public BookAddressViewModel Dropoff {
-			get {
-				return _dropoffViewModel;
-			}
-			set {
-				_dropoffViewModel = value;
-				RaisePropertyChanged (); 
 			}
 		}
 
@@ -200,15 +168,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged ();
 			}
 		}
-
-		public Address PickupModel {
-			get { return Pickup.Model; }
-			set {
-				Pickup.Model = value;
-				RaisePropertyChanged ();
-			}
-		}
-
+            
 		private Order _order;
 		public Order Order {
 			get { return _order; }
@@ -414,7 +374,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void CenterMap ()
         {            
-			var pickup = CoordinateViewModel.Create(Pickup.Model.Latitude, Pickup.Model.Longitude, true);
+            var pickup = CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true);
 			if (OrderStatusDetail.IBSStatusId != VehicleStatuses.Common.Waiting && OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue) 
 			{
                 MapCenter = new[] 

@@ -162,7 +162,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         {
             var nextProgress = Progress + increment;
 
-            if(nextProgress >= 99)
+            if(nextProgress >= 95)
             {
                 return;
             }
