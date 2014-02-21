@@ -157,6 +157,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get
 			{
 				return this.GetCommand<AddressViewModel>(vm => {
+                    this.Services().Message.ShowProgressNonModal(false );
 					var detailedAddress = UpdateAddressWithPlaceDetail(vm.Address);
 					_orderWorkflowService.SetAddress(detailedAddress);
 					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
@@ -170,6 +171,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get
 			{
 				return this.GetCommand(() => {
+                    this.Services().Message.ShowProgressNonModal(false );
 					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
 				}); 
 			}
