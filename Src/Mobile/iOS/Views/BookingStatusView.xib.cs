@@ -301,6 +301,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
+        public override void ViewWillDisappear(bool animated)
+        {
+            base.ViewWillDisappear(animated);
+            if (IsMovingFromParentViewController)
+            {
+                // Back button pressed
+                ViewModel.PrepareNewOrder.Execute(null);
+            }
+        }
+
         void UpdateCallButtonSize (RectangleF callFrame)
         {
             if (!ViewModel.IsCancelButtonVisible && !ViewModel.IsPayButtonVisible && !ViewModel.IsResendButtonVisible)
