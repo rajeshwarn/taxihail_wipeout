@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
     {
         private static readonly object _lock = new object();
         private static int count = 0;
-        private static UIView _modalBackgroundView;
+        private static LoadingOverlayView _modalBackgroundView;
 
         public static UIView StartAnimatingLoading()
         {
@@ -24,7 +24,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 if (count == 1)
                 {
                     _modalBackgroundView = new LoadingOverlayView();
-                    UIApplication.SharedApplication.KeyWindow.AddSubview(_modalBackgroundView);
+                    _modalBackgroundView.Show();
+
                 }
             }
             return _modalBackgroundView;
@@ -36,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             {
                 if (count == 1)
                 {
-                    _modalBackgroundView.Dispose();
+                    _modalBackgroundView.Dismiss();
                     _modalBackgroundView = null;
                 }
 

@@ -13,6 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         private static float _dialogWidth = UIScreen.MainScreen.Bounds.Width;
         private static float _dialogHeight = 95;
         private static bool _isLoading;
+        private UIWindow _modalWindow;
 
         public LoadingOverlayView()
         {
@@ -30,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
 
             _progressView = new CircularProgressView(new RectangleF(0, 0, 67, 67), colorOfCarAndWheel);
-            _progressView.OnCompleted = () => this.RemoveFromSuperview();
+            _progressView.OnCompleted = () => Hide();
             _progressView.LineWidth = 1.5f;
             _progressView.Hidden = true;
 
@@ -44,9 +45,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _imageView.SetVerticalCenter(UIScreen.MainScreen.Bounds.Height / 2);
 
             AddSubviews(_dialogView, _progressView, _imageView);
-
-            _isLoading = true;
-            Animate();
         }
 
         private void Animate()
@@ -105,13 +103,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             }
         }
 
-        protected override void Dispose(bool disposing)
+        public void Show()
         {
-            base.Dispose(disposing);
-            if (disposing)
+            _modalWindow =  _modalWindow ?? new UIWindow(UIScreen.MainScreen.Bounds);
+            _modalWindow.Add(this);
+
+            _modalWindow.MakeKeyAndVisible();
+
+            _isLoading = true;
+            Animate();
+
+        }
+
+        public void Dismiss()
+        {
+            // Will hide this view at the end of next animation cycle
+            _isLoading = false;
+        }
+
+        private void Hide()
+        {
+            if (_modalWindow == UIApplication.SharedApplication.KeyWindow)
             {
-                _isLoading = false;
+                UIApplication.SharedApplication.Windows[0].MakeKeyWindow();
             }
+            this.RemoveFromSuperview();
+            _modalWindow.Hidden = true;
         }
     }
 
