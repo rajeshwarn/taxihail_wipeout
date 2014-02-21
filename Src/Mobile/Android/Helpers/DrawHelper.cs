@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 
         public static Bitmap Colorize(Bitmap src, Color colorFilter) {
 
-            Bitmap b = Bitmap.CreateBitmap(src);
+            Bitmap b = src.Copy(src.GetConfig(), true);
             for (int x = 0; x < b.Width; x++) {
                 for (int y = 0; y < b.Height; y++) {
                     int color = b.GetPixel(x, y);

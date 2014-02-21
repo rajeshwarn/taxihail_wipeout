@@ -186,6 +186,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 if (show)
                 {
+                    if (topActivity.Activity.Intent.Categories == null || topActivity.Activity.Intent.Categories.Contains("Progress"))
+                    {
+                        topActivity.Activity.Intent.AddCategory("Progress");
+                    }
+            
                     var contentView = rootView.GetChildAt(0);
                     rootView.RemoveView(contentView);
                     var relLayout = new RelativeLayout(topActivity.Activity.ApplicationContext);
@@ -196,6 +201,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 }
                 else
                 {
+                    if (topActivity.Activity.Intent.Categories != null && topActivity.Activity.Intent.Categories.Contains("Progress"))
+                    {
+                        topActivity.Activity.Intent.Categories.Remove("Progress");
+                    }
                     LoadingOverlay.StopAnimatingLoading();
                 }
             }

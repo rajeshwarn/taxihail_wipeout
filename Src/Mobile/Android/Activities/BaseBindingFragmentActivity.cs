@@ -20,6 +20,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             }
         }
 
+        public override bool OnKeyDown(Android.Views.Keycode keyCode, Android.Views.KeyEvent e)
+        {
+            if (e.KeyCode == Android.Views.Keycode.Back)
+            {
+                if (Intent.Categories.Contains("Progress"))
+                {
+                    return false;
+                }
+            }
+            return base.OnKeyDown(keyCode, e);
+        }      
+
         protected override void OnResume()
         {
             base.OnResume();
