@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
             var closeButton = new FlatButton();
             closeButton.SetTitle(Localize.GetValue("OkButtonText"), UIControlState.Normal);           
             closeButton.TranslatesAutoresizingMaskIntoConstraints = false;
-            FlatButtonStyle.Silver.ApplyTo(closeButton);
+            FlatButtonStyle.Green.ApplyTo(closeButton);
             text.InputAccessoryView.AddSubview(closeButton);
 
             closeButton.AddConstraints(new [] {
