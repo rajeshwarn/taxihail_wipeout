@@ -15,6 +15,9 @@ using apcurium.MK.Common;
 using System.Threading;
 using Cirrious.MvvmCross.ViewModels;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -22,7 +25,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
 		private int _refreshPeriod = 5; //in seconds
 	    private bool _waitingToNavigateAfterTimeOut;
+		readonly IOrderWorkflowService _orderWorkflowService;
 
+		public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService)
+		{
+			this._orderWorkflowService = orderWorkflowService;
+			
+		}
 		public void Init(string order, string orderStatus)
 		{
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
@@ -299,7 +308,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 if (isDone) 
                 {
-                    GoToSummary();
+					GoToSummary();
                 }
 
                 if (this.Services().Booking.IsStatusTimedOut(status.IBSStatusId))
@@ -519,6 +528,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					});
 			}
 		}
+
+		public ICommand PrepareNewOrder
+        {
+			get
+			{
+				return this.GetCommand(async () =>{
+					var address = await _orderWorkflowService.SetAddressToUserLocation();
+					if(address.HasValidCoordinate())
+					{
+						ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
+					}
+				});
+			}
+        }
 
         bool _isUnpairButtonVisible;
         public bool IsUnpairButtonVisible

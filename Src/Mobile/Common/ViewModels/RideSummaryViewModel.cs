@@ -8,11 +8,21 @@ using System.Globalization;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Configuration.Impl;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class RideSummaryViewModel: BaseViewModel
 	{
+		readonly IOrderWorkflowService _orderWorkflowService;
+
+		public RideSummaryViewModel(IOrderWorkflowService orderWorkflowService)
+		{
+			this._orderWorkflowService = orderWorkflowService;
+			
+		}
+
 		public void Init(string order, string orderStatus)
 		{			
 			Order = order.FromJson<Order> ();
@@ -131,6 +141,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					        order = Order.ToJson(),
 					        orderStatus = OrderStatus.ToJson()
 					    }));
+			}
+		}
+
+		public ICommand PrepareNewOrder
+		{
+			get
+			{
+				return this.GetCommand(async () =>{
+					var address = await _orderWorkflowService.SetAddressToUserLocation();
+					if(address.HasValidCoordinate())
+					{
+						ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
+					}
+				});
 			}
 		}
 	}

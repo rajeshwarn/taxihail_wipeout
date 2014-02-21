@@ -485,7 +485,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             return base.OnKeyDown(keyCode, e);
         }
 
-
         void IChangePresentation.ChangePresentation(ChangePresentationHint hint)
         {
             if (hint is HomeViewModelPresentationHint)
