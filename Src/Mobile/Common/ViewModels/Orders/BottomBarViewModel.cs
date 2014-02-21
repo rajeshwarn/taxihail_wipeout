@@ -63,12 +63,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					try
 					{
-						using(this.Services().Message.ShowProgress())
-						{
-							await _orderWorkflowService.SetPickupDate(date);
-							await _orderWorkflowService.ValidatePickupDestinationAndTime();
-							ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
-						}
+						await _orderWorkflowService.SetPickupDate(date);
+						await _orderWorkflowService.ValidatePickupDestinationAndTime();
+						ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
 					}
 					catch (OrderValidationException e)
 					{
