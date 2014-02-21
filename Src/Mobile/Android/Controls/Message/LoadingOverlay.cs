@@ -14,6 +14,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Activities;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {
@@ -71,13 +72,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             if (_car != null)
             {
                 _car.Recycle();
-            }                
+            }
 
             if (_progressImage != null)
             {
                 _progressImage.Recycle();
+                _progressImage = null;
             }
-                
+                            
             _car = BitmapFactory.DecodeResource(_activity.Resources, Resource.Drawable.taxi_progress);
 
             var displaySize = _activity.Resources.DisplayMetrics;
@@ -100,48 +102,48 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 //                _car = DrawHelper.Colorize(_car, _colorToUse);
 //            }
 
-            ThreadPool.QueueUserWorkItem(d =>
-            {
-                Animate();
-            });
+            StartAnimationLoop();
         }
+
+
 
         public static void StopAnimatingLoading()
         {                
             _isLoading = false;       
         }
 
-        private static void Animate()
+        private static async void StartAnimationLoop()
         {
-            if (_isLoading)
+            await Task.Run(async () =>
             {
-                IncreaseProgressDependingOnCurrentProgress();
-                Animate();
-            }
-            else
-            {
-                Progress = 100;
-                _activity.RunOnUiThread(() =>
+                while (_isLoading)
                 {
-                    _layoutImage.SetBackgroundDrawable(GetCircleForProgress());
-                    Thread.Sleep(500);
-                    RelativeLayout root = (RelativeLayout) _layoutCenter.Parent.Parent;
-                    root.RemoveView((LinearLayout)_layoutCenter.Parent);
-                });
-            }
+                    await IncreaseProgressDependingOnCurrentProgress();
+                }
+            });
+
+            Progress = 100;
+
+            _activity.RunOnUiThread(async () =>
+            {
+                _layoutImage.SetBackgroundDrawable(GetCircleForProgress());
+                await Task.Delay(500);
+                RelativeLayout root = (RelativeLayout) _layoutCenter.Parent.Parent;
+                root.RemoveView((LinearLayout)_layoutCenter.Parent);
+            });
         }
 
-        private static void IncrementProgress(float increment)
+        private static async Task IncrementProgress(float increment)
         {
             var nextProgress = Progress + increment;
 
             if (nextProgress < 20)
             {
-                Thread.Sleep(20);
+                await Task.Delay(20);
             }
             else
             {
-                Thread.Sleep(60);
+                await Task.Delay(60);
             }
 
             Progress = nextProgress;
@@ -152,31 +154,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             });                
         }
 
-        private static void IncreaseProgressDependingOnCurrentProgress()
+        private static async Task IncreaseProgressDependingOnCurrentProgress()
         {
+            const float speed = 1f;
             var currentProgress = Progress;
-
-            float speed = 1f;
+            var increment = 0f;
 
             if (currentProgress <= 50)
             {
-                IncrementProgress(speed);
+                increment = speed;
             }
             else if (currentProgress > 95)
             {
-                IncrementProgress(0);
+                increment = 0;
             }         
             else
             {
-                IncrementProgress((100 - currentProgress) / 80);
-            }                
+                increment = (100 - currentProgress) / 80;
+            } 
+
+            await IncrementProgress(increment);
+                           
         }
 
         private static BitmapDrawable GetCircleForProgress()
         {
             var conf = Bitmap.Config.Argb4444;
 
-            _progressImage = Bitmap.CreateBitmap(_windowSize.Width, _windowSize.Height, conf);
+            if (_progressImage == null)
+            {
+                _progressImage = Bitmap.CreateBitmap(_windowSize.Width, _windowSize.Height, conf);
+            }
 
             var canvas = new Canvas(_progressImage);
             var paint = new Paint();
