@@ -583,6 +583,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\taxi_progress.png" />
     <AndroidResource Include="Resources\Layout\Control_LoadingOverlay.axml" />
     <AndroidResource Include="Resources\Drawable\loading_overlay.xml" />
+    <AndroidResource Include="Resources\Drawable\white_button.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

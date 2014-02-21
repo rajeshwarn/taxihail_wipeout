@@ -34,6 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ViewVehicleType = Content.FindViewById<VehicleTypeAndEstimateControl>(Resource.Id.viewEstimate);
 
                 ViewDestination.IsDestination = true;
+                ViewPickup.IsDestination = false;
 
                 // temporary until we can be notified by the service that we're searching for an address
                 ViewPickup.IsLoadingAddress = false;
