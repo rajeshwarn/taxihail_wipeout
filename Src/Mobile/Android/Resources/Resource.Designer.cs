@@ -1999,7 +1999,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int visa_electron = 2130837848;
 			
 			// aapt resource value: 0x7f020159
-			public const int WindowDisplay = 2130837849;
+			public const int white_button = 2130837849;
+			
+			// aapt resource value: 0x7f02015a
+			public const int WindowDisplay = 2130837850;
 			
 			static Drawable()
 			{

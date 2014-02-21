@@ -227,9 +227,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                         LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.WrapContent),
                         Indeterminate = true,
                         Tag = "Progress"
+
                     };
                             
-                    ((RelativeLayout.LayoutParams)b.LayoutParameters).TopMargin = 92.ToPixels();
+                    ((RelativeLayout.LayoutParams)b.LayoutParameters).TopMargin = 78.ToPixels();
                     relLayout.AddView(b);
                     rootView.AddView(relLayout);
                 }               
