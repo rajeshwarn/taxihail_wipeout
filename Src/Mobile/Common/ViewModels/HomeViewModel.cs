@@ -34,6 +34,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
+            this.Services().Location.Start();
 			if (firstTime)
 			{
 				Map = AddChild<MapViewModel>();
@@ -54,8 +55,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public override void OnViewStopped()
 		{
 			base.OnViewStopped();
+            this.Services().Location.Stop();
 			this.Services().Vehicle.Stop();
+
 		}
+
+
 
 		public PanelMenuViewModel Panel { get; set; }
 

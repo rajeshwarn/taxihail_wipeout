@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 
         public IPhoneService Phone { get { return _container.Resolve<IPhoneService>(); } }
 
-        public AbstractLocationService Location { get { return _container.Resolve<AbstractLocationService>(); } }
+        public ILocationService Location { get { return _container.Resolve<ILocationService>(); } }
 
         public IBookingService Booking { get { return _container.Resolve<IBookingService>(); } }
 

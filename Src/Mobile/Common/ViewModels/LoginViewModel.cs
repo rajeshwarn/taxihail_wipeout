@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		readonly IFacebookService _facebookService;
 		readonly ITwitterService _twitterService;
 
+        private bool _loginWasSuccesful = false;
         public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
 			IPushNotificationService pushService)
@@ -48,9 +49,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             base.OnViewStarted(firstTime);
 
+            this.Services().Location.Start();
+
             CheckVersion();
         }
 
+        public override void OnViewStopped()
+        {
+            base.OnViewStopped();
+
+            if (!_loginWasSuccesful)
+            {
+                this.Services().Location.Stop();
+            }
+        }
         private void CheckVersion()
         {
             this.Services().ApplicationInfo.CheckVersionAsync();
@@ -279,8 +291,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void OnLoginSuccess()
         {
+            _loginWasSuccesful = true;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
-
 			ShowViewModel<HomeViewModel>();
 			if (LoginSucceeded != null)
 			{

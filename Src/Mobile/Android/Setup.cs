@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             _container.Register<IMessageService>(new MessageService(ApplicationContext));
             _container.Register<IAnalyticsService>((c, x) => new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>()));
 
-            _container.Register<AbstractLocationService>(new LocationService());
+            _container.Register<ILocationService>(new LocationService());
 
 			_container.Register<ILocalization>(new Localize(ApplicationContext,_container.Resolve<ILogger>()));
             _container.Register<IErrorHandler, ErrorHandler>();
