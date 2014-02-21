@@ -320,7 +320,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void CheckTwitterAccount()
         {
-            this.Services().Message.ShowProgress(true);
+			this.Services().Message.ShowProgress(true);
 
             _twitterService.GetUserInfos(async info =>
                 {
@@ -339,7 +339,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     finally
                     {
-                        this.Services().Message.ShowProgress(false);
+					this.Services().Message.ShowProgress(false);
                     }
                 });
         }

@@ -179,28 +179,26 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void ShowProgress(bool show)
         {
-            TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>().RequestMainThreadAction(() =>
-            {
-                var activity = TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
+            var topActivity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>();
+            var rootView = topActivity.Activity.Window.DecorView.RootView as ViewGroup;
 
+            if (rootView != null)
+            {
                 if (show)
                 {
-                    LoadingOverlay.StartAnimatingLoading(activity);
+                    var contentView = rootView.GetChildAt(0);
+                    rootView.RemoveView(contentView);
+                    var relLayout = new RelativeLayout(topActivity.Activity.ApplicationContext);
+                    relLayout.LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
+                    relLayout.AddView(contentView);
+                    LoadingOverlay.StartAnimatingLoading(relLayout, topActivity.Activity);
+                    rootView.AddView(relLayout);
                 }
                 else
                 {
                     LoadingOverlay.StopAnimatingLoading();
                 }
-
-                //if (show)
-                //{
-                //    LoadingOverlay.StartBeta(Context);
-                //}
-                //else
-                //{
-                //    LoadingOverlay.StopBeta(Context);
-                //}
-            });
+            }
         }
 
         public void ShowProgressNonModal(bool show)

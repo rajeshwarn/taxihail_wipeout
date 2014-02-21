@@ -19,7 +19,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {
     public class LoadingOverlay
     {
-        private static Dialog _progressBar;
         private static bool _isLoading;
         private static Activity _activity;
         private static float Progress;
@@ -31,47 +30,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         private static LinearLayout _layoutImage;
         private static Android.Graphics.Color _colorToUse = Android.Graphics.Color.ParseColor("#0378ff");
 
-        public static void StartBeta(Context context)
-        {
-            var ownerId = Guid.NewGuid().ToString();
-            var i = new Intent(context, typeof(AlertDialogActivity));
-            i.PutExtra("OwnerId", ownerId);
-            context.StartActivity(i);            
-        }
-
-        public static void StopBeta(Context context)
-        {
-            // May stop the wrong activity
-            ((Activity)context).Finish();
-        }
-
-
-        public static void StartAnimatingLoading(Activity activity)
+        public static void StartAnimatingLoading(RelativeLayout masterLayout, Activity activity)
         {
             _activity = activity;
-
-            _progressBar = new Dialog(_activity);
-            _progressBar.RequestWindowFeature((int)WindowFeatures.NoTitle);
-            _progressBar.SetCancelable(false);
-            _progressBar.Window.SetBackgroundDrawable(_activity.Resources.GetDrawable(Resource.Drawable.loading_overlay));
-            _progressBar.Window.DecorView.Invalidate();
-
-            WindowManagerLayoutParams mainLayoutParameters = new WindowManagerLayoutParams();
-            mainLayoutParameters.CopyFrom(_progressBar.Window.Attributes);
-            mainLayoutParameters.Width = WindowManagerLayoutParams.MatchParent;
-            mainLayoutParameters.Height = WindowManagerLayoutParams.MatchParent;
-
-            _progressBar.Show();
-            _progressBar.Window.Attributes = mainLayoutParameters;
 
             var layoutParent = new LinearLayout(_activity);
             _layoutCenter = new LinearLayout(_activity);
             _layoutImage = new LinearLayout(_activity);
 
             var layoutParentParameters = new ViewGroup.LayoutParams(-1, -1);
-            layoutParentParameters.Width = mainLayoutParameters.Width;
-            layoutParentParameters.Height = mainLayoutParameters.Height;
+            layoutParentParameters.Width = masterLayout.LayoutParameters.Width;
+            layoutParentParameters.Height = masterLayout.LayoutParameters.Height;
             layoutParent.LayoutParameters = layoutParentParameters;
+
+            masterLayout.SetBackgroundDrawable(_activity.Resources.GetDrawable(Resource.Drawable.loading_overlay));
+            layoutParent.SetBackgroundColor(Android.Graphics.Color.Argb(80, 0, 0, 0));
+
 
             var layoutCenterParameters = new LinearLayout.LayoutParams(-2, 0);
             layoutCenterParameters.Weight = 1.0f;
@@ -89,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             _layoutCenter.AddView(_layoutImage);
             layoutParent.AddView(_layoutCenter);
-            _progressBar.AddContentView(layoutParent, layoutParentParameters);
+            masterLayout.AddView(layoutParent, layoutParentParameters);
 
             _layoutCenter.ClearAnimation();
             _layoutImage.SetBackgroundDrawable(null);
@@ -107,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _car = BitmapFactory.DecodeResource(_activity.Resources, Resource.Drawable.taxi_progress);
 
             var displaySize = _activity.Resources.DisplayMetrics;
-            var windowHeight = (int)(_car.Width * 1.4f);
+            var windowHeight = (int)(_car.Width * 1.5f);
             _windowSize = new Size(displaySize.WidthPixels, windowHeight);
 
             var _radius = _car.Width * 1.3f;
@@ -133,44 +107,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         }
 
         public static void StopAnimatingLoading()
-        {
-            if (_progressBar != null && _progressBar.IsShowing)
-            {
-                _isLoading = false;
-            }
+        {                
+            _isLoading = false;       
         }
 
         private static void Animate()
         {
-            if (_progressBar != null)
+            if (_isLoading)
             {
-                if (_isLoading)
+                IncreaseProgressDependingOnCurrentProgress();
+                Animate();
+            }
+            else
+            {
+                Progress = 100;
+                _activity.RunOnUiThread(() =>
                 {
-                    IncreaseProgressDependingOnCurrentProgress();
-                    Animate();
-                }
-                else
-                {
-                    try
-                    {
-                        Progress = 100;
-                        _activity.RunOnUiThread(() =>
-                        {
-                            _layoutImage.SetBackgroundDrawable(GetCircleForProgress());
-                        });
-
-                        Thread.Sleep(500);
-
-                        _activity.RunOnUiThread(() =>
-                        {
-                            _progressBar.Dismiss();
-                        });
-                    }
-                    catch
-                    {
-                        // on peut avoir une exception ici si activity est plus présente, pas grave
-                    }
-                }
+                    _layoutImage.SetBackgroundDrawable(GetCircleForProgress());
+                    Thread.Sleep(500);
+                    RelativeLayout root = (RelativeLayout) _layoutCenter.Parent.Parent;
+                    root.RemoveView((LinearLayout)_layoutCenter.Parent);
+                });
             }
         }
 
@@ -178,18 +135,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         {
             var nextProgress = Progress + increment;
 
-            if(nextProgress >= 95)
-            {
-                return;
-            }
-
             if (nextProgress < 20)
             {
                 Thread.Sleep(20);
             }
             else
             {
-                Thread.Sleep(50);
+                Thread.Sleep(60);
             }
 
             Progress = nextProgress;
@@ -206,13 +158,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             float speed = 1f;
 
-            if (currentProgress <= 80)
+            if (currentProgress <= 50)
             {
                 IncrementProgress(speed);
             }
-            else if (currentProgress > 80)
+            else if (currentProgress > 95)
             {
-                IncrementProgress((100 - currentProgress) / 2);
+                IncrementProgress(0);
+            }         
+            else
+            {
+                IncrementProgress((100 - currentProgress) / 80);
             }                
         }
 
@@ -261,9 +217,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             }
 
             _layoutCenter.RequestLayout();
-
             return new BitmapDrawable(_progressImage);
         }
     }
 }
-

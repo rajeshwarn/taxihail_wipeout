@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					try
 					{
-						using(this.Services().Message.ShowProgress())
+                        using(this.Services().Message.ShowProgress())						
 						{
 							var result = await _orderWorkflowService.ConfirmOrder();
 							ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
