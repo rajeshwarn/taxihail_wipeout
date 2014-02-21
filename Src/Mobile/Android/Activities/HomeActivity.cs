@@ -458,6 +458,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
+            if (!base.OnKeyDown(keyCode, e))
+            {
+                return false;
+            }
+
             if (keyCode == Keycode.Back)
             {
                 switch (_presentationState)
