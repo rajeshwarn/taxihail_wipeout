@@ -19,6 +19,8 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using TinyIoC;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -39,6 +41,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private Marker _pickupPin;
         private OrderStatusDetail _taxiLocation;
         private Marker _taxiLocationPin;
+
+        private BitmapDescriptor _destinationIcon;
+        private BitmapDescriptor _hailIcon;
 
         public TouchMap(Context context)
             : base(context)
@@ -79,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        public Address Dropoff
+        public Address DropOff
         {
             get { return _dropoff; }
             set
@@ -169,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                             _pickupPin.Visible = false;
                         }
 
-                        ShowDropoffPin(Dropoff);
+                        ShowDropoffPin(DropOff);
                         PostInvalidateDelayed(100);
                     }
                     else if (_addressSelectionMode == AddressSelectionMode.DropoffSelection)
@@ -188,7 +193,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     }
                     else
                     {
-                        ShowDropoffPin(Dropoff);
+                        ShowDropoffPin(DropOff);
                         ShowPickupPin(Pickup);
                         PostInvalidateDelayed(100);
                     }
@@ -200,6 +205,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void Initialize()
         {
+            var useColor = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
+            var colorBgTheme = useColor ? (Color?)Resources.GetColor(Resource.Color.login_background_color) : (Color?)null;
+
+            var destinationIcon =  Resources.GetDrawable(Resource.Drawable.@destination_icon);
+            _destinationIcon = DrawHelper.DrawableToBitmapDescriptor(destinationIcon, colorBgTheme);
+
+            var hailIcon = Resources.GetDrawable(Resource.Drawable.@hail_icon);       
+            _hailIcon = DrawHelper.DrawableToBitmapDescriptor(hailIcon, colorBgTheme);
         }
 
         public void SetMapReady()
@@ -340,7 +353,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _dropoffPin = Map.AddMarker(new MarkerOptions()
                     .SetPosition(new LatLng(0, 0))
                     .Anchor(.5f, 1f)
-                    .InvokeIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.destination_icon))
+                    .InvokeIcon(_destinationIcon)
                     .Visible(false));
             }
 
@@ -364,7 +377,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _pickupPin = Map.AddMarker(new MarkerOptions()
                     .SetPosition(new LatLng(0, 0))
                     .Anchor(.5f, 1f)
-                    .InvokeIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.hail_icon))
+                    .InvokeIcon(_hailIcon)
                     .Visible(false));
             }
 

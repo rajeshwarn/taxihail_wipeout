@@ -26,7 +26,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:enabled="false"
-            local:MvxBind="Pickup Pickup.Model; TaxiLocation OrderStatusDetail; Center MapCenter"
+            local:MvxBind="Pickup Order.PickupAddress; DropOff Order.DropOffAddress; TaxiLocation OrderStatusDetail; Center MapCenter"
             android:clickable="true" />
         <LinearLayout
             android:orientation="horizontal"
