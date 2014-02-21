@@ -46,14 +46,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_refreshPeriod = Settings.ClientPollingInterval;
             
-			Task.Factory.StartNew (() =>
-            {
-                Thread.Sleep( 1000 );     
-                InvokeOnMainThread(RefreshStatus);
-            });
-
-			Observable.Interval( TimeSpan.FromSeconds (_refreshPeriod))
-				.Subscribe (unit => InvokeOnMainThread (RefreshStatus))
+			Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds (_refreshPeriod))
+				.ObserveOn(SynchronizationContext.Current)
+				.Subscribe (_ => RefreshStatus())
 				.DisposeWith (Subscriptions);
 
 		}
@@ -254,10 +249,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private bool _isCurrentlyPairing;
 		string _vehicleNumber;
-        private void RefreshStatus ()
+		private async void RefreshStatus ()
         {
             try {
-                var status = this.Services().Booking.GetOrderStatus(Order.Id);
+				var status = await this.Services().Booking.GetOrderStatusAsync(Order.Id);
 				if(status.VehicleNumber != null)
 				{
 					_vehicleNumber = status.VehicleNumber;
@@ -418,28 +413,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         "", 
                         this.Services().Localize["StatusConfirmCancelRide"],
                         this.Services().Localize["YesButton"], 
-                        () => Task.Factory.SafeStartNew(() =>
+						async () =>
                         {
-                            try 
+							bool isSuccess = false;
+							using(this.Services().Message.ShowProgress())
+							{
+								isSuccess = await Task.Run(() => this.Services().Booking.CancelOrder(Order.Id)); 
+							}
+                            if (isSuccess) 
                             {
-                                this.Services().Message.ShowProgress(true);
-
-                                var isSuccess = this.Services().Booking.CancelOrder(Order.Id);      
-                                if (isSuccess) 
-                                {
-                                    this.Services().Booking.ClearLastOrder();
-									ShowViewModelAndRemoveFromHistory<HomeViewModel> ();
-                                } 
-                                else 
-                                {
-                                    this.Services().Message.ShowMessage(this.Services().Localize["StatusConfirmCancelRideErrorTitle"], this.Services().Localize["StatusConfirmCancelRideError"]);
-                                }
+                                this.Services().Booking.ClearLastOrder();
+								ShowViewModelAndRemoveFromHistory<HomeViewModel> ();
                             } 
-                            finally 
+                            else 
                             {
-                                this.Services().Message.ShowProgress(false);
-                            }     
-                        }),
+                                this.Services().Message.ShowMessage(this.Services().Localize["StatusConfirmCancelRideErrorTitle"], this.Services().Localize["StatusConfirmCancelRideError"]);
+                            }
+                        },
                         this.Services().Localize["NoButton"], () => { });
                 });
             }
