@@ -139,14 +139,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		private Address UpdateAddressWithPlaceDetail(Address value)
+		{
+			if ((value != null) && (value.AddressType == "place"))
+			{
+				var place = _placeService.GetPlaceDetail("", value.PlaceReference);
+				return place;
+			}
+			else
+			{
+				return value;
+			}
+		}
+
 		public ICommand AddressSelected
 		{
 			get
 			{
 				return this.GetCommand<AddressViewModel>(vm => {
-					_orderWorkflowService.SetAddress(vm.Address);
+					var detailedAddress = UpdateAddressWithPlaceDetail(vm.Address);
+					_orderWorkflowService.SetAddress(detailedAddress);
 					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
-					ChangePresentation(new ZoomToStreetLevelPresentationHint(vm.Address.Latitude, vm.Address.Longitude));
+					ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
 				}); 
 			}
 		}
