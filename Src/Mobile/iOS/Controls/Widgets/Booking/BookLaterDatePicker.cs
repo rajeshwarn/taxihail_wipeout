@@ -110,18 +110,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
         {
             get 
             {
-                return (DateTime?)DatePicker.Date;
+                var d = (DateTime?)DatePicker.Date;
+                if (d.HasValue)
+                {
+                    return d.Value.ToLocalTime();
+                }
+                return null;
             }
             set 
             {
-                if(value == null)
+                if (value == null)
                 {
-                    DatePicker.SetDate(DateTime.Now, true);
+                    DatePicker.SetDate(DateTime.UtcNow, true);
+                }
+                else if (value.HasValue)
+                {
+                    DatePicker.SetDate(value.Value.ToUniversalTime(), true);
                 }
                 else
                 {
-                    DatePicker.SetDate(value, true);
-                }    
+                    DatePicker.SetDate(null, true);
+                }
             } 
         }
     }

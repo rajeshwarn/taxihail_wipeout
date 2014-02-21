@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 	public static class PositionExtensions
 	{
-		public static TimeSpan ValidCoordinateTime = new TimeSpan(0, 0, 10);
+		public static TimeSpan ValidCoordinateTime = new TimeSpan(0, 0, 30);
 
 		public static bool IsBetterThan(this Position trueIfBetter, Position falseIfBetter)
 		{

@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_refreshPeriod = Settings.ClientPollingInterval;
             
-			Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds (_refreshPeriod))
+            Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds (_refreshPeriod))
 				.ObserveOn(SynchronizationContext.Current)
 				.Subscribe (_ => RefreshStatus())
 				.DisposeWith (Subscriptions);
