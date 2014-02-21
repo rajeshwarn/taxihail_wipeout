@@ -52,7 +52,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             MessageHelper.Show( title, message,additionalButton);
         }
-
 		public void ShowProgress(bool show)
 		{
             if(show)

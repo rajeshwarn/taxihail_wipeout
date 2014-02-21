@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         private static int count = 0;
         private static UIView _modalBackgroundView;
 
-        public static void StartAnimatingLoading()
+        public static UIView StartAnimatingLoading()
         {
             lock (_lock)
             {
@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                     UIApplication.SharedApplication.KeyWindow.AddSubview(_modalBackgroundView);
                 }
             }
+            return _modalBackgroundView;
         }
 
         public static void StopAnimatingLoading()
@@ -39,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                     _modalBackgroundView = null;
                 }
 
-                count = Math.Max(0, --count);
+                count = Math.Max(0, count-1);
             }
         }
     }
