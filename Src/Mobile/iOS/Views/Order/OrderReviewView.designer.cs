@@ -46,10 +46,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 		MonoTouch.UIKit.UILabel lblVehicule { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtNote { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextView txtNote { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (iconNbPasserngers != null) {
+				iconNbPasserngers.Dispose ();
+				iconNbPasserngers = null;
+			}
+
+			if (iconPassengerName != null) {
+				iconPassengerName.Dispose ();
+				iconPassengerName = null;
+			}
+
+			if (iconPhone != null) {
+				iconPhone.Dispose ();
+				iconPhone = null;
+			}
+
 			if (lblApt != null) {
 				lblApt.Dispose ();
 				lblApt = null;
@@ -93,21 +108,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (txtNote != null) {
 				txtNote.Dispose ();
 				txtNote = null;
-			}
-
-			if (iconPhone != null) {
-				iconPhone.Dispose ();
-				iconPhone = null;
-			}
-
-			if (iconNbPasserngers != null) {
-				iconNbPasserngers.Dispose ();
-				iconNbPasserngers = null;
-			}
-
-			if (iconPassengerName != null) {
-				iconPassengerName.Dispose ();
-				iconPassengerName = null;
 			}
 		}
 	}

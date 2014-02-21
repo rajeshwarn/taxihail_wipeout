@@ -15,7 +15,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 		void ShowProgressNonModal(bool show);
 		IDisposable ShowProgress ();
 		IDisposable ShowProgressNonModal ();
-
         
         void ShowDialogActivity(Type type);
 		void ShowDialog<T>(string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onResult);
