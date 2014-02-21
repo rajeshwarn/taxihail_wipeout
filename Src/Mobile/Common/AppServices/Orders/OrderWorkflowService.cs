@@ -35,9 +35,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
         readonly ISubject<BookingSettings> _bookingSettingsSubject;
 		readonly ISubject<string> _estimatedFareSubject;
-		string _noteToDriver = null;
-
-
+		readonly ISubject<string> _noteToDriverSubject = new BehaviorSubject<string>(string.Empty);
 
 		public OrderWorkflowService(AbstractLocationService locationService,
 			IAccountService accountService,
@@ -53,17 +51,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_accountService = accountService;
 			_locationService = locationService;
 
-			// TODO: Listen to account booking settings changes && set default value?
-			var settings = accountService.CurrentAccount.Settings;
-			if (settings.Passengers <= 0)
-			{
-				settings.Passengers = 1;
-			}
-			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(settings);
+			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(accountService.CurrentAccount.Settings);
 			_localize = localize;
 			_bookingService = bookingService;
 
 			_estimatedFareSubject = new BehaviorSubject<string>(_localize["NoFareText"]);
+
 		}
 
 		public async Task SetAddress(Address address)
@@ -110,7 +103,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				await SetAddressToCurrentSelection(address);
 				return address;
 			}
-
 		}
 
         public async Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken)
@@ -122,12 +114,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			await SetAddressToCurrentSelection(address);
 		}
 
-		public async Task ClearDestinationAddress()
+		public void ClearDestinationAddress()
 		{
 			_destinationAddressSubject.OnNext(new Address());
 		}
 
-		public async Task SetPickupDate(DateTime? date)
+		public void SetPickupDate(DateTime? date)
 		{
 			_pickupDateSubject.OnNext(date);
 		}
@@ -196,7 +188,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					Settings = order.Settings
 				};
 
-
 				PrepareForNewOrder();
 
 				// TODO: Refactor so we don't have to return two distinct objects
@@ -239,10 +230,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 				throw new OrderCreationException(message);
 			}
-
 		}
 
-		public async Task SetBookingSettings(BookingSettings bookingSettings)
+		public void SetBookingSettings(BookingSettings bookingSettings)
 		{
 			_bookingSettingsSubject.OnNext(bookingSettings);
 		}
@@ -288,6 +278,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public IObservable<string> GetAndObserveEstimatedFare()
 		{
 			return _estimatedFareSubject;
+		}
+
+		public IObservable<string> GetAndObserveNoteToDriver()
+		{
+			return _noteToDriverSubject;
 		}
 
 		public IObservable<DateTime?> GetAndObservePickupDate()
@@ -356,7 +351,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		private void PrepareForNewOrder()
 		{
-			_noteToDriver = null;
+			_noteToDriverSubject.OnNext(string.Empty);
 			_pickupAddressSubject.OnNext(new Address());
 			_destinationAddressSubject.OnNext(new Address());
 			_addressSelectionModeSubject.OnNext(AddressSelectionMode.PickupSelection);
@@ -365,9 +360,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_estimatedFareSubject.OnNext(_localize["NoFareText"]);
 		}
 
+		public void ResetOrderSettings()
+		{
+			_noteToDriverSubject.OnNext(string.Empty);
+			_bookingSettingsSubject.OnNext(_accountService.CurrentAccount.Settings);
+		}
+
 		public void SetNoteToDriver(string text)
 		{
-			_noteToDriver = text;
+			_noteToDriverSubject.OnNext(text);
 		}
 
 		public async Task<bool> ShouldWarnAboutEstimate()
@@ -393,7 +394,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
 			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
 			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
-			order.Note = _noteToDriver;
+			order.Note = await _noteToDriverSubject.Take(1).ToTask();
 
 			return order;
 		}
@@ -403,7 +404,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_pickupAddressSubject.OnNext(previous.PickupAddress);
 			_destinationAddressSubject.OnNext(previous.DropOffAddress);
 			_bookingSettingsSubject.OnNext(previous.Settings);
-			_noteToDriver = previous.Note;
+			_noteToDriverSubject.OnNext(previous.Note);
 		}
     }
 }
