@@ -271,25 +271,10 @@ namespace apcurium.MK.Booking.IBS.Impl
             var isCompleted = false;
             UseService(service =>
             {
-                var count = 0;
-                IbsOrderStatus status;
-
-                //We need to try 5 times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up.
-                do
-                {
-                    if (count > 0)
-                    {
-                        Logger.LogMessage("WebService Cancel Order is not working!  Trying again in 500ms  : " + orderId +
-                                          " " + accountId);
-                        Thread.Sleep(500);
-                    }
-
-                    var result = service.CancelBookOrder(UserNameApp, PasswordApp, orderId, contactPhone, null,
-                        accountId);
-                    count++;
-                    isCompleted = result == 0;
-                    status = GetOrderStatus(orderId, accountId, contactPhone);
-                } while ((status.Status.ToSafeString().Contains("Cancel")) && (count <= 5));
+                var count = 0;                
+                var result = service.CancelBookOrder(UserNameApp, PasswordApp, orderId, contactPhone, null, accountId);                    
+                var status = GetOrderStatus(orderId, accountId, contactPhone);
+                isCompleted = (result == 0) && (VehicleStatuses.CompletedStatuses.Contains(status.Status));                
             });
             return isCompleted;
         }

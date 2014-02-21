@@ -38,5 +38,35 @@ namespace apcurium.MK.Common.Extensions
 
             throw new AggregateException(exceptions);
         }
+
+
+        public static void Retry(this Func<bool> func, TimeSpan retryInterval, int retryCount = 3)
+        {
+            var exceptions = new List<Exception>();
+
+            for (var retry = 0; retry < retryCount; retry++)
+            {
+                try
+                {
+                    var isSuccessful = func();
+                    if (isSuccessful)
+                    {
+                        return;
+                    }                    
+                    else
+                    {
+                        exceptions.Add(new Exception("Method returned false"));
+                        Thread.Sleep(retryInterval);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    exceptions.Add(ex);
+                    Thread.Sleep(retryInterval);
+                }
+            }
+
+            throw new AggregateException(exceptions);
+        }
     }
 }
