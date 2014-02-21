@@ -164,15 +164,16 @@
             if (result.responseText) {
                 result = JSON.parse(result.responseText).responseStatus;
             }
+
             var $alert = $('<div class="alert alert-error" />');
             if (result.errorCode == "CreateOrder_RuleDisable") {
                 $alert.append($('<div />').text(result.message));
             }
-            else if (result.errorCode) {
-                $alert.append($('<div />').text(this.localize(result.errorCode)));
+            else if (result.statusText) {
+                $alert.append($('<div />').text(this.localize(result.statusText)));
             }
             _.each(result.errors, function (error) {
-                $alert.append($('<div />').text(this.localize(error.errorCode)));
+                $alert.append($('<div />').text(this.localize(error.statusText)));
             }, this);
             this.$('.errors').html($alert);
         },
