@@ -191,6 +191,15 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 {
                     LoadingOverlay.StopAnimatingLoading();
                 }
+
+                //if (show)
+                //{
+                //    LoadingOverlay.StartBeta(Context);
+                //}
+                //else
+                //{
+                //    LoadingOverlay.StopBeta(Context);
+                //}
             });
         }
 

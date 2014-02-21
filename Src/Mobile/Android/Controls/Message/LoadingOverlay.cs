@@ -13,6 +13,7 @@ using TinyIoC;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Client.Activities;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {
@@ -29,6 +30,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         private static LinearLayout _layoutCenter;
         private static LinearLayout _layoutImage;
         private static Android.Graphics.Color _colorToUse = Android.Graphics.Color.ParseColor("#0378ff");
+
+        public static void StartBeta(Context context)
+        {
+            var ownerId = Guid.NewGuid().ToString();
+            var i = new Intent(context, typeof(AlertDialogActivity));
+            i.PutExtra("OwnerId", ownerId);
+            context.StartActivity(i);            
+        }
+
+        public static void StopBeta(Context context)
+        {
+            // May stop the wrong activity
+            ((Activity)context).Finish();
+        }
+
 
         public static void StartAnimatingLoading(Activity activity)
         {
