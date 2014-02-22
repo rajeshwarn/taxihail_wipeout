@@ -12,7 +12,6 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore.Touch.Views;
-using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -25,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             _modalHost = modalHost;
             _logger = logger;
+
             
         }
 
@@ -61,7 +61,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             
             var mailComposer = new MFMailComposeViewController ();
 
-            var errorLogPath = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.ErrorLogFile;
+            var appSettings = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>();
+            var errorLogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), appSettings.Data.ErrorLogFile);
             if (File.Exists (errorLogPath))
             {
                 mailComposer.AddAttachmentData (NSData.FromFile (errorLogPath), "text", "errorlog.txt");
