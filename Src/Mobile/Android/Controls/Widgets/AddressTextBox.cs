@@ -15,6 +15,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         public Action<string,string> AddressUpdated { get; set; }
 
+        public event EventHandler AddressClicked;
+
         private Color SelectedColor;
         public EditText AddressTextView;
         private EditText StreetNumberTextView;
@@ -134,10 +136,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 }
             });
 
+            AddressTextView.Click += (sender, e) => {
+                if(!IsReadOnly && AddressClicked!= null)
+                {
+                    AddressClicked(this, null);
+                }
+            };
+
             StreetNumberTextView.FocusChange += (sender, e) => 
             {
                 if(e.HasFocus)
                 {
+                    if(string.IsNullOrWhiteSpace(StreetNumberTextView.Text))
+                    {
+                        if(AddressClicked != null)
+                        {
+                            AddressClicked(this, null);
+                        }
+                        return;
+                    }
+
                     Resize();
                     StreetNumberTextView.SetTextColor(Color.White);
                     StreetNumberTextView.SetBackgroundColor(SelectedColor);
