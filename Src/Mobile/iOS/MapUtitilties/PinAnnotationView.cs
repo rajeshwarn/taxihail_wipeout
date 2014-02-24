@@ -43,11 +43,11 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             Image = ann.GetImage();
 
             if (ann.AddressType == AddressAnnotationType.Taxi) {
-                var lblVehicleNumber = new UILabel(new RectangleF(0, 0, Image.Size.Width, 16));
+                var lblVehicleNumber = new UILabel(new RectangleF(0, 8, Image.Size.Width, 16));
                 lblVehicleNumber.BackgroundColor = UIColor.Clear;
                 lblVehicleNumber.TextColor = Theme.BackgroundColor;
                 lblVehicleNumber.TextAlignment = UITextAlignment.Center;
-                lblVehicleNumber.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 34/2);
+                lblVehicleNumber.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 30/2);
                 lblVehicleNumber.Text = ((AddressAnnotation)Annotation).Subtitle;
                 AddSubview(lblVehicleNumber);
             }
