@@ -36,13 +36,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             BackgroundColor = UIColor.Clear;
             viewPickup.BackgroundColor = UIColor.Clear;
             viewDestination.BackgroundColor = UIColor.Clear;
-            
-            viewDestination.IsDestination = true;
 
-            // temporary until we can be notified by the service that we're searching for an address
-            viewPickup.IsLoadingAddress = false;
             viewPickup.IsDestination = false;
-            viewDestination.IsLoadingAddress = false;
+            viewDestination.IsDestination = true;
 
             // since we don't have the vehicle selection yet, we hardcode this value
             viewVehicleType.VehicleType = "Taxi";
@@ -71,6 +67,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(viewPickup)
                 .For(v => v.IsReadOnly)
                 .To(vm => vm.ShowDestination);
+            set.Bind(viewPickup)
+                .For(v => v.IsLoadingAddress)
+                .To(vm => vm.IsLoadingAddress);
             set.Bind(viewPickup.AddressTextView)
                 .To(vm => vm.PickupAddress.DisplayAddress);
 
@@ -78,6 +77,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Hidden)
                 .To(vm => vm.ShowDestination)
                 .WithConversion("BoolInverter");
+            set.Bind(viewDestination)
+                .For(v => v.IsLoadingAddress)
+                .To(vm => vm.IsLoadingAddress);
             set.Bind(viewDestination.AddressTextView)
                 .To(vm => vm.DestinationAddress.DisplayAddress);
 

@@ -213,7 +213,7 @@
   <string name="CreateAccountFullNamePlaceHolder">Full Name</string>
   <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall">The specified Pickup address lies outside the regular service area.</string>
-  <string name="ServiceErrorCreateOrder_InvalidProvider">Order cannot be created, invalid provider. Please try again or call us.</string>
+  <string name="ServiceErrorCreateOrder_InvalidProvider">Order cannot be created, invalid provider. Please contact {0} at {1} for further assistance.</string>
   <string name="View_BookingStatus">Status</string>
   <string name="LocationNoHistory">No history</string>
   <string name="Tuto07Top">On the Status screen you will see a reservation number confirming your booking. Once a vehicle is assigned, you can watch as it progresses to your pickup location.</string>
@@ -461,4 +461,5 @@
   <string name="Estimate">Estimate</string>
   <string name="ViewAll">View All</string>
   <string name="Collapse">Collapse</string>
+  <string name="ServiceErrorCreateOrder_InvalidProvider_NoCall">Order cannot be created, invalid provider.</string>
 </resources>

@@ -38,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
         readonly ISubject<BookingSettings> _bookingSettingsSubject;
 		readonly ISubject<string> _estimatedFareSubject;
 		readonly ISubject<string> _noteToDriverSubject = new BehaviorSubject<string>(string.Empty);
+		readonly ISubject<bool> _loadingAddressSubject = new BehaviorSubject<bool>(false);
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -68,6 +69,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<Address> SetAddressToUserLocation()
 		{
+			_loadingAddressSubject.OnNext(true);
 			// TODO: Location service refactoring is needed in order
 			// to simplify this method
 
@@ -97,6 +99,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			if (_locationService.BestPosition == null)
 			{
 				//this.Services().Message.ShowToast("Cant find location, please try again", ToastDuration.Short);
+				_loadingAddressSubject.OnNext(false);
 				return new Address();
 			}
 			else
@@ -289,16 +292,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			return _pickupDateSubject;
 		}
+
+		public IObservable<bool> GetAndObserveLoadingAddress()
+		{
+			return _loadingAddressSubject;
+		}
 		
 		private async Task<Address> SearchAddressForCoordinate(Position p)
 		{
-			//IsExecuting = true;
+			_loadingAddressSubject.OnNext(true);
 			using (Logger.StartStopwatch("SearchAddress : " + p.Latitude.ToString(CultureInfo.InvariantCulture) + ", " + p.Longitude.ToString(CultureInfo.InvariantCulture)))
 			{
 				var accountAddress = _accountService.FindInAccountAddresses(p.Latitude, p.Longitude);
 				if (accountAddress != null)
 				{
 					Logger.LogMessage("Address found in account");
+					_loadingAddressSubject.OnNext(false);
 					return accountAddress;
 				}
 				else
@@ -307,6 +316,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					Logger.LogMessage("Found {0} addresses", address.Count());
 					if (address.Any())
 					{
+						_loadingAddressSubject.OnNext(false);
 						return address[0];
 					}
 					else
@@ -315,12 +325,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 						// TODO: Refactor. We should probably throw an exception here.
 						// Error should be handled by the caller.
+						_loadingAddressSubject.OnNext(false);
 						return new Address(){ Latitude = p.Latitude, Longitude = p.Longitude };
 					}
 				}
 			}
-
-			//IsExecuting = false;
 		}
 
 		private async Task SetAddressToCurrentSelection(Address address)

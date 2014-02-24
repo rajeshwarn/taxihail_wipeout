@@ -4504,6 +4504,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0a0115
 			public const int ServiceErrorCreateOrder_InvalidProvider = 2131362069;
 			
+			// aapt resource value: 0x7f0a020d
+			public const int ServiceErrorCreateOrder_InvalidProvider_NoCall = 2131362317;
+			
 			// aapt resource value: 0x7f0a017d
 			public const int ServiceErrorCreateOrder_NoFareEstimateAvailable = 2131362173;
 			
