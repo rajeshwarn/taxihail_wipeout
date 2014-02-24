@@ -218,14 +218,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     new RectangleF((this.Bounds.Width - pinSize.Width) / 2, (this.Bounds.Height - pinSize.Height) / 2, pinSize.Width, pinSize.Height);
 
             // change position of Legal link on map
-            foreach (var subview in Subviews)
+            var legalView = Subviews.FirstOrDefault(x => x is UILabel);
+            if (legalView != null)
             {
-                if (subview is UILabel)
-                { 
-                    var legalView = subview;
-                    legalView.IncrementX(5).IncrementY(-47);
-                }
-            }                
+                var leftMargin = 8;
+                var bottomMargin = 13;
+                var menuButtonWidth = 39;
+                legalView.SetX(leftMargin + menuButtonWidth + legalView.Frame.Width).SetY(this.Frame.Bottom - legalView.Frame.Height - bottomMargin); 
+            }
         }
 
         void ShowMarkers()
