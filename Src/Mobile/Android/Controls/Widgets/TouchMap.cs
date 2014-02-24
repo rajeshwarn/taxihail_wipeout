@@ -500,7 +500,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private Bitmap CreateTaxiBitmap(string vehicleNumber)
         {
             var textSize = DrawHelper.GetPixels(12);
-            var textVerticalOffset = DrawHelper.GetPixels(8);
+            var textVerticalOffset = DrawHelper.GetPixels(10);
             var taxiIcon = BitmapFactory.DecodeResource(Resources, Resource.Drawable.taxi_icon);
 
             /* Find the width and height of the title*/
