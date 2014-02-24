@@ -34,6 +34,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<DateTime?> GetAndObservePickupDate();
 		IObservable<string> GetAndObserveEstimatedFare();
 		IObservable<string> GetAndObserveNoteToDriver();
+		IObservable<bool> GetAndObserveLoadingAddress();
 
 		Task<bool> ShouldWarnAboutEstimate();
 

@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			this.Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
 			this.Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), selectionMode => AddressSelectionMode = selectionMode);
 			this.Observe(_orderWorkflowService.GetAndObserveEstimatedFare(), fare => EstimatedFare = fare);
+			this.Observe(_orderWorkflowService.GetAndObserveLoadingAddress(), loading => IsLoadingAddress = loading);
 		}
 
 		private Address _pickupAddress;
@@ -49,8 +50,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		
-
 		private AddressSelectionMode _addressSelectionMode;
 		public AddressSelectionMode AddressSelectionMode
 		{
@@ -64,6 +63,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					OnAddressSelectionModeChanged();
 				}
 			} 
+		}
+
+		private bool _isLoadingAddress;
+		public bool IsLoadingAddress
+		{
+			get
+			{ 
+				return _isLoadingAddress;
+			}
+			private set
+			{
+				if (_isLoadingAddress != value)
+				{
+					_isLoadingAddress = value;
+					RaisePropertyChanged();
+				}
+			}
 		}
 
 		private bool _showDestination;
