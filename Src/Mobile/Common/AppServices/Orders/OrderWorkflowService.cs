@@ -16,6 +16,8 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading;
 using ServiceStack.ServiceClient.Web;
+using ServiceStack.Text;
+using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -195,40 +197,38 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 			catch(WebServiceException e)
 			{
-				string message = callIsEnabled
-					? _localize["ServiceError_ErrorCreatingOrderMessage"]
-					: _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"];
+				string message = "";
+				string messageNoCall = "";
 
-				if (e.ErrorCode == ErrorCode.CreateOrder_RuleDisable.ToString())
+				switch (e.ErrorCode)
 				{
-					// Order creation is temporarily disabled by rules
-					message = e.Message;
-				}
-				else
-				{
-					// Miscellaneous error
-					var messageKey = "ServiceError" + e.ErrorCode;
-					if (_localize.Exists(messageKey))
-					{
-						// Message when call is enabled
-						message = _localize[messageKey];
-					}
-						
-					messageKey += "_NoCall";
-					if (!callIsEnabled
-						&& _localize.Exists(messageKey))
-					{
-						// messasge when call is disabled
-						message = _localize[messageKey];
-					}
-				}
 
-				if (callIsEnabled)
-				{
-					message = string.Format(message, _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
-				}
+					case "CreateOrder_RuleDisable":
+						// Exception message comes from Rules admin tool, already localized
+						// Quick workaround for a bug in service stack where the response is not properly deserialized
+						var error = e.ResponseBody.FromJson<ErrorResponse>();
+						if (error.ResponseStatus != null)
+						{
+							throw new OrderCreationException(error.ResponseStatus.Message, error.ResponseStatus.Message);
+						}
+						else
+						{
+							goto default;
+						}
+					case "CreateOrder_InvalidProvider":
+					case "CreateOrder_NoFareEstimateAvailable": /* Fare estimate is required and was not submitted */
+					case "CreateOrder_CannotCreateInIbs_1002": /* Pickup address outside of service area */
+					case "CreateOrder_CannotCreateInIbs_7000": /* Inactive account */
+						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
+						messageNoCall = _localize["ServiceError" + e.ErrorCode + "_NoCall"];
+						throw new OrderCreationException(message, messageNoCall);
+					default:
+						// Unhandled errors
+						message = string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
+						messageNoCall = _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"];
+						throw new OrderCreationException(message, messageNoCall);
 
-				throw new OrderCreationException(message);
+				}
 			}
 		}
 

@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						Logger.LogError(e);
 
 						var settings = this.Services().Settings;
-						var callIsEnabled = !settings.HideCallDispatchButton;
+						var callIsEnabled = false;//!settings.HideCallDispatchButton;
 						var title = this.Services().Localize["ErrorCreatingOrderTitle"];
 
 						if (callIsEnabled)
@@ -128,7 +128,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						}
 						else
 						{
-							this.Services().Message.ShowMessage(title, e.Message);
+							this.Services().Message.ShowMessage(title, e.MessageNoCall);
 						}
 					}
 					catch(Exception e)

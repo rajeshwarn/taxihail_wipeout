@@ -781,7 +781,10 @@
     <value>Order cannot be created, no provider specified. Please try again or call us.</value>
   </data>
   <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
-    <value>Order cannot be created, invalid provider. Please try again or call us.</value>
+    <value>Order cannot be created, invalid provider. Please contact {0} at {1} for further assistance.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_InvalidProvider_NoCall" xml:space="preserve">
+    <value>Order cannot be created, invalid provider.</value>
   </data>
   <data name="ServiceErrorCreateOrder_VehiculeType" xml:space="preserve">
     <value>Order cannot be created, invalid vehicle type. Please try again or call us.</value>
