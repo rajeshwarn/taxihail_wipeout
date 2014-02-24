@@ -33,15 +33,15 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void SendFeedbackErrorLog(string supportEmail, string subject)
         {
-            var emailIntent = new Intent(Intent.ActionSend);
-
+            var emailIntent = new Intent();
+            emailIntent.SetAction(Intent.ActionSend);           
             emailIntent.SetType("message/rfc822");
             emailIntent.PutExtra(Intent.ExtraEmail, new[] {supportEmail});
             emailIntent.PutExtra(Intent.ExtraSubject, subject);
 
             if (File.Exists(LoggerImpl.LogFilename))
             {
-                emailIntent.PutExtra(Intent.ExtraStream, Uri.Parse(LoggerImpl.LogFilename));
+                emailIntent.PutExtra(Intent.ExtraStream,  Uri.FromFile(new Java.IO.File(LoggerImpl.LogFilename)));
             }
             try
             {
