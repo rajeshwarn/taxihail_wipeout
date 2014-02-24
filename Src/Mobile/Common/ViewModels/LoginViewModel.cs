@@ -21,11 +21,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class LoginViewModel : BaseViewModel
     {
 		public event EventHandler LoginSucceeded; 
-        readonly IPushNotificationService _pushService;
-		readonly IFacebookService _facebookService;
-		readonly ITwitterService _twitterService;
-
+		private readonly IPushNotificationService _pushService;
+		private readonly IFacebookService _facebookService;
+		private readonly ITwitterService _twitterService;
         private bool _loginWasSuccesful = false;
+
         public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
 			IPushNotificationService pushService)
@@ -34,7 +34,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _pushService = pushService;
 			_twitterService = twitterService;
 			_twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
-
         }
 
         public override void Start()
