@@ -62,7 +62,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             var mailComposer = new MFMailComposeViewController ();
 
             var appSettings = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>();
-            var errorLogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), appSettings.Data.ErrorLogFile);
+            var errorLogPath = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments), "..", "Library", appSettings.Data.ErrorLogFile);
+ 
             if (File.Exists (errorLogPath))
             {
                 mailComposer.AddAttachmentData (NSData.FromFile (errorLogPath), "text", "errorlog.txt");
