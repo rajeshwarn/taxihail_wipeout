@@ -33,7 +33,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:indeterminate="true"
-                android:layout_margin="7dp" />
+                android:layout_margin="6dp" />
         </LinearLayout>
         <ImageView
             android:id="@+id/Dot"
