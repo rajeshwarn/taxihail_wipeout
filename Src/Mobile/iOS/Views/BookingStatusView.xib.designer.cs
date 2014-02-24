@@ -25,16 +25,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCancel { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnChangeBooking { get; set; }
-
-		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnNewRide { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnPay { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIButton btnRefresh { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnResend { get; set; }
@@ -124,11 +118,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnCancel = null;
 			}
 
-			if (btnChangeBooking != null) {
-				btnChangeBooking.Dispose ();
-				btnChangeBooking = null;
-			}
-
 			if (btnNewRide != null) {
 				btnNewRide.Dispose ();
 				btnNewRide = null;
@@ -137,11 +126,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (btnPay != null) {
 				btnPay.Dispose ();
 				btnPay = null;
-			}
-
-			if (btnRefresh != null) {
-				btnRefresh.Dispose ();
-				btnRefresh = null;
 			}
 
 			if (btnResend != null) {

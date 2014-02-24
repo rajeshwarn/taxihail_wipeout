@@ -378,32 +378,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             base.SetRegion(region, animated);
         }
 
+        // if we remove this override, the current location of the user glows blue
         public override void SubviewAdded(UIView uiview)
         {
             base.SubviewAdded(uiview);
-
-            if (Subviews != null)
-            {
-
-                UIView legalView = null;
-
-                foreach (var subview in Subviews)
-                {
-                    if (subview is UILabel)
-                    { 
-                        legalView = subview;
-                    }
-                    else if (subview is UIImageView)
-                    {
-                        // google image iOS 5 and lower
-                        legalView = subview;
-                    }
-                }
-                if (legalView != null)
-                {
-                    legalView.Frame = new RectangleF(legalView.Frame.X, legalView.Frame.Y - 60, legalView.Frame.Width, legalView.Frame.Height);
-                }
-            }
         }
 
         private void ShowDropOffPin (Address address)

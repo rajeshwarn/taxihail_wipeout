@@ -68,8 +68,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 txtColor.Text = Localize.GetValue("DriverInfoColor");
                 txtColor.TextColor = textColor;
 
-                btnChangeBooking.SetTitle(Localize.GetValue("ChangeBookingSettingsButton"), UIControlState.Normal);
-
                 topSlidingStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("background.png"));
                 topVisibleStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("backPickupDestination.png"));
 
