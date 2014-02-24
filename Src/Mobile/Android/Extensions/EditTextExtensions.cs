@@ -15,15 +15,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
             ((InputMethodManager)thisControl.Context.GetSystemService(Context.InputMethodService)).HideSoftInputFromWindow(thisControl.WindowToken,0);
         }
 
-
-
         public static void SetCursorAtEnd(this EditText thisControl)
         {
             thisControl.SetSelection(thisControl.Text.Length);
-
-         
         }
-
 
         public static void ShowKeyboard(this EditText thisControl)
         {
