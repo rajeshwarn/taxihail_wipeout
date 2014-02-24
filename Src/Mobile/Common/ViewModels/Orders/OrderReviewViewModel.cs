@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	public class OrderReviewViewModel: ChildViewModel
     {
 		readonly IOrderWorkflowService _orderWorkflowService;
-		bool _hasShowWarnings;
+		bool _hasShownWarnings;
         
 		public OrderReviewViewModel(IOrderWorkflowService orderWorkflowService)
 		{
@@ -30,19 +30,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public async void ReviewStart()
         {
-			if (!_hasShowWarnings)
+			if (!_hasShownWarnings)
 			{
 				await ShowFareEstimateAlertDialogIfNecessary();
 				await PreValidateOrder();
 			}
         }
 
+		public void ReviewEnd()
+		{
+			_hasShownWarnings = false;
+		}
+
 		private async Task PreValidateOrder()
 		{
 			var validationInfo = await _orderWorkflowService.ValidateOrder();
 			if (validationInfo.HasWarning)
 			{
-				_hasShowWarnings = true;
+				_hasShownWarnings = true;
 				this.Services().Message.ShowMessage(this.Services().Localize["WarningTitle"], 
 					validationInfo.Message, 
 					this.Services().Localize["Continue"], 
@@ -165,11 +170,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			if (await _orderWorkflowService.ShouldWarnAboutEstimate())
 			{
-				_hasShowWarnings = true;
+				_hasShownWarnings = true;
 				this.Services().Message.ShowMessage(this.Services().Localize["WarningEstimateTitle"], this.Services().Localize["WarningEstimate"],
 					"Ok", delegate{ },
 					this.Services().Localize["WarningEstimateDontShow"], () => this.Services().Cache.Set("WarningEstimateDontShow", "yes"));
-
 			}
 		}
     }

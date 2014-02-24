@@ -113,11 +113,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
         public override void ChangeState(ChangePresentationHint hint)
         {
             base.ChangeState(hint);
+
             var hintHome = hint as HomeViewModelPresentationHint;
-            if (hintHome != null
-                && hintHome.State == HomeViewModelState.Review)
+            if (hintHome != null)
             {
-                ViewModel.ReviewStart();
+                if (hintHome.State == HomeViewModelState.Review)
+                {
+                    ViewModel.ReviewStart();
+                }
+
+                if (hintHome.State == HomeViewModelState.Initial)
+                {
+                    ViewModel.ReviewEnd();
+                }
             }
         }
     }
