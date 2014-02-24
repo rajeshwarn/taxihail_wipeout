@@ -123,13 +123,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
                 {
                     DatePicker.SetDate(DateTime.UtcNow, true);
                 }
-                else if (value.HasValue)
+                else 
                 {
                     DatePicker.SetDate(value.Value.ToUniversalTime(), true);
-                }
-                else
-                {
-                    DatePicker.SetDate(null, true);
                 }
             } 
         }
