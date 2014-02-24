@@ -81,32 +81,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async Task LoadOrders ()
 		{
-			var orders = await this.Services().Account.GetHistoryOrders();
-			if (orders.Any())
+			using (this.Services().Message.ShowProgress())
 			{
-				var firstId = orders.First().Id;
-				var lastId = orders.Last().Id;
-				var ordersViewModels = new List<OrderViewModel>();
-				foreach (var item in orders)
+				var orders = await this.Services().Account.GetHistoryOrders();
+				if (orders.Any())
 				{
-					var viewModel = new OrderViewModel
+					var firstId = orders.First().Id;
+					var lastId = orders.Last().Id;
+					var ordersViewModels = new List<OrderViewModel>();
+					foreach (var item in orders)
 					{
-						IBSOrderId = item.IBSOrderId,
-						Id = item.Id,
-						CreatedDate = item.CreatedDate,
-						PickupAddress = item.PickupAddress,
-						PickupDate = item.PickupDate,
-						Status = item.Status,
-						Title = FormatDateTime(item.PickupDate),
-						IsFirst = item.Id == firstId,
-						IsLast = item.Id.Equals(lastId),
-						ShowRightArrow = true
-					};
-					ordersViewModels.Add(viewModel);
+						var viewModel = new OrderViewModel
+						{
+							IBSOrderId = item.IBSOrderId,
+							Id = item.Id,
+							CreatedDate = item.CreatedDate,
+							PickupAddress = item.PickupAddress,
+							PickupDate = item.PickupDate,
+							Status = item.Status,
+							Title = FormatDateTime(item.PickupDate),
+							IsFirst = item.Id == firstId,
+							IsLast = item.Id.Equals(lastId),
+							ShowRightArrow = true
+						};
+						ordersViewModels.Add(viewModel);
+					}
+					Orders = new ObservableCollection<OrderViewModel>(ordersViewModels);
 				}
-				Orders = new ObservableCollection<OrderViewModel>(ordersViewModels);
+				HasOrders = orders.Any();
 			}
-			HasOrders = orders.Any();
 		}
 
 

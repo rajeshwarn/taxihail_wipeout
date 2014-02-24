@@ -41,6 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             // temporary until we can be notified by the service that we're searching for an address
             viewPickup.IsLoadingAddress = false;
+            viewPickup.IsDestination = false;
             viewDestination.IsLoadingAddress = false;
 
             // since we don't have the vehicle selection yet, we hardcode this value

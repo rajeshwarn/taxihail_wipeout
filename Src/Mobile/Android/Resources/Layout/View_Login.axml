@@ -34,7 +34,10 @@
             android:hint="@string/EmailLabel"
             android:inputType="textEmailAddress"
             android:nextFocusDown="@+id/Password"
-            android:nextFocusUp="@+id/LoginButton" />
+            android:nextFocusUp="@+id/LoginButton"
+            android:textIsSelectable="true">
+            <requestFocus />
+        </EditText>
         <View
             android:layout_height="@dimen/VerticalPadding"
             android:layout_width="fill_parent"
@@ -46,7 +49,8 @@
             android:layout_width="fill_parent"
             android:layout_height="@dimen/HeightEditText"
             android:hint="@string/PasswordLabel"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textIsSelectable="true" />
         <View
             android:layout_height="@dimen/VerticalPadding"
             android:layout_width="fill_parent"

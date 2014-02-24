@@ -155,11 +155,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                 RingCode =
                     string.IsNullOrWhiteSpace(command.PickupAddress.RingCode) ? "-" : command.PickupAddress.RingCode,
                 /* Mandatory visibility settings */
-                VisibilityLargeBags =
-                    _configurationManager.GetSetting("Client.ShowLargeBagsIndicator", false) ||
-                    command.Settings.LargeBags > 0
-                        ? "inline"
-                        : "none"
+                VisibilityLargeBags = _configurationManager.GetSetting("Client.ShowLargeBagsIndicator", false) || command.Settings.LargeBags > 0                    
             };
 
             SendEmail(command.EmailAddress, template, BookingConfirmationEmailSubject, templateData);

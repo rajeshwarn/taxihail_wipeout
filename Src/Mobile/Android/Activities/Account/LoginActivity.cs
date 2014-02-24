@@ -15,6 +15,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Services.Social;
 using TinyIoC;
+using Android.Views.InputMethods;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
@@ -34,18 +36,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			base.OnCreate(bundle);
 			_uiHelper = new UiLifecycleHelper(this, _facebookService.StatusCallback);
 			_uiHelper.OnCreate(bundle);
-
 		}
+
 		protected override void OnPause()
 		{
 			base.OnPause();
 			_uiHelper.OnPause();
 		}
+
 		protected override void OnResume()
 		{
 			base.OnResume();
 			_uiHelper.OnResume();
 		}
+
 		protected override void OnSaveInstanceState(Bundle outState)
 		{
 			base.OnSaveInstanceState(outState);
@@ -62,20 +66,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         {
             SetContentView(Resource.Layout.View_Login);
 
-            var settings = this.Services().Settings;
-
-            if (!settings.FacebookEnabled)
+            if (!this.Services().Settings.FacebookEnabled)
 			{
                 FindViewById<Button>(Resource.Id.FacebookButton).Visibility = ViewStates.Invisible;
 			}
 
-            if (settings.CanChangeServiceUrl)
+            if (this.Services().Settings.CanChangeServiceUrl)
             {
                 FindViewById<Button>(Resource.Id.ServerButton).Click += delegate { PromptServer(); };
                 FindViewById<Button>(Resource.Id.ServerButton).Visibility = ViewStates.Visible;
             }
 
-            if (!settings.TwitterEnabled)
+            if (!this.Services().Settings.TwitterEnabled)
             {
                 FindViewById<Button>(Resource.Id.TwitterButton).Visibility = ViewStates.Invisible;
             }
@@ -86,12 +88,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 .Subscribe(_ => Observable.Timer(TimeSpan.FromSeconds(2))
                     .Subscribe(__ => RunOnUiThread(Finish)));
 
-			// There is no other way to clean the typeface for password hint
-			// http://stackoverflow.com/questions/3406534/password-hint-font-in-android
-
-			EditText password = FindViewById<EditText>(Resource.Id.Password);
+            var username = FindViewById<EditText>(Resource.Id.Username);
+            var password = FindViewById<EditText>(Resource.Id.Password);
 			password.SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
 
+            ApplyKeyboardEnabler(username);
+            ApplyKeyboardEnabler(password);
+        }
+
+        public bool ShouldUseClipboardManager()
+        {
+            return DeviceHelper.IsAndroid23();
+        }
+
+        public void ApplyKeyboardEnabler(EditText view)
+        {
+            InputMethodManager mImm = (InputMethodManager) GetSystemService(Context.InputMethodService);  
+            view.FocusChange += (sender, e) =>  
+            {
+                if (e.HasFocus)
+                {
+                    mImm.ShowSoftInput(((EditText)sender), Android.Views.InputMethods.ShowFlags.Implicit);  
+                }
+            };
+
+            if (ShouldUseClipboardManager())
+            {
+                view.Click += (sender, e) => 
+                {
+                    ClipboardManager cm = (ClipboardManager)GetSystemService(Context.ClipboardService);
+                    cm.Text = ((EditText)sender).Text;
+                };
+            }
         }
 
         private void PromptServer()

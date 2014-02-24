@@ -4,7 +4,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
-    public class LocationService : AbstractLocationService
+    public class LocationService : BaseLocationService
     {
         private readonly CLLocationManager _locationManager;
         private readonly LocationManagerDelegate _locationDelegate;

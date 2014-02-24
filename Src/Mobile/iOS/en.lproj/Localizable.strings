@@ -211,7 +211,7 @@
 "CreateAccountFullNamePlaceHolder"="Full Name";
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance.";
 "ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall"="The specified Pickup address lies outside the regular service area.";
-"ServiceErrorCreateOrder_InvalidProvider"="Order cannot be created, invalid provider. Please try again or call us.";
+"ServiceErrorCreateOrder_InvalidProvider"="Order cannot be created, invalid provider. Please contact {0} at {1} for further assistance.";
 "View_BookingStatus"="Status";
 "LocationNoHistory"="No history";
 "Tuto07Top"="On the Status screen you will see a reservation number confirming your booking. Once a vehicle is assigned, you can watch as it progresses to your pickup location.";
@@ -459,3 +459,4 @@
 "Estimate"="Estimate";
 "ViewAll"="View All";
 "Collapse"="Collapse";
+"ServiceErrorCreateOrder_InvalidProvider_NoCall"="Order cannot be created, invalid provider.";

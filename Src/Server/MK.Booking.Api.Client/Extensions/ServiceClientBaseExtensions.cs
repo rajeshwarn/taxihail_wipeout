@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceHost;
+using System;
 
 namespace apcurium.MK.Booking.Api.Client.Extensions
 {
@@ -12,7 +13,7 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
 
             client.GetAsync<TResponse>(relativeOrAbsoluteUrl,
                 tcs.SetResult,
-                (result, error) => tcs.SetException(error));
+                (result, error) => tcs.SetException(FixWebServiceException(error)));
 
             return tcs.Task;
         }
@@ -23,7 +24,7 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
 
             client.GetAsync(request,
                 tcs.SetResult,
-                (result, error) => tcs.SetException(error));
+                (result, error) => tcs.SetException(FixWebServiceException(error)));
 
             return tcs.Task;
         }
@@ -34,7 +35,7 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
 
 			client.PostAsync(request,
 				tcs.SetResult,
-				(result, error) => tcs.SetException(error));
+                (result, error) => tcs.SetException(FixWebServiceException(error)));
 
 			return tcs.Task;
 		}
@@ -47,7 +48,7 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
 			client.PostAsync<TResponse>(relativeOrAbsoluteUrl,
 				request,
 				tcs.SetResult,
-				(result, error) => tcs.SetException(error));
+                (result, error) => tcs.SetException(FixWebServiceException(error)));
 
 			return tcs.Task;
 		}
@@ -59,7 +60,7 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
             client.PutAsync<TResponse>(relativeOrAbsoluteUrl,
                 request,
                 tcs.SetResult,
-                (result, error) => tcs.SetException(error));
+                (result, error) => tcs.SetException(FixWebServiceException(error)));
 
             return tcs.Task;
         }
@@ -70,7 +71,7 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
 
             client.DeleteAsync<TResponse>(relativeOrAbsoluteUrl,
                 tcs.SetResult,
-                (result, error) => tcs.SetException(error));
+                (result, error) => tcs.SetException(FixWebServiceException(error)));
 
             return tcs.Task;
         }
@@ -81,9 +82,21 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
 
             client.DeleteAsync(request,
                 tcs.SetResult,
-                (result, error) => tcs.SetException(error));
+                (result, error) => tcs.SetException(FixWebServiceException(error)));
 
             return tcs.Task;
+        }
+
+        private static Exception FixWebServiceException(Exception e)
+        {
+            var wse = e as WebServiceException;
+            if (wse != null && wse.StatusDescription == null)
+            {
+                // Fix ServiceStack bug.
+                // WebServiceException.StatusDescription is null when using AsyncServiceClient
+                wse.StatusDescription = e.Message;
+            }
+            return e;
         }
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="44dp"
+    android:layout_height="42dp"
     android:id="@+id/addressLayout">
     <View
         android:id="@+id/HorizontalDivider"
@@ -19,13 +19,16 @@
             android:layout_height="match_parent"
             android:hint="#"
             android:gravity="center"
-            android:minWidth="44dp"
-            android:padding="12dp"
-            android:background="@null" />
+            android:minWidth="42dp"
+            android:background="@null"
+            android:paddingTop="0dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="0dp"
+            android:paddingLeft="12dp" />
         <LinearLayout
             android:id="@+id/ProgressBar"
             android:layout_width="wrap_content"
-            android:layout_height="44dp">
+            android:layout_height="fill_parent">
             <ProgressBar
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -34,7 +37,7 @@
         </LinearLayout>
         <ImageView
             android:id="@+id/Dot"
-            android:layout_width="44dp"
+            android:layout_width="42dp"
             android:layout_height="match_parent"
             android:src="@drawable/colored_dot"
             android:adjustViewBounds="false"
@@ -50,6 +53,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:focusable="false"
-            android:background="@null" />
+            android:background="@null"
+            android:text="1234 Fake street, Springfield"
+            android:ellipsize="end"
+            android:lines="1"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:editable="false" />
     </LinearLayout>
 </RelativeLayout>

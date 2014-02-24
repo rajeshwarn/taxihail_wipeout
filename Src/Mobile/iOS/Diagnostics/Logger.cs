@@ -59,8 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
     
     public static class Logger
     {
-        private static Stopwatch _stopWatch;
-
         public static void LogError (Exception ex)
         {
             LogError (ex, 0);
@@ -103,22 +101,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
             Write ("Message on " + DateTime.Now + " : " + message);
         }
 
-        public static void StartStopwatch (string message)
-        {
-            _stopWatch = new Stopwatch ();
-            _stopWatch.Start ();
-            
-            Write ("Start timer : " + message);
-        }
-
-        public static void StopStopwatch (string message)
-        {
-            if (_stopWatch != null) {
-                _stopWatch.Stop ();
-                Write ("Stop timer : " + message + " in " + _stopWatch.ElapsedMilliseconds + " ms");
-            }
-        }
-
         public static void LogStack ()
         {
             var stackTrace = new StackTrace ();           // get call stack
@@ -135,41 +117,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
 
         private static void Write (string message)
         {
-            try {
-                var user = @" N\A with version " + TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version;
+            try
+            {
+                var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
+                var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), settings.ErrorLogFile);
                 var account = TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount;
-                if (account != null) {
-                    user = account.Email;                             
-                }
+                var user = account == null
+                    ? @" N\A "
+                    : account.Email;
 
-                Console.WriteLine (message + " by :" + user + " with version " + TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version);            
+                message += " by :" + user + " with version " + TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version;
+
+                Console.WriteLine (message);            
             
-                if (TinyIoCContainer.Current.Resolve<IAppSettings> ().Data.ErrorLogEnabled) {
-                    try {
-                        if (File.Exists (TinyIoCContainer.Current.Resolve<IAppSettings> ().Data.ErrorLogFile)) {
-                            var f = new FileInfo (TinyIoCContainer.Current.Resolve<IAppSettings> ().Data.ErrorLogFile);
-                            var lenKb = f.Length / 1024;
-                            if (lenKb > 375) {
-                                File.Delete (TinyIoCContainer.Current.Resolve<IAppSettings> ().Data.ErrorLogFile);
-                            }
+                if (settings.ErrorLogEnabled)
+                {
+                    if (File.Exists (filePath))
+                    {
+                        var f = new FileInfo (filePath);
+                        var lenKb = f.Length / 1024;
+                        if (lenKb > 375)
+                        {
+                            f.Delete();
                         }
-
-                        using (var fs = new FileStream (TinyIoCContainer.Current.Resolve<IAppSettings>().Data.ErrorLogFile, FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
-                            using (var w = new StreamWriter (fs)) {
-                                w.BaseStream.Seek (0, SeekOrigin.End);
-                                w.WriteLine (message + " by :" + user + " with version " + TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version);
-                                w.Flush ();
-                                w.Close ();
-                            }
-                            fs.Close ();
-                        }
-
-                    } catch {
-                    
                     }
+
+                    File.AppendAllLines(filePath, new[] { message });
                 }
 
-            } catch {
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
             
         }

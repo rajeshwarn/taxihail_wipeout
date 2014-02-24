@@ -9,7 +9,7 @@ using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    public class LocationService : AbstractLocationService
+    public class LocationService : BaseLocationService
     {
         private readonly LocationListener _locationListener;
         private readonly LocationManager _locationManager;

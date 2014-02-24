@@ -171,7 +171,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 .To(vm => vm.UserMovedMap);
 
             set.Bind()
-            set.Bind()
                 .For(v => v.AddressSelectionMode)
                 .To(vm => vm.AddressSelectionMode);
 

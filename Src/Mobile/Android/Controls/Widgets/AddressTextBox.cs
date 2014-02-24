@@ -77,20 +77,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
-        private bool _isDestination;
+        private bool? _isDestination;  //Needs to be nullable because by default it's false and the code in the setter was never called for the pickup.
         public bool IsDestination
         {
-            get { return _isDestination; }        
+            get { return _isDestination.HasValue || _isDestination.Value; }        
             set
             {
-                if (_isDestination != value)
+                if ( !_isDestination.HasValue  || (_isDestination.Value != value))
                 {
                     _isDestination = value;
                     if (value)
                     {
                         SelectedColor = Resources.GetColor(Resource.Color.orderoptions_destination_address_color);
-                    }
-
+                    }                       
                     Dot.SetColorFilter(SelectedColor, PorterDuff.Mode.SrcAtop);
                     HorizontalDivider.Visibility = value.ToVisibility();
                 }

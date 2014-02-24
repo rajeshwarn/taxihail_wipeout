@@ -226,7 +226,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 				set.Bind(mapStatus)
 					.For(v => v.Pickup)
-					.To(vm => vm.Pickup.Model);
+                    .To(vm => vm.Order.PickupAddress);
+                set.Bind(mapStatus)
+                    .For(v => v.Dropoff)
+                    .To(vm => vm.Order.DropOffAddress);
 				set.Bind(mapStatus)
 					.For(v => v.TaxiLocation)
 					.To(vm => vm.OrderStatusDetail);
@@ -295,6 +298,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             
             } catch (Exception ex) {
                 Logger.LogError (ex);
+            }
+        }
+
+        public override void ViewWillDisappear(bool animated)
+        {
+            base.ViewWillDisappear(animated);
+            if (IsMovingFromParentViewController)
+            {
+                // Back button pressed
+                ViewModel.PrepareNewOrder.Execute(null);
             }
         }
 

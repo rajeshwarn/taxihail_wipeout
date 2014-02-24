@@ -16,12 +16,14 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading;
 using ServiceStack.ServiceClient.Web;
+using ServiceStack.Text;
+using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
 	public class OrderWorkflowService: BaseService, IOrderWorkflowService
     {
-		readonly AbstractLocationService _locationService;
+		readonly ILocationService _locationService;
 		readonly IAccountService _accountService;
 		readonly IGeolocService _geolocService;
 		readonly IAppSettings _appSettings;
@@ -35,11 +37,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
         readonly ISubject<BookingSettings> _bookingSettingsSubject;
 		readonly ISubject<string> _estimatedFareSubject;
-		string _noteToDriver = null;
+		readonly ISubject<string> _noteToDriverSubject = new BehaviorSubject<string>(string.Empty);
 
-
-
-		public OrderWorkflowService(AbstractLocationService locationService,
+		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
 			IGeolocService geolocService,
 			IAppSettings configurationManager,
@@ -53,17 +53,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_accountService = accountService;
 			_locationService = locationService;
 
-			// TODO: Listen to account booking settings changes && set default value?
-			var settings = accountService.CurrentAccount.Settings;
-			if (settings.Passengers <= 0)
-			{
-				settings.Passengers = 1;
-			}
-			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(settings);
+			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(accountService.CurrentAccount.Settings);
 			_localize = localize;
 			_bookingService = bookingService;
 
 			_estimatedFareSubject = new BehaviorSubject<string>(_localize["NoFareText"]);
+
 		}
 
 		public async Task SetAddress(Address address)
@@ -110,7 +105,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				await SetAddressToCurrentSelection(address);
 				return address;
 			}
-
 		}
 
         public async Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken)
@@ -122,12 +116,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			await SetAddressToCurrentSelection(address);
 		}
 
-		public async Task ClearDestinationAddress()
+		public void ClearDestinationAddress()
 		{
 			_destinationAddressSubject.OnNext(new Address());
 		}
 
-		public async Task SetPickupDate(DateTime? date)
+		public void SetPickupDate(DateTime? date)
 		{
 			_pickupDateSubject.OnNext(date);
 		}
@@ -196,7 +190,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					Settings = order.Settings
 				};
 
-
 				PrepareForNewOrder();
 
 				// TODO: Refactor so we don't have to return two distinct objects
@@ -204,45 +197,42 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 			catch(WebServiceException e)
 			{
-				string message = callIsEnabled
-					? _localize["ServiceError_ErrorCreatingOrderMessage"]
-					: _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"];
+				string message = "";
+				string messageNoCall = "";
 
-				if (e.ErrorCode == ErrorCode.CreateOrder_RuleDisable.ToString())
+				switch (e.ErrorCode)
 				{
-					// Order creation is temporarily disabled by rules
-					message = e.Message;
-				}
-				else
-				{
-					// Miscellaneous error
-					var messageKey = "ServiceError" + e.ErrorCode;
-					if (_localize.Exists(messageKey))
-					{
-						// Message when call is enabled
-						message = _localize[messageKey];
-					}
-						
-					messageKey += "_NoCall";
-					if (!callIsEnabled
-						&& _localize.Exists(messageKey))
-					{
-						// messasge when call is disabled
-						message = _localize[messageKey];
-					}
-				}
 
-				if (callIsEnabled)
-				{
-					message = string.Format(message, _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
-				}
+					case "CreateOrder_RuleDisable":
+						// Exception message comes from Rules admin tool, already localized
+						// Quick workaround for a bug in service stack where the response is not properly deserialized
+						var error = e.ResponseBody.FromJson<ErrorResponse>();
+						if (error.ResponseStatus != null)
+						{
+							throw new OrderCreationException(error.ResponseStatus.Message, error.ResponseStatus.Message);
+						}
+						else
+						{
+							goto default;
+						}
+					case "CreateOrder_InvalidProvider":
+					case "CreateOrder_NoFareEstimateAvailable": /* Fare estimate is required and was not submitted */
+					case "CreateOrder_CannotCreateInIbs_1002": /* Pickup address outside of service area */
+					case "CreateOrder_CannotCreateInIbs_7000": /* Inactive account */
+						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
+						messageNoCall = _localize["ServiceError" + e.ErrorCode + "_NoCall"];
+						throw new OrderCreationException(message, messageNoCall);
+					default:
+						// Unhandled errors
+						message = string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
+						messageNoCall = _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"];
+						throw new OrderCreationException(message, messageNoCall);
 
-				throw new OrderCreationException(message);
+				}
 			}
-
 		}
 
-		public async Task SetBookingSettings(BookingSettings bookingSettings)
+		public void SetBookingSettings(BookingSettings bookingSettings)
 		{
 			_bookingSettingsSubject.OnNext(bookingSettings);
 		}
@@ -288,6 +278,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public IObservable<string> GetAndObserveEstimatedFare()
 		{
 			return _estimatedFareSubject;
+		}
+
+		public IObservable<string> GetAndObserveNoteToDriver()
+		{
+			return _noteToDriverSubject;
 		}
 
 		public IObservable<DateTime?> GetAndObservePickupDate()
@@ -356,7 +351,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		private void PrepareForNewOrder()
 		{
-			_noteToDriver = null;
+			_noteToDriverSubject.OnNext(string.Empty);
 			_pickupAddressSubject.OnNext(new Address());
 			_destinationAddressSubject.OnNext(new Address());
 			_addressSelectionModeSubject.OnNext(AddressSelectionMode.PickupSelection);
@@ -365,9 +360,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_estimatedFareSubject.OnNext(_localize["NoFareText"]);
 		}
 
+		public void ResetOrderSettings()
+		{
+			_noteToDriverSubject.OnNext(string.Empty);
+			_bookingSettingsSubject.OnNext(_accountService.CurrentAccount.Settings);
+		}
+
 		public void SetNoteToDriver(string text)
 		{
-			_noteToDriver = text;
+			_noteToDriverSubject.OnNext(text);
 		}
 
 		public async Task<bool> ShouldWarnAboutEstimate()
@@ -393,7 +394,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
 			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
 			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
-			order.Note = _noteToDriver;
+			order.Note = await _noteToDriverSubject.Take(1).ToTask();
 
 			return order;
 		}
@@ -403,7 +404,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_pickupAddressSubject.OnNext(previous.PickupAddress);
 			_destinationAddressSubject.OnNext(previous.DropOffAddress);
 			_bookingSettingsSubject.OnNext(previous.Settings);
-			_noteToDriver = previous.Note;
+			_noteToDriverSubject.OnNext(previous.Note);
 		}
     }
 }

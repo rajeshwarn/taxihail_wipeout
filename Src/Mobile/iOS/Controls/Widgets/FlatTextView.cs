@@ -1,6 +1,7 @@
 using System;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 using System.Drawing;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
@@ -9,6 +10,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     public class FlatTextView : UITextView
     {
         NSMutableParagraphStyle _paragraphStyle;
+        static UIColor DefaultFontColor = UIColor.FromRGB(44, 44, 44);
+        static UIColor PlaceholderFontColor = UIColor.FromRGB(200, 200, 200);
+
+        private static bool _showPlaceholder = true;
 
         public FlatTextView (IntPtr handle) : base (handle)
         {
@@ -33,6 +38,41 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _paragraphStyle.MaximumLineHeight = 20f;
         }
 
+        public void TapAnywhereToClose(Func<UIView> owner)
+        {
+            var giantInvisibleButton = new UIButton();
+
+            ShouldBeginEditing = t => 
+            {
+                var o = owner();
+                o.AddSubview(giantInvisibleButton);
+                giantInvisibleButton.Frame = o.Frame.Copy();
+
+                if (Text == Placeholder)
+                {
+                    _showPlaceholder = false;
+                    Text = string.Empty;
+                }
+                return true;
+            };
+            ShouldEndEditing = t => 
+            {           
+                giantInvisibleButton.RemoveFromSuperview();
+
+                _showPlaceholder = true;
+                if (string.IsNullOrWhiteSpace(Text))
+                {
+                    Text = Placeholder;
+                }
+                return true;
+            };
+
+            giantInvisibleButton.TouchDown += (sender, e) => 
+            {
+                EndEditing(true);
+            };
+        }
+
         public override string Text
         {
             get
@@ -41,8 +81,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
             set
             {
-                var attributedText = new NSMutableAttributedString(value, font: UIFont.FromName(FontName.HelveticaNeueRegular, 14f), foregroundColor: UIColor.FromRGB(44, 44, 44), paragraphStyle: _paragraphStyle);
+                if (string.IsNullOrWhiteSpace(value) && _showPlaceholder)
+                {
+                    value = Placeholder;
+                }
+
+                if (value == Placeholder)
+                {
+                    TextColor = PlaceholderFontColor;
+                }
+                else
+                {
+                    TextColor = DefaultFontColor;
+                }
+
+                var attributedText = new NSMutableAttributedString(value, font: Font, foregroundColor: TextColor, paragraphStyle: _paragraphStyle);
                 base.AttributedText = attributedText;
+            }
+        }
+
+        private string _placeholder = string.Empty;
+        public string Placeholder
+        {
+            get { return _placeholder; }
+            set
+            {
+                _placeholder = value;
+                if (string.IsNullOrWhiteSpace(Text))
+                {
+                    _showPlaceholder = true;
+                    Text = value;
+                }
             }
         }
     }

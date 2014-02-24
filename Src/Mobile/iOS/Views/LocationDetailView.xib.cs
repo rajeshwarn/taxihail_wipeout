@@ -10,6 +10,9 @@ using MonoTouch.UIKit;
 using System.Collections.Generic;
 using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using System.Reactive.Linq;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -56,18 +59,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, null);
 
+            txtAddress.EditingDidEnd += (sender, e) =>
+            {
+                ViewModel.ValidateAddress.Execute(((UITextField)sender).Text);
+            };
+
 			var set = this.CreateBindingSet<LocationDetailView, LocationDetailViewModel> ();
 
             set.Bind (NavigationItem.RightBarButtonItem)
                 .For ("Clicked")
                 .To(vm => vm.SaveAddress);
 
-			set.Bind(txtAddress)
+            set.Bind(txtAddress)
 				.For(v => v.Text)
-				.To(vm => vm.BookAddress);
-			set.Bind(txtAddress)
-				.For("Ended")
-				.To(vm => vm.ValidateAddress);
+                .To(vm => vm.BookAddress)
+                .OneWay();
 
 			set.Bind(txtAptNumber)
 				.For(v => v.Text)

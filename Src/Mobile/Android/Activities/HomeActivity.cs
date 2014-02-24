@@ -37,6 +37,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using Android.Graphics.Drawables;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -54,11 +55,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private Button _bigButton;
         private TouchableMap _touchMap;
         private LinearLayout _mapOverlay;
-        private LinearLayout _mapContainer;
         private OrderReview _orderReview;
         private OrderEdit _orderEdit;
         private OrderOptions _orderOptions;
-        private SearchAddress _searchAddress;
+        private AddressPicker _searchAddress;
         private ImageView _btnLocation; 
         private ImageView _btnSettings;
         private AppBar _appBar;
@@ -193,11 +193,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
             _orderEdit = (OrderEdit) FindViewById(Resource.Id.orderEdit);
-            _searchAddress = (SearchAddress) FindViewById(Resource.Id.searchAddressControl);
+            _searchAddress = (AddressPicker) FindViewById(Resource.Id.searchAddressControl);
             _appBar = (AppBar) FindViewById(Resource.Id.appBar);
             _frameLayout = (FrameLayout) FindViewById(Resource.Id.RelInnerLayout);
             _mapOverlay = (LinearLayout) FindViewById(Resource.Id.mapOverlay);
-            _mapContainer = (LinearLayout) FindViewById(Resource.Id.mapContainer);
             _btnSettings = FindViewById<ImageView>(Resource.Id.btnSettings);
             _btnLocation = FindViewById<ImageView>(Resource.Id.btnLocation);
 
@@ -235,8 +234,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnResume()
         { 
             base.OnResume();
-            TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
-
             var mainLayout = FindViewById(Resource.Id.HomeLayout);
             mainLayout.Invalidate();
             _touchMap.OnResume();
@@ -306,7 +303,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             else
             {
-                ViewModel.BottomBar.CancelBookLater.Execute();
+                ViewModel.BottomBar.CancelBookLater.Execute(null);
             }
         }
 
@@ -316,42 +313,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap.OnLowMemory();
         }
 
-        private void SetMapEnabled(bool state)
+        private void SetMapEnabled(bool enabled)
         {
+            // TODO this should be done on the ChangePresentation of the map itself, like iOS
+            _touchMap.Map.UiSettings.SetAllGesturesEnabled(enabled);
+            _btnLocation.Enabled = enabled;
+            _btnSettings.Enabled = enabled;
 
-            _mapContainer = (LinearLayout) FindViewById(Resource.Id.mapContainer);
-            _touchMap.Map.UiSettings.SetAllGesturesEnabled(state);
-            _btnLocation.Enabled = state;
-            _btnSettings.Enabled = state;
-
-            if (!state)
+            if (!enabled)
             {                
-//                var _size = new Size(((View)_mapContainer).Width, ((View)_mapContainer).Height);
-//                if (blurryImage == null)
-//                {
-//                    blurryImage = new BitmapDrawable(DrawHelper.Blur(DrawHelper.LoadBitmapFromView(_mapContainer, _size)));
-//                    _mapOverlay.SetBackgroundDrawable(blurryImage);
-//                }
-                    
                 _mapOverlay.Visibility = ViewStates.Visible;
                 ViewGroup parent = (ViewGroup)_mapOverlay.Parent;               
                 parent.RemoveView(_mapOverlay);
                 parent.AddView(_mapOverlay, 1);
-
             }
             else
             {
-                //_mapOverlay.SetBackgroundDrawable(null);
                 _mapOverlay.Visibility = ViewStates.Gone;
             }
         }
 
-        BitmapDrawable blurryImage = null;
-
         public void ChangeState(HomeViewModelPresentationHint hint)
         {
+            if (_presentationState == hint.State)
+            {
+                return;
+            }
+
             _presentationState = hint.State;
-            SetMapEnabled(true);
 
             if (_presentationState == HomeViewModelState.PickDate)
             {
@@ -421,8 +410,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             else if (_presentationState == HomeViewModelState.AddressSearch)
             {
                 SetMapEnabled(false);
-                _searchAddress.Visibility = ViewStates.Visible;
-
+                _searchAddress.Open();
+                ViewModel.AddressPicker.LoadAddresses();
             } 
             else if(_presentationState == HomeViewModelState.Initial)
             {
@@ -440,15 +429,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 _orderEdit.StartAnimation(animation2);
                 _orderOptions.StartAnimation(animation3);
 
+                _searchAddress.Close();
+
                 SetSelectedOnBookLater(false);
             }
-
+                
             _appBar.ChangePresentation(hint);
             _orderOptions.ChangePresentation(hint);
+            _orderReview.ChangePresentation(hint);
         }
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
+            if (!base.OnKeyDown(keyCode, e))
+            {
+                return false;
+            }
+
             if (keyCode == Keycode.Back)
             {
                 switch (_presentationState)
@@ -473,7 +470,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             return base.OnKeyDown(keyCode, e);
         }
 
-
         void IChangePresentation.ChangePresentation(ChangePresentationHint hint)
         {
             if (hint is HomeViewModelPresentationHint)
@@ -482,7 +478,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
 
             ((IChangePresentation)_mapFragment).ChangePresentation(hint);
-
         }
     }
 }

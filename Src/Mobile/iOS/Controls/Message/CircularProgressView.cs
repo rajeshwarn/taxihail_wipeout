@@ -15,12 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         private CAShapeLayer _progressLayer;
         private CAShapeLayer _iconLayer;
 
-        public CircularProgressView(RectangleF frame) : base(frame)
-        {
-            Initialize();
-        }
-
-        void Initialize()
+        public CircularProgressView(RectangleF frame, UIColor color) : base(frame)
         {
             _runningIconView = new UIView();
             _readyIconView = new UIView();
@@ -50,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _iconLayer.FillRule = CAShapeLayer.FillRuleNonZero;
             Layer.AddSublayer(_iconLayer);      
 
-            Color = UIColor.FromRGB(0, 125, 249);
+            Color = color;
         }
 
         float _lineWidth;
@@ -101,10 +96,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 {
                     _progress = value;
 
-                    if (_progress == 1f) {
-                        ProgressCompleted();
-                    }
-
                     if (_progress == 0f) {
                         _progressBackgroundLayer.FillColor = BackgroundColor.CGColor;
                     }
@@ -114,19 +105,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             }
         }
 
-        void ProgressCompleted()
+        async void ProgressCompleted()
         {
-            UIView.Animate(
-                0.5, 
-                () =>
-                {
-                    // nothing?
-                }, 
-                async () => 
-                {
-                    await Task.Delay(TimeSpan.FromSeconds(0.5));
-                    OnCompleted.Invoke();
-                });
+            await Task.Delay(TimeSpan.FromSeconds(0.5));
+            OnCompleted.Invoke();
         }
 
         public Action OnCompleted { get; set; }
@@ -195,6 +177,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             ReadyIconView.Hidden = true;
             RunningIconView.Hidden = true;
             CompletedIconView.Hidden = false;
+
+            ProgressCompleted();
         }
 
         void AddNewIcon(UIView value)

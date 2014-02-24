@@ -494,8 +494,8 @@
     <Compile Include="Controls\Message\LoadingBar.cs" />
     <Compile Include="MapUtitilties\MKMapViewExtensions.cs" />
     <Compile Include="Controls\Message\CircularProgressView.cs" />
-
     <Compile Include="Controls\Message\LoadingOverlay.cs" />
+    <Compile Include="Controls\Message\LoadingOverlayView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

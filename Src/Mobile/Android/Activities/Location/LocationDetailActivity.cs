@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
         {
             if (!e.HasFocus)
             {
-                ViewModel.ValidateAddress.Execute();
+                ViewModel.ValidateAddress.Execute(((EditText)sender).Text);
             }
         }
     }

@@ -18,13 +18,12 @@ using Cirrious.CrossCore.Droid.Platform;
 using Cirrious.MvvmCross.ViewModels;
 using Android.Views;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Controls.Message;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class MessageService : IMessageService
     {
-        private readonly Stack<ProgressDialog> _progressDialogs = new Stack<ProgressDialog>();
-        
         public MessageService(Context context)
         {
             Context = context;
@@ -180,38 +179,35 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void ShowProgress(bool show)
         {
-            TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>().RequestMainThreadAction(() =>
-            {
-                var activity = TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
+            var topActivity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>();
+            var rootView = topActivity.Activity.Window.DecorView.RootView as ViewGroup;
 
+            if (rootView != null)
+            {
                 if (show)
                 {
-                    var progress = new ProgressDialog(activity);
-                    _progressDialogs.Push(progress);
-                    progress.SetTitle(string.Empty);
-                    progress.SetMessage(activity.GetString(Resource.String.LoadingMessage));
-                    progress.Show();
+                    if (topActivity.Activity.Intent.Categories == null || topActivity.Activity.Intent.Categories.Contains("Progress"))
+                    {
+                        topActivity.Activity.Intent.AddCategory("Progress");
+                    }
+            
+                    var contentView = rootView.GetChildAt(0);
+                    rootView.RemoveView(contentView);
+                    var relLayout = new RelativeLayout(topActivity.Activity.ApplicationContext);
+                    relLayout.LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
+                    relLayout.AddView(contentView);
+                    LoadingOverlay.StartAnimatingLoading(relLayout, topActivity.Activity);
+                    rootView.AddView(relLayout);
                 }
                 else
                 {
-                    if (_progressDialogs.Any())
+                    if (topActivity.Activity.Intent.Categories != null && topActivity.Activity.Intent.Categories.Contains("Progress"))
                     {
-                        var progressPrevious = _progressDialogs.Pop();
-                        if (progressPrevious != null
-                            && progressPrevious.IsShowing)
-                        {
-                            try
-                            {
-                                progressPrevious.Dismiss();
-                            }
-// ReSharper disable once EmptyGeneralCatchClause
-                            catch
-                            {
-                            } // on peut avoir une exception ici si activity est plus présente, pas grave
-                        }
+                        topActivity.Activity.Intent.Categories.Remove("Progress");
                     }
+                    LoadingOverlay.StopAnimatingLoading();
                 }
-            });
+            }
         }
 
         public void ShowProgressNonModal(bool show)
@@ -221,7 +217,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             if (rootView != null)
             {
-                ProgressBar progress = rootView.FindViewWithTag("Progress") as ProgressBar;
+                var progress = rootView.FindViewWithTag("Progress") as ProgressBar;
 
                 if ((progress == null) && (show))
                 {
@@ -232,21 +228,20 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                     relLayout.LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
                     relLayout.AddView(contentView);
 
-
                     var b = new ProgressBar(topActivity.Activity.ApplicationContext, null, Android.Resource.Attribute.ProgressBarStyleHorizontal)
                     {
                         Progress = 25,
-                        LayoutParameters =
-                            new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.WrapContent)
-                        };
+                        LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.WrapContent),
+                        Indeterminate = true,
+                        Tag = "Progress"
 
-                    b.Indeterminate = true;
-                    ((RelativeLayout.LayoutParams)b.LayoutParameters).TopMargin = 75.ToPixels();
-                    b.Tag = "Progress";
+                    };
+                            
+                    ((RelativeLayout.LayoutParams)b.LayoutParameters).TopMargin = 78.ToPixels();
                     relLayout.AddView(b);
                     rootView.AddView(relLayout);
                 }               
-                else if  ( progress != null  )
+                else if (progress != null)
                 {
                     progress.Visibility = show ? ViewStates.Visible : ViewStates.Gone;
                     progress.Indeterminate = true;

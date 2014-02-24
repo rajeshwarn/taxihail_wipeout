@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 FBAppCall.HandleDidBecomeActive();
             }
 
-            var locService = TinyIoCContainer.Current.Resolve<AbstractLocationService>();
+            var locService = TinyIoCContainer.Current.Resolve<ILocationService>();
             if ( locService != null )
             {
                 locService.Start ();
@@ -140,7 +140,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void DidEnterBackground (UIApplication application)
         {
-            var locService = TinyIoCContainer.Current.Resolve<AbstractLocationService>() as LocationService ;
+            var locService = TinyIoCContainer.Current.Resolve<ILocationService>() as LocationService ;
             if ( locService != null )
             {
                 locService.Stop();

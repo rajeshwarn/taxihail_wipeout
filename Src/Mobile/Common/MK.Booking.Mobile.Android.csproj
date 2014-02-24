@@ -224,7 +224,6 @@
     <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="ViewModels\BookAddressViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqChangePaymentViewModel.cs" />
@@ -253,7 +252,6 @@
     <Compile Include="AppServices\IUseServiceClient.cs" />
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
-    <Compile Include="Infrastructure\AbstractLocationService.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
@@ -330,6 +328,9 @@
     <Compile Include="PresentationHints\ZoomToStreetLevelPresentationHint.cs" />
     <Compile Include="PresentationHints\ChangePresentationHint.cs" />
     <Compile Include="PresentationHints\CenterMapPresentationHint.cs" />
+    <Compile Include="Extensions\ObservableCollectionExtentions.cs" />
+    <Compile Include="Infrastructure\ILocationService.cs" />
+    <Compile Include="Infrastructure\BaseLocationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

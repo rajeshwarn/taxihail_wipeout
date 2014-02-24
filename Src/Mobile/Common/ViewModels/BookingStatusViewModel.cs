@@ -15,6 +15,9 @@ using apcurium.MK.Common;
 using System.Threading;
 using Cirrious.MvvmCross.ViewModels;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -22,7 +25,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
 		private int _refreshPeriod = 5; //in seconds
 	    private bool _waitingToNavigateAfterTimeOut;
+		readonly IOrderWorkflowService _orderWorkflowService;
 
+		public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService)
+		{
+			this._orderWorkflowService = orderWorkflowService;
+			
+		}
 		public void Init(string order, string orderStatus)
 		{
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
@@ -37,16 +46,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			StatusInfoText = string.Format(this.Services().Localize["StatusStatusLabel"], this.Services().Localize["LoadingMessage"]);
 
-			Pickup = new BookAddressViewModel(){
-				EmptyAddressPlaceholder = this.Services().Localize["BookPickupLocationEmptyPlaceholder"]
-			};
-			Pickup.Init(() => Order.PickupAddress, address => Order.PickupAddress = address);
-
-			Dropoff = new BookAddressViewModel(){
-				EmptyAddressPlaceholder = this.Services().Localize["BookPickupLocationEmptyPlaceholder"]
-			};
-			Dropoff.Init(() => Order.DropOffAddress, address => Order.DropOffAddress = address);
-
             CenterMap ();
         }
 
@@ -56,14 +55,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_refreshPeriod = Settings.ClientPollingInterval;
             
-			Task.Factory.StartNew (() =>
-            {
-                Thread.Sleep( 1000 );     
-                InvokeOnMainThread(RefreshStatus);
-            });
-
-			Observable.Interval( TimeSpan.FromSeconds (_refreshPeriod))
-				.Subscribe (unit => InvokeOnMainThread (RefreshStatus))
+            Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds (_refreshPeriod))
+				.ObserveOn(SynchronizationContext.Current)
+				.Subscribe (_ => RefreshStatus())
 				.DisposeWith (Subscriptions);
 
 		}
@@ -82,28 +76,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			private set {
 				_mapCenter = value;
 				RaisePropertyChanged ();
-			}
-		}
-		
-		BookAddressViewModel _pickupViewModel;
-		public BookAddressViewModel Pickup {
-			get {
-				return _pickupViewModel;
-			}
-			set {
-				_pickupViewModel = value;
-				RaisePropertyChanged (); 
-			}
-		}
-		
-		BookAddressViewModel _dropoffViewModel;
-		public BookAddressViewModel Dropoff {
-			get {
-				return _dropoffViewModel;
-			}
-			set {
-				_dropoffViewModel = value;
-				RaisePropertyChanged (); 
 			}
 		}
 
@@ -200,15 +172,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged ();
 			}
 		}
-
-		public Address PickupModel {
-			get { return Pickup.Model; }
-			set {
-				Pickup.Model = value;
-				RaisePropertyChanged ();
-			}
-		}
-
+            
 		private Order _order;
 		public Order Order {
 			get { return _order; }
@@ -294,10 +258,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private bool _isCurrentlyPairing;
 		string _vehicleNumber;
-        private void RefreshStatus ()
+		private async void RefreshStatus ()
         {
             try {
-                var status = this.Services().Booking.GetOrderStatus(Order.Id);
+				var status = await this.Services().Booking.GetOrderStatusAsync(Order.Id);
 				if(status.VehicleNumber != null)
 				{
 					_vehicleNumber = status.VehicleNumber;
@@ -344,7 +308,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 if (isDone) 
                 {
-                    GoToSummary();
+					GoToSummary();
                 }
 
                 if (this.Services().Booking.IsStatusTimedOut(status.IBSStatusId))
@@ -414,7 +378,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void CenterMap ()
         {            
-			var pickup = CoordinateViewModel.Create(Pickup.Model.Latitude, Pickup.Model.Longitude, true);
+            var pickup = CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true);
 			if (OrderStatusDetail.IBSStatusId != VehicleStatuses.Common.Waiting && OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue) 
 			{
                 MapCenter = new[] 
@@ -458,28 +422,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         "", 
                         this.Services().Localize["StatusConfirmCancelRide"],
                         this.Services().Localize["YesButton"], 
-                        () => Task.Factory.SafeStartNew(() =>
+						async () =>
                         {
-                            try 
+							bool isSuccess = false;
+							using(this.Services().Message.ShowProgress())
+							{
+								isSuccess = await Task.Run(() => this.Services().Booking.CancelOrder(Order.Id)); 
+							}
+                            if (isSuccess) 
                             {
-                                this.Services().Message.ShowProgress(true);
-
-                                var isSuccess = this.Services().Booking.CancelOrder(Order.Id);      
-                                if (isSuccess) 
-                                {
-                                    this.Services().Booking.ClearLastOrder();
-									ShowViewModelAndRemoveFromHistory<HomeViewModel> ();
-                                } 
-                                else 
-                                {
-                                    this.Services().Message.ShowMessage(this.Services().Localize["StatusConfirmCancelRideErrorTitle"], this.Services().Localize["StatusConfirmCancelRideError"]);
-                                }
+                                this.Services().Booking.ClearLastOrder();
+								ShowViewModelAndRemoveFromHistory<HomeViewModel> ();
                             } 
-                            finally 
+                            else 
                             {
-                                this.Services().Message.ShowProgress(false);
-                            }     
-                        }),
+                                this.Services().Message.ShowMessage(this.Services().Localize["StatusConfirmCancelRideErrorTitle"], this.Services().Localize["StatusConfirmCancelRideError"]);
+                            }
+                        },
                         this.Services().Localize["NoButton"], () => { });
                 });
             }
@@ -569,6 +528,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					});
 			}
 		}
+
+		public ICommand PrepareNewOrder
+        {
+			get
+			{
+				return this.GetCommand(async () =>{
+					var address = await _orderWorkflowService.SetAddressToUserLocation();
+					if(address.HasValidCoordinate())
+					{
+						ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
+					}
+				});
+			}
+        }
 
         bool _isUnpairButtonVisible;
         public bool IsUnpairButtonVisible

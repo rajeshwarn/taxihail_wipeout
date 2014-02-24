@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _shadowView.RemoveFromSuperview();
             }
 
-            var biggerRect = Bounds.Copy().Shrink(-10);
+            var biggerRect = Bounds.Copy().Grow(10);
             var holeRect = rect.Copy().Shrink(1);
 
             var roundedRectanglePath = UIBezierPath.FromRoundedRect (holeRect, _radiusCorner);

@@ -52,13 +52,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
             return thisRectangleF;
         }
 
-        public static RectangleF Shrink(this RectangleF thisRectangleF, float numberOfPixels)
+        public static RectangleF Grow(this RectangleF rect, float numberOfPixels)
         {
-            thisRectangleF.Y += numberOfPixels;
-            thisRectangleF.X += numberOfPixels;
-            thisRectangleF.Width -= (numberOfPixels*2);
-            thisRectangleF.Height -= (numberOfPixels*2);
-            return thisRectangleF;
+            return Shrink(rect, -numberOfPixels);
+        }
+
+        public static RectangleF Shrink(this RectangleF rect, float numberOfPixels)
+        {
+            rect.Y += numberOfPixels;
+            rect.X += numberOfPixels;
+            rect.Width -= (numberOfPixels * 2);
+            rect.Height -= (numberOfPixels * 2);
+            return rect;
         }
 
         public static RectangleF Copy(this RectangleF thisRectangleF)

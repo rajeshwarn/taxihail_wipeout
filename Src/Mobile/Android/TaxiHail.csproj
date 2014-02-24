@@ -557,8 +557,33 @@
     <Compile Include="Helpers\AnimationHelper.cs" />
     <AndroidResource Include="Resources\Drawable\places.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\places.png" />
-    <AndroidResource Include="Resources\Layout\SubView_SearchAddress.axml" />
-    <Compile Include="Controls\Widgets\SearchAddress.cs" />
+    <AndroidResource Include="Resources\Layout\Control_AddressBar.axml" />
+    <AndroidResource Include="Resources\Layout\Control_AddressLine.axml" />
+    <AndroidResource Include="Resources\Layout\Control_AddressList.axml" />
+    <AndroidResource Include="Resources\Layout\Control_AddressPicker.axml" />
+    <Compile Include="Controls\Widgets\Addresses\AddressLine.cs" />
+    <Compile Include="Controls\Widgets\Addresses\AddressList.cs" />
+    <Compile Include="Controls\Widgets\Addresses\AddressPicker.cs" />
+    <Compile Include="Controls\Widgets\Addresses\AddressTypeToDrawableConverter.cs" />
+    <AndroidResource Include="Resources\Drawable\Controls_AddressBar_AddressEditText_Background.xml" />
+    <AndroidResource Include="Resources\Drawable\controls_addressbar_addressedittext_greendot.xml" />
+    <AndroidResource Include="Resources\Drawable\controls_addressbar_addressedittext_progress.xml" />
+    <AndroidResource Include="Resources\Drawable\Controls_AddressBar_AddressPickerEditText_Background.xml" />
+    <AndroidResource Include="Resources\Drawable\Controls_AddressBar_AddressSeparatorView_Background.xml" />
+    <AndroidResource Include="Resources\Drawable\Controls_AddressBar_StreetNumberEditText_Background_Focused.xml" />
+    <AndroidResource Include="Resources\Drawable\Controls_AddressBar_StreetNumberEditText_Background_Normal.xml" />
+    <AndroidResource Include="Resources\Drawable\Controls_AddressBar_StreetNumberEditText_Background_State.xml" />
+    <AndroidResource Include="Resources\Drawable\Controls_AddressBar_StreetNumberEditText_TextColor_State.xml" />
+    <AndroidResource Include="Resources\Drawable\Controls_AddressBar_TariffBackground.xml" />
+    <Compile Include="Controls\Message\LoadingOverlay.cs" />
+    <AndroidResource Include="Resources\Values\AddressLineAttributes.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\taxi_progress.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\taxi_progress.png" />
+    <AndroidResource Include="Resources\Layout\Control_LoadingOverlay.axml" />
+    <AndroidResource Include="Resources\Drawable\loading_overlay.xml" />
+    <AndroidResource Include="Resources\Drawable\white_button.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -713,6 +738,7 @@
     <Folder Include="Activities\Utilities\" />
     <Folder Include="Controls\Fragments\" />
     <Folder Include="Controls\Behavior\" />
+    <Folder Include="Controls\Message\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">

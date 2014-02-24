@@ -48,6 +48,18 @@ namespace Cirrious.MvvmCross.Droid.Fragging
         {
         }
 
+        public override bool OnKeyDown(Android.Views.Keycode keyCode, Android.Views.KeyEvent e)
+        {
+            if (e.KeyCode == Android.Views.Keycode.Back)
+            {
+                if (Intent.Categories.Contains("Progress"))
+                {
+                    return false;
+                }
+            }
+            return base.OnKeyDown(keyCode, e);
+        }            
+
         public IMvxBindingContext BindingContext { get; set; }
 
         public override void SetContentView(int layoutResId)

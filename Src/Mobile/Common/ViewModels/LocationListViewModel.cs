@@ -54,39 +54,42 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public Task LoadAllAddresses ()
         {
-            var tasks = new [] {
-                LoadFavoriteAddresses(),
-                LoadHistoryAddresses()
-            };
-            return Task.Factory.ContinueWhenAll(tasks, t => {
+			using (this.Services().Message.ShowProgress())
+			{
+				var tasks = new [] {
+					LoadFavoriteAddresses(),
+					LoadHistoryAddresses()
+				};
+				return Task.Factory.ContinueWhenAll(tasks, t => {
 
-                AllAddresses.Clear ();
-                AllAddresses.Add (new AddressViewModel{ Address =  new Address
-                    {
-                        FriendlyName = this.Services().Localize["LocationAddFavoriteTitle"],
-                        FullAddress = this.Services().Localize["LocationAddFavoriteSubtitle"],
-                    }, IsAddNew = true, ShowPlusSign=true});
+					AllAddresses.Clear ();
+					AllAddresses.Add (new AddressViewModel{ Address =  new Address
+						{
+							FriendlyName = this.Services().Localize["LocationAddFavoriteTitle"],
+							FullAddress = this.Services().Localize["LocationAddFavoriteSubtitle"],
+						}, IsAddNew = true, ShowPlusSign=true});
 
 
-                if(t[0].Status == TaskStatus.RanToCompletion)
-                {
-                    AllAddresses.AddRange(t[0].Result);
-                }
+					if(t[0].Status == TaskStatus.RanToCompletion)
+					{
+						AllAddresses.AddRange(t[0].Result);
+					}
 
-                if(t[1].Status == TaskStatus.RanToCompletion)
-                {
-                    AllAddresses.AddRange(t[1].Result);
-                }
+					if(t[1].Status == TaskStatus.RanToCompletion)
+					{
+						AllAddresses.AddRange(t[1].Result);
+					}
 
-                AllAddresses.ForEach ( a=> 
-                                           {
-                    a.IsFirst = a.Equals(AllAddresses.First());
-                    a.IsLast = a.Equals(AllAddresses.Last());                    
-                });
+					AllAddresses.ForEach ( a=> 
+					{
+						a.IsFirst = a.Equals(AllAddresses.First());
+						a.IsLast = a.Equals(AllAddresses.Last());                    
+					});
 
-				RaisePropertyChanged( () =>AllAddresses );
+					RaisePropertyChanged( () =>AllAddresses );
 
-            }, new CancellationTokenSource().Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+				}, new CancellationTokenSource().Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+			}
         }
         
         private Task<AddressViewModel[]> LoadFavoriteAddresses()

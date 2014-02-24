@@ -113,9 +113,31 @@ namespace apcurium.MK.Common.Entity
             }
         }
 
+        /// <summary>
+        ///     Returns a MemberwiseClone of the Address
+        /// </summary>
         public Address Copy()
         {
             return (Address)this.MemberwiseClone();
+        }
+
+        /// <summary>
+        ///     Copies only the location-related fields without changing the rest (for example 'FriendlyName', 'Apartment', 'RingCode' and 'IsHistory')
+        /// </summary>
+        public void CopyTo(Address address)
+        {
+            if (address == null) return;
+
+            address.FullAddress = FullAddress;
+            address.Longitude = Longitude;
+            address.Latitude = Latitude;
+            address.BuildingName = BuildingName;
+            address.Street = Street;
+            address.StreetNumber = StreetNumber;
+            address.City = City;
+            address.ZipCode = ZipCode;
+            address.State = State;
+            address.PlaceReference = PlaceReference;
         }
     }
 }

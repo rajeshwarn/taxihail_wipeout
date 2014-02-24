@@ -34,6 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ViewVehicleType = Content.FindViewById<VehicleTypeAndEstimateControl>(Resource.Id.viewEstimate);
 
                 ViewDestination.IsDestination = true;
+                ViewPickup.IsDestination = false;
 
                 // temporary until we can be notified by the service that we're searching for an address
                 ViewPickup.IsLoadingAddress = false;
@@ -53,15 +54,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         void InitializeBinding()
         {
-            // TODO to toggle the AddressSearch, taken from TaxiDiamond
-//            viewPickup.AddressClicked += () => StartAddressSearch (Address.GetFirstPortionOfAddress(viewPickup.Address), address => {
-//                ViewModel.SetAddress.Execute(address.Address);
-//            });
-//
-//            viewDestination.AddressClicked += () => StartAddressSearch (Address.GetFirstPortionOfAddress(viewDestination.Address), address => {
-//                ViewModel.SetAddress.Execute(address.Address);
-//            });
-
             ViewPickup.AddressUpdated = (streetNumber, fullAddress) =>
             {
                 ViewModel.PickupAddress.StreetNumber = streetNumber;

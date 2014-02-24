@@ -6,20 +6,18 @@ using System.Threading.Tasks;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
 	public class OrderReviewViewModel: ChildViewModel
     {
 		readonly IOrderWorkflowService _orderWorkflowService;
-		readonly IAccountService _accountService;
 		bool _hasShowWarnings;
         
-		public OrderReviewViewModel(IOrderWorkflowService orderWorkflowService,
-									IAccountService accountService)
+		public OrderReviewViewModel(IOrderWorkflowService orderWorkflowService)
 		{
 			_orderWorkflowService = orderWorkflowService;
-			_accountService = accountService;
 		}
 
 		public void Init()
@@ -27,14 +25,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), (settings) => SettingsUpdated(settings));
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
 			this.Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
+			this.Observe(_orderWorkflowService.GetAndObserveNoteToDriver(), note => Note = note);
 		}
 
-        public void ReviewStart()
+		public async void ReviewStart()
         {
 			if (!_hasShowWarnings)
 			{
-				ShowFareEstimateAlertDialogIfNecessary();
-				PreValidateOrder();
+				await ShowFareEstimateAlertDialogIfNecessary();
+				await PreValidateOrder();
 			}
         }
 
@@ -57,9 +56,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private async Task SettingsUpdated(BookingSettings settings)
 		{
 			Settings = settings;
-			var list = await _accountService.GetVehiclesList();
+			var list = await this.Services().Account.GetVehiclesList();
 			VehiculeType = list.First(x => x.Id == settings.VehicleTypeId).Display;
-			list = await _accountService.GetPaymentsList();
+			list = await this.Services().Account.GetPaymentsList();
 			ChargeType = list.First(x => x.Id == settings.ChargeTypeId).Display;
 		}
 
@@ -147,14 +146,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		string _note;
+		private string _note;
 		public string Note
 		{
-			get{ return _note; }
+			get { return _note; }
 			set
 			{
-				_note = value;
-				_orderWorkflowService.SetNoteToDriver(_note);
+				if (_note != value)
+				{
+					_note = value;
+					_orderWorkflowService.SetNoteToDriver(value);
+					RaisePropertyChanged();
+				}
 			}
 		}
 
