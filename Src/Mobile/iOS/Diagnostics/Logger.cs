@@ -7,6 +7,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
 {
@@ -142,8 +144,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
                             f.Delete();
                         }
                     }
+                    using (var fs = new FileStream (filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                    {
+                        using (var w = new StreamWriter (fs))
+                        {
+                            w.BaseStream.Seek (0, SeekOrigin.End);
+                            w.WriteLine (message);
+                            w.Flush ();
+                            w.Close ();
+                        }
+                        fs.Close ();
+                    }
 
-                    File.AppendAllLines(filePath, new[] { message });
                 }
 
             }
