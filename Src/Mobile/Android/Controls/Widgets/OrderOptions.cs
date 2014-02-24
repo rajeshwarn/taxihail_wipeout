@@ -97,14 +97,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .To(vm => vm.ShowDestination)
                 .WithConversion("Visibility");
 
-            set.Bind(ViewPickup.AddressTextView)
-                .For("Click")
+            set.Bind(ViewPickup)
+                .For("AddressClicked")
                 .To(vm => vm.ShowSearchAddress);
 
-            set.Bind(ViewPickup.AddressTextView)
-                .For("Click")
+            set.Bind(ViewDestination)
+                .For("AddressClicked")
                 .To(vm => vm.ShowSearchAddress);
-
 
             set.Apply();
         }

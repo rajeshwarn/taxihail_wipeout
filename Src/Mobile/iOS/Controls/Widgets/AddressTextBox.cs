@@ -258,6 +258,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             StreetNumberTextView.EditingDidBegin += (sender, e) => 
             {
+                if(string.IsNullOrWhiteSpace(StreetNumberTextView.Text))
+                {
+                    if(AddressClicked != null)
+                    {
+                        AddressClicked(this, null);
+                    }
+                    return;
+                }
+
                 RedRoundedCornerView.Hidden = false;
                 VerticalDivider.Hidden = true;
                 _isInStreetNumberEditMode = true;
