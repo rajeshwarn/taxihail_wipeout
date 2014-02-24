@@ -196,6 +196,7 @@
         </LinearLayout>
         <EditText
             android:background="#eeeeee"
+            android:inputType="textMultiLine"
             android:id="@+id/txtNotes"
             android:hint="Notes to driver"
             android:paddingTop="10dp"
