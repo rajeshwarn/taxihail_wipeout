@@ -130,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                         InvokeOnMainThread (() =>
                         {
-							location.CopyTo(_address);
+							location.CopyLocationInfoTo(_address);
 							RaisePropertyChanged(() => BookAddress);
                         });
                         
@@ -159,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             return;
                         }
                     
-						location.CopyTo(_address);
+						location.CopyLocationInfoTo(_address);
 
 						RaisePropertyChanged (() => BookAddress );
 

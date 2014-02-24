@@ -124,7 +124,7 @@ namespace apcurium.MK.Common.Entity
         /// <summary>
         ///     Copies only the location-related fields without changing the rest (for example 'FriendlyName', 'Apartment', 'RingCode' and 'IsHistory')
         /// </summary>
-        public void CopyTo(Address address)
+        public void CopyLocationInfoTo(Address address)
         {
             if (address == null) return;
 
