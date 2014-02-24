@@ -217,6 +217,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 _dropoffCenterPin.Frame = 
                     new RectangleF((this.Bounds.Width - pinSize.Width) / 2, (this.Bounds.Height - pinSize.Height) / 2, pinSize.Width, pinSize.Height);
 
+            UIView legalView = null;
+
+            foreach (var subview in Subviews)
+            {
+                if (subview is UILabel)
+                { 
+                    legalView = subview;
+
+                    legalView.Center = new PointF(legalView.Center.X + 5, legalView.Center.Y - 47);
+                }
+            }                
         }
 
         void ShowMarkers()
