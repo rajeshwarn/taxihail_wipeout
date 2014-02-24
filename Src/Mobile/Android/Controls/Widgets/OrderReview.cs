@@ -10,6 +10,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Configuration;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -99,6 +100,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
 
             set.Apply();
+        }
+
+        public void ChangePresentation(ChangePresentationHint hint)
+        {
+            var hintHome = hint as HomeViewModelPresentationHint;
+            if (hintHome != null
+                && hintHome.State == HomeViewModelState.Review)
+            {
+                ViewModel.ReviewStart();
+            }
         }
     }
 }

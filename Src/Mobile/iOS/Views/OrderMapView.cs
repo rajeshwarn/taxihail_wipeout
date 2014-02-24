@@ -335,17 +335,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         }
 
 
-        public void SetEnabled(bool state)
+        public void SetEnabled(bool enabled)
         {
-            if (this.ZoomEnabled == state)
+            if (this.ZoomEnabled == enabled)
             {
                 // already in the good state, no need to change
                 return;
             }
 
-            this.ZoomEnabled = state;
-            this.ScrollEnabled = state;
-            this.UserInteractionEnabled = state;                       
+            this.ZoomEnabled = enabled;
+            this.ScrollEnabled = enabled;
+            this.UserInteractionEnabled = enabled;                       
 
             if (_mapBlurOverlay == null)
             {
@@ -356,7 +356,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 this.AddSubview(_mapBlurOverlay);
             }
 
-            if (!state)
+            if (!enabled)
             {
                 _mapBlurOverlay.Image = ImageHelper.CreateBlurImageFromView(this);    
 
@@ -378,28 +378,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         void ChangeState(HomeViewModelPresentationHint hint)
         {
-            if (hint.State == HomeViewModelState.PickDate)
+            switch (hint.State)
             {
-                SetEnabled(false);
+                case HomeViewModelState.Initial:
+                    SetEnabled(true);
+                    break;
+                default:
+                    SetEnabled(false);
             }
-            else if (hint.State == HomeViewModelState.Review)
-            {
-                SetEnabled(false);
-            }
-            else if (hint.State == HomeViewModelState.Edit)
-            {
-                SetEnabled(false);
-            }
-            else if (hint.State == HomeViewModelState.AddressSearch)
-            {
-                SetEnabled(false);
-            }
-            else if(hint.State == HomeViewModelState.Initial)
-            {
-                SetEnabled(true);
-            } 
         }
-
 
         public void ChangePresentation(ChangePresentationHint hint)
         {
@@ -421,6 +408,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 SetRegion(new MKCoordinateRegion(new CLLocationCoordinate2D(centerHint.Latitude, centerHint.Longitude), Region.Span), true);
             }
         }
-
     }
 }
