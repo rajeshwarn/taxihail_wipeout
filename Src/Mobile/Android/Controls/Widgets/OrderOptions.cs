@@ -36,10 +36,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ViewDestination.IsDestination = true;
                 ViewPickup.IsDestination = false;
 
-                // temporary until we can be notified by the service that we're searching for an address
-                ViewPickup.IsLoadingAddress = false;
-                ViewDestination.IsLoadingAddress = false;
-
                 // since we don't have the vehicle selection yet, we hardcode this value
                 ViewVehicleType.VehicleType = "Taxi";
 
@@ -75,6 +71,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(ViewPickup)
                 .For(v => v.IsReadOnly)
                 .To(vm => vm.ShowDestination);
+            set.Bind(ViewPickup)
+                .For(v => v.IsLoadingAddress)
+                .To(vm => vm.IsLoadingAddress);
 
             set.Bind(ViewPickup.AddressTextView)
                 .To(vm => vm.PickupAddress.DisplayAddress);
@@ -83,7 +82,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Visibility)
                 .To(vm => vm.ShowDestination)
                 .WithConversion("Visibility");
-           
+            set.Bind(ViewDestination)
+                .For(v => v.IsLoadingAddress)
+                .To(vm => vm.IsLoadingAddress);
+
             set.Bind(ViewDestination.AddressTextView)
                 .To(vm => vm.DestinationAddress.DisplayAddress);
 
@@ -94,7 +96,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Visibility)
                 .To(vm => vm.ShowDestination)
                 .WithConversion("Visibility");
-
 
             set.Bind(ViewPickup.AddressTextView)
                 .For("Click")
