@@ -216,7 +216,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return !Settings.HideDestination;
+				return Settings.HideDestination;
 			}
 		}
 
