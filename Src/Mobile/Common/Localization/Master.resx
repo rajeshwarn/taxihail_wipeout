@@ -1302,7 +1302,7 @@
     <value>Confirmation of payment has been sent to the driver.</value>
   </data>
   <data name="OkButtonText" xml:space="preserve">
-    <value>Ok</value>
+    <value>OK</value>
   </data>
   <data name="TaxiServerDownMessage" xml:space="preserve">
     <value>Can't send message to Taxi</value>

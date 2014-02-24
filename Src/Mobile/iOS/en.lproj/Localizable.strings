@@ -195,7 +195,7 @@
 "CmtTransactionErrorMessage"="Transaction Denied";
 "CmtConfirmPayment"="Confirm";
 "RideSettingsPassword"="Password";
-"OkButtonText"="Ok";
+"OkButtonText"="OK";
 "Now"="Now";
 "NbPassenger"=" ({0} passenger)";
 "LocationViewTitle"="My Locations";

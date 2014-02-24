@@ -139,7 +139,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             AddressTextView.Click += (sender, e) => {
                 if(!IsReadOnly && AddressClicked!= null)
                 {
-                    AddressClicked(this, null);
+                    AddressClicked(this, EventArgs.Empty);
                 }
             };
 
@@ -151,7 +151,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     {
                         if(AddressClicked != null)
                         {
-                            AddressClicked(this, null);
+                            AddressClicked(this, EventArgs.Empty);
                         }
                         return;
                     }

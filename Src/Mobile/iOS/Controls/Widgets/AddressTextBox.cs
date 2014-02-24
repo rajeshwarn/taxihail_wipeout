@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             AddressButton.TouchDown += (sender, e) => {
                 if(!IsReadOnly && AddressClicked!= null)
                 {
-                    AddressClicked(this, null);
+                    AddressClicked(this, EventArgs.Empty);
                 }
             };
             AddSubview(AddressButton);
@@ -262,7 +262,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     if(AddressClicked != null)
                     {
-                        AddressClicked(this, null);
+                        AddressClicked(this, EventArgs.Empty);
                     }
                     return;
                 }
