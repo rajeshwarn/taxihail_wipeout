@@ -19,7 +19,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-    public class AppBar: MvxFrameControl
+    public class AppBar: MvxFrameControl, IChangePresentation
     {
         public AppBar(Context context, IAttributeSet attrs) :
             base(Resource.Layout.SubView_AppBar, context, attrs)
@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             });
         }
 
-        public void ChangePresentation(HomeViewModelPresentationHint hint)
+        private void ChangeState(HomeViewModelPresentationHint hint)
         {
             var bookButtons = Content.FindViewById(Resource.Id.order_buttons);
             var reviewButtons = Content.FindViewById(Resource.Id.review_buttons);
@@ -106,6 +106,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         }
 
 
+        public void ChangePresentation(ChangePresentationHint hint)
+        {
+            if (hint is HomeViewModelPresentationHint)
+            {
+                ChangeState((HomeViewModelPresentationHint)hint);
+            }
+        }
     }
 }
 

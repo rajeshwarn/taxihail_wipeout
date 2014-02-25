@@ -433,9 +433,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                 SetSelectedOnBookLater(false);
             }
-                
-            _appBar.ChangePresentation(hint);
-            _orderOptions.ChangePresentation(hint);
+
         }
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
@@ -476,7 +474,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 ChangeState((HomeViewModelPresentationHint)hint);
             }
 
-            ((IChangePresentation)_mapFragment).ChangePresentation(hint);
+            _mapFragment.ChangePresentation(hint);
+            _appBar.ChangePresentation(hint);
+            _orderOptions.ChangePresentation(hint);
         }
     }
 }
