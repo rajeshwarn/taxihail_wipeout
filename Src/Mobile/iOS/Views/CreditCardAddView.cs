@@ -6,6 +6,7 @@ using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Views;
 using System.Collections.Generic;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -37,6 +38,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblExpMonth.Text = Localize.GetValue("CreditCardExpMonth");
             lblExpYear.Text = Localize.GetValue("CreditCardExpYear");
             lblCvv.Text = Localize.GetValue("CreditCardCCV");
+
+            txtCardNumber.ShowCloseButtonOnKeyboard();
+            txtCvv.ShowCloseButtonOnKeyboard();
 
             ViewModel.CreditCardCompanies[0].Image = "visa.png";
             ViewModel.CreditCardCompanies[1].Image = "mastercard.png";
