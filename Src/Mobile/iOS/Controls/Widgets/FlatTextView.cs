@@ -44,6 +44,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 TextAlignment = UITextAlignment.Left 
             };
             AddSubview(_lblPlaceholder);
+
+            ShouldBeginEditing = t => 
+            {
+                _lblPlaceholder.Hidden = true;
+                return true;
+            };
+
+            ShouldEndEditing = t => 
+            {           
+                if (string.IsNullOrWhiteSpace(Text))
+                {
+                    _lblPlaceholder.Hidden = false;
+                }
+                else
+                {
+                    _lblPlaceholder.Hidden = true;
+                }
+
+                return true;
+            };
         }
 
         public override UIFont Font
@@ -59,43 +79,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
-        public void TapAnywhereToClose(Func<UIView> owner)
-        {
-            var giantInvisibleButton = new UIButton();
-
-            ShouldBeginEditing = t => 
-            {
-                var o = owner();
-                o.AddSubview(giantInvisibleButton);
-                giantInvisibleButton.Frame = o.Frame.Copy();
-
-                _lblPlaceholder.Hidden = true;
-
-                return true;
-            };
-
-            ShouldEndEditing = t => 
-            {           
-                giantInvisibleButton.RemoveFromSuperview();
-
-                if (string.IsNullOrWhiteSpace(Text))
-                {
-                    _lblPlaceholder.Hidden = false;
-                }
-                else
-                {
-                    _lblPlaceholder.Hidden = true;
-                }
-
-                return true;
-            };
-
-            giantInvisibleButton.TouchDown += (sender, e) => 
-            {
-                EndEditing(true);
-            };
-        }
-
         public override string Text
         {
             get
@@ -104,6 +87,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
             set
             {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    _lblPlaceholder.Hidden = false;
+                }
+                else
+                {
+                    _lblPlaceholder.Hidden = true;
+                }
+
                 var attributedText = new NSMutableAttributedString(value, font: Font, foregroundColor: DefaultFontColor, paragraphStyle: _paragraphStyle);
                 base.AttributedText = attributedText;
             }
