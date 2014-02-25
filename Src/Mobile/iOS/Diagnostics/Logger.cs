@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
             {
                 var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
                 var documents = Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments);
-                var filePath = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments), "..", "Library", settings.ErrorLogFile);
+                var filePath = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments), "..", "Library", settings.ErrorLog);
                 var account = TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount;
                 var user = account == null
                     ? @" N\A "
