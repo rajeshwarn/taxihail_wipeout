@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
         public static UIImage ApplyThemeColorToImage(string imagePath, CGBlendMode colorMode = CGBlendMode.Color)
         {
-            return ApplyColorToImage(imagePath, Theme.BackgroundColor, colorMode);
+            return ApplyColorToImage(imagePath, Theme.CompanyColor, colorMode);
         }
 
         public static UIImage ApplyThemeTextColorToImage(string imagePath)

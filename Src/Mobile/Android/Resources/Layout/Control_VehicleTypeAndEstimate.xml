@@ -11,7 +11,7 @@
         android:layout_centerHorizontal="true"
         android:layout_width="fill_parent"
         android:layout_height="1px"
-        android:background="#B1B1B1" />
+        android:background="@color/company_color" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_margin="0px"
@@ -25,7 +25,6 @@
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/vehicleTypeImage"
-                android:src="@drawable/taxi_badge_selected"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
@@ -34,7 +33,7 @@
                 android:id="@+id/vehicleTypeLabel"
                 android:textSize="10dp"
                 android:gravity="center|center"
-                android:textColor="#0081F8"
+                android:textColor="@color/company_color"
                 android:textStyle="bold"
                 android:layout_margin="0px"
                 android:singleLine="true"
@@ -50,7 +49,7 @@
                 android:id="@+id/estimateFareLabel"
                 android:textSize="14dp"
                 android:gravity="center"
-                android:textColor="#0081F8"
+                android:textColor="@color/company_color"
                 android:textStyle="normal"
                 android:layout_margin="0px"
                 android:singleLine="false"

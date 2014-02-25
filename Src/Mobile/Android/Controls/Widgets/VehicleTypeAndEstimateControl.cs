@@ -55,9 +55,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if (_vehicleType != value)
                 {
                     _vehicleType = value;
-                    var image = DrawableHelper.GetDrawableFromString(Resources, string.Format("{0}_badge_selected", value.ToLower()));
 
-                    SelectedVehicleType.SetImageDrawable(image);
+                    //var image = DrawableHelper.GetDrawableFromString(Resources, string.Format("{0}_badge_selected", value.ToLower()));
+                    var bitmap = BitmapFactory.DecodeResource(Context.Resources, Resource.Drawable.taxi_badge_selected);
+                    var iconWithNewColor = DrawHelper.Colorize(bitmap, Color.Brown);
+                    SelectedVehicleType.SetImageBitmap(iconWithNewColor);
                     SelectedVehicleTypeLabel.Text = value.ToUpper();
                 }
             }
@@ -79,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             if (ShowEstimate)
             {
-                HorizontalDivider.Background.SetColorFilter(Resources.GetColor(Resource.Color.orderoptions_estimate_blue), PorterDuff.Mode.SrcAtop);
+                HorizontalDivider.Background.SetColorFilter(Resources.GetColor(Resource.Color.company_color), PorterDuff.Mode.SrcAtop);
                 SelectedVehicleType.Visibility = ViewStates.Visible;
                 SelectedVehicleTypeLabel.Visibility = ViewStates.Visible;
                 EstimatedFareLabel.Visibility = ViewStates.Visible;

@@ -75,7 +75,7 @@
     <item name="android:lines">1</item>
     <item name="android:singleLine">true</item>
     <item name="android:textStyle">bold</item>
-    <item name="android:textColor">@color/login_background_color</item>
+    <item name="android:textColor">@color/company_color</item>
   </style>  
   <style name="FormDataText">
     <item name="android:lines">1</item>

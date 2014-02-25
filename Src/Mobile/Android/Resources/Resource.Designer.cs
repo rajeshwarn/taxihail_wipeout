@@ -724,6 +724,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070047
 			public const int common_signin_btn_text_light = 2131165255;
 			
+			// aapt resource value: 0x7f070024
+			public const int company_color = 2131165220;
+			
 			// aapt resource value: 0x7f070018
 			public const int darkgray = 2131165208;
 			
@@ -765,9 +768,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f07003e
 			public const int listitem_text_line2_color = 2131165246;
-			
-			// aapt resource value: 0x7f070024
-			public const int login_background_color = 2131165220;
 			
 			// aapt resource value: 0x7f07002e
 			public const int main_background_color = 2131165230;
