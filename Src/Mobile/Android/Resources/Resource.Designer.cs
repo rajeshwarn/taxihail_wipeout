@@ -3808,6 +3808,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0a0166
 			public const int CreditCardNumber = 2131362150;
 			
+			// aapt resource value: 0x7f0a0210
+			public const int CreditCardRemoveErrorMessage = 2131362320;
+			
+			// aapt resource value: 0x7f0a020f
+			public const int CreditCardRemoveErrorTitle = 2131362319;
+			
 			// aapt resource value: 0x7f0a0190
 			public const int CreditCardRequiredFields = 2131362192;
 			
