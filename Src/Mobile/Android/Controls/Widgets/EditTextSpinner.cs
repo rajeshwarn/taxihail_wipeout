@@ -104,7 +104,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var layout = inflater.Inflate(Resource.Layout.SpinnerCell, this, true);
 
             _label = (TextView) layout.FindViewById(Resource.Id.label);
-            _label.SetBackgroundDrawable(this.Background);
+            if (this.Background != null)
+            {
+                _label.SetBackgroundDrawable(this.Background);
+            }
+
             _label.Focusable = false;
             _imageLeftView = layout.FindViewById<ImageView>(Resource.Id.leftImage);
             if (_text != null) _label.Text = _text;
