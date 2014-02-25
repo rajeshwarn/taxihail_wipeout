@@ -69,18 +69,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _layoutCenter.ClearAnimation();
             _layoutImage.SetBackgroundDrawable(null);
 
-            if (_car != null)
-            {
-                _car.Recycle();
-            }
+            _car = BitmapFactory.DecodeResource(_activity.Resources, Resource.Drawable.taxi_progress);
 
             if (_progressImage != null)
             {
                 _progressImage.Recycle();
                 _progressImage = null;
             }
-                            
-            _car = BitmapFactory.DecodeResource(_activity.Resources, Resource.Drawable.taxi_progress);
+
+
+            _colorToUse = (Android.Graphics.Color)_activity.Resources.GetColor(Resource.Color.company_color);
+            _car = DrawHelper.Colorize(_car, _colorToUse);
 
             var displaySize = _activity.Resources.DisplayMetrics;
             var windowHeight = (int)(_car.Width * 1.5f);
@@ -93,14 +92,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _zoneCircle = new RectF((_windowSize.Width * 0.5f) - _radius / 2f, (_windowSize.Height * 0.5f) - _radius / 2f,  (_windowSize.Width * 0.5f) + _radius / 2f, (_windowSize.Height * 0.5f) + _radius / 2f);
 
             _isLoading = true;
-
-            // TODO if this is necessary, do it, but it slows down the animation
-//            var useColor = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
-//            if (useColor)
-//            {
-//                _colorToUse = (Android.Graphics.Color)_activity.Resources.GetColor(Resource.Color.login_background_color);
-//                _car = DrawHelper.Colorize(_car, _colorToUse);
-//            }
 
             StartAnimationLoop();
         }

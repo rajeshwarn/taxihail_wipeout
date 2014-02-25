@@ -2,6 +2,7 @@ using MonoTouch.CoreLocation;
 using MonoTouch.MapKit;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Helper;
+using MonoTouch.CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {
@@ -56,17 +57,17 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             {
                 case AddressAnnotationType.Destination:
                     return UseThemeColorForIcons
-                            ? ImageHelper.ApplyThemeColorToImage("destination_icon.png")
+                        ? ImageHelper.ApplyThemeColorToImage("destination_icon.png", CGBlendMode.Hue)
                             : UIImage.FromFile("destination_icon.png");
                 case AddressAnnotationType.Taxi:
-                    return ImageHelper.ApplyThemeColorToImage("taxi_icon.png");
+                    return ImageHelper.ApplyThemeColorToImage("taxi_icon.png", CGBlendMode.Hue);
                 case AddressAnnotationType.NearbyTaxi:
-                    return ImageHelper.ApplyThemeColorToImage("nearby_taxi.png");
+                    return ImageHelper.ApplyThemeColorToImage("nearby_taxi.png", CGBlendMode.Hue);
                 case AddressAnnotationType.NearbyTaxiCluster:
-                    return ImageHelper.ApplyThemeColorToImage("cluster.png");
+                    return ImageHelper.ApplyThemeColorToImage("cluster.png", CGBlendMode.Hue);
                 default:
                     return UseThemeColorForIcons
-                            ? ImageHelper.ApplyThemeColorToImage("hail_icon.png")
+                        ? ImageHelper.ApplyThemeColorToImage("hail_icon.png", CGBlendMode.Hue)
                             : UIImage.FromFile("hail_icon.png");
             }
         }

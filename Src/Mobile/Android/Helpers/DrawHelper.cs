@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
         }
 
         public static Bitmap Colorize(Bitmap src, Color colorFilter) {
-
+            // TODO: No real usage of HSV, but keep method intact for future cases 
             Bitmap b = src.Copy(src.GetConfig(), true);
             for (int x = 0; x < b.Width; x++) {
                 for (int y = 0; y < b.Height; y++) {
@@ -87,8 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
                     float[] hsv = new float[3];
                     hsv = ColorToHSV(new Color(color));
                     float[] hsvMask = ColorToHSV(new Color(colorFilter));
-                    hsv[2] += hsvMask[2];
-                    Color newColor = HSVToColor(hsvMask[0], hsv[1], hsv[2]);
+                    Color newColor = HSVToColor(hsvMask[0], hsv[1], hsvMask[2]);
                     newColor.A = new Color(color).A;
                     if (Color.GetAlphaComponent(color) != 0)
                     {

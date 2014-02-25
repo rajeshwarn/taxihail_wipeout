@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return resultImage;
         }
 
-        public static UIImage ApplyColorToImage(string imagePath, UIColor color)
+        private static UIImage ApplyColorToImage(string imagePath, UIColor color, CGBlendMode colorMode)
         {
             var image = UIImage.FromFile(imagePath);
 
@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             context.ScaleCTM(1, -1);
 
             context.SetFillColorWithColor(color.CGColor);
-            context.SetBlendMode(CGBlendMode.Hue);
+            context.SetBlendMode(colorMode);
 
             context.FillRect(rect);
 
@@ -112,14 +112,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return new UIImage(transformedImage);
         }
 
-        public static UIImage ApplyThemeColorToImage(string imagePath)
+        public static UIImage ApplyThemeColorToImage(string imagePath, CGBlendMode colorMode = CGBlendMode.Color)
         {
-            return ApplyColorToImage(imagePath, Theme.BackgroundColor);
+            return ApplyColorToImage(imagePath, Theme.CompanyColor, colorMode);
         }
 
         public static UIImage ApplyThemeTextColorToImage(string imagePath)
         {
-            return ApplyColorToImage(imagePath, Theme.LabelTextColor);
+            return ApplyColorToImage(imagePath, Theme.LabelTextColor, CGBlendMode.Color);
         }
 
 		public static UIImage GetImage ( string imagePath )
