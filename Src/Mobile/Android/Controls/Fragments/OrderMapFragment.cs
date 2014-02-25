@@ -352,7 +352,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
 
-        void IChangePresentation.ChangePresentation(ChangePresentationHint hint)
+        public void ChangePresentation(ChangePresentationHint hint)
         {
             var zoomHint = hint as ZoomToStreetLevelPresentationHint;
             if (zoomHint != null)
