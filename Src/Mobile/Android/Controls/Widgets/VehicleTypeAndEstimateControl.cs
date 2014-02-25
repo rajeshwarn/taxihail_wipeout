@@ -55,8 +55,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if (_vehicleType != value)
                 {
                     _vehicleType = value;
-
-                    //var image = DrawableHelper.GetDrawableFromString(Resources, string.Format("{0}_badge_selected", value.ToLower()));
                     var bitmap = BitmapFactory.DecodeResource(Context.Resources, Resource.Drawable.taxi_badge_selected);
                     var iconWithNewColor = DrawHelper.Colorize(bitmap, Color.Brown);
                     SelectedVehicleType.SetImageBitmap(iconWithNewColor);
