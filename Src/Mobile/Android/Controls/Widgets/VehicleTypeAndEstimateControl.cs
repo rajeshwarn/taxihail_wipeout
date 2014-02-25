@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     _vehicleType = value;
                     var bitmap = BitmapFactory.DecodeResource(Context.Resources, Resource.Drawable.taxi_badge_selected);
-                    var iconWithNewColor = DrawHelper.Colorize(bitmap, Color.Brown);
+                    var iconWithNewColor = DrawHelper.Colorize(bitmap, Resources.GetColor(Resource.Color.company_color));
                     SelectedVehicleType.SetImageBitmap(iconWithNewColor);
                     SelectedVehicleTypeLabel.Text = value.ToUpper();
                 }
