@@ -134,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
             LogFilename = "errorlog.txt";
             if(TinyIoCContainer.Current.CanResolve<IAppSettings>())
             {
-                LogFilename = Path.Combine(BaseDir, TinyIoCContainer.Current.Resolve<IAppSettings>().Data.ErrorLog);
+                LogFilename = Path.Combine(BaseDir, "errorlog.txt");
             }
 
             if (File.Exists(LogFilename) && _flushNextWrite)
