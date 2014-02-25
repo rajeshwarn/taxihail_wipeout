@@ -2,6 +2,10 @@
 using MonoTouch.UIKit;
 using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Helper;
+using TinyIoC;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {
@@ -25,16 +29,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             var colorOfCarAndWheel = UIColor.FromRGB(0, 125, 249);
 
-            _imageView = new UIImageView(UIImage.FromFile("taxi_progress.png")); // TODO MKTAXI-1519 Apply color to image with ImageHelper
+            var useColor = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
+
+            if (useColor)
+            {
+                colorOfCarAndWheel = Theme.BackgroundColor;
+                _imageView = new UIImageView(ImageHelper.ApplyThemeColorToImage("taxi_progress.png", MonoTouch.CoreGraphics.CGBlendMode.Color));
+            }
+            else
+            {
+                _imageView = new UIImageView(UIImage.FromFile("taxi_progress.png"));
+            }
+                
             _imageView.SizeToFit();
             _imageView.Hidden = true;
-
 
             _progressView = new CircularProgressView(new RectangleF(0, 0, 67, 67), colorOfCarAndWheel);
             _progressView.OnCompleted = () => Hide();
             _progressView.LineWidth = 1.5f;
             _progressView.Hidden = true;
-
 
             _dialogView.Frame  = new RectangleF(0, UIScreen.MainScreen.Bounds.Height / 2, UIScreen.MainScreen.Bounds.Width, 0);
 
