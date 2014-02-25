@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using System.Linq;
+using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -63,6 +64,17 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
             
             return null;
+        }
+
+        public static IEnumerable<T> FindSubviewsOfType<T>(this UIView view)
+        {
+            var allSubviews = view.Subviews.SelectMany(FindSubviewsRecursive);
+            return allSubviews.OfType<T>();
+        }
+
+        private static IEnumerable<UIView> FindSubviewsRecursive(UIView view)
+        {
+            return view.Subviews.SelectMany(FindSubviewsRecursive).Concat(new [] { view });
         }
 
         public static void RemoveDelay(this UIView view)

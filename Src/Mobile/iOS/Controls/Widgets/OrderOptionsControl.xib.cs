@@ -15,7 +15,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-    public partial class OrderOptionsControl : BaseBindableChildView<OrderOptionsViewModel>
+    public partial class OrderOptionsControl : BaseBindableChildView<OrderOptionsViewModel>, IChangePresentation
     {
         private NSLayoutConstraint _heightConstraint;
 
@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             SetNeedsDisplay();
         }
 
-        public void ChangeState(HomeViewModelPresentationHint hint)
+        private void ChangeState(HomeViewModelPresentationHint hint)
         {
             if (hint.State == HomeViewModelState.Review)
             {
@@ -142,6 +142,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 viewPickup.IsReadOnly = ViewModel.ShowDestination;
                 viewDestination.IsReadOnly = false;
+            }
+        }
+
+        void IChangePresentation.ChangePresentation(ChangePresentationHint hint)
+        {
+            if (hint is HomeViewModelPresentationHint)
+            {
+                ChangeState((HomeViewModelPresentationHint)hint);
             }
         }
     }

@@ -129,10 +129,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
             });
         }
 
-        public virtual void ChangeState(ChangePresentationHint hint)
-        { 
-        }
-
         protected override void Dispose(bool disposing)
         {
             UnregisterKeyboardNotifications();

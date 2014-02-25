@@ -333,7 +333,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
         }
 
-        public void ChangeState(HomeViewModelPresentationHint hint)
+        private void ChangeState(HomeViewModelPresentationHint hint)
         {
             if (_presentationState == hint.State)
             {
@@ -433,10 +433,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                 SetSelectedOnBookLater(false);
             }
-                
-            _appBar.ChangePresentation(hint);
-            _orderOptions.ChangePresentation(hint);
-            _orderReview.ChangePresentation(hint);
+
         }
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
@@ -477,7 +474,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 ChangeState((HomeViewModelPresentationHint)hint);
             }
 
-            ((IChangePresentation)_mapFragment).ChangePresentation(hint);
+            _mapFragment.ChangePresentation(hint);
+            _appBar.ChangePresentation(hint);
+            _orderOptions.ChangePresentation(hint);
         }
     }
 }

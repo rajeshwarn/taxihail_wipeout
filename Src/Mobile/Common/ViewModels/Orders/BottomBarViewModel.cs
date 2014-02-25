@@ -61,12 +61,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand<DateTime?>(async date =>
 				{
+					_orderWorkflowService.SetPickupDate(date);
 					try
 					{
-						_orderWorkflowService.SetPickupDate(date);
 						await _orderWorkflowService.ValidatePickupDestinationAndTime();
-						_orderWorkflowService.ResetOrderSettings();
-						ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
 					}
 					catch (OrderValidationException e)
 					{
@@ -86,6 +84,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								break;
 						}
 					}
+					_orderWorkflowService.ResetOrderSettings();
+					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
+					await ShowFareEstimateAlertDialogIfNecessary();
+					await PreValidateOrder();
 				});
 			}
 		}
@@ -206,6 +208,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					_cancelEdit = value;
 					RaisePropertyChanged();
 				}
+			}
+		}
+
+		async Task ShowFareEstimateAlertDialogIfNecessary()
+		{
+			if (await _orderWorkflowService.ShouldWarnAboutEstimate())
+			{
+				this.Services().Message.ShowMessage(this.Services().Localize["WarningEstimateTitle"], this.Services().Localize["WarningEstimate"],
+					"Ok", delegate{ },
+					this.Services().Localize["WarningEstimateDontShow"], () => this.Services().Cache.Set("WarningEstimateDontShow", "yes"));
+			}
+		}
+
+		private async Task PreValidateOrder()
+		{
+			var validationInfo = await _orderWorkflowService.ValidateOrder();
+			if (validationInfo.HasWarning)
+			{
+				this.Services().Message.ShowMessage(this.Services().Localize["WarningTitle"], 
+					validationInfo.Message, 
+					this.Services().Localize["Continue"], 
+					delegate{}, 
+					this.Services().Localize["Cancel"], 
+					() => { ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+				});
 			}
 		}
 

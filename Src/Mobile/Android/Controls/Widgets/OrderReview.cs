@@ -102,22 +102,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Apply();
         }
 
-        public void ChangePresentation(ChangePresentationHint hint)
-        {
-            var hintHome = hint as HomeViewModelPresentationHint;
-            if (hintHome != null)
-            {
-                if (hintHome.State == HomeViewModelState.Review)
-                {
-                    ViewModel.ReviewStart();
-                }
-
-                if (hintHome.State == HomeViewModelState.Initial)
-                {
-                    ViewModel.ReviewEnd();
-                }
-            }
-        }
     }
 }
 

@@ -14,7 +14,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     [Register("AppBarView")]
-    public class AppBarView : MvxView
+    public class AppBarView : MvxView, IChangePresentation
     {
         private UIView _reviewButtons;
         private UIView _orderButtons;
@@ -177,7 +177,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             Add(_editButtons);
         }
 
-        public void ChangeState(HomeViewModelPresentationHint hint)
+        private void ChangeState(HomeViewModelPresentationHint hint)
         {   
             if (hint.State == HomeViewModelState.PickDate)
             {
@@ -187,6 +187,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _orderButtons.Hidden = hint.State != HomeViewModelState.Initial;
             _reviewButtons.Hidden = hint.State != HomeViewModelState.Review;
             _editButtons.Hidden = hint.State != HomeViewModelState.Edit;
+        }
+
+        void IChangePresentation.ChangePresentation(ChangePresentationHint hint)
+        {
+            if (hint is HomeViewModelPresentationHint)
+            {
+                ChangeState((HomeViewModelPresentationHint)hint);
+            }
         }
     }
 }
