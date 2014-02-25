@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 //            var useColor = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
 //            if (useColor)
 //            {
-//                _colorToUse = (Android.Graphics.Color)_activity.Resources.GetColor(Resource.Color.login_background_color);
+//                _colorToUse = (Android.Graphics.Color)_activity.Resources.GetColor(Resource.Color.company_color);
 //                _car = DrawHelper.Colorize(_car, _colorToUse);
 //            }
 

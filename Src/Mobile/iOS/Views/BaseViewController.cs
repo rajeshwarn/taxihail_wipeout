@@ -197,7 +197,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var navBarButtonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
 
             var textColor = Theme.LabelTextColor;
-            var navBarColor = Theme.BackgroundColor;
+            var navBarColor = Theme.CompanyColor;
 
             var isOS7orHigher = UIHelper.IsOS7orHigher;
 

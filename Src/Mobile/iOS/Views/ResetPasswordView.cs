@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
 
-			View.BackgroundColor = Theme.BackgroundColor;
+			View.BackgroundColor = Theme.CompanyColor;
 			lblTitle.TextColor = Theme.LabelTextColor;
 			lblSubTitle.TextColor = Theme.LabelTextColor;
 
