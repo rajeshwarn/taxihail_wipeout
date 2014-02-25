@@ -460,3 +460,4 @@
 "ViewAll"="View All";
 "Collapse"="Collapse";
 "ServiceErrorCreateOrder_InvalidProvider_NoCall"="Order cannot be created, invalid provider.";
+"CreditCardInstructions"="In order to use the application, you need to add a credit card to your account.";

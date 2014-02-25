@@ -1131,6 +1131,9 @@
   <data name="View_CreditCardAdd" xml:space="preserve">
     <value>New Credit Card</value>
   </data>
+  <data name="CreditCardInstructions" xml:space="preserve">
+    <value>In order to use the application, you need to add a credit card to your account.</value>
+  </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>Name as it appears on card</value>
   </data>

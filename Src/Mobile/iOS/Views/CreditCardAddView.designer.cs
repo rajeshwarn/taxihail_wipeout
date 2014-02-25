@@ -28,6 +28,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UILabel lblExpYear { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UILabel lblInstructions { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblNameOnCard { get; set; }
 
 		[Outlet]
@@ -50,9 +53,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (lblNameOnCard != null) {
-				lblNameOnCard.Dispose ();
-				lblNameOnCard = null;
+			if (lblInstructions != null) {
+				lblInstructions.Dispose ();
+				lblInstructions = null;
 			}
 
 			if (lblCardNumber != null) {
@@ -78,6 +81,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblExpYear != null) {
 				lblExpYear.Dispose ();
 				lblExpYear = null;
+			}
+
+			if (lblNameOnCard != null) {
+				lblNameOnCard.Dispose ();
+				lblNameOnCard = null;
 			}
 
 			if (txtCardNumber != null) {
