@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private bool _isAddNewCell;
         private ICommand _deleteCommand;
         private SizeF StandardImageSize = new SizeF(46f, 32f);
+        private UIButton _removeButton;
 
         public SingleLinePictureCell (IntPtr handle, string bindingText) : base(bindingText, handle)
         {       
@@ -121,14 +122,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             if (!IsAddNewCell)
             {
-                var removeButton = new UIButton(new RectangleF(this.Frame.Width - 38 - 10, (this.Frame.Height - 24) / 2, 38, 24));
-                removeButton.BackgroundColor = UIColor.Clear;
-                removeButton.ContentMode = UIViewContentMode.ScaleAspectFit;
-                removeButton.SetImage(UIImage.FromFile("delete_card_btn.png"),UIControlState.Normal);
-                removeButton.TouchUpInside += (sender, e) => {
+                _removeButton = new UIButton(new RectangleF(this.Frame.Width - 38 - 10, (this.Frame.Height - 24) / 2, 38, 24));
+                _removeButton.BackgroundColor = UIColor.Clear;
+                _removeButton.ContentMode = UIViewContentMode.ScaleAspectFit;
+                _removeButton.SetImage(UIImage.FromFile("delete_card_btn.png"),UIControlState.Normal);
+                _removeButton.TouchUpInside += (sender, e) => {
                     DeleteCommand.Execute();
                 };
-                AddSubview (removeButton); 
+                AddSubview (_removeButton); 
             }
         }
         
