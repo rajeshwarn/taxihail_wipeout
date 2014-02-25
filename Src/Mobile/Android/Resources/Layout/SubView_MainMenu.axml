@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_height="fill_parent"
+    android:background="#cccccc"
     android:layout_width="fill_parent">
     <RelativeLayout
         android:id="@+id/fakeLayout"
@@ -44,7 +45,10 @@
                         android:layout_height="fill_parent"
                         android:id="@+id/listContainer"
                         android:orientation="vertical"
-                        android:layout_margin="10dip">
+                        android:layout_marginRight="10dip"
+                        android:layout_marginLeft="10dip"
+                        android:layout_marginTop="0dip"
+                        android:layout_marginBottom="10dip">
                         <View
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
@@ -188,37 +192,38 @@
             <LinearLayout
                 android:id="@+id/apcuriumLogoLayout"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_toRightOf="@id/fakeLayout"
-                android:layout_marginTop="18.0dp"
-                android:layout_weight="1">
+                android:layout_marginBottom="5.0dp"
+                android:layout_weight="0">
                 <ImageView
                     android:id="@+id/mk_logo"
                     android:clickable="true"
                     android:src="@drawable/mk_logo"
-                    android:layout_width="220dip"
+                    android:layout_width="100dip"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:adjustViewBounds="true" />
+                    android:layout_gravity="bottom"
+                    android:adjustViewBounds="true"
+                    android:layout_marginLeft="5dip" />
                 <ImageView
                     android:id="@+id/apc_logo_menu"
                     android:clickable="true"
                     android:src="@drawable/apc_logo_menu"
-                    android:layout_width="140dip"
+                    android:layout_width="90dip"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:adjustViewBounds="true" />
+                    android:layout_gravity="bottom"
+                    android:adjustViewBounds="true"
+                    android:layout_marginLeft="10dip" />
                 <TextView
                     android:text="v0.0.0"
                     local:MvxBind="Text Panel.Version"
                     android:layout_width="fill_parent"
-                    android:layout_height="30dip"
-                    android:layout_marginRight="10dip"
-                    android:paddingBottom="10dip"
-                    android:layout_gravity="right"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dip"
+                    android:layout_gravity="bottom"
                     style="@style/FinePrint"
-                    android:gravity="bottom|right" />
+                    android:gravity="right" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
