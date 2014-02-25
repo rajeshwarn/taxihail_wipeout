@@ -16,10 +16,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
 			}
 		}
 
-		static UIColor _backgroundColor;
-		public static UIColor BackgroundColor
+        static UIColor _companyColor;
+		public static UIColor CompanyColor
 		{
-			get{ return ToUIColor(_themeValues.LoginBackgroundColor, ref _backgroundColor); }
+            get{ return ToUIColor(_themeValues.CompanyColor, ref _companyColor); }
 		}
 
 		static UIColor _labelTextColor;
@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
 		{
 			get
 			{
-				var components = BackgroundColor.CGColor.Components;
+				var components = CompanyColor.CGColor.Components;
 				var darknessScore = (((components[0]*255) * 299) + ((components[1]*255) * 587) + ((components[2]*255) * 114)) / 1000;
 
 				if (darknessScore >= 125) {
@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
 
 	public class ThemeValues 
 	{
-		public string LoginBackgroundColor { get; set; }
+        public string CompanyColor { get; set; }
 		public string LabelTextColor { get; set; }
 		public string ButtonTextColor { get; set; }
 	}

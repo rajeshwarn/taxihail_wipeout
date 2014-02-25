@@ -5,7 +5,7 @@
 
     <!--- 	LoginTheme Color -->
 
-    <color name="login_background_color">#004785</color>		
+    <color name="company_color">#004785</color>		
 	
     <color name="dialog_background_color">#9b9b9b</color>
 
