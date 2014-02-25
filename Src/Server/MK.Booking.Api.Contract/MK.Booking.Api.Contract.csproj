@@ -113,8 +113,6 @@
     <Compile Include="Requests\ExportDataRequest.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />
     <Compile Include="Requests\GrantAdminRightRequest.cs" />
-    <Compile Include="Requests\Messages\SendMessageToDriverRequest.cs" />
-    <Compile Include="Requests\Messages\SendMessageToDriverResponse.cs" />
     <Compile Include="Requests\NearbyPlacesRequest.cs" />
     <Compile Include="Requests\OrderRatingRequest.cs" />
     <Compile Include="Requests\OrderRequest.cs" />

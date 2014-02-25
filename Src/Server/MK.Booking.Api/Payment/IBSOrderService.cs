@@ -2,6 +2,7 @@
 
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
+using System;
 
 #endregion
 
@@ -16,15 +17,21 @@ namespace apcurium.MK.Booking.Api.Payment
             _client = client;
         }
 
-        public void ConfirmExternalPayment(int orderId, decimal amount, string type, string provider,
-            string transactionId, string authorizationCode)
+        public void ConfirmExternalPayment(int orderId, string vehicleId, string text, double amount, double fareAmount, string cardType, string cardNumber, string cardExpiry, string transactionId, string authorizationCode)
         {
-            _client.ConfirmExternalPayment(orderId, amount, type, provider, transactionId, authorizationCode);
+            if ( !_client.ConfirmExternalPayment(orderId, vehicleId, text, amount, fareAmount, cardType, cardNumber, cardExpiry, transactionId, authorizationCode) )
+            {
+                throw new Exception("Cannot confirm the payment");
+            }
         }
 
-        public void SendMessageToDriver(string message, string vehicleNumber)
+        public void SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId)
         {
-            _client.SendMessageToDriver(message, vehicleNumber);
+
+            if ( !_client.SendPaymentNotification(message, vehicleNumber, ibsOrderId) )
+            {
+                throw new Exception("Cannot send the payment notification");
+            }
         }
     }
 }

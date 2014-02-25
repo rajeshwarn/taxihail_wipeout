@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -360,7 +360,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="Localization\Master.resx" />
+    <None Include="Localization\Master.resx">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Localization\Taxiworld.resx" />
     <None Include="Localization\Thriev.resx" />
     <None Include="Localization\TaxiHail NYC.resx" />
@@ -392,10 +394,5 @@
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\Map\" />
-    <Folder Include="AppServices\Orders\" />
-    <Folder Include="ViewModels\Orders\" />
-    <Folder Include="PresentationHints\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
