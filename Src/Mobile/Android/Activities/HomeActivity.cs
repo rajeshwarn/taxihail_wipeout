@@ -436,7 +436,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 
             _appBar.ChangePresentation(hint);
             _orderOptions.ChangePresentation(hint);
-            _orderReview.ChangePresentation(hint);
         }
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)

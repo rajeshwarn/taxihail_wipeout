@@ -13,7 +13,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	public class OrderReviewViewModel: ChildViewModel
     {
 		readonly IOrderWorkflowService _orderWorkflowService;
-		bool _hasShownWarnings;
         
 		public OrderReviewViewModel(IOrderWorkflowService orderWorkflowService)
 		{
@@ -26,36 +25,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
 			this.Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
 			this.Observe(_orderWorkflowService.GetAndObserveNoteToDriver(), note => Note = note);
-		}
-
-		public async void ReviewStart()
-        {
-			if (!_hasShownWarnings)
-			{
-				await ShowFareEstimateAlertDialogIfNecessary();
-				await PreValidateOrder();
-			}
-        }
-
-		public void ReviewEnd()
-		{
-			_hasShownWarnings = false;
-		}
-
-		private async Task PreValidateOrder()
-		{
-			var validationInfo = await _orderWorkflowService.ValidateOrder();
-			if (validationInfo.HasWarning)
-			{
-				_hasShownWarnings = true;
-				this.Services().Message.ShowMessage(this.Services().Localize["WarningTitle"], 
-					validationInfo.Message, 
-					this.Services().Localize["Continue"], 
-					delegate{}, 
-					this.Services().Localize["Cancel"], 
-					() => { ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
-					});
-			}
 		}
 
 		private async Task SettingsUpdated(BookingSettings settings)
@@ -166,16 +135,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		async Task ShowFareEstimateAlertDialogIfNecessary()
-		{
-			if (await _orderWorkflowService.ShouldWarnAboutEstimate())
-			{
-				_hasShownWarnings = true;
-				this.Services().Message.ShowMessage(this.Services().Localize["WarningEstimateTitle"], this.Services().Localize["WarningEstimate"],
-					"Ok", delegate{ },
-					this.Services().Localize["WarningEstimateDontShow"], () => this.Services().Cache.Set("WarningEstimateDontShow", "yes"));
-			}
-		}
+
     }
 }
 

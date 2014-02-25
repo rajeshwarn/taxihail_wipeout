@@ -197,7 +197,7 @@
   <string name="CmtTransactionErrorMessage">Transaction Denied</string>
   <string name="CmtConfirmPayment">Confirm</string>
   <string name="RideSettingsPassword">Password</string>
-  <string name="OkButtonText">Ok</string>
+  <string name="OkButtonText">OK</string>
   <string name="Now">Now</string>
   <string name="NbPassenger"> ({0} passenger)</string>
   <string name="LocationViewTitle">My Locations</string>
