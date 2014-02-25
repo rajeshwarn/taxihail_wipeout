@@ -120,7 +120,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 _layoutImage.SetBackgroundDrawable(GetCircleForProgress());
                 await Task.Delay(500);
                 RelativeLayout root = (RelativeLayout) _layoutCenter.Parent.Parent;
-                root.RemoveView((LinearLayout)_layoutCenter.Parent);
+                if (root != null && _layoutCenter.Parent != null)
+                {
+                    root.RemoveView((LinearLayout)_layoutCenter.Parent);
+                }
             });
         }
 
