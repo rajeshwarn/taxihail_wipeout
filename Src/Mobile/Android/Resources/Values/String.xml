@@ -462,4 +462,5 @@
   <string name="ViewAll">View All</string>
   <string name="Collapse">Collapse</string>
   <string name="ServiceErrorCreateOrder_InvalidProvider_NoCall">Order cannot be created, invalid provider.</string>
+  <string name="CreditCardInstructions">In order to use the application, you need to add a credit card to your account.</string>
 </resources>

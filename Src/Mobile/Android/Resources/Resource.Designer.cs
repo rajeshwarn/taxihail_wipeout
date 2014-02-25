@@ -3796,6 +3796,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0a013e
 			public const int CreditCardExpYear = 2131362110;
 			
+			// aapt resource value: 0x7f0a020e
+			public const int CreditCardInstructions = 2131362318;
+			
 			// aapt resource value: 0x7f0a01a6
 			public const int CreditCardInvalidCrediCardNUmber = 2131362214;
 			
