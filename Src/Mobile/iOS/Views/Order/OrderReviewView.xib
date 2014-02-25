@@ -126,12 +126,12 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SAi-py-j4y" customClass="FlatTextView">
-                    <rect key="frame" x="9" y="183" width="282" height="100"/>
+                    <rect key="frame" x="9" y="183" width="284" height="100"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="100" id="Xj5-qX-6wp"/>
-                        <constraint firstAttribute="width" constant="282" id="icz-ny-Beg"/>
+                        <constraint firstAttribute="height" priority="500" constant="100" id="R6u-PV-7Qc"/>
+                        <constraint firstAttribute="width" constant="284" id="icz-ny-Beg"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
@@ -162,6 +162,7 @@
                 <constraint firstItem="7mt-Af-m4S" firstAttribute="leading" secondItem="JLh-1X-33p" secondAttribute="trailing" constant="12" id="dwA-PN-XyY"/>
                 <constraint firstItem="j8k-Nc-UKw" firstAttribute="centerY" secondItem="gDd-hn-z9F" secondAttribute="centerY" id="eUk-je-aCe"/>
                 <constraint firstItem="M8A-gq-5Cj" firstAttribute="leading" secondItem="Zbo-DL-yJk" secondAttribute="trailing" constant="12" id="egW-db-bey"/>
+                <constraint firstAttribute="bottom" secondItem="SAi-py-j4y" secondAttribute="bottom" constant="17" id="fFP-Hx-XVO"/>
                 <constraint firstItem="gDd-hn-z9F" firstAttribute="leading" secondItem="j8k-Nc-UKw" secondAttribute="trailing" constant="12" id="gI1-Jj-FH1"/>
                 <constraint firstItem="feA-ip-Qvv" firstAttribute="centerY" secondItem="FN5-We-36v" secondAttribute="centerY" id="jqb-wb-0c6"/>
                 <constraint firstItem="vAa-yj-UNW" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="ki8-u8-c18"/>
