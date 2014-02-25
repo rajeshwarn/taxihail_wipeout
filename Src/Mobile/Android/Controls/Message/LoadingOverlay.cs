@@ -69,11 +69,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _layoutCenter.ClearAnimation();
             _layoutImage.SetBackgroundDrawable(null);
 
-            if (_car != null)
-            {
-                _car.Recycle();
-            }
-
             if (_progressImage != null)
             {
                 _progressImage.Recycle();
