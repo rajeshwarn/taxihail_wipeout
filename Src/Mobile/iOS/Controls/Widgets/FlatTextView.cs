@@ -9,11 +9,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     [Register("FlatTextView")]
     public class FlatTextView : UITextView
     {
-        NSMutableParagraphStyle _paragraphStyle;
-        static UIColor DefaultFontColor = UIColor.FromRGB(44, 44, 44);
-        static UIColor PlaceholderFontColor = UIColor.FromRGB(200, 200, 200);
-
-        private static bool _showPlaceholder = true;
+        private NSMutableParagraphStyle _paragraphStyle;
+        private static UIColor DefaultFontColor = UIColor.FromRGB(44, 44, 44);
+        private static UIColor PlaceholderFontColor = UIColor.FromRGB(200, 200, 200);
+        private UILabel _lblPlaceholder;
 
         public FlatTextView (IntPtr handle) : base (handle)
         {
@@ -36,6 +35,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _paragraphStyle.LineHeightMultiple = 20f;
             _paragraphStyle.MinimumLineHeight = 20f;
             _paragraphStyle.MaximumLineHeight = 20f;
+
+            _lblPlaceholder = new UILabel(new RectangleF(5, 5, 0, 0)) { TextColor = PlaceholderFontColor };
+            AddSubview(_lblPlaceholder);
+        }
+
+        public override UIFont Font
+        {
+            get
+            {
+                return base.Font;
+            }
+            set
+            {
+                base.Font = value;
+                _lblPlaceholder.Font = value;
+            }
         }
 
         public void TapAnywhereToClose(Func<UIView> owner)
@@ -48,22 +63,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 o.AddSubview(giantInvisibleButton);
                 giantInvisibleButton.Frame = o.Frame.Copy();
 
-                if (Text == Placeholder)
-                {
-                    _showPlaceholder = false;
-                    Text = string.Empty;
-                }
+                _lblPlaceholder.Hidden = true;
+
                 return true;
             };
+
             ShouldEndEditing = t => 
             {           
                 giantInvisibleButton.RemoveFromSuperview();
 
-                _showPlaceholder = true;
                 if (string.IsNullOrWhiteSpace(Text))
                 {
-                    Text = Placeholder;
+                    _lblPlaceholder.Hidden = false;
                 }
+                else
+                {
+                    _lblPlaceholder.Hidden = true;
+                }
+
                 return true;
             };
 
@@ -81,37 +98,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
             set
             {
-                if (string.IsNullOrWhiteSpace(value) && _showPlaceholder)
-                {
-                    value = Placeholder;
-                }
-
-                if (value == Placeholder)
-                {
-                    TextColor = PlaceholderFontColor;
-                }
-                else
-                {
-                    TextColor = DefaultFontColor;
-                }
-
-                var attributedText = new NSMutableAttributedString(value, font: Font, foregroundColor: TextColor, paragraphStyle: _paragraphStyle);
+                var attributedText = new NSMutableAttributedString(value, font: Font, foregroundColor: DefaultFontColor, paragraphStyle: _paragraphStyle);
                 base.AttributedText = attributedText;
             }
         }
-
-        private string _placeholder = string.Empty;
+            
         public string Placeholder
         {
-            get { return _placeholder; }
+            get { return _lblPlaceholder.Text; }
             set
             {
-                _placeholder = value;
-                if (string.IsNullOrWhiteSpace(Text))
-                {
-                    _showPlaceholder = true;
-                    Text = value;
-                }
+                _lblPlaceholder.Text = value;
+                _lblPlaceholder.SizeToFit();
             }
         }
     }
