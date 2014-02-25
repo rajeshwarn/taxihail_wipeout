@@ -52,7 +52,7 @@ namespace Cirrious.MvvmCross.Droid.Fragging
         {
             if (e.KeyCode == Android.Views.Keycode.Back)
             {
-                if (Intent.Categories.Contains("Progress"))
+                if (Intent.Categories != null && Intent.Categories.Contains("Progress"))
                 {
                     return false;
                 }
