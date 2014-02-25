@@ -5,6 +5,7 @@ using ServiceStack.Text;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -12,6 +13,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
 		private readonly BaseViewModel _parent;
 		private IMvxWebBrowserTask _browserTask;
+	
 
 		public PanelMenuViewModel (BaseViewModel parent, IMvxWebBrowserTask browserTask)
         {
@@ -145,16 +147,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public string Version {
             get 
             {
+				if (string.IsNullOrEmpty(_version))
+				{
+					_version = this.Services().PackageInfo.Version;
+				}
                 return _version;                         
             }
-            set 
-            {
-                if (value != _version) 
-                {
-                    _version = value;
-					RaisePropertyChanged ();
-                }
-            }
+            
         }
 
 		public ICommand NavigateToUpdateProfile
