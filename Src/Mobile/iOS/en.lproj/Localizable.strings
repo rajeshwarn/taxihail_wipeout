@@ -1,7 +1,7 @@
 "CreateAccountPasswordConfirmationPlaceHolder"="Confirm password";
 "ConfirmPhoneLabel"="Mobile:";
 "DestinationMapTitle"="Destination location";
-"NotesToDriveLabel"="Notes to driver";
+"NotesToDriveLabel"="Notes to driver (Name of business, specific entrance, ...)";
 "Date"="Date";
 "CreateAccountPasswordPlaceHolder"="Password";
 "CmtRideLinqUnpairErrorMessage"="There was an error during unpairing, please try again later.";

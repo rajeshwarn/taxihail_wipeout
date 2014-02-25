@@ -36,7 +36,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _paragraphStyle.MinimumLineHeight = 20f;
             _paragraphStyle.MaximumLineHeight = 20f;
 
-            _lblPlaceholder = new UILabel(new RectangleF(5, 5, 0, 0)) { TextColor = PlaceholderFontColor };
+            _lblPlaceholder = new UILabel(new RectangleF(5, 5, Frame.Width, Frame.Height)) 
+            { 
+                TextColor = PlaceholderFontColor, 
+                Lines = 0, 
+                LineBreakMode = UILineBreakMode.WordWrap, 
+                TextAlignment = UITextAlignment.Left 
+            };
             AddSubview(_lblPlaceholder);
         }
 
@@ -102,14 +108,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 base.AttributedText = attributedText;
             }
         }
-            
+
         public string Placeholder
         {
             get { return _lblPlaceholder.Text; }
             set
             {
+                var boundingRect = new NSString(value).GetBoundingRect(Frame.Size, NSStringDrawingOptions.UsesLineFragmentOrigin, new UIStringAttributes() { Font = Font }, new NSStringDrawingContext());
+                _lblPlaceholder.SetHeight(boundingRect.Height);
                 _lblPlaceholder.Text = value;
-                _lblPlaceholder.SizeToFit();
             }
         }
     }

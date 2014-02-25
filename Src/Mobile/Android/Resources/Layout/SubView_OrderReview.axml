@@ -198,7 +198,7 @@
             android:background="#eeeeee"
             android:inputType="textMultiLine"
             android:id="@+id/txtNotes"
-            android:hint="Notes to driver"
+            android:hint="@string/NotesToDriveLabel"
             android:paddingTop="10dp"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
