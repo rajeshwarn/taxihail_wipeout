@@ -164,7 +164,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool IsStatusDone (string statusId)
         {
-            return statusId.SoftEqual (VehicleStatuses.Common.Done);
+            return statusId.SoftEqual(VehicleStatuses.Common.Done) || statusId.SoftEqual(VehicleStatuses.Common.MeterOffNotPayed);
         }
 
 		public async Task<DirectionInfo> GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate)
