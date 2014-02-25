@@ -114,7 +114,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 ChangeState((HomeViewModelPresentationHint)hint);
             }
-            mapView.ChangePresentation(hint);
         }
 
         void ChangeState(HomeViewModelPresentationHint hint)
@@ -209,9 +208,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         RedrawSubViews();
                     });
             } 
-
-            ctrlOrderOptions.ChangeState(hint);
-            bottomBar.ChangeState(hint);
         }
 
         private void RedrawSubViews()

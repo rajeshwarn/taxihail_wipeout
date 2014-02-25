@@ -73,6 +73,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             if (view != null)
             {
                 view.ChangePresentation(hint);
+                foreach (var subview in CurrentTopViewController.View.FindSubviewsOfType<IChangePresentation>())
+                {
+                    subview.ChangePresentation(hint);
+                }
             }
             else
             {

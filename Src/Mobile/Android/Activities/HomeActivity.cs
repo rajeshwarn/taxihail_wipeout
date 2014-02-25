@@ -333,7 +333,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
         }
 
-        public void ChangeState(HomeViewModelPresentationHint hint)
+        private void ChangeState(HomeViewModelPresentationHint hint)
         {
             if (_presentationState == hint.State)
             {
