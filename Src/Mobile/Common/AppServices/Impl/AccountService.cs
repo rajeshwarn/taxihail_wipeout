@@ -530,25 +530,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public void RemoveCreditCard (Guid creditCardId)
         {
 			UseServiceClientTask<IAccountServiceClient>(client => client.RemoveCreditCard(creditCardId,""));
-            
         }
 
-        public bool AddCreditCard (CreditCardInfos creditCard)
+		public async Task<bool> AddCreditCard (CreditCardInfos creditCard)
         {
 			try
 			{
-                var response = UseServiceClientTask<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
+				var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
                     creditCard.CardNumber,
                     new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
                     creditCard.CCV));	
 			    creditCard.Token = response.CardOnFileToken;       
-			
 			}
 			catch
 			{
                 return false;
 			}
-            
             
             var request = new CreditCardRequest
             {
@@ -559,7 +556,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 Token = creditCard.Token
             };
             
-			UseServiceClientTask<IAccountServiceClient> (client => client.AddCreditCard (request));  
+			await UseServiceClientAsync<IAccountServiceClient> (client => client.AddCreditCard (request));  
 
 			return true;
 

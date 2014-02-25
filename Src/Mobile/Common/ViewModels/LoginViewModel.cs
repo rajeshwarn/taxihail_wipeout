@@ -296,7 +296,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (NeedsToNavigateToAddCreditCard())
 			{
-				ShowViewModel<CreditCardAddViewModel>();
+				ShowViewModel<CreditCardAddViewModel>(new { showInstructions =  true });
 				return;
 			}
 
@@ -311,7 +311,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			if (this.Settings.CreditCardIsMandatory)
 			{
-				if (this.Services().Account.GetCreditCards().None())
+				if (!this.Services().Account.CurrentAccount.DefaultCreditCard.HasValue)
 				{
 					return true;
 				}

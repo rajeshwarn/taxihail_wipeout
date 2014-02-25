@@ -15,7 +15,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
 	public class CreditCardAddViewModel : BaseSubViewModel<CreditCardInfos>
     {
-
 #region Const and ReadOnly
         private const string Visa = "Visa";
         private const string MasterCard = "MasterCard";
@@ -35,6 +34,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             public static int AvcCvvCvv2 = 135;
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
         }
+
+		public void Init(bool showInstructions)
+		{
+			ShowInstructions = showInstructions;
+		}
 
 		public override void Start()
         {
@@ -273,10 +277,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public ICommand AddCreditCardCommand { get { return this.GetCommand(() => AddCrediCard()); } }
 
+		public bool ShowInstructions { get; set; }
+
 #endregion
 
 #region Private Methods
-        private void AddCrediCard ()
+		private async void AddCrediCard ()
         {
 			Data.FriendlyName = CreditCardCategoryName;
             Data.CreditCardCompany = CreditCardTypeName;
@@ -300,15 +306,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 this.Services().Message.ShowProgress(true);
                 Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
                 Data.CreditCardId = Guid.NewGuid();
-                if (this.Services().Account.AddCreditCard(Data))
-				{		
 
+				var success = await this.Services().Account.AddCreditCard(Data);
+				if (success)
+				{		
 					Data.CardNumber = null;
 					Data.CCV = null;
 
-					ReturnResult(Data);
+					if(ShowInstructions)
+					{
+						ShowViewModelAndRemoveFromHistory<HomeViewModel>();
+					}
+					else
+					{
+						ReturnResult(Data);
+					}
 				}
-				else{
+				else
+				{
                     this.Services().Message.ShowMessage("Validation", "Cannot validate the credit card.");
 				}
 
