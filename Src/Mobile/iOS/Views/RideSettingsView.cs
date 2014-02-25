@@ -53,7 +53,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblTip.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
             txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
 
-            DismissKeyboardOnReturn(txtName, txtPhone);
+            DismissKeyboardOnReturn(txtName);
+
+            txtPhone.ShowCloseButtonOnKeyboard();
 
             txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), () => ViewModel.Vehicles, () => ViewModel.VehicleTypeId, x => ViewModel.SetVehiculeType.Execute(x.Id));
             txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), () => ViewModel.Payments, () => ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.Execute(x.Id));

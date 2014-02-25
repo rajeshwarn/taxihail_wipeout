@@ -448,17 +448,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 switch (_presentationState)
                 {
                     case HomeViewModelState.Review:
-                        ChangeState(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
-                        return true;
+                        ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                        return false;
                     case HomeViewModelState.Edit:
-                        ChangeState(new HomeViewModelPresentationHint(HomeViewModelState.Review));
-                        return true;
+                        ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
+                        return false;
                     case HomeViewModelState.PickDate:
-                        ChangeState(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
-                        return true;
+                        ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                        return false;
                     case HomeViewModelState.AddressSearch:
-                        ChangeState(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
-                        return true;
+                        ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                        return false;
                     default:
                         break;
                 }
@@ -467,7 +467,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             return base.OnKeyDown(keyCode, e);
         }
 
-        void IChangePresentation.ChangePresentation(ChangePresentationHint hint)
+        public void ChangePresentation(ChangePresentationHint hint)
         {
             if (hint is HomeViewModelPresentationHint)
             {

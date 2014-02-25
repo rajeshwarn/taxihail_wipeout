@@ -121,6 +121,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             set
             {
+                if (value == null)
+                    return;
+
                 if (_availableVehicles != value)
                 {
                     ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value.ToArray(), GetMapBoundsFromProjection()));

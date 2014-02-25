@@ -496,6 +496,7 @@
     <Compile Include="Controls\Message\CircularProgressView.cs" />
     <Compile Include="Controls\Message\LoadingOverlay.cs" />
     <Compile Include="Controls\Message\LoadingOverlayView.cs" />
+    <Compile Include="Extensions\UITextViewExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
