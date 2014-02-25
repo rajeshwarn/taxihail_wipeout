@@ -14,7 +14,6 @@ namespace MK.Common.Configuration
             DefaultRadius = 500;
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;
-            ErrorLogFile = "errorlog.txt";
             ErrorLogEnabled = true;
             SupportEmail = "taxihail@apcurium.com";
             ShowPassengerName = true;
@@ -33,9 +32,6 @@ namespace MK.Common.Configuration
 		public string ServiceUrl { get; set; }
         [Display(Name = "Error Log Enabled", Description="Flag to enable the log of the errors in file")]
 		public bool ErrorLogEnabled{ get; private set; }
-        [Display(Name = "Error Log File", Description="Path of the error Log file")]
-        public string ErrorLogFile{ get; private set; }
-
         [Display(Name = "Twitter Enabled", Description="Enable register/log in with Twitter")]
 		public bool TwitterEnabled{ get; private set; }
         [Display(Name = "Twitter Consumer Key", Description="Twitter API settings")]
