@@ -43,9 +43,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				var lastKnownPosition = _locationService.LastKnownPosition;
 				if(lastKnownPosition != null)
 				{
+					try{
 					var availableVehicles = await UseServiceClientAsync<IVehicleClient, AvailableVehicle[]>(service => service
-						.GetAvailableVehiclesAsync(lastKnownPosition.Latitude, lastKnownPosition.Longitude));
-					_availableVehiclesSubject.OnNext(availableVehicles);
+						GetAvailableVehiclesAsync(lastKnownPosition.Latitude, lastKnownPosition.Longitude));
+						_availableVehiclesSubject.OnNext(availableVehicles);
+					}
+					catch{}
+
 				}
 
 				await Task.Delay(5000);
