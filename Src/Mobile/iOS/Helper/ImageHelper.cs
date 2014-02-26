@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return resultImage;
         }
 
-        private static UIImage ApplyColorToImage(string imagePath, UIColor color, CGBlendMode colorMode)
+        public static UIImage ApplyColorToImage(string imagePath, UIColor color, CGBlendMode colorMode)
         {
             var image = UIImage.FromFile(imagePath);
 
