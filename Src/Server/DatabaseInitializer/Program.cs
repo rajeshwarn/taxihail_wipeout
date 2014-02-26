@@ -48,7 +48,7 @@ namespace DatabaseInitializer
             var loggger = LogManager.GetLogger("DatabaseInitializer");
             try
             {
-                var companyName = "MKWebDev";
+                var companyName = "TaxiHailDemo";
                 if (args.Length > 0)
                 {
                     companyName = args[0];
@@ -82,10 +82,14 @@ namespace DatabaseInitializer
                 Console.WriteLine("Working...");
 
                 var creatorDb = new DatabaseCreator();
+                var isUpdate = creatorDb.DatabaseExists(connStringMaster, companyName);
+
                 string oldDatabase = null;
                 var container = new UnityContainer();
                 var module = new Module();
                 module.Init(container, connectionString);
+                
+                
 
                 var configurationManager = new
                     ConfigurationManager(
@@ -93,7 +97,7 @@ namespace DatabaseInitializer
 
                 IDictionary<string, string> settingsInDb = null;
 
-                var isUpdate = creatorDb.DatabaseExists(connStringMaster, companyName);
+                
 
                 //for dev company, delete old database to prevent keeping too many databases
                 if (companyName == "MKWebDev"
