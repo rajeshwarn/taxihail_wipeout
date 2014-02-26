@@ -222,7 +222,6 @@
     <Compile Include="ListViewStructure\ListItemData.cs" />
     <Compile Include="ListViewStructure\BooleanSectionItem.cs" />
     <Compile Include="Models\Activities.cs" />
-    <Compile Include="Diagnostic\ErrorHandler.cs" />
     <Compile Include="Activities\AlertDialogActivity.cs" />
     <AndroidResource Include="Resources\Drawable\StatusBottomBarBackground.xml" />
     <AndroidResource Include="Resources\Drawable\WindowDisplay.xml" />
