@@ -22,6 +22,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
             get{ return ToUIColor(_themeValues.CompanyColor, ref _companyColor); }
 		}
 
+        static UIColor _loginColor;
+        public static UIColor LoginColor
+        {
+            get{ return ToUIColor(_themeValues.LoginColor, ref _loginColor); }
+        }
+
 		static UIColor _labelTextColor;
 		public static UIColor LabelTextColor
 		{
@@ -64,6 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
 	public class ThemeValues 
 	{
         public string CompanyColor { get; set; }
+        public string LoginColor { get; set; }
 		public string LabelTextColor { get; set; }
 		public string ButtonTextColor { get; set; }
 	}
