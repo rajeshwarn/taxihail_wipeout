@@ -91,7 +91,9 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			{
 				try
 				{
+#if DEBUG
 					_logger.LogMessage("setting {0} - value {1}", item.Key, item.Value);
+#endif
 					var propertyName = item.Key.Contains(".") ? 
 					                   item.Key.SplitOnLast('.')[1]
 						               : item.Key;
@@ -115,7 +117,9 @@ namespace apcurium.MK.Booking.Mobile.Settings
 				catch(Exception e)
 				{
 					_logger.LogError(e);
+#if DEBUG
 					_logger.LogMessage("Error can't set value for property {0}, value was {1}", item.Key, item.Value);
+#endif
 				}
 			}
 		}
