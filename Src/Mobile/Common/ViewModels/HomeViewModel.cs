@@ -26,11 +26,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Panel = new PanelMenuViewModel(this, browserTask);
 		}
 
-		public void Init()
-		{
-
-		}
-
 		public override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
@@ -57,10 +52,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.OnViewStopped();
             this.Services().Location.Stop();
 			this.Services().Vehicle.Stop();
-
 		}
-
-
 
 		public PanelMenuViewModel Panel { get; set; }
 
