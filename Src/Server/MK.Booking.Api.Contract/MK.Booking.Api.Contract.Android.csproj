@@ -138,6 +138,5 @@
   <ItemGroup>
     <Folder Include="Resources\Payments\Braintree\" />
     <Folder Include="Resources\Payments\Cmt\" />
-    <Folder Include="Requests\Messages\" />
   </ItemGroup>
 </Project>
