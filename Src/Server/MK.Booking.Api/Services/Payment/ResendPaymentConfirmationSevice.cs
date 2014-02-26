@@ -48,14 +48,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var paymentInfo = _orderPaymentDao.FindByOrderId(order.Id);
             if (paymentInfo == null) return new HttpResult(HttpStatusCode.NotFound);
 
-            SendPaymentConfirmationToDriver(orderStatus.VehicleNumber, paymentInfo.Amount, paymentInfo.TransactionId,
+            SendPaymentConfirmationToDriver( order.IBSOrderId.Value, orderStatus.VehicleNumber, paymentInfo.Amount, paymentInfo.TransactionId,
                 paymentInfo.AuthorizationCode);
 
             return new HttpResult(HttpStatusCode.OK);
         }
 
 
-        private void SendPaymentConfirmationToDriver(string vehicleNumber, decimal amount, string transactionId,
+        private void SendPaymentConfirmationToDriver(int ibsOrderId, string vehicleNumber, decimal amount, string transactionId,
             string authorizationCode)
         {
             var applicationKey = _configurationManager.GetSetting("TaxiHail.ApplicationKey");
@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             line1 = line1.PadRight(32, ' ');
                 //Padded with 32 char because the MDT displays line of 32 char.  This will cause to write the auth code on the second line
             var line2 = string.Format(resources.GetString("PaymentConfirmationToDriver2"), authorizationCode);
-            _ibs.SendMessageToDriver(line1 + line2, vehicleNumber);
+            _ibs.SendPaymentNotification(line1 + line2, vehicleNumber, ibsOrderId);
         }
     }
 }

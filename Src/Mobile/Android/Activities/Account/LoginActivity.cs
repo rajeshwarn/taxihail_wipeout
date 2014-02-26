@@ -103,23 +103,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
         public void ApplyKeyboardEnabler(EditText view)
         {
-            InputMethodManager mImm = (InputMethodManager) GetSystemService(Context.InputMethodService);  
-            view.FocusChange += (sender, e) =>  
-            {
-                if (e.HasFocus)
-                {
-                    mImm.ShowSoftInput(((EditText)sender), Android.Views.InputMethods.ShowFlags.Implicit);  
-                }
-            };
+            InputMethodManager mImm = (InputMethodManager)GetSystemService(Context.InputMethodService);  
 
-            if (ShouldUseClipboardManager())
+            view.Click += (sender, e) =>
             {
-                view.Click += (sender, e) => 
+                if (ShouldUseClipboardManager())
                 {
+
                     ClipboardManager cm = (ClipboardManager)GetSystemService(Context.ClipboardService);
                     cm.Text = ((EditText)sender).Text;
-                };
-            }
+                }
+
+                mImm.ShowSoftInput(((EditText)sender), Android.Views.InputMethods.ShowFlags.Implicit);  
+            };
         }
 
         private void PromptServer()

@@ -96,6 +96,13 @@ namespace apcurium.MK.Common.Configuration.Impl
 
                     var propertyType = typeOfSettings.GetProperty(propertyName);
 
+                    if ( propertyType == null )
+                    {
+                        Console.WriteLine("Error can't set value for property {0}, value was {1}", item.Key, item.Value);
+                        continue;
+                    }
+
+
                     var targetType = IsNullableType(propertyType.PropertyType)
                             ? Nullable.GetUnderlyingType(propertyType.PropertyType)
                             : propertyType.PropertyType;

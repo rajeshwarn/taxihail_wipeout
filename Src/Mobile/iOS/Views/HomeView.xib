@@ -69,8 +69,8 @@
                                 <constraint firstAttribute="width" constant="305" id="x9x-99-XeZ"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="350" translatesAutoresizingMaskIntoConstraints="NO" id="lYS-4q-3Mj" customClass="OrderReviewView">
-                            <rect key="frame" x="8" y="686" width="305" height="350"/>
+                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="300" translatesAutoresizingMaskIntoConstraints="NO" id="lYS-4q-3Mj" customClass="OrderReviewView">
+                            <rect key="frame" x="8" y="686" width="305" height="300"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="305" id="zdm-6b-UEv"/>
@@ -117,7 +117,7 @@
                         <constraint firstItem="Fsx-d8-MLA" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="XF0-qe-pxP"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="Z3E-95-Tkk"/>
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="ZSI-kr-X81"/>
-                        <constraint firstItem="lYS-4q-3Mj" firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" constant="468" id="aqP-8Y-Hn4"/>
+                        <constraint firstItem="lYS-4q-3Mj" firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" constant="418" id="aqP-8Y-Hn4"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="Jqp-iu-ci1" secondAttribute="bottom" constant="13" id="nTh-8y-wH1"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="MeW-ns-SQv" secondAttribute="bottom" constant="13" id="pen-rq-tIj"/>
                     </constraints>

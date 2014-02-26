@@ -20,6 +20,8 @@
         public class Common
         {
             public const string Done = "wosDONE";
+            public const string MeterOffNotPayed = "wosDoneNotPayed";
+            
             public const string Waiting = "wosWAITING";
             public const string Assigned = "wosASSIGNED";
             public const string Arrived = "wosARRIVED";

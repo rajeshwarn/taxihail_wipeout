@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var orderStatus = _orderDao.FindOrderStatusById(orderDetail.Id);
                 if (orderStatus == null) throw new HttpError(HttpStatusCode.BadRequest, "Order status not found");
 
-
+                
                 var authRequest = new AuthorizationRequest
                 {
                     Amount = (int) (request.Amount*100),

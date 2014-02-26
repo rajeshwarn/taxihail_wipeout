@@ -24,11 +24,12 @@ namespace apcurium.MK.Booking.IBS
 
         IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds);
 
-        bool SendMessageToDriver(string message, string carId);
+
+        bool SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId);
+        
 
         IbsVehiclePosition[] GetAvailableVehicles(double latitude, double longitude);
 
-        void ConfirmExternalPayment(int orderId, decimal amount, string type, string provider, string transactionId,
-            string authorizationCode);
+        bool ConfirmExternalPayment(int orderId, string vehicleId, string text, double amount, double fareAmount, string cardType, string cardNumber, string cardExpiry, string transactionId, string authorizationCode);
     }
 }

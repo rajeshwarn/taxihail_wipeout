@@ -113,8 +113,6 @@
     <Compile Include="Resources\PaymentSettings.cs" />
     <Compile Include="Requests\PushNotificationRegistration.cs" />
     <Compile Include="Resources\OrderValidationResult.cs" />
-    <Compile Include="Requests\Messages\SendMessageToDriverRequest.cs" />
-    <Compile Include="Requests\Messages\SendMessageToDriverResponse.cs" />
     <Compile Include="Resources\AvailableVehicle.cs" />
     <Compile Include="Requests\AvailableVehicles.cs" />
     <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
@@ -140,5 +138,6 @@
   <ItemGroup>
     <Folder Include="Resources\Payments\Braintree\" />
     <Folder Include="Resources\Payments\Cmt\" />
+    <Folder Include="Requests\Messages\" />
   </ItemGroup>
 </Project>
