@@ -51,23 +51,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        //public void ConfirmExternalPayment(int orderId, decimal amount, string type, string provider,
-        //    string transactionId, string authorizationCode)
-        //{
-        //    var result = 0;
-        //    UseService(service =>
-        //    {
-        //        //   string param = string.Format(@"{{""authorizationCode"":""{0}"",""transactionId"":""{1}"",""type"":""{2}"",""provider"":""{3}""}}", transactionId, authorizationCode, type, provider);
-
-        //        result = service.SendMsg_3dPartyPaymentAuth( UserNameApp, PasswordApp, orderId, Convert.ToDouble(amount),
-        //            authorizationCode);
-        //    });
-
-        //    if (result != 1) throw new Exception("SaveExtrPayment failed");
-        //}
-
-
-
+        
         public IbsOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone)
         {
             var status = new IbsOrderStatus
@@ -178,7 +162,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             UseService(service =>
             {
                 var resultat = service.SendMsg_3dPartyPaymentNotification(UserNameApp, PasswordApp, vehicleNumber, true, ibsOrderId, message);
-                success = resultat == 1;
+                success = resultat == 0;
             });
             return success;
         }
@@ -211,7 +195,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
 
            var result = service.SendMsg_3dPartyPaymentAuth(UserNameApp, PasswordApp, vehicleId, auth);
-           success = result == 1;
+           success = result == 0;
        });
 
             return success;
