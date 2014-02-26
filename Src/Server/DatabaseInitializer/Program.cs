@@ -48,7 +48,7 @@ namespace DatabaseInitializer
             var loggger = LogManager.GetLogger("DatabaseInitializer");
             try
             {
-                var companyName = "TaxiHailDemo";
+                var companyName = "MKWebDev";
                 if (args.Length > 0)
                 {
                     companyName = args[0];

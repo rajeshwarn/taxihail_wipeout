@@ -105,6 +105,7 @@
     <Compile Include="Integration\AccountFixture\AccountDetailsGenerator.cs" />
     <Compile Include="Integration\AccountFixture\DeviceDetailsGenerator.cs" />
     <Compile Include="Integration\AddressListFixture\AddressListGenerator.cs" />
+    <Compile Include="Integration\CompanyFixture\CompanyDetailsGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\RatingTypeDetailsGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\TariffDetailsGenerator.cs" />
     <Compile Include="Integration\AppSettingsFixture\AppSettingsGenerator.cs" />
