@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.BackgroundColor = UIColor.FromRGB (242, 242, 242);
 
+            lblInstructions.Text = Localize.GetValue("CreditCardInstructions");
             lblNameOnCard.Text = Localize.GetValue("CreditCardName");
             lblCardNumber.Text = Localize.GetValue("CreditCardNumber");
             lblCategory.Text = Localize.GetValue("CreditCardCategory");
@@ -53,6 +54,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtExpYear.Configure(Localize.GetValue("CreditCardExpYear"), () => ViewModel.ExpirationYears.ToArray(), () => ViewModel.ExpirationYear, x => ViewModel.ExpirationYear = x.Id);
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, null);
+
+            if (!ViewModel.ShowInstructions)
+            {
+                lblInstructions.RemoveFromSuperview();
+            }
 
 			var set = this.CreateBindingSet<CreditCardAddView, CreditCardAddViewModel>();
 

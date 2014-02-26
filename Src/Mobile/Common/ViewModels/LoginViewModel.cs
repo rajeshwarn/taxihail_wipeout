@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -183,7 +184,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     await this.Services().Account.SignIn(Email, Password);   
                     Password = string.Empty;
                     _pushService.RegisterDeviceForPushNotifications(force: true);
-                    OnLoginSuccess();
+					OnLoginSuccess();
                 }
                 catch (AuthException e)
                 {
@@ -259,7 +260,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             await this.Services().Account.SignIn(data.Email, data.Password);
                         }
 
-                        OnLoginSuccess();
+						OnLoginSuccess();
                     }
                     catch (Exception ex)
                     {
@@ -288,16 +289,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             this.Services().Account.ClearReferenceData();
         }
 
-        private void OnLoginSuccess()
+		private void OnLoginSuccess()
         {
             _loginWasSuccesful = true;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
+
+			if (NeedsToNavigateToAddCreditCard())
+			{
+				ShowViewModel<CreditCardAddViewModel>(new { showInstructions =  true });
+				return;
+			}
+
 			ShowViewModel<HomeViewModel>();
 			if (LoginSucceeded != null)
 			{
 				LoginSucceeded(this, EventArgs.Empty);
 			}
         }
+
+		private bool NeedsToNavigateToAddCreditCard()
+		{
+			if (this.Settings.CreditCardIsMandatory)
+			{
+				if (!this.Services().Account.CurrentAccount.DefaultCreditCard.HasValue)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 
         private async Task CheckFacebookAccount()
 		{
@@ -314,7 +334,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 try
                 {
                     await this.Services().Account.GetFacebookAccount(info.Id);
-    				OnLoginSuccess();
+					OnLoginSuccess();
                 }
                 catch(Exception)
                 {
@@ -338,7 +358,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     try
                     {
                         await this.Services().Account.GetTwitterAccount(info.Id);
-                        OnLoginSuccess();
+						OnLoginSuccess();
                     }
                     catch(Exception)
                     {

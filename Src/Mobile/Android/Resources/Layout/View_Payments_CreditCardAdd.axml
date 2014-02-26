@@ -45,6 +45,17 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
                 <TextView
+                    android:textSize="17dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/CreditCardInstructions"
+                    style="@style/BlackTextLong"
+                    android:gravity="center_horizontal"
+                    android:inputType="textMultiLine"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="12dp"
+                    local:MvxBind="Visibility ShowInstructions, Converter=Visibility" />
+                <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/CreditCardCategory"

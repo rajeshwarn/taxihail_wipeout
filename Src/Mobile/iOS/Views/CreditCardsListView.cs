@@ -59,11 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			var set = this.CreateBindingSet<CreditCardsListView, CreditCardsListViewModel>();
 
-			set.Bind(tableCardsList)
-				.For(v => v.Hidden)
-				.To(vm => vm.HasCards)
-				.WithConversion("BoolInverter");
-
 			set.Bind(source)
 				.For(v => v.ItemsSource)
 				.To(vm => vm.CreditCards);

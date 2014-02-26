@@ -32,7 +32,6 @@ namespace MK.Common.Configuration
 		public string ServiceUrl { get; set; }
         [Display(Name = "Error Log Enabled", Description="Flag to enable the log of the errors in file")]
 		public bool ErrorLogEnabled{ get; private set; }
-
         [Display(Name = "Twitter Enabled", Description="Enable register/log in with Twitter")]
 		public bool TwitterEnabled{ get; private set; }
         [Display(Name = "Twitter Consumer Key", Description="Twitter API settings")]
@@ -119,6 +118,8 @@ namespace MK.Common.Configuration
         public int ClientPollingInterval { get; private set; }
         [Display(Name = "Hide Call Dispatch Button", Description="Hide button to call dispatch in panel menu, status screens")]
         public bool HideCallDispatchButton { get; private set; }
+        [Display(Name = "Credit Card Is Mandatory", Description="If true, the user needs to have a card on file")]
+        public bool CreditCardIsMandatory { get; private set; }
 
 		[Display(Name = "Place Types", Description="Give a list of Google Maps places types to filter search")]
 		public string PlacesTypes { get; private set; }
@@ -157,10 +158,6 @@ namespace MK.Common.Configuration
 
         [Display(Name = "Company Settings", Description = "List of settings that can be modified by the taxi company")]
         public string CompanySettings { get; private set; }
-
-
-        
-
     }
 }
 

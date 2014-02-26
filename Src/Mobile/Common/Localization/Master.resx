@@ -1131,6 +1131,15 @@
   <data name="View_CreditCardAdd" xml:space="preserve">
     <value>New Credit Card</value>
   </data>
+  <data name="CreditCardInstructions" xml:space="preserve">
+    <value>In order to use the application, you need to add a credit card to your account.</value>
+  </data>
+  <data name="CreditCardRemoveErrorTitle" xml:space="preserve">
+    <value>Cannot remove credit card</value>
+  </data>
+  <data name="CreditCardRemoveErrorMessage" xml:space="preserve">
+    <value>You need to have at least one credit card in your account. If you want to remove a card, you will need to add another one before.</value>
+  </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>Name as it appears on card</value>
   </data>
@@ -1156,7 +1165,7 @@
     <value>Zip code</value>
   </data>
   <data name="CreditCardErrorTitle" xml:space="preserve">
-    <value>Can't add the Credit Card</value>
+    <value>Cannot add credit card</value>
   </data>
   <data name="CreditCardRequiredFields" xml:space="preserve">
     <value>All the fields are required</value>

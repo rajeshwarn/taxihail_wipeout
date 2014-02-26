@@ -2,13 +2,13 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Extensions;
+using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Common.Extensions;
-using TinyMessenger;
-using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -24,16 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{ 
 				_creditCards = value;
 				RaisePropertyChanged(); 
-				RaisePropertyChanged(() => HasCards);
 			}
-        }
-		
-        public bool HasCards
-        {
-            get
-            {
-				return _creditCards.Any();
-            }
         }
 
 		public override void Start()
@@ -58,6 +49,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public void RemoveCreditCard (Guid creditCardId)
         {
+			if (this.Settings.CreditCardIsMandatory && CreditCards.Where(x => !x.IsAddNew).Count() == 1)
+			{
+				this.Services().Message.ShowMessage(this.Services().Localize["CreditCardRemoveErrorTitle"], this.Services().Localize["CreditCardRemoveErrorMessage"]);
+				return;
+			}
+
             this.Services().Message.ShowMessage(this.Services().Localize["RemoveCreditCardTitle"],
                 this.Services().Localize["RemoveCreditCardMessage"],
                 this.Services().Localize["YesButton"],
@@ -68,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     if (creditCardToRemove != null)
                     {
                         InvokeOnMainThread(() => CreditCards.Remove(creditCardToRemove));
-						RaisePropertyChanged("CreditCards");
+						RaisePropertyChanged(() => CreditCards);
                     }
 
                     CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
@@ -137,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 							 	? newCreditCard.CreditCardCompany.ToLower().Replace(" ", "_")
 								: string.Empty
                         });
-						RaisePropertyChanged("CreditCards");
+						RaisePropertyChanged(() => CreditCards);
                     });                                                                                         		
                     CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
                  }));

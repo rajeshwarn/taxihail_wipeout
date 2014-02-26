@@ -226,7 +226,7 @@
 "TabFavorites"="Favorites";
 "PickupMapTitle"="Pickup location";
 "ReSendConfirmation"="Notify driver of payment";
-"CreditCardErrorTitle"="Can't add the Credit Card";
+"CreditCardErrorTitle"="Cannot add credit card";
 "PickupDateTextPlaceholder"="Date: Today";
 "BuildingName"="Building Name / Remark";
 "AddressSearchingText"="Searching...";
@@ -460,3 +460,6 @@
 "ViewAll"="View All";
 "Collapse"="Collapse";
 "ServiceErrorCreateOrder_InvalidProvider_NoCall"="Order cannot be created, invalid provider.";
+"CreditCardInstructions"="In order to use the application, you need to add a credit card to your account.";
+"CreditCardRemoveErrorTitle"="Cannot remove credit card";
+"CreditCardRemoveErrorMessage"="You need to have at least one credit card in your account. If you want to remove a card, you will need to add another one before.";
