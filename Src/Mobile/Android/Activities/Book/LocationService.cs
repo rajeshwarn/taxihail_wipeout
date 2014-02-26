@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if (!IsLocationServiceEnabled)
             {
-                throw new Exception("Please enable location services!!");
+                // TODO: MKTAXI-1111 - Handle Location Service Disabled
             }
 
             if (IsNetworkProviderEnabled)
