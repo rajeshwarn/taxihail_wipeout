@@ -113,8 +113,6 @@
     <Compile Include="Resources\OrderValidationResult.cs" />
     <Compile Include="Requests\AvailableVehicles.cs" />
     <Compile Include="Resources\AvailableVehicle.cs" />
-    <Compile Include="Requests\Messages\SendMessageToDriverRequest.cs" />
-    <Compile Include="Requests\Messages\SendMessageToDriverResponse.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\DeleteTokenizedCreditcardBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />

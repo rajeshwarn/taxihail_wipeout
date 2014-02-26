@@ -10,6 +10,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using ServiceStack.Text;
+using System.Globalization;
 
 #endregion
 
@@ -50,20 +51,22 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public void ConfirmExternalPayment(int orderId, decimal amount, string type, string provider,
-            string transactionId, string authorizationCode)
-        {
-            var result = 0;
-            UseService(service =>
-            {
-                //   string param = string.Format(@"{{""authorizationCode"":""{0}"",""transactionId"":""{1}"",""type"":""{2}"",""provider"":""{3}""}}", transactionId, authorizationCode, type, provider);
+        //public void ConfirmExternalPayment(int orderId, decimal amount, string type, string provider,
+        //    string transactionId, string authorizationCode)
+        //{
+        //    var result = 0;
+        //    UseService(service =>
+        //    {
+        //        //   string param = string.Format(@"{{""authorizationCode"":""{0}"",""transactionId"":""{1}"",""type"":""{2}"",""provider"":""{3}""}}", transactionId, authorizationCode, type, provider);
 
-                result = service.SaveExtrPayment(UserNameApp, PasswordApp, orderId, Convert.ToDouble(amount),
-                    authorizationCode);
-            });
+        //        result = service.SendMsg_3dPartyPaymentAuth( UserNameApp, PasswordApp, orderId, Convert.ToDouble(amount),
+        //            authorizationCode);
+        //    });
 
-            if (result != 1) throw new Exception("SaveExtrPayment failed");
-        }
+        //    if (result != 1) throw new Exception("SaveExtrPayment failed");
+        //}
+
+
 
         public IbsOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone)
         {
@@ -99,12 +102,12 @@ namespace apcurium.MK.Booking.IBS.Impl
                 if (order != null)
                 {
                     result.VehicleNumber = order.CabNo.ToSafeString().Trim();
-// ReSharper disable CompareOfFloatsByEqualityOperator
-                    result.Fare = order.Fare == 0 ? (double?) null : order.Fare;
-                    result.Toll = order.Tolls == 0 ? (double?) null : order.Tolls;
-                    result.Tip = order.Tips == 0 ? (double?) null : order.Tips; //TODO à enlever
-                    result.VAT = order.VAT == 0 ? (double?) null : order.VAT;
- // ReSharper restore CompareOfFloatsByEqualityOperator
+                    // ReSharper disable CompareOfFloatsByEqualityOperator
+                    result.Fare = order.Fare == 0 ? (double?)null : order.Fare;
+                    result.Toll = order.Tolls == 0 ? (double?)null : order.Tolls;
+                    result.Tip = order.Tips == 0 ? (double?)null : order.Tips; //TODO à enlever
+                    result.VAT = order.VAT == 0 ? (double?)null : order.VAT;
+                    // ReSharper restore CompareOfFloatsByEqualityOperator
                     result.CallNumber = order.CallNumber;
                 }
             });
@@ -123,8 +126,8 @@ namespace apcurium.MK.Booking.IBS.Impl
                 {
                     tbook.PickupAddress = new TWEBAddress
                     {
-                        Latitude = (double) pickupLat,
-                        Longitude = (double) pickupLng
+                        Latitude = (double)pickupLat,
+                        Longitude = (double)pickupLng
                     };
                 }
                 if (dropoffLat != null
@@ -132,7 +135,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 {
                     tbook.DropoffAddress = new TWEBAddress
                     {
-                        Latitude = (double)dropoffLat, 
+                        Latitude = (double)dropoffLat,
                         Longitude = (double)dropoffLng
                     };
                 }
@@ -166,16 +169,54 @@ namespace apcurium.MK.Booking.IBS.Impl
         }
 
 
-        public bool SendMessageToDriver(string message, string carId)
+
+
+
+        public bool SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId)
         {
             var success = false;
             UseService(service =>
             {
-                var resultat = service.SendDriverMsg(UserNameApp, PasswordApp, carId, message);
+                var resultat = service.SendMsg_3dPartyPaymentNotification(UserNameApp, PasswordApp, vehicleNumber, true, ibsOrderId, message);
                 success = resultat == 1;
             });
             return success;
         }
+
+        public bool ConfirmExternalPayment(int orderId, string vehicleId, string text, double amount, double fareAmount, string cardType, string cardNumber, string cardExpiry, string transactionId, string authorizationCode)
+        {
+            var success = false;
+
+            UseService(service =>
+       {
+           var auth = new TPaymentAuthorization3dParty
+           {
+               ApprovalText = text,
+               Approved = true,
+               ApprovedAmount = string.Format("{0:C}", amount),
+               AuthorizationNumber = authorizationCode,
+               TransactionTime = DateTime.Now.ToString("hh:mm:ss tt", CultureInfo.InvariantCulture),
+               TransactionDate = DateTime.Now.ToString("dd/MM/yy", CultureInfo.InvariantCulture),
+               CCSequenceNumber = transactionId,
+               CardNumber = cardNumber,
+               CardType = cardType,
+               FareAmount = string.Format("{0:C}", fareAmount),
+               DiscountAmount = string.Format("{0:C}", 0),
+               ExpiryDate = cardExpiry,
+               JobNumber = orderId,
+               PayType = 3,               
+
+           };
+
+
+
+           var result = service.SendMsg_3dPartyPaymentAuth(UserNameApp, PasswordApp, vehicleId, auth);
+           success = result == 1;
+       });
+
+            return success;
+        }
+
 
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers,
             int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup,
@@ -188,8 +229,8 @@ namespace apcurium.MK.Booking.IBS.Impl
                 AccountID = accountId,
                 Customer = passengerName,
                 Phone = phone,
-                Fare = (double) fare.AmountExclTax,
-                VAT = (double) fare.TaxAmount
+                Fare = (double)fare.AmountExclTax,
+                VAT = (double)fare.TaxAmount
             };
 
             var autoDispatch =
@@ -252,11 +293,11 @@ namespace apcurium.MK.Booking.IBS.Impl
             UseService(service =>
             {
                 Logger.LogMessage("WebService Creating IBS Order : " +
-                                  JsonSerializer.SerializeToString(order, typeof (TBookOrder_7)));
+                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_7)));
                 Logger.LogMessage("WebService Creating IBS Order pickup : " +
-                                  JsonSerializer.SerializeToString(order.PickupAddress, typeof (TWEBAddress)));
+                                  JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
                 Logger.LogMessage("WebService Creating IBS Order dest : " +
-                                  JsonSerializer.SerializeToString(order.DropoffAddress, typeof (TWEBAddress)));
+                                  JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
 
 
                 orderId = service.SaveBookOrder_7(UserNameApp, PasswordApp, order);
@@ -271,10 +312,10 @@ namespace apcurium.MK.Booking.IBS.Impl
             var isCompleted = false;
             UseService(service =>
             {
-                var count = 0;                
-                var result = service.CancelBookOrder(UserNameApp, PasswordApp, orderId, contactPhone, null, accountId);                    
+                var count = 0;
+                var result = service.CancelBookOrder(UserNameApp, PasswordApp, orderId, contactPhone, null, accountId);
                 var status = GetOrderStatus(orderId, accountId, contactPhone);
-                isCompleted = (result == 0) && (VehicleStatuses.CompletedStatuses.Contains(status.Status));                
+                isCompleted = (result == 0) && (VehicleStatuses.CompletedStatuses.Contains(status.Status));
             });
             return isCompleted;
         }
@@ -293,7 +334,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 return false;
             }
 
-// ReSharper disable CompareOfFloatsByEqualityOperator
+            // ReSharper disable CompareOfFloatsByEqualityOperator
             if ((order.DropoffAddress != null) && (order.DropoffAddress.Latitude != 0) &&
                 (order.DropoffAddress.Latitude != 0))
             {

@@ -2,7 +2,7 @@
 
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Requests.Messages;
+
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
 using AutoMapper;
@@ -27,12 +27,6 @@ namespace apcurium.MK.Booking.Api.Services
             return new AvailableVehiclesResponse(vehicles.Select(Mapper.Map<AvailableVehicle>));
         }
 
-        public SendMessageToDriverResponse Post(SendMessageToDriverRequest request)
-        {
-            return new SendMessageToDriverResponse
-            {
-                Success = _bookingWebServiceClient.SendMessageToDriver(request.Message, request.CarNumber)
-            };
-        }
+        
     }
 }
