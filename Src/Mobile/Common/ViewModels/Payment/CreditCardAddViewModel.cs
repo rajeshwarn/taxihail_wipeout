@@ -303,11 +303,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
             try
             {
-                this.Services().Message.ShowProgress(true);
-                Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
-                Data.CreditCardId = Guid.NewGuid();
+				bool success = false;
+				using(this.Services().Message.ShowProgress())
+				{
+	                Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
+	                Data.CreditCardId = Guid.NewGuid();
 
-				var success = await this.Services().Account.AddCreditCard(Data);
+					success = await this.Services().Account.AddCreditCard(Data);
+				}
 				if (success)
 				{		
 					Data.CardNumber = null;
@@ -326,11 +329,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{
                     this.Services().Message.ShowMessage("Validation", "Cannot validate the credit card.");
 				}
+				
 
             }
             finally {
-                this.Services().Cache.Clear("Account.CreditCards");
-                this.Services().Message.ShowProgress(false);
+                this.Services().Cache.Clear("Account.CreditCards");                
             }
         }
 
