@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			AllAddresses = new ObservableCollection<AddressViewModel>();
 		}
 			
-        public ObservableCollection<AddressViewModel> AllAddresses { get; set; }
+		public ObservableCollection<AddressViewModel> AllAddresses { get; set; }
         public bool IgnoreTextChange { get; set; }
 
 		private AddressViewModel[] _defaultHistoryAddresses = new AddressViewModel[0];
@@ -71,8 +71,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						});
 
 					await favoritePlaces;
+					AllAddresses.AddRange(_defaultFavoriteAddresses);
+
 					await historyPlaces;
+					AllAddresses.AddRange(_defaultHistoryAddresses);
+
 					await neabyPlaces;
+					AllAddresses.AddRange(_defaultNearbyPlaces);
 				}
 			}
 			catch (Exception e)
@@ -98,11 +103,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 
 			addressViewModels.Last().IsLast = true;
-
-			InvokeOnMainThread(() =>
-				{
-					AllAddresses.AddRange(addressViewModels);
-				});
 
 			return addressViewModels;
 		}		
