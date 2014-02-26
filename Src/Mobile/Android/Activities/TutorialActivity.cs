@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
     public class TutorialActivity : MvxActivity
     {
         private BitmapDrawable _grayCircle;
-        private BitmapDrawable _yellowCircle;
+        private BitmapDrawable _blackCircle;
 
 		public new TutorialViewModel ViewModel
 		{
@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             var horizontalPager = FindViewById<HorizontalPager>(Resource.Id.details);
             Title = null;
 
-            _yellowCircle = Resources.GetDrawable(Resource.Drawable.tutorial_yellow_circle) as BitmapDrawable;
+            _blackCircle = Resources.GetDrawable(Resource.Drawable.tutorial_black_circle) as BitmapDrawable;
             _grayCircle = Resources.GetDrawable(Resource.Drawable.tutorial_grey_circle) as BitmapDrawable;
 
             horizontalPager.MOnScreenSwitchListener += (sender, args) =>
@@ -41,11 +41,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
                 var newScreen = args.Screen;
                 CleanAllPips(pipsLayout);
                 var currentPip = (ImageView) pipsLayout.GetChildAt(newScreen);
-                currentPip.SetImageDrawable(_yellowCircle);
+                currentPip.SetImageDrawable(_blackCircle);
             };
             for (int i = 0; i < ViewModel.TutorialItemsList.Count(); i++)
             {
-                var d = _yellowCircle;
+                var d = _blackCircle;
                 if (d != null)
                 {
                     var w = d.Bitmap.Width;
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
 
                     var imageFill = new ImageView(this);
-                    imageFill.SetImageDrawable(_yellowCircle);
+                    imageFill.SetImageDrawable(_blackCircle);
                     imageFill.LayoutParameters = layoutParams;
 
 

@@ -313,7 +313,6 @@
     <AndroidResource Include="Resources\Drawable\tutorial_screen04.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_screen05.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_screen07.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
     <AndroidResource Include="Resources\Drawable\favorites.png" />
     <AndroidResource Include="Resources\Drawable\history.png" />
     <AndroidResource Include="Resources\Values\Themes.xml">
@@ -584,6 +583,10 @@
     <AndroidResource Include="Resources\Layout\Control_LoadingOverlay.axml" />
     <AndroidResource Include="Resources\Drawable\loading_overlay.xml" />
     <AndroidResource Include="Resources\Drawable\white_button.xml" />
+    <AndroidResource Include="Resources\Drawable\tutorial_background_rounded.xml" />
+    <AndroidResource Include="Resources\Drawable\close_tutorial_button.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\close_tutorial_button.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_black_circle.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -705,7 +708,6 @@
     <AndroidResource Include="Resources\Drawable\rate_neutral_state.xml" />
     <AndroidResource Include="Resources\Drawable\rate_unhappy_state.xml" />
     <AndroidResource Include="Resources\Drawable\erase_cross_btn.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_yellow_circle.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_background.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_grey_circle.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_screen03.png" />

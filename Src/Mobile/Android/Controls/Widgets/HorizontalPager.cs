@@ -138,7 +138,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     var d = page.ContentView.FindViewById<ImageView>(Resource.Id.TutorialImage).Drawable;
                     var drawable = d as BitmapDrawable;
-                    if (drawable != null)
+                    if (drawable != null && drawable.Bitmap != null)
                     {
                         drawable.Bitmap.Recycle();
                     }
