@@ -285,7 +285,6 @@
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Extensions\LocationDataExtension.cs" />
     <Compile Include="Controls\StatusBar.cs" />
-    <Compile Include="Diagnostics\ErrorHandler.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="PhonePresenter.cs" />

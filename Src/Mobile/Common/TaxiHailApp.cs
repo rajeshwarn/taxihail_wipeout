@@ -103,6 +103,8 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Resolve<IMvxLifetime>().LifetimeChanged -= TaxiHailApp_LifetimeChanged;
 			_container.Resolve<IMvxLifetime>().LifetimeChanged += TaxiHailApp_LifetimeChanged;
 
+			_container.Register<IErrorHandler, ErrorHandler>();
+
             RefreshAppData();
         }
 
