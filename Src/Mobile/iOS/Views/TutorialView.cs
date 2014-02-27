@@ -86,7 +86,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     .SetY(pageView.Frame.Bottom - labelBottomTitle.Frame.Height - 20);
                 pageView.AddSubview(labelBottomTitle);  
 
-
                 var labelBottom = new UILabel(new RectangleF(40, 0, pageView.Frame.Width - 40, 0))
                 {
                     LineBreakMode = UILineBreakMode.WordWrap,
@@ -102,7 +101,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 labelBottom.SetX((pageView.Frame.Width - labelBottom.Frame.Width) / 2)
                     .SetY(image.Frame.Bottom + 35);
                 pageView.AddSubview(labelBottom);
-
 
                 var labelTopTitle = new UILabel(new RectangleF(0, 0, pageView.Frame.Width, 0))
                 {
@@ -133,9 +131,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 labelTop.SetX((pageView.Frame.Width - labelTop.Frame.Width) / 2)
                         .SetY(labelTopTitle.Frame.Bottom);
                 pageView.AddSubview(labelTop);
-
-
-
             }
             pageControl.Hidden = false;
             pageControl.Pages = count;

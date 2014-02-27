@@ -20,6 +20,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
                 return (int)Android.OS.Build.VERSION.SdkInt;
             }
         }
+
+        public static bool IsAndroid23
+        {
+            get
+            {
+                return APILevel <= 10;
+            }
+        }
     }
 }
 
