@@ -358,7 +358,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             _estimatedFareSubject.OnNext(estimatedFareString);
 		}
 
-		private void PrepareForNewOrder()
+		public void PrepareForNewOrder()
 		{
 			_noteToDriverSubject.OnNext(string.Empty);
 			_pickupAddressSubject.OnNext(new Address());

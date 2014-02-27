@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, IMvxWebBrowserTask browserTask) : base()
 		{
 			_orderWorkflowService = orderWorkflowService;
-			Panel = new PanelMenuViewModel(this, browserTask);
+			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService);
 		}
 
 		public override void OnViewStarted(bool firstTime)
