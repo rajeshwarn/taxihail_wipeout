@@ -76,6 +76,7 @@
             android:orientation="horizontal">
             <Button
                 local:MvxBind="Click SignUp"
+                android:id="@+id/SignUpButton"
                 android:text="Register"
                 android:layout_weight=".475"
                 android:layout_width="0dip"
@@ -88,6 +89,7 @@
                 android:visibility="invisible" />
             <Button
                 local:MvxBind="Click SignInCommand"
+                android:id="@+id/SignInButton"
                 android:text="@string/SignIn"
                 android:layout_weight=".475"
                 android:layout_width="0dip"

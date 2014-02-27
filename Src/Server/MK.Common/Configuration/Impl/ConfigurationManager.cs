@@ -98,7 +98,7 @@ namespace apcurium.MK.Common.Configuration.Impl
 
                     if ( propertyType == null )
                     {
-                        Console.WriteLine("Error can't set value for property {0}, value was {1}", item.Key, item.Value);
+                        Console.WriteLine("Warning - can't set value for property {0}, value was {1} - property not found", item.Key, item.Value);
                         continue;
                     }
 
@@ -124,8 +124,8 @@ namespace apcurium.MK.Common.Configuration.Impl
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Error can't set value for property {0}, value was {1}", item.Key, item.Value);
-                    _logger.LogMessage("Error can't set value for property {0}, value was {1}", item.Key, item.Value);
+                    Console.WriteLine("Warning - can't set value for property {0}, value was {1}", item.Key, item.Value);
+                    _logger.LogMessage("Warning - can't set value for property {0}, value was {1}", item.Key, item.Value);
                     _logger.LogError(e);
                 }
             }

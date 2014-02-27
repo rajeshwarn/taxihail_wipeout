@@ -32,14 +32,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			get {
 				return this.GetCommand (() =>
 				{ 
-					ShowSubViewModel<PaymentViewModel,object>(
-	                    new { 
-	                        order = Order.ToJson(),
-	                        orderStatus = OrderStatus.ToJson(),
-	                    }.ToStringDictionary(), 
-                    	_=>{});
-					
-					Close(this);
+					ShowViewModelAndRemoveFromHistory<PaymentViewModel>(new { 
+						order = Order.ToJson(),
+						orderStatus = OrderStatus.ToJson(),
+					}.ToStringDictionary());
 				});
 			}
 		}
