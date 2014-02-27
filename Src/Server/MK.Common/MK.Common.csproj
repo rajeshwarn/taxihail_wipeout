@@ -149,6 +149,7 @@
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Extensions\StringBuilderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\UserAgentExtension.cs" />
     <Compile Include="Fare.cs" />
     <Compile Include="IoC\UnityContainerAdapter.cs" />
     <Compile Include="IoC\UnityExtension.cs" />

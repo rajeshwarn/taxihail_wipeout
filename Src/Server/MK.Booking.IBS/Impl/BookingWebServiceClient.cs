@@ -164,22 +164,24 @@ namespace apcurium.MK.Booking.IBS.Impl
                 //*********************************Keep this code.  They are testing this method 
                 //var resultat = service.SendMsg_3dPartyPaymentNotification(UserNameApp, PasswordApp, vehicleNumber, true, ibsOrderId, message);
                 //success = resultat == 0;
-                var result = service.SendDriverMsg(UserNameApp, PasswordApp, vehicleNumber, message);
+                var result = service.SendDriverMsg_2(UserNameApp, PasswordApp, vehicleNumber, message);
                 success = result == 1;
 
             });
             return success;
         }
 
-        public bool ConfirmExternalPayment(int orderId, string vehicleId, string text, double amount, double fareAmount, string cardType, string cardNumber, string cardExpiry, string transactionId, string authorizationCode)
+        public bool ConfirmExternalPayment(int orderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
+           string authorizationCode, string cardToken, int accountID, string name, string phone, string email, string os, string userAgent)
         {
             var success = false;
 
             UseService(service =>
                {
                    int result = 0;
-                   result = service.SaveExtrPayment(UserNameApp, PasswordApp, orderId, Convert.ToDouble(amount), authorizationCode);
-                   success = result == 1;
+                   result  = service.SaveExtrPayment_2(UserNameApp, PasswordApp, orderId, transactionId, authorizationCode, cardToken, type, provider, 0, 0, 0, 0,
+                    ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name, phone, email, os, userAgent);
+                   success = result == 0;
                    //*********************************Keep this code.  MK is testing this method as soon as it's ready, 
                    //var auth = new TPaymentAuthorization3dParty
                    //{
@@ -209,6 +211,10 @@ namespace apcurium.MK.Booking.IBS.Impl
             return success;
         }
 
+        private int ToCents(decimal dollarAmout)
+        {
+            return Convert.ToInt32(dollarAmout * 100);
+        }
 
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers,
             int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup,

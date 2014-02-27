@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -23,9 +24,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IIbsOrderService _ibs;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
-
-        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, ICreditCardDao creditCardDao, IIbsOrderService ibs, IConfigurationManager configurationManager)
+        private readonly IAccountDao _accountDao;
+        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, ICreditCardDao creditCardDao, IIbsOrderService ibs, IConfigurationManager configurationManager)
         {
+            _accountDao = accountDao;
             _dao = dao;
             _paymentDao = paymentDao;
             _creditCardDao = creditCardDao;
@@ -33,23 +35,19 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _configurationManager = configurationManager;
         }
 
-        public void Handle(CreditCardPaymentCaptured @event)
-        { 
-            
-            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, PaymentType.CreditCard.ToString(),
-                @event.Provider.ToString(), @event.TransactionId, @event.AuthorizationCode);
-        }
-
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
         {
-            
             // Send message to driver
-            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Amount, PaymentType.PayPal.ToString(),
-                PaymentProvider.PayPal.ToString(), @event.TransactionId, @event.PayPalPayerId);
+            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, 0, @event.Amount, PaymentType.PayPal.ToString(), PaymentProvider.PayPal.ToString(), @event.TransactionId, @event.PayPalPayerId);
+
         }
 
-        private void SendPaymentConfirmationToDriver(Guid orderId, decimal amount, decimal fareAmount,  string type, string provider,
-            string transactionId, string authorizationCode)
+        public void Handle(CreditCardPaymentCaptured @event)
+        {
+            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Tip, @event.Meter, PaymentType.CreditCard.ToString(), @event.Provider.ToString(), @event.TransactionId, @event.AuthorizationCode);
+        }
+
+        private void SendPaymentConfirmationToDriver(Guid orderId, decimal amount, decimal tip, decimal meter, string type, string provider, string transactionId, string authorizationCode)
         {
             // Send message to driver
             var orderStatusDetail = _dao.FindOrderStatusById(orderId);
@@ -62,6 +60,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
             var payment = _paymentDao.FindByOrderId(orderId);
             if (payment == null) throw new InvalidOperationException("Payment info not found");
+
+            var account = _accountDao.FindById(orderDetail.AccountId);
+            if (account == null) throw new InvalidOperationException("Order account not found");
+
+            
 
             string lastForDigit = "";
 
@@ -81,10 +84,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             //Padded with 32 char because the MDT displays line of 32 char.  This will cause to write the auth code on the second line
             var line2 = string.Format(resources.GetString("PaymentConfirmationToDriver2"), authorizationCode);
             _ibs.SendPaymentNotification(line1 + line2, orderStatusDetail.VehicleNumber, orderDetail.IBSOrderId.Value);
-
             
 
-            _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value, orderStatusDetail.VehicleNumber, line1 + line2, Convert.ToDouble(amount), Convert.ToDouble(fareAmount), provider, lastForDigit, "", transactionId, authorizationCode);
+            _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value, amount, tip, meter, type, provider, transactionId, authorizationCode, payment.CardToken, account.IBSAccountId, orderDetail.Settings.Name, orderDetail.Settings.Phone, account.Email, orderDetail.UserAgent.GetOperatingSystem(), orderDetail.UserAgent);
+            
         }
     }
 }
