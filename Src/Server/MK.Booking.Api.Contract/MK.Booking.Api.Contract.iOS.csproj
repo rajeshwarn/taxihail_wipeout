@@ -132,6 +132,7 @@
     <Compile Include="Resources\Payments\Cmt\Trip.cs" />
     <Compile Include="Requests\Payment\Cmt\PairingRidelinqCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\UnpairingRidelinqCmtRequest.cs" />
+    <Compile Include="Requests\TermsAndConditionsRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">

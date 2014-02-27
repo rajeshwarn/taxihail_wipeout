@@ -31,7 +31,10 @@ namespace apcurium.MK.Booking.Mobile
 			var creditCardIsMandatory = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.CreditCardIsMandatory;
 			var currentAccount = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
 
-			if (currentAccount == null || (creditCardIsMandatory && currentAccount != null && !currentAccount.DefaultCreditCard.HasValue))
+			if (currentAccount == null 
+				|| (creditCardIsMandatory 
+					&& currentAccount != null 
+					&& !currentAccount.DefaultCreditCard.HasValue))
 			{
 				if (currentAccount != null)
 				{

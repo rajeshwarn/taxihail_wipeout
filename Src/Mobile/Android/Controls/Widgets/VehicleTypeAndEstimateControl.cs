@@ -55,12 +55,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if (_vehicleType != value)
                 {
                     _vehicleType = value;
-                    var bitmap = BitmapFactory.DecodeResource(Context.Resources, Resource.Drawable.taxi_badge_selected);
-                    var iconWithNewColor = DrawHelper.Colorize(bitmap, Resources.GetColor(Resource.Color.company_color));
-                    SelectedVehicleType.SetImageBitmap(iconWithNewColor);
+                    var image = DrawableHelper.GetDrawableFromString(Resources, string.Format("{0}_badge_selected", value.ToLower()));
+                    SelectedVehicleType.SetImageDrawable(image);
+                    SelectedVehicleType.SetColorFilter(GetColorFilter(Resources.GetColor(Resource.Color.label_text_color)));
                     SelectedVehicleTypeLabel.Text = value.ToUpper();
                 }
             }
+        }
+
+        private ColorFilter GetColorFilter(Color color)
+        {
+            int iColor = color;
+
+            int red = (iColor & 0xFF0000) / 0xFFFF;
+            int green = (iColor & 0xFF00) / 0xFF;
+            int blue = iColor & 0xFF;
+
+            float[] matrix = { 0, 0, 0, 0, red
+                , 0, 0, 0, 0, green
+                , 0, 0, 0, 0, blue
+                , 0, 0, 0, 1, 0 };
+
+            ColorFilter colorFilter = new ColorMatrixColorFilter(matrix);
+
+            return colorFilter;
         }
 
         public string EstimatedFare

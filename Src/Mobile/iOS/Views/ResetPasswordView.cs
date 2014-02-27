@@ -18,17 +18,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			base.ViewWillAppear (animated);
 
 			NavigationController.NavigationBar.Hidden = true;
+            NavigationController.NavigationBar.BarStyle = Theme.ShouldHaveLightContent(this.View.BackgroundColor)
+                ? UIBarStyle.Black
+                : UIBarStyle.Default;
 		}
 
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
 
-			View.BackgroundColor = Theme.CompanyColor;
+            View.BackgroundColor = Theme.LoginColor;
 			lblTitle.TextColor = Theme.LabelTextColor;
 			lblSubTitle.TextColor = Theme.LabelTextColor;
+            lblTitle.TextColor = Theme.GetTextColor(Theme.LoginColor);
+            lblSubTitle.TextColor = Theme.GetTextColor(Theme.LoginColor);
 
 			FlatButtonStyle.Main.ApplyTo(btnReset); 
+            btnReset.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+            btnCancel.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
 
 			DismissKeyboardOnReturn(txtEmail);
 

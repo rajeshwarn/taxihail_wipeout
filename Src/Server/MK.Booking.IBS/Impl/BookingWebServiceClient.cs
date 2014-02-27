@@ -51,22 +51,6 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        //public void ConfirmExternalPayment(int orderId, decimal amount, string type, string provider,
-        //    string transactionId, string authorizationCode)
-        //{
-        //    var result = 0;
-        //    UseService(service =>
-        //    {
-        //        //   string param = string.Format(@"{{""authorizationCode"":""{0}"",""transactionId"":""{1}"",""type"":""{2}"",""provider"":""{3}""}}", transactionId, authorizationCode, type, provider);
-
-        //        result = service.SendMsg_3dPartyPaymentAuth( UserNameApp, PasswordApp, orderId, Convert.ToDouble(amount),
-        //            authorizationCode);
-        //    });
-
-        //    if (result != 1) throw new Exception("SaveExtrPayment failed");
-        //}
-
-
 
         public IbsOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone)
         {
@@ -177,46 +161,60 @@ namespace apcurium.MK.Booking.IBS.Impl
             var success = false;
             UseService(service =>
             {
-                var resultat = service.SendMsg_3dPartyPaymentNotification(UserNameApp, PasswordApp, vehicleNumber, true, ibsOrderId, message);
-                success = resultat == 1;
+                //*********************************Keep this code.  They are testing this method 
+                //var resultat = service.SendMsg_3dPartyPaymentNotification(UserNameApp, PasswordApp, vehicleNumber, true, ibsOrderId, message);
+                //success = resultat == 0;
+                var result = service.SendDriverMsg_2(UserNameApp, PasswordApp, vehicleNumber, message);
+                success = result == 1;
+
             });
             return success;
         }
 
-        public bool ConfirmExternalPayment(int orderId, string vehicleId, string text, double amount, double fareAmount, string cardType, string cardNumber, string cardExpiry, string transactionId, string authorizationCode)
+        public bool ConfirmExternalPayment(int orderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
+           string authorizationCode, string cardToken, int accountID, string name, string phone, string email, string os, string userAgent)
         {
             var success = false;
 
             UseService(service =>
-       {
-           var auth = new TPaymentAuthorization3dParty
-           {
-               ApprovalText = text,
-               Approved = true,
-               ApprovedAmount = string.Format("{0:C}", amount),
-               AuthorizationNumber = authorizationCode,
-               TransactionTime = DateTime.Now.ToString("hh:mm:ss tt", CultureInfo.InvariantCulture),
-               TransactionDate = DateTime.Now.ToString("dd/MM/yy", CultureInfo.InvariantCulture),
-               CCSequenceNumber = transactionId,
-               CardNumber = cardNumber,
-               CardType = cardType,
-               FareAmount = string.Format("{0:C}", fareAmount),
-               DiscountAmount = string.Format("{0:C}", 0),
-               ExpiryDate = cardExpiry,
-               JobNumber = orderId,
-               PayType = 3,               
+               {
+                   int result = 0;
+                   result  = service.SaveExtrPayment_2(UserNameApp, PasswordApp, orderId, transactionId, authorizationCode, cardToken, type, provider, 0, 0, 0, 0,
+                    ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name, phone, email, os, userAgent);
+                   success = result == 0;
+                   //*********************************Keep this code.  MK is testing this method as soon as it's ready, 
+                   //var auth = new TPaymentAuthorization3dParty
+                   //{
+                   //    ApprovalText = text,
+                   //    Approved = true,
+                   //    ApprovedAmount = string.Format("{0:C}", amount),
+                   //    AuthorizationNumber = authorizationCode,
+                   //    TransactionTime = DateTime.Now.ToString("hh:mm:ss tt", CultureInfo.InvariantCulture),
+                   //    TransactionDate = DateTime.Now.ToString("dd/MM/yy", CultureInfo.InvariantCulture),
+                   //    CCSequenceNumber = transactionId,
+                   //    CardNumber = cardNumber,
+                   //    CardType = cardType,
+                   //    FareAmount = string.Format("{0:C}", fareAmount),
+                   //    DiscountAmount = string.Format("{0:C}", 0),
+                   //    ExpiryDate = cardExpiry,
+                   //    JobNumber = orderId,
+                   //    PayType = 3,
 
-           };
+                   //};
+
+                   //var result = service.SendMsg_3dPartyPaymentAuth(UserNameApp, PasswordApp, vehicleId, auth);
+                   //success = result == 0;
 
 
-
-           var result = service.SendMsg_3dPartyPaymentAuth(UserNameApp, PasswordApp, vehicleId, auth);
-           success = result == 1;
-       });
+               });
 
             return success;
         }
 
+        private int ToCents(decimal dollarAmout)
+        {
+            return Convert.ToInt32(dollarAmout * 100);
+        }
 
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers,
             int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup,

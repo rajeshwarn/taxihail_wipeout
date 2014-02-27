@@ -17,6 +17,7 @@ using apcurium.MK.Booking.Mobile.Client.Services.Social;
 using TinyIoC;
 using Android.Views.InputMethods;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using Android.Content.Res;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
@@ -64,23 +65,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
         protected override void OnViewModelSet()
         {
-            SetContentView(Resource.Layout.View_Login);
+            SetContentView(Resource.Layout.View_Login);           
+
+            DrawHelper.SupportLoginTextColor(FindViewById<TextView>(Resource.Id.ForgotPasswordButton));
+            DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.SignUpButton));
+            DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.SignInButton));
 
             if (!this.Services().Settings.FacebookEnabled)
 			{
                 FindViewById<Button>(Resource.Id.FacebookButton).Visibility = ViewStates.Invisible;
 			}
+            DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.FacebookButton));
 
             if (this.Services().Settings.CanChangeServiceUrl)
             {
                 FindViewById<Button>(Resource.Id.ServerButton).Click += delegate { PromptServer(); };
                 FindViewById<Button>(Resource.Id.ServerButton).Visibility = ViewStates.Visible;
+                DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.ServerButton));
             }
 
             if (!this.Services().Settings.TwitterEnabled)
             {
                 FindViewById<Button>(Resource.Id.TwitterButton).Visibility = ViewStates.Invisible;
             }
+            DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.TwitterButton));
 
             Observable.FromEventPattern<EventHandler, EventArgs>(
                 ev => ViewModel.LoginSucceeded += ev,

@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			AllAddresses = new ObservableCollection<AddressViewModel>();
 		}
 			
-        public ObservableCollection<AddressViewModel> AllAddresses { get; set; }
+		public ObservableCollection<AddressViewModel> AllAddresses { get; set; }
         public bool IgnoreTextChange { get; set; }
 
 		private AddressViewModel[] _defaultHistoryAddresses = new AddressViewModel[0];
@@ -47,9 +47,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_currentAddress = await _orderWorkflowService.GetCurrentAddress();
 			StartingText = _currentAddress.GetFirstPortionOfAddress();
 
-			var neabyPlaces = Task.Factory.StartNew(() => _placeService.SearchPlaces(null, _currentAddress.Latitude, _currentAddress.Longitude, null));
 			var favoritePlaces = Task.Factory.StartNew(() => this.Services().Account.GetFavoriteAddresses().ToArray());
 			var historyPlaces = Task.Factory.StartNew(() => this.Services().Account.GetHistoryAddresses().ToArray());
+			var neabyPlaces = Task.Factory.StartNew(() => _placeService.SearchPlaces(null, _currentAddress.Latitude, _currentAddress.Longitude, null));
 
 			try
 			{
@@ -57,22 +57,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					AllAddresses.Clear();
 
-					favoritePlaces.ContinueWith(t =>
-						{
-							_defaultFavoriteAddresses = OnAddressesArrived(t.Result, AddressType.Favorites);
-						});
-					historyPlaces.ContinueWith(t =>
-						{
-							_defaultHistoryAddresses = OnAddressesArrived(t.Result, AddressType.History);
-						});
-					neabyPlaces.ContinueWith(t =>
-						{
-							_defaultNearbyPlaces = OnAddressesArrived(t.Result, AddressType.Places);
-						});
+					var resultFavoritePlaces = await favoritePlaces;
+					var _defaultFavoriteAddresses = ConvertToAddressViewModel(resultFavoritePlaces, AddressType.Favorites);
+					AllAddresses.AddRange(_defaultFavoriteAddresses);
 
-					await favoritePlaces;
-					await historyPlaces;
-					await neabyPlaces;
+					var resultHistoryPlaces = await historyPlaces;
+					var _defaultHistoryAddresses = ConvertToAddressViewModel(resultHistoryPlaces, AddressType.History);
+					AllAddresses.AddRange(_defaultHistoryAddresses);
+
+					var resultNeabyPlaces = await neabyPlaces;
+					var _defaultNearbyPlaces = ConvertToAddressViewModel(resultNeabyPlaces, AddressType.Places);
+					AllAddresses.AddRange(_defaultNearbyPlaces);
 				}
 			}
 			catch (Exception e)
@@ -85,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
 		}
 
-		private AddressViewModel[] OnAddressesArrived(Address[] addresses, AddressType type)
+		private AddressViewModel[] ConvertToAddressViewModel(Address[] addresses, AddressType type)
 		{
 			var addressViewModels = addresses
 				.Where(f => f.BookAddress.HasValue())
@@ -97,12 +92,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				addressViewModels = addressViewModels.OrderBy(a => a.ToPosition().DistanceTo(currentPosition)).ToArray();
 			}
 
-			addressViewModels.Last().IsLast = true;
-
-			InvokeOnMainThread(() =>
-				{
-					AllAddresses.AddRange(addressViewModels);
-				});
+			if(addressViewModels.Any())
+			{
+				addressViewModels.Last().IsLast = true;
+			}
 
 			return addressViewModels;
 		}		

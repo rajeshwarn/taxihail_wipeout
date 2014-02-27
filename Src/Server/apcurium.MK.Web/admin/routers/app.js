@@ -19,6 +19,9 @@
             "disableemail": "disableEmail",
             "sendpushnotification": "sendPushNotification",
             
+            /* terms and conditions */
+            "termsandconditions": "termsAndConditions",
+
             /* settings */
             "settings": "manageCompanySettings",
 
@@ -102,6 +105,10 @@
 
         sendPushNotification: function () {
             action(TaxiHail.SecurityController, 'sendpushnotification');
+        },
+        
+        termsAndConditions: function() {
+            action(TaxiHail.TermsAndConditionsController, 'index');
         },
 
         manageTariffs: function() {

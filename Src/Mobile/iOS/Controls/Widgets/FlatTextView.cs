@@ -3,6 +3,7 @@ using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -41,7 +42,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 TextColor = PlaceholderFontColor, 
                 Lines = 0, 
                 LineBreakMode = UILineBreakMode.WordWrap, 
-                TextAlignment = UITextAlignment.Left 
+                TextAlignment = UITextAlignment.Left,
+                BackgroundColor = UIColor.Clear
             };
             AddSubview(_lblPlaceholder);
 
@@ -106,9 +108,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             get { return _lblPlaceholder.Text; }
             set
             {
-                var boundingRect = new NSString(value).GetBoundingRect(Frame.Size, NSStringDrawingOptions.UsesLineFragmentOrigin, new UIStringAttributes() { Font = Font }, new NSStringDrawingContext());
-                _lblPlaceholder.SetHeight(boundingRect.Height);
                 _lblPlaceholder.Text = value;
+                _lblPlaceholder.SizeToFit();
             }
         }
     }

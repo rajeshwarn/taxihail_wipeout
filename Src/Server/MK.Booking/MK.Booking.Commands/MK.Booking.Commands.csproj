@@ -105,6 +105,7 @@
     <Compile Include="UpdatePopularAddress.cs" />
     <Compile Include="UpdateTariff.cs" />
     <Compile Include="UpdateRatingType.cs" />
+    <Compile Include="UpdateTermsAndConditions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">

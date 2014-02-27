@@ -178,6 +178,7 @@
     <Content Include="admin\collections\TariffCollection.js" />
     <Content Include="admin\controllers\Controller.js" />
     <Content Include="admin\controllers\CompanySettingsController.js" />
+    <Content Include="admin\controllers\TermsAndConditionsController.js" />
     <Content Include="admin\controllers\ExportController.js" />
     <Content Include="admin\controllers\PaymentSettingsController.js" />
     <Content Include="admin\controllers\RulesController.js" />
@@ -187,6 +188,7 @@
     <Content Include="admin\controllers\SecurityController.js" />
     <Content Include="admin\controllers\TariffsController.js" />
     <Content Include="admin\jquery.min.js" />
+    <Content Include="admin\models\TermsAndConditions.js" />
     <Content Include="admin\models\PaymentSettings.js" />
     <Content Include="admin\models\Rule.js" />
     <Content Include="admin\models\Tariff.js" />
@@ -203,6 +205,7 @@
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\AddFavoriteView.js" />
     <Content Include="admin\views\ConfirmEmailView.js" />
+    <Content Include="admin\views\UpdateTermsAndConditionsView.js" />
     <Content Include="admin\views\ExportAccountsView.js" />
     <Content Include="admin\views\ExportOrdersView.js" />
     <Content Include="admin\views\ManagePaymentSettingsView.js" />
@@ -403,6 +406,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="admin\templates\ExportAccounts.handlebars" />
+    <Content Include="admin\templates\UpdateTermsAndConditions.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -413,14 +419,12 @@
   <ItemGroup>
     <Compile Include="admin\default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
     <Compile Include="ApiDoc.aspx.cs">
       <DependentUpon>ApiDoc.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ApiDoc.aspx.designer.cs">
       <DependentUpon>ApiDoc.aspx</DependentUpon>
@@ -428,14 +432,12 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Config.aspx.cs">
       <DependentUpon>Config.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Config.aspx.designer.cs">
       <DependentUpon>Config.aspx</DependentUpon>
     </Compile>
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
@@ -447,9 +449,7 @@
     </Compile>
     <Compile Include="Optimization\HandlebarsTransform.cs" />
     <Compile Include="Optimization\ResourcesTransform.cs" />
-    <Compile Include="PageBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="PageBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

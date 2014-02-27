@@ -65,10 +65,11 @@ namespace apcurium.MK.Booking.Domain
             Handles<RuleActivated>(NoAction);
             Handles<RuleDeactivated>(NoAction);
 
-
             Handles<RatingTypeAdded>(NoAction);
             Handles<RatingTypeHidded>(NoAction);
             Handles<RatingTypeUpdated>(NoAction);
+
+            Handles<TermsAndConditionsUpdated>(NoAction);
         }
 
         private void OnPaymentSettingUpdated(PaymentSettingUpdated obj)
@@ -375,7 +376,6 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-
         private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude,
             double longitude)
         {
@@ -418,6 +418,14 @@ namespace apcurium.MK.Booking.Domain
                     _defaultRules[@event.Category] = @event.RuleId;
                 }
             }
+        }
+
+        public void UpdateTermsAndConditions(string termsAndConditions)
+        {
+            Update(new TermsAndConditionsUpdated
+            {
+                TermsAndConditions = termsAndConditions
+            });
         }
     }
 }

@@ -1,20 +1,20 @@
 ﻿using System;
-using Android.Widget;
-using Android.Content;
-using Android.Util;
-using Android.Views;
-using Android.App;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Threading;
-using Android.Graphics.Drawables;
+using System.Threading.Tasks;
+using Android.App;
+using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
-using System.Drawing;
+using Android.Graphics.Drawables;
+using Android.Util;
+using Android.Views;
+using Android.Widget;
 using TinyIoC;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
-using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Activities;
-using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {
@@ -47,7 +47,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             masterLayout.SetBackgroundDrawable(_activity.Resources.GetDrawable(Resource.Drawable.loading_overlay));
             layoutParent.SetBackgroundColor(Android.Graphics.Color.Argb(80, 0, 0, 0));
 
-
             var layoutCenterParameters = new LinearLayout.LayoutParams(-2, 0);
             layoutCenterParameters.Weight = 1.0f;
             layoutCenterParameters.SetMargins(0, 0, 0, 0);
@@ -69,6 +68,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _layoutCenter.ClearAnimation();
             _layoutImage.SetBackgroundDrawable(null);
 
+            if (_car != null)
+            {
+                _car.Recycle();
+            }
             _car = BitmapFactory.DecodeResource(_activity.Resources, Resource.Drawable.taxi_progress);
 
             if (_progressImage != null)
@@ -76,7 +79,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 _progressImage.Recycle();
                 _progressImage = null;
             }
-
 
             _colorToUse = (Android.Graphics.Color)_activity.Resources.GetColor(Resource.Color.company_color);
             _car = DrawHelper.Colorize(_car, _colorToUse);
@@ -95,8 +97,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             StartAnimationLoop();
         }
-
-
 
         public static void StopAnimatingLoading()
         {                
