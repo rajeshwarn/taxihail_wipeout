@@ -12,14 +12,17 @@ namespace apcurium.MK.Booking.Api.Payment
     {
         private readonly IBookingWebServiceClient _client;
 
-        public IbsOrderService(IBookingWebServiceClient client)
+        public IbsOrderService( IBookingWebServiceClient client)
         {
             _client = client;
         }
 
-        public void ConfirmExternalPayment(int orderId, string vehicleId, string text, double amount, double fareAmount, string cardType, string cardNumber, string cardExpiry, string transactionId, string authorizationCode)
+       
+         public void ConfirmExternalPayment(int orderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
+                                                    string authorizationCode, string cardToken, int accountID, string name, string phone, string email, string os, string userAgent)       
         {
-            if ( !_client.ConfirmExternalPayment(orderId, vehicleId, text, amount, fareAmount, cardType, cardNumber, cardExpiry, transactionId, authorizationCode) )
+            if ( ! _client.ConfirmExternalPayment(orderId, totalAmount, tipAmount, meterAmount, type, provider, transactionId,
+                            authorizationCode, cardToken, accountID, name, phone, email, os, userAgent) )
             {
                 throw new Exception("Cannot confirm the payment");
             }
