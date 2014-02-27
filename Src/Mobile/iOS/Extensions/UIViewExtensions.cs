@@ -5,6 +5,7 @@ using System.Linq;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using MonoTouch.CoreAnimation;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -19,6 +20,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			view.Frame = new RectangleF(view.Frame.X, view.Frame.Y, width ?? view.Frame.Width, height ?? view.Frame.Height);
 		}
+
+        public static void SetRoundedCorners(this UIView view, UIRectCorner corners, float radius)
+        {
+            var roundedRect = UIBezierPath.FromRoundedRect(new RectangleF(0, 0, view.Frame.Width, view.Frame.Height), corners, new SizeF(radius, radius));
+            var maskLayer = new CAShapeLayer() { Frame = view.Bounds, Path = roundedRect.CGPath };
+            view.Layer.Mask = maskLayer;
+        }
 
         public static UIView FindFirstResponder (this UIView view)
         {
