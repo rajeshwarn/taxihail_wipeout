@@ -145,6 +145,7 @@
     <Compile Include="Requests\RegisterAccount.cs" />
     <Compile Include="Requests\SearchLocationsRequest.cs" />
     <Compile Include="Requests\SendReceipt.cs" />
+    <Compile Include="Requests\TermsAndConditionsRequest.cs" />
     <Compile Include="Requests\TestOnlyReqGetAdminTestAccount.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
     <Compile Include="Requests\UpdatePassword.cs" />

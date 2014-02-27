@@ -144,6 +144,7 @@ namespace apcurium.MK.Web.App_Start
                 "~/admin/models/Rule.js",
                 "~/admin/models/CompanySettings.js",
                 "~/admin/models/PaymentSettings.js",
+                "~/admin/models/TermsAndConditions.js",
                 /* Collections */
                 "~/common/collections/AddressCollection.js",
                 "~/common/collections/AvailableVehicleCollection.js",
@@ -161,6 +162,7 @@ namespace apcurium.MK.Web.App_Start
                 "~/admin/controllers/DefaultAddressesController.js",
                 "~/admin/controllers/PopularAddressesController.js",
                 "~/admin/controllers/ExportController.js",
+                "~/admin/controllers/TermsAndConditionsController.js",
                 /* Views */
                 "~/admin/views/AddPopularAddressView.js",
                 "~/common/views/AlertView.js",
@@ -188,6 +190,7 @@ namespace apcurium.MK.Web.App_Start
                 "~/admin/views/TariffItemView.js",
                 "~/admin/views/EditTariffView.js",
                 "~/admin/views/ManageExclusionsView.js",
+                "~/admin/views/UpdateTermsAndConditionsView.js",
                 /* Services */
                 "~/common/services/AuthService.js",
                 "~/common/services/GeocodingService.js",

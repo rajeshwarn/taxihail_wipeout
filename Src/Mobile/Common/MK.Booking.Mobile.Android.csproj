@@ -271,7 +271,6 @@
     <Compile Include="ViewModels\TermsAndConditionsViewModel.cs" />
     <Compile Include="AppServices\ITermsAndConditionsService.cs" />
     <Compile Include="AppServices\Impl\TermsAndConditionsService.cs" />
-    <Compile Include="Data\TermsAndConditionsContent.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="Messages\AppActivated.cs" />
     <Compile Include="ViewModels\Payment\CreditCardViewModel.cs" />

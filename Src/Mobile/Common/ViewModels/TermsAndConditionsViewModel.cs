@@ -11,8 +11,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get 
             { 
 				if (_termsAndConditions.IsNullOrEmpty())
-                {
-					_termsAndConditions = this.Services().Terms.GetText();
+				{
+				    _termsAndConditions = await this.Services().Terms.GetText();
                 }
 				return @_termsAndConditions; 
             } 

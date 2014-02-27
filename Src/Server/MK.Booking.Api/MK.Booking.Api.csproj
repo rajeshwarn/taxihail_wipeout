@@ -142,6 +142,7 @@
     <Compile Include="Services\Payment\PaymentService.cs" />
     <Compile Include="Services\Payment\PayPalService.cs" />
     <Compile Include="Services\PushNotificationAdministrationService.cs" />
+    <Compile Include="Services\TermsAndConditionsService.cs" />
     <Compile Include="Services\ValidateOrderService.cs" />
     <Compile Include="Services\RuleActivateService.cs" />
     <Compile Include="Services\RuleDeactivateService.cs" />

@@ -56,6 +56,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IConfigurationDao>(
                 new ConfigurationDao(() => container.Resolve<ConfigurationDbContext>()));
             container.RegisterInstance<IDeviceDao>(new DeviceDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<ICompanyDao>(new CompanyDao(() => container.Resolve<BookingDbContext>()));
 
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterInstance<ITemplateService>(new TemplateService());

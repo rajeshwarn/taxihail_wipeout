@@ -1,8 +1,10 @@
+using System.Threading.Tasks;
+
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface ITermsAndConditionsService
 	{
-		string GetText ();
+	    Task<string> GetText();
 	}
 }
 
