@@ -29,6 +29,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 // set the theme of the company for the navigation bar
                 ChangeThemeOfNavigationBar();
                 _themeApplied = true;
+                NavigationController.NavigationBar.BarStyle = Theme.ShouldHaveLightContent(this.View.BackgroundColor)
+                    ? UIBarStyle.Black
+                    : UIBarStyle.Default;
             }
 
 			NavigationController.NavigationBar.Hidden = true;
@@ -38,8 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
 
-			View.BackgroundColor = Theme.CompanyColor;
-			btnForgotPassword.SetTitleColor(Theme.LabelTextColor, UIControlState.Normal);
+            View.BackgroundColor = Theme.LoginColor;
 
 			txtEmail.Placeholder = Localize.GetValue("LoginViewEmailPlaceHolder");
             txtEmail.ReturnKeyType = UIReturnKeyType.Next;
@@ -59,10 +61,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			};  
 
 			FlatButtonStyle.Clear.ApplyTo (btnForgotPassword);
+            btnForgotPassword.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
 			FlatButtonStyle.Main.ApplyTo (btnSignIn);
+            btnSignIn.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
 
 			btnSignIn.SetTitle (Localize.GetValue ("SignIn"), UIControlState.Normal);
 			btnSignUp.SetTitle (Localize.GetValue ("Register"), UIControlState.Normal);
+            btnSignUp.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
 
             var settings = this.Services().Settings;;
 
@@ -83,6 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 set.Bind(btnFbLogin)
                     .For("TouchUpInside")
                     .To(vm => vm.LoginFacebook);
+                btnFbLogin.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
             }
             btnFbLogin.Hidden = !settings.FacebookEnabled;
 
@@ -93,12 +99,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 set.Bind(btnTwLogin)
                     .For("TouchUpInside")
                     .To(vm => vm.LoginTwitter);
+                btnTwLogin.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
             }
             btnTwLogin.Hidden = !settings.TwitterEnabled;
 
 			btnServer.SetTitle (Localize.GetValue ("ChangeServer"), UIControlState.Normal);
             btnServer.TouchUpInside += ChangeServerTouchUpInside;
             btnServer.Hidden = !settings.CanChangeServiceUrl;
+            btnServer.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
 
             set.Bind(btnSignIn)
                 .For("TouchUpInside")

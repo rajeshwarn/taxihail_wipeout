@@ -3,7 +3,7 @@
     <!--- Themes -->
 
     <style name="LoginTheme" parent="@android:style/Theme.Holo">
-        <item name="android:windowBackground">@color/company_color</item>
+        <item name="android:windowBackground">@color/login_color</item>
         <item name="android:windowNoTitle">true</item>  
         <item name="android:editTextStyle">@style/custom_EditTextStyle</item>              
         <item name="android:buttonStyle">@style/custom_ButtonStyle</item>     

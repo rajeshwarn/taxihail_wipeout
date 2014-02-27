@@ -14,6 +14,7 @@ using Android.Util;
 using Android.Graphics.Drawables;
 using Android.Graphics;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
@@ -34,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             var textWithBold = Html.FromHtml(ResourceAcklowledge.Replace(ResourceAcklowledgeBold, "<b>" + ResourceAcklowledgeBold + "</b>"));
             lblTermsAndConditions.SetText(textWithBold, TextView.BufferType.Spannable);
 
-            var colorTheme = Resources.GetColor(Resource.Color.label_text_color);
+            var colorTheme = DrawHelper.GetTextColorForBackground(Resources.GetColor(Resource.Color.login_color));
             var checkedIcon = Resources.GetDrawable(Resource.Drawable.@checked_custom);
             var uncheckedIcon = Resources.GetDrawable(Resource.Drawable.@unchecked_custom);                                
 
@@ -47,6 +48,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             var checkBox = (CheckBox)FindViewById<CheckBox>(Resource.Id.cbTermsAndConditions);
             checkBox.SetButtonDrawable(list);
             checkBox.Invalidate();
+
+            DrawHelper.SupportLoginTextColor(lblTermsAndConditions);
+            DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.btnCancel));
+            DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.btnCreate));
+            DrawHelper.SupportLoginTextColor(FindViewById<TextView>(Resource.Id.lblTitle));
         }	
 
         public void SetDialog(ViewGroup registerContainer, int positionInContainer)
