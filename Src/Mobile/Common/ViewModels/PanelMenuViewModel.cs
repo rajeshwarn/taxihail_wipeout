@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -13,12 +14,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
 		private readonly BaseViewModel _parent;
 		private IMvxWebBrowserTask _browserTask;
-	
+		private IOrderWorkflowService _orderWorkflowService;
 
-		public PanelMenuViewModel (BaseViewModel parent, IMvxWebBrowserTask browserTask)
+		public PanelMenuViewModel (BaseViewModel parent, IMvxWebBrowserTask browserTask, IOrderWorkflowService orderWorkflowService)
         {
             _parent = parent;
 			_browserTask = browserTask;
+			_orderWorkflowService = orderWorkflowService;
 
 			ItemMenuList = new ObservableCollection<ItemMenuModel>();
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations});
@@ -111,8 +113,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return this.GetCommand(() =>
                 {
                     MenuIsOpen = false;
+					_orderWorkflowService.PrepareForNewOrder();
                     this.Services().Account.SignOut();         
-                    ShowViewModel<LoginViewModel> (true);
+					ShowViewModel<LoginViewModel> ();
 
                     Close( _parent );
                 });
