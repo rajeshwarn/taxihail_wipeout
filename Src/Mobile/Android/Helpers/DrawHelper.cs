@@ -6,6 +6,8 @@ using System;
 using Android.Gms.Maps.Model;
 using Android.Graphics.Drawables;
 using Android.Views;
+using Android.Widget;
+using Android.Content.Res;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
@@ -160,6 +162,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
                 return Color.Argb(255, t, p, v);
             else
                 return Color.Argb(255, v, p, q);
+        }
+
+        public static Color GetTextColorForBackground(Color backgroundColor)
+        {
+            var darknessScore = (((backgroundColor.R) * 299) + ((backgroundColor.G) * 587) + ((backgroundColor.B) * 114)) / 1000;
+
+            if (darknessScore >= 125) {
+                return Color.Black;
+            }
+            return Color.White;
+        }
+
+        public static void SupportLoginTextColor(TextView textView)
+        {
+            int[][] states = new int[1][];
+            states[0] = new int[0];
+            var colors = new[]{(int)GetTextColorForBackground(textView.Resources.GetColor(Resource.Color.login_color))};
+            var colorList = new ColorStateList (states, colors);
+            textView.SetTextColor(colorList);
         }
     }
 }
