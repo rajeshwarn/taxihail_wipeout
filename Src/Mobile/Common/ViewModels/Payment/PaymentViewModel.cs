@@ -15,13 +15,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
     public class PaymentViewModel : BaseSubViewModel<object>
     {
         private readonly IPayPalExpressCheckoutService _palExpressCheckoutService;
+		private readonly IAccountService _accountService;
 
-		public PaymentViewModel(IPayPalExpressCheckoutService palExpressCheckoutService)
+		public PaymentViewModel(IPayPalExpressCheckoutService palExpressCheckoutService,
+			IAccountService accountService)
 		{
+			_accountService = accountService;
 			_palExpressCheckoutService = palExpressCheckoutService;
 		}
 
-		public void Init(string order, string orderStatus, IPayPalExpressCheckoutService palExpressCheckoutService)
+		public async void Init(string order, string orderStatus)
         {
 			this.Services().Payment.GetPaymentSettings();
 
@@ -42,7 +45,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             PayPalSelected = !IsCreditCardEnabled;
 
             PaymentPreferences.TipListDisabled = false;
+
+			InitAmounts(Order);
+
+			//refresh from the server
+			var orderFromServer = await _accountService.GetHistoryOrderAsync(Order.Id);
+			InitAmounts(orderFromServer);
         }
+
+		void InitAmounts(Order order)
+		{
+			if (order == null)
+				return;
+
+			if (order.Fare.HasValue)
+			{
+				double value = order.Fare.Value + (order.Toll.HasValue ? order.Toll.Value : 0);
+				MeterAmount = CultureProvider.FormatCurrency(value);
+			}
+
+			if (order.Tip.HasValue)
+			{
+				PaymentPreferences.TipListDisabled = true;
+				TipAmount = CultureProvider.FormatCurrency(order.Tip.Value);
+			}
+		}
 
         public bool IsPayPalEnabled
         { 
