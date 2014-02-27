@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using MonoTouch.CoreGraphics;
+using MonoTouch.CoreAnimation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -57,6 +58,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 TextColor = Theme.LabelTextColor,
                 ShadowColor = UIColor.Clear
             };
+
+            this.SetRoundedCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 3f);
 
             AddSubviews(HorizontalDividerTop, SelectedVehicleType, SelectedVehicleTypeLabel, EstimatedFareLabel);
         }

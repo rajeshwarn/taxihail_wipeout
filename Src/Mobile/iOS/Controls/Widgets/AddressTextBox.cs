@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private UIActivityIndicatorView LoadingWheel  { get; set; }
         private UIView VerticalDivider { get; set; }
         private UIView HorizontalDividerTop { get; set; }
-        private RoundedCornerView RedRoundedCornerView { get; set; }
+        private RoundedCornerView StreetNumberRoundedCornerView { get; set; }
 
         public AddressTextBox(IntPtr h):base(h)
         {
@@ -40,9 +40,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             BackgroundColor = UIColor.Clear;
 
-            RedRoundedCornerView = new RoundedCornerView();
-            RedRoundedCornerView.Hidden = true;
-            AddSubview(RedRoundedCornerView);
+            StreetNumberRoundedCornerView = new RoundedCornerView();
+            StreetNumberRoundedCornerView.Hidden = true;
+            AddSubview(StreetNumberRoundedCornerView);
 
             StreetNumberTextView = new FlatTextField();
             StreetNumberTextView.BackgroundColor = UIColor.Clear;
@@ -205,21 +205,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 AddressTextView.LeftViewMode = UITextFieldViewMode.Never;
 
-                RedRoundedCornerView.BackColor = color.ColorWithAlpha(0.7f);
-                RedRoundedCornerView.StrokeLineColor = color;
+                StreetNumberRoundedCornerView.BackColor = color.ColorWithAlpha(0.7f);
+                StreetNumberRoundedCornerView.StrokeLineColor = color;
 
                 if (IsDestination)
                 {
-                    RedRoundedCornerView.Corners = 0;
+                    StreetNumberRoundedCornerView.Corners = 0;
                     HorizontalDividerTop.Hidden = false;
                 }
                 else
                 {
-                    RedRoundedCornerView.Corners = UIRectCorner.TopLeft | UIRectCorner.BottomLeft;
+                    StreetNumberRoundedCornerView.Corners = UIRectCorner.TopLeft | UIRectCorner.BottomLeft;
                     HorizontalDividerTop.Hidden = true;
                 }
 
-                RedRoundedCornerView.Frame = LoadingWheel.Frame = StreetNumberTextView.Frame;
+                StreetNumberRoundedCornerView.Frame = LoadingWheel.Frame = StreetNumberTextView.Frame;
 
                 if (_isInStreetNumberEditMode)
                 {
@@ -267,7 +267,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     return;
                 }
 
-                RedRoundedCornerView.Hidden = false;
+                StreetNumberRoundedCornerView.Hidden = false;
                 VerticalDivider.Hidden = true;
                 _isInStreetNumberEditMode = true;
                 Resize();
@@ -275,7 +275,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             StreetNumberTextView.EditingDidEnd += (sender, e) => 
             {
-                RedRoundedCornerView.Hidden = true;
+                StreetNumberRoundedCornerView.Hidden = true;
                 VerticalDivider.Hidden = false;
                 _isInStreetNumberEditMode = false;
                 Resize();
