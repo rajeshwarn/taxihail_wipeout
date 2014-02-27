@@ -38,10 +38,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
 
-            contentView.Layer.CornerRadius = 7;
-            btnClose.SetImage (UIImage.FromFile ("closeButton.png"), UIControlState.Normal);
-            btnClose.SetTitle ("", UIControlState.Normal);
-            View.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0.40f);
+            contentView.Layer.CornerRadius = 2;
+            View.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0.7f);
 
             CreatePanels (ViewModel.TutorialItemsList);
 
@@ -62,60 +60,82 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             scrollFrame.Width = scrollFrame.Width * count;
             scrollview.ContentSize = scrollFrame.Size;
 
-            for (var i=0; i<count; i++) {
-                var view = new UIView ();
-                view.BackgroundColor = UIColor.Clear;
-                var image = new UIImageView (UIImage.FromFile (listTutorial[i].ImageUri + ".png"));
+            for (var i = 0; i < count; i++)
+            {
+                var pageView = new UIView(new RectangleF(i * scrollview.Frame.Width, 0, scrollview.Frame.Width, scrollview.Frame.Height)) { BackgroundColor = UIColor.Clear };
+                scrollview.AddSubview(pageView);
 
-                var labelBottom = new ValignLabel ();
-                labelBottom.VerticalAlignment = ValignLabel.VerticalAlignments.Middle;
-                labelBottom.TextColor = UIColor.FromRGB (86, 86, 86);
-                labelBottom.BackgroundColor = UIColor.Clear;
-                labelBottom.TextAlignment = UITextAlignment.Center;
-                labelBottom.Text = listTutorial [i].BottomText;
-                labelBottom.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 16.0f);
-                labelBottom.Lines = 0;
-                labelBottom.Frame = new RectangleF( scrollview.Frame.Width * i, scrollview.Frame.Height - 110, scrollview.Frame.Width, 95 );
-                view.AddSubview (labelBottom);
+                var image = new UIImageView(UIImage.FromFile(listTutorial[i].ImageUri + ".png"));
+                image.SetWidth(pageView.Frame.Width);
+                image.ContentMode = UIViewContentMode.ScaleAspectFit;
+                image.SetX(0).SetY(96f);
+                pageView.AddSubview(image);
 
-                var labelBottomTitle = new ValignLabel ();
-                labelBottomTitle.VerticalAlignment = ValignLabel.VerticalAlignments.Middle;
-                labelBottomTitle.TextColor = UIColor.FromRGB (86, 86, 86);
-                labelBottomTitle.BackgroundColor = UIColor.Clear;
-                labelBottomTitle.TextAlignment = UITextAlignment.Center;
-                labelBottomTitle.Text = listTutorial [i].BottomTitle;
-                labelBottomTitle.Font = UIFont.FromName(FontName.HelveticaNeueBold, 18.0f);
-                labelBottomTitle.Lines = 1;
-                labelBottomTitle.Frame = new RectangleF( scrollview.Frame.Width * i, scrollview.Frame.Height - 40, scrollview.Frame.Width, 30 ); 
-                view.AddSubview (labelBottomTitle);
+                var labelBottomTitle = new UILabel(new RectangleF(0, 0, pageView.Frame.Width, 0))
+                {
+                    LineBreakMode = UILineBreakMode.WordWrap,
+                    TextColor = UIColor.FromRGB(44, 44, 44),
+                    BackgroundColor = UIColor.Clear,
+                    TextAlignment = UITextAlignment.Center,
+                    Font = UIFont.FromName(FontName.HelveticaNeueBold, 17.0f),
+                    Lines = 1
+                };
+                labelBottomTitle.Text = listTutorial[i].BottomTitle;  
+                labelBottomTitle.SizeToFit();
+                labelBottomTitle.SetX((pageView.Frame.Width - labelBottomTitle.Frame.Width) / 2)
+                    .SetY(pageView.Frame.Bottom - labelBottomTitle.Frame.Height - 20);
+                pageView.AddSubview(labelBottomTitle);  
 
-                var labelTop = new ValignLabel ();
-                labelTop.VerticalAlignment = ValignLabel.VerticalAlignments.Middle ;
-                labelTop.BackgroundColor = UIColor.Clear;
-                labelTop.TextColor = UIColor.FromRGB (50, 50, 50);
-                labelTop.TextAlignment = UITextAlignment.Center;
-                labelTop.Text = listTutorial [i].TopText;
-                labelTop.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 16.0f);
-                labelTop.Lines = 0;
-                labelTop.Frame = new RectangleF (scrollview.Frame.Width * i, 10, scrollview.Frame.Width, 110);                
-                view.AddSubview (labelTop);
 
-                var labelTopTitle = new ValignLabel ();
-                labelTopTitle.VerticalAlignment = ValignLabel.VerticalAlignments.Middle;
-                labelTopTitle.TextColor =  UIColor.FromRGB (50, 50, 50);
-                labelTopTitle.BackgroundColor = UIColor.Clear;
-                labelTopTitle.TextAlignment = UITextAlignment.Center;
-                labelTopTitle.Text = listTutorial [i].TopTitle;
-                labelTopTitle.Font = UIFont.FromName(FontName.HelveticaNeueBold, 18.0f);
-                labelTopTitle.Lines = 1;
-                labelTopTitle.Frame = new RectangleF (scrollview.Frame.Width * i, 20, scrollview.Frame.Width, 30);                
-                view.AddSubview (labelTopTitle);
+                var labelBottom = new UILabel(new RectangleF(40, 0, pageView.Frame.Width - 40, 0))
+                {
+                    LineBreakMode = UILineBreakMode.WordWrap,
+                    TextColor = UIColor.FromRGB(44, 44, 44),
+                    BackgroundColor = UIColor.Clear,
+                    TextAlignment = UITextAlignment.Center,
+                    ContentMode = UIViewContentMode.Top,
+                    Font = UIFont.FromName(FontName.HelveticaNeueLight, 17.0f),
+                    Lines = 0
+                };
+                labelBottom.Text = listTutorial[i].BottomText;  
+                labelBottom.SizeToFit();
+                labelBottom.SetX((pageView.Frame.Width - labelBottom.Frame.Width) / 2)
+                    .SetY(image.Frame.Bottom + 35);
+                pageView.AddSubview(labelBottom);
 
-                image.SetPosition (scrollview.Frame.Width * i, 115);
 
-                view.AddSubview (image);
+                var labelTopTitle = new UILabel(new RectangleF(0, 0, pageView.Frame.Width, 0))
+                {
+                    LineBreakMode = UILineBreakMode.WordWrap,
+                    TextColor = UIColor.FromRGB(44, 44, 44),
+                    BackgroundColor = UIColor.Clear,
+                    TextAlignment = UITextAlignment.Center,
+                    Font = UIFont.FromName(FontName.HelveticaNeueBold, 17.0f),
+                    Lines = 1
+                };
+                labelTopTitle.Text = listTutorial[i].TopTitle;  
+                labelTopTitle.SizeToFit();
+                labelTopTitle.SetX((pageView.Frame.Width - labelTopTitle.Frame.Width) / 2)
+                    .SetY(0);
+                pageView.AddSubview(labelTopTitle);               
 
-                scrollview.AddSubview (view);
+                var labelTop = new UILabel(new RectangleF(40, 0, pageView.Frame.Width - 40, 0))
+                {
+                    LineBreakMode = UILineBreakMode.WordWrap,
+                    TextColor = UIColor.FromRGB(44, 44, 44),
+                    BackgroundColor = UIColor.Clear,
+                    TextAlignment = UITextAlignment.Center,
+                    Font = UIFont.FromName(FontName.HelveticaNeueLight, 17.0f),
+                    Lines = 0
+                };
+                labelTop.Text = listTutorial[i].TopText;  
+                labelTop.SizeToFit();
+                labelTop.SetX((pageView.Frame.Width - labelTop.Frame.Width) / 2)
+                        .SetY(labelTopTitle.Frame.Bottom);
+                pageView.AddSubview(labelTop);
+
+
+
             }
             pageControl.Hidden = false;
             pageControl.Pages = count;
