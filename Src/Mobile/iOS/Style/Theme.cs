@@ -44,15 +44,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
 		{
 			get
 			{
-				var components = CompanyColor.CGColor.Components;
-				var darknessScore = (((components[0]*255) * 299) + ((components[1]*255) * 587) + ((components[2]*255) * 114)) / 1000;
-
-				if (darknessScore >= 125) {
-					return false;
-				}
-				return true;
+                return ShouldHaveLightContent(CompanyColor);
 			}
 		}
+
+        public static bool ShouldHaveLightContent(UIColor color)
+        {
+            var components = color.CGColor.Components;
+            var darknessScore = (((components[0]*255) * 299) + ((components[1]*255) * 587) + ((components[2]*255) * 114)) / 1000;
+
+            if (darknessScore >= 125) {
+                return false;
+            }
+            return true;
+        }
+
+        public static UIColor GetTextColor(UIColor loginColor)
+        {
+            return ShouldHaveLightContent(loginColor) ? UIColor.White : UIColor.Black;
+        }
 
 		private static UIColor ToUIColor(string hexaDecimaleValue, ref UIColor color)
 		{

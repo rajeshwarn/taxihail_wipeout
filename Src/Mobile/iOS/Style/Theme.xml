@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ThemeValues>
-  <CompanyColor>#004e91</CompanyColor>
-  <LoginColor>#004e91</LoginColor>
+  <CompanyColor>#26388F</CompanyColor>
+  <LoginColor>#ededed</LoginColor>
   <ButtonTextColor>#ffffff</ButtonTextColor>
   <LabelTextColor>#ffffff</LabelTextColor>
 </ThemeValues>
