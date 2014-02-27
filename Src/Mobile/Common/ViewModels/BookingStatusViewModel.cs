@@ -458,7 +458,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return;
 					}
 #endif
-
+					IsPayButtonVisible = false;
                     if (IsCmtRideLinq)
                     {
                         GoToCmtPairScreen();

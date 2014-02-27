@@ -12,7 +12,7 @@ using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-    public class PaymentViewModel : BaseSubViewModel<object>
+    public class PaymentViewModel : BaseViewModel
     {
         private readonly IPayPalExpressCheckoutService _palExpressCheckoutService;
 		private readonly IAccountService _accountService;
@@ -399,16 +399,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutSuccessTitle"],
                               this.Services().Localize["PayPalExpressCheckoutSuccessMessage"],
-                              null, () => ReturnResult(""),
-                              this.Services().Localize["OkButtonText"], () => ReturnResult(""));
+							  null, () => {Close(this);},
+							  this.Services().Localize["OkButtonText"], () => {Close(this);});
         }
 
         private void ShowCreditCardPaymentConfirmation(string transactionId)
         {
             this.Services().Message.ShowMessage(this.Services().Localize["CmtTransactionSuccessTitle"],
                               string.Format(this.Services().Localize["CmtTransactionSuccessMessage"], transactionId),
-                              null, () => ReturnResult(""),
-                              this.Services().Localize["OkButtonText"], () => ReturnResult(""));
+								null, () => {Close(this);},
+								this.Services().Localize["OkButtonText"], () => {Close(this);});
         }
     }
 }
