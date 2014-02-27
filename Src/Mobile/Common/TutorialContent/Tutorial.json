@@ -11,65 +11,56 @@
     ,
     {
       "Position": "2",
-      "TopTitle": "",
-      "TopText": "We should be able to locate you using the GPS receiver in your mobile device.",
+      "TopTitle": "Refine Address",
+      "TopText": "Tap on the hashtag to refine your address number.",
       "BottomTitle": "",
-      "BottomText": "If it's a little off, simply reposition the map to your actual location." ,
+      "BottomText": "Tap on the hashtag to refine your address number." ,
       "ImageUri":"tutorial_screen02"
-    }                   
+    }
     ,
     {
       "Position": "3",
-      "TopTitle": "",
-      "TopText": "You may also select your pickup location by tapping the pickup address.",
+      "TopTitle": "Cards on File",
+      "TopText": "Use multiple credit cards for your account.",
       "BottomTitle": "",
-      "BottomText": "You can search for a specific address or pick one from your favorites, contacts or a list of nearby places." ,
+      "BottomText": "Adding a card is as easy as 1-2-3." ,
       "ImageUri":"tutorial_screen03"
     }                   
     ,
     {
       "Position": "4",
-      "TopTitle": "",
-      "TopText": "If you want, you can also set your destination.",
+      "TopTitle": "Future Booking",
+      "TopText": "Book in the future.",
       "BottomTitle": "",
-      "BottomText": "Doing so will provide an estimate for the cost for the trip." ,
+      "BottomText": "Book in the future." ,
       "ImageUri":"tutorial_screen04"
     }                   
     ,
     {
       "Position": "5",
-      "TopTitle": "",
-      "TopText": "Tap Book Now and a vehicle will be assigned as soon as possible.",
+      "TopTitle": "Locations",
+      "TopText": "Add locations",
       "BottomTitle": "",
-      "BottomText": "Or tap the Later button to schedule your pickup for a future time or date." ,
+      "BottomText": "Add locations" ,
       "ImageUri":"tutorial_screen05"
     }                   
     ,
     {
       "Position": "6",
-      "TopTitle": "",
-      "TopText": "The confirmation screen allows you to verify your trip details and to change any of your preferences for this specific ride.",
+      "TopTitle": "History",
+      "TopText": "Remember all your rides past, present and future with your history list.",
       "BottomTitle": "",
-      "BottomText": "Tap Confim when you are ready to go." ,
+      "BottomText": "The history list is useful." ,
       "ImageUri":"tutorial_screen06"
     }                   
-    ,    
+    ,
     {
       "Position": "7",
-      "TopTitle": "",
-      "TopText": "On the Status screen you will see a reservation number confirming your booking. Once a vehicle is assigned, you can watch as it approaches.",
+      "TopTitle": "Edit Details",
+      "TopText": "Edit your details.",
       "BottomTitle": "",
-      "BottomText": "Status updates are provided when the vehicle arrives at the pickup address, when you enter the vehicle, and at the end of the ride." ,
+      "BottomText": "Edit your details." ,
       "ImageUri":"tutorial_screen07"
     }                   
-    ,    
-    {
-      "Position": "8",
-      "TopTitle": "",
-      "TopText": "You can review your order history at any time, and even rebook a previous trip with the push of a button.",
-      "BottomTitle": "We thank you for your business!",
-      "BottomText": "We hope you find this application both convenient and intuitive."      ,
-      "ImageUri":"tutorial_screen08"
-    }    
   ]
 }

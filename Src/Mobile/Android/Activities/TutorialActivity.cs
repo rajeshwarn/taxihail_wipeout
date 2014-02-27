@@ -8,14 +8,15 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Droid.Views;
+using Android.OS;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
-    [Activity(Theme = "@style/Theme.Modal", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Theme = "@style/TutorialDialog", ScreenOrientation = ScreenOrientation.Portrait)]
     public class TutorialActivity : MvxActivity
     {
         private BitmapDrawable _grayCircle;
-        private BitmapDrawable _yellowCircle;
+        private BitmapDrawable _blackCircle;
 
 		public new TutorialViewModel ViewModel
 		{
@@ -25,40 +26,63 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 			}
 		}
 
+        private int _tutorialInsetPixels = 7.ToPixels();
+
         protected override void OnViewModelSet()
         {
-            Window.AddFlags(WindowManagerFlags.Fullscreen);
+            Window.SetFlags(WindowManagerFlags.Dither, WindowManagerFlags.Fullscreen);
             SetContentView(Resource.Layout.View_Tutorial);
+
             var pipsLayout = FindViewById<LinearLayout>(Resource.Id.layout_pips);
             var horizontalPager = FindViewById<HorizontalPager>(Resource.Id.details);
+            var containerLayout = FindViewById<RelativeLayout>(Resource.Id.tutorial_container);
+            _tutorialInsetPixels = Resources.GetDimension(Resource.Dimension.tutorial_insets).ToPixels();
+            // ScaleType on TutorialImage could be changed to something with a minimal zoom for tablets so we would get 100% compatibility
             Title = null;
 
-            _yellowCircle = Resources.GetDrawable(Resource.Drawable.tutorial_yellow_circle) as BitmapDrawable;
+            _blackCircle = Resources.GetDrawable(Resource.Drawable.tutorial_black_circle) as BitmapDrawable;
             _grayCircle = Resources.GetDrawable(Resource.Drawable.tutorial_grey_circle) as BitmapDrawable;
+
+            var maxWidth = Window.WindowManager.DefaultDisplay.Width;
+
+            var lp = ((View)containerLayout.Parent).LayoutParameters;
+            lp.Width = maxWidth;
+            lp.Height = WindowManagerLayoutParams.MatchParent;
+            ((View)containerLayout.Parent).LayoutParameters = lp;
+
+            lp = ((View)containerLayout).LayoutParameters;
+
+            lp.Width = maxWidth - (_tutorialInsetPixels * (PlatformHelper.IsAndroid23 ? 2 : 1));
+            lp.Height = WindowManagerLayoutParams.MatchParent;
+            ((View)containerLayout).LayoutParameters = lp;
+
+            lp = ((View)pipsLayout).LayoutParameters;
+            lp.Width = maxWidth / 2;
+            lp.Height = 50.ToPixels();
+            ((View)pipsLayout).LayoutParameters = lp;
 
             horizontalPager.MOnScreenSwitchListener += (sender, args) =>
             {
                 var newScreen = args.Screen;
                 CleanAllPips(pipsLayout);
                 var currentPip = (ImageView) pipsLayout.GetChildAt(newScreen);
-                currentPip.SetImageDrawable(_yellowCircle);
+                currentPip.SetImageDrawable(_blackCircle);
             };
+
             for (int i = 0; i < ViewModel.TutorialItemsList.Count(); i++)
             {
-                var d = _yellowCircle;
+                var d = _blackCircle;
                 if (d != null)
                 {
-                    var w = d.Bitmap.Width;
-                    var h = d.Bitmap.Height;
-// ReSharper disable once PossibleLossOfFraction
-                    var layoutParams = new RelativeLayout.LayoutParams(DrawHelper.GetPixels(12*w/h),
-                        DrawHelper.GetPixels(12)) {LeftMargin = 10, RightMargin = 10, AlignWithParent = true};
+                    float w = d.Bitmap.Width;
+                    float h = d.Bitmap.Height;
 
+                    var layoutParams = new RelativeLayout.LayoutParams(20.ToPixels(),
+                        12.ToPixels()) {LeftMargin = 10.ToPixels(), RightMargin = 10.ToPixels(), AlignWithParent = true};
 
                     var imageFill = new ImageView(this);
-                    imageFill.SetImageDrawable(_yellowCircle);
+                    imageFill.SetImageDrawable(_blackCircle);
                     imageFill.LayoutParameters = layoutParams;
-
 
                     var imageNotFill = new ImageView(this);
                     imageNotFill.SetImageDrawable(_grayCircle);

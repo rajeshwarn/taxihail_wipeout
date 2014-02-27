@@ -729,14 +729,14 @@
     <BundleResource Include="Resources\tutorial_screen06%402x.png" />
     <BundleResource Include="Resources\tutorial_screen07.png" />
     <BundleResource Include="Resources\tutorial_screen07%402x.png" />
-    <BundleResource Include="Resources\tutorial_screen08.png" />
-    <BundleResource Include="Resources\tutorial_screen08%402x.png" />
     <BundleResource Include="Resources\poweredby.png" />
     <BundleResource Include="Resources\poweredByGoogle.png" />
     <BundleResource Include="Resources\places.png" />
     <BundleResource Include="Resources\places%402x.png" />
     <BundleResource Include="Resources\taxi_progress.png" />
     <BundleResource Include="Resources\taxi_progress%402x.png" />
+    <BundleResource Include="Resources\close_tutorial_button.png" />
+    <BundleResource Include="Resources\close_tutorial_button%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

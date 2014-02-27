@@ -77,6 +77,8 @@
   	<dimen name="setting_menu_text_size">20dip</dimen>
     <dimen name="payment_text_size">18dip</dimen>
     <dimen name="payment_text_bold_size">19dip</dimen>
+    <dimen name="tutorial_insets">7dip</dimen>
+    <dimen name="tutorial_text_size">18dip</dimen>
 
   	<!--- Styles -->
 
@@ -144,7 +146,7 @@
     	<item name="android:textColor">@drawable/button_main_text_selector</item>
     	<item name="android:background">@drawable/button_main_selector</item>      
     	<item name="android:textSize">20dip</item>
-    </style>
+    </style>        
 
     <!--	Main Theme Action (colorized) Buttons  -->
 
@@ -171,5 +173,15 @@
     <style name="ButtonActionLabelStyle" parent="@style/custom_ButtonStyle">
       <item name="android:background">@drawable/button_action_label_selector</item>
       <item name="android:textColor">@drawable/button_action_label_text_selector</item>      
+    </style>
+
+    <!-- Tutorial Theme -->
+
+    <style name="TutorialDialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/tutorial_root_background_insets</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
     </style>
 </resources>
