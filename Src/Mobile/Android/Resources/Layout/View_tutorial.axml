@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_marginLeft="0dip"
+    android:layout_marginRight="0dip"
+    android:layout_marginTop="0dip"
+    android:layout_marginBottom="0dip"
     android:layout_width="fill_parent"
+    android:id="@+id/tutorial_container"
     android:layout_height="fill_parent">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@drawable/tutorial_background_rounded"
-        android:layout_marginTop="7dip"
-        android:layout_marginRight="7dip"
-        android:layout_marginBottom="20dip"
-        android:layout_marginLeft="7dip"
         android:layout_gravity="center"
         android:id="@+id/layout_main">
         <apcurium.MK.Booking.Mobile.Client.Controls.HorizontalPager
@@ -19,17 +20,16 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
-            local:MvxBind="TutorialItemModel TutorialItemsList"
-            android:layout_weight="0.7" />
+            android:layout_weight="1"
+            local:MvxBind="TutorialItemModel TutorialItemsList" />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="50dip"
             android:id="@+id/layout_pips"
-            android:paddingBottom="8dip"
+            android:paddingBottom="16dip"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_weight="10" />
+            android:gravity="center" />
     </LinearLayout>
     <ImageButton
         android:background="@android:color/transparent"
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:paddingTop="16dip"
-        android:paddingRight="16dip"
+        android:paddingTop="10dip"
+        android:paddingRight="10dip"
         local:MvxBind="Click CloseCommand" />
 </RelativeLayout>

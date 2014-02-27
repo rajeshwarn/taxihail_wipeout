@@ -147,6 +147,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     int i = IndexOfChild(page.ContentView);
                     RemoveView(page.ContentView);
                     page.RootView = new View(Context);
+
+
                     AddView(page.RootView, i);
                     page.RootView.Layout(page.ContentView.Left, 0,
                         page.ContentView.Left + page.ContentView.MeasuredWidth, page.ContentView.MeasuredHeight);

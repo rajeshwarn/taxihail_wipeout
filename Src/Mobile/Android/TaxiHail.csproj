@@ -587,6 +587,9 @@
     <AndroidResource Include="Resources\Drawable\close_tutorial_button.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\close_tutorial_button.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_black_circle.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_root_background_insets.xml" />
+    <Compile Include="Helpers\PlatformHelper.cs" />
+    <AndroidResource Include="Resources\values-sw600dp\Themes.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

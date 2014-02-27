@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
         public bool ShouldUseClipboardManager()
         {
-            return (int) Build.VERSION.SdkInt <= 8;
+            return (int) Build.VERSION.SdkInt <= 10;
         }
 
         public void ApplyKeyboardEnabler(EditText view)
