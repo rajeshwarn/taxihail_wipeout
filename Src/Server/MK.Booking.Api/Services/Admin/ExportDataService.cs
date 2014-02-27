@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                     var testResult = orders.Where(x => x.CreatedDate >= startDate && x.CreatedDate <= endDate)
                         .Select(x =>
                     {
-                        var operatingSystem = UserAgentParser.GetOperatingSystem(x.UserAgent);
+                        var operatingSystem = x.UserAgent.GetOperatingSystem();
                         var phone = string.IsNullOrWhiteSpace(x.Phone) ? "" : x.Phone.ToSafeString();
                         var transactionId = string.IsNullOrEmpty(x.TransactionId) ||
                                             (x.TransactionId.Trim().Length <= 1)

@@ -1,21 +1,21 @@
-﻿#region
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-using System;
-
-#endregion
-
-namespace apcurium.MK.Booking.Api.Helpers
+namespace apcurium.MK.Common.Extensions
 {
-    public static class UserAgentParser
+    public static class UserAgentExtension
     {
         /// <summary>
-        ///     Extracts human readible Operating system name.
+        /// Extracts human readible Operating system name.
         /// </summary>
         /// <param name="userAgent">User Agent string from Request.</param>
         /// <returns>Human readible Operating system name.</returns>
-        public static string GetOperatingSystem(string userAgent)
+        public static string GetOperatingSystem(this string userAgent)
         {
-            string clientOsName;
+            var clientOsName = string.Empty;
 
             if (string.IsNullOrWhiteSpace(userAgent))
             {
@@ -67,13 +67,14 @@ namespace apcurium.MK.Booking.Api.Helpers
 
         private static string GetOsVersion(string userAgent, string osName)
         {
-            if (userAgent.Split(new[] {osName}, StringSplitOptions.None)[1].Split(new[] {';', ')'}).Length != 0)
+            if (userAgent.Split(new[] { osName }, StringSplitOptions.None)[1].Split(new[] { ';', ')' }).Length != 0)
             {
-                return string.Format("{0}{1}", osName,
-                    userAgent.Split(new[] {osName}, StringSplitOptions.None)[1].Split(new[] {';', ')'})[0]);
+                return string.Format("{0}{1}", osName, userAgent.Split(new[] { osName }, StringSplitOptions.None)[1].Split(new[] { ';', ')' })[0]);
             }
 
             return osName;
         }
     }
+
+
 }
