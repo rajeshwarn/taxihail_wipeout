@@ -364,7 +364,6 @@
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial.json" />
     <None Include="Localization\Thriev.resx" />
-    <EmbeddedResource Include="TermsAndConditionsContent\TermsAndConditions.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

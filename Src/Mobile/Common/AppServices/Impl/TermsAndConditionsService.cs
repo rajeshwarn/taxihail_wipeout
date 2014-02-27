@@ -8,12 +8,11 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
-    public class TermsAndConditionsService : ITermsAndConditionsService
+	public class TermsAndConditionsService : BaseService, ITermsAndConditionsService
     {
         public async Task<string> GetText()
         {
-            var response = await UseServiceClientAsync<CompanyServiceClient, TermsAndConditionsResponse>(service => service.GetTermsAndConditions());
-            return response.Content;
+			return await UseServiceClientAsync<CompanyServiceClient, string>(service => service.GetTermsAndConditions());
         }
     }
 }
