@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.Mobile
 					var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher> ();
 					dispatch.ShowViewModel(new MvxViewModelRequest (typeof(LoginViewModel), null, null, MvxRequestedBy.UserAction));
 
+					TinyIoCContainer.Current.Resolve<IOrderWorkflowService> ().PrepareForNewOrder ();
 					TinyIoCContainer.Current.Resolve<IAccountService> ().SignOut ();
 				});
 			}

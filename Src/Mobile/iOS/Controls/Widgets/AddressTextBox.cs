@@ -191,7 +191,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             AddressTextView.UserInteractionEnabled = !IsReadOnly;
 
-            var color = IsDestination ? UIColor.FromRGB(255, 0, 18) : UIColor.FromRGB(0, 192, 49);
+            var color = IsDestination ? UIColor.FromRGB(255, 0, 0) : UIColor.FromRGB(30, 192, 34);
 
             if (!IsReadOnly)
             {
@@ -205,7 +205,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 AddressTextView.LeftViewMode = UITextFieldViewMode.Never;
 
-                StreetNumberRoundedCornerView.BackColor = color.ColorWithAlpha(0.7f);
+                StreetNumberRoundedCornerView.BackColor = color;
                 StreetNumberRoundedCornerView.StrokeLineColor = color;
 
                 if (IsDestination)
