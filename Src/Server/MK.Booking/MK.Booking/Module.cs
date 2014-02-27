@@ -56,6 +56,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IConfigurationDao>(
                 new ConfigurationDao(() => container.Resolve<ConfigurationDbContext>()));
             container.RegisterInstance<IDeviceDao>(new DeviceDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<ICompanyDao>(new CompanyDao(() => container.Resolve<BookingDbContext>()));
 
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterInstance<ITemplateService>(new TemplateService());
@@ -136,6 +137,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, PayPalExpressCheckoutPaymentDetailsGenerator>(
                 "PayPalExpressCheckoutPaymentDetailsGenerator");
             container.RegisterType<IEventHandler, CreditCardPaymentDetailsGenerator>("CreditCardPaymentDetailsGenerator");
+            container.RegisterType<IEventHandler, CompanyDetailsGenerator>("CompanyDetailsGenerator");
 
             // Integration event handlers
             container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");

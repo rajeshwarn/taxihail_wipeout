@@ -124,6 +124,7 @@
     <Compile Include="Payments\CmtPayments\Pair\CmtUnpairingResponse.cs" />
     <Compile Include="Payments\CmtPayments\Pair\UnpairingRequest.cs" />
     <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
+    <Compile Include="TaxiHail\CompanyServiceClient.cs" />
   </ItemGroup>
   <ItemGroup />
 </Project>
