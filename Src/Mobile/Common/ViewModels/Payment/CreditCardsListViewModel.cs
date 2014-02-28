@@ -56,22 +56,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 
             this.Services().Message.ShowMessage(this.Services().Localize["RemoveCreditCardTitle"],
-                this.Services().Localize["RemoveCreditCardMessage"],
-                this.Services().Localize["YesButton"],
-                () =>
-                {
-                    this.Services().Account.RemoveCreditCard(creditCardId);
-                    var creditCardToRemove = CreditCards.FirstOrDefault(c => c.CreditCardDetails.CreditCardId.Equals(creditCardId));
-                    if (creditCardToRemove != null)
-                    {
-                        InvokeOnMainThread(() => CreditCards.Remove(creditCardToRemove));
-						RaisePropertyChanged(() => CreditCards);
-                    }
+									            this.Services().Localize["RemoveCreditCardMessage"],
+									            this.Services().Localize["YesButton"],
+			            () =>
+			            {
+				            this.Services().Account.RemoveCreditCard(creditCardId);
+				            var creditCardToRemove = CreditCards.FirstOrDefault(c => c.CreditCardDetails.CreditCardId.Equals(creditCardId));
+				            if (creditCardToRemove != null)
+				            {
+				                InvokeOnMainThread(() => CreditCards.Remove(creditCardToRemove));
+								RaisePropertyChanged(() => CreditCards);
+				            }
 
-                    CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
-                },
-                this.Services().Localize["Cancel"],
-                () => { });
+				            CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
+							if(this.Services().Account.CurrentAccount.DefaultCreditCard == creditCardId)
+							{
+								var account = this.Services().Account.CurrentAccount;
+								account.DefaultCreditCard = null;
+								this.Services().Account.UpdateSettings(account.Settings, null, account.DefaultTipPercent);								
+							}
+
+			            },
+			            this.Services().Localize["Cancel"],
+			            () => { });
                                                                   
         }
 

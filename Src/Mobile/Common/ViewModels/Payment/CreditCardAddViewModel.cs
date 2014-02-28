@@ -312,13 +312,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					success = await this.Services().Account.AddCreditCard(Data);
 				}
 				if (success)
-				{		
+				{	
 					Data.CardNumber = null;
 					Data.CCV = null;
 
 					if(ShowInstructions)
 					{
 						ShowViewModelAndRemoveFromHistory<HomeViewModel>();
+						if(!this.Services().Account.CurrentAccount.DefaultCreditCard.HasValue)
+						{
+							var account = this.Services().Account.CurrentAccount;
+							account.DefaultCreditCard = Data.CreditCardId;
+							this.Services().Account.UpdateSettings(account.Settings, Data.CreditCardId, account.DefaultTipPercent);
+						}
 					}
 					else
 					{

@@ -139,6 +139,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 								   Last4Digits = newCreditCard.Last4Digits
 								});
 							SelectedCreditCardId = newCreditCard.CreditCardId;
+							//save as default if none
+							if(!this.Services().Account.CurrentAccount.DefaultCreditCard.HasValue)
+							{
+								var account = this.Services().Account.CurrentAccount;
+								account.DefaultCreditCard = newCreditCard.CreditCardId;
+								this.Services().Account.UpdateSettings(account.Settings, newCreditCard.CreditCardId, account.DefaultTipPercent);
+							}
 						}));
 					}
 					else
