@@ -367,6 +367,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_pickupDateSubject.OnNext(null);
 			_bookingSettingsSubject.OnNext(_accountService.CurrentAccount.Settings);
 			_estimatedFareSubject.OnNext(_localize["NoFareText"]);
+			SetAddressToUserLocation();
 		}
 
 		public void ResetOrderSettings()
