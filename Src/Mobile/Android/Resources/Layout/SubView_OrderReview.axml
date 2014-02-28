@@ -36,6 +36,8 @@
                 android:text="text"
                 android:textSize="19dip"
                 android:textStyle="bold"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:id="@+id/lblName" />
         </LinearLayout>
         <LinearLayout
@@ -61,6 +63,8 @@
                     android:textColor="#000000"
                     android:text="text"
                     android:textSize="19dip"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:id="@+id/lblPhone" />
             </LinearLayout>
             <LinearLayout
@@ -82,6 +86,8 @@
                     android:textColor="#000000"
                     android:text="text"
                     android:textSize="19dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:id="@+id/lblNbPassengers" />
             </LinearLayout>
         </LinearLayout>
@@ -102,6 +108,8 @@
                 android:textColor="#000000"
                 android:text="text"
                 android:textSize="19dip"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:id="@+id/lblDate" />
         </LinearLayout>
         <LinearLayout
@@ -125,6 +133,8 @@
                     android:textColor="#000000"
                     android:text="text"
                     android:textSize="19dip"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:gravity="left|center"
                     android:id="@+id/lblVehicule" />
             </LinearLayout>
@@ -146,6 +156,8 @@
                     android:textColor="#000000"
                     android:text="text"
                     android:textSize="19dip"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:id="@+id/lblChargeType" />
             </LinearLayout>
         </LinearLayout>
@@ -171,6 +183,8 @@
                     android:textColor="#000000"
                     android:text="text"
                     android:textSize="19dip"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:id="@+id/lblApt" />
             </LinearLayout>
             <LinearLayout
@@ -191,6 +205,8 @@
                     android:textColor="#000000"
                     android:text="text"
                     android:textSize="19dip"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:id="@+id/lblRingCode" />
             </LinearLayout>
         </LinearLayout>
