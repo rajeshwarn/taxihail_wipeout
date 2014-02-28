@@ -4,6 +4,7 @@ using MonoTouch.Foundation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -98,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     _lblPlaceholder.Hidden = true;
                 }
 
-                var attributedText = new NSMutableAttributedString(value, font: Font, foregroundColor: DefaultFontColor, paragraphStyle: _paragraphStyle);
+                var attributedText = new NSMutableAttributedString(value.ToSafeString(), font: Font, foregroundColor: DefaultFontColor, paragraphStyle: _paragraphStyle);
                 base.AttributedText = attributedText;
             }
         }
