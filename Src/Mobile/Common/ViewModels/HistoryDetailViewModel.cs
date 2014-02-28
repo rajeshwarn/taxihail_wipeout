@@ -134,11 +134,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public bool HasRated
         {
             get {
-				return !Settings.RatingEnabled && _hasRated;
+				return _hasRated;
             }
             set { 
-				_hasRated = value; 
-				RaisePropertyChanged(); 
+				_hasRated = value;
 				RaisePropertyChanged(()=>ShowRateButton);  
 			}
         }
@@ -266,11 +265,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			var bookingService = this.Services().Booking;
 
-			var ratings = bookingService.GetOrderRatingAsync(OrderId);
-			var status = bookingService.GetOrderStatusAsync(OrderId);
+			var ratings = await bookingService.GetOrderRatingAsync(OrderId);
+			var status = await bookingService.GetOrderStatusAsync(OrderId);
 
-			HasRated = (await ratings).RatingScores.Any();
-			Status = await status;
+			HasRated = ratings.RatingScores.Any();
+			Status = status;
 			IsCompleted = bookingService.IsStatusCompleted(Status.IBSStatusId);
 			IsDone = bookingService.IsStatusDone(Status.IBSStatusId);
             
