@@ -296,11 +296,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (NeedsToNavigateToAddCreditCard())
 			{
-				ShowViewModel<CreditCardAddViewModel>(new { showInstructions =  true });
+				ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel>(new { showInstructions =  true });
 				return;
 			}
 
-			ShowViewModel<HomeViewModel>();
+			ShowViewModelAndRemoveFromHistory<HomeViewModel>();
 			if (LoginSucceeded != null)
 			{
 				LoginSucceeded(this, EventArgs.Empty);
