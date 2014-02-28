@@ -5,6 +5,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
     public interface ITutorialService
     {
         TutorialItem[] GetTutorialItems();
+		void DisplayTutorialToNewUser();
     }
 }
 

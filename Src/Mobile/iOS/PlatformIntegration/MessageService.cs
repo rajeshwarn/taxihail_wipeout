@@ -100,7 +100,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             return Disposable.Create (() => ShowProgressNonModal(false));
         }
 
-        public void ShowDialogActivity(Type type)
+        public void ShowDialog(Type type)
         {
             UIApplication.SharedApplication.InvokeOnMainThread(delegate {
                 _viewPresenter.Show(new MvxViewModelRequest(type, null, null, MvxRequestedBy.UserAction));

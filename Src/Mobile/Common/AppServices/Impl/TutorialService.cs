@@ -4,6 +4,8 @@ using apcurium.MK.Booking.Mobile.Data;
 using System.IO;
 using ServiceStack.Text;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -11,9 +13,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     {
 		readonly IAppSettings _settings;
 
-		public TutorialService(IAppSettings settings)
+		readonly ICacheService _cacheService;
+
+		readonly IMessageService _messageService;
+
+		public TutorialService(IAppSettings settings, 
+			ICacheService cacheService,
+			IMessageService messageService)
 		{
+			_messageService = messageService;
+			_cacheService = cacheService;
 			_settings = settings;	
+		}
+
+		public void DisplayTutorialToNewUser()
+		{
+			if(_settings.Data.TutorialEnabled
+				&& _cacheService.Get<object>("TutorialDisplayed") == null)
+			{
+				_messageService.ShowDialog(typeof(TutorialViewModel));
+				_cacheService.Set<object>("TutorialDisplayed", new object());
+			}
 		}
 
         private TutorialContent _content;
