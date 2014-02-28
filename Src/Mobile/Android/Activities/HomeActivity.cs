@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         Theme = "@style/MainTheme", 
         ScreenOrientation = ScreenOrientation.Portrait, 
         ClearTaskOnLaunch = true, 
-        WindowSoftInputMode = SoftInput.AdjustPan, 
+        WindowSoftInputMode = SoftInput.AdjustResize, 
         FinishOnTaskLaunch = true, 
         LaunchMode = LaunchMode.SingleTask
     )]
@@ -53,6 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
         private Button _bigButton;
+        private RelativeLayout _relMapLayout;
         private TouchableMap _touchMap;
         private LinearLayout _mapOverlay;
         private OrderReview _orderReview;
@@ -83,6 +84,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 dialog.Show();
                 dialog.DismissEvent += (s, e) => Finish();
             }
+
+            _relMapLayout.ViewTreeObserver.AddOnGlobalLayoutListener(new LayoutObserverForHome(_relMapLayout, _appBar));       
         }
 
         public OrderMapFragment _mapFragment; 
@@ -189,6 +192,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             SetContentView(Resource.Layout.View_Home);
             ViewModel.OnViewLoaded();
+            _relMapLayout = (RelativeLayout) FindViewById(Resource.Id.RelMapLayout);
             _bigButton = (Button) FindViewById(Resource.Id.BigButtonTransparent);
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
@@ -477,6 +481,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _mapFragment.ChangePresentation(hint);
             _appBar.ChangePresentation(hint);
             _orderOptions.ChangePresentation(hint);
+        }
+    }
+
+    public class LayoutObserverForHome : Java.Lang.Object, ViewTreeObserver.IOnGlobalLayoutListener
+    {
+        private readonly RelativeLayout _view;
+        private readonly AppBar _appBar;
+
+        public LayoutObserverForHome(RelativeLayout view, AppBar appBar)
+        {
+            _view = view;
+            _appBar = appBar;
+        }
+
+        public void OnGlobalLayout()
+        {
+            var heightDiff = _view.RootView.Height - _view.Height;
+            if (heightDiff > 100)
+            {
+                _appBar.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                _appBar.Visibility = ViewStates.Visible;
+            }
         }
     }
 }
