@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         /// <summary>
         /// put the content of on activity on a modal dialog ( type = viewmodel Type )
         /// </summary>
-        public void ShowDialogActivity(Type type)
+        public void ShowDialog(Type type)
         {
             var presenter = new MvxAndroidViewPresenter();
 			presenter.Show(new MvxViewModelRequest(type, null, null, MvxRequestedBy.UserAction));
