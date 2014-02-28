@@ -43,6 +43,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				BottomBar.CancelEdit = OrderEdit.Cancel;
 
 				LocateMe.Execute();
+
+				this.Services().ApplicationInfo.CheckVersionAsync();
 			}
 			this.Services().Vehicle.Start();
 		}
