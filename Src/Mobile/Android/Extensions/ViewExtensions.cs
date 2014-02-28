@@ -1,6 +1,7 @@
 using System.Drawing;
 using Android.Views;
 using Android.Widget;
+using Android.Graphics.Drawables;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions
 {
@@ -146,6 +147,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
             newLayout.TopMargin += y;
             thisView.LayoutParameters = newLayout;
             return thisView;
+        }
+
+        public static void SetRoundedCorners(this View view, float topLeftRadius, float topRightRadius, float bottomLeftRadius, float bottomRightRadius, Android.Graphics.Color backgroundColor)
+        {            
+            GradientDrawable sd = new GradientDrawable();
+            sd.SetColor(backgroundColor);
+            sd.SetCornerRadii(new float[] { topLeftRadius, topLeftRadius, topRightRadius, topRightRadius, bottomLeftRadius, bottomLeftRadius, bottomRightRadius, bottomRightRadius });
+            view.SetBackgroundDrawable(sd);
         }
     }
 }
