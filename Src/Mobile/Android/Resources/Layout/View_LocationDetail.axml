@@ -34,140 +34,149 @@
             android:orientation="horizontal" />
         <LinearLayout
             android:orientation="vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="5dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:gravity="center_horizontal">
-            <LinearLayout
-                android:orientation="vertical"
+            <ScrollView
                 android:layout_width="fill_parent"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical">
-                <TextView
-                    style="@style/BlackTextLabel"
-                    android:paddingBottom="6dp"
-                    android:singleLine="true"
-                    android:layout_width="fill_parent"
-                    android:text="@string/LocationDetailNameLabel"
-                    android:gravity="left"
-                    android:layout_height="wrap_content" />
-                <EditText
-                    android:id="@+id/LocationFriendlyName"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    local:MvxBind="Text FriendlyName" />
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical">
-                <TextView
-                    style="@style/BlackTextLabel"
-                    android:paddingBottom="6dp"
-                    android:layout_width="fill_parent"
-                    android:singleLine="true"
-                    android:text="@string/LocationDetailAddressLabel"
-                    android:layout_height="wrap_content" />
-                <EditText
-                    android:id="@+id/LocationAddress"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    local:MvxBind="Text BookAddress, Mode=OneWay" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                local:MvxBind="Visibility ShowRingCodeField, Converter=Visibility"
-                android:gravity="center_horizontal">
+                android:layout_height="fill_parent">
                 <LinearLayout
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="8dp"
                     android:orientation="vertical"
-                    android:layout_width="0dip"
-                    android:layout_weight="0.50"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal">
-                    <TextView
-                        style="@style/BlackTextLabel"
-                        android:paddingBottom="6dp"
-                        android:singleLine="true"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="fill_parent"
-                        android:text="@string/LocationDetailApartmentLabel"
-                        android:layout_height="wrap_content" />
-                    <EditText
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+                        <TextView
+                            style="@style/BlackTextLabel"
+                            android:paddingBottom="6dp"
+                            android:singleLine="true"
+                            android:layout_width="fill_parent"
+                            android:text="@string/LocationDetailNameLabel"
+                            android:gravity="left"
+                            android:layout_height="wrap_content" />
+                        <EditText
+                            android:id="@+id/LocationFriendlyName"
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            local:MvxBind="Text FriendlyName" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightEditTextFlat"
-                        android:lines="0"
-                        android:singleLine="true"
-                        android:ellipsize="end"
-                        local:MvxBind="Text Apartment" />
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+                        <TextView
+                            style="@style/BlackTextLabel"
+                            android:paddingBottom="6dp"
+                            android:layout_width="fill_parent"
+                            android:singleLine="true"
+                            android:text="@string/LocationDetailAddressLabel"
+                            android:layout_height="wrap_content" />
+                        <EditText
+                            android:id="@+id/LocationAddress"
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            local:MvxBind="Text BookAddress, Mode=OneWay" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        local:MvxBind="Visibility ShowRingCodeField, Converter=Visibility"
+                        android:gravity="center_horizontal">
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="0dip"
+                            android:layout_weight="0.50"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal">
+                            <TextView
+                                style="@style/BlackTextLabel"
+                                android:paddingBottom="6dp"
+                                android:singleLine="true"
+                                android:layout_width="fill_parent"
+                                android:text="@string/LocationDetailApartmentLabel"
+                                android:layout_height="wrap_content" />
+                            <EditText
+                                android:layout_width="fill_parent"
+                                android:layout_height="@dimen/HeightEditTextFlat"
+                                android:lines="0"
+                                android:singleLine="true"
+                                android:ellipsize="end"
+                                local:MvxBind="Text Apartment" />
+                        </LinearLayout>
+                        <View
+                            android:layout_height="1dip"
+                            android:layout_width="0dip"
+                            android:layout_weight=".05" />
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="0dip"
+                            android:layout_weight="0.45"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal">
+                            <TextView
+                                style="@style/BlackTextLabel"
+                                android:paddingBottom="6dp"
+                                android:singleLine="true"
+                                android:layout_width="fill_parent"
+                                android:text="@string/LocationDetailRingCodeLabel"
+                                android:layout_height="wrap_content" />
+                            <EditText
+                                android:id="@+id/RingCode"
+                                android:layout_width="fill_parent"
+                                android:layout_height="@dimen/HeightEditTextFlat"
+                                android:lines="0"
+                                android:singleLine="true"
+                                android:ellipsize="end"
+                                android:inputType="text"
+                                local:MvxBind="Text RingCode" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginTop="13dp"
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal">
+                        <Button
+                            android:id="@+id/LocationSaveBtn"
+                            style="@style/ButtonActionBlackStyle"
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/HeightButton"
+                            android:text="@string/Save"
+                            local:MvxBind="Click SaveAddress" />
+                        <Button
+                            android:id="@+id/LocationBookBtn"
+                            style="@style/ButtonActionGreenStyle"
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/HeightButton"
+                            android:text="@string/Rebook"
+                            local:MvxBind="Click RebookOrder;Visibility RebookIsAvailable, Converter=Visibility" />
+                        <Button
+                            android:id="@+id/LocationDeleteBtn"
+                            style="@style/ButtonActionRedStyle"
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/HeightButton"
+                            android:text="@string/Delete"
+                            local:MvxBind="Click DeleteAddress;Visibility IsNew, Converter=InvertedVisibility" />
+                    </LinearLayout>
                 </LinearLayout>
-                <View
-                    android:layout_height="1dip"
-                    android:layout_width="0dip"
-                    android:layout_weight=".05" />
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="0dip"
-                    android:layout_weight="0.45"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal">
-                    <TextView
-                        style="@style/BlackTextLabel"
-                        android:paddingBottom="6dp"
-                        android:singleLine="true"
-                        android:layout_width="fill_parent"
-                        android:text="@string/LocationDetailRingCodeLabel"
-                        android:layout_height="wrap_content" />
-                    <EditText
-                        android:id="@+id/RingCode"
-                        android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightEditTextFlat"
-                        android:lines="0"
-                        android:singleLine="true"
-                        android:ellipsize="end"
-                        android:inputType="text"
-                        local:MvxBind="Text RingCode" />
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_marginTop="13dp"
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal">
-                <Button
-                    android:id="@+id/LocationSaveBtn"
-                    style="@style/ButtonActionBlackStyle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/HeightButton"
-                    android:text="@string/Save"
-                    local:MvxBind="Click SaveAddress" />
-                <Button
-                    android:id="@+id/LocationBookBtn"
-                    style="@style/ButtonActionGreenStyle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/HeightButton"
-                    android:text="@string/Rebook"
-                    local:MvxBind="Click RebookOrder;Visibility RebookIsAvailable, Converter=Visibility" />
-                <Button
-                    android:id="@+id/LocationDeleteBtn"
-                    style="@style/ButtonActionRedStyle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/HeightButton"
-                    android:text="@string/Delete"
-                    local:MvxBind="Click DeleteAddress;Visibility IsNew, Converter=InvertedVisibility" />
-            </LinearLayout>
+            </ScrollView>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

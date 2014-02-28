@@ -5,8 +5,11 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-	[Activity(Label = "UpdatePasswordActivity", Theme = "@style/MainTheme",
-        ScreenOrientation = ScreenOrientation.Portrait)]
+	[Activity(Label = "UpdatePasswordActivity", 
+        Theme = "@style/MainTheme",
+        ScreenOrientation = ScreenOrientation.Portrait,
+        WindowSoftInputMode = Android.Views.SoftInput.AdjustResize
+    )]
     public class UpdatePasswordActivity : BaseBindingActivity<UpdatePasswordViewModel>
     {
         protected override void OnViewModelSet()
