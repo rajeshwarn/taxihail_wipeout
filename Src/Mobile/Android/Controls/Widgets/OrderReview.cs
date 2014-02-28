@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _lblChargeType = (TextView)FindViewById<TextView>(Resource.Id.lblChargeType);
                 _lblApt = (TextView)FindViewById<TextView>(Resource.Id.lblApt);
                 _lblRingCode = (TextView)FindViewById<TextView>(Resource.Id.lblRingCode);
+                _editNote = FindViewById<EditText>(Resource.Id.txtNotes);
 
                 InitializeBinding();
             });              
@@ -45,6 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private TextView _lblChargeType;
         private TextView _lblApt;
         private TextView _lblRingCode;
+        private EditText _editNote;
 
         private OrderReviewViewModel ViewModel { get { return (OrderReviewViewModel)DataContext; } }
 
@@ -83,6 +85,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(_lblRingCode)
                 .For(v => v.Text)
                 .To(vm => vm.RingCode);
+
+            set.Bind(_editNote)
+                .For(v => v.Text)
+                .To(vm => vm.Note);
 
             if (!_settings.Data.ShowPassengerName)
             {
