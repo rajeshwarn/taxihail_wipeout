@@ -99,6 +99,15 @@ namespace apcurium.MK.Booking.Mobile.Settings
 						               : item.Key;
 
 					var propertyType = typeOfSettings.GetProperty(propertyName);
+
+					if(propertyType == null)
+					{
+#if DEBUG
+						_logger.LogMessage("property not found for {0}", item.Key);
+#endif
+						continue;
+					}
+
 					var targetType = IsNullableType(propertyType.PropertyType) ? 
 					                 		Nullable.GetUnderlyingType(propertyType.PropertyType) 
 					                 		: propertyType.PropertyType;
