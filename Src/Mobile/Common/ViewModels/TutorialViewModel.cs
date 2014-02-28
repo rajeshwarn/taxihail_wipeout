@@ -7,7 +7,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	public class TutorialViewModel : BaseViewModel
 	{
 		private TutorialItemModel[] _tutorialItemsList;
-
 		public TutorialItemModel[] TutorialItemsList
 		{
 			get { return _tutorialItemsList; }
@@ -20,15 +19,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public override void Start()
 		{
-            
 			TutorialItemsList = this.Services().Tutorial
 				.GetTutorialItems()
 				.Select(item => new TutorialItemModel
 					{ 
-						TopText = item.TopText,
-						TopTitle = item.TopTitle,
-						BottomText = item.BottomText,
-						BottomTitle = item.BottomTitle,
+						Text = item.Text,
+						Title = item.Title,
 						ImageUri = item.ImageUri
 					}).ToArray(); 
 		}
