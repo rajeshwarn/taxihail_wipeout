@@ -5,6 +5,7 @@ using Android.Util;
 using Android.Views;
 using Android.Graphics;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -30,6 +31,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             SelectedVehicleTypeLabel = (TextView)layout.FindViewById(Resource.Id.vehicleTypeLabel);
             EstimatedFareLabel = (TextView)layout.FindViewById(Resource.Id.estimateFareLabel);
             HorizontalDivider = (View)layout.FindViewById(Resource.Id.HorizontalDivider);
+
+            this.SetRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
         }
 
         private bool _showEstimate;

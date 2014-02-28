@@ -2,6 +2,7 @@ using System.Drawing;
 using Android.Views;
 using Android.Widget;
 using Android.Graphics.Drawables;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions
 {
@@ -151,9 +152,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
 
         public static void SetRoundedCorners(this View view, float topLeftRadius, float topRightRadius, float bottomLeftRadius, float bottomRightRadius, Android.Graphics.Color backgroundColor)
         {            
-            GradientDrawable sd = new GradientDrawable();
+            var sd = new GradientDrawable();
             sd.SetColor(backgroundColor);
-            sd.SetCornerRadii(new float[] { topLeftRadius, topLeftRadius, topRightRadius, topRightRadius, bottomLeftRadius, bottomLeftRadius, bottomRightRadius, bottomRightRadius });
+            sd.SetCornerRadii(new float[] { topLeftRadius.ToPixels(), topLeftRadius.ToPixels(), 
+                                            topRightRadius.ToPixels(), topRightRadius.ToPixels(), 
+                                            bottomLeftRadius.ToPixels(), bottomLeftRadius.ToPixels(), 
+                                            bottomRightRadius.ToPixels(), bottomRightRadius.ToPixels() 
+            });
             view.SetBackgroundDrawable(sd);
         }
     }

@@ -592,7 +592,6 @@
     <AndroidResource Include="Resources\Drawable\tutorial_root_background_insets.xml" />
     <Compile Include="Helpers\PlatformHelper.cs" />
     <AndroidResource Include="Resources\values-sw600dp\Themes.xml" />
-    <AndroidResource Include="Resources\Drawable\estimate_background.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
