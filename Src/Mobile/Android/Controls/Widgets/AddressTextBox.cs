@@ -67,14 +67,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 return _isLoadingAddress;
             }
             set{
-                _isLoadingAddress = value;
-                if (value && !IsReadOnly)
+                if (value != _isLoadingAddress)
                 {
-                    ShowLoadingWheel();
-                }
-                else
-                {
-                    HideLoadingWheel();
+                    _isLoadingAddress = value;
+
+                    if (_isLoadingAddress && !IsReadOnly)
+                    {
+                        ShowLoadingWheel();
+                    }
+                    else
+                    {
+                        HideLoadingWheel();
+                    }
                 }
             }
         }
