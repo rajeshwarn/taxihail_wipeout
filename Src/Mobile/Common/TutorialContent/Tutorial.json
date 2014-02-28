@@ -2,64 +2,50 @@
   "Items": [
     {
       "Position": "1",
-      "TopTitle": "Welcome!",
-      "TopText": "Here's how to book a ride with just a couple of taps",
-      "BottomTitle": "",
-      "BottomText": "Start by selecting your current position" ,
+      "Title": "Welcome!",
+      "Text": "Here's how to book a ride with just a couple of taps",
       "ImageUri":"tutorial_screen01"
     }
     ,
     {
       "Position": "2",
-      "TopTitle": "Refine Address",
-      "TopText": "Tap on the hashtag to refine your address number.",
-      "BottomTitle": "",
-      "BottomText": "Tap on the hashtag to refine your address number." ,
+      "Title": "Refine Address",
+      "Text": "Tap on the hashtag to refine your address number.",
       "ImageUri":"tutorial_screen02"
     }
     ,
     {
       "Position": "3",
-      "TopTitle": "Cards on File",
-      "TopText": "Use multiple credit cards for your account.",
-      "BottomTitle": "",
-      "BottomText": "Adding a card is as easy as 1-2-3." ,
+      "Title": "Cards on File",
+      "Text": "Use multiple credit cards for your account.",
       "ImageUri":"tutorial_screen03"
     }                   
     ,
     {
       "Position": "4",
-      "TopTitle": "Future Booking",
-      "TopText": "Book in the future.",
-      "BottomTitle": "",
-      "BottomText": "Book in the future." ,
+      "Title": "Future Booking",
+      "Text": "Book in the future.",
       "ImageUri":"tutorial_screen04"
     }                   
     ,
     {
       "Position": "5",
-      "TopTitle": "Locations",
-      "TopText": "Add locations",
-      "BottomTitle": "",
-      "BottomText": "Add locations" ,
+      "Title": "Locations",
+      "Text": "Add locations",
       "ImageUri":"tutorial_screen05"
     }                   
     ,
     {
       "Position": "6",
-      "TopTitle": "History",
-      "TopText": "Remember all your rides past, present and future with your history list.",
-      "BottomTitle": "",
-      "BottomText": "The history list is useful." ,
+      "Title": "History",
+      "Text": "Remember all your rides past, present and future with your history list.",
       "ImageUri":"tutorial_screen06"
     }                   
     ,
     {
       "Position": "7",
-      "TopTitle": "Edit Details",
-      "TopText": "Edit your details.",
-      "BottomTitle": "",
-      "BottomText": "Edit your details." ,
+      "Title": "Edit Details",
+      "Text": "Edit your details.",
       "ImageUri":"tutorial_screen07"
     }                   
   ]

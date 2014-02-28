@@ -148,7 +148,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     RemoveView(page.ContentView);
                     page.RootView = new View(Context);
 
-
                     AddView(page.RootView, i);
                     page.RootView.Layout(page.ContentView.Left, 0,
                         page.ContentView.Left + page.ContentView.MeasuredWidth, page.ContentView.MeasuredHeight);
@@ -175,12 +174,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
                 page.ContentView = inflater.Inflate(Resource.Layout.TutorialListItem, null);
 
-                page.ContentView.FindViewById<TextView>(Resource.Id.TutorialTopText).Text = page.ItemModel.TopText;
-                page.ContentView.FindViewById<TextView>(Resource.Id.TutorialBottomText).Text = page.ItemModel.BottomText;
-                page.ContentView.FindViewById<TextView>(Resource.Id.TutorialTopTitleText).Text = page.ItemModel.TopTitle;
-                page.ContentView.FindViewById<TextView>(Resource.Id.TutorialBottomTitleText).Text =
-                    page.ItemModel.BottomTitle;
-
+                page.ContentView.FindViewById<TextView>(Resource.Id.TutorialText).Text = page.ItemModel.Text;
+                page.ContentView.FindViewById<TextView>(Resource.Id.TutorialTitle).Text = page.ItemModel.Title;
                 var resource = Resources.GetIdentifier(page.ItemModel.ImageUri, "drawable", Context.PackageName);
 
                 //Decode image size
@@ -194,7 +189,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 page.ContentView.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageBitmap(bmp);
                 page.ContentView.FindViewById<ImageView>(Resource.Id.TutorialImage).Invalidate();
 
-
                 int i = IndexOfChild(page.RootView);
                 RemoveView(page.RootView);
                 AddView(page.ContentView, i);
@@ -205,25 +199,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 page.RootView = null;
             }
         }
-
-//        private void LayoutItem(int index)
-//        {
-//            var page = _pages[index];
-//            if (page.ContentView != null)
-//            {
-//                page.ContentView.Layout(page.RootView.Left, 0, page.RootView.Left + page.RootView.MeasuredWidth, page.RootView.MeasuredHeight);
-//            }
-//            //page.ContentView.Layout( page.RootView.Left, 0,page.RootView.Left+page.RootView.MeasuredWidth, page.RootView.MeasuredWidth);
-//            //            View child = _pages[i].RootView;
-//            //            
-//            //            if ((child != null) && (child.Visibilitpage.ContentView.Layout( page.RootView.Left, 0,page.RootView.Left+page.RootView.MeasuredWidth, page.RootView.MeasuredWidth);y != ViewStates.Gone))
-//            //            {
-//            //                int childWidth = child.MeasuredWidth;
-//            //                child.Layout(childLeft, 0, childLeft + childWidth, child.MeasuredHeight);
-//            //                childLeft += childWidth;
-//            //            }
-//            
-//        }
 
         private void LoadItems()
         {
@@ -240,11 +215,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _pages.Add(page);
                 AddView(page.RootView);
             }
+
             LoadItem(0);
             PostDelayed(() => LoadItem(1), 200);
             _mScroller = new Scroller(Context);
 
-            ViewConfiguration configuration = ViewConfiguration.Get(Context);
+            var configuration = ViewConfiguration.Get(Context);
             _mTouchSlop = configuration.ScaledTouchSlop;
             _mMaximumVelocity = configuration.ScaledMaximumFlingVelocity;
         }
@@ -276,66 +252,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
 
-
-            int width = MeasureSpec.GetSize(widthMeasureSpec);
-            MeasureSpecMode widthMode = MeasureSpec.GetMode(widthMeasureSpec);
+            var widthMode = MeasureSpec.GetMode(widthMeasureSpec);
             if (widthMode != MeasureSpecMode.Exactly)
             {
                 //    throw new Exception("ViewSwitcher can only be used in EXACTLY mode.");
             }
 
-
-            MeasureSpecMode heightMode = MeasureSpec.GetMode(heightMeasureSpec);
+            var heightMode = MeasureSpec.GetMode(heightMeasureSpec);
             if (heightMode != MeasureSpecMode.Exactly)
             {
                 //  throw new Exception("ViewSwitcher can only be used in EXACTLY mode.");
             }
 
-
             // The children are given the same width and height as the workspace
-            int count = ChildCount;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < ChildCount; i++)
             {
                 GetChildAt(i).Measure(widthMeasureSpec, heightMeasureSpec);
             }
-
-
+                
             if (_mFirstLayout)
             {
-                ScrollTo(_mCurrentScreen*width, 0);
+                int width = MeasureSpec.GetSize(widthMeasureSpec);
+                ScrollTo(_mCurrentScreen * width, 0);
                 _mFirstLayout = false;
             }
-
-
-            //else if (width != mLastSeenLayoutWidth)
-            //{
-            // Width has changed
-            /*
-                 * Recalculate the width and scroll to the right position to be sure we're in the right
-                 * place in the event that we had a rotation that didn't result in an activity restart
-                 * (code by aveyD). Without this you can end up between two pages after a rotation.
-                 */
-            /*var display = ((IWindowManager) Context.GetSystemService(Context.WindowService)).DefaultDisplay;
-                int displayWidth = display.Width;
-
-
-                mNextScreen = Math.Max(0, Math.Min(getCurrentScreen(), ChildCount - 1));
-                int newX = mNextScreen*displayWidth;
-                int delta = newX - ScrollX;
-
-
-                mScroller.StartScroll(ScrollX, 0, delta, 0, 0);
-            }*/
         }
 
-        protected override void OnLayout(bool changed, int l, int t, int r,
-            int b)
+        protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
-            int childLeft = 0;
-            int count = ChildCount;
+            var childLeft = 0;
 
-
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < ChildCount; i++)
             {
                 View child = GetChildAt(i);
                 if (child.Visibility != ViewStates.Gone)
@@ -356,9 +303,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
              * let the children, but once a scroll registers for y-wise scrolling, let the children
              * handle it exclusively.
              */
-            MotionEventActions action = ev.Action;
-            bool intercept = false;
-
+            var action = ev.Action;
+            var intercept = false;
 
             switch (action)
             {
