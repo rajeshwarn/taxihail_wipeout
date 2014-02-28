@@ -8,8 +8,11 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
-	[Activity(Label = "RideSettingsActivity", Theme = "@style/MainTheme",
-        WindowSoftInputMode = SoftInput.AdjustPan, ScreenOrientation = ScreenOrientation.Portrait)]
+	[Activity(Label = "RideSettingsActivity", 
+        Theme = "@style/MainTheme",
+        WindowSoftInputMode = SoftInput.AdjustResize, 
+        ScreenOrientation = ScreenOrientation.Portrait
+    )]
     public class RideSettingsActivity : BaseBindingActivity<RideSettingsViewModel>
     {
         protected override void OnViewModelSet()
