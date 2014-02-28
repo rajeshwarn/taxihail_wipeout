@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             EstimatedFareLabel = (TextView)layout.FindViewById(Resource.Id.estimateFareLabel);
             HorizontalDivider = (View)layout.FindViewById(Resource.Id.HorizontalDivider);
 
-            this.SetRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
+            this.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
         }
 
         private bool _showEstimate;

@@ -150,7 +150,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
             return thisView;
         }
 
-        public static void SetRoundedCorners(this View view, float topLeftRadius, float topRightRadius, float bottomLeftRadius, float bottomRightRadius, Android.Graphics.Color backgroundColor)
+        public static void SetBackgroundColorWithRoundedCorners(this View view, float topLeftRadius, float topRightRadius, float bottomLeftRadius, float bottomRightRadius, Android.Graphics.Color backgroundColor)
         {            
             var sd = new GradientDrawable();
             sd.SetColor(backgroundColor);
