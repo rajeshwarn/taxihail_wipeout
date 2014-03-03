@@ -156,7 +156,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
 
 
-        public bool SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId)
+        public void SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId)
         {
             var success = false;
             UseService(service =>
@@ -165,7 +165,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 //var resultat = service.SendMsg_3dPartyPaymentNotification(UserNameApp, PasswordApp, vehicleNumber, true, ibsOrderId, message);
                 //success = resultat == 0;
                 var result = service.SendDriverMsg(UserNameApp, PasswordApp, vehicleNumber, message);
-                success = result == 1;
+                success = result == 0;
 
             });
             return success;
@@ -182,6 +182,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                    result  = service.SaveExtrPayment_2(UserNameApp, PasswordApp, orderId, transactionId, authorizationCode, cardToken, type, provider, 0, 0, 0, 0,
                     ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name, phone, email, os, userAgent);
                    success = result == 0;
+                   
                    //*********************************Keep this code.  MK is testing this method as soon as it's ready, 
                    //var auth = new TPaymentAuthorization3dParty
                    //{
