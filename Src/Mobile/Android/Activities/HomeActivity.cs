@@ -48,8 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         WindowSoftInputMode = SoftInput.AdjustPan, 
         FinishOnTaskLaunch = true, 
         LaunchMode = LaunchMode.SingleTask
-    )]
-   
+    )]   
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
         private Button _bigButton;

@@ -48,6 +48,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             CenterMap ();
 
+			_orderWorkflowService.SetAddressToUserLocation();
 			_orderWorkflowService.PrepareForNewOrder();
         }
 
