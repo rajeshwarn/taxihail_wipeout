@@ -164,7 +164,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 //*********************************Keep this code.  They are testing this method 
                 //var resultat = service.SendMsg_3dPartyPaymentNotification(UserNameApp, PasswordApp, vehicleNumber, true, ibsOrderId, message);
                 //success = resultat == 0;
-                var result = service.SendDriverMsg_2(UserNameApp, PasswordApp, vehicleNumber, message);
+                var result = service.SendDriverMsg(UserNameApp, PasswordApp, vehicleNumber, message);
                 success = result == 1;
 
             });
