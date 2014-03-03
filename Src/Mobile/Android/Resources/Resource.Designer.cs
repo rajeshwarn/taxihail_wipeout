@@ -4651,6 +4651,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0500cc
 			public const int SettingsViewTitle = 2131034316;
 			
+			// aapt resource value: 0x7f050217
+			public const int ShowCardIO = 2131034647;
+			
 			// aapt resource value: 0x7f05019c
 			public const int SignIn = 2131034524;
 			

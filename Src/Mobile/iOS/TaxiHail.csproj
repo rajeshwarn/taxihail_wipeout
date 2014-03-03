@@ -260,6 +260,9 @@
     <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Plugins.WebBrowser.Touch.dll</HintPath>
     </Reference>
+    <Reference Include="CardIO">
+      <HintPath>..\Libraries\Monotouch\CardIO.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
