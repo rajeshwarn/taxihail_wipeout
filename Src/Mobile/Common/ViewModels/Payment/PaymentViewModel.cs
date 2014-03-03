@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			_palExpressCheckoutService = palExpressCheckoutService;
 		}
 
-		public async void Init(string order, string orderStatus)
+		public void Init(string order, string orderStatus)
         {
 			this.Services().Payment.GetPaymentSettings();
 
@@ -47,11 +47,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             PaymentPreferences.TipListDisabled = false;
 
 			InitAmounts(Order);
+        }
+
+		public override async void OnViewStarted(bool firstTime)
+		{
+			base.OnViewStarted(firstTime);
 
 			//refresh from the server
 			var orderFromServer = await _accountService.GetHistoryOrderAsync(Order.Id);
 			InitAmounts(orderFromServer);
-        }
+		}
 
 		void InitAmounts(Order order)
 		{
