@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         Theme = "@style/MainTheme", 
         ScreenOrientation = ScreenOrientation.Portrait, 
         ClearTaskOnLaunch = true, 
-        WindowSoftInputMode = SoftInput.AdjustResize, 
+        WindowSoftInputMode = SoftInput.AdjustPan, 
         FinishOnTaskLaunch = true, 
         LaunchMode = LaunchMode.SingleTask
     )]
