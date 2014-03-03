@@ -105,6 +105,7 @@
                     android:orientation="horizontal"
                     android:layout_marginBottom="8dp">
                     <apcurium.mk.booking.mobile.client.controls.EditTextLeftImage
+                        android:id="@+id/CreditCardNumberEditText"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_weight="0.8"
@@ -168,12 +169,12 @@
                 </LinearLayout>
                 <Button
                     style="@style/ButtonActionGrayStyle"
-                    android:id="@+id/SaveSettingsButton"
+                    android:id="@+id/ScanCreditCardButton"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
                     android:singleLine="true"
                     android:lines="1"
-                    android:text="@string/ShowCardIO"
+                    android:text="@string/ScanCreditCard"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp" />
                 <Button
