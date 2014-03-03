@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Map.MapType = GoogleMap.MapTypeNormal;
             Map.UiSettings.CompassEnabled = false;
             Map.UiSettings.ZoomControlsEnabled = false;
-            Map.MoveCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(latitude, longitude) , 11f));
+            Map.MoveCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(latitude, longitude) , 12f));
 
             Surface = new TouchableWrapper(Activity);
             Surface.AddView(mOriginalContentView);
