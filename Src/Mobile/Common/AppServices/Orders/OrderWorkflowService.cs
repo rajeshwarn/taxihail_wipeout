@@ -240,8 +240,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_bookingSettingsSubject.OnNext(bookingSettings);
 		}
 
-		public void SetPickupAddress(Address address)
+		public async Task SetPickupAptAndRingCode(string apt, string ringCode)
 		{
+			var address = await _pickupAddressSubject.Take(1).ToTask();
+			address.Apartment = apt;
+			address.RingCode = ringCode;
 			_pickupAddressSubject.OnNext(address);
 		}
 
