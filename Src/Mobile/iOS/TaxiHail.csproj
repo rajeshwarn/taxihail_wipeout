@@ -499,6 +499,7 @@
     <Compile Include="Controls\Message\LoadingOverlay.cs" />
     <Compile Include="Controls\Message\LoadingOverlayView.cs" />
     <Compile Include="Extensions\UITextViewExtensions.cs" />
+    <Compile Include="Controls\Delegate\CardScannerDelegate.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -764,6 +765,7 @@
     <Folder Include="Views\Order\" />
     <Folder Include="Views\AddressPicker\" />
     <Folder Include="Controls\Message\" />
+    <Folder Include="Controls\Delegate\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Style\Theme.xml">

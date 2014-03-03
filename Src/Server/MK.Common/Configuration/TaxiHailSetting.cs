@@ -21,6 +21,7 @@ namespace MK.Common.Configuration
             ShowPassengerPhone = true;
             ShowRingCodeField = true;
             TutorialEnabled = true;
+            CardIOToken = "af444ebbc4844f57999c52cc82d50478";
             CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink";
 		}
 
@@ -155,6 +156,9 @@ namespace MK.Common.Configuration
         public bool PushNotificationsEnabled { get; private set; }
         [Display(Name = "Hide Send Receipt", Description="Hides the send receipt button in the app")]
         public bool HideSendReceipt { get; private set; }
+
+        [Display(Name = "Card.IO Token", Description="Token for the Card.IO API (If empty, hides the button)")]
+        public string CardIOToken { get; private set; }
 
         [Display(Name = "Company Settings", Description = "List of settings that can be modified by the taxi company")]
         public string CompanySettings { get; private set; }

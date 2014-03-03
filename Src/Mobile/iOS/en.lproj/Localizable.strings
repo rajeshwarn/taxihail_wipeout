@@ -464,3 +464,4 @@
 "CreditCardRemoveErrorTitle"="Cannot remove credit card";
 "CreditCardRemoveErrorMessage"="You need to have at least one credit card in your account. If you want to remove a card, you will need to add another one before.";
 "ShowCardIO"="Scan Credit Card";
+"ScanCreditCard"="Scan";
