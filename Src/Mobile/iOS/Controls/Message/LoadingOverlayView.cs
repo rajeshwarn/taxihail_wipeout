@@ -89,14 +89,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             if (currentProgress < 0.8f)
             {
-                _progressView.Progress += slowestSpeed * 5.5f;
+                _progressView.Progress += slowestSpeed * 10f;
                 return;
             }
 
             if (currentProgress > 0.8f)
             {
                 var nextProgress = currentProgress + slowestSpeed;
-                if (nextProgress >= 1.0f)
+                if (nextProgress >= 0.95f)
                 {
                     nextProgress = 0.95f;
                 }
