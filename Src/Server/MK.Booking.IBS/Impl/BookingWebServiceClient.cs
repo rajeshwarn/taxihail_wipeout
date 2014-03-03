@@ -11,6 +11,7 @@ using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using ServiceStack.Text;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 #endregion
 
@@ -156,7 +157,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
 
 
-        public void SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId)
+        public bool SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId)
         {
             var success = false;
             UseService(service =>
@@ -217,17 +218,24 @@ namespace apcurium.MK.Booking.IBS.Impl
             return Convert.ToInt32(dollarAmout * 100);
         }
 
+        private string CleanPhone(string phone)
+        {
+            var regEx = new Regex(@"\D");
+            return regEx.Replace(phone, "");
+        }
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers,
             int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup,
             IbsAddress dropoff, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
+
+            
             var order = new TBookOrder_7
             {
                 ServiceProviderID = providerId.GetValueOrDefault(),
                 AccountID = accountId,
                 Customer = passengerName,
-                Phone = phone,
+                Phone = CleanPhone( phone ),
                 Fare = (double)fare.AmountExclTax,
                 VAT = (double)fare.TaxAmount
             };
