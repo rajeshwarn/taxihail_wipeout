@@ -44,10 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     [Activity(Label = "Home", 
         Theme = "@style/MainTheme", 
         ScreenOrientation = ScreenOrientation.Portrait, 
-        ClearTaskOnLaunch = true, 
-        WindowSoftInputMode = SoftInput.AdjustPan, 
-        FinishOnTaskLaunch = true, 
-        LaunchMode = LaunchMode.SingleTask
+        WindowSoftInputMode = SoftInput.AdjustPan
     )]   
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {

@@ -193,6 +193,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					Settings = order.Settings
 				};
 
+				PrepareForNewOrder();
+
 				// TODO: Refactor so we don't have to return two distinct objects
 				return Tuple.Create(orderCreated, orderStatus);
 			}

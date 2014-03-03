@@ -46,9 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			StatusInfoText = string.Format(this.Services().Localize["StatusStatusLabel"], this.Services().Localize["LoadingMessage"]);
 
-            CenterMap ();
-
-			_orderWorkflowService.PrepareForNewOrder();
+            CenterMap ();			
         }
 
 		public override void OnViewStarted (bool firstStart = false)
@@ -433,7 +431,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							}
                             if (isSuccess) 
                             {
-                                this.Services().Booking.ClearLastOrder();
+                                this.Services().Booking.ClearLastOrder();                                
 								ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser =  true });
                             } 
                             else 
