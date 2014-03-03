@@ -364,6 +364,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public void PrepareForNewOrder()
 		{
 			_noteToDriverSubject.OnNext(string.Empty);
+			_pickupAddressSubject.OnNext(new Address());
 			_destinationAddressSubject.OnNext(new Address());
 			_addressSelectionModeSubject.OnNext(AddressSelectionMode.PickupSelection);
 			_pickupDateSubject.OnNext(null);
