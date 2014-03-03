@@ -70,6 +70,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.IBS.Test", "MK.B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrainTreeEncryption.Library.net", "..\Mobile\Libraries\SourceCode\BrainTreeEncryption.Library\BrainTreeEncryption.Library.net.csproj", "{62593C52-2D25-4345-ACDD-27124CDEA6DB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplicationTool", "ReplicationTool\ReplicationTool.csproj", "{EB06B9A0-4289-4A58-8563-5BBE41FDE68E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -341,6 +343,16 @@ Global
 		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Release|x86.ActiveCfg = Release|Any CPU
+		{EB06B9A0-4289-4A58-8563-5BBE41FDE68E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB06B9A0-4289-4A58-8563-5BBE41FDE68E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB06B9A0-4289-4A58-8563-5BBE41FDE68E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EB06B9A0-4289-4A58-8563-5BBE41FDE68E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EB06B9A0-4289-4A58-8563-5BBE41FDE68E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EB06B9A0-4289-4A58-8563-5BBE41FDE68E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB06B9A0-4289-4A58-8563-5BBE41FDE68E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB06B9A0-4289-4A58-8563-5BBE41FDE68E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EB06B9A0-4289-4A58-8563-5BBE41FDE68E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EB06B9A0-4289-4A58-8563-5BBE41FDE68E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -369,6 +381,7 @@ Global
 		{51717880-85AA-4BCB-AE92-8EDF27E37DFB} = {9B51688D-9CE2-4AF9-8859-1FA3ABF80CBF}
 		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454} = {9B51688D-9CE2-4AF9-8859-1FA3ABF80CBF}
 		{78A8B275-4004-4586-893B-607EC1F98F26} = {9B51688D-9CE2-4AF9-8859-1FA3ABF80CBF}
+		{EB06B9A0-4289-4A58-8563-5BBE41FDE68E} = {9B51688D-9CE2-4AF9-8859-1FA3ABF80CBF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\TransientFaultHandling.Core.5.0.1118.2\lib\NET35;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\lib\NET4;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\DesignTime;packages\Unity.2.1.505.2\lib\NET35

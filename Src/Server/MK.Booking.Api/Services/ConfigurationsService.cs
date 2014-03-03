@@ -47,12 +47,15 @@ namespace apcurium.MK.Booking.Api.Services
                 };
             }
 
+            
+
             var allKeys = _configManager.GetSettings();
 
             var result = allKeys.Where(k => returnAllKeys
                                             || keys.Contains(k.Key)
                                             || k.Key.StartsWith("Client.")
-                                            || k.Key.StartsWith("GeoLoc."))
+                                            || k.Key.StartsWith("GeoLoc.")
+                                            || k.Key.StartsWith("AvailableVehicles."))
                 .ToDictionary(s => s.Key, s => s.Value);
 
             return result;
