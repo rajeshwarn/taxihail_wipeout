@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly ISubject<AvailableVehicle[]> _availableVehiclesSubject = new BehaviorSubject<AvailableVehicle[]>(new AvailableVehicle[0]);
 
 		private bool IsStarted { get; set; }
-		private Address PickupAddress { get; set; }
+		private Address AroundLocation { get; set; }
 
 		protected void Observe<T>(IObservable<T> observable, Action<T> onNext)
 		{
@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 
 			_orderWorkflowService = TinyIoCContainer.Current.Resolve<IOrderWorkflowService>();
-			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
+			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => AroundLocation = address);
 
 			IsStarted = true;
 
@@ -47,12 +47,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			do
 			{
-				if(PickupAddress != null && PickupAddress.Latitude != 0 && PickupAddress.Longitude != 0)
+				if(AroundLocation != null && AroundLocation.Latitude != 0 && AroundLocation.Longitude != 0)
 				{
 					try
 					{
 					    var availableVehicles = await UseServiceClientAsync<IVehicleClient, AvailableVehicle[]>(service => 
-							service.GetAvailableVehiclesAsync(PickupAddress.Latitude, PickupAddress.Longitude)
+							service.GetAvailableVehiclesAsync(AroundLocation.Latitude, AroundLocation.Longitude)
                         );
 						_availableVehiclesSubject.OnNext(availableVehicles);
 					}
