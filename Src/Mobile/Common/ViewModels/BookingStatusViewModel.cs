@@ -325,9 +325,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			var setting = this.Services().Payment.GetPaymentSettings();
             var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-
-            var isPaired = this.Services().Booking.IsPaired(Order.Id);
-			IsUnpairButtonVisible = IsCmtRideLinq && isPaired;
+                       
+            IsUnpairButtonVisible = IsCmtRideLinq && this.Services().Booking.IsPaired(Order.Id);
 
 			IsPayButtonVisible =  (statusId == VehicleStatuses.Common.Done
 								||statusId == VehicleStatuses.Common.Loaded)
