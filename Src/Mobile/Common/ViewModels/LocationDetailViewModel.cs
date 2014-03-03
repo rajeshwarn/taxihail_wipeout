@@ -211,7 +211,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	                 var account = this.Services().Account.CurrentAccount;
 	                 order.Settings = account.Settings;
 					 _orderWorkflowService.Rebook(order);
-					 ShowViewModel<HomeViewModel>();
+					 ShowViewModel<HomeViewModel>(new { locateUser =  false });
 				});
 			}
 		}

@@ -48,7 +48,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             CenterMap ();
 
-			_orderWorkflowService.SetAddressToUserLocation();
 			_orderWorkflowService.PrepareForNewOrder();
         }
 
@@ -364,7 +363,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					this.Services().Booking.ClearLastOrder();
 		                        _waitingToNavigateAfterTimeOut = true;
-								ShowViewModel<HomeViewModel>();
+								ShowViewModel<HomeViewModel>(new { locateUser =  true });
 								Close(this);
                     }));
             }
@@ -405,7 +404,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Localize["YesButton"], 
                     () => { 
                         this.Services().Booking.ClearLastOrder();
-						ShowViewModel<HomeViewModel> ();
+						ShowViewModel<HomeViewModel> (new { locateUser =  true });
                     },
                     this.Services().Localize["NoButton"], NoAction));
             }
@@ -435,7 +434,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             if (isSuccess) 
                             {
                                 this.Services().Booking.ClearLastOrder();
-								ShowViewModelAndRemoveFromHistory<HomeViewModel> ();
+								ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser =  true });
                             } 
                             else 
                             {

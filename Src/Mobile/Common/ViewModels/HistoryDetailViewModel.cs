@@ -340,7 +340,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return this.GetCommand(() =>
                 {
 					_orderWorkflowService.Rebook(Order);
-					ShowViewModel<HomeViewModel>();
+					ShowViewModel<HomeViewModel>(new { locateUser =  false });
                 });
             }
         }

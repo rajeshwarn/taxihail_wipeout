@@ -19,11 +19,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	public class HomeViewModel : BaseViewModel
     {
 		readonly IOrderWorkflowService _orderWorkflowService;
+		private bool _locateUser;
 
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, IMvxWebBrowserTask browserTask) : base()
 		{
 			_orderWorkflowService = orderWorkflowService;
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService);
+		}
+
+		public void Init(bool locateUser)
+		{
+			_locateUser = locateUser;
 		}
 
 		public override void OnViewStarted(bool firstTime)
@@ -42,13 +48,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				BottomBar.Save = OrderEdit.Save;
 				BottomBar.CancelEdit = OrderEdit.Cancel;
 
-				LocateMe.Execute();
-
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
 				this.Services().Tutorial.DisplayTutorialToNewUser();
 
 				this.Services().PushNotification.RegisterDeviceForPushNotifications(force: true);
+			}
+
+			if (_locateUser)
+			{
+				LocateMe.Execute();
 			}
 			this.Services().Vehicle.Start();
 		}

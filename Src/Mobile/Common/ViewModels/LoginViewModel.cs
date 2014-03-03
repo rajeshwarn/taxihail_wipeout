@@ -296,7 +296,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return;
 			}
 
-			ShowViewModelAndRemoveFromHistory<HomeViewModel>();
+			ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser =  true });
 			if (LoginSucceeded != null)
 			{
 				LoginSucceeded(this, EventArgs.Empty);

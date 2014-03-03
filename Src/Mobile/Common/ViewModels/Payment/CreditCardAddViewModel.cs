@@ -318,7 +318,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 					if(ShowInstructions)
 					{
-						ShowViewModelAndRemoveFromHistory<HomeViewModel>();
+						ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser =  true });
 						if(!this.Services().Account.CurrentAccount.DefaultCreditCard.HasValue)
 						{
 							var account = this.Services().Account.CurrentAccount;
