@@ -47,6 +47,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
 				this.Services().Tutorial.DisplayTutorialToNewUser();
+
+				this.Services().PushNotification.RegisterDeviceForPushNotifications(force: true);
 			}
 			this.Services().Vehicle.Start();
 		}
