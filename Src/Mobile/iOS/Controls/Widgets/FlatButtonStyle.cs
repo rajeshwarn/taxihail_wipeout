@@ -27,7 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public static readonly FlatButtonStyle Green = new GreenButtonStyle();
         public static readonly FlatButtonStyle Red = new RedButtonStyle();
         public static readonly FlatButtonStyle Silver = new SilverButtonStyle();
-        public static readonly FlatButtonStyle ClearSilver = new ClearSilverButtonStyle();
 
         private class MainButtonStyle: FlatButtonStyle
         {
@@ -98,26 +97,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				button.SetTitleColor(UIColor.White, UIControlState.Highlighted);
 
                 button.SetStrokeColor(SilverColor);
-            }
-        }
-
-        private class ClearSilverButtonStyle: FlatButtonStyle
-        {
-            public override void ApplyTo (FlatButton button)
-            {
-                if(button == null) return;
-
-                button.Font = ClearButtonFont;
-
-                button.SetFillColor(UIColor.Clear, UIControlState.Normal);
-                button.SetFillColor(UIColor.Clear, UIControlState.Selected);
-                button.SetFillColor(UIColor.Clear, UIControlState.Highlighted);
-
-                button.SetTitleColor(SilverColor, UIControlState.Normal);
-                button.SetTitleColor(SilverColor.ColorWithAlpha(0.5f), UIControlState.Selected);
-                button.SetTitleColor(SilverColor.ColorWithAlpha(0.5f), UIControlState.Highlighted);
-
-                button.SetStrokeColor(UIColor.Clear);
             }
         }
 

@@ -6,7 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreditCardAddView">
             <connections>
-                <outlet property="btnScanCard" destination="CGu-2O-674" id="2gd-w4-6X4"/>
+                <outlet property="btnScanCard" destination="WJg-Rj-tzy" id="T5p-kp-a1L"/>
                 <outlet property="lblCardNumber" destination="DfD-Yo-WvS" id="8a2-VX-TKW"/>
                 <outlet property="lblCategory" destination="IXx-RS-Zn5" id="Ibz-7H-QwP"/>
                 <outlet property="lblCvv" destination="Tz3-UC-Wg8" id="RsN-3z-3Io"/>
@@ -33,7 +33,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLR-a7-OyV">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="375"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="448"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In order to use the application, you need to add a credit card to your account." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="304" translatesAutoresizingMaskIntoConstraints="NO" id="GXd-K4-4cG">
@@ -171,16 +171,16 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CGu-2O-674" customClass="FlatButton">
-                                    <rect key="frame" x="99" y="226" width="122" height="30"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WJg-Rj-tzy" customClass="FlatButton">
+                                    <rect key="frame" x="8" y="392" width="304" height="41"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="30" id="bod-Kz-p5q"/>
-                                        <constraint firstAttribute="width" constant="122" id="wpb-mS-oZt"/>
+                                        <constraint firstAttribute="height" constant="41" id="TNn-bc-geU"/>
+                                        <constraint firstAttribute="width" constant="304" id="xT2-Mt-nwS"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
-                                    <state key="normal" title="Scan">
-                                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                    <state key="normal" title="Scan Credit Card">
+                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
@@ -188,11 +188,13 @@
                             <constraints>
                                 <constraint firstItem="CKf-21-NCh" firstAttribute="leading" secondItem="WEq-Dm-0h1" secondAttribute="leading" id="02E-vh-Y2g"/>
                                 <constraint firstItem="DfD-Yo-WvS" firstAttribute="top" secondItem="3fV-2N-0Oy" secondAttribute="bottom" constant="12" id="8Hr-0U-Vne"/>
-                                <constraint firstItem="CGu-2O-674" firstAttribute="leading" secondItem="DfD-Yo-WvS" secondAttribute="trailing" constant="-109" id="AeK-MS-dn0"/>
+                                <constraint firstItem="WJg-Rj-tzy" firstAttribute="top" secondItem="At1-rh-wQX" secondAttribute="bottom" constant="20" id="8NT-D7-ua4"/>
+                                <constraint firstAttribute="bottom" secondItem="WJg-Rj-tzy" secondAttribute="bottom" constant="15" id="9TB-Dh-78J"/>
                                 <constraint firstItem="Ipi-wL-ffn" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="BdI-fI-okc"/>
                                 <constraint firstItem="At1-rh-wQX" firstAttribute="top" secondItem="Ipi-wL-ffn" secondAttribute="bottom" constant="6" id="BsV-i8-Cp9"/>
                                 <constraint firstItem="Ipi-wL-ffn" firstAttribute="top" secondItem="RPn-ad-Ae9" secondAttribute="bottom" constant="12" id="FDP-jz-eEW"/>
                                 <constraint firstItem="AHt-1S-sWk" firstAttribute="leading" secondItem="Tz3-UC-Wg8" secondAttribute="leading" id="HdL-pf-co6"/>
+                                <constraint firstItem="WJg-Rj-tzy" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="IRw-xi-9Ve"/>
                                 <constraint firstItem="ngX-Wq-laP" firstAttribute="top" secondItem="NJZ-aq-OJp" secondAttribute="bottom" constant="12" id="Jgb-Ge-fRg"/>
                                 <constraint firstItem="DfD-Yo-WvS" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="KKO-52-pjg"/>
                                 <constraint firstItem="3fV-2N-0Oy" firstAttribute="top" secondItem="ngX-Wq-laP" secondAttribute="bottom" constant="6" id="KiQ-XA-MRJ"/>
@@ -201,6 +203,7 @@
                                 <constraint firstItem="Ipi-wL-ffn" firstAttribute="centerY" secondItem="WEq-Dm-0h1" secondAttribute="centerY" id="Qly-tQ-XMa"/>
                                 <constraint firstItem="Tz3-UC-Wg8" firstAttribute="centerY" secondItem="DfD-Yo-WvS" secondAttribute="centerY" id="WV7-CP-2es"/>
                                 <constraint firstItem="RPn-ad-Ae9" firstAttribute="top" secondItem="DfD-Yo-WvS" secondAttribute="bottom" constant="6" id="a0R-P9-lA9"/>
+                                <constraint firstAttribute="bottom" secondItem="At1-rh-wQX" secondAttribute="bottom" priority="500" constant="71" id="aHr-md-Psu"/>
                                 <constraint firstItem="RPn-ad-Ae9" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="anv-hh-gLf"/>
                                 <constraint firstAttribute="trailing" secondItem="AHt-1S-sWk" secondAttribute="trailing" constant="8" id="bNU-99-u08"/>
                                 <constraint firstAttribute="trailing" secondItem="NJZ-aq-OJp" secondAttribute="trailing" constant="8" id="ibX-lr-sg4"/>
@@ -213,10 +216,8 @@
                                 <constraint firstItem="3fV-2N-0Oy" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="svG-qh-6ti"/>
                                 <constraint firstItem="NJZ-aq-OJp" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="twc-ef-VpH"/>
                                 <constraint firstItem="IXx-RS-Zn5" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="u91-gs-Opp"/>
-                                <constraint firstAttribute="height" constant="375" id="v5A-sa-k6K"/>
                                 <constraint firstAttribute="trailing" secondItem="3fV-2N-0Oy" secondAttribute="trailing" constant="8" id="wnz-dA-pcL"/>
                                 <constraint firstItem="At1-rh-wQX" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="x5S-F6-EbY"/>
-                                <constraint firstItem="CGu-2O-674" firstAttribute="bottom" secondItem="DfD-Yo-WvS" secondAttribute="bottom" constant="7" id="xEb-ln-tyi"/>
                                 <constraint firstItem="RPn-ad-Ae9" firstAttribute="centerY" secondItem="AHt-1S-sWk" secondAttribute="centerY" id="ziR-t5-qse"/>
                             </constraints>
                         </view>

@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             if (CardIOPaymentViewController.CanReadCardWithCamera && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken))
             {
-                FlatButtonStyle.ClearSilver.ApplyTo(btnScanCard);
+                FlatButtonStyle.Silver.ApplyTo(btnScanCard);
                 btnScanCard.SetTitle(Localize.GetValue("ScanCreditCard"), UIControlState.Normal);
                 btnScanCard.TouchUpInside += (sender, e) => ScanCard();
             }
