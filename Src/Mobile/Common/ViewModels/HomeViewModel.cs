@@ -20,16 +20,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
 		readonly IOrderWorkflowService _orderWorkflowService;
 
-		public HomeViewModel(IOrderWorkflowService orderWorkflowService, IMvxWebBrowserTask browserTask) : base()
+		ILocationService _locationService;
+		ITutorialService _tutorialService;
+		IPushNotificationService _pushNotificationService;
+		IVehicleService _vehicleService;
+
+		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
+			IMvxWebBrowserTask browserTask,
+			ILocationService locationService,
+			ITutorialService tutorialService,
+			IPushNotificationService pushNotificationService,
+			IVehicleService vehicleService) : base()
 		{
+			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
+			_tutorialService = tutorialService;
+			_pushNotificationService = pushNotificationService;
+			_vehicleService= vehicleService;
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService);
 		}
 
 		public override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
-            this.Services().Location.Start();
+			_locationService.Start();
 			if (firstTime)
 			{
 				Map = AddChild<MapViewModel>();
@@ -46,18 +60,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
-				this.Services().Tutorial.DisplayTutorialToNewUser();
+				_tutorialService.DisplayTutorialToNewUser();
 
-				this.Services().PushNotification.RegisterDeviceForPushNotifications(force: true);
+				_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
 			}
-			this.Services().Vehicle.Start();
+			_vehicleService.Start();
 		}
 
 		public override void OnViewStopped()
 		{
 			base.OnViewStopped();
-            this.Services().Location.Stop();
-			this.Services().Vehicle.Stop();
+			_locationService.Stop();
+			_vehicleService.Stop();
 		}
 
 		public PanelMenuViewModel Panel { get; set; }

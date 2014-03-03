@@ -38,34 +38,14 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 
         public ITinyMessengerHub MessengerHub { get { return _container.Resolve<ITinyMessengerHub>(); } }
 
-		public TaxiHailSetting Settings { get { return _container.Resolve<IAppSettings>().Data; } }
-
-        public IPhoneService Phone { get { return _container.Resolve<IPhoneService>(); } }
-
-        public ILocationService Location { get { return _container.Resolve<ILocationService>(); } }
-
-        public IBookingService Booking { get { return _container.Resolve<IBookingService>(); } }
+		public TaxiHailSetting Settings { get { return _container.Resolve<IAppSettings>().Data; } }        
 
         public ICacheService Cache { get { return _container.Resolve<ICacheService>(); } }
 
         public ICacheService AppCache { get { return _container.Resolve<ICacheService>("AppCache"); } }
 
-        public IApplicationInfoService ApplicationInfo { get { return _container.Resolve<IApplicationInfoService>(); } }
-
-        public IGeolocService Geoloc { get { return _container.Resolve<IGeolocService>(); } }
-
-        public IAccountService Account { get { return _container.Resolve<IAccountService>(); } }
-
-        public IPaymentService Payment { get { return _container.Resolve<IPaymentService>(); } }
-
-        public ITutorialService Tutorial { get { return _container.Resolve<ITutorialService>(); } }
-
-        public ITermsAndConditionsService Terms { get { return _container.Resolve<ITermsAndConditionsService>(); } }
-
-        public IPushNotificationService PushNotification { get { return _container.Resolve<IPushNotificationService>(); } }
+        public IApplicationInfoService ApplicationInfo { get { return _container.Resolve<IApplicationInfoService>(); } }        
 
         public IPackageInfo PackageInfo { get { return _container.Resolve<IPackageInfo>(); } }
-
-        public IVehicleService Vehicle { get { return _container.Resolve<IVehicleService>(); } }
     }
 }

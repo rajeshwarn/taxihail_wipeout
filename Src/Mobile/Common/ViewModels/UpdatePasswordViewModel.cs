@@ -2,11 +2,19 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Extensions;
 using System;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class UpdatePasswordViewModel : BaseViewModel
 	{
+		readonly IAccountService _accountService;
+
+		public UpdatePasswordViewModel(IAccountService accountService)
+		{
+			_accountService = accountService;			
+		}
+
 		private string _currentPassword;
 		public string CurrentPassword
 		{
@@ -69,8 +77,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 					this.Services().Message.ShowProgress(true);
 					try{
-						this.Services().Account.UpdatePassword(this.Services().Account.CurrentAccount.Id, CurrentPassword, NewPassword);
-						this.Services().Account.SignOut();
+						_accountService.UpdatePassword(this.Services().Account.CurrentAccount.Id, CurrentPassword, NewPassword);
+						_accountService.SignOut();
 						var msg = this.Services().Localize["ChangePasswordConfirmmation"];
 						var title = Settings.ApplicationName;
 						this.Services().Message.ShowMessage(title, msg, () => ShowViewModel<LoginViewModel>());
