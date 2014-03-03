@@ -19,10 +19,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			_accountService = accountService;
 		}
 
-		public async void Init(string order, string orderStatus)
+		public void Init(string order, string orderStatus)
 		{
 			Order = order.FromJson<Order>();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
+		}
+
+		public override async void OnViewStarted(bool firstTime)
+		{
+			base.OnViewStarted(firstTime);
 
 			//refresh from the server to get possible fare and tip values
 			Order = await _accountService.GetHistoryOrderAsync(Order.Id);
