@@ -47,6 +47,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			StatusInfoText = string.Format(this.Services().Localize["StatusStatusLabel"], this.Services().Localize["LoadingMessage"]);
 
             CenterMap ();
+
+			_orderWorkflowService.PrepareForNewOrder();
         }
 
 		public override void OnViewStarted (bool firstStart = false)
