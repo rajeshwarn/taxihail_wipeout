@@ -50,8 +50,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{ 
 					ShowViewModelAndRemoveFromHistory<PaymentViewModel>(new { 
 						order = Order.ToJson(),
-						orderStatus = OrderStatus.ToJson(),
-					}.ToStringDictionary());
+						orderStatus = OrderStatus.ToJson()
+					});
 				});
 			}
 		}
