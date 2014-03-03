@@ -599,6 +599,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen05.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen06.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen07.png" />
+    <Compile Include="Controls\Behavior\TextFieldInHomeSubviewsBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
