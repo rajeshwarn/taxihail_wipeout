@@ -10,14 +10,63 @@ using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    public class LocationListener : Object, ILocationListener, IObservable<Position>
+    public class LocationListener : Object, ILocationListener
+    {
+        public LocationListener( LocationListenerManager manager )
+        {
+            Manager = manager;
+        }
+
+        protected LocationListenerManager Manager
+        {
+            get;
+            set;
+        }
+
+        #region ILocationListener implementation
+
+        public void OnLocationChanged(Location location)
+        {
+            Manager.OnLocationChanged(location);
+        }
+
+        public void OnProviderDisabled(string provider)
+        {
+            Manager.OnProviderDisabled(provider);
+        }
+
+        public void OnProviderEnabled(string provider)
+        {
+            Manager.OnProviderEnabled(provider);
+        }
+
+        public void OnStatusChanged(string provider, Availability status, Bundle extras)
+        {
+            Manager.OnStatusChanged( provider,  status,  extras);
+        }
+
+        #endregion
+
+       
+
+
+    }
+
+    public class LocationListenerManager : Object, IObservable<Position>
     {
         private readonly List<IObserver<Position>> _observers;
 
-        public LocationListener()
+        public LocationListenerManager()
         {
             _observers = new List<IObserver<Position>>();
+            GpsListener = new LocationListener(this);
+            NetworkListener = new LocationListener(this);
+
+
         }
+
+        public LocationListener GpsListener { get; private set; }
+        public LocationListener NetworkListener { get; private set; }
 
         public Position LastKnownPosition { get; set; }
         public Position BestPosition { get; set; }
