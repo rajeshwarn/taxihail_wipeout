@@ -245,12 +245,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.OnPause();	        
         }
 
+        bool _locateUserOnStart;
+
         protected override void OnStart()
         {
             base.OnStart();
             if (ViewModel != null)
             {
                 ViewModel.Start();
+            }
+            if (_locateUserOnStart)
+            {
+                ViewModel.LocateMe.Execute(null);
+                _locateUserOnStart = false;
             }
         }
 
@@ -457,6 +464,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 _searchAddress.Close();
 
                 SetSelectedOnBookLater(false);
+
+                if (hint.IsNewOrder)
+                {
+                    _locateUserOnStart = true;
+                }
             }
 
         }

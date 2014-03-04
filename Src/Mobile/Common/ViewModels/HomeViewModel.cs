@@ -14,6 +14,7 @@ using System.Drawing;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -32,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public void Init(bool locateUser, string defaultHintZoomLevel)
 		{
 			_locateUser = locateUser;
-			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);
+			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);			
 		}
 
 		public override void OnViewStarted(bool firstTime)
