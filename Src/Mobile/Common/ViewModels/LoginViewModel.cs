@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public override void Start()
         {
 #if DEBUG
-            Email = "matthieu@live.com";
+			Email = "john@taxihail.com";
             Password = "password";          
 #endif
         }
