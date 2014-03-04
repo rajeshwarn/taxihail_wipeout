@@ -42,6 +42,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     _editNote, 
                     () => _bottomPadding.Visibility = ViewStates.Visible, 
                     () => _bottomPadding.Visibility = ViewStates.Gone);
+
+                InitializeBinding();
             });              
         }
 
