@@ -8,6 +8,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
 using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.Client.Helper;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
 {
@@ -133,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
                     user,
                     packageInfo.Version,
                     settings.ApplicationName,
-                    UIDevice.CurrentDevice.Model,
+                    HardwareInfo.Version,
                     UIDevice.CurrentDevice.SystemVersion);
 
                 Console.WriteLine (message);            

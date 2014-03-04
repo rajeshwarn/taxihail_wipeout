@@ -360,7 +360,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var zoomHint = hint as ZoomToStreetLevelPresentationHint;
             if (zoomHint != null)
             {
-                Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(zoomHint.Latitude, zoomHint.Longitude), 18));
+                Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(zoomHint.Latitude, zoomHint.Longitude), 17));
             }
 
             var centerHint = hint as CenterMapPresentationHint;

@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile
             }
             else
             {
-				ShowViewModel<HomeViewModel>();
+				ShowViewModel<HomeViewModel>(new { locateUser =  true });
             }
 
 			TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Startup with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().Data.ServiceUrl);

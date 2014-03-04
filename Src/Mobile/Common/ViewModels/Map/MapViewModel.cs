@@ -39,11 +39,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return _pickupAddress; }
             set
             {				
-                if (value != _pickupAddress)
-                {
-                    _pickupAddress = value;					
-                    RaisePropertyChanged();		
-                }
+				_pickupAddress = value;					
+				RaisePropertyChanged();	
             }
         }
 
@@ -53,11 +50,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return _destinationAddress; }
 			set
 			{
-                if (value != _destinationAddress)
-				{
-					_destinationAddress = value;
-					RaisePropertyChanged();
-				}
+				_destinationAddress = value;
+				RaisePropertyChanged();
 			}
 		}
 

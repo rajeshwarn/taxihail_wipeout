@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			StatusInfoText = string.Format(this.Services().Localize["StatusStatusLabel"], this.Services().Localize["LoadingMessage"]);
 
-            CenterMap ();
+            CenterMap ();			
         }
 
 		public override void OnViewStarted (bool firstStart = false)
@@ -325,9 +325,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			var setting = this.Services().Payment.GetPaymentSettings();
             var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-
-            var isPaired = this.Services().Booking.IsPaired(Order.Id);
-			IsUnpairButtonVisible = IsCmtRideLinq && isPaired;
+                       
+            IsUnpairButtonVisible = IsCmtRideLinq && this.Services().Booking.IsPaired(Order.Id);
 
 			IsPayButtonVisible =  (statusId == VehicleStatuses.Common.Done
 								||statusId == VehicleStatuses.Common.Loaded)
@@ -361,7 +360,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					this.Services().Booking.ClearLastOrder();
 		                        _waitingToNavigateAfterTimeOut = true;
-								ShowViewModel<HomeViewModel>();
+								ShowViewModel<HomeViewModel>(new { locateUser =  true });
 								Close(this);
                     }));
             }
@@ -402,7 +401,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Localize["YesButton"], 
                     () => { 
                         this.Services().Booking.ClearLastOrder();
-						ShowViewModel<HomeViewModel> ();
+						ShowViewModel<HomeViewModel> (new { locateUser =  true });
                     },
                     this.Services().Localize["NoButton"], NoAction));
             }
@@ -431,8 +430,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							}
                             if (isSuccess) 
                             {
-                                this.Services().Booking.ClearLastOrder();
-								ShowViewModelAndRemoveFromHistory<HomeViewModel> ();
+                                this.Services().Booking.ClearLastOrder();                                
+								ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser =  true });
                             } 
                             else 
                             {
