@@ -40,6 +40,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			ShowInstructions = showInstructions;
 		}
 
+		public override void OnViewStarted(bool firstTime)
+		{
+			base.OnViewStarted(firstTime);
+			// we stop the service when the viewmodel starts because it stops after the homeviewmodel starts when we press back
+			// this ensures that we don't stop the service just after having started it in homeviewmodel
+			this.Services().Location.Stop();
+		}
+
 		public override void Start()
         {
             Data = new CreditCardInfos();
