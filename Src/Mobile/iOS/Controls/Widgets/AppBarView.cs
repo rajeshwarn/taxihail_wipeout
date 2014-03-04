@@ -83,6 +83,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Command)
                 .To(vm => vm.BookLater);
 
+            set.Bind(btnBookLater)
+                .For(v => v.Hidden)
+                .To(vm => vm.DisableFutureBooking);
+
             set.Apply();
 
             _orderButtons.AddSubviews(btnEstimate, btnBook, btnBookLater);
