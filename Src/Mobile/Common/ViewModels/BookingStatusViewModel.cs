@@ -18,6 +18,7 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -431,8 +432,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             if (isSuccess) 
                             {
                                 this.Services().Booking.ClearLastOrder();                                
-								ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser =  true });
-                                await SetAddressToUserLocation();
+                                ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser =  true });
                             } 
                             else 
                             {
@@ -529,21 +529,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        async Task SetAddressToUserLocation()
-        {
-            var address = await _orderWorkflowService.SetAddressToUserLocation();
-            if (address.HasValidCoordinate())
-            {
-                ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
-            }
-        }
-
 		public ICommand PrepareNewOrder
         {
 			get
 			{
 				return this.GetCommand(async () =>{
-                    await SetAddressToUserLocation();
+
+                    var address = await _orderWorkflowService.SetAddressToUserLocation();
+                    if (address.HasValidCoordinate())
+                    {
+                        ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
+                    }
 				});
 			}
         }
