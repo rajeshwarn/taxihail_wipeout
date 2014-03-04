@@ -432,6 +432,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             {
                                 this.Services().Booking.ClearLastOrder();                                
 								ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser =  true });
+                                await SetAddressToUserLocation();
                             } 
                             else 
                             {
@@ -528,16 +529,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+        async Task SetAddressToUserLocation()
+        {
+            var address = await _orderWorkflowService.SetAddressToUserLocation();
+            if (address.HasValidCoordinate())
+            {
+                ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
+            }
+        }
+
 		public ICommand PrepareNewOrder
         {
 			get
 			{
 				return this.GetCommand(async () =>{
-					var address = await _orderWorkflowService.SetAddressToUserLocation();
-					if(address.HasValidCoordinate())
-					{
-						ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
-					}
+                    await SetAddressToUserLocation();
 				});
 			}
         }
