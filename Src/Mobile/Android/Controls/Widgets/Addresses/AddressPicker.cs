@@ -68,7 +68,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
                 _addressEditText.OnKeyDown()
                     .Throttle(TimeSpan.FromMilliseconds(700))
-                    .Subscribe(text => ExecuteSearchCommand(text));
+                    .Subscribe(text => 
+                    { 
+                        if (_addressEditText.HasFocus)
+                        {
+                            ExecuteSearchCommand(text);
+                        }
+                    });
 
                 _addressEditText.EditorAction += (sender, args) =>
                 {
