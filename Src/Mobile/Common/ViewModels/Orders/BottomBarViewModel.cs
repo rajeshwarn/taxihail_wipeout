@@ -215,8 +215,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return true;
-				//return this.Services().Settings.DisableFutureBooking;
+				return this.Services().Settings.DisableFutureBooking;
 			}
 		}
 
