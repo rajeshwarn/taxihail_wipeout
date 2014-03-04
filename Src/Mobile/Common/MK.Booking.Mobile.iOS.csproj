@@ -209,7 +209,6 @@
     <Compile Include="Data\Coordinate.cs" />
     <Compile Include="Data\CoordinatePrecision.cs" />
     <Compile Include="Data\CoordinateRefreshTime.cs" />
-    <Compile Include="Messages\AddressSelected.cs" />
     <Compile Include="Messages\BookUsingAddress.cs" />
     <Compile Include="Messages\CloseViewsToRoot.cs" />
     <Compile Include="Messages\DateTimePicked.cs" />
