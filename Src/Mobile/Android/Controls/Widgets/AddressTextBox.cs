@@ -200,12 +200,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             AddressTextView.Enabled = !IsReadOnly;
             if (IsReadOnly)
             {
-                StreetNumberTextView.Visibility = ViewStates.Gone;
+                StreetNumberTextView.LayoutParameters.Width = 0;
                 Dot.Visibility = ViewStates.Visible;
             }
             else
             {
-                StreetNumberTextView.Visibility = ViewStates.Visible;
+                StreetNumberTextView.LayoutParameters.Width = LinearLayout.MarginLayoutParams.WrapContent;
                 Dot.Visibility = ViewStates.Gone;
             }
         }
