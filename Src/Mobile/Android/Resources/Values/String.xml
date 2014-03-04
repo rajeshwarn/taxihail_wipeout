@@ -465,4 +465,6 @@
   <string name="CreditCardInstructions">In order to use the application, you need to add a credit card to your account.</string>
   <string name="CreditCardRemoveErrorTitle">Cannot remove credit card</string>
   <string name="CreditCardRemoveErrorMessage">You need to have at least one credit card in your account. If you want to remove a card, you will need to add another one before.</string>
+  <string name="ShowCardIO">Scan Credit Card</string>
+  <string name="ScanCreditCard">Scan Credit Card</string>
 </resources>

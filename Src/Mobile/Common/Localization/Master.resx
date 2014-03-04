@@ -1481,4 +1481,7 @@
   <data name="Collapse" xml:space="preserve">
     <value>Collapse</value>
   </data>
+  <data name="ScanCreditCard" xml:space="preserve">
+    <value>Scan Credit Card</value>
+  </data>
 </root>
