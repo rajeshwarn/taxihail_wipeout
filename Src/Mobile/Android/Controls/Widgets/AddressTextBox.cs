@@ -106,13 +106,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             LoadingWheel.Visibility = ViewStates.Visible;
             StreetNumberTextView.ClearFocus();
-            StreetNumberTextView.Visibility = ViewStates.Gone;
+            StreetNumberTextView.LayoutParameters.Width = 0; //not using visibility to avoid triggering focus change
         }
 
         private void HideLoadingWheel()
         {
             LoadingWheel.Visibility = ViewStates.Gone;
-            StreetNumberTextView.Visibility = IsReadOnly.ToVisibility(true);
+            //not using visibility to avoid triggering focus change
+            StreetNumberTextView.LayoutParameters.Width = IsReadOnly ? 0 : LinearLayout.MarginLayoutParams.WrapContent;
         }
 
         private bool _isReadOnly;
@@ -200,11 +201,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             AddressTextView.Enabled = !IsReadOnly;
             if (IsReadOnly)
             {
+                //not using visibility to avoid triggering focus change
                 StreetNumberTextView.LayoutParameters.Width = 0;
                 Dot.Visibility = ViewStates.Visible;
             }
             else
             {
+                //not using visibility to avoid triggering focus change
                 StreetNumberTextView.LayoutParameters.Width = LinearLayout.MarginLayoutParams.WrapContent;
                 Dot.Visibility = ViewStates.Gone;
             }
