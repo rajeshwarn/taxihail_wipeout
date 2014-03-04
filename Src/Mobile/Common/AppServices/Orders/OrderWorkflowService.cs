@@ -227,6 +227,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 						throw new OrderCreationException(message, messageNoCall);
 					default:
 						// Unhandled errors
+						// if ibs3000, there's a problem with the account, use a different one
 						message = string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"];
 						throw new OrderCreationException(message, messageNoCall);
