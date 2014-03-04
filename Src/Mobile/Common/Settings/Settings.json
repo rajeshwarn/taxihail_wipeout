@@ -7,6 +7,6 @@
    "TwitterConsumerSecret" : "Th6nCDTgPiI3JPwHxgm8fQheMaLczUeHHG5liHGZRqs",
    "TwitterEnabled" : "true",
    "TwitterRequestTokenUrl" : "https://api.twitter.com/oauth/request_token",
-   "ServiceUrl" : "http://staging.taxihail.com/luxorcab/api/",
+   "ServiceUrl" : "http://test.taxihail.biz:8181/TaxiHailDemo/api/",
    "CanChangeServiceUrl": "true"
 }
