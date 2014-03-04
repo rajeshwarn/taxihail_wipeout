@@ -211,14 +211,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		public bool DisableFutureBooking
-		{
-			get
-			{
-				return this.Services().Settings.DisableFutureBooking;
-			}
-		}
-
 		async Task ShowFareEstimateAlertDialogIfNecessary()
 		{
 			if (await _orderWorkflowService.ShouldWarnAboutEstimate())
