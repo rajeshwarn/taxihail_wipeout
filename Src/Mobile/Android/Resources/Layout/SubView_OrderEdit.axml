@@ -33,7 +33,7 @@
                     android:paddingBottom="5dip"
                     android:text="Name"
                     style="@style/BlackTextLabel" />
-                <EditText
+                <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
                     android:id="@+id/txtName"
                     android:imeOptions="actionDone"
                     android:layout_width="fill_parent"
@@ -61,7 +61,7 @@
                             android:paddingBottom="5dip"
                             android:text="Phone"
                             style="@style/BlackTextLabel" />
-                        <EditText
+                        <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
                             android:id="@+id/txtPhone"
                             android:imeOptions="actionDone"
                             android:layout_width="fill_parent"
@@ -89,7 +89,7 @@
                             android:layout_width="fill_parent"
                             android:text="Passengers"
                             android:layout_height="wrap_content" />
-                        <EditText
+                        <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
                             android:id="@+id/txtPassengers"
                             android:imeOptions="actionDone"
                             android:layout_width="fill_parent"
@@ -121,7 +121,7 @@
                             android:layout_width="fill_parent"
                             android:text="Apartment"
                             android:layout_height="wrap_content" />
-                        <EditText
+                        <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
                             android:id="@+id/txtApartment"
                             android:imeOptions="actionDone"
                             android:layout_width="fill_parent"
@@ -148,7 +148,7 @@
                             android:layout_width="fill_parent"
                             android:text="Entry code"
                             android:layout_height="wrap_content" />
-                        <EditText
+                        <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
                             android:id="@+id/txtEntryCode"
                             android:imeOptions="actionDone"
                             android:layout_width="fill_parent"

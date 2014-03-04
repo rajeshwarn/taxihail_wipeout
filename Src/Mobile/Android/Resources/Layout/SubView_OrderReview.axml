@@ -220,7 +220,7 @@
                             android:id="@+id/lblRingCode" />
                     </LinearLayout>
                 </LinearLayout>
-                <EditText
+                <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
                     android:background="#eeeeee"
                     android:inputType="textMultiLine"
                     android:id="@+id/txtNotes"
@@ -236,7 +236,7 @@
                 <LinearLayout
                     android:id="@+id/HackBottomPadding"
                     android:layout_width="fill_parent"
-                    android:layout_height="125dp"
+                    android:layout_height="175dip"
                     android:visibility="gone" />
             </LinearLayout>
         </ScrollView>

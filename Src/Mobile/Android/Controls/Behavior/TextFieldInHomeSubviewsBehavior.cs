@@ -27,8 +27,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
             {
                 if (e.HasFocus)
                 {
-                    onFocus();
                     editText.ShowKeyboard();
+                    onFocus();
                 }
                 else
                 {
