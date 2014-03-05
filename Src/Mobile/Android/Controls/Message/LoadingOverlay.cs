@@ -49,10 +49,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 return;
             }
 
-            if (_activity.Intent.Categories == null || _activity.Intent.Categories.Count == 0 || !_activity.Intent.Categories.Contains("Progress"))
+            if (_activity.Intent.Categories == null || !_activity.Intent.Categories.Contains("Progress"))
             {
                 _activity.Intent.AddCategory("Progress");
-            }                
+            }
 
             Initialize(rootView);
             StartAnimationLoop();
@@ -139,8 +139,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             if (WaitStack < 1)
             {
-                _isLoading = false;               
-                _activity.Intent.Categories.Clear();
+                _isLoading = false;    
+                if (_activity.Intent.Categories != null && _activity.Intent.Categories.Contains("Progress"))
+                {
+                    _activity.Intent.Categories.Remove("Progress");
+                }
             }
         }
 
