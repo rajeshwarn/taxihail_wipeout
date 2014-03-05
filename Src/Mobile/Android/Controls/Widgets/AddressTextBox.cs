@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             HorizontalDivider = (View)layout.FindViewById(Resource.Id.HorizontalDivider);
 
             StreetNumberTextView.SetSelectAllOnFocus(true);
+            StreetNumberTextView.ImeOptions = ImeAction.Done;
             StreetNumberTextView.SetSingleLine(true);
             StreetNumberTextView.Hint = "#";
             StreetNumberTextView.Gravity = GravityFlags.Center;

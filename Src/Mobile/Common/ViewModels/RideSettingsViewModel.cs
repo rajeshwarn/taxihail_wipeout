@@ -59,15 +59,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (_paymentPreferences == null)
                 {
-                    var account = this.Services().Account.CurrentAccount;
-                    var paymentInformation = new PaymentInformation
-                    {
-                        CreditCardId = account.DefaultCreditCard,
-                        TipPercent = account.DefaultTipPercent,
-                    };
-
 					_paymentPreferences = new PaymentDetailsViewModel();
-					_paymentPreferences.Init(paymentInformation);
+					_paymentPreferences.Init();
                 }
                 return _paymentPreferences;
             }

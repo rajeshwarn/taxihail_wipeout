@@ -49,6 +49,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return _cachedSettings;
 		}
 
+		public void ClearPaymentSettingsFromCache()
+		{
+			// this forces the payment settings to be refreshed at the next call
+			// since we can't them at the same time as the standard settings because we could be not authenticated
+			_cachedSettings = null;
+		}
+
         public double? GetPaymentFromCache(Guid orderId)
         {
             var result = _cache.Get<string>(orderId + PayedCacheSuffix);

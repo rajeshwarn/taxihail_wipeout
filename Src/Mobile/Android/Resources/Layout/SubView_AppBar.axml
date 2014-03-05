@@ -77,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                local:MvxBind="Visibility Settings.DisableFutureBooking, Converter=Visibility"
+                local:MvxBind="Visibility Settings.DisableFutureBooking, Converter=InvertedVisibility"
                 android:layout_gravity="center|center">
                 <ImageView
                     android:id="@+id/btnBookLater"

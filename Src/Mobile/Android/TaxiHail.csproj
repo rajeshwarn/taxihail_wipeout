@@ -785,11 +785,6 @@
     <AndroidResource Include="Resources\Layout\SimpleOrderListItem.axml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Layout\SubView_BookButtons.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\Layout\TutorialListItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
