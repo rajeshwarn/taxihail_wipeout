@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		void PrepareForNewOrder();
 
 		Task SetAddress(Address address);
-		void SetPickupAddress(Address address);
+		Task SetPickupAptAndRingCode(string apt, string ringCode);
 		Task<Address> SetAddressToUserLocation();
 		void ClearDestinationAddress();
 

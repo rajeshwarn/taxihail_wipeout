@@ -22,17 +22,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class LoginViewModel : BaseViewModel
     {
 		public event EventHandler LoginSucceeded; 
-		private readonly IPushNotificationService _pushService;
 		private readonly IFacebookService _facebookService;
 		private readonly ITwitterService _twitterService;
         private bool _loginWasSuccesful = false;
 
         public LoginViewModel(IFacebookService facebookService,
-			ITwitterService twitterService,
-			IPushNotificationService pushService)
+			ITwitterService twitterService)
         {
             _facebookService = facebookService;
-            _pushService = pushService;
 			_twitterService = twitterService;
 			_twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
         }
@@ -40,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public override void Start()
         {
 #if DEBUG
-            Email = "john@taxihail.com";
+			Email = "john@taxihail.com";
             Password = "password";          
 #endif
         }
@@ -182,8 +179,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 try
                 {
                     await this.Services().Account.SignIn(Email, Password);   
-                    Password = string.Empty;
-                    _pushService.RegisterDeviceForPushNotifications(force: true);
+                    Password = string.Empty;                    
 					OnLoginSuccess();
                 }
                 catch (AuthException e)
@@ -296,11 +292,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (NeedsToNavigateToAddCreditCard())
 			{
-				ShowViewModel<CreditCardAddViewModel>(new { showInstructions =  true });
+				ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel>(new { showInstructions =  true });
 				return;
 			}
 
-			ShowViewModel<HomeViewModel>();
+			ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser =  true });
 			if (LoginSucceeded != null)
 			{
 				LoginSucceeded(this, EventArgs.Empty);

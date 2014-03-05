@@ -10,6 +10,9 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using Android.Widget;
 using apcurium.MK.Common.Extensions;
+using System.Collections.Generic;
+using Android.Views.InputMethods;
+using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -28,27 +31,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private EditText _txtEntryCode;
         private EditTextSpinner _txtVehicleType;
         private EditTextSpinner _txtChargeType;
+        private LinearLayout _bottomPadding;
 
         public OrderEdit(Context context, IAttributeSet attrs) : base(Resource.Layout.SubView_OrderEdit, context, attrs)
         {
             Settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
 
             this.DelayBind(() => 
-                {
-                    _lblName = Content.FindViewById<TextView>(Resource.Id.lblName);
-                    _lblPhone = Content.FindViewById<TextView>(Resource.Id.lblPhone);
-                    _lblPassengers = Content.FindViewById<TextView>(Resource.Id.lblPassengers);
-                    _txtName = Content.FindViewById<EditText>(Resource.Id.txtName);
-                    _txtPhone = Content.FindViewById<EditText>(Resource.Id.txtPhone);
-                    _txtPassengers = Content.FindViewById<EditText>(Resource.Id.txtPassengers);
-//                    _txtLargeBags = Content.FindViewById<EditText>(Resource.Id.txtLargeBags);
-                    _txtApartment = Content.FindViewById<EditText>(Resource.Id.txtApartment);
-                    _txtEntryCode = Content.FindViewById<EditText>(Resource.Id.txtEntryCode);
-                    _txtVehicleType = Content.FindViewById<EditTextSpinner>(Resource.Id.txtVehicleType);
-                    _txtChargeType = Content.FindViewById<EditTextSpinner>(Resource.Id.txtChargeType);
+            {
+                _lblName = Content.FindViewById<TextView>(Resource.Id.lblName);
+                _lblPhone = Content.FindViewById<TextView>(Resource.Id.lblPhone);
+                _lblPassengers = Content.FindViewById<TextView>(Resource.Id.lblPassengers);
+                _txtName = Content.FindViewById<EditText>(Resource.Id.txtName);
+                _txtPhone = Content.FindViewById<EditText>(Resource.Id.txtPhone);
+                _txtPassengers = Content.FindViewById<EditText>(Resource.Id.txtPassengers);
+//                _txtLargeBags = Content.FindViewById<EditText>(Resource.Id.txtLargeBags);
+                _txtApartment = Content.FindViewById<EditText>(Resource.Id.txtApartment);
+                _txtEntryCode = Content.FindViewById<EditText>(Resource.Id.txtEntryCode);
+                _txtVehicleType = Content.FindViewById<EditTextSpinner>(Resource.Id.txtVehicleType);
+                _txtChargeType = Content.FindViewById<EditTextSpinner>(Resource.Id.txtChargeType);
 
-                    InitializeBinding();
-                });
+                // hack for scroll in view when in EditText
+                _bottomPadding = FindViewById<LinearLayout>(Resource.Id.HackBottomPadding);
+                TextFieldInHomeSubviewsBehavior.ApplyTo(
+                    new List<EditText>{ _txtName, _txtPhone, _txtPassengers, _txtLargeBags, _txtApartment, _txtEntryCode },
+                    () => _bottomPadding.Visibility = ViewStates.Visible,
+                    () => _bottomPadding.Visibility = ViewStates.Gone
+                );
+
+                InitializeBinding();
+            });
         }
 
         private OrderEditViewModel ViewModel { get { return (OrderEditViewModel)DataContext; } }

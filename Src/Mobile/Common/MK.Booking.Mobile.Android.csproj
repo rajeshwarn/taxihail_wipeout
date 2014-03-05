@@ -184,7 +184,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Messages\AddressSelected.cs" />
     <Compile Include="Messages\BookUsingAddress.cs" />
     <Compile Include="Messages\CallboxOrderCreated.cs" />
     <Compile Include="Messages\CloseViewsToRoot.cs" />

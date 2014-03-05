@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 					
 					container.AuthorizationToken = results ["oauth_token"];
 					container.AuthorizationVerifier = results ["oauth_verifier"];
-					DismissModalViewControllerAnimated (false);
+                    DismissViewController (false, () => {});
 
                     if (results["denied"] == null)
                     {

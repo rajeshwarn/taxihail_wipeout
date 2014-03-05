@@ -56,13 +56,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get { return _address; }
 			set
 			{
-				if (value != _address)
-				{
-					_address = value;
-					RaisePropertyChanged();
-					RaisePropertyChanged("Apartment");
-					RaisePropertyChanged("RingCode");
-				}
+				_address = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged("Apartment");
+				RaisePropertyChanged("RingCode");
 			}
 		}
 

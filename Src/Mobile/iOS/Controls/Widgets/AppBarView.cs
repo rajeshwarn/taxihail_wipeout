@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             _orderButtons = new UIView(this.Bounds);
 
-            var btnEstimate = new AppBarButton(Localize.GetValue("Estimate"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "estimate_icon.png", "estimate_icon_pressed.png");
+            var btnEstimate = new AppBarButton(Localize.GetValue("Destination"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "estimate_icon.png", "estimate_icon_pressed.png");
             btnEstimate.Frame = btnEstimate.Frame.IncrementX(4);
 
             var btnBook = new FlatButton(new RectangleF((320 - 123)/2, 7, 123, 41));
@@ -82,6 +82,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(btnBookLater)
                 .For(v => v.Command)
                 .To(vm => vm.BookLater);
+
+            set.Bind(btnBookLater)
+                .For(v => v.Hidden)
+                .To(vm => vm.Settings.DisableFutureBooking);
 
             set.Apply();
 

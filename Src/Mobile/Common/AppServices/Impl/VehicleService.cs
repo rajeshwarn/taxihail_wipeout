@@ -5,33 +5,40 @@ using System;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Reactive.Subjects;
+using apcurium.MK.Common.Entity;
+using System.Reactive.Disposables;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class VehicleService : BaseService, IVehicleService
     {
-		// TODO use the pickup address in the orderWorkflowService instead
-		private ILocationService _locationService;
+		private IOrderWorkflowService _orderWorkflowService;
 
+		readonly CompositeDisposable _subscriptions = new CompositeDisposable();
 		readonly ISubject<AvailableVehicle[]> _availableVehiclesSubject = new BehaviorSubject<AvailableVehicle[]>(new AvailableVehicle[0]);
 
-		bool _isStarted;
-		public bool IsStarted {
-			get {
-				return _isStarted;
-			}
+		private bool IsStarted { get; set; }
+		private Address AroundLocation { get; set; }
+
+		protected void Observe<T>(IObservable<T> observable, Action<T> onNext)
+		{
+			observable
+				.Subscribe(x => onNext(x))
+				.DisposeWith(_subscriptions);
 		}
 
 		public void Start()
 		{   
-			if(_isStarted)
+			if(IsStarted)
 			{
 				return;
 			}
 
-			_locationService = TinyIoCContainer.Current.Resolve<ILocationService>();
+			_orderWorkflowService = TinyIoCContainer.Current.Resolve<IOrderWorkflowService>();
+			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => AroundLocation = address);
 
-			_isStarted = true;
+			IsStarted = true;
 
 			ObserveAvailableVehicles();
 		}
@@ -40,29 +47,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			do
 			{
-				var lastKnownPosition = _locationService.LastKnownPosition;
-				if(lastKnownPosition != null)
+				if(AroundLocation != null && AroundLocation.Latitude != 0 && AroundLocation.Longitude != 0)
 				{
-					try{
+					try
+					{
 					    var availableVehicles = await UseServiceClientAsync<IVehicleClient, AvailableVehicle[]>(service => 
-                            service.GetAvailableVehiclesAsync(lastKnownPosition.Latitude, lastKnownPosition.Longitude)
+							service.GetAvailableVehiclesAsync(AroundLocation.Latitude, AroundLocation.Longitude)
                         );
 						_availableVehiclesSubject.OnNext(availableVehicles);
 					}
 					catch{}
-
 				}
 
 				await Task.Delay(5000);
 			}
-			while(_isStarted);
+			while(IsStarted);
 		}
 		
 		public void Stop ()
 		{   
-			if(_isStarted)
+			if(IsStarted)
 			{
-				_isStarted = false;
+				_subscriptions.Dispose();
+				IsStarted = false;
 			}
 		}
 
@@ -70,12 +77,5 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			return _availableVehiclesSubject;
 		}
-
-		[Obsolete("Old method for legacy purpose")]
-		public Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude)
-        {
-			return UseServiceClientAsync<IVehicleClient, AvailableVehicle[]>(service => service
-				.GetAvailableVehiclesAsync( latitude, longitude));
-        }
     }
 }

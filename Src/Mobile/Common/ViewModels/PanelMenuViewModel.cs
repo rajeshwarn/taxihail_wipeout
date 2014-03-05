@@ -204,7 +204,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if ( TutorialEnabled )
                     {
                         MenuIsOpen = false;
-                        this.Services().Message.ShowDialogActivity(typeof(TutorialViewModel));
+                        this.Services().Message.ShowDialog(typeof(TutorialViewModel));
                     }
                 });
             }

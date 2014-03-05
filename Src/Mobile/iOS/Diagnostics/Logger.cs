@@ -7,6 +7,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
+using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.Client.Helper;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
 {
@@ -127,7 +129,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
                     ? @" N\A "
                     : account.Email;
 
-                message += " by :" + user + " with version " + TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version;
+                var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
+                message += string.Format(" by : {0} with version {1} - company {2} - platform {3} {4}",
+                    user,
+                    packageInfo.Version,
+                    settings.ApplicationName,
+                    HardwareInfo.Version,
+                    UIDevice.CurrentDevice.SystemVersion);
 
                 Console.WriteLine (message);            
             

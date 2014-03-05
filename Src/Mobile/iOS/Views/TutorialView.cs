@@ -65,43 +65,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var pageView = new UIView(new RectangleF(i * scrollview.Frame.Width, 0, scrollview.Frame.Width, scrollview.Frame.Height)) { BackgroundColor = UIColor.Clear };
                 scrollview.AddSubview(pageView);
 
-                var image = new UIImageView(UIImage.FromFile(listTutorial[i].ImageUri + ".png"));
-                image.SetWidth(pageView.Frame.Width);
-                image.ContentMode = UIViewContentMode.ScaleAspectFit;
-                image.SetX(0).SetY(96f);
-                pageView.AddSubview(image);
-
-                var labelBottomTitle = new UILabel(new RectangleF(0, 0, pageView.Frame.Width, 0))
-                {
-                    LineBreakMode = UILineBreakMode.WordWrap,
-                    TextColor = UIColor.FromRGB(44, 44, 44),
-                    BackgroundColor = UIColor.Clear,
-                    TextAlignment = UITextAlignment.Center,
-                    Font = UIFont.FromName(FontName.HelveticaNeueBold, 17.0f),
-                    Lines = 1
-                };
-                labelBottomTitle.Text = listTutorial[i].BottomTitle;  
-                labelBottomTitle.SizeToFit();
-                labelBottomTitle.SetX((pageView.Frame.Width - labelBottomTitle.Frame.Width) / 2)
-                    .SetY(pageView.Frame.Bottom - labelBottomTitle.Frame.Height - 20);
-                pageView.AddSubview(labelBottomTitle);  
-
-                var labelBottom = new UILabel(new RectangleF(40, 0, pageView.Frame.Width - 40, 0))
-                {
-                    LineBreakMode = UILineBreakMode.WordWrap,
-                    TextColor = UIColor.FromRGB(44, 44, 44),
-                    BackgroundColor = UIColor.Clear,
-                    TextAlignment = UITextAlignment.Center,
-                    ContentMode = UIViewContentMode.Top,
-                    Font = UIFont.FromName(FontName.HelveticaNeueLight, 17.0f),
-                    Lines = 0
-                };
-                labelBottom.Text = listTutorial[i].BottomText;  
-                labelBottom.SizeToFit();
-                labelBottom.SetX((pageView.Frame.Width - labelBottom.Frame.Width) / 2)
-                    .SetY(image.Frame.Bottom + 35);
-                pageView.AddSubview(labelBottom);
-
                 var labelTopTitle = new UILabel(new RectangleF(0, 0, pageView.Frame.Width, 0))
                 {
                     LineBreakMode = UILineBreakMode.WordWrap,
@@ -111,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     Font = UIFont.FromName(FontName.HelveticaNeueBold, 17.0f),
                     Lines = 1
                 };
-                labelTopTitle.Text = listTutorial[i].TopTitle;  
+                labelTopTitle.Text = listTutorial[i].Title;  
                 labelTopTitle.SizeToFit();
                 labelTopTitle.SetX((pageView.Frame.Width - labelTopTitle.Frame.Width) / 2)
                     .SetY(0);
@@ -126,11 +89,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     Font = UIFont.FromName(FontName.HelveticaNeueLight, 17.0f),
                     Lines = 0
                 };
-                labelTop.Text = listTutorial[i].TopText;  
+                labelTop.Text = listTutorial[i].Text;  
                 labelTop.SizeToFit();
                 labelTop.SetX((pageView.Frame.Width - labelTop.Frame.Width) / 2)
                         .SetY(labelTopTitle.Frame.Bottom);
                 pageView.AddSubview(labelTop);
+
+                var image = new UIImageView(UIImage.FromFile(listTutorial[i].ImageUri + ".png"));
+                image.SetWidth(pageView.Frame.Width);
+                image.ContentMode = UIViewContentMode.ScaleAspectFit;
+                image.SetX(0).SetY(96f);
+                pageView.AddSubview(image);
             }
             pageControl.Hidden = false;
             pageControl.Pages = count;

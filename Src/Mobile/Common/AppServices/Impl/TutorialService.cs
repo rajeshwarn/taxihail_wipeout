@@ -4,16 +4,34 @@ using apcurium.MK.Booking.Mobile.Data;
 using System.IO;
 using ServiceStack.Text;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class TutorialService : ITutorialService
     {
-		readonly IAppSettings _settings;
+		private readonly IAppSettings _settings;
+		private readonly ICacheService _cacheService;
+		private readonly IMessageService _messageService;
 
-		public TutorialService(IAppSettings settings)
+		public TutorialService(IAppSettings settings, 
+			ICacheService cacheService,
+			IMessageService messageService)
 		{
+			_messageService = messageService;
+			_cacheService = cacheService;
 			_settings = settings;	
+		}
+
+		public void DisplayTutorialToNewUser()
+		{
+			if(_settings.Data.TutorialEnabled
+				&& _cacheService.Get<object>("TutorialDisplayed") == null)
+			{
+				_messageService.ShowDialog(typeof(TutorialViewModel));
+				_cacheService.Set<object>("TutorialDisplayed", new object());
+			}
 		}
 
         private TutorialContent _content;
@@ -39,20 +57,25 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             TutorialContent result = null;
             string resourceName = "";
             
-            foreach (string name in typeof(TutorialService).Assembly.GetManifestResourceNames()) { 
-                if (name.ToLower ().EndsWith (".tutorial.json")) {
+            foreach (string name in typeof(TutorialService).Assembly.GetManifestResourceNames()) 
+			{ 
+                if (name.ToLower ().EndsWith (".tutorial.json")) 
+				{
                     resourceName = name;
                     break;
                 }
             }
             
-            using (var stream = typeof(TutorialContent).Assembly.GetManifestResourceStream( resourceName)) {
-                if (stream != null)
-                    using (var reader = new StreamReader(stream)) {
-                    
-                        string serializedData = reader.ReadToEnd ();
-                        result = JsonSerializer.DeserializeFromString<TutorialContent> (serializedData);
-                    }
+            using (var stream = typeof(TutorialContent).Assembly.GetManifestResourceStream( resourceName)) 
+			{
+				if (stream != null)
+				{
+					using (var reader = new StreamReader(stream))
+					{
+						string serializedData = reader.ReadToEnd();
+						result = JsonSerializer.DeserializeFromString<TutorialContent>(serializedData);
+					}
+				}
             }
 
 			var disabledSlidesString = _settings.Data.DisabledTutorialSlides;

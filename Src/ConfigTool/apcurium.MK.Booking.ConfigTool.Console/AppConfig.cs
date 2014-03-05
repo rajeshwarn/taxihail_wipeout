@@ -127,7 +127,7 @@ namespace apcurium.MK.Booking.ConfigTool
 				{  
 					Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
 					NodeSelector=@"//resources/color[@name=""company_color""]", 
-					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.NavigationBarColor) 
+					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.CompanyColor) 
 				},
 				new ConfigXML(this)
 				{  
@@ -139,7 +139,7 @@ namespace apcurium.MK.Booking.ConfigTool
 				{  
 					Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
 					NodeSelector=@"//resources/color[@name=""top_bar_color""]", 
-					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.NavigationBarColor) 
+					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.CompanyColor) 
 				},
 				new ConfigXML(this)
 				{  
@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.ConfigTool
 				{  
 					Destination=@"Mobile\iOS\Style\Theme.xml", 
 					NodeSelector=@"//ThemeValues/CompanyColor", 
-					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.NavigationBarColor) 
+					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.CompanyColor) 
 				},
 				new ConfigXML(this)
 				{  

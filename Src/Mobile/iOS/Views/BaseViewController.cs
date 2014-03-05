@@ -84,6 +84,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             RegisterForKeyboardNotifications ();
 
             NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
+
+            //remove gesture swipe to go back
+            if (UIHelper.IsOS7orHigher
+                && NavigationController != null)
+            {
+                NavigationController.InteractivePopGestureRecognizer.Enabled = false;
+            }
         }
 		
         public override void DidReceiveMemoryWarning ()

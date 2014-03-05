@@ -34,11 +34,9 @@
     <ImageButton
         android:background="@android:color/transparent"
         android:src="@drawable/close_tutorial_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:paddingTop="10dip"
-        android:paddingRight="10dip"
         local:MvxBind="Click CloseCommand" />
 </RelativeLayout>

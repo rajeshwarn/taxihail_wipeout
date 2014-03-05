@@ -48,11 +48,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         WindowSoftInputMode = SoftInput.AdjustPan, 
         FinishOnTaskLaunch = true, 
         LaunchMode = LaunchMode.SingleTask
-    )]
-   
+    )]   
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
         private Button _bigButton;
+        private RelativeLayout _relMapLayout;
         private TouchableMap _touchMap;
         private LinearLayout _mapOverlay;
         private OrderReview _orderReview;
@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 var dialog = GooglePlayServicesUtil.GetErrorDialog(errorCode, this, 0);
                 dialog.Show();
                 dialog.DismissEvent += (s, e) => Finish();
-            }
+            }    
         }
 
         public OrderMapFragment _mapFragment; 
@@ -189,6 +189,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             SetContentView(Resource.Layout.View_Home);
             ViewModel.OnViewLoaded();
+            _relMapLayout = (RelativeLayout) FindViewById(Resource.Id.RelMapLayout);
             _bigButton = (Button) FindViewById(Resource.Id.BigButtonTransparent);
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
@@ -244,10 +245,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.OnPause();	        
         }
 
+        bool _locateUserOnStart;
+
         protected override void OnStart()
         {
             base.OnStart();
-            if (ViewModel != null) ViewModel.Start();
+            if (ViewModel != null)
+            {
+                ViewModel.Start();
+            }
+            if (_locateUserOnStart)
+            {
+                ViewModel.LocateMe.Execute(null);
+                _locateUserOnStart = false;
+            }
         }
 
         protected override void OnStop()
@@ -368,10 +379,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 var animation = AnimationHelper.GetForYTranslation(_orderReview, _orderOptions.Height);
                 animation.AnimationStart += (sender, e) =>
                 {
-                    var desiredHeight = _frameLayout.Height - _orderOptions.Height;
-                    if (((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height != desiredHeight)
+                    // set it to fill_parent to allow the subview to take the remaining space in the screen 
+                    // and to allow the view to resize when keyboard is up
+                    if (((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height != LinearLayout.MarginLayoutParams.FillParent)
                     {
-                        ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height = desiredHeight;
+                        ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height = LinearLayout.MarginLayoutParams.FillParent;
                     }
                 };
 
@@ -400,6 +412,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 // Date Picker: Hidden
 
                 var animation = AnimationHelper.GetForYTranslation(_orderReview, WindowManager.DefaultDisplay.Height);
+                animation.AnimationEnd += (sender, e) =>
+                {
+                    // reset to a fix height in order to have a smooth translation animation next time we show the review screen
+                    var desiredHeight = _frameLayout.Height - _orderOptions.Height;
+                    if (((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height != desiredHeight)
+                    {
+                        ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height = desiredHeight;
+                    }
+                };
+
                 var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, 0);
                 var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, -_orderOptions.Height);
 
@@ -411,7 +433,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 SetMapEnabled(false);
                 _searchAddress.Open();
-                ViewModel.AddressPicker.LoadAddresses();
             } 
             else if(_presentationState == HomeViewModelState.Initial)
             {
@@ -422,6 +443,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 // Date Picker: Hidden
 
                 var animation = AnimationHelper.GetForYTranslation(_orderReview, WindowManager.DefaultDisplay.Height);
+                animation.AnimationEnd += (sender, e) =>
+                {
+                    // reset to a fix height in order to have a smooth translation animation next time we show the review screen
+                    var desiredHeight = _frameLayout.Height - _orderOptions.Height;
+                    if (((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height != desiredHeight)
+                    {
+                        ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height = desiredHeight;
+                    }
+                };
+
                 var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width);
                 var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, 0);
 
@@ -432,6 +463,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 _searchAddress.Close();
 
                 SetSelectedOnBookLater(false);
+
+                if (hint.IsNewOrder)
+                {
+                    _locateUserOnStart = true;
+                }
             }
 
         }

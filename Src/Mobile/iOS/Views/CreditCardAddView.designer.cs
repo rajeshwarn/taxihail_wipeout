@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class CreditCardAddView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnScanCard { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblCardNumber { get; set; }
 
 		[Outlet]
@@ -53,9 +56,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (lblInstructions != null) {
-				lblInstructions.Dispose ();
-				lblInstructions = null;
+			if (btnScanCard != null) {
+				btnScanCard.Dispose ();
+				btnScanCard = null;
 			}
 
 			if (lblCardNumber != null) {
@@ -81,6 +84,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblExpYear != null) {
 				lblExpYear.Dispose ();
 				lblExpYear = null;
+			}
+
+			if (lblInstructions != null) {
+				lblInstructions.Dispose ();
+				lblInstructions = null;
 			}
 
 			if (lblNameOnCard != null) {

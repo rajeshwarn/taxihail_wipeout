@@ -98,7 +98,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
             set.Bind(AddressEditText)
                 .For(v => v.Text)
-                .To(vm => vm.StartingText);
+                .To(vm => vm.StartingText)
+                .OneWay();
 
             set.Bind(CancelButton)
                 .For("TouchUpInside")
@@ -150,6 +151,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             this.Hidden = false;
             UIView.Animate(0.3f, () => this.Alpha = 1);
 
+            ViewModel.LoadAddresses();
             Task.Factory.StartNew(() =>
                 {
                     InvokeOnMainThread(() => AddressEditText.BecomeFirstResponder());

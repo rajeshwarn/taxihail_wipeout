@@ -9,6 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		UIColor MainColor = UIColor.Black.ColorWithAlpha(0.15f);
 		UIColor DarkBlue = UIColor.FromRGB(3, 27, 49);
 		UIColor GreenColor = UIColor.FromRGB(31, 191, 33);
+        UIColor SilverColor = UIColor.FromRGB(90, 90, 90);
 
 		public static UIFont ClearButtonFont = UIFont.FromName(FontName.HelveticaNeueBold, 28/2);
 
@@ -88,14 +89,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if(button == null) return;
 
                 button.SetFillColor(UIColor.Clear, UIControlState.Normal);
-				button.SetFillColor(UIColor.FromRGB(90, 90, 90), UIControlState.Selected);
-				button.SetFillColor(UIColor.FromRGB(90, 90, 90), UIControlState.Highlighted);
+                button.SetFillColor(SilverColor, UIControlState.Selected);
+                button.SetFillColor(SilverColor, UIControlState.Highlighted);
 
-                button.SetTitleColor(UIColor.FromRGB(90, 90, 90), UIControlState.Normal);
+                button.SetTitleColor(SilverColor, UIControlState.Normal);
 				button.SetTitleColor(UIColor.White, UIControlState.Selected);
 				button.SetTitleColor(UIColor.White, UIControlState.Highlighted);
 
-                button.SetStrokeColor(UIColor.FromRGB(90, 90, 90));
+                button.SetStrokeColor(SilverColor);
             }
         }
 

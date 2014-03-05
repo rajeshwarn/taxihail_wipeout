@@ -7,6 +7,9 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
 using Environment = Android.OS.Environment;
+using apcurium.MK.Booking.Mobile.AppServices;
+
+
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 {
     public static class Logger
@@ -115,21 +118,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
                 if (!Directory.Exists(BaseDir))
                 {
                     Directory.CreateDirectory(BaseDir);
-                }
+                }            
+
+                var user = @" N\A ";
+                if(TinyIoCContainer.Current.CanResolve<IAccountService>()
+                    && TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount != null)
+                {
+                    user = TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount.Email;
+                }                 
+                var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
+                var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
+
+                
+
+                message += string.Format(" by : {0} with version {1} - company {2} - platform {3} {4} {5}",
+                    user,
+                    packageInfo.Version,
+                    settings.ApplicationName,
+                    Android.OS.Build.VERSION.Release,
+                    Android.OS.Build.Manufacturer,
+                    Android.OS.Build.Model);
+
+                Console.WriteLine(message);
+
             }
             catch
             {
                 return;
             }
-
-
-            string version = TinyIoCContainer.Current.Resolve<IPackageInfo>().Version;
-
-            string user = @" N\A with version " + version;
-
-            var msgToLog = message + " by :" + user + " with version " + version;
-
-            Console.WriteLine(msgToLog);
 
             LogFilename = "errorlog.txt";
             if(TinyIoCContainer.Current.CanResolve<IAppSettings>())
@@ -161,7 +177,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
                     using (var w = new StreamWriter(fs))
                     {
                         w.BaseStream.Seek(0, SeekOrigin.End);
-                        w.WriteLine(msgToLog + "\r\n");
+                        w.WriteLine(message + "\r\n");
                         w.Flush();
                         w.Close();
                     }
