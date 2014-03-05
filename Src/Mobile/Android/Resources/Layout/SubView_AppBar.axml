@@ -41,7 +41,7 @@
                     android:textColor="@drawable/button_highlight_text_selector"
                     android:layout_width="wrap_content"
                     android:layout_height="24dip"
-                    android:text="@string/Estimate"
+                    android:text="@string/Destination"
                     android:layout_gravity="center_horizontal" />
             </LinearLayout>
         </LinearLayout>

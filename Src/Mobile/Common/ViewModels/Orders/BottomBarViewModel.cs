@@ -70,18 +70,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					{
 						switch (e.Error)
 						{
+							case OrderValidationError.OpenDestinationSelection:
+								// not really an error, but we stop the command from proceeding at this point
+								return;
+
 							case OrderValidationError.PickupAddressRequired:
 								this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]);
-								break;
+								return;
 							case OrderValidationError.DestinationAddressRequired:
 								this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);
-								break;
+								return;
 							case OrderValidationError.InvalidPickupDate:
 								this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["BookViewInvalidDate"]);
-								break;
+								return;
 							default:
 								Logger.LogError(e);
-								break;
+								return;
 						}
 					}
 					_orderWorkflowService.ResetOrderSettings();

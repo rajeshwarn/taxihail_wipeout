@@ -3973,6 +3973,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0500a3
 			public const int DeleteBookItButtonImageNamePressed = 2131034275;
 			
+			// aapt resource value: 0x7f05021a
+			public const int Destination = 2131034650;
+			
 			// aapt resource value: 0x7f050048
 			public const int DestinationMapTitle = 2131034184;
 			
@@ -4290,6 +4293,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0501fb
 			public const int NoFareText = 2131034619;
+			
+			// aapt resource value: 0x7f050219
+			public const int NoFareTextIfDestinationIsRequired = 2131034649;
 			
 			// aapt resource value: 0x7f0501ef
 			public const int NoMailClient = 2131034607;
