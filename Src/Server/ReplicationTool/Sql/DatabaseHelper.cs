@@ -1,28 +1,32 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Management.Common;
+using Microsoft.SqlServer.Management.Smo;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ReplicationTool.Sql
 {
-    public static class DatabaseHelper
+    public class DatabaseHelper
     {
 
-         
+
         public void Backup(string connectionString, string databaseName, string pathBackup)
         {
             string file = string.Format("dbbackup{0}.bak", DateTime.Now.Ticks);
-            string pathBackup = Path.Combine(@"C:\temp\", file);
+            //string pathBackup = Path.Combine(@"C:\temp\", file);
             string remoteNetworkPathBackup = Path.Combine(@"\\taxihail01\DBBackup", file);
             string remoteLocalPathBackup = Path.Combine(@"C:\DBBackup\", file);
-            
-            using (SqlConnection con = new SqlConnection(BackUpConString))
+
+            using (SqlConnection con = new SqlConnection(connectionString ))
             {
                 ServerConnection srvConn = new ServerConnection(con);
 
                 Server srvr = new Server(srvConn);
-                
+
                 if (srvr != null)
                 {
 
@@ -32,7 +36,7 @@ namespace ReplicationTool.Sql
                         bkpDatabase.Action = BackupActionType.Database;
                         bkpDatabase.Database = "CabMateDemo";
 
-                       
+
 
                         var bkpDevice = new BackupDeviceItem(pathBackup, DeviceType.File);
                         bkpDatabase.Devices.Add(bkpDevice);
@@ -41,8 +45,8 @@ namespace ReplicationTool.Sql
 
                         File.Copy(pathBackup, remoteNetworkPathBackup);
 
-                        
-                        
+
+
                     }
                     catch (Exception e)
                     {
@@ -51,8 +55,10 @@ namespace ReplicationTool.Sql
                 }
             }
 
+        }
     }
 }
+    
 
 
 

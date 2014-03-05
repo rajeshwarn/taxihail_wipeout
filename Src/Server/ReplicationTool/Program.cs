@@ -17,9 +17,9 @@ namespace ReplicationTool
             string file = string.Format("dbbackup{0}.bak", DateTime.Now.Ticks);
             string pathBackup = Path.Combine(@"C:\temp\", file);
 
-            Database.
+            //Database.
 
-            new Backup_Restore().BackUpMyDB();
+            //new Backup_Restore().BackUpMyDB();
 
 
 

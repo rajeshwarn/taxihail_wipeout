@@ -307,7 +307,7 @@ namespace MK.DeploymentService
             File.WriteAllText(fileSettings, stringBuilder.ToString());
 
 
-            var exeArgs = string.Format("{0} {1}", companyName, _job.Server.SqlServerInstance);
+            var exeArgs = string.Format("{0} {1} N \"{2}\" \"{3}\"", companyName, _job.Server.SqlServerInstance, string.Format(Settings.Default.SqlConnectionString, companyName ), Settings.Default.SqlConnectionStringMaster );
             Log("Calling DB tool with : " + exeArgs);
             var deployDb =
                 ProcessEx.GetProcess(

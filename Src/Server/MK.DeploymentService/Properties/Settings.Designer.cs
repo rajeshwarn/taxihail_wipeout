@@ -117,5 +117,16 @@ namespace MK.DeploymentService.Properties {
                 return ((string)(this["ReplicatedServer"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=CL-T077-082CL;Initial Catalog={0};Integrated Security=True; MultipleA" +
+            "ctiveResultSets=True")]
+        public string SqlConnectionStringMaster {
+            get {
+                return ((string)(this["SqlConnectionStringMaster"]));
+            }
+        }
     }
 }
