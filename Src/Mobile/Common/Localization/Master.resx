@@ -708,6 +708,18 @@
   <data name="WarningEstimateDontShow" xml:space="preserve">
     <value>Don't warn</value>
   </data>
+  <data name="WarningLocationService" xml:space="preserve">
+    <value>Please turn on location services to have your location show up in the map.</value>
+  </data>
+  <data name="WarningLocationServiceTitle" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="WarningLocationServiceDontShow" xml:space="preserve">
+    <value>Don't warn</value>
+  </data>
+  <data name="WarningLocationServiceCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="ResetPasswordConfirmationTitle" xml:space="preserve">
     <value>Password sent</value>
   </data>

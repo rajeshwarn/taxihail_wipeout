@@ -8,6 +8,9 @@ using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore.Droid;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using Cirrious.CrossCore.Droid.Platform;
+using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -15,13 +18,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     {
         private readonly LocationListenerManager _locationListeners;
         private readonly LocationManager _locationManager;
+        private readonly IMessageService _messageService;
         private bool _isStarted;
 
         public LocationService()
         {
             _locationManager = (LocationManager) Application.Context.GetSystemService(Context.LocationService);
             _locationListeners = new LocationListenerManager();
-
+            _messageService = new MessageService(Application.Context);
             Positions = _locationListeners;
         }
 
@@ -87,16 +91,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 return;
             }
 
-
-
             if (!IsLocationServiceEnabled)
             { 
-                // TODO: MKTAXI-1111 - Handle Location Service Disabled
+                var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
+
+                var dontShowLocationWarning = (string)Cache.Get<string>("WarningEstimateDontShow");
+
+                if (dontShowLocationWarning != "yes")
+                {
+                    _messageService.ShowMessage(localize["WarningLocationServiceTitle"], localize["WarningLocationService"],
+                        "Settings", delegate
+                    { 
+                        var topActivity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>(); 
+                        topActivity.Activity.StartActivity(new Intent(Android.Provider.Settings.ActionLocationSourceSettings));
+                    },
+                        localize["WarningLocationServiceDontShow"], () => Cache.Set("WarningLocationServiceDontShow", "yes"),
+                        localize["WarningLocationServiceCancel"], delegate
+                    {
+                    } 
+                    );
+                }
             }
 
-
-
-      
             if (IsNetworkProviderEnabled)
             {
                 _locationManager.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, _locationListeners.NetworkListener,
