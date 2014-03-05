@@ -11,6 +11,7 @@ using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
@@ -38,6 +39,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         {
             var appSettingsService = TinyIoCContainer.Current.Resolve<IAppSettings>();
             appSettingsService.Load();
+
+            var paymentService = TinyIoCContainer.Current.Resolve<IPaymentService>();
+            paymentService.GetPaymentSettings(true);
 
             // Overriden in order to pass params
             var starter = Mvx.Resolve<IMvxAppStart>();
