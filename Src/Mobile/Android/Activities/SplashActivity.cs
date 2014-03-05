@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             appSettingsService.Load();
 
             var paymentService = TinyIoCContainer.Current.Resolve<IPaymentService>();
-            paymentService.GetPaymentSettings(true);
+            paymentService.ClearPaymentSettingsFromCache();
 
             // Overriden in order to pass params
             var starter = Mvx.Resolve<IMvxAppStart>();
