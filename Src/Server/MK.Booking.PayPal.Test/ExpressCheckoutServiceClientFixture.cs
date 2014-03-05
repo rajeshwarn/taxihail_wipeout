@@ -35,13 +35,37 @@ namespace MK.Booking.PayPal.Test
             var token = sut.SetExpressCheckout(12.34m, returnUrl, cancelUrl);
 
             // Use this checkout url to authorize the transaction (john@taxihail.com / 1234567890)
-            sut.GetCheckoutUrl(token);
+            var url = sut.GetCheckoutUrl(token);
 
             // Act
             var transactionId = sut.DoExpressCheckoutPayment(token, "5CX7H5Y7VLBZQ", 12.34m);
 
             // Assert
             Assert.IsNotEmpty(transactionId);
+        }
+
+        [Test]
+        [Ignore("This is a manual test. tx should be complete, like the previous test")]
+        public void RefundPaymentTest()
+        {
+            // Arrange
+            var returnUrl = "http://example.net/return";
+            var cancelUrl = "http://example.net/cancel";
+            var sut = new ExpressCheckoutServiceClient(new PayPalCredentials(), new RegionInfo("en-US"), true);
+
+            var token = sut.SetExpressCheckout(12.34m, returnUrl, cancelUrl);
+
+            // Use this checkout url to authorize the transaction (john@taxihail.com / 1234567890)
+            var url = sut.GetCheckoutUrl(token);
+            Console.WriteLine(url);
+
+            var transactionId = sut.DoExpressCheckoutPayment(token, "5CX7H5Y7VLBZQ", 12.34m);
+
+            // Act
+            sut.RefundTransaction(transactionId);
+            
+            // Assert
+            Assert.Pass();
         }
 
         [Test]

@@ -123,5 +123,22 @@ namespace apcurium.MK.Booking.Test.Integration.PayPalPaymentFixture
                 Assert.AreEqual(PaymentProvider.PayPal, dto.Provider);
             }
         }
+
+        [Test]
+        public void when_cancellation_failed_then_dto_has_reason()
+        {
+            Sut.Handle(new PayPalPaymentCancellationFailed
+            {
+                SourceId = _paymentId,
+                Reason = "message"
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<OrderPaymentDetail>(_paymentId);
+                Assert.NotNull(dto);
+                Assert.AreEqual("message", dto.CancellationError);
+            }
+        }
     }
 }

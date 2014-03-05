@@ -60,6 +60,7 @@
     <Compile Include="DeleteAllCreditCards.cs" />
     <Compile Include="InitiateCreditCardPayment.cs" />
     <Compile Include="InitiatePayPalExpressCheckoutPayment.cs" />
+    <Compile Include="LogCancellationFailurePayPalPayment.cs" />
     <Compile Include="LogCreditCardPaymentCancellationFailed.cs" />
     <Compile Include="PairForRideLinqCmtPayment.cs" />
     <Compile Include="SendAssignedConfirmation.cs" />

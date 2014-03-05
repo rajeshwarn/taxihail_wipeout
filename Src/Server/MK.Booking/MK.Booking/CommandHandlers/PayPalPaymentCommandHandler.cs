@@ -12,7 +12,8 @@ namespace apcurium.MK.Booking.CommandHandlers
     public class PayPalPaymentCommandHandler :
         ICommandHandler<InitiatePayPalExpressCheckoutPayment>,
         ICommandHandler<CancelPayPalExpressCheckoutPayment>,
-        ICommandHandler<CompletePayPalExpressCheckoutPayment>
+        ICommandHandler<CompletePayPalExpressCheckoutPayment>,
+        ICommandHandler<LogCancellationFailurePayPalPayment>
 
     {
         private readonly IEventSourcedRepository<PayPalPayment> _repository;
@@ -40,6 +41,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var payment = new PayPalPayment(command.PaymentId, command.OrderId, command.Token, command.Amount,
                 command.Meter, command.Tip);
+            _repository.Save(payment, command.Id.ToString());
+        }
+
+        public void Handle(LogCancellationFailurePayPalPayment command)
+        {
+            var payment = _repository.Get(command.PaymentId);
+            payment.LogCancellationError(command.Reason);
             _repository.Save(payment, command.Id.ToString());
         }
     }

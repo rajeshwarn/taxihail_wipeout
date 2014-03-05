@@ -37,7 +37,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             // Send message to driver
             SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, PaymentProvider.PayPal.ToString(), @event.PayPalPayerId);
-
         }
 
         public void Handle(CreditCardPaymentCaptured @event)

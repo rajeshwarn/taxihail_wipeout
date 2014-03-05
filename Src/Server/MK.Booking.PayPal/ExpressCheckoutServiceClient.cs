@@ -1,8 +1,6 @@
-﻿
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Globalization;
-
 using apcurium.MK.Common.Configuration.Impl;
 
 namespace MK.Booking.PayPal
@@ -14,7 +12,7 @@ namespace MK.Booking.PayPal
         // https://developer.paypal.com/webapps/developer/docs/classic/api/
         // ----------------------------------------------------------------------
 
-        const string ApiVersion = "104";
+        const string ApiVersion = "111";
         const string MobileKnowledgeReferralCode = "MobileKnowledgeSystems_SP_MEC";
         readonly Urls _urls;
         readonly UserIdPasswordType _credentials;
@@ -48,7 +46,7 @@ namespace MK.Booking.PayPal
             if (string.IsNullOrWhiteSpace(returnUrl)) throw new ArgumentException("returnUrl");
             if (string.IsNullOrWhiteSpace(cancelUrl)) throw new ArgumentException("returnUrl");
 
-            using (var api = CreateApiClient())
+            using (var api = CreateApiAaClient())
             {
                 var request = BuildRequest(orderTotal, returnUrl, cancelUrl);
                 var response = api.SetExpressCheckout(request);
@@ -59,6 +57,24 @@ namespace MK.Booking.PayPal
             }
         }
 
+        public void RefundTransaction(string transactionId)
+        {
+            //see https://developer.paypal.com/docs/classic/express-checkout/ht_basicRefund-curl-etc/
+            using (var api = CreateApiClient())
+            {
+                var response = api.RefundTransaction(new RefundTransactionReq
+                {
+                    RefundTransactionRequest = new RefundTransactionRequestType
+                    {
+                        Version = ApiVersion,
+                        TransactionID = transactionId,
+                        RefundType = RefundType.Full
+                    }
+                });
+                ThrowIfError(response);
+            }
+        }
+
         public string GetCheckoutUrl(string token)
         {
             return _urls.GetCheckoutUrl(token);
@@ -66,7 +82,7 @@ namespace MK.Booking.PayPal
 
         public string DoExpressCheckoutPayment(string token, string payerId, decimal orderTotal)
         {
-            using (var api = CreateApiClient())
+            using (var api = CreateApiAaClient())
             {
 
                 var amount = new BasicAmountType
@@ -120,6 +136,7 @@ namespace MK.Booking.PayPal
                 {
                     foreach (var error in response.Errors)
                     {
+                        Console.WriteLine(error.LongMessage);
                         Trace.WriteLine(error.LongMessage);
                         errors += error + Environment.NewLine;
                     }
@@ -129,7 +146,7 @@ namespace MK.Booking.PayPal
             }
         }
 
-        private PayPalAPIAASoapBinding CreateApiClient()
+        private PayPalAPIAASoapBinding CreateApiAaClient()
         {
             var securityHeader = new CustomSecurityHeaderType
                                      {
@@ -140,6 +157,20 @@ namespace MK.Booking.PayPal
                               Url = _urls.GetApiUrl(),
                               RequesterCredentials = securityHeader,
                           };
+            return api;
+        }
+
+        private PayPalAPISoapBinding CreateApiClient()
+        {
+            var securityHeader = new CustomSecurityHeaderType
+            {
+                Credentials = _credentials
+            };
+            var api = new PayPalAPISoapBinding
+            {
+                Url = _urls.GetApiUrl(),
+                RequesterCredentials = securityHeader,
+            };
             return api;
         }
 
