@@ -4,34 +4,50 @@ using System.Data.Entity;
 using System.Linq;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Web.SelfHost;
+using Microsoft.Practices.Unity;
 using NUnit.Framework;
+using ServiceStack.WebHost.Endpoints.Support;
+using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public abstract class BasePaymentClientFixture : BaseTest
     {
+        private Type _ibsImplementation;
+        private FakeIbs _fakeIbs;
+
         [SetUp]
         public override void Setup()
         {
             base.Setup();
             CreateAndAuthenticateTestAccount().Wait();
+            //replace it with a fake
+            _fakeIbs = new FakeIbs();
+            UnityServiceLocator.Instance.RegisterInstance<IIbsOrderService>(_fakeIbs);
         }
 
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
             base.TestFixtureSetup();
+            var container = UnityServiceLocator.Instance;
+            _ibsImplementation = container.Registrations
+                                            .FirstOrDefault(x => x.RegisteredType == typeof(IIbsOrderService))
+                                            .MappedToType;
         }
 
         [TestFixtureTearDown]
         public override void TestFixtureTearDown()
         {
             base.TestFixtureTearDown();
+            UnityServiceLocator.Instance.RegisterType(typeof(IIbsOrderService), _ibsImplementation);
         }
 
         protected BasePaymentClientFixture(TestCreditCards.TestCreditCardSetting settings)
@@ -104,8 +120,9 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void when_capturing_a_preauthorized_a_credit_card_payment()
+        public async void when_capturing_a_preauthorized_commit_a_credit_card_payment_but_ibs_failed()
         {
+            _fakeIbs.Fail = true;
             var orderId = Guid.NewGuid();
             using (var context = ContextFactory.Invoke())
             {
@@ -138,7 +155,8 @@ namespace apcurium.MK.Web.Tests
 
             
             var response = await client.PreAuthorizeAndCommit(token, amount, meter, tip, orderId);
-            Assert.True(response.IsSuccessfull, response.Message);
+            Assert.False(response.IsSuccessfull);
+            Assert.AreEqual("ibs failed", response.Message);
         }
 
         [Test]
@@ -222,5 +240,25 @@ namespace apcurium.MK.Web.Tests
             var response = await client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2 + "");
             Assert.True(response.IsSuccessfull, response.Message);
         }
+    }
+
+    public class FakeIbs : IIbsOrderService
+    {
+        public void ConfirmExternalPayment(int orderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type,
+            string provider, string transactionId, string authorizationCode, string cardToken, int accountID, string name,
+            string phone, string email, string os, string userAgent)
+        {
+            if (Fail)
+            {
+                throw new Exception("ibs failed");
+            }
+        }
+
+        public void SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId)
+        {
+            
+        }
+
+        public bool Fail { get; set; }
     }
 }
