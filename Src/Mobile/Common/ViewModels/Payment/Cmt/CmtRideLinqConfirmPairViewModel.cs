@@ -16,11 +16,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 			Order = order.FromJson<Order>();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
 			_paymentPreferences = new PaymentDetailsViewModel();
-			_paymentPreferences.Init(new PaymentInformation
-				{
-					CreditCardId = this.Services().Account.CurrentAccount.DefaultCreditCard,
-                    TipPercent = this.Services().Account.CurrentAccount.DefaultTipPercent,
-				});
+			_paymentPreferences.Init();
 			_paymentPreferences.CreditCards.CollectionChanged += (sender, e) => RefreshCreditCards();
 		}
 

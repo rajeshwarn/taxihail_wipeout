@@ -14,14 +14,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
 	public class PaymentDetailsViewModel: BaseViewModel
 	{
-		public void Init(PaymentInformation paymentDetails)
+		private int DefaultTipValue = 15;
+
+		public void Init(PaymentInformation paymentDetails = null)
 		{
 			CreditCards.CollectionChanged += (sender, e) =>  RaisePropertyChanged(()=>HasCreditCards);
-		
-			LoadCreditCards();
-        
-            SelectedCreditCardId = paymentDetails.CreditCardId.GetValueOrDefault();
-        
+
+			LoadCreditCards();        
+
 			Tips = new ListItem[]
 			{ 
 				new ListItem { Id = 0,  Display = "0%" }, 
@@ -33,9 +33,43 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				new ListItem { Id = 25, Display = "25%" }
 			};
 
-            Tip = paymentDetails.TipPercent.HasValue 
-                ? paymentDetails.TipPercent.Value 
-                : 0;
+			if (paymentDetails == null)
+			{
+				paymentDetails = new PaymentInformation();
+			}
+
+			// check null and set to default values in case of null
+			if (!paymentDetails.CreditCardId.HasValue)
+			{
+				var creditCards = this.Services().Account.GetCreditCards();
+				if (this.Services().Account.CurrentAccount.DefaultCreditCard.HasValue 
+					&& creditCards.Any(x => x.CreditCardId == this.Services().Account.CurrentAccount.DefaultCreditCard.Value))
+				{
+					paymentDetails.CreditCardId = this.Services().Account.CurrentAccount.DefaultCreditCard;
+				}
+				else
+				{
+					if (creditCards.Any())
+					{
+						paymentDetails.CreditCardId = creditCards.First().CreditCardId;
+					}
+				}
+			}
+
+			if (!paymentDetails.TipPercent.HasValue)
+			{
+				if (this.Services().Account.CurrentAccount.DefaultTipPercent.HasValue)
+				{
+					paymentDetails.TipPercent = this.Services().Account.CurrentAccount.DefaultTipPercent;
+				}
+				else
+				{
+					paymentDetails.TipPercent = DefaultTipValue;
+				}
+			}
+
+			SelectedCreditCardId = paymentDetails.CreditCardId.GetValueOrDefault();
+			Tip = paymentDetails.TipPercent.Value;
         }
     
         private readonly ObservableCollection<CreditCardDetails> _creditCards = new ObservableCollection<CreditCardDetails>();

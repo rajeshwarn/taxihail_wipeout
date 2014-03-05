@@ -31,14 +31,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             Order = JsonSerializer.DeserializeFromString<Order>(order); 
             OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 
-            var account = this.Services().Account.CurrentAccount;
-            var paymentInformation = new PaymentInformation
-            {
-                CreditCardId = account.DefaultCreditCard,
-                TipPercent = account.DefaultTipPercent,
-            };
 			PaymentPreferences = new PaymentDetailsViewModel();
-			PaymentPreferences.Init(paymentInformation);
+			PaymentPreferences.Init();
 			TipAmount = (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString();
 
             PaymentSelectorToggleIsVisible = IsPayPalEnabled && IsCreditCardEnabled;
@@ -54,8 +48,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			base.OnViewStarted(firstTime);
 
 			//refresh from the server
-			var orderFromServer = await _accountService.GetHistoryOrderAsync(Order.Id);
-			InitAmounts(orderFromServer);
+//			var orderFromServer = await _accountService.GetHistoryOrderAsync(Order.Id);
+//			InitAmounts(orderFromServer);
 		}
 
 		void InitAmounts(Order order)
@@ -65,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			if (order.Fare.HasValue)
 			{
-				double value = order.Fare.Value + (order.Toll.HasValue ? order.Toll.Value : 0);
+				var value = order.Fare.Value + (order.Toll.HasValue ? order.Toll.Value : 0);
 				MeterAmount = CultureProvider.FormatCurrency(value);
 			}
 
@@ -116,7 +110,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             get
             {
-
 				return this.GetCommand(() => InvokeOnMainThread(delegate
                 {
                     PayPalSelected = true;
@@ -156,7 +149,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{				 
                 return (PaymentPreferences.TipListDisabled ? _tipAmount : (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString());
 			}
-
 			set
 			{
 				_tipAmount = GetTipAmount(value);
