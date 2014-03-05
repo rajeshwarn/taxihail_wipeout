@@ -39,19 +39,22 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly ILogger _logger;
         private readonly IIbsOrderService _ibs;
         private readonly IAccountDao _accountDao;
+        private readonly IOrderPaymentDao _paymentDao;
 
         public BraintreePaymentService(ICommandBus commandBus,
             IOrderDao orderDao,
             ILogger logger,
             IConfigurationManager configurationManager,
             IIbsOrderService ibs,
-            IAccountDao accountDao)
+            IAccountDao accountDao,
+            IOrderPaymentDao paymentDao)
         {
             _commandBus = commandBus;
             _orderDao = orderDao;
             _logger = logger;
             _ibs = ibs;
             _accountDao = accountDao;
+            _paymentDao = paymentDao;
 
             BraintreeGateway =
                 GetBraintreeGateway(
@@ -108,6 +111,16 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 if (orderDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
                 if (orderDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
+                
+                //check if already a payment
+                if (_paymentDao.FindByOrderId(request.OrderId) != null)
+                {
+                    return new CommitPreauthorizedPaymentResponse
+                    {
+                        IsSuccessfull = false,
+                        Message = "order already paid or payment currently processing"
+                    };
+                }
 
                 var transactionRequest = new TransactionRequest
                 {

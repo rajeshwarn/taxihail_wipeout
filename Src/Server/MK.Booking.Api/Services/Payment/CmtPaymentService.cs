@@ -40,9 +40,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly ILogger _logger;
         private readonly IOrderDao _orderDao;
         private readonly IIbsOrderService _ibs;
+        private readonly IOrderPaymentDao _ordrPaymentDao;
 
         public CmtPaymentService(ICommandBus commandBus, IOrderDao orderDao,
-            IAccountDao accountDao, IConfigurationManager configurationManager, ILogger logger, IIbsOrderService ibs)
+            IAccountDao accountDao, IConfigurationManager configurationManager, ILogger logger, IIbsOrderService ibs, IOrderPaymentDao ordrPaymentDao)
         {
             _commandBus = commandBus;
             _orderDao = orderDao;
@@ -51,6 +52,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _configurationManager = configurationManager;
             _logger = logger;
             _ibs = ibs;
+            _ordrPaymentDao = ordrPaymentDao;
             _cmtPaymentServiceClient =
                 new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null,
                     "TaxiHail");
@@ -107,6 +109,16 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 if (orderDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
                 if (orderDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
+
+                //check if already a payment
+                if (_ordrPaymentDao.FindByOrderId(request.OrderId) != null)
+                {
+                    return new CommitPreauthorizedPaymentResponse
+                    {
+                        IsSuccessfull = false,
+                        Message = "order already paid or payment currently processing"
+                    };
+                }
 
                 var orderStatus = _orderDao.FindOrderStatusById(orderDetail.Id);
                 if (orderStatus == null) throw new HttpError(HttpStatusCode.BadRequest, "Order status not found");

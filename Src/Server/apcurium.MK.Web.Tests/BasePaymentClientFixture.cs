@@ -210,6 +210,48 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        public async void when_double_preauthorizing_and_capturing_then_error()
+        {
+            var orderId = Guid.NewGuid();
+            using (var context = ContextFactory.Invoke())
+            {
+                context.Set<OrderDetail>().Add(new OrderDetail
+                {
+                    Id = orderId,
+                    IBSOrderId = 1234,
+                    CreatedDate = DateTime.Now,
+                    PickupDate = DateTime.Now,
+                    AccountId = TestAccount.Id
+                });
+                context.Set<OrderStatusDetail>().Add(new OrderStatusDetail
+                {
+                    OrderId = orderId,
+                    VehicleNumber = "vehicle",
+                    PickupDate = DateTime.Now,
+                    AccountId = TestAccount.Id
+                });
+                context.Set<OrderPaymentDetail>().Add(new OrderPaymentDetail
+                {
+                    OrderId = orderId
+                });
+                context.SaveChanges();
+            }
+
+            var client = GetPaymentClient();
+
+            var tokenizeResponse = await client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "");
+            var token = tokenizeResponse.CardOnFileToken;
+
+            const double amount = 31.50;
+            const double meter = 21.25;
+            const double tip = 10.25;
+
+            var authorization = await client.PreAuthorizeAndCommit(token, amount, meter, tip, orderId);
+            Assert.False(authorization.IsSuccessfull);
+            Assert.AreEqual("order already paid or payment currently processing", authorization.Message);
+        }
+
+        [Test]
         public async void when_tokenizing_a_credit_card_amex()
         {
             var client = GetPaymentClient();
