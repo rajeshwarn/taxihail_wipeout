@@ -11,5 +11,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         void SetPaymentFromCache(Guid orderId, double amount);     
 
 		ClientPaymentSettings GetPaymentSettings(bool cleanCache = false);
+
+		void ClearPaymentSettingsFromCache();
     }
 }

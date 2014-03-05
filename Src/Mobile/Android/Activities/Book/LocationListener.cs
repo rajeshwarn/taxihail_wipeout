@@ -73,17 +73,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public void OnLocationChanged(Location location)
         {
-           
-            var position = new Position()
-            {
-                Time = location.Time.ToDateTime(),
-                Error = location.Accuracy,
-                Latitude = location.Latitude,
-                Longitude = location.Longitude
-            };
-
             try
             {
+                var position = new Position()
+                {
+                    Time = location.Time.ToDateTime(),
+                    Error = location.Accuracy,
+                    Latitude = location.Latitude,
+                    Longitude = location.Longitude
+                };
 
                 foreach (var observer in _observers.ToList())
                 {

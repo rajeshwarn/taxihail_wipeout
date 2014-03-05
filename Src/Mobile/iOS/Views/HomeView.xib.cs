@@ -184,7 +184,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     });
 
                 ctrlAddressPicker.Open();
-                ViewModel.AddressPicker.LoadAddresses();
             }
             else if(hint.State == HomeViewModelState.Initial)
             {

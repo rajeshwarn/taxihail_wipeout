@@ -176,11 +176,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get { return _startingText; }
 			set 
 			{
-				if(value != _startingText)
-				{
-					_startingText = value;
-					RaisePropertyChanged();
-				}
+				_startingText = value;
+				RaisePropertyChanged();
 			}
 		}
 
@@ -191,7 +188,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 return;
             }
 
-			if (criteria.HasValue())
+            if (criteria.HasValue() && criteria != StartingText)
 			{                
 				InvokeOnMainThread(() =>
 					{

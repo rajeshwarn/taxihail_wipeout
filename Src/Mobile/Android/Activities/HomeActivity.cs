@@ -433,7 +433,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 SetMapEnabled(false);
                 _searchAddress.Open();
-                ViewModel.AddressPicker.LoadAddresses();
             } 
             else if(_presentationState == HomeViewModelState.Initial)
             {

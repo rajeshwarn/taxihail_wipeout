@@ -172,7 +172,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
             set.Bind(_addressEditText)
                 .For(v => v.Text)
-                .To(vm => vm.StartingText);
+                .To(vm => vm.StartingText)
+                .OneWay();
 
             set.Bind(_cancelButton)
                 .For("Click")
@@ -184,6 +185,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
         public void Open()
         {        
             Visibility = ViewStates.Visible;
+            ViewModel.LoadAddresses();
             _addressEditText.PostDelayed(() => 
             {
                 _addressEditText.RequestFocusFromTouch();
