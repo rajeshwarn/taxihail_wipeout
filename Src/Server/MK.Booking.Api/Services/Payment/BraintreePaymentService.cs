@@ -180,6 +180,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             isSuccessful = false;
 
                             //cancel braintree transaction
+                            //see paragraph oops here https://www.braintreepayments.com/docs/dotnet/transactions/submit_for_settlement
                             try
                             {
                                 var transaction = BraintreeGateway.Transaction.Find(transactionId);
