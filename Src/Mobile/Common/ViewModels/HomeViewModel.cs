@@ -39,7 +39,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_pushNotificationService = pushNotificationService;
 			_vehicleService= vehicleService;
 
-			Panel = Container.Resolve<PanelMenuViewModel>();
+			var accountService = Container.Resolve<IAccountService>();
+			var phoneService = Container.Resolve<IPhoneService>();
+
+			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService);
 		}
 
 		private bool _locateUser;
