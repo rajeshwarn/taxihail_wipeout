@@ -54,6 +54,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
+				CheckTermsAsync();
+
 				this.Services().Tutorial.DisplayTutorialToNewUser();
 
 				this.Services().PushNotification.RegisterDeviceForPushNotifications(force: true);
@@ -71,6 +73,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_defaultHintZoomLevel = null;
 			}
 			this.Services().Vehicle.Start();
+		}
+
+
+		public async void CheckTermsAsync()
+		{
+			var etagTermsAndConditionsIsUpToDate = false;
+
+			if (!etagTermsAndConditionsIsUpToDate)
+			{				 
+				this.Services().Message.ShowDialog(typeof(UpdatedTermsAndConditionsViewModel));
+			}
 		}
 
 		public override void OnViewStopped()

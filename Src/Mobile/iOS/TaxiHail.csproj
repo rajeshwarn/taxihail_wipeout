@@ -500,6 +500,10 @@
     <Compile Include="Controls\Message\LoadingOverlayView.cs" />
     <Compile Include="Extensions\UITextViewExtensions.cs" />
     <Compile Include="Controls\Delegate\CardScannerDelegate.cs" />
+    <Compile Include="Views\UpdatedTermsAndConditionsView.cs" />
+    <Compile Include="Views\UpdatedTermsAndConditions.designer.cs">
+      <DependentUpon>UpdatedTermsAndConditionsView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -543,6 +547,7 @@
     <InterfaceDefinition Include="Views\Order\OrderReviewView.xib" />
     <InterfaceDefinition Include="Views\Order\OrderEditView.xib" />
     <InterfaceDefinition Include="Views\Order\OrderEditView_Thriev.xib" />
+    <InterfaceDefinition Include="Views\UpdatedTermsAndConditionsView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
