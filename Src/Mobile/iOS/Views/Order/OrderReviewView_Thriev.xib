@@ -73,7 +73,7 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="passengers.png" translatesAutoresizingMaskIntoConstraints="NO" id="JLh-1X-33p">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="baggage.png" translatesAutoresizingMaskIntoConstraints="NO" id="JLh-1X-33p">
                     <rect key="frame" x="156" y="44" width="16" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
@@ -145,8 +145,8 @@
     </objects>
     <resources>
         <image name="account.png" width="16" height="16"/>
+        <image name="baggage.png" width="16" height="16"/>
         <image name="chargetype.png" width="16" height="16"/>
-        <image name="passengers.png" width="16" height="16"/>
         <image name="telephone.png" width="16" height="16"/>
         <image name="time.png" width="16" height="16"/>
         <image name="vehicle.png" width="16" height="16"/>

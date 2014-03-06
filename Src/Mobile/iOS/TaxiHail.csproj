@@ -743,6 +743,8 @@
     <BundleResource Include="Resources\taxi_progress%402x.png" />
     <BundleResource Include="Resources\close_tutorial_button.png" />
     <BundleResource Include="Resources\close_tutorial_button%402x.png" />
+    <BundleResource Include="Resources\baggage.png" />
+    <BundleResource Include="Resources\baggage%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
