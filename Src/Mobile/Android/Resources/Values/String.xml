@@ -469,4 +469,8 @@
   <string name="ScanCreditCard">Scan Credit Card</string>
   <string name="NoFareTextIfDestinationIsRequired">You need to specify a destination.</string>
   <string name="Destination">Destination</string>
+  <string name="WarningLocationService">Please turn on location services to have your location show up in the map.</string>
+  <string name="WarningLocationServiceTitle">Warning</string>
+  <string name="WarningLocationServiceDontShow">Don\'t warn</string>
+  <string name="WarningLocationServiceCancel">Cancel</string>
 </resources>
