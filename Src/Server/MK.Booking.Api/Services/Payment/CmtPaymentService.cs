@@ -204,22 +204,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             isSuccessful = false;
 
                             //cancel CMT transaction
-                            try
+                            //waiting API from CMT in the meantime we log the error in the database
+                            _commandBus.Send(new LogCreditCardPaymentCancellationFailed
                             {
-                               //waiting code from CMT
-                            }
-                            catch (Exception ex)
-                            {
-                                _logger.LogMessage("can't cancel braintree transaction");
-                                _logger.LogError(ex);
-                                message = message + ex.Message;
-                                //can't cancel transaction, send a command to log
-                                _commandBus.Send(new LogCreditCardPaymentCancellationFailed
-                                {
-                                    PaymentId = paymentId,
-                                    Reason = message
-                                });
-                            }
+                                PaymentId = paymentId,
+                                Reason = message
+                            });
                         }
                     }
 
