@@ -143,7 +143,7 @@ namespace DatabaseInitializer
                 Console.WriteLine("Add user for IIS...");
 
                 ////add user for IIS IIS APPPOOL\MyCompany
-                if (companyName != "MKWebDev")
+                if ( (companyName != "MKWebDev") && ( connectionString.ConnectionString.ToLower().Contains("integrated security=true")))
                 {
                     creatorDb.AddUserAndRighst(connStringMaster, connectionString.ConnectionString,
                         "IIS APPPOOL\\" + companyName, companyName);

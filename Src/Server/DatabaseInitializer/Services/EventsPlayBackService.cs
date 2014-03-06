@@ -43,11 +43,20 @@ namespace DatabaseInitializer.Services
                 allEvents = context.Set<Event>().OrderBy(x => x.EventDate).ToList();
             }
 
+            Console.WriteLine( "Total number of events: " + allEvents.Count().ToString() );
+
+            int progress = 0;
             if (allEvents.Any())
             {
                 foreach (var @event in allEvents)
                 {
                     _eventBus.Publish(new Envelope<IEvent>(Deserialize(@event)) {CorrelationId = @event.CorrelationId});
+                    
+                    progress ++;                    
+                    if( progress % 1000 == 0 )
+                    {
+                        Console.WriteLine( "Played event count : " +  progress.ToString() );
+                    }
                 }
             }
         }
