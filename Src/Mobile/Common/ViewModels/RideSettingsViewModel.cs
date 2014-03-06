@@ -59,8 +59,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (_paymentPreferences == null)
                 {
-					_paymentPreferences = new PaymentDetailsViewModel();
-					_paymentPreferences.Init();
+					_paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
+					_paymentPreferences.Start();
                 }
                 return _paymentPreferences;
             }

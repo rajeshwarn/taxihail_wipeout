@@ -11,8 +11,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 		public new void Init(string currentPaymentInformation)
 		{
 			DefaultPaymentInformations = JsonSerializer.DeserializeFromString<PaymentInformation>(currentPaymentInformation);
-			PaymentPreferences = new PaymentDetailsViewModel();
-			PaymentPreferences.Init(DefaultPaymentInformations);
+			PaymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
+			PaymentPreferences.Start(DefaultPaymentInformations);
 			PaymentPreferences.LoadCreditCards();
 		}
 

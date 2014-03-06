@@ -31,8 +31,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             Order = JsonSerializer.DeserializeFromString<Order>(order); 
             OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 
-			PaymentPreferences = new PaymentDetailsViewModel();
-			PaymentPreferences.Init();
+			PaymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
+			PaymentPreferences.Start();
 			TipAmount = (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString();
 
             PaymentSelectorToggleIsVisible = IsPayPalEnabled && IsCreditCardEnabled;

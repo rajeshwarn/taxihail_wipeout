@@ -9,18 +9,25 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-	public class PaymentDetailsViewModel: BaseViewModel
+	public class PaymentDetailsViewModel : BaseViewModel
 	{
+		private IAccountService _accountService;
 		private int DefaultTipValue = 15;
 
-		public void Init(PaymentInformation paymentDetails = null)
+		public PaymentDetailsViewModel(IAccountService accountService)
 		{
-			CreditCards.CollectionChanged += (sender, e) =>  RaisePropertyChanged(()=>HasCreditCards);
+			_accountService = accountService;
+		}
 
-			LoadCreditCards();        
+		public void Start(PaymentInformation paymentDetails = null)
+		{
+			CreditCards.CollectionChanged += (sender, e) => RaisePropertyChanged(() => HasCreditCards);
+
+			LoadCreditCards();
 
 			Tips = new ListItem[]
 			{ 
@@ -38,29 +45,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				paymentDetails = new PaymentInformation();
 			}
 
+			var currentAccount = _accountService.CurrentAccount;
+
 			// check null and set to default values in case of null
 			if (!paymentDetails.CreditCardId.HasValue)
 			{
-				var creditCards = this.Services().Account.GetCreditCards();
-				if (this.Services().Account.CurrentAccount.DefaultCreditCard.HasValue 
-					&& creditCards.Any(x => x.CreditCardId == this.Services().Account.CurrentAccount.DefaultCreditCard.Value))
+				var creditCards = _accountService.GetCreditCards();
+				if (currentAccount.DefaultCreditCard.HasValue 
+					&& creditCards.Any(x => x.CreditCardId == currentAccount.DefaultCreditCard.Value))
 				{
-					paymentDetails.CreditCardId = this.Services().Account.CurrentAccount.DefaultCreditCard;
+					paymentDetails.CreditCardId = currentAccount.DefaultCreditCard;
 				}
 				else
 				{
 					if (creditCards.Any())
 					{
-						paymentDetails.CreditCardId = creditCards.First().CreditCardId;
+						paymentDetails.CreditCardId = CreditCards.First().CreditCardId;
 					}
 				}
 			}
 
 			if (!paymentDetails.TipPercent.HasValue)
 			{
-				if (this.Services().Account.CurrentAccount.DefaultTipPercent.HasValue)
+				if (currentAccount.DefaultTipPercent.HasValue)
 				{
-					paymentDetails.TipPercent = this.Services().Account.CurrentAccount.DefaultTipPercent;
+					paymentDetails.TipPercent = currentAccount.DefaultTipPercent;
 				}
 				else
 				{
@@ -70,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			SelectedCreditCardId = paymentDetails.CreditCardId.GetValueOrDefault();
 			Tip = paymentDetails.TipPercent.Value;
-        }
+		}
     
         private readonly ObservableCollection<CreditCardDetails> _creditCards = new ObservableCollection<CreditCardDetails>();
 		public ObservableCollection<CreditCardDetails> CreditCards  { get { return _creditCards; } }
@@ -174,26 +183,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 								});
 							SelectedCreditCardId = newCreditCard.CreditCardId;
 							//save as default if none
-							if(!this.Services().Account.CurrentAccount.DefaultCreditCard.HasValue)
+							if(!_accountService.CurrentAccount.DefaultCreditCard.HasValue)
 							{
-								var account = this.Services().Account.CurrentAccount;
+								var account = _accountService.CurrentAccount;
 								account.DefaultCreditCard = newCreditCard.CreditCardId;
-								this.Services().Account.UpdateSettings(account.Settings, newCreditCard.CreditCardId, account.DefaultTipPercent);
+								_accountService.UpdateSettings(account.Settings, newCreditCard.CreditCardId, account.DefaultTipPercent);
 							}
 						}));
 					}
 					else
 					{
 						ShowSubViewModel<CreditCardsListViewModel, Guid>(null, result => 
-								{
-									if(result != default(Guid))
-									{
-									  SelectedCreditCardId = result;
+						{
+							if(result != default(Guid))
+							{
+								SelectedCreditCardId = result;
 
-									  //Reload credit cards in case the credit card list has changed (add/remove)
-									  LoadCreditCards();
-									}
-                       			});
+								//Reload credit cards in case the credit card list has changed (add/remove)
+								LoadCreditCards();
+							}
+               			});
 					}
 				});
 			}
@@ -203,7 +212,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             var task = Task.Factory.StartNew(() => 
 				{
-					var cards = this.Services().Account.GetCreditCards();
+					var cards = _accountService.GetCreditCards();
                     InvokeOnMainThread(delegate {
 						CreditCards.Clear();
                         foreach (var card in cards) {
