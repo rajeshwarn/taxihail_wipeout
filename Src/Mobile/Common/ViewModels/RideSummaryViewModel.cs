@@ -77,8 +77,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				var sendReceiptAvailable = Settings.SendReceiptAvailable;
-                return (OrderStatus != null) && OrderStatus.FareAvailable && sendReceiptAvailable;
+				var fareIsAvailable = OrderStatus.FareAvailable || this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue;
+				return (OrderStatus != null) && fareIsAvailable && Settings.SendReceiptAvailable;
 			}
 		}
 

@@ -25,6 +25,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.Client.Views;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -71,6 +72,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             var appSettingsService = TinyIoCContainer.Current.Resolve<IAppSettings>();
             appSettingsService.Load();
+
+            var paymentService = TinyIoCContainer.Current.Resolve<IPaymentService>();
+            paymentService.ClearPaymentSettingsFromCache();
 
 			var startup = Mvx.Resolve<IMvxAppStart>();
 			startup.Start(@params);

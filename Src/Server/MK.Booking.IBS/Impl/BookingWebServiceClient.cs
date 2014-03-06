@@ -11,6 +11,7 @@ using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using ServiceStack.Text;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 #endregion
 
@@ -61,7 +62,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             UseService(service =>
             {
-                var orderStatus = service.GetOrderStatus(UserNameApp, PasswordApp, orderId, contactPhone, string.Empty,
+                var orderStatus = service.GetOrderStatus(UserNameApp, PasswordApp, orderId, CleanPhone(contactPhone), string.Empty,
                     accountId);
                 status.Status = orderStatus.ToString();
 
@@ -82,7 +83,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             var result = new IbsOrderDetails();
             UseService(service =>
             {
-                var order = service.GetBookOrder_7(UserNameApp, PasswordApp, orderId, contactPhone, null, accountId);
+                var order = service.GetBookOrder_7(UserNameApp, PasswordApp, orderId, CleanPhone(contactPhone), null, accountId);
                 if (order != null)
                 {
                     result.VehicleNumber = order.CabNo.ToSafeString().Trim();
@@ -164,8 +165,8 @@ namespace apcurium.MK.Booking.IBS.Impl
                 //*********************************Keep this code.  They are testing this method 
                 //var resultat = service.SendMsg_3dPartyPaymentNotification(UserNameApp, PasswordApp, vehicleNumber, true, ibsOrderId, message);
                 //success = resultat == 0;
-                var result = service.SendDriverMsg_2(UserNameApp, PasswordApp, vehicleNumber, message);
-                success = result == 1;
+                var result = service.SendDriverMsg(UserNameApp, PasswordApp, vehicleNumber, message);
+                success = result == 0;
 
             });
             return success;
@@ -180,8 +181,9 @@ namespace apcurium.MK.Booking.IBS.Impl
                {
                    int result = 0;
                    result  = service.SaveExtrPayment_2(UserNameApp, PasswordApp, orderId, transactionId, authorizationCode, cardToken, type, provider, 0, 0, 0, 0,
-                    ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name, phone, email, os, userAgent);
+                    ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name, CleanPhone(phone), email, os, userAgent);
                    success = result == 0;
+                   
                    //*********************************Keep this code.  MK is testing this method as soon as it's ready, 
                    //var auth = new TPaymentAuthorization3dParty
                    //{
@@ -216,17 +218,24 @@ namespace apcurium.MK.Booking.IBS.Impl
             return Convert.ToInt32(dollarAmout * 100);
         }
 
+        private string CleanPhone(string phone)
+        {
+            var regEx = new Regex(@"\D");
+            return regEx.Replace(phone, "");
+        }
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers,
             int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup,
             IbsAddress dropoff, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
+
+            
             var order = new TBookOrder_7
             {
                 ServiceProviderID = providerId.GetValueOrDefault(),
                 AccountID = accountId,
                 Customer = passengerName,
-                Phone = phone,
+                Phone = CleanPhone( phone ),
                 Fare = (double)fare.AmountExclTax,
                 VAT = (double)fare.TaxAmount
             };
@@ -277,7 +286,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.Passengers = nbPassengers;
             order.VehicleTypeID = vehicleTypeId ?? 0;
             order.Note = note;
-            order.ContactPhone = phone;
+            order.ContactPhone = CleanPhone( phone );
             order.OrderStatus = TWEBOrderStatusValue.wosPost;
 
 
@@ -311,8 +320,8 @@ namespace apcurium.MK.Booking.IBS.Impl
             UseService(service =>
             {
                 var count = 0;
-                var result = service.CancelBookOrder(UserNameApp, PasswordApp, orderId, contactPhone, null, accountId);
-                var status = GetOrderStatus(orderId, accountId, contactPhone);
+                var result = service.CancelBookOrder(UserNameApp, PasswordApp, orderId, CleanPhone(contactPhone), null, accountId);
+                var status = GetOrderStatus(orderId, accountId, CleanPhone(contactPhone));
                 isCompleted = (result == 0) && (VehicleStatuses.CompletedStatuses.Contains(status.Status));
             });
             return isCompleted;

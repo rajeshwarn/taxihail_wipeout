@@ -83,9 +83,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             line1 = line1.PadRight(32, ' ');
             //Padded with 32 char because the MDT displays line of 32 char.  This will cause to write the auth code on the second line
             var line2 = string.Format(resources.GetString("PaymentConfirmationToDriver2"), authorizationCode);
+            
             _ibs.SendPaymentNotification(line1 + line2, orderStatusDetail.VehicleNumber, orderDetail.IBSOrderId.Value);
             
-
             _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value, amount, tip, meter, type, provider, transactionId, authorizationCode, payment.CardToken, account.IBSAccountId, orderDetail.Settings.Name, orderDetail.Settings.Phone, account.Email, orderDetail.UserAgent.GetOperatingSystem(), orderDetail.UserAgent);
             
         }

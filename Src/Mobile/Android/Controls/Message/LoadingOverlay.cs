@@ -11,6 +11,7 @@ using Android.Graphics.Drawables;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Cirrious.CrossCore.Droid.Platform;
 using TinyIoC;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Client.Activities;
@@ -31,9 +32,42 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         private static LinearLayout _layoutImage;
         private static Android.Graphics.Color _colorToUse = Android.Graphics.Color.ParseColor("#0378ff");
 
-        public static void StartAnimatingLoading(RelativeLayout masterLayout, Activity activity)
+        public static void StartAnimatingLoading()
         {
-            _activity = activity;
+            _activity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
+            var rootView = _activity.Window.DecorView.RootView as ViewGroup;
+
+            if (rootView == null)
+            {
+                return;
+            }                
+
+            LoadingOverlay.WaitMore();
+
+            if (WaitStack > 1)
+            {
+                return;
+            }
+
+            if (_activity.Intent.Categories == null || !_activity.Intent.Categories.Contains("Progress"))
+            {
+                _activity.Intent.AddCategory("Progress");
+            }
+
+            Initialize(rootView);
+            StartAnimationLoop();
+        }
+
+        public static void Initialize(ViewGroup rootView)
+        {
+            Progress = 0;
+            _isLoading = true;
+
+            var contentView = rootView.GetChildAt(0);
+            rootView.RemoveView(contentView);
+            var masterLayout = new RelativeLayout(_activity.ApplicationContext);
+            masterLayout.LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
+            masterLayout.AddView(contentView);
 
             var layoutParent = new LinearLayout(_activity);
             _layoutCenter = new LinearLayout(_activity);
@@ -65,6 +99,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             layoutParent.AddView(_layoutCenter);
             masterLayout.AddView(layoutParent, layoutParentParameters);
 
+            rootView.AddView(masterLayout);
+
             _layoutCenter.ClearAnimation();
             _layoutImage.SetBackgroundDrawable(null);
 
@@ -89,19 +125,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             var _radius = _car.Width * 1.3f;
 
-            Progress = 0;
-
             _zoneCircle = new RectF((_windowSize.Width * 0.5f) - _radius / 2f, (_windowSize.Height * 0.5f) - _radius / 2f,  (_windowSize.Width * 0.5f) + _radius / 2f, (_windowSize.Height * 0.5f) + _radius / 2f);
 
-            _isLoading = true;
-
-            StartAnimationLoop();
+            _activity.RunOnUiThread(() =>
+            {
+                rootView.RequestLayout();
+            });
         }
 
         public static void StopAnimatingLoading()
         {                
-            _isLoading = false;       
+            WaitStack -= 1;
+
+            if (WaitStack < 1)
+            {
+                _isLoading = false;    
+                if (_activity.Intent.Categories != null && _activity.Intent.Categories.Contains("Progress"))
+                {
+                    _activity.Intent.Categories.Remove("Progress");
+                }
+            }
         }
+
+        public static void WaitMore()
+        {
+            WaitStack += 1;
+            _isLoading = true;
+
+            if (Progress > 20)
+            {
+                Progress /= 2f;
+            }
+        }
+
+        public static int WaitStack = 0;
 
         private static async void StartAnimationLoop()
         {
@@ -117,12 +174,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             _activity.RunOnUiThread(async () =>
             {
-                _layoutImage.SetBackgroundDrawable(GetCircleForProgress());
-                await Task.Delay(500);
-                RelativeLayout root = (RelativeLayout) _layoutCenter.Parent.Parent;
-                if (root != null && _layoutCenter.Parent != null)
+                try
                 {
-                    root.RemoveView((LinearLayout)_layoutCenter.Parent);
+                    _layoutImage.SetBackgroundDrawable(GetCircleForProgress());
+                }
+                catch
+                {
+
+                }
+
+                await Task.Delay(500);
+
+                if (_layoutCenter.Parent != null)
+                {
+                    RelativeLayout root = (RelativeLayout)_layoutCenter.Parent.Parent;
+                    if (root != null)
+                    {
+                        root.RemoveView((LinearLayout)_layoutCenter.Parent);
+                    }
                 }
             });
         }

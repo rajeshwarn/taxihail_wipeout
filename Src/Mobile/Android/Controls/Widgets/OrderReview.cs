@@ -1,16 +1,18 @@
 using System;
-using Cirrious.MvvmCross.Binding.Droid.Views;
+using System.Drawing;
 using Android.Content;
 using Android.Util;
 using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
-using System.Drawing;
 using Cirrious.MvvmCross.Binding.Attributes;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using apcurium.MK.Common.Configuration;
+using Cirrious.MvvmCross.Binding.Droid.Views;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -34,6 +36,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _lblRingCode = (TextView)FindViewById<TextView>(Resource.Id.lblRingCode);
                 _editNote = FindViewById<EditText>(Resource.Id.txtNotes);
 
+                // hack for scroll in view when in EditText
+                _bottomPadding = FindViewById<LinearLayout>(Resource.Id.HackBottomPadding);
+                TextFieldInHomeSubviewsBehavior.ApplyTo(
+                    _editNote, 
+                    () => _bottomPadding.Visibility = ViewStates.Visible, 
+                    () => _bottomPadding.Visibility = ViewStates.Gone);
+
                 InitializeBinding();
             });              
         }
@@ -47,6 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private TextView _lblApt;
         private TextView _lblRingCode;
         private EditText _editNote;
+        private LinearLayout _bottomPadding;
 
         private OrderReviewViewModel ViewModel { get { return (OrderReviewViewModel)DataContext; } }
 
@@ -107,7 +117,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Apply();
         }
-
     }
 }
 

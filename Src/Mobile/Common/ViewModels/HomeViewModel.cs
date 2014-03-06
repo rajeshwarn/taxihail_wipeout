@@ -13,12 +13,16 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using System.Drawing;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using ServiceStack.Text;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class HomeViewModel : BaseViewModel
     {
 		readonly IOrderWorkflowService _orderWorkflowService;
+		private bool _locateUser;
+		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
 
 		ILocationService _locationService;
 		ITutorialService _tutorialService;
@@ -40,6 +44,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService);
 		}
 
+		public void Init(bool locateUser, string defaultHintZoomLevel)
+		{
+			_locateUser = locateUser;
+			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);			
+		}
+
 		public override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
@@ -56,13 +66,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				BottomBar.Save = OrderEdit.Save;
 				BottomBar.CancelEdit = OrderEdit.Cancel;
 
-				LocateMe.Execute();
-
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
 				_tutorialService.DisplayTutorialToNewUser();
 
 				_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
+			}
+
+			if (_locateUser)
+			{
+				LocateMe.Execute();
+				_locateUser = false;
+			}
+
+			if (_defaultHintZoomLevel != null)
+			{
+				this.ChangePresentation(_defaultHintZoomLevel);
+				_defaultHintZoomLevel = null;
 			}
 			_vehicleService.Start();
 		}

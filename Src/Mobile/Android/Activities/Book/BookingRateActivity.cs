@@ -2,7 +2,6 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Widget;
-
 using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
@@ -19,7 +18,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _listView = FindViewById<ListView>(Resource.Id.RatingListView);
             _listView.Divider = null;
             _listView.DividerHeight = 0;
-            _listView.SetPadding(10, 0, 10, 0);
         }
 
         protected override void OnViewModelSet()

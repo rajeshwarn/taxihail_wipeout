@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public override void Start()
         {
 #if DEBUG
-            Email = "john@taxihail.com";
+			Email = "john@taxihail.com";
             Password = "password";          
 #endif
         }
@@ -296,7 +296,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return;
 			}
 
-			ShowViewModelAndRemoveFromHistory<HomeViewModel>();
+			ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser =  true });
 			if (LoginSucceeded != null)
 			{
 				LoginSucceeded(this, EventArgs.Empty);

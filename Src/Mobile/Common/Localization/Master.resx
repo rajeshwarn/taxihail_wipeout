@@ -708,6 +708,18 @@
   <data name="WarningEstimateDontShow" xml:space="preserve">
     <value>Don't warn</value>
   </data>
+  <data name="WarningLocationService" xml:space="preserve">
+    <value>Please turn on location services to have your location show up in the map.</value>
+  </data>
+  <data name="WarningLocationServiceTitle" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="WarningLocationServiceDontShow" xml:space="preserve">
+    <value>Don't warn</value>
+  </data>
+  <data name="WarningLocationServiceCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="ResetPasswordConfirmationTitle" xml:space="preserve">
     <value>Password sent</value>
   </data>
@@ -833,6 +845,9 @@
   </data>
   <data name="NoFareText" xml:space="preserve">
     <value>Choose a destination to get a price estimate.</value>
+  </data>
+  <data name="NoFareTextIfDestinationIsRequired" xml:space="preserve">
+    <value>You need to specify a destination.</value>
   </data>
   <data name="PickupDateDisplay" xml:space="preserve">
     <value>Reservation for {0:ddd, MMM d} at {0:h:mm tt}</value>
@@ -1469,8 +1484,8 @@
   <data name="mobileKnowledgeUrl" xml:space="preserve">
     <value>http://www.mobile-knowledge.com/</value>
   </data>
-  <data name="Estimate" xml:space="preserve">
-    <value>Estimate</value>
+  <data name="Destination" xml:space="preserve">
+    <value>Destination</value>
   </data>
   <data name="CmtRideLinqConfirmPairViewConfirmPairDetailText" xml:space="preserve">
     <value>Check that you are in the vehicle indicated above. If you confirm this ride will be paid automatically using your default payment settings.</value>
@@ -1480,5 +1495,8 @@
   </data>
   <data name="Collapse" xml:space="preserve">
     <value>Collapse</value>
+  </data>
+  <data name="ScanCreditCard" xml:space="preserve">
+    <value>Scan Credit Card</value>
   </data>
 </root>

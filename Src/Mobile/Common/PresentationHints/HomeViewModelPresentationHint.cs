@@ -12,11 +12,24 @@ namespace apcurium.MK.Booking.Mobile.PresentationHints
 			State = state;
         }
 
+        public HomeViewModelPresentationHint(HomeViewModelState state, bool newOrder)
+        {
+            State = state;
+            IsNewOrder = newOrder;
+        }
+
 		public HomeViewModelState State
 		{
 			get;
 			private set;
 		}
+
+        public bool IsNewOrder
+        {
+            get;
+            set;
+        }
+
     }
 }
 

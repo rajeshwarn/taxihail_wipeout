@@ -28,8 +28,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 			title = new UILabel (new RectangleF (10, 0, 80, 30)){
 				BackgroundColor = UIColor.Clear,
 				AdjustsFontSizeToFitWidth = true,
-				Font = UIFont.BoldSystemFontOfSize (22),
-				MinimumFontSize = 14,
+                Font = UIFont.BoldSystemFontOfSize (22), 
+                MinimumScaleFactor = 14,
 				TextColor = UIColor.White,
 				ShadowColor = UIColor.FromRGB (64, 74, 87),
 				ShadowOffset = new SizeF (0, -1)
@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 			topBar.Items = new UIBarButtonItem []  {
 				new UIBarButtonItem (title),
 				flexibleSpace,
-				new UIBarButtonItem ("Close", UIBarButtonItemStyle.Bordered, (o, e) => { DismissModalViewControllerAnimated (true);} )
+                new UIBarButtonItem ("Close", UIBarButtonItemStyle.Bordered, (o, e) => { DismissViewController(true, () => {});} )
 			};
 			
 			backButton = new UIBarButtonItem (UIImage.FromFile ("back.png"), UIBarButtonItemStyle.Plain, (o, e) => { WebView.GoBack (); });

@@ -33,8 +33,9 @@
                     android:paddingBottom="5dip"
                     android:text="Name"
                     style="@style/BlackTextLabel" />
-                <EditText
+                <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
                     android:id="@+id/txtName"
+                    android:imeOptions="actionDone"
                     android:layout_width="fill_parent"
                     android:layout_marginBottom="8dip"
                     android:layout_height="@dimen/HeightEditTextFlat"
@@ -60,8 +61,9 @@
                             android:paddingBottom="5dip"
                             android:text="Phone"
                             style="@style/BlackTextLabel" />
-                        <EditText
+                        <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
                             android:id="@+id/txtPhone"
+                            android:imeOptions="actionDone"
                             android:layout_width="fill_parent"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:background="#f2f2f2"
@@ -87,8 +89,9 @@
                             android:layout_width="fill_parent"
                             android:text="Passengers"
                             android:layout_height="wrap_content" />
-                        <EditText
+                        <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
                             android:id="@+id/txtPassengers"
+                            android:imeOptions="actionDone"
                             android:layout_width="fill_parent"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:background="#f2f2f2"
@@ -118,8 +121,9 @@
                             android:layout_width="fill_parent"
                             android:text="Apartment"
                             android:layout_height="wrap_content" />
-                        <EditText
+                        <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
                             android:id="@+id/txtApartment"
+                            android:imeOptions="actionDone"
                             android:layout_width="fill_parent"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:background="#f2f2f2"
@@ -144,8 +148,9 @@
                             android:layout_width="fill_parent"
                             android:text="Entry code"
                             android:layout_height="wrap_content" />
-                        <EditText
+                        <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
                             android:id="@+id/txtEntryCode"
+                            android:imeOptions="actionDone"
                             android:layout_width="fill_parent"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:background="#f2f2f2"
@@ -182,6 +187,11 @@
                     android:layout_height="@dimen/HeightEditTextFlat"
                     android:background="#f2f2f2"
                     android:layout_marginBottom="10dip" />
+                <LinearLayout
+                    android:id="@+id/HackBottomPadding"
+                    android:layout_width="fill_parent"
+                    android:layout_height="175dp"
+                    android:visibility="gone" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

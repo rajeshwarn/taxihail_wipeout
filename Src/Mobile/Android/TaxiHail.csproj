@@ -175,6 +175,9 @@
     <Reference Include="Xamarin.Android.Support.v7.MediaRouter">
       <HintPath>..\Components\googleplayservicesgingerbread-15.0\lib\android\Xamarin.Android.Support.v7.MediaRouter.dll</HintPath>
     </Reference>
+    <Reference Include="CardIO">
+      <HintPath>..\Libraries\Monodroid\CardIO.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
@@ -599,6 +602,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen05.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen06.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen07.png" />
+    <Compile Include="Controls\Behavior\TextFieldInHomeSubviewsBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -779,11 +783,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\SimpleOrderListItem.axml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Layout\SubView_BookButtons.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\TutorialListItem.axml">

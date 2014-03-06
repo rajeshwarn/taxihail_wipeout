@@ -58,8 +58,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_localize = localize;
 			_bookingService = bookingService;
 
-			_estimatedFareSubject = new BehaviorSubject<string>(_localize["NoFareText"]);
-
+			_estimatedFareSubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		}
 
 		public async Task SetAddress(Address address)
@@ -154,13 +153,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 
 			var destinationIsRequired = _appSettings.Data.DestinationIsRequired;
-			var destinationAddress = await _destinationAddressSubject.Take(1).ToTask();
-			var destinationIsValid = destinationAddress.BookAddress.HasValue()
-			                         && destinationAddress.HasValidCoordinate();
 
-			if (destinationIsRequired && !destinationIsValid)
+			if (destinationIsRequired)
 			{
-				throw new OrderValidationException("Destination address required", OrderValidationError.DestinationAddressRequired);
+				var currentSelectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
+				if (currentSelectionMode == AddressSelectionMode.PickupSelection)
+				{
+					await ToggleBetweenPickupAndDestinationSelectionMode();
+					throw new OrderValidationException("Open the destination selection", OrderValidationError.OpenDestinationSelection);
+				}
+
+				var destinationAddress = await _destinationAddressSubject.Take(1).ToTask();
+				var destinationIsValid = destinationAddress.BookAddress.HasValue()
+					&& destinationAddress.HasValidCoordinate();
+
+				if (!destinationIsValid)
+				{
+					throw new OrderValidationException("Destination address required", OrderValidationError.DestinationAddressRequired);
+				}
 			}
 
 			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
@@ -227,6 +237,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 						throw new OrderCreationException(message, messageNoCall);
 					default:
 						// Unhandled errors
+						// if ibs3000, there's a problem with the account, use a different one
 						message = string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"];
 						throw new OrderCreationException(message, messageNoCall);
@@ -356,7 +367,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var destinationAddress = await _destinationAddressSubject.Take(1).ToTask();
 			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
 
-            var estimatedFareString = await _bookingService.GetFareEstimateDisplay(pickupAddress, destinationAddress, pickupDate, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
+			var estimatedFareString = await _bookingService.GetFareEstimateDisplay(pickupAddress, destinationAddress, pickupDate, "EstimatePriceFormat", 
+				_appSettings.Data.DestinationIsRequired 
+					? "NoFareTextIfDestinationIsRequired"
+					: "NoFareText", 
+				true, 
+				"EstimatedFareNotAvailable");
 
             _estimatedFareSubject.OnNext(estimatedFareString);
 		}
@@ -364,11 +380,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public void PrepareForNewOrder()
 		{
 			_noteToDriverSubject.OnNext(string.Empty);
+			_pickupAddressSubject.OnNext(new Address());
 			_destinationAddressSubject.OnNext(new Address());
 			_addressSelectionModeSubject.OnNext(AddressSelectionMode.PickupSelection);
 			_pickupDateSubject.OnNext(null);
 			_bookingSettingsSubject.OnNext(_accountService.CurrentAccount.Settings);
-			_estimatedFareSubject.OnNext(_localize["NoFareText"]);
+			_estimatedFareSubject.OnNext(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		}
 
 		public void ResetOrderSettings()

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayoutReview"
     android:background="@drawable/drop_shadow"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -219,7 +220,7 @@
                             android:id="@+id/lblRingCode" />
                     </LinearLayout>
                 </LinearLayout>
-                <EditText
+                <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
                     android:background="#eeeeee"
                     android:inputType="textMultiLine"
                     android:id="@+id/txtNotes"
@@ -232,6 +233,11 @@
                     android:gravity="left|top"
                     android:layout_marginTop="16dip"
                     android:minHeight="44dip" />
+                <LinearLayout
+                    android:id="@+id/HackBottomPadding"
+                    android:layout_width="fill_parent"
+                    android:layout_height="175dip"
+                    android:visibility="gone" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

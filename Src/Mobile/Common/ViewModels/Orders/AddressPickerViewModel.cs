@@ -58,15 +58,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					AllAddresses.Clear();
 
 					var resultFavoritePlaces = await favoritePlaces;
-					var _defaultFavoriteAddresses = ConvertToAddressViewModel(resultFavoritePlaces, AddressType.Favorites);
+					_defaultFavoriteAddresses = ConvertToAddressViewModel(resultFavoritePlaces, AddressType.Favorites);
 					AllAddresses.AddRange(_defaultFavoriteAddresses);
 
 					var resultHistoryPlaces = await historyPlaces;
-					var _defaultHistoryAddresses = ConvertToAddressViewModel(resultHistoryPlaces, AddressType.History);
+					_defaultHistoryAddresses = ConvertToAddressViewModel(resultHistoryPlaces, AddressType.History);
 					AllAddresses.AddRange(_defaultHistoryAddresses);
 
 					var resultNeabyPlaces = await neabyPlaces;
-					var _defaultNearbyPlaces = ConvertToAddressViewModel(resultNeabyPlaces, AddressType.Places);
+					_defaultNearbyPlaces = ConvertToAddressViewModel(resultNeabyPlaces, AddressType.Places);
 					AllAddresses.AddRange(_defaultNearbyPlaces);
 				}
 			}
@@ -176,11 +176,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get { return _startingText; }
 			set 
 			{
-				if(value != _startingText)
-				{
-					_startingText = value;
-					RaisePropertyChanged();
-				}
+				_startingText = value;
+				RaisePropertyChanged();
 			}
 		}
 
@@ -191,7 +188,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 return;
             }
 
-			if (criteria.HasValue())
+            if (criteria.HasValue() && criteria != StartingText)
 			{                
 				InvokeOnMainThread(() =>
 					{

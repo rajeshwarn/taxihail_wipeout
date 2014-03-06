@@ -41,7 +41,7 @@
                     android:textColor="@drawable/button_highlight_text_selector"
                     android:layout_width="wrap_content"
                     android:layout_height="24dip"
-                    android:text="@string/Estimate"
+                    android:text="@string/Destination"
                     android:layout_gravity="center_horizontal" />
             </LinearLayout>
         </LinearLayout>
@@ -65,18 +65,19 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:orientation="vertical"
+            android:minWidth="55dip"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
             android:paddingRight="15dp"
             android:gravity="center_vertical">
             <LinearLayout
                 android:id="@+id/btnBookLaterLayout"
                 android:background="@drawable/button_highlight_selector"
                 android:orientation="vertical"
-                android:minWidth="55dip"
-                android:paddingTop="5dip"
-                android:paddingBottom="5dip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                local:MvxBind="Visibility Settings.DisableFutureBooking, Converter=InvertedVisibility"
                 android:layout_gravity="center|center">
                 <ImageView
                     android:id="@+id/btnBookLater"

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -226,7 +227,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					var account = _accountService.CurrentAccount;
 					order.Settings = account.Settings;
 					_orderWorkflowService.Rebook(order);
-					ShowViewModel<HomeViewModel>();
+					ShowViewModel<HomeViewModel>(new { 
+							locateUser =  false, 
+							defaultHintZoomLevel = new ZoomToStreetLevelPresentationHint(order.PickupAddress.Latitude, order.PickupAddress.Longitude).ToJson()});
 				});
 			}
 		}

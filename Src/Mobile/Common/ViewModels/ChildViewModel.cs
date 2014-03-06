@@ -1,11 +1,13 @@
 using System;
-using Cirrious.MvvmCross.ViewModels;
-using System.Runtime.CompilerServices;
 using System.Reactive.Disposables;
-using apcurium.MK.Booking.Mobile.Extensions;
+using System.Runtime.CompilerServices;
 using Cirrious.CrossCore;
+using Cirrious.MvvmCross.ViewModels;
+using MK.Common.Configuration;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -38,6 +40,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		protected ILogger Logger { get { return Container.Resolve<ILogger>(); } }
+
+		public TaxiHailSetting Settings { get { return Container.Resolve<IAppSettings>().Data; } }
 
 		protected virtual void Dispose(bool disposing)
 		{

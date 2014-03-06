@@ -7,11 +7,16 @@ using Cirrious.MvvmCross.Views;
 using System.Collections.Generic;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using CardIO;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class CreditCardAddView : BaseViewController<CreditCardAddViewModel>
     {
+        private CardIOPaymentViewController _cardScanner;
+
         public CreditCardAddView () : base("CreditCardAddView", null)
         {
         }
@@ -54,6 +59,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtExpYear.Configure(Localize.GetValue("CreditCardExpYear"), () => ViewModel.ExpirationYears.ToArray(), () => ViewModel.ExpirationYear, x => ViewModel.ExpirationYear = x.Id);
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, null);
+
+            if (CardIOPaymentViewController.CanReadCardWithCamera && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken))
+            {
+                FlatButtonStyle.Silver.ApplyTo(btnScanCard);
+                btnScanCard.SetTitle(Localize.GetValue("ScanCreditCard"), UIControlState.Normal);
+                btnScanCard.TouchUpInside += (sender, e) => ScanCard();
+            }
+            else
+            {
+                btnScanCard.RemoveFromSuperview();
+            }
 
             if (!ViewModel.ShowInstructions)
             {
@@ -103,6 +119,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtNameOnCard.ResignFirstResponder ();
             txtCardNumber.BecomeFirstResponder();
             return true;
+        }
+
+        private void ScanCard ()
+        {           
+            if (_cardScanner == null)
+            {
+                var cardScannerDelegate = new CardScannerDelegate(
+                    () => _cardScanner.DismissViewController(true, () => {}), 
+                    (cardInfo, _controller) =>
+                {
+                    _controller.DismissViewController(true, () => {});
+                    PopulateCreditCardName(cardInfo);
+                });
+
+                _cardScanner = new CardIOPaymentViewController(cardScannerDelegate)
+                {
+                    GuideColor = this.View.BackgroundColor,
+                    SuppressScanConfirmation = true,
+                    CollectCVV = false,
+                    CollectExpiry = false,
+                    DisableManualEntryButtons = true,
+                    AppToken = this.Services().Settings.CardIOToken
+                };
+            }
+
+            PresentViewController(_cardScanner, true, null);
+        }
+
+        private void PopulateCreditCardName(CardIOCreditCardInfo info)
+        {
+            txtCardNumber.Text = info.CardNumber;
+            ViewModel.CreditCardNumber = info.CardNumber;
+            txtCvv.BecomeFirstResponder();
         }
     }
 }

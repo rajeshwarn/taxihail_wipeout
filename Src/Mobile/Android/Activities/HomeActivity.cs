@@ -48,8 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         WindowSoftInputMode = SoftInput.AdjustPan, 
         FinishOnTaskLaunch = true, 
         LaunchMode = LaunchMode.SingleTask
-    )]
-   
+    )]   
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
         private Button _bigButton;
@@ -83,9 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 var dialog = GooglePlayServicesUtil.GetErrorDialog(errorCode, this, 0);
                 dialog.Show();
                 dialog.DismissEvent += (s, e) => Finish();
-            }
-
-            _relMapLayout.ViewTreeObserver.AddOnGlobalLayoutListener(new LayoutObserverForHome(_relMapLayout, _appBar));       
+            }    
         }
 
         public OrderMapFragment _mapFragment; 
@@ -248,12 +245,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.OnPause();	        
         }
 
+        bool _locateUserOnStart;
+
         protected override void OnStart()
         {
             base.OnStart();
             if (ViewModel != null)
             {
                 ViewModel.Start();
+            }
+            if (_locateUserOnStart)
+            {
+                ViewModel.LocateMe.Execute(null);
+                _locateUserOnStart = false;
             }
         }
 
@@ -429,7 +433,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 SetMapEnabled(false);
                 _searchAddress.Open();
-                ViewModel.AddressPicker.LoadAddresses();
             } 
             else if(_presentationState == HomeViewModelState.Initial)
             {
@@ -460,6 +463,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 _searchAddress.Close();
 
                 SetSelectedOnBookLater(false);
+
+                if (hint.IsNewOrder)
+                {
+                    _locateUserOnStart = true;
+                }
             }
 
         }
@@ -505,31 +513,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _mapFragment.ChangePresentation(hint);
             _appBar.ChangePresentation(hint);
             _orderOptions.ChangePresentation(hint);
-        }
-    }
-
-    public class LayoutObserverForHome : Java.Lang.Object, ViewTreeObserver.IOnGlobalLayoutListener
-    {
-        private readonly RelativeLayout _view;
-        private readonly AppBar _appBar;
-
-        public LayoutObserverForHome(RelativeLayout view, AppBar appBar)
-        {
-            _view = view;
-            _appBar = appBar;
-        }
-
-        public void OnGlobalLayout()
-        {
-            var heightDiff = _view.RootView.Height - _view.Height;
-            if (heightDiff > 100)
-            {
-                _appBar.Visibility = ViewStates.Gone;
-            }
-            else
-            {
-                _appBar.Visibility = ViewStates.Visible;
-            }
         }
     }
 }

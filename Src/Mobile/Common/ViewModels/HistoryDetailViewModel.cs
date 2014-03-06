@@ -11,6 +11,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Entity;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -179,7 +180,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 return null;
             }
-        }
+		}
 
         private string _authorizationNumber;
         public string AuthorizationNumber {
@@ -343,7 +344,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return this.GetCommand(() =>
                 {
 					_orderWorkflowService.Rebook(Order);
-					ShowViewModel<HomeViewModel>();
+					ShowViewModel<HomeViewModel>(new { 
+						locateUser =  false, 
+						defaultHintZoomLevel = new ZoomToStreetLevelPresentationHint(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude).ToJson()});
                 });
             }
         }

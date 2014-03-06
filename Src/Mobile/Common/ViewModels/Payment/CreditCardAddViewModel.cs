@@ -40,9 +40,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			ShowInstructions = showInstructions;
 		}
 
+		public override void OnViewStarted(bool firstTime)
+		{
+			base.OnViewStarted(firstTime);
+			// we stop the service when the viewmodel starts because it stops after the homeviewmodel starts when we press back
+			// this ensures that we don't stop the service just after having started it in homeviewmodel
+			this.Services().Location.Stop();
+		}
+
 		public override void Start()
         {
             Data = new CreditCardInfos();
+
+			Data.NameOnCard = this.Services().Account.CurrentAccount.Name;
 
 			CardCategories = new List<ListItem>
 			{
@@ -101,7 +111,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			Data.ExpirationMonth = DummyVisa.ExpirationDate.Month+"";
 			Data.ExpirationYear = DummyVisa.ExpirationDate.Year + "";
-			Data.NameOnCard = "Chris";
 			RaisePropertyChanged("CreditCardNumber");
 #endif            
         }
@@ -318,7 +327,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 					if(ShowInstructions)
 					{
-						ShowViewModelAndRemoveFromHistory<HomeViewModel>();
+						ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser =  true });
 						if(!this.Services().Account.CurrentAccount.DefaultCreditCard.HasValue)
 						{
 							var account = this.Services().Account.CurrentAccount;

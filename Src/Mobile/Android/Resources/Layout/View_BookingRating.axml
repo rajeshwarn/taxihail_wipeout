@@ -43,7 +43,7 @@
             android:layout_alignParentLeft="true"
             android:gravity="center_horizontal">
             <cirrious.mvvmcross.binding.droid.views.MvxListView
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/RatingListView"
                 android:layout_margin="12dip"
