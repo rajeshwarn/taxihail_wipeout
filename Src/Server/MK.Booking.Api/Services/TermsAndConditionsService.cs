@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -24,7 +25,16 @@ namespace apcurium.MK.Booking.Api.Services
         public object Get(TermsAndConditionsRequest request)
         {
             var company = _dao.Get();
-            return new TermsAndConditionsResponse { Content = company.TermsAndConditions.ToSafeString() };
+            if (company.Version != null 
+                && Request.Headers[HttpHeaders.IfNoneMatch] == company.Version)
+            {
+                return new HttpResult(HttpStatusCode.NotModified, HttpStatusCode.NotModified.ToString()); 
+            }
+
+            Response.AddHeader(HttpHeaders.ETag, company.Version);
+            var result = new TermsAndConditions { Content = company.TermsAndConditions.ToSafeString() };
+            return result;
+            
         }
 
         public object Post(TermsAndConditionsRequest request)

@@ -133,7 +133,6 @@
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Localization\AppLanguage.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
-    <Compile Include="Infrastructure\ICacheService.cs" />
     <Compile Include="AppServices\Impl\AccountService.cs" />
     <Compile Include="AppServices\Impl\BaseService.cs" />
     <Compile Include="AppServices\Impl\BookingService.cs" />
