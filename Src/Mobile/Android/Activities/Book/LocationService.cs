@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             { 
                 var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
 
-                var dontShowLocationWarning = (string)Cache.Get<string>("WarningEstimateDontShow");
+                var dontShowLocationWarning = (string)Cache.Get<string>("WarningLocationServiceDontShow");
 
                 if (dontShowLocationWarning != "yes")
                 {
