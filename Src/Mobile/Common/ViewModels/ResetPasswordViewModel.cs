@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class ResetPasswordViewModel : BaseSubViewModel<string>
 	{
-		IAccountService _accountService;
+		private readonly IAccountService _accountService;
 
 		public ResetPasswordViewModel(IAccountService accountService)
 		{

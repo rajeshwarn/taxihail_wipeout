@@ -11,8 +11,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {
 	public class CmtRideLinqConfirmPairViewModel : BaseViewModel
 	{
-		IAccountService _accountService;
-		IPaymentService _paymentService;
+		private readonly IAccountService _accountService;
+		private readonly IPaymentService _paymentService;
 
 		public CmtRideLinqConfirmPairViewModel(IAccountService accountService,
 			IPaymentService paymentService)

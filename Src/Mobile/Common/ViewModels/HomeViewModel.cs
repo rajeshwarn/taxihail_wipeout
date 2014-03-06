@@ -20,14 +20,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class HomeViewModel : BaseViewModel
     {
-		readonly IOrderWorkflowService _orderWorkflowService;
-		private bool _locateUser;
-		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
-
-		ILocationService _locationService;
-		ITutorialService _tutorialService;
-		IPushNotificationService _pushNotificationService;
-		IVehicleService _vehicleService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly ILocationService _locationService;
+		private readonly ITutorialService _tutorialService;
+		private readonly IPushNotificationService _pushNotificationService;
+		private readonly IVehicleService _vehicleService;
 
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
 			IMvxWebBrowserTask browserTask,
@@ -41,8 +38,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_tutorialService = tutorialService;
 			_pushNotificationService = pushNotificationService;
 			_vehicleService= vehicleService;
-			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService);
+
+			Panel = Container.Resolve<PanelMenuViewModel>();
 		}
+
+		private bool _locateUser;
+		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
 
 		public void Init(bool locateUser, string defaultHintZoomLevel)
 		{

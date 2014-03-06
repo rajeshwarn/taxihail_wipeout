@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookRatingViewModel : BaseSubViewModel<OrderRated>
     {
-		IBookingService _bookingService;
+		private readonly IBookingService _bookingService;
 
 		public BookRatingViewModel(IBookingService bookingService)
 		{

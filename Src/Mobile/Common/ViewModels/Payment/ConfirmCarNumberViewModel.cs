@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
 	public class ConfirmCarNumberViewModel : BaseViewModel
 	{
-		readonly IAccountService _accountService;
+		private readonly IAccountService _accountService;
 
 		public ConfirmCarNumberViewModel(IAccountService accountService)
 		{

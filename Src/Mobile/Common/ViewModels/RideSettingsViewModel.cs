@@ -12,10 +12,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class RideSettingsViewModel: BaseViewModel
     {
-		private IAccountService _accountService;
-		private IPaymentService _paymentService;
+		private readonly IAccountService _accountService;
+		private readonly IPaymentService _paymentService;
 
-		public RideSettingsViewModel(IAccountService accountService, IPaymentService paymentService)
+		public RideSettingsViewModel(IAccountService accountService, 
+			IPaymentService paymentService)
 		{
 			_paymentService = paymentService;
 			_accountService = accountService;

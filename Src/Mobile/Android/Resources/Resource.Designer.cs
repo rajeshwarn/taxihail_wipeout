@@ -4957,6 +4957,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0501ec
 			public const int WarningEstimateTitle = 2131034604;
 			
+			// aapt resource value: 0x7f05021e
+			public const int WarningLocationService = 2131034654;
+			
+			// aapt resource value: 0x7f05021b
+			public const int WarningLocationServiceCancel = 2131034651;
+			
+			// aapt resource value: 0x7f05021c
+			public const int WarningLocationServiceDontShow = 2131034652;
+			
+			// aapt resource value: 0x7f05021d
+			public const int WarningLocationServiceTitle = 2131034653;
+			
 			// aapt resource value: 0x7f050078
 			public const int WarningTitle = 2131034232;
 			

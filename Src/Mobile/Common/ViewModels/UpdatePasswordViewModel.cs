@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class UpdatePasswordViewModel : BaseViewModel
 	{
-		readonly IAccountService _accountService;
+		private readonly IAccountService _accountService;
 
 		public UpdatePasswordViewModel(IAccountService accountService)
 		{

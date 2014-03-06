@@ -13,13 +13,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class LocationDetailViewModel: BaseViewModel
 	{
-	    readonly CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
+		private readonly CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
 
-		readonly IOrderWorkflowService _orderWorkflowService;
-		readonly IGeolocService _geolocService;
-		readonly IAccountService _accountService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IGeolocService _geolocService;
+		private readonly IAccountService _accountService;
 
-		public LocationDetailViewModel(IOrderWorkflowService orderWorkflowService, IGeolocService geolocService, IAccountService accountService)
+		public LocationDetailViewModel(IOrderWorkflowService orderWorkflowService, 
+			IGeolocService geolocService, 
+			IAccountService accountService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_geolocService = geolocService;

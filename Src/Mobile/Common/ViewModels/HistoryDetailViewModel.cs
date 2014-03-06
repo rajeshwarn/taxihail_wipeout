@@ -18,11 +18,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class HistoryDetailViewModel : BaseViewModel
     {
-		IOrderWorkflowService _orderWorkflowService;
-		IBookingService _bookingService;
-		IAccountService _accountService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IBookingService _bookingService;
+		private readonly IAccountService _accountService;
 
-		public HistoryDetailViewModel(IOrderWorkflowService orderWorkflowService, IBookingService bookingService, IAccountService accountService)
+		public HistoryDetailViewModel(IOrderWorkflowService orderWorkflowService, 
+			IBookingService bookingService, 
+			IAccountService accountService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_bookingService = bookingService;

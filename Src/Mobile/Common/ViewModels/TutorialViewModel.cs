@@ -7,7 +7,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class TutorialViewModel : BaseViewModel
 	{
-		private ITutorialService _tutorialService;
+		private readonly ITutorialService _tutorialService;
 
 		public TutorialViewModel(ITutorialService tutorialService)
 		{

@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {
 	public class CmtRideLinqChangePaymentViewModel : BaseSubViewModel<PaymentInformation>
 	{
-		IAccountService _accountService;
+		private readonly IAccountService _accountService;
 
 		public CmtRideLinqChangePaymentViewModel(IAccountService accountService)
 		{

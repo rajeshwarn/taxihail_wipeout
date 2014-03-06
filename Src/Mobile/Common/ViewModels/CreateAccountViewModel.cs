@@ -12,18 +12,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class CreateAccountViewModel: BaseSubViewModel<RegisterAccount>
 	{
+		private readonly IAccountService _accountService;
+
+		public CreateAccountViewModel(IAccountService accountService)
+		{
+			_accountService = accountService;			
+		}
+
 		public RegisterAccount Data { get; set; }
 		public string ConfirmPassword { get; set; }
 
 		public bool HasSocialInfo { get { return Data.FacebookId.HasValue () || Data.TwitterId.HasValue (); } }
 		public bool ShowTermsAndConditions { get { return Settings.ShowTermsAndConditions; } }
 
-		readonly IAccountService _accountService;
-
-		public CreateAccountViewModel(IAccountService accountService)
-		{
-			_accountService = accountService;			
-		}
 
 		public void Init(string twitterId, string facebookId, string name, string email)
 		{

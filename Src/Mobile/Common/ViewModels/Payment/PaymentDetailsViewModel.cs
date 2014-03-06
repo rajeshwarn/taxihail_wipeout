@@ -15,13 +15,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
 	public class PaymentDetailsViewModel : BaseViewModel
 	{
-		private IAccountService _accountService;
-		private int DefaultTipValue = 15;
+		private readonly IAccountService _accountService;
 
 		public PaymentDetailsViewModel(IAccountService accountService)
 		{
 			_accountService = accountService;
 		}
+
+		private int DefaultTipValue = 15;
 
 		public void Start(PaymentInformation paymentDetails = null)
 		{

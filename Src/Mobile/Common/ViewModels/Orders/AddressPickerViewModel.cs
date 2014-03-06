@@ -15,24 +15,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
 	public class AddressPickerViewModel : ChildViewModel
 	{
-		readonly IOrderWorkflowService _orderWorkflowService;
-		readonly IPlaces _placeService;
-		readonly IGeolocService _geoCoding;
-
-		Address _currentAddress;
+		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IPlaces _placesService;
+		private readonly IGeolocService _geolocService;
+		private readonly IAccountService _accountService;
 
 		public AddressPickerViewModel(IOrderWorkflowService orderWorkflowService,
-			IPlaces placeService,
-			IGeolocService geoCoding)
+			IPlaces placesService,
+			IGeolocService geolocService,
+			IAccountService accountService)
 		{
-			_geoCoding = geoCoding;
-			_placeService = placeService;
 			_orderWorkflowService = orderWorkflowService;
+			_geolocService = geolocService;
+			_placesService = placesService;
+			_accountService = accountService;
+		}
 
-            IgnoreTextChange = true;
+		public void Init()
+		{
+			IgnoreTextChange = true;
 			AllAddresses = new ObservableCollection<AddressViewModel>();
 		}
-			
+
+		private Address _currentAddress;	
 		public ObservableCollection<AddressViewModel> AllAddresses { get; set; }
         public bool IgnoreTextChange { get; set; }
 
@@ -47,9 +52,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_currentAddress = await _orderWorkflowService.GetCurrentAddress();
 			StartingText = _currentAddress.GetFirstPortionOfAddress();
 
-			var favoritePlaces = Task.Factory.StartNew(() => this.Services().Account.GetFavoriteAddresses().ToArray());
-			var historyPlaces = Task.Factory.StartNew(() => this.Services().Account.GetHistoryAddresses().ToArray());
-			var neabyPlaces = Task.Factory.StartNew(() => _placeService.SearchPlaces(null, _currentAddress.Latitude, _currentAddress.Longitude, null));
+			var favoritePlaces = Task.Factory.StartNew(() => _accountService.GetFavoriteAddresses().ToArray());
+			var historyPlaces = Task.Factory.StartNew(() => _accountService.GetHistoryAddresses().ToArray());
+			var neabyPlaces = Task.Factory.StartNew(() => _placesService.SearchPlaces(null, _currentAddress.Latitude, _currentAddress.Longitude, null));
 
 			try
 			{
@@ -136,7 +141,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			if ((value != null) && (value.AddressType == "place"))
 			{
-				var place = _placeService.GetPlaceDetail("", value.PlaceReference);
+				var place = _placesService.GetPlaceDetail("", value.PlaceReference);
 				return place;
 			}
 			else
@@ -249,7 +254,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				return new AddressViewModel[0];
 			}
 
-			var fullAddresses = _placeService.SearchPlaces(criteria, position.Latitude, position.Longitude, null);
+			var fullAddresses = _placesService.SearchPlaces(criteria, position.Latitude, position.Longitude, null);
 
 			var addresses = fullAddresses.ToList();
 			return addresses.Select(a => new AddressViewModel(a, AddressType.Places) { IsSearchResult = true }).ToArray();
@@ -257,8 +262,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		protected AddressViewModel[] SearchFavoriteAndHistoryAddresses(string criteria)
 		{
-			var addresses = this.Services().Account.GetFavoriteAddresses();
-			var historicAddresses = this.Services().Account.GetHistoryAddresses();
+			var addresses = _accountService.GetFavoriteAddresses();
+			var historicAddresses = _accountService.GetHistoryAddresses();
 
 			Func<Address, bool> predicate = c => true;
 
@@ -283,12 +288,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			if (position == null)
 			{
 				Logger.LogMessage("No Position SearchAddresses : " + criteria);
-				addresses = _geoCoding.SearchAddress(criteria);                
+				addresses = _geolocService.SearchAddress(criteria);                
 			}
 			else
 			{
 				Logger.LogMessage("Position SearchAddresses : " + criteria);
-				addresses = _geoCoding.SearchAddress(criteria, position.Latitude, position.Longitude);
+				addresses = _geolocService.SearchAddress(criteria, position.Latitude, position.Longitude);
 			}
 
 			return addresses.Select(a => new AddressViewModel(a, AddressType.Places) { IsSearchResult = true }).ToArray();
