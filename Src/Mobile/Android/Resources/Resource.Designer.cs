@@ -2386,8 +2386,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0700f2
 			public const int UnpairBtn = 2131165426;
 			
-			// aapt resource value: 0x7f070160
-			public const int UpdatePassword = 2131165536;
+			// aapt resource value: 0x7f070161
+			public const int UpdatePassword = 2131165537;
+			
+			// aapt resource value: 0x7f07015d
+			public const int UpdatedTermsAndConditionsTextView = 2131165533;
 			
 			// aapt resource value: 0x7f070139
 			public const int Username = 2131165497;
@@ -3127,14 +3130,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0700ce
 			public const int txtPassengers = 2131165390;
 			
-			// aapt resource value: 0x7f07015d
-			public const int txtPasswordCurrent = 2131165533;
-			
 			// aapt resource value: 0x7f07015e
-			public const int txtPasswordNew = 2131165534;
+			public const int txtPasswordCurrent = 2131165534;
 			
 			// aapt resource value: 0x7f07015f
-			public const int txtPasswordNewConfirm = 2131165535;
+			public const int txtPasswordNew = 2131165535;
+			
+			// aapt resource value: 0x7f070160
+			public const int txtPasswordNewConfirm = 2131165536;
 			
 			// aapt resource value: 0x7f0700cc
 			public const int txtPhone = 2131165388;
@@ -3556,7 +3559,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int View_Tutorial = 2130903157;
 			
 			// aapt resource value: 0x7f030076
-			public const int View_UpdatePassword = 2130903158;
+			public const int View_UpdatedTermsAndConditions = 2130903158;
+			
+			// aapt resource value: 0x7f030077
+			public const int View_UpdatePassword = 2130903159;
 			
 			static Layout()
 			{
