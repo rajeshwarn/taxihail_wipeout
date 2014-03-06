@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -24,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewWillAppear (animated);
 
-            NavigationItem.HidesBackButton = false;
+            NavigationItem.HidesBackButton = true;
             NavigationItem.Title = Localize.GetValue("View_UpdatedTermsAndConditions");
             NavigationController.NavigationBar.Hidden = false;
         }
@@ -33,11 +34,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad();
 
+            FlatButtonStyle.Silver.ApplyTo (btnAccept);
+            btnAccept.SetTitle(Localize.GetValue("UpdatedTermsAndConditionsAcceptButton"), UIControlState.Normal);
+
             var set = this.CreateBindingSet<UpdatedTermsAndConditionsView, UpdatedTermsAndConditionsViewModel> ();
 
             set.BindSafe(txtTermsAndConditions)
                 .For(v => v.Text)
                 .To(vm => vm.TermsAndConditions);
+
+            set.Bind(btnAccept)
+                .For("TouchUpInside")
+                .To(vm => vm.Confirm);
 
             set.Apply ();
         }

@@ -82,7 +82,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (!etagTermsAndConditionsIsUpToDate)
 			{				 
-				this.Services().Message.ShowDialog(typeof(UpdatedTermsAndConditionsViewModel));
+				ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool>(
+					null, async acknowledged =>
+				{                                                
+					// Set Acknowledgement in cache to [acknowledged]
+					if (!acknowledged)
+					{
+						this.Services().Account.SignOut();
+					}
+				});
 			}
 		}
 

@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UpdatedTermsAndConditionsView">
             <connections>
+                <outlet property="btnAccept" destination="VBr-tv-58J" id="Mkh-Wt-6eA"/>
                 <outlet property="txtTermsAndConditions" destination="Wab-wT-OEO" id="FN2-ku-7A4"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
@@ -16,9 +17,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wab-wT-OEO" customClass="FlatTextView">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="366"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="346"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="346" id="n72-bh-tFv"/>
+                        <constraint firstAttribute="width" constant="320" id="vdN-di-7SU"/>
+                    </constraints>
                     <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt mi in dolor convallis elementum. Sed interdum vulputate ultrices. Vivamus eu urna pretium, placerat est vel, viverra leo. Sed porta erat sed sollicitudin suscipit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam a aliquet orci. Integer vulputate, sem ut varius semper, libero magna commodo ipsum, porttitor placerat nibh justo et erat. 
 
 Duis vulputate venenatis tincidunt. Cras at sapien aliquet, volutpat massa at, convallis nulla. Nulla orci tellus, scelerisque scelerisque tellus sed, hendrerit egestas diam. Duis vitae sapien eros. Donec at massa ante. Integer scelerisque, libero eu semper faucibus, erat tortor aliquam odio, semper faucibus ante urna vel turpis. 
@@ -32,13 +37,26 @@ Nullam laoreet ac eros vel aliquam. Maecenas luctus consectetur enim, eu aliquam
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VBr-tv-58J" customClass="FlatButton">
+                    <rect key="frame" x="8" y="355" width="304" height="41"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="41" id="6Nt-sY-mbh"/>
+                        <constraint firstAttribute="width" constant="304" id="ZPy-Dp-8nx"/>
+                    </constraints>
+                    <state key="normal" title="Accept">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="Wab-wT-OEO" secondAttribute="trailing" id="HsR-C8-wVg"/>
+                <constraint firstAttribute="trailing" secondItem="VBr-tv-58J" secondAttribute="trailing" constant="8" id="F1N-lB-eJb"/>
+                <constraint firstAttribute="bottom" secondItem="VBr-tv-58J" secondAttribute="bottom" constant="20" id="FoO-op-NGP"/>
+                <constraint firstAttribute="bottom" secondItem="Wab-wT-OEO" secondAttribute="bottom" constant="70" id="GDR-3z-7Kf"/>
+                <constraint firstItem="Wab-wT-OEO" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="IBv-yg-kc0"/>
                 <constraint firstItem="Wab-wT-OEO" firstAttribute="top" secondItem="1" secondAttribute="top" id="Pga-LY-YzE"/>
-                <constraint firstItem="Wab-wT-OEO" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="e7f-5C-l7f"/>
-                <constraint firstAttribute="bottom" secondItem="Wab-wT-OEO" secondAttribute="bottom" constant="50" id="kee-z5-QEW"/>
+                <constraint firstItem="VBr-tv-58J" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="im6-eh-97h"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>

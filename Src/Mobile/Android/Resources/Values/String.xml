@@ -43,6 +43,8 @@
   <string name="ListPromptSelectOne">Select one</string>
   <string name="NetworkErrorTitle">No network connection</string>
   <string name="View_TermsAndConditions">Terms and Conditions</string>
+  <string name="View_UpdatedTermsAndConditions">New Terms and Conditions</string>
+  <string name="UpdatedTermsAndConditionsAcceptButton">Accept</string>
   <string name="Tuto02Top">We should be able to locate you using the GPS receiver in your mobile device.</string>
   <string name="RideSummarySubTitleText">Thank you for riding with {0}, we look forward to serving you again soon.</string>
   <string name="UpdateBookingSettingsEmptyField">The data is invalid, all the fields are required.</string>
@@ -469,4 +471,8 @@
   <string name="ScanCreditCard">Scan Credit Card</string>
   <string name="NoFareTextIfDestinationIsRequired">You need to specify a destination.</string>
   <string name="Destination">Destination</string>
+  <string name="WarningLocationServiceCancel">Cancel</string>
+  <string name="WarningLocationServiceDontShow">Don\'t warn</string>
+  <string name="WarningLocationServiceTitle">Warning</string>
+  <string name="WarningLocationService">Please turn on location services to have your location show up in the map.</string>
 </resources>

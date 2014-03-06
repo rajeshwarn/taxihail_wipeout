@@ -44,11 +44,19 @@
             android:layout_height="fill_parent">
             <TextView
                 android:id="@+id/UpdatedTermsAndConditionsTextView"
-                local:MvxBind="Text TermsAndConditions"
+                android:text="Text TermsAndConditions"
                 android:scrollbars="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                style="@style/BlackTextLong" />
+                android:layout_height="wrap_content"
+                style="@style/BlackTextLong"
+                android:layout_weight="1" />
+            <Button
+                android:id="@+id/btnConfirm"
+                style="@style/ButtonActionGrayStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightButton"
+                android:text="@string/UpdatedTermsAndConditionsAcceptButton"
+                local:MvxBind="Click Confirm" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

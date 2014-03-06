@@ -3,6 +3,7 @@ using Android.Content.PM;
 using Android.Text.Method;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
@@ -16,6 +17,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             var textView = FindViewById<TextView>(Resource.Id.UpdatedTermsAndConditionsTextView);
             textView.MovementMethod = new ScrollingMovementMethod();
+        }
+
+        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
+        {
+            if (keyCode == Keycode.Back)
+            {
+                return false;
+            }
+
+            return base.OnKeyDown(keyCode, e);
         }
     }
 }
