@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Security.Cryptography;
+using System.Text;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
@@ -31,6 +33,7 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var company = context.Find<CompanyDetail>(@event.SourceId);
                 company.TermsAndConditions = @event.TermsAndConditions;
+                company.Version = Guid.NewGuid().ToString();
                 context.Save(company);
             }
         }

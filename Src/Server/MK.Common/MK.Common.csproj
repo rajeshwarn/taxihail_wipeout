@@ -151,6 +151,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\UserAgentExtension.cs" />
     <Compile Include="Fare.cs" />
+    <Compile Include="ICacheService.cs" />
     <Compile Include="IoC\UnityContainerAdapter.cs" />
     <Compile Include="IoC\UnityExtension.cs" />
     <Compile Include="IoC\UnityServiceLocator.cs" />

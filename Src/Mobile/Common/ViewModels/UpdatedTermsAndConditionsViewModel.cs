@@ -8,6 +8,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public override async void OnViewStarted(bool firstTime)
 		{
 			TermsAndConditions = "- Ipsum thingy -";
+				var terms = await this.Services().Terms.GetTerms();
+			    TermsAndConditions = terms.Content;
 		}
 
 		private string _termsAndConditions;
