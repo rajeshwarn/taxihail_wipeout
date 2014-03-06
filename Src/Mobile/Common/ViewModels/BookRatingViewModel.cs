@@ -7,11 +7,19 @@ using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Entity;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookRatingViewModel : BaseSubViewModel<OrderRated>
     {
+		IBookingService _bookingService;
+
+		public BookRatingViewModel(IBookingService bookingService)
+		{
+			_bookingService = bookingService;
+		}
+
         private List<RatingModel> _ratingList;
         public List<RatingModel> RatingList
         {
@@ -55,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void Init(string orderId, bool canRate = false)
 		{
-			RatingList = this.Services().Booking.GetRatingType().Select(c => new RatingModel
+			RatingList = _bookingService.GetRatingType().Select(c => new RatingModel
 				{
 					RatingTypeId = c.Id, 
 					RatingTypeName = c.Name 
@@ -66,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (orderId != null)
 			{
-				var ratingTypes = this.Services().Booking.GetRatingType();
+				var ratingTypes = _bookingService.GetRatingType();
 				RatingList = ratingTypes.Select(c => new RatingModel(canRate) 
 					{
 						RatingTypeId = c.Id, 
@@ -81,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				CanRate = canRate;
 				if(!CanRate)
 				{
-					var orderRatings = this.Services().Booking.GetOrderRating(Guid.Parse(orderId));
+					var orderRatings = _bookingService.GetOrderRating(Guid.Parse(orderId));
 					Note = orderRatings.Note;
 					RatingList = orderRatings.RatingScores.Select(c=> new RatingModel
 						{
@@ -101,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					if (_ratingList.Any(c => c.Score == 0))
 					{
-							this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
+						this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
 						return;
 					} 
 
@@ -119,9 +127,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							}).ToList()
 					};
 
-					this.Services().Booking.SendRatingReview(orderRating);
+					_bookingService.SendRatingReview(orderRating);
 					ReturnResult(new OrderRated(this, OrderId));
-                    
 				});
             }
         }

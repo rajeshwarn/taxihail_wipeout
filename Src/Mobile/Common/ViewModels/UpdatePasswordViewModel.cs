@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				return this.GetCommand(() =>
-				                  {
+				{
 					if (!CanUpdatePassword)
 					{
 						var title = this.Services().Localize["View_UpdatePassword"];
@@ -76,18 +76,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return;
 					}
 					this.Services().Message.ShowProgress(true);
-					try{
-						_accountService.UpdatePassword(this.Services().Account.CurrentAccount.Id, CurrentPassword, NewPassword);
+					try
+					{
+						_accountService.UpdatePassword(_accountService.CurrentAccount.Id, CurrentPassword, NewPassword);
 						_accountService.SignOut();
 						var msg = this.Services().Localize["ChangePasswordConfirmmation"];
 						var title = Settings.ApplicationName;
 						this.Services().Message.ShowMessage(title, msg, () => ShowViewModel<LoginViewModel>());
-					}catch(Exception e)
+					}
+					catch(Exception e)
 					{
 						var msg = this.Services().Localize["ServiceError" + e.Message];
 						var title = this.Services().Localize["ServiceErrorCallTitle"];
 						this.Services().Message.ShowMessage(title, msg);
-					}finally{
+					}
+					finally
+					{
 						this.Services().Message.ShowProgress(false);
 					}					
 				});

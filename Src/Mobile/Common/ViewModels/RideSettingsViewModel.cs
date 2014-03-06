@@ -5,24 +5,35 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class RideSettingsViewModel: BaseViewModel
     {
-        private BookingSettings _bookingSettings;
+		private IAccountService _accountService;
+		private IPaymentService _paymentService;
+
+		public RideSettingsViewModel(IAccountService accountService, IPaymentService paymentService)
+		{
+			_paymentService = paymentService;
+			_accountService = accountService;
+		}
+
+		private BookingSettings _bookingSettings;
 
 		public async void Init(string bookingSettings)
         {
 			_bookingSettings = bookingSettings.FromJson<BookingSettings>();
 
-			var v = await this.Services().Account.GetVehiclesList();
+			var v = await _accountService.GetVehiclesList();
 			_vehicules = v == null ? new ListItem[0] : v.ToArray();
 			RaisePropertyChanged(() => Vehicles );
 			RaisePropertyChanged(() => VehicleTypeId );
 			RaisePropertyChanged(() => VehicleTypeName );
 
-			var p = await this.Services().Account.GetPaymentsList();
+			var p = await _accountService.GetPaymentsList();
 			_payments = p == null ? new ListItem[0] : p.ToArray();
 			RaisePropertyChanged(() => Payments );
 			RaisePropertyChanged(() => ChargeTypeId );
@@ -33,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				var setting = this.Services().Payment.GetPaymentSettings();
+				var setting = _paymentService.GetPaymentSettings();
                 return setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
             }
         }
@@ -42,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				var setting = this.Services().Payment.GetPaymentSettings();
+				var setting = _paymentService.GetPaymentSettings();
                 return setting.IsPayInTaxiEnabled;
             }
         }
@@ -59,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (_paymentPreferences == null)
                 {
-                    var account = this.Services().Account.CurrentAccount;
+					var account = _accountService.CurrentAccount;
                     var paymentInformation = new PaymentInformation
                     {
                         CreditCardId = account.DefaultCreditCard,
@@ -256,8 +267,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     if (ValidateRideSettings())
                     {
-                        Guid? creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty ? default(Guid?) : PaymentPreferences.SelectedCreditCardId;
-                        this.Services().Account.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
+						var creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty ? default(Guid?) : PaymentPreferences.SelectedCreditCardId;
+						_accountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
 						Close(this);
                     }
                 });

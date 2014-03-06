@@ -3,12 +3,20 @@ using System.Text.RegularExpressions;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class ResetPasswordViewModel : BaseSubViewModel<string>
 	{
+		IAccountService _accountService;
+
+		public ResetPasswordViewModel(IAccountService accountService)
+		{
+			_accountService = accountService;
+		}
+
 		public string Email { get; set; }
 
 		public ICommand ResetPassword
@@ -26,24 +34,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     this.Services().Message.ShowProgress(true);
 
-					try{
-                        this.Services().Account.ResetPassword(Email);
+					try
+					{
+						_accountService.ResetPassword(Email);
 						ReturnResult(Email);
-
-                     }catch(Exception e)
-                     {
-                         var msg = this.Services().Localize["ServiceError" + e.Message];
-                         var title = this.Services().Localize["ServiceErrorCallTitle"];
-                         this.Services().Message.ShowMessage(title, msg);
-                     }finally
-					 {
-                         this.Services().Message.ShowProgress(false);
-					 }
+                    }
+					catch(Exception e)
+                    {
+                        var msg = this.Services().Localize["ServiceError" + e.Message];
+                        var title = this.Services().Localize["ServiceErrorCallTitle"];
+                        this.Services().Message.ShowMessage(title, msg);
+                    }
+					finally
+					{
+                        this.Services().Message.ShowProgress(false);
+					}
 				});
 			}
-			
 		}
-        
 
 		private bool IsEmail(string inputEmail)
 		{
