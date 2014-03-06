@@ -10,7 +10,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
 	public class OrderOptionsViewModel : ChildViewModel
 	{
-		readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
+
 		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService)
 		{
 			_orderWorkflowService = orderWorkflowService;

@@ -13,14 +13,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	public class PanelMenuViewModel : BaseViewModel
     {
 		private readonly BaseViewModel _parent;
-		private IMvxWebBrowserTask _browserTask;
-		private IOrderWorkflowService _orderWorkflowService;
+		private readonly IMvxWebBrowserTask _browserTask;
 
-		public PanelMenuViewModel (BaseViewModel parent, IMvxWebBrowserTask browserTask, IOrderWorkflowService orderWorkflowService)
+		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IAccountService _accountService;
+		private readonly IPhoneService _phoneService;
+
+		public PanelMenuViewModel (BaseViewModel parent, 
+			IMvxWebBrowserTask browserTask, 
+			IOrderWorkflowService orderWorkflowService,
+			IAccountService accountService,
+			IPhoneService phoneService)
         {
             _parent = parent;
 			_browserTask = browserTask;
+
 			_orderWorkflowService = orderWorkflowService;
+			_accountService = accountService;
+			_phoneService = phoneService;
 
 			ItemMenuList = new ObservableCollection<ItemMenuModel>();
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations});
@@ -114,7 +124,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     MenuIsOpen = false;
 					_orderWorkflowService.PrepareForNewOrder();
-                    this.Services().Account.SignOut();         
+					_accountService.SignOut();         
 					ShowViewModel<LoginViewModel> ();
 
                     Close( _parent );
@@ -166,7 +176,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return this.GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    ShowViewModel<RideSettingsViewModel>(new { bookingSettings = this.Services().Account.CurrentAccount.Settings.ToJson() });
+					ShowViewModel<RideSettingsViewModel>(new { bookingSettings = _accountService.CurrentAccount.Settings.ToJson() });
                 });
             }
         }
@@ -190,7 +200,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return this.GetCommand(() =>
 				{
 					MenuIsOpen = false;
-					InvokeOnMainThread(() => this.Services().Phone.SendFeedbackErrorLog(Settings.SupportEmail, this.Services().Localize["TechSupportEmailTitle"]));
+					InvokeOnMainThread(() => _phoneService.SendFeedbackErrorLog(Settings.SupportEmail, this.Services().Localize["TechSupportEmailTitle"]));
 				});
 			}
 		}
@@ -233,7 +243,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return this.GetCommand(() =>
                 {
                     MenuIsOpen = false;
-						Action call = () => { this.Services().Phone.Call(Settings.DefaultPhoneNumber); };
+					Action call = () => { _phoneService.Call(Settings.DefaultPhoneNumber); };
                     this.Services().Message.ShowMessage(string.Empty,
 												Settings.DefaultPhoneNumberDisplay,
                                                this.Services().Localize["CallButton"],

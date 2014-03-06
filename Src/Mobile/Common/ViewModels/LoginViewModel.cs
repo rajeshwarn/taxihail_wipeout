@@ -8,31 +8,38 @@ using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Framework;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-		public event EventHandler LoginSucceeded; 
 		private readonly IFacebookService _facebookService;
 		private readonly ITwitterService _twitterService;
-        private bool _loginWasSuccesful = false;
+		private readonly ILocationService _locationService;
+		private readonly IAccountService _accountService;
 
         public LoginViewModel(IFacebookService facebookService,
-			ITwitterService twitterService)
+			ITwitterService twitterService,
+			ILocationService locationService,
+			IAccountService accountService)
         {
             _facebookService = facebookService;
 			_twitterService = twitterService;
 			_twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
+			_locationService = locationService;
+			_accountService = accountService;
         }
+
+		public event EventHandler LoginSucceeded; 
+		private bool _loginWasSuccesful = false;
 
         public override void Start()
         {
@@ -46,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             base.OnViewStarted(firstTime);
 
-            this.Services().Location.Start();
+			_locationService.Start();
 
             CheckVersion();
         }
@@ -57,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             if (!_loginWasSuccesful)
             {
-                this.Services().Location.Stop();
+				_locationService.Stop();
             }
         }
         private void CheckVersion()
@@ -103,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
 				return this.GetCommand(async () =>
                 {
-                    this.Services().Account.ClearCache();
+					_accountService.ClearCache();
 					await SignIn();
                 });
             }
@@ -178,7 +185,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 try
                 {
-                    await this.Services().Account.SignIn(Email, Password);   
+					await _accountService.SignIn(Email, Password);   
                     Password = string.Empty;                    
 					OnLoginSuccess();
                 }
@@ -223,7 +230,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     this.Services().Message.ShowMessage(title, message);
                 }
-
             }
         }
 
@@ -245,15 +251,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         if (facebookId.HasValue())
                         {
-                            await this.Services().Account.GetFacebookAccount(facebookId);
+							await _accountService.GetFacebookAccount(facebookId);
                         }
                         else if (twitterId.HasValue())
                         {
-                            await this.Services().Account.GetTwitterAccount(twitterId);
+							await _accountService.GetTwitterAccount(twitterId);
                         }
                         else
                         {
-                            await this.Services().Account.SignIn(data.Email, data.Password);
+							await _accountService.SignIn(data.Email, data.Password);
                         }
 
 						OnLoginSuccess();
@@ -282,7 +288,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			this.Container.Resolve<IAppSettings>().ChangeServerUrl(serverUrl);
             this.Services().ApplicationInfo.ClearAppInfo();
-            this.Services().Account.ClearReferenceData();
+			_accountService.ClearReferenceData();
         }
 
 		private void OnLoginSuccess()
@@ -307,7 +313,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			if (this.Settings.CreditCardIsMandatory)
 			{
-				if (!this.Services().Account.CurrentAccount.DefaultCreditCard.HasValue)
+				if (!_accountService.CurrentAccount.DefaultCreditCard.HasValue)
 				{
 					return true;
 				}
@@ -329,7 +335,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 try
                 {
-                    await this.Services().Account.GetFacebookAccount(info.Id);
+					await _accountService.GetFacebookAccount(info.Id);
 					OnLoginSuccess();
                 }
                 catch(Exception)
@@ -353,7 +359,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     try
                     {
-                        await this.Services().Account.GetTwitterAccount(info.Id);
+						await _accountService.GetTwitterAccount(info.Id);
 						OnLoginSuccess();
                     }
                     catch(Exception)

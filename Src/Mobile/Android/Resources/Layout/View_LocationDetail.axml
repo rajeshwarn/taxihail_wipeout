@@ -96,7 +96,7 @@
                         android:paddingBottom="8dp"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        local:MvxBind="Visibility ShowRingCodeField, Converter=Visibility"
+                        local:MvxBind="Visibility Settings.ShowRingCodeField, Converter=Visibility"
                         android:gravity="center_horizontal">
                         <LinearLayout
                             android:orientation="vertical"

@@ -6,16 +6,25 @@ using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class CreateAccountViewModel: BaseSubViewModel<RegisterAccount>
 	{
+		private readonly IAccountService _accountService;
+
+		public CreateAccountViewModel(IAccountService accountService)
+		{
+			_accountService = accountService;			
+		}
+
 		public RegisterAccount Data { get; set; }
 		public string ConfirmPassword { get; set; }
 
 		public bool HasSocialInfo { get { return Data.FacebookId.HasValue () || Data.TwitterId.HasValue (); } }
 		public bool ShowTermsAndConditions { get { return Settings.ShowTermsAndConditions; } }
+
 
 		public void Init(string twitterId, string facebookId, string name, string email)
 		{
@@ -99,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						Data.AccountActivationDisabled = Settings.AccountActivationDisabled;
 						try{
 
-							await this.Services().Account.Register(Data);
+							await _accountService.Register(Data);
 							if (!HasSocialInfo && !Data.AccountActivationDisabled)
 							{
 								this.Services().Message.ShowMessage(this.Services().Localize["AccountActivationTitle"], this.Services().Localize["AccountActivationMessage"]);

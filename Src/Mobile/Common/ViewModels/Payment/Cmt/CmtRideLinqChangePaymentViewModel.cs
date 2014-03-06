@@ -8,6 +8,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {
 	public class CmtRideLinqChangePaymentViewModel : BaseSubViewModel<PaymentInformation>
 	{
+		private readonly IAccountService _accountService;
+
+		public CmtRideLinqChangePaymentViewModel(IAccountService accountService)
+		{
+			_accountService = accountService;			
+		}
+
 		public new void Init(string currentPaymentInformation)
 		{
 			DefaultPaymentInformations = JsonSerializer.DeserializeFromString<PaymentInformation>(currentPaymentInformation);
@@ -40,10 +47,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
             {
 				return this.GetCommand(() =>
 				{
-                    if (this.Services().Account.CurrentAccount.DefaultCreditCard == null)
+					if (_accountService.CurrentAccount.DefaultCreditCard == null)
 					{
-                        this.Services().Account.UpdateSettings(this.Services().Account.CurrentAccount.Settings, PaymentPreferences.SelectedCreditCardId, 
-                                    this.Services().Account.CurrentAccount.DefaultTipPercent);
+						_accountService.UpdateSettings(_accountService.CurrentAccount.Settings, PaymentPreferences.SelectedCreditCardId, 
+							_accountService.CurrentAccount.DefaultTipPercent);
 					}
 
 					ReturnResult(new PaymentInformation

@@ -3,13 +3,21 @@ using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
     public class CallboxOrderViewModel : BaseViewModel
     {
-        public Guid Id { get; set; }
+        private readonly IBookingService _bookingService;
 
+        public CallboxOrderViewModel(IBookingService bookingService)
+        {
+            _bookingService = bookingService;
+        }
+            
+        public Guid Id { get; set; }
+      
         public int? IBSOrderId { get; set; }
 
         public DateTime CreatedDate { get; set; }
@@ -36,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
         public bool CanBeCancelled
         {
-			get { return !this.Services().Booking.IsCallboxStatusCompleted(OrderStatus.IBSStatusId); }
+            get { return !_bookingService.IsCallboxStatusCompleted(OrderStatus.IBSStatusId); }
         }
 
         public ColorEnum TextColor

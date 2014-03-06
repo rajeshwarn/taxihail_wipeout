@@ -1,11 +1,19 @@
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Models;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class TutorialViewModel : BaseViewModel
 	{
+		private readonly ITutorialService _tutorialService;
+
+		public TutorialViewModel(ITutorialService tutorialService)
+		{
+			_tutorialService = tutorialService;
+		}
+
 		private TutorialItemModel[] _tutorialItemsList;
 		public TutorialItemModel[] TutorialItemsList
 		{
@@ -19,8 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public override void Start()
 		{
-			TutorialItemsList = this.Services().Tutorial
-				.GetTutorialItems()
+			TutorialItemsList = _tutorialService.GetTutorialItems()
 				.Select(item => new TutorialItemModel
 					{ 
 						Text = item.Text,

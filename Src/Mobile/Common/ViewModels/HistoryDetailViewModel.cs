@@ -1,3 +1,4 @@
+
 using System;
 using System.Globalization;
 using System.Linq;
@@ -17,11 +18,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class HistoryDetailViewModel : BaseViewModel
     {
-		IOrderWorkflowService _orderWorkflowService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IBookingService _bookingService;
+		private readonly IAccountService _accountService;
 
-		public HistoryDetailViewModel(IOrderWorkflowService orderWorkflowService)
+		public HistoryDetailViewModel(IOrderWorkflowService orderWorkflowService, 
+			IBookingService bookingService, 
+			IAccountService accountService)
 		{
-			_orderWorkflowService = orderWorkflowService;			
+			_orderWorkflowService = orderWorkflowService;
+			_bookingService = bookingService;
+			_accountService = accountService;
 		}
 
 		public void Init(string orderId)
@@ -259,20 +266,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async void LoadOrder() 
 		{
-			Order = await this.Services().Account.GetHistoryOrderAsync(OrderId);
+			Order = await _accountService.GetHistoryOrderAsync(OrderId);
 		}
 
 		public async void LoadStatus ()
 		{
-			var bookingService = this.Services().Booking;
-
-			var ratings = await bookingService.GetOrderRatingAsync(OrderId);
-			var status = await bookingService.GetOrderStatusAsync(OrderId);
+			var ratings = await _bookingService.GetOrderRatingAsync(OrderId);
+			var status = await _bookingService.GetOrderStatusAsync(OrderId);
 
 			HasRated = ratings.RatingScores.Any();
 			Status = status;
-			IsCompleted = bookingService.IsStatusCompleted(Status.IBSStatusId);
-			IsDone = bookingService.IsStatusDone(Status.IBSStatusId);
+			IsCompleted = _bookingService.IsStatusCompleted(Status.IBSStatusId);
+			IsDone = _bookingService.IsStatusDone(Status.IBSStatusId);
             
 			CanCancel = !IsCompleted;
 		}
@@ -326,7 +331,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     if (GuidExtensions.HasValue(OrderId))
                     {
-                        this.Services().Booking.RemoveFromHistory(OrderId);
+						_bookingService.RemoveFromHistory(OrderId);
                         this.Services().MessengerHub.Publish(new OrderDeleted(this, OrderId, null));
 						Close(this);
                     }
@@ -356,7 +361,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     if (OrderId.HasValue())
                     {
-                        this.Services().Booking.SendReceipt(OrderId);
+						_bookingService.SendReceipt(OrderId);
                     }
                     Close(this);
                 });
@@ -371,7 +376,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                                                    this.Services().Localize["YesButton"], () =>
                 {
 
-                    var isSuccess = this.Services().Booking.CancelOrder(OrderId);
+					var isSuccess = _bookingService.CancelOrder(OrderId);
 
                     if(isSuccess)
                     {
