@@ -16,8 +16,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
 	public class BottomBarViewModel: ChildViewModel
     {
-		readonly IOrderWorkflowService _orderWorkflowService;
-		readonly IMvxPhoneCallTask _phone;
+		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IMvxPhoneCallTask _phone;
 
 		public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, IMvxPhoneCallTask phone)
 		{

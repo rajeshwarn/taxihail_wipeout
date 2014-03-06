@@ -374,7 +374,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <Compile Include="Activities\Account\CreateAccountActivity.cs" />
-    <AndroidResource Include="Resources\Drawable\mk_logo.png" />
     <AndroidResource Include="Resources\Drawable\dialog_background.xml" />
     <AndroidResource Include="Resources\Layout\SpinnerCellTextRight.axml" />
     <Compile Include="Controls\Widgets\EditTextRightSpinner.cs" />
@@ -409,7 +408,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\main_btn_selected.9.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\main_settings.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\mastercard.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\mk_logo.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\notification_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\number_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\password_cell.9.png" />
@@ -605,6 +603,8 @@
     <Compile Include="Controls\Behavior\TextFieldInHomeSubviewsBehavior.cs" />
     <Compile Include="Activities\Account\UpdatedTermsAndConditionsActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_UpdatedTermsAndConditions.axml" />
+    <AndroidResource Include="Resources\Drawable\th_logo_small.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\th_logo_small.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

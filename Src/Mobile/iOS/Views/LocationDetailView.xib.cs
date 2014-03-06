@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtRingCode.ShouldReturn = HandleShouldReturn;
             txtName.ShouldReturn = HandleShouldReturn;
 
-            if ( !ViewModel.ShowRingCodeField )
+            if ( !ViewModel.Settings.ShowRingCodeField )
             {
 				lblRingCode.Hidden = true;
                 txtRingCode.Hidden = true;

@@ -16,17 +16,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
 	public class OrderEditViewModel: ChildViewModel
 	{
-		readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IAccountService _accountService;
 
-		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService)
+		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService,
+			IAccountService accountService)
 		{
 			_orderWorkflowService = orderWorkflowService;
+			_accountService = accountService;
 		}
 
 		public async Task Init()
 		{
-			Vehicles = await this.Services().Account.GetVehiclesList();
-			ChargeTypes = await this.Services().Account.GetPaymentsList();
+			Vehicles = await _accountService.GetVehiclesList();
+			ChargeTypes = await _accountService.GetPaymentsList();
 
 			this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());

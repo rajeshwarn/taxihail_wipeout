@@ -12,11 +12,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
 	public class OrderReviewViewModel: ChildViewModel
     {
-		readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IAccountService _accountService;
         
-		public OrderReviewViewModel(IOrderWorkflowService orderWorkflowService)
+		public OrderReviewViewModel(IOrderWorkflowService orderWorkflowService,
+			IAccountService accountService)
 		{
 			_orderWorkflowService = orderWorkflowService;
+			_accountService = accountService;
 		}
 
 		public void Init()
@@ -30,9 +33,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private async Task SettingsUpdated(BookingSettings settings)
 		{
 			Settings = settings;
-			var list = await this.Services().Account.GetVehiclesList();
+			var list = await _accountService.GetVehiclesList();
 			VehiculeType = list.First(x => x.Id == settings.VehicleTypeId).Display;
-			list = await this.Services().Account.GetPaymentsList();
+			list = await _accountService.GetPaymentsList();
 			ChargeType = list.First(x => x.Id == settings.ChargeTypeId).Display;
 		}
 
@@ -65,23 +68,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public string Apartment
 		{
-			get{ return Address != null && Address.Apartment != null ? 
-								Address.Apartment
-								: this.Services().Localize["NotAvailable"] ; }
+			get{ return Address != null && Address.Apartment != null 
+					? Address.Apartment
+					: this.Services().Localize["NotAvailable"] ; }
 		}
 
 		public string RingCode
 		{
-			get{ return Address != null && Address.RingCode != null ? 
-						Address.RingCode
-						: this.Services().Localize["NotAvailable"] ; }
+			get{ return Address != null && Address.RingCode != null 
+					? Address.RingCode
+					: this.Services().Localize["NotAvailable"] ; }
 		}
 
 		private void DateUpdated(DateTime? date)
 		{
-			Date = date.HasValue ?
-			       date.Value.ToShortDateString() + " " + date.Value.ToShortTimeString()
-			       : this.Services().Localize["TimeNow"];
+			Date = date.HasValue 
+				? date.Value.ToShortDateString() + " " + date.Value.ToShortTimeString()
+			    : this.Services().Localize["TimeNow"];
 		}
 
 		private string _date;
@@ -131,8 +134,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				}
 			}
 		}
-
-
     }
 }
 

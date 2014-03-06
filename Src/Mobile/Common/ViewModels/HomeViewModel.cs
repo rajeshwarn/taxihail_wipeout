@@ -20,15 +20,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class HomeViewModel : BaseViewModel
     {
-		readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly ILocationService _locationService;
+		private readonly ITutorialService _tutorialService;
+		private readonly IPushNotificationService _pushNotificationService;
+		private readonly IVehicleService _vehicleService;
+
+		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
+			IMvxWebBrowserTask browserTask,
+			ILocationService locationService,
+			ITutorialService tutorialService,
+			IPushNotificationService pushNotificationService,
+			IVehicleService vehicleService) : base()
+		{
+			_locationService = locationService;
+			_orderWorkflowService = orderWorkflowService;
+			_tutorialService = tutorialService;
+			_pushNotificationService = pushNotificationService;
+			_vehicleService= vehicleService;
+
+			var accountService = Container.Resolve<IAccountService>();
+			var phoneService = Container.Resolve<IPhoneService>();
+
+			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService);
+		}
+
 		private bool _locateUser;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
-
-		public HomeViewModel(IOrderWorkflowService orderWorkflowService, IMvxWebBrowserTask browserTask) : base()
-		{
-			_orderWorkflowService = orderWorkflowService;
-			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService);
-		}
 
 		public void Init(bool locateUser, string defaultHintZoomLevel)
 		{
@@ -39,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
-            this.Services().Location.Start();
+			_locationService.Start();
 			if (firstTime)
 			{
 				Map = AddChild<MapViewModel>();
@@ -56,9 +74,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				CheckTermsAsync();
 
-				this.Services().Tutorial.DisplayTutorialToNewUser();
-
-				this.Services().PushNotification.RegisterDeviceForPushNotifications(force: true);
+				_tutorialService.DisplayTutorialToNewUser();
+				_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
 			}
 
 			if (_locateUser)
@@ -72,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				this.ChangePresentation(_defaultHintZoomLevel);
 				_defaultHintZoomLevel = null;
 			}
-			this.Services().Vehicle.Start();
+			_vehicleService.Start();
 		}
 
 
@@ -97,8 +114,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public override void OnViewStopped()
 		{
 			base.OnViewStopped();
-            this.Services().Location.Stop();
-			this.Services().Vehicle.Stop();
+			_locationService.Stop();
+			_vehicleService.Stop();
 		}
 
 		public PanelMenuViewModel Panel { get; set; }

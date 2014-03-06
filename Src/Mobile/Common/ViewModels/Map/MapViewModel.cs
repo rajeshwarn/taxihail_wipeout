@@ -19,8 +19,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class MapViewModel: ChildViewModel
     {
-		readonly IOrderWorkflowService _orderWorkflowService;
-		readonly IVehicleService _vehicleService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IVehicleService _vehicleService;
 
 		public MapViewModel(IOrderWorkflowService orderWorkflowService, IVehicleService vehicleService)
         {

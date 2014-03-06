@@ -467,3 +467,7 @@
 "ScanCreditCard"="Scan Credit Card";
 "NoFareTextIfDestinationIsRequired"="You need to specify a destination.";
 "Destination"="Destination";
+"WarningLocationServiceCancel"="Cancel";
+"WarningLocationServiceDontShow"="Don't warn";
+"WarningLocationServiceTitle"="Warning";
+"WarningLocationService"="Please turn on location services to have your location show up in the map.";

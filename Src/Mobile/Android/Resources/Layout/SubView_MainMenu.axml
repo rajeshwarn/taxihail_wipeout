@@ -188,42 +188,58 @@
                     </LinearLayout>
                 </ScrollView>
             </LinearLayout>
-            <LinearLayout
+            <FrameLayout
                 android:id="@+id/apcuriumLogoLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_toRightOf="@id/fakeLayout"
-                android:layout_marginBottom="5.0dp"
-                android:layout_weight="0">
-                <ImageView
-                    android:id="@+id/mk_logo"
-                    android:clickable="true"
-                    android:src="@drawable/mk_logo"
-                    android:layout_width="100dip"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:adjustViewBounds="true"
-                    android:layout_marginLeft="5dip" />
-                <ImageView
-                    android:id="@+id/apc_logo_menu"
-                    android:clickable="true"
-                    android:src="@drawable/apc_logo_menu"
-                    android:layout_width="90dip"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:adjustViewBounds="true"
-                    android:layout_marginLeft="10dip" />
-                <TextView
-                    android:text="v0.0.0"
-                    local:MvxBind="Text Panel.Version"
+                android:layout_marginBottom="5dp">
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5">
+                        <ImageView
+                            android:id="@+id/mk_logo"
+                            android:orientation="horizontal"
+                            android:clickable="true"
+                            android:src="@drawable/th_logo_small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:adjustViewBounds="true" />
+                        <ImageView
+                            android:id="@+id/apc_logo_menu"
+                            android:clickable="true"
+                            android:src="@drawable/apc_logo_menu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:adjustViewBounds="true"
+                            android:layout_marginLeft="17dp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25" />
+                </LinearLayout>
+                <TextView
+                    android:text="2.0.17"
+                    local:MvxBind="Text Panel.Version"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dip"
-                    android:layout_gravity="bottom"
+                    android:layout_marginRight="15dp"
+                    android:layout_gravity="bottom|right"
                     style="@style/FinePrint"
                     android:gravity="right" />
-            </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
     </RelativeLayout>
     <RelativeLayout
