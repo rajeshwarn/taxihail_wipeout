@@ -6,9 +6,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class TermsAndConditionsService : BaseService, ITermsAndConditionsService
     {
-        public async Task<TermsAndConditions> GetTerms()
+        public Task<TermsAndConditions> GetTerms()
         {
-            return await UseServiceClientAsync<CompanyServiceClient, TermsAndConditions>(service => service.GetTermsAndConditions());
+            return UseServiceClientAsync<CompanyServiceClient, TermsAndConditions>(service => service.GetTermsAndConditions());
         }
     }
 }

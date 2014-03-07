@@ -35,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPushNotificationService pushNotificationService,
 			IVehicleService vehicleService,
 			IAccountService accountService,
+			IPhoneService phoneService,
 			ITermsAndConditionsService termsService) : base()
 		{
 			_locationService = locationService;
@@ -44,8 +45,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService = vehicleService;
 			_accountService = accountService;
 			_termsService = termsService;
-
-			var phoneService = Container.Resolve<IPhoneService>();
 
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService);
 		}
@@ -100,25 +99,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async void CheckTermsAsync()
 		{
-			if (Settings.ShowTermsAndConditions) 
+			if (!Settings.ShowTermsAndConditions) 
 			{
-				var response = await _termsService.GetTerms();
+				return;
+			}
 
-				if (response.Updated)
-				{				 
-					ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool>(new 
-						{														
-							content = response.Content
-						}.ToStringDictionary(), 
-						async acknowledged =>
-						{                                                
-							// Set Acknowledgement in cache to [acknowledged]
-							if (!acknowledged)
-							{
-								_accountService.SignOut();
-							}
-						});
-				}
+			var response = await _termsService.GetTerms();
+			var termsAckKey = string.Format("TermsAck{0}", _accountService.CurrentAccount.Email);
+			var termsAcknowledged = this.Services().Cache.Get<string>(termsAckKey);
+
+			if (response.Updated || !(termsAcknowledged == "yes"))
+			{				 
+				this.Services().Cache.Clear(termsAckKey);
+				ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool>(new 
+					{														
+						content = response.Content
+					}.ToStringDictionary(), 
+					async acknowledged =>
+					{
+						this.Services().Cache.Set<string>(termsAckKey, acknowledged ? "yes" : "no");
+						if (!acknowledged)
+						{
+							_accountService.SignOut();
+						}
+					});
 			}
 		}
 
