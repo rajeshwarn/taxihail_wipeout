@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 			DefaultPaymentInformations = JsonSerializer.DeserializeFromString<PaymentInformation>(currentPaymentInformation);
 			PaymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
 			PaymentPreferences.Start(DefaultPaymentInformations);
-			PaymentPreferences.LoadCreditCards();
+			//PaymentPreferences.LoadCreditCards();
 		}
 
 		public PaymentInformation DefaultPaymentInformations { get; set ; }

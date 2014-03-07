@@ -58,11 +58,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return setting.IsPayInTaxiEnabled;
             }
         }
-		public override void OnViewStarted(bool firstTime)
-        {
-			base.OnViewStarted(firstTime);
-            PaymentPreferences.LoadCreditCards();
-        }
 
         private PaymentDetailsViewModel _paymentPreferences;
         public PaymentDetailsViewModel PaymentPreferences
