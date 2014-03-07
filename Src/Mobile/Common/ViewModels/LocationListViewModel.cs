@@ -9,11 +9,19 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class LocationListViewModel: BaseViewModel
     {
+		private readonly IAccountService _accountService;
+
+		public LocationListViewModel(IAccountService accountService)
+		{
+			_accountService = accountService;
+		}
+
         public override void OnViewStarted(bool firstStart = false)
         {
             base.OnViewStarted (firstStart);
@@ -94,8 +102,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         
         private Task<AddressViewModel[]> LoadFavoriteAddresses()
         {
-            return Task<AddressViewModel[]>.Factory.StartNew(()=>{
-                var adrs = this.Services().Account.GetFavoriteAddresses().ToList();
+            return Task<AddressViewModel[]>.Factory.StartNew(()=>
+			{
+				var adrs = _accountService.GetFavoriteAddresses().ToList();
              
                 return adrs.Select(a => new AddressViewModel
                 { 
@@ -111,7 +120,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private Task<AddressViewModel[]> LoadHistoryAddresses()
         {
             return Task<AddressViewModel[]>.Factory.StartNew(()=>{
-                var adrs = this.Services().Account.GetHistoryAddresses();
+				var adrs = _accountService.GetHistoryAddresses();
                 return adrs.Select(a => new AddressViewModel
                 { 
                     Address = a,

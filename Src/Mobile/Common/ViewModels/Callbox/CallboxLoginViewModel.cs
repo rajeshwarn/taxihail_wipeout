@@ -11,6 +11,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
     public class CallboxLoginViewModel : BaseViewModel
     {
+        private readonly IAccountService _accountService;
+
+        public CallboxLoginViewModel(IAccountService accountService)
+        {
+            _accountService = accountService;
+        }
 
         public override void Start()
         {
@@ -21,7 +27,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         }
 
         private string _email;
-
         public string Email
         {
             get { return _email; }
@@ -33,7 +38,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         }
 
         private string _password;
-
         public string Password
         {
             get { return _password; }
@@ -49,10 +53,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             get
             {
                 return this.GetCommand(() =>
-                                      {
-										 this.Services().Account.ClearCache();
-                                          SignIn();
-                                      });
+                {
+                    _accountService.ClearCache();
+                    SignIn();
+                });
             }
         }
 
@@ -66,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
                 try
                 {
-                    account = await this.Services().Account.SignIn(Email, Password);
+                    account = await _accountService.SignIn(Email, Password);
                 }
                 catch (Exception e)
                 {
@@ -81,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                 if (account != null)
                 {
                     Password = string.Empty;
-                    if (this.Services().Account.GetActiveOrdersStatus().Any(c => TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IBSStatusId)))
+                    if (_accountService.GetActiveOrdersStatus().Any(c => TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IBSStatusId)))
                     {
 						ShowViewModel<CallboxOrderListViewModel>();
                     }

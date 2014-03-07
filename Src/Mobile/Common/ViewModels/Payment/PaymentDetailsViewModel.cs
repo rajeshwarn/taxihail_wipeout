@@ -15,13 +15,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
 	public class PaymentDetailsViewModel : BaseViewModel
 	{
-		private IAccountService _accountService;
-		private int DefaultTipValue = 15;
+		private readonly IAccountService _accountService;
 
 		public PaymentDetailsViewModel(IAccountService accountService)
 		{
 			_accountService = accountService;
 		}
+
+		private int DefaultTipValue = 15;
 
 		public void Start(PaymentInformation paymentDetails = null)
 		{
@@ -47,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			var currentAccount = _accountService.CurrentAccount;
 
-			// check null and set to default values in case of null
+			// check null and set to default values in case of null            
 			if (!paymentDetails.CreditCardId.HasValue)
 			{
 				var creditCards = _accountService.GetCreditCards();
@@ -60,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{
 					if (creditCards.Any())
 					{
-						paymentDetails.CreditCardId = CreditCards.First().CreditCardId;
+                        paymentDetails.CreditCardId = creditCards.First().CreditCardId;
 					}
 				}
 			}

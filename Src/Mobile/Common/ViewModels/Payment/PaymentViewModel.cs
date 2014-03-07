@@ -16,17 +16,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
     {
         private readonly IPayPalExpressCheckoutService _palExpressCheckoutService;
 		private readonly IAccountService _accountService;
+		private readonly IPaymentService _paymentService;
 
 		public PaymentViewModel(IPayPalExpressCheckoutService palExpressCheckoutService,
-			IAccountService accountService)
+			IAccountService accountService,
+			IPaymentService paymentService)
 		{
-			_accountService = accountService;
 			_palExpressCheckoutService = palExpressCheckoutService;
+			_accountService = accountService;
+			_paymentService = paymentService;
 		}
 
 		public void Init(string order, string orderStatus)
         {
-			this.Services().Payment.GetPaymentSettings();
+			_paymentService.GetPaymentSettings();
 
             Order = JsonSerializer.DeserializeFromString<Order>(order); 
             OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
@@ -48,8 +51,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			base.OnViewStarted(firstTime);
 
 			//refresh from the server
-//			var orderFromServer = await _accountService.GetHistoryOrderAsync(Order.Id);
-//			InitAmounts(orderFromServer);
+			var orderFromServer = await _accountService.GetHistoryOrderAsync(Order.Id);
+			InitAmounts(orderFromServer);
 		}
 
 		void InitAmounts(Order order)
@@ -74,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         { 
             get
             {
-				var payPalSettings = this.Services().Payment.GetPaymentSettings().PayPalClientSettings;
+				var payPalSettings = _paymentService.GetPaymentSettings().PayPalClientSettings;
                 return payPalSettings.IsEnabled;
             }
         }
@@ -83,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         { 
             get
             {
-				var setting = this.Services().Payment.GetPaymentSettings();
+				var setting = _paymentService.GetPaymentSettings();
                 return setting.IsPayInTaxiEnabled;
             }
         }
@@ -335,7 +338,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                             if (success)
                             {
                                 ShowPayPalPaymentConfirmation();
-                                this.Services().Payment.SetPaymentFromCache(Order.Id, Amount);
+								_paymentService.SetPaymentFromCache(Order.Id, Amount);
                             }
                             else
                             {
@@ -352,7 +355,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             {
                 using (this.Services().Message.ShowProgress())
                 {
-					var response = await this.Services().Payment.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, CultureProvider.ParseCurrency(MeterAmount), CultureProvider.ParseCurrency(TipAmount), Order.Id);
+					var response = await _paymentService.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, CultureProvider.ParseCurrency(MeterAmount), CultureProvider.ParseCurrency(TipAmount), Order.Id);
                     if (!response.IsSuccessfull)
                     {
                         this.Services().Message.ShowProgress(false);
@@ -360,7 +363,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                         return;
                     }
 
-                    this.Services().Payment.SetPaymentFromCache(Order.Id, Amount);
+					_paymentService.SetPaymentFromCache(Order.Id, Amount);
                     ShowCreditCardPaymentConfirmation(response.AuthorizationCode);
                 }
             }

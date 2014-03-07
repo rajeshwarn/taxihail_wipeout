@@ -54,11 +54,28 @@ namespace DatabaseInitializer
                     companyName = args[0];
                 }
 
-                var connectionString = new ConnectionStringSettings("MkWeb",
-                    string.Format(
-                        "Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True",
-                        companyName));
+
+
+                ConnectionStringSettings connectionString;
+                
+                if ( args.Length > 3 )
+                {
+                    connectionString = new ConnectionStringSettings("MkWeb", string.Format(args[3],companyName));
+                }
+                else
+                {
+                    connectionString = new ConnectionStringSettings("MkWeb",
+                        string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True",companyName));
+                }
+
+                                
+                Console.WriteLine("Using connection string :" + connectionString.ConnectionString);
+
                 var connStringMaster = connectionString.ConnectionString.Replace(companyName, "master");
+
+                connStringMaster = args.Length > 4 ? args[4] : connStringMaster;
+
+                Console.WriteLine("Using master connection string :" + connStringMaster);
 
                 //SQL Instance name
                 var sqlInstanceName = "MSSQL11.MSSQLSERVER";
@@ -126,7 +143,7 @@ namespace DatabaseInitializer
                 Console.WriteLine("Add user for IIS...");
 
                 ////add user for IIS IIS APPPOOL\MyCompany
-                if (companyName != "MKWebDev")
+                if ( (companyName != "MKWebDev") && ( connectionString.ConnectionString.ToLower().Contains("integrated security=true")))
                 {
                     creatorDb.AddUserAndRighst(connStringMaster, connectionString.ConnectionString,
                         "IIS APPPOOL\\" + companyName, companyName);

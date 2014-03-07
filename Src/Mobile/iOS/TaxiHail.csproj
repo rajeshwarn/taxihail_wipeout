@@ -687,8 +687,6 @@
     <BundleResource Include="Resources\left_arrow_white%402x.png" />
     <BundleResource Include="Resources\mastercard.png" />
     <BundleResource Include="Resources\mastercard%402x.png" />
-    <BundleResource Include="Resources\mk_logo.png" />
-    <BundleResource Include="Resources\mk_logo%402x.png" />
     <BundleResource Include="Resources\paypal.png" />
     <BundleResource Include="Resources\paypal%402x.png" />
     <BundleResource Include="Resources\right_arrow.png" />
@@ -745,6 +743,8 @@
     <BundleResource Include="Resources\close_tutorial_button%402x.png" />
     <BundleResource Include="Resources\baggage.png" />
     <BundleResource Include="Resources\baggage%402x.png" />
+    <BundleResource Include="Resources\th_logo_small.png" />
+    <BundleResource Include="Resources\th_logo_small%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

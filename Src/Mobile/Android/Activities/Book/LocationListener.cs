@@ -75,6 +75,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             try
             {
+                if ( location == null )
+                {
+                    return;
+                }
+
                 var position = new Position()
                 {
                     Time = location.Time.ToDateTime(),

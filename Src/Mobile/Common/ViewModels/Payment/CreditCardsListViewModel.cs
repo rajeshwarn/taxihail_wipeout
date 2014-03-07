@@ -9,12 +9,20 @@ using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
     public class CreditCardsListViewModel : BaseSubViewModel<Guid>
     {
-        private TinyMessageSubscriptionToken _removeCreditCardToken;
+		private readonly IAccountService _accountService;
+
+		public CreditCardsListViewModel(IAccountService accountService)
+		{
+			_accountService = accountService;
+		}
+
+		private TinyMessageSubscriptionToken _removeCreditCardToken;
         private ObservableCollection<CreditCardViewModel> _creditCards;
 
         public ObservableCollection<CreditCardViewModel> CreditCards
@@ -60,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 									            this.Services().Localize["YesButton"],
 			            () =>
 			            {
-				            this.Services().Account.RemoveCreditCard(creditCardId);
+							_accountService.RemoveCreditCard(creditCardId);
 				            var creditCardToRemove = CreditCards.FirstOrDefault(c => c.CreditCardDetails.CreditCardId.Equals(creditCardId));
 				            if (creditCardToRemove != null)
 				            {
@@ -69,11 +77,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				            }
 
 				            CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
-							if(this.Services().Account.CurrentAccount.DefaultCreditCard == creditCardId)
+							if(_accountService.CurrentAccount.DefaultCreditCard == creditCardId)
 							{
-								var account = this.Services().Account.CurrentAccount;
+								var account = _accountService.CurrentAccount;
 								account.DefaultCreditCard = null;
-								this.Services().Account.UpdateSettings(account.Settings, null, account.DefaultTipPercent);								
+								_accountService.UpdateSettings(account.Settings, null, account.DefaultTipPercent);								
 							}
 
 			            },
@@ -86,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             return Task.Factory.StartNew(() =>
             {
-                var creditCards = this.Services().Account.GetCreditCards().ToList();
+				var creditCards = _accountService.GetCreditCards().ToList();
 				creditCards.Insert(0, new CreditCardDetails
                 {
                     FriendlyName = this.Services().Localize["AddCreditCardTitle"],

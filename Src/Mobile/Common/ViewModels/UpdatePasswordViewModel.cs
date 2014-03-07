@@ -2,11 +2,19 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Extensions;
 using System;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class UpdatePasswordViewModel : BaseViewModel
 	{
+		private readonly IAccountService _accountService;
+
+		public UpdatePasswordViewModel(IAccountService accountService)
+		{
+			_accountService = accountService;			
+		}
+
 		private string _currentPassword;
 		public string CurrentPassword
 		{
@@ -59,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				return this.GetCommand(() =>
-				                  {
+				{
 					if (!CanUpdatePassword)
 					{
 						var title = this.Services().Localize["View_UpdatePassword"];
@@ -68,18 +76,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return;
 					}
 					this.Services().Message.ShowProgress(true);
-					try{
-						this.Services().Account.UpdatePassword(this.Services().Account.CurrentAccount.Id, CurrentPassword, NewPassword);
-						this.Services().Account.SignOut();
+					try
+					{
+						_accountService.UpdatePassword(_accountService.CurrentAccount.Id, CurrentPassword, NewPassword);
+						_accountService.SignOut();
 						var msg = this.Services().Localize["ChangePasswordConfirmmation"];
 						var title = Settings.ApplicationName;
 						this.Services().Message.ShowMessage(title, msg, () => ShowViewModel<LoginViewModel>());
-					}catch(Exception e)
+					}
+					catch(Exception e)
 					{
 						var msg = this.Services().Localize["ServiceError" + e.Message];
 						var title = this.Services().Localize["ServiceErrorCallTitle"];
 						this.Services().Message.ShowMessage(title, msg);
-					}finally{
+					}
+					finally
+					{
 						this.Services().Message.ShowProgress(false);
 					}					
 				});
