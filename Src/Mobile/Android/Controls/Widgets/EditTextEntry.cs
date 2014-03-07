@@ -31,6 +31,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			return base.OnPreDraw ();
 		}
             
+        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
+        {
+            if (e.KeyCode == Keycode.Enter)
+            {
+                Text += System.Environment.NewLine;
+                SetSelection(Text.Length);
+                return false;
+            }
+            return base.OnKeyDown(keyCode, e);
+        }
+
         public override bool OnKeyPreIme(Android.Views.Keycode keyCode, Android.Views.KeyEvent e)
         {
             // intercept the back button to hide the keyboard

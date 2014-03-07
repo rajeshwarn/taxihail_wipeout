@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _lblChargeType = (TextView)FindViewById<TextView>(Resource.Id.lblChargeType);
                 _lblApt = (TextView)FindViewById<TextView>(Resource.Id.lblApt);
                 _lblRingCode = (TextView)FindViewById<TextView>(Resource.Id.lblRingCode);
-                _editNote = FindViewById<EditText>(Resource.Id.txtNotes);
+                _editNote = FindViewById<EditTextEntry>(Resource.Id.txtNotes);
 
                 // hack for scroll in view when in EditText
                 _bottomPadding = FindViewById<LinearLayout>(Resource.Id.HackBottomPadding);
@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private TextView _lblChargeType;
         private TextView _lblApt;
         private TextView _lblRingCode;
-        private EditText _editNote;
+        private EditTextEntry _editNote;
         private LinearLayout _bottomPadding;
 
         private OrderReviewViewModel ViewModel { get { return (OrderReviewViewModel)DataContext; } }
