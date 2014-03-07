@@ -13,12 +13,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class LocationDetailViewModel: BaseViewModel
 	{
-	    readonly CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
-		readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
 
-		public LocationDetailViewModel(IOrderWorkflowService orderWorkflowService)
+		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IGeolocService _geolocService;
+		private readonly IAccountService _accountService;
+
+		public LocationDetailViewModel(IOrderWorkflowService orderWorkflowService, 
+			IGeolocService geolocService, 
+			IAccountService accountService)
 		{
-			_orderWorkflowService = orderWorkflowService;			
+			_orderWorkflowService = orderWorkflowService;
+			_geolocService = geolocService;
+			_accountService = accountService;
 		}
 
 		public void Init(string address)
@@ -32,13 +39,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				IsNew = false;
 			} 
 		}
-
-        public bool ShowRingCodeField {
-            get
-            {
-				return Settings.ShowRingCodeField;
-            }
-        }
 
 		private Address _address;
 		
@@ -55,11 +55,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public string Apartment {
-            get {
-                return _address.Apartment;
-            }
-            set {
+        public string Apartment 
+		{
+			get { return _address.Apartment; }
+            set 
+			{
                 if(value != _address.Apartment)
                 {
                     _address.Apartment = value;
@@ -68,11 +68,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public string RingCode {
-            get {
-                return _address.RingCode;
-            }
-            set {
+        public string RingCode 
+		{
+			get { return _address.RingCode; }
+            set 
+			{
                 if(value != _address.RingCode)
                 {
                     _address.RingCode = value;
@@ -81,11 +81,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public string FriendlyName {
-            get {
-                return _address.FriendlyName;
-            }
-            set {
+        public string FriendlyName 
+		{
+			get  { return _address.FriendlyName; }
+            set 
+			{
                 if(value != _address.FriendlyName)
                 {
                     _address.FriendlyName = value;
@@ -95,11 +95,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         private bool _isNew;
-        public bool IsNew {
-            get {
-                return _isNew;
-            }
-            set {
+        public bool IsNew 
+		{
+			get { return _isNew; }
+            set 
+			{
                 if(value != _isNew)
                 {
                     _isNew = value;
@@ -109,20 +109,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public bool RebookIsAvailable {
-			get { return !IsNew && !Settings.HideRebookOrder; }
-		}
+		public bool RebookIsAvailable { get { return !IsNew && !Settings.HideRebookOrder; } }
 
 		public ICommand ValidateAddress
         {
-            get {
+            get 
+			{
 				return this.GetCommand<string>(text =>
                 {
 					this.Services().Message.ShowProgress(true);
-					var task = Task.Factory.StartNew(() => this.Services().Geoloc.ValidateAddress(text))
+					var task = Task.Factory.StartNew(() => _geolocService.ValidateAddress(text))
                         .HandleErrors();
 					task.ContinueWith(t => this.Services().Message.ShowProgress(false));
-                    task.ContinueWith(t=>{
+                    task.ContinueWith(t=>
+					{
                         var location = t.Result;
                         if ((location == null) || string.IsNullOrWhiteSpace(location.FullAddress) || !location.HasValidCoordinate ()) {
                             this.Services().Message.ShowMessage(this.Services().Localize["InvalidAddressTitle"], this.Services().Localize["InvalidAddressMessage"]);
@@ -147,15 +147,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public ICommand SaveAddress
         {
-            get {
+            get 
+			{
                 return this.GetCommand(() =>
                 {
                     if (!ValidateFields()) return;
                     var progressShowing = true;
                     this.Services().Message.ShowProgress(true);
-                    try {
-                        var location = this.Services().Geoloc.ValidateAddress(_address.FullAddress);
-                        if ((location == null) || string.IsNullOrWhiteSpace(location.FullAddress) || !location.HasValidCoordinate ()) {
+                    try 
+					{
+						var location = _geolocService.ValidateAddress(_address.FullAddress);
+                        if ((location == null) || string.IsNullOrWhiteSpace(location.FullAddress) || !location.HasValidCoordinate ()) 
+						{
                             this.Services().Message.ShowMessage(this.Services().Localize["InvalidAddressTitle"], this.Services().Localize["InvalidAddressMessage"]);
                             return;
                         }
@@ -164,16 +167,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 						RaisePropertyChanged (() => BookAddress );
 
-                        this.Services().Account.UpdateAddress(_address);
+						_accountService.UpdateAddress(_address);
 
                         this.Services().Message.ShowProgress(false);
 						progressShowing = false;
 						Close(this);
                     
-                    } catch (Exception ex) {
+                    } 
+					catch (Exception ex) 
+					{
                         Logger.LogError (ex);
-                    } finally {
-                        if (progressShowing) this.Services().Message.ShowProgress(false);
+                    } 
+					finally 
+					{
+                        if (progressShowing) 
+							this.Services().Message.ShowProgress(false);
                     }
                 });
             }
@@ -186,16 +194,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     this.Services().Message.ShowProgress(true);
                 
-                    try {
-                        if (_address.IsHistoric) {
-                            this.Services().Account.DeleteHistoryAddress(_address.Id);
-                        } else {
-                            this.Services().Account.DeleteFavoriteAddress(_address.Id);
+                    try 
+					{
+                        if (_address.IsHistoric) 
+						{
+							_accountService.DeleteHistoryAddress(_address.Id);
+                        } 
+						else 
+						{
+							_accountService.DeleteFavoriteAddress(_address.Id);
                         }
-							Close (this);
-                    } catch (Exception ex) {
+
+						Close (this);
+                    }
+					catch (Exception ex) 
+					{
                         Logger.LogError (ex);
-                    } finally {
+                    } 
+					finally 
+					{
                         this.Services().Message.ShowProgress(false);
                     }
                 });
@@ -208,10 +225,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>
 				{
-	                 var order = new Order {PickupAddress = _address};
-	                 var account = this.Services().Account.CurrentAccount;
-	                 order.Settings = account.Settings;
-					 _orderWorkflowService.Rebook(order);
+					var order = new Order {PickupAddress = _address};
+					var account = _accountService.CurrentAccount;
+					order.Settings = account.Settings;
+					_orderWorkflowService.Rebook(order);
 					ShowViewModel<HomeViewModel>(new { 
 							locateUser =  false, 
 							defaultHintZoomLevel = new ZoomToStreetLevelPresentationHint(order.PickupAddress.Latitude, order.PickupAddress.Longitude).ToJson()});

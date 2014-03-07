@@ -271,6 +271,13 @@ namespace MK.DeploymentService
             Log("Deploying Server");
             DeployServer(_job.Company.Id, companyName, packagesDirectory, iisManager);
 
+            Log("Done Deploying Server");
+
+            if ( Settings.Default.ReplicationEnabled )
+            {
+
+            }
+
             appPool.Start();
         }
 
@@ -300,7 +307,7 @@ namespace MK.DeploymentService
             File.WriteAllText(fileSettings, stringBuilder.ToString());
 
 
-            var exeArgs = string.Format("{0} {1}", companyName, _job.Server.SqlServerInstance);
+            var exeArgs = string.Format("{0} {1} N \"{2}\" \"{3}\"", companyName, _job.Server.SqlServerInstance, string.Format(Settings.Default.SqlConnectionString, companyName ), Settings.Default.SqlConnectionStringMaster );
             Log("Calling DB tool with : " + exeArgs);
             var deployDb =
                 ProcessEx.GetProcess(
@@ -339,7 +346,8 @@ namespace MK.DeploymentService
 
             CopyFiles(sourcePath, targetWeDirectory);
 
-            var website = iisManager.Sites["Default Web Site"];
+
+            var website = iisManager.Sites[Settings.Default.SiteName];
             var webApp = website.Applications.FirstOrDefault(x => x.Path == "/" + companyName);
             if (webApp != null)
             {
@@ -354,15 +362,18 @@ namespace MK.DeploymentService
             }
 
             var configuration = webApp.GetWebConfiguration();
+
+
             var section =
                 configuration.GetSection("connectionStrings")
                     .GetCollection()
                     .First(x => x.Attributes["name"].Value.ToString() == "MKWeb");
+            
             var connSting = section.Attributes["connectionString"];
-            connSting.Value =
-                string.Format(
-                    "Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True",
-                    companyName);
+
+            
+
+            connSting.Value =string.Format(Settings.Default.SqlConnectionString, companyName );                    
 
             //log4net comn
             var document = XDocument.Load(targetWeDirectory + "log4net.xml");

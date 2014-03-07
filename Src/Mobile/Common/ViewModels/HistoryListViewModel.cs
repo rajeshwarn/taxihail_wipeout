@@ -9,20 +9,29 @@ using System.Threading.Tasks;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class HistoryListViewModel : BaseViewModel
     {
+		private readonly IAccountService _accountService;
 
-        private ObservableCollection<OrderViewModel> _orders;
-        private readonly TinyMessageSubscriptionToken _orderDeletedToken;
-
-        public HistoryListViewModel()
+		public HistoryListViewModel(IAccountService accountService)
         {
-            HasOrders = true; //Needs to be true otherwise we see the no order for a few seconds
-            _orderDeletedToken = this.Services().MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));            
+			_accountService = accountService;
+
+			_orderDeletedToken = this.Services().MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));  
         }
+
+		private ObservableCollection<OrderViewModel> _orders;
+		private readonly TinyMessageSubscriptionToken _orderDeletedToken;
+
+		public void Init()
+		{
+			HasOrders = true; //Needs to be true otherwise we see the no order for a few seconds 
+		}
+
         public ObservableCollection<OrderViewModel> Orders
         {
             get { return _orders; }
@@ -49,8 +58,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
             }
         }
-
-
 
         private void OnOrderDeleted(Guid orderId)
         {
@@ -83,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			using (this.Services().Message.ShowProgress())
 			{
-				var orders = await this.Services().Account.GetHistoryOrders();
+				var orders = await _accountService.GetHistoryOrders();
 				if (orders.Any())
 				{
 					var firstId = orders.First().Id;

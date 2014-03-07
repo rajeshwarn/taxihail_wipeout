@@ -10,11 +10,26 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
 	public class CreditCardAddViewModel : BaseSubViewModel<CreditCardInfos>
     {
+		private readonly ILocationService _locationService;
+		private readonly IPaymentService _paymentService;
+		private readonly IAccountService _accountService;
+
+		public CreditCardAddViewModel(ILocationService locationService,
+			IPaymentService paymentService, 
+			IAccountService accountService)
+		{
+			_locationService = locationService;
+			_paymentService = paymentService;
+			_accountService = accountService;
+		}
+
 #region Const and ReadOnly
         private const string Visa = "Visa";
         private const string MasterCard = "MasterCard";
@@ -45,14 +60,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			base.OnViewStarted(firstTime);
 			// we stop the service when the viewmodel starts because it stops after the homeviewmodel starts when we press back
 			// this ensures that we don't stop the service just after having started it in homeviewmodel
-			this.Services().Location.Stop();
+			_locationService.Stop();
 		}
 
 		public override void Start()
         {
             Data = new CreditCardInfos();
 
-			Data.NameOnCard = this.Services().Account.CurrentAccount.Name;
+			Data.NameOnCard = _accountService.CurrentAccount.Name;
 
 			CardCategories = new List<ListItem>
 			{
@@ -100,7 +115,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		    }
 
 #if DEBUG
-			if (this.Services().Payment.GetPaymentSettings().PaymentMode == PaymentMethod.Braintree)
+			if (_paymentService.GetPaymentSettings().PaymentMode == PaymentMethod.Braintree)
 			{
 				CreditCardNumber = DummyVisa.BraintreeNumber;
 			}
@@ -114,10 +129,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			RaisePropertyChanged("CreditCardNumber");
 #endif            
         }
-
-#region Properties
+			
         public CreditCardInfos Data { get; set; }
-
 
         //todo: refactorer le setter
         public string CreditCardNumber
@@ -127,8 +140,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             {
                 Data.CardNumber = value;
 
-                Regex visaRgx = new Regex(VisaPattern, RegexOptions.IgnoreCase);
-                MatchCollection matches = visaRgx.Matches(Data.CardNumber);
+				var visaRgx = new Regex(VisaPattern, RegexOptions.IgnoreCase);
+				var matches = visaRgx.Matches(Data.CardNumber);
 
                 if (matches.Count > 0)
                 {
@@ -152,8 +165,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 }
                 else
                 {
-
-                    Regex masterRgx = new Regex(MasterPattern, RegexOptions.IgnoreCase);
+					var masterRgx = new Regex(MasterPattern, RegexOptions.IgnoreCase);
                     matches = masterRgx.Matches(Data.CardNumber);
                     if (matches.Count > 0)
                     {
@@ -184,19 +196,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         }
 
 		int _creditCardCategory;
-		public int CreditCardCategory {
-			get {
-				return _creditCardCategory;
-			}
-			set {
+		public int CreditCardCategory 
+		{
+			get { return _creditCardCategory; }
+			set 
+			{
 				_creditCardCategory = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged("CreditCardCategoryName");
 			}
 		}
 
-		public string CreditCardCategoryName { 
-			get {
+		public string CreditCardCategoryName 
+		{ 
+			get 
+			{
 				var category = CardCategories.FirstOrDefault(x=>x.Id == CreditCardCategory);
 				if(category == null) return null;
 				return category.Display; 
@@ -204,9 +218,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		}
 
         int _creditCardType;
-        public int CreditCardType {
-            get {return _creditCardType;}
-            set {
+        public int CreditCardType 
+		{
+			get { return _creditCardType; }
+            set 
+			{
                 _creditCardType = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged("CreditCardTypeName");
@@ -214,48 +230,61 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-        public string CreditCardTypeName { 
-            get {
+        public string CreditCardTypeName 
+		{ 
+            get 
+			{
                 var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
 				return type == null ? null : type.Display;
             }
         }
 
-        public string CreditCardImagePath { 
-            get {
+        public string CreditCardImagePath 
+		{ 
+            get 
+			{
                 var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
 				return type == null ? null : type.Image;
             }
         }
 
         public int? ExpirationYear {
-            get {
+            get 
+			{
                 return string.IsNullOrEmpty(Data.ExpirationYear) 
                     ? default(int?) 
                     : int.Parse(Data.ExpirationYear);
             }
-            set {
+            set 
+			{
                 var year = value;
-                var current = string.IsNullOrEmpty(Data.ExpirationYear) ? default(int?) : int.Parse(Data.ExpirationYear);
+                var current = string.IsNullOrEmpty(Data.ExpirationYear) 
+					? default(int?) 
+					: int.Parse(Data.ExpirationYear);
 
-                if(year != current){
+                if(year != current)
+				{
                     Data.ExpirationYear = year.ToSafeString();
 					RaisePropertyChanged();
                 }
             }
         }
 
-        public int? ExpirationMonth {
-            get {
+        public int? ExpirationMonth 
+		{
+            get 
+			{
                 return string.IsNullOrEmpty(Data.ExpirationMonth) 
                     ? default(int?) 
                     : int.Parse(Data.ExpirationMonth);
             }
-            set {
+            set 
+			{
                 var month = value;
                 var current = string.IsNullOrEmpty(Data.ExpirationMonth) ? default(int?) : int.Parse(Data.ExpirationMonth);
 
-                if(month != current){
+                if(month != current)
+				{
                     Data.ExpirationMonth = month.ToSafeString();
 					RaisePropertyChanged("ExpirationMonth");
 					RaisePropertyChanged("ExpirationMonthDisplay");
@@ -263,8 +292,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-        public string ExpirationMonthDisplay {
-            get {
+        public string ExpirationMonthDisplay 
+		{
+            get 
+			{
                 var type = ExpirationMonths.FirstOrDefault(x => x.Id == ExpirationMonth);
                 return type == null ? null : type.Display;
             }
@@ -288,9 +319,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public bool ShowInstructions { get; set; }
 
-#endregion
-
-#region Private Methods
 		private async void AddCrediCard ()
         {
 			Data.FriendlyName = CreditCardCategoryName;
@@ -305,7 +333,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				return;
             }
 
-            if (!IsValidate (Data.CardNumber)) {
+            if (!IsValidate (Data.CardNumber)) 
+			{
                 this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNUmber"]);
 				return;
             }
@@ -318,7 +347,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	                Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
 	                Data.CreditCardId = Guid.NewGuid();
 
-					success = await this.Services().Account.AddCreditCard(Data);
+					success = await _accountService.AddCreditCard(Data);
 				}
 				if (success)
 				{	
@@ -328,11 +357,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					if(ShowInstructions)
 					{
 						ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser =  true });
-						if(!this.Services().Account.CurrentAccount.DefaultCreditCard.HasValue)
+						if(!_accountService.CurrentAccount.DefaultCreditCard.HasValue)
 						{
-							var account = this.Services().Account.CurrentAccount;
+							var account = _accountService.CurrentAccount;
 							account.DefaultCreditCard = Data.CreditCardId;
-							this.Services().Account.UpdateSettings(account.Settings, Data.CreditCardId, account.DefaultTipPercent);
+							_accountService.UpdateSettings(account.Settings, Data.CreditCardId, account.DefaultTipPercent);
 						}
 					}
 					else
@@ -344,10 +373,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{
                     this.Services().Message.ShowMessage("Validation", "Cannot validate the credit card.");
 				}
-				
-
             }
-            finally {
+            finally 
+			{
                 this.Services().Cache.Clear("Account.CreditCards");                
             }
         }
@@ -381,9 +409,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
             return (sum % 10 == 0);
         }
-
-#endregion
-
     }
 }
 

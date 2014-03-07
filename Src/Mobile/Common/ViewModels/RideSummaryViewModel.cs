@@ -15,12 +15,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class RideSummaryViewModel: BaseViewModel
 	{
-		readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IPaymentService _paymentService;
+		private readonly IBookingService _bookingService;
 
-		public RideSummaryViewModel(IOrderWorkflowService orderWorkflowService)
+		public RideSummaryViewModel(IOrderWorkflowService orderWorkflowService,
+			IPaymentService paymentService,
+			IBookingService bookingService)
 		{
-			this._orderWorkflowService = orderWorkflowService;
-			
+			_orderWorkflowService = orderWorkflowService;
+			_paymentService = paymentService;
+			_bookingService = bookingService;
 		}
 
 		public void Init(string order, string orderStatus)
@@ -57,9 +62,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				var setting = this.Services().Payment.GetPaymentSettings();
+				var setting = _paymentService.GetPaymentSettings();
 				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-				return isPayEnabled && setting.PaymentMode != PaymentMethod.RideLinqCmt && !this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue; // TODO not sure about this
+				return isPayEnabled && setting.PaymentMode != PaymentMethod.RideLinqCmt && !_paymentService.GetPaymentFromCache(Order.Id).HasValue; // TODO not sure about this
 			}
 		}
 
@@ -67,9 +72,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        get
 	        {
-				var setting = this.Services().Payment.GetPaymentSettings();
+				var setting = _paymentService.GetPaymentSettings();
                 var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-                return isPayEnabled && setting.PaymentMode != PaymentMethod.RideLinqCmt && this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue;
+				return isPayEnabled && setting.PaymentMode != PaymentMethod.RideLinqCmt && _paymentService.GetPaymentFromCache(Order.Id).HasValue;
 	        }
 	    }
 
@@ -77,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				var fareIsAvailable = OrderStatus.FareAvailable || this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue;
+				var fareIsAvailable = OrderStatus.FareAvailable || _paymentService.GetPaymentFromCache(Order.Id).HasValue;
 				return (OrderStatus != null) && fareIsAvailable && Settings.SendReceiptAvailable;
 			}
 		}
@@ -101,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get {
 				return this.GetCommand(() =>
 				{
-					this.Services().Booking.SendReceipt(Order.Id);
+					_bookingService.SendReceipt(Order.Id);
                     ReceiptSent = true;
 				});
 			}
@@ -126,7 +131,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return this.GetCommand(() =>
                 {
 					this.Services().Message.ShowMessage("Confirmation", this.Services().Localize["ConfirmationOfPaymentSent"]);
-                    this.Services().Payment.ResendConfirmationToDriver(Order.Id);
+					_paymentService.ResendConfirmationToDriver(Order.Id);
                 });
             }
         }

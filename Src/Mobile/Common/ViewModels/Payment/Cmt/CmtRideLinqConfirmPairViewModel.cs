@@ -11,12 +11,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {
 	public class CmtRideLinqConfirmPairViewModel : BaseViewModel
 	{
+		private readonly IAccountService _accountService;
+		private readonly IPaymentService _paymentService;
+
+		public CmtRideLinqConfirmPairViewModel(IAccountService accountService,
+			IPaymentService paymentService)
+		{
+			_accountService = accountService;	
+			_paymentService = paymentService;
+		}
+
 		public void Init(string order, string orderStatus)
 		{
 			Order = order.FromJson<Order>();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
-			_paymentPreferences = new PaymentDetailsViewModel();
-			_paymentPreferences.Init();
+			_paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
+			_paymentPreferences.Start();
 			_paymentPreferences.CreditCards.CollectionChanged += (sender, e) => RefreshCreditCards();
 		}
 
@@ -82,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 								return;
 							}
 
-						var pairingResponse = await this.Services().Payment.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip, null);                    
+						var pairingResponse = await _paymentService.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip, null);                    
 
 							this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? CmtRideLinqPairingState.Success : CmtRideLinqPairingState.Failed);
 

@@ -19,20 +19,34 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class BookingStatusViewModel : BaseViewModel
     {
-		private int _refreshPeriod = 5; //in seconds
-	    private bool _waitingToNavigateAfterTimeOut;
-		readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IPhoneService _phoneService;
+		private readonly IBookingService _bookingService;
+		private readonly IPaymentService _paymentService;
+		private readonly IAccountService _accountService;
 
-		public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService)
+		public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService,
+			IPhoneService phoneService,
+			IBookingService bookingService,
+			IPaymentService paymentService,
+			IAccountService accountService)
 		{
-			this._orderWorkflowService = orderWorkflowService;
-			
+			_orderWorkflowService = orderWorkflowService;
+			_phoneService = phoneService;
+			_bookingService = bookingService;
+			_paymentService = paymentService;
+			_accountService = accountService;
 		}
+
+		private int _refreshPeriod = 5; //in seconds
+		private bool _waitingToNavigateAfterTimeOut;
+
 		public void Init(string order, string orderStatus)
 		{
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
@@ -210,7 +224,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         this.Services().Message.ShowMessage(string.Empty, 
 						                            OrderStatusDetail.DriverInfos.MobilePhone,
                                                     this.Services().Localize["CallButton"],
-                                                    () => this.Services().Phone.Call(OrderStatusDetail.DriverInfos.MobilePhone),
+													() => _phoneService.Call(OrderStatusDetail.DriverInfos.MobilePhone),
                                                     this.Services().Localize["Cancel"], 
 						                            () => {});   
                     }
@@ -236,18 +250,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             this.Services().Cache.Set("OrderReminderWasSeen." + orderId.ToString(), true.ToString());                     
         }
 
-		private bool IsCmtRideLinq { get { return this.Services().Payment.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt; } }
+		private bool IsCmtRideLinq { get { return _paymentService.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt; } }
         private void AddReminder (OrderStatusDetail status)
         {
             if (!HasSeenReminderPrompt(status.OrderId )
-                && this.Services().Phone.CanUseCalendarAPI())
+				&& _phoneService.CanUseCalendarAPI())
             {
                 SetHasSeenReminderPrompt(status.OrderId);
                 InvokeOnMainThread(() => this.Services().Message.ShowMessage(
                     this.Services().Localize["AddReminderTitle"], 
                     this.Services().Localize["AddReminderMessage"],
                     this.Services().Localize["YesButton"],
-                    () => this.Services().Phone.AddEventToCalendarAndReminder(
+					() => _phoneService.AddEventToCalendarAndReminder(
 						string.Format(this.Services().Localize["ReminderTitle"], Settings.ApplicationName), 
                         string.Format(this.Services().Localize["ReminderDetails"], Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),						              									 
                     Order.PickupAddress.FullAddress, 
@@ -262,7 +276,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private async void RefreshStatus ()
         {
             try {
-				var status = await this.Services().Booking.GetOrderStatusAsync(Order.Id);
+				var status = await _bookingService.GetOrderStatusAsync(Order.Id);
 				if(status.VehicleNumber != null)
 				{
 					_vehicleNumber = status.VehicleNumber;
@@ -271,7 +285,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					status.VehicleNumber = _vehicleNumber;
 				}
 
-                var isDone = this.Services().Booking.IsStatusDone(status.IBSStatusId);
+				var isDone = _bookingService.IsStatusDone(status.IBSStatusId);
 
 				if(status.IBSStatusId.HasValue() && status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled) )
 				{
@@ -288,9 +302,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 CenterMap ();
 
 				var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
-				if (isLoaded && IsCmtRideLinq && this.Services().Account.CurrentAccount.DefaultCreditCard != null)
+				if (isLoaded && IsCmtRideLinq && _accountService.CurrentAccount.DefaultCreditCard != null)
 					{
-						var isPaired = this.Services().Booking.IsPaired(Order.Id);
+						var isPaired = _bookingService.IsPaired(Order.Id);
                         var pairState = this.Services().Cache.Get<string>("CmtRideLinqPairState" + Order.Id.ToString());
 						var isPairBypass = (pairState == CmtRideLinqPairingState.Failed) || (pairState == CmtRideLinqPairingState.Canceled) || (pairState == CmtRideLinqPairingState.Unpaired);
 						if (!isPaired && !_isCurrentlyPairing && !isPairBypass)
@@ -312,11 +326,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					GoToSummary();
                 }
 
-                if (this.Services().Booking.IsStatusTimedOut(status.IBSStatusId))
+				if (_bookingService.IsStatusTimedOut(status.IBSStatusId))
                 {
                     GoToBookingScreen();
                 }
-            } catch (Exception ex) {
+            } 
+			catch (Exception ex) 
+			{
                 Logger.LogError (ex);
             }
         }
@@ -324,14 +340,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		void UpdatePayCancelButtons (string statusId)
 		{
-			var setting = this.Services().Payment.GetPaymentSettings();
+			var setting = _paymentService.GetPaymentSettings();
             var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
                        
-            IsUnpairButtonVisible = IsCmtRideLinq && this.Services().Booking.IsPaired(Order.Id);
+			IsUnpairButtonVisible = IsCmtRideLinq && _bookingService.IsPaired(Order.Id);
 
 			IsPayButtonVisible =  (statusId == VehicleStatuses.Common.Done
 								||statusId == VehicleStatuses.Common.Loaded)
-                                && (isPayEnabled && !this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue)
+								&& (isPayEnabled && !_paymentService.GetPaymentFromCache(Order.Id).HasValue)
 			                    && !IsUnpairButtonVisible;
 			
             IsCancelButtonVisible = statusId == null 
@@ -340,7 +356,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 || statusId == VehicleStatuses.Common.Arrived
                                 || statusId == VehicleStatuses.Common.Scheduled;
 
-            IsResendButtonVisible = isPayEnabled && !IsCmtRideLinq && this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue;
+			IsResendButtonVisible = isPayEnabled && !IsCmtRideLinq && _paymentService.GetPaymentFromCache(Order.Id).HasValue;
 		}
 
 		public void GoToSummary(){
@@ -359,7 +375,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				Observable.Interval( TimeSpan.FromSeconds (10))
 				.Subscribe(unit => InvokeOnMainThread(() =>
 				{
-					this.Services().Booking.ClearLastOrder();
+					_bookingService.ClearLastOrder();
 		                        _waitingToNavigateAfterTimeOut = true;
 								ShowViewModel<HomeViewModel>(new { locateUser =  true });
 								Close(this);
@@ -401,7 +417,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Localize["StatusConfirmNewBooking"],
                     this.Services().Localize["YesButton"], 
                     () => { 
-                        this.Services().Booking.ClearLastOrder();
+						_bookingService.ClearLastOrder();
 						ShowViewModel<HomeViewModel> (new { locateUser =  true });
                     },
                     this.Services().Localize["NoButton"], NoAction));
@@ -427,11 +443,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							bool isSuccess = false;
 							using(this.Services().Message.ShowProgress())
 							{
-								isSuccess = await Task.Run(() => this.Services().Booking.CancelOrder(Order.Id)); 
+								isSuccess = await Task.Run(() => _bookingService.CancelOrder(Order.Id)); 
 							}
                             if (isSuccess) 
                             {
-                                this.Services().Booking.ClearLastOrder();                                
+								_bookingService.ClearLastOrder();                                
                                 ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser =  true });
                             } 
                             else 
@@ -484,7 +500,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Message.ShowMessage(string.Empty,
 												Settings.DefaultPhoneNumberDisplay,
                                                this.Services().Localize["CallButton"],
-							(					) => this.Services().Phone.Call(Settings.DefaultPhoneNumber),
+											   () => _phoneService.Call(Settings.DefaultPhoneNumber),
                                                this.Services().Localize["Cancel"], 
                                                () => {});                    
                 });
@@ -497,9 +513,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(() =>
 					{
-						if (this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue)
+						if (_paymentService.GetPaymentFromCache(Order.Id).HasValue)
 						{
-							this.Services().Payment.ResendConfirmationToDriver(Order.Id);
+							_paymentService.ResendConfirmationToDriver(Order.Id);
 						}
 					});
 			}
@@ -513,7 +529,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 						using(this.Services().Message.ShowProgress())
 						{
-							var response = await this.Services().Payment.Unpair(Order.Id);
+							var response = await _paymentService.Unpair(Order.Id);
 
 							if(response.IsSuccessfull)
 							{

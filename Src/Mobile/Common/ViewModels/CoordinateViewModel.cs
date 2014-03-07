@@ -19,8 +19,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public Coordinate Coordinate { get; set; }
 
-        public ZoomLevel Zoom{ get; set; }
-        
-
+		public ZoomLevel Zoom { get; set; }
     }
 }
