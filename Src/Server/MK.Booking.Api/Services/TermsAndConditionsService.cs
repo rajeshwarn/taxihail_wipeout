@@ -25,7 +25,8 @@ namespace apcurium.MK.Booking.Api.Services
         public object Get(TermsAndConditionsRequest request)
         {
             var company = _dao.Get();
-            if (company.Version != null 
+
+            if (company.Version != null
                 && Request.Headers[HttpHeaders.IfNoneMatch] == company.Version)
             {
                 return new HttpResult(HttpStatusCode.NotModified, HttpStatusCode.NotModified.ToString()); 
@@ -43,6 +44,17 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 CompanyId = AppConstants.CompanyId,
                 TermsAndConditions = request.TermsAndConditions
+            };
+            _commandBus.Send(command);
+
+            return new HttpResult(HttpStatusCode.OK);
+        }
+
+        public object Post(RetriggerTermsAndConditionsRequest request)
+        {
+            var command = new RetriggerTermsAndConditions
+            {
+                CompanyId = AppConstants.CompanyId
             };
             _commandBus.Send(command);
 

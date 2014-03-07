@@ -61,6 +61,7 @@
     <Compile Include="InitiateCreditCardPayment.cs" />
     <Compile Include="InitiatePayPalExpressCheckoutPayment.cs" />
     <Compile Include="PairForRideLinqCmtPayment.cs" />
+    <Compile Include="RetriggerTermsAndConditions.cs" />
     <Compile Include="SendAssignedConfirmation.cs" />
     <Compile Include="UnpairForRideLinqCmtPayment.cs" />
     <Compile Include="UpdatePaymentSettings.cs" />

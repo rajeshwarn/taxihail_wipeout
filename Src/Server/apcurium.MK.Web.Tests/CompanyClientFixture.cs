@@ -43,7 +43,6 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        [Ignore("this needs the API to update the terms and condition")]
         public async void SecondGet_ShouldGet_Terms_NotUpdated()
         {
             var terms = await _sut.GetTermsAndConditions();
@@ -53,9 +52,10 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        [Ignore("this needs the API to update the terms and condition")]
-        public async void SecondGet_With_UpdateCompany_ShouldGet_Terms_NotUpdated()
+        [Ignore("Need to modify CompanyDetail.Version before the second call")]
+        public async void SecondGet_With_UpdateCompany_ShouldGet_Terms_Updated()
         {
+            //make sure that the companydetail.version is not null at first
             var terms = await _sut.GetTermsAndConditions();
 
             //update terms on server
@@ -78,6 +78,11 @@ namespace apcurium.MK.Web.Tests
 
             public void Set<T>(string key, T obj) where T : class
             {
+                if (_cache.ContainsKey(key))
+                {
+                    _cache.Remove(key);
+                }
+
                 _cache.Add(key, obj);
             }
 

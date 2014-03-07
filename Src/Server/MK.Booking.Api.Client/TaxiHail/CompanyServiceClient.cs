@@ -19,7 +19,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             _cacheService = cacheService;
         }
 
-
         private void HandleException(Exception error, TaskCompletionSource<TermsAndConditions> task)
         {
             var webServiceError = error as WebServiceException;
@@ -53,7 +52,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             var version = _cacheService.Get<string>("TermsVersion");
             if (version != null)
             {
-                request.Headers.Add(HttpHeaders.IfNoneMatch, version);
+                request.Headers.Set(HttpHeaders.IfNoneMatch, version);
             }
         }
 
