@@ -128,6 +128,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_locationService.Stop();
 			_vehicleService.Stop();
 		}
+			
+		public void VehicleServiceStateManager(HomeViewModelPresentationHint hint)
+		{
+			if (hint.State == HomeViewModelState.Initial) {
+				_vehicleService.Start ();
+			} else {
+				_vehicleService.Stop ();
+			}
+		}
 
 		public PanelMenuViewModel Panel { get; set; }
 

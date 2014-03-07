@@ -508,6 +508,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (hint is HomeViewModelPresentationHint)
             {
                 ChangeState((HomeViewModelPresentationHint)hint);
+				ViewModel.VehicleServiceManager (hint as HomeViewModelPresentationHint);
             }
 
             _mapFragment.ChangePresentation(hint);
