@@ -33,8 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private TextView _lblLargeBags;
         private EditTextEntry _editNote;
         private LinearLayout _bottomPadding;
-        private LinearLayout _container;
-
+        
         public override bool OnTouchEvent(MotionEvent e)
         {
             return base.OnTouchEvent(e);
@@ -45,8 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
 
             this.DelayBind (() => {
-
-                _container = Content.FindViewById<LinearLayout>(Resource.Id.orderReviewContainer);
+            
                 _lblName = Content.FindViewById<TextView>(Resource.Id.lblName);
                 _lblPhone = Content.FindViewById<TextView>(Resource.Id.lblPhone);
                 _lblNbPassengers = Content.FindViewById<TextView>(Resource.Id.lblNbPassengers);
@@ -57,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _lblRingCode = Content.FindViewById<TextView>(Resource.Id.lblRingCode);
                 _editNote = FindViewById<EditTextEntry>(Resource.Id.txtNotes);
 
-                _editNote.SetClickAnywhereToDismiss(_container);
+                _editNote.SetClickAnywhereToDismiss();
 
                 // hack for scroll in view when in EditText
                 _bottomPadding = Content.FindViewById<LinearLayout>(Resource.Id.HackBottomPadding);
