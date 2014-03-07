@@ -11,6 +11,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
@@ -44,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .For(v => v.Text)
                 .To(vm => vm.Settings.Phone);
 
-            set.Bind(lblNbPassengers)
+            set.BindSafe(lblNbPassengers)
                 .For(v => v.Text)
                 .To(vm => vm.Settings.Passengers);
 
@@ -60,13 +61,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .For(v => v.Text)
                 .To(vm => vm.ChargeType);
 
-            set.Bind(lblApt)
+            set.BindSafe(lblApt)
                 .For(v => v.Text)
                 .To(vm => vm.Apartment);
 
-            set.Bind(lblRingCode)
+            set.BindSafe(lblRingCode)
                 .For(v => v.Text)
                 .To(vm => vm.RingCode);
+
+            set.BindSafe(lblNbLargeBags)
+                .For(v => v.Text)
+                .To(vm => vm.Settings.LargeBags);
 
             set.Bind(txtNote)
                 .For(v => v.Text)
@@ -80,8 +85,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
             if (!_settings.Data.ShowPassengerNumber)
             {
-                lblNbPassengers.RemoveFromSuperview();
-                iconNbPasserngers.RemoveFromSuperview();
+                if (lblNbPassengers != null && iconNbPasserngers != null)
+                {
+                    lblNbPassengers.RemoveFromSuperview();
+                    iconNbPasserngers.RemoveFromSuperview();
+                }
             }
 
             if (!_settings.Data.ShowPassengerPhone)
@@ -97,19 +105,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
         {
             base.AwakeFromNib();
 
-            var nib = UINib.FromName ("OrderReviewView", null);
+            Settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+
+            var nib = NibHelper.GetNibForView("OrderReviewView");
             var view = (UIView)nib.Instantiate(this, null)[0];
             AddSubview(view);
 
             Initialize();
 
-            _settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-
             this.DelayBind (() => {
                 InitializeBinding();
             });
         }
-
     }
 }
 
