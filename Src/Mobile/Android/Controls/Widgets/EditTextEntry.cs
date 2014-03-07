@@ -31,8 +31,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             return base.OnPreDraw ();
         }
 
-        }
-
         private View _container;
 
         public void SetClickAnywhereToDismiss(View container)
@@ -49,6 +47,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ClearFocus();
                 this.HideKeyboard();
             }
+        }
+
         public override bool OnKeyPreIme(Android.Views.Keycode keyCode, Android.Views.KeyEvent e)
         {
             // intercept the back button to hide the keyboard
