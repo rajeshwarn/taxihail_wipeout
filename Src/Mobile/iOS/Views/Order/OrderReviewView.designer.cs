@@ -15,6 +15,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 		[Outlet]
 		MonoTouch.UIKit.UIImageView iconNbPasserngers { get; set; }
 
+        [Outlet]
+        MonoTouch.UIKit.UIImageView iconNbLargeBags { get; set; }
+
 		[Outlet]
 		MonoTouch.UIKit.UIImageView iconPassengerName { get; set; }
 
@@ -35,6 +38,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblNbPassengers { get; set; }
+
+        [Outlet]
+        MonoTouch.UIKit.UILabel lblNbLargeBags { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblPhone { get; set; }
@@ -109,6 +115,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				txtNote.Dispose ();
 				txtNote = null;
 			}
+
+            if (iconNbLargeBags != null) {
+                iconNbLargeBags.Dispose ();
+                iconNbLargeBags = null;
+            }
+
+            if (lblNbLargeBags != null) {
+                lblNbLargeBags.Dispose ();
+                lblNbLargeBags = null;
+            }
 		}
 	}
 }

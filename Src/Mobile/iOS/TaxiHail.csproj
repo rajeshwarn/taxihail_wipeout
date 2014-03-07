@@ -500,6 +500,7 @@
     <Compile Include="Controls\Message\LoadingOverlayView.cs" />
     <Compile Include="Extensions\UITextViewExtensions.cs" />
     <Compile Include="Controls\Delegate\CardScannerDelegate.cs" />
+    <Compile Include="Extensions\Helpers\NibHelper.cs" />
     <Compile Include="Views\UpdatedTermsAndConditionsView.cs" />
     <Compile Include="Views\UpdatedTermsAndConditions.designer.cs">
       <DependentUpon>UpdatedTermsAndConditionsView.cs</DependentUpon>
@@ -545,6 +546,7 @@
     <InterfaceDefinition Include="Views\HomeView.xib" />
     <InterfaceDefinition Include="Controls\Widgets\OrderOptionsControl.xib" />
     <InterfaceDefinition Include="Views\Order\OrderReviewView.xib" />
+    <InterfaceDefinition Include="Views\Order\OrderReviewView_Thriev.xib" />
     <InterfaceDefinition Include="Views\Order\OrderEditView.xib" />
     <InterfaceDefinition Include="Views\Order\OrderEditView_Thriev.xib" />
     <InterfaceDefinition Include="Views\UpdatedTermsAndConditionsView.xib" />
@@ -744,6 +746,8 @@
     <BundleResource Include="Resources\taxi_progress%402x.png" />
     <BundleResource Include="Resources\close_tutorial_button.png" />
     <BundleResource Include="Resources\close_tutorial_button%402x.png" />
+    <BundleResource Include="Resources\baggage.png" />
+    <BundleResource Include="Resources\baggage%402x.png" />
     <BundleResource Include="Resources\th_logo_small.png" />
     <BundleResource Include="Resources\th_logo_small%402x.png" />
   </ItemGroup>
