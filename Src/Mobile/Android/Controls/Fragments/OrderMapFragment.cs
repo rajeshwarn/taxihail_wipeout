@@ -133,6 +133,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public IMvxBindingContext BindingContext { get; set; }
 
+        private bool lockGeocoding = false;
+
         [MvxSetToNullAfterBinding]
         public object DataContext
         {
@@ -147,17 +149,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             var set = this.CreateBindingSet<OrderMapFragment, MapViewModel>();
 
-            _touchableMap.Surface.Touched += (object sender, MotionEvent e) => 
+            _touchableMap.Surface.Touched += (object sender, MotionEvent e) =>
             {
                 switch (e.Action)
                 {
                     case MotionEventActions.Down:
+                        lockGeocoding = true;
                         ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
                         break;                    
-                    case MotionEventActions.Move:
+                    case MotionEventActions.Move:                
+                        lockGeocoding = true;
                         ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
-                        break;                    
+                        break;                       
                     default:
+                        lockGeocoding = false;
                         break;
                 }               
             };
@@ -315,7 +320,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
             var bounds = GetMapBoundsFromProjection();
-            if (UserMovedMap != null && UserMovedMap.CanExecute(bounds))
+            if (UserMovedMap != null && UserMovedMap.CanExecute(bounds) && !lockGeocoding)
             {
                 UserMovedMap.Execute(bounds);
             }

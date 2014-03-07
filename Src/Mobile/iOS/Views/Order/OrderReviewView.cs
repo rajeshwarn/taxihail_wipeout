@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
     public partial class OrderReviewView : BaseBindableChildView<OrderReviewViewModel>
     {
-        private IAppSettings Settings;
+        private IAppSettings _settings;
 
         public OrderReviewView(IntPtr handle) : base(handle)
         {
@@ -77,13 +77,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .For(v => v.Text)
                 .To(vm => vm.Note);
 
-            if (!Settings.Data.ShowPassengerName)
+            if (!_settings.Data.ShowPassengerName)
             {
                 lblName.RemoveFromSuperview();
                 iconPassengerName.RemoveFromSuperview();
             }
 
-            if (!Settings.Data.ShowPassengerNumber)
+            if (!_settings.Data.ShowPassengerNumber)
             {
                 if (lblNbPassengers != null && iconNbPasserngers != null)
                 {
@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 }
             }
 
-            if (!Settings.Data.ShowPassengerPhone)
+            if (!_settings.Data.ShowPassengerPhone)
             {
                 lblPhone.RemoveFromSuperview();
                 iconPhone.RemoveFromSuperview();

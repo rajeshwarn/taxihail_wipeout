@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private TextView _lblApt;
         private TextView _lblRingCode;
         private TextView _lblLargeBags;
-        private EditText _editNote;
+        private EditTextEntry _editNote;
         private LinearLayout _bottomPadding;
 
         public OrderReview(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderReview, context), context, attrs)
@@ -48,8 +48,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _lblChargeType = Content.FindViewById<TextView>(Resource.Id.lblChargeType);
                 _lblApt = Content.FindViewById<TextView>(Resource.Id.lblApt);
                 _lblRingCode = Content.FindViewById<TextView>(Resource.Id.lblRingCode);
-                _lblLargeBags = Content.FindViewById<TextView>(Resource.Id.lblLargeBags);
-                _editNote = Content.FindViewById<EditText>(Resource.Id.txtNotes);
+                _editNote = FindViewById<EditTextEntry>(Resource.Id.txtNotes);
+                _editNote.IsMultiline = true;
 
                 // hack for scroll in view when in EditText
                 _bottomPadding = Content.FindViewById<LinearLayout>(Resource.Id.HackBottomPadding);
