@@ -67,7 +67,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 result =>
                 {
                     var terms = result.FromJson<TermsAndConditions>();
-                    terms.Updated = true;
                     _cacheService.Set("Terms", terms);
                     tcs.SetResult(terms);
                 },

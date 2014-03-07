@@ -32,10 +32,24 @@ namespace apcurium.MK.Booking.Api.Services
                 return new HttpResult(HttpStatusCode.NotModified, HttpStatusCode.NotModified.ToString()); 
             }
 
-            Response.AddHeader(HttpHeaders.ETag, company.Version);
-            var result = new TermsAndConditions { Content = company.TermsAndConditions.ToSafeString() };
+            var shouldForceDisplayOfTermsOnClient = true;
+            if(company.Version != null)
+            {
+                Response.AddHeader(HttpHeaders.ETag, company.Version);
+            }
+            else
+            {
+                // version is null, so the terms and conditions have never been triggered
+                // don't force them to the user at startup
+                shouldForceDisplayOfTermsOnClient = false;
+            }
+
+            var result = new TermsAndConditions
+                {
+                    Content = company.TermsAndConditions.ToSafeString(),
+                    Updated = shouldForceDisplayOfTermsOnClient
+                };
             return result;
-            
         }
 
         public object Post(TermsAndConditionsRequest request)

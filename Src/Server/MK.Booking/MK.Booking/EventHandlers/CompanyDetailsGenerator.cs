@@ -23,11 +23,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.Save(new CompanyDetail
-                    {
-                        Id = @event.SourceId,
-                        Version = string.Empty.GetHashCode().ToString(CultureInfo.InvariantCulture)
-                    });
+                context.Save(new CompanyDetail { Id = @event.SourceId });
             }
         }
 
