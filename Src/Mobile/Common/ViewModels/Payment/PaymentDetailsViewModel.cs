@@ -48,9 +48,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			var currentAccount = _accountService.CurrentAccount;
 
-			// check null and set to default values in case of null
-            //paymentDetails.CreditCardId = null;
-
+			// check null and set to default values in case of null            
 			if (!paymentDetails.CreditCardId.HasValue)
 			{
 				var creditCards = _accountService.GetCreditCards();
