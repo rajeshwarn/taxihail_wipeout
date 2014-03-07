@@ -4,7 +4,6 @@
         urlRoot: TaxiHail.parameters.apiRoot + "/termsandconditions",
 
         save: function (termsandconditions) {
-
             return $.ajax({
                 type: 'POST',
                 url: this.urlRoot,
@@ -12,6 +11,13 @@
                     termsAndConditions: termsandconditions
                 }),
                 contentType: 'application/json'
+            });
+        },
+        
+        retrigger: function() {
+            return $.ajax({
+                type: 'POST',
+                url: this.urlRoot + "/retrigger"
             });
         }
     });

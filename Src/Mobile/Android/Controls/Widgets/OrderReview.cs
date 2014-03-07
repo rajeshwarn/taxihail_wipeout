@@ -18,7 +18,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-    public class OrderReview: MvxFrameControl
+	public class OrderReview : MvxFrameControl
     {    
         private IAppSettings _settings;
 
@@ -34,11 +34,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private EditTextEntry _editNote;
         private LinearLayout _bottomPadding;
         
-        public override bool OnTouchEvent(MotionEvent e)
-        {
-            return base.OnTouchEvent(e);
-        }
-
         public OrderReview(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderReview, context), context, attrs)
         {
             _settings = TinyIoCContainer.Current.Resolve<IAppSettings>();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
@@ -8,7 +9,8 @@ namespace apcurium.MK.Booking.EventHandlers
 {
     public class CompanyDetailsGenerator :
         IEventHandler<CompanyCreated>,
-        IEventHandler<TermsAndConditionsUpdated>
+        IEventHandler<TermsAndConditionsUpdated>,
+        IEventHandler<TermsAndConditionsRetriggered>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -31,6 +33,16 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var company = context.Find<CompanyDetail>(@event.SourceId);
                 company.TermsAndConditions = @event.TermsAndConditions;
+                context.Save(company);
+            }
+        }
+
+        public void Handle(TermsAndConditionsRetriggered @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var company = context.Find<CompanyDetail>(@event.SourceId);
+                company.Version = company.TermsAndConditions.GetHashCode().ToString(CultureInfo.InvariantCulture);
                 context.Save(company);
             }
         }

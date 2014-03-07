@@ -32,7 +32,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<AddDefaultFavoriteAddress>,
         ICommandHandler<RemoveDefaultFavoriteAddress>,
         ICommandHandler<UpdateDefaultFavoriteAddress>,
-        ICommandHandler<UpdateTermsAndConditions>
+        ICommandHandler<UpdateTermsAndConditions>,
+        ICommandHandler<RetriggerTermsAndConditions>
     {
         private readonly IEventSourcedRepository<Company> _repository;
 
@@ -254,6 +255,15 @@ namespace apcurium.MK.Booking.CommandHandlers
             var company = _repository.Get(command.CompanyId);
 
             company.UpdateTermsAndConditions(command.TermsAndConditions);
+
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(RetriggerTermsAndConditions command)
+        {
+            var company = _repository.Get(command.CompanyId);
+
+            company.RetriggerTermsAndConditions();
 
             _repository.Save(company, command.Id.ToString());
         }

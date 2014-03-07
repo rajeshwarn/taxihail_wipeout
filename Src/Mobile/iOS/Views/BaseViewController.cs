@@ -67,14 +67,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);
-            ViewModel.OnViewStarted (_firstStart);
-            _firstStart = false;
         }
 
         public override void ViewWillDisappear (bool animated)
         {
             base.ViewWillDisappear (animated);
             if(ViewModel!= null) ViewModel.OnViewStopped();
+        }
+
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+            if (ViewModel != null)
+            {
+                ViewModel.OnViewStarted(_firstStart);
+                _firstStart = false;
+            }                
         }
 				
         public override void ViewDidLoad ()
