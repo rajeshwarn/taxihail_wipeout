@@ -30,24 +30,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
             return base.OnPreDraw ();
         }
-            
-        public bool IsMultiline = false;
-
-        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
+                    
+        public void SetClickAnywhereToDismiss()
         {
-            if (IsMultiline)
+            var container = (View)this.Parent;
+            container.Clickable = true;
+            container.Click -= ContainerClicked;
+            container.Click += ContainerClicked;
+        }
+
+        public void ContainerClicked(object sender, EventArgs e)
+        {
+            if (((View)sender).Id != this.Id)
             {
-                if (e.KeyCode == Keycode.Enter)
-                {
-                    var curCarPos = SelectionStart;
-                    var endCarPos = SelectionEnd;
-                    Text = Text.Substring(0, SelectionStart) + System.Environment.NewLine + Text.Substring(endCarPos);
-                    SetSelection((curCarPos + 1) < Text.Length ? curCarPos + 1 : Text.Length);
-                    return false;
-                }
+                ClearFocus();
+                this.HideKeyboard();
             }
-                
-            return base.OnKeyDown(keyCode, e);
         }
 
         public override bool OnKeyPreIme(Android.Views.Keycode keyCode, Android.Views.KeyEvent e)

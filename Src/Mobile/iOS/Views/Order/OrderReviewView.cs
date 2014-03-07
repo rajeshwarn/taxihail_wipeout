@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
         {
             base.AwakeFromNib();
 
-            Settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+            _settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
 
             var nib = NibHelper.GetNibForView("OrderReviewView");
             var view = (UIView)nib.Instantiate(this, null)[0];

@@ -116,7 +116,7 @@
                             android:paddingLeft="10dip"
                             android:gravity="left|center_vertical" />
                         <View
-                            local:MvxBind="Visibility Panel.TutorialEnabled"
+                            local:MvxBind="Visibility Panel.TutorialEnabled, Converter=Visibility"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"

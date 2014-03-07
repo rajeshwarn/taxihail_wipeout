@@ -18,7 +18,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-    public class OrderReview: MvxFrameControl
+	public class OrderReview : MvxFrameControl
     {    
         private IAppSettings _settings;
 
@@ -33,23 +33,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private TextView _lblLargeBags;
         private EditTextEntry _editNote;
         private LinearLayout _bottomPadding;
-
+        
         public OrderReview(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderReview, context), context, attrs)
         {
             _settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
 
             this.DelayBind (() => {
-
+            
                 _lblName = Content.FindViewById<TextView>(Resource.Id.lblName);
                 _lblPhone = Content.FindViewById<TextView>(Resource.Id.lblPhone);
                 _lblNbPassengers = Content.FindViewById<TextView>(Resource.Id.lblNbPassengers);
+                _lblLargeBags = Content.FindViewById<TextView>(Resource.Id.lblLargeBags);
                 _lblDate = Content.FindViewById<TextView>(Resource.Id.lblDate);
                 _lblVehicule = Content.FindViewById<TextView>(Resource.Id.lblVehicule);
                 _lblChargeType = Content.FindViewById<TextView>(Resource.Id.lblChargeType);
                 _lblApt = Content.FindViewById<TextView>(Resource.Id.lblApt);
                 _lblRingCode = Content.FindViewById<TextView>(Resource.Id.lblRingCode);
                 _editNote = FindViewById<EditTextEntry>(Resource.Id.txtNotes);
-                _editNote.IsMultiline = true;
+
+                _editNote.SetClickAnywhereToDismiss();
 
                 // hack for scroll in view when in EditText
                 _bottomPadding = Content.FindViewById<LinearLayout>(Resource.Id.HackBottomPadding);
