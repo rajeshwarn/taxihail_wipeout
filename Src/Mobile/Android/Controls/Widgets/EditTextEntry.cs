@@ -30,11 +30,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
             return base.OnPreDraw ();
         }
-
-        private View _container;
-
-        public void SetClickAnywhereToDismiss(View container)
+                    
+        public void SetClickAnywhereToDismiss()
         {
+            var container = (View)this.Parent;
             container.Clickable = true;
             container.Click -= ContainerClicked;
             container.Click += ContainerClicked;
