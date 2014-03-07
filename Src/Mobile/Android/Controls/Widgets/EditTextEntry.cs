@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             return base.OnPreDraw ();
         }
             
-        public bool IsMultiline = false;
+        public bool IsMultiline = false;       
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
@@ -48,6 +48,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
                 
             return base.OnKeyDown(keyCode, e);
+        }
+
+        private View _container;
+
+        public void SetClickAnywhereToDismiss(View container)
+        {
+            container.Clickable = true;
+            container.Click -= ContainerClicked;
+            container.Click += ContainerClicked;
+        }
+
+        public void ContainerClicked(object sender, EventArgs e)
+        {
+            if (((View)sender).Id != this.Id)
+            {
+                ClearFocus();
+                this.HideKeyboard();
+            }
         }
 
         public override bool OnKeyPreIme(Android.Views.Keycode keyCode, Android.Views.KeyEvent e)
