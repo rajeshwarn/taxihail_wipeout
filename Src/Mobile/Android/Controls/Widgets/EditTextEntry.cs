@@ -25,20 +25,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 		}
 
-		public override bool OnPreDraw ()
-		{
-			SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
-			return base.OnPreDraw ();
-		}
+        public override bool OnPreDraw ()
+        {
+            SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
+            return base.OnPreDraw ();
+        }
             
+        public bool IsMultiline = false;
+
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
-            if (e.KeyCode == Keycode.Enter)
+            if (IsMultiline)
             {
-                Text += System.Environment.NewLine;
-                SetSelection(Text.Length);
-                return false;
+                if (e.KeyCode == Keycode.Enter)
+                {
+                    var curCarPos = SelectionStart;
+                    var endCarPos = SelectionEnd;
+                    Text = Text.Substring(0, SelectionStart) + System.Environment.NewLine + Text.Substring(endCarPos);
+                    SetSelection((curCarPos + 1) < Text.Length ? curCarPos + 1 : Text.Length);
+                    return false;
+                }
             }
+                
             return base.OnKeyDown(keyCode, e);
         }
 

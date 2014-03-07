@@ -35,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _lblApt = (TextView)FindViewById<TextView>(Resource.Id.lblApt);
                 _lblRingCode = (TextView)FindViewById<TextView>(Resource.Id.lblRingCode);
                 _editNote = FindViewById<EditTextEntry>(Resource.Id.txtNotes);
+                _editNote.IsMultiline = true;
 
                 // hack for scroll in view when in EditText
                 _bottomPadding = FindViewById<LinearLayout>(Resource.Id.HackBottomPadding);
