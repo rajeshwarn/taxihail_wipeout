@@ -50,6 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _lblName = Content.FindViewById<TextView>(Resource.Id.lblName);
                 _lblPhone = Content.FindViewById<TextView>(Resource.Id.lblPhone);
                 _lblNbPassengers = Content.FindViewById<TextView>(Resource.Id.lblNbPassengers);
+                _lblLargeBags = Content.FindViewById<TextView>(Resource.Id.lblLargeBags);
                 _lblDate = Content.FindViewById<TextView>(Resource.Id.lblDate);
                 _lblVehicule = Content.FindViewById<TextView>(Resource.Id.lblVehicule);
                 _lblChargeType = Content.FindViewById<TextView>(Resource.Id.lblChargeType);
