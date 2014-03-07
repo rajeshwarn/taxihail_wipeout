@@ -1,20 +1,20 @@
 using System;
-using Cirrious.MvvmCross.Plugins.WebBrowser;
 using System.Collections.Generic;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Data;
-using apcurium.MK.Booking.Mobile.Extensions;
+using System.Drawing;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Mobile.AppServices;
 using System.Windows.Input;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using System.Drawing;
-using apcurium.MK.Booking.Mobile.PresentationHints;
-using apcurium.MK.Booking.Mobile.Infrastructure;
+using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -25,21 +25,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITutorialService _tutorialService;
 		private readonly IPushNotificationService _pushNotificationService;
 		private readonly IVehicleService _vehicleService;
+		private readonly IAccountService _accountService;
+		private readonly ITermsAndConditionsService _termsService;
 
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
 			IMvxWebBrowserTask browserTask,
 			ILocationService locationService,
 			ITutorialService tutorialService,
 			IPushNotificationService pushNotificationService,
-			IVehicleService vehicleService) : base()
+			IVehicleService vehicleService,
+			IAccountService accountService,
+			ITermsAndConditionsService termsService) : base()
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
 			_tutorialService = tutorialService;
 			_pushNotificationService = pushNotificationService;
-			_vehicleService= vehicleService;
+			_vehicleService = vehicleService;
+			_accountService = accountService;
+			_termsService = termsService;
 
-			var accountService = Container.Resolve<IAccountService>();
 			var phoneService = Container.Resolve<IPhoneService>();
 
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService);
@@ -95,19 +100,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async void CheckTermsAsync()
 		{
-			var etagTermsAndConditionsIsUpToDate = false;
+			if (Settings.ShowTermsAndConditions) 
+			{
+				var response = await _termsService.GetTerms();
 
-			if (!etagTermsAndConditionsIsUpToDate)
-			{				 
-				ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool>(
-					null, async acknowledged =>
-				{                                                
-					// Set Acknowledgement in cache to [acknowledged]
-					if (!acknowledged)
-					{
-						this.Services().Account.SignOut();
-					}
-				});
+				if (response.Updated)
+				{				 
+					ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool>(new 
+						{														
+							content = response.Content
+						}.ToStringDictionary(), 
+						async acknowledged =>
+						{                                                
+							// Set Acknowledgement in cache to [acknowledged]
+							if (!acknowledged)
+							{
+								_accountService.SignOut();
+							}
+						});
+				}
 			}
 		}
 

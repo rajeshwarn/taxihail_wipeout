@@ -1,15 +1,14 @@
 ﻿using apcurium.MK.Booking.Mobile.Extensions;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class UpdatedTermsAndConditionsViewModel : BaseSubViewModel<bool>
 	{
-		public override async void OnViewStarted(bool firstTime)
+		public void Init(string content)
 		{
-			TermsAndConditions = "- Ipsum thingy -";
-				var terms = await this.Services().Terms.GetTerms();
-			    TermsAndConditions = terms.Content;
+			TermsAndConditions = content;
 		}
 
 		private string _termsAndConditions;
