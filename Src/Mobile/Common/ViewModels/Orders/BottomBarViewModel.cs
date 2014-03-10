@@ -5,7 +5,6 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
@@ -14,10 +13,12 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class BottomBarViewModel: ChildViewModel
+	public class BottomBarViewModel: ChildViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
     {
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IMvxPhoneCallTask _phone;
+
+        public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
 		public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, IMvxPhoneCallTask phone)
 		{
@@ -89,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						}
 					}
 					_orderWorkflowService.ResetOrderSettings();
-					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
+                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
 					await ShowFareEstimateAlertDialogIfNecessary();
 					await PreValidateOrder();
 				});
@@ -107,7 +108,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                         using(this.Services().Message.ShowProgress())						
 						{
 							var result = await _orderWorkflowService.ConfirmOrder();
-                            ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial, true));
+
+                            PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
 							ShowViewModel<BookingStatusViewModel>(new
 							{
 								order = result.Item1.ToJson(),
@@ -152,7 +154,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             get
             {
 				return this.GetCommand(() => {
-                    ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.PickDate));
+                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.PickDate));
                 });
             }
         }
@@ -162,7 +164,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get
 			{
 				return this.GetCommand(() => {
-					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Edit));
+                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Edit));
 				});
 			}
 		}
@@ -186,7 +188,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             get
 			{
 				return this.GetCommand(() => {
-					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
 				});
 			}
         }
@@ -196,7 +198,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get
 			{
 				return this.GetCommand(() => {
-					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
 				});
 			}
 		}
@@ -235,7 +237,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					this.Services().Localize["Continue"], 
 					delegate{}, 
 					this.Services().Localize["Cancel"], 
-					() => { ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                    () => { PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
 				});
 			}
 		}

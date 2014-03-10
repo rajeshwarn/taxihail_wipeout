@@ -120,7 +120,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (hint is HomeViewModelPresentationHint)
             {
                 ChangeState((HomeViewModelPresentationHint)hint);
-				ViewModel.VehicleServiceStateManager (hint as HomeViewModelPresentationHint);
             }
         }
 

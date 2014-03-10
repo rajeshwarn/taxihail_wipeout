@@ -13,12 +13,14 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class AddressPickerViewModel : ChildViewModel
+	public class AddressPickerViewModel : ChildViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IPlaces _placesService;
 		private readonly IGeolocService _geolocService;
 		private readonly IAccountService _accountService;
+
+		public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
 		public AddressPickerViewModel(IOrderWorkflowService orderWorkflowService,
 			IPlaces placesService,
@@ -158,7 +160,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     this.Services().Message.ShowProgressNonModal(false );
 					var detailedAddress = UpdateAddressWithPlaceDetail(vm.Address);
 					_orderWorkflowService.SetAddress(detailedAddress);
-					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
 					ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
 				}); 
 			}
@@ -170,7 +172,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(() => {
                     this.Services().Message.ShowProgressNonModal(false );
-					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
 				}); 
 			}
 		}
