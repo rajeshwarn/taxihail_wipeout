@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			base.ViewWillAppear (animated);
 
+			NavigationController.NavigationBar.Hidden = false;
 			NavigationItem.HidesBackButton = false;
 			NavigationItem.Title = Localize.GetValue("View_LocationDetail");
             ChangeRightBarButtonFontToBold();
@@ -46,7 +47,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			btnRebook.SetTitle (Localize.GetValue("Rebook"), UIControlState.Normal);
 			btnDelete.SetTitle (Localize.GetValue("Delete"), UIControlState.Normal);
 
-            txtAddress.ShouldReturn = HandleShouldReturn;
             txtAptNumber.ShouldReturn = HandleShouldReturn;
             txtRingCode.ShouldReturn = HandleShouldReturn;
             txtName.ShouldReturn = HandleShouldReturn;
@@ -59,11 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, null);
 
-            txtAddress.EditingDidEnd += (sender, e) =>
-            {
-                ViewModel.ValidateAddress.Execute(((UITextField)sender).Text);
-            };
-
 			var set = this.CreateBindingSet<LocationDetailView, LocationDetailViewModel> ();
 
             set.Bind (NavigationItem.RightBarButtonItem)
@@ -74,6 +69,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Text)
                 .To(vm => vm.BookAddress)
                 .OneWay();
+			set.Bind(txtAddress)
+				.For(v => v.NavigateCommand)
+				.To(vm => vm.NavigateToSearch);
 
 			set.Bind(txtAptNumber)
 				.For(v => v.Text)

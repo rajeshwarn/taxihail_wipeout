@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class CreateAccountView : BaseViewController<CreateAccountViewModel>
     {
-        public CreateAccountView() : base("CreateAccountView", null)
+		public CreateAccountView() : base("CreateAccountView", null)
         {
         }
 

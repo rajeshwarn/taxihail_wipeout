@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IPlaces _placesService;
 		private readonly IGeolocService _geolocService;
 		private readonly IAccountService _accountService;
+		private bool _isInLocationDetail;
 
 		public AddressPickerViewModel(IOrderWorkflowService orderWorkflowService,
 			IPlaces placesService,
@@ -31,10 +32,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_accountService = accountService;
 		}
 
-		public void Init()
+		public void Init(string searchCriteria)
 		{
-			IgnoreTextChange = true;
 			AllAddresses = new ObservableCollection<AddressViewModel>();
+
+			if (!string.IsNullOrWhiteSpace (searchCriteria)) 
+			{
+				_isInLocationDetail = true;
+				SearchAddress (searchCriteria);
+				StartingText = searchCriteria;
+			} 
+			else 
+			{
+				IgnoreTextChange = true;
+			}
 		}
 
 		private Address _currentAddress;	
@@ -154,12 +165,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return this.GetCommand<AddressViewModel>(vm => {
-                    this.Services().Message.ShowProgressNonModal(false );
+				return this.GetCommand<AddressViewModel>(vm => 
+				{
+                    this.Services().Message.ShowProgressNonModal(false);
 					var detailedAddress = UpdateAddressWithPlaceDetail(vm.Address);
-					_orderWorkflowService.SetAddress(detailedAddress);
-					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
-					ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
+
+					if(_isInLocationDetail)
+					{
+						Close(this);
+					}
+					else
+					{
+						_orderWorkflowService.SetAddress(detailedAddress);
+						ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+						ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
+					}
 				}); 
 			}
 		}
@@ -168,9 +188,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return this.GetCommand(() => {
+				return this.GetCommand(() => 
+				{
                     this.Services().Message.ShowProgressNonModal(false );
-					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+
+					if(_isInLocationDetail)
+					{
+						Close(this);
+					}
+					else
+					{
+						ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+					}
 				}); 
 			}
 		}

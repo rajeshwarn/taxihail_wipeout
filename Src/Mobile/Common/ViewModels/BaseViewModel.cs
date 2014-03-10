@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get { return TinyIoCContainer.Current; }
         }
-
+			
         protected ILogger Logger { get { return Container.Resolve<ILogger>(); } }
 
 		public TaxiHailSetting Settings { get { return Container.Resolve<IAppSettings>().Data; } }
@@ -48,6 +48,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			_subscriptions.Dispose();
         }
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing) 
+			{
+				_subscriptions.Dispose();
+			}
+		}
 
 		protected bool ShowSubViewModel<TViewModel, TResult>(object parameterValuesObject, Action<TResult> onResult)
 				where TViewModel : BaseSubViewModel<TResult>

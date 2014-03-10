@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
         {
             get
             {
-                return (TViewModel)DataContext;
+				return (TViewModel)DataContext;
             }
         }
 

@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -144,6 +145,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             _validateAddressCancellationTokenSource.Cancel();
         }
+
+		public ICommand NavigateToSearch
+		{
+			get
+			{
+				return this.GetCommand(() => ShowViewModel<AddressPickerViewModel>(new { searchCriteria =  BookAddress }));
+			}
+		}
 
 		public ICommand SaveAddress
         {
