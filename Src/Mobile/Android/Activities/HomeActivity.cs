@@ -484,16 +484,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 switch (_presentationState)
                 {
                     case HomeViewModelState.Review:
+                    case HomeViewModelState.PickDate:
+                    case HomeViewModelState.AddressSearch:
                         ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
                         return false;
                     case HomeViewModelState.Edit:
                         ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
-                        return false;
-                    case HomeViewModelState.PickDate:
-                        ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
-                        return false;
-                    case HomeViewModelState.AddressSearch:
-                        ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
                         return false;
                     default:
                         break;
@@ -508,7 +504,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (hint is HomeViewModelPresentationHint)
             {
                 ChangeState((HomeViewModelPresentationHint)hint);
-				ViewModel.VehicleServiceStateManager (hint as HomeViewModelPresentationHint);
             }
 
             _mapFragment.ChangePresentation(hint);

@@ -132,16 +132,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_locationService.Stop();
 			_vehicleService.Stop();
 		}
-			
-		public void VehicleServiceStateManager(HomeViewModelPresentationHint hint)
-		{
-			if (hint.State == HomeViewModelState.Initial) {
-				_vehicleService.Start ();
-			} else {
-				_vehicleService.Stop ();
-			}
-		}
-
+		
 		public PanelMenuViewModel Panel { get; set; }
 
 		private MapViewModel _map;
@@ -223,6 +214,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 				});
 			}
+		}
+
+		protected override TViewModel AddChild<TViewModel>()
+		{
+			var child = base.AddChild<TViewModel>();
+			var rps = child as IRequestPresentationState<HomeViewModelStateRequestedEventArgs>;
+			if (rps != null)
+			{
+				rps.PresentationStateRequested += OnPresentationStateRequested;
+			}
+
+            return child;
+		}
+
+		private void OnPresentationStateRequested(object sender, HomeViewModelStateRequestedEventArgs e)
+		{
+			this.ChangePresentation(new HomeViewModelPresentationHint(e.State, e.IsNewOrder));
+
+            if (e.State == HomeViewModelState.Initial)
+            {
+                _vehicleService.Start ();
+            }
+            else
+            {
+                _vehicleService.Stop ();
+            }
+
 		}
     }
 }

@@ -31,7 +31,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public void Dispose()
 		{
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		protected TinyIoCContainer Container
@@ -65,6 +64,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			return AddChild<TViewModel>(() => Mvx.IocConstruct<TViewModel>());
 		}
+
+	
     }
 }
 

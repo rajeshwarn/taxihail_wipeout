@@ -14,10 +14,12 @@ using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class OrderEditViewModel: ChildViewModel
+	public class OrderEditViewModel: ChildViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
+
+        public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
 		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService,
 			IAccountService accountService)
@@ -75,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					_orderWorkflowService.SetBookingSettings(BookingSettings);
 					await _orderWorkflowService.SetPickupAptAndRingCode(PickupAddress.Apartment, PickupAddress.RingCode);
-					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
+                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
 				});
 			}
 		}
@@ -92,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					BookingSettings = bookingSettings.Copy();
 					PickupAddress = pickupAddress.Copy();
 					
-					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
+                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
 				});
 			}
 		}

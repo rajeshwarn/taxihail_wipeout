@@ -115,7 +115,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return viewModel;
 		}
 
-		protected TViewModel AddChild<TViewModel>()
+		protected virtual TViewModel AddChild<TViewModel>()
 			where TViewModel: ChildViewModel
 		{
 			return AddChild<TViewModel>(() => Mvx.IocConstruct<TViewModel>());

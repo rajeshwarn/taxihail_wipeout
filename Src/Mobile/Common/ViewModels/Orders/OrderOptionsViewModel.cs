@@ -8,9 +8,11 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class OrderOptionsViewModel : ChildViewModel
+	public class OrderOptionsViewModel : ChildViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
+
+        public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
 		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService)
 		{
@@ -115,7 +117,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-                return this.GetCommand<Address>(address => {
+				return this.GetCommand<Address>(address => {
                     _orderWorkflowService.SetAddress(address);
                 });
             }
@@ -125,8 +127,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return this.GetCommand(() => {
-					ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.AddressSearch));
+				return this.GetCommand(() =>
+				{
+                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AddressSearch));
 				});
 			}
 		}
