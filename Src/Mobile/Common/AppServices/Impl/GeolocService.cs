@@ -95,45 +95,5 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
         }
-
-
-        public IEnumerable<Address> FindSimilar(string address)
-        {
-            var addresses = new List<Address>();
-
-            if (address.IsNullOrEmpty())
-            {
-                return addresses.ToArray();
-
-            }
-
-			var favAddresses = _accountService.GetFavoriteAddresses();
-            var items = favAddresses as Address[] ?? favAddresses.ToArray();
-            if (items.Any())
-            {
-                addresses.AddRange(items);
-            }
-
-			var historic = _accountService.GetHistoryAddresses();
-
-
-            var hists = historic as Address[] ?? historic.ToArray();
-            if (hists.Any())
-            {
-
-                foreach (var hist in hists)
-                {
-// ReSharper disable once AccessToForEachVariableInClosure
-                    if (addresses.None(a => a.IsSame(hist)))
-                    {
-                        addresses.Add(hist);
-                    }
-                }
-            }
-
-            return addresses.Where(a => a.FullAddress.HasValue() && a.FullAddress.ToLower().StartsWith(address.ToLower())).ToArray();
-        }
-              
-
     }
 }

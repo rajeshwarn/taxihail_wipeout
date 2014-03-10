@@ -17,7 +17,5 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<DirectionInfo> GetDirectionInfo(double originLat, double originLong, double destLat, double destLong, DateTime? date= null);
 
 		Task<DirectionInfo> GetDirectionInfo(Address origin, Address dest);
-
-        IEnumerable<Address> FindSimilar(string address);
     }
 }
