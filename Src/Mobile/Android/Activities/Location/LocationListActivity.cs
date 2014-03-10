@@ -24,8 +24,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
             _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());
         }
 
-        protected override void OnViewModelSet()
-        {
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
+
             SetContentView(Resource.Layout.View_LocationList);
             var listView = FindViewById<ListView>(Resource.Id.LocationListView);
             listView.CacheColorHint = Color.White;

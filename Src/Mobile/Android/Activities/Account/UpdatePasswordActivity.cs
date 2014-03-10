@@ -12,8 +12,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     )]
     public class UpdatePasswordActivity : BaseBindingActivity<UpdatePasswordViewModel>
     {
-        protected override void OnViewModelSet()
-        {
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
+
             SetContentView(Resource.Layout.View_UpdatePassword);
 
 			// There is no other way to clean the typeface for password hint

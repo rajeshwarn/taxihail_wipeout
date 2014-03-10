@@ -22,11 +22,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             _listView.SetPadding(0, 0, 0, 0);
         }
 
-        protected override void OnViewModelSet()
-        {
-            SetContentView(Resource.Layout.View_HistoryList);
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
 
-            ViewModel.OnViewLoaded();
+            SetContentView(Resource.Layout.View_HistoryList);
         }
     }
 }

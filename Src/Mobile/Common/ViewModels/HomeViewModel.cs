@@ -58,22 +58,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);			
 		}
 
+		public override void OnViewLoaded ()
+		{
+			base.OnViewLoaded ();
+
+			Map = AddChild<MapViewModel>();
+			OrderOptions = AddChild<OrderOptionsViewModel>();
+			OrderReview = AddChild<OrderReviewViewModel>();
+			OrderEdit = AddChild<OrderEditViewModel>();
+			BottomBar = AddChild<BottomBarViewModel>();
+			AddressPicker = AddChild<AddressPickerViewModel>();
+
+			BottomBar.Save = OrderEdit.Save;
+			BottomBar.CancelEdit = OrderEdit.Cancel;
+		}
+
 		public override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
 			_locationService.Start();
 			if (firstTime)
 			{
-				Map = AddChild<MapViewModel>();
-				OrderOptions = AddChild<OrderOptionsViewModel>();
-				OrderReview = AddChild<OrderReviewViewModel>();
-				OrderEdit = AddChild<OrderEditViewModel>();
-				BottomBar = AddChild<BottomBarViewModel>();
-				AddressPicker = AddChild<AddressPickerViewModel>();
-
-				BottomBar.Save = OrderEdit.Save;
-				BottomBar.CancelEdit = OrderEdit.Cancel;
-
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
 				CheckTermsAsync();

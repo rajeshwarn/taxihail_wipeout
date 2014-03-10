@@ -15,8 +15,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
     )]
     public class LocationDetailActivity : BaseBindingActivity<LocationDetailViewModel>
     {
-        protected override void OnViewModelSet()
-        {
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
+
             SetContentView(Resource.Layout.View_LocationDetail);
             FindViewById<EditText>(Resource.Id.LocationAddress).FocusChange += LocationDetailActivity_FocusChange;
         }

@@ -239,7 +239,7 @@
                     android:id="@+id/StatusBtn"
                     android:text="@string/HistoryViewStatusButton"
                     android:visibility="gone"
-                    local:MvxBind="Enabled IsCompleted; Converter=BoolInverter; Visibility IsCompleted, Converter=InvertedVisibility; Click NavigateToOrderStatus" />
+                    local:MvxBind="Enabled IsCompleted, Converter=BoolInverter; Visibility IsCompleted, Converter=InvertedVisibility; Click NavigateToOrderStatus" />
                 <Button
                     style="@style/ButtonActionGrayStyle"
                     android:layout_width="fill_parent"

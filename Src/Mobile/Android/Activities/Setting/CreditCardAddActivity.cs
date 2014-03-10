@@ -21,8 +21,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
         private Intent _scanIntent { get; set; }
         private int CardIOScanRequestCode = 981288735; // TODO: Handle arbitrary number in a better way
 
-        protected override void OnViewModelSet()
-        {
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
+
             ViewModel.CreditCardCompanies[0].Image = Resource.Drawable.visa.ToString(CultureInfo.InvariantCulture);
             ViewModel.CreditCardCompanies[1].Image = Resource.Drawable.mastercard.ToString(CultureInfo.InvariantCulture);
             ViewModel.CreditCardCompanies[2].Image = Resource.Drawable.amex.ToString(CultureInfo.InvariantCulture);
