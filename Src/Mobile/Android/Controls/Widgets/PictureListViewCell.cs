@@ -7,6 +7,7 @@ using Android.Util;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using System.Drawing;
+using System.Collections;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -17,6 +18,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public string Picture { get; set; }
         public bool ShowAddSign { get; set; }
         public bool IsBottom { get; set; }
+		private Android.Graphics.Drawables.Drawable _backgroundDrawable;	
+		private Hashtable pictureTable = new Hashtable ();
 
         private SizeF StandardImageSize = new SizeF(46, 32);
 
@@ -51,29 +54,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var imageButtonRightSize = 47.ToPixels();
             var textWidth = 75.ToPixels();
 
-            if (ShowAddSign)
-            {
-                var bitmapIcon = BitmapFactory.DecodeResource (Resources, Resource.Drawable.add_list);                              
- 
-                canvas.DrawBitmap(bitmapIcon, imageLeftX + 12.ToPixels(), imageLeftY + 7.ToPixels(), null);
-            }
-            else if (!string.IsNullOrEmpty(Picture))
-            {
-                var resource = Resources.GetIdentifier(Picture.ToLower(), "drawable", Context.PackageName);
-                if (resource != 0)
-                {
-                    canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, resource), imageLeftX, imageLeftY, null);
-                }
-            }
+			if (ShowAddSign) {
+				var identifier = Resource.Drawable.add_list;
+
+				if (pictureTable [identifier] == null) {
+					pictureTable [identifier] = BitmapFactory.DecodeResource (Resources, identifier);                              
+				}
+				canvas.DrawBitmap ((Bitmap)pictureTable [identifier], imageLeftX + 12.ToPixels (), imageLeftY + 7.ToPixels (), null);
+
+			} else if (!string.IsNullOrEmpty (Picture)) {
+				var identifier = Resources.GetIdentifier (Picture.ToLower (), "drawable", Context.PackageName);
+
+				if (pictureTable [identifier] == null && identifier != 0) {
+					pictureTable.Add (identifier, BitmapFactory.DecodeResource (Resources, identifier));
+				} else {
+					canvas.DrawBitmap ((Bitmap)pictureTable [identifier], imageLeftX, imageLeftY, null);
+				}
+			}
 
             DrawText(canvas, TextLeft ?? "", leftTextX, textY, textFontSize, ShowAddSign ? Typeface.DefaultBold : Typeface.Default);
 
             if (!string.IsNullOrEmpty(TextRight))
                 DrawText(canvas, TextRight ?? "", canvas.Width - (textWidth + imageButtonRightSize), textY, textFontSize, Typeface.DefaultBold);
 
-            SetBackgroundDrawable(Resources.GetDrawable(IsBottom 
-                ? Resource.Drawable.cell_bottom_state 
-                : Resource.Drawable.cell_middle_state));
+			if (_backgroundDrawable == null) {
+				_backgroundDrawable = Resources.GetDrawable (IsBottom 
+					? Resource.Drawable.cell_bottom_state 
+					: Resource.Drawable.cell_middle_state);
+				SetBackgroundDrawable(_backgroundDrawable);
+			}	
         }
 
         private void DrawText(Canvas canvas, string text, float x, float y, float textSize,
