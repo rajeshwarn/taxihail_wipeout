@@ -21,6 +21,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
     {
         NSObject _keyboardObserverWillShow;
         NSObject _keyboardObserverWillHide;
+
+		NSObject _applicationActivated;
+		NSObject _applicationInBackground;
+
         private bool _firstStart = true;
 		protected const float BottomPadding = 20f;
 
@@ -88,8 +92,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
+
             // Setup keyboard event handlers
             RegisterForKeyboardNotifications ();
+
+			RegisterForApplicationNotifications ();
 
             NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
 
@@ -109,6 +116,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void DidReceiveMemoryWarning ()
         {
             UnregisterKeyboardNotifications();
+			UnregisterForApplicationNotifications ();
             ViewModel.OnViewUnloaded ();
             base.DidReceiveMemoryWarning ();
         }
@@ -138,12 +146,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			NSNotificationCenter.DefaultCenter.RemoveObserver(_keyboardObserverWillShow);
             NSNotificationCenter.DefaultCenter.RemoveObserver(_keyboardObserverWillHide);
         }
+
+		protected virtual void RegisterForApplicationNotifications()
+		{
+			_applicationActivated = NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillEnterForegroundNotification, OnActivated);
+			_applicationInBackground = NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidEnterBackgroundNotification, DidEnterBackground);
+		}
+
+		protected virtual void UnregisterForApplicationNotifications()
+		{
+			NSNotificationCenter.DefaultCenter.RemoveObserver(_applicationActivated);
+			NSNotificationCenter.DefaultCenter.RemoveObserver(_applicationInBackground);
+		}
         
         protected virtual UIView KeyboardGetActiveView()
         {
             return View.FindFirstResponder();
         }
         
+		protected virtual void OnActivated(NSNotification notification)
+		{
+		}
+
+		protected virtual void DidEnterBackground(NSNotification notification)
+		{
+		}
+
         protected virtual void KeyboardWillShowNotification (NSNotification notification)
         {
             var activeView = KeyboardGetActiveView();

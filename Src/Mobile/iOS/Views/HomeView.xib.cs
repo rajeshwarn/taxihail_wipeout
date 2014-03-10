@@ -26,6 +26,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
         }
 
+		protected override void OnActivated (NSNotification notification)
+		{
+			base.OnActivated (notification);
+
+			ViewModel.CheckTermsAsync ();
+		}
+
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);
