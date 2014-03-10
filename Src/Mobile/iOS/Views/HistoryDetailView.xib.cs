@@ -35,7 +35,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		public override void ViewDidLoad()
 		{
 			base.ViewDidLoad();
-			ViewModel.OnViewLoaded();
             
             View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 

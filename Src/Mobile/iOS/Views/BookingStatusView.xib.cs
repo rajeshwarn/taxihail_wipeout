@@ -46,9 +46,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
 
-            try {
-                ViewModel.OnViewLoaded();
-
+            try 
+			{
                 View.BringSubviewToFront (statusBar);
 
                 var textColor = UIColor.FromRGB (86, 86, 86);
@@ -294,7 +293,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var statusLineDivider = Line.CreateHorizontal(320.0f, UIColor.Black.ColorWithAlpha(0.35f));
                 bottomBar.AddSubview(statusLineDivider);
             
-            } catch (Exception ex) {
+            } 
+			catch (Exception ex) 
+			{
                 Logger.LogError (ex);
             }
         }

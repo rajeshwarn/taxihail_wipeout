@@ -140,10 +140,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             };
         }
 
-        protected override void OnViewModelSet()
-        {
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
+
             SetContentView(Resource.Layout.View_Payments_BookPayment);
-            ViewModel.OnViewLoaded();
         }
     }
 }

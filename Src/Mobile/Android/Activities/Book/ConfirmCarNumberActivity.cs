@@ -9,10 +9,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class ConfirmPaymentActivity : BaseBindingActivity<ConfirmCarNumberViewModel>
     {
-        protected override void OnViewModelSet()
-        {
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
+
             SetContentView(Resource.Layout.View_Payments_ConfirmCarNumber);
-            ViewModel.OnViewLoaded();
         }
     }
 }

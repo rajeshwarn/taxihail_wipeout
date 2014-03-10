@@ -20,8 +20,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _listView.DividerHeight = 0;
         }
 
-        protected override void OnViewModelSet()
-        {
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
             SetContentView(Resource.Layout.View_BookingRating);
         }
     }

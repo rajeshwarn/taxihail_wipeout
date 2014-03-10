@@ -10,8 +10,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class TermsAndConditionsActivity : BaseBindingActivity<TermsAndConditionsViewModel>
     {
-        protected override void OnViewModelSet()
-        {
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
+
             SetContentView(Resource.Layout.View_TermsAndConditions);
 
             var textView = FindViewById<TextView>(Resource.Id.TermsAndConditionsTextView);
