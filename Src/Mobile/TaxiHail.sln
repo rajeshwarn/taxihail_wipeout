@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-VisualStudioVersion = {0}
-MinimumVisualStudioVersion = {0}
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "iOS", "iOS", "{746228AE-71D1-4807-B52B-B5563266CA53}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Api.Client.iOS", "..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj", "{52A964D2-F9FE-47CD-9C50-781CCEC560ED}"
