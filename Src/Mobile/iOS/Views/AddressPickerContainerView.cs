@@ -4,6 +4,7 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Views.AddressPicker;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -27,18 +28,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			NavigationController.NavigationBar.Hidden = true;
 			View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
-
-			var addressPickerView = View.Subviews [0] as AddressPickerView;
-			addressPickerView.Hidden = false;
-			addressPickerView.DataContext = ViewModel;
+			View.Hidden = false;
+            View.Bind(this, "DataContext;");
 		}
 
-		public override void ViewDidLoad ()
-		{
-			base.ViewDidLoad ();
-		
-			// Perform any additional setup after loading the view, typically from a nib.
-		}
 	}
 }
 
