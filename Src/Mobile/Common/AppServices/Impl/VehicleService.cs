@@ -8,6 +8,9 @@ using System.Reactive.Subjects;
 using apcurium.MK.Common.Entity;
 using System.Reactive.Disposables;
 using apcurium.MK.Booking.Mobile.Extensions;
+using System.Reactive.Threading.Tasks;
+using System.Reactive.Linq;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -15,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     {
 		private IOrderWorkflowService _orderWorkflowService;
 
-		readonly CompositeDisposable _subscriptions = new CompositeDisposable();
+		private CompositeDisposable _subscriptions;
 		readonly ISubject<AvailableVehicle[]> _availableVehiclesSubject = new BehaviorSubject<AvailableVehicle[]>(new AvailableVehicle[0]);
 
 		private bool IsStarted { get; set; }
@@ -35,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				return;
 			}
 
+			_subscriptions = new CompositeDisposable ();
 			_orderWorkflowService = TinyIoCContainer.Current.Resolve<IOrderWorkflowService>();
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => AroundLocation = address);
 
@@ -43,25 +47,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			ObserveAvailableVehicles();
 		}
 
+		private async void CheckForAvailableVehicles()
+		{
+			if (AroundLocation != null && AroundLocation.Latitude != 0 && AroundLocation.Longitude != 0) 
+			{
+				try 
+				{
+					var availableVehicles = await UseServiceClientAsync<IVehicleClient, AvailableVehicle[]> (service => 
+						service.GetAvailableVehiclesAsync (AroundLocation.Latitude, AroundLocation.Longitude));
+					_availableVehiclesSubject.OnNext (availableVehicles);
+				} 
+				catch 
+				{
+				}
+			}
+		}
+
 		private async void ObserveAvailableVehicles()
 		{
-			do
-			{
-				if(AroundLocation != null && AroundLocation.Latitude != 0 && AroundLocation.Longitude != 0)
-				{
-					try
-					{
-					    var availableVehicles = await UseServiceClientAsync<IVehicleClient, AvailableVehicle[]>(service => 
-							service.GetAvailableVehiclesAsync(AroundLocation.Latitude, AroundLocation.Longitude)
-                        );
-						_availableVehiclesSubject.OnNext(availableVehicles);
-					}
-					catch{}
-				}
-
-				await Task.Delay(5000);
-			}
-			while(IsStarted);
+			Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds (5))
+				.Subscribe (_ => CheckForAvailableVehicles())
+				.DisposeWith (_subscriptions);
 		}
 		
 		public void Stop ()
