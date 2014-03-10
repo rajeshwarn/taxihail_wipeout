@@ -235,6 +235,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["ServiceError" + e.ErrorCode + "_NoCall"];
 						throw new OrderCreationException(message, messageNoCall);
+					case "CreateOrder_CannotCreateInIbs_3000": /* Disabled account */
+						message = string.Format(_localize["AccountDisabled"], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
+						messageNoCall = _localize["AccountDisabled_NoCall"];
+						throw new OrderCreationException(message, messageNoCall);
 					default:
 						// Unhandled errors
 						// if ibs3000, there's a problem with the account, use a different one
