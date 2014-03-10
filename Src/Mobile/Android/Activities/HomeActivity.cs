@@ -185,10 +185,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             mainLayout.StartAnimation(animation);
         }
 
-        protected override void OnViewModelSet()
-        {
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
+			if (ViewModel != null)
+			{
+				ViewModel.OnViewLoaded();
+			}
+
             SetContentView(Resource.Layout.View_Home);
-            ViewModel.OnViewLoaded();
+
             _relMapLayout = (RelativeLayout) FindViewById(Resource.Id.RelMapLayout);
             _bigButton = (Button) FindViewById(Resource.Id.BigButtonTransparent);
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);

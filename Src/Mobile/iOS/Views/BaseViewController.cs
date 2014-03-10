@@ -99,6 +99,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 NavigationController.InteractivePopGestureRecognizer.Enabled = false;
             }
+
+			if (ViewModel != null)
+			{
+				ViewModel.OnViewLoaded();
+			}  
         }
 		
         public override void DidReceiveMemoryWarning ()

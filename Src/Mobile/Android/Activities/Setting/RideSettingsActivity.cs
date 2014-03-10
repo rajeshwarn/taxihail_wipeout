@@ -15,8 +15,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
     )]
     public class RideSettingsActivity : BaseBindingActivity<RideSettingsViewModel>
     {
-        protected override void OnViewModelSet()
-        {
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
+
             SetContentView(Resource.Layout.View_RideSettings);
             var txtPassword = FindViewById<EditTextNavigate>(Resource.Id.rideSettingsPassword);
             txtPassword.TransformationMethod = PasswordTransformationMethod.Instance;

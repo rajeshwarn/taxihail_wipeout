@@ -13,8 +13,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         ClearTaskOnLaunch = true, FinishOnTaskLaunch = true)]
     public class RideSummaryActivity : BaseBindingActivity<RideSummaryViewModel>
     {
-        protected override void OnViewModelSet()
-        {
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
+
             SetContentView(Resource.Layout.View_Book_RideSummaryPage);
             var lblSubTitle = FindViewById<TextView>(Resource.Id.lblSubTitle);
             lblSubTitle.Text = String.Format(Localize ("RideSummarySubTitleText"), this.Services().Settings.ApplicationName);

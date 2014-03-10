@@ -19,9 +19,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             FindViewById<WebView>(Resource.Id.aboutWebView).LoadUrl(ViewModel.Uri);
             FindViewById<WebView>(Resource.Id.aboutWebView).SetInitialScale(40);
         }
-
-        protected override void OnViewModelSet()
-        {
-        }
     }
 }

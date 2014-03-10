@@ -63,8 +63,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			_uiHelper.OnActivityResult(requestCode, (int)resultCode, data);
 		}
 
-        protected override void OnViewModelSet()
-        {
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
+
             SetContentView(Resource.Layout.View_Login);           
 
             DrawHelper.SupportLoginTextColor(FindViewById<TextView>(Resource.Id.ForgotPasswordButton));

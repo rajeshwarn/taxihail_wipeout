@@ -18,9 +18,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             // Create your application here
         }
 
-        protected override void OnViewModelSet()
-        {
-            ViewModel.OnViewLoaded();
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
 
             var webView = new WebView(this);
             webView.SetWebViewClient(new PayPalWebViewClient(ViewModel));

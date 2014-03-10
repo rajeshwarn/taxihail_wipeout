@@ -33,11 +33,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap.ViewTreeObserver.AddOnGlobalLayoutListener(new LayoutObserverForMap(_touchMap));	        
         }        
 
-        protected override void OnViewModelSet()
-        {
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
+
             SetContentView(Resource.Layout.View_BookingStatus);
             _touchMap = FindViewById<TouchMap>(Resource.Id.mapStatus);
-            ViewModel.OnViewLoaded();
         }
 
         protected override void OnResume()

@@ -22,8 +22,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     public class CreateAccountActivity : BaseBindingActivity<CreateAccountViewModel>
     {
 
-        protected override void OnViewModelSet()
-        {
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
+
 			DroidResources.Initialize (typeof (Resource.Layout));
             SetContentView(Resource.Layout.View_CreateAccount);
             ViewGroup registerContainer = (ViewGroup)FindViewById<LinearLayout>(Resource.Id.registerContainer);

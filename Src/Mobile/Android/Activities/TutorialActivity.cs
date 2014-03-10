@@ -28,8 +28,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
         private int _tutorialInsetPixels = 7.ToPixels();
 
-        protected override void OnViewModelSet()
-        {
+		protected override void OnViewModelSet()
+		{
+			base.OnViewModelSet ();
+
             Window.SetFlags(WindowManagerFlags.Dither, WindowManagerFlags.Fullscreen);
             SetContentView(Resource.Layout.View_Tutorial);
 

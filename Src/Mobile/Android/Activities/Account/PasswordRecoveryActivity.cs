@@ -12,7 +12,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     public class PasswordRecoveryActivity : BaseBindingActivity<ResetPasswordViewModel>
     {
 		protected override void OnViewModelSet()
-        {
+		{
+			base.OnViewModelSet ();
+
             SetContentView(Resource.Layout.View_PasswordRecovery);
 
             DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.btnReset));
