@@ -12,6 +12,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
@@ -111,18 +112,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             base.AwakeFromNib();
 
             Settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            var isThriev = Settings.Data.ApplicationName == "Thriev";
 
-            UINib nib;
-            if (isThriev)
-            {
-                nib = UINib.FromName ("OrderEditView_Thriev", null);
-            } 
-            else 
-            {
-                nib = UINib.FromName ("OrderEditView", null);
-            }
-
+            var nib = NibHelper.GetNibForView("OrderEditView");
             var view = (UIView)nib.Instantiate(this, null)[0];
             AddSubview(view);
 

@@ -104,6 +104,7 @@
     <Compile Include="Requests\SendReceipt.cs" />
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Requests\OrderRatingRequest.cs" />
+    <Compile Include="Resources\TermsAndConditions.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
     <Compile Include="Requests\CreditCardRequest.cs" />
     <Compile Include="Resources\CreditCardDetails.cs" />

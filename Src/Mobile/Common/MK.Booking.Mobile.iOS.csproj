@@ -133,7 +133,6 @@
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Localization\AppLanguage.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
-    <Compile Include="Infrastructure\ICacheService.cs" />
     <Compile Include="AppServices\Impl\AccountService.cs" />
     <Compile Include="AppServices\Impl\BaseService.cs" />
     <Compile Include="AppServices\Impl\BookingService.cs" />
@@ -328,6 +327,7 @@
     <Compile Include="Infrastructure\ILocationService.cs" />
     <Compile Include="Infrastructure\BaseLocationService.cs" />
     <Compile Include="ErrorHandler.cs" />
+    <Compile Include="ViewModels\UpdatedTermsAndConditionsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

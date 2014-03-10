@@ -103,6 +103,7 @@
     <Compile Include="RatingTypeAdded.cs" />
     <Compile Include="RatingTypeHidded.cs" />
     <Compile Include="RatingTypeUpdated.cs" />
+    <Compile Include="TermsAndConditionsRetriggered.cs" />
     <Compile Include="TermsAndConditionsUpdated.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -70,6 +70,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<RatingTypeUpdated>(NoAction);
 
             Handles<TermsAndConditionsUpdated>(NoAction);
+            Handles<TermsAndConditionsRetriggered>(NoAction);
         }
 
         private void OnPaymentSettingUpdated(PaymentSettingUpdated obj)
@@ -426,6 +427,11 @@ namespace apcurium.MK.Booking.Domain
             {
                 TermsAndConditions = termsAndConditions
             });
+        }
+
+        public void RetriggerTermsAndConditions()
+        {
+            Update(new TermsAndConditionsRetriggered());
         }
     }
 }

@@ -17,8 +17,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             base.OnViewStarted(firstTime);
             using (this.Services().Message.ShowProgressNonModal())
             {
-				TermsAndConditions = await _termsService.GetText();
-		    }
+                var terms = await _termsService.GetTerms();
+                TermsAndConditions = terms.Content;
+            }
         }
 
         private string _termsAndConditions;

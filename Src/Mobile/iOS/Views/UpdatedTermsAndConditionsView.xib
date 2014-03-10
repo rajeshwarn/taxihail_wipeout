@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UpdatedTermsAndConditionsView">
+            <connections>
+                <outlet property="btnAccept" destination="VBr-tv-58J" id="Mkh-Wt-6eA"/>
+                <outlet property="txtTermsAndConditions" destination="Wab-wT-OEO" id="FN2-ku-7A4"/>
+                <outlet property="view" destination="1" id="3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1">
+            <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wab-wT-OEO" customClass="FlatTextView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="346"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="346" id="n72-bh-tFv"/>
+                        <constraint firstAttribute="width" constant="320" id="vdN-di-7SU"/>
+                    </constraints>
+                    <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt mi in dolor convallis elementum. Sed interdum vulputate ultrices. Vivamus eu urna pretium, placerat est vel, viverra leo. Sed porta erat sed sollicitudin suscipit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam a aliquet orci. Integer vulputate, sem ut varius semper, libero magna commodo ipsum, porttitor placerat nibh justo et erat. 
+
+Duis vulputate venenatis tincidunt. Cras at sapien aliquet, volutpat massa at, convallis nulla. Nulla orci tellus, scelerisque scelerisque tellus sed, hendrerit egestas diam. Duis vitae sapien eros. Donec at massa ante. Integer scelerisque, libero eu semper faucibus, erat tortor aliquam odio, semper faucibus ante urna vel turpis. 
+
+Maecenas luctus lacus eros, quis porttitor ipsum placerat in. Etiam sagittis, purus vel tempus ornare, leo massa dapibus ligula, vitae rhoncus velit nisi at diam. Aenean convallis velit ac nunc ultrices pretium.
+
+Quisque massa libero, semper et massa sit amet, varius aliquam elit. Etiam commodo, velit id dapibus ornare, augue mi sodales est, quis sodales massa dolor vel justo. Nam nec ullamcorper libero. Maecenas posuere vitae purus vel tincidunt. Fusce non lacus elit. Phasellus imperdiet neque et ultrices fringilla. Fusce justo lacus, tempus cursus blandit vitae, aliquet at orci. Aliquam fringilla sit amet sem id placerat. Nulla commodo dictum urna. Etiam accumsan turpis sit amet nunc auctor, vitae semper justo pharetra. Etiam gravida nisl eget felis tempor, id posuere quam rutrum.
+
+Nullam laoreet ac eros vel aliquam. Maecenas luctus consectetur enim, eu aliquam massa tempus et. Sed libero est, condimentum sed ligula sed, hendrerit rutrum turpis. Etiam rutrum non justo non commodo. Nulla a faucibus turpis. Donec ac diam id arcu auctor venenatis nec nec sapien. Nullam sed orci dapibus erat pharetra pellentesque ac quis augue. Duis vel nisl est. Curabitur in ligula faucibus, ultricies lectus quis, hendrerit libero. Maecenas purus justo, posuere id tincidunt feugiat, porta et diam. Ut vestibulum, nibh a congue vehicula, sapien lacus viverra velit, ut molestie magna tellus sit amet eros. Donec vestibulum nisi eu semper fermentum. Aliquam erat volutpat. Morbi risus justo, imperdiet ac condimentum ut, facilisis non sem. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
+                    <color key="textColor" red="0.011764705882352941" green="0.10588235294117647" blue="0.19215686274509802" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VBr-tv-58J" customClass="FlatButton">
+                    <rect key="frame" x="8" y="355" width="304" height="41"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="41" id="6Nt-sY-mbh"/>
+                        <constraint firstAttribute="width" constant="304" id="ZPy-Dp-8nx"/>
+                    </constraints>
+                    <state key="normal" title="Accept">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="VBr-tv-58J" secondAttribute="trailing" constant="8" id="F1N-lB-eJb"/>
+                <constraint firstAttribute="bottom" secondItem="VBr-tv-58J" secondAttribute="bottom" constant="20" id="FoO-op-NGP"/>
+                <constraint firstAttribute="bottom" secondItem="Wab-wT-OEO" secondAttribute="bottom" constant="70" id="GDR-3z-7Kf"/>
+                <constraint firstItem="Wab-wT-OEO" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="IBv-yg-kc0"/>
+                <constraint firstItem="Wab-wT-OEO" firstAttribute="top" secondItem="1" secondAttribute="top" id="Pga-LY-YzE"/>
+                <constraint firstItem="VBr-tv-58J" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="im6-eh-97h"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+</document>

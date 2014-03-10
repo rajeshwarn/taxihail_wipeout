@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OrderReviewView">
+            <connections>
+                <outlet property="iconNbLargeBags" destination="JLh-1X-33p" id="Frs-e1-ygN"/>
+                <outlet property="iconPassengerName" destination="vAa-yj-UNW" id="vWw-QG-foM"/>
+                <outlet property="iconPhone" destination="9J8-5J-YSm" id="dWX-r2-hgW"/>
+                <outlet property="lblChargeType" destination="gDd-hn-z9F" id="HfV-Wz-WjA"/>
+                <outlet property="lblDate" destination="feA-ip-Qvv" id="ilb-3w-T5f"/>
+                <outlet property="lblName" destination="067-rR-eif" id="Cum-d2-33c"/>
+                <outlet property="lblNbLargeBags" destination="7mt-Af-m4S" id="f3t-7a-i0S"/>
+                <outlet property="lblPhone" destination="HWR-DD-bhe" id="Jhl-6D-jDD"/>
+                <outlet property="lblVehicule" destination="M8A-gq-5Cj" id="SDS-UY-Ynh"/>
+                <outlet property="txtNote" destination="SAi-py-j4y" id="7rU-Ee-YDW"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <scrollView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" id="1">
+            <rect key="frame" x="0.0" y="0.0" width="302" height="300"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="account.png" translatesAutoresizingMaskIntoConstraints="NO" id="vAa-yj-UNW">
+                    <rect key="frame" x="10" y="10" width="16" height="16"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="067-rR-eif">
+                    <rect key="frame" x="38" y="8" width="46" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="telephone.png" translatesAutoresizingMaskIntoConstraints="NO" id="9J8-5J-YSm">
+                    <rect key="frame" x="10" y="44" width="16" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="time.png" translatesAutoresizingMaskIntoConstraints="NO" id="FN5-We-36v">
+                    <rect key="frame" x="10" y="78" width="16" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="vehicle.png" translatesAutoresizingMaskIntoConstraints="NO" id="Zbo-DL-yJk">
+                    <rect key="frame" x="10" y="112" width="16" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HWR-DD-bhe">
+                    <rect key="frame" x="38" y="41" width="104" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="104" id="YWv-jh-dUl"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="feA-ip-Qvv">
+                    <rect key="frame" x="38" y="75" width="43" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M8A-gq-5Cj">
+                    <rect key="frame" x="38" y="109" width="104" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="104" id="TOG-nz-Ffw"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="baggage.png" translatesAutoresizingMaskIntoConstraints="NO" id="JLh-1X-33p">
+                    <rect key="frame" x="156" y="44" width="16" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7mt-Af-m4S">
+                    <rect key="frame" x="184" y="41" width="43" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chargetype.png" translatesAutoresizingMaskIntoConstraints="NO" id="j8k-Nc-UKw">
+                    <rect key="frame" x="156" y="112" width="16" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gDd-hn-z9F">
+                    <rect key="frame" x="184" y="109" width="104" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="104" id="1eV-8l-iOd"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SAi-py-j4y" customClass="FlatTextView">
+                    <rect key="frame" x="9" y="149" width="284" height="100"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" priority="500" constant="100" id="R6u-PV-7Qc"/>
+                        <constraint firstAttribute="width" constant="284" id="icz-ny-Beg"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="9J8-5J-YSm" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="0od-p8-MbW"/>
+                <constraint firstItem="067-rR-eif" firstAttribute="centerY" secondItem="vAa-yj-UNW" secondAttribute="centerY" constant="0.5" id="205-9l-kQq"/>
+                <constraint firstItem="JLh-1X-33p" firstAttribute="leading" secondItem="1" secondAttribute="leading" priority="500" constant="10" id="28y-Rd-ldF"/>
+                <constraint firstItem="SAi-py-j4y" firstAttribute="top" secondItem="Zbo-DL-yJk" secondAttribute="bottom" constant="21" id="AUL-JA-zMk"/>
+                <constraint firstItem="FN5-We-36v" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="Dea-uc-KKR"/>
+                <constraint firstItem="9J8-5J-YSm" firstAttribute="top" secondItem="vAa-yj-UNW" secondAttribute="bottom" constant="18" id="Fbc-48-g5M"/>
+                <constraint firstItem="FN5-We-36v" firstAttribute="top" secondItem="vAa-yj-UNW" secondAttribute="bottom" priority="275" constant="18" id="I6s-Y8-x3y"/>
+                <constraint firstItem="vAa-yj-UNW" firstAttribute="top" secondItem="1" secondAttribute="top" constant="10" id="MJu-8p-s7a"/>
+                <constraint firstItem="Zbo-DL-yJk" firstAttribute="top" secondItem="FN5-We-36v" secondAttribute="bottom" constant="18" id="OgZ-6v-FPn"/>
+                <constraint firstItem="j8k-Nc-UKw" firstAttribute="leading" secondItem="M8A-gq-5Cj" secondAttribute="trailing" constant="14" id="Rb2-HO-Jvt"/>
+                <constraint firstItem="SAi-py-j4y" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="9" id="Smo-kP-QZo"/>
+                <constraint firstItem="JLh-1X-33p" firstAttribute="leading" secondItem="HWR-DD-bhe" secondAttribute="trailing" constant="14" id="WeB-SE-a5K"/>
+                <constraint firstItem="j8k-Nc-UKw" firstAttribute="centerY" secondItem="M8A-gq-5Cj" secondAttribute="centerY" id="ZEA-27-i09"/>
+                <constraint firstItem="Zbo-DL-yJk" firstAttribute="centerY" secondItem="M8A-gq-5Cj" secondAttribute="centerY" id="c2W-S5-1M0"/>
+                <constraint firstItem="7mt-Af-m4S" firstAttribute="leading" secondItem="JLh-1X-33p" secondAttribute="trailing" constant="12" id="dwA-PN-XyY"/>
+                <constraint firstItem="j8k-Nc-UKw" firstAttribute="centerY" secondItem="gDd-hn-z9F" secondAttribute="centerY" id="eUk-je-aCe"/>
+                <constraint firstItem="M8A-gq-5Cj" firstAttribute="leading" secondItem="Zbo-DL-yJk" secondAttribute="trailing" constant="12" id="egW-db-bey"/>
+                <constraint firstAttribute="bottom" secondItem="SAi-py-j4y" secondAttribute="bottom" constant="17" id="fFP-Hx-XVO"/>
+                <constraint firstItem="gDd-hn-z9F" firstAttribute="leading" secondItem="j8k-Nc-UKw" secondAttribute="trailing" constant="12" id="gI1-Jj-FH1"/>
+                <constraint firstItem="feA-ip-Qvv" firstAttribute="centerY" secondItem="FN5-We-36v" secondAttribute="centerY" id="jqb-wb-0c6"/>
+                <constraint firstItem="vAa-yj-UNW" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="ki8-u8-c18"/>
+                <constraint firstItem="FN5-We-36v" firstAttribute="top" secondItem="9J8-5J-YSm" secondAttribute="bottom" constant="18" id="s8E-f5-5Lo" userLabel="Vertical Space - (8) - Image View - time.png - Image View - telephone.png"/>
+                <constraint firstItem="JLh-1X-33p" firstAttribute="centerY" secondItem="HWR-DD-bhe" secondAttribute="centerY" constant="0.5" id="tk7-MJ-ia5"/>
+                <constraint firstItem="feA-ip-Qvv" firstAttribute="leading" secondItem="FN5-We-36v" secondAttribute="trailing" constant="12" id="u3X-Kn-a6s"/>
+                <constraint firstItem="HWR-DD-bhe" firstAttribute="leading" secondItem="9J8-5J-YSm" secondAttribute="trailing" constant="12" id="uUx-6i-RxQ"/>
+                <constraint firstItem="FN5-We-36v" firstAttribute="top" secondItem="1" secondAttribute="top" priority="175" constant="10" id="urc-j2-0og"/>
+                <constraint firstItem="Zbo-DL-yJk" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="ySd-Bw-WiA"/>
+                <constraint firstItem="067-rR-eif" firstAttribute="leading" secondItem="vAa-yj-UNW" secondAttribute="trailing" constant="12" id="yhw-8R-hip"/>
+                <constraint firstItem="9J8-5J-YSm" firstAttribute="centerY" secondItem="HWR-DD-bhe" secondAttribute="centerY" constant="0.5" id="zCo-cc-Q7h"/>
+                <constraint firstItem="JLh-1X-33p" firstAttribute="centerY" secondItem="7mt-Af-m4S" secondAttribute="centerY" constant="0.5" id="zkY-B5-xDn"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </scrollView>
+    </objects>
+    <resources>
+        <image name="account.png" width="16" height="16"/>
+        <image name="baggage.png" width="16" height="16"/>
+        <image name="chargetype.png" width="16" height="16"/>
+        <image name="telephone.png" width="16" height="16"/>
+        <image name="time.png" width="16" height="16"/>
+        <image name="vehicle.png" width="16" height="16"/>
+    </resources>
+</document>

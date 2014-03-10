@@ -1,20 +1,20 @@
 using System;
-using Cirrious.MvvmCross.Plugins.WebBrowser;
 using System.Collections.Generic;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Data;
-using apcurium.MK.Booking.Mobile.Extensions;
+using System.Drawing;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Mobile.AppServices;
 using System.Windows.Input;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using System.Drawing;
-using apcurium.MK.Booking.Mobile.PresentationHints;
-using apcurium.MK.Booking.Mobile.Infrastructure;
+using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -25,22 +25,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITutorialService _tutorialService;
 		private readonly IPushNotificationService _pushNotificationService;
 		private readonly IVehicleService _vehicleService;
+		private readonly IAccountService _accountService;
+		private readonly ITermsAndConditionsService _termsService;
 
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
 			IMvxWebBrowserTask browserTask,
 			ILocationService locationService,
 			ITutorialService tutorialService,
 			IPushNotificationService pushNotificationService,
-			IVehicleService vehicleService) : base()
+			IVehicleService vehicleService,
+			IAccountService accountService,
+			IPhoneService phoneService,
+			ITermsAndConditionsService termsService) : base()
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
 			_tutorialService = tutorialService;
 			_pushNotificationService = pushNotificationService;
-			_vehicleService= vehicleService;
-
-			var accountService = Container.Resolve<IAccountService>();
-			var phoneService = Container.Resolve<IPhoneService>();
+			_vehicleService = vehicleService;
+			_accountService = accountService;
+			_termsService = termsService;
 
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService);
 		}
@@ -72,8 +76,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
-				_tutorialService.DisplayTutorialToNewUser();
+				CheckTermsAsync();
 
+				_tutorialService.DisplayTutorialToNewUser();
 				_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
 			}
 
@@ -91,11 +96,50 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService.Start();
 		}
 
+
+		public async void CheckTermsAsync()
+		{
+			if (!Settings.ShowTermsAndConditions) 
+			{
+				return;
+			}
+
+			var response = await _termsService.GetTerms();
+			var termsAckKey = string.Format("TermsAck{0}", _accountService.CurrentAccount.Email);
+			var termsAcknowledged = this.Services().Cache.Get<string>(termsAckKey);
+
+			if (response.Updated || !(termsAcknowledged == "yes"))
+			{				 
+				this.Services().Cache.Clear(termsAckKey);
+				ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool>(new 
+					{														
+						content = response.Content
+					}.ToStringDictionary(), 
+					async acknowledged =>
+					{
+						this.Services().Cache.Set<string>(termsAckKey, acknowledged ? "yes" : "no");
+						if (!acknowledged)
+						{
+							_accountService.SignOut();
+						}
+					});
+			}
+		}
+
 		public override void OnViewStopped()
 		{
 			base.OnViewStopped();
 			_locationService.Stop();
 			_vehicleService.Stop();
+		}
+			
+		public void VehicleServiceStateManager(HomeViewModelPresentationHint hint)
+		{
+			if (hint.State == HomeViewModelState.Initial) {
+				_vehicleService.Start ();
+			} else {
+				_vehicleService.Stop ();
+			}
 		}
 
 		public PanelMenuViewModel Panel { get; set; }

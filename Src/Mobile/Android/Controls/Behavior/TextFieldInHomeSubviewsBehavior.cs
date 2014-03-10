@@ -42,6 +42,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
                 if(e.ActionId == ImeAction.Done){
                     editText.ClearFocus();
                 } 
+
+                e.Handled = false;
             };
         }
     }

@@ -13,39 +13,14 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-    public class OrderReview: MvxFrameControl
+	public class OrderReview : MvxFrameControl
     {    
         private IAppSettings _settings;
-
-        public OrderReview(Context context, IAttributeSet attrs) : base (Resource.Layout.SubView_OrderReview, context, attrs)
-        {
-            _settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-
-            this.DelayBind (() => {
-
-                _lblName = (TextView)FindViewById<TextView>(Resource.Id.lblName);
-                _lblPhone = (TextView)FindViewById<TextView>(Resource.Id.lblPhone);
-                _lblNbPassengers = (TextView)FindViewById<TextView>(Resource.Id.lblNbPassengers);
-                _lblDate = (TextView)FindViewById<TextView>(Resource.Id.lblDate);
-                _lblVehicule = (TextView)FindViewById<TextView>(Resource.Id.lblVehicule);
-                _lblChargeType = (TextView)FindViewById<TextView>(Resource.Id.lblChargeType);
-                _lblApt = (TextView)FindViewById<TextView>(Resource.Id.lblApt);
-                _lblRingCode = (TextView)FindViewById<TextView>(Resource.Id.lblRingCode);
-                _editNote = FindViewById<EditText>(Resource.Id.txtNotes);
-
-                // hack for scroll in view when in EditText
-                _bottomPadding = FindViewById<LinearLayout>(Resource.Id.HackBottomPadding);
-                TextFieldInHomeSubviewsBehavior.ApplyTo(
-                    _editNote, 
-                    () => _bottomPadding.Visibility = ViewStates.Visible, 
-                    () => _bottomPadding.Visibility = ViewStates.Gone);
-
-                InitializeBinding();
-            });              
-        }
 
         private TextView _lblName;
         private TextView _lblPhone;
@@ -55,8 +30,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private TextView _lblChargeType;
         private TextView _lblApt;
         private TextView _lblRingCode;
-        private EditText _editNote;
+        private TextView _lblLargeBags;
+        private EditTextEntry _editNote;
         private LinearLayout _bottomPadding;
+        
+        public OrderReview(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderReview, context), context, attrs)
+        {
+            _settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+
+            this.DelayBind (() => {
+            
+                _lblName = Content.FindViewById<TextView>(Resource.Id.lblName);
+                _lblPhone = Content.FindViewById<TextView>(Resource.Id.lblPhone);
+                _lblNbPassengers = Content.FindViewById<TextView>(Resource.Id.lblNbPassengers);
+                _lblLargeBags = Content.FindViewById<TextView>(Resource.Id.lblLargeBags);
+                _lblDate = Content.FindViewById<TextView>(Resource.Id.lblDate);
+                _lblVehicule = Content.FindViewById<TextView>(Resource.Id.lblVehicule);
+                _lblChargeType = Content.FindViewById<TextView>(Resource.Id.lblChargeType);
+                _lblApt = Content.FindViewById<TextView>(Resource.Id.lblApt);
+                _lblRingCode = Content.FindViewById<TextView>(Resource.Id.lblRingCode);
+                _editNote = FindViewById<EditTextEntry>(Resource.Id.txtNotes);
+
+                _editNote.SetClickAnywhereToDismiss();
+
+                // hack for scroll in view when in EditText
+                _bottomPadding = Content.FindViewById<LinearLayout>(Resource.Id.HackBottomPadding);
+                TextFieldInHomeSubviewsBehavior.ApplyTo(
+                    _editNote, 
+                    () => _bottomPadding.Visibility = ViewStates.Visible, 
+                    () => _bottomPadding.Visibility = ViewStates.Gone);
+
+                InitializeBinding();
+            });              
+        }
 
         private OrderReviewViewModel ViewModel { get { return (OrderReviewViewModel)DataContext; } }
 
@@ -72,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Text)
                 .To(vm => vm.Settings.Phone);
 
-            set.Bind(_lblNbPassengers)
+            set.BindSafe(_lblNbPassengers)
                 .For(v => v.Text)
                 .To(vm => vm.Settings.Passengers);
 
@@ -88,13 +94,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Text)
                 .To(vm => vm.ChargeType);
 
-            set.Bind(_lblApt)
+            set.BindSafe(_lblApt)
                 .For(v => v.Text)
                 .To(vm => vm.Apartment);
 
-            set.Bind(_lblRingCode)
+            set.BindSafe(_lblRingCode)
                 .For(v => v.Text)
                 .To(vm => vm.RingCode);
+
+            set.BindSafe(_lblLargeBags)
+                .For(v => v.Text)
+                .To(vm => vm.Settings.LargeBags);
 
             set.Bind(_editNote)
                 .For(v => v.Text)

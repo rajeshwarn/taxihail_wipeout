@@ -1,4 +1,5 @@
-﻿using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Booking.Api.Contract.Resources;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Security;
 #if !CLIENT
@@ -12,13 +13,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     [AuthorizationRequired(ApplyTo.Post, RoleName.Admin)]
 #endif
     [Route("/termsandconditions", "GET, POST")]
-    public class TermsAndConditionsRequest : IReturn<TermsAndConditionsResponse>
+    public class TermsAndConditionsRequest : IReturn<TermsAndConditions>
     {
         public string TermsAndConditions { get; set; }
-    }
-
-    public class TermsAndConditionsResponse
-    {
-        public string Content { get; set; }
     }
 }
