@@ -1,19 +1,20 @@
 using System;
-using Cirrious.MvvmCross.ViewModels;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.Extensions;
-using System.Reactive.Disposables;
 using System.Collections.Generic;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.ComponentModel;
-using apcurium.MK.Booking.Mobile.Data;
-using System.Threading.Tasks;
+using System.Reactive.Disposables;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Cirrious.MvvmCross.ViewModels;
 using MK.Common.Configuration;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

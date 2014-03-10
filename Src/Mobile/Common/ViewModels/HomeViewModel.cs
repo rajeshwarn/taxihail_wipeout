@@ -76,12 +76,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
+
 			_locationService.Start();
+			CheckTermsAsync();
+
 			if (firstTime)
 			{
 				this.Services().ApplicationInfo.CheckVersionAsync();
-
-				CheckTermsAsync();
 
 				_tutorialService.DisplayTutorialToNewUser();
 				_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
@@ -104,31 +105,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async void CheckTermsAsync()
 		{
-			if (!Settings.ShowTermsAndConditions) 
-			{
-				return;
-			}
-
-			var response = await _termsService.GetTerms();
-			var termsAckKey = string.Format("TermsAck{0}", _accountService.CurrentAccount.Email);
-			var termsAcknowledged = this.Services().Cache.Get<string>(termsAckKey);
-
-			if (response.Updated || !(termsAcknowledged == "yes"))
-			{				 
-				this.Services().Cache.Clear(termsAckKey);
-				ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool>(new 
-					{														
-						content = response.Content
-					}.ToStringDictionary(), 
-					async acknowledged =>
-					{
-						this.Services().Cache.Set<string>(termsAckKey, acknowledged ? "yes" : "no");
-						if (!acknowledged)
-						{
-							_accountService.SignOut();
-						}
-					});
-			}
+			await _termsService.CheckIfNeedsToShowTerms ((content, actionOnResult) => ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool> (content, actionOnResult));
 		}
 
 		public override void OnViewStopped()
@@ -137,16 +114,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_locationService.Stop();
 			_vehicleService.Stop();
 		}
-			
-		public void VehicleServiceStateManager(HomeViewModelPresentationHint hint)
-		{
-			if (hint.State == HomeViewModelState.Initial) {
-				_vehicleService.Start ();
-			} else {
-				_vehicleService.Stop ();
-			}
-		}
-
+		
 		public PanelMenuViewModel Panel { get; set; }
 
 		private MapViewModel _map;
@@ -228,6 +196,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 				});
 			}
+		}
+
+		protected override TViewModel AddChild<TViewModel>()
+		{
+			var child = base.AddChild<TViewModel>();
+			var rps = child as IRequestPresentationState<HomeViewModelStateRequestedEventArgs>;
+			if (rps != null)
+			{
+				rps.PresentationStateRequested += OnPresentationStateRequested;
+			}
+
+            return child;
+		}
+
+		private void OnPresentationStateRequested(object sender, HomeViewModelStateRequestedEventArgs e)
+		{
+			this.ChangePresentation(new HomeViewModelPresentationHint(e.State, e.IsNewOrder));
+
+            if (e.State == HomeViewModelState.Initial)
+            {
+                _vehicleService.Start ();
+            }
+            else
+            {
+                _vehicleService.Stop ();
+            }
+
 		}
     }
 }

@@ -16,72 +16,61 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class VehicleService : BaseService, IVehicleService
     {
-		private IOrderWorkflowService _orderWorkflowService;
+		readonly IObservable<AvailableVehicle[]> _availableVehiclesObservable;
+		readonly ISubject<IObservable<long>> _timerSubject = new BehaviorSubject<IObservable<long>>(Observable.Never<long>());
 
-		private CompositeDisposable _subscriptions;
-		readonly ISubject<AvailableVehicle[]> _availableVehiclesSubject = new BehaviorSubject<AvailableVehicle[]>(new AvailableVehicle[0]);
+		private bool _isStarted { get; set; }
 
-		private bool IsStarted { get; set; }
-		private Address AroundLocation { get; set; }
-
-		protected void Observe<T>(IObservable<T> observable, Action<T> onNext)
+		public VehicleService(IOrderWorkflowService orderWorkflowService)
 		{
-			observable
-				.Subscribe(x => onNext(x))
-				.DisposeWith(_subscriptions);
+			_availableVehiclesObservable = _timerSubject
+				.Switch()
+				.CombineLatest(orderWorkflowService.GetAndObservePickupAddress(), (_, address) => address)
+				.Where(a => a.HasValidCoordinate())
+				.SelectMany(a => CheckForAvailableVehicles(a));
+
 		}
+
 
 		public void Start()
 		{   
-			if(IsStarted)
+			if(_isStarted)
 			{
 				return;
 			}
 
-			_subscriptions = new CompositeDisposable ();
-			_orderWorkflowService = TinyIoCContainer.Current.Resolve<IOrderWorkflowService>();
-			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => AroundLocation = address);
+			_isStarted = true;
 
-			IsStarted = true;
-
-			ObserveAvailableVehicles();
+			_timerSubject.OnNext(Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds (5)));
 		}
 
-		private async void CheckForAvailableVehicles()
+		private async Task<AvailableVehicle[]> CheckForAvailableVehicles(Address address)
 		{
-			if (AroundLocation != null && AroundLocation.Latitude != 0 && AroundLocation.Longitude != 0) 
+			try
 			{
-				try 
-				{
-					var availableVehicles = await UseServiceClientAsync<IVehicleClient, AvailableVehicle[]> (service => 
-						service.GetAvailableVehiclesAsync (AroundLocation.Latitude, AroundLocation.Longitude));
-					_availableVehiclesSubject.OnNext (availableVehicles);
-				} 
-				catch 
-				{
-				}
+				return await UseServiceClientAsync<IVehicleClient, AvailableVehicle[]>(service => 
+                    service.GetAvailableVehiclesAsync(address.Latitude, address.Longitude))
+						.ConfigureAwait(false);
 			}
-		}
-
-		private async void ObserveAvailableVehicles()
-		{
-			Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds (5))
-				.Subscribe (_ => CheckForAvailableVehicles())
-				.DisposeWith (_subscriptions);
+			catch (Exception e)
+			{
+				Logger.LogError(e);
+				return new AvailableVehicle[0];
+			}
 		}
 		
 		public void Stop ()
 		{   
-			if(IsStarted)
+			if(_isStarted)
 			{
-				_subscriptions.Dispose();
-				IsStarted = false;
+				_timerSubject.OnNext(Observable.Never<long>());
+				_isStarted = false;
 			}
 		}
 
 		public IObservable<AvailableVehicle[]> GetAndObserveAvailableVehicles()
 		{
-			return _availableVehiclesSubject;
+			return _availableVehiclesObservable;
 		}
     }
 }
