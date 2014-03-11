@@ -65,7 +65,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				MeterAmount = CultureProvider.FormatCurrency(value);
 			}
 
-			if (order.Tip.HasValue)
+			if (order.Tip.HasValue 
+				&& order.Tip.Value != 0)
 			{
 				PaymentPreferences.TipListDisabled = true;
 				TipAmount = CultureProvider.FormatCurrency(order.Tip.Value);
