@@ -16,15 +16,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	public class LocationDetailViewModel: PageViewModel
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
-		private readonly IGeolocService _geolocService;
 		private readonly IAccountService _accountService;
 
 		public LocationDetailViewModel(IOrderWorkflowService orderWorkflowService, 
-			IGeolocService geolocService, 
 			IAccountService accountService)
 		{
 			_orderWorkflowService = orderWorkflowService;
-			_geolocService = geolocService;
 			_accountService = accountService;
 		}
 

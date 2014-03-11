@@ -20,15 +20,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
 			base.OnViewModelSet ();
 
             SetContentView(Resource.Layout.View_LocationDetail);
-            FindViewById<EditText>(Resource.Id.LocationAddress).FocusChange += LocationDetailActivity_FocusChange;
-        }
-
-        private void LocationDetailActivity_FocusChange(object sender, View.FocusChangeEventArgs e)
-        {
-            if (!e.HasFocus)
-            {
-                ViewModel.ValidateAddress.Execute(((EditText)sender).Text);
-            }
         }
     }
 }
