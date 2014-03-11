@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			var response = await GetTerms();
 
-			var ackKey = GetTermsAcknowledgmentKey ();
+			var ackKey = GetTermsAcknowledgmentKey (_accountService.CurrentAccount.Email);
 			var termsAcknowledged = _cacheService.Get<string>(ackKey);
 
 			if (response.Updated || !(termsAcknowledged == "yes"))
@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					}.ToStringDictionary(),
 					async acknowledged =>
 					{
-						_cacheService.Set<string>(ackKey, acknowledged ? "yes" : "no");
+						AcknowledgeTerms(acknowledged, _accountService.CurrentAccount.Email);
 						if (!acknowledged)
 						{
 							_accountService.SignOut();
@@ -58,9 +58,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 		}
 
-		private string GetTermsAcknowledgmentKey()
+		public void AcknowledgeTerms(bool acknowledged, string email)
 		{
-			return string.Format("TermsAck{0}", _accountService.CurrentAccount.Email);
+			_cacheService.Set<string>(GetTermsAcknowledgmentKey(email), acknowledged ? "yes" : "no");
+		}
+
+		private string GetTermsAcknowledgmentKey(string email)
+		{
+			return string.Format("TermsAck{0}", email);
 		}
     }
 }

@@ -10,6 +10,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Task<TermsAndConditions> GetTerms();
 
 		Task CheckIfNeedsToShowTerms (Action<object, Action<bool>> actionToDoIfTrue);
+
+		void AcknowledgeTerms(bool acknowledged, string email);
 	}
 }
 

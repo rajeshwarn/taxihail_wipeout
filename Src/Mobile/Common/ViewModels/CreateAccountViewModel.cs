@@ -13,10 +13,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	public class CreateAccountViewModel: BaseViewModel, ISubViewModel<RegisterAccount>
 	{
 		private readonly IAccountService _accountService;
+		private readonly ITermsAndConditionsService _termsService;
 
-		public CreateAccountViewModel(IAccountService accountService)
+		public CreateAccountViewModel(IAccountService accountService, ITermsAndConditionsService termsService)
 		{
-			_accountService = accountService;			
+			_accountService = accountService;	
+			_termsService = termsService;
 		}
 
 		public RegisterAccount Data { get; set; }
@@ -24,7 +26,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool HasSocialInfo { get { return Data.FacebookId.HasValue () || Data.TwitterId.HasValue (); } }
 		public bool ShowTermsAndConditions { get { return Settings.ShowTermsAndConditions; } }
-
 
 		public void Init(string twitterId, string facebookId, string name, string email)
 		{
@@ -106,13 +107,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					try
 					{	
 						Data.AccountActivationDisabled = Settings.AccountActivationDisabled;
-						try{
-
+						try
+						{
 							await _accountService.Register(Data);
 							if (!HasSocialInfo && !Data.AccountActivationDisabled)
 							{
 								this.Services().Message.ShowMessage(this.Services().Localize["AccountActivationTitle"], this.Services().Localize["AccountActivationMessage"]);
 							}
+							
+							if(ShowTermsAndConditions)
+							{
+								// get the terms and conditions to make sure that when the user logs in
+								// the acknowledgment of terms are up to date and if an error occurs, continue
+								try
+								{
+									_termsService.GetTerms();
+									_termsService.AcknowledgeTerms(true, Data.Email);
+								}
+								catch {}
+							}
+
 							this.ReturnResult(Data);
 
 						}catch(Exception e)
