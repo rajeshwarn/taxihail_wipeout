@@ -450,9 +450,7 @@
     <AndroidResource Include="Resources\Drawable\drop_shadow_old.xml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow.xml" />
     <AndroidResource Include="Resources\Drawable\menu_icon.png" />
-    <AndroidResource Include="Resources\Drawable\menu_icon_pressed.png" />
     <AndroidResource Include="Resources\Drawable\location_icon.png" />
-    <AndroidResource Include="Resources\Drawable\location_icon_pressed.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\later_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\later_icon_pressed.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\location_icon.png" />
@@ -610,8 +608,8 @@
     <Compile Include="Helpers\LayoutHelper.cs" />
     <AndroidResource Include="Resources\Layout\SubView_OrderEdit_Thriev.axml" />
     <AndroidResource Include="Resources\Layout\SubView_OrderReview_Thriev.axml" />
-    <AndroidResource Include="Resources\Drawable\menu_icon_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\location_icon_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\drop_shadow_pressed.xml" />
+    <AndroidResource Include="Resources\Drawable\drop_shadow_selector.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
