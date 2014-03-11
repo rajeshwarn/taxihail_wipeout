@@ -9,13 +9,12 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class LocationDetailViewModel: PageViewModel
 	{
-		private readonly CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
-
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IGeolocService _geolocService;
 		private readonly IAccountService _accountService;
@@ -42,18 +41,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		private Address _address;
-		
-        public string BookAddress {
-            get {
-                return _address.BookAddress;
-            }
-            set {
-                if(value != _address.FullAddress)
-                {
-                    _address.FullAddress = value;
-					RaisePropertyChanged();
-                }
-            }
+
+        public string BookAddress 
+		{
+			get { return _address.BookAddress; }
         }
 
         public string Apartment 
@@ -112,46 +103,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool RebookIsAvailable { get { return !IsNew && !Settings.HideRebookOrder; } }
 
-		public ICommand ValidateAddress
-        {
-            get 
-			{
-				return this.GetCommand<string>(text =>
-                {
-					this.Services().Message.ShowProgress(true);
-					var task = Task.Factory.StartNew(() => _geolocService.ValidateAddress(text))
-                        .HandleErrors();
-					task.ContinueWith(t => this.Services().Message.ShowProgress(false));
-                    task.ContinueWith(t=>
-					{
-                        var location = t.Result;
-                        if ((location == null) || string.IsNullOrWhiteSpace(location.FullAddress) || !location.HasValidCoordinate ()) {
-                            this.Services().Message.ShowMessage(this.Services().Localize["InvalidAddressTitle"], this.Services().Localize["InvalidAddressMessage"]);
-                            return;
-                        }
-
-                        InvokeOnMainThread (() =>
-                        {
-							location.CopyLocationInfoTo(_address);
-							RaisePropertyChanged(() => BookAddress);
-                        });
-                        
-                    }, TaskContinuationOptions.OnlyOnRanToCompletion);
-                });
-            }
-        }
-
-        public void StopValidatingAddresses ()
-        {
-            _validateAddressCancellationTokenSource.Cancel();
-        }
-
 		public ICommand NavigateToSearch
 		{
 			get
 			{
-				return this.GetCommand(() => ShowViewModel<AddressPickerViewModel>(new { searchCriteria =  BookAddress }));
+				return this.GetCommand(() => ShowSubViewModel<AddressPickerViewModel, Address>(new { searchCriteria =  BookAddress.ToSafeString() }, result => ChangeAddress(result)));
 			}
+		}
+
+		private void ChangeAddress (Address searchResult)
+		{
+			if (string.IsNullOrWhiteSpace (FriendlyName)) 
+			{
+				FriendlyName = searchResult.FriendlyName;
+			}
+
+			searchResult.CopyLocationInfoTo (_address);
+
+			RaisePropertyChanged (() => BookAddress);
 		}
 
 		public ICommand SaveAddress
@@ -165,23 +134,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Message.ShowProgress(true);
                     try 
 					{
-						var location = _geolocService.ValidateAddress(_address.FullAddress);
-                        if ((location == null) || string.IsNullOrWhiteSpace(location.FullAddress) || !location.HasValidCoordinate ()) 
-						{
-                            this.Services().Message.ShowMessage(this.Services().Localize["InvalidAddressTitle"], this.Services().Localize["InvalidAddressMessage"]);
-                            return;
-                        }
-                    
-						location.CopyLocationInfoTo(_address);
-
-						RaisePropertyChanged (() => BookAddress );
-
 						_accountService.UpdateAddress(_address);
 
                         this.Services().Message.ShowProgress(false);
 						progressShowing = false;
 						Close(this);
-                    
                     } 
 					catch (Exception ex) 
 					{
@@ -190,7 +147,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					finally 
 					{
                         if (progressShowing) 
+						{
 							this.Services().Message.ShowProgress(false);
+						}
                     }
                 });
             }
