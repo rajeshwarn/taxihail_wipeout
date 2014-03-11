@@ -9,7 +9,6 @@
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
     <ProductVersion>12.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>

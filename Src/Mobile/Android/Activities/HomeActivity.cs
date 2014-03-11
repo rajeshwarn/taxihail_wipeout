@@ -51,8 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     )]   
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
-        private Button _bigButton;
-        private RelativeLayout _relMapLayout;
+        private Button _bigButton;        
         private TouchableMap _touchMap;
         private LinearLayout _mapOverlay;
         private OrderReview _orderReview;
@@ -194,8 +193,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			}
 
             SetContentView(Resource.Layout.View_Home);
-
-            _relMapLayout = (RelativeLayout) FindViewById(Resource.Id.RelMapLayout);
+			            
             _bigButton = (Button) FindViewById(Resource.Id.BigButtonTransparent);
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);

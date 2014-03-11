@@ -62,13 +62,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					case AddressType.Favorites:
 						return "favorites";
-						break;
 					case AddressType.History:
 						return "history";
-						break;
 					case AddressType.Places:
-						return "places";
-						break;
+						return "places";						
 					default:
 						return null;
 				}

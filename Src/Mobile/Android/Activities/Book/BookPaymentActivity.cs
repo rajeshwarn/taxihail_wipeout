@@ -11,7 +11,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     [Activity(Label = "BookPaymentActivity", Theme = "@style/MainTheme", ScreenOrientation = ScreenOrientation.Portrait)]
     public class BookPaymentActivity : BaseBindingActivity<PaymentViewModel>
     {
-        private LinearLayout _layoutRoot;
         private EditText _meterAmountTextView;
         private EditText _tipAmountTextView;
         private EditTextRightSpinner _tipPicker;
@@ -38,8 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnStart()
         {
             base.OnStart();
-
-            _layoutRoot = FindViewById<LinearLayout>(Resource.Id.layoutRoot);
+			            
             _tipPicker = FindViewById<EditTextRightSpinner>(Resource.Id.tipPicker);
             _tipAmountTextView = FindViewById<EditText>(Resource.Id.tipAmountTextView);
             _meterAmountTextView = FindViewById<EditText>(Resource.Id.meterAmountTextView);

@@ -10,7 +10,6 @@ using Cirrious.CrossCore.Droid;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using Cirrious.CrossCore.Droid.Platform;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {

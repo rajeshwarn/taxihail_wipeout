@@ -193,12 +193,7 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="TaxiHailApp.cs" />
     <Compile Include="StartNavigation.cs" />
-    <Compile Include="ListViewStructure\InfoStructure.cs" />
-    <Compile Include="ListViewStructure\Section.cs" />
-    <Compile Include="ListViewStructure\SectionItem.cs" />
-    <Compile Include="ListViewStructure\TwoLinesAddressItem.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
-    <Compile Include="ListViewStructure\SingleLineItem.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\CreateAccountViewModel.cs" />
     <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqChangePaymentViewModel.cs" />
@@ -260,7 +255,6 @@
     <Compile Include="AppServices\IPayPalExpressCheckoutService.cs" />
     <Compile Include="AppServices\Impl\PayPalExpressCheckoutService.cs" />
     <Compile Include="ViewModels\RideSummaryViewModel.cs" />
-    <Compile Include="ViewModels\IHaveViewModel.cs" />
     <Compile Include="AppServices\Impl\PaymentService.cs" />
     <Compile Include="AppServices\IPaymentService.cs" />
     <Compile Include="Infrastructure\IAnalyticsService.cs" />
@@ -331,6 +325,9 @@
     <Compile Include="Extensions\EventHandlerExtensions.cs" />
     <Compile Include="ViewModels\ISubViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
+    <Compile Include="ViewModels\IHaveViewModel.cs" />
+    <Compile Include="BindingConverter\HasValueToVisibilityConverter.cs" />
+    <Compile Include="Extensions\ObservableCollectionExtentions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

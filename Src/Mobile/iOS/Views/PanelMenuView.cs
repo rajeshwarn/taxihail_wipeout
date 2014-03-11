@@ -8,7 +8,6 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.ListViewStructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Animations;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;

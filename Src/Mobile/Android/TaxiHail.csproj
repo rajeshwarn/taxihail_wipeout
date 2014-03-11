@@ -234,11 +234,7 @@
     <AndroidResource Include="Resources\Layout\Control_EditTextNavigate.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_BookStreetNumber.axml" />
     <AndroidResource Include="Resources\Drawable\closeButton.png" />
-    <AndroidResource Include="Resources\Layout\Control_SearchButton.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\right_arrow_light.png" />
     <Compile Include="Activities\Setting\CreditCardsListActivity.cs" />
     <Compile Include="Activities\Setting\CreditCardAddActivity.cs" />
@@ -328,7 +324,6 @@
     <AndroidResource Include="Resources\Drawable\button_action_green_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_red_selector.xml" />
     <AndroidResource Include="Resources\Drawable\active.png" />
-    <AndroidResource Include="Resources\Drawable\cancelled.png" />
     <AndroidResource Include="Resources\Drawable\completed.png" />
     <AndroidResource Include="Resources\Drawable\scheduled.png" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -407,7 +402,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\rate_neutral.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\rate_unhappy_selected.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\rate_unhappy.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\right_arrow_light.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\right_arrow.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\scheduled.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\server_button.png" />
@@ -508,33 +502,17 @@
     <AndroidResource Include="Resources\Drawable\apartment.png" />
     <AndroidResource Include="Resources\Drawable\chargetype.png" />
     <AndroidResource Include="Resources\Drawable\entrycode.png" />
-    <AndroidResource Include="Resources\Drawable\happy.png" />
-    <AndroidResource Include="Resources\Drawable\happy_selected.png" />
-    <AndroidResource Include="Resources\Drawable\mad.png" />
-    <AndroidResource Include="Resources\Drawable\mad_selected.png" />
-    <AndroidResource Include="Resources\Drawable\neutral.png" />
-    <AndroidResource Include="Resources\Drawable\neutral_selected.png" />
     <AndroidResource Include="Resources\Drawable\passengers.png" />
     <AndroidResource Include="Resources\Drawable\telephone.png" />
     <AndroidResource Include="Resources\Drawable\time.png" />
-    <AndroidResource Include="Resources\Drawable\unhappy.png" />
-    <AndroidResource Include="Resources\Drawable\unhappy_selected.png" />
     <AndroidResource Include="Resources\Drawable\vehicle.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\account.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\apartment.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\chargetype.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\entrycode.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\happy.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\happy_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\mad.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\mad_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\neutral.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\neutral_selected.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\passengers.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\telephone.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\time.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\unhappy.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\unhappy_selected.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\vehicle.png" />
     <AndroidResource Include="Resources\Layout\SubView_OrderReview.axml" />
     <Compile Include="Helpers\AnimationHelper.cs" />
@@ -674,13 +652,9 @@
     <AndroidResource Include="Resources\Drawable\main_settings.png" />
     <AndroidResource Include="Resources\Values\MvxBindingAttributes.xml" />
     <AndroidResource Include="Resources\Drawable\Logo.png" />
-    <AndroidResource Include="Resources\Drawable\myLocationButton_state.xml" />
     <AndroidResource Include="Resources\Drawable\location_info.png" />
     <AndroidResource Include="Resources\Drawable\number_icon.png" />
     <AndroidResource Include="Resources\Drawable\cancel.png" />
-    <AndroidResource Include="Resources\Values\HeaderedLayoutAttributes.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Values\FontSize.xml" />
     <AndroidResource Include="Resources\Drawable\poweredby2.png" />
     <AndroidResource Include="Resources\Drawable\rate_unhappy_selected.png" />

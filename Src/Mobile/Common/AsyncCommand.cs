@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile
 			{
 				return TaskScheduler.FromCurrentSynchronizationContext();
 			}
-			catch(Exception e)
+			catch(Exception)
 			{
 				return TaskScheduler.Default;
 			}
@@ -233,7 +233,7 @@ namespace apcurium.MK.Booking.Mobile
 			{
 				return TaskScheduler.FromCurrentSynchronizationContext();
 			}
-			catch(Exception e)
+			catch(Exception)
 			{
 				return TaskScheduler.Default;
 			}
