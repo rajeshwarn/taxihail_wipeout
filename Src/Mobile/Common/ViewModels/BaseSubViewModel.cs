@@ -1,27 +1,33 @@
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
+using Cirrious.CrossCore.Core;
+using Cirrious.MvvmCross.ViewModels;
+using Cirrious.MvvmCross.Views;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public abstract class BaseSubViewModel<TResult>: BaseViewModel
+	public interface ISubViewModel<TResult>
 	{
-		public void Init(string messageId)
+		string MessageId { get; }
+	}
+
+	public static class ISubViewModelExtensions
+	{
+		public static void ReturnResult<TViewModel, TResult>(this TViewModel viewModel, TResult result) where TViewModel: MvxViewModel, ISubViewModel<TResult>
 		{
-			this.MessageId = messageId;
+			var message = new SubNavigationResultMessage<TResult>(viewModel, viewModel.MessageId, result);
+			Dispatcher.ChangePresentation(new MvxClosePresentationHint(viewModel));
+
+			viewModel.Services().MessengerHub.Publish(message);
 		}
 
-		protected string MessageId
+		private static IMvxViewDispatcher Dispatcher
 		{
-			get;
-			private set;
-		}
-		
-		protected void ReturnResult(TResult result)
-		{
-			var message = new SubNavigationResultMessage<TResult>(this, MessageId, result);		
-			Close(this);
-            this.Services().MessengerHub.Publish(message);
+			get
+			{
+				return ((IMvxViewDispatcher)MvxSingleton<IMvxMainThreadDispatcher>.Instance);
+			}
 		}
 	}
 }

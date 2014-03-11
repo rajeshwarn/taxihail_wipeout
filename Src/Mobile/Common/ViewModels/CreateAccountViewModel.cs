@@ -10,7 +10,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class CreateAccountViewModel: BaseSubViewModel<RegisterAccount>
+	public class CreateAccountViewModel: BaseViewModel, ISubViewModel<RegisterAccount>
 	{
 		private readonly IAccountService _accountService;
 
@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							{
 								this.Services().Message.ShowMessage(this.Services().Localize["AccountActivationTitle"], this.Services().Localize["AccountActivationMessage"]);
 							}
-							ReturnResult(Data);
+							this.ReturnResult(Data);
 
 						}catch(Exception e)
 						{

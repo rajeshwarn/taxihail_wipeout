@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {
-	public class CmtRideLinqChangePaymentViewModel : BaseSubViewModel<PaymentInformation>
+	public class CmtRideLinqChangePaymentViewModel : BaseViewModel, ISubViewModel<PaymentInformation>
 	{
 		private readonly IAccountService _accountService;
 
@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
             {
 				return this.GetCommand(() =>
 				{
-					ReturnResult(new PaymentInformation
+					this.ReturnResult(new PaymentInformation
 					{
 						CreditCardId = DefaultPaymentInformations.CreditCardId,
 						TipPercent = DefaultPaymentInformations.TipPercent,
@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 							_accountService.CurrentAccount.DefaultTipPercent);
 					}
 
-					ReturnResult(new PaymentInformation
+					this.ReturnResult(new PaymentInformation
 					{
 						CreditCardId = PaymentPreferences.SelectedCreditCardId,
 						TipPercent = PaymentPreferences.Tip,

@@ -58,14 +58,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		protected bool ShowSubViewModel<TViewModel, TResult>(object parameterValuesObject, Action<TResult> onResult)
-				where TViewModel : BaseSubViewModel<TResult>
+			where TViewModel : MvxViewModel, ISubViewModel<TResult>
 		{
 			return ShowSubViewModel<TViewModel, TResult>(parameterValuesObject.ToSimplePropertyDictionary(), onResult);
 		}
 
 		protected bool ShowSubViewModel<TViewModel, TResult>(IDictionary<string, string> parameterValues,
                                                                Action<TResult> onResult)
-            where TViewModel : BaseSubViewModel<TResult>
+			where TViewModel : MvxViewModel, ISubViewModel<TResult>
         {
             parameterValues = parameterValues ?? new Dictionary<string, string>();
 
@@ -134,6 +134,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			observable
 				.Subscribe(x => InvokeOnMainThread(() => onNext(x)))
 				.DisposeWith(_subscriptions);
+		}
+
+		protected override void InitFromBundle(IMvxBundle parameters)
+		{
+			base.InitFromBundle(parameters);
+			if(parameters.Data.ContainsKey("messageId"))
+			{
+				this.MessageId = parameters.Data["messageId"];
+			}
+		}
+
+		public string MessageId
+		{
+			get;
+			private set;
 		}
 
     }

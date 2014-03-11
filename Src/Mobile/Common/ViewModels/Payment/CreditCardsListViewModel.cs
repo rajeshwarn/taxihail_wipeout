@@ -13,7 +13,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-    public class CreditCardsListViewModel : BaseSubViewModel<Guid>
+	public class CreditCardsListViewModel : BaseViewModel, ISubViewModel<Guid>
     {
 		private readonly IAccountService _accountService;
 
@@ -160,7 +160,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             get
             {
-				return this.GetCommand<Guid>(guid => ReturnResult(guid));
+				return this.GetCommand<Guid>(guid => this.ReturnResult(guid));
             }
         }
     }
