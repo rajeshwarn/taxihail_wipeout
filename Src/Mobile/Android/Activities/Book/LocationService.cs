@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             { 
                 var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
 
-                var dontShowLocationWarning = (string)Cache.Get<string>("WarningLocationServiceDontShow");
+				var dontShowLocationWarning = (string)TinyIoCContainer.Current.Resolve<ICacheService>("UserAppCache").Get<string>("WarningLocationServiceDontShow");
 
                 if (dontShowLocationWarning != "yes")
                 {
@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         var topActivity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>(); 
                         topActivity.Activity.StartActivity(new Intent(Android.Provider.Settings.ActionLocationSourceSettings));
                     },
-                        localize["WarningLocationServiceDontShow"], () => Cache.Set("WarningLocationServiceDontShow", "yes"),
+						localize["WarningLocationServiceDontShow"], () => TinyIoCContainer.Current.Resolve<ICacheService>("UserAppCache").Set("WarningLocationServiceDontShow", "yes"),
                         localize["WarningLocationServiceCancel"], delegate
                     {
                     } 
