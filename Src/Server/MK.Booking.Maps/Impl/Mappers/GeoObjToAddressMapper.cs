@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
         {
             var address = new Address
             {
+				FriendlyName = placeName,
                 FullAddress = geoCodeResult.Formatted_address,
                 Id = Guid.NewGuid(),
                 Latitude = geoCodeResult.Geometry.Location.Lat,

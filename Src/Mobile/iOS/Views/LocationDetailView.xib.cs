@@ -103,11 +103,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Apply();
         }
 
-        public override void ViewWillDisappear (bool animated)
-        {
-            ViewModel.StopValidatingAddresses();
-        }
-
         bool HandleShouldReturn (UITextField textField)
         {
             return textField.ResignFirstResponder();
