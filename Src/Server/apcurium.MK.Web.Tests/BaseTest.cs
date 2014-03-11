@@ -14,7 +14,7 @@ namespace apcurium.MK.Web.Tests
 {
     public class BaseTest
     {
-        static readonly AppHost AppHost;
+        protected static readonly AppHost AppHost;
         protected string BaseUrl { get { return "http://localhost:6903/"; } }
         protected Account TestAccount { get; set; }
         protected Account TestAdminAccount { get; set; }

@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<PayPalExpressCheckoutPaymentInitiated>(OnPayPalExpressCheckoutPaymentInitiated);
             Handles<PayPalExpressCheckoutPaymentCancelled>(OnPayPalExpressCheckoutPaymentCancelled);
             Handles<PayPalExpressCheckoutPaymentCompleted>(OnPayPalExpressCheckoutPaymentCompleted);
+            Handles<PayPalPaymentCancellationFailed>(NoAction);
         }
 
         public PayPalPayment(Guid id, IEnumerable<IVersionedEvent> history)
@@ -51,6 +52,8 @@ namespace apcurium.MK.Booking.Domain
             Update(new PayPalExpressCheckoutPaymentCancelled());
         }
 
+        
+
         public void Complete(string transactionId, string payerId)
         {
             if (_cancelled) throw new InvalidOperationException("Payment is cancelled");
@@ -61,6 +64,14 @@ namespace apcurium.MK.Booking.Domain
                 OrderId = _orderId,
                 Token = _token,
                 Amount = _amount,
+            });
+        }
+
+        public void LogCancellationError(string reason)
+        {
+            Update(new PayPalPaymentCancellationFailed
+            {
+                Reason = reason
             });
         }
 

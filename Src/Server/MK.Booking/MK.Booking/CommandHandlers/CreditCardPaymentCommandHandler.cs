@@ -11,7 +11,8 @@ namespace apcurium.MK.Booking.CommandHandlers
 {
     public class CreditCardPaymentCommandHandler :
         ICommandHandler<InitiateCreditCardPayment>,
-        ICommandHandler<CaptureCreditCardPayment>
+        ICommandHandler<CaptureCreditCardPayment>,
+        ICommandHandler<LogCreditCardPaymentCancellationFailed>
     {
         private readonly IEventSourcedRepository<CreditCardPayment> _repository;
 
@@ -31,6 +32,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var payment = new CreditCardPayment(command.PaymentId, command.OrderId, command.TransactionId,
                 command.Amount, command.Meter, command.Tip, command.CardToken, command.Provider);
+            _repository.Save(payment, command.Id.ToString());
+        }
+
+        public void Handle(LogCreditCardPaymentCancellationFailed command)
+        {
+            var payment = _repository.Get(command.PaymentId);
+            payment.CancellationFailed(command.Reason);
             _repository.Save(payment, command.Id.ToString());
         }
     }

@@ -2,13 +2,11 @@
 
 using System;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
-using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -38,16 +36,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
         {
             // Send message to driver
-            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, 0, @event.Amount, PaymentType.PayPal.ToString(), PaymentProvider.PayPal.ToString(), @event.TransactionId, @event.PayPalPayerId);
-
+            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, PaymentProvider.PayPal.ToString(), @event.PayPalPayerId);
         }
 
         public void Handle(CreditCardPaymentCaptured @event)
         {
-            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Tip, @event.Meter, PaymentType.CreditCard.ToString(), @event.Provider.ToString(), @event.TransactionId, @event.AuthorizationCode);
+            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Provider.ToString(), @event.AuthorizationCode);
         }
 
-        private void SendPaymentConfirmationToDriver(Guid orderId, decimal amount, decimal tip, decimal meter, string type, string provider, string transactionId, string authorizationCode)
+        private void SendPaymentConfirmationToDriver(Guid orderId, decimal amount, string provider,  string authorizationCode)
         {
             // Send message to driver
             var orderStatusDetail = _dao.FindOrderStatusById(orderId);
@@ -64,17 +61,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var account = _accountDao.FindById(orderDetail.AccountId);
             if (account == null) throw new InvalidOperationException("Order account not found");
 
-            
-
-            string lastForDigit = "";
-
             if ( provider == PaymentType.CreditCard.ToString () )
             {
                 var card = _creditCardDao.FindByToken(payment.CardToken);
                 if (card == null) throw new InvalidOperationException("Credit card not found");
-                lastForDigit = card.Last4Digits;                
             }
-                       
 
             var applicationKey = _configurationManager.GetSetting("TaxiHail.ApplicationKey");
             var resources = new DynamicResources(applicationKey);
@@ -85,8 +76,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var line2 = string.Format(resources.GetString("PaymentConfirmationToDriver2"), authorizationCode);
             
             _ibs.SendPaymentNotification(line1 + line2, orderStatusDetail.VehicleNumber, orderDetail.IBSOrderId.Value);
-            
-            _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value, amount, tip, meter, type, provider, transactionId, authorizationCode, payment.CardToken, account.IBSAccountId, orderDetail.Settings.Name, orderDetail.Settings.Phone, account.Email, orderDetail.UserAgent.GetOperatingSystem(), orderDetail.UserAgent);
             
         }
     }

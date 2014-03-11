@@ -14,7 +14,8 @@ namespace apcurium.MK.Booking.EventHandlers
 {
     public class CreditCardPaymentDetailsGenerator :
         IEventHandler<CreditCardPaymentInitiated>,
-        IEventHandler<CreditCardPaymentCaptured>
+        IEventHandler<CreditCardPaymentCaptured>,
+        IEventHandler<CreditCardPaymentCancellationFailed>
 
     {
         private readonly Func<BookingDbContext> _contextFactory;
@@ -65,6 +66,17 @@ namespace apcurium.MK.Booking.EventHandlers
                     Provider = @event.Provider,
                     Type = PaymentType.CreditCard,
                 });
+            }
+        }
+
+        public void Handle(CreditCardPaymentCancellationFailed @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var payment = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
+                if (payment == null) throw new InvalidOperationException("Payment not found");
+                payment.CancellationError = @event.Reason;
+                context.SaveChanges();
             }
         }
     }

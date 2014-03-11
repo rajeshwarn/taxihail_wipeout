@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Api.Payment
             if ( ! _client.ConfirmExternalPayment(orderId, totalAmount, tipAmount, meterAmount, type, provider, transactionId,
                             authorizationCode, cardToken, accountID, name, phone, email, os, userAgent) )
             {
-                throw new Exception("Cannot confirm the payment");
+                throw new Exception("Cannot send payment information to dispatch.");
             }
         }
 

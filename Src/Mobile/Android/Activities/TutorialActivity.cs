@@ -12,7 +12,7 @@ using Android.OS;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
-    [Activity(Theme = "@style/TutorialDialog", ScreenOrientation = ScreenOrientation.Portrait)]
+	[Activity(Label = "Tutorial", Theme = "@style/TutorialDialog", ScreenOrientation = ScreenOrientation.Portrait)]
     public class TutorialActivity : MvxActivity
     {
         private BitmapDrawable _grayCircle;

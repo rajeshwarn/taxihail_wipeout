@@ -69,5 +69,23 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
                 Assert.AreEqual(true, dto.IsCompleted);
             }
         }
+
+        [Test]
+        public void when_payment_cancellation_failed_then_dto_updated_with_message()
+        {
+            var message = "message";
+            Sut.Handle(new CreditCardPaymentCancellationFailed
+            {
+                SourceId = _paymentId,
+                Reason = message
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<OrderPaymentDetail>(_paymentId);
+                Assert.NotNull(dto);
+                Assert.AreEqual(message, dto.CancellationError);
+            }
+        }
     }
 }

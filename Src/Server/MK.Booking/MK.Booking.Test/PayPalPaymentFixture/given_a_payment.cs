@@ -64,5 +64,18 @@ namespace apcurium.MK.Booking.Test.PayPalPaymentFixture
             Assert.AreEqual(12.34m, @event.Amount);
             Assert.AreEqual(_orderId, @event.OrderId);
         }
+
+        [Test]
+        public void when_logging_failed_cancellation()
+        {
+            _sut.When(new LogCancellationFailurePayPalPayment
+            {
+                PaymentId = _paymentId,
+                Reason = "message"
+            });
+
+            var @event = _sut.ThenHasSingle<PayPalPaymentCancellationFailed>();
+            Assert.AreEqual("message", @event.Reason);
+        }
     }
 }

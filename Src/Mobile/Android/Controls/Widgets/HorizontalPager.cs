@@ -156,7 +156,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
 
-            GC.Collect();
+            
         }
 
         private void LoadItem(int index)
@@ -166,7 +166,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 return;
             }
 
-            GC.Collect();
+            
             var page = _pages[index];
             if (!page.IsLoaded)
             {

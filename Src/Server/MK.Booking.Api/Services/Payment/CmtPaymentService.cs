@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Api.Contract.Requests.Payment.Cmt;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
@@ -38,18 +39,20 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly IConfigurationManager _configurationManager;
         private readonly ILogger _logger;
         private readonly IOrderDao _orderDao;
-        private readonly IOrderPaymentDao _orderPaymentDao;
+        private readonly IIbsOrderService _ibs;
+        private readonly IOrderPaymentDao _ordrPaymentDao;
 
-        public CmtPaymentService(ICommandBus commandBus, IOrderPaymentDao orderPaymentDao, IOrderDao orderDao,
-            IAccountDao accountDao, IConfigurationManager configurationManager, ILogger logger)
+        public CmtPaymentService(ICommandBus commandBus, IOrderDao orderDao,
+            IAccountDao accountDao, IConfigurationManager configurationManager, ILogger logger, IIbsOrderService ibs, IOrderPaymentDao ordrPaymentDao)
         {
             _commandBus = commandBus;
-            _orderPaymentDao = orderPaymentDao;
             _orderDao = orderDao;
             _accountDao = accountDao;
 
             _configurationManager = configurationManager;
             _logger = logger;
+            _ibs = ibs;
+            _ordrPaymentDao = ordrPaymentDao;
             _cmtPaymentServiceClient =
                 new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null,
                     "TaxiHail");
@@ -99,10 +102,23 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var authorizationCode = string.Empty;
                 string message;
 
+                var session = this.GetSession();
+                var account = _accountDao.FindById(new Guid(session.UserAuthId));
+
                 var orderDetail = _orderDao.FindById(request.OrderId);
                 if (orderDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
                 if (orderDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
+
+                //check if already a payment
+                if (_ordrPaymentDao.FindByOrderId(request.OrderId) != null)
+                {
+                    return new CommitPreauthorizedPaymentResponse
+                    {
+                        IsSuccessfull = false,
+                        Message = "order already paid or payment currently processing"
+                    };
+                }
 
                 var orderStatus = _orderDao.FindOrderStatusById(orderDetail.Id);
                 if (orderStatus == null) throw new HttpError(HttpStatusCode.BadRequest, "Order status not found");
@@ -156,15 +172,55 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                     message = captureResponse.ResponseMessage;
                     isSuccessful = captureResponse.ResponseCode == 1;
+
+
                     if (isSuccessful)
                     {
                         authorizationCode = captureResponse.AuthorizationCode;
 
+                        //send information to IBS
+                        try
+                        {
+                            _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value,
+                                Convert.ToDecimal(request.Amount),
+                                Convert.ToDecimal(request.TipAmount),
+                                Convert.ToDecimal(request.MeterAmount),
+                                PaymentType.CreditCard.ToString(),
+                                PaymentProvider.Braintree.ToString(),
+                                transactionId,
+                                authorizationCode,
+                                request.CardToken,
+                                account.IBSAccountId,
+                                orderDetail.Settings.Name,
+                                orderDetail.Settings.Phone,
+                                account.Email,
+                                orderDetail.UserAgent.GetOperatingSystem(),
+                                orderDetail.UserAgent);
+                        }
+                        catch (Exception e)
+                        {
+                            _logger.LogError(e);
+                            message = e.Message;
+                            isSuccessful = false;
+
+                            //cancel CMT transaction
+                            //waiting API from CMT in the meantime we log the error in the database
+                            _commandBus.Send(new LogCreditCardPaymentCancellationFailed
+                            {
+                                PaymentId = paymentId,
+                                Reason = message
+                            });
+                        }
+                    }
+
+                    if (isSuccessful)
+                    {
+                        //payment completed
                         _commandBus.Send(new CaptureCreditCardPayment
                         {
                             PaymentId = paymentId,
                             AuthorizationCode = authorizationCode,
-                            Provider = PaymentProvider.Cmt,
+							Provider = PaymentProvider.Cmt,
                         });
                     }
                 }

@@ -9,7 +9,7 @@ namespace apcurium.MK.Common
     public class CreditCard
     {
         public int AvcCvvCvv2;
-        public DateTime ExpirationDate = DateTime.Today.AddMonths(3);
+        public DateTime ExpirationDate = DateTime.Today.AddYears(3);
         public string Number;
 
         public CreditCard(string number, int cvv = 135)

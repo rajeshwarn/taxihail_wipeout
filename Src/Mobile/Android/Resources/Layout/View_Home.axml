@@ -78,7 +78,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="center"
-                            android:src="@drawable/menu_icon" />
+                            android:src="@drawable/menu_icon_selector" />
                     </LinearLayout>
                 <!-- Locate Me button -->
                     <LinearLayout
@@ -95,7 +95,7 @@
                             android:scaleType="center"
                             android:clickable="true"
                             local:MvxBind="Click LocateMe"
-                            android:src="@drawable/location_icon" />
+                            android:src="@drawable/location_icon_selector" />
                     </LinearLayout>
                 <!-- Order Review -->
                     <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderReview
