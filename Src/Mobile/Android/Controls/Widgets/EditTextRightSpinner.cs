@@ -7,9 +7,8 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
-using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
-
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {

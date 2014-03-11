@@ -21,8 +21,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		private Android.Graphics.Drawables.Drawable _backgroundDrawable;	
 		private Hashtable pictureTable = new Hashtable ();
 
-        private SizeF StandardImageSize = new SizeF(46, 32);
-
         public PictureListViewCell(Context context)
             : base(context)
         {

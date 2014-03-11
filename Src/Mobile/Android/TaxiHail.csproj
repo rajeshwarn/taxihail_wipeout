@@ -186,11 +186,9 @@
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
-    <Compile Include="Activities\ShowDialogActivity.cs" />
     <Compile Include="Activities\TutorialActivity.cs" />
     <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
     <Compile Include="Adapters\LocationListAdapter.cs" />
-    <Compile Include="Animations\ResizeAnimation.cs" />
     <Compile Include="Animations\SlideAnimation.cs" />
     <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
     <Compile Include="Cache\CacheItem.cs" />
@@ -199,31 +197,20 @@
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
     <Compile Include="Helpers\DrawHelper.cs" />
-    <Compile Include="Helpers\ThreadHelper.cs" />
-    <Compile Include="Helpers\WebRequestHelper.cs" />
     <Compile Include="Activities\History\HistoryDetailActivity.cs" />
     <Compile Include="Activities\Account\LoginActivity.cs" />
+    <Compile Include="ListViewStructure\ListItemData.cs" />
     <Compile Include="Messages\ActivityCompleted.cs" />
-    <Compile Include="Models\IconAction.cs" />
     <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
-    <AndroidResource Include="Resources\Layout\IconActionLayout.axml" />
     <AndroidResource Include="Resources\Layout\RatingListItem.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <Compile Include="Setup.cs" />
-    <Compile Include="TaxiMobileApp.cs" />
-    <Compile Include="ListViewStructure\Section.cs" />
-    <Compile Include="ListViewStructure\SectionItem.cs" />
-    <Compile Include="ListViewStructure\ListStructure.cs" />
-    <Compile Include="ListViewStructure\TextEditSectionItem.cs" />
     <Compile Include="Activities\Setting\RideSettingsActivity.cs" />
-    <Compile Include="ListViewStructure\SpinnerSectionItem.cs" />
-    <Compile Include="ListViewStructure\ListItemData.cs" />
-    <Compile Include="ListViewStructure\BooleanSectionItem.cs" />
     <Compile Include="Models\Activities.cs" />
     <Compile Include="Activities\AlertDialogActivity.cs" />
     <AndroidResource Include="Resources\Drawable\StatusBottomBarBackground.xml" />
@@ -280,9 +267,7 @@
     <Compile Include="Binding\CustomBindings.cs" />
     <Compile Include="Binding\TextViewBinding.cs" />
     <Compile Include="Extensions\ViewExtensions.cs" />
-    <Compile Include="Extensions\DisplayExtensions.cs" />
     <Compile Include="Extensions\LayoutParametersExtensions.cs" />
-    <Compile Include="Extensions\ImageViewExtensions.cs" />
     <Compile Include="Activities\Book\BookPayPalActivity.cs">
       <DependentUpon>BookPaymentActivity.cs</DependentUpon>
     </Compile>
@@ -350,7 +335,6 @@
     <Compile Include="Controls\Widgets\CreditCardButton.cs" />
     <Compile Include="Controls\Widgets\ListViewCell.cs" />
     <Compile Include="Controls\Widgets\EditTextLeftImage.cs" />
-    <Compile Include="Controls\Widgets\TextProgressButton.cs" />
     <Compile Include="Controls\Widgets\BindableSelectionButton.cs" />
     <Compile Include="Controls\Widgets\EditTextNavigate.cs" />
     <Compile Include="Controls\Widgets\EditTextSpinner.cs" />
@@ -480,7 +464,6 @@
     <AndroidResource Include="Resources\Values\String.xml" />
     <Compile Include="Activities\Utilities\MvxFragmentActivity.cs" />
     <Compile Include="Activities\Utilities\MvxEventSourceFragmentActivity.cs" />
-    <Compile Include="Activities\Utilities\MvxCreateViewParameters.cs" />
     <Compile Include="Activities\Utilities\MvxTabsFragmentActivity.cs" />
     <AndroidResource Include="Resources\Drawable\destination_icon.png" />
     <AndroidResource Include="Resources\Drawable\hail_icon.png" />
@@ -744,11 +727,6 @@
   </Target>
   <ItemGroup>
     <Folder Include="Resources\drawable-hdpi\" />
-    <Folder Include="Resources\values-v11\" />
-    <Folder Include="Activities\Utilities\" />
-    <Folder Include="Controls\Fragments\" />
-    <Folder Include="Controls\Behavior\" />
-    <Folder Include="Controls\Message\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">

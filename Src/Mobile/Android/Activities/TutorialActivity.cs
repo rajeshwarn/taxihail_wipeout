@@ -76,9 +76,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
                 var d = _blackCircle;
                 if (d != null)
                 {
-                    float w = d.Bitmap.Width;
-                    float h = d.Bitmap.Height;
-
                     var layoutParams = new RelativeLayout.LayoutParams(20.ToPixels(),
                         12.ToPixels()) {LeftMargin = 10.ToPixels(), RightMargin = 10.ToPixels(), AlignWithParent = true};
 
