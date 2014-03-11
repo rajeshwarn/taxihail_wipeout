@@ -31,5 +31,6 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool IsCancelled { get; set; }
         public bool IsCompleted { get; set; }
+        public string CancellationError { get; set; }
     }
 }

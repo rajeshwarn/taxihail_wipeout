@@ -1,16 +1,19 @@
 ﻿#region
 
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Braintree;
@@ -34,14 +37,25 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     {
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
-        private readonly IOrderPaymentDao _orderPaymentDao;
+        private readonly ILogger _logger;
+        private readonly IIbsOrderService _ibs;
+        private readonly IAccountDao _accountDao;
+        private readonly IOrderPaymentDao _paymentDao;
 
-        public BraintreePaymentService(ICommandBus commandBus, IOrderPaymentDao orderPaymentDao, IOrderDao orderDao,
-            IConfigurationManager configurationManager)
+        public BraintreePaymentService(ICommandBus commandBus,
+            IOrderDao orderDao,
+            ILogger logger,
+            IConfigurationManager configurationManager,
+            IIbsOrderService ibs,
+            IAccountDao accountDao,
+            IOrderPaymentDao paymentDao)
         {
             _commandBus = commandBus;
-            _orderPaymentDao = orderPaymentDao;
             _orderDao = orderDao;
+            _logger = logger;
+            _ibs = ibs;
+            _accountDao = accountDao;
+            _paymentDao = paymentDao;
 
             BraintreeGateway =
                 GetBraintreeGateway(
@@ -62,7 +76,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 EncryptedCreditCardNumber = braintreeEncrypter.Encrypt(dummyCreditCard.Number),
                 EncryptedCvv = braintreeEncrypter.Encrypt(dummyCreditCard.AvcCvvCvv2 + ""),
-                EncryptedExpirationDate = braintreeEncrypter.Encrypt(dummyCreditCard.ExpirationDate.ToString("MM/yyyy")),
+                EncryptedExpirationDate = braintreeEncrypter.Encrypt(dummyCreditCard.ExpirationDate.ToString("MM/yyyy", CultureInfo.InvariantCulture)),
             }).IsSuccessfull;
         }
 
@@ -91,10 +105,23 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 string message;
                 var authorizationCode = string.Empty;
 
+                var session = this.GetSession();
+                var account = _accountDao.FindById(new Guid(session.UserAuthId));
+
                 var orderDetail = _orderDao.FindById(request.OrderId);
                 if (orderDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
                 if (orderDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
+                
+                //check if already a payment
+                if (_paymentDao.FindByOrderId(request.OrderId) != null)
+                {
+                    return new CommitPreauthorizedPaymentResponse
+                    {
+                        IsSuccessfull = false,
+                        Message = "order already paid or payment currently processing"
+                    };
+                }
 
                 var transactionRequest = new TransactionRequest
                 {
@@ -107,6 +134,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     }
                 };
 
+                //sale
                 var result = BraintreeGateway.Transaction.Sale(transactionRequest);
                 message = result.Message;
                 if (result.IsSuccess())
@@ -135,10 +163,81 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                     isSuccessful = settlementResult.IsSuccess() && (settlementResult.Target != null) &&
                                    (settlementResult.Target.ProcessorAuthorizationCode.HasValue());
+
                     if (isSuccessful)
                     {
                         authorizationCode = settlementResult.Target.ProcessorAuthorizationCode;
 
+                        //send information to IBS
+                        try
+                        {
+                            _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value, 
+                                                            request.Amount, 
+                                                            request.TipAmount,
+                                                            request.MeterAmount,
+                                                            PaymentType.CreditCard.ToString(),
+                                                            PaymentProvider.Braintree.ToString(), 
+                                                            transactionId, 
+                                                            authorizationCode, 
+                                                            request.CardToken, 
+                                                            account.IBSAccountId, 
+                                                            orderDetail.Settings.Name, 
+                                                            orderDetail.Settings.Phone, 
+                                                            account.Email, 
+                                                            orderDetail.UserAgent.GetOperatingSystem(), 
+                                                            orderDetail.UserAgent);
+                        }
+                        catch (Exception e)
+                        {
+                            _logger.LogError(e);
+                            message = e.Message;
+                            isSuccessful = false;
+
+                            //cancel braintree transaction
+                            //see paragraph oops here https://www.braintreepayments.com/docs/dotnet/transactions/submit_for_settlement
+                            try
+                            {
+                                var transaction = BraintreeGateway.Transaction.Find(transactionId);
+                                Result<Transaction> cancellationResult = null;
+                                if (transaction.Status == TransactionStatus.SUBMITTED_FOR_SETTLEMENT)
+                                {
+                                    // can void
+                                    cancellationResult = BraintreeGateway.Transaction.Void(transactionId);
+                                }
+                                else if (transaction.Status == TransactionStatus.SETTLED)
+                                {
+                                    // will have to refund it
+                                    cancellationResult = BraintreeGateway.Transaction.Refund(transactionId);
+                                }
+
+                                if (cancellationResult == null
+                                    || !cancellationResult.IsSuccess())
+                                {
+                                    throw new Exception(cancellationResult != null ?
+                                            cancellationResult.Message
+                                            : string.Format("transaction {0} status unkonw, can't cancel it", transactionId));
+                                }
+
+                                message = message + cancellationResult;
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.LogMessage("can't cancel braintree transaction");
+                                _logger.LogError(ex);
+                                message = message + ex.Message;
+                                //can't cancel transaction, send a command to log
+                                _commandBus.Send(new LogCreditCardPaymentCancellationFailed
+                                {
+                                    PaymentId = paymentId,
+                                    Reason = message
+                                });
+                            }
+                        }
+                    }
+
+                    if (isSuccessful)
+                    {
+                        //payment completed
                         _commandBus.Send(new CaptureCreditCardPayment
                         {
                             PaymentId = paymentId,

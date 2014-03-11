@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
+using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 
 #endregion
@@ -14,7 +15,8 @@ namespace apcurium.MK.Booking.EventHandlers
     public class PayPalExpressCheckoutPaymentDetailsGenerator :
         IEventHandler<PayPalExpressCheckoutPaymentInitiated>,
         IEventHandler<PayPalExpressCheckoutPaymentCancelled>,
-        IEventHandler<PayPalExpressCheckoutPaymentCompleted>
+        IEventHandler<PayPalExpressCheckoutPaymentCompleted>,
+        IEventHandler<PayPalPaymentCancellationFailed>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -71,6 +73,20 @@ namespace apcurium.MK.Booking.EventHandlers
                     Type = PaymentType.PayPal
                 };
                 context.Save(detail);
+            }
+        }
+
+        public void Handle(PayPalPaymentCancellationFailed @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var detail = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
+                if ((detail == null) || (detail.Type != PaymentType.PayPal))
+                {
+                    throw new InvalidOperationException("Payment not found");
+                }
+                detail.CancellationError = @event.Reason;
+                context.SaveChanges();
             }
         }
     }

@@ -49,5 +49,20 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             Assert.AreEqual(12.34m, @event.Amount);
             Assert.AreEqual(_orderId, @event.OrderId);
         }
+
+        [Test]
+        public void when_cancellation_failed()
+        {
+            string message = "bouh";
+            _sut.When(new LogCreditCardPaymentCancellationFailed
+            {
+                Reason = message,
+                PaymentId = _paymentId
+            });
+
+            var @event = _sut.ThenHasSingle<CreditCardPaymentCancellationFailed>();
+            Assert.AreEqual(message, @event.Reason);
+            Assert.AreEqual(_paymentId, @event.SourceId);
+        }
     }
 }

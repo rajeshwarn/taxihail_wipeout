@@ -6,9 +6,13 @@ using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Payment;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
@@ -24,14 +28,23 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly IConfigurationManager _configurationManager;
         private readonly IOrderPaymentDao _dao;
         private readonly ExpressCheckoutServiceFactory _factory;
+        private readonly IIbsOrderService _ibs;
+        private readonly IAccountDao _accountDao;
+        private readonly ILogger _logger;
+        private readonly IOrderDao _orderDao;
 
         public PayPalService(ICommandBus commandBus, IOrderPaymentDao dao,
-            ExpressCheckoutServiceFactory factory, IConfigurationManager configurationManager)
+            ExpressCheckoutServiceFactory factory, IConfigurationManager configurationManager, 
+            IIbsOrderService ibs, IAccountDao accountDao, ILogger logger, IOrderDao orderDao)
         {
             _commandBus = commandBus;
             _dao = dao;
             _factory = factory;
             _configurationManager = configurationManager;
+            _ibs = ibs;
+            _accountDao = accountDao;
+            _logger = logger;
+            _orderDao = orderDao;
         }
 
 
@@ -105,13 +118,75 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
             var transactionId = service.DoExpressCheckoutPayment(payment.PayPalToken, request.PayerId, payment.Amount);
 
+            var session = this.GetSession();
+            var account = _accountDao.FindById(new Guid(session.UserAuthId));
 
-            _commandBus.Send(new CompletePayPalExpressCheckoutPayment
+            var orderDetail = _orderDao.FindById(payment.OrderId);
+           
+            //send information to IBS
+            try
             {
-                PaymentId = payment.PaymentId,
-                PayPalPayerId = request.PayerId,
-                TransactionId = transactionId,
-            });
+
+                _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value,
+                                                payment.Amount,
+                                                payment.Tip,
+                                                payment.Meter,
+                                                PaymentType.PayPal.ToString(),
+                                                PaymentProvider.PayPal.ToString(),
+                                                transactionId,
+                                                request.PayerId,
+                                                payment.CardToken,
+                                                account.IBSAccountId,
+                                                orderDetail.Settings.Name,
+                                                orderDetail.Settings.Phone,
+                                                account.Email,
+                                                orderDetail.UserAgent.GetOperatingSystem(),
+                                                orderDetail.UserAgent);
+
+                _commandBus.Send(new CompletePayPalExpressCheckoutPayment
+                {
+                    PaymentId = payment.PaymentId,
+                    PayPalPayerId = request.PayerId,
+                    TransactionId = transactionId,
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.LogMessage("Can't send Payment Information to IBS");
+                _logger.LogError(e);
+
+                //cancel paypal transaction
+                try
+                {
+                    service.RefundTransaction(transactionId);
+                }
+                catch (Exception exe)
+                {
+                    _logger.LogMessage("Can't cancel Paypal transaction");
+                    _logger.LogError(exe);
+
+                    _commandBus.Send(new LogCancellationFailurePayPalPayment
+                    {
+                        PaymentId = payment.PaymentId,
+                        Reason = exe.Message
+                    });
+                }
+
+                _commandBus.Send(new CancelPayPalExpressCheckoutPayment
+                {
+                    PaymentId = payment.PaymentId
+                });
+
+                return new HttpResult
+                {
+                    StatusCode = HttpStatusCode.Redirect,
+                    Headers =
+                        {
+                            {HttpHeaders.Location, "taxihail://failure"}
+                        }
+                };
+
+            }
 
             return new HttpResult
             {
