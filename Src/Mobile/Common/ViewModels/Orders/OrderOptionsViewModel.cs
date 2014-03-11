@@ -8,7 +8,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class OrderOptionsViewModel : ChildViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
+	public class OrderOptionsViewModel : BaseViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 

@@ -13,7 +13,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class LocationListViewModel: BaseViewModel
+	public class LocationListViewModel: PageViewModel
     {
 		private readonly IAccountService _accountService;
 
@@ -100,12 +100,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
         
-        private Task<AddressViewModel[]> LoadFavoriteAddresses()
+		private async Task<AddressViewModel[]> LoadFavoriteAddresses()
         {
-            return Task<AddressViewModel[]>.Factory.StartNew(()=>
+			try
 			{
-				var adrs = _accountService.GetFavoriteAddresses().ToList();
-             
+				var adrs = await _accountService.GetFavoriteAddresses();
                 return adrs.Select(a => new AddressViewModel
                 { 
                     Address = a,
@@ -114,13 +113,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     ShowRightArrow = !a.Id.IsNullOrEmpty(),
 					Type = AddressType.Favorites
                 }).ToArray();
-            }).HandleErrors();
+			}
+			catch(Exception e)
+			{
+				Logger.LogError(e);
+				return new AddressViewModel[0];
+			}
+
         }
 
-        private Task<AddressViewModel[]> LoadHistoryAddresses()
+		private async Task<AddressViewModel[]> LoadHistoryAddresses()
         {
-            return Task<AddressViewModel[]>.Factory.StartNew(()=>{
-				var adrs = _accountService.GetHistoryAddresses();
+			try
+			{
+				var adrs = await _accountService.GetHistoryAddresses();
                 return adrs.Select(a => new AddressViewModel
                 { 
                     Address = a,
@@ -128,7 +134,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     ShowRightArrow = !a.Id.IsNullOrEmpty(),
 					Type = AddressType.History
                 }).ToArray();
-            }).HandleErrors();
+			}
+			catch(Exception e)
+			{
+				Logger.LogError(e);
+				return new AddressViewModel[0];
+			}
         }
     }
 }

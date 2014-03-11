@@ -18,7 +18,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class MapViewModel: ChildViewModel
+	public class MapViewModel: BaseViewModel
     {
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IVehicleService _vehicleService;

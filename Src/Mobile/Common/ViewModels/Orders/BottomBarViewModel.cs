@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class BottomBarViewModel: ChildViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
+	public class BottomBarViewModel: BaseViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
     {
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IMvxPhoneCallTask _phone;

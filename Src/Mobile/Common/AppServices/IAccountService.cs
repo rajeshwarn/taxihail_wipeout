@@ -43,11 +43,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
 		Task Register (RegisterAccount data);
 
-        Address FindInAccountAddresses(double latitude, double longitude);
+		Task<Address> FindInAccountAddresses(double latitude, double longitude);
 
-        IEnumerable<Address> GetHistoryAddresses();
+		Task<Address[]> GetHistoryAddresses();
         
-        IEnumerable<Address> GetFavoriteAddresses();
+		Task<Address[]> GetFavoriteAddresses();
         
         void UpdateAddress(Address address);
         

@@ -5,7 +5,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class TutorialViewModel : BaseViewModel
+	public class TutorialViewModel : PageViewModel
 	{
 		private readonly ITutorialService _tutorialService;
 

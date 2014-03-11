@@ -10,7 +10,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 {
     public abstract class BaseBindableChildView<TViewModel> : OverlayView
-        where TViewModel : ChildViewModel
+        where TViewModel : BaseViewModel
     {
         NSObject _keyboardObserverWillShow;
         NSObject _keyboardObserverWillHide;
@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
         {
             get
             {
-                return (TViewModel)DataContext;
+				return (TViewModel)DataContext;
             }
         }
 

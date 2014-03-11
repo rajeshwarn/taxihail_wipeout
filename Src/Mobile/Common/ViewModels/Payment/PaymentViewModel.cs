@@ -12,7 +12,7 @@ using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-    public class PaymentViewModel : BaseViewModel
+	public class PaymentViewModel : PageViewModel
     {
         private readonly IPayPalExpressCheckoutService _palExpressCheckoutService;
 		private readonly IAccountService _accountService;

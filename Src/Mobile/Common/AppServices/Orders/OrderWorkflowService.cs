@@ -321,7 +321,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_loadingAddressSubject.OnNext(true);
 			using (Logger.StartStopwatch("SearchAddress : " + p.Latitude.ToString(CultureInfo.InvariantCulture) + ", " + p.Longitude.ToString(CultureInfo.InvariantCulture)))
 			{
-				var accountAddress = _accountService.FindInAccountAddresses(p.Latitude, p.Longitude);
+				var accountAddress = await _accountService
+					.FindInAccountAddresses(p.Latitude, p.Longitude)
+					.ConfigureAwait(false);
+
 				if (accountAddress != null)
 				{
 					Logger.LogMessage("Address found in account");

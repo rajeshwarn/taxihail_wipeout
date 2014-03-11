@@ -19,7 +19,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+	public class LoginViewModel : PageViewModel
     {
 		private readonly IFacebookService _facebookService;
 		private readonly ITwitterService _twitterService;

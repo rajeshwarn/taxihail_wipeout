@@ -15,7 +15,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-	public class CreditCardAddViewModel : BaseSubViewModel<CreditCardInfos>
+	public class CreditCardAddViewModel : PageViewModel, ISubViewModel<CreditCardInfos>
     {
 		private readonly ILocationService _locationService;
 		private readonly IPaymentService _paymentService;
@@ -366,7 +366,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					}
 					else
 					{
-						ReturnResult(Data);
+						this.ReturnResult(Data);
 					}
 				}
 				else

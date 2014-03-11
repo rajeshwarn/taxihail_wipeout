@@ -14,7 +14,7 @@ using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class OrderEditViewModel: ChildViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
+	public class OrderEditViewModel: BaseViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;

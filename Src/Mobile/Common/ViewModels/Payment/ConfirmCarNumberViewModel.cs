@@ -10,7 +10,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-	public class ConfirmCarNumberViewModel : BaseViewModel
+	public class ConfirmCarNumberViewModel : PageViewModel
 	{
 		private readonly IAccountService _accountService;
 

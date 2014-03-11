@@ -17,7 +17,7 @@ using apcurium.MK.Booking.Mobile.Client.Helper;
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public abstract class BaseViewController<TViewModel> : MvxViewController, IHaveViewModel
-		where TViewModel : BaseViewModel
+        where TViewModel : PageViewModel
     {
         NSObject _keyboardObserverWillShow;
         NSObject _keyboardObserverWillHide;

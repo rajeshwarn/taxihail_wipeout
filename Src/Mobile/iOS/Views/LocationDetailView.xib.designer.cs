@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UILabel lblRingCode { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtAddress { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.NavigateFlatTextField txtAddress { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtAptNumber { get; set; }
@@ -69,14 +69,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblName = null;
 			}
 
-			if (lblRingCode != null) {
-				lblRingCode.Dispose ();
-				lblRingCode = null;
-			}
-
 			if (txtAddress != null) {
 				txtAddress.Dispose ();
 				txtAddress = null;
+			}
+
+			if (lblRingCode != null) {
+				lblRingCode.Dispose ();
+				lblRingCode = null;
 			}
 
 			if (txtAptNumber != null) {

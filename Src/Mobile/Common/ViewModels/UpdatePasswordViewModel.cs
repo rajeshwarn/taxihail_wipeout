@@ -6,7 +6,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class UpdatePasswordViewModel : BaseViewModel
+	public class UpdatePasswordViewModel : PageViewModel
 	{
 		private readonly IAccountService _accountService;
 

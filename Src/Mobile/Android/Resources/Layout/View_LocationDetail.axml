@@ -84,11 +84,11 @@
                             android:singleLine="true"
                             android:text="@string/LocationDetailAddressLabel"
                             android:layout_height="wrap_content" />
-                        <EditText
+                        <apcurium.mk.booking.mobile.client.controls.EditTextNavigate
                             android:id="@+id/LocationAddress"
                             android:layout_width="fill_parent"
                             android:layout_height="@dimen/HeightEditTextFlat"
-                            local:MvxBind="Text BookAddress, Mode=OneWay" />
+                            local:MvxBind="Text BookAddress, Mode=OneWay; NavigateCommand NavigateToSearch" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="fill_parent"

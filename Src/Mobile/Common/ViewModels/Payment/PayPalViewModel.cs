@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-    public class PayPalViewModel : BaseSubViewModel<bool>
+	public class PayPalViewModel : PageViewModel, ISubViewModel<bool>
     {
 		public new void Init(string url)
         {
@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		public ICommand Finish
 		{
 			get{
-				return this.GetCommand<bool>(b => ReturnResult(b));
+				return this.GetCommand<bool>(b => this.ReturnResult(b));
 			}
 		}
     }

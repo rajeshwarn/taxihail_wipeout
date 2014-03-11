@@ -9,15 +9,12 @@ using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {
-	public class CmtRideLinqConfirmPairViewModel : BaseViewModel
+	public class CmtRideLinqConfirmPairViewModel : PageViewModel
 	{
-		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
 
-		public CmtRideLinqConfirmPairViewModel(IAccountService accountService,
-			IPaymentService paymentService)
+		public CmtRideLinqConfirmPairViewModel(IPaymentService paymentService)
 		{
-			_accountService = accountService;	
 			_paymentService = paymentService;
 		}
 

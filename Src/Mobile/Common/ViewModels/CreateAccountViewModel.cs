@@ -10,7 +10,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class CreateAccountViewModel: BaseSubViewModel<RegisterAccount>
+	public class CreateAccountViewModel: PageViewModel, ISubViewModel<RegisterAccount>
 	{
 		private readonly IAccountService _accountService;
 		private readonly ITermsAndConditionsService _termsService;
@@ -127,7 +127,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								catch {}
 							}
 
-							ReturnResult(Data);
+							this.ReturnResult(Data);
 
 						}catch(Exception e)
 						{

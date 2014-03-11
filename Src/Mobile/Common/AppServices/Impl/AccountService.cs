@@ -111,25 +111,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             ClearCache ();
         }
 
-        public void RefreshCache (bool reload)
+		public async void RefreshCache (bool reload)
         {
             UserCache.Clear (HistoryAddressesCacheKey);
             UserCache.Clear (FavoriteAddressesCacheKey);
 
-            if (reload) {
-                GetFavoriteAddresses();
-                GetHistoryAddresses();
+            if (reload)
+			{
+				await Task.WhenAll(GetFavoriteAddresses(), GetHistoryAddresses());
             }
         }
 
-        public IEnumerable<Address> GetHistoryAddresses()
+		public async Task<Address[]> GetHistoryAddresses()
         {
             var cached = UserCache.Get<Address[]> (HistoryAddressesCacheKey);
             if (cached != null) {
                 return cached;
             }
 
-            var result = UseServiceClientTask<IAccountServiceClient, IList<Address>>(service => service.GetHistoryAddresses (CurrentAccount.Id));
+			var result = await UseServiceClientAsync<IAccountServiceClient, IList<Address>>(s => s
+					.GetHistoryAddresses (CurrentAccount.Id))
+				.ConfigureAwait(false);
 
             UserCache.Set(HistoryAddressesCacheKey, result.ToArray());
             return result;
@@ -160,14 +162,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return result;
         }
 
-        public IEnumerable<Address> GetFavoriteAddresses ()
+		public async Task<Address[]> GetFavoriteAddresses ()
         {
             var cached = UserCache.Get<Address[]> (FavoriteAddressesCacheKey);
 
-            if (cached != null) {
+            if (cached != null)
+			{
                 return cached;
             }
-            var result = UseServiceClientTask<IAccountServiceClient, IEnumerable<Address>>(service => service.GetFavoriteAddresses());
+
+			var result = await UseServiceClientAsync<IAccountServiceClient, IEnumerable<Address>>(s => s
+					.GetFavoriteAddresses())
+				.ConfigureAwait(false);
+
             var favoriteAddresses = result as Address[] ?? result.ToArray();
             UserCache.Set (FavoriteAddressesCacheKey, favoriteAddresses.ToArray ());
             return favoriteAddresses;
@@ -206,15 +213,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        public Address FindInAccountAddresses (double latitude, double longitude)
+		public async Task<Address> FindInAccountAddresses (double latitude, double longitude)
         {
-            var found = GetAddresseInRange(GetFavoriteAddresses(), new Position(latitude, longitude), 100) ??
-                            GetAddresseInRange(GetHistoryAddresses(), new Position(latitude, longitude), 75);
+			var found = GetAddressInRange(await GetFavoriteAddresses(), new Position(latitude, longitude), 100) ??
+				GetAddressInRange(await GetHistoryAddresses(), new Position(latitude, longitude), 75);
             return found;
 
         }
 
-        private Address GetAddresseInRange (IEnumerable<Address> addresses, Position position, float range)
+        private Address GetAddressInRange (IEnumerable<Address> addresses, Position position, float range)
         {
             var addressesInRange = from a in addresses
                 let distance = position.DistanceTo (new Position (a.Latitude, a.Longitude))

@@ -13,12 +13,20 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class AddressPickerViewModel : ChildViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
+	public class AddressPickerViewModel : PageViewModel,
+		IRequestPresentationState<HomeViewModelStateRequestedEventArgs>,
+		ISubViewModel<Address>
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IPlaces _placesService;
 		private readonly IGeolocService _geolocService;
 		private readonly IAccountService _accountService;
+		private bool _isInLocationDetail;
+		private Address _currentAddress;	
+		private bool _ignoreTextChange;
+		private AddressViewModel[] _defaultHistoryAddresses = new AddressViewModel[0];
+		private AddressViewModel[] _defaultFavoriteAddresses = new AddressViewModel[0];
+		private AddressViewModel[] _defaultNearbyPlaces = new AddressViewModel[0];
 
 		public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
@@ -33,30 +41,34 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_accountService = accountService;
 		}
 
-		public void Init()
+		public void Init(string searchCriteria)
 		{
-			IgnoreTextChange = true;
 			AllAddresses = new ObservableCollection<AddressViewModel>();
+
+			if (searchCriteria != null) 
+			{
+				_isInLocationDetail = true;
+				SearchAddress (searchCriteria);
+				StartingText = searchCriteria;
+			} 
+			else 
+			{
+				_ignoreTextChange = true;
+			}
 		}
 
-		private Address _currentAddress;	
 		public ObservableCollection<AddressViewModel> AllAddresses { get; set; }
-        public bool IgnoreTextChange { get; set; }
-
-		private AddressViewModel[] _defaultHistoryAddresses = new AddressViewModel[0];
-		private AddressViewModel[] _defaultFavoriteAddresses = new AddressViewModel[0];
-		private AddressViewModel[] _defaultNearbyPlaces = new AddressViewModel[0];
 
 		public async void LoadAddresses()
 		{            
-            IgnoreTextChange = true;
+            _ignoreTextChange = true;
 			ShowDefaultResults = true;
 			_currentAddress = await _orderWorkflowService.GetCurrentAddress();
 			StartingText = _currentAddress.GetFirstPortionOfAddress();
 
-			var favoritePlaces = Task.Factory.StartNew(() => _accountService.GetFavoriteAddresses().ToArray());
-			var historyPlaces = Task.Factory.StartNew(() => _accountService.GetHistoryAddresses().ToArray());
-			var neabyPlaces = Task.Factory.StartNew(() => _placesService.SearchPlaces(null, _currentAddress.Latitude, _currentAddress.Longitude, null));
+			var favoritePlaces = _accountService.GetFavoriteAddresses();
+			var historyPlaces = _accountService.GetHistoryAddresses();
+			var neabyPlaces = Task.Run(() => _placesService.SearchPlaces(null, _currentAddress.Latitude, _currentAddress.Longitude, null));
 
 			try
 			{
@@ -64,16 +76,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					AllAddresses.Clear();
 
-					var resultFavoritePlaces = await favoritePlaces;
-					_defaultFavoriteAddresses = ConvertToAddressViewModel(resultFavoritePlaces, AddressType.Favorites);
+					_defaultFavoriteAddresses = ConvertToAddressViewModel(await favoritePlaces, AddressType.Favorites);
 					AllAddresses.AddRange(_defaultFavoriteAddresses);
 
-					var resultHistoryPlaces = await historyPlaces;
-					_defaultHistoryAddresses = ConvertToAddressViewModel(resultHistoryPlaces, AddressType.History);
+					_defaultHistoryAddresses = ConvertToAddressViewModel(await historyPlaces, AddressType.History);
 					AllAddresses.AddRange(_defaultHistoryAddresses);
 
-					var resultNeabyPlaces = await neabyPlaces;
-					_defaultNearbyPlaces = ConvertToAddressViewModel(resultNeabyPlaces, AddressType.Places);
+					_defaultNearbyPlaces = ConvertToAddressViewModel(await neabyPlaces, AddressType.Places);
 					AllAddresses.AddRange(_defaultNearbyPlaces);
 				}
 			}
@@ -83,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
             finally
             {
-                IgnoreTextChange = false;
+                _ignoreTextChange = false;
             }
 		}
 
@@ -143,7 +152,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			if ((value != null) && (value.AddressType == "place"))
 			{
-				var place = _placesService.GetPlaceDetail("", value.PlaceReference);
+				var place = _placesService.GetPlaceDetail(value.FriendlyName, value.PlaceReference);
 				return place;
 			}
 			else
@@ -156,12 +165,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return this.GetCommand<AddressViewModel>(vm => {
-                    this.Services().Message.ShowProgressNonModal(false );
+				return this.GetCommand<AddressViewModel>(vm => 
+				{
+                    this.Services().Message.ShowProgressNonModal(false);
 					var detailedAddress = UpdateAddressWithPlaceDetail(vm.Address);
-					_orderWorkflowService.SetAddress(detailedAddress);
-                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
-					ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
+
+					if(_isInLocationDetail)
+					{
+						this.ReturnResult(detailedAddress);
+					}
+					else
+					{
+						_orderWorkflowService.SetAddress(detailedAddress);
+                    	PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
+						ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
+					}
 				}); 
 			}
 		}
@@ -170,9 +188,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return this.GetCommand(() => {
+				return this.GetCommand(() => 
+				{
                     this.Services().Message.ShowProgressNonModal(false );
-                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
+
+					if(_isInLocationDetail)
+					{
+						Close(this);
+					}
+					else
+					{
+						PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
+					}
 				}); 
 			}
 		}
@@ -188,62 +215,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		public void SearchAddress(string criteria)
+		public async Task SearchAddress(string criteria)
 		{
-            if (IgnoreTextChange)
+            if (_ignoreTextChange)
             {
                 return;
             }
 
             if (criteria.HasValue() && criteria != StartingText)
-			{                
-				InvokeOnMainThread(() =>
-					{
-						this.Services().Message.ShowProgressNonModal(true);
-						ShowDefaultResults = false;
-						AllAddresses.Clear();
-					});
+			{
+				using (this.Services().Message.ShowProgressNonModal())
+				{
+					ShowDefaultResults = false;
+					AllAddresses.Clear();
 
-				var t1 = Task.Factory.StartNew(() =>
-					{
-						var fhAdrs = SearchFavoriteAndHistoryAddresses(criteria);
-						InvokeOnMainThread(() =>
-							{
-								AllAddresses.AddRangeDistinct(fhAdrs, (x, y) => x.Equals(y));
-							});
-					});
-				var t2 = Task.Factory.StartNew(() =>
-					{
-						var pAdrs = SearchPlaces(criteria);
-						InvokeOnMainThread(() =>
-							{
-								AllAddresses.AddRangeDistinct(pAdrs, (x, y) => x.Equals(y));
-							});
-					});
-				var t3 = Task.Factory.StartNew(() =>
-					{
-						var gAdrs = SearchGeocodeAddresses(criteria);   
-						InvokeOnMainThread(() =>
-							{
-								AllAddresses.AddRangeDistinct(gAdrs, (x, y) => x.Equals(y));
-							});
-					});
+					var fhAdrs = SearchFavoriteAndHistoryAddresses(criteria);
+					var pAdrs = Task.Run(() => SearchPlaces(criteria));
+					var gAdrs = Task.Run(() => SearchGeocodeAddresses(criteria));
 
-				t1.Wait();
-				t2.Wait();
-				t3.Wait();
+					AllAddresses.AddRangeDistinct(await fhAdrs, (x, y) => x.Equals(y));
+					AllAddresses.AddRangeDistinct(await pAdrs, (x, y) => x.Equals(y));
+					AllAddresses.AddRangeDistinct(await gAdrs, (x, y) => x.Equals(y));
 
-				InvokeOnMainThread(() =>
-					{
-						this.Services().Message.ShowProgressNonModal(false);
-					});
+				}
 			}
 			else
 			{
-				InvokeOnMainThread(() =>
-					{
-						LoadDefaultList();
-					});
+				LoadDefaultList();
 			}
 		}
 
@@ -262,22 +260,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			return addresses.Select(a => new AddressViewModel(a, AddressType.Places) { IsSearchResult = true }).ToArray();
 		}
 
-		protected AddressViewModel[] SearchFavoriteAndHistoryAddresses(string criteria)
+		protected async Task<AddressViewModel[]> SearchFavoriteAndHistoryAddresses(string criteria)
 		{
-			var addresses = _accountService.GetFavoriteAddresses();
-			var historicAddresses = _accountService.GetHistoryAddresses();
+			var addresses = _accountService.GetFavoriteAddresses().ConfigureAwait(false);
+			var historicAddresses = _accountService.GetHistoryAddresses().ConfigureAwait(false);
 
-			Func<Address, bool> predicate = c => true;
+			Func<Address, bool> predicate = x => (x.FriendlyName != null
+			                                && x.FriendlyName.ToLowerInvariant().Contains(criteria))
+			                                || (x.FullAddress != null
+			                                && x.FullAddress.ToLowerInvariant().Contains(criteria));         
 
-			predicate = x => (x.FriendlyName != null
-				&& x.FriendlyName.ToLowerInvariant().Contains(criteria))
-			            || (x.FullAddress != null
-				            && x.FullAddress.ToLowerInvariant().Contains(criteria));           
+			var a1 = (await addresses)
+				.Where(predicate)
+				.Select(f => new AddressViewModel(f, f.FriendlyName.HasValue() ? AddressType.Favorites : AddressType.History) { IsSearchResult = true });
+			var a2 = (await historicAddresses)
+				.Where(predicate)
+				.Select(f => new AddressViewModel(f, f.FriendlyName.HasValue() ? AddressType.Favorites : AddressType.History) { IsSearchResult = true });
 
-			var a1 = addresses.Where(predicate).Select(f => new AddressViewModel(f, f.FriendlyName.HasValue() ? AddressType.Favorites : AddressType.History) { IsSearchResult = true });
-			var a2 = historicAddresses.Where(predicate).Select(f => new AddressViewModel(f, f.FriendlyName.HasValue() ? AddressType.Favorites : AddressType.History) { IsSearchResult = true });
-			var r = a1.Concat(a2).ToArray(); 
-			return r;
+			return a1.Concat(a2).ToArray(); 
 		}
 
 		protected AddressViewModel[] SearchGeocodeAddresses(string criteria)

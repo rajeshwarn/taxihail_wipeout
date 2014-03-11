@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
-    public abstract class BaseCallboxViewModel : BaseViewModel
+    public abstract class BaseCallboxViewModel : PageViewModel
     {
         public ICommand Logout
         {

@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class OrderReviewViewModel: ChildViewModel
+	public class OrderReviewViewModel: BaseViewModel
     {
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;

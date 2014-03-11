@@ -68,6 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
                 _addressEditText.OnKeyDown()
                     .Throttle(TimeSpan.FromMilliseconds(700))
+                    .ObserveOn(SynchronizationContext.Current)
                     .Subscribe(text => 
                     { 
                         if (_addressEditText.HasFocus)
