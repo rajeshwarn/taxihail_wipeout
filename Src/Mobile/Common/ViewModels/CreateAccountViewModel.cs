@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool _termsAndConditionsAcknowledged;
 		public bool TermsAndConditionsAcknowledged 
 		{
-			get { return !ShowTermsAndConditions || _termsAndConditionsAcknowledged; }
+			get { return !Settings.ShowTermsAndConditions || _termsAndConditionsAcknowledged; }
 			set
 			{
 				_termsAndConditionsAcknowledged = value;
@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								this.Services().Message.ShowMessage(this.Services().Localize["AccountActivationTitle"], this.Services().Localize["AccountActivationMessage"]);
 							}
 							
-							if(ShowTermsAndConditions)
+							if(Settings.ShowTermsAndConditions)
 							{
 								// get the terms and conditions to make sure that when the user logs in
 								// the acknowledgment of terms are up to date and if an error occurs, continue
