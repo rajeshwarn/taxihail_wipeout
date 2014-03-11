@@ -132,11 +132,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        protected ICacheService Cache
+		protected ICacheService UserCache
         {
             get
             {
-                return TinyIoCContainer.Current.Resolve<ICacheService>("AppCache");
+                return TinyIoCContainer.Current.Resolve<ICacheService>("UserAppCache");
             }
         }
 

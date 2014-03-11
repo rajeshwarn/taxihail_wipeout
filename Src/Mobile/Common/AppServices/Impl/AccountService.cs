@@ -56,12 +56,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 	
         public async Task<ReferenceData> GetReferenceData()
         {
-            var cached = Cache.Get<ReferenceData>(RefDataCacheKey);
+            var cached = UserCache.Get<ReferenceData>(RefDataCacheKey);
 
             if (cached == null)
             {
                 var refData = UseServiceClientAsync<ReferenceDataServiceClient, ReferenceData>(service => service.GetReferenceData());
-                Cache.Set(RefDataCacheKey, await refData, DateTime.Now.AddHours(1));
+                UserCache.Set(RefDataCacheKey, await refData, DateTime.Now.AddHours(1));
                 return await refData;
 
             }
@@ -70,19 +70,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void ClearReferenceData()
         {
-            Cache.Clear(RefDataCacheKey);
+            UserCache.Clear(RefDataCacheKey);
         }
 
         public void ClearCache ()
         {
-			var serverUrl = _appSettings.Data.ServiceUrl;
-
-            Cache.Clear (HistoryAddressesCacheKey);
-            Cache.Clear (FavoriteAddressesCacheKey);
-            Cache.Clear ("AuthenticationData");
-            Cache.ClearAll ();
-			// TODO: Clearing the cache should not clear ServiceUrl
-			_appSettings.Data.ServiceUrl = serverUrl; 
+            UserCache.Clear (HistoryAddressesCacheKey);
+            UserCache.Clear (FavoriteAddressesCacheKey);
+            UserCache.Clear ("AuthenticationData");
+            UserCache.ClearAll ();
         }
 
         public void SignOut ()
@@ -117,8 +113,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void RefreshCache (bool reload)
         {
-            Cache.Clear (HistoryAddressesCacheKey);
-            Cache.Clear (FavoriteAddressesCacheKey);
+            UserCache.Clear (HistoryAddressesCacheKey);
+            UserCache.Clear (FavoriteAddressesCacheKey);
 
             if (reload) {
                 GetFavoriteAddresses();
@@ -128,14 +124,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public IEnumerable<Address> GetHistoryAddresses()
         {
-            var cached = Cache.Get<Address[]> (HistoryAddressesCacheKey);
+            var cached = UserCache.Get<Address[]> (HistoryAddressesCacheKey);
             if (cached != null) {
                 return cached;
             }
 
             var result = UseServiceClientTask<IAccountServiceClient, IList<Address>>(service => service.GetHistoryAddresses (CurrentAccount.Id));
 
-            Cache.Set(HistoryAddressesCacheKey, result.ToArray());
+            UserCache.Set(HistoryAddressesCacheKey, result.ToArray());
             return result;
         }
 
@@ -166,20 +162,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public IEnumerable<Address> GetFavoriteAddresses ()
         {
-            var cached = Cache.Get<Address[]> (FavoriteAddressesCacheKey);
+            var cached = UserCache.Get<Address[]> (FavoriteAddressesCacheKey);
 
             if (cached != null) {
                 return cached;
             }
             var result = UseServiceClientTask<IAccountServiceClient, IEnumerable<Address>>(service => service.GetFavoriteAddresses());
             var favoriteAddresses = result as Address[] ?? result.ToArray();
-            Cache.Set (FavoriteAddressesCacheKey, favoriteAddresses.ToArray ());
+            UserCache.Set (FavoriteAddressesCacheKey, favoriteAddresses.ToArray ());
             return favoriteAddresses;
         }
 
         private void UpdateCacheArray<T> (string key, T updated, Func<T, T, bool> compare) where T : class
         {
-            var cached = Cache.Get<T[]> (key);
+            var cached = UserCache.Get<T[]> (key);
 
             if (cached != null) {
 
@@ -189,24 +185,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     Array.Copy (cached, newList, cached.Length);
                     newList [cached.Length] = updated;
 
-                    Cache.Set (key, newList);
+                    UserCache.Set (key, newList);
                 } else {
                     var foundIndex = cached.IndexOf (updated, compare);
                     cached [foundIndex] = updated;
-                    Cache.Set (key, cached);
+                    UserCache.Set (key, cached);
                 }
             }
         }
 
         private void RemoveFromCacheArray<T> (string key, Guid toDeleteId, Func<Guid, T, bool> compare)
         {
-            var cached = Cache.Get<T[]> (key);
+            var cached = UserCache.Get<T[]> (key);
 
             if ((cached != null) && (cached.Length > 0)) {
                 var list = new List<T> (cached);
                 var toDelete = list.SingleOrDefault (item => compare (toDeleteId, item));
                 list.Remove (toDelete);
-                Cache.Set (key, list.ToArray ());
+                UserCache.Set (key, list.ToArray ());
             }
         }
 
@@ -232,14 +228,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Account CurrentAccount {
             get {
 
-                var account = Cache.Get<Account> ("LoggedUser");
+                var account = UserCache.Get<Account> ("LoggedUser");
                 return account;
             }
             private set {
                 if (value != null) {
-                    Cache.Set ("LoggedUser", value);    
+                    UserCache.Set ("LoggedUser", value);    
                 } else {
-                    Cache.Clear ("LoggedUser");
+                    UserCache.Clear ("LoggedUser");
                 }                
             }
         }
@@ -362,8 +358,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             try
 			{
                 //todo avoir une cache propre au login du user
-                Cache.Clear (HistoryAddressesCacheKey);
-                Cache.Clear (FavoriteAddressesCacheKey);
+                UserCache.Clear (HistoryAddressesCacheKey);
+                UserCache.Clear (FavoriteAddressesCacheKey);
 
 				var account = await UseServiceClientAsync<IAccountServiceClient, Account>(service => service.GetMyAccount ());
                 if (account != null)

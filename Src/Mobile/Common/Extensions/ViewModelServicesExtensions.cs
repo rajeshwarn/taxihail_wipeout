@@ -40,9 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 
 		public TaxiHailSetting Settings { get { return _container.Resolve<IAppSettings>().Data; } }        
 
-        public ICacheService Cache { get { return _container.Resolve<ICacheService>(); } }
-
-        public ICacheService AppCache { get { return _container.Resolve<ICacheService>("AppCache"); } }
+        public ICacheService Cache { get { return _container.Resolve<ICacheService>(); } }        
 
         public IApplicationInfoService ApplicationInfo { get { return _container.Resolve<IApplicationInfoService>(); } }        
 
