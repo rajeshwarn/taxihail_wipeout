@@ -610,6 +610,8 @@
     <Compile Include="Helpers\LayoutHelper.cs" />
     <AndroidResource Include="Resources\Layout\SubView_OrderEdit_Thriev.axml" />
     <AndroidResource Include="Resources\Layout\SubView_OrderReview_Thriev.axml" />
+    <AndroidResource Include="Resources\Drawable\menu_icon_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\location_icon_selector.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
