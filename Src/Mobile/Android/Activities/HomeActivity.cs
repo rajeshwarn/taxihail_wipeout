@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private OrderOptions _orderOptions;
         private AddressPicker _searchAddress;
         private ImageView _btnLocation; 
-        private ImageView _btnSettings;
+		private LinearLayout _btnSettings;
         private AppBar _appBar;
         private FrameLayout _frameLayout;
         private HomeViewModelState _presentationState = HomeViewModelState.Initial;
@@ -204,7 +204,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _appBar = (AppBar) FindViewById(Resource.Id.appBar);
             _frameLayout = (FrameLayout) FindViewById(Resource.Id.RelInnerLayout);
             _mapOverlay = (LinearLayout) FindViewById(Resource.Id.mapOverlay);
-            _btnSettings = FindViewById<ImageView>(Resource.Id.btnSettings);
+			_btnSettings = FindViewById<LinearLayout>(Resource.Id.btnSettings);
             _btnLocation = FindViewById<ImageView>(Resource.Id.btnLocation);
 
             // attach big invisible button to the OrderOptions to be able to pass it to the address text box and clear focus when clicking outside

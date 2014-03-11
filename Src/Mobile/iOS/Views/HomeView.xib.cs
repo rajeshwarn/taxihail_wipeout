@@ -61,7 +61,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnMenu.SetImage(UIImage.FromFile("menu_icon_pressed.png"), UIControlState.Highlighted);
 
             btnLocateMe.SetImage(UIImage.FromFile("location_icon.png"), UIControlState.Normal);
-            btnLocateMe.SetImage(UIImage.FromFile("location_icon_pressed.png"), UIControlState.Highlighted);
+			btnLocateMe.SetImage(UIImage.FromFile("location_icon_pressed.png"), UIControlState.Highlighted);
+
 
             InstantiatePanel();
 
