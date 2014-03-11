@@ -29,12 +29,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         private ObservableCollection<AddressViewModel> _allAddresses = new ObservableCollection<AddressViewModel>();
-        public ObservableCollection<AddressViewModel> AllAddresses { 
-            get {
-                return _allAddresses;
-            }
-            set {
-                if(value != _allAddresses) {
+        public ObservableCollection<AddressViewModel> AllAddresses 
+		{ 
+			get { return _allAddresses; }
+            set 
+			{
+                if(value != _allAddresses) 
+				{
                     _allAddresses = value;
 					RaisePropertyChanged();
                 }
@@ -43,15 +44,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public ICommand NavigateToLocationDetailPage
         {
-            get{
+            get
+			{
                 return this.GetCommand<AddressViewModel>(a =>
                 {
-
                     if(a.Address.Id == Guid.Empty)
                     {
                         // New address
                         ShowViewModel<LocationDetailViewModel>();
-                    } else {
+                    } 
+					else 
+					{
                         ShowViewModel<LocationDetailViewModel>(new Dictionary<string,string>{
                             { "address", a.Address.ToJson() }
                         });
@@ -64,19 +67,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			using (this.Services().Message.ShowProgress())
 			{
-				var tasks = new [] {
+				var tasks = new [] 
+				{
 					LoadFavoriteAddresses(),
 					LoadHistoryAddresses()
 				};
-				return Task.Factory.ContinueWhenAll(tasks, t => {
 
+				return Task.Factory.ContinueWhenAll(tasks, t => 
+				{
 					AllAddresses.Clear ();
 					AllAddresses.Add (new AddressViewModel{ Address =  new Address
 						{
 							FriendlyName = this.Services().Localize["LocationAddFavoriteTitle"],
 							FullAddress = this.Services().Localize["LocationAddFavoriteSubtitle"],
 						}, IsAddNew = true, ShowPlusSign=true});
-
 
 					if(t[0].Status == TaskStatus.RanToCompletion)
 					{

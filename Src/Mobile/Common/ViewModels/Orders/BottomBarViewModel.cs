@@ -122,10 +122,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						Logger.LogError(e);
 
 						var settings = this.Services().Settings;
-						var callIsEnabled = false;//!settings.HideCallDispatchButton;
 						var title = this.Services().Localize["ErrorCreatingOrderTitle"];
 
-						if (callIsEnabled)
+						if (!Settings.HideCallDispatchButton)
 						{
 							this.Services().Message.ShowMessage(title,
 								e.Message,

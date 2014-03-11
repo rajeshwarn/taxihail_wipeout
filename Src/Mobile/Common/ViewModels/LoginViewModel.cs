@@ -95,15 +95,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public bool CallIsEnabled
-        {
-            get
-            {
-				return !Settings.HideCallDispatchButton;
-            }
-
-        }
-
         public ICommand SignInCommand
         {
             get
@@ -209,7 +200,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         var title = this.Services().Localize["InvalidLoginMessageTitle"];
                         string message = null;
-                        if (CallIsEnabled)
+						if (!Settings.HideCallDispatchButton)
                         {
 							var companyName = Settings.ApplicationName;
 							var phoneNumber = Settings.DefaultPhoneNumberDisplay;

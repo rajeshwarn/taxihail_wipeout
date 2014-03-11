@@ -149,10 +149,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return showVehicleInformation && ( (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived) ) 
                 && ( OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue() || OrderStatusDetail.DriverInfos.LastName.HasValue() || OrderStatusDetail.DriverInfos.FirstName.HasValue()); }
         }
-		
-		public bool IsCallButtonVisible {
-			get { return !Settings.HideCallDispatchButton; }
-		}
 
 		public bool VehicleDriverHidden
 		{

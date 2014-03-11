@@ -184,8 +184,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder()
 		{
-			bool callIsEnabled = !_appSettings.Data.HideCallDispatchButton;
-
 			CreateOrder order = await GetOrder();
 
 			try
