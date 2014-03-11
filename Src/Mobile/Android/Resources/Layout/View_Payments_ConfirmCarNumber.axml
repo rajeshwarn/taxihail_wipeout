@@ -59,7 +59,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:text="4585"
+                android:text=""
                 local:MvxBind="Text CarNumber"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal" />
