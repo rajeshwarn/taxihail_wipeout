@@ -4,7 +4,7 @@ using Android.OS;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
-    [Activity(Theme = "@android:style/Theme.Dialog")]
+	[Activity(Label = "Show Dialog", Theme = "@android:style/Theme.Dialog")]
     public class ShowDialogActivity : Activity
     {
         private ProgressDialog _progressDialog;
