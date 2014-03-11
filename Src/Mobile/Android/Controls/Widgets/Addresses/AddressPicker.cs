@@ -187,12 +187,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
         {        
             Visibility = ViewStates.Visible;
             ViewModel.LoadAddresses();
-            _addressEditText.PostDelayed(() => 
-            {
-                _addressEditText.RequestFocusFromTouch();
-                _addressEditText.ShowKeyboard();
-                _addressEditText.SetCursorAtEnd();
-            }, 400);
+			FocusOnTextField ();  
         } 
 
         public void Close()
@@ -203,6 +198,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             _recentAddressList.Collapse();
             _nearbyAddressList.Collapse();
         }
+
+		public void FocusOnTextField()
+		{
+			_addressEditText.PostDelayed(() => 
+			{
+				_addressEditText.RequestFocusFromTouch();
+				_addressEditText.ShowKeyboard();
+				_addressEditText.SetCursorAtEnd();
+			}, 400);
+		}
  
         protected override void Dispose(bool disposing)
         {

@@ -153,12 +153,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             UIView.Animate(0.3f, () => this.Alpha = 1);
 
             ViewModel.LoadAddresses();
-            Task.Factory.StartNew(() =>
-                {
-                    InvokeOnMainThread(() => AddressEditText.BecomeFirstResponder());
-                }
-             );
+			FocusOnTextField ();
         }        
+
+		public void FocusOnTextField()
+		{
+			Task.Factory.StartNew(() =>
+			{
+				InvokeOnMainThread(() => AddressEditText.BecomeFirstResponder());
+			});
+		}
 
         protected override void DrawStroke(MonoTouch.CoreGraphics.CGColor fillColor, RectangleF rect)
         {
