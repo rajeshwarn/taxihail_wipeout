@@ -9,7 +9,6 @@
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
     <ProductVersion>12.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -510,6 +509,7 @@
     <Compile Include="Views\AddressPickerContainerView.designer.cs">
       <DependentUpon>AddressPickerContainerView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\ViewServicesExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

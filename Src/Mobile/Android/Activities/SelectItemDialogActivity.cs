@@ -36,8 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
         private void ReturnResult(int itemIndex)
         {
-            var messenger = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
-            messenger.Publish(new SubNavigationResultMessage<int>(this, _ownerId, itemIndex));
+			this.Services().MessengerHub.Publish(new SubNavigationResultMessage<int>(this, _ownerId, itemIndex));
             Finish();
         }
     }

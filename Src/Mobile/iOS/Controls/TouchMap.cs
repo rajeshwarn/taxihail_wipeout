@@ -5,22 +5,21 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MonoTouch.CoreLocation;
+using MonoTouch.Foundation;
+using MonoTouch.MapKit;
+using MonoTouch.UIKit;
+using TinyIoC;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.Client.Order;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Data;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Common;
-using apcurium.MK.Common.Entity;
-using MonoTouch.Foundation;
-using MonoTouch.CoreLocation;
-using MonoTouch.MapKit;
-using MonoTouch.UIKit;
-using TinyIoC;
-using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -68,27 +67,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Initialize();
         }
 
-
-
         private void Initialize()
         {   
-           // _cancelToken = new CancellationTokenSource();
-            UseThemeColorForPickupAndDestinationMapIcons = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
-
+			UseThemeColorForPickupAndDestinationMapIcons = this.Services().Settings.UseThemeColorForMapIcons;
             ShowsUserLocation = true;
-            if (_pickupCenterPin == null) {
+
+            if (_pickupCenterPin == null) 
+			{
                 _pickupCenterPin = new UIImageView(AddressAnnotation.GetImage(AddressAnnotationType.Pickup));
                 _pickupCenterPin.BackgroundColor = UIColor.Clear;
                 _pickupCenterPin.ContentMode = UIViewContentMode.Center;
                 AddSubview(_pickupCenterPin);
                 _pickupCenterPin.Hidden = true;                
             }
-            if (_dropoffCenterPin == null) {
+
+            if (_dropoffCenterPin == null) 
+			{
                 _dropoffCenterPin = new UIImageView(AddressAnnotation.GetImage(AddressAnnotationType.Destination));
                 _dropoffCenterPin.BackgroundColor = UIColor.Clear;
                 _dropoffCenterPin.ContentMode = UIViewContentMode.Center;
                 AddSubview(_dropoffCenterPin);
-                
                 _dropoffCenterPin.Hidden = true;
             }
         }
@@ -153,10 +151,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     InvokeOnMainThread(() =>
                     {
-								if ((MapMoved != null) && (MapMoved.CanExecute()))
+						if ((MapMoved != null) && (MapMoved.CanExecute()))
                         {
                             Console.WriteLine("MapMovedMapMovedMapMovedMapMovedMapMovedMapMovedMapMoved");
-                            MapMoved.Execute(new Address {            Latitude = CenterCoordinate.Latitude,              Longitude = CenterCoordinate.Longitude });
+                            MapMoved.Execute(new Address {
+										Latitude = CenterCoordinate.Latitude,
+										Longitude = CenterCoordinate.Longitude 
+									});
                         }
                     });
                 }        
@@ -184,10 +185,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private AddressSelectionMode _addressSelectionMode;
         public AddressSelectionMode AddressSelectionMode {
-            get {
+            get 
+			{
                 return _addressSelectionMode;
             }
-            set {
+            set 
+			{
                 _addressSelectionMode = value;
                 if(_addressSelectionMode == AddressSelectionMode.PickupSelection)
                 {
@@ -293,15 +296,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 SetNeedsDisplay();
             }
         }
-
-        public IEnumerable<AvailableVehicle> AvailableVehicles
-        {
-            set
-            {
-                ShowAvailableVehicles (Clusterize(value.ToArray()));
-            }
-        }
-
         
         private void SetZoom(IEnumerable<CoordinateViewModel> adressesToDisplay)
         {
@@ -421,69 +415,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 AddAnnotation (_pickupPin);
             }
             if(_pickupCenterPin != null) _pickupCenterPin.Hidden = true;
-        }
-
-        private readonly List<MKAnnotation> _availableVehiclePushPins = new List<MKAnnotation> ();
-        private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
-        {
-            // remove currently displayed pushpins
-            foreach (var pp in _availableVehiclePushPins)
-            {
-                RemoveAnnotation(pp);
-            }
-            _availableVehiclePushPins.Clear ();
-
-            if (vehicles == null)
-                return;
-
-            foreach (var v in vehicles)
-            {
-                var annotationType = (v is AvailableVehicleCluster) ? AddressAnnotationType.NearbyTaxiCluster : AddressAnnotationType.NearbyTaxi;
-                var pushPin = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), annotationType, string.Empty, string.Empty, UseThemeColorForPickupAndDestinationMapIcons);
-                AddAnnotation (pushPin);
-                _availableVehiclePushPins.Add (pushPin);
-            }
-
-
-
-        }
-
-        private AvailableVehicle[] Clusterize(AvailableVehicle[] vehicles)
-        {
-            // Divide the map in 25 cells (5*5)
-            const int numberOfRows = 5;
-            const int numberOfColumns = 5;
-            // Maximum number of vehicles in a cell before we start displaying a cluster
-            const int cellThreshold = 1;
-
-            var result = new List<AvailableVehicle>();
-
-            var bounds =  Bounds;
-            var clusterWidth = bounds.Width / numberOfColumns;
-            var clusterHeight = bounds.Height / numberOfRows;
-
-            var list = new List<AvailableVehicle>(vehicles);
-
-            for (var rowIndex = 0; rowIndex < numberOfRows; rowIndex++)
-                for (var colIndex = 0; colIndex < numberOfColumns; colIndex++)
-                {
-                    var rect = new RectangleF(Bounds.X + colIndex * clusterWidth, Bounds.Y + rowIndex * clusterHeight, clusterWidth, clusterHeight);
-
-                    var vehiclesInRect = list.Where(v => rect.Contains(ConvertCoordinate(new CLLocationCoordinate2D(v.Latitude, v.Longitude), this))).ToArray();
-                    if (vehiclesInRect.Length > cellThreshold)
-                    {
-                        var clusterBuilder = new VehicleClusterBuilder();
-                        foreach(var v in vehiclesInRect) clusterBuilder.Add(v);
-                        result.Add(clusterBuilder.Build());
-                    }
-                    else
-                    {
-                        result.AddRange(vehiclesInRect);
-                    }
-                    foreach(var v in vehiclesInRect) list.Remove(v);
-
-                }
-            return result.ToArray();
         }
     }
 

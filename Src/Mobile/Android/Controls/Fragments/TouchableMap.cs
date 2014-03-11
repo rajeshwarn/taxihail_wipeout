@@ -31,12 +31,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             mOriginalContentView = base.OnCreateView(inflater, parent, savedInstanceState);
 
             var bestPosition = TinyIoCContainer.Current.Resolve<ILocationService>().BestPosition;
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
 
-            var latitude = bestPosition != null ? bestPosition.Latitude : settings.DefaultLatitude;
-            var longitude = bestPosition != null ? bestPosition.Longitude : settings.DefaultLongitude;
+			var latitude = bestPosition != null ? bestPosition.Latitude : this.Services().Settings.DefaultLatitude;
+			var longitude = bestPosition != null ? bestPosition.Longitude : this.Services().Settings.DefaultLongitude;
 
-            
             Map.MapType = GoogleMap.MapTypeNormal;
             Map.UiSettings.CompassEnabled = false;
             Map.UiSettings.ZoomControlsEnabled = false;

@@ -201,7 +201,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void InitDrawables()
         {            
-            var useColor = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
+			var useColor = this.Services().Settings.UseThemeColorForMapIcons;
             var colorBgTheme = useColor ? (Color?)_resources.GetColor(Resource.Color.company_color) : (Color?)null;
 
             var destinationIcon =  _resources.GetDrawable(Resource.Drawable.@destination_icon);

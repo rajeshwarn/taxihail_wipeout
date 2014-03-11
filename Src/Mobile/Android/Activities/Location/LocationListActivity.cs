@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
         {
             base.OnCreate(bundle);
 
-            _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());
+			_closeViewToken = this.Services().MessengerHub.Subscribe<CloseViewsToRoot>(m => Finish());
         }
 
 		protected override void OnViewModelSet()
@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
             base.OnDestroy();
             if (_closeViewToken != null)
             {
-                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<CloseViewsToRoot>(_closeViewToken);
+				this.Services().MessengerHub.Unsubscribe<CloseViewsToRoot>(_closeViewToken);
             }
         }
 
