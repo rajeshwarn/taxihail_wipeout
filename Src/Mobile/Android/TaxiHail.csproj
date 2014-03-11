@@ -610,6 +610,8 @@
     <Compile Include="Helpers\LayoutHelper.cs" />
     <AndroidResource Include="Resources\Layout\SubView_OrderEdit_Thriev.axml" />
     <AndroidResource Include="Resources\Layout\SubView_OrderReview_Thriev.axml" />
+    <Compile Include="Activities\Location\AddressSearchActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_AddressPickerContainer.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
