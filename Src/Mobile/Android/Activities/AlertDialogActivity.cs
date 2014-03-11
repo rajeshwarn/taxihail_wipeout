@@ -8,7 +8,7 @@ using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
-    [Activity(Theme = "@android:style/Theme.Dialog")]
+	[Activity(Label = "Alert Dialog", Theme = "@android:style/Theme.Dialog")]
     public class AlertDialogActivity : Activity
     {
         private string _message;

@@ -118,5 +118,5 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             return new PhonePresenter();
         }
-    }
+	}
 }

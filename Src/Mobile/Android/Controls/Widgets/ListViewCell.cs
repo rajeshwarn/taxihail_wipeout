@@ -8,6 +8,7 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 using apcurium.MK.Common.Extensions;
+using System.Collections;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -40,7 +41,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public bool ShowRightArrow { get; set; }
 
-        //TEST
+		private Android.Graphics.Drawables.Drawable _backgroundDrawable;	
+
+		private Hashtable pictureTable = new Hashtable ();
+		        
         private bool _showPlusSign;
         public bool ShowPlusSign
         { 
@@ -49,8 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 _showPlusSign = value;
             }
-        }
-        //public bool ShowPlusSign { get; set; }
+        }        
 
         public string Icon { get; set; }
 // ReSharper restore UnusedAutoPropertyAccessor.Global
@@ -97,34 +100,48 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 DrawText(canvas, TextLine2 ?? "", textX, 32.ToPixels(), 16.ToPixels(), Typeface.Default, TextColorLine2);
             }
 
-            if (ShowRightArrow)
-            {                
-				canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.right_arrow),
-                    Width - (20.ToPixels()), 16.ToPixels(), null);
-            }
+			if (ShowRightArrow)
+			{                
+				var identifier = Resource.Drawable.add_list;
 
-            if (ShowPlusSign)
-            {
-                var bitmapIcon = BitmapFactory.DecodeResource (Resources, Resource.Drawable.add_list);								
-				var offsetIcon = (canvas.Height - bitmapIcon.Height) / 2;
-				canvas.DrawBitmap(bitmapIcon, 10.ToPixels(), offsetIcon, null);
+				if (pictureTable[identifier] == null) {
+					pictureTable[identifier] = BitmapFactory.DecodeResource (Resources, Resource.Drawable.right_arrow);
+				}					
 
-            }
-            else if (Icon.HasValue())
-            {
-                var identifier = Context.Resources.GetIdentifier(Icon, "drawable", Context.PackageName);
+				canvas.DrawBitmap((Bitmap)pictureTable[identifier],
+					Width - (20.ToPixels()), 16.ToPixels(), null);
+			}
 
-				var bitmapIcon = BitmapFactory.DecodeResource (Resources, identifier);									
-				var offsetIcon = (canvas.Height - bitmapIcon.Height) / 2;
-				canvas.DrawBitmap(bitmapIcon, 10.ToPixels(), offsetIcon,  null);
-            }
+			if (ShowPlusSign)
+			{
+				var identifier = Resource.Drawable.add_list;
 
+				if (pictureTable[identifier] == null) {
+					pictureTable[identifier] = BitmapFactory.DecodeResource (Resources, identifier);								
+				}
 
-            var d = IsBottom
-                    ? Resource.Drawable.cell_bottom_state
-                    : Resource.Drawable.cell_middle_state;
+				var offsetIcon = (canvas.Height - ((Bitmap)pictureTable[identifier]).Height) / 2;
+				canvas.DrawBitmap((Bitmap)pictureTable[identifier], 10.ToPixels(), offsetIcon, null);
 
-            SetBackgroundDrawable(Resources.GetDrawable(d));
+			}
+			else if (Icon.HasValue())
+			{
+				var identifier = Context.Resources.GetIdentifier(Icon, "drawable", Context.PackageName);
+
+				if (pictureTable[identifier] == null) {
+					pictureTable[identifier] = BitmapFactory.DecodeResource (Resources, identifier);                              
+				}
+
+				var offsetIcon = (canvas.Height - ((Bitmap)pictureTable[identifier]).Height) / 2;
+				canvas.DrawBitmap((Bitmap)pictureTable[identifier], 10.ToPixels(), offsetIcon,  null);
+			}
+
+			if (_backgroundDrawable == null) {
+				_backgroundDrawable = Resources.GetDrawable (IsBottom 
+					? Resource.Drawable.cell_bottom_state 
+					: Resource.Drawable.cell_middle_state);
+				SetBackgroundDrawable(_backgroundDrawable);
+			}	
         }
 
         private void DrawText(Canvas canvas, string text, float x, float y, float textSize, Typeface typeface,
