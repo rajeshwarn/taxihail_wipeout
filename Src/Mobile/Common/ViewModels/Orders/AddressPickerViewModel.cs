@@ -20,6 +20,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IGeolocService _geolocService;
 		private readonly IAccountService _accountService;
 		private bool _isInLocationDetail;
+		private Address _currentAddress;	
+		private bool _ignoreTextChange;
+		private AddressViewModel[] _defaultHistoryAddresses = new AddressViewModel[0];
+		private AddressViewModel[] _defaultFavoriteAddresses = new AddressViewModel[0];
+		private AddressViewModel[] _defaultNearbyPlaces = new AddressViewModel[0];
 
 		public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
@@ -46,21 +51,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			} 
 			else 
 			{
-				IgnoreTextChange = true;
+				_ignoreTextChange = true;
 			}
 		}
 
-		private Address _currentAddress;	
 		public ObservableCollection<AddressViewModel> AllAddresses { get; set; }
-        public bool IgnoreTextChange { get; set; }
-
-		private AddressViewModel[] _defaultHistoryAddresses = new AddressViewModel[0];
-		private AddressViewModel[] _defaultFavoriteAddresses = new AddressViewModel[0];
-		private AddressViewModel[] _defaultNearbyPlaces = new AddressViewModel[0];
 
 		public async void LoadAddresses()
 		{            
-            IgnoreTextChange = true;
+            _ignoreTextChange = true;
 			ShowDefaultResults = true;
 			_currentAddress = await _orderWorkflowService.GetCurrentAddress();
 			StartingText = _currentAddress.GetFirstPortionOfAddress();
@@ -91,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
             finally
             {
-                IgnoreTextChange = false;
+                _ignoreTextChange = false;
             }
 		}
 
@@ -216,7 +215,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public async Task SearchAddress(string criteria)
 		{
-            if (IgnoreTextChange)
+            if (_ignoreTextChange)
             {
                 return;
             }
