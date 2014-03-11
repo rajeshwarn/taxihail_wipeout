@@ -220,7 +220,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         {
                             PaymentId = paymentId,
                             AuthorizationCode = authorizationCode,
-                            Provider = PaymentProvider.Braintree,
+							Provider = PaymentProvider.Cmt,
                         });
                     }
                 }
