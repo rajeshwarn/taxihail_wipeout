@@ -23,7 +23,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class BookingStatusViewModel : BaseViewModel
+	public class BookingStatusViewModel : PageViewModel
     {
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IPhoneService _phoneService;
@@ -420,7 +420,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						_bookingService.ClearLastOrder();
 						ShowViewModel<HomeViewModel> (new { locateUser =  true });
                     },
-                    this.Services().Localize["NoButton"], NoAction));
+					this.Services().Localize["NoButton"], delegate {}));
             }
         }
 

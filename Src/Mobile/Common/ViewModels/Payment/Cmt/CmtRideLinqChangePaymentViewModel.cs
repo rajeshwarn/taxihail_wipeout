@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {
-	public class CmtRideLinqChangePaymentViewModel : BaseViewModel, ISubViewModel<PaymentInformation>
+	public class CmtRideLinqChangePaymentViewModel : PageViewModel, ISubViewModel<PaymentInformation>
 	{
 		private readonly IAccountService _accountService;
 
@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 			_accountService = accountService;			
 		}
 
-		public new void Init(string currentPaymentInformation)
+		public void Init(string currentPaymentInformation)
 		{
 			DefaultPaymentInformations = JsonSerializer.DeserializeFromString<PaymentInformation>(currentPaymentInformation);
 			PaymentPreferences = Container.Resolve<PaymentDetailsViewModel>();

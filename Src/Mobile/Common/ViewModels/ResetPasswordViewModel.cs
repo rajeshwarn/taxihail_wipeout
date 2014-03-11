@@ -8,7 +8,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class ResetPasswordViewModel : BaseViewModel, ISubViewModel<string>
+	public class ResetPasswordViewModel : PageViewModel, ISubViewModel<string>
 	{
 		private readonly IAccountService _accountService;
 

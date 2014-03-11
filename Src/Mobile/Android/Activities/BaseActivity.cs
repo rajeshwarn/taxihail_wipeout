@@ -7,7 +7,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
     public abstract class BaseBindingActivity<TViewModel> : MvxActivity
-        where TViewModel : BaseViewModel, IMvxViewModel
+        where TViewModel : PageViewModel, IMvxViewModel
     {
         private bool _firstStart = true;
 

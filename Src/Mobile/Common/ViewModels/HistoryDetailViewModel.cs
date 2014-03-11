@@ -16,7 +16,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class HistoryDetailViewModel : BaseViewModel
+	public class HistoryDetailViewModel : PageViewModel
     {
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IBookingService _bookingService;

@@ -13,7 +13,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class LocationListViewModel: BaseViewModel
+	public class LocationListViewModel: PageViewModel
     {
 		private readonly IAccountService _accountService;
 

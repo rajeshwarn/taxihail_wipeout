@@ -13,7 +13,9 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class AddressPickerViewModel : ChildViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
+	public class AddressPickerViewModel : PageViewModel,
+		IRequestPresentationState<HomeViewModelStateRequestedEventArgs>,
+		ISubViewModel<Address>
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IPlaces _placesService;

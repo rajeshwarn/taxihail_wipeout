@@ -8,7 +8,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class AddressPickerContainerView : BaseViewController<AddressPickerViewModel>
+    public partial class AddressPickerContainerView : BaseViewController<AddressPickerViewModel>
 	{
 		public AddressPickerContainerView () : base ("AddressPickerContainerView", null)
 		{

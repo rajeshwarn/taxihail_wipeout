@@ -13,7 +13,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class RideSummaryViewModel: BaseViewModel
+	public class RideSummaryViewModel: PageViewModel
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IPaymentService _paymentService;

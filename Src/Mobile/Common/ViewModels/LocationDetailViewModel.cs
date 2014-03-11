@@ -12,7 +12,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class LocationDetailViewModel: BaseViewModel
+	public class LocationDetailViewModel: PageViewModel
 	{
 		private readonly CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
 

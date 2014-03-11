@@ -13,7 +13,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class HistoryListViewModel : BaseViewModel
+	public class HistoryListViewModel : PageViewModel
     {
 		private readonly IAccountService _accountService;
 

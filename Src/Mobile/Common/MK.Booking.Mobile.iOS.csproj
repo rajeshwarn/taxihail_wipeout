@@ -226,7 +226,6 @@
     <Compile Include="Messages\StatusCloseRequested.cs" />
     <Compile Include="ViewModels\LocationDetailViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
-    <Compile Include="ViewModels\BaseSubViewModel.cs" />
     <Compile Include="Messages\SubNavigationResultMessage.cs" />
     <Compile Include="ViewModels\RideSettingsViewModel.cs" />
     <Compile Include="BindingConverter\PhoneNumberConverter.cs" />
@@ -306,7 +305,6 @@
     <Compile Include="AppServices\IOrderWorkflowService.cs" />
     <Compile Include="ViewModels\Map\MapViewModel.cs" />
     <Compile Include="ViewModels\Map\MapBounds.cs" />
-    <Compile Include="ViewModels\ChildViewModel.cs" />
     <Compile Include="AppServices\Orders\OrderWorkflowService.cs" />
     <Compile Include="AppServices\Orders\OrderValidationException.cs" />
     <Compile Include="AppServices\Orders\OrderValidationError.cs" />
@@ -331,6 +329,8 @@
     <Compile Include="ViewModels\IRequestPresentationState.cs" />
     <Compile Include="ViewModels\Orders\HomeViewModelStateRequestedEventArgs.cs" />
     <Compile Include="Extensions\EventHandlerExtensions.cs" />
+    <Compile Include="ViewModels\ISubViewModel.cs" />
+    <Compile Include="ViewModels\PageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

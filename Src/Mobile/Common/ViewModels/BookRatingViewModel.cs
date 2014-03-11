@@ -11,7 +11,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class BookRatingViewModel : BaseViewModel, ISubViewModel<OrderRated>
+	public class BookRatingViewModel : PageViewModel, ISubViewModel<OrderRated>
     {
 		private readonly IBookingService _bookingService;
 

@@ -8,7 +8,7 @@ using Cirrious.MvvmCross.Droid.Fragging;
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
     public abstract class BaseBindingFragmentActivity<TViewModel> : MvxFragmentActivity
-        where TViewModel : BaseViewModel, IMvxViewModel
+        where TViewModel : PageViewModel, IMvxViewModel
     {
         private bool _firstStart = true;
 

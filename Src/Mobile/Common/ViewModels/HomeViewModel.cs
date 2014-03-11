@@ -18,7 +18,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class HomeViewModel : BaseViewModel
+	public class HomeViewModel : PageViewModel
     {
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly ILocationService _locationService;

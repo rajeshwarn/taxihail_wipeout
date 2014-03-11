@@ -6,11 +6,10 @@ using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class RideSettingsViewModel: BaseViewModel
+	public class RideSettingsViewModel: PageViewModel
     {
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;

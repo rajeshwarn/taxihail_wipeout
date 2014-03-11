@@ -4,7 +4,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class UpdatedTermsAndConditionsViewModel : BaseViewModel, ISubViewModel<bool>
+	public class UpdatedTermsAndConditionsViewModel : PageViewModel, ISubViewModel<bool>
 	{
 		public void Init(string content)
 		{

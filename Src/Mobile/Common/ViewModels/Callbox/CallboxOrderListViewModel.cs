@@ -239,7 +239,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 			});
 		}
 
-		private void CreateOrder(string passengerName)
+        private async void CreateOrder(string passengerName)
 		{        
 			this.Services().Message.ShowProgress(true);
 
@@ -247,77 +247,75 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 			{
 				_orderToCreate = new CreateOrderInfo { PassengerName = passengerName, IsPendingCreation = true }; 
 			}
-
-			Task.Factory.StartNew(() =>
+                
+			try
 			{
-				try
+                var pickupAddress = (await _accountService.GetFavoriteAddresses()).FirstOrDefault();
+
+				var newOrderCreated = new CreateOrder();
+				newOrderCreated.Id = Guid.NewGuid();
+                newOrderCreated.Settings = _accountService.CurrentAccount.Settings;
+				newOrderCreated.PickupAddress = pickupAddress;
+				newOrderCreated.PickupDate = DateTime.Now;
+
+				if (!string.IsNullOrEmpty(passengerName))
 				{
-                    var pickupAddress = _accountService.GetFavoriteAddresses().FirstOrDefault();
+                    newOrderCreated.Note = string.Format(this.Services().Localize["Callbox.passengerName"], passengerName);
+					newOrderCreated.Settings.Name = passengerName;
+				}
+				else
+				{
+                    newOrderCreated.Note = this.Services().Localize["Callbox.noPassengerName"];
+                    newOrderCreated.Settings.Name = this.Services().Localize["NotSpecified"];
+				}      
+                // TODO: Refactor to async/await
+                var orderInfoTask = _bookingService.CreateOrder(newOrderCreated);
+                orderInfoTask.Wait();
+                var orderInfo = orderInfoTask.Result;
 
-					var newOrderCreated = new CreateOrder();
-					newOrderCreated.Id = Guid.NewGuid();
-                    newOrderCreated.Settings = _accountService.CurrentAccount.Settings;
-					newOrderCreated.PickupAddress = pickupAddress;
-					newOrderCreated.PickupDate = DateTime.Now;
-
-					if (!string.IsNullOrEmpty(passengerName))
+				InvokeOnMainThread (() =>
+				{                    
+					if (pickupAddress != null)
 					{
-                        newOrderCreated.Note = string.Format(this.Services().Localize["Callbox.passengerName"], passengerName);
-						newOrderCreated.Settings.Name = passengerName;
+						if (orderInfo.IBSOrderId.HasValue && orderInfo.IBSOrderId > 0)
+						{
+							orderInfo.Name = newOrderCreated.Settings.Name;
+                            var o = new CallboxOrderViewModel(_bookingService)
+							{
+								CreatedDate = DateTime.Now,
+								IBSOrderId = orderInfo.IBSOrderId,
+								Id = newOrderCreated.Id,
+								OrderStatus = orderInfo                                            
+							};
+
+							if ( _orderToCreate != null )
+							{
+								_orderToCreate.Order  = o;
+							}
+
+							Orders.Add(o);
+						}
 					}
 					else
 					{
-                        newOrderCreated.Note = this.Services().Localize["Callbox.noPassengerName"];
-                        newOrderCreated.Settings.Name = this.Services().Localize["NotSpecified"];
-					}      
-                    // TODO: Refactor to async/await
-                    var orderInfoTask = _bookingService.CreateOrder(newOrderCreated);
-                    orderInfoTask.Wait();
-                    var orderInfo = orderInfoTask.Result;
-
-					InvokeOnMainThread (() =>
-					{                    
-						if (pickupAddress != null)
-						{
-							if (orderInfo.IBSOrderId.HasValue && orderInfo.IBSOrderId > 0)
-							{
-								orderInfo.Name = newOrderCreated.Settings.Name;
-                                var o = new CallboxOrderViewModel(_bookingService)
-								{
-									CreatedDate = DateTime.Now,
-									IBSOrderId = orderInfo.IBSOrderId,
-									Id = newOrderCreated.Id,
-									OrderStatus = orderInfo                                            
-								};
-
-								if ( _orderToCreate != null )
-								{
-									_orderToCreate.Order  = o;
-								}
-
-								Orders.Add(o);
-							}
-						}
-						else
-						{
-                            this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoPickupAddress"]);
-						}
-					});
-				}
-				catch
+                        this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoPickupAddress"]);
+					}
+				});
+			}
+            catch(Exception e)
+			{
+                Logger.LogError(e);
+				InvokeOnMainThread(() =>
 				{
-					InvokeOnMainThread(() =>
-					{
-                        string err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], Settings.ApplicationName, this.Services().Settings.DefaultPhoneNumberDisplay);
-                        this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
-					});
-				}
-				finally
-				{
-					_orderToCreate.IsPendingCreation = false;
-					this.Services().Message.ShowProgress(false);
-				}
-			}).HandleErrors();
+                    string err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], Settings.ApplicationName, this.Services().Settings.DefaultPhoneNumberDisplay);
+                    this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
+				});
+			}
+			finally
+			{
+				_orderToCreate.IsPendingCreation = false;
+				this.Services().Message.ShowProgress(false);
+			}
 		}
 
 		public delegate void OrderHandler(object sender,EventArgs args);
