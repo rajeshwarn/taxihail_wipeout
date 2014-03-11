@@ -46,17 +46,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			InitAmounts(Order);
         }
 
-		public override void OnViewStarted(bool firstTime)
-		{
-			base.OnViewStarted(firstTime);
-		}
-
-		public override void OnViewLoaded ()
+		public override async void OnViewLoaded ()
 		{
 			base.OnViewLoaded ();
 
-			// TODO: Why would it be async since we don't want the user to interact with an uninitialized form?
-			var orderFromServer =  _accountService.GetHistoryOrder(Order.Id);
+			var orderFromServer =  await _accountService.GetHistoryOrderAsync(Order.Id);
 			InitAmounts(orderFromServer);
 		}
 
