@@ -50,16 +50,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public bool NewPasswordIsConfirmed { 
+		public bool NewPasswordIsConfirmed 
+		{ 
 			get { return NewPassword == Confirmation; }
 		}
 
-		public bool CanUpdatePassword { 
-			get { return !CurrentPassword.IsNullOrEmpty() 
-				&& !NewPassword.IsNullOrEmpty() 
-					&& NewPassword.Length >= 6 
+		public bool CanUpdatePassword 
+		{ 
+			get 
+			{ 
+				return !CurrentPassword.IsNullOrEmpty() 
+						&& !NewPassword.IsNullOrEmpty() 
+						&& NewPassword.Length >= 6 
 						&& NewPassword.Length <= 10 
-						&& NewPasswordIsConfirmed; }
+						&& NewPasswordIsConfirmed; 
+			}
 		}
 
 		public ICommand UpdateCommand

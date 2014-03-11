@@ -36,12 +36,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile});
-			if (TutorialEnabled)
+			if (Settings.TutorialEnabled)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial});
-			if (CanCall)
+			if (!Settings.HideCallDispatchButton)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewCallDispatchText"], NavigationCommand = Call});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewAboutUsText"], NavigationCommand = NavigateToAboutUs});
-			if (CanReportProblem)
+			if (!Settings.HideReportProblem)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewSignOutText"], NavigationCommand = SignOut});
         }
@@ -59,13 +59,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_itemMenuList = value;
 			}
 		}
-
-        public bool TutorialEnabled {
-            get
-            {
-				return Settings.TutorialEnabled;
-            }
-        }
 
         private bool _menuIsOpen;
         public bool MenuIsOpen {
@@ -166,7 +159,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
                 return _version;                         
             }
-            
         }
 
 		public ICommand NavigateToUpdateProfile
@@ -211,29 +203,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>
                 {
-                    if ( TutorialEnabled )
+					if (Settings.TutorialEnabled)
                     {
                         MenuIsOpen = false;
                         this.Services().Message.ShowDialog(typeof(TutorialViewModel));
                     }
                 });
             }
-        }
-
-        public bool CanCall
-        {
-            get
-			{
-				return !Settings.HideCallDispatchButton;
-			}
-        }
-
-        public bool CanReportProblem
-        {
-            get 
-            {
-				return !Settings.HideReportProblem;
-			}            
         }
 
 		public ICommand Call

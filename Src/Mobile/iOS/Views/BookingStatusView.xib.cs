@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					});
 				};
 
-                if ( ViewModel.IsCallButtonVisible )
+				if(!ViewModel.Settings.HideCallDispatchButton)
                 {
                     btnCancel.SetFrame(8, btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
                     btnCall.SetFrame( 320 - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
@@ -252,11 +252,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 				set.Bind(btnCall)
 					.For(v => v.Hidden)
-					.To(vm => vm.IsCallButtonVisible)
-					.WithConversion("BoolInverter");
+					.To(vm => vm.Settings.HideCallDispatchButton);
 				set.Bind(btnCall)
 					.For(v => v.Enabled)
-					.To(vm => vm.IsCallButtonVisible);
+					.To(vm => vm.Settings.HideCallDispatchButton)
+					.WithConversion("BoolInverter");
 				set.Bind(btnCall)
 					.For("TouchUpInside")
 					.To(vm => vm.CallCompany);

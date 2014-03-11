@@ -25,7 +25,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public string ConfirmPassword { get; set; }
 
 		public bool HasSocialInfo { get { return Data.FacebookId.HasValue () || Data.TwitterId.HasValue (); } }
-		public bool ShowTermsAndConditions { get { return Settings.ShowTermsAndConditions; } }
 
 		public void Init(string twitterId, string facebookId, string name, string email)
 		{

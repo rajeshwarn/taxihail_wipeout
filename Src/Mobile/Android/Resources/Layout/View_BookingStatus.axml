@@ -94,7 +94,7 @@
                 android:layout_marginRight="8dip"
                 android:layout_gravity="center_vertical"
                 android:text="@string/StatusCallButton"
-                local:MvxBind="Click CallCompany; Visibility IsCallButtonVisible, Converter=Visibility" />
+                local:MvxBind="Click CallCompany; Visibility Settings.HideCallDispatchButton, Converter=InvertedVisibility" />
         </LinearLayout>
     </FrameLayout>
     <apcurium.mk.booking.mobile.client.controls.SlidingPanel

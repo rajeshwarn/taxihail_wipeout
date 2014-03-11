@@ -1,4 +1,3 @@
-
 using System;
 using System.Globalization;
 using System.Linq;
@@ -12,7 +11,6 @@ using apcurium.MK.Common.Entity;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.PresentationHints;
-
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -52,11 +50,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private Guid _orderId;
         public Guid OrderId
         {
-            get
-            {
-                return _orderId;
-            }
-            set { 
+			get { return _orderId; }
+            set 
+			{ 
 				_orderId = value; 
 				RaisePropertyChanged(); 
 			}
@@ -64,10 +60,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private Order _order;
 		public Order Order {
-			get{ return _order; }
-            set { 
+			get { return _order; }
+            set 
+			{ 
 				_order = value; 
-                if (_order.TransactionId != default(long)) {
+                if (_order.TransactionId != default(long)) 
+				{
                     AuthorizationNumber = _order.TransactionId + "";
                 }
 				RaisePropertyChanged(()=>Order); 
@@ -83,12 +81,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private OrderStatusDetail _status;
 		public OrderStatusDetail Status 
         {
-			get{ return _status; }
+			get { return _status; }
 		    set
 		    {
 		        _status = value;
 				RaisePropertyChanged();
-				RaisePropertyChanged("SendReceiptAvailable");
+				RaisePropertyChanged(() => SendReceiptAvailable);
 		    }
 		}
         
@@ -105,11 +103,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private bool _isDone;
         public bool IsDone
         {
-            get
-            {
-                return _isDone;
-            }
-            set { 
+			get { return _isDone; }
+            set 
+			{ 
 				_isDone = value; 
 				RaisePropertyChanged(); 
 				RaisePropertyChanged(()=>ShowRateButton); 
@@ -117,12 +113,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         private bool _isCompleted = true;
-		public bool IsCompleted {
-			get {
-				return _isCompleted;
-			}
-			set { 
-				if (value != _isCompleted) {
+		public bool IsCompleted 
+		{
+			get { return _isCompleted; }
+			set 
+			{ 
+				if (value != _isCompleted) 
+				{
 					_isCompleted = value;
 					RaisePropertyChanged ();
 					RaisePropertyChanged (()=>RebookIsAvailable);
@@ -130,21 +127,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public bool RebookIsAvailable {
-			get {
-                
-				return IsCompleted 
-						&& !Settings.HideRebookOrder;
+		public bool RebookIsAvailable 
+		{
+			get 
+			{
+				return IsCompleted && !Settings.HideRebookOrder;
 			}
 		}
 
         private bool _hasRated;
         public bool HasRated
         {
-            get {
-				return _hasRated;
-            }
-            set { 
+			get { return _hasRated; }
+            set 
+			{ 
 				_hasRated = value;
 				RaisePropertyChanged(()=>ShowRateButton);  
 			}
@@ -185,11 +181,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
         private string _authorizationNumber;
-        public string AuthorizationNumber {
-            get {
-                return _authorizationNumber;
-            }
-            set{
+        public string AuthorizationNumber 
+		{
+			get { return _authorizationNumber; }
+            set
+			{
                 _authorizationNumber = value;
 				RaisePropertyChanged ();
             }
@@ -197,35 +193,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public string RequestedTxt
         {
-            get {
-                return Order != null ? FormatDateTime(Order.PickupDate, Order.PickupDate) : null;
+            get 
+			{
+                return Order != null 
+					? FormatDateTime(Order.PickupDate, Order.PickupDate) 
+					: null;
             }
         }
 
         public string OriginTxt
         {
-            get {
-                return Order != null ? Order.PickupAddress.DisplayAddress : null;
+            get 
+			{
+                return Order != null 
+					? Order.PickupAddress.DisplayAddress 
+					: null;
             }
         }
 
         public string AptRingTxt
         {
-            get {
+            get 
+			{
                 return Order != null 
-                    ? 
-                    FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode) 
+                    ? FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode) 
                     : null;
             }
         }
-
-		public bool HideDestination
-		{
-			get
-			{
-				return Settings.HideDestination;
-			}
-		}
 
         public string DestinationTxt
         {
@@ -237,13 +231,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 return Order.DropOffAddress.FullAddress.HasValue()
                            ? Order.DropOffAddress.FullAddress
-						: this.Services().Localize["DestinationNotSpecifiedText"];
+						   : this.Services().Localize["DestinationNotSpecifiedText"];
             }
         }
 
         public string PickUpDateTxt
         {
-            get {
+            get 
+			{
                 return Order != null 
                     ? FormatDateTime(Order.PickupDate, Order.PickupDate) 
                     : null;
@@ -259,7 +254,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void RefreshOrderStatus (OrderRated orderRated)
 		{
-			if (orderRated.Content == OrderId) {
+			if (orderRated.Content == OrderId) 
+			{
 				HasRated = true;
 			}
         }
@@ -287,15 +283,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return this.GetCommand(() =>
-                                               {
-                                                   var canRate = IsDone && !HasRated;
-													ShowSubViewModel<BookRatingViewModel,OrderRated>(new 
-					            	                    {														
-															orderId = OrderId, 
-															canRate = canRate
-														}.ToStringDictionary(),
-													RefreshOrderStatus);
-                                               });
+	                           {
+	                                var canRate = IsDone && !HasRated;
+									ShowSubViewModel<BookRatingViewModel,OrderRated>(new 
+	            	                    {														
+											orderId = OrderId, 
+											canRate = canRate
+										}.ToStringDictionary(),
+									RefreshOrderStatus);
+	                           });
             }
         }
 
@@ -307,13 +303,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					var orderStatus = new OrderStatusDetail
 					{ 
-							IBSOrderId = Order.IBSOrderId,
-							IBSStatusDescription = this.Services().Localize["LoadingMessage"],
-							IBSStatusId = "",
-							OrderId = OrderId,
-							Status = OrderStatus.Unknown,
-							VehicleLatitude = null,
-							VehicleLongitude = null
+						IBSOrderId = Order.IBSOrderId,
+						IBSStatusDescription = this.Services().Localize["LoadingMessage"],
+						IBSStatusId = "",
+						OrderId = OrderId,
+						Status = OrderStatus.Unknown,
+						VehicleLatitude = null,
+						VehicleLongitude = null
 					};
 					ShowViewModel<BookingStatusViewModel>(new {
 						order =  Order.ToJson(),
@@ -372,23 +368,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return this.GetCommand(() => this.Services().Message.ShowMessage(string.Empty, this.Services().Localize["StatusConfirmCancelRide"], 
-                                                                                                   this.Services().Localize["YesButton"], () =>
-                {
+                return this.GetCommand(() => this.Services().Message.ShowMessage(
+					string.Empty, 
+					this.Services().Localize["StatusConfirmCancelRide"], 
+                    this.Services().Localize["YesButton"], 
+					() =>
+                	{
+						var isSuccess = _bookingService.CancelOrder(OrderId);
 
-					var isSuccess = _bookingService.CancelOrder(OrderId);
-
-                    if(isSuccess)
-                    {
-                        LoadStatus();
-                    }
-                    else
-                    {
-                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Localize["StatusConfirmCancelRideErrorTitle"], 
-                                                                                            this.Services().Localize["StatusConfirmCancelRideError"]));
-                    }
-                },
-                    this.Services().Localize["NoButton"], () => { })); 
+	                    if(isSuccess)
+	                    {
+	                        LoadStatus();
+	                    }
+	                    else
+	                    {
+	                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Localize["StatusConfirmCancelRideErrorTitle"], 
+	                                                                                            this.Services().Localize["StatusConfirmCancelRideError"]));
+	                    }
+	                },
+                    this.Services().Localize["NoButton"], 
+					() => { })); 
             }
         }
 

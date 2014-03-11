@@ -106,7 +106,7 @@
                             android:layout_height="1px" />
                         <Button
                             android:id="@+id/settingsTutorial"
-                            local:MvxBind="Click Panel.NavigateToTutorial; Visibility Panel.TutorialEnabled, Converter=Visibility"
+                            local:MvxBind="Click Panel.NavigateToTutorial; Visibility Panel.Settings.TutorialEnabled, Converter=Visibility"
                             style="@style/SettingItemTitle"
                             android:background="@drawable/setting_cell"
                             android:layout_width="fill_parent"
@@ -116,7 +116,7 @@
                             android:paddingLeft="10dip"
                             android:gravity="left|center_vertical" />
                         <View
-                            local:MvxBind="Visibility Panel.TutorialEnabled, Converter=Visibility"
+                            local:MvxBind="Visibility Panel.Settings.TutorialEnabled, Converter=Visibility"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
@@ -124,7 +124,7 @@
                             android:layout_height="1px" />
                         <Button
                             android:id="@+id/settingsCallCompany"
-                            local:MvxBind="Click Panel.Call; Visibility Panel.CanCall, Converter=Visibility"
+                            local:MvxBind="Click Panel.Call; Visibility Panel.Settings.HideCallDispatchButton, Converter=InvertedVisibility"
                             style="@style/SettingItemTitle"
                             android:background="@drawable/setting_cell"
                             android:layout_width="fill_parent"
@@ -134,7 +134,7 @@
                             android:paddingLeft="10dip"
                             android:gravity="left|center_vertical" />
                         <View
-                            local:MvxBind="Visibility Panel.CanCall, Converter=Visibility"
+                            local:MvxBind="Visibility Panel.Settings.Settings.HideCallDispatchButton, Converter=InvertedVisibility"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
@@ -159,7 +159,7 @@
                             android:layout_height="1px" />
                         <Button
                             android:id="@+id/settingsSupport"
-                            local:MvxBind="Click Panel.NavigateToReportProblem; Visibility Panel.CanReportProblem, Converter=Visibility"
+                            local:MvxBind="Click Panel.NavigateToReportProblem; Visibility Panel.Settings.HideReportProblem, Converter=InvertedVisibility"
                             style="@style/SettingItemTitle"
                             android:background="@drawable/setting_cell"
                             android:layout_width="fill_parent"
@@ -169,7 +169,7 @@
                             android:paddingLeft="10dip"
                             android:gravity="left|center_vertical" />
                         <View
-                            local:MvxBind="Visibility Panel.CanReportProblem, Converter=Visibility"
+                            local:MvxBind="Visibility Panel.Settings.HideReportProblem, Converter=InvertedVisibility"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"

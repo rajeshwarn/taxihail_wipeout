@@ -103,7 +103,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     _bookingSettings.VehicleTypeId = value;
 					RaisePropertyChanged();
-					RaisePropertyChanged("VehicleTypeName");
+					RaisePropertyChanged(() => VehicleTypeName);
                 }
             }
         }
@@ -141,7 +141,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     _bookingSettings.ChargeTypeId = value;
 					RaisePropertyChanged();
-					RaisePropertyChanged("ChargeTypeName");
+					RaisePropertyChanged(() => ChargeTypeName);
                 }
             }
         }

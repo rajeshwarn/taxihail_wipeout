@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             View.BackgroundColor = Theme.LoginColor;
             lblTitle.TextColor = Theme.GetTextColor(Theme.LoginColor);
 
-            if (ViewModel.ShowTermsAndConditions)
+			if (ViewModel.Settings.ShowTermsAndConditions)
             {
                 var textFirstPart = Localize.GetValue("TermsAndConditionsAcknowledgment")
                     .Replace(Localize.GetValue("TermsAndConditionsLabel"), string.Empty)

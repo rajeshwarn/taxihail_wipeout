@@ -61,8 +61,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				_address = value;
 				RaisePropertyChanged();
-				RaisePropertyChanged("Apartment");
-				RaisePropertyChanged("RingCode");
+				RaisePropertyChanged(() => Apartment);
+				RaisePropertyChanged(() => RingCode);
 			}
 		}
 

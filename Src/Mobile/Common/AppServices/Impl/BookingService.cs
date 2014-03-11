@@ -73,8 +73,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return orderDetail;
         }
 
-		public bool CallIsEnabled { get{ return !_appSettings.Data.HideCallDispatchButton; } }
-
         private void CallCompany (string name, string number)
         {
 			_phoneCallTask.MakePhoneCall (name, number);
