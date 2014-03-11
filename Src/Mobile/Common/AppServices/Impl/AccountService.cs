@@ -134,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.ConfigureAwait(false);
 
             UserCache.Set(HistoryAddressesCacheKey, result.ToArray());
-            return result;
+			return result.ToArray();
         }
 
         public Task<IList<Order>> GetHistoryOrders ()
