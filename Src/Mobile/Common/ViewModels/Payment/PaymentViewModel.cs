@@ -275,7 +275,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             {
                 return this.GetCommand(() =>
                 { 										
-                    if (MeterAmount.ToString() != GetCurrency(MeterAmount).ToString())
+					if (MeterAmount != null && MeterAmount.ToString() != GetCurrency(MeterAmount).ToString())
                     {
                         MeterAmount = GetCurrency(MeterAmount);
                     }
@@ -315,13 +315,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 								this.Services().Localize["ConfirmationPaymentAmountOver100Title"], 
 								message, 
 								this.Services().Localize["OkButtonText"], 
-								() => 
-								{
-									using(this.Services().Message.ShowProgress())
-									{
-										Task.Factory.SafeStartNew(executePayment);
-									}
-								}, 
+								() => InvokeOnMainThread(executePayment), 
 								this.Services().Localize["Cancel"], 
 								() => {});
                     }
@@ -335,10 +329,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         private void PayPalFlow()
         {
+			this.Services().Message.ShowProgress(true);
+
             if (CanProceedToPayment(false))
             {
-                this.Services().Message.ShowProgress(true);
-
 				_palExpressCheckoutService.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount), Convert.ToDecimal(CultureProvider.ParseCurrency(MeterAmount)), Convert.ToDecimal(CultureProvider.ParseCurrency(TipAmount)))
 					.ToObservable()
                     // Always Hide progress indicator
@@ -363,10 +357,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         private async void CreditCardFlow()
         {
-            if (CanProceedToPayment())
-            {
-                using (this.Services().Message.ShowProgress())
-                {
+			using (this.Services().Message.ShowProgress())
+			{
+	            if (CanProceedToPayment())
+	            {
 					var response = await _paymentService.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, CultureProvider.ParseCurrency(MeterAmount), CultureProvider.ParseCurrency(TipAmount), Order.Id);
                     if (!response.IsSuccessfull)
                     {

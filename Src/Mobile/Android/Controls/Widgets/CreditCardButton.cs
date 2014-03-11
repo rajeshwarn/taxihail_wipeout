@@ -122,23 +122,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void SetCreditCardImage()
         {
-            if (_creditCardCompany != null)
-            {
-                var resource = Resources.GetIdentifier(_creditCardCompany.ToLower(), "drawable", Context.PackageName);
-                if (resource != 0)
-                {
-                    _cardImage.SetImageResource(resource);
-                    _cardImage.Visibility = ViewStates.Visible;
-                }
-                else
-                {
-                    _cardImage.Visibility = ViewStates.Gone;
-                }
-            }
-            else
-            {
-                _cardImage.Visibility = ViewStates.Gone;
-            }
+			if (_cardImage != null) 
+			{
+				if (_creditCardCompany != null)
+				{
+					var resource = Resources.GetIdentifier(_creditCardCompany.ToLower(), "drawable", Context.PackageName);
+					if (resource != 0)
+					{
+						_cardImage.SetImageResource(resource);
+						_cardImage.Visibility = ViewStates.Visible;
+					}
+					else
+					{
+						_cardImage.Visibility = ViewStates.Gone;
+					}
+				}
+				else
+				{
+					_cardImage.Visibility = ViewStates.Gone;
+				}
+			}
         }
     }
 }
