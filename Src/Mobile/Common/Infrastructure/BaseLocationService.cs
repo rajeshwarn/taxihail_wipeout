@@ -32,15 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 		public abstract Position LastKnownPosition { get; }
 
-		public abstract Position BestPosition { get; }
-
-        protected ICacheService Cache
-        {
-            get
-            {
-                return TinyIoCContainer.Current.Resolve<ICacheService>("AppCache");
-            }
-        }
+		public abstract Position BestPosition { get; }        
 	}
 
 	public class Position

@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			if (orderDetail.IBSOrderId.HasValue
 				&& orderDetail.IBSOrderId > 0)
 			{
-                Cache.Set ("LastOrderId", orderDetail.OrderId.ToString ()); // Need to be cached as a string because of a jit error on device
+                UserCache.Set ("LastOrderId", orderDetail.OrderId.ToString ()); // Need to be cached as a string because of a jit error on device
             }
 
 			Task.Run(() => _accountService.RefreshCache (true));
@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		}
 
         public bool HasLastOrder {
-            get{ return Cache.Get<string> ("LastOrderId").HasValue ();}
+            get{ return UserCache.Get<string> ("LastOrderId").HasValue ();}
         }
 
         public Task<OrderStatusDetail> GetLastOrderStatus ()
@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 {
                     throw new InvalidOperationException ();
                 }
-                var lastOrderId = Cache.Get<string> ("LastOrderId");  // Need to be cached as a string because of a jit error on device
+                var lastOrderId = UserCache.Get<string> ("LastOrderId");  // Need to be cached as a string because of a jit error on device
 				return UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.GetOrderStatus (new Guid (lastOrderId)));
             }
 			catch(Exception e)
@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void ClearLastOrder ()
         {
-            Cache.Set ("LastOrderId", (string)null); // Need to be cached as a string because of a jit error on device
+            UserCache.Set ("LastOrderId", (string)null); // Need to be cached as a string because of a jit error on device
         }
 
         public void RemoveFromHistory (Guid orderId)

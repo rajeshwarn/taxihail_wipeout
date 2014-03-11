@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         private float _radiusCorner = 2f;
         private UIView _shadowView = null;
+		private UIColor fillColor;
+		private UIColor fillColorNormal = UIColor.White.ColorWithAlpha(0.8f);
+		private UIColor fillColorPressed = UIColor.Gray.ColorWithAlpha(0.8f);
 
         public OverlayButton(IntPtr handle) : base(handle)
         {
@@ -22,19 +25,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private void Initialize()
         {
             BackgroundColor = UIColor.Clear;
+			fillColor = fillColorNormal;
+
+			this.TouchDown += (object sender, EventArgs e) => 
+			{
+				fillColor = fillColorPressed;
+				this.SetNeedsDisplay();
+			};				
         }
+
+		public override void TouchesEnded (NSSet touches, UIEvent evt)
+		{
+			base.TouchesEnded (touches, evt);
+			fillColor = fillColorNormal;
+			this.SetNeedsDisplay();
+		}
 
         public override void Draw (RectangleF rect)
         {           
-            var context = UIGraphics.GetCurrentContext ();
-
-            var fillColor = UIColor.White.ColorWithAlpha(0.8f);
+			var context = UIGraphics.GetCurrentContext ();
             var textColor = UIColor.Black;
 
             var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _radiusCorner);
 
-            DrawBackground(context, rect, roundedRectanglePath, fillColor.CGColor);
-            DrawStroke(fillColor.CGColor);
+			DrawBackground(context, rect, roundedRectanglePath, fillColor.CGColor);
+            DrawStroke(fillColor.CGColor);			
 
             SetNeedsDisplay();
         }

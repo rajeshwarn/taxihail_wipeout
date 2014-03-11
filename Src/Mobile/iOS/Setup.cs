@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<ILocalization, Localize>();
             container.Register<ILogger, LoggerWrapper>();        
             container.Register<ICacheService>(new CacheService());
-            container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "AppCache");
+            container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "UserAppCache");
 
             container.Register<IPhoneService, PhoneService>();
             container.Register<IPushNotificationService, PushNotificationService>();
