@@ -15,22 +15,26 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly ILocalization _localize;
 		readonly IMessageService _messageService;
 		readonly IPackageInfo _packageInfo;
+		readonly ICacheService _cacheService;
 
-		public ApplicationInfoService(ILocalization localize, IMessageService messageService, IPackageInfo packageInfo )
+		public ApplicationInfoService(ILocalization localize, 
+									IMessageService messageService, 
+									IPackageInfo packageInfo,
+									ICacheService cacheService)
 		{
 			_packageInfo = packageInfo;
 			_messageService = messageService;
 			_localize = localize;
-        	
+			_cacheService = cacheService;
 		}
 
         public async Task<ApplicationInfo> GetAppInfoAsync( )
         {
-            var cached = Cache.Get<ApplicationInfo>(AppInfoCacheKey);
+			var cached = _cacheService.Get<ApplicationInfo>(AppInfoCacheKey);
             if (cached == null)
             {
                 var appInfo = UseServiceClientAsync<ApplicationInfoServiceClient, ApplicationInfo>(service => service.GetAppInfoAsync());
-                Cache.Set(AppInfoCacheKey, await appInfo, DateTime.Now.AddHours(1));
+				_cacheService.Set(AppInfoCacheKey, await appInfo, DateTime.Now.AddHours(1));
                 return await appInfo;
             }
             return cached;
@@ -38,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void ClearAppInfo()
         {
-            Cache.Clear (AppInfoCacheKey);
+			_cacheService.Clear (AppInfoCacheKey);
         }
         
         
