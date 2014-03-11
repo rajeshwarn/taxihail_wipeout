@@ -565,16 +565,6 @@
     <Compile Include="Controls\Widgets\Addresses\AddressList.cs" />
     <Compile Include="Controls\Widgets\Addresses\AddressPicker.cs" />
     <Compile Include="Controls\Widgets\Addresses\AddressTypeToDrawableConverter.cs" />
-    <AndroidResource Include="Resources\Drawable\Controls_AddressBar_AddressEditText_Background.xml" />
-    <AndroidResource Include="Resources\Drawable\controls_addressbar_addressedittext_greendot.xml" />
-    <AndroidResource Include="Resources\Drawable\controls_addressbar_addressedittext_progress.xml" />
-    <AndroidResource Include="Resources\Drawable\Controls_AddressBar_AddressPickerEditText_Background.xml" />
-    <AndroidResource Include="Resources\Drawable\Controls_AddressBar_AddressSeparatorView_Background.xml" />
-    <AndroidResource Include="Resources\Drawable\Controls_AddressBar_StreetNumberEditText_Background_Focused.xml" />
-    <AndroidResource Include="Resources\Drawable\Controls_AddressBar_StreetNumberEditText_Background_Normal.xml" />
-    <AndroidResource Include="Resources\Drawable\Controls_AddressBar_StreetNumberEditText_Background_State.xml" />
-    <AndroidResource Include="Resources\Drawable\Controls_AddressBar_StreetNumberEditText_TextColor_State.xml" />
-    <AndroidResource Include="Resources\Drawable\Controls_AddressBar_TariffBackground.xml" />
     <Compile Include="Controls\Message\LoadingOverlay.cs" />
     <AndroidResource Include="Resources\Values\AddressLineAttributes.xml">
       <SubType>Designer</SubType>
@@ -697,16 +687,9 @@
     <AndroidResource Include="Resources\Drawable\server_button.png" />
     <AndroidResource Include="Resources\Drawable\loupe.png" />
     <AndroidResource Include="Resources\Drawable\main_settings.png" />
-    <AndroidResource Include="Resources\Drawable\bookLaterIcon.png" />
     <AndroidResource Include="Resources\Values\MvxBindingAttributes.xml" />
-    <AndroidResource Include="Resources\Drawable\bookLater_state.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\Logo.png" />
     <AndroidResource Include="Resources\Drawable\myLocationButton_state.xml" />
-    <AndroidResource Include="Resources\Drawable\bookLaterButton_state.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\location_info.png" />
     <AndroidResource Include="Resources\Drawable\number_icon.png" />
     <AndroidResource Include="Resources\Drawable\cancel.png" />
