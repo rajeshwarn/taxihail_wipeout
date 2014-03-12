@@ -12,20 +12,23 @@ using ServiceStack.Text;
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
 	public class PaymentViewModel : PageViewModel
+	{
         private readonly IPayPalExpressCheckoutService _palExpressCheckoutService;
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
+
 		public PaymentViewModel(IPayPalExpressCheckoutService palExpressCheckoutService,
-			IAccountService accountService,
-		public PaymentViewModel(IPayPalExpressCheckoutService palExpressCheckoutService,
-			IAccountService accountService,
+			IAccountService accountService,IPaymentService paymentService)
+		{
 			_palExpressCheckoutService = palExpressCheckoutService;
 			_accountService = accountService;
 			_palExpressCheckoutService = palExpressCheckoutService;
 			_accountService = accountService;
 			_paymentService = paymentService;
-		public void Init(string order, string orderStatus)
+		}
 
+		public void Init(string order, string orderStatus)
+		{
 			_paymentService.GetPaymentSettings();
 
             Order = JsonSerializer.DeserializeFromString<Order>(order); 
@@ -415,7 +418,3 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         }
     }
 }
-
-    }
-}
-
