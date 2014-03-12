@@ -2,6 +2,7 @@
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Client.Views.AddressPicker;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
