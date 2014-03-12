@@ -1,20 +1,13 @@
 using System;
-using Cirrious.MvvmCross.Binding.Droid.Views;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
 using Android.Content;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using System.Drawing;
-using Cirrious.MvvmCross.Binding.Attributes;
-using Cirrious.MvvmCross.Binding.BindingContext;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using apcurium.MK.Common.Configuration;
-using TinyIoC;
-using System.Collections.ObjectModel;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using System.Linq;
-using System.Collections.Specialized;
-using apcurium.MK.Booking.Mobile.Infrastructure;
+using Cirrious.MvvmCross.Binding.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 {

@@ -1,7 +1,6 @@
 #region
 
 using System;
-using System.Linq;
 using apcurium.MK.Common.Extensions;
 
 #endregion

@@ -1,5 +1,5 @@
-using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {

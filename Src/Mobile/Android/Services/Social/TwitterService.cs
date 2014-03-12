@@ -1,8 +1,7 @@
-using System;
-using apcurium.MK.Booking.Mobile.AppServices.Social;
 using Android.App;
-using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
 using Android.Content;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
+using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
 using Cirrious.CrossCore.Droid.Platform;
 
 namespace apcurium.MK.Booking.Mobile.Client.Services.Social

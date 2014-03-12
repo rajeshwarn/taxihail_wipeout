@@ -8,7 +8,6 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Droid.Views;
-using Android.OS;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {

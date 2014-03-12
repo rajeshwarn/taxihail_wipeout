@@ -1,14 +1,4 @@
 using Android.App;
-using Android.Content.PM;
-using Android.Widget;
-using Android.Views;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.BindingContext;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using CrossUI.Droid.Dialog.Elements;
-using CrossUI.Droid.Dialog;
-using CrossUI.Droid;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities

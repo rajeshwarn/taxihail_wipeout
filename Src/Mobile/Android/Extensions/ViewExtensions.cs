@@ -1,7 +1,7 @@
 using System.Drawing;
+using Android.Graphics.Drawables;
 using Android.Views;
 using Android.Widget;
-using Android.Graphics.Drawables;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions

@@ -1,11 +1,10 @@
-using System;
-using Android.Widget;
 using Android.Content;
+using Android.Graphics;
 using Android.Util;
 using Android.Views;
-using Android.Graphics;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
+using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {

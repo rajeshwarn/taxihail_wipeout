@@ -1,15 +1,15 @@
 using System;
 using System.Collections.ObjectModel;
-using apcurium.MK.Booking.Mobile.AppServices;
 using System.Linq;
-using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using apcurium.MK.Booking.Maps;
+using apcurium.MK.Booking.Maps.Geo;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Maps.Geo;
-using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {

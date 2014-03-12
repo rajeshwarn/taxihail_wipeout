@@ -2,8 +2,8 @@ using System;
 using Android.Content;
 using Android.Runtime;
 using Android.Util;
-using Android.Widget;
 using Android.Views;
+using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets

@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
-using ServiceStack.Text;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using System.Reactive.Linq;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using System.Reactive.Disposables;
-using apcurium.MK.Booking.Mobile.Extensions;
-using System.Threading.Tasks;
-using apcurium.MK.Common;
-using System.Threading;
-using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.PresentationHints;
-using apcurium.MK.Booking.Mobile.Infrastructure;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

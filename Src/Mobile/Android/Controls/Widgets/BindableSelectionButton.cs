@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Windows.Input;
 using Android.Content;
 using Android.Runtime;
 using Android.Util;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Style;
-using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {

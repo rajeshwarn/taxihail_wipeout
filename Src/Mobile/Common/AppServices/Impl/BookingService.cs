@@ -1,21 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using Address = apcurium.MK.Common.Entity.Address;
-using apcurium.MK.Booking.Mobile.Extensions;
-using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common;
-using Direction = apcurium.MK.Common.Entity.DirectionSetting;
-using apcurium.MK.Booking.Api.Client;
-using Cirrious.MvvmCross.Plugins.PhoneCall;
 using Cirrious.CrossCore;
+using Cirrious.MvvmCross.Plugins.PhoneCall;
+using Direction = apcurium.MK.Common.Entity.DirectionSetting;
+using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

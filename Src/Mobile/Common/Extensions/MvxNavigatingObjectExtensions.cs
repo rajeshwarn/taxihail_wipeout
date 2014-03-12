@@ -1,8 +1,8 @@
 ﻿using System;
-using Cirrious.MvvmCross.ViewModels;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Extensions
 {

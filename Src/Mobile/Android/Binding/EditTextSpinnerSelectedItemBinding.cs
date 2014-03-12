@@ -3,8 +3,8 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Adapters;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
-using Cirrious.MvvmCross.Binding.Droid.Target;
 using Cirrious.MvvmCross.Binding;
+using Cirrious.MvvmCross.Binding.Droid.Target;
 
 namespace apcurium.MK.Booking.Mobile.Client.Binding
 {

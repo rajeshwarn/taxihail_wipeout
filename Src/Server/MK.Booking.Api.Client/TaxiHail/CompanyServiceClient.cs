@@ -1,11 +1,7 @@
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {

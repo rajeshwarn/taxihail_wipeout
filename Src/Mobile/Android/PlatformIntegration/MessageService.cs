@@ -3,22 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
-using Android.App;
 using Android.Content;
+using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Activities;
+using apcurium.MK.Booking.Mobile.Client.Controls.Message;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Messages;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
+using Cirrious.CrossCore.Droid.Platform;
+using Cirrious.MvvmCross.Droid.Views;
+using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using TinyIoC;
 using TinyMessenger;
-using Cirrious.MvvmCross.Droid.Views;
-using Cirrious.CrossCore.Droid.Platform;
-using Cirrious.MvvmCross.ViewModels;
-using Android.Views;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
-using apcurium.MK.Booking.Mobile.Client.Controls.Message;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {

@@ -1,11 +1,11 @@
-using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Client;
 using System;
-using System.Reactive.Subjects;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.Extensions;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

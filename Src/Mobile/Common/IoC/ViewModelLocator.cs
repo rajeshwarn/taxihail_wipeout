@@ -1,5 +1,5 @@
-using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.IoC
 {

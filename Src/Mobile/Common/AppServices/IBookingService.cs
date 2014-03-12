@@ -1,10 +1,9 @@
 using System;
-using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
-using Address = apcurium.MK.Common.Entity.Address;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 
 namespace apcurium.MK.Booking.Mobile.AppServices

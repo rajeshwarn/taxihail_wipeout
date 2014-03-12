@@ -13,14 +13,14 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.Client.Diagnostic;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
-using TinyIoC;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Entity;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {

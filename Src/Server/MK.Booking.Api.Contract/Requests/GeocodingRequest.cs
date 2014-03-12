@@ -1,7 +1,6 @@
 ﻿#region
 
 using apcurium.MK.Booking.Google.Resources;
-using ServiceStack.ServiceHost;
 
 #endregion
 

@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Net;
-using System.Web;
 using System.Security.Cryptography;
-
+using System.Text;
+using System.Web;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Social.OAuth
 {

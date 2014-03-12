@@ -1,9 +1,7 @@
-using System;
-using Android.Views.Animations;
-using Android.Views;
-using Android.Widget;
 using Android.App;
-using Android.OS;
+using Android.Views;
+using Android.Views.Animations;
+using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {

@@ -4,7 +4,6 @@ using Cirrious.CrossCore.Core;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 
-
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public interface ISubViewModel<TResult>

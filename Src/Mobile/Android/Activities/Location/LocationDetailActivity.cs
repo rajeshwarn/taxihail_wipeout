@@ -1,9 +1,5 @@
-using System.Windows.Input;
 using Android.App;
 using Android.Content.PM;
-using Android.OS;
-using Android.Views;
-using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation

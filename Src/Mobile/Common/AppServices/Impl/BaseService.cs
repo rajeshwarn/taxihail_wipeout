@@ -1,10 +1,10 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Cirrious.CrossCore;
-using apcurium.MK.Common.Diagnostic;
-using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Diagnostic;
+using Cirrious.CrossCore;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

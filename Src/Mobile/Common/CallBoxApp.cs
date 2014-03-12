@@ -1,16 +1,15 @@
-using Cirrious.CrossCore;
-using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Security;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
-using TinyIoC;
-using TinyMessenger;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.IoC;
+using apcurium.MK.Common.Configuration;
+using Cirrious.CrossCore;
+using Cirrious.MvvmCross.ViewModels;
+using TinyIoC;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile
 {

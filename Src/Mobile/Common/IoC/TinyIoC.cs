@@ -21,6 +21,11 @@
 // Preprocessor directives for enabling/disabling functionality
 // depending on platform features. If the platform has an appropriate
 // #DEFINE then these should be set automatically below.
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
 #define EXPRESSIONS                         // Platform supports System.Linq.Expressions
 #define COMPILED_EXPRESSIONS                // Platform supports compiling expressions
 #define APPDOMAIN_GETASSEMBLIES             // Platform supports getting all assemblies from the AppDomain object
@@ -67,12 +72,7 @@
 #endregion
 namespace TinyIoC
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Reflection;
-
-	#if EXPRESSIONS
+    #if EXPRESSIONS
 	using System.Linq.Expressions;
 	using System.Threading;
 

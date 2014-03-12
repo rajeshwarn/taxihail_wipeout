@@ -1,11 +1,11 @@
 ﻿using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
-using MK.Common.Configuration;
-using TinyMessenger;
-using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.ViewModels;
+using Cirrious.MvvmCross.Views;
+using MK.Common.Configuration;
 using TinyIoC;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Extensions
 {

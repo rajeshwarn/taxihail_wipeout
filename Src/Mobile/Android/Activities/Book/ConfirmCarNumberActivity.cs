@@ -1,6 +1,5 @@
 using Android.App;
 using Android.Content.PM;
-
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
