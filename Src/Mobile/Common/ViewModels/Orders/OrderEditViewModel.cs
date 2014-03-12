@@ -121,9 +121,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 			set
 			{
-				_chargeTypes = value == null 
-				            ? new List<ListItem>() 
-				            : value;
+				_chargeTypes = value ?? new List<ListItem>();
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => ChargeTypeId);
 				RaisePropertyChanged(() => ChargeTypeName);

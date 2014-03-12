@@ -412,14 +412,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     _mLastMotionX = x;
 
 
-                    if (_mScroller.IsFinished)
-                    {
-                        _mTouchState = TOUCH_STATE_REST;
-                    }
-                    else
-                    {
-                        _mTouchState = TOUCH_STATE_HORIZONTAL_SCROLLING;
-                    }
+                    _mTouchState = _mScroller.IsFinished ? TOUCH_STATE_REST : TOUCH_STATE_HORIZONTAL_SCROLLING;
 
 
                     break;
