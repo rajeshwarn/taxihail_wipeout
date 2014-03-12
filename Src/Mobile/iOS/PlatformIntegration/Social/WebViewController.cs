@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 				ShadowOffset = new SizeF (0, -1)
 			};
 			
-			topBar.Items = new UIBarButtonItem []  {
+			topBar.Items = new []   {
 				new UIBarButtonItem (title),
 				flexibleSpace,
                 new UIBarButtonItem ("Close", UIBarButtonItemStyle.Bordered, (o, e) => { DismissViewController(true, () => {});} )
@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 			refreshButton = new UIBarButtonItem (UIBarButtonSystemItem.Refresh, (o, e) => { WebView.Reload (); });
 			stopButton = new UIBarButtonItem (UIBarButtonSystemItem.Stop, (o, e) => { WebView.StopLoading (); });
 			
-			toolbar.Items = new UIBarButtonItem [] { backButton, fixedSpace, forwardButton, flexibleSpace, stopButton, fixedSpace, refreshButton };
+			toolbar.Items = new [] { backButton, fixedSpace, forwardButton, flexibleSpace, stopButton, fixedSpace, refreshButton };
 
 			View.AddSubview (topBar);
 			View.AddSubview (toolbar);

@@ -174,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 
 			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
-			var pickupDateIsValid = !pickupDate.HasValue || (pickupDate.HasValue && pickupDate.Value.ToUniversalTime() >= DateTime.UtcNow);
+			var pickupDateIsValid = !pickupDate.HasValue || (pickupDate.Value.ToUniversalTime() >= DateTime.UtcNow);
 
 			if (!pickupDateIsValid)
 			{

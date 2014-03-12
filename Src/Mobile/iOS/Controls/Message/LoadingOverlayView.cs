@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _dialogView = new UIView();
             _dialogView.BackgroundColor = UIColor.White;
 
-            _imageView = new UIImageView(ImageHelper.ApplyThemeColorToImage("taxi_progress.png", MonoTouch.CoreGraphics.CGBlendMode.Color));
+            _imageView = new UIImageView(ImageHelper.ApplyThemeColorToImage("taxi_progress.png"));
                 
             _imageView.SizeToFit();
             _imageView.Hidden = true;

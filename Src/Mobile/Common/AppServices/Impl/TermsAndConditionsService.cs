@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public void AcknowledgeTerms(bool acknowledged, string email)
 		{
-			_cacheService.Set<string>(GetTermsAcknowledgmentKey(email), acknowledged ? "yes" : "no");
+			_cacheService.Set(GetTermsAcknowledgmentKey(email), acknowledged ? "yes" : "no");
 		}
 
 		private string GetTermsAcknowledgmentKey(string email)

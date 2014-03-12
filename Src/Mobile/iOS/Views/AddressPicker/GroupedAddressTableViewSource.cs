@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             _collapseItemCount = UIHelper.Is4InchDisplay ? 3 : 2;            
         }
 
-        public override int NumberOfSections(MonoTouch.UIKit.UITableView tableView)
+        public override int NumberOfSections(UITableView tableView)
         {
             var collection = ItemsSource as ObservableCollection<AddressViewModel>;
             if (collection != null)

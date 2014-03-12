@@ -26,7 +26,6 @@ namespace apcurium.MK.Booking.Mobile
 
 			if (currentAccount == null 
 				|| (creditCardIsMandatory 
-					&& currentAccount != null 
 					&& !currentAccount.DefaultCreditCard.HasValue))
 			{
 				if (currentAccount != null)

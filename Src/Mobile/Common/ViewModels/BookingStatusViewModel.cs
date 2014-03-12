@@ -234,13 +234,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private bool HasSeenReminderPrompt( Guid orderId )
         {
-            var hasSeen = this.Services().Cache.Get<string>("OrderReminderWasSeen." + orderId.ToString());
+            var hasSeen = this.Services().Cache.Get<string>("OrderReminderWasSeen." + orderId);
             return !string.IsNullOrEmpty(hasSeen);
         }
 
         private void SetHasSeenReminderPrompt( Guid orderId )
         {
-            this.Services().Cache.Set("OrderReminderWasSeen." + orderId.ToString(), true.ToString());                     
+            this.Services().Cache.Set("OrderReminderWasSeen." + orderId, true.ToString());                     
         }
 
 		private bool IsCmtRideLinq { get { return _paymentService.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt; } }
@@ -298,7 +298,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if (isLoaded && IsCmtRideLinq && _accountService.CurrentAccount.DefaultCreditCard != null)
 					{
 						var isPaired = _bookingService.IsPaired(Order.Id);
-                        var pairState = this.Services().Cache.Get<string>("CmtRideLinqPairState" + Order.Id.ToString());
+                        var pairState = this.Services().Cache.Get<string>("CmtRideLinqPairState" + Order.Id);
 						var isPairBypass = (pairState == CmtRideLinqPairingState.Failed) || (pairState == CmtRideLinqPairingState.Canceled) || (pairState == CmtRideLinqPairingState.Unpaired);
 						if (!isPaired && !_isCurrentlyPairing && !isPairBypass)
 						{
@@ -526,7 +526,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 							if(response.IsSuccessfull)
 							{
-								this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id.ToString(), CmtRideLinqPairingState.Unpaired);
+								this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id, CmtRideLinqPairingState.Unpaired);
 								RefreshStatus();
 							}
 							else

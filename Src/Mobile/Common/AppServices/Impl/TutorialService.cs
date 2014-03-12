@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				&& _cacheService.Get<object>("TutorialDisplayed") == null)
 			{
 				_messageService.ShowDialog(typeof(TutorialViewModel));
-				_cacheService.Set<object>("TutorialDisplayed", new object());
+				_cacheService.Set("TutorialDisplayed", new object());
 			}
 		}
 

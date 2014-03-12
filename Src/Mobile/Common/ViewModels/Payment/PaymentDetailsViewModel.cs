@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			LoadCreditCards();
 
-			Tips = new ListItem[]
+			Tips = new[]
 			{ 
 				new ListItem { Id = 0,  Display = "0%" }, 
 				new ListItem { Id = 5,  Display = "5%" }, 

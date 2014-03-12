@@ -118,7 +118,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                     var gradientLayer = new CAGradientLayer () {
                         StartPoint = new PointF (0, 0),
                         EndPoint = new Point (1, 0),
-                        Colors = new CGColor[] {
+                        Colors = new [] {
                             startColor,
                             midColor,
                             endColor

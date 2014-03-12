@@ -11,14 +11,14 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 		public static ICommand GetCommand(this MvxNavigatingObject viewModel, Action execute, Func<bool> canExecute = null, bool async = true)
 		{
 			return async 
-				? (ICommand)new AsyncCommand(WrapInTask(execute), canExecute)
+				? new AsyncCommand(WrapInTask(execute), canExecute)
 					: (ICommand)new MvxCommand(execute, canExecute);
 		}
 
 		public static ICommand GetCommand<T>(this MvxNavigatingObject viewModel, Action<T> execute, Func<T, bool> canExecute = null, bool async = true)
 		{   
 			return async 
-				? (ICommand)new AsyncCommand<T>(WrapInTask(execute), canExecute)
+				? new AsyncCommand<T>(WrapInTask(execute), canExecute)
 				: (ICommand)new MvxCommand<T>(execute, canExecute);
 		}
 

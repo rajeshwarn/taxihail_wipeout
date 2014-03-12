@@ -274,7 +274,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             {
                 return this.GetCommand(() =>
                 { 										
-					if (MeterAmount != null && MeterAmount.ToString() != GetCurrency(MeterAmount).ToString())
+					if (MeterAmount != null && MeterAmount != GetCurrency(MeterAmount))
                     {
                         MeterAmount = GetCurrency(MeterAmount);
                     }

@@ -3227,19 +3227,26 @@ public sealed partial class TinyIoCContainer : IDisposable
 		ObjectFactoryBase factory;
 		if (_RegisteredTypes.TryGetValue(new TypeRegistration(checkType, name), out factory))
 		{
-			if (factory.AssumeConstruction)
-				return true;
+		    if (factory.AssumeConstruction)
+		    {
+                return true;
+		    }
 
-			if (factory.Constructor == null)
-				return (GetBestConstructor(factory.CreatesType, parameters, options) != null) ? true : false;
-			else
-				return CanConstruct(factory.Constructor, parameters, options);
+
+		    if (factory.Constructor == null)
+		    {
+		        return (GetBestConstructor(factory.CreatesType, parameters, options) != null) ? true : false;
+		    }
+		    else
+		    {
+		        return CanConstruct(factory.Constructor, parameters, options);
+		    }				
 		}
 
 		// Fail if requesting named resolution and settings set to fail if unresolved
 		// Or bubble up if we have a parent
 		if (!String.IsNullOrEmpty(name) && options.NamedResolutionFailureAction == NamedResolutionFailureActions.Fail)
-			return (_Parent != null) ? _Parent.CanResolveInternal(registration, parameters, options) : false;
+			return (_Parent != null) && _Parent.CanResolveInternal(registration, parameters, options);
 
 		// Attemped unnamed fallback container resolution if relevant and requested
 		if (!String.IsNullOrEmpty(name) && options.NamedResolutionFailureAction == NamedResolutionFailureActions.AttemptUnnamedResolution)
@@ -3249,7 +3256,7 @@ public sealed partial class TinyIoCContainer : IDisposable
 				if (factory.AssumeConstruction)
 					return true;
 
-				return (GetBestConstructor(factory.CreatesType, parameters, options) != null) ? true : false;
+				return GetBestConstructor(factory.CreatesType, parameters, options) != null;
 			}
 		}
 

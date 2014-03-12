@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             // TODO: When refactoring StatusView, get rid of AddressMapDelegate
             // and use helper class to get GetViewForAnnotation delegate
-            this.GetViewForAnnotation = new AddressMapDelegate(true).GetViewForAnnotation;
+            this.GetViewForAnnotation = new AddressMapDelegate().GetViewForAnnotation;
 
             InitializeGesture();
         }

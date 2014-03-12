@@ -287,7 +287,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 									ShowSubViewModel<BookRatingViewModel,OrderRated>(new 
 	            	                    {														
 											orderId = OrderId, 
-											canRate = canRate
+											canRate
 										}.ToStringDictionary(),
 									RefreshOrderStatus);
 	                           });

@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             result.HideBottomBar = tableView.IsLastCell(indexPath);
             result.RemoveDelay();
-            return result as UITableViewCell;
+            return result;
         }
        
 		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)

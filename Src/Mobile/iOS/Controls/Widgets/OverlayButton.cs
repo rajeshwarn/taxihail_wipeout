@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             BackgroundColor = UIColor.Clear;
             _fillColor = fillColorNormal;
 
-            this.TouchDown += (object sender, EventArgs e) => 
+            this.TouchDown += (sender, e) => 
 			{
                 _fillColor = fillColorPressed;
 				this.SetNeedsDisplay();

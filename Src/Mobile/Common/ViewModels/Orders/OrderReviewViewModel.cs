@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public void Init()
 		{
-			this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), (settings) => SettingsUpdated(settings));
+			this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), settings => SettingsUpdated(settings));
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
 			this.Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
 			this.Observe(_orderWorkflowService.GetAndObserveNoteToDriver(), note => Note = note);
