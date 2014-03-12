@@ -106,6 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public async void CheckTermsAsync()
 		{
 			await _termsService.CheckIfNeedsToShowTerms ((content, actionOnResult) => ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool> (content, actionOnResult));
+			_locateUser = true;
 		}
 
 		public override void OnViewStopped()
