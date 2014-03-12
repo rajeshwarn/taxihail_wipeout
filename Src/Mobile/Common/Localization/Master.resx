@@ -1307,8 +1307,8 @@
   <data name="PaymentConfirmationMessageToDriver" xml:space="preserve">
     <value>The passenger has paid {0} (auth : {1})</value>
   </data>
-  <data name="CmtTransactionErrorMessage" xml:space="preserve">
-    <value>Transaction Denied</value>
+  <data name="PaymentErrorMessage" xml:space="preserve">
+    <value>Details: {0}</value>
   </data>
   <data name="SendMessageErrorMessage" xml:space="preserve">
     <value>Error confirming with driver payment cancelled</value>

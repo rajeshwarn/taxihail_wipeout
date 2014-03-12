@@ -365,7 +365,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     if (!response.IsSuccessfull)
                     {
                         this.Services().Message.ShowProgress(false);
-                        this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], this.Services().Localize["CmtTransactionErrorMessage"]);
+                        this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], 
+							string.Format(this.Services().Localize["PaymentErrorMessage"], response.Message));
                         return;
                     }
 

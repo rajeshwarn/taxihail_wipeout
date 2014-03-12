@@ -473,3 +473,4 @@
 "WarningLocationService"="Please turn on location services to have your location show up in the map.";
 "UpdatedTermsAndConditionsAcceptButton"="Accept";
 "View_UpdatedTermsAndConditions"="New Terms and Conditions";
+"PaymentErrorMessage"="Details: {0}";
