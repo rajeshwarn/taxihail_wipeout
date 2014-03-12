@@ -9,7 +9,6 @@
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
     <ProductVersion>12.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -347,7 +346,6 @@
     </Compile>
     <Compile Include="Views\BaseViewController.cs" />
     <Compile Include="Extensions\UIResponderExtensions.cs" />
-    <Compile Include="Controls\ValignLabel.cs" />
     <Compile Include="Views\ResetPasswordView.designer.cs">
       <DependentUpon>ResetPasswordView.cs</DependentUpon>
     </Compile>
