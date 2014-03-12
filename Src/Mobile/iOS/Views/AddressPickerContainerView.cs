@@ -5,6 +5,7 @@ using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Views.AddressPicker;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -18,10 +19,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			base.ViewWillAppear (animated);
 
+			NavigationController.NavigationBar.BarStyle = UIBarStyle.Default;
 			NavigationController.NavigationBar.Hidden = true;
 			View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 			View.Hidden = false;
             View.Bind(this, "DataContext;");
+			((AddressPickerView)View).FocusOnTextField ();
 		}
 	}
 }

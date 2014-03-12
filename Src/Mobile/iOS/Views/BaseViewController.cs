@@ -239,6 +239,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             });
         }
 
+		protected void ChangeThemeOfBarStyle()
+		{
+			// change color of status bar
+			if (UIHelper.IsOS7orHigher)
+			{
+				NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
+					? UIBarStyle.Black
+					: UIBarStyle.Default;
+			}
+		}
+
         protected void ChangeThemeOfNavigationBar()
         {
             var titleFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
@@ -247,10 +258,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var textColor = Theme.LabelTextColor;
             var navBarColor = Theme.CompanyColor;
 
-            var isOS7orHigher = UIHelper.IsOS7orHigher;
-
             // change color of navigation bar
-            if (isOS7orHigher) 
+			if (UIHelper.IsOS7orHigher) 
             {
                 NavigationController.NavigationBar.Translucent = false;
                 UINavigationBar.Appearance.BarTintColor = navBarColor;
@@ -276,12 +285,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
 
             // change color of status bar
-            if (isOS7orHigher)
-            {
-                NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
-                                                              ? UIBarStyle.Black
-                                                              : UIBarStyle.Default;
-            }
+			ChangeThemeOfBarStyle ();
 
             // set title color
             var titleTextAttributes = new UITextAttributes()
