@@ -2,6 +2,7 @@
 
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
 
 #endregion
 

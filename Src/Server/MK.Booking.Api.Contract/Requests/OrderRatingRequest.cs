@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
 
 #endregion
 

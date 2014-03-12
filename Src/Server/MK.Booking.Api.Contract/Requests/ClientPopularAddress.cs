@@ -1,8 +1,10 @@
-﻿#region
+﻿using System.Collections.Generic;
+using apcurium.MK.Booking.Api.Contract.Http;
+
+#region
 
 #if !CLIENT
 using apcurium.MK.Booking.ReadModel;
-
 #endif
 
 #endregion

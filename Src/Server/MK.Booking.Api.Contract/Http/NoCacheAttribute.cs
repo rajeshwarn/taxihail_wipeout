@@ -2,8 +2,13 @@
 
 #if CLIENT
 using System;
+#else
+using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
 #endif
 #endregion
+
+
 
 namespace apcurium.MK.Booking.Api.Contract.Http
 {

@@ -1,14 +1,13 @@
 #region
 
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Security;
-using ServiceStack.Common.ServiceClient.Web;
 #if !CLIENT
 using ServiceStack.ServiceInterface.Auth;
 #else
-using System.Threading.Tasks;
-
+using ServiceStack.Common.ServiceClient.Web;
 #endif
 
 #endregion
