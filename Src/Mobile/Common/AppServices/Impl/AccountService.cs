@@ -295,13 +295,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             catch(WebServiceException e)
             {
-                if (e.StatusCode == (int)HttpStatusCode.NotFound)
+                switch (e.StatusCode)
                 {
-                    throw new AuthException("Invalid service url", AuthFailure.InvalidServiceUrl, e);
-                }
-                else if (e.StatusCode == (int)HttpStatusCode.Unauthorized)
-                {
-                    throw new AuthException("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);
+                    case (int)HttpStatusCode.NotFound:
+                        throw new AuthException("Invalid service url", AuthFailure.InvalidServiceUrl, e);
+                    case (int)HttpStatusCode.Unauthorized:
+                        throw new AuthException("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);
                 }
                 throw;
             }

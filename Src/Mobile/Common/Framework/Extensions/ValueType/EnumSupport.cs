@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Mobile.Framework.Extensions.ValueType
 
         public EnumSupport()
         {
-            Type type = Enum.GetUnderlyingType(typeof (T));
+            var type = Enum.GetUnderlyingType(typeof (T));
 
             support = ValueSupport.Get(type);
         }

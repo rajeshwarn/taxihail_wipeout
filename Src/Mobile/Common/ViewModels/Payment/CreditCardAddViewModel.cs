@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		        CreditCardType = (int)id;
 
 		        ExpirationYears = new List<ListItem>();
-		        for (int i = 0; i <= 15; i++)
+		        for (var i = 0; i <= 15; i++)
 		        {
 		            ExpirationYears.Add (new ListItem { Id = DateTime.Today.AddYears(i).Year, Display = DateTime.Today.AddYears(i).Year.ToString(CultureInfo.InvariantCulture) });
 		        }
@@ -175,7 +175,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     }
                     else
                     {
-                        Regex amexRgx = new Regex(AmexPattern, RegexOptions.IgnoreCase);
+                        var amexRgx = new Regex(AmexPattern, RegexOptions.IgnoreCase);
                         matches = amexRgx.Matches(Data.CardNumber);
                         if (matches.Count > 0)
                         {
@@ -341,7 +341,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
             try
             {
-				bool success = false;
+				var success = false;
 				using(this.Services().Message.ShowProgress())
 				{
 	                Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
@@ -382,11 +382,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         private bool IsValidate(string cardNumber)
         {
-            byte[] number = new byte[16]; // number to validate
+            var number = new byte[16]; // number to validate
             
             // Remove non-digits
-            int len = 0;
-            for(int i = 0; i < cardNumber.Length; i++)
+            var len = 0;
+            for(var i = 0; i < cardNumber.Length; i++)
             {
                 if(char.IsDigit(cardNumber, i))
                 {
@@ -396,12 +396,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
 
             // Use Luhn Algorithm to validate
-            int sum = 0;
-            for(int i = len - 1; i >= 0; i--)
+            var sum = 0;
+            for(var i = len - 1; i >= 0; i--)
             {
                 if(i % 2 == len % 2)
                 {
-                    int n = number[i] * 2;
+                    var n = number[i] * 2;
                     sum += (n / 10) + (n % 10);
                 }
                 else

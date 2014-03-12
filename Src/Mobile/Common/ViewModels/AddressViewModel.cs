@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			unchecked
 			{
-				int hash = 17;
+				var hash = 17;
 				hash = hash * 23 + DisplayLine1.ToSafeString().GetHashCode();
 				hash = hash * 23 + DisplayLine2.ToSafeString().GetHashCode();
 				hash = hash * 23 + Type.GetHashCode();

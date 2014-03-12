@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 		void LayoutViews ()
 		{
 			var sbounds = View.Bounds;
-			int top = (InterfaceOrientation == UIInterfaceOrientation.Portrait) ? 0 : -44;
+			var top = (InterfaceOrientation == UIInterfaceOrientation.Portrait) ? 0 : -44;
 			
 			topBar.Frame = new RectangleF (0, top, sbounds.Width, 44);
 			toolbar.Frame =  new RectangleF (0, sbounds.Height-44, sbounds.Width, 44);
@@ -136,11 +136,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 		
 		public static string EncodeIdna (string host)
 		{
-			foreach (char c in host){
+			foreach (var c in host){
 				if (c > (char) 0x7f){
 					var segments = host.Split ('.');
 					var encoded = new string [segments.Length];
-					int i = 0;
+					var i = 0;
 					
 					foreach (var s in segments)
 						encoded [i++] = Mono.Util.Punycode.Encode (s.ToLower ());
@@ -159,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 			
 			if (url.StartsWith ("http://")){
 				string host;
-				int last = url.IndexOf ('/', 7);
+				var last = url.IndexOf ('/', 7);
 				if (last == -1)
 					host = url.Substring (7);
 				else 

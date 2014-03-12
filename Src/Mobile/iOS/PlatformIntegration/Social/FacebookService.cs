@@ -29,8 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 					allowLoginUI: true,
 					completion: (session, status, error) =>
 					{
-						//var appDelegate = UIApplication.SharedApplications.Delegate;
-						bool connected = status == FBSessionState.Open
+						var connected = status == FBSessionState.Open
 						                 || status == FBSessionState.OpenTokenExtended;
 
 						if(connected)

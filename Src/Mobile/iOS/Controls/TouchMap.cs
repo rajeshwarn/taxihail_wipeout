@@ -186,31 +186,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             get {
                 return _addressSelectionMode;
             }
-            set {
+            set
+            {
                 _addressSelectionMode = value;
-                if(_addressSelectionMode == AddressSelectionMode.PickupSelection)
+                switch (_addressSelectionMode)
                 {
-                    _pickupCenterPin.Hidden = false;
-                    if(_pickupPin != null) RemoveAnnotation(_pickupPin);
-                    _pickupPin = null;
-
-                    ShowDropOffPin(Dropoff);
-                    SetNeedsDisplay();
-                }
-                else if(_addressSelectionMode == AddressSelectionMode.DropoffSelection)
-                {
-                    _dropoffCenterPin.Hidden = false;
-                    if(_dropoffPin != null) RemoveAnnotation(_dropoffPin);
-                    _dropoffPin = null;
-
-                    ShowPickupPin(Pickup);
-                    SetNeedsDisplay();
-                }
-                else
-                {
-                    ShowDropOffPin(Dropoff);
-                    ShowPickupPin(Pickup);
-                    SetNeedsDisplay();
+                    case AddressSelectionMode.PickupSelection:
+                        _pickupCenterPin.Hidden = false;
+                        if(_pickupPin != null) RemoveAnnotation(_pickupPin);
+                        _pickupPin = null;
+                        ShowDropOffPin(Dropoff);
+                        SetNeedsDisplay();
+                        break;
+                    case AddressSelectionMode.DropoffSelection:
+                        _dropoffCenterPin.Hidden = false;
+                        if(_dropoffPin != null) RemoveAnnotation(_dropoffPin);
+                        _dropoffPin = null;
+                        ShowPickupPin(Pickup);
+                        SetNeedsDisplay();
+                        break;
+                    default:
+                        ShowDropOffPin(Dropoff);
+                        ShowPickupPin(Pickup);
+                        SetNeedsDisplay();
+                        break;
                 }
             }
         }

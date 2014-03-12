@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return;
 					}
 					
-					bool hasPassword = Data.Password.HasValue() && ConfirmPassword.HasValue();
+					var hasPassword = Data.Password.HasValue() && ConfirmPassword.HasValue();
                     if (Data.Email.IsNullOrEmpty() || Data.Name.IsNullOrEmpty() || Data.Phone.IsNullOrEmpty() || (!hasPassword && !HasSocialInfo))
 					{
                         this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["CreateAccountEmptyField"]);

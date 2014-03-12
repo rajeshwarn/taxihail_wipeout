@@ -19,12 +19,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         protected override UITableViewCell GetOrCreateCellFor(UITableView tableView, NSIndexPath indexPath, object item)
         {
-            PanelMenuCell result = tableView.DequeueReusableCell (this.CellIdentifier) as PanelMenuCell;
-
-            if (result == null)
-            {
-                result = new PanelMenuCell(_cellId, _cellBindingText); 
-            }
+            var result = tableView.DequeueReusableCell (this.CellIdentifier) as PanelMenuCell ??
+                         new PanelMenuCell(_cellId, _cellBindingText);
 
             result.HideBottomBar = tableView.IsLastCell(indexPath);
             result.RemoveDelay();

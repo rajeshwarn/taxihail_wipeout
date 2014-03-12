@@ -131,8 +131,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
         public override UIView GetViewForFooter(UITableView tableView, int section)
         {
-            bool showLoadMore = true;
-            bool isPlaces = false;
+            var showLoadMore = true;
+            var isPlaces = false;
 
             var collection = ItemsSource as ObservableCollection<AddressViewModel>;
             if (collection != null)

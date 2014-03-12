@@ -174,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 
 			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
-			bool pickupDateIsValid = !pickupDate.HasValue || (pickupDate.HasValue && pickupDate.Value.ToUniversalTime() >= DateTime.UtcNow);
+			var pickupDateIsValid = !pickupDate.HasValue || (pickupDate.HasValue && pickupDate.Value.ToUniversalTime() >= DateTime.UtcNow);
 
 			if (!pickupDateIsValid)
 			{
@@ -184,7 +184,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder()
 		{
-			CreateOrder order = await GetOrder();
+			var order = await GetOrder();
 
 			try
 			{
@@ -208,8 +208,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 			catch(WebServiceException e)
 			{
-				string message = "";
-				string messageNoCall = "";
+				var message = "";
+				var messageNoCall = "";
 
 				switch (e.ErrorCode)
 				{

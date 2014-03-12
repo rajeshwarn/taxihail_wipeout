@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         
         public async void CheckVersionAsync()
         {
-			bool isUpToDate = true;
+			var isUpToDate = true;
             try
             {
                 var app = await GetAppInfoAsync();

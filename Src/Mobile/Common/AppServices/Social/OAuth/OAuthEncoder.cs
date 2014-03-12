@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Social.OAuth
 		{
 			var sb = new StringBuilder ();
 			
-			foreach (byte c in Encoding.UTF8.GetBytes (s)){
+			foreach (var c in Encoding.UTF8.GetBytes (s)){
 				if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '-' || c == '_' || c == '.' || c == '~')
 					sb.Append ((char) c);
 				else {

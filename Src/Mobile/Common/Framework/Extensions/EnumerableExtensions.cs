@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Framework.Extensions
 
         public static int IndexOf<T>(this IEnumerable<T> items, T item, Func<T, T, bool> predicate)
         {
-            int index = 0;
+            var index = 0;
 
             foreach (T instance in items)
             {

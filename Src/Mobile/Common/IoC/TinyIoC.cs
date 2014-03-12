@@ -465,13 +465,13 @@ public static class TypeExtensions
 			if (_parameterTypes.Length != cacheKey._parameterTypes.Length)
 				return false;
 
-			for (int i = 0; i < _genericTypes.Length; ++i)
+			for (var i = 0; i < _genericTypes.Length; ++i)
 			{
 				if (_genericTypes[i] != cacheKey._genericTypes[i])
 					return false;
 			}
 
-			for (int i = 0; i < _parameterTypes.Length; ++i)
+			for (var i = 0; i < _parameterTypes.Length; ++i)
 			{
 				if (_parameterTypes[i] != cacheKey._parameterTypes[i])
 					return false;
@@ -493,12 +493,12 @@ public static class TypeExtensions
 
 				result = (result * 397) ^ _methodName.GetHashCode();
 
-				for (int i = 0; i < _genericTypes.Length; ++i)
+				for (var i = 0; i < _genericTypes.Length; ++i)
 				{
 					result = (result * 397) ^ _genericTypes[i].GetHashCode();
 				}
 
-				for (int i = 0; i < _parameterTypes.Length; ++i)
+				for (var i = 0; i < _parameterTypes.Length; ++i)
 				{
 					result = (result * 397) ^ _parameterTypes[i].GetHashCode();
 				}
@@ -3221,8 +3221,8 @@ public sealed partial class TinyIoCContainer : IDisposable
 		if (parameters == null)
 			throw new ArgumentNullException("parameters");
 
-		Type checkType = registration.Type;
-		string name = registration.Name;
+		var checkType = registration.Type;
+		var name = registration.Name;
 
 		ObjectFactoryBase factory;
 		if (_RegisteredTypes.TryGetValue(new TypeRegistration(checkType, name), out factory))
@@ -3278,7 +3278,7 @@ public sealed partial class TinyIoCContainer : IDisposable
 		if (!type.IsGenericType())
 			return false;
 
-		Type genericType = type.GetGenericTypeDefinition();
+		var genericType = type.GetGenericTypeDefinition();
 
 		if (genericType == typeof(IEnumerable<>))
 			return true;
@@ -3291,7 +3291,7 @@ public sealed partial class TinyIoCContainer : IDisposable
 		if (!type.IsGenericType())
 			return false;
 
-		Type genericType = type.GetGenericTypeDefinition();
+		var genericType = type.GetGenericTypeDefinition();
 
 		// Just a func
 		if (genericType == typeof(Func<>))
@@ -3443,7 +3443,7 @@ public sealed partial class TinyIoCContainer : IDisposable
 	if (!type.IsGenericType())
 	return null;
 
-	Type genericType = type.GetGenericTypeDefinition();
+	var genericType = type.GetGenericTypeDefinition();
 	//#if NETFX_CORE
 	//			Type[] genericArguments = type.GetTypeInfo().GenericTypeArguments.ToArray();
 	//#else
@@ -3453,7 +3453,7 @@ public sealed partial class TinyIoCContainer : IDisposable
 	// Just a func
 	if (genericType == typeof(Func<>))
 	{
-	Type returnType = genericArguments[0];
+	var returnType = genericArguments[0];
 
 	//#if NETFX_CORE
 	//				MethodInfo resolveMethod = typeof(TinyIoCContainer).GetTypeInfo().GetDeclaredMethods("Resolve").First(mi => !mi.GetParameters().Any());
@@ -3472,7 +3472,7 @@ public sealed partial class TinyIoCContainer : IDisposable
 	// 2 parameter func with string as first parameter (name)
 	if ((genericType == typeof(Func<,>)) && (genericArguments[0] == typeof(string)))
 	{
-	Type returnType = genericArguments[1];
+	var returnType = genericArguments[1];
 
 	//#if NETFX_CORE
 	//				MethodInfo resolveMethod = typeof(TinyIoCContainer).GetTypeInfo().GetDeclaredMethods("Resolve").First(mi => mi.GetParameters().Length == 1 && mi.GetParameters()[0].GetType() == typeof(String));
@@ -3496,7 +3496,7 @@ public sealed partial class TinyIoCContainer : IDisposable
 	if ((genericType == typeof(Func<,,>) && type.GetGenericArguments()[0] == typeof(string) && type.GetGenericArguments()[1] == typeof(IDictionary<string, object>)))
 	//#endif
 	{
-	Type returnType = genericArguments[2];
+	var returnType = genericArguments[2];
 
 	var name = Expression.Parameter(typeof(string), "name");
 	var parameters = Expression.Parameter(typeof(IDictionary<string, object>), "parameters");
@@ -3632,7 +3632,7 @@ public sealed partial class TinyIoCContainer : IDisposable
 		var ctorParams = constructor.GetParameters();
 		object[] args = new object[ctorParams.Count()];
 
-		for (int parameterIndex = 0; parameterIndex < ctorParams.Count(); parameterIndex++)
+		for (var parameterIndex = 0; parameterIndex < ctorParams.Count(); parameterIndex++)
 		{
 			var currentParam = ctorParams[parameterIndex];
 
@@ -3688,7 +3688,7 @@ public sealed partial class TinyIoCContainer : IDisposable
 		var lambdaParams = Expression.Parameter(typeof(object[]), "parameters");
 		var newParams = new Expression[constructorParams.Length];
 
-		for (int i = 0; i < constructorParams.Length; i++)
+		for (var i = 0; i < constructorParams.Length; i++)
 		{
 			var paramsParameter = Expression.ArrayIndex(lambdaParams, Expression.Constant(i));
 

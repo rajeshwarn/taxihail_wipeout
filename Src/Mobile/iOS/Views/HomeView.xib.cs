@@ -162,10 +162,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         homeView.LayoutIfNeeded();
                         ctrlOrderReview.SetNeedsDisplay();
                         ctrlOrderOptions.SetNeedsDisplay();
-                    }, () =>
-                {
-                    orderEdit.SetNeedsDisplay();
-                });
+                    }, () => orderEdit.SetNeedsDisplay());
             }
             else if (hint.State == HomeViewModelState.AddressSearch)
             {

@@ -230,7 +230,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool CancelOrder (Guid orderId)
         {
-			bool isCompleted = true;
+			var isCompleted = true;
 			try{
 				UseServiceClientTask<OrderServiceClient> (service => service.CancelOrder (orderId));
 			}catch{
@@ -241,7 +241,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool SendReceipt (Guid orderId)
         {
-			bool isCompleted = true;
+			var isCompleted = true;
 			try{
 				UseServiceClientTask<OrderServiceClient> (service => service.SendReceipt (orderId));			
 			}catch{

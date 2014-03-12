@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private void HandleCanExecuteChanged(object sender, EventArgs e)
         {
             var command = (ICommand)sender;
-            bool canExecute = command.CanExecute(CommandParameter);
+            var canExecute = command.CanExecute(CommandParameter);
             this.Enabled = canExecute;
         }
 

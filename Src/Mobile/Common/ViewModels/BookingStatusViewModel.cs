@@ -433,7 +433,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         this.Services().Localize["YesButton"], 
 						async () =>
                         {
-							bool isSuccess = false;
+							var isSuccess = false;
 							using(this.Services().Message.ShowProgress())
 							{
 								isSuccess = await Task.Run(() => _bookingService.CancelOrder(Order.Id)); 

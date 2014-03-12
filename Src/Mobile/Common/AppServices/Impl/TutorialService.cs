@@ -55,9 +55,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private TutorialContent LoadTutorialContent ()
         {
             TutorialContent result = null;
-            string resourceName = "";
+            var resourceName = "";
             
-            foreach (string name in typeof(TutorialService).Assembly.GetManifestResourceNames()) 
+            foreach (var name in typeof(TutorialService).Assembly.GetManifestResourceNames()) 
 			{ 
                 if (name.ToLower ().EndsWith (".tutorial.json")) 
 				{
@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				{
 					using (var reader = new StreamReader(stream))
 					{
-						string serializedData = reader.ReadToEnd();
+						var serializedData = reader.ReadToEnd();
 						result = JsonSerializer.DeserializeFromString<TutorialContent>(serializedData);
 					}
 				}

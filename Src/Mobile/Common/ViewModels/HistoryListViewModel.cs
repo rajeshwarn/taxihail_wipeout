@@ -40,8 +40,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private string FormatDateTime(DateTime date )
         {
             var formatTime = new CultureInfo(CultureProvider.CultureInfoString).DateTimeFormat.ShortTimePattern;
-            string format = "{0:dddd, MMMM d}, {0:"+formatTime+"}";
-            string result = string.Format(format, date) ;
+            var format = "{0:dddd, MMMM d}, {0:"+formatTime+"}";
+            var result = string.Format(format, date) ;
             return result;
         }
        
