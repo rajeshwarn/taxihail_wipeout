@@ -20,15 +20,17 @@ namespace ninePatchMaker
             {
                 var basicSplashNinePatch = new NinePatch();
 
-                basicSplashNinePatch.LeftRanges.Add(NinePatchRange.CreateFromStart(0, 1d / 8d));
+				// stretch (these values should be the same for both left and both top, to ensure that the image stays centered when resizing)
+				basicSplashNinePatch.LeftRanges.Add(NinePatchRange.CreateFromStart(0, 1d / 26d));
                 basicSplashNinePatch.LeftRanges.Add(NinePatchRange.CreateFromEnd(1, 1d / 26d));
-
                 basicSplashNinePatch.TopRanges.Add(NinePatchRange.CreateFromStart(0, 1d / 8d));
                 basicSplashNinePatch.TopRanges.Add(NinePatchRange.CreateFromEnd(1, 1d / 8d));
 
+				// scale
                 basicSplashNinePatch.RightRanges.Add(NinePatchRange.CreateFromStart(1d / 8d, 6.7d / 8d));
                 basicSplashNinePatch.BottomRanges.Add(NinePatchRange.CreateFromStart(1d / 8d, 6d / 8d));
 
+				// output
 				SaveDrawable(outputFolder, filename, "xxhdpi", bitmap, basicSplashNinePatch, 1.5);
 				SaveDrawable(outputFolder, filename, "xhdpi", bitmap, basicSplashNinePatch, 1);
                 SaveDrawable(outputFolder, filename, "hdpi", bitmap, basicSplashNinePatch, .75);
