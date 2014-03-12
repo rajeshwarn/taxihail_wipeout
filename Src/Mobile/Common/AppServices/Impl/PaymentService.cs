@@ -1,17 +1,14 @@
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Client.Payments.Fake;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Booking.Api.Client.Payments.Braintree;
-using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using apcurium.MK.Booking.Api.Client;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
-
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Configuration.Impl;
 
 #if IOS
 using ServiceStack.ServiceClient.Web;

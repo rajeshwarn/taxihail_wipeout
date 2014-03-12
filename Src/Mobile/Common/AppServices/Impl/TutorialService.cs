@@ -1,11 +1,11 @@
 using System;
+using System.IO;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Data;
-using System.IO;
-using ServiceStack.Text;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Common.Configuration;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

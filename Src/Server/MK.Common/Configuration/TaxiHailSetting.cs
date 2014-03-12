@@ -1,6 +1,4 @@
-using System;
 using apcurium.MK.Common.Entity;
-using System.ComponentModel.DataAnnotations;
 
 namespace MK.Common.Configuration
 {

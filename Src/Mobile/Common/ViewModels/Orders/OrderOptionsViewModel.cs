@@ -1,10 +1,9 @@
 using System;
 using System.Windows.Input;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {

@@ -1,13 +1,13 @@
-using Android.App;
-using Android.Graphics;
-using Android.Util;
-using apcurium.MK.Booking.Mobile.Style;
 using System;
+using Android.App;
+using Android.Content.Res;
 using Android.Gms.Maps.Model;
+using Android.Graphics;
 using Android.Graphics.Drawables;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Android.Content.Res;
+using apcurium.MK.Booking.Mobile.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {

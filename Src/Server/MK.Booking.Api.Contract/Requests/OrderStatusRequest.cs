@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.ServiceModel;
 
 #endregion
 

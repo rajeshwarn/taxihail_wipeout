@@ -1,8 +1,6 @@
-using Android.App;
-using Android.Widget;
+using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Droid.Views;
 using Cirrious.MvvmCross.ViewModels;
-using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {

@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Social.OAuth

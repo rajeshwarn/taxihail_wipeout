@@ -1,15 +1,12 @@
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.PresentationHints;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
-using System.Threading.Tasks;
-
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {

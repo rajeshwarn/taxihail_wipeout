@@ -1,5 +1,5 @@
-using TinyMessenger;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Messages
 {

@@ -1,6 +1,6 @@
-using TinyMessenger;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Messages
 {

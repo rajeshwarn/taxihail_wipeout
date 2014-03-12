@@ -1,16 +1,13 @@
-using System;
 using Android.App;
 using Android.Content;
 using Android.Locations;
 using Android.OS;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using TinyIoC;
-using apcurium.MK.Common.Diagnostic;
-using Cirrious.CrossCore.Droid;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using Cirrious.CrossCore.Droid.Platform;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using Cirrious.CrossCore.Droid;
+using Cirrious.CrossCore.Droid.Platform;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {

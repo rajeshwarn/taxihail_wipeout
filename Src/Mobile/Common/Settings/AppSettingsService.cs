@@ -1,15 +1,15 @@
 using System;
-using System.Linq;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using ServiceStack.Text;
-using System.IO;
-using apcurium.MK.Common.Configuration;
 using System.Collections.Generic;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
-using apcurium.MK.Common.Diagnostic;
-using TinyIoC;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using MK.Common.Configuration;
+using ServiceStack.Text;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {

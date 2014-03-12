@@ -1,8 +1,7 @@
-using System;
+using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using ServiceStack.Text;
-using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {

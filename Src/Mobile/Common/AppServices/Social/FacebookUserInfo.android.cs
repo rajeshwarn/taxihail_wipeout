@@ -1,4 +1,3 @@
-using System;
 using Xamarin.FacebookBinding.Model;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Social

@@ -1,15 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Android.Content;
-using Android.Runtime;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
-
-using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {

@@ -1,9 +1,8 @@
 using System.Linq;
+using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Maps.Geo;
-
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

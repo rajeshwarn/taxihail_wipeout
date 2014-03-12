@@ -1,7 +1,7 @@
 using System;
-using Cirrious.CrossCore;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Common.Diagnostic;
+using Cirrious.CrossCore;
 using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Extensions

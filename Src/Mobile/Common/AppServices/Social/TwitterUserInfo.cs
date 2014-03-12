@@ -1,5 +1,3 @@
-using System;
-
 namespace apcurium.MK.Booking.Mobile.AppServices.Social
 {
     public class TwitterUserInfo

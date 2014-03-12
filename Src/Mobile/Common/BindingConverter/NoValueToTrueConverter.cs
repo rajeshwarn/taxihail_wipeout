@@ -1,6 +1,6 @@
 using System;
-using System.Globalization;
 using System.Collections;
+using System.Globalization;
 using Cirrious.CrossCore.Converters;
 
 namespace apcurium.MK.Booking.Mobile.BindingConverter

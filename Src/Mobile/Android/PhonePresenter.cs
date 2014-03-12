@@ -1,12 +1,8 @@
-using System;
-using Cirrious.MvvmCross.Views;
-using Cirrious.MvvmCross.Droid.Views;
-using Android.Content;
 using Android.App;
-using Cirrious.CrossCore.Platform;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using apcurium.MK.Booking.Mobile.Client.Activities.Book;
+using Android.Content;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using Cirrious.CrossCore.Platform;
+using Cirrious.MvvmCross.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

@@ -2,7 +2,6 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Webkit;
-
 using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting

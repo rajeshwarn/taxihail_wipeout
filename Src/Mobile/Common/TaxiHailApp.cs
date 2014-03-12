@@ -1,8 +1,4 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Cirrious.CrossCore;
-using Cirrious.MvvmCross.Platform;
-using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Security;
@@ -10,17 +6,20 @@ using apcurium.MK.Booking.Google;
 using apcurium.MK.Booking.Google.Impl;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.Maps.Impl;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Provider;
-using TinyIoC;
-using TinyMessenger;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
+using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.IoC;
 using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.AppServices.Orders;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Provider;
+using Cirrious.CrossCore;
+using Cirrious.MvvmCross.Platform;
+using Cirrious.MvvmCross.ViewModels;
+using TinyIoC;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile
 {

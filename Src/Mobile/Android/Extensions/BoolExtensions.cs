@@ -1,4 +1,3 @@
-using System;
 using Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions

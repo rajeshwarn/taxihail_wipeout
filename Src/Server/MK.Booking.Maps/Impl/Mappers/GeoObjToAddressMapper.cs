@@ -1,7 +1,6 @@
 ﻿#region
 
 using System;
-using System.Linq;
 using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;

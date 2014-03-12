@@ -1,6 +1,5 @@
-using System;
-using Android.Graphics.Drawables;
 using Android.Content.Res;
+using Android.Graphics.Drawables;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {

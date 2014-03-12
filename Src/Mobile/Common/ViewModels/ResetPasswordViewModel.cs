@@ -1,10 +1,9 @@
 using System;
 using System.Text.RegularExpressions;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
-
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

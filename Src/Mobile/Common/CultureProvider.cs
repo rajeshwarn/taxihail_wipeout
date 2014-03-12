@@ -1,6 +1,5 @@
 using System;
 using System.Globalization;
-using TinyIoC;
 using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore;
 

@@ -1,6 +1,5 @@
-﻿using apcurium.MK.Booking.Mobile.Extensions;
-using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.AppServices;
+﻿using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

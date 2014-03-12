@@ -2,9 +2,7 @@
 
 using System;
 using System.Globalization;
-using System.Net;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Tokenize;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;

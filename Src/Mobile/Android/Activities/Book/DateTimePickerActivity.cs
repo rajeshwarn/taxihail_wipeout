@@ -1,15 +1,14 @@
 using System;
 using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
-
 using apcurium.MK.Booking.Mobile.Messages;
 using Java.Lang;
 using TinyIoC;
 using TinyMessenger;
 using Boolean = Java.Lang.Boolean;
-using Android.Content;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {

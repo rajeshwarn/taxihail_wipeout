@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Android.Content;
 using Android.Graphics;
 using Android.Runtime;
@@ -6,8 +7,6 @@ using Android.Text;
 using Android.Util;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
-using System.Drawing;
-using System.Collections;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {

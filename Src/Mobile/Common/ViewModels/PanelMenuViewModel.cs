@@ -1,12 +1,12 @@
 using System;
-using apcurium.MK.Booking.Mobile.Extensions;
-using Params = System.Collections.Generic.Dictionary<string, string>;
-using ServiceStack.Text;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Cirrious.MvvmCross.Plugins.WebBrowser;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using Cirrious.MvvmCross.Plugins.WebBrowser;
+using ServiceStack.Text;
+using Params = System.Collections.Generic.Dictionary<string, string>;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

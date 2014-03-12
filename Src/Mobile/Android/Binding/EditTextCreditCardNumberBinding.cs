@@ -1,7 +1,7 @@
 using System;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using Cirrious.MvvmCross.Binding;
 using Cirrious.MvvmCross.Binding.Droid.Target;
-using apcurium.MK.Booking.Mobile.Client.Controls;
 
 namespace apcurium.MK.Booking.Mobile.Client.Binding
 {

@@ -1,15 +1,14 @@
 using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using apcurium.MK.Booking.Mobile.Extensions;
-using TinyMessenger;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using apcurium.MK.Booking.Mobile.Messages;
-using System.Threading.Tasks;
-using System.Globalization;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Messages;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

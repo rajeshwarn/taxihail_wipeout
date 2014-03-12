@@ -1,15 +1,10 @@
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Android.App;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Views;
-using Android.Widget;
-using Cirrious.MvvmCross.Binding.Droid.Views;
-using Java.Lang;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using apcurium.MK.Booking.Mobile.Client.Controls;
+using Cirrious.MvvmCross.Binding.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {

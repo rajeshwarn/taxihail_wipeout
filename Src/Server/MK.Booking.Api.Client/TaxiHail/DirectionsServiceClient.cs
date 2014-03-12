@@ -2,7 +2,6 @@
 
 using System.Globalization;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 
 #endregion

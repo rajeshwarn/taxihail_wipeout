@@ -1,9 +1,9 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.Text.Method;
+using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {

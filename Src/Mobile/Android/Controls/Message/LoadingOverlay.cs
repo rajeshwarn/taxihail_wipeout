@@ -1,21 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Threading;
+﻿using System.Drawing;
 using System.Threading.Tasks;
 using Android.App;
-using Android.Content;
-using Android.Content.Res;
 using Android.Graphics;
 using Android.Graphics.Drawables;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Cirrious.CrossCore.Droid.Platform;
-using TinyIoC;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Booking.Mobile.Client.Activities;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using Cirrious.CrossCore.Droid.Platform;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {

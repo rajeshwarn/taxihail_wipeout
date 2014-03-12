@@ -1,12 +1,10 @@
+using System;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using System;
+using apcurium.MK.Common.Configuration;
 using ServiceStack.Text;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

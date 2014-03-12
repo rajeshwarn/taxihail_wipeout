@@ -1,11 +1,12 @@
 #region
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Api.Client.Extensions;
+
 #endregion
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail

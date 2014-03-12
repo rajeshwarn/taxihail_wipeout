@@ -1,7 +1,6 @@
 using System;
 using Android.Widget;
 using Cirrious.MvvmCross.Binding;
-using Cirrious.MvvmCross.Binding.Bindings.Target;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
 using Cirrious.MvvmCross.Binding.Droid.Target;
 

@@ -1,8 +1,7 @@
 #region
 
-using apcurium.MK.Booking.Api.Contract.Security;
 using System.Threading.Tasks;
-using System;
+using apcurium.MK.Booking.Api.Contract.Security;
 
 #endregion
 

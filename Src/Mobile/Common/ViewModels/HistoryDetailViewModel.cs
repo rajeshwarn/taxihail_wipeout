@@ -1,16 +1,15 @@
 using System;
 using System.Globalization;
 using System.Linq;
-using apcurium.MK.Booking.Mobile.Extensions;
-using ServiceStack.Text;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Messages;
-using System.Threading.Tasks;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.Entity;
 using System.Windows.Input;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
