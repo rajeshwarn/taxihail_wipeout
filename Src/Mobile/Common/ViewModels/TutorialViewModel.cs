@@ -1,5 +1,4 @@
 using System.Linq;
-using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Booking.Mobile.AppServices;
 

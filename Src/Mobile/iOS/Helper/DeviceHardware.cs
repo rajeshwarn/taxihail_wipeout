@@ -1,7 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using MonoTouch;
-using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {

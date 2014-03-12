@@ -5,7 +5,6 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets

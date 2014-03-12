@@ -1,7 +1,5 @@
 using System;
 using System.IO;
-using apcurium.MK.Common.Configuration;
-using Cirrious.MvvmCross.Touch.Views.Presenters;
 using MonoTouch.EventKit;
 using MonoTouch.Foundation;
 using MonoTouch.MessageUI;
@@ -10,7 +8,6 @@ using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore.Touch.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration

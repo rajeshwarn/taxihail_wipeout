@@ -1,11 +1,5 @@
 using System;
-using System.Drawing;
-using System.Threading;
-using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {

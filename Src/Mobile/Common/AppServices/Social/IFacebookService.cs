@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Social

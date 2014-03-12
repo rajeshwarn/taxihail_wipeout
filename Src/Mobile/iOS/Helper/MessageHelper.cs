@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Cirrious.CrossCore;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls.Message;
 using apcurium.MK.Booking.Mobile.Client.Localization;

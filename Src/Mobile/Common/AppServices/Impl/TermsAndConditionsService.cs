@@ -5,8 +5,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System;
 using ServiceStack.Text;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

@@ -1,5 +1,4 @@
 using System;
-using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {

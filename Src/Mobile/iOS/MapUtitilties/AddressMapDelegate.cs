@@ -1,7 +1,6 @@
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
 using MonoTouch.MapKit;
-using apcurium.MK.Booking.Mobile.Client.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {

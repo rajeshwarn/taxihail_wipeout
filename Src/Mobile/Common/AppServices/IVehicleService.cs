@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System;
 

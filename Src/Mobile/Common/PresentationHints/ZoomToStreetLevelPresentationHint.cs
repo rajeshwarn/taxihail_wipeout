@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace apcurium.MK.Booking.Mobile.PresentationHints
+﻿namespace apcurium.MK.Booking.Mobile.PresentationHints
 {
     public class ZoomToStreetLevelPresentationHint: ChangePresentationHint
     {

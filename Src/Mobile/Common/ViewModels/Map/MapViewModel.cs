@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reactive.Disposables;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Cirrious.MvvmCross.ViewModels;
-using MK.Common.Configuration;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
@@ -14,7 +10,6 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.PresentationHints;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

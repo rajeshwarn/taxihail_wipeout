@@ -13,12 +13,9 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
 using System.Threading;
-using Cirrious.MvvmCross.ViewModels;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.PresentationHints;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels

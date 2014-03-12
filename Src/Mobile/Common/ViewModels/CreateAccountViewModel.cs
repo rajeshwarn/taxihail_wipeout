@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Extensions;

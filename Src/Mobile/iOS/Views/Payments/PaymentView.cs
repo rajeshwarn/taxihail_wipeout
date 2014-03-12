@@ -1,16 +1,9 @@
-using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.Client.Binding;
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using Cirrious.MvvmCross.Views;
 using MonoTouch.UIKit;
-using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using apcurium.MK.Booking.Mobile.Client;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {

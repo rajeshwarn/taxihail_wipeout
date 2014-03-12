@@ -3,8 +3,6 @@ using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
-using System.Threading.Tasks;
-using System.Threading;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.PresentationHints;

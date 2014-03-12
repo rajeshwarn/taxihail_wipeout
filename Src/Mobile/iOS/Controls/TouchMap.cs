@@ -1,3 +1,17 @@
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Entity;
+using MonoTouch.CoreLocation;
+using MonoTouch.Foundation;
+using MonoTouch.MapKit;
+using MonoTouch.UIKit;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -5,22 +19,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
-using apcurium.MK.Booking.Mobile.Client.Order;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Data;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Common;
-using apcurium.MK.Common.Entity;
-using MonoTouch.Foundation;
-using MonoTouch.CoreLocation;
-using MonoTouch.MapKit;
-using MonoTouch.UIKit;
 using TinyIoC;
-using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {

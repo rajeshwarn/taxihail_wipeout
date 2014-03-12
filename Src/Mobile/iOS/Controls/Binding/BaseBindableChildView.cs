@@ -1,11 +1,9 @@
 using System;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.Views;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using System.Drawing;
-using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 {

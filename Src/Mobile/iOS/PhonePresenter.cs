@@ -1,14 +1,8 @@
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using Cirrious.CrossCore;
-using Cirrious.CrossCore.Platform;
-using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Touch.Views.Presenters;
 using Cirrious.MvvmCross.ViewModels;
 using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using apcurium.MK.Booking.Mobile.Client.Views;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client

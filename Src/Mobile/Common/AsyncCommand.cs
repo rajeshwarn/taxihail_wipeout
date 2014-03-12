@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Cirrious.CrossCore;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile
 {

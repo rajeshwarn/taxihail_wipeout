@@ -1,17 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Binding;
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.ViewModels;
-using Cirrious.MvvmCross.Views;
-using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;

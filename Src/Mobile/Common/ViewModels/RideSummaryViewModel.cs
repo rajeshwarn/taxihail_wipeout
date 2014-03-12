@@ -1,10 +1,8 @@
-using System;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using ServiceStack.Text;
-using System.Globalization;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Configuration.Impl;
 using System.Windows.Input;

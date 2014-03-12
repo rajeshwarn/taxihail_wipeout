@@ -1,6 +1,4 @@
-using System;
 using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {

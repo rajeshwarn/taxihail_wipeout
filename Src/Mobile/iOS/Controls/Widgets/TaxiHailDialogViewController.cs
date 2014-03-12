@@ -1,6 +1,4 @@
-using System;
 using System.Drawing;
-using Cirrious.MvvmCross.Binding.Touch.Views;
 using CrossUI.Touch.Dialog;
 using CrossUI.Touch.Dialog.Elements;
 using MonoTouch.Foundation;

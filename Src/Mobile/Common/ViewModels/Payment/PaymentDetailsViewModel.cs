@@ -7,7 +7,6 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
-using System.Collections.Generic;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 

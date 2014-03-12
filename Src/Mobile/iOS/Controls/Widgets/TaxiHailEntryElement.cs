@@ -1,4 +1,3 @@
-using System;
 using CrossUI.Touch.Dialog.Elements;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;

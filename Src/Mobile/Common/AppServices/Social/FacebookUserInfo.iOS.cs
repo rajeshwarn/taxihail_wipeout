@@ -1,4 +1,3 @@
-using System;
 using MonoTouch.FacebookConnect;
 using MonoTouch.Foundation;
 

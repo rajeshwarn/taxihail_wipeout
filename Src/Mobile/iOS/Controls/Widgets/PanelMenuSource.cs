@@ -1,4 +1,3 @@
-using System;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;

@@ -1,5 +1,3 @@
-using System;
-
 namespace MK.Common.Android
 {
     public class Singleton<T> where T :new()

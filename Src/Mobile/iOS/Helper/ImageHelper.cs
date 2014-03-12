@@ -1,7 +1,5 @@
-using System;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using System.Drawing;
 using MonoTouch.CoreGraphics;

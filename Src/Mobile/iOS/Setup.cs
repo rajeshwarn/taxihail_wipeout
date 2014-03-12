@@ -21,7 +21,6 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
 using MonoTouch.FacebookConnect;
 using Cirrious.MvvmCross.ViewModels;
-using Cirrious.MvvmCross.Views;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Dialog.Touch;
 

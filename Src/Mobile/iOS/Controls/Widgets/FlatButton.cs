@@ -1,8 +1,6 @@
-using MonoTouch.CoreGraphics;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Client.Style;

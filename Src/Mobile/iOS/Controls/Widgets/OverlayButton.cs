@@ -4,7 +4,6 @@ using MonoTouch.UIKit;
 using System.Drawing;
 using MonoTouch.CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {

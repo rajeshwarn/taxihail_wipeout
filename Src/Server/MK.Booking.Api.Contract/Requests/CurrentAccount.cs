@@ -3,7 +3,6 @@
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.ServiceModel;
 
 #endregion

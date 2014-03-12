@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
 using TinyMessenger;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using System.Threading.Tasks;
 using System.Globalization;

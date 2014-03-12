@@ -1,7 +1,5 @@
 using System;
 using System.Drawing;
-using System.Globalization;
-using CrossUI.Touch.Dialog;
 using CrossUI.Touch.Dialog.Elements;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -9,7 +7,6 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using System.Linq;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {

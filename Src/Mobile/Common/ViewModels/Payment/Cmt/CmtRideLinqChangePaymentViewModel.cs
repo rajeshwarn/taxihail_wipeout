@@ -1,4 +1,3 @@
-using System;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using ServiceStack.Text;

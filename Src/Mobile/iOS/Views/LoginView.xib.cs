@@ -4,7 +4,6 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 using MonoTouch.UIKit;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;

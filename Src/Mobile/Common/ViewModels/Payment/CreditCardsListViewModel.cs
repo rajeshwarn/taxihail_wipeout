@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Extensions;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;

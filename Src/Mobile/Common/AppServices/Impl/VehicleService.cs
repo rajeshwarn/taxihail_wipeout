@@ -2,15 +2,10 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Client;
 using System;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Reactive.Subjects;
 using apcurium.MK.Common.Entity;
-using System.Reactive.Disposables;
 using apcurium.MK.Booking.Mobile.Extensions;
-using System.Reactive.Threading.Tasks;
 using System.Reactive.Linq;
-using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

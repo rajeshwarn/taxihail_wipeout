@@ -1,9 +1,7 @@
 using System;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets

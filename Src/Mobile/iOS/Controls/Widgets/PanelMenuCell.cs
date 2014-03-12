@@ -1,6 +1,3 @@
-using System;
-using System.Drawing;
-using System.Windows.Input;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;

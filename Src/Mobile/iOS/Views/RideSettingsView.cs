@@ -1,14 +1,8 @@
-using System.Collections.Generic;
-using apcurium.MK.Booking.Mobile.Client.Binding;
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Views;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using apcurium.MK.Booking.Mobile.Extensions;
-using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {

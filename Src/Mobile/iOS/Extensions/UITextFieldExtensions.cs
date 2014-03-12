@@ -1,11 +1,9 @@
 using System;
 using MonoTouch.UIKit;
-using MonoTouch.Foundation;
 using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using System.Reactive.Linq;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions
 {

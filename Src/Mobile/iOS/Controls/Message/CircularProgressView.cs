@@ -2,9 +2,7 @@
 using MonoTouch.UIKit;
 using System.Drawing;
 using MonoTouch.CoreAnimation;
-using MonoTouch.Foundation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using MonoTouch.CoreGraphics;
 using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message

@@ -1,5 +1,4 @@
-﻿using System;
-using MonoTouch.UIKit;
+﻿using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using TinyIoC;
 using apcurium.MK.Common.Configuration;

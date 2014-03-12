@@ -1,4 +1,3 @@
-using System;
 namespace apcurium.MK.Booking.Mobile.AppServices.Social.OAuth
 {
 	public class OAuthConfig
