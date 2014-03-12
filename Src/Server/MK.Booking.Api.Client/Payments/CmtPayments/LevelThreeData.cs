@@ -4,6 +4,8 @@ using System.Xml.Serialization;
 
 #endregion
 
+
+
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 {
     public class LevelThreeData

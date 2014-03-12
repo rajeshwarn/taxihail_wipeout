@@ -1,6 +1,5 @@
 using System;
 using System.Reactive.Linq;
-using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {

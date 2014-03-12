@@ -1,4 +1,3 @@
-using System;
 using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions

@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
             number.EditingDidBegin += (s, e) => FocusOnNumber(number, address);
             number.EditingDidEnd += (sender, e) => {
                 var newFullAddress = number.Text + " " + address.Text.ToSafeString().Trim();
-                if ( addressUpdated != null && number != null && address != null)
+                if ( addressUpdated != null)
                 {
                     addressUpdated( number.Text, newFullAddress );
                 }

@@ -1,10 +1,8 @@
 ﻿using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Contract.Security;
 #if !CLIENT
 using apcurium.MK.Booking.Security;
 #endif
+using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {

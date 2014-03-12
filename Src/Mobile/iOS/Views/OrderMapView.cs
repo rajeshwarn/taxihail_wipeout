@@ -11,12 +11,10 @@ using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using System.Windows.Input;
@@ -107,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             // TODO: When refactoring StatusView, get rid of AddressMapDelegate
             // and use helper class to get GetViewForAnnotation delegate
-            this.GetViewForAnnotation = new AddressMapDelegate(true).GetViewForAnnotation;
+            this.GetViewForAnnotation = new AddressMapDelegate().GetViewForAnnotation;
 
             InitializeGesture();
         }
@@ -402,8 +400,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var centerHint = hint as CenterMapPresentationHint;
             if (centerHint != null)
             {
-                // Set the new region center, but keep current span
-                var currentRegion = Region;
+                // Set the new region center, but keep current span                
                 SetRegion(new MKCoordinateRegion(new CLLocationCoordinate2D(centerHint.Latitude, centerHint.Longitude), Region.Span), true);
             }
         }

@@ -3,7 +3,6 @@ using System;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using System.Web;
-using apcurium.MK.Common.Extensions;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social

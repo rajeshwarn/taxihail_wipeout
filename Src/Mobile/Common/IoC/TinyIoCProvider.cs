@@ -1,8 +1,8 @@
-using TinyIoC;
-using Cirrious.CrossCore.IoC;
 using System;
 using System.Collections.Generic;
 using Cirrious.CrossCore.Core;
+using Cirrious.CrossCore.IoC;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.IoC
 {

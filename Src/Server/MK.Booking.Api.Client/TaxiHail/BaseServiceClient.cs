@@ -1,14 +1,15 @@
-#region
-
-using System;
 using System.Net;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 
+#region
+
+using System;
+
 #endregion
 
 #if CLIENT
-using ServiceStack.Common.ServiceClient.Web;
+
 #endif
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail

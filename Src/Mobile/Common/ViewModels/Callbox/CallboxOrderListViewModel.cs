@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
-using ServiceStack.ServiceClient.Web;
-using TinyMessenger;
+using System.Threading;
+using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using System.Threading.Tasks;
-using System.Threading;
-using apcurium.MK.Booking.Mobile.Extensions;
-using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.AppServices;
+using ServiceStack.ServiceClient.Web;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {

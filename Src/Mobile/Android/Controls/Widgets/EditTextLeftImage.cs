@@ -7,7 +7,6 @@ using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 
-
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class EditTextLeftImage : LinearLayout

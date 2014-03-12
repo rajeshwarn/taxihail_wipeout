@@ -1,10 +1,10 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using TinyIoC;
-using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using TinyIoC;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {

@@ -4,7 +4,6 @@ using MonoTouch.UIKit;
 using System.Drawing;
 using MonoTouch.CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -13,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         private float _radiusCorner = 2f;
         private UIView _shadowView = null;
-		private UIColor fillColor;
+		private UIColor _fillColor;
 		private UIColor fillColorNormal = UIColor.White.ColorWithAlpha(0.8f);
 		private UIColor fillColorPressed = UIColor.Gray.ColorWithAlpha(0.8f);
 
@@ -25,11 +24,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private void Initialize()
         {
             BackgroundColor = UIColor.Clear;
-			fillColor = fillColorNormal;
+            _fillColor = fillColorNormal;
 
-			this.TouchDown += (object sender, EventArgs e) => 
+            this.TouchDown += (sender, e) => 
 			{
-				fillColor = fillColorPressed;
+                _fillColor = fillColorPressed;
 				this.SetNeedsDisplay();
 			};				
         }
@@ -37,38 +36,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		public override void TouchesEnded (NSSet touches, UIEvent evt)
 		{
 			base.TouchesEnded (touches, evt);
-			fillColor = fillColorNormal;
+            _fillColor = fillColorNormal;
 			this.SetNeedsDisplay();
 		}
 
         public override void Draw (RectangleF rect)
         {           
 			var context = UIGraphics.GetCurrentContext ();
-            var textColor = UIColor.Black;
-
             var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _radiusCorner);
 
-			DrawBackground(context, rect, roundedRectanglePath, fillColor.CGColor);
-            DrawStroke(fillColor.CGColor);			
+			DrawBackground(context, rect, roundedRectanglePath);
+            DrawStroke();			
 
             SetNeedsDisplay();
         }
 
-        void DrawBackground (CGContext context, RectangleF rect, UIBezierPath roundedRectanglePath, CGColor fillColor)
+        void DrawBackground (CGContext context, RectangleF rect, UIBezierPath roundedRectanglePath)
         {
             context.SaveState ();
             context.BeginTransparencyLayer (null);
             roundedRectanglePath.AddClip ();
-            context.SetFillColorWithColor(fillColor);
+            context.SetFillColorWithColor(_fillColor.CGColor);
             context.FillRect(rect);
             context.EndTransparencyLayer ();
             context.RestoreState ();
         }
 
-        void DrawStroke(CGColor fillColor)
+        void DrawStroke()
         {
             Layer.BorderWidth = 1.0f;
-            Layer.BorderColor = fillColor;
+            Layer.BorderColor = _fillColor.CGColor;
             Layer.CornerRadius = _radiusCorner;
 
             if (_shadowView == null)

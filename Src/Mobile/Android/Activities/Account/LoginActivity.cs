@@ -6,18 +6,15 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Text;
 using Android.Views;
-using Android.Widget;
-using Cirrious.MvvmCross.ViewModels;
-using Xamarin.FacebookBinding;
-using apcurium.MK.Booking.Mobile.AppServices.Social;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.Client.Services.Social;
-using TinyIoC;
 using Android.Views.InputMethods;
+using Android.Widget;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
-using Android.Content.Res;
+using apcurium.MK.Booking.Mobile.Client.Services.Social;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using TinyIoC;
+using Xamarin.FacebookBinding;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {

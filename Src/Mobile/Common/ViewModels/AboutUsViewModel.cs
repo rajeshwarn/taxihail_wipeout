@@ -1,5 +1,3 @@
-using apcurium.MK.Booking.Mobile.Extensions;
-
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class AboutUsViewModel : PageViewModel

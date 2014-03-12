@@ -17,9 +17,9 @@ namespace apcurium.MK.Booking.Mobile.Framework.Extensions
 
         public static DateTime AddWeekDays(this DateTime instance, int days)
         {
-            int sign = Math.Sign(days);
-            int unsignedDays = Math.Abs(days);
-            for (int i = 0; i < unsignedDays; i++)
+            var sign = Math.Sign(days);
+            var unsignedDays = Math.Abs(days);
+            for (var i = 0; i < unsignedDays; i++)
             {
                 do
                 {

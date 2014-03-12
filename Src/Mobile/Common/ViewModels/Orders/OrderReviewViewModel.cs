@@ -1,12 +1,9 @@
 using System;
-using apcurium.MK.Booking.Mobile.AppServices.Orders;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.AppServices;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.PresentationHints;
-using System.Windows.Input;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -24,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public void Init()
 		{
-			this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), (settings) => SettingsUpdated(settings));
+			this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), settings => SettingsUpdated(settings));
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
 			this.Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
 			this.Observe(_orderWorkflowService.GetAndObserveNoteToDriver(), note => Note = note);

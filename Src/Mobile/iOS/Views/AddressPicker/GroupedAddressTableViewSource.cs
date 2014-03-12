@@ -8,7 +8,6 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 {
@@ -26,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             _collapseItemCount = UIHelper.Is4InchDisplay ? 3 : 2;            
         }
 
-        public override int NumberOfSections(MonoTouch.UIKit.UITableView tableView)
+        public override int NumberOfSections(UITableView tableView)
         {
             var collection = ItemsSource as ObservableCollection<AddressViewModel>;
             if (collection != null)
@@ -132,8 +131,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
         public override UIView GetViewForFooter(UITableView tableView, int section)
         {
-            bool showLoadMore = true;
-            bool isPlaces = false;
+            var showLoadMore = true;
+            var isPlaces = false;
 
             var collection = ItemsSource as ObservableCollection<AddressViewModel>;
             if (collection != null)

@@ -1,19 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Reactive.Disposables;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Cirrious.CrossCore;
-using Cirrious.MvvmCross.Platform;
-using Cirrious.MvvmCross.ViewModels;
-using MK.Common.Configuration;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
-using TinyIoC;
-using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

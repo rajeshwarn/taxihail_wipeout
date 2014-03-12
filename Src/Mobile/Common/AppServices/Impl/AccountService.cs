@@ -1,32 +1,29 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using apcurium.MK.Booking.Mobile.Data;
-using ServiceStack.Common;
-using apcurium.MK.Common.Configuration;
-using ServiceStack.ServiceClient.Web;
-using apcurium.MK.Booking.Mobile.AppServices.Social;
-using Cirrious.CrossCore;
-using TinyIoC;
-using apcurium.MK.Common.Enumeration;
-
-
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
 #endif
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Api.Contract.Security;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
+using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using System.Net;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
+using Cirrious.CrossCore;
+using ServiceStack.Common;
+using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
@@ -296,13 +293,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             catch(WebServiceException e)
             {
-                if (e.StatusCode == (int)HttpStatusCode.NotFound)
+                switch (e.StatusCode)
                 {
-                    throw new AuthException("Invalid service url", AuthFailure.InvalidServiceUrl, e);
-                }
-                else if (e.StatusCode == (int)HttpStatusCode.Unauthorized)
-                {
-                    throw new AuthException("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);
+                    case (int)HttpStatusCode.NotFound:
+                        throw new AuthException("Invalid service url", AuthFailure.InvalidServiceUrl, e);
+                    case (int)HttpStatusCode.Unauthorized:
+                        throw new AuthException("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);
                 }
                 throw;
             }

@@ -1,25 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
-using ServiceStack.Text;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using System.Reactive.Linq;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using System.Reactive.Disposables;
-using apcurium.MK.Booking.Mobile.Extensions;
-using System.Threading.Tasks;
-using apcurium.MK.Common;
-using System.Threading;
-using Cirrious.MvvmCross.ViewModels;
-using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.PresentationHints;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.Infrastructure;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -237,13 +234,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private bool HasSeenReminderPrompt( Guid orderId )
         {
-            var hasSeen = this.Services().Cache.Get<string>("OrderReminderWasSeen." + orderId.ToString());
+            var hasSeen = this.Services().Cache.Get<string>("OrderReminderWasSeen." + orderId);
             return !string.IsNullOrEmpty(hasSeen);
         }
 
         private void SetHasSeenReminderPrompt( Guid orderId )
         {
-            this.Services().Cache.Set("OrderReminderWasSeen." + orderId.ToString(), true.ToString());                     
+            this.Services().Cache.Set("OrderReminderWasSeen." + orderId, true.ToString());                     
         }
 
 		private bool IsCmtRideLinq { get { return _paymentService.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt; } }
@@ -301,7 +298,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if (isLoaded && IsCmtRideLinq && _accountService.CurrentAccount.DefaultCreditCard != null)
 					{
 						var isPaired = _bookingService.IsPaired(Order.Id);
-                        var pairState = this.Services().Cache.Get<string>("CmtRideLinqPairState" + Order.Id.ToString());
+                        var pairState = this.Services().Cache.Get<string>("CmtRideLinqPairState" + Order.Id);
 						var isPairBypass = (pairState == CmtRideLinqPairingState.Failed) || (pairState == CmtRideLinqPairingState.Canceled) || (pairState == CmtRideLinqPairingState.Unpaired);
 						if (!isPaired && !_isCurrentlyPairing && !isPairBypass)
 						{
@@ -436,7 +433,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         this.Services().Localize["YesButton"], 
 						async () =>
                         {
-							bool isSuccess = false;
+							var isSuccess = false;
 							using(this.Services().Message.ShowProgress())
 							{
 								isSuccess = await Task.Run(() => _bookingService.CancelOrder(Order.Id)); 
@@ -529,7 +526,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 							if(response.IsSuccessfull)
 							{
-								this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id.ToString(), CmtRideLinqPairingState.Unpaired);
+								this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id, CmtRideLinqPairingState.Unpaired);
 								RefreshStatus();
 							}
 							else

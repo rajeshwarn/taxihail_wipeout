@@ -1,14 +1,9 @@
 using System.Collections.Generic;
-using System.Drawing;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using Cirrious.MvvmCross.ViewModels;
-using Cirrious.MvvmCross.Views;
-using CrossUI.Touch.Dialog;
 using CrossUI.Touch.Dialog.Elements;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Style;
@@ -57,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnCreate.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
             btnCancel.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
 
-			BuildTableView (tableView);
+			BuildTableView ();
 
 			var set = this.CreateBindingSet<CreateAccountView, CreateAccountViewModel>();
 
@@ -83,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Apply ();
         }
 
-		private void BuildTableView(UIView container)
+		private void BuildTableView()
 		{
 			var bindings = this.CreateInlineBindingTarget<CreateAccountViewModel>();
 

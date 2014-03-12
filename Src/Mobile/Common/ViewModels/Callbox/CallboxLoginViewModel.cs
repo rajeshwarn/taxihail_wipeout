@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.AppServices;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Extensions;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {

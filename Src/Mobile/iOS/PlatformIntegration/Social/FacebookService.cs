@@ -1,10 +1,8 @@
 using System;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using MonoTouch.Foundation;
 using System.Threading.Tasks;
 using MonoTouch.FacebookConnect;
-using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 {
@@ -31,8 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 					allowLoginUI: true,
 					completion: (session, status, error) =>
 					{
-						//var appDelegate = UIApplication.SharedApplications.Delegate;
-						bool connected = status == FBSessionState.Open
+						var connected = status == FBSessionState.Open
 						                 || status == FBSessionState.OpenTokenExtended;
 
 						if(connected)

@@ -1,6 +1,5 @@
 using System;
 using System.Globalization;
-using TinyIoC;
 using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore;
 
@@ -11,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile
 		public static string FormatTime(DateTime date )
         {
             var formatTime = new CultureInfo( CultureInfoString ).DateTimeFormat.ShortTimePattern;
-            string format = "{0:"+formatTime+"}";
+            var format = "{0:"+formatTime+"}";
             return string.Format(format, date);
         }
         

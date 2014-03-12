@@ -1,10 +1,7 @@
-﻿using System;
-using MonoTouch.UIKit;
+﻿using MonoTouch.UIKit;
 using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helper;
-using TinyIoC;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
@@ -27,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _dialogView = new UIView();
             _dialogView.BackgroundColor = UIColor.White;
 
-            _imageView = new UIImageView(ImageHelper.ApplyThemeColorToImage("taxi_progress.png", MonoTouch.CoreGraphics.CGBlendMode.Color));
+            _imageView = new UIImageView(ImageHelper.ApplyThemeColorToImage("taxi_progress.png"));
                 
             _imageView.SizeToFit();
             _imageView.Hidden = true;

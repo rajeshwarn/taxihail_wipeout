@@ -1,8 +1,8 @@
 using System.Collections;
 using Android.App;
 using Android.Views;
-using Cirrious.MvvmCross.Binding.Droid.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Adapters
 {

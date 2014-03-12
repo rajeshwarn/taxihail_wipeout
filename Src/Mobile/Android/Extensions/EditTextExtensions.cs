@@ -1,10 +1,9 @@
-using Android.App;
-using Android.Content;
-using Android.Views.InputMethods;
-using Android.Widget;
 using System;
 using System.Reactive.Linq;
+using Android.Content;
 using Android.Text;
+using Android.Views.InputMethods;
+using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions
 {

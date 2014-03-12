@@ -1,8 +1,7 @@
 using System.Linq;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common;
-
 
 namespace apcurium.MK.Booking.Mobile.Extensions
 {

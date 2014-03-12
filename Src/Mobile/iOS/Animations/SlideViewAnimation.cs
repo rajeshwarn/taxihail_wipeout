@@ -1,6 +1,5 @@
 using System;
 using System.Drawing;
-using MonoTouch.CoreAnimation;
 using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Animations

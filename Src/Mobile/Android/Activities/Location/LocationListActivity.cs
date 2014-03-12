@@ -3,11 +3,10 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Widget;
-using Cirrious.MvvmCross.Binding.Droid.Views;
-using TinyIoC;
-using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using TinyIoC;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
 {

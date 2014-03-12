@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Social

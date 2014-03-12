@@ -4,12 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Extensions;
-using TinyMessenger;
+using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.AppServices;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -57,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public void RemoveCreditCard (Guid creditCardId)
         {
-			if (this.Settings.CreditCardIsMandatory && CreditCards.Where(x => !x.IsAddNew).Count() == 1)
+			if (this.Settings.CreditCardIsMandatory && CreditCards.Count(x => !x.IsAddNew) == 1)
 			{
 				this.Services().Message.ShowMessage(this.Services().Localize["CreditCardRemoveErrorTitle"], this.Services().Localize["CreditCardRemoveErrorMessage"]);
 				return;

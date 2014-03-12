@@ -1,9 +1,8 @@
 using System.Linq;
+using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Maps.Geo;
-
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -62,13 +61,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					case AddressType.Favorites:
 						return "favorites";
-						break;
 					case AddressType.History:
 						return "history";
-						break;
 					case AddressType.Places:
-						return "places";
-						break;
+						return "places";						
 					default:
 						return null;
 				}
@@ -110,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			unchecked
 			{
-				int hash = 17;
+				var hash = 17;
 				hash = hash * 23 + DisplayLine1.ToSafeString().GetHashCode();
 				hash = hash * 23 + DisplayLine2.ToSafeString().GetHashCode();
 				hash = hash * 23 + Type.GetHashCode();

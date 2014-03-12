@@ -9,7 +9,6 @@ using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using MonoTouch.CoreGraphics;
-using MonoTouch.CoreAnimation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {

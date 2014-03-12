@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using apcurium.MK.Common.Configuration;
-using Cirrious.MvvmCross.Droid.Views;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
-using Cirrious.MvvmCross.Droid.Platform;
-using Cirrious.MvvmCross.ViewModels;
-using Cirrious.CrossCore;
-using TinyIoC;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Common.Configuration;
+using Cirrious.CrossCore;
+using Cirrious.MvvmCross.Droid.Views;
+using Cirrious.MvvmCross.ViewModels;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {

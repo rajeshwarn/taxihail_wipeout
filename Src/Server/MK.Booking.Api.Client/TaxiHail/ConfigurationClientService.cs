@@ -1,9 +1,8 @@
 #region
-using System;
+
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Common.Configuration.Impl;
-
 
 #endregion
 

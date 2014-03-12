@@ -4,6 +4,8 @@ using ServiceStack.ServiceHost;
 
 #endregion
 
+
+
 namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Pair
 {
     [Route("v1/init/pairing/external/cof")]

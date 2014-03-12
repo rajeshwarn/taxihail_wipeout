@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
-		public override void Draw(System.Drawing.RectangleF rect)
+		public override void Draw(RectangleF rect)
 		{
 			base.Draw(rect);
 

@@ -31,6 +31,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 // 
+
 using System;
 using System.Text;
 
@@ -84,11 +85,11 @@ namespace Mono.Util {
 			int bias = 72;
 	
 			while (h < input.Length) {
-				int m = Int32.MaxValue;
+				var m = Int32.MaxValue;
 	
 				// Find the next code point
-				foreach (char c in input){
-					int ic = (int) c;
+				foreach (var c in input){
+					var ic = (int) c;
 					if (ic > n && ic < m)
 						m = ic;
 				}
@@ -99,8 +100,8 @@ namespace Mono.Util {
 				delta += (m - n) * (h + 1);
 				n = m;
 	
-				foreach (char c in input){
-					int ic = (int) c;
+				foreach (var c in input){
+					var ic = (int) c;
 	
 					// Punycode does not need to check whether input[j] is basic
 					if (ic < n)

@@ -1,16 +1,13 @@
 using System;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Common.Entity;
-using ServiceStack.Text;
-using System.Windows.Input;
-using System.Linq;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-using apcurium.MK.Booking.Mobile.PresentationHints;
-using apcurium.MK.Booking.Mobile.Extensions;
-using System.Reactive.Threading.Tasks;
+using System.Linq;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -108,9 +105,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 			set
 			{
-				_vehicles = value == null 
-				            ? new List<ListItem>() 
-				            : value;
+				_vehicles = value ?? new List<ListItem>();
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => VehicleTypeId);
 				RaisePropertyChanged(() => VehicleTypeName);
@@ -126,9 +121,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 			set
 			{
-				_chargeTypes = value == null 
-				            ? new List<ListItem>() 
-				            : value;
+				_chargeTypes = value ?? new List<ListItem>();
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => ChargeTypeId);
 				RaisePropertyChanged(() => ChargeTypeName);

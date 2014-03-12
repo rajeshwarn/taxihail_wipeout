@@ -19,8 +19,8 @@ namespace MonoTouch.MapKit
             zoomLevel = Math.Min(zoomLevel, 28);
 
             // use the zoom level to compute the region
-            MKCoordinateSpan span = CoordinateSpanWithMapView(mapView, centerCoordinate, zoomLevel);
-            MKCoordinateRegion region = new MKCoordinateRegion(centerCoordinate, span);
+            var span = CoordinateSpanWithMapView(mapView, centerCoordinate, zoomLevel);
+            var region = new MKCoordinateRegion(centerCoordinate, span);
 
             // set the region like normal
             mapView.SetRegion(region, animated);
@@ -76,7 +76,7 @@ namespace MonoTouch.MapKit
             double latitudeDelta = -1 * (maxLat - minLat);
 
             // create and return the lat/lng span
-            MKCoordinateSpan span = new MKCoordinateSpan(latitudeDelta, longitudeDelta);
+            var span = new MKCoordinateSpan(latitudeDelta, longitudeDelta);
             return span;
         }
     }

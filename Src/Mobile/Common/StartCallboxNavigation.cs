@@ -1,12 +1,11 @@
 using System.Linq;
-using Cirrious.MvvmCross.ViewModels;
-using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels.Callbox;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile
 {

@@ -2,11 +2,10 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -80,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return;
 					}
 					
-					bool hasPassword = Data.Password.HasValue() && ConfirmPassword.HasValue();
+					var hasPassword = Data.Password.HasValue() && ConfirmPassword.HasValue();
                     if (Data.Email.IsNullOrEmpty() || Data.Name.IsNullOrEmpty() || Data.Phone.IsNullOrEmpty() || (!hasPassword && !HasSocialInfo))
 					{
                         this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["CreateAccountEmptyField"]);

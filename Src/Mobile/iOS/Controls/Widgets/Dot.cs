@@ -1,4 +1,3 @@
-using System;
 using MonoTouch.UIKit;
 using System.Drawing;
 
@@ -18,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             BackgroundColor = UIColor.Clear;
         }
 
-        public override void Draw(System.Drawing.RectangleF rect)
+        public override void Draw(RectangleF rect)
         {
             base.Draw(rect);
 

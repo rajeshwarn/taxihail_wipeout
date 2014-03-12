@@ -1,5 +1,4 @@
 using System;
-using Android.Util;
 using Android.App;
 
 namespace apcurium.MK.Booking.Mobile.Client

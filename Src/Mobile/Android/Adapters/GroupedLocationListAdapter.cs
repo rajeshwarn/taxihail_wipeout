@@ -5,8 +5,8 @@ using Android.App;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Java.Lang;
 using Cirrious.MvvmCross.Binding.Droid.Views;
+using Java.Lang;
 
 namespace apcurium.MK.Booking.Mobile.Client.Adapters
 {

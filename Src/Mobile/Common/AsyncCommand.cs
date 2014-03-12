@@ -2,9 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Cirrious.CrossCore;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Booking.Mobile.Extensions;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -101,7 +100,7 @@ namespace apcurium.MK.Booking.Mobile
 			{
 				return TaskScheduler.FromCurrentSynchronizationContext();
 			}
-			catch(Exception e)
+			catch(Exception)
 			{
 				return TaskScheduler.Default;
 			}
@@ -233,7 +232,7 @@ namespace apcurium.MK.Booking.Mobile
 			{
 				return TaskScheduler.FromCurrentSynchronizationContext();
 			}
-			catch(Exception e)
+			catch(Exception)
 			{
 				return TaskScheduler.Default;
 			}

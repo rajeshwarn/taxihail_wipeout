@@ -1,9 +1,5 @@
-﻿using System;
-using System.Drawing;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+﻿using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using apcurium.MK.Booking.Mobile.Client.Views.AddressPicker;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Threading.Tasks;
 

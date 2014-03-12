@@ -1,9 +1,9 @@
 using System;
+using System.Web;
 using Android.App;
+using Android.Content;
 using Android.Views;
 using Android.Webkit;
-using Android.Content;
-using System.Web;
 using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Social.OAuth

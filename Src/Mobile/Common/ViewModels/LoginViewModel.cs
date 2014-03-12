@@ -1,21 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Framework;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -183,34 +178,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 catch (AuthException e)
                 {
                     var localize = this.Services().Localize;
-                    if(e.Failure == AuthFailure.NetworkError 
-                        || e.Failure == AuthFailure.InvalidServiceUrl)
+                    switch (e.Failure)
                     {
-                        var title = localize["NoConnectionTitle"];
-                        var msg = localize["NoConnectionMessage"];
-                        this.Services().Message.ShowMessage (title, msg);
-                    }
-                    else if(e.Failure == AuthFailure.InvalidUsernameOrPassword)
-                    {
-                        var title = localize["InvalidLoginMessageTitle"];
-                        var message = localize["InvalidLoginMessage"];
-                        this.Services().Message.ShowMessage (title, message);
-                    }
-                    else if(e.Failure == AuthFailure.AccountDisabled)
-                    {
-                        var title = this.Services().Localize["InvalidLoginMessageTitle"];
-                        string message = null;
-						if (!Settings.HideCallDispatchButton)
+                        case AuthFailure.InvalidServiceUrl:
+                        case AuthFailure.NetworkError:
                         {
-							var companyName = Settings.ApplicationName;
-							var phoneNumber = Settings.DefaultPhoneNumberDisplay;
-                            message = string.Format(localize[e.Message], companyName, phoneNumber);
+                            var title = localize["NoConnectionTitle"];
+                            var msg = localize["NoConnectionMessage"];
+                            this.Services().Message.ShowMessage (title, msg);
                         }
-                        else 
+                            break;
+                        case AuthFailure.InvalidUsernameOrPassword:
                         {
-                            message = localize["AccountDisabled_NoCall"];
+                            var title = localize["InvalidLoginMessageTitle"];
+                            var message = localize["InvalidLoginMessage"];
+                            this.Services().Message.ShowMessage (title, message);
                         }
-                        this.Services().Message.ShowMessage(title, message);
+                            break;
+                        case AuthFailure.AccountDisabled:
+                        {
+                            var title = this.Services().Localize["InvalidLoginMessageTitle"];
+                            string message = null;
+                            if (!Settings.HideCallDispatchButton)
+                            {
+                                var companyName = Settings.ApplicationName;
+                                var phoneNumber = Settings.DefaultPhoneNumberDisplay;
+                                message = string.Format(localize[e.Message], companyName, phoneNumber);
+                            }
+                            else 
+                            {
+                                message = localize["AccountDisabled_NoCall"];
+                            }
+                            this.Services().Message.ShowMessage(title, message);
+                        }
+                            break;
                     }
                 }
                 catch (Exception e)

@@ -1,4 +1,3 @@
-using System;
 using Cirrious.CrossCore.Plugins;
 
 namespace apcurium.MK.Booking.Mobile.Client.Bootstrap

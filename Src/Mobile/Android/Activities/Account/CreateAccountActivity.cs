@@ -1,20 +1,19 @@
 using Android.App;
 using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Text;
-using Android.Widget;
+using Android.Util;
 using Android.Views;
+using Android.Widget;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using CrossUI.Droid.Dialog.Elements;
-using CrossUI.Droid.Dialog;
 using CrossUI.Droid;
-using Android.Util;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using System.Linq;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
+using CrossUI.Droid.Dialog;
+using CrossUI.Droid.Dialog.Elements;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {

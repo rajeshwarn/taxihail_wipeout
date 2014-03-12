@@ -1,23 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using Address = apcurium.MK.Common.Entity.Address;
-using ServiceStack.ServiceClient.Web;
-using apcurium.MK.Booking.Mobile.Extensions;
-using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common;
-using Direction = apcurium.MK.Common.Entity.DirectionSetting;
-using apcurium.MK.Booking.Api.Client;
-using Cirrious.MvvmCross.Plugins.PhoneCall;
 using Cirrious.CrossCore;
+using Cirrious.MvvmCross.Plugins.PhoneCall;
+using Direction = apcurium.MK.Common.Entity.DirectionSetting;
+using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -99,8 +96,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			try
             {
-                var result = new OrderStatusDetail ();
-
                 if (!HasLastOrder)
                 {
                     throw new InvalidOperationException ();
@@ -234,7 +229,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool CancelOrder (Guid orderId)
         {
-			bool isCompleted = true;
+			var isCompleted = true;
 			try{
 				UseServiceClientTask<OrderServiceClient> (service => service.CancelOrder (orderId));
 			}catch{
@@ -245,7 +240,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool SendReceipt (Guid orderId)
         {
-			bool isCompleted = true;
+			var isCompleted = true;
 			try{
 				UseServiceClientTask<OrderServiceClient> (service => service.SendReceipt (orderId));			
 			}catch{

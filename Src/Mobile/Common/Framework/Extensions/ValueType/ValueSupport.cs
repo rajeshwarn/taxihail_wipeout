@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Framework.Extensions.ValueType
 
         public static IValueSupport<T> Get<T>()
         {
-            Type type = typeof (T);
+            var type = typeof (T);
 
             if (type.IsEnum)
             {

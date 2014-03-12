@@ -346,7 +346,6 @@
     </Compile>
     <Compile Include="Views\BaseViewController.cs" />
     <Compile Include="Extensions\UIResponderExtensions.cs" />
-    <Compile Include="Controls\ValignLabel.cs" />
     <Compile Include="Views\ResetPasswordView.designer.cs">
       <DependentUpon>ResetPasswordView.cs</DependentUpon>
     </Compile>

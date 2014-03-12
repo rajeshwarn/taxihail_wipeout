@@ -535,7 +535,7 @@ namespace TinyMessenger
         /// <returns>TinyMessageSubscription used to unsubscribing</returns>
         public TinyMessageSubscriptionToken Subscribe<TMessage>(Action<TMessage> deliveryAction) where TMessage : class, ITinyMessage
         {
-            return AddSubscriptionInternal<TMessage>(deliveryAction, (m) => true, true, DefaultTinyMessageProxy.Instance);
+            return AddSubscriptionInternal<TMessage>(deliveryAction, m => true, true, DefaultTinyMessageProxy.Instance);
         }
 
         /// <summary>
@@ -551,7 +551,7 @@ namespace TinyMessenger
         /// <returns>TinyMessageSubscription used to unsubscribing</returns>
         public TinyMessageSubscriptionToken Subscribe<TMessage>(Action<TMessage> deliveryAction, ITinyMessageProxy proxy) where TMessage : class, ITinyMessage
         {
-            return AddSubscriptionInternal<TMessage>(deliveryAction, (m) => true, true, proxy);
+            return AddSubscriptionInternal<TMessage>(deliveryAction, m => true, true, proxy);
         }
 
         /// <summary>
@@ -565,7 +565,7 @@ namespace TinyMessenger
         /// <returns>TinyMessageSubscription used to unsubscribing</returns>
         public TinyMessageSubscriptionToken Subscribe<TMessage>(Action<TMessage> deliveryAction, bool useStrongReferences) where TMessage : class, ITinyMessage
         {
-            return AddSubscriptionInternal<TMessage>(deliveryAction, (m) => true, useStrongReferences, DefaultTinyMessageProxy.Instance);
+            return AddSubscriptionInternal<TMessage>(deliveryAction, m => true, useStrongReferences, DefaultTinyMessageProxy.Instance);
         }
 
         /// <summary>
@@ -581,7 +581,7 @@ namespace TinyMessenger
         /// <returns>TinyMessageSubscription used to unsubscribing</returns>
         public TinyMessageSubscriptionToken Subscribe<TMessage>(Action<TMessage> deliveryAction, bool useStrongReferences, ITinyMessageProxy proxy) where TMessage : class, ITinyMessage
         {
-            return AddSubscriptionInternal<TMessage>(deliveryAction, (m) => true, useStrongReferences, proxy);
+            return AddSubscriptionInternal<TMessage>(deliveryAction, m => true, useStrongReferences, proxy);
         }
 
         /// <summary>

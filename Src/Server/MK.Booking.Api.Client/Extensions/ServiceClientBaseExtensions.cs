@@ -1,7 +1,7 @@
+using System;
 using System.Threading.Tasks;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceHost;
-using System;
 
 namespace apcurium.MK.Booking.Api.Client.Extensions
 {

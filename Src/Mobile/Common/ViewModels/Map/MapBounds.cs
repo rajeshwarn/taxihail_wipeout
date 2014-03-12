@@ -1,9 +1,4 @@
 using System;
-using Cirrious.MvvmCross.ViewModels;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.Extensions;
-using System.Reactive.Disposables;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

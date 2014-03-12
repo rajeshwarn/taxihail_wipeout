@@ -1,17 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using Cirrious.MvvmCross.Views;
-using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Binding;
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments

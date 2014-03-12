@@ -1,7 +1,5 @@
 using System;
 using Cirrious.MvvmCross.Binding.Bindings.Target;
-using MonoTouch.UIKit;
-using System.Reflection;
 using Cirrious.MvvmCross.Binding;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;

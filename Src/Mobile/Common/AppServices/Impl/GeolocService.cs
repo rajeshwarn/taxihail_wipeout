@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using apcurium.MK.Common.Entity;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Diagnostic;
-using System.Threading.Tasks;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

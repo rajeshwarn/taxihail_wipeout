@@ -1,11 +1,11 @@
 using System;
 using System.Globalization;
 using System.Windows.Input;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Entity;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {
@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 
 						var pairingResponse = await _paymentService.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip, null);                    
 
-							this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? CmtRideLinqPairingState.Success : CmtRideLinqPairingState.Failed);
+							this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id, pairingResponse.IsSuccessfull ? CmtRideLinqPairingState.Success : CmtRideLinqPairingState.Failed);
 
 							if(!pairingResponse.IsSuccessfull)
 							{

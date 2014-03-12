@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Style
         private static StyleManager LoadStyle()
         {
             StyleManager result = null;
-            string resourceName = "";
+            var resourceName = "";
             
             foreach ( string name in typeof(StyleManager).Assembly.GetManifestResourceNames() ) 
             { 

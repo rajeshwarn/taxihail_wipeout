@@ -1,20 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Entity;
 using TinyIoC;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -33,7 +26,6 @@ namespace apcurium.MK.Booking.Mobile
 
 			if (currentAccount == null 
 				|| (creditCardIsMandatory 
-					&& currentAccount != null 
 					&& !currentAccount.DefaultCreditCard.HasValue))
 			{
 				if (currentAccount != null)

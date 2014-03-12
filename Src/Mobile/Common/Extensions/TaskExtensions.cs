@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Extensions
 {

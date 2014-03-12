@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 				ShadowOffset = new SizeF (0, -1)
 			};
 			
-			topBar.Items = new UIBarButtonItem []  {
+			topBar.Items = new []   {
 				new UIBarButtonItem (title),
 				flexibleSpace,
                 new UIBarButtonItem ("Close", UIBarButtonItemStyle.Bordered, (o, e) => { DismissViewController(true, () => {});} )
@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 			refreshButton = new UIBarButtonItem (UIBarButtonSystemItem.Refresh, (o, e) => { WebView.Reload (); });
 			stopButton = new UIBarButtonItem (UIBarButtonSystemItem.Stop, (o, e) => { WebView.StopLoading (); });
 			
-			toolbar.Items = new UIBarButtonItem [] { backButton, fixedSpace, forwardButton, flexibleSpace, stopButton, fixedSpace, refreshButton };
+			toolbar.Items = new [] { backButton, fixedSpace, forwardButton, flexibleSpace, stopButton, fixedSpace, refreshButton };
 
 			View.AddSubview (topBar);
 			View.AddSubview (toolbar);
@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 		void LayoutViews ()
 		{
 			var sbounds = View.Bounds;
-			int top = (InterfaceOrientation == UIInterfaceOrientation.Portrait) ? 0 : -44;
+			var top = (InterfaceOrientation == UIInterfaceOrientation.Portrait) ? 0 : -44;
 			
 			topBar.Frame = new RectangleF (0, top, sbounds.Width, 44);
 			toolbar.Frame =  new RectangleF (0, sbounds.Height-44, sbounds.Width, 44);
@@ -136,11 +136,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 		
 		public static string EncodeIdna (string host)
 		{
-			foreach (char c in host){
+			foreach (var c in host){
 				if (c > (char) 0x7f){
 					var segments = host.Split ('.');
 					var encoded = new string [segments.Length];
-					int i = 0;
+					var i = 0;
 					
 					foreach (var s in segments)
 						encoded [i++] = Mono.Util.Punycode.Encode (s.ToLower ());
@@ -159,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 			
 			if (url.StartsWith ("http://")){
 				string host;
-				int last = url.IndexOf ('/', 7);
+				var last = url.IndexOf ('/', 7);
 				if (last == -1)
 					host = url.Substring (7);
 				else 

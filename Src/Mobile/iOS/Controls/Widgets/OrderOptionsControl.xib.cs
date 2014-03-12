@@ -1,16 +1,9 @@
 using System;
-using System.Drawing;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.Data;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 using System.Linq;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
@@ -128,20 +121,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void ChangeState(HomeViewModelPresentationHint hint)
         {
-            if (hint.State == HomeViewModelState.Review)
+            switch (hint.State)
             {
-                viewPickup.IsReadOnly = true;
-                viewDestination.IsReadOnly = true;
-            }
-            else if(hint.State == HomeViewModelState.PickDate)
-            {
-                viewPickup.IsReadOnly = true;
-                viewDestination.IsReadOnly = true;
-            }
-            else if(hint.State == HomeViewModelState.Initial)
-            {
-                viewPickup.IsReadOnly = ViewModel.ShowDestination;
-                viewDestination.IsReadOnly = false;
+                case HomeViewModelState.Review:
+                    viewPickup.IsReadOnly = true;
+                    viewDestination.IsReadOnly = true;
+                    break;
+                case HomeViewModelState.PickDate:
+                    viewPickup.IsReadOnly = true;
+                    viewDestination.IsReadOnly = true;
+                    break;
+                case HomeViewModelState.Initial:
+                    viewPickup.IsReadOnly = ViewModel.ShowDestination;
+                    viewDestination.IsReadOnly = false;
+                    break;
             }
         }
 

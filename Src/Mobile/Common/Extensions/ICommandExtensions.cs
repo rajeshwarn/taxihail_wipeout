@@ -1,5 +1,3 @@
-using System;
-
 namespace System.Windows.Input
 {
 	public static class ICommandExtensions

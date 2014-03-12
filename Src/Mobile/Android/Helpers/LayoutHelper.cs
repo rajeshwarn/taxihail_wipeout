@@ -1,7 +1,6 @@
-﻿using System;
-using TinyIoC;
+﻿using Android.Content;
 using apcurium.MK.Common.Configuration;
-using Android.Content;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {

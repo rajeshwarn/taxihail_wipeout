@@ -3,21 +3,21 @@ using System.Globalization;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Threading.Tasks;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.AppServices.Impl;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Reactive.Threading.Tasks;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Mobile.Data;
+using System.Threading;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using System.Threading;
+using apcurium.MK.Booking.Mobile.AppServices.Impl;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
 using ServiceStack.ServiceInterface.ServiceModel;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -174,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 
 			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
-			bool pickupDateIsValid = !pickupDate.HasValue || (pickupDate.HasValue && pickupDate.Value.ToUniversalTime() >= DateTime.UtcNow);
+			var pickupDateIsValid = !pickupDate.HasValue || (pickupDate.Value.ToUniversalTime() >= DateTime.UtcNow);
 
 			if (!pickupDateIsValid)
 			{
@@ -184,7 +184,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder()
 		{
-			CreateOrder order = await GetOrder();
+			var order = await GetOrder();
 
 			try
 			{
@@ -208,8 +208,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 			catch(WebServiceException e)
 			{
-				string message = "";
-				string messageNoCall = "";
+				var message = "";
+				var messageNoCall = "";
 
 				switch (e.ErrorCode)
 				{

@@ -1,14 +1,14 @@
+using System.Globalization;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Runtime;
+using Android.Views;
+using Android.Widget;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using IO.Card.Payment;
-using System.Globalization;
-using Android.Widget;
-using Android.Views;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Controls;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {

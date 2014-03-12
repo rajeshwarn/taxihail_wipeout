@@ -1,4 +1,3 @@
-using System;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using System.Drawing;

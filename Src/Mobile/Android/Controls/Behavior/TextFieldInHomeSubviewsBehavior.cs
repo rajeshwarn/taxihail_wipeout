@@ -1,7 +1,7 @@
 ﻿using System;
-using Android.Widget;
-using Android.Views.InputMethods;
 using System.Collections.Generic;
+using Android.Views.InputMethods;
+using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior

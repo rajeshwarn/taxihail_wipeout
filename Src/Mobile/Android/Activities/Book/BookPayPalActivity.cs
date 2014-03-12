@@ -2,7 +2,6 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Webkit;
-
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
@@ -50,14 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             if (url.StartsWith("taxihail"))
             {
-                if (url.EndsWith("success"))
-                {
-                    _viewModel.Finish.Execute(true);
-                }
-                else
-                {
-                    _viewModel.Finish.Execute(false);
-                }
+                _viewModel.Finish.Execute(url.EndsWith("success"));
                 return true;
             }
             return base.ShouldOverrideUrlLoading(view, url);

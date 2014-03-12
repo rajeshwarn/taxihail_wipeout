@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<resources>
-  <declare-styleable name="apcurium.mk.booking.mobile.client.controls.HeaderedLayout">    
-    <attr name="HideLogo" format="boolean" />
-    <attr name="RightButtonSource" format="string" />
-    <attr name="BackgroundSource" format="string" />
-  </declare-styleable>
-</resources>

@@ -2,39 +2,35 @@ using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
-using System.Threading.Tasks;
+using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
-using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
 	public class PaymentViewModel : PageViewModel
-    {
         private readonly IPayPalExpressCheckoutService _palExpressCheckoutService;
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
-
 		public PaymentViewModel(IPayPalExpressCheckoutService palExpressCheckoutService,
 			IAccountService accountService,
-			IPaymentService paymentService)
-		{
+		public PaymentViewModel(IPayPalExpressCheckoutService palExpressCheckoutService,
+			IAccountService accountService,
+			_palExpressCheckoutService = palExpressCheckoutService;
+			_accountService = accountService;
 			_palExpressCheckoutService = palExpressCheckoutService;
 			_accountService = accountService;
 			_paymentService = paymentService;
-		}
-
 		public void Init(string order, string orderStatus)
-        {
+
 			_paymentService.GetPaymentSettings();
 
             Order = JsonSerializer.DeserializeFromString<Order>(order); 
             OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 
-			PaymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
 			PaymentPreferences.Start();
 			TipAmount = (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString();
 
@@ -275,7 +271,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             {
                 return this.GetCommand(() =>
                 { 										
-					if (MeterAmount != null && MeterAmount.ToString() != GetCurrency(MeterAmount).ToString())
+					if (MeterAmount != null && MeterAmount != GetCurrency(MeterAmount))
                     {
                         MeterAmount = GetCurrency(MeterAmount);
                     }
@@ -364,10 +360,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					var response = await _paymentService.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, CultureProvider.ParseCurrency(MeterAmount), CultureProvider.ParseCurrency(TipAmount), Order.Id);
                     if (!response.IsSuccessfull)
                     {
-                        this.Services().Message.ShowProgress(false);
-                        this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], 
-							string.Format(this.Services().Localize["PaymentErrorMessage"], response.Message));
-                        return;
+							this.Services().Message.ShowProgress(false);
+							this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], 
+								string.Format(this.Services().Localize["PaymentErrorMessage"], response.Message));
+							return;
                     }
 
 					_paymentService.SetPaymentFromCache(Order.Id, Amount);
@@ -417,6 +413,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 								null, () => {Close(this);},
 								this.Services().Localize["OkButtonText"], () => {Close(this);});
         }
+    }
+}
+
     }
 }
 

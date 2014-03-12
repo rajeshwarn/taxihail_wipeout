@@ -2,42 +2,24 @@ using System;
 using System.ComponentModel;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Gms.Common;
-using Android.Gms.Maps;
 using Android.Graphics;
 using Android.OS;
 using Android.Views;
-using Android.Views.Animations;
 using Android.Widget;
-using Cirrious.MvvmCross.Droid.Views;
-using TinyIoC;
-using TinyMessenger;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Animations;
 using apcurium.MK.Booking.Mobile.Client.Controls;
-using apcurium.MK.Booking.Mobile.Client.Diagnostic;
-using apcurium.MK.Booking.Mobile.Client.Models;
-using Android.Support.V4.App;
-using Cirrious.MvvmCross.Droid.Fragging;
-using Cirrious.MvvmCross.ViewModels;
-using Cirrious.MvvmCross.Binding.BindingContext;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using apcurium.MK.Booking.Mobile.Client.Messages;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Booking.Mobile.PresentationHints;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
-using Android.Graphics.Drawables;
-using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Models;
+using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -51,8 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     )]   
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
-        private Button _bigButton;
-        private RelativeLayout _relMapLayout;
+        private Button _bigButton;        
         private TouchableMap _touchMap;
         private LinearLayout _mapOverlay;
         private OrderReview _orderReview;
@@ -194,8 +175,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			}
 
             SetContentView(Resource.Layout.View_Home);
-
-            _relMapLayout = (RelativeLayout) FindViewById(Resource.Id.RelMapLayout);
+			            
             _bigButton = (Button) FindViewById(Resource.Id.BigButtonTransparent);
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
