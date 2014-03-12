@@ -40,6 +40,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService);
 		}
 
+		private bool _isShowingTermsAndConditions;
 		private bool _locateUser;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
 
@@ -96,8 +97,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async void CheckTermsAsync()
 		{
-			await _termsService.CheckIfNeedsToShowTerms ((content, actionOnResult) => ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool> (content, actionOnResult));
-			_locateUser = true;
+			// if we're already showing the terms and conditions, do nothing
+			if (!_isShowingTermsAndConditions)
+			{
+				await _termsService.CheckIfNeedsToShowTerms (
+					(content, actionOnResult) => 
+					{
+						_isShowingTermsAndConditions = true;
+						ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool> (content, actionOnResult);
+					},
+					(locateUser, defaultHintZoomLevel) => 
+					{
+						_isShowingTermsAndConditions = false;
+
+						// reset the viewmodel to the state it was before calling CheckTermsAsync()
+						_locateUser = locateUser;
+						_defaultHintZoomLevel = defaultHintZoomLevel;
+					},
+					_locateUser, 
+					_defaultHintZoomLevel
+				);
+			}
 		}
 
 		public override void OnViewStopped()
