@@ -26,6 +26,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -48,10 +49,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private BitmapDescriptor _hailIcon;
 
         private Resources _resources;
+		private TaxiHailSetting _settings;
 
-        public OrderMapFragment(TouchableMap mapFragment, Resources resources)
+		public OrderMapFragment(TouchableMap mapFragment, Resources resources, TaxiHailSetting settings)
         {
             _resources = resources;
+			_settings = settings;
 
             InitDrawables();
 
@@ -201,7 +204,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void InitDrawables()
         {            
-            var useColor = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
+			var useColor = _settings.UseThemeColorForMapIcons;
             var colorBgTheme = useColor ? (Color?)_resources.GetColor(Resource.Color.company_color) : (Color?)null;
 
             var destinationIcon =  _resources.GetDrawable(Resource.Drawable.@destination_icon);

@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                 .Throttle(TimeSpan.FromMilliseconds(700))
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(text => ViewModel.TextSearchCommand.Execute(text));
-
+				
             var set = this.CreateBindingSet<AddressPickerView, AddressPickerViewModel> ();
 
             set.Bind(source)

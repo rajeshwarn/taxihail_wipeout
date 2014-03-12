@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             SetContentView(Resource.Layout.View_Book_RideSummaryPage);
             var lblSubTitle = FindViewById<TextView>(Resource.Id.lblSubTitle);
-            lblSubTitle.Text = String.Format(Localize ("RideSummarySubTitleText"), this.Services().Settings.ApplicationName);
+			lblSubTitle.Text = String.Format(this.Services().Localize["RideSummarySubTitleText"], this.Services().Settings.ApplicationName);
 
             ViewModel.PropertyChanged += (sender, e) =>
             {
@@ -30,11 +30,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     sendReceiptBtn.Enabled = false;
                 }
             };
-        }
-
-        private string Localize(string value)
-        {
-            return TinyIoCContainer.Current.Resolve<ILocalization> () [value];
         }
     }
 }
