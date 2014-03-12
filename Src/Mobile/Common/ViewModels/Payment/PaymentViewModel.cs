@@ -18,10 +18,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly IPaymentService _paymentService;
 
 		public PaymentViewModel(IPayPalExpressCheckoutService palExpressCheckoutService,
-			IAccountService accountService,IPaymentService paymentService)
+			IAccountService accountService,
+			IPaymentService paymentService)
 		{
-			_palExpressCheckoutService = palExpressCheckoutService;
-			_accountService = accountService;
 			_palExpressCheckoutService = palExpressCheckoutService;
 			_accountService = accountService;
 			_paymentService = paymentService;
@@ -34,6 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             Order = JsonSerializer.DeserializeFromString<Order>(order); 
             OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 
+			PaymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
 			PaymentPreferences.Start();
 			TipAmount = (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString();
 
