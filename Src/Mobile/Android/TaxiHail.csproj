@@ -271,7 +271,6 @@
     <AndroidResource Include="Resources\Layout\View_Book_RideSummaryPage.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-large-nodpi\splash.9.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\splash.9.png" />
     <AndroidResource Include="Resources\Drawable\paypal.png" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
@@ -561,6 +560,8 @@
     <AndroidResource Include="Resources\Drawable\drop_shadow_pressed.xml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_selector.xml" />
     <Compile Include="Extensions\ViewServicesExtensions.cs" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\splash.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\splash.9.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
