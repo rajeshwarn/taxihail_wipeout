@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -8,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	{
         Task<TermsAndConditions> GetTerms();
 
-		Task CheckIfNeedsToShowTerms (Action<object, Action<bool>> actionToDoIfTrue);
+		Task CheckIfNeedsToShowTerms (Action<object, Action<bool>> actionToDoIfTrue, Action<bool, ZoomToStreetLevelPresentationHint> actionToDoOnReturn, bool initialLocateUserValue, ZoomToStreetLevelPresentationHint initialHintValue);
 
 		void AcknowledgeTerms(bool acknowledged, string email);
 	}

@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -26,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return UseServiceClientAsync<CompanyServiceClient, TermsAndConditions>(service => service.GetTermsAndConditions());
         }
 
-		public async Task CheckIfNeedsToShowTerms(Action<object, Action<bool>> actionToDoIfTrue)
+		public async Task CheckIfNeedsToShowTerms(Action<object, Action<bool>> actionToDoIfTrue, Action<bool, ZoomToStreetLevelPresentationHint> actionToDoOnReturn, bool initialLocateUserValue, ZoomToStreetLevelPresentationHint initialHintValue)
 		{
 			if (!_appSettings.Data.ShowTermsAndConditions)
 			{
@@ -47,6 +48,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					}.ToStringDictionary(),
 					async acknowledged =>
 					{
+						actionToDoOnReturn.Invoke(initialLocateUserValue, initialHintValue);
 						AcknowledgeTerms(acknowledged, _accountService.CurrentAccount.Email);
 						if (!acknowledged)
 						{
