@@ -34,8 +34,6 @@ namespace ninePatchMaker
                 SaveDrawable(outputFolder, filename, "hdpi", bitmap, basicSplashNinePatch, .75);
 				SaveDrawable(outputFolder, filename, "mdpi", bitmap, basicSplashNinePatch, .5);
                 SaveDrawable(outputFolder, filename, "ldpi", bitmap, basicSplashNinePatch, .375);
-
-                SaveDrawable(outputFolder, filename, "large-nodpi", bitmap, basicSplashNinePatch, 1);
             }
         }
 
@@ -54,7 +52,6 @@ namespace ninePatchMaker
 
             g.Flush();
         }
-
 
         private static void SaveDrawable(string folder, string filename, string suffix, Bitmap bitmap, NinePatch patch, double scale)
         {
