@@ -66,8 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
         private void SendMessage(string buttonTitle)
         {
-            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>()
-                .Publish(new ActivityCompleted(this, buttonTitle, _ownerId));
+			this.Services().MessengerHub.Publish(new ActivityCompleted(this, buttonTitle, _ownerId));
             Finish();
         }
     }

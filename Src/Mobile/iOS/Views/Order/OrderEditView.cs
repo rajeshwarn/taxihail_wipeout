@@ -16,8 +16,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
     public partial class OrderEditView : BaseBindableChildView<OrderEditViewModel>
     {
-        private IAppSettings Settings;
-
         public OrderEditView (IntPtr handle) : base(handle)
         {
         }
@@ -56,19 +54,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
         private void InitializeBinding()
         {
-            if (!Settings.Data.ShowPassengerName)
+			if (!this.Services().Settings.ShowPassengerName)
             {
                 lblName.Maybe(x => x.RemoveFromSuperview());
                 txtName.Maybe(x => x.RemoveFromSuperview());
             }
 
-            if (!Settings.Data.ShowPassengerPhone)
+			if (!this.Services().Settings.ShowPassengerPhone)
             {
                 lblPhone.Maybe(x => x.RemoveFromSuperview());
                 txtPhone.Maybe(x => x.RemoveFromSuperview());
             }
 
-            if (!Settings.Data.ShowPassengerNumber)
+			if (!this.Services().Settings.ShowPassengerNumber)
             {
                 lblPassengers.Maybe(x => x.RemoveFromSuperview());
                 txtPassengers.Maybe(x => x.RemoveFromSuperview());
@@ -108,8 +106,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
         public override void AwakeFromNib()
         {
             base.AwakeFromNib();
-
-            Settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
 
             var nib = NibHelper.GetNibForView("OrderEditView");
             var view = (UIView)nib.Instantiate(this, null)[0];

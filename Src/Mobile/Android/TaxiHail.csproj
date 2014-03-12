@@ -225,7 +225,6 @@
     <AndroidResource Include="Resources\Drawable\flag_state.xml" />
     <AndroidResource Include="Resources\Drawable\green_button_left.xml" />
     <AndroidResource Include="Resources\Drawable\green_button_right.xml" />
-    <AndroidResource Include="Resources\Drawable\address_selector_button.xml" />
     <AndroidResource Include="Resources\Layout\View_UpdatePassword.axml" />
     <Compile Include="Activities\Account\UpdatePasswordActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Tutorial.axml">
@@ -253,7 +252,6 @@
     <AndroidResource Include="Resources\Drawable\cell_full_state.xml" />
     <AndroidResource Include="Resources\Drawable\cell_selected.xml" />
     <AndroidResource Include="Resources\Drawable\transparentAllStates.xml" />
-    <AndroidResource Include="Resources\Drawable\address.png" />
     <Compile Include="Binding\CellItemBinding.cs" />
     <AndroidResource Include="Resources\Drawable\visa_electron.png" />
     <Compile Include="Activities\Book\BookPaymentActivity.cs" />
@@ -359,7 +357,6 @@
     <Compile Include="Controls\Widgets\ListItemAdapter.cs" />
     <Compile Include="Binding\EditTextRightSpinnerSelectedItemBinding.cs" />
     <AndroidResource Include="Resources\drawable-xhdpi\active.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\address.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\amex.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\apc_logo_menu.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\backPickupDestination.png" />
@@ -563,6 +560,7 @@
     <AndroidResource Include="Resources\Layout\View_AddressPickerContainer.axml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_pressed.xml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_selector.xml" />
+    <Compile Include="Extensions\ViewServicesExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

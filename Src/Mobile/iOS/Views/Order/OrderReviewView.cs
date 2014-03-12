@@ -13,8 +13,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
     public partial class OrderReviewView : BaseBindableChildView<OrderReviewViewModel>
     {
-        private IAppSettings _settings;
-
         public OrderReviewView(IntPtr handle) : base(handle)
         {
         }
@@ -73,13 +71,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .For(v => v.Text)
                 .To(vm => vm.Note);
 
-            if (!_settings.Data.ShowPassengerName)
+			if (!this.Services().Settings.ShowPassengerName)
             {
                 lblName.RemoveFromSuperview();
                 iconPassengerName.RemoveFromSuperview();
             }
 
-            if (!_settings.Data.ShowPassengerNumber)
+			if (!this.Services().Settings.ShowPassengerNumber)
             {
                 if (lblNbPassengers != null && iconNbPasserngers != null)
                 {
@@ -88,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 }
             }
 
-            if (!_settings.Data.ShowPassengerPhone)
+			if (!this.Services().Settings.ShowPassengerPhone)
             {
                 lblPhone.RemoveFromSuperview();
                 iconPhone.RemoveFromSuperview();
@@ -100,8 +98,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
         public override void AwakeFromNib()
         {
             base.AwakeFromNib();
-
-            _settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
 
             var nib = NibHelper.GetNibForView("OrderReviewView");
             var view = (UIView)nib.Instantiate(this, null)[0];

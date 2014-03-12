@@ -201,7 +201,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             Bundle mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
             _touchMap = (TouchableMap)SupportFragmentManager.FindFragmentById(Resource.Id.mapPickup);
             _touchMap.OnCreate(mapViewSavedInstanceState);
-            _mapFragment = new OrderMapFragment(_touchMap, Resources);
+			_mapFragment = new OrderMapFragment(_touchMap, Resources, this.Services().Settings);
 
             // Home View Bindings
             var set = this.CreateBindingSet<HomeActivity, HomeViewModel>();

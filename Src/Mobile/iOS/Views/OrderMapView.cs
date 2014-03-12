@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void Initialize()
         {
-            _useThemeColorForPickupAndDestinationMapIcons = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
+			_useThemeColorForPickupAndDestinationMapIcons = this.Services().Settings.UseThemeColorForMapIcons;
 
             this.DelayBind(() => {
 

@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
 
 			var addressPicker = FindViewById<AddressPicker>(Resource.Id.searchAddressControl);
 			addressPicker.Bind(this, "DataContext;");
+			addressPicker.DelayBind(() => addressPicker.FocusOnTextField ());
 		}
 	}
 }

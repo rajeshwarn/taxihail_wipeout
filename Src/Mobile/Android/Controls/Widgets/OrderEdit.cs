@@ -17,8 +17,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public class OrderEdit : MvxFrameControl
     {
-        private IAppSettings Settings;
-
         private TextView _lblName;
         private TextView _lblPhone;
         private TextView _lblPassengers;
@@ -34,8 +32,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public OrderEdit(Context context, IAttributeSet attrs) : base(LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderEdit, context), context, attrs)
         {
-            Settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-
             this.DelayBind(() => 
             {
                 _lblName = Content.FindViewById<TextView>(Resource.Id.lblName);
@@ -66,19 +62,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void InitializeBinding()
         {
-            if (!Settings.Data.ShowPassengerName)
+			if (!this.Services().Settings.ShowPassengerName)
             {
                 _lblName.Maybe(x => x.Visibility = ViewStates.Gone);
                 _txtName.Maybe(x => x.Visibility = ViewStates.Gone);
             }
 
-            if (!Settings.Data.ShowPassengerPhone)
+			if (!this.Services().Settings.ShowPassengerPhone)
             {
                 _lblPhone.Maybe(x => x.Visibility = ViewStates.Gone);
                 _txtPhone.Maybe(x => x.Visibility = ViewStates.Gone);
             }
 
-            if (!Settings.Data.ShowPassengerNumber)
+			if (!this.Services().Settings.ShowPassengerNumber)
             {
                 _lblPassengers.Maybe(x => x.Visibility = ViewStates.Gone);
                 _txtPassengers.Maybe(x => x.Visibility = ViewStates.Gone);

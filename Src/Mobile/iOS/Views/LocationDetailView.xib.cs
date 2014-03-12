@@ -16,6 +16,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			base.ViewWillAppear (animated);
 
+			ChangeThemeOfBarStyle ();
+
 			NavigationController.NavigationBar.Hidden = false;
 			NavigationItem.HidesBackButton = false;
 			NavigationItem.Title = Localize.GetValue("View_LocationDetail");

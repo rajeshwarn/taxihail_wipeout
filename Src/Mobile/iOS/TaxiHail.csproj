@@ -508,6 +508,7 @@
     <Compile Include="Views\AddressPickerContainerView.designer.cs">
       <DependentUpon>AddressPickerContainerView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\ViewServicesExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

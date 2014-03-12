@@ -134,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public override void OnBackPressed()
         {
-            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new DateTimePicked(this, null));
+			this.Services().MessengerHub.Publish(new DateTimePicked(this, null));
             base.OnBackPressed();
         }
     }

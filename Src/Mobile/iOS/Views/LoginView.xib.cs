@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			btnSignUp.SetTitle (Localize.GetValue ("Register"), UIControlState.Normal);
             btnSignUp.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
 
-            var settings = this.Services().Settings;;
+            var settings = this.Services().Settings;
 
             btnSignIn.TouchUpInside += (sender, e) => { 
                 var firstResponder = View.FindFirstResponder();
@@ -133,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         void ChangeServerTouchUpInside (object sender, EventArgs e)
         {
             var popup = new UIAlertView {AlertViewStyle = UIAlertViewStyle.PlainTextInput, Title = "Server Url"};
-            popup.GetTextField (0).Text = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data.ServiceUrl;
+			popup.GetTextField (0).Text = this.Services().Settings.ServiceUrl;
 
             var cancelBtnIndex = popup.AddButton ("Cancel");
             var saveBtnIndex = popup.AddButton ("Save");
