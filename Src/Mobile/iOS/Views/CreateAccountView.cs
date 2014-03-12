@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnCreate.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
             btnCancel.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
 
-			BuildTableView (tableView);
+			BuildTableView ();
 
 			var set = this.CreateBindingSet<CreateAccountView, CreateAccountViewModel>();
 
@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Apply ();
         }
 
-		private void BuildTableView(UIView container)
+		private void BuildTableView()
 		{
 			var bindings = this.CreateInlineBindingTarget<CreateAccountViewModel>();
 

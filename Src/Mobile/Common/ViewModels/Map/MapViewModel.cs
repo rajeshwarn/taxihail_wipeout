@@ -138,7 +138,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var token = GetNewCancellationToken();
                     try
                     {
-                        var source = new CancellationTokenSource();
                         await _execute((TParam)parameter, token);
                     }
                     catch(Exception)

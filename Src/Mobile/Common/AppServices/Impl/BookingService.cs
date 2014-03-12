@@ -99,8 +99,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			try
             {
-                var result = new OrderStatusDetail ();
-
                 if (!HasLastOrder)
                 {
                     throw new InvalidOperationException ();

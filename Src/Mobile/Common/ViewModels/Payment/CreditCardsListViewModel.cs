@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public void RemoveCreditCard (Guid creditCardId)
         {
-			if (this.Settings.CreditCardIsMandatory && CreditCards.Where(x => !x.IsAddNew).Count() == 1)
+			if (this.Settings.CreditCardIsMandatory && CreditCards.Count(x => !x.IsAddNew) == 1)
 			{
 				this.Services().Message.ShowMessage(this.Services().Localize["CreditCardRemoveErrorTitle"], this.Services().Localize["CreditCardRemoveErrorMessage"]);
 				return;
