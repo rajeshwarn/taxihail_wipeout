@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Payment
 
             if ( !_client.SendPaymentNotification(message, vehicleNumber, ibsOrderId) )
             {
-                throw new Exception("Cannot send the payment notification");
+				throw new Exception("Cannot send the payment notification.");
             }
         }
     }

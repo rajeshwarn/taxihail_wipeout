@@ -68,11 +68,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             layoutParentParameters.Width = masterLayout.LayoutParameters.Width;
             layoutParentParameters.Height = masterLayout.LayoutParameters.Height;
             layoutParent.LayoutParameters = layoutParentParameters;
+			layoutParent.SetBackgroundDrawable(_activity.Resources.GetDrawable(Resource.Drawable.loading_overlay));
 
-            masterLayout.SetBackgroundDrawable(_activity.Resources.GetDrawable(Resource.Drawable.loading_overlay));
-            layoutParent.SetBackgroundColor(Android.Graphics.Color.Argb(80, 0, 0, 0));
-
-            var layoutCenterParameters = new LinearLayout.LayoutParams(-2, 0);
+			var layoutCenterParameters = new LinearLayout.LayoutParams(-2, 0);
             layoutCenterParameters.Weight = 1.0f;
             layoutCenterParameters.SetMargins(0, 0, 0, 0);
             layoutCenterParameters.Gravity = GravityFlags.CenterVertical;

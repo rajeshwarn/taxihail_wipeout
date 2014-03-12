@@ -218,7 +218,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                                             : string.Format("transaction {0} status unkonw, can't cancel it", transactionId));
                                 }
 
-                                message = message + cancellationResult;
+								message = message + " the transaction has been cancelled.";
                             }
                             catch (Exception ex)
                             {
