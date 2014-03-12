@@ -105,9 +105,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 			set
 			{
-				_vehicles = value == null 
-				            ? new List<ListItem>() 
-				            : value;
+				_vehicles = value ?? new List<ListItem>();
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => VehicleTypeId);
 				RaisePropertyChanged(() => VehicleTypeName);

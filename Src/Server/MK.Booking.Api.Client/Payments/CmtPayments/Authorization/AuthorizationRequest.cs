@@ -1,6 +1,7 @@
 ﻿#region
 
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
+using ServiceStack.ServiceHost;
 
 #endregion
 

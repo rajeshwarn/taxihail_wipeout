@@ -1,3 +1,7 @@
+using System.Net;
+using ServiceStack.ServiceClient.Web;
+using ServiceStack.Text;
+
 #region
 
 using System;

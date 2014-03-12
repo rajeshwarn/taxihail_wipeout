@@ -1,5 +1,6 @@
 ﻿#region
 
+using System.Xml.Serialization;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 
 #endregion

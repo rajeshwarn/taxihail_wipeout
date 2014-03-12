@@ -1,10 +1,14 @@
 #region
 
 using System;
+using System.Net;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Client.Cmt.OAuth;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Configuration.Impl;
+using ServiceStack.Common.Web;
+using ServiceStack.ServiceHost;
 
 #endregion
 

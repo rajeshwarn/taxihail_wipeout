@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;

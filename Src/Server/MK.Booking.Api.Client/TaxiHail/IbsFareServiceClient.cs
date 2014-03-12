@@ -1,4 +1,5 @@
 #region
+using apcurium.MK.Booking.Api.Client.Extensions;
 
 using System.Globalization;
 using System.Threading.Tasks;

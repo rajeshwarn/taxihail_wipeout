@@ -1,8 +1,6 @@
-#region
-
 using System.Collections.Generic;
-
-#endregion
+using System.Linq;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Google.Resources
 {

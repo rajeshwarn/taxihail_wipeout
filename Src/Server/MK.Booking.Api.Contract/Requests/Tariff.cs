@@ -3,11 +3,11 @@
 using System;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
-
 #if !CLIENT
 using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Security;
 #endif
+using ServiceStack.ServiceInterface.ServiceModel;
 
 #endregion
 

@@ -1,8 +1,10 @@
 ﻿#region
 
-
+using ServiceStack.ServiceHost;
 
 #endregion
+
+
 
 namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Pair
 {
