@@ -18,9 +18,7 @@ namespace ninePatchMaker
         {
             using (var bitmap = new Bitmap(filePathToPatch))
             {
-
                 var basicSplashNinePatch = new NinePatch();
-
 
                 basicSplashNinePatch.LeftRanges.Add(NinePatchRange.CreateFromStart(0, 1d / 8d));
                 basicSplashNinePatch.LeftRanges.Add(NinePatchRange.CreateFromEnd(1, 1d / 26d));
@@ -28,20 +26,16 @@ namespace ninePatchMaker
                 basicSplashNinePatch.TopRanges.Add(NinePatchRange.CreateFromStart(0, 1d / 8d));
                 basicSplashNinePatch.TopRanges.Add(NinePatchRange.CreateFromEnd(1, 1d / 8d));
 
-
                 basicSplashNinePatch.RightRanges.Add(NinePatchRange.CreateFromStart(1d / 8d, 6.7d / 8d));
                 basicSplashNinePatch.BottomRanges.Add(NinePatchRange.CreateFromStart(1d / 8d, 6d / 8d));
 
-
-
-                SaveDrawable(outputFolder, filename, "xhdpi", bitmap, basicSplashNinePatch, 1);
+				SaveDrawable(outputFolder, filename, "xxhdpi", bitmap, basicSplashNinePatch, 1.5);
+				SaveDrawable(outputFolder, filename, "xhdpi", bitmap, basicSplashNinePatch, 1);
                 SaveDrawable(outputFolder, filename, "hdpi", bitmap, basicSplashNinePatch, .75);
-                SaveDrawable(outputFolder, filename, "mdpi", bitmap, basicSplashNinePatch, 5);
+				SaveDrawable(outputFolder, filename, "mdpi", bitmap, basicSplashNinePatch, .5);
                 SaveDrawable(outputFolder, filename, "ldpi", bitmap, basicSplashNinePatch, .375);
 
                 SaveDrawable(outputFolder, filename, "large-nodpi", bitmap, basicSplashNinePatch, 1);
-
-
             }
         }
 

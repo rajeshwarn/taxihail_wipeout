@@ -13,9 +13,9 @@ namespace ninePatchMaker
     {
         static void Main(string[] args)
         {
-            var fileName = @"C:\Users\matthieu.duluc\Desktop\splash.png";
+			var fileName = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Desktop), "splash.png");
 
-            NinePatchMaker.Generate(fileName, @"C:\Users\matthieu.duluc\Desktop\", "splash.91.png");
+			NinePatchMaker.Generate(fileName, Environment.GetFolderPath (Environment.SpecialFolder.Desktop), "splash.91.png");
 
             
         }
