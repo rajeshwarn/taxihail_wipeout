@@ -21,7 +21,6 @@
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
     <ProductVersion>12.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -43,7 +42,8 @@
         <Command type="BeforeBuild" command="&quot;../../LocalizationTool/output/LocalizationTool.exe&quot; -t=android -m=&quot;../../Mobile/Common/Localization/Master.resx&quot; -d=&quot;../Android/Resources/Values/String.xml&quot; -s=&quot;../../Mobile/Common/Settings/Settings.json&quot;" />
       </CustomCommands>
     </CustomCommands>
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -58,6 +58,7 @@
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidSupportedAbis>armeabi;armeabi-v7a</AndroidSupportedAbis>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cirrious.CrossCore">
