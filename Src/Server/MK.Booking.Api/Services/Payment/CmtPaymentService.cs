@@ -182,7 +182,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             Convert.ToDecimal(request.TipAmount),
                             Convert.ToDecimal(request.MeterAmount),
                             PaymentType.CreditCard.ToString(),
-                            PaymentProvider.Braintree.ToString(),
+                            PaymentProvider.Cmt.ToString(),
                             transactionId,
                             authorizationCode,
                             request.CardToken,
