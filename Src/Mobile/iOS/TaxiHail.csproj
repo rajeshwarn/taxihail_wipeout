@@ -276,15 +276,6 @@
     <None Include="features\support\02_pre_stop_hooks.rb" />
     <None Include="features\support\env.rb" />
     <None Include="features\my_first.feature" />
-    <None Include="calabash.framework\Headers\CalabashServer.h" />
-    <None Include="calabash.framework\Versions\A\Headers\CalabashServer.h" />
-    <None Include="calabash.framework\Versions\A\calabash" />
-    <None Include="calabash.framework\Versions\Current\Headers\CalabashServer.h" />
-    <None Include="calabash.framework\Versions\Current\calabash" />
-    <None Include="calabash.framework\calabash" />
-    <None Include="Calabash\.DS_Store" />
-    <None Include="Calabash\cal.xcconfig" />
-    <None Include="calabash.sh" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
