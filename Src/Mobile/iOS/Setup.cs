@@ -81,6 +81,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
 
             InitializeSocialNetwork();
+
+			#if DEBUG
+			Xamarin.Calabash.Start();
+			#endif
         }
 
         private void InitializeSocialNetwork()
