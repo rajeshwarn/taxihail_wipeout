@@ -33,8 +33,7 @@
     </CustomCommands>
     <MtouchUseSGen>True</MtouchUseSGen>
     <OptimizePNGs>false</OptimizePNGs>
-    <MtouchExtraArgs>-time -time -gcc_flags "-framework CFNetwork -framework CoreGraphics -force_load $(ProjectDir)/calabash.framework/calabash -lstdc++"</MtouchExtraArgs>
-    <!--<MtouchExtraArgs>-time -time -gcc_flags "-framework CFNetwork -framework CoreGraphics -force_load $(ProjectDir)/calabash.framework/calabash -lstdc++"</MtouchExtraArgs> -->
+    <MtouchExtraArgs>-time -time</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -264,10 +263,28 @@
     <Reference Include="CardIO">
       <HintPath>..\Libraries\Monotouch\CardIO.dll</HintPath>
     </Reference>
+    <Reference Include="Calabash">
+      <HintPath>..\Libraries\Monotouch\Calabash.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="packages.config" />
+    <None Include="features\step_definitions\calabash_steps.rb" />
+    <None Include="features\step_definitions\my_first_steps.rb" />
+    <None Include="features\support\01_launch.rb" />
+    <None Include="features\support\02_pre_stop_hooks.rb" />
+    <None Include="features\support\env.rb" />
+    <None Include="features\my_first.feature" />
+    <None Include="calabash.framework\Headers\CalabashServer.h" />
+    <None Include="calabash.framework\Versions\A\Headers\CalabashServer.h" />
+    <None Include="calabash.framework\Versions\A\calabash" />
+    <None Include="calabash.framework\Versions\Current\Headers\CalabashServer.h" />
+    <None Include="calabash.framework\Versions\Current\calabash" />
+    <None Include="calabash.framework\calabash" />
+    <None Include="Calabash\.DS_Store" />
+    <None Include="Calabash\cal.xcconfig" />
+    <None Include="calabash.sh" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
