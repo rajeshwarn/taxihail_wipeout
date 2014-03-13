@@ -124,21 +124,23 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>(); //?
                 var employeeId = orderStatus.DriverInfos == null ? "" : orderStatus.DriverInfos.DriverId; //?
                 var tripId = orderStatus.IBSOrderId.Value; //?
+                var fleetToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.FleetToken;
+                var customerReferenceNumber = orderStatus.ReferenceNumber.HasValue() ? 
+                                                    orderStatus.ReferenceNumber : 
+                                                    orderDetail.IBSOrderId.ToString();
 
                 var authRequest = new AuthorizationRequest
                 {
-                    FleetToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.FleetToken,
+                    FleetToken = fleetToken,
                     DeviceId = deviceId,
-
                     Amount = (int) (request.Amount*100),
                     CardOnFileToken = request.CardToken,              
-                    CustomerReferenceNumber = string.IsNullOrEmpty(orderStatus.ReferenceNumber) ? orderDetail.IBSOrderId.ToString() : orderStatus.ReferenceNumber,
+                    CustomerReferenceNumber = customerReferenceNumber,
                     DriverId = driverId,
                     EmployeeId = employeeId,
                     Fare =  (int) (request.MeterAmount*100),
                     Tip = (int) (request.TipAmount*100),
                     TripId = tripId,
-
                     ConvenienceFee = 0,
                     Extras = 0,
                     Surcharge = 0,
@@ -204,9 +206,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         {
                             var reverseRequest = new ReverseRequest
                             {
-                                FleetToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.FleetToken,
+                                FleetToken = fleetToken,
                                 DeviceId = deviceId,
-
                                 TransactionId = authResponse.TransactionId,
                                 DriverId = driverId,
                                 TripId = tripId
