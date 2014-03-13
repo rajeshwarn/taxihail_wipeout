@@ -1,8 +1,3 @@
-Platform API
-Consumer Key:  vmAoqWEY3zIvUCM4
-Secret Key:  DUWzh0jAldPc7C5I
-Merchant Token:  E4AFE87B0E864228200FA947C4A5A5F98E02AA7A3CFE907B0AD33B56D61D2D13E0A75F51641AB031500BD3C5BDACC114
- 
 PayNet Credentials  (this will allow you to view your transactions)
 URL:  http://paynet-staging.cmtnyc.com
 Username:  TaxiHail

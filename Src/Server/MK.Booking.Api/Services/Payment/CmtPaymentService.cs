@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -8,8 +6,8 @@ using System.Net;
 using System.Threading;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Authorization;
-using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Capture;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Pair;
+using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Reverse;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Tokenize;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Cmt;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
@@ -25,8 +23,6 @@ using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
-
-#endregion
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
@@ -123,17 +119,31 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var orderStatus = _orderDao.FindOrderStatusById(orderDetail.Id);
                 if (orderStatus == null) throw new HttpError(HttpStatusCode.BadRequest, "Order status not found");
 
-                
+                // TODO verify these!!
+                var deviceId = orderStatus.VehicleNumber; //? previously DeviceName = orderStatus.TerminalId
+                var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>(); //?
+                var employeeId = orderStatus.DriverInfos == null ? "" : orderStatus.DriverInfos.DriverId; //?
+                var tripId = orderStatus.IBSOrderId.Value; //?
+
                 var authRequest = new AuthorizationRequest
                 {
+                    FleetToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.FleetToken,
+                    DeviceId = deviceId,
+
                     Amount = (int) (request.Amount*100),
-                    CardOnFileToken = request.CardToken,
-                    TransactionType = AuthorizationRequest.TransactionTypes.PreAuthorized,
-                    CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,                    
-                    MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken,
+                    CardOnFileToken = request.CardToken,              
                     CustomerReferenceNumber = string.IsNullOrEmpty(orderStatus.ReferenceNumber) ? orderDetail.IBSOrderId.ToString() : orderStatus.ReferenceNumber,
-                    EmployeeId = orderStatus.DriverInfos == null ? "" : orderStatus.DriverInfos.DriverId,
-                    DeviceName = orderStatus.TerminalId
+                    DriverId = driverId,
+                    EmployeeId = employeeId,
+                    Fare =  (int) (request.MeterAmount*100),
+                    Tip = (int) (request.TipAmount*100),
+                    TripId = tripId,
+
+                    ConvenienceFee = 0,
+                    Extras = 0,
+                    Surcharge = 0,
+                    Tax = 0,
+                    Tolls = 0
                 };
 
                 var responseTask = _cmtPaymentServiceClient.PostAsync(authRequest);
@@ -143,6 +153,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 if (authResponse.ResponseCode == 1)
                 {
+                    isSuccessful = true;
                     var transactionId = authResponse.TransactionId.ToString(CultureInfo.InvariantCulture);
                     var paymentId = Guid.NewGuid();
 
@@ -161,50 +172,64 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     // wait for OrderPaymentDetail to be created
                     Thread.Sleep(500);
 
-                    // commit transaction
-                    var captureResponseTask = _cmtPaymentServiceClient.PostAsync(new CaptureRequest
+                    authorizationCode = authResponse.AuthorizationCode;
+
+                    //send information to IBS
+                    try
                     {
-                        MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken,
-                        TransactionId = transactionId.ToLong(),
-                    });
-                    captureResponseTask.Wait();
-                    var captureResponse = captureResponseTask.Result;
-
-                    message = captureResponse.ResponseMessage;
-                    isSuccessful = captureResponse.ResponseCode == 1;
-
-
-                    if (isSuccessful)
+                        _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value,
+                            Convert.ToDecimal(request.Amount),
+                            Convert.ToDecimal(request.TipAmount),
+                            Convert.ToDecimal(request.MeterAmount),
+                            PaymentType.CreditCard.ToString(),
+                            PaymentProvider.Braintree.ToString(),
+                            transactionId,
+                            authorizationCode,
+                            request.CardToken,
+                            account.IBSAccountId,
+                            orderDetail.Settings.Name,
+                            orderDetail.Settings.Phone,
+                            account.Email,
+                            orderDetail.UserAgent.GetOperatingSystem(),
+                            orderDetail.UserAgent);
+                    }
+                    catch (Exception e)
                     {
-                        authorizationCode = captureResponse.AuthorizationCode;
+                        _logger.LogError(e);
+                        message = e.Message;
+                        isSuccessful = false;
 
-                        //send information to IBS
+                        //cancel CMT transaction
                         try
                         {
-                            _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value,
-                                Convert.ToDecimal(request.Amount),
-                                Convert.ToDecimal(request.TipAmount),
-                                Convert.ToDecimal(request.MeterAmount),
-                                PaymentType.CreditCard.ToString(),
-                                PaymentProvider.Braintree.ToString(),
-                                transactionId,
-                                authorizationCode,
-                                request.CardToken,
-                                account.IBSAccountId,
-                                orderDetail.Settings.Name,
-                                orderDetail.Settings.Phone,
-                                account.Email,
-                                orderDetail.UserAgent.GetOperatingSystem(),
-                                orderDetail.UserAgent);
-                        }
-                        catch (Exception e)
-                        {
-                            _logger.LogError(e);
-                            message = e.Message;
-                            isSuccessful = false;
+                            var reverseRequest = new ReverseRequest
+                            {
+                                FleetToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.FleetToken,
+                                DeviceId = deviceId,
 
-                            //cancel CMT transaction
-                            //waiting API from CMT in the meantime we log the error in the database
+                                TransactionId = authResponse.TransactionId,
+                                DriverId = driverId,
+                                TripId = tripId
+                            };
+
+                            var responseReverseTask = _cmtPaymentServiceClient.PostAsync(reverseRequest);
+                            responseReverseTask.Wait();
+                            var reverseResponse = responseReverseTask.Result;
+                            message = reverseResponse.ResponseMessage;
+
+                            if (reverseResponse.ResponseCode != 1)
+                            {
+                                throw new Exception("Cannot cancel cmt transaction");
+                            }
+
+							message = message + " the transaction has been cancelled.";
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogMessage("can't cancel cmt transaction");
+                            _logger.LogError(ex);
+                            message = message + ex.Message;
+                            //can't cancel transaction, send a command to log
                             _commandBus.Send(new LogCreditCardPaymentCancellationFailed
                             {
                                 PaymentId = paymentId,
@@ -213,16 +238,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         }
                     }
 
-                    if (isSuccessful)
+                    //payment completed
+                    _commandBus.Send(new CaptureCreditCardPayment
                     {
-                        //payment completed
-                        _commandBus.Send(new CaptureCreditCardPayment
-                        {
-                            PaymentId = paymentId,
-                            AuthorizationCode = authorizationCode,
-							Provider = PaymentProvider.Cmt,
-                        });
-                    }
+                        PaymentId = paymentId,
+                        AuthorizationCode = authorizationCode,
+						Provider = PaymentProvider.Cmt,
+                    });
                 }
 
                 return new CommitPreauthorizedPaymentResponse
@@ -254,8 +276,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 };
             }
         }
-
-  
 
         public PairingResponse Post(PairingRidelinqCmtRequest request)
         {

@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
         {
             Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
             Client.LocalHttpWebRequestFilter = SignRequest;
-            ConsumerKey = cmtSettings.CustomerKey;
+            ConsumerKey = cmtSettings.ConsumerKey;
             ConsumerSecretKey = cmtSettings.ConsumerSecretKey;
 
             //todo - Bug accept all certificates
