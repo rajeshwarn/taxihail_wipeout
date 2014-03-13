@@ -27,6 +27,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 var cancelEdit = Content.FindViewById<Button>(Resource.Id.btnCancelEdit);
                 var save = Content.FindViewById<Button>(Resource.Id.btnSave);
 
+				if(!this.Services().Settings.ShowEstimate)
+				{
+					var estimateImageView = Content.FindViewById<ImageView>(Resource.Id.btnEstimate);
+					estimateImageView.SetImageDrawable(Resources.GetDrawable(Resource.Drawable.button_destination_image_selector));
+				}
+
                 var set = this.CreateBindingSet<AppBar, BottomBarViewModel>();
 
                 set.Bind(estimate)
@@ -58,9 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     .For("Click")
                     .To(vm => vm.Save);
 
-
                 set.Apply();
-
             });
         }
 
@@ -94,7 +98,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 // this state does not affect this control
             }
         }
-
 
         public void ChangePresentation(ChangePresentationHint hint)
         {

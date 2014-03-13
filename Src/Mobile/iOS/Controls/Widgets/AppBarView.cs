@@ -55,7 +55,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             _orderButtons = new UIView(this.Bounds);
 
-            var btnEstimate = new AppBarButton(Localize.GetValue("Destination"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "estimate_icon.png", "estimate_icon_pressed.png");
+			var btnEstimateImage = this.Services ().Settings.ShowEstimate 
+				? "estimate_icon" 
+				: "destination_small_icon";
+			var btnEstimate = new AppBarButton(Localize.GetValue("Destination"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, string.Format("{0}.png", btnEstimateImage), string.Format("{0}_pressed.png", btnEstimateImage));
             btnEstimate.Frame = btnEstimate.Frame.IncrementX(4);
 
             var btnBook = new FlatButton(new RectangleF((320 - 123)/2, 7, 123, 41));

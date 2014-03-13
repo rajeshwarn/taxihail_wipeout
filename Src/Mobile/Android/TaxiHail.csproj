@@ -562,6 +562,11 @@
     <Compile Include="Extensions\ViewServicesExtensions.cs" />
     <AndroidResource Include="Resources\drawable-xxhdpi\splash.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\splash.9.png" />
+    <AndroidResource Include="Resources\Drawable\button_destination_image_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\destination_small_icon.png" />
+    <AndroidResource Include="Resources\Drawable\destination_small_icon_pressed.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\destination_small_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\destination_small_icon_pressed.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

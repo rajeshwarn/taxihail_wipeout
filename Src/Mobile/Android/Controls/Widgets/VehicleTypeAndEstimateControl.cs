@@ -99,6 +99,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             if (ShowEstimate)
             {
+				// this is the state where we show the logo and text of the selected vehicle type and the estimate
+
                 HorizontalDivider.Background.SetColorFilter(Resources.GetColor(Resource.Color.company_color), PorterDuff.Mode.SrcAtop);
                 SelectedVehicleType.Visibility = ViewStates.Visible;
                 SelectedVehicleTypeLabel.Visibility = ViewStates.Visible;
@@ -106,6 +108,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
             else
             {
+				// this is the state where we show the buttons to select vehicle type
+
                 HorizontalDivider.Background.SetColorFilter(Resources.GetColor(Resource.Color.orderoptions_horizontal_divider), PorterDuff.Mode.SrcAtop);
                 SelectedVehicleType.Visibility = ViewStates.Gone;
                 SelectedVehicleTypeLabel.Visibility = ViewStates.Gone;

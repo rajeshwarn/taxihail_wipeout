@@ -81,11 +81,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .To(vm => vm.EstimatedFare);
             set.Bind(viewVehicleType)
                 .For(v => v.Hidden)
-                .To(vm => vm.ShowDestination)
+				.To(vm => vm.VehicleAndEstimateBoxIsVisible)
                 .WithConversion("BoolInverter");
             set.Bind(viewVehicleType)
                 .For(v => v.ShowEstimate)
-                .To(vm => vm.ShowDestination);
+				.To(vm => vm.Settings.ShowEstimate);
 
             set.Bind(viewPickup)
                 .For("AddressClicked")

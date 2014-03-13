@@ -85,8 +85,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .To(vm => vm.EstimatedFare);
             set.Bind(ViewVehicleType)
                 .For(v => v.Visibility)
-                .To(vm => vm.ShowDestination)
+				.To(vm => vm.VehicleAndEstimateBoxIsVisible)
                 .WithConversion("Visibility");
+			set.Bind(ViewVehicleType)
+				.For(v => v.ShowEstimate)
+				.To(vm => vm.Settings.ShowEstimate);
 
             set.Bind(ViewPickup)
                 .For("AddressClicked")

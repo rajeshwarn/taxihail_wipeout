@@ -16,12 +16,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     public class VehicleTypeAndEstimateView : UIView
     {
         private UIView HorizontalDividerTop { get; set; }
-
         private UIImageView SelectedVehicleType { get; set; }
         private UILabel SelectedVehicleTypeLabel { get; set; }
         private UILabel EstimatedFareLabel { get; set; }
-
-
 
         public VehicleTypeAndEstimateView(IntPtr h):base(h)
         {
@@ -118,6 +115,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             if (ShowEstimate)
             {
+				// this is the state where we show the logo and text of the selected vehicle type and the estimate
+
                 BackgroundColor = Theme.CompanyColor;
                 HorizontalDividerTop.BackgroundColor = Theme.LabelTextColor;
                 SelectedVehicleType.Hidden = false;
@@ -126,13 +125,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
             else
             {
+				// this is the state where we show the buttons to select vehicle type
+
                 BackgroundColor = UIColor.Clear;
                 HorizontalDividerTop.BackgroundColor = UIColor.FromRGB(177, 177, 177);
                 SelectedVehicleType.Hidden = true;
                 SelectedVehicleTypeLabel.Hidden = true;
                 EstimatedFareLabel.Hidden = true;
-
-                // show the buttons to select vehicle type
             }
         }
 

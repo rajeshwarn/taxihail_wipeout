@@ -112,6 +112,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		public bool VehicleAndEstimateBoxIsVisible
+		{
+			get { return ShowDestination && Settings.ShowEstimate; }
+		}
+
         public ICommand SetAddress
         {
             get

@@ -755,6 +755,10 @@
     <BundleResource Include="Resources\baggage%402x.png" />
     <BundleResource Include="Resources\th_logo_small.png" />
     <BundleResource Include="Resources\th_logo_small%402x.png" />
+    <BundleResource Include="Resources\destination_small_icon.png" />
+    <BundleResource Include="Resources\destination_small_icon%402x.png" />
+    <BundleResource Include="Resources\destination_small_icon_pressed.png" />
+    <BundleResource Include="Resources\destination_small_icon_pressed%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
