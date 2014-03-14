@@ -1,9 +1,9 @@
 ﻿using System;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 
-namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Authorization
+namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Reverse
 {
-    public class AuthorizationResponse : PaymentResponse
+    public class ReverseResponse : PaymentResponse
     {
         public long TransactionId { get; set; }
 
