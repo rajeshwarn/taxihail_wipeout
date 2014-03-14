@@ -1,12 +1,10 @@
-Feature: Running a test
-  As an iOS developer
-  I want to have a sample feature file
-  So I can begin testing quickly
+Feature: Automate screenshots for TaxiHail
+  Tests should allow to 
+  Move the map to certain position,
+  To test the colors on the different views
+  and to take screen shots
 
-Scenario: Example steps
-  Given I am on the Welcome Screen
-  Then I swipe left
-  And I wait until I don't see "Please swipe left"
-  And take picture
-
-
+Scenario: TaxiHail Steps
+  Given the app is running
+  Then I take screenshots
+  Then I change the address BETA

@@ -59,7 +59,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		protected override void InitializeLastChance()
         {
 			base.InitializeLastChance();
-            var container = TinyIoCContainer.Current;
+            
+
+
+			var container = TinyIoCContainer.Current;
 
             container.Register<IAnalyticsService, GoogleAnalyticsService>();
 
@@ -82,9 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             InitializeSocialNetwork();
 
-			#if DEBUG
-			Xamarin.Calabash.Start();
-			#endif
+
         }
 
         private void InitializeSocialNetwork()
