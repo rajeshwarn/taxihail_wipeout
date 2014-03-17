@@ -124,6 +124,24 @@ namespace DatabaseInitializer.Sql
             }
         }
 
+        public void FixUnorderedEvents(string connString)
+        {
+            string unorderedEvents = ";WITH cte AS ";
+            unorderedEvents += "( ";
+            unorderedEvents += "SELECT *, ROW_NUMBER() OVER (PARTITION BY AggregateId ORDER BY [EventDate] ASC) AS rn ";
+            unorderedEvents += "FROM [Events].[Events]  ";
+            unorderedEvents += ") ";
+            unorderedEvents += "SELECT * ";
+            unorderedEvents += "FROM cte ";
+            unorderedEvents += "WHERE rn = 1 and Version > 0 ";
+            unorderedEvents += "order by [EventDate] ";
+            var invalidAggregateId = DatabaseHelper.ExecuteListQuery<string>(connString, unorderedEvents);
+            invalidAggregateId.ToString();
+
+        }
+
+
+
         public void CopyEventsAndCacheTables(string connString, string oldDatabase, string newDatabase)
         {
             var queryForEvents =
@@ -186,7 +204,7 @@ namespace DatabaseInitializer.Sql
             {
                 foreach (var context in contexts)
                 {
-                    var adapter = (IObjectContextAdapter) context;
+                    var adapter = (IObjectContextAdapter)context;
 
                     var script = adapter.ObjectContext.CreateDatabaseScript();
 
@@ -195,7 +213,7 @@ namespace DatabaseInitializer.Sql
                     context.Dispose();
                 }
             }
-// ReSharper disable once EmptyGeneralCatchClause
+            // ReSharper disable once EmptyGeneralCatchClause
             catch
             {
                 //TODO trouver un moyen plus sexy

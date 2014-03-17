@@ -152,7 +152,9 @@ namespace DatabaseInitializer
                 //Copy Domain Events
                 if (isUpdate)
                 {
+                    
                     creatorDb.CopyEventsAndCacheTables(connStringMaster, oldDatabase, companyName);
+                    creatorDb.FixUnorderedEvents(connectionString.ConnectionString);
                 }
                 
 
