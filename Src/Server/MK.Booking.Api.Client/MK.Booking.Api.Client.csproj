@@ -88,14 +88,14 @@
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationRequest.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationResponse.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\OAuthAuthorizer.cs" />
-    <Compile Include="Payments\CmtPayments\Capture\CaptureRequest.cs" />
-    <Compile Include="Payments\CmtPayments\Capture\CaptureResponse.cs" />
+    <Compile Include="Payments\CmtPayments\Reverse\ReverseRequest.cs" />
     <Compile Include="Payments\CmtPayments\CmtMobileServiceClient.cs" />
     <Compile Include="Payments\CmtPayments\Pair\CmtUnpairingResponse.cs" />
     <Compile Include="Payments\CmtPayments\Pair\PairingRequest.cs" />
     <Compile Include="Payments\CmtPayments\Pair\CmtPairingResponse.cs" />
     <Compile Include="Payments\CmtPayments\Pair\TripRequest.cs" />
     <Compile Include="Payments\CmtPayments\Pair\UnpairingRequest.cs" />
+    <Compile Include="Payments\CmtPayments\Reverse\ReverseResponse.cs" />
     <Compile Include="Payments\Fake\FakePaymentClient.cs" />
     <Compile Include="Payments\CmtPayments\CmtPaymentServiceClient.cs" />
     <Compile Include="Payments\CmtPayments\LevelThreeData.cs" />

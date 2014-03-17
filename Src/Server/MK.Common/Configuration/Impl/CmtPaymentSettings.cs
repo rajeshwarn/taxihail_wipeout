@@ -5,9 +5,10 @@
         public CmtPaymentSettings()
         {
 #if DEBUG
-            MerchantToken =
-                "E4AFE87B0E864228200FA947C4A5A5F98E02AA7A3CFE907B0AD33B56D61D2D13E0A75F51641AB031500BD3C5BDACC114";
-            CustomerKey = "AH7j9KweF235hP";
+            // TODO Change these values when we have them
+
+            FleetToken = "270d2767ec30c1c2";
+            ConsumerKey = "AH7j9KweF235hP";
             ConsumerSecretKey = "K09JucBn23dDrehZa";
             SandboxMobileBaseUrl = "https://mobile-sandbox.cmtapi.com/";
             SandboxBaseUrl = "https://payment-sandbox.cmtapi.com/";
@@ -30,9 +31,9 @@
 
         public string ConsumerSecretKey { get; set; }
 
-        public string CustomerKey { get; set; }
+        public string ConsumerKey { get; set; }
 
-        public string MerchantToken { get; set; }
+        public string FleetToken { get; set; }
 
         public string CurrencyCode { get; set; }
     }
