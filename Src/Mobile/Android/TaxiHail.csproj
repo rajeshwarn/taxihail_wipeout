@@ -773,5 +773,6 @@
     <None Include="Calabash\features\support\app_life_cycle_hooks.rb" />
     <None Include="Calabash\features\support\env.rb" />
     <None Include="Calabash\features\support\hooks.rb" />
+    <None Include="Calabash\features\step_definitions\my_first_steps.rb" />
   </ItemGroup>
 </Project>
