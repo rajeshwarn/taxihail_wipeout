@@ -61,8 +61,6 @@
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationRequest.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationResponse.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\OAuthAuthorizer.cs" />
-    <Compile Include="Payments\CmtPayments\Capture\CaptureRequest.cs" />
-    <Compile Include="Payments\CmtPayments\Capture\CaptureResponse.cs" />
     <Compile Include="Payments\CmtPayments\CmtMobileServiceClient.cs" />
     <Compile Include="Payments\CmtPayments\CmtPaymentClient.cs" />
     <Compile Include="Payments\CmtPayments\CmtPaymentServiceClient.cs" />
@@ -120,4 +118,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Payments\CmtPayments\Capture\" />
+  </ItemGroup>
 </Project>

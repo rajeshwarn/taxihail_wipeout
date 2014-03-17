@@ -105,8 +105,6 @@
     <Compile Include="TaxiHail\PayPalServiceClient.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationRequest.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationResponse.cs" />
-    <Compile Include="Payments\CmtPayments\Capture\CaptureRequest.cs" />
-    <Compile Include="Payments\CmtPayments\Capture\CaptureResponse.cs" />
     <Compile Include="Payments\CmtPayments\Tokenize\TokenizeDeleteRequest.cs" />
     <Compile Include="Payments\CmtPayments\Tokenize\TokenizeDeleteResponse.cs" />
     <Compile Include="Payments\CmtPayments\Tokenize\TokenizeRequest.cs" />
@@ -127,4 +125,7 @@
     <Compile Include="TaxiHail\CompanyServiceClient.cs" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Payments\CmtPayments\Capture\" />
+  </ItemGroup>
 </Project>
