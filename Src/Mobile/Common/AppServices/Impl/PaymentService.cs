@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 case PaymentMethod.RideLinqCmt:
                 case PaymentMethod.Cmt:
-					return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _packageInfo.UserAgent);
+				return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _packageInfo.UserAgent, null);
 
                 case PaymentMethod.Fake:
                     return new FakePaymentClient();

@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Client.Cmt.OAuth;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Extensions;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.Text;
@@ -51,33 +52,33 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             request.ContentType = ContentType.Json;
 
 
-            _logger.LogMessage("CMT request header info : " + request.Headers.ToString());
-            _logger.LogMessage("CMT request info : " + request.ToJson());
+            _logger.Maybe( () => _logger.LogMessage("CMT request header info : " + request.Headers.ToString()));
+            _logger.Maybe( () => _logger.LogMessage("CMT request info : " + request.ToJson()));
         }
 
        
         public Task<T> GetAsync<T>(IReturn<T> request)
         {
-            _logger.LogMessage("CMT Get : " + request.ToJson());
+            _logger.Maybe(() => _logger.LogMessage("CMT Get : " + request.ToJson()));
             var result = Client.GetAsync(request);
-            result.ContinueWith(r => _logger.LogMessage("CMT Get Result: " + r.Result.ToJson())); 
+            result.ContinueWith(r => _logger.Maybe( () => _logger.LogMessage("CMT Get Result: " + r.Result.ToJson()))); 
             return result;
         }
 
         public Task<T> DeleteAsync<T>(IReturn<T> request)
         {
-            _logger.LogMessage("CMT Delete : " + request.ToJson());
+            _logger.Maybe( () => _logger.LogMessage("CMT Delete : " + request.ToJson()));
             var result = Client.DeleteAsync(request);
-            result.ContinueWith(r => _logger.LogMessage("CMT Delete Result: " + r.Result.ToJson())); 
+            result.ContinueWith(r =>_logger.Maybe( () =>  _logger.LogMessage("CMT Delete Result: " + r.Result.ToJson()))); 
             return result;
 
         }
 
         public Task<T> PostAsync<T>(IReturn<T> request)
         {
-            _logger.LogMessage("CMT Post : " + request.ToJson());
+            _logger.Maybe( () => _logger.LogMessage("CMT Post : " + request.ToJson()));
             var result = Client.PostAsync(request);
-            result.ContinueWith(r => _logger.LogMessage("CMT Post Result: " + r.Result.ToJson())); 
+            result.ContinueWith(r =>_logger.Maybe( () => _logger.LogMessage("CMT Post Result: " + r.Result.ToJson()))); 
             return result;
         }
     }
