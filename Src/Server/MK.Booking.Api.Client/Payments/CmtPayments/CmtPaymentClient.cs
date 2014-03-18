@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Cmt;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 
 #endregion
 
@@ -25,10 +26,10 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
     public class CmtPaymentClient : BaseServiceClient, IPaymentServiceClient
     {
         public CmtPaymentClient(string baseUrl, string sessionId, CmtPaymentSettings cmtSettings,
-            string userAgent)
+            string userAgent, ILogger logger)
             : base(baseUrl, sessionId, userAgent)
-        {           
-            CmtPaymentServiceClient = new CmtPaymentServiceClient(cmtSettings, null, userAgent);
+        {
+            CmtPaymentServiceClient = new CmtPaymentServiceClient(cmtSettings, null, userAgent, logger);
         }
 
         private CmtPaymentServiceClient CmtPaymentServiceClient { get; set; }
@@ -128,10 +129,46 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             }
         }
 
-        public async static Task<bool> TestClient(CmtPaymentSettings serverPaymentSettings, string number, DateTime date)
+        private static TokenizedCreditCardResponse TokenizeSync(CmtPaymentServiceClient cmtPaymentServiceClient,
+          string accountNumber, DateTime expiryDate)
         {
-            var cmtPaymentServiceClient = new CmtPaymentServiceClient(serverPaymentSettings, null, "test");
-            var result = await Tokenize(cmtPaymentServiceClient, number, date);
+            try
+            {
+                var response = cmtPaymentServiceClient.PostAsync(new TokenizeRequest
+                {
+                    AccountNumber = accountNumber,
+                    ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture)
+#if DEBUG
+,
+                    ValidateAccountInformation = false
+#endif
+                });
+
+                response.Wait();
+
+                return new TokenizedCreditCardResponse
+                {
+                    CardOnFileToken = response.Result.CardOnFileToken,
+                    IsSuccessfull = response.Result.ResponseCode == 1,
+                    Message = response.Result.ResponseMessage,
+                    CardType = response.Result.CardType,
+                    LastFour = response.Result.LastFour,
+                };
+            }
+            catch (WebException e)
+            {
+                return new TokenizedCreditCardResponse
+                {
+                    IsSuccessfull = false,
+                    Message = e.Message
+                };
+            }
+        }
+
+        public static bool TestClient(CmtPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger)
+        {
+            var cmtPaymentServiceClient = new CmtPaymentServiceClient(serverPaymentSettings, null, "test", logger);
+            var result = TokenizeSync(cmtPaymentServiceClient, number, date);
             return result.IsSuccessfull;
         }
     }

@@ -9,6 +9,9 @@ using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Configuration.Impl;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
+using ServiceStack.Text;
+using apcurium.MK.Common.Diagnostic;
+using System.IO;
 
 #endregion
 
@@ -16,13 +19,15 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 {
     public class CmtPaymentServiceClient : BaseServiceClient
     {
-        public CmtPaymentServiceClient(CmtPaymentSettings cmtSettings, string sessionId, string userAgent)
+        private readonly ILogger _logger;
+        public CmtPaymentServiceClient(CmtPaymentSettings cmtSettings, string sessionId, string userAgent, ILogger logger)
             : base(cmtSettings.IsSandbox
                 ? cmtSettings.SandboxBaseUrl
                 : cmtSettings.BaseUrl, sessionId, userAgent)
         {
+            _logger = logger;
             Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
-            Client.LocalHttpWebRequestFilter = SignRequest;
+            Client.LocalHttpWebRequestFilter = SignRequest;            
             ConsumerKey = cmtSettings.ConsumerKey;
             ConsumerSecretKey = cmtSettings.ConsumerSecretKey;
 
@@ -45,21 +50,35 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             request.Headers.Add(HttpRequestHeader.Authorization, oauthHeader);
             request.ContentType = ContentType.Json;
 
+
+            _logger.LogMessage("CMT request header info : " + request.Headers.ToString());
+            _logger.LogMessage("CMT request info : " + request.ToJson());
         }
 
+       
         public Task<T> GetAsync<T>(IReturn<T> request)
         {
-            return Client.GetAsync(request);
+            _logger.LogMessage("CMT Get : " + request.ToJson());
+            var result = Client.GetAsync(request);
+            result.ContinueWith(r => _logger.LogMessage("CMT Get Result: " + r.Result.ToJson())); 
+            return result;
         }
 
         public Task<T> DeleteAsync<T>(IReturn<T> request)
         {
-            return Client.DeleteAsync(request);
+            _logger.LogMessage("CMT Delete : " + request.ToJson());
+            var result = Client.DeleteAsync(request);
+            result.ContinueWith(r => _logger.LogMessage("CMT Delete Result: " + r.Result.ToJson())); 
+            return result;
+
         }
 
         public Task<T> PostAsync<T>(IReturn<T> request)
         {
-            return Client.PostAsync(request);
+            _logger.LogMessage("CMT Post : " + request.ToJson());
+            var result = Client.PostAsync(request);
+            result.ContinueWith(r => _logger.LogMessage("CMT Post Result: " + r.Result.ToJson())); 
+            return result;
         }
     }
 }
