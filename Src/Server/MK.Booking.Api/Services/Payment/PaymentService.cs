@@ -13,6 +13,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
+using apcurium.MK.Common.Diagnostic;
 
 #endregion
 
@@ -23,10 +24,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationDao _configurationDao;
         private readonly IConfigurationManager _configurationManager;
+        private readonly ILogger _logger;
 
         public PaymentService(ICommandBus commandBus, IConfigurationDao configurationDao,
-            IConfigurationManager configurationManager)
+            IConfigurationManager configurationManager,ILogger logger)
         {
+            _logger = logger;
             _commandBus = commandBus;
             _configurationDao = configurationDao;
             _configurationManager = configurationManager;
@@ -139,7 +142,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             return response;
         }
 
-        public async Task<TestServerPaymentSettingsResponse> Post(TestCmtSettingsRequest request)
+        public TestServerPaymentSettingsResponse Post(TestCmtSettingsRequest request)
         {
             var response = new TestServerPaymentSettingsResponse
             {
@@ -150,7 +153,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             try
             {
                 var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt).Visa;
-                var result = await CmtPaymentClient.TestClient(request.CmtPaymentSettings, cc.Number, cc.ExpirationDate);
+                var result = CmtPaymentClient.TestClient(request.CmtPaymentSettings, cc.Number, cc.ExpirationDate, _logger);
                 if (result)
                 {
                     return new TestServerPaymentSettingsResponse
