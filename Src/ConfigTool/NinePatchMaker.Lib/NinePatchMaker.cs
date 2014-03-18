@@ -20,15 +20,20 @@ namespace ninePatchMaker
             {
                 var basicSplashNinePatch = new NinePatch();
 
+				var topAndBottomSegmentHeight = 1d / 26d;
+				var leftAndRightSegmentWidth = 1d / 18d;
+
 				// stretch (these values should be the same for both left and both top, to ensure that the image stays centered when resizing)
-				basicSplashNinePatch.LeftRanges.Add(NinePatchRange.CreateFromStart(0, 1d / 26d));
-                basicSplashNinePatch.LeftRanges.Add(NinePatchRange.CreateFromEnd(1, 1d / 26d));
-                basicSplashNinePatch.TopRanges.Add(NinePatchRange.CreateFromStart(0, 1d / 8d));
-                basicSplashNinePatch.TopRanges.Add(NinePatchRange.CreateFromEnd(1, 1d / 8d));
+				// LeftRanges represent the NinePatch lines appearing on the left side of the image, it represents the top and bottom part
+				// TopRanges represent the NinePatch lines appearing on the top side of the image, it represents the left and right part
+				basicSplashNinePatch.LeftRanges.Add(NinePatchRange.CreateFromStart(0, topAndBottomSegmentHeight));
+				basicSplashNinePatch.LeftRanges.Add(NinePatchRange.CreateFromEnd(1, topAndBottomSegmentHeight));
+				basicSplashNinePatch.TopRanges.Add(NinePatchRange.CreateFromStart(0, leftAndRightSegmentWidth));
+				basicSplashNinePatch.TopRanges.Add(NinePatchRange.CreateFromEnd(1, leftAndRightSegmentWidth));
 
 				// scale
-                basicSplashNinePatch.RightRanges.Add(NinePatchRange.CreateFromStart(1d / 8d, 6.7d / 8d));
-                basicSplashNinePatch.BottomRanges.Add(NinePatchRange.CreateFromStart(1d / 8d, 6d / 8d));
+				basicSplashNinePatch.RightRanges.Add(NinePatchRange.CreateFromStart(topAndBottomSegmentHeight, 1d - 2*topAndBottomSegmentHeight));
+				basicSplashNinePatch.BottomRanges.Add(NinePatchRange.CreateFromStart(leftAndRightSegmentWidth, 1d - 2*leftAndRightSegmentWidth));
 
 				// output
 				SaveDrawable(outputFolder, filename, "xxhdpi", bitmap, basicSplashNinePatch, 1.5);
