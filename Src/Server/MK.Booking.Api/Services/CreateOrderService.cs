@@ -137,7 +137,7 @@ namespace apcurium.MK.Booking.Api.Services
                 _commandBus.Send(emailCommand);
             }
 
-            UpdateStatusAsync();
+            UpdateStatusAsync(command.OrderId);
 
             return new OrderStatusDetail
             {
@@ -149,13 +149,14 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        private void UpdateStatusAsync()
+        private void UpdateStatusAsync(Guid orderId)
         {
             new TaskFactory().StartNew(() =>
             {
                 //We have to wait for the order to be completed.
                 Thread.Sleep(750);
-                _updateOrderStatusJob.CheckStatus();
+
+                _updateOrderStatusJob.CheckStatus(orderId);
             });
         }
 
