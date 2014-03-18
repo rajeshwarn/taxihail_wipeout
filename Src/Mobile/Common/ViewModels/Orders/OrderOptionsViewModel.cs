@@ -95,6 +95,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
                 _showDestination = value;
 				RaisePropertyChanged();
+				RaisePropertyChanged(() => VehicleAndEstimateBoxIsVisible);
 			}
 		}
 
