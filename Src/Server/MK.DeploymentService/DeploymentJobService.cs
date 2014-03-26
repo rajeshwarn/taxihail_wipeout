@@ -248,13 +248,15 @@ namespace MK.DeploymentService
         {
             Log(String.Format("Deploying"));
             var companyName = _job.Company.CompanyKey;
+            var appPoolName = string.Format(Settings.Default.AppPoolFormat, _job.Company.CompanyKey);
+
             var iisManager = new ServerManager();
-            var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == companyName);
+            var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == appPoolName);
             if (appPool == null)
             {
                 Log("Creating a new app pool");
                 //create a new one
-                appPool = iisManager.ApplicationPools.Add(companyName);
+                appPool = iisManager.ApplicationPools.Add(appPoolName);
                 appPool.ManagedRuntimeVersion = "v4.0";
                 iisManager.CommitChanges();
                 Thread.Sleep(2000);
@@ -269,7 +271,7 @@ namespace MK.DeploymentService
 
 
             Log("Deploying Server");
-            DeployServer(_job.Company.Id, companyName, packagesDirectory, iisManager);
+            DeployServer(_job.Company.Id, companyName, appPoolName, packagesDirectory, iisManager);
 
             Log("Done Deploying Server");
 
@@ -334,7 +336,7 @@ namespace MK.DeploymentService
             Log(e.Data);
         }
 
-        private void DeployServer(string companyId, string companyName, string packagesDirectory,
+        private void DeployServer(string companyId, string companyName, string appPoolName, string packagesDirectory,
             ServerManager iisManager)
         {
             Log("Deploying IIS");
@@ -352,12 +354,13 @@ namespace MK.DeploymentService
             if (webApp != null)
             {
                 webApp.VirtualDirectories["/"].PhysicalPath = targetWeDirectory;
+                webApp.ApplicationPoolName = appPoolName;
                 iisManager.CommitChanges();
             }
             else
             {
                 webApp = website.Applications.Add("/" + companyName, targetWeDirectory);
-                webApp.ApplicationPoolName = companyName;
+                webApp.ApplicationPoolName = appPoolName;
                 iisManager.CommitChanges();
             }
 

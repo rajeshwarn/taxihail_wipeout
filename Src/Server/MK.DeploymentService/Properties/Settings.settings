@@ -39,5 +39,8 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=CL-T077-082CL;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True</Value>
     </Setting>
+    <Setting Name="AppPoolFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">{0}</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

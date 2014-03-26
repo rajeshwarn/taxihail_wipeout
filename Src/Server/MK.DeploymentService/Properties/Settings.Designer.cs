@@ -128,5 +128,14 @@ namespace MK.DeploymentService.Properties {
                 return ((string)(this["SqlConnectionStringMaster"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("{0}")]
+        public string AppPoolFormat {
+            get {
+                return ((string)(this["AppPoolFormat"]));
+            }
+        }
     }
 }
