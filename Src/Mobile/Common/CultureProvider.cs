@@ -21,7 +21,10 @@ namespace apcurium.MK.Booking.Mobile
 
 		public static string FormatCurrency(double amount)
 		{
-			return amount.ToString("C", CultureInfo.GetCultureInfo(CultureInfoString));
+			Console.WriteLine ("amount:" + amount);
+			var formattedAmount = amount.ToString ("C", CultureInfo.GetCultureInfo (CultureInfoString));
+			Console.WriteLine ("formatted amount:" + formattedAmount);
+			return formattedAmount;
 		}
         
 		public static double ParseCurrency(string amount)

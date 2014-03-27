@@ -149,7 +149,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{ 
 			get
 			{				 
-                return (PaymentPreferences.TipListDisabled ? _tipAmount : (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString());
+				var roundedAmount =  Math.Round((CultureProvider.ParseCurrency (MeterAmount) * ((double)PaymentPreferences.Tip / 100)), 2);
+                return (PaymentPreferences.TipListDisabled ? _tipAmount : roundedAmount.ToString());
 			}
 			set
 			{
@@ -191,7 +192,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public string GetTipAmount(string value)
 		{
-            var _tip = (PaymentPreferences.TipListDisabled ? value : (CultureProvider.ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString());
+			var roundedTip = Math.Round(CultureProvider.ParseCurrency (MeterAmount) * ((double)PaymentPreferences.Tip / 100), 2);
+			var _tip = (PaymentPreferences.TipListDisabled ? value : roundedTip.ToString());
 			return _tip;
 		}
 
@@ -360,7 +362,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 	            if (CanProceedToPayment())
 	            {
-					var response = await _paymentService.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, CultureProvider.ParseCurrency(MeterAmount), CultureProvider.ParseCurrency(TipAmount), Order.Id);
+					var meterAmount = CultureProvider.ParseCurrency (MeterAmount);
+					var tipAmount = CultureProvider.ParseCurrency (TipAmount);
+					var response = await _paymentService.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, meterAmount, tipAmount, Order.Id);
                     if (!response.IsSuccessfull)
                     {
 							this.Services().Message.ShowProgress(false);
