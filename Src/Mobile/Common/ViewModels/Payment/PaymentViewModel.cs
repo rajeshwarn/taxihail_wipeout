@@ -334,7 +334,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
             if (CanProceedToPayment(false))
             {
-				_palExpressCheckoutService.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount), Convert.ToDecimal(CultureProvider.ParseCurrency(MeterAmount)), Convert.ToDecimal(CultureProvider.ParseCurrency(TipAmount)))
+				_palExpressCheckoutService.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount), Convert.ToDecimal(CultureProvider.ParseCurrency(MeterAmount)), Convert.ToDecimal(Math.Round(CultureProvider.ParseCurrency (TipAmount), 2)))
 					.ToObservable()
                     // Always Hide progress indicator
                     .Do(_ => this.Services().Message.ShowProgress(false), _ => this.Services().Message.ShowProgress(false))
@@ -363,7 +363,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	            if (CanProceedToPayment())
 	            {
 					var meterAmount = CultureProvider.ParseCurrency (MeterAmount);
-					var tipAmount = CultureProvider.ParseCurrency (TipAmount);
+					var tipAmount = Math.Round(CultureProvider.ParseCurrency (TipAmount), 2);
 					var response = await _paymentService.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, meterAmount, tipAmount, Order.Id);
                     if (!response.IsSuccessfull)
                     {
