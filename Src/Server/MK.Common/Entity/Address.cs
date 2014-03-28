@@ -62,7 +62,7 @@ namespace apcurium.MK.Common.Entity
         {
             var components =
                 new[] {StreetNumber, Street, City, State, ZipCode}.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
-            if (components.Length > 1)
+            if ((components.Length > 1) && (StreetNumber.HasValue()) && (Street.HasValue()))
             {
                 // StreetNumber Street, City, State ZipCode
                 var address = string.Join(", ", new[]
