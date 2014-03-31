@@ -36,7 +36,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<AddressSelectionMode> _addressSelectionModeSubject = new BehaviorSubject<AddressSelectionMode>(AddressSelectionMode.PickupSelection);
 		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
         readonly ISubject<BookingSettings> _bookingSettingsSubject;
-		readonly ISubject<string> _estimatedFareSubject;
+		readonly ISubject<string> _estimatedFareDisplaySubject;
+
+		readonly ISubject<DirectionInfo> _estimatedFareDetailSubject = new BehaviorSubject<DirectionInfo>( new DirectionInfo() );
 		readonly ISubject<string> _noteToDriverSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<bool> _loadingAddressSubject = new BehaviorSubject<bool>(false);
 
@@ -58,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_localize = localize;
 			_bookingService = bookingService;
 
-			_estimatedFareSubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
+			_estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		}
 
 		public async Task SetAddress(Address address)
@@ -296,7 +298,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public IObservable<string> GetAndObserveEstimatedFare()
 		{
-			return _estimatedFareSubject;
+			return _estimatedFareDisplaySubject;
 		}
 
 		public IObservable<string> GetAndObserveNoteToDriver()
@@ -372,14 +374,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var destinationAddress = await _destinationAddressSubject.Take(1).ToTask();
 			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
 
-			var estimatedFareString = await _bookingService.GetFareEstimateDisplay(pickupAddress, destinationAddress, pickupDate, "EstimatePriceFormat", 
+			var direction = await _bookingService.GetFareEstimate (pickupAddress, destinationAddress, pickupDate);
+
+			var estimatedFareString = await _bookingService.GetFareEstimateDisplay(direction, "EstimatePriceFormat", 
 				_appSettings.Data.DestinationIsRequired 
 					? "NoFareTextIfDestinationIsRequired"
 					: "NoFareText", 
 				true, 
 				"EstimatedFareNotAvailable");
 
-            _estimatedFareSubject.OnNext(estimatedFareString);
+
+
+			_estimatedFareDetailSubject.OnNext (direction);
+			_estimatedFareDisplaySubject.OnNext(estimatedFareString);
+
 		}
 
 		public void PrepareForNewOrder()
@@ -390,7 +398,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_addressSelectionModeSubject.OnNext(AddressSelectionMode.PickupSelection);
 			_pickupDateSubject.OnNext(null);
 			_bookingSettingsSubject.OnNext(_accountService.CurrentAccount.Settings);
-			_estimatedFareSubject.OnNext(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
+			_estimatedFareDisplaySubject.OnNext(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		}
 
 		public void ResetOrderSettings()
@@ -428,7 +436,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
 			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
 			order.Note = await _noteToDriverSubject.Take(1).ToTask();
-
+			var e = await _estimatedFareDetailSubject.Take (1).ToTask ();
+			if (e != null) {
+				order.Estimate = new CreateOrder.RideEstimate{ Price = e.Price, Distance = e.Distance.HasValue ? e.Distance.Value :0  };
+			}
 			return order;
 		}
 

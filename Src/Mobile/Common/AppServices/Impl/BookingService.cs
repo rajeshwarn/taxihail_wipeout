@@ -160,6 +160,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return statusId.SoftEqual(VehicleStatuses.Common.Done) || statusId.SoftEqual(VehicleStatuses.Common.MeterOffNotPayed);
         }
 
+
+
 		public async Task<DirectionInfo> GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate)
         {
 			var tarifMode = _appSettings.Data.TarifMode;            
@@ -167,6 +169,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             
             if (pickup.HasValidCoordinate() && destination.HasValidCoordinate())
             {
+
                 if (tarifMode != TarifMode.AppTarif)
                 {
 					directionInfo = await UseServiceClientAsync<IIbsFareClient, DirectionInfo>(service => service.GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude));                                                            
@@ -177,41 +180,41 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					directionInfo = await _geolocService.GetDirectionInfo(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude, pickupDate);                    
                 }            
 
-                return directionInfo ?? new DirectionInfo();
-            }
+				return directionInfo ?? new DirectionInfo();
 
+
+            }
             return new DirectionInfo();
         }
 
-		public async Task<string> GetFareEstimateDisplay (Address pickup, Address destination, DateTime? pickupDate, string fareFormat, string noFareText, bool includeDistance, string cannotGetFareText)
+		public async Task<string> GetFareEstimateDisplay (DirectionInfo direction, string fareFormat, string noFareText, bool includeDistance, string cannotGetFareText)
         {
 			var fareEstimate = _localize[noFareText];
 
-			if (pickup.HasValidCoordinate() && destination.HasValidCoordinate())
+			if (direction.Distance.HasValue)
             {
-				var estimatedFare = await GetFareEstimate(pickup, destination, pickupDate)
-					.ConfigureAwait(false);
 
-                var willShowFare = estimatedFare.Price.HasValue && estimatedFare.Price.Value > 0;                                
 
-                if (estimatedFare.Price.HasValue && willShowFare)
+				var willShowFare = direction.Price.HasValue && direction.Price.Value > 0;                                
+
+				if (direction.Price.HasValue && willShowFare)
                 {                    
 					var maxEstimate = _appSettings.Data.MaxFareEstimate;
-					if (fareFormat.HasValue() || (estimatedFare.Price.Value > maxEstimate && _localize["EstimatePriceOver100"].HasValue()))
+					if (fareFormat.HasValue() || (direction.Price.Value > maxEstimate && _localize["EstimatePriceOver100"].HasValue()))
                     {
-						fareEstimate = String.Format(_localize[estimatedFare.Price.Value > maxEstimate 
+						fareEstimate = String.Format(_localize[direction.Price.Value > maxEstimate 
                                                                            ? "EstimatePriceOver100"
 																		   : fareFormat], 
-                                                 estimatedFare.FormattedPrice);
+							direction.FormattedPrice);
                     }
                     else
                     {
-                        fareEstimate = estimatedFare.FormattedPrice;
+						fareEstimate = direction.FormattedPrice;
                     }
 
-                    if (includeDistance && estimatedFare.Distance.HasValue)
+					if (includeDistance && direction.Distance.HasValue)
                     {
-						var destinationString = " " + String.Format(_localize["EstimateDistance"], estimatedFare.FormattedDistance);
+						var destinationString = " " + String.Format(_localize["EstimateDistance"], direction.FormattedDistance);
                         if (!string.IsNullOrWhiteSpace(destinationString))
                         {
                             fareEstimate += destinationString;
