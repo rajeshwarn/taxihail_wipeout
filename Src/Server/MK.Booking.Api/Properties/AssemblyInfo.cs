@@ -31,9 +31,9 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.5.14")]
-[assembly: AssemblyVersion("1.5.14")]
-[assembly: AssemblyFileVersion("1.5.14")]
+// [assembly: AssemblyVersion("1.5.15")]
+[assembly: AssemblyVersion("1.5.15")]
+[assembly: AssemblyFileVersion("1.5.15")]
 
 //[assembly: Log] 
 //[assembly: Log(AttributeTargetMembers="regex:get_.*|set_.*" , OnEntryOptions = LogOptions.IncludeParameterValue, OnSuccessOptions = LogOptions.IncludeReturnValue)]
