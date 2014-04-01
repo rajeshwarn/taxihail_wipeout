@@ -216,7 +216,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             var responseReverseTask = _cmtPaymentServiceClient.PostAsync(reverseRequest);
                             responseReverseTask.Wait();
                             var reverseResponse = responseReverseTask.Result;
-                            message = reverseResponse.ResponseMessage;
+                            _logger.LogMessage( "CMT reverse response : "  + reverseResponse.ResponseMessage );
 
                             if (reverseResponse.ResponseCode != 1)
                             {
