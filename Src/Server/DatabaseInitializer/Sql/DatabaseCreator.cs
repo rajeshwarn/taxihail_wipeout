@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Linq;
 using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -124,6 +125,46 @@ namespace DatabaseInitializer.Sql
             }
         }
 
+        public void FixUnorderedEvents(string connString)
+        {
+            Console.WriteLine( "Checking for events in invalid order");
+
+            string unorderedEvents = ";WITH cte AS ";
+            unorderedEvents += "( ";
+            unorderedEvents += "SELECT *, ROW_NUMBER() OVER (PARTITION BY AggregateId ORDER BY [EventDate] ASC) AS rn ";
+            unorderedEvents += "FROM [Events].[Events]  ";
+            unorderedEvents += ") ";
+            unorderedEvents += "SELECT * ";
+            unorderedEvents += "FROM cte ";
+            unorderedEvents += "WHERE rn = 1 and Version > 0 ";
+            unorderedEvents += "order by [EventDate] ";
+
+
+            var invalidAggregateId = DatabaseHelper.ExecuteListQuery<Guid>(connString, unorderedEvents);
+
+            if ( invalidAggregateId.Any() )
+            {
+                Console.WriteLine( "Found " + invalidAggregateId.Count().ToString() + " events in invalid order");
+
+                string fixEvents = "update [Events].[Events] set EventDate =  DATEADD(MINUTE, [Version] , (select top 1 EventDate from [Events].[Events] where AggregateId='{0}')) where AggregateId='{0}'";
+
+                foreach (var invalidId in invalidAggregateId)
+                {
+                    DatabaseHelper.ExecuteNonQuery(connString, string.Format(fixEvents, invalidId.ToString()));
+                }            
+            }
+            else
+            {
+                Console.WriteLine( "No event in invalid order");
+            }
+
+            
+         
+
+        }
+
+
+
         public void CopyEventsAndCacheTables(string connString, string oldDatabase, string newDatabase)
         {
             var queryForEvents =
@@ -186,7 +227,7 @@ namespace DatabaseInitializer.Sql
             {
                 foreach (var context in contexts)
                 {
-                    var adapter = (IObjectContextAdapter) context;
+                    var adapter = (IObjectContextAdapter)context;
 
                     var script = adapter.ObjectContext.CreateDatabaseScript();
 
@@ -195,7 +236,7 @@ namespace DatabaseInitializer.Sql
                     context.Dispose();
                 }
             }
-// ReSharper disable once EmptyGeneralCatchClause
+            // ReSharper disable once EmptyGeneralCatchClause
             catch
             {
                 //TODO trouver un moyen plus sexy

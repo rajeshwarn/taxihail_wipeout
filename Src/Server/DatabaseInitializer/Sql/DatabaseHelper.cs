@@ -1,5 +1,6 @@
 ﻿#region
 
+using System.Collections.Generic;
 using System.Data.SqlClient;
 
 #endregion
@@ -77,6 +78,28 @@ namespace DatabaseInitializer.Sql
                 connection.Close();
             }
             return (T) result;
+        }
+
+        public static IEnumerable<T> ExecuteListQuery<T>(string connectionString, string cmdText)
+        {
+            var result = new List<T>(); ;
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var sqlCommandCreate = new SqlCommand(cmdText) { Connection = connection, CommandTimeout = 600 };
+
+                connection.Open();
+                var reader = sqlCommandCreate.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    var v = (T) reader.GetValue(0); //The 0 stands for "the 0'th column", so the first column of the result.
+                    // Do somthing with this rows string, for example to put them in to a list
+                    result.Add(v);
+                }
+
+                connection.Close();
+            }
+            return result;
         }
     }
 }
