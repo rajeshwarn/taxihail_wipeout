@@ -13,6 +13,7 @@ using ServiceStack.ServiceHost;
 using ServiceStack.Text;
 using apcurium.MK.Common.Diagnostic;
 using System.IO;
+using System.Text;
 
 #endregion
 
@@ -28,7 +29,9 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
         {
             _logger = logger;
             Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
-            Client.LocalHttpWebRequestFilter = SignRequest;            
+            Client.LocalHttpWebRequestFilter = SignRequest;
+
+            //Client.Proxy = new WebProxy("192.168.12.122", 8888);
             ConsumerKey = cmtSettings.ConsumerKey;
             ConsumerSecretKey = cmtSettings.ConsumerSecretKey;
 
@@ -52,34 +55,54 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             request.ContentType = ContentType.Json;
 
 
-            _logger.Maybe( () => _logger.LogMessage("CMT request header info : " + request.Headers.ToString()));
-            _logger.Maybe( () => _logger.LogMessage("CMT request info : " + request.ToJson()));
+            _logger.Maybe(() => _logger.LogMessage("CMT request header info : " + request.Headers.ToString()));
+            _logger.Maybe(() => _logger.LogMessage("CMT request info : " + request.ToJson()));
         }
+ 
 
-       
+
+
         public Task<T> GetAsync<T>(IReturn<T> request)
         {
             _logger.Maybe(() => _logger.LogMessage("CMT Get : " + request.ToJson()));
             var result = Client.GetAsync(request);
-            result.ContinueWith(r => _logger.Maybe( () => _logger.LogMessage("CMT Get Result: " + r.Result.ToJson()))); 
+            result.ContinueWith(r => LogResult(r, "CMT Get Result: "));
             return result;
         }
 
         public Task<T> DeleteAsync<T>(IReturn<T> request)
         {
-            _logger.Maybe( () => _logger.LogMessage("CMT Delete : " + request.ToJson()));
+            _logger.Maybe(() => _logger.LogMessage("CMT Delete : " + request.ToJson()));
             var result = Client.DeleteAsync(request);
-            result.ContinueWith(r =>_logger.Maybe( () =>  _logger.LogMessage("CMT Delete Result: " + r.Result.ToJson()))); 
+            result.ContinueWith(r => LogResult(r, "CMT Delete Result: "));
             return result;
 
         }
 
         public Task<T> PostAsync<T>(IReturn<T> request)
         {
-            _logger.Maybe( () => _logger.LogMessage("CMT Post : " + request.ToJson()));
+            _logger.Maybe(() => _logger.LogMessage("CMT Post : " + request.ToJson()));
             var result = Client.PostAsync(request);
-            result.ContinueWith(r =>_logger.Maybe( () => _logger.LogMessage("CMT Post Result: " + r.Result.ToJson()))); 
+
+            result.ContinueWith(r => LogResult(r, "CMT Post Result: "));
             return result;
+        }
+
+        private void LogResult<T>(Task<T> result, string message)
+        {
+            _logger.Maybe(() =>
+            {
+                if (!result.IsFaulted)
+                {
+                    _logger.LogMessage(message + result.Result.ToJson());
+                }
+                else if (result.Exception != null)
+                {
+                    _logger.LogMessage(message + " EXCEPTION.");
+                    _logger.LogError(result.Exception);                                        
+                }
+
+            });
         }
     }
 }
