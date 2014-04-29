@@ -369,6 +369,9 @@
     <EmbeddedResource Include="TutorialContent\Tutorial.json" />
     <None Include="Localization\Thriev.resx" />
     <None Include="packages.config" />
+    <None Include="Localization\Master.ar.resx">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
