@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -100,22 +100,22 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="Jqp-iu-ci1" secondAttribute="trailing" constant="8" id="1TQ-vn-Vkh"/>
+                        <constraint firstAttribute="right" secondItem="Jqp-iu-ci1" secondAttribute="right" constant="8" id="1TQ-vn-Vkh"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="1iv-ib-vEh"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="DgF-jB-8zt" secondAttribute="bottom" id="1pu-b1-Fgi"/>
                         <constraint firstAttribute="trailing" secondItem="DgF-jB-8zt" secondAttribute="trailing" id="1zx-5z-Qo2"/>
-                        <constraint firstItem="Fsx-d8-MLA" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="320" id="4Uw-iv-741"/>
+                        <constraint firstItem="Fsx-d8-MLA" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="320" id="4Uw-iv-741"/>
                         <constraint firstAttribute="trailing" secondItem="cXg-Q6-nLg" secondAttribute="trailing" id="8Ab-0L-enX"/>
                         <constraint firstItem="HaA-X5-eHm" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="FRw-GE-bhA"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="top" secondItem="HaA-X5-eHm" secondAttribute="bottom" constant="620" id="JSE-qi-pXl"/>
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" id="Mlm-GQ-8rc"/>
                         <constraint firstAttribute="centerX" secondItem="HaA-X5-eHm" secondAttribute="centerX" id="Pnu-1F-Vfo"/>
-                        <constraint firstItem="MeW-ns-SQv" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="Q0C-IM-4L9"/>
-                        <constraint firstAttribute="trailing" secondItem="lYS-4q-3Mj" secondAttribute="trailing" constant="7" id="Syf-T8-VwL"/>
+                        <constraint firstItem="MeW-ns-SQv" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="8" id="Q0C-IM-4L9"/>
+                        <constraint firstAttribute="right" secondItem="lYS-4q-3Mj" secondAttribute="right" constant="7" id="Syf-T8-VwL"/>
                         <constraint firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" id="VBK-AW-R7l"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="Fsx-d8-MLA" secondAttribute="bottom" constant="7" id="Vjz-XR-Ktl"/>
                         <constraint firstItem="Fsx-d8-MLA" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="XF0-qe-pxP"/>
-                        <constraint firstItem="lYS-4q-3Mj" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="Z3E-95-Tkk"/>
+                        <constraint firstItem="lYS-4q-3Mj" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="8" id="Z3E-95-Tkk"/>
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="ZSI-kr-X81"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" constant="418" id="aqP-8Y-Hn4"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="Jqp-iu-ci1" secondAttribute="bottom" constant="13" id="nTh-8y-wH1"/>
