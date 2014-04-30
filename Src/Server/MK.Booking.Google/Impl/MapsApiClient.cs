@@ -9,6 +9,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
+using ServiceStack.Text;
 
 #endregion
 
@@ -136,9 +137,14 @@ namespace apcurium.MK.Booking.Google.Impl
         {
             var client = new JsonServiceClient(MapsServiceUrl);
             var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=true", address);
-            _logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
 
-            return client.Get<GeoResult>(resource);
+			_logger.LogMessage("GeocodeAddress : " + MapsServiceUrl + resource);
+
+			var result = client.Get<GeoResult>(resource);
+
+			_logger.LogMessage ("GeocodeAddress result : " + result.ToJson ());
+
+			return result;
         }
 
         public GeoResult GeocodeLocation(double latitude, double longitude)
@@ -150,7 +156,11 @@ namespace apcurium.MK.Booking.Google.Impl
 
             _logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
 
-            return client.Get<GeoResult>(resource);
+			var result =  client.Get<GeoResult>(resource);
+
+			_logger.LogMessage ("GeocodeLocation result : " + result.ToJson ());
+
+			return result;
         }
 
         private IEnumerable<Place> ConvertPredictionToPlaces(IEnumerable<Prediction> result)
