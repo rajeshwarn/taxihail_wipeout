@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             
             foreach (var name in typeof(TutorialService).Assembly.GetManifestResourceNames()) 
 			{ 
-				if (name.ToLower ().EndsWith (string.Format(".tutorial.{0}.json", TinyIoCContainer.Current.Resolve<ILocalization>()["LanguageCode"])))
+				if (name.ToLower ().EndsWith (string.Format(".tutorial-{0}.json", TinyIoCContainer.Current.Resolve<ILocalization>()["LanguageCode"])))
 				{
                     resourceName = name;
                     break;
