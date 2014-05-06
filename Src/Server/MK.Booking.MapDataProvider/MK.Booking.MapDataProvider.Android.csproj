@@ -12,8 +12,6 @@
     <FileAlignment>512</FileAlignment>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -52,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IMapsApiClient.cs" />
-    <Compile Include="Impl\MapsApiClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AddressComponent.cs" />
     <Compile Include="Resources\AddressComponentType.cs" />
@@ -79,6 +76,12 @@
     <Compile Include="Resources\Viewport.cs" />
     <Compile Include="Resources\Prediction.cs" />
     <Compile Include="Resources\PredictionResponse.cs" />
+    <Compile Include="Google\MapsApiClient.cs" />
+    <Compile Include="OpenStreetMap\MapsApiClient.cs" />
+    <Compile Include="Resources\GeoAddress.cs" />
+    <Compile Include="Resources\OSMAddress.cs" />
+    <Compile Include="Resources\OSMResult.cs" />
+    <Compile Include="CompositeMapApiClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

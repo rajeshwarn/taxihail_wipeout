@@ -2,8 +2,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Security;
-using apcurium.MK.Booking.Google;
-using apcurium.MK.Booking.Google.Impl;
+
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -20,6 +19,8 @@ using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.ViewModels;
 using TinyIoC;
 using TinyMessenger;
+using apcurium.MK.Booking.MapDataProvider;
+using apcurium.MK.Booking.MapDataProvider.OpenStreetMap;
 
 namespace apcurium.MK.Booking.Mobile
 {

@@ -12,8 +12,6 @@
     <FileAlignment>512</FileAlignment>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -67,13 +65,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MK.Booking.Google\MK.Booking.Google.Android.csproj">
-      <Project>{742B3C55-5630-4DCA-BBBD-035C313A4647}</Project>
-      <Name>MK.Booking.Google.Android</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MK.Common\MK.Common.Android.csproj">
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.Android.csproj">
+      <Project>{742B3C55-5630-4DCA-BBBD-035C313A4647}</Project>
+      <Name>MK.Booking.MapDataProvider.Android</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

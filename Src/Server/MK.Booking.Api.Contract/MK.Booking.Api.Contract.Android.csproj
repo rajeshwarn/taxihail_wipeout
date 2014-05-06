@@ -11,8 +11,6 @@
     <AssemblyName>MK.Booking.Api.Contract.Android</AssemblyName>
     <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -132,9 +130,9 @@
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MK.Booking.Google\MK.Booking.Google.Android.csproj">
+    <ProjectReference Include="..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.Android.csproj">
       <Project>{742B3C55-5630-4DCA-BBBD-035C313A4647}</Project>
-      <Name>MK.Booking.Google.Android</Name>
+      <Name>MK.Booking.MapDataProvider.Android</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
