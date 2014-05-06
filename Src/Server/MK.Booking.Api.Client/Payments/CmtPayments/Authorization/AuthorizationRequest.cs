@@ -46,6 +46,8 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Authorization
 
         public string EmployeeId { get; set; }
 
+        public string ShiftUuid { get; set; }
+
         public string FleetToken { get; set; }
 
         public string DeviceId { get; set; }

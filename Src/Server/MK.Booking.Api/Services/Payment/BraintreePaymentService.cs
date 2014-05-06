@@ -171,7 +171,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         //send information to IBS
                         try
                         {
-                            _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value, 
+                            _ibs.ConfirmExternalPayment(orderDetail.Id,
+                                                            orderDetail.IBSOrderId.Value, 
                                                             request.Amount, 
                                                             request.TipAmount,
                                                             request.MeterAmount,
