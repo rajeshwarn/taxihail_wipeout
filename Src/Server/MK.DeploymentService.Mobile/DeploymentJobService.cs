@@ -166,14 +166,27 @@ namespace MK.DeploymentService.Mobile
 					return;
 				}
 
-				UpdateJob("Downloading/installing provisioning profile");
-				var message = await _customerPortalRepository.DownloadProfile (
-					_job.Company.AppleAppStoreCredentials.Username, 
-					_job.Company.AppleAppStoreCredentials.Password,
-					_job.Company.AppleAppStoreCredentials.Team,
-					appId,
-					_job.IosAdhoc);
-				UpdateJob (message);
+				if (_job.IosAdhoc) {
+					UpdateJob ("Downloading/installing Adhoc provisioning profile");
+					var message = await _customerPortalRepository.DownloadProfile (
+						             _job.Company.AppleAppStoreCredentials.Username, 
+						             _job.Company.AppleAppStoreCredentials.Password,
+						             _job.Company.AppleAppStoreCredentials.Team,
+						             appId,
+									true);
+					UpdateJob (message);
+				}
+
+				if (_job.IosAppStore) {
+					UpdateJob ("Downloading/installing AppStore provisioning profile");
+					var message = await _customerPortalRepository.DownloadProfile (
+						_job.Company.AppleAppStoreCredentials.Username, 
+						_job.Company.AppleAppStoreCredentials.Password,
+						_job.Company.AppleAppStoreCredentials.Team,
+						appId, false
+						);
+					UpdateJob (message);
+				}
 			}
 		}
 
