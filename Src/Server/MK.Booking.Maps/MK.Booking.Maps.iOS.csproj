@@ -8,8 +8,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>MK.Booking.Maps.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -73,9 +71,9 @@
       <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
       <Name>MK.Common.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MK.Booking.Google\MK.Booking.Google.iOS.csproj">
+    <ProjectReference Include="..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.iOS.csproj">
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
-      <Name>MK.Booking.Google.iOS</Name>
+      <Name>MK.Booking.MapDataProvider.iOS</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

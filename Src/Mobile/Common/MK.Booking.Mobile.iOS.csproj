@@ -7,8 +7,6 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile</RootNamespace>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -342,10 +340,6 @@
       <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
       <Name>MK.Common.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\MK.Booking.Google\MK.Booking.Google.iOS.csproj">
-      <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
-      <Name>MK.Booking.Google.iOS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Maps\MK.Booking.Maps.iOS.csproj">
       <Project>{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}</Project>
       <Name>MK.Booking.Maps.iOS</Name>
@@ -365,6 +359,7 @@
     <None Include="Localization\Thriev.resx" />
     <None Include="Localization\TaxiHail NYC.resx" />
     <None Include="packages.config" />
+    <None Include="Localization\Master.ar.resx" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
