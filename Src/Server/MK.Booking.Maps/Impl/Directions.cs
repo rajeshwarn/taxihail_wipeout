@@ -3,10 +3,12 @@
 using System;
 using System.Globalization;
 using System.Linq;
-using apcurium.MK.Booking.Google;
-using apcurium.MK.Booking.Google.Resources;
+
+
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.MapDataProvider;
+using apcurium.MK.Booking.MapDataProvider.Resources;
 
 #endregion
 

@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeocodingFixture\given_a_valid_address.cs" />
     <Compile Include="GeocodingFixture\given_a_gps_coordinate.cs" />
     <Compile Include="PlacesFixture\given_a_location.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,9 +62,9 @@
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
       <Name>Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MK.Booking.Google\MK.Booking.Google.csproj">
-      <Project>{AD0BC4AD-6BAC-4E02-8202-D7B3BF64D0F1}</Project>
-      <Name>MK.Booking.Google</Name>
+    <ProjectReference Include="..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.csproj">
+      <Project>{ad0bc4ad-6bac-4e02-8202-d7b3bf64d0f1}</Project>
+      <Name>MK.Booking.MapDataProvider</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking.Test\MK.Booking.Test.csproj">
       <Project>{2AD48D85-462D-4763-8016-A2AA10F185A7}</Project>

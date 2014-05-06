@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using apcurium.MK.Booking.Google;
-using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Maps.Impl.Mappers;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Provider;
+using apcurium.MK.Booking.MapDataProvider.Resources;
+using apcurium.MK.Booking.MapDataProvider;
 
 namespace apcurium.MK.Booking.Maps.Impl
 {

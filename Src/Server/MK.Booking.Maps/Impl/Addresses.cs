@@ -2,13 +2,15 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using apcurium.MK.Booking.Google;
-using apcurium.MK.Booking.Google.Resources;
+
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Provider;
+using apcurium.MK.Booking.MapDataProvider;
+using apcurium.MK.Booking.MapDataProvider.Resources;
+using apcurium.MK.Common.Diagnostic;
 
 #endregion
 
@@ -19,10 +21,12 @@ namespace apcurium.MK.Booking.Maps.Impl
         private readonly IMapsApiClient _client;
         private readonly IAppSettings _appSettings;
         private readonly IPopularAddressProvider _popularAddressProvider;
+        private readonly ILogger _logger;
 
         public Addresses(IMapsApiClient client, IAppSettings appSettings,
-            IPopularAddressProvider popularAddressProvider)
+            IPopularAddressProvider popularAddressProvider, ILogger logger)
         {
+            _logger = logger;
             _client = client;
             _appSettings = appSettings;
             _popularAddressProvider = popularAddressProvider;
@@ -53,7 +57,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             IEnumerable<Address> addressesGeocode;
             IEnumerable<Address> addressesPlaces = new Address[0];
 
-            var geoCodingService = new Geocoding(_client, _appSettings, _popularAddressProvider);
+            var geoCodingService = new Geocoding(_client, _appSettings, _popularAddressProvider, _logger);
 
             var allResults = geoCodingService.Search(name, geoResult);
 
