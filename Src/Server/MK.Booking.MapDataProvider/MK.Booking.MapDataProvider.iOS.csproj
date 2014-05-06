@@ -8,6 +8,8 @@
     <OutputType>Library</OutputType>
     <RootNamespace>MK.Booking.Google.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -99,5 +101,8 @@
     <Compile Include="Google\MapsApiClient.cs" />
     <Compile Include="OpenStreetMap\MapsApiClient.cs" />
     <Compile Include="CompositeMapApiClient.cs" />
+    <Compile Include="Resources\GeoAddress.cs" />
+    <Compile Include="Resources\OSMAddress.cs" />
+    <Compile Include="Resources\OSMResult.cs" />
   </ItemGroup>
 </Project>

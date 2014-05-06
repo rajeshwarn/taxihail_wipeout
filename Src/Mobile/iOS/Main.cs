@@ -10,7 +10,7 @@ using MonoTouch.UIKit;
 using ServiceStack.Text;
 using TinyIoC;
 using Xamarin.Contacts;
-using apcurium.MK.Booking.Google.Resources;
+
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Settings;
@@ -23,6 +23,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.MapDataProvider.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -119,7 +120,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 JsConfig.RegisterTypeForAot<PushNotificationServicePlatform>();
                 JsConfig.RegisterTypeForAot<PaymentMethod> ();
                 JsConfig.RegisterTypeForAot<InstantMessagingService>();
-                JsConfig.RegisterTypeForAot< ResultStatus>();
+                JsConfig.RegisterTypeForAot<ResultStatus>();
                 JsConfig.RegisterTypeForAot<AddressComponentType>();
             } catch(NullReferenceException){
                 // In the Simulator, a NullReferenceException is mysteriously thrown
