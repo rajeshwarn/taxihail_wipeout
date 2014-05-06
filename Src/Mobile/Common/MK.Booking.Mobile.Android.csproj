@@ -12,8 +12,6 @@
     <FileAlignment>512</FileAlignment>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -366,13 +364,14 @@
       <LastGenOutput>Taxiworld.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings\Settings.json" />
-    <EmbeddedResource Include="TutorialContent\Tutorial.json" />
     <None Include="Localization\Thriev.resx" />
     <None Include="packages.config" />
     <None Include="Localization\Master.ar.resx">
       <SubType>Designer</SubType>
     </None>
     <None Include="Localization\TaxiHail NYC.resx" />
+    <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
+    <None Include="TutorialContent\Tutorial-ar.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">

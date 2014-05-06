@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.Text;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -59,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             
             foreach (var name in typeof(TutorialService).Assembly.GetManifestResourceNames()) 
 			{ 
-                if (name.ToLower ().EndsWith (".tutorial.json")) 
+				if (name.ToLower ().EndsWith (string.Format(".tutorial.{0}.json", TinyIoCContainer.Current.Resolve<ILocalization>()["LanguageCode"])))
 				{
                     resourceName = name;
                     break;
