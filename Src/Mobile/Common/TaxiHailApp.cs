@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<IDirections, Directions>();
 			_container.Register<IGeocoding, Geocoding>();
 			_container.Register<IPlaces, Places>();
-			_container.Register<IMapsApiClient, MapsApiClient>();
+			//	_container.Register<IMapsApiClient, MapsApiClient>();
 			_container.Register<IPopularAddressProvider, PopularAddressProvider>();
 			_container.Register<ITariffProvider, TariffProvider>();
 

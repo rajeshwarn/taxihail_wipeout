@@ -23,6 +23,7 @@ using MonoTouch.FacebookConnect;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Dialog.Touch;
+using apcurium.MK.Booking.MapDataProvider;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -82,6 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<IPushNotificationService, PushNotificationService>();
 
             container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
+			container.Register<IMapsApiClient, AppleMapApiClient>();
 
             InitializeSocialNetwork();
 

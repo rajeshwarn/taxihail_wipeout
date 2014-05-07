@@ -23,6 +23,7 @@ using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
 using Cirrious.MvvmCross.Dialog.Droid;
 using Cirrious.MvvmCross.ViewModels;
 using TinyIoC;
+using apcurium.MK.Booking.MapDataProvider;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -67,6 +68,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             _container.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IAppSettings>()));
 
             _container.Register<IAppSettings>(new AppSettingsService(_container.Resolve<ICacheService>(), _container.Resolve<ILogger>()));
+
+			_container.Register<IMapsApiClient, MK.Booking.MapDataProvider.Google.MapsApiClient >();
 
 			InitializeSocialNetwork();
         }

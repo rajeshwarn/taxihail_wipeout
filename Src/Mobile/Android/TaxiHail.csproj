@@ -725,6 +725,10 @@
       <Project>{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}</Project>
       <Name>MK.Booking.Mobile.Android</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Server\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.Android.csproj">
+      <Project>{742B3C55-5630-4DCA-BBBD-035C313A4647}</Project>
+      <Name>MK.Booking.MapDataProvider.Android</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_BookingRating.axml">

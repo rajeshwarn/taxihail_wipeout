@@ -35,6 +35,7 @@
     <MtouchUseSGen>True</MtouchUseSGen>
     <OptimizePNGs>false</OptimizePNGs>
     <MtouchExtraArgs>-time -time</MtouchExtraArgs>
+    <MtouchSdkVersion>7.0</MtouchSdkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -520,6 +521,7 @@
       <DependentUpon>AddressPickerContainerView.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\ViewServicesExtensions.cs" />
+    <Compile Include="PlatformIntegration\AppleMapApiClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
