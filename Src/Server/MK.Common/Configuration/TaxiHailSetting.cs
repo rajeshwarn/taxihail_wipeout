@@ -124,8 +124,6 @@ namespace MK.Common.Configuration
 		[Display(Name = "Place Types", Description="Give a list of Google Maps places types to filter search")]
 		public string PlacesTypes { get; private set; }
         [Display(Name = "Place Types", Description = "Give a list of Google Maps places types to filter search")]
-        public string FoursquarePlacesTypes { get; private set; }
-        [Display(Name = "Place API Key", Description="Key for the Google Maps API")]
         public string PlacesApiKey { get; private set; }
         [Display(Name = "Price Format", Description="Format to display amount")]
 		public string PriceFormat { get; private set; }
@@ -144,6 +142,14 @@ namespace MK.Common.Configuration
         [Display(Name = "Range", Description="???")]
         public double Range { get; private set; }
 
+        [Display(Name = "Foursquare Client Id", Description = "Foursquare API credentials Id")]
+        public string FoursquareClientId { get; private set; }
+        [Display(Name = "Foursquare Client Secret", Description = "Foursquare Client Secret")]
+        public string FoursquareClientSecret { get; private set; }
+        [Display(Name = "Foursquare Categories", Description = "filter venues for include only those categories")]
+        public string FoursquarePlacesTypes { get; private set; }
+
+         
         public bool AllowAddressRange { get; private set; }
 
         [Display(Name = "Need a Valid Tarif", Description="Prevent order when tarif is not available")]
