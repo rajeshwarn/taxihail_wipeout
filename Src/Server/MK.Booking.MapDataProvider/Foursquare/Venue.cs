@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace MK.Booking.MapDataProvider.Foursquare
 {
+    /// <summary>
+    /// https://github.com/TICLAB/SharpSquare/tree/master/Entities
+    /// </summary>
     public class FoursquareResponse
     {
         public string Meta { get; set; }
@@ -17,6 +20,10 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 	public class Venue
 	{
+	    public Venue()
+	    {
+	        categories = new List<Category>();
+	    }
 		///
 		///  <summary>
 		/// A unique string identifier for this venue.
@@ -36,6 +43,11 @@ namespace MK.Booking.MapDataProvider.Foursquare
 			set;
 		}
 
+        public List<Category> categories
+        {
+            get;
+            set;
+        }
 
 		/// <summary>
 		///  An object containing none, some, or all of address (street address), crossStreet, city, state, postalCode, country, lat, lng, and distance. All fields are strings, except for lat, lng, and distance. Distance is measured in meters. 
@@ -237,5 +249,79 @@ namespace MK.Booking.MapDataProvider.Foursquare
 			set;
 		}
 	}
+
+    public class Category
+    {
+        /// <summary>
+        /// A unique identifier for this category.
+        /// </summary>
+        public string id
+        {
+            get;
+            set;
+        }
+
+
+        /// <summary>
+        /// Name of the category.
+        /// </summary>
+        public string name
+        {
+            get;
+            set;
+        }
+
+
+        /// <summary>
+        /// Pluralized version of the category name.
+        /// </summary>
+        public string pluralName
+        {
+            get;
+            set;
+        }
+
+
+        /// <summary>
+        /// Shorter version of the category name.
+        /// </summary>
+        public string shortName
+        {
+            get;
+            set;
+        }
+
+
+        
+        /// <summary>
+        /// If this is the primary category for parent venue object.
+        /// </summary>
+        public List<string> parents
+        {
+            get;
+            set;
+        }
+
+
+        /// <summary>
+        /// If this is the primary category for parent venue object.
+        /// </summary>
+        public bool primary
+        {
+            get;
+            set;
+        }
+
+
+        /// <summary>
+        /// (only present in venues/categories response). A list of categories that are descendants of this category in the hierarchy.
+        /// </summary>
+        public List<Category> categories
+        {
+            get;
+            set;
+        }
+    }
+
 
 }

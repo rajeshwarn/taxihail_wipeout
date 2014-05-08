@@ -123,6 +123,8 @@ namespace MK.Common.Configuration
 
 		[Display(Name = "Place Types", Description="Give a list of Google Maps places types to filter search")]
 		public string PlacesTypes { get; private set; }
+        [Display(Name = "Place Types", Description = "Give a list of Google Maps places types to filter search")]
+        public string FoursquarePlacesTypes { get; private set; }
         [Display(Name = "Place API Key", Description="Key for the Google Maps API")]
         public string PlacesApiKey { get; private set; }
         [Display(Name = "Price Format", Description="Format to display amount")]

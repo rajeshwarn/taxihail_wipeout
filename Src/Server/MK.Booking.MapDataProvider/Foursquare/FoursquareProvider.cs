@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Resources;
+using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
 using System.Globalization;
 using System.Linq;
@@ -36,13 +37,20 @@ namespace MK.Booking.MapDataProvider.Foursquare
 		public Place[] GetNearbyPlaces (double? latitude, double? longitude, string languageCode, bool sensor, int radius, string pipedTypeList = null)
 		{
             var searchQueryString = GetBaseQueryString(latitude, longitude, radius);
+
+		    pipedTypeList = pipedTypeList ?? _settings.Data.FoursquarePlacesTypes;
+		    if (pipedTypeList.HasValue())
+		    {
+                searchQueryString = string.Format("{0}&categoryId={1}", searchQueryString, pipedTypeList.Replace('|', ','));
+		    }
+
 			var client = new JsonServiceClient (apiUrl);
             var venues = client.Get<FoursquareResponse>(searchQueryString);
 
 			return venues.Response.Venues.Select (v => new Place
 			{
 			    Name = v.name,
-                Types = new List<string>()
+                Types = v.categories.Select(x => x.name).ToList()
 			}).ToArray();
 		}
 
@@ -68,9 +76,11 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 	        latitude = latitude ?? _settings.Data.DefaultLatitude;
 	        longitude = longitude ?? _settings.Data.DefaultLongitude;
+
 	        searchQueryString = searchQueryString +
 	                            string.Format("&ll={0},{1}", latitude.Value.ToString(CultureInfo.InvariantCulture),
 	                                longitude.Value.ToString(CultureInfo.InvariantCulture));
+
 	        return searchQueryString;
 	    }
 

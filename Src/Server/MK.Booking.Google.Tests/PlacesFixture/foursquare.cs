@@ -17,6 +17,17 @@ namespace MK.Booking.Google.Tests.Foursquare
         {
             Sut = new FoursquareProvider(new TestConfigurationManager(), new Logger());
         }
+
+        [Test]
+        public void when_searching_nearby_places_it_does_not_include_others_categories()
+        {
+            //see here for categories https://developer.foursquare.com/categorytree
+            var places = Sut.GetNearbyPlaces(Latitude, Longitude, "en", false, 800, "4d4b7105d754a06374d81259,4d4b7105d754a06376d81259"); //nightlife stop and restaurants
+
+            var neighborhoods = places.Where(x => x.Types.Contains("neighborhood"));
+
+            Assert.IsEmpty(neighborhoods);
+        }
        
     }
 }
