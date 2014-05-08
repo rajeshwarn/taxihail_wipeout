@@ -14,6 +14,7 @@ using CrossUI.Droid;
 using CrossUI.Droid.Dialog;
 using CrossUI.Droid.Dialog.Elements;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Client.Dialog;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
@@ -76,6 +77,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             return (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, value, dm);
         }
 
+	
+			
 		RootElement InitializeRoot()
 		{
 			var root = new RootElement();
@@ -86,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			var email = new EntryElement (null, this.Services().Localize["CreateAccountEmailPlaceHolder"], null,  "DialogTop") {IsEmail = true};
 			email.Bind(bindings, vm => vm.Data.Email);
 
-			var name = new EntryElement(null, this.Services().Localize["CreateAccountFullNamePlaceHolder"], null, "DialogCenter");
+			var name = new EntryElementWithInputType(null, this.Services().Localize["CreateAccountFullNamePlaceHolder"], null, "DialogCenter", InputTypes.ClassText | InputTypes.TextFlagCapWords);
 			name.Bind(bindings, vm => vm.Data.Name);
 
 			var phone = new EntryElement(null, this.Services().Localize["CreateAccountPhonePlaceHolder"], null, "DialogCenter") { Numeric = true };
@@ -94,6 +97,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
 			var password = new EntryElement(null, this.Services().Localize["CreateAccountPasswordPlaceHolder"], null, "DialogCenter") { Password = true };
 			password.Bind(bindings, vm => vm.Data.Password);
+
+
 
 			var passwordConfirm = new EntryElement(null, this.Services().Localize["CreateAccountPasswordConfirmationPlaceHolder"], null, "DialogBottom") { Password = true };
 			passwordConfirm.Bind(bindings, vm => vm.ConfirmPassword);

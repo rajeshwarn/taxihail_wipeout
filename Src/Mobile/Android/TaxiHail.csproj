@@ -568,6 +568,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\destination_small_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\destination_small_icon_pressed.png" />
     <AndroidResource Include="Resources\values-ar\String.xml" />
+    <Compile Include="Dialog\EntryElementWithInputType.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -707,6 +708,7 @@
   <ItemGroup>
     <Folder Include="Resources\drawable-hdpi\" />
     <Folder Include="Calabash\" />
+    <Folder Include="Dialog\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
