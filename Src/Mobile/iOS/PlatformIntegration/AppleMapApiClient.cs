@@ -13,6 +13,7 @@ using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider;
 using MonoTouch.Foundation;
 using System.Text;
+using MK.Booking.MapDataProvider.Foursquare;
 
 #endregion
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
@@ -30,8 +31,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			"route", "postal_code", "street_address"
 		};
 
+		private IMapsApiClient _foursquare;
+
 		public AppleMapApiClient (IAppSettings settings, ILogger logger)
 		{
+			_foursquare = new FoursquareProvider (settings, logger);
 			_logger = logger;
 			_settings = settings;
 		
@@ -44,83 +48,19 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		public Place[] GetNearbyPlaces (double? latitude, double? longitude, string languageCode, bool sensor, int radius,
 		                               string pipedTypeList = null)
 		{
-			pipedTypeList = pipedTypeList ?? new PlaceTypes (_settings.Data.PlacesTypes).GetPipedTypeList ();
-			var client = new JsonServiceClient (PlacesServiceUrl);
-
-			var @params = new Dictionary<string, string> {
-				{ "sensor", sensor.ToString (CultureInfo.InvariantCulture).ToLowerInvariant () },
-				{ "key", PlacesApiKey },
-				{ "radius", radius.ToString (CultureInfo.InvariantCulture) },
-				{ "language", languageCode },
-				{ "types", pipedTypeList },
-			};
-
-
-			if (latitude != null
-			    && longitude != null) {
-				@params.Add ("location",
-					string.Join (",", latitude.Value.ToString (CultureInfo.InvariantCulture),
-						longitude.Value.ToString (CultureInfo.InvariantCulture)));
-			}
-
-
-			var r = "json" + BuildQueryString (@params);
-
-			_logger.LogMessage ("Nearby Places API : " + PlacesServiceUrl + r);
-
-			return client.Get<PlacesResponse> (r).Results.ToArray ();
+			return _foursquare.GetNearbyPlaces (latitude, longitude, languageCode, sensor, radius, pipedTypeList);
 		}
 
 		public Place[] SearchPlaces (double? latitude, double? longitude, string name, string languageCode, bool sensor,
 		                            int radius, string countryCode)
 		{
-			var url = PlacesAutoCompleteServiceUrl;
-			var client = new JsonServiceClient (url);
-
-			var @params = new Dictionary<string, string> {
-				{ "sensor", sensor.ToString (CultureInfo.InvariantCulture).ToLowerInvariant () },
-				{ "key", PlacesApiKey },
-				{ "radius", radius.ToString (CultureInfo.InvariantCulture) },
-				{ "language", languageCode },
-				{ "types", "establishment" },
-				{ "components", "country:" + countryCode },
-			};
-
-
-			if (latitude != null
-			    && longitude != null) {
-				@params.Add ("location",
-					string.Join (",", latitude.Value.ToString (CultureInfo.InvariantCulture),
-						longitude.Value.ToString (CultureInfo.InvariantCulture)));
-			}
-
-			if (name != null) {
-				@params.Add ("input", name);
-			}
-
-			var r = "json" + BuildQueryString (@params);
-
-
-			_logger.LogMessage ("Search Places API : " + url + r);
-
-
-			var result = client.Get<PredictionResponse> (r).predictions;
-
-			return ConvertPredictionToPlaces (result).ToArray ();
+			return _foursquare.SearchPlaces (latitude, longitude, name, languageCode, sensor, radius, countryCode);
 		}
 
 		public GeoAddress GetPlaceDetail (string reference)
 		{
-			var client = new JsonServiceClient (PlaceDetailsServiceUrl);
-			var @params = new Dictionary<string, string> {
-				{ "reference", reference },
-				{ "sensor", true.ToString ().ToLower () },
-				{ "key", PlacesApiKey },
-			};
+			return _foursquare.GetPlaceDetail (reference);
 
-			var qry = "json" + BuildQueryString (@params);
-			Console.WriteLine (qry);
-			return ConvertGeoObjectToAddress (client.Get<PlaceDetailResponse> (qry).Result);
 		}
 
 		public DirectionResult GetDirections (double originLat, double originLng, double destLat, double destLng)
@@ -197,22 +137,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 					
 		}
 
-		private IEnumerable<Place> ConvertPredictionToPlaces (IEnumerable<Prediction> result)
-		{
-			var g = new Geometry { Location = new Location { Lat = 0, Lng = 0 } };
-			return
-				result.Select (
-				p =>
-					new Place {
-					Id = p.Id,
-					Name = GetNameFromDescription (p.Description),
-					Reference = p.Reference,
-					Formatted_Address = GetAddressFromDescription (p.Description),
-					Geometry = g,
-					Vicinity = "n\a",
-					Types = p.Types
-				});
-		}
+		 
 
 		private string GetNameFromDescription (string description)
 		{

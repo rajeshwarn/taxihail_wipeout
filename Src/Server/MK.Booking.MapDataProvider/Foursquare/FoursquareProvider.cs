@@ -65,12 +65,15 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 	    private Place ToPlace(Venue venue)
 	    {
+
 	        return new Place
 	        {
                 Name = venue.name,
                 Types = venue.categories.Select(x => x.name).ToList(),
                 Id = venue.id,
-                Formatted_Address = venue.location.address
+				Formatted_Address = venue.location.address,
+				Reference = venue.id,
+				Geometry = new Geometry {  Location = new apcurium.MK.Booking.MapDataProvider.Resources.Location{ Lat = venue.location.lat , Lng = venue.location.lng}  }
 	        };
 	    }
 
@@ -100,7 +103,10 @@ namespace MK.Booking.MapDataProvider.Foursquare
                 Longitude = location.lng,
                 State = location.state,
                 City = location.city,
-                FullAddress = location.address
+				FullAddress = location.address,
+				StreetNumber =  location.address.Split( ' ' )[0],
+				Street =  location.address.Split( ' ' )[1],
+
             };
 		}
 
