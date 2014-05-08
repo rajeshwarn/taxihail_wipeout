@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Common.Extensions;
@@ -19,13 +18,10 @@ namespace MK.Booking.MapDataProvider.Foursquare
 	{
 	    private readonly IAppSettings _settings;
 	    private readonly ILogger _logger;
-	    private const string apiUrl = "https://api.foursquare.com/v2/";
+	    private const string ApiUrl = "https://api.foursquare.com/v2/";
 
-        private const string searchParameters = "venues/search?client_id={0}&client_secret={1}&intent=browse&radius={2}&v=2014100805";
-        private const string venueDetails = "venues/{0}/?client_id={1}&client_secret={2}&v=2014100805";
-
-		private string clientId = "ZBALTMPLRQURC5BAVHJWXSGBVAPGXYQBMJ24Z1K4RHYP31YW";
-		private string clientSecret = "L3AEJBI3JJILNLWTWZNVCDUIIZZ0RV3EO3RX3M44RTFKC0VM";
+        private const string SearchVenues = "venues/search?client_id={0}&client_secret={1}&intent=browse&radius={2}&v=2014100805";
+        private const string VenueDetails = "venues/{0}/?client_id={1}&client_secret={2}&v=2014100805";
 
 		public FoursquareProvider (IAppSettings settings, ILogger logger)
 		{
@@ -45,7 +41,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
                 searchQueryString = string.Format("{0}&categoryId={1}", searchQueryString, pipedTypeList.Replace('|', ','));
 		    }
 
-			var client = new JsonServiceClient (apiUrl);
+			var client = new JsonServiceClient (ApiUrl);
             var venues = client.Get<FoursquareVenuesResponse<VenuesResponse>>(searchQueryString);
 
 			return venues.Response.Venues.Select(ToPlace).ToArray();
@@ -57,7 +53,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 		    searchQueryString = string.Format("{0}&query={1}", searchQueryString, name);
 
-		    var client = new JsonServiceClient(apiUrl);
+		    var client = new JsonServiceClient(ApiUrl);
             var venues = client.Get<FoursquareVenuesResponse<VenuesResponse>>(searchQueryString);
 
             return venues.Response.Venues.Select(ToPlace).ToArray();
@@ -79,7 +75,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 	    private string GetBaseQueryString(double? latitude, double? longitude, int radius)
 	    {
-	        var searchQueryString = string.Format(searchParameters, clientId, clientSecret, radius);
+            var searchQueryString = string.Format(SearchVenues, _settings.Data.FoursquareClientId, _settings.Data.FoursquareClientSecret, radius);
 
 	        latitude = latitude ?? _settings.Data.DefaultLatitude;
 	        longitude = longitude ?? _settings.Data.DefaultLongitude;
@@ -93,8 +89,8 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 	    public GeoAddress GetPlaceDetail (string reference)
 		{
-            var client = new JsonServiceClient(apiUrl);
-            var venue = client.Get<FoursquareVenuesResponse<VenueResponse>>(string.Format(venueDetails, reference, clientId, clientSecret));
+            var client = new JsonServiceClient(ApiUrl);
+            var venue = client.Get<FoursquareVenuesResponse<VenueResponse>>(string.Format(VenueDetails, reference, _settings.Data.FoursquareClientId, _settings.Data.FoursquareClientSecret));
 	        var location = venue.Response.Venue.location;
 	        return new GeoAddress
             {
