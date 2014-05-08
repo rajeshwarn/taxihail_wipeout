@@ -1,7 +1,5 @@
 ﻿using System.Linq;
 using apcurium.MK.Booking.Common.Tests;
-using apcurium.MK.Booking.MapDataProvider;
-using apcurium.MK.Booking.MapDataProvider.Google;
 using apcurium.MK.Common.Diagnostic;
 using MK.Booking.Google.Tests.PlacesFixture;
 using MK.Booking.MapDataProvider.Foursquare;
@@ -27,6 +25,14 @@ namespace MK.Booking.Google.Tests.Foursquare
             var neighborhoods = places.Where(x => x.Types.Contains("neighborhood"));
 
             Assert.IsEmpty(neighborhoods);
+        }
+
+        [Test]
+        public void when_getting_place_details()
+        {
+            var geoAddress = Sut.GetPlaceDetail("4ae4d07df964a520669e21e3");
+
+            Assert.That(geoAddress.ZipCode, Is.EqualTo("H2X 1X7"));
         }
        
     }

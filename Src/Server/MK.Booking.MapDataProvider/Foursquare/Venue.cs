@@ -7,15 +7,21 @@ namespace MK.Booking.MapDataProvider.Foursquare
     /// <summary>
     /// https://github.com/TICLAB/SharpSquare/tree/master/Entities
     /// </summary>
-    public class FoursquareResponse
+    public class FoursquareVenuesResponse<T>
     {
         public string Meta { get; set; }
-        public VenueResponse Response { get; set; }
+        public T Response { get; set; }
+    }
+    
+
+    public class VenuesResponse
+    {
+        public Venue[] Venues { get; set; }
     }
 
     public class VenueResponse
     {
-        public Venue[] Venues { get; set; }
+        public Venue Venue { get; set; }
     }
 
 	public class Venue
