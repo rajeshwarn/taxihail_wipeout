@@ -9,6 +9,8 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.MapDataProvider.Resources;
+using MK.Booking.MapDataProvider.Foursquare;
+using Location = apcurium.MK.Booking.MapDataProvider.Resources.Location;
 
 
 #endregion
@@ -24,6 +26,7 @@ namespace apcurium.MK.Booking.MapDataProvider
 		private readonly IAppSettings _settings;
 		private readonly ILogger _logger;
 		private readonly IMapsApiClient _osmApi;  //We use google for method not implemented by OpenStreetMap
+		private readonly IMapsApiClient _foursquare;
 
 		private readonly string[] _otherTypesAllowed =
 		{
@@ -35,6 +38,7 @@ namespace apcurium.MK.Booking.MapDataProvider
 			_logger = logger;
 			_settings = settings;
 			_osmApi = new apcurium.MK.Booking.MapDataProvider.OpenStreetMap.MapsApiClient(settings, logger);
+			_foursquare = new FoursquareProvider (settings, logger);
 		}
 
 		protected string PlacesApiKey
@@ -45,6 +49,10 @@ namespace apcurium.MK.Booking.MapDataProvider
 		public Place[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius,
 			string pipedTypeList = null)
 		{
+			//foursqaure 
+			var places = _foursquare.GetNearbyPlaces (latitude, longitude, languageCode, sensor, radius, pipedTypeList);
+
+
 			pipedTypeList = pipedTypeList ?? new PlaceTypes(_settings.Data.PlacesTypes).GetPipedTypeList();
 			var client = new JsonServiceClient(PlacesServiceUrl);
 
@@ -77,7 +85,7 @@ namespace apcurium.MK.Booking.MapDataProvider
 		public Place[] SearchPlaces(double? latitude, double? longitude, string name, string languageCode, bool sensor,
 			int radius, string countryCode)
 		{
-			var url = PlacesAutoCompleteServiceUrl;
+						var url = PlacesAutoCompleteServiceUrl;
 			var client = new JsonServiceClient(url);
 
 			var @params = new Dictionary<string, string>

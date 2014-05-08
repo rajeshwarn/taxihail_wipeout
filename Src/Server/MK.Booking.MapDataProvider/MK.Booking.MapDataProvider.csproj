@@ -65,6 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompositeMapApiClient.cs" />
+    <Compile Include="Foursquare\FoursquareProvider.cs" />
+    <Compile Include="Foursquare\Venue.cs" />
     <Compile Include="Google\MapsApiClient.cs" />
     <Compile Include="IMapsApiClient.cs" />
     <Compile Include="Module.cs" />

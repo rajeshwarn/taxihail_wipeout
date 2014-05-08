@@ -49,9 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlacesFixture\foursquare.cs" />
     <Compile Include="GeocodingFixture\given_a_valid_address.cs" />
     <Compile Include="GeocodingFixture\given_a_gps_coordinate.cs" />
-    <Compile Include="PlacesFixture\given_a_location.cs" />
+    <Compile Include="PlacesFixture\googlemaps.cs" />
+    <Compile Include="PlacesFixture\given_places_provider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +76,9 @@
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
       <Name>MK.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Foursquare\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
