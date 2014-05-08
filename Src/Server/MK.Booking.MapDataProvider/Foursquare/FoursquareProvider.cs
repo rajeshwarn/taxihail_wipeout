@@ -92,6 +92,12 @@ namespace MK.Booking.MapDataProvider.Foursquare
             var client = new JsonServiceClient(ApiUrl);
             var venue = client.Get<FoursquareVenuesResponse<VenueResponse>>(string.Format(VenueDetails, reference, _settings.Data.FoursquareClientId, _settings.Data.FoursquareClientSecret));
 	        var location = venue.Response.Venue.location;
+			string street = null;
+			string streetNumber = null;
+			if (!string.IsNullOrEmpty (location.address) && (char.IsNumber (location.address.FirstOrDefault ())) && location.address.Any( c=> c==' ' )) {
+				streetNumber = location.address.Split (' ') [0];
+				street = location.address.Substring (location.address.IndexOf (' '), location.address.Length - location.address.IndexOf (' ')).Trim(); 
+			}
 	        return new GeoAddress
             {
                 ZipCode = location.postalCode,
@@ -100,8 +106,8 @@ namespace MK.Booking.MapDataProvider.Foursquare
                 State = location.state,
                 City = location.city,
 				FullAddress = location.address,
-				StreetNumber =  location.address.Split( ' ' )[0],
-				Street =  location.address.Split( ' ' )[1],
+				Street = street,
+				StreetNumber = streetNumber,
 
             };
 		}
