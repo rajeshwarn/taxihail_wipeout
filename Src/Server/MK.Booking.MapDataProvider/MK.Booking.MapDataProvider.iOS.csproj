@@ -104,5 +104,7 @@
     <Compile Include="Resources\GeoAddress.cs" />
     <Compile Include="Resources\OSMAddress.cs" />
     <Compile Include="Resources\OSMResult.cs" />
+	<Compile Include="Foursquare\FoursquareProvider.cs" />
+    <Compile Include="Foursquare\Venue.cs" />
   </ItemGroup>
 </Project>
