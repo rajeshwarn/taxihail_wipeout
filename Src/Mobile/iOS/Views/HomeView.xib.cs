@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             InstantiatePanel();
 
             _datePicker = new BookLaterDatePicker();            
-            _datePicker.UpdateView(View.Frame.Height, View.Frame.Width);
+			_datePicker.UpdateView(UIScreen.MainScreen.Bounds.Height, UIScreen.MainScreen.Bounds.Width);
             _datePicker.Hide();
             View.AddSubview(_datePicker);
 
