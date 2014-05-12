@@ -111,11 +111,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     if (orderPayment != null)
                     {
                         var command = SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
-                            orderStatus.VehicleNumber,
+                            orderStatus.VehicleNumber, orderStatus.DriverInfos.FullName,
                             Convert.ToDouble(orderPayment.Meter), 0, Convert.ToDouble(orderPayment.Tip), 0, orderPayment,
                             card);
-
-
+                        
                         _commandBus.Send(command);
                     }
                 }

@@ -68,11 +68,13 @@ namespace apcurium.MK.Booking.Api.Services
 
             var orderPayment = _orderPaymentDao.FindByOrderId(order.Id);
             var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
+            var orderStatus = _orderDao.FindOrderStatusById(request.OrderId);
 
             if ((orderPayment != null) && (orderPayment.IsCompleted))
             {
                 var creditCard = orderPayment.CardToken.HasValue() ? _creditCardDao.FindByToken(orderPayment.CardToken) : null;
-                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, Convert.ToDouble(orderPayment.Meter), 0, Convert.ToDouble(orderPayment.Tip), 0, orderPayment, creditCard));
+                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos.FullName,
+                    Convert.ToDouble(orderPayment.Meter), 0, Convert.ToDouble(orderPayment.Tip), 0, orderPayment, creditCard));
             }
             else if ((pairingInfo != null) && (pairingInfo.AutoTipPercentage.HasValue))
             {
@@ -80,19 +82,19 @@ namespace apcurium.MK.Booking.Api.Services
                 var tripData = GetTripData(pairingInfo.PairingToken);
                 if ((tripData != null) && (tripData.EndTime.HasValue))
                 {
-                    _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
-                        ibsOrder.VehicleNumber, Math.Round(((double)tripData.Fare / 100), 2), Math.Round(((double)tripData.Extra / 2), 2), Math.Round(((double)tripData.Tip / 100), 2), Math.Round(((double)tripData.Tax / 100), 2), null, creditCard));
+                    _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos.FullName,
+                        Math.Round(((double)tripData.Fare / 100), 2), Math.Round(((double)tripData.Extra / 2), 2), Math.Round(((double)tripData.Tip / 100), 2), Math.Round(((double)tripData.Tax / 100), 2), null, creditCard));
                 }
                 else
                 {
 
-                    _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
-                        ibsOrder.VehicleNumber, ibsOrder.Fare, ibsOrder.Toll, Math.Round(((double)pairingInfo.AutoTipPercentage.Value) / 100, 2), ibsOrder.VAT, null, creditCard));
+                    _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos.FullName,
+                        ibsOrder.Fare, ibsOrder.Toll, Math.Round(((double)pairingInfo.AutoTipPercentage.Value) / 100, 2), ibsOrder.VAT, null, creditCard));
                 }
             }
             else
             {
-                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, ibsOrder.Fare, ibsOrder.Toll, ibsOrder.Tip, ibsOrder.VAT, null, null));
+                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos.FullName, ibsOrder.Fare, ibsOrder.Toll, ibsOrder.Tip, ibsOrder.VAT, null, null));
             }
 
             return new HttpResult(HttpStatusCode.OK, "OK");
@@ -110,11 +112,7 @@ namespace apcurium.MK.Booking.Api.Services
             catch (Exception)
             {
                 return null;
-
             }
-
         }
-
-        
     }
 }
