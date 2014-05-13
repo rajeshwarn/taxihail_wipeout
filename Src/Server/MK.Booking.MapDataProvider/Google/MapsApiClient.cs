@@ -268,7 +268,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             
             address.LocationType = geoResult.Geometry.Location_type;
 
-            return address;
+			return address;
         }
 
     }

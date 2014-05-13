@@ -169,6 +169,18 @@ namespace MK.Common.Configuration
 
         [Display(Name = "Company Settings", Description = "List of settings that can be modified by the taxi company")]
         public string CompanySettings { get; private set; }
+					
+
+		[Display(Name = "Lower Left Latitude", Description="Lower Left Latitude limit to be used when searching for an address")]
+		public double? LowerLeftLatitude { get; private set; }
+		[Display(Name = "Lower Left Longitude", Description="Lower Left Longitude limit to be used when searching for an address")]
+		public double? LowerLeftLongitude { get; private set; }
+
+		[Display(Name = "Upper Right Latitude", Description="Upper Right Latitude limit to be used when searching for an address")]
+		public double? UpperRightLatitude { get; private set; }
+		[Display(Name = "Upper Right Longitude", Description="Upper Right Longitude limit to be used when searching for an address")]
+		public double? UpperRightLongitude { get; private set; }
+
     }
 }
 
