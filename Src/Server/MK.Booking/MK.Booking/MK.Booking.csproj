@@ -181,10 +181,10 @@
     <Compile Include="ReadModel\OrderRatingDetails.cs" />
     <Compile Include="ReadModel\RatingScoreDetails.cs" />
     <Compile Include="Resources\DynamicResources.cs" />
-    <Compile Include="Resources\Global.fr.Designer.cs">
+    <Compile Include="Resources\Global.ar.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Global.fr.resx</DependentUpon>
+      <DependentUpon>Global.ar.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\TaxiHailNYC.Designer.cs">
       <DependentUpon>TaxiHailNYC.resx</DependentUpon>
@@ -209,27 +209,14 @@
     <Content Include="Email\Images\header-gradient.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Email\Templates\AccountConfirmation.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Email\Templates\AccountConfirmationSuccess.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Email\Templates\BookingConfirmation.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Email\Templates\DriverAssigned.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Email\Templates\DriverAssignedWithVAT.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Email\Templates\PasswordReset.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Email\Templates\Receipt.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Email\Templates\ar\AccountConfirmation.html" />
+    <Content Include="Email\Templates\en\AccountConfirmation.html" />
+    <Content Include="Email\Templates\en\AccountConfirmationSuccess.html" />
+    <Content Include="Email\Templates\en\BookingConfirmation.html" />
+    <Content Include="Email\Templates\en\DriverAssigned.html" />
+    <Content Include="Email\Templates\en\DriverAssignedWithVAT.html" />
+    <Content Include="Email\Templates\en\PasswordReset.html" />
+    <Content Include="Email\Templates\en\Receipt.html" />
     <None Include="App.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -258,9 +245,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Global.fr.resx">
+    <EmbeddedResource Include="Resources\Global.ar.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Global.fr.Designer.cs</LastGenOutput>
+      <LastGenOutput>Global.ar.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\TaxiHailNYC.resx">

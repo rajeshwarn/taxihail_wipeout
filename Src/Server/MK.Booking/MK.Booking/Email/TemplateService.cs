@@ -10,6 +10,8 @@ namespace apcurium.MK.Booking.Email
 {
     public class TemplateService : ITemplateService
     {
+        private const string DefaultLanguageCode = "en";
+
         public static string AssemblyDirectory
         {
             get
@@ -21,9 +23,14 @@ namespace apcurium.MK.Booking.Email
             }
         }
 
-        public string Find(string templateName, string languageCode = "en")
+        public string Find(string templateName, string languageCode = DefaultLanguageCode)
         {
             var path = Path.Combine(AssemblyDirectory, "Email\\Templates", languageCode, templateName + ".html");
+            if (!File.Exists(path))
+            {
+                path = Path.Combine(AssemblyDirectory, "Email\\Templates", DefaultLanguageCode, templateName + ".html");
+            }
+
             if (File.Exists(path))
             {
                 return File.ReadAllText(path);

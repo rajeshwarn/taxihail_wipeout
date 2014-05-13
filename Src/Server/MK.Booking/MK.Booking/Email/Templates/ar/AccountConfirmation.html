@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <title>{{ ApplicationName }} - Confirmation de courriel requise</title>
+  </head>
+  <body style="font-family:Calibri,Helvetica, sans-serif; color:#686868">
+   <table width="300px" cellpadding="0" cellspacing="0" style="border-right:1px solid {{ AccentColor }};border-left:1px solid {{ AccentColor }};width:300px;" id="backgroundTable">       
+		<tr style="background-color:{{ AccentColor }}">
+				<td colspan="2">&nbsp;</td>
+		</tr>
+        <tr>
+            <td colspan="2">
+                <h1 style="color:{{ AccentColor }};padding-left:45px;padding-right:20px;width:300px;">Bienvenue chez {{ ApplicationName }}<br/>Confirmation de courriel requise</h1>
+            </td>
+        </tr>
+      <tr>
+            <td colspan="2">
+              <p style="padding-left:45px;padding-right:20px;width:300px;">Pour confirmer votre adresse courriel, veuillez cliquer sur ce lien: </p>
+              <p style="padding-left:45px;padding-right:20px;width:300px;"><a style="color:#2c5cb3" href='{{ ConfirmationUrl }}'>{{ ConfirmationUrl }}</a></p>
+              <p style="padding-left:45px;padding-right:20px;width:300px;">Merci!</p>
+              <p style="font-weight:700;padding-left:45px;padding-right:20px;width:300px;">L'équipe {{ ApplicationName }}</p>
+              <br />
+            </td>
+      </tr>
+      <tr style="background-color:{{ AccentColor }}">
+            <td colspan="2">&nbsp;</td>
+      </tr>
+    </table>
+  </body>
+</html>
