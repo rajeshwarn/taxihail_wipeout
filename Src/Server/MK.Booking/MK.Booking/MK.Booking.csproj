@@ -209,14 +209,33 @@
     <Content Include="Email\Images\header-gradient.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Email\Templates\ar\AccountConfirmation.html" />
-    <Content Include="Email\Templates\en\AccountConfirmation.html" />
-    <Content Include="Email\Templates\en\AccountConfirmationSuccess.html" />
-    <Content Include="Email\Templates\en\BookingConfirmation.html" />
-    <Content Include="Email\Templates\en\DriverAssigned.html" />
-    <Content Include="Email\Templates\en\DriverAssignedWithVAT.html" />
-    <Content Include="Email\Templates\en\PasswordReset.html" />
-    <Content Include="Email\Templates\en\Receipt.html" />
+    <Content Include="Email\Templates\ar\AccountConfirmation.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\ar\BookingConfirmation.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\en\AccountConfirmation.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\en\AccountConfirmationSuccess.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\en\BookingConfirmation.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\en\DriverAssigned.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\en\DriverAssignedWithVAT.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\en\PasswordReset.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\en\Receipt.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="App.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>

@@ -115,7 +115,6 @@ namespace apcurium.MK.Booking.Api.Services
             command.AccountId = account.Id;
             command.UserAgent = base.Request.UserAgent;
             emailCommand.EmailAddress = account.Email;
-            emailCommand.ClientLanguageCode = request.ClientLanguageCode;
 
             // Get Charge Type and Vehicle Type from reference data
             var chargeType =

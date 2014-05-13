@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Resources
             {
                 return Global.ResourceManager.GetString(key, CultureInfo.GetCultureInfo(languageCode));
             }
-            return _resources.GetString(key)
+            return _resources.GetString(key, CultureInfo.GetCultureInfo(languageCode))
                    ?? Global.ResourceManager.GetString(key, CultureInfo.GetCultureInfo(languageCode));
         }
 

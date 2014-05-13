@@ -177,4 +177,19 @@
   <data name="PaymentConfirmationToDriver2" xml:space="preserve">
     <value>Auth #{0}</value>
   </data>
+  <data name="AccountConfirmationEmailSubject" xml:space="preserve">
+    <value>Welcome to {{ ApplicationName }}</value>
+  </data>
+  <data name="BookingConfirmationEmailSubject" xml:space="preserve">
+    <value>{{ ApplicationName }} - Booking confirmation</value>
+  </data>
+  <data name="DriverAssignedEmailSubject" xml:space="preserve">
+    <value>{{ ApplicationName }} - Driver assigned confirmation</value>
+  </data>
+  <data name="PasswordResetEmailSubject" xml:space="preserve">
+    <value>{{ ApplicationName }} - Your password has been reset</value>
+  </data>
+  <data name="ReceiptEmailSubject" xml:space="preserve">
+    <value>{{ ApplicationName }} - Receipt</value>
+  </data>
 </root>
