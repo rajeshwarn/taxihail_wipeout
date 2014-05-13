@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             _container.Register<IAppSettings>(new AppSettingsService(_container.Resolve<ICacheService>(), _container.Resolve<ILogger>()));
 
-			_container.Register<IMapsApiClient, MK.Booking.MapDataProvider.Google.MapsApiClient >();
+			_container.Register<IMapsApiClient, PlatformIntegration.AndroidMapApiClient >();
 
 			InitializeSocialNetwork();
         }

@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		};
 		private IMapsApiClient _foursquare;
 
-		public AndroidMapApiClient (IAppSettings settings, ILogger logger, IMvxAndroidGlobals androidGlobals  )
+		public AndroidMapApiClient (IAppSettings settings, ILogger logger, IMvxAndroidGlobals androidGlobals)
 		{
 			_androidGlobals = androidGlobals;
 			_foursquare = new FoursquareProvider (settings, logger);
@@ -77,17 +77,17 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		public GeoAddress[] GeocodeAddress (string address)
 		{
 
-//			var client = new JsonServiceClient (MapsServiceUrl);
-//			var resource = string.Format (CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=true", address);
-//			_logger.LogMessage ("GeocodeLocation : " + MapsServiceUrl + resource);
-//
-//			var result = client.Get<GeoResult> (resource);
-//
-//			if (result.Status == ResultStatus.OVER_QUERY_LIMIT || result.Status == ResultStatus.REQUEST_DENIED) {
-			return GeocodeAddressUsingAndroid (address);
-//			} else {
-			//return GeocodeAddressUsingAndroid (result);
-			//}
+			var client = new JsonServiceClient (MapsServiceUrl);
+			var resource = string.Format (CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=true", address);
+			_logger.LogMessage ("GeocodeLocation : " + MapsServiceUrl + resource);
+
+			var result = client.Get<GeoResult> (resource);
+
+			if (result.Status == ResultStatus.OVER_QUERY_LIMIT || result.Status == ResultStatus.REQUEST_DENIED) {
+				return GeocodeAddressUsingAndroid (address);
+			} else {
+				return ConvertGeoResultToAddresses (result);
+			}
 
 		}
 
@@ -97,14 +97,16 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 			try {
 
-				if ( new[] {_settings.Data.LowerLeftLatitude, _settings.Data.LowerLeftLongitude  , _settings.Data.UpperRightLatitude, _settings.Data.UpperRightLongitude }.All( d=>d.HasValue ) )
-				{
-					var locations = geocoder.GetFromLocationName(address.Replace ("+", " "), 100, _settings.Data.LowerLeftLatitude.Value, _settings.Data.LowerLeftLongitude.Value, _settings.Data.UpperRightLatitude.Value, _settings.Data.UpperRightLongitude.Value );				
+				if (new[] {
+					_settings.Data.LowerLeftLatitude,
+					_settings.Data.LowerLeftLongitude  ,
+					_settings.Data.UpperRightLatitude,
+					_settings.Data.UpperRightLongitude
+				}.All (d => d.HasValue)) {
+					var locations = geocoder.GetFromLocationName (address.Replace ("+", " "), 100, _settings.Data.LowerLeftLatitude.Value, _settings.Data.LowerLeftLongitude.Value, _settings.Data.UpperRightLatitude.Value, _settings.Data.UpperRightLongitude.Value);				
 					return locations.Select (ConvertAddressToGeoAddress).ToArray ();			
-				}
-				else
-				{
-					var locations = geocoder.GetFromLocationName(address.Replace ("+", " "), 100 );				
+				} else {
+					var locations = geocoder.GetFromLocationName (address.Replace ("+", " "), 100);				
 					return locations.Select (ConvertAddressToGeoAddress).ToArray ();			
 				}
 
@@ -125,7 +127,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			try {
 				var locations = geocoder.GetFromLocation (latitude, longitude, 25);
 
-				return locations.Where( l=>l.HasLatitude && l.HasLongitude ).Select (ConvertAddressToGeoAddress).ToArray ();			
+				return locations.Where (l => l.HasLatitude && l.HasLongitude).Select (ConvertAddressToGeoAddress).ToArray ();			
 							
 			} catch (Exception ex) {
 				_logger.LogError (ex);
@@ -152,13 +154,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 			return  new GeoAddress { 
 				StreetNumber = streetNumber,
-							Street = address.Thoroughfare,
-							Latitude = address.Latitude,
-							Longitude = address.Longitude,
-							City = address.Locality,
-							FullAddress = address.GetAddressLine(0),
-							State = address.AdminArea,
-							ZipCode = address.PostalCode
+				Street = address.Thoroughfare,
+				Latitude = address.Latitude,
+				Longitude = address.Longitude,
+				City = address.Locality,
+				FullAddress = address.GetAddressLine (0),
+				State = address.AdminArea,
+				ZipCode = address.PostalCode
 			};
 
 		}
@@ -222,11 +224,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			.Maybe (x => address.StreetNumber = x.Long_name);
 
 			var component = (from c in geoResult.Address_components
-				where
-				(c.AddressComponentTypes.Any (
-				                x => x == AddressComponentType.Route || x == AddressComponentType.Street_address) &&
-			                !string.IsNullOrEmpty (c.Long_name))
-				select c).FirstOrDefault ();
+			                 where
+			                     (c.AddressComponentTypes.Any (
+				                     x => x == AddressComponentType.Route || x == AddressComponentType.Street_address) &&
+			                     !string.IsNullOrEmpty (c.Long_name))
+			                 select c).FirstOrDefault ();
 			component.Maybe (c => address.Street = c.Long_name);
 
 			geoResult.Address_components.FirstOrDefault (
