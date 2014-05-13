@@ -404,7 +404,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task Register (RegisterAccount data)
         {
             data.AccountId = Guid.NewGuid();
-			data.Language = _localize["LanguageCode"];
+			data.Language = _localize.CurrentLanguage;
 			await UseServiceClientAsync<IAccountServiceClient> (service =>  service.RegisterAccount (data)); 
         }
 
