@@ -57,7 +57,8 @@ namespace apcurium.MK.Web.Tests
                             NumberOfTaxi = 1,
                             Name = "Joe Smith",
                             LargeBags = 1
-                        }
+                        },
+                    ClientLanguageCode = "fr"
                 };
 
             var details = await sut.CreateOrder(order);
@@ -85,7 +86,8 @@ namespace apcurium.MK.Web.Tests
                 {
                     Price = 10,
                     Distance = 3
-                }
+                },
+                ClientLanguageCode = "fr"
             };
 
             Assert.Throws<WebServiceException>(async () => await sut.CreateOrder(order), "CreateOrder_SettingsRequired");
@@ -128,7 +130,8 @@ namespace apcurium.MK.Web.Tests
                             NumberOfTaxi = 1,
                             Name = "Joe Smith",
                             LargeBags = 1
-                        }
+                        },
+                    ClientLanguageCode = "fr"
                 };
             sut.CreateOrder(order).Wait();
         }

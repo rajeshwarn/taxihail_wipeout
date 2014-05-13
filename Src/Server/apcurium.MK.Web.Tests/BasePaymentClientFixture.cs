@@ -81,9 +81,13 @@ namespace apcurium.MK.Web.Tests
                 context.Set<OrderStatusDetail>().Add(new OrderStatusDetail
                 {
                     OrderId = orderId,
+                    IBSOrderId = 1234,
                     VehicleNumber = "vehicle",
                     PickupDate = DateTime.Now,
-                    DriverInfos = new DriverInfos(),
+                    DriverInfos = new DriverInfos()
+                    {
+                        DriverId = "1",
+                    },
                     Status = new OrderStatus(),
 
                     AccountId = TestAccount.Id

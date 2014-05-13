@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.Resources
     public class DynamicResources : DynamicObject
     {
         private readonly ResourceManager _resources;
+        private const string DefaultLanguageCode = "en";
 
         public DynamicResources(string applicationKey)
         {
@@ -25,9 +26,14 @@ namespace apcurium.MK.Booking.Resources
         }
 
         public bool MissingResourceFile { get; private set; }
-        
-        public string GetString(string key, string languageCode = "en")
+
+        public string GetString(string key, string languageCode = DefaultLanguageCode)
         {
+            if (string.IsNullOrWhiteSpace(languageCode))
+            {
+                languageCode = DefaultLanguageCode;
+            }
+
             if (MissingResourceFile)
             {
                 return Global.ResourceManager.GetString(key, CultureInfo.GetCultureInfo(languageCode));
