@@ -76,6 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		public GeoAddress[] GeocodeAddress (string address)
 		{
+			return GeocodeAddressUsingAndroid (address);
 
 			var client = new JsonServiceClient (MapsServiceUrl);
 			var resource = string.Format (CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=true", address);
@@ -99,7 +100,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 				if (new[] {
 					_settings.Data.LowerLeftLatitude,
-					_settings.Data.LowerLeftLongitude  ,
+					_settings.Data.LowerLeftLongitude,
 					_settings.Data.UpperRightLatitude,
 					_settings.Data.UpperRightLongitude
 				}.All (d => d.HasValue)) {
@@ -125,9 +126,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 
 			try {
-				var locations = geocoder.GetFromLocation (latitude, longitude, 25);
+				var locations = geocoder.GetFromLocation (latitude, longitude, 25).ToArray ();
 
-				return locations.Where (l => l.HasLatitude && l.HasLongitude).Select (ConvertAddressToGeoAddress).ToArray ();			
+				var result = locations.Where (l => l.HasLatitude && l.HasLongitude).Select (ConvertAddressToGeoAddress).ToArray ();			
+				return result;
 							
 			} catch (Exception ex) {
 				_logger.LogError (ex);
@@ -138,30 +140,43 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		}
 
+		static string GetFormatFullAddres (Address address)
+		{
+			var fullAddressComponents = new List<string> ();
+			for (int i = 0; i < address.MaxAddressLineIndex; i++) {
+				var l = address.GetAddressLine (i);
+				if (l.HasValue () && l.Split (' ').Length > 1 && l.Split (' ') [0].Contains ("-")) {
+					var sNumber = l.Split (' ') [0].Split ('-') [0];
+					l = sNumber + l.Split (' ').Skip (1).JoinBy (" ");
+				}
+				fullAddressComponents.Add (l);
+			}
+			var full = fullAddressComponents.JoinBy (", ");
+			return full;
+		}
+
 		private GeoAddress ConvertAddressToGeoAddress (Address address)
 		{		
-
-
-
-
-
-
-
 			var streetNumber = address.SubThoroughfare;
-			if ((streetNumber != null) && (streetNumber.Any (c => c == '–'))) {
-				streetNumber = streetNumber.Substring (0, streetNumber.IndexOf ('–')); 
+			if ((streetNumber != null) && (streetNumber.Any (c => c == '-'))) {
+				streetNumber = streetNumber.Substring (0, streetNumber.IndexOf ('-')); 			
 			}
 
-			return  new GeoAddress { 
+			var full = GetFormatFullAddres (address);
+
+
+			var r = new GeoAddress { 
 				StreetNumber = streetNumber,
 				Street = address.Thoroughfare,
 				Latitude = address.Latitude,
 				Longitude = address.Longitude,
-				City = address.Locality,
-				FullAddress = address.GetAddressLine (0),
+				City = address.Locality ?? address.SubLocality,
+				FullAddress = full,
 				State = address.AdminArea,
 				ZipCode = address.PostalCode
 			};
+
+			return r;
 
 		}
 
