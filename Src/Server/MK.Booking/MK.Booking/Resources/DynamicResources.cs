@@ -1,6 +1,7 @@
 ﻿#region
 
 using System.Dynamic;
+using System.Globalization;
 using System.Resources;
 using apcurium.MK.Common.Extensions;
 
@@ -24,19 +25,20 @@ namespace apcurium.MK.Booking.Resources
         }
 
         public bool MissingResourceFile { get; private set; }
-
-        public string GetString(string key)
+        
+        public string GetString(string key, string languageCode = "en")
         {
             if (MissingResourceFile)
             {
-                return Global.ResourceManager.GetString(key);
+                return Global.ResourceManager.GetString(key, CultureInfo.GetCultureInfo(languageCode));
             }
             return _resources.GetString(key)
-                   ?? Global.ResourceManager.GetString(key);
+                   ?? Global.ResourceManager.GetString(key, CultureInfo.GetCultureInfo(languageCode));
         }
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
+            // we pass null since we only want to see if it exists
             result = GetString(binder.Name);
             return true;
         }

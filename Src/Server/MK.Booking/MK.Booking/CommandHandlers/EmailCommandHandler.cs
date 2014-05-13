@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(SendAccountConfirmationEmail command)
         {
-            var template = _templateService.Find(AccountConfirmationTemplateName);
+            var template = _templateService.Find(AccountConfirmationTemplateName, command.ClientLanguageCode);
             if (template == null)
                 throw new InvalidOperationException("Template not found: " + AccountConfirmationTemplateName);
 
@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                 ? DriverAssignedWithVATTemplateName
                 : DriverAssignedTemplateName;
 
-            var template = _templateService.Find(templateName);
+            var template = _templateService.Find(templateName, command.ClientLanguageCode);
             if (template == null) throw new InvalidOperationException("Template not found: " + templateName);
 
             var priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(SendBookingConfirmationEmail command)
         {
-            var template = _templateService.Find(BookingConfirmationTemplateName);
+            var template = _templateService.Find(BookingConfirmationTemplateName, command.ClientLanguageCode);
             if (template == null)
                 throw new InvalidOperationException("Template not found: " + BookingConfirmationTemplateName);
 
@@ -163,7 +163,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(SendPasswordResetEmail command)
         {
-            var template = _templateService.Find(PasswordResetTemplateName);
+            var template = _templateService.Find(PasswordResetTemplateName, command.ClientLanguageCode);
             if (template == null)
                 throw new InvalidOperationException("Template not found: " + PasswordResetTemplateName);
 
@@ -179,7 +179,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(SendReceipt command)
         {
             var vatEnabled = _configurationManager.GetSetting(VATEnabledSetting, false);
-            var template = _templateService.Find(ReceiptTemplateName);
+            var template = _templateService.Find(ReceiptTemplateName, command.ClientLanguageCode);
 
             if (template == null) throw new InvalidOperationException("Template not found: " + ReceiptTemplateName);
 

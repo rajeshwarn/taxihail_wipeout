@@ -34,6 +34,8 @@ namespace apcurium.MK.Booking.Commands
 
         public double? EstimatedFare { get; set; }
 
+        public string ClientLanguageCode { get; set; }
+
         public string UserAgent { get; set; }
         public Guid Id { get; private set; }
 

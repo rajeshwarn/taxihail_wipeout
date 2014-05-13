@@ -21,9 +21,9 @@ namespace apcurium.MK.Booking.Email
             }
         }
 
-        public string Find(string templateName)
+        public string Find(string templateName, string languageCode = "en")
         {
-            var path = Path.Combine(AssemblyDirectory, "Email\\Templates", templateName + ".html");
+            var path = Path.Combine(AssemblyDirectory, "Email\\Templates", languageCode, templateName + ".html");
             if (File.Exists(path))
             {
                 return File.ReadAllText(path);
