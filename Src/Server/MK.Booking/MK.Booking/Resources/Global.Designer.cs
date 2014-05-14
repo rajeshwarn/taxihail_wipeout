@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Apt&amp;nbsp;No.&amp;nbsp;&amp;nbsp;.
+        ///   Looks up a localized string similar to Apt&amp;nbsp;No..
         /// </summary>
         public static string Email_Body_AptNumber {
             get {
@@ -115,7 +115,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Charge&amp;nbsp;Type&amp;nbsp;&amp;nbsp;.
+        ///   Looks up a localized string similar to Charge&amp;nbsp;Type.
         /// </summary>
         public static string Email_Body_ChargeType {
             get {
@@ -187,7 +187,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Large&amp;nbsp;bags&amp;nbsp;&amp;nbsp;.
+        ///   Looks up a localized string similar to Large&amp;nbsp;bags.
         /// </summary>
         public static string Email_Body_LargeBags {
             get {
@@ -232,7 +232,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Passengers&amp;nbsp;&amp;nbsp;.
+        ///   Looks up a localized string similar to Passengers.
         /// </summary>
         public static string Email_Body_Passengers {
             get {
@@ -322,7 +322,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ring&amp;nbsp;Code&amp;nbsp;&amp;nbsp;.
+        ///   Looks up a localized string similar to Ring&amp;nbsp;Code.
         /// </summary>
         public static string Email_Body_RingCode {
             get {
@@ -430,7 +430,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vehicle&amp;nbsp;Type&amp;nbsp;&amp;nbsp;.
+        ///   Looks up a localized string similar to Vehicle&amp;nbsp;Type.
         /// </summary>
         public static string Email_Body_VehicleType {
             get {

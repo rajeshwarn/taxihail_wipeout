@@ -202,7 +202,7 @@
     <value>You can now sign into the application.</value>
   </data>
   <data name="Email_Body_AptNumber" xml:space="preserve">
-    <value>Apt&amp;nbsp;No.&amp;nbsp;&amp;nbsp;</value>
+    <value>Apt&amp;nbsp;No.</value>
   </data>
   <data name="Email_Body_AuthorizationNumber" xml:space="preserve">
     <value>Authorization number :</value>
@@ -211,7 +211,7 @@
     <value>Booking confirmation</value>
   </data>
   <data name="Email_Body_ChargeType" xml:space="preserve">
-    <value>Charge&amp;nbsp;Type&amp;nbsp;&amp;nbsp;</value>
+    <value>Charge&amp;nbsp;Type</value>
   </data>
   <data name="Email_Body_Date" xml:space="preserve">
     <value>Date</value>
@@ -235,7 +235,7 @@
     <value>Fare</value>
   </data>
   <data name="Email_Body_LargeBags" xml:space="preserve">
-    <value>Large&amp;nbsp;bags&amp;nbsp;&amp;nbsp;</value>
+    <value>Large&amp;nbsp;bags</value>
   </data>
   <data name="Email_Body_Name" xml:space="preserve">
     <value>Name</value>
@@ -250,7 +250,7 @@
     <value>Paid With</value>
   </data>
   <data name="Email_Body_Passengers" xml:space="preserve">
-    <value>Passengers&amp;nbsp;&amp;nbsp;</value>
+    <value>Passengers</value>
   </data>
   <data name="Email_Body_PasswordReset" xml:space="preserve">
     <value>Password reset</value>
@@ -280,7 +280,7 @@
     <value>Receipt</value>
   </data>
   <data name="Email_Body_RingCode" xml:space="preserve">
-    <value>Ring&amp;nbsp;Code&amp;nbsp;&amp;nbsp;</value>
+    <value>Ring&amp;nbsp;Code</value>
   </data>
   <data name="Email_Body_ThankYou" xml:space="preserve">
     <value>Thank you!</value>
@@ -316,6 +316,6 @@
     <value>Vehicle #</value>
   </data>
   <data name="Email_Body_VehicleType" xml:space="preserve">
-    <value>Vehicle&amp;nbsp;Type&amp;nbsp;&amp;nbsp;</value>
+    <value>Vehicle&amp;nbsp;Type</value>
   </data>
 </root>
