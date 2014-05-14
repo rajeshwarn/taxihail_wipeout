@@ -70,6 +70,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Nustache.1.13.8.22\lib\net20\Nustache.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Nustache.i18n">
+      <HintPath>..\..\packages\Nustache.i18n.1.0.0\lib\net40\Nustache.i18n.dll</HintPath>
+    </Reference>
     <Reference Include="PushSharp.Android, Version=2.0.4.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\PushSharp.2.0.4.0\lib\net40\PushSharp.Android.dll</HintPath>
@@ -121,6 +124,7 @@
     <Compile Include="EventHandlers\Integration\IIBSOrderService.cs" />
     <Compile Include="EventHandlers\Integration\PaymentSettingsUpdater.cs" />
     <Compile Include="EventHandlers\Integration\OrderPaymentManager.cs" />
+    <Compile Include="EventHandlers\OrderUserGpsGenerator.cs" />
     <Compile Include="EventHandlers\PayPalExpressCheckoutPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\PaymentSettingGenerator.cs" />
     <Compile Include="EventHandlers\CreditCardDetailsGenerator.cs" />
@@ -140,6 +144,7 @@
     <Compile Include="ReadModel\AddressDetails.cs" />
     <Compile Include="ReadModel\CompanyDetail.cs" />
     <Compile Include="ReadModel\OrderPaymentDetail.cs" />
+    <Compile Include="ReadModel\OrderUserGpsDetail.cs" />
     <Compile Include="ReadModel\Query\CompanyDao.cs" />
     <Compile Include="ReadModel\Query\ConfigurationDao.cs" />
     <Compile Include="ReadModel\DeviceDetail.cs" />
@@ -181,6 +186,11 @@
     <Compile Include="ReadModel\OrderRatingDetails.cs" />
     <Compile Include="ReadModel\RatingScoreDetails.cs" />
     <Compile Include="Resources\DynamicResources.cs" />
+    <Compile Include="Resources\Global.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\TaxiHailNYC.Designer.cs">
       <DependentUpon>TaxiHailNYC.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -253,6 +263,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Global.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Global.fr.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\TaxiHailNYC.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TaxiHailNYC.Designer.cs</LastGenOutput>

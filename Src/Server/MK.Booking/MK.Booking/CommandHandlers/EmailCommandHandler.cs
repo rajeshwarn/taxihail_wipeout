@@ -7,6 +7,7 @@ using System.Net.Mail;
 using System.Text;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Email;
+using apcurium.MK.Booking.Resources;
 using apcurium.MK.Common.Configuration;
 using Infrastructure.Messaging.Handling;
 
@@ -27,25 +28,25 @@ namespace apcurium.MK.Booking.CommandHandlers
         private const string VATRegistrationNumberSetting = "VATRegistrationNumber";
 
         private const string PasswordResetTemplateName = "PasswordReset";
-        private const string PasswordResetEmailSubject = "{{ ApplicationName }} - Your password has been reset";
+        private const string PasswordResetEmailSubject = "Email_Subject_PasswordReset";
 
         private const string AccountConfirmationTemplateName = "AccountConfirmation";
-        private const string AccountConfirmationEmailSubject = "Welcome to {{ ApplicationName }}";
+        private const string AccountConfirmationEmailSubject = "Email_Subject_AccountConfirmation";
 
-        private const string ReceiptEmailSubject = "{{ ApplicationName }} - Receipt";
+        private const string ReceiptEmailSubject = "Email_Subject_Receipt";
         private const string ReceiptTemplateName = "Receipt";
 
-
         private const string BookingConfirmationTemplateName = "BookingConfirmation";
-        private const string BookingConfirmationEmailSubject = "{{ ApplicationName }} - Booking confirmation";
+        private const string BookingConfirmationEmailSubject = "Email_Subject_BookingConfirmation";
 
         private const string DriverAssignedTemplateName = "DriverAssigned";
         private const string DriverAssignedWithVATTemplateName = "DriverAssignedWithVAT";
-        private const string DriverAssignedEmailSubject = "{{ ApplicationName }} - Driver assigned confirmation";
+        private const string DriverAssignedEmailSubject = "Email_Subject_DriverAssigned";
 
         private readonly IConfigurationManager _configurationManager;
         private readonly IEmailSender _emailSender;
         private readonly ITemplateService _templateService;
+        private readonly DynamicResources _resources;
 
         public EmailCommandHandler(IConfigurationManager configurationManager, ITemplateService templateService,
             IEmailSender emailSender)
@@ -53,14 +54,13 @@ namespace apcurium.MK.Booking.CommandHandlers
             _configurationManager = configurationManager;
             _templateService = templateService;
             _emailSender = emailSender;
+
+            var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
+            _resources = new DynamicResources(applicationKey);
         }
 
         public void Handle(SendAccountConfirmationEmail command)
         {
-            var template = _templateService.Find(AccountConfirmationTemplateName);
-            if (template == null)
-                throw new InvalidOperationException("Template not found: " + AccountConfirmationTemplateName);
-
             var templateData = new
             {
                 command.ConfirmationUrl,
@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                 AccentColor = _configurationManager.GetSetting(AccentColorSetting)
             };
 
-            SendEmail(command.EmailAddress, template, AccountConfirmationEmailSubject, templateData);
+            SendEmail(command.EmailAddress, AccountConfirmationTemplateName, AccountConfirmationEmailSubject, templateData, command.ClientLanguageCode);
         }
 
         public void Handle(SendAssignedConfirmation command)
@@ -77,9 +77,6 @@ namespace apcurium.MK.Booking.CommandHandlers
             var templateName = vatEnabled
                 ? DriverAssignedWithVATTemplateName
                 : DriverAssignedTemplateName;
-
-            var template = _templateService.Find(templateName);
-            if (template == null) throw new InvalidOperationException("Template not found: " + templateName);
 
             var priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
 
@@ -120,15 +117,11 @@ namespace apcurium.MK.Booking.CommandHandlers
                 TotalFare = command.Fare.ToString("C", priceFormat)
             };
 
-            SendEmail(command.EmailAddress, template, DriverAssignedEmailSubject, templateData);
+            SendEmail(command.EmailAddress, templateName, DriverAssignedEmailSubject, templateData, command.ClientLanguageCode);
         }
 
         public void Handle(SendBookingConfirmationEmail command)
         {
-            var template = _templateService.Find(BookingConfirmationTemplateName);
-            if (template == null)
-                throw new InvalidOperationException("Template not found: " + BookingConfirmationTemplateName);
-
             var hasDropOffAddress = command.DropOffAddress != null &&
                                     !string.IsNullOrWhiteSpace(command.DropOffAddress.FullAddress);
 
@@ -158,31 +151,23 @@ namespace apcurium.MK.Booking.CommandHandlers
                 VisibilityLargeBags = _configurationManager.GetSetting("Client.ShowLargeBagsIndicator", false) || command.Settings.LargeBags > 0                    
             };
 
-            SendEmail(command.EmailAddress, template, BookingConfirmationEmailSubject, templateData);
+            SendEmail(command.EmailAddress, BookingConfirmationTemplateName, BookingConfirmationEmailSubject, templateData, command.ClientLanguageCode);
         }
 
         public void Handle(SendPasswordResetEmail command)
         {
-            var template = _templateService.Find(PasswordResetTemplateName);
-            if (template == null)
-                throw new InvalidOperationException("Template not found: " + PasswordResetTemplateName);
-
             var templateData = new
             {
                 command.Password,
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
             };
 
-            SendEmail(command.EmailAddress, template, PasswordResetEmailSubject, templateData);
+            SendEmail(command.EmailAddress, PasswordResetTemplateName, PasswordResetEmailSubject, templateData, command.ClientLanguageCode);
         }
 
         public void Handle(SendReceipt command)
         {
             var vatEnabled = _configurationManager.GetSetting(VATEnabledSetting, false);
-            var template = _templateService.Find(ReceiptTemplateName);
-
-            if (template == null) throw new InvalidOperationException("Template not found: " + ReceiptTemplateName);
-
             var priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
 
             var isCardOnFile = command.CardOnFileInfo != null;
@@ -238,7 +223,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             };
 
 
-            SendEmail(command.EmailAddress, template, ReceiptEmailSubject, templateData);
+            SendEmail(command.EmailAddress, ReceiptTemplateName, ReceiptEmailSubject, templateData, command.ClientLanguageCode);
         }
 
         private double GetAmountWithoutVAT(double totalAmount)
@@ -246,11 +231,15 @@ namespace apcurium.MK.Booking.CommandHandlers
             return totalAmount/(1 + _configurationManager.GetSetting<double>(VATPercentageSetting, 0)/100);
         }
 
-        private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData,
+        private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData, string languageCode,
             params KeyValuePair<string, string>[] embeddedIMages)
         {
-            var messageSubject = _templateService.Render(subjectTemplate, templateData);
-            var messageBody = _templateService.Render(bodyTemplate, templateData);
+            var messageSubject = _templateService.Render(_resources.GetString(subjectTemplate, languageCode), templateData);
+
+            var template = _templateService.Find(bodyTemplate, languageCode);
+            if (template == null)
+                throw new InvalidOperationException("Template not found: " + bodyTemplate);
+            var messageBody = _templateService.Render(template, templateData);
 
             var mailMessage = new MailMessage(_configurationManager.GetSetting("Email.NoReply"), to, messageSubject,
                 null)

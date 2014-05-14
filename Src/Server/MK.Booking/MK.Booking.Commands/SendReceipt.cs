@@ -27,6 +27,8 @@ namespace apcurium.MK.Booking.Commands
         public double Toll { get; set; }
         public double Tax { get; set; }
 
+        public string ClientLanguageCode { get; set; }
+
         public Address PickupAddress { get; set; }
         public Address DropOffAddress { get; set; }
 

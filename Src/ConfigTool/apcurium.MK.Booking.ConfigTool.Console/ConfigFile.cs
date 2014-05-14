@@ -22,6 +22,13 @@ namespace apcurium.MK.Booking.ConfigTool
             {
                 sourcePath = Path.Combine(Parent.CommonDirectoryPath, PathConverter.Convert(Source));
             }
+
+			if (!File.Exists (sourcePath))
+			{
+				// source file not found, abort!
+				return;
+			}
+
             File.Copy(sourcePath, destPath, true);
         }
 

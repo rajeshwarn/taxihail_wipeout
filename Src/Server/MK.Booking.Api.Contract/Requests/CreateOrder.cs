@@ -39,6 +39,12 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public RideEstimate Estimate { get; set; }
 
+        public string ClientLanguageCode { get; set; }
+
+        public double? UserLatitude { get; set; }
+
+        public double? UserLongitude { get; set; }
+
         public class RideEstimate
         {
             /// <summary>

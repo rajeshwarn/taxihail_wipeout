@@ -440,6 +440,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			if (e != null) {
 				order.Estimate = new CreateOrder.RideEstimate{ Price = e.Price, Distance = e.Distance.HasValue ? e.Distance.Value :0  };
 			}
+
+		    order.UserLatitude = _locationService.BestPosition != null
+		        ? _locationService.BestPosition.Latitude
+		        : (double?) null;
+            order.UserLongitude = _locationService.BestPosition != null
+                ? _locationService.BestPosition.Longitude
+                : (double?)null;
+
 			return order;
 		}
 

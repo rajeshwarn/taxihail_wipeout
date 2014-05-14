@@ -67,6 +67,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         Fare = order.EstimatedFare.GetValueOrDefault(),
                         PickupAddress = order.PickupAddress,
                         DropOffAddress = order.DropOffAddress,
+                        ClientLanguageCode = order.ClientLanguageCode,
                         Settings = new SendBookingConfirmationEmail.BookingSettings
                         {
                             Name = account.Name,

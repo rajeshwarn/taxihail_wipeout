@@ -107,6 +107,7 @@ namespace apcurium.MK.Booking.ConfigTool
 
                     new ConfigFile(this){ Source="app.png", Destination=@"Mobile\iOS\app.png" },
                     new ConfigFile(this){ Source="app@2x.png", Destination=@"Mobile\iOS\app@2x.png" },
+					new ConfigFile(this){ Source="120px.png", Destination=@"Mobile\iOS\Resources\Icon-60@2x.png" },
                    
 				    new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleDisplayName",  SetterEle = ( ele )=> ele.InnerText = Config.ApplicationName },
                     new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleIdentifier",  SetterEle = ( ele )=> ele.InnerText = Config.Package },
