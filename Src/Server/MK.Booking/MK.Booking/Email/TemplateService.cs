@@ -25,6 +25,11 @@ namespace apcurium.MK.Booking.Email
 
         public string Find(string templateName, string languageCode = DefaultLanguageCode)
         {
+            if (string.IsNullOrWhiteSpace(languageCode))
+            {
+                languageCode = DefaultLanguageCode;
+            }
+
             var path = Path.Combine(AssemblyDirectory, "Email\\Templates", languageCode, templateName + ".html");
             if (!File.Exists(path))
             {

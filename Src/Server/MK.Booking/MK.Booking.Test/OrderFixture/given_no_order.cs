@@ -54,6 +54,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 DropOffAddress =
                     new Address {Latitude = 45.50643, Longitude = -73.554052, FullAddress = "Velvet auberge st gabriel"},
                 IBSOrderId = 99,
+                ClientLanguageCode = "fr"
                 UserLatitude = 46.50643,
                 UserLongitude = -74.554052
             };
@@ -89,6 +90,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(6, orderCreated.Settings.Passengers);
             Assert.AreEqual(1, orderCreated.Settings.NumberOfTaxi);
             Assert.AreEqual("Joe Smith", orderCreated.Settings.Name);
+            Assert.AreEqual("fr", orderCreated.ClientLanguageCode);
             Assert.AreEqual(46.50643, orderCreated.UserLatitude);
             Assert.AreEqual(-74.554052, orderCreated.UserLongitude);
         }

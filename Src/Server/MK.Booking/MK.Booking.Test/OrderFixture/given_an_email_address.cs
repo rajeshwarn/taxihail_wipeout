@@ -49,7 +49,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 PickupAddress = new Address
                 {
                     FullAddress = "5250, rue Ferrier, Montreal, H1P 4L4"
-                }
+                },
+                ClientLanguageCode = "fr"
             });
 
             _emailSenderMock.Verify(s => s
@@ -78,7 +79,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 PickupAddress = new Address
                 {
                     FullAddress = "5250, rue Ferrier, Montreal, H1P 4L4"
-                }
+                },
+                ClientLanguageCode = "fr"
             });
 
             _emailSenderMock.Verify(s => s
@@ -103,7 +105,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 PickupAddress = new Address
                 {
                     FullAddress = "5250, rue Ferrier, Montreal, H1P 4L4"
-                }
+                },
+                ClientLanguageCode = "fr"
             });
 
             _emailSenderMock.Verify(s => s

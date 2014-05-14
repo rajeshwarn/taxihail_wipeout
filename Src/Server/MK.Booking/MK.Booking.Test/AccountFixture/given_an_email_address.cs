@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         {
             const string newPassword = "123456";
 
-            _sut.When(new SendPasswordResetEmail {EmailAddress = "test@example.net", Password = newPassword});
+            _sut.When(new SendPasswordResetEmail {EmailAddress = "test@example.net", Password = newPassword, ClientLanguageCode = "fr"});
 
             _emailSenderMock.Verify(s => s
                 .Send(It.Is<MailMessage>(message =>
@@ -54,7 +54,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             _sut.When(new SendAccountConfirmationEmail
             {
                 EmailAddress = "test@example.net",
-                ConfirmationUrl = confirmationUrl
+                ConfirmationUrl = confirmationUrl,
+                ClientLanguageCode = "fr"
             });
 
             _emailSenderMock.Verify(s => s
@@ -75,7 +76,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 Id = Guid.NewGuid(),
                 Note = "Tomato Sandwich",
                 PickupDate = DateTime.Now,
-                Settings = new SendBookingConfirmationEmail.BookingSettings()
+                Settings = new SendBookingConfirmationEmail.BookingSettings(),
+                ClientLanguageCode = "fr"
             });
 
             _emailSenderMock.Verify(s => s
@@ -99,7 +101,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 Settings = new SendBookingConfirmationEmail.BookingSettings(),
                 Fare = 12,
                 TransactionDate = DateTime.Now,
-                VehicleNumber = 12345.ToString()
+                VehicleNumber = 12345.ToString(),
+                ClientLanguageCode = "fr"
             });
 
             _emailSenderMock.Verify(s => s

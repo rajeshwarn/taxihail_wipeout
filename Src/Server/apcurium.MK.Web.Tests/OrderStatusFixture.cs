@@ -50,7 +50,8 @@ namespace apcurium.MK.Web.Tests
                 {
                     Distance = 3,
                     Price = 10
-                }
+                },
+                ClientLanguageCode = "fr"
             };
 
             sut.CreateOrder(order).Wait();
