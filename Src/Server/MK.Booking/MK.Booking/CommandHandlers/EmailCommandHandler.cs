@@ -28,20 +28,20 @@ namespace apcurium.MK.Booking.CommandHandlers
         private const string VATRegistrationNumberSetting = "VATRegistrationNumber";
 
         private const string PasswordResetTemplateName = "PasswordReset";
-        private const string PasswordResetEmailSubject = "PasswordResetEmailSubject";
+        private const string PasswordResetEmailSubject = "Email_Subject_PasswordReset";
 
         private const string AccountConfirmationTemplateName = "AccountConfirmation";
-        private const string AccountConfirmationEmailSubject = "AccountConfirmationEmailSubject";
+        private const string AccountConfirmationEmailSubject = "Email_Subject_AccountConfirmation";
 
-        private const string ReceiptEmailSubject = "ReceiptEmailSubject";
+        private const string ReceiptEmailSubject = "Email_Subject_Receipt";
         private const string ReceiptTemplateName = "Receipt";
 
         private const string BookingConfirmationTemplateName = "BookingConfirmation";
-        private const string BookingConfirmationEmailSubject = "BookingConfirmationEmailSubject";
+        private const string BookingConfirmationEmailSubject = "Email_Subject_BookingConfirmation";
 
         private const string DriverAssignedTemplateName = "DriverAssigned";
         private const string DriverAssignedWithVATTemplateName = "DriverAssignedWithVAT";
-        private const string DriverAssignedEmailSubject = "DriverAssignedEmailSubject";
+        private const string DriverAssignedEmailSubject = "Email_Subject_DriverAssigned";
 
         private readonly IConfigurationManager _configurationManager;
         private readonly IEmailSender _emailSender;

@@ -61,29 +61,425 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To confirm your email address, please visit this link:.
+        /// </summary>
+        public static string Email_Body_AccountConfirmationLine1 {
+            get {
+                return ResourceManager.GetString("Email_Body_AccountConfirmationLine1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your email address has been confirmed successfully..
+        /// </summary>
+        public static string Email_Body_AccountConfirmationSuccessfulLine1 {
+            get {
+                return ResourceManager.GetString("Email_Body_AccountConfirmationSuccessfulLine1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can now sign into the application..
+        /// </summary>
+        public static string Email_Body_AccountConfirmationSuccessfulLine2 {
+            get {
+                return ResourceManager.GetString("Email_Body_AccountConfirmationSuccessfulLine2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apt&amp;nbsp;No.&amp;nbsp;&amp;nbsp;.
+        /// </summary>
+        public static string Email_Body_AptNumber {
+            get {
+                return ResourceManager.GetString("Email_Body_AptNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authorization number :.
+        /// </summary>
+        public static string Email_Body_AuthorizationNumber {
+            get {
+                return ResourceManager.GetString("Email_Body_AuthorizationNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Booking confirmation.
+        /// </summary>
+        public static string Email_Body_BookingConfirmation {
+            get {
+                return ResourceManager.GetString("Email_Body_BookingConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Charge&amp;nbsp;Type&amp;nbsp;&amp;nbsp;.
+        /// </summary>
+        public static string Email_Body_ChargeType {
+            get {
+                return ResourceManager.GetString("Email_Body_ChargeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        public static string Email_Body_Date {
+            get {
+                return ResourceManager.GetString("Email_Body_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination.
+        /// </summary>
+        public static string Email_Body_Destination {
+            get {
+                return ResourceManager.GetString("Email_Body_Destination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Driver assigned confirmation.
+        /// </summary>
+        public static string Email_Body_DriverAssignedConfirmation {
+            get {
+                return ResourceManager.GetString("Email_Body_DriverAssignedConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email confirmation required.
+        /// </summary>
+        public static string Email_Body_EmailConfirmationRequired {
+            get {
+                return ResourceManager.GetString("Email_Body_EmailConfirmationRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email address confirmation successful.
+        /// </summary>
+        public static string Email_Body_EmailConfirmationSuccessful {
+            get {
+                return ResourceManager.GetString("Email_Body_EmailConfirmationSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Estimated&amp;nbsp;Fare.
+        /// </summary>
+        public static string Email_Body_EstimatedFare {
+            get {
+                return ResourceManager.GetString("Email_Body_EstimatedFare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fare.
+        /// </summary>
+        public static string Email_Body_Fare {
+            get {
+                return ResourceManager.GetString("Email_Body_Fare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Large&amp;nbsp;bags&amp;nbsp;&amp;nbsp;.
+        /// </summary>
+        public static string Email_Body_LargeBags {
+            get {
+                return ResourceManager.GetString("Email_Body_LargeBags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Email_Body_Name {
+            get {
+                return ResourceManager.GetString("Email_Body_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note.
+        /// </summary>
+        public static string Email_Body_Note {
+            get {
+                return ResourceManager.GetString("Email_Body_Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order&amp;nbsp;#.
+        /// </summary>
+        public static string Email_Body_OrderNo {
+            get {
+                return ResourceManager.GetString("Email_Body_OrderNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paid With.
+        /// </summary>
+        public static string Email_Body_PaidWith {
+            get {
+                return ResourceManager.GetString("Email_Body_PaidWith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passengers&amp;nbsp;&amp;nbsp;.
+        /// </summary>
+        public static string Email_Body_Passengers {
+            get {
+                return ResourceManager.GetString("Email_Body_Passengers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password reset.
+        /// </summary>
+        public static string Email_Body_PasswordReset {
+            get {
+                return ResourceManager.GetString("Email_Body_PasswordReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your password has been reset..
+        /// </summary>
+        public static string Email_Body_PasswordResetLine1 {
+            get {
+                return ResourceManager.GetString("Email_Body_PasswordResetLine1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New password:.
+        /// </summary>
+        public static string Email_Body_PasswordResetLine2 {
+            get {
+                return ResourceManager.GetString("Email_Body_PasswordResetLine2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment Information.
+        /// </summary>
+        public static string Email_Body_PaymentInformation {
+            get {
+                return ResourceManager.GetString("Email_Body_PaymentInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone&amp;nbsp;Number.
+        /// </summary>
+        public static string Email_Body_PhoneNumber {
+            get {
+                return ResourceManager.GetString("Email_Body_PhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pickup&amp;nbsp;Location.
+        /// </summary>
+        public static string Email_Body_PickupLocation {
+            get {
+                return ResourceManager.GetString("Email_Body_PickupLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pickup&amp;nbsp;Time.
+        /// </summary>
+        public static string Email_Body_PickupTime {
+            get {
+                return ResourceManager.GetString("Email_Body_PickupTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {{PickupDate}} at {{PickupTime}}.
+        /// </summary>
+        public static string Email_Body_PickupTimeValue {
+            get {
+                return ResourceManager.GetString("Email_Body_PickupTimeValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Receipt.
+        /// </summary>
+        public static string Email_Body_Receipt {
+            get {
+                return ResourceManager.GetString("Email_Body_Receipt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ring&amp;nbsp;Code&amp;nbsp;&amp;nbsp;.
+        /// </summary>
+        public static string Email_Body_RingCode {
+            get {
+                return ResourceManager.GetString("Email_Body_RingCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thank you!.
+        /// </summary>
+        public static string Email_Body_ThankYou {
+            get {
+                return ResourceManager.GetString("Email_Body_ThankYou", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {{ ApplicationName }} Team.
+        /// </summary>
+        public static string Email_Body_TheTeam {
+            get {
+                return ResourceManager.GetString("Email_Body_TheTeam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tip.
+        /// </summary>
+        public static string Email_Body_Tip {
+            get {
+                return ResourceManager.GetString("Email_Body_Tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toll.
+        /// </summary>
+        public static string Email_Body_Toll {
+            get {
+                return ResourceManager.GetString("Email_Body_Toll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Amount.
+        /// </summary>
+        public static string Email_Body_TotalAmount {
+            get {
+                return ResourceManager.GetString("Email_Body_TotalAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total&amp;nbsp;Fare.
+        /// </summary>
+        public static string Email_Body_TotalFare {
+            get {
+                return ResourceManager.GetString("Email_Body_TotalFare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transaction Id :.
+        /// </summary>
+        public static string Email_Body_TransactionId {
+            get {
+                return ResourceManager.GetString("Email_Body_TransactionId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transaction&amp;nbsp;Time.
+        /// </summary>
+        public static string Email_Body_TransactionTime {
+            get {
+                return ResourceManager.GetString("Email_Body_TransactionTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {{TransactionDate}} at {{TransactionTime}}.
+        /// </summary>
+        public static string Email_Body_TransactionTimeValue {
+            get {
+                return ResourceManager.GetString("Email_Body_TransactionTimeValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VAT.
+        /// </summary>
+        public static string Email_Body_VAT {
+            get {
+                return ResourceManager.GetString("Email_Body_VAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle #.
+        /// </summary>
+        public static string Email_Body_VehicleNumber {
+            get {
+                return ResourceManager.GetString("Email_Body_VehicleNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle&amp;nbsp;Type&amp;nbsp;&amp;nbsp;.
+        /// </summary>
+        public static string Email_Body_VehicleType {
+            get {
+                return ResourceManager.GetString("Email_Body_VehicleType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Welcome to {{ ApplicationName }}.
         /// </summary>
-        public static string AccountConfirmationEmailSubject {
+        public static string Email_Subject_AccountConfirmation {
             get {
-                return ResourceManager.GetString("AccountConfirmationEmailSubject", resourceCulture);
+                return ResourceManager.GetString("Email_Subject_AccountConfirmation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to {{ ApplicationName }} - Booking confirmation.
         /// </summary>
-        public static string BookingConfirmationEmailSubject {
+        public static string Email_Subject_BookingConfirmation {
             get {
-                return ResourceManager.GetString("BookingConfirmationEmailSubject", resourceCulture);
+                return ResourceManager.GetString("Email_Subject_BookingConfirmation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to {{ ApplicationName }} - Driver assigned confirmation.
         /// </summary>
-        public static string DriverAssignedEmailSubject {
+        public static string Email_Subject_DriverAssigned {
             get {
-                return ResourceManager.GetString("DriverAssignedEmailSubject", resourceCulture);
+                return ResourceManager.GetString("Email_Subject_DriverAssigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {{ ApplicationName }} - Your password has been reset.
+        /// </summary>
+        public static string Email_Subject_PasswordReset {
+            get {
+                return ResourceManager.GetString("Email_Subject_PasswordReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {{ ApplicationName }} - Receipt.
+        /// </summary>
+        public static string Email_Subject_Receipt {
+            get {
+                return ResourceManager.GetString("Email_Subject_Receipt", resourceCulture);
             }
         }
         
@@ -223,15 +619,6 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {{ ApplicationName }} - Your password has been reset.
-        /// </summary>
-        public static string PasswordResetEmailSubject {
-            get {
-                return ResourceManager.GetString("PasswordResetEmailSubject", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The passenger has paid {0:c}.
         /// </summary>
         public static string PaymentConfirmationToDriver1 {
@@ -273,15 +660,6 @@ namespace apcurium.MK.Booking.Resources {
         public static string PushNotification_wosTIMEOUT {
             get {
                 return ResourceManager.GetString("PushNotification_wosTIMEOUT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {{ ApplicationName }} - Receipt.
-        /// </summary>
-        public static string ReceiptEmailSubject {
-            get {
-                return ResourceManager.GetString("ReceiptEmailSubject", resourceCulture);
             }
         }
     }

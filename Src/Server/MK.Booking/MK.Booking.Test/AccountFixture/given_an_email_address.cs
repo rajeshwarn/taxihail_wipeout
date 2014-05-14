@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             _configurationManager = new TestConfigurationManager();
             _configurationManager.SetSetting("TaxiHail.ApplicationName", ApplicationName);
 
-            _sut.Setup(new EmailCommandHandler(_configurationManager, new TemplateService(), _emailSenderMock.Object));
+            _sut.Setup(new EmailCommandHandler(_configurationManager, new TemplateService(_configurationManager), _emailSenderMock.Object));
         }
 
         [Test]

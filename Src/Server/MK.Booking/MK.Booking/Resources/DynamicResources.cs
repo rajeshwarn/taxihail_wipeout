@@ -1,5 +1,8 @@
 ﻿#region
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Globalization;
 using System.Resources;
@@ -16,6 +19,7 @@ namespace apcurium.MK.Booking.Resources
 
         public DynamicResources(string applicationKey)
         {
+            applicationKey = "Thriev";
             var names = GetType().Assembly.GetManifestResourceNames();
             var resourceName = "apcurium.MK.Booking.Resources." + applicationKey + ".resources";
 
@@ -40,6 +44,21 @@ namespace apcurium.MK.Booking.Resources
             }
             return _resources.GetString(key, CultureInfo.GetCultureInfo(languageCode))
                    ?? Global.ResourceManager.GetString(key, CultureInfo.GetCultureInfo(languageCode));
+        }
+
+        public Dictionary<string, string> GetLocalizedDictionary(string languageCode)
+        {
+            // we take the ResourceSet from the Main file because it contains all the keys
+            var resourceSet = Global.ResourceManager.GetResourceSet(CultureInfo.InvariantCulture, true, true);
+
+            var enumerator = resourceSet.GetEnumerator();
+            var result = new Dictionary<string, string>();
+            while (enumerator.MoveNext())
+            {
+                result[(string)enumerator.Key] = GetString((string)enumerator.Key, languageCode);
+            }
+
+            return result;
         }
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
