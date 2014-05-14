@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			base.LayoutSubviews ();
 
 			TextLabel.SetX(5);
+			TextLabel.TextAlignment = UITextAlignment.Natural;
 		}
 
 		public bool HideBottomBar
