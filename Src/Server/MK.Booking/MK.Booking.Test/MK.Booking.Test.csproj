@@ -118,6 +118,7 @@
     <Compile Include="Integration\GivenAConfigReadModelDatabase.cs" />
     <Compile Include="Integration\GivenAReadModelDatabase.cs" />
     <Compile Include="Integration\OrderFixture\OrderGeneratorTest.cs" />
+    <Compile Include="Integration\OrderFixture\OrderUserGpsInfoGenerator.cs" />
     <Compile Include="Integration\PaymentUpdatedFixture.cs" />
     <Compile Include="Integration\PayPalPaymentFixture\PayPalPaymentGeneratorTest.cs" />
     <Compile Include="Maps\PriceCalculatorFixture\given_a_date.cs" />
