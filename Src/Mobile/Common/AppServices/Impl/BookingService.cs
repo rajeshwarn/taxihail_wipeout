@@ -57,6 +57,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<OrderStatusDetail> CreateOrder (CreateOrder order)
         {
+			order.ClientLanguageCode = _localize.CurrentLanguage;
 			var orderDetail = await UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
 
 			if (orderDetail.IBSOrderId.HasValue

@@ -29,9 +29,9 @@ namespace apcurium.MK.Booking.CommandBuilder
                 Tip = tip.GetValueOrDefault(),
                 Tax = tax.GetValueOrDefault(),
                 PickupAddress = order.PickupAddress,
-                DropOffAddress = order.DropOffAddress
+                DropOffAddress = order.DropOffAddress,
+                ClientLanguageCode = order.ClientLanguageCode
             };
-
 
             if (orderPayment != null)
             {
