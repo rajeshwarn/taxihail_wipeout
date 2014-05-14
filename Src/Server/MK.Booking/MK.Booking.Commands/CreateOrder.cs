@@ -36,6 +36,10 @@ namespace apcurium.MK.Booking.Commands
 
         public string ClientLanguageCode { get; set; }
 
+        public double? UserLatitude { get; set; }
+
+        public double? UserLongitude { get; set; }
+
         public string UserAgent { get; set; }
         public Guid Id { get; private set; }
 

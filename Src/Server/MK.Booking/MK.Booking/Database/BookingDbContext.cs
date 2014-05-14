@@ -51,6 +51,7 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<CreditCardDetails>().ToTable("CreditCardDetails", SchemaName);
             modelBuilder.Entity<OrderPaymentDetail>().ToTable("OrderPaymentDetail", SchemaName);
             modelBuilder.Entity<CompanyDetail>().ToTable("CompanyDetail", SchemaName);
+            modelBuilder.Entity<OrderUserGpsDetail>().ToTable("OrderUserGpsDetail", SchemaName);
         }
 
         public T Find<T>(Guid id) where T : class

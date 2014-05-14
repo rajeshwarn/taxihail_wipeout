@@ -34,5 +34,10 @@ namespace apcurium.MK.Booking.Events
         public string UserAgent { get; set; }
 
         public string ClientLanguageCode { get; set; }
+
+        public double? UserLatitude { get; set; }
+
+        public double? UserLongitude { get; set; }
+        
     }
 }
