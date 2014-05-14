@@ -184,6 +184,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(account.Email, TestAccount.Email);
             Assert.AreEqual(account.Name, TestAccount.Name);
             Assert.AreEqual(account.Phone, TestAccount.Phone);
+            Assert.AreEqual(account.Language, TestAccount.Language);
         }
 
         [Test]

@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<ICompanyDao>(new CompanyDao(() => container.Resolve<BookingDbContext>()));
 
             container.RegisterInstance<IPasswordService>(new PasswordService());
-            container.RegisterInstance<ITemplateService>(new TemplateService());
+            container.RegisterInstance<ITemplateService>(new TemplateService(container.Resolve<IConfigurationManager>()));
             container.RegisterInstance<IRuleCalculator>(new RuleCalculator(container.Resolve<IRuleDao>()));
             container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
             container.RegisterInstance<IPushNotificationService>(

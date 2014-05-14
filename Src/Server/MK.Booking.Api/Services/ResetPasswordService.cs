@@ -43,6 +43,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var emailCommand = new SendPasswordResetEmail
             {
+                ClientLanguageCode = user.Language,
                 EmailAddress = user.Email,
                 Password = newPassword,
             };

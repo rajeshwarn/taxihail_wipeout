@@ -86,6 +86,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     IsRated = false,
                     EstimatedFare = @event.EstimatedFare,
                     UserAgent = @event.UserAgent,
+                    ClientLanguageCode = @event.ClientLanguageCode
                 });
 
                 // Create an empty OrderStatusDetail row

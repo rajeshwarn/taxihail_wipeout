@@ -22,6 +22,7 @@ namespace apcurium.MK.Booking.Commands
         public string VehicleNumber { get; set; }
         public Address PickupAddress { get; set; }
         public Address DropOffAddress { get; set; }
+        public string ClientLanguageCode { get; set; }
         public SendBookingConfirmationEmail.BookingSettings Settings { get; set; }
         public double Fare { get; set; }
         public Guid Id { get; set; }
