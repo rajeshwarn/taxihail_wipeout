@@ -21,6 +21,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
             const string Undefined = "UNDEFINED";
             return NSBundle.MainBundle.LocalizedString(key, Undefined, string.Empty) != Undefined;
         }
+
+		public string CurrentLanguage
+		{
+			get { return this["LanguageCode"]; }
+		}
 	}
 }
 

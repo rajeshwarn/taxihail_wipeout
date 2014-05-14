@@ -94,7 +94,8 @@ namespace apcurium.MK.Web.Tests
                     NumberOfTaxi = 1,
                     Name = "Joe Smith",
                     LargeBags = 1
-                }
+                },
+                ClientLanguageCode = "fr"
             };
 
             var details = await orderServiceClient.CreateOrder(order);

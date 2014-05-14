@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             _configurationManager = new TestConfigurationManager();
             _configurationManager.SetSetting("TaxiHail.ApplicationName", ApplicationName);
 
-            sut.Setup(new EmailCommandHandler(_configurationManager, new TemplateService(), _emailSenderMock.Object));
+            sut.Setup(new EmailCommandHandler(_configurationManager, new TemplateService(_configurationManager), _emailSenderMock.Object));
         }
 
         [Test]
@@ -49,7 +49,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 PickupAddress = new Address
                 {
                     FullAddress = "5250, rue Ferrier, Montreal, H1P 4L4"
-                }
+                },
+                ClientLanguageCode = "fr"
             });
 
             _emailSenderMock.Verify(s => s
@@ -78,7 +79,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 PickupAddress = new Address
                 {
                     FullAddress = "5250, rue Ferrier, Montreal, H1P 4L4"
-                }
+                },
+                ClientLanguageCode = "fr"
             });
 
             _emailSenderMock.Verify(s => s
@@ -103,7 +105,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 PickupAddress = new Address
                 {
                     FullAddress = "5250, rue Ferrier, Montreal, H1P 4L4"
-                }
+                },
+                ClientLanguageCode = "fr"
             });
 
             _emailSenderMock.Verify(s => s

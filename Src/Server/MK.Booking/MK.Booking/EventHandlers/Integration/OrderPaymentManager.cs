@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Resources;

@@ -19,8 +19,6 @@
     <MandroidI18n />
     <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
