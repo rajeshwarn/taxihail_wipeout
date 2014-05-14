@@ -318,4 +318,7 @@
   <data name="Email_Body_VehicleType" xml:space="preserve">
     <value>Vehicle&amp;nbsp;Type</value>
   </data>
+  <data name="Email_Body_Driver" xml:space="preserve">
+    <value>Driver</value>
+  </data>
 </root>

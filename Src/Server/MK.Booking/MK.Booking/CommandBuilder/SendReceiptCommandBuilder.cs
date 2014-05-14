@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.CommandBuilder
 {
     public static class SendReceiptCommandBuilder
     {
-        public static SendReceipt GetSendReceiptCommand(OrderDetail order, AccountDetail account, string vehicleNumber,
+        public static SendReceipt GetSendReceiptCommand(OrderDetail order, AccountDetail account, string vehicleNumber, string driverName,
             double? fare, double? toll, double? tip, double? tax, OrderPaymentDetail orderPayment = null,
             CreditCardDetails creditCard = null)
         {
@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.CommandBuilder
                 IBSOrderId = order.IBSOrderId ?? 0,
                 TransactionDate = order.PickupDate,
                 VehicleNumber = vehicleNumber,
+                DriverName = driverName,
                 Fare = fare.GetValueOrDefault(),
                 Toll = toll.GetValueOrDefault(),
                 Tip = tip.GetValueOrDefault(),
@@ -32,7 +33,7 @@ namespace apcurium.MK.Booking.CommandBuilder
                 DropOffAddress = order.DropOffAddress,
                 ClientLanguageCode = order.ClientLanguageCode
             };
-
+            
             if (orderPayment != null)
             {
                 command.CardOnFileInfo = new SendReceipt.CardOnFile(
