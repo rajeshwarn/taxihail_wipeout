@@ -101,15 +101,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             _reviewButtons = new UIView(this.Bounds) { Hidden = true };
 
-            var btnCancel = new AppBarLabelButton("Cancel");
+			var btnCancel = new AppBarLabelButton(Localize.GetValue("Cancel"));
             btnCancel.TranslatesAutoresizingMaskIntoConstraints = false;
 
-            var btnEdit = new AppBarLabelButton("Edit");
+			var btnEdit = new AppBarLabelButton(Localize.GetValue("Edit"));
             btnEdit.TranslatesAutoresizingMaskIntoConstraints = false;
 
             var btnConfirm = new FlatButton(new RectangleF((320 - 123)/2, 7, 123, 41));
             FlatButtonStyle.Green.ApplyTo(btnConfirm);
-            btnConfirm.SetTitle("Confirm", UIControlState.Normal);
+			btnConfirm.SetTitle(Localize.GetValue("Confirm"), UIControlState.Normal);
 
             _reviewButtons.AddSubviews(btnCancel, btnConfirm, btnEdit);
 
@@ -152,12 +152,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             _editButtons = new UIView(this.Bounds) { Hidden = true };
 
-            var btnCancel = new AppBarLabelButton("Cancel");
+			var btnCancel = new AppBarLabelButton(Localize.GetValue("Cancel"));
             btnCancel.TranslatesAutoresizingMaskIntoConstraints = false;
 
             var btnSave = new FlatButton(new RectangleF((320 - 123)/2, 7, 123, 41));
             FlatButtonStyle.Green.ApplyTo(btnSave);
-            btnSave.SetTitle("Save", UIControlState.Normal);
+			btnSave.SetTitle(Localize.GetValue("Save"), UIControlState.Normal);
 
             _editButtons.AddSubviews(btnCancel, btnSave);
 

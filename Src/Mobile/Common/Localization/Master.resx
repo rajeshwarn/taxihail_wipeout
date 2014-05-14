@@ -360,6 +360,9 @@
   <data name="StatusViewTitle" xml:space="preserve">
     <value>Confirmed</value>
   </data>
+  <data name="Order" xml:space="preserve">
+    <value>Order</value>
+  </data>
   <data name="StatusDescription" xml:space="preserve">
     <value>Order #{0}</value>
   </data>
