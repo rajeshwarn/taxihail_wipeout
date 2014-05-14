@@ -138,6 +138,7 @@ namespace apcurium.MK.Booking
                 "PayPalExpressCheckoutPaymentDetailsGenerator");
             container.RegisterType<IEventHandler, CreditCardPaymentDetailsGenerator>("CreditCardPaymentDetailsGenerator");
             container.RegisterType<IEventHandler, CompanyDetailsGenerator>("CompanyDetailsGenerator");
+            container.RegisterType<IEventHandler, OrderUserGpsGenerator>("OrderUserGpsGenerator");
 
             // Integration event handlers
             container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");

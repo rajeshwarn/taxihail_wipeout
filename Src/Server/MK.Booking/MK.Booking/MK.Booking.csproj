@@ -124,6 +124,7 @@
     <Compile Include="EventHandlers\Integration\IIBSOrderService.cs" />
     <Compile Include="EventHandlers\Integration\PaymentSettingsUpdater.cs" />
     <Compile Include="EventHandlers\Integration\OrderPaymentManager.cs" />
+    <Compile Include="EventHandlers\OrderUserGpsGenerator.cs" />
     <Compile Include="EventHandlers\PayPalExpressCheckoutPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\PaymentSettingGenerator.cs" />
     <Compile Include="EventHandlers\CreditCardDetailsGenerator.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="ReadModel\AddressDetails.cs" />
     <Compile Include="ReadModel\CompanyDetail.cs" />
     <Compile Include="ReadModel\OrderPaymentDetail.cs" />
+    <Compile Include="ReadModel\OrderUserGpsDetail.cs" />
     <Compile Include="ReadModel\Query\CompanyDao.cs" />
     <Compile Include="ReadModel\Query\ConfigurationDao.cs" />
     <Compile Include="ReadModel\DeviceDetail.cs" />
