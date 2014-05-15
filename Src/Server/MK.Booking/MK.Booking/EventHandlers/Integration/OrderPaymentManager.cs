@@ -69,12 +69,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
 
             var applicationKey = _configurationManager.GetSetting("TaxiHail.ApplicationKey");
-            var resources = new DynamicResources(applicationKey);
+            var resources = new Resources.Resources(applicationKey);
 
-            var line1 = string.Format(resources.GetString("PaymentConfirmationToDriver1"), amount);
+            var line1 = string.Format(resources.Get("PaymentConfirmationToDriver1"), amount);
             line1 = line1.PadRight(32, ' ');
             //Padded with 32 char because the MDT displays line of 32 char.  This will cause to write the auth code on the second line
-            var line2 = string.Format(resources.GetString("PaymentConfirmationToDriver2"), authorizationCode);
+            var line2 = string.Format(resources.Get("PaymentConfirmationToDriver2"), authorizationCode);
             
             _ibs.SendPaymentNotification(line1 + line2, orderStatusDetail.VehicleNumber, orderDetail.IBSOrderId.Value);
             

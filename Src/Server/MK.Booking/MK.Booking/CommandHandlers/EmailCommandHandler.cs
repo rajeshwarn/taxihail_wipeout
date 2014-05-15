@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         private readonly IConfigurationManager _configurationManager;
         private readonly IEmailSender _emailSender;
         private readonly ITemplateService _templateService;
-        private readonly DynamicResources _resources;
+        private readonly Resources.Resources _resources;
 
         public EmailCommandHandler(IConfigurationManager configurationManager, ITemplateService templateService,
             IEmailSender emailSender)
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             _emailSender = emailSender;
 
             var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
-            _resources = new DynamicResources(applicationKey);
+            _resources = new Resources.Resources(applicationKey);
         }
 
         public void Handle(SendAccountConfirmationEmail command)
@@ -234,7 +234,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData, string languageCode,
             params KeyValuePair<string, string>[] embeddedIMages)
         {
-            var messageSubject = _templateService.Render(_resources.GetString(subjectTemplate, languageCode), templateData);
+            var messageSubject = _templateService.Render(_resources.Get(subjectTemplate, languageCode), templateData);
 
             var template = _templateService.Find(bodyTemplate, languageCode);
             if (template == null)

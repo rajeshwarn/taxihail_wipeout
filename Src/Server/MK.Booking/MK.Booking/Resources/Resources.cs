@@ -12,12 +12,12 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Resources
 {
-    public class DynamicResources : DynamicObject
+    public class Resources : DynamicObject
     {
         private readonly ResourceManager _resources;
         private const string DefaultLanguageCode = "en";
 
-        public DynamicResources(string applicationKey)
+        public Resources(string applicationKey)
         {
             applicationKey = "Thriev";
             var names = GetType().Assembly.GetManifestResourceNames();
@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Resources
 
         public bool MissingResourceFile { get; private set; }
 
-        public string GetString(string key, string languageCode = DefaultLanguageCode)
+        public string Get(string key, string languageCode = DefaultLanguageCode)
         {
             if (string.IsNullOrWhiteSpace(languageCode))
             {
@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Resources
             var result = new Dictionary<string, string>();
             while (enumerator.MoveNext())
             {
-                result[(string)enumerator.Key] = GetString((string)enumerator.Key, languageCode);
+                result[(string)enumerator.Key] = Get((string)enumerator.Key, languageCode);
             }
 
             return result;
@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Resources
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             // we pass null since we only want to see if it exists
-            result = GetString(binder.Name);
+            result = Get(binder.Name);
             return true;
         }
     }

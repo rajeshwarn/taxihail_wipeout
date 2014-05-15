@@ -185,7 +185,7 @@
     <Compile Include="ReadModel\TariffDetail.cs" />
     <Compile Include="ReadModel\OrderRatingDetails.cs" />
     <Compile Include="ReadModel\RatingScoreDetails.cs" />
-    <Compile Include="Resources\DynamicResources.cs" />
+    <Compile Include="Resources\Resources.cs" />
     <Compile Include="Resources\Global.fr.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

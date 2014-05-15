@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IPushNotificationService _pushNotificationService;
-        private readonly DynamicResources _resources;
+        private readonly Resources.Resources _resources;
 
         public PushNotificationSender(Func<BookingDbContext> contextFactory,
             IPushNotificationService pushNotificationService, IConfigurationManager configurationManager)
@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _pushNotificationService = pushNotificationService;
 
             var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
-            _resources = new DynamicResources(applicationKey);
+            _resources = new Resources.Resources(applicationKey);
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -50,15 +50,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     switch (@event.Status.IBSStatusId)
                     {
                         case VehicleStatuses.Common.Assigned:
-                            alert = string.Format(_resources.GetString("PushNotification_wosASSIGNED", order.ClientLanguageCode),
+                            alert = string.Format(_resources.Get("PushNotification_wosASSIGNED", order.ClientLanguageCode),
                                 @event.Status.VehicleNumber);
                             break;
                         case VehicleStatuses.Common.Arrived:
-                            alert = string.Format(_resources.GetString("PushNotification_wosARRIVED", order.ClientLanguageCode),
+                            alert = string.Format(_resources.Get("PushNotification_wosARRIVED", order.ClientLanguageCode),
                                 @event.Status.VehicleNumber);
                             break;
                         case VehicleStatuses.Common.Timeout:
-                            alert = _resources.GetString("PushNotification_wosTIMEOUT", order.ClientLanguageCode);
+                            alert = _resources.Get("PushNotification_wosTIMEOUT", order.ClientLanguageCode);
                             break;
                         default:
                             throw new InvalidOperationException("No push notification for this order status");

@@ -15,13 +15,13 @@ namespace apcurium.MK.Booking.Email
 {
     public class TemplateService : ITemplateService
     {
-        private readonly DynamicResources _resources;
+        private readonly Resources.Resources _resources;
         private const string DefaultLanguageCode = "en";
 
         public TemplateService(IConfigurationManager configurationManager)
         {
             var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
-            _resources = new DynamicResources(applicationKey);
+            _resources = new Resources.Resources(applicationKey);
         }
         
         public static string AssemblyDirectory
