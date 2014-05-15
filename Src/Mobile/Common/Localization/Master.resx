@@ -675,6 +675,9 @@
   <data name="RideSettingsPassword" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="RideSettingsAccountNumber" xml:space="preserve">
+    <value>Account Number</value>
+  </data>
   <data name="CreateAccountInvalidPassword" xml:space="preserve">
     <value>The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.</value>
   </data>

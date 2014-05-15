@@ -198,6 +198,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public string AccountNumber
+		{
+			get
+			{
+				return _bookingSettings.AccountNumber;
+			}
+			set
+			{
+				if (value != _bookingSettings.AccountNumber)
+				{
+					_bookingSettings.AccountNumber = value;
+					RaisePropertyChanged();
+				}
+			}
+		}
+
 		public ICommand SetVehiculeType
         {
             get

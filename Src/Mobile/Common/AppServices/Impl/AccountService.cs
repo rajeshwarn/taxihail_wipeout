@@ -254,10 +254,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 ChargeTypeId = settings.ChargeTypeId,
                 ProviderId = settings.ProviderId,
                 DefaultCreditCard = creditCardId,
-                DefaultTipPercent = tipPercent
+				DefaultTipPercent = tipPercent,
+				AccountNumber = settings.AccountNumber
             };
             
-			UseServiceClientTask<IAccountServiceClient> (service =>                                                 {                     
+			UseServiceClientTask<IAccountServiceClient> (service => {                     
 				return service.UpdateBookingSettings (bsr);                
             });
             var account = CurrentAccount;
