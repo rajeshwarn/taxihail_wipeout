@@ -2,6 +2,6 @@
 {
     public interface IEventsMigrator
     {
-        void Do(string version);
+        void Do();
     }
 }
