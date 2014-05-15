@@ -454,4 +454,5 @@
   <string name="WarningEstimateTitle">تحذير</string>
   <string name="WarningTitle">تحذير</string>
   <string name="YesButton">نعم</string>
+  <string name="Order">طلب</string>
 </resources>

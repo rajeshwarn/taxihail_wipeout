@@ -3982,14 +3982,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050108
 			public const int GooglePlayServicesNotAvailableMessage = 2131034376;
 			
-			// aapt resource value: 0x7f050222
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034658;
+			// aapt resource value: 0x7f050224
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034660;
 			
 			// aapt resource value: 0x7f050068
 			public const int GooglePlayServicesNotAvailableTitle = 2131034216;
 			
-			// aapt resource value: 0x7f050223
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034659;
+			// aapt resource value: 0x7f050225
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034661;
 			
 			// aapt resource value: 0x7f05005d
 			public const int HistoryDetailAptRingCodeLabel = 2131034205;
@@ -4252,6 +4252,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05010d
 			public const int OkButtonText = 2131034381;
 			
+			// aapt resource value: 0x7f050223
+			public const int Order = 2131034659;
+			
 			// aapt resource value: 0x7f0500a0
 			public const int OrderHistoryListTitle = 2131034272;
 			
@@ -4449,6 +4452,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f050116
 			public const int RideHistoryButton = 2131034390;
+			
+			// aapt resource value: 0x7f050222
+			public const int RideSettingsAccountNumber = 2131034658;
 			
 			// aapt resource value: 0x7f05014d
 			public const int RideSettingsCannotLoadListMessage = 2131034445;
