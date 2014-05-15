@@ -21,7 +21,7 @@ namespace MK.Common.Configuration
             ShowRingCodeField = true;
             TutorialEnabled = true;
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
-            CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink";
+            CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink,Client.AccountChargeTypeId";
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -54,7 +54,7 @@ namespace MK.Common.Configuration
         public bool AccountActivationDisabled { get; private set; }
         [Display(Name = "Show Terms and Conditions", Description="Display and require T&C screen")]
         public bool ShowTermsAndConditions { get; private set; }
-
+        
         [Display(Name = "Tutorial Enabled", Description="Enable the tutorial")]
         public bool TutorialEnabled { get; private set; }
         [Display(Name = "Tutorial slides disabled", Description="Index of the slides to hide")]
@@ -120,6 +120,8 @@ namespace MK.Common.Configuration
         public bool HideCallDispatchButton { get; private set; }
         [Display(Name = "Credit Card Is Mandatory", Description="If true, the user needs to have a card on file")]
         public bool CreditCardIsMandatory { get; private set; }
+        [Display(Name = "Account ChargeTypeId", Description = "ChargeTypeId of the Account Charge Type")]
+        public string AccountChargeTypeId { get; private set; }
 
 		[Display(Name = "Place Types", Description="Give a list of Google Maps places types to filter search")]
 		public string PlacesTypes { get; private set; }
