@@ -239,7 +239,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Phone = "123",
                     Passengers = 3,
                     ProviderId = 85,
-                    VehicleTypeId = 69
+                    VehicleTypeId = 69,
+                    AccountNumber = "1234"
                 });
 
                 using (var context = new BookingDbContext(DbName))
@@ -254,6 +255,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Assert.AreEqual(3, dto.Settings.Passengers);
                     Assert.AreEqual(85, dto.Settings.ProviderId);
                     Assert.AreEqual(69, dto.Settings.VehicleTypeId);
+                    Assert.AreEqual("1234", dto.Settings.AccountNumber);
                 }
             }
 
@@ -269,7 +271,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Phone = "123",
                     Passengers = 3,
                     ProviderId = 13,
-                    VehicleTypeId = 1
+                    VehicleTypeId = 1,
+                    AccountNumber = "1234"
                 });
 
                 using (var context = new BookingDbContext(DbName))

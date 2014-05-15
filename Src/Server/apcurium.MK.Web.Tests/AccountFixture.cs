@@ -88,7 +88,8 @@ namespace apcurium.MK.Web.Tests
                 ProviderId = 13,
                 VehicleTypeId = 1,
                 DefaultCreditCard = creditCardId,
-                DefaultTipPercent = defaultTipPercent
+                DefaultTipPercent = defaultTipPercent,
+                AccountNumber = "1234"
             };
 
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
@@ -106,6 +107,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(settings.VehicleTypeId, account.Settings.VehicleTypeId);
             Assert.AreEqual(creditCardId, account.DefaultCreditCard);
             Assert.AreEqual(defaultTipPercent, account.DefaultTipPercent);
+            Assert.AreEqual(settings.AccountNumber, account.Settings.AccountNumber);
         }
 
         [Test]

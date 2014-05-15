@@ -9,6 +9,7 @@
         public string VehicleType { get; set; }
         public int? ChargeTypeId { get; set; }
         public string ChargeType { get; set; }
+        public string AccountNumber { get; set; }
         public int NumberOfTaxi { get; set; }
         public int LargeBags { get; set; }
 

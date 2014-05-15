@@ -29,7 +29,8 @@ namespace apcurium.MK.Booking.Api.Services
                     Passengers = order.Settings.Passengers,
                     ProviderId = order.Settings.ProviderId,
                     VehicleTypeId = order.Settings.VehicleTypeId,
-                    LargeBags = order.Settings.LargeBags
+                    LargeBags = order.Settings.LargeBags,
+                    AccountNumber = order.Settings.AccountNumber
                 },
                 Fare = order.Fare,
                 Tip = order.Tip,

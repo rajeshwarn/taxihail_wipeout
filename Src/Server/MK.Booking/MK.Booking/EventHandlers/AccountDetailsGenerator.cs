@@ -176,6 +176,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.NumberOfTaxi = @event.NumberOfTaxi;
                 settings.Passengers = @event.Passengers;
                 settings.Phone = @event.Phone;
+                settings.AccountNumber = @event.AccountNumber;
 
                 account.Settings = settings;
                 context.Save(account);
