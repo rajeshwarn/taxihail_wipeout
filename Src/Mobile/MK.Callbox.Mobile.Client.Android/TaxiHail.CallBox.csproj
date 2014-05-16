@@ -56,7 +56,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GooglePlayServicesLib">
-      <HintPath>..\Components\googleplayservicesgingerbread-13.0\lib\android\GooglePlayServicesLib.dll</HintPath>
+      <HintPath>Components\googleplayservicesgingerbread-13.0\lib\android\GooglePlayServicesLib.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
@@ -95,10 +95,10 @@
       <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Providers.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v4">
-      <HintPath>..\Components\googleplayservicesgingerbread-13.0\lib\android\Xamarin.Android.Support.v4.dll</HintPath>
+      <HintPath>Components\googleplayservicesgingerbread-13.0\lib\android\Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v7.AppCompat">
-      <HintPath>..\Components\googleplayservicesgingerbread-13.0\lib\android\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
+      <HintPath>Components\googleplayservicesgingerbread-13.0\lib\android\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
     </Reference>
     <Reference Include="System.Net">
       <HintPath>..\packages\MvvmCross.PortableSupport.3.0.14\lib\MonoAndroid\System.Net.dll</HintPath>
@@ -264,16 +264,6 @@
     <AndroidResource Include="Resources\Raw\vehicle.mp3" />
     <AndroidResource Include="Resources\Drawable\red_button.xml" />
     <AndroidResource Include="Resources\Drawable\navBar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
-      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
-      <Name>MK.Common.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Common\MK.Booking.Mobile.Android.csproj">
-      <Project>{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}</Project>
-      <Name>MK.Booking.Mobile.Android</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Localization\Mapper\" />

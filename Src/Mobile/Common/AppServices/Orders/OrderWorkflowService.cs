@@ -18,6 +18,7 @@ using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface.ServiceModel;
 using ServiceStack.Text;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -30,6 +31,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ILocalization _localize;
 		readonly IBookingService _bookingService;
 		readonly ICacheService _cacheService;
+		readonly IAccountPaymentService _accountPaymentService;
 
 		readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
@@ -37,10 +39,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
         readonly ISubject<BookingSettings> _bookingSettingsSubject;
 		readonly ISubject<string> _estimatedFareDisplaySubject;
-
 		readonly ISubject<DirectionInfo> _estimatedFareDetailSubject = new BehaviorSubject<DirectionInfo>( new DirectionInfo() );
 		readonly ISubject<string> _noteToDriverSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<bool> _loadingAddressSubject = new BehaviorSubject<bool>(false);
+		readonly ISubject<AccountPaymentQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountPaymentQuestion[]> (null);
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -48,7 +50,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			IAppSettings configurationManager,
 			ILocalization localize,
 			IBookingService bookingService,
-			ICacheService cacheService)
+			ICacheService cacheService,
+			IAccountPaymentService accountPaymentService)
 		{
 			_cacheService = cacheService;
 			_appSettings = configurationManager;
@@ -59,6 +62,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(accountService.CurrentAccount.Settings);
 			_localize = localize;
 			_bookingService = bookingService;
+			_accountPaymentService = accountPaymentService;
 
 			_estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		}
@@ -418,6 +422,57 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _appSettings.Data.ShowEstimateWarning
 					&& !_cacheService.Get<string>("WarningEstimateDontShow").HasValue()
 					&& destination.HasValidCoordinate();
+		}
+
+		public async Task<bool> ShouldGoToAccountNumberFlow()
+		{
+			if (!_appSettings.Data.AccountChargeTypeId.HasValue)
+			{
+				return false;
+			}
+
+			var settings = await _bookingSettingsSubject.Take(1).ToTask();
+			return _appSettings.Data.AccountChargeTypeId == settings.ChargeTypeId;
+		}
+
+		public async Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null)
+		{
+			if (accountNumber == null)
+			{
+				var settings = await _bookingSettingsSubject.Take(1).ToTask();
+				accountNumber = settings.AccountNumber;
+			}
+
+			if (!accountNumber.HasValue ())
+			{
+				return false;
+			}
+
+			try
+			{
+				var questions = await _accountPaymentService.GetQuestions (accountNumber);
+				_accountPaymentQuestions.OnNext (questions);
+
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public async Task SetAccountNumber(string accountNumber)
+		{
+			_accountService.UpdateAccountNumber (accountNumber);
+
+			var bookingSettings = await _bookingSettingsSubject.Take(1).ToTask();
+			bookingSettings.AccountNumber = accountNumber;
+			_bookingSettingsSubject.OnNext (bookingSettings);
+		}
+
+		public async Task<AccountPaymentQuestion[]> GetAccountPaymentQuestions()
+		{
+			return await _accountPaymentQuestions.Take (1).ToTask ();
 		}
 
 		public async Task<OrderValidationResult> ValidateOrder()

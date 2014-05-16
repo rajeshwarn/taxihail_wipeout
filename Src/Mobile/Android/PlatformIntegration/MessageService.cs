@@ -18,6 +18,7 @@ using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using TinyIoC;
 using TinyMessenger;
+using Android.App;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -90,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 if (a.Content == positiveButtonTitle && positiveAction != null)
                 {
-                    positiveAction();
+					positiveAction();Context
                 }
                 else if (a.Content == negativeButtonTitle && negativeAction != null)
                 {
@@ -289,10 +290,34 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             Context.StartActivity(i);
         }
 
-        public void ShowEditTextDialog(string title, string message, string positiveButtonTitle,
-            Action<string> positionAction)
+		public Task<string> ShowPromptDialog(string title, string message, Action cancelAction)
         {
-            throw new NotImplementedException();
+			var tcs = new TaskCompletionSource<string>();
+
+			var alert = new AlertDialog.Builder(Context);
+
+			alert.SetTitle(title);
+			alert.SetMessage(message);
+
+			// Set an EditText view to get user input 
+			var input = new EditText(this);
+			alert.SetView(input);
+
+			alert.SetPositiveButton(Resource.String.OkButtonText, (sender, e) => 
+			{  
+				var text = input.Text;
+				tcs.TrySetResult(value);
+			});
+
+			alert.SetNegativeButton(Resource.String.Cancel, (sender, e) => 
+			{
+				tcs.TrySetCanceled();
+				cancelAction();
+			});
+
+			alert.Show();
+
+			return tcs.Task;
         }
     }
 }

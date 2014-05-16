@@ -121,7 +121,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Credit Card Is Mandatory", Description="If true, the user needs to have a card on file")]
         public bool CreditCardIsMandatory { get; private set; }
         [Display(Name = "Account ChargeTypeId", Description = "ChargeTypeId of the Account Charge Type")]
-        public string AccountChargeTypeId { get; private set; }
+		public int? AccountChargeTypeId { get; private set; }
 
 		[Display(Name = "Place Types", Description="Give a list of Google Maps places types to filter search")]
 		public string PlacesTypes { get; private set; }

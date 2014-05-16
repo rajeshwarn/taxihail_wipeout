@@ -140,7 +140,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 			} );
 			
 		}	
-		
+
+		public static Task<string> Prompt (string title, string message, Action cancelAction)
+		{
+			var tcs = new TaskCompletionSource<string>();
+
+			UIApplication.SharedApplication.InvokeOnMainThread( delegate
+			{					
+				LoadingOverlay.StopAnimatingLoading();
+				var av = new UIAlertView(title, message, null, Localize.GetValue("Cancel"), Localize.GetValue("OkButtonText"));
+				av.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
+				av.Dismissed += (sender, e) => 
+				{
+					if(e.ButtonIndex == 0)
+					{
+						tcs.TrySetCanceled();
+						cancelAction();
+					}
+					else
+					{
+						var value = ((UIAlertView)sender).GetTextField(0).Text;
+						tcs.TrySetResult(value);
+					}
+				};
+				av.Show ();
+			});
+
+			return tcs.Task;
+		}
 	}
 }
 

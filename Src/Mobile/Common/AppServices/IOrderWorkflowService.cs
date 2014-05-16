@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder();
 
 		void SetBookingSettings(BookingSettings bookingSettings);
+		Task SetAccountNumber (string accountNumber);
 		void SetNoteToDriver(string text);
 
 		IObservable<Address> GetAndObservePickupAddress();
@@ -39,6 +40,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<bool> GetAndObserveLoadingAddress();
 
 		Task<bool> ShouldWarnAboutEstimate();
+
+		Task<bool> ShouldGoToAccountNumberFlow();
+		Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null);
+		Task<AccountPaymentQuestion[]> GetAccountPaymentQuestions();
 
 		Task<OrderValidationResult> ValidateOrder();
 		void Rebook(Order previous);

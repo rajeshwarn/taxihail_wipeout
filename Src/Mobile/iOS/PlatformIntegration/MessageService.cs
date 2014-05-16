@@ -121,8 +121,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                         
         }		
 
-        public void ShowEditTextDialog(string title, string message, string positiveButtonTitle, Action<string> positionAction)
+		public Task<string> ShowPromptDialog(string title, string message, Action cancelAction)
         {
+			return MessageHelper.Prompt (title, message, cancelAction);
         }
 
 	}

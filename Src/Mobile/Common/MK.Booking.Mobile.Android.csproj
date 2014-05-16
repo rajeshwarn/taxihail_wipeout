@@ -332,6 +332,8 @@
     <Compile Include="ViewModels\ISubViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\IHaveViewModel.cs" />
+    <Compile Include="AppServices\IAccountPaymentService.cs" />
+    <Compile Include="AppServices\Impl\AccountPaymentService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

@@ -102,16 +102,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					try
 					{
-                        using(this.Services().Message.ShowProgress())						
+						if(await _orderWorkflowService.ShouldGoToAccountNumberFlow())
 						{
-							var result = await _orderWorkflowService.ConfirmOrder();
-
-                            PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
-							ShowViewModel<BookingStatusViewModel>(new
+							var hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions();
+							if (!hasValidAccountNumber)
 							{
-								order = result.Item1.ToJson(),
-								orderStatus = result.Item2.ToJson()
-							});
+								var accountNumber = await this.Services().Message.ShowPromptDialog("Account Number required", "Please enter a valid account number", () => { return; });
+
+								hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions(accountNumber);
+								if(!hasValidAccountNumber)
+								{
+									this.Services().Message.ShowMessage("Error", "Invalid Account Number");
+									return;
+								}
+
+								await _orderWorkflowService.SetAccountNumber(accountNumber);
+							}
+								
+							ShowViewModel<InitializeOrderForAccountPaymentViewModel>();
+						}
+						else
+						{
+							using(this.Services().Message.ShowProgress())
+							{
+								var result = await _orderWorkflowService.ConfirmOrder();
+
+								PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
+								ShowViewModel<BookingStatusViewModel>(new
+								{
+									order = result.Item1.ToJson(),
+									orderStatus = result.Item2.ToJson()
+								});
+							}
 						}
 					}
 					catch(OrderCreationException e)
