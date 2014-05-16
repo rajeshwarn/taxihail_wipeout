@@ -46,12 +46,23 @@ namespace apcurium.MK.Booking.Common.Tests
                         : item.Key;
 
                     var propertyType = typeOfSettings.GetProperty(propertyName);
-                    var targetType = IsNullableType(propertyType.PropertyType)
-                        ? Nullable.GetUnderlyingType(propertyType.PropertyType)
-                        : propertyType.PropertyType;
+                    if (propertyType != null)
+                    {
+                        var targetType = IsNullableType(propertyType.PropertyType)
+                            ? Nullable.GetUnderlyingType(propertyType.PropertyType)
+                            : propertyType.PropertyType;
 
-                    var propertyVal = Convert.ChangeType(item.Value, targetType);
-                    propertyType.SetValue(Data, propertyVal);
+                        if (targetType.IsEnum)
+                        {
+                            var propertyVal = Enum.Parse(targetType, item.Value);
+                            propertyType.SetValue(Data, propertyVal);
+                        }
+                        else
+                        {
+                            var propertyVal = Convert.ChangeType(item.Value, targetType);
+                            propertyType.SetValue(Data, propertyVal);
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
@@ -117,6 +128,8 @@ namespace apcurium.MK.Booking.Common.Tests
         public void SetSetting(string key, string value)
         {
             _config[key] = value;
+            Data = new TaxiHailSetting();
+            SetSettingsValue(_config);
         }
 
         public TaxiHailSetting Data { get; private set; }

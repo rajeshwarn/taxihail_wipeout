@@ -344,10 +344,6 @@
       <Project>{F899012E-C6A6-4C49-8501-8DDEF592CCF1}</Project>
       <Name>MK.Booking.Api.Contract.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\MK.Booking.Google\MK.Booking.Google.Android.csproj">
-      <Project>{742B3C55-5630-4DCA-BBBD-035C313A4647}</Project>
-      <Name>MK.Booking.Google.Android</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Maps\MK.Booking.Maps.Android.csproj">
       <Project>{7ABA8DC0-BC56-48FA-826A-286DE83D6C75}</Project>
       <Name>MK.Booking.Maps.Android</Name>
@@ -355,6 +351,10 @@
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.Android.csproj">
+      <Project>{742B3C55-5630-4DCA-BBBD-035C313A4647}</Project>
+      <Name>MK.Booking.MapDataProvider.Android</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -366,9 +366,14 @@
       <LastGenOutput>Taxiworld.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings\Settings.json" />
-    <EmbeddedResource Include="TutorialContent\Tutorial.json" />
     <None Include="Localization\Thriev.resx" />
     <None Include="packages.config" />
+    <None Include="Localization\Master.ar.resx">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Localization\TaxiHail NYC.resx" />
+    <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
+    <None Include="TutorialContent\Tutorial-ar.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">

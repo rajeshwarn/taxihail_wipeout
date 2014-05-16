@@ -84,7 +84,7 @@
             <constraints>
                 <constraint firstItem="ZSi-EL-Atn" firstAttribute="top" secondItem="1" secondAttribute="top" id="2pK-Aj-LOL"/>
                 <constraint firstAttribute="bottom" secondItem="ZSi-EL-Atn" secondAttribute="bottom" id="AkF-a1-1ft"/>
-                <constraint firstItem="ZSi-EL-Atn" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="QBO-kE-9pW"/>
+                <constraint firstItem="ZSi-EL-Atn" firstAttribute="left" secondItem="1" secondAttribute="left" id="QBO-kE-9pW"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>

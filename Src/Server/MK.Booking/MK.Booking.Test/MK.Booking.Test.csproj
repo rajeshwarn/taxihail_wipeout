@@ -148,10 +148,6 @@
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
       <Name>Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\MK.Booking.Google\MK.Booking.Google.csproj">
-      <Project>{ad0bc4ad-6bac-4e02-8202-d7b3bf64d0f1}</Project>
-      <Name>MK.Booking.Google</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\MK.Booking.IBS\MK.Booking.IBS.csproj">
       <Project>{7B615EA9-4232-4FFB-B66C-AC7B833973C9}</Project>
       <Name>MK.Booking.IBS</Name>

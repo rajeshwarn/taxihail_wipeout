@@ -29,11 +29,13 @@
     <CustomCommands>
       <CustomCommands>
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.ar.resx&quot; -d=&quot;$(ProjectDir)/ar.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
       </CustomCommands>
     </CustomCommands>
     <MtouchUseSGen>True</MtouchUseSGen>
     <OptimizePNGs>false</OptimizePNGs>
     <MtouchExtraArgs>-time -time</MtouchExtraArgs>
+    <MtouchSdkVersion>7.0</MtouchSdkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -79,6 +81,7 @@
     <CustomCommands>
       <CustomCommands>
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.ar.resx&quot; -d=&quot;$(ProjectDir)/ar.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
@@ -215,9 +218,6 @@
     <Reference Include="Xamarin.Mobile">
       <HintPath>..\Components\xamarin.mobile-0.7.1\lib\ios\Xamarin.Mobile.dll</HintPath>
     </Reference>
-    <Reference Include="MonoTouch.FacebookConnect">
-      <HintPath>..\Components\facebookios-3.8.0.1\lib\ios\MonoTouch.FacebookConnect.dll</HintPath>
-    </Reference>
     <Reference Include="Cirrious.CrossCore.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoTouch\Cirrious.CrossCore.Touch.dll</HintPath>
     </Reference>
@@ -260,11 +260,14 @@
     <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Plugins.WebBrowser.Touch.dll</HintPath>
     </Reference>
-    <Reference Include="CardIO">
-      <HintPath>..\Libraries\Monotouch\CardIO.dll</HintPath>
-    </Reference>
     <Reference Include="Calabash">
       <HintPath>..\Libraries\Monotouch\Calabash.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoTouch.FacebookConnect">
+      <HintPath>..\Components\facebookios-3.14.1\lib\ios\MonoTouch.FacebookConnect.dll</HintPath>
+    </Reference>
+    <Reference Include="Card.IO.iOS">
+      <HintPath>..\Components\cardioios-3.7.0\lib\ios\Card.IO.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -518,6 +521,7 @@
       <DependentUpon>AddressPickerContainerView.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\ViewServicesExtensions.cs" />
+    <Compile Include="PlatformIntegration\AppleGeocoder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -568,6 +572,7 @@
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
     <Content Include="app%402x.png" />
+    <Content Include="ar.lproj\Localizable.strings" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
@@ -586,9 +591,9 @@
       <Project>{52A964D2-F9FE-47CD-9C50-781CCEC560ED}</Project>
       <Name>MK.Booking.Api.Client.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\MK.Booking.Google\MK.Booking.Google.iOS.csproj">
+    <ProjectReference Include="..\..\Server\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.iOS.csproj">
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
-      <Name>MK.Booking.Google.iOS</Name>
+      <Name>MK.Booking.MapDataProvider.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -779,7 +784,11 @@
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="facebookios">
-      <Version>3.8.0.1</Version>
+      <Version>3.14.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="cardioios">
+      <Version>3.7.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>

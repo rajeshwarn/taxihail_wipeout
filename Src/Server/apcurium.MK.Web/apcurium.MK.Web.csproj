@@ -482,13 +482,13 @@
       <Project>{1A931A36-D855-4A7A-AD0F-1B35D76582F3}</Project>
       <Name>MK.Booking.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MK.Booking.Google\MK.Booking.Google.csproj">
-      <Project>{AD0BC4AD-6BAC-4E02-8202-D7B3BF64D0F1}</Project>
-      <Name>MK.Booking.Google</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MK.Booking.IBS\MK.Booking.IBS.csproj">
       <Project>{7B615EA9-4232-4FFB-B66C-AC7B833973C9}</Project>
       <Name>MK.Booking.IBS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.csproj">
+      <Project>{ad0bc4ad-6bac-4e02-8202-d7b3bf64d0f1}</Project>
+      <Name>MK.Booking.MapDataProvider</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Maps\MK.Booking.Maps.csproj">
       <Project>{c41ea1b3-0e19-41ae-8efc-ae242532b248}</Project>
@@ -705,6 +705,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="mixins\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

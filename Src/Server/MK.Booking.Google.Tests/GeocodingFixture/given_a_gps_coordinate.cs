@@ -2,10 +2,10 @@
 
 using System.Linq;
 using apcurium.MK.Booking.Common.Tests;
-using apcurium.MK.Booking.Google;
-using apcurium.MK.Booking.Google.Impl;
 using apcurium.MK.Common.Diagnostic;
 using NUnit.Framework;
+using apcurium.MK.Booking.MapDataProvider;
+using apcurium.MK.Booking.MapDataProvider.Google;
 
 #endregion
 
@@ -17,7 +17,8 @@ namespace MK.Booking.Google.Tests.GeocodingFixture
         [SetUp]
         public void Setup()
         {
-            _sut = new MapsApiClient(new TestConfigurationManager(), new Logger());
+            //_sut = new MapsApiClient(new TestConfigurationManager(), new Logger());
+            _sut = new apcurium.MK.Booking.MapDataProvider.OpenStreetMap.MapsApiClient(new TestConfigurationManager(), new Logger());
         }
 
         private IMapsApiClient _sut;
@@ -26,7 +27,7 @@ namespace MK.Booking.Google.Tests.GeocodingFixture
         public void coordinate1_should_return_something()
         {
             var a = _sut.GeocodeLocation(38.9040692, -77.0575374);
-            Assert.IsTrue(a.Results.Any());
+            Assert.IsTrue(a.Any());
         }
     }
 }

@@ -2,24 +2,25 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using apcurium.MK.Booking.Google;
-using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Maps.Impl.Mappers;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Provider;
+using apcurium.MK.Booking.MapDataProvider.Resources;
+using apcurium.MK.Booking.MapDataProvider;
+using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 
 namespace apcurium.MK.Booking.Maps.Impl
 {
     public class Places : IPlaces
     {
-        private readonly IMapsApiClient _client;
+		private readonly IPlaceDataProvider _client;
         private readonly IAppSettings _appSettings;
         private readonly IPopularAddressProvider _popularAddressProvider;
 
-        public Places(IMapsApiClient client, IAppSettings appSettings,
+		public Places(IPlaceDataProvider client, IAppSettings appSettings,
             IPopularAddressProvider popularAddressProvider)
         {
             _client = client;
@@ -31,9 +32,7 @@ namespace apcurium.MK.Booking.Maps.Impl
         {
             var place = _client.GetPlaceDetail(referenceId);
 
-            var result = new GeoObjToAddressMapper().ConvertToAddress(place, name, true);
-
-            result.PlaceReference = referenceId;
+			var result = new GeoObjToAddressMapper().ConvertToAddress(place.Address, name, true);
 
             return result;
         }
@@ -65,7 +64,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                 popularAddresses = popularAddresses.ForEach(p => p.AddressType = "popular");
             }
 
-            IEnumerable<Place> googlePlaces;
+			IEnumerable<GeoPlace> googlePlaces;
 
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -99,7 +98,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             }
         }
 
-        private Address ConvertToAddress(Place place)
+		private Address ConvertToAddress(GeoPlace place)
         {
             var txtInfo = new CultureInfo("en-US", false).TextInfo;
 
@@ -113,11 +112,11 @@ namespace apcurium.MK.Booking.Maps.Impl
             var address = new Address
             {
                 Id = Guid.NewGuid(),
-                PlaceReference = place.Reference,
+				PlaceReference = place.Id,
                 FriendlyName = place.Name + displayPlaceType,
-                FullAddress = place.Formatted_Address.IsNullOrEmpty() ? place.Vicinity : place.Formatted_Address,
-                Latitude = place.Geometry.Location.Lat,
-                Longitude = place.Geometry.Location.Lng,
+				FullAddress = place.Address.FullAddress,
+				Latitude = place.Address.Latitude,
+				Longitude = place.Address.Longitude ,
                 AddressType = "place"
             };
 

@@ -31,14 +31,18 @@ namespace DeploymentServiceTools
 			client.BaseAddress = new Uri(ConfigurationManager.AppSettings ["CustomerPortalUrl"]);
 		}
 
-		public string CreateNewVersion(string companyKey, string versionNumber, string websiteUrl, string ipaFileName, FileStream ipaFile, string apkFileName, FileStream apkFile)
+		public string CreateNewVersion(string companyKey, string versionNumber, string websiteUrl, DeployInfo deployment)
 		{
 			versionNumber = versionNumber.Replace("[Bitbucket]", string.Empty).Replace(" ", string.Empty);
+
+
+
 
 			if (websiteUrl.Contains ("staging.taxihail.com")) {
 				versionNumber = versionNumber + ".staging";
 			}
 
+			 
 			var data = new
 			{
 				CompanyKey = companyKey,
@@ -50,17 +54,24 @@ namespace DeploymentServiceTools
 			{
 				multipartFormDataContent.Add(new StringContent(JsonConvert.SerializeObject(data)), "data");
 
-				if (!string.IsNullOrWhiteSpace (ipaFileName) && ipaFile != null) {
-					var ipaContent = new StreamContent(ipaFile);
+				if (deployment.iOSAdhocFileExist) {
+					var ipaContent = new StreamContent(deployment.GetiOSAdhocStream());
 					ipaContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-					ipaContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = ipaFileName };
+					ipaContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = deployment.iOSAdhocFileName };
 					multipartFormDataContent.Add(ipaContent);
 				}
 
-				if (!string.IsNullOrWhiteSpace (apkFileName) && apkFile != null) {
-					var apkContent = new StreamContent(apkFile);
+
+				if (deployment.iOSAppStoreFileExist) {
+					var ipaAppStoreContent = new StreamContent(deployment.GetiOSAppStoreStream());
+					ipaAppStoreContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+					ipaAppStoreContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = deployment.iOSAppStoreFileName };
+					multipartFormDataContent.Add(ipaAppStoreContent);
+				}
+				if (deployment.AndroidApkFileExist) {
+					var apkContent = new StreamContent(deployment.GetAndroidApkStream());
 					apkContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-					apkContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = apkFileName };
+					apkContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = deployment.AndroidApkFileName };
 					multipartFormDataContent.Add(apkContent);
 				}
 

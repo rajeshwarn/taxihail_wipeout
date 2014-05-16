@@ -1,12 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "iOS", "iOS", "{746228AE-71D1-4807-B52B-B5563266CA53}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Api.Client.iOS", "..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj", "{52A964D2-F9FE-47CD-9C50-781CCEC560ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Api.Contract.iOS", "..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.iOS.csproj", "{0C54E2DC-0852-4EED-A882-60B68FE41C8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Google.iOS", "..\Server\MK.Booking.Google\MK.Booking.Google.iOS.csproj", "{50A4C580-4D47-48CF-80A8-79FDF81D9845}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.MapDataProvider.iOS", "..\Server\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.iOS.csproj", "{50A4C580-4D47-48CF-80A8-79FDF81D9845}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Maps.iOS", "..\Server\MK.Booking.Maps\MK.Booking.Maps.iOS.csproj", "{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}"
 EndProject
@@ -24,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Common.Android", "..\Ser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Api.Contract.Android", "..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Android.csproj", "{F899012E-C6A6-4C49-8501-8DDEF592CCF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Google.Android", "..\Server\MK.Booking.Google\MK.Booking.Google.Android.csproj", "{742B3C55-5630-4DCA-BBBD-035C313A4647}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.MapDataProvider.Android", "..\Server\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.Android.csproj", "{742B3C55-5630-4DCA-BBBD-035C313A4647}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Maps.Android", "..\Server\MK.Booking.Maps\MK.Booking.Maps.Android.csproj", "{7ABA8DC0-BC56-48FA-826A-286DE83D6C75}"
 EndProject

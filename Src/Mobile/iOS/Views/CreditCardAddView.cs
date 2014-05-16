@@ -4,14 +4,14 @@ using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using CardIO;
+using Card.IO;
 using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class CreditCardAddView : BaseViewController<CreditCardAddViewModel>
     {
-        private CardIOPaymentViewController _cardScanner;
+		private Card.IO.PaymentViewController  _cardScanner;
 
         public CreditCardAddView () : base("CreditCardAddView", null)
         {
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, null);
 
-            if (CardIOPaymentViewController.CanReadCardWithCamera && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken))
+			if (PaymentViewController.CanReadCardWithCamera  && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken))
             {
                 FlatButtonStyle.Silver.ApplyTo(btnScanCard);
                 btnScanCard.SetTitle(Localize.GetValue("ScanCreditCard"), UIControlState.Normal);
@@ -121,15 +121,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {           
             if (_cardScanner == null)
             {
-                var cardScannerDelegate = new CardScannerDelegate(
-                    () => _cardScanner.DismissViewController(true, () => {}), 
-                    (cardInfo, _controller) =>
-                {
-                    _controller.DismissViewController(true, () => {});
+				var cardScannerDelegate = new  PaymentViewControllerDelegate ();
+				cardScannerDelegate.OnScanCompleted+= (PaymentViewController viewController, CreditCardInfo cardInfo) => 
+				{
+					_cardScanner.DismissViewController(true, () => {});
+					if (cardInfo != null )
+					{
                     PopulateCreditCardName(cardInfo);
-                });
+					}
+                };
 
-                _cardScanner = new CardIOPaymentViewController(cardScannerDelegate)
+				_cardScanner = new PaymentViewController(cardScannerDelegate)
                 {
                     GuideColor = this.View.BackgroundColor,
                     SuppressScanConfirmation = true,
@@ -143,9 +145,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             PresentViewController(_cardScanner, true, null);
         }
 
-        private void PopulateCreditCardName(CardIOCreditCardInfo info)
+		private void PopulateCreditCardName(CreditCardInfo  info)
         {
+			 
             txtCardNumber.Text = info.CardNumber;
+			txtCvv.Text = info.Cvv;
+
+			txtExpYear.Text = info.ExpiryYear.ToString ();
+			txtExpMonth.Text = info.ExpiryMonth.ToString ();
+
             ViewModel.CreditCardNumber = info.CardNumber;
             txtCvv.BecomeFirstResponder();
         }

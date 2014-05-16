@@ -48,9 +48,7 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="Mono.Http" />
-    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="System.Net.Http.Formatting">
       <HintPath>..\..\ConfigTool\Libraries\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
@@ -104,6 +102,7 @@
     <Compile Include="Services\DeploymentJobServiceClient.cs" />
     <Compile Include="WebEntities\CompanySetting.cs" />
     <Compile Include="Extensions\SettingsExtensions.cs" />
+    <Compile Include="DeployInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

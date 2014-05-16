@@ -3,14 +3,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using apcurium.MK.Booking.Google;
-using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Maps.Impl.Mappers;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Provider;
+using apcurium.MK.Booking.MapDataProvider;
+using apcurium.MK.Booking.MapDataProvider.Resources;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 
 #endregion
 
@@ -19,19 +21,17 @@ namespace apcurium.MK.Booking.Maps.Impl
     public class Geocoding : IGeocoding
     {
         private readonly IAppSettings _appSettings;
-        private readonly IMapsApiClient _mapApi;
+		private readonly IGeocoder  _mapApi;
+        private readonly ILogger _logger;
 
-        private readonly string[] _otherTypesAllowed =
-        {
-            "airport", "transit_station", "bus_station", "train_station",
-            "route", "postal_code", "street_address"
-        };
+        
 
         private readonly IPopularAddressProvider _popularAddressProvider;
 
-        public Geocoding(IMapsApiClient mapApi, IAppSettings appSettings,
-            IPopularAddressProvider popularAddressProvider)
+		public Geocoding(IGeocoder mapApi, IAppSettings appSettings,
+            IPopularAddressProvider popularAddressProvider, ILogger logger)
         {
+            _logger = logger;
             _mapApi = mapApi;
             _appSettings = appSettings;
             _popularAddressProvider = popularAddressProvider;
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
         public Address[] Search(string addressName, GeoResult geoResult = null)
         {
-            geoResult = geoResult ?? SearchUsingName(addressName, true);
+            
 
             var popularPlaces = new Address[0];
 
@@ -48,13 +48,34 @@ namespace apcurium.MK.Booking.Maps.Impl
                 popularPlaces = SearchPopularAddresses(addressName);
             }
 
-
-            if ((geoResult.Status == ResultStatus.OK) || (geoResult.Results.Count > 0))
+            if (geoResult == null)
             {
-                return popularPlaces.Concat(ConvertGeoResultToAddresses(geoResult, null, true)).ToArray();
+                var addresses = SearchUsingName(addressName, true);
+                if ( addresses == null )
+                {
+                    return popularPlaces;
+                }
+                else
+                {
+                    return popularPlaces.Concat(addresses.Select(a => new GeoObjToAddressMapper().ConvertToAddress(a, null, true))).ToArray();
+                }
+            }
+            else            
+            {
+				var addresses = new MapDataProvider.Google.GoogleApiClient(_appSettings, _logger).ConvertGeoResultToAddresses(geoResult);
+                 
+                if ( addresses == null )
+                {
+                    return popularPlaces;
+                }
+                else
+                {
+                    return popularPlaces.Concat(addresses.Select(a => new GeoObjToAddressMapper().ConvertToAddress(a, null, true))).ToArray();
+                }
+                
             }
 
-            return popularPlaces;
+            
         }
 
 
@@ -67,15 +88,23 @@ namespace apcurium.MK.Booking.Maps.Impl
                 addressesInRange = GetPopularAddressesInRange(new Position(latitude, longitude));
             }
 
-            geoResult = geoResult ?? _mapApi.GeocodeLocation(latitude, longitude);
-            if (geoResult.Status == ResultStatus.OK)
+            if (geoResult != null)
             {
-                return addressesInRange.Concat(ConvertGeoResultToAddresses(geoResult, null, false)).ToArray();
+				var addresses = new MapDataProvider.Google.GoogleApiClient( _appSettings, _logger ).ConvertGeoResultToAddresses(geoResult);
+                return addressesInRange.Concat(addresses.Select(a => new GeoObjToAddressMapper().ConvertToAddress(a, null, false))).ToArray();
             }
-            return addressesInRange;
+            else
+            {
+                var addresses = _mapApi.GeocodeLocation(latitude, longitude);
+                var rr = addresses.Select(r => new GeoObjToAddressMapper().ConvertToAddress(r, null, false));
+                return addressesInRange.Concat(rr).ToArray();
+
+            }
+            
+            
         }
 
-        private GeoResult SearchUsingName(string name, bool useFilter)
+        private GeoAddress[] SearchUsingName(string name, bool useFilter)
         {
             var filter = _appSettings.Data.SearchFilter;
             if (name != null)
@@ -121,23 +150,6 @@ namespace apcurium.MK.Booking.Maps.Impl
             return inRange.ToArray();
         }
 
-        private IEnumerable<Address> ConvertGeoResultToAddresses(GeoResult geoResult, string placeName, bool foundByName)
-        {
-            if ((geoResult.Status != ResultStatus.OK) || (geoResult.Results == null) || (geoResult.Results.Count == 0))
-            {
-                return new Address[0];
-            }
-
-            return geoResult.Results.Where(r => r.Formatted_address.HasValue() &&
-                                                r.Geometry != null && r.Geometry.Location != null &&
-// ReSharper disable CompareOfFloatsByEqualityOperator
-                                                r.Geometry.Location.Lng != 0 && r.Geometry.Location.Lat != 0 &&
-// ReSharper restore CompareOfFloatsByEqualityOperator
-                                                (r.AddressComponentTypes.Any(
-                                                    type => type == AddressComponentType.Street_address) ||
-                                                 (r.Types.Any(
-                                                     t => _otherTypesAllowed.Any(o => o.ToLower() == t.ToLower())))))
-                .Select(r => new GeoObjToAddressMapper().ConvertToAddress(r, placeName, foundByName)).ToArray();
-        }
+       
     }
 }

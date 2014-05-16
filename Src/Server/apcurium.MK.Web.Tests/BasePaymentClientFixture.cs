@@ -286,7 +286,7 @@ namespace apcurium.MK.Web.Tests
 
     public class FakeIbs : IIbsOrderService
     {
-        public void ConfirmExternalPayment(int orderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type,
+        public void ConfirmExternalPayment( Guid orderId, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type,
             string provider, string transactionId, string authorizationCode, string cardToken, int accountID, string name,
             string phone, string email, string os, string userAgent)
         {

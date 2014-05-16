@@ -29,7 +29,7 @@ namespace DatabaseInitializer
             new apcurium.MK.Booking.Module().Init(container);
             new apcurium.MK.Booking.IBS.Module().Init(container);
             new apcurium.MK.Booking.Api.Module().Init(container);
-            new apcurium.MK.Booking.Google.Module().Init(container);
+            new apcurium.MK.Booking.MapDataProvider.Module().Init(container);
             new apcurium.MK.Booking.Maps.Module().Init(container);
 
             RegisterEventHandlers(container);
