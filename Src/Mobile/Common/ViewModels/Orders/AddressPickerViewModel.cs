@@ -69,7 +69,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			var favoritePlaces = _accountService.GetFavoriteAddresses();
 			var historyPlaces = _accountService.GetHistoryAddresses();
 			var neabyPlaces = Task.Run(() => _placesService.SearchPlaces(null, _currentAddress.Latitude, _currentAddress.Longitude, null));
-
 			try
 			{
 				using(this.Services().Message.ShowProgressNonModal())

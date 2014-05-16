@@ -24,6 +24,8 @@ using Cirrious.MvvmCross.Dialog.Droid;
 using Cirrious.MvvmCross.ViewModels;
 using TinyIoC;
 using apcurium.MK.Booking.MapDataProvider;
+using apcurium.MK.Booking.MapDataProvider.Google;
+using Cirrious.CrossCore.Droid;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -69,7 +71,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             _container.Register<IAppSettings>(new AppSettingsService(_container.Resolve<ICacheService>(), _container.Resolve<ILogger>()));
 
-			_container.Register<IMapsApiClient, PlatformIntegration.AndroidMapApiClient >();
+			_container.Register<IGeocoder>( (c,p)=> new GoogleApiClient( c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())) );
+			_container.Register<IPlaceDataProvider, GoogleApiClient>();
+			_container.Register<IDirectionDataProvider, GoogleApiClient>();
+
 
 			InitializeSocialNetwork();
         }

@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
 
-			container.Register<IGeocoder, AppleGeocoder>();
+			container.Register<IGeocoder>( (c,p)=> new GoogleApiClient( c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AppleGeocoder()) );
 			container.Register<IPlaceDataProvider, GoogleApiClient>();
 			container.Register<IDirectionDataProvider, GoogleApiClient>();
 

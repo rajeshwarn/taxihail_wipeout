@@ -163,7 +163,16 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             _logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
 
             var result = client.Get<GeoResult>(resource);
-            return ConvertGeoResultToAddresses(result);
+
+			if ( (result.Status == ResultStatus.OVER_QUERY_LIMIT || result.Status == ResultStatus.REQUEST_DENIED) && (_fallbackGeocoder != null )) {
+				return _fallbackGeocoder.GeocodeAddress (address);
+			} else if (result.Status == ResultStatus.OK) {
+				return ConvertGeoResultToAddresses(result);
+			} else {
+				return new GeoAddress [0];
+			}
+
+            
            
         }
 
@@ -178,7 +187,13 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
             
             var result = client.Get<GeoResult>(resource);
-            return ConvertGeoResultToAddresses(result);
+			if ( (result.Status == ResultStatus.OVER_QUERY_LIMIT || result.Status == ResultStatus.REQUEST_DENIED) && (_fallbackGeocoder != null )) {
+				return _fallbackGeocoder.GeocodeLocation (latitude, longitude);
+			} else if (result.Status == ResultStatus.OK) {
+				return ConvertGeoResultToAddresses (result);
+			} else {
+				return new GeoAddress [0];
+			}
            
         }
 
@@ -189,8 +204,8 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 			return
 							new GeoPlace {
 				Id = place.Reference,
-				Name = GetNameFromDescription (place.Name),
-				Address = new GeoAddress { FullAddress = place.Formatted_Address, Latitude = place.Geometry.Location.Lat ,Longitude = place.Geometry.Location.Lng  },                                                       
+				Name =  place.Name,
+				Address = new GeoAddress { FullAddress = place.Formatted_Address ?? place.Vicinity, Latitude = place.Geometry.Location.Lat ,Longitude = place.Geometry.Location.Lng  },                                                       
 				Types = place.Types
 
 			};
