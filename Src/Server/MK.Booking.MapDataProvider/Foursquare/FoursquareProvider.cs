@@ -8,13 +8,14 @@ using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 
+
 namespace MK.Booking.MapDataProvider.Foursquare
 {
 	/// <summary>
 	/// Foursquare provider.
 	/// documentation : https://developer.foursquare.com/docs/venues/search
 	/// </summary>
-	public class FoursquareProvider : IMapsApiClient
+	public class FoursquareProvider : IPlaceDataProvider
 	{
 	    private readonly IAppSettings _settings;
 	    private readonly ILogger _logger;
@@ -31,7 +32,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 	    #region IMapsApiClient implementation
 
-		public Place[] GetNearbyPlaces (double? latitude, double? longitude, string languageCode, bool sensor, int radius, string pipedTypeList = null)
+		public GeoPlace[] GetNearbyPlaces (double? latitude, double? longitude, string languageCode, bool sensor, int radius, string pipedTypeList = null)
 		{
             var searchQueryString = GetBaseQueryString(latitude, longitude, radius);
 
@@ -47,7 +48,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 			return venues.Response.Venues.Select(ToPlace).ToArray();
 		}
 
-		public Place[] SearchPlaces (double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string countryCode)
+		public GeoPlace[] SearchPlaces (double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string countryCode)
 		{
             var searchQueryString = GetBaseQueryString(latitude, longitude, radius);
 
@@ -59,17 +60,17 @@ namespace MK.Booking.MapDataProvider.Foursquare
             return venues.Response.Venues.Select(ToPlace).ToArray();
 		}
 
-	    private Place ToPlace(Venue venue)
+		private GeoPlace ToPlace(Venue venue)
 	    {
 
-	        return new Place
+			return new GeoPlace
 	        {
                 Name = venue.name,
                 Types = venue.categories.Select(x => x.name).ToList(),
                 Id = venue.id,
-				Formatted_Address = venue.location.address,
-				Reference = venue.id,
-				Geometry = new Geometry {  Location = new apcurium.MK.Booking.MapDataProvider.Resources.Location{ Lat = venue.location.lat , Lng = venue.location.lng}  }
+				Address = new GeoAddress{ FullAddress  = venue.location.address, Latitude =  venue.location.lat , Longitude = venue.location.lng },
+
+
 	        };
 	    }
 
@@ -87,10 +88,10 @@ namespace MK.Booking.MapDataProvider.Foursquare
 	        return searchQueryString;
 	    }
 
-	    public GeoAddress GetPlaceDetail (string reference)
+		public GeoPlace GetPlaceDetail (string id)
 		{
             var client = new JsonServiceClient(ApiUrl);
-            var venue = client.Get<FoursquareVenuesResponse<VenueResponse>>(string.Format(VenueDetails, reference, _settings.Data.FoursquareClientId, _settings.Data.FoursquareClientSecret));
+			var venue = client.Get<FoursquareVenuesResponse<VenueResponse>>(string.Format(VenueDetails, id, _settings.Data.FoursquareClientId, _settings.Data.FoursquareClientSecret));
 	        var location = venue.Response.Venue.location;
 			string street = null;
 			string streetNumber = null;
@@ -98,7 +99,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 				streetNumber = location.address.Split (' ') [0];
 				street = location.address.Substring (location.address.IndexOf (' '), location.address.Length - location.address.IndexOf (' ')).Trim(); 
 			}
-	        return new GeoAddress
+			return new GeoPlace{ Id = id , Name = venue.Response.Venue.name, Address = new GeoAddress
             {
                 ZipCode = location.postalCode,
                 Latitude = location.lat,
@@ -109,26 +110,10 @@ namespace MK.Booking.MapDataProvider.Foursquare
 				Street = street,
 				StreetNumber = streetNumber,
 
-            };
+				}};
 		}
 
-		/** those methods are not supported by Foursquare **/
-
-		public DirectionResult GetDirections (double originLatitude, double originLongitude, double destinationLatitude, double destinationLongitude)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public GeoAddress[] GeocodeAddress (string address)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public GeoAddress[] GeocodeLocation (double latitude, double longitude)
-		{
-			throw new NotImplementedException ();
-		}
-
+	
 		#endregion
 	}
     

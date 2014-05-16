@@ -11,6 +11,7 @@ using apcurium.MK.Common.Provider;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 
 #endregion
 
@@ -18,16 +19,18 @@ namespace apcurium.MK.Booking.Maps.Impl
 {
     public class Addresses : IAddresses
     {
-        private readonly IMapsApiClient _client;
+		private readonly IGeocoder _geocoder;
         private readonly IAppSettings _appSettings;
         private readonly IPopularAddressProvider _popularAddressProvider;
         private readonly ILogger _logger;
+		private readonly IPlaceDataProvider _placeProvider;
 
-        public Addresses(IMapsApiClient client, IAppSettings appSettings,
+		public Addresses(IGeocoder geocoder, IPlaceDataProvider placeProvider, IAppSettings appSettings,
             IPopularAddressProvider popularAddressProvider, ILogger logger)
         {
+			_placeProvider = placeProvider;
             _logger = logger;
-            _client = client;
+			_geocoder = geocoder;
             _appSettings = appSettings;
             _popularAddressProvider = popularAddressProvider;
         }
@@ -57,7 +60,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             IEnumerable<Address> addressesGeocode;
             IEnumerable<Address> addressesPlaces = new Address[0];
 
-            var geoCodingService = new Geocoding(_client, _appSettings, _popularAddressProvider, _logger);
+            var geoCodingService = new Geocoding(_geocoder, _appSettings, _popularAddressProvider, _logger);
 
             var allResults = geoCodingService.Search(name, geoResult);
 
@@ -79,7 +82,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             int n;
             if (!int.TryParse(term + "", out n))
             {
-                var nearbyService = new Places(_client, _appSettings, _popularAddressProvider);
+				var nearbyService = new Places(_placeProvider, _appSettings, _popularAddressProvider);
                 addressesPlaces = nearbyService.SearchPlaces(name, latitude, longitude, null);
             }
 

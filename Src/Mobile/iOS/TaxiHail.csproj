@@ -7,8 +7,6 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -218,9 +216,6 @@
     <Reference Include="Xamarin.Mobile">
       <HintPath>..\Components\xamarin.mobile-0.7.1\lib\ios\Xamarin.Mobile.dll</HintPath>
     </Reference>
-    <Reference Include="MonoTouch.FacebookConnect">
-      <HintPath>..\Components\facebookios-3.8.0.1\lib\ios\MonoTouch.FacebookConnect.dll</HintPath>
-    </Reference>
     <Reference Include="Cirrious.CrossCore.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoTouch\Cirrious.CrossCore.Touch.dll</HintPath>
     </Reference>
@@ -263,11 +258,14 @@
     <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Plugins.WebBrowser.Touch.dll</HintPath>
     </Reference>
-    <Reference Include="CardIO">
-      <HintPath>..\Libraries\Monotouch\CardIO.dll</HintPath>
-    </Reference>
     <Reference Include="Calabash">
       <HintPath>..\Libraries\Monotouch\Calabash.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoTouch.FacebookConnect">
+      <HintPath>..\Components\facebookios-3.14.1\lib\ios\MonoTouch.FacebookConnect.dll</HintPath>
+    </Reference>
+    <Reference Include="Card.IO.iOS">
+      <HintPath>..\Components\cardioios-3.7.0\lib\ios\Card.IO.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -521,7 +519,7 @@
       <DependentUpon>AddressPickerContainerView.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\ViewServicesExtensions.cs" />
-    <Compile Include="PlatformIntegration\AppleMapApiClient.cs" />
+    <Compile Include="PlatformIntegration\AppleGeocoder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -784,7 +782,13 @@
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="facebookios">
-      <Version>3.8.0.1</Version>
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>3.14.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="cardioios">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>3.7.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>

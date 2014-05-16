@@ -24,6 +24,7 @@ using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Dialog.Touch;
 using apcurium.MK.Booking.MapDataProvider;
+using apcurium.MK.Booking.MapDataProvider.Google;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -83,7 +84,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<IPushNotificationService, PushNotificationService>();
 
             container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
-			container.Register<IMapsApiClient, AppleMapApiClient>();
+
+
+
+			container.Register<IGeocoder, AppleGeocoder>();
+			container.Register<IPlaceDataProvider, GoogleApiClient>();
+			container.Register<IDirectionDataProvider, GoogleApiClient>();
 
             InitializeSocialNetwork();
 
