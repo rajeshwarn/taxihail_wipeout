@@ -8,7 +8,7 @@ namespace MK.Booking.Google.Tests.PlacesFixture
     {
         protected const double Latitude = 45.5062;
         protected const double Longitude = -73.5726;
-        protected IMapsApiClient Sut;
+        protected IPlaceDataProvider Sut;
 
         [Test]
         public void when_searching_nearby_places()

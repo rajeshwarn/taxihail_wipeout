@@ -32,7 +32,7 @@ namespace MK.Booking.Google.Tests.Foursquare
         {
             var geoAddress = Sut.GetPlaceDetail("4ae4d07df964a520669e21e3");
 
-            Assert.That(geoAddress.ZipCode, Is.EqualTo("H2X 1X7"));
+            Assert.That(geoAddress.Address.ZipCode, Is.EqualTo("H2X 1X7"));
         }
        
     }
