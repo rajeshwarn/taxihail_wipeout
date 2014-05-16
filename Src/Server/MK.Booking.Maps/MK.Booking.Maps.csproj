@@ -69,9 +69,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MK.Booking.Google\MK.Booking.Google.csproj">
+    <ProjectReference Include="..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.csproj">
       <Project>{ad0bc4ad-6bac-4e02-8202-d7b3bf64d0f1}</Project>
-      <Name>MK.Booking.Google</Name>
+      <Name>MK.Booking.MapDataProvider</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Common\MK.Common.csproj">
       <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>

@@ -138,6 +138,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     CustomerReferenceNumber = customerReferenceNumber,
                     DriverId = driverId,
                     EmployeeId = employeeId,
+                    ShiftUuid = orderDetail.Id.ToString(),
                     Fare =  (int) (request.MeterAmount*100),
                     Tip = (int) (request.TipAmount*100),
                     TripId = tripId,
@@ -145,6 +146,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     Extras = 0,
                     Surcharge = 0,
                     Tax = 0,
+                    
                     Tolls = 0
                 };
 
@@ -179,7 +181,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     //send information to IBS
                     try
                     {
-                        _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value,
+                        _ibs.ConfirmExternalPayment(orderDetail.Id,                            
+                            orderDetail.IBSOrderId.Value,
                             Convert.ToDecimal(request.Amount),
                             Convert.ToDecimal(request.TipAmount),
                             Convert.ToDecimal(request.MeterAmount),

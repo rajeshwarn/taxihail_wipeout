@@ -1,7 +1,9 @@
 ﻿#region
 
-using apcurium.MK.Booking.Google.Resources;
+
+using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 
 #endregion
 

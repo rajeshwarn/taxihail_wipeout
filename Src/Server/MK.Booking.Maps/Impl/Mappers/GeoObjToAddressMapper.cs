@@ -2,9 +2,9 @@
 
 using System;
 using System.Linq;
-using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.MapDataProvider.Resources;
 
 #endregion
 
@@ -12,42 +12,29 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
 {
     public class GeoObjToAddressMapper
     {
-        public Address ConvertToAddress(GeoObj geoCodeResult, string placeName, bool foundByName)
+        public Address ConvertToAddress(GeoAddress geoAddress , string placeName, bool foundByName)
         {
             var address = new Address
             {
 				FriendlyName = placeName,
-                FullAddress = geoCodeResult.Formatted_address,
+                FullAddress = geoAddress.FullAddress,
                 Id = Guid.NewGuid(),
-                Latitude = geoCodeResult.Geometry.Location.Lat,
-                Longitude = geoCodeResult.Geometry.Location.Lng
+                Latitude = geoAddress.Latitude,
+                Longitude = geoAddress.Longitude,
+                StreetNumber = geoAddress.StreetNumber,
+                Street = geoAddress.Street,
+                ZipCode = geoAddress.ZipCode,
+                City = geoAddress.City,
+                State = geoAddress.State, 
+
             };
-
-            geoCodeResult.Address_components.FirstOrDefault(
-                x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Street_number))
-                .Maybe(x => address.StreetNumber = x.Long_name);
-            var component = (from c in geoCodeResult.Address_components
-                where
-                    (c.AddressComponentTypes.Any(
-                        x => x == AddressComponentType.Route || x == AddressComponentType.Street_address) &&
-                     !string.IsNullOrEmpty(c.Long_name))
-                select c).FirstOrDefault();
-            component.Maybe(c => address.Street = c.Long_name);
-            geoCodeResult.Address_components.FirstOrDefault(
-                x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Postal_code))
-                .Maybe(x => address.ZipCode = x.Long_name);
-            geoCodeResult.Address_components.FirstOrDefault(
-                x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Locality))
-                .Maybe(x => address.City = x.Long_name);
-            geoCodeResult.Address_components.FirstOrDefault(
-                x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Administrative_area_level_1))
-                .Maybe(x => address.State = x.Short_name);
-
+                                    
             address.AddressType = "postal";
             address.StreetNumber = address.StreetNumber ?? "";
 
-            var isRange = !foundByName && geoCodeResult.Geometry.Location_type == "RANGE_INTERPOLATED";
-                //indicates that the returned result reflects an approximation (usually on a road) interpolated between two precise points (such as intersections). Interpolated results are generally returned when rooftop geocodes are unavailable for a street address.
+            var isRange = !foundByName && geoAddress.LocationType == "RANGE_INTERPOLATED";
+            
+            //indicates that the returned result reflects an approximation (usually on a road) interpolated between two precise points (such as intersections). Interpolated results are generally returned when rooftop geocodes are unavailable for a street address.
 
             //Mega patch for Four Twos!!! When you search for 2107 Utopia Pkwy, google returns 21-7.  
             //If the search was done by name ( foundByName == true ) we assume that it's an address not a range.  

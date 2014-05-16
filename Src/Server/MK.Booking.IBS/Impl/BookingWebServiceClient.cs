@@ -172,7 +172,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return success;
         }
 
-        public bool ConfirmExternalPayment(int orderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
+        public bool ConfirmExternalPayment(Guid orderID, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
            string authorizationCode, string cardToken, int accountID, string name, string phone, string email, string os, string userAgent)
         {
             var success = false;
@@ -180,8 +180,8 @@ namespace apcurium.MK.Booking.IBS.Impl
             UseService(service =>
                {
                    int result = 0;
-                   result  = service.SaveExtrPayment_2(UserNameApp, PasswordApp, orderId, transactionId, authorizationCode, cardToken, type, provider, 0, 0, 0, 0,
-                    ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name, CleanPhone(phone), email, os, userAgent);
+                   result = service.SaveExtrPayment_2(UserNameApp, PasswordApp, ibsOrderId, transactionId, authorizationCode, cardToken, type, provider, 0, 0, 0, 0,
+                    ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name, CleanPhone(phone), email, os, userAgent, orderID.ToString());
                    success = result == 0;
                    
                    //*********************************Keep this code.  MK is testing this method as soon as it's ready, 

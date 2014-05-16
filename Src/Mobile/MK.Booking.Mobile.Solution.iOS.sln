@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Api.Client.iOS",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Api.Contract.iOS", "..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.iOS.csproj", "{0C54E2DC-0852-4EED-A882-60B68FE41C8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Google.iOS", "..\Server\MK.Booking.Google\MK.Booking.Google.iOS.csproj", "{50A4C580-4D47-48CF-80A8-79FDF81D9845}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.MapDataProvider.iOS", "..\Server\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.iOS.csproj", "{50A4C580-4D47-48CF-80A8-79FDF81D9845}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Maps.iOS", "..\Server\MK.Booking.Maps\MK.Booking.Maps.iOS.csproj", "{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}"
 EndProject

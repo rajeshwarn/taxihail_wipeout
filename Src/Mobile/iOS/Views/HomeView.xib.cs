@@ -1,10 +1,13 @@
+using System.Linq;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using MonoTouch.CoreLocation;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.MapDataProvider.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -113,8 +116,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
+	
         void ChangeState(HomeViewModelPresentationHint hint)
         {
+
+
+
             if (hint.State == HomeViewModelState.PickDate)
             {
                 // Order Options: Visible
@@ -138,6 +145,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         constraintOrderReviewBottomSpace.Constant = -65;
                         constraintOrderOptionsTopSpace.Constant = 22;
                         constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
+
                         homeView.LayoutIfNeeded();  
                         _datePicker.Hide();                                            
                     }, () =>

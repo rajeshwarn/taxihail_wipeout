@@ -108,9 +108,9 @@ namespace MK.DeploymentService.Mobile
 					BuildMobile (sourceDirectory);
 
 					UpdateJob ("Deploy");
-					Deploy (sourceDirectory, _job.Company, releaseiOSAdHocDir, releaseiOSAppStoreDir, releaseAndroidDir, releaseCallboxAndroidDir);
+					var deploymentInfo = Deploy (sourceDirectory, _job.Company, releaseiOSAdHocDir, releaseiOSAppStoreDir, releaseAndroidDir, releaseCallboxAndroidDir);
 
-					CreateNewVersionInCustomerPortal(releaseiOSAdHocDir, releaseAndroidDir);
+					CreateNewVersionInCustomerPortal(deploymentInfo);
 					UpdateJob ("Done", JobStatus.Success);
 
 
@@ -126,26 +126,26 @@ namespace MK.DeploymentService.Mobile
 		}
 
 
-		private void CreateNewVersionInCustomerPortal(string ipaAdHocPath, string apkPath)
+		private void CreateNewVersionInCustomerPortal(DeployInfo deployment)
 		{
 			UpdateJob("Creating new version in Customer Portal");
 
-			var ipaAdHocFile = GetiOSAdHocFile(ipaAdHocPath);
-			var ipaAdHocFileName = ipaAdHocFile != null ? new FileInfo(ipaAdHocFile).Name : null;
-            var fsIOs = ipaAdHocFile != null ? File.OpenRead(ipaAdHocFile) : null;
-
-			var apkFile = GetAndroidFile(apkPath);
-            var apkFileName = apkFile != null ? new FileInfo(apkFile).Name : null;
-            var fsAndroid = apkFile != null ? File.OpenRead(apkFile) : null;
 
 		    var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, 
                                                                         _job.Revision.Tag, 
-                                                                        _job.ServerUrl, 
-                                                                        ipaAdHocFileName, 
-                                                                        fsIOs, 
-                                                                        apkFileName, 
-                                                                        fsAndroid);
+																		_job.ServerUrl, 
+																		deployment);
 			UpdateJob (message);
+		}
+
+		void DeleteTempAppStoreFile (string ipaPath)
+		{
+			if (Directory.Exists (ipaPath)) {
+				var file =  Directory.EnumerateFiles(ipaPath, "*appstore.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+					File.Delete (file);
+
+			}
+
 		}
 
 		private async void DownloadAndInstallProfileIfNecessary()
@@ -166,14 +166,27 @@ namespace MK.DeploymentService.Mobile
 					return;
 				}
 
-				UpdateJob("Downloading/installing provisioning profile");
-				var message = await _customerPortalRepository.DownloadProfile (
-					_job.Company.AppleAppStoreCredentials.Username, 
-					_job.Company.AppleAppStoreCredentials.Password,
-					_job.Company.AppleAppStoreCredentials.Team,
-					appId,
-					_job.IosAdhoc);
-				UpdateJob (message);
+				if (_job.IosAdhoc) {
+					UpdateJob ("Downloading/installing Adhoc provisioning profile");
+					var message = await _customerPortalRepository.DownloadProfile (
+						             _job.Company.AppleAppStoreCredentials.Username, 
+						             _job.Company.AppleAppStoreCredentials.Password,
+						             _job.Company.AppleAppStoreCredentials.Team,
+						             appId,
+									true);
+					UpdateJob (message);
+				}
+
+				if (_job.IosAppStore) {
+					UpdateJob ("Downloading/installing AppStore provisioning profile");
+					var message = await _customerPortalRepository.DownloadProfile (
+						_job.Company.AppleAppStoreCredentials.Username, 
+						_job.Company.AppleAppStoreCredentials.Password,
+						_job.Company.AppleAppStoreCredentials.Team,
+						appId, false
+						);
+					UpdateJob (message);
+				}
 			}
 		}
 
@@ -198,24 +211,20 @@ namespace MK.DeploymentService.Mobile
 			return null;
 		}
 
-		private string GetiOSAdHocFile(string ipaAdHocPath)
+		private string GetiOSFile(string ipaPath)
 		{
-			if (Directory.Exists (ipaAdHocPath)) {
-				return Directory.EnumerateFiles(ipaAdHocPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+					if (Directory.Exists (ipaPath)) {
+						return Directory.EnumerateFiles(ipaPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
 			}
 			return null;
 		}
 
-		private string GetiOSAppStoreFile(string ipaAppStorePath)
-		{
-			if (Directory.Exists (ipaAppStorePath)) {
-				return Directory.EnumerateFiles(ipaAppStorePath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
-			}
-			return null;
-		}
+		
 
-		void Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox)
+		DeployInfo Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox)
 		{
+
+			var result = new DeployInfo ();
 			if (_job.Android || _job.CallBox || _job.IosAdhoc || _job.IosAppStore) {
 				string targetDirWithoutFileName = Path.Combine (System.Configuration.ConfigurationManager.AppSettings ["DeployDir"], 
 					company.CompanyKey,
@@ -224,7 +233,7 @@ namespace MK.DeploymentService.Mobile
 					Directory.CreateDirectory (targetDirWithoutFileName);
 				}
 
-				//CopySettingsFileToOutputDir (GetSettingsFilePath (sourceDirectory, company.CompanyKey), Path.Combine (targetDirWithoutFileName, "Settings.txt"));
+				result.RootPath = targetDirWithoutFileName;
 
 				if (_job.Android) {
 					_logger.DebugFormat ("Copying Apk");
@@ -236,6 +245,9 @@ namespace MK.DeploymentService.Mobile
 						if (File.Exists (targetDir))
 							File.Delete (targetDir);
 						File.Copy (apkFile, targetDir);
+
+						result.AndroidApkFileName = fileInfo.Name;
+
 					} else {
 						throw new Exception ("Can't find the APK file in the release dir");
 					}
@@ -250,6 +262,7 @@ namespace MK.DeploymentService.Mobile
 						if (File.Exists (targetDir))
 							File.Delete (targetDir);
 						File.Copy (apkFile, targetDir);
+						result.CallboxApkFileName = fileInfo.Name;
 					} else {
 						throw new Exception ("Can't find the CallBox APK file in the release dir");
 					}
@@ -257,18 +270,16 @@ namespace MK.DeploymentService.Mobile
 
 				if (_job.IosAdhoc) {
 					_logger.DebugFormat ("Uploading and copying IPA AdHoc");
-					var ipaFile = GetiOSAdHocFile(ipaAdHocPath);
+					var ipaFile = GetiOSFile(ipaAdHocPath);
 					if (ipaFile != null) {
 
-//						Task.Factory.StartNew (() => {
-//							var fileUplaoder = new FileUploader ();
-//							fileUplaoder.Upload (ipaFile);
-//						});
 						var fileInfo = new FileInfo (ipaFile); 
 						var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
 						if (File.Exists (targetDir))
 							File.Delete (targetDir);
 						File.Copy (ipaFile, targetDir);
+						result.iOSAdhocFileName = fileInfo.Name;
+
 					} else {
 						throw new Exception ("Can't find the IPA file in the AdHoc dir");
 					}
@@ -276,7 +287,7 @@ namespace MK.DeploymentService.Mobile
 
 				if (_job.IosAppStore) {
 					_logger.DebugFormat ("Uploading and copying IPA AppStore");
-					var ipaFile = GetiOSAppStoreFile(ipaAppStorePath);
+					var ipaFile = GetiOSFile(ipaAppStorePath);
 					if (ipaFile != null) {
 
 						var fileInfo = new FileInfo (ipaFile); 
@@ -285,11 +296,14 @@ namespace MK.DeploymentService.Mobile
 						if (File.Exists (targetDir))
 							File.Delete (targetDir);
 						File.Copy (ipaFile, targetDir);
+						result.iOSAppStoreFileName = newName;
 					} else {
 						throw new Exception ("Can't find the IPA file in the AppStore dir");
 					}
 				}
 			}
+
+			return result;
 		}
 
 		void Customize (string sourceDirectory, DeploymentJob job)

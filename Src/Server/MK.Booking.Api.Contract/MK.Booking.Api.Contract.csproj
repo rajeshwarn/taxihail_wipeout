@@ -178,9 +178,9 @@
     <Compile Include="Security\AuthorizationRequiredAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MK.Booking.Google\MK.Booking.Google.csproj">
-      <Project>{AD0BC4AD-6BAC-4E02-8202-D7B3BF64D0F1}</Project>
-      <Name>MK.Booking.Google</Name>
+    <ProjectReference Include="..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.csproj">
+      <Project>{ad0bc4ad-6bac-4e02-8202-d7b3bf64d0f1}</Project>
+      <Name>MK.Booking.MapDataProvider</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking\MK.Booking.csproj">
       <Project>{baf90740-9220-4bb0-b857-1e5927e464e9}</Project>
