@@ -24,6 +24,7 @@ using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.MapDataProvider.Resources;
+using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {

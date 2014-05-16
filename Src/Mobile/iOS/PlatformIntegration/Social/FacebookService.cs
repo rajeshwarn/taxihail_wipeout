@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 		public Task<FacebookUserInfo> GetUserInfo()
 		{
 			var tcs = new TaskCompletionSource<FacebookUserInfo>();
-			FBRequestConnection.StartForMe((connection, result, error) =>
+			FBRequestConnection.GetMe((connection, result, error) =>
 			{
 					if(error == null)
 					{
