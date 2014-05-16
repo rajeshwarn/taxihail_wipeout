@@ -73,6 +73,7 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<IVehicleService, VehicleService>();
 			_container.Register<ITutorialService, TutorialService>();
 			_container.Register<ITermsAndConditionsService, TermsAndConditionsService>();
+			_container.Register<IAccountPaymentService, AccountPaymentService>();
 
 			_container.Register<IGeolocService, GeolocService>();
 			_container.Register<IGoogleService, GoogleService>();
