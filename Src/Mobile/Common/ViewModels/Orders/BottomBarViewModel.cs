@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions(accountNumber);
 								if(!hasValidAccountNumber)
 								{
-									this.Services().Message.ShowMessage("Error", "Invalid Account Number");
+									await this.Services().Message.ShowMessage("Error", "Invalid Account Number");
 									return;
 								}
 

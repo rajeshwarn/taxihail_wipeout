@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 if (a.Content == positiveButtonTitle && positiveAction != null)
                 {
-					positiveAction();Context
+					positiveAction();
                 }
                 else if (a.Content == negativeButtonTitle && negativeAction != null)
                 {
@@ -300,12 +300,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			alert.SetMessage(message);
 
 			// Set an EditText view to get user input 
-			var input = new EditText(this);
+			var input = new EditText(Context);
 			alert.SetView(input);
 
 			alert.SetPositiveButton(Resource.String.OkButtonText, (sender, e) => 
 			{  
-				var text = input.Text;
+				var value = input.Text;
 				tcs.TrySetResult(value);
 			});
 
