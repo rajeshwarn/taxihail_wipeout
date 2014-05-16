@@ -93,7 +93,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 			private set
 			{
-                _showDestination = value;
+				_showDestination = value && !Settings.HideDestination;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => VehicleAndEstimateBoxIsVisible);
 			}
