@@ -32,6 +32,7 @@
                 android:minWidth="55dip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                local:MvxBind="Visibility Settings.HideDestination, Converter=InvertedVisibility"
                 android:layout_gravity="left|center">
                 <ImageView
                     android:id="@+id/btnEstimate"

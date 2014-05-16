@@ -76,6 +76,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(btnEstimate)
                 .For(v => v.Selected)
                 .To(vm => vm.EstimateSelected);
+			set.Bind(btnEstimate)
+				.For(v => v.Hidden)
+				.To(vm => vm.Settings.HideDestination);
 
             set.Bind(btnBook)
                 .For(v => v.Command)
@@ -84,7 +87,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(btnBookLater)
                 .For(v => v.Command)
                 .To(vm => vm.BookLater);
-
             set.Bind(btnBookLater)
                 .For(v => v.Hidden)
                 .To(vm => vm.Settings.DisableFutureBooking);
