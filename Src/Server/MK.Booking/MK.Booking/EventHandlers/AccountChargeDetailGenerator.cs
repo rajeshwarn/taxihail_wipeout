@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers
@@ -24,11 +27,18 @@ namespace apcurium.MK.Booking.EventHandlers
                 var accountChargeDetail = context.Find<AccountChargeDetail>(@event.AccountChargeId);
                 if (accountChargeDetail == null)
                 {
-                    accountChargeDetail = new AccountChargeDetail();
+                    accountChargeDetail = new AccountChargeDetail {Id = @event.AccountChargeId};
                 }
                 accountChargeDetail.Number = @event.Number;
                 accountChargeDetail.Name = @event.Name;
-                accountChargeDetail.Questions = @event.Questions;
+                accountChargeDetail.Questions.Clear();
+                context.Save(accountChargeDetail);
+
+                accountChargeDetail.Questions.AddRange(@event.Questions);
+                foreach (var question in accountChargeDetail.Questions)
+                {
+                    question.AccountId = accountChargeDetail.Id;
+                }
                 context.Save(accountChargeDetail);
             }
         }

@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string Number { get; set; }
 
-        public virtual ICollection<AccountChargeQuestion> Questions { get; set; }
+        public virtual IList<AccountChargeQuestion> Questions { get; set; }
 
     }
 }

@@ -263,5 +263,52 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(RuleType.Default, evt.Type);
             Assert.AreEqual("Due to...", evt.Message);
         }
+
+        [Test]
+        public void when_adding_accountcharge_successfully()
+        {
+            var addUpdateAccountCharge = new AddUpdateAccountCharge
+            {
+                CompanyId = _companyId,
+                AccountChargeId = Guid.NewGuid(),
+                Number = "number",
+                Name = "VIP",
+                Questions = new []
+                {
+                    new AccountChargeQuestion
+                    {
+                        Answer = "answer",
+                        Id = Guid.NewGuid(),
+                        Question = "question"
+                    }
+                }
+            };
+            _sut.When(addUpdateAccountCharge);
+
+            var evt = _sut.ThenHasSingle<AccountChargeAddedUpdated>();
+            Assert.AreEqual(_companyId, evt.SourceId);
+            Assert.AreEqual(addUpdateAccountCharge.Name, evt.Name);
+            Assert.AreEqual(addUpdateAccountCharge.Number, evt.Number);
+            Assert.AreEqual(addUpdateAccountCharge.AccountChargeId, evt.AccountChargeId);
+            Assert.AreEqual(addUpdateAccountCharge.Questions[0].Question, evt.Questions[0].Question);
+            Assert.AreEqual(addUpdateAccountCharge.Questions[0].Answer, evt.Questions[0].Answer);
+
+
+        }
+
+        [Test]
+        public void when_deleting_accountcharge_successfully()
+        {
+            var deleteAccountCharge = new DeleteAccountCharge
+            {
+                CompanyId = _companyId,
+                AccountChargeId = Guid.NewGuid()
+            };
+            _sut.When(deleteAccountCharge);
+
+            var evt = _sut.ThenHasSingle<AccountChargeDeleted>();
+            Assert.AreEqual(_companyId, evt.SourceId);
+            Assert.AreEqual(deleteAccountCharge.AccountChargeId, evt.AccountChargeId);
+        }
     }
 }
