@@ -7,6 +7,8 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -258,11 +260,11 @@
     <Reference Include="MonoTouch.FacebookConnect">
       <HintPath>..\Components\facebookios-3.14.1\lib\ios\MonoTouch.FacebookConnect.dll</HintPath>
     </Reference>
-    <Reference Include="Card.IO.iOS">
-      <HintPath>..\Components\cardioios-3.7.0\lib\ios\Card.IO.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="GoogleAnalytics.iOS">
       <HintPath>..\Components\googleanalytics-3.0.3.4\lib\ios\GoogleAnalytics.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Card.IO.iOS">
+      <HintPath>..\Libraries\Monotouch\Card.IO.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -778,12 +780,7 @@
       <Version>3.14.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
-    <XamarinComponentReference Include="cardioios">
-      <Version>3.7.0</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="googleanalytics">
-      <InstallationInProgress>True</InstallationInProgress>
       <Version>3.0.3.4</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
