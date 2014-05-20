@@ -520,6 +520,10 @@
     </Compile>
     <Compile Include="Extensions\ViewServicesExtensions.cs" />
     <Compile Include="PlatformIntegration\AppleMapApiClient.cs" />
+    <Compile Include="Views\Order\InitializeOrderForAccountPaymentView.cs" />
+    <Compile Include="Views\Order\InitializeOrderForAccountPaymentView.designer.cs">
+      <DependentUpon>InitializeOrderForAccountPaymentView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -566,6 +570,7 @@
     <InterfaceDefinition Include="Views\Order\OrderEditView_Thriev.xib" />
     <InterfaceDefinition Include="Views\UpdatedTermsAndConditionsView.xib" />
     <InterfaceDefinition Include="Views\AddressPickerContainerView.xib" />
+    <InterfaceDefinition Include="Views\Order\InitializeOrderForAccountPaymentView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

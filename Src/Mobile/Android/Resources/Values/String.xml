@@ -478,7 +478,7 @@
   <string name="PaymentErrorMessage">Details: {0}</string>
   <string name="RideSettingsAccountNumber">Account Number</string>
   <string name="Order">Order</string>
-  <string name="View_InitializeOrderForAccountPayment">Please answer these questions to continue</string>
+  <string name="View_InitializeOrderForAccountPayment">Please answer these questions</string>
   <string name="AccountPaymentNumberRequiredTitle">Account Number required</string>
   <string name="Error_AccountPaymentTitle">Error</string>
   <string name="Error_AccountPaymentMessage">Invalid account number</string>

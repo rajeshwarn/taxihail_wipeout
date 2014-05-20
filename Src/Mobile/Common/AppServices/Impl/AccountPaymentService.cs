@@ -13,14 +13,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			var questions = new List<AccountChargeQuestion> ();
 
-			questions.Add(new AccountChargeQuestion { Question = "Question 1" });
-			questions.Add(new AccountChargeQuestion { Question = "Question 2" });
-			questions.Add(new AccountChargeQuestion { Question = "Question 3" });
+			questions.Add(new AccountChargeQuestion { Question = "What?" });
+			questions.Add(new AccountChargeQuestion { Question = "Who?" });
+			questions.Add(new AccountChargeQuestion { Question = "Where?" });
 			questions.Add(new AccountChargeQuestion { Question = "" });
-			questions.Add(new AccountChargeQuestion { Question = "Question 5" });
+			questions.Add(new AccountChargeQuestion { Question = "When?" });
 			questions.Add(new AccountChargeQuestion { Question = "" });
-			questions.Add(new AccountChargeQuestion { Question = "Question 7" });
-			questions.Add(new AccountChargeQuestion { Question = "Question 8" });
+			questions.Add(new AccountChargeQuestion { Question = "Pow?" });
+			questions.Add(new AccountChargeQuestion { Question = "Profit?" });
 
 			tcs.TrySetResult (questions.ToArray ());
 
