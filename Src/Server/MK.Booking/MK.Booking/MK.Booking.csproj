@@ -140,6 +140,7 @@
     <Compile Include="PushNotifications\Impl\PushNotificationService.cs" />
     <Compile Include="PushNotifications\IPushNotificationService.cs" />
     <Compile Include="ReadModel\AccountAddress.cs" />
+    <Compile Include="ReadModel\AccountChargeDetail.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
     <Compile Include="ReadModel\CompanyDetail.cs" />

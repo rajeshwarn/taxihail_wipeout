@@ -86,6 +86,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entity\AccountPaymentQuestion.cs" />
     <Compile Include="AppConstants.cs" />
     <Compile Include="Caching\CacheItem.cs" />
     <Compile Include="Caching\CachingDbContext.cs" />

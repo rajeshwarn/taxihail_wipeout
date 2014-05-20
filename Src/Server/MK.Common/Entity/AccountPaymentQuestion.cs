@@ -1,11 +1,14 @@
 using System;
-using apcurium.MK.Common.Entity;
+using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Common.Extensions;
 
-namespace apcurium.MK.Booking.Api.Contract.Resources
+namespace apcurium.MK.Common.Entity
 {
-	public class AccountPaymentQuestion : BaseDto
+	public class AccountChargeQuestion
 	{
+        [Key]
+        public Guid Id { get; set; }
+
 		public string Question { get; set; }
 
 		public string Answer { get; set; }
