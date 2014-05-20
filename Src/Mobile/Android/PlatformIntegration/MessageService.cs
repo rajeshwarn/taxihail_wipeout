@@ -289,35 +289,39 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		public Task<string> ShowPromptDialog(string title, string message, Action cancelAction)
         {
-			TinyIoCContainer.Current.Resolve<IMvxViewDispatcher> ().RequestMainThreadAction (() =>
+			var tcs = new TaskCompletionSource<string> ();
+
+			var ownerId = Guid.NewGuid().ToString();
+			var i = new Intent(Context, typeof(EditTextDialogActivity));
+			i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+			i.PutExtra("Title", title);
+			i.PutExtra("Message", message);
+			i.PutExtra("PositiveButtonTitle", Context.GetString(Resource.String.OkButtonText));
+			i.PutExtra("NegativeButtonTitle", Context.GetString(Resource.String.Cancel));
+			i.PutExtra("OwnerId", ownerId);
+
+			var messenger = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
+
+			TinyMessageSubscriptionToken token = null;
+			token = messenger.Subscribe<ActivityCompleted>(a =>
 			{
-				var tcs = new TaskCompletionSource<string> ();
-
-				var builder = new AlertDialog.Builder (Context);
-
-				builder.SetTitle (title);
-				builder.SetMessage (message);
-
-				// Set an EditText view to get user input 
-				var input = new EditText (Context);
-				builder.SetView (input);
-
-				builder.SetPositiveButton (Resource.String.OkButtonText, (sender, e) =>
-				{  
-					var value = input.Text;
-					tcs.TrySetResult (value);
-				});
-
-				builder.SetNegativeButton (Resource.String.Cancel, (sender, e) =>
+				if(a.Content == null)
 				{
 					tcs.TrySetCanceled ();
 					cancelAction ();
-				});
+				}
+				else
+				{
+					tcs.TrySetResult (a.Content);
+				}
 
-				builder.Create ().Show ();
+				messenger.Unsubscribe<ActivityCompleted>(token);
+				token.Dispose();
+			}, a => a.OwnerId == ownerId);
 
-				return tcs.Task;
-			});
+			Context.StartActivity(i);
+
+			return tcs.Task;
         }
     }
 }

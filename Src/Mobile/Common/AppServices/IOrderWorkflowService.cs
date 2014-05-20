@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -44,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<bool> ShouldGoToAccountNumberFlow();
 		Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null);
 		Task<AccountPaymentQuestion[]> GetAccountPaymentQuestions();
+		Task<bool> ValidateAndSaveAccountAnswers (AccountPaymentQuestion[] questionsAndAnswers);
 
 		Task<OrderValidationResult> ValidateOrder();
 		void Rebook(Order previous);

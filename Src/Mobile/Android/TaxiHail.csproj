@@ -571,6 +571,7 @@
     <AndroidResource Include="Resources\Layout\View_InitializeOrderForAccountPayment.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <Compile Include="Activities\EditTextDialogActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

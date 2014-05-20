@@ -438,7 +438,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null)
 		{
-			return false;
 			if (accountNumber == null)
 			{
 				var settings = await _bookingSettingsSubject.Take(1).ToTask();
@@ -452,8 +451,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			try
 			{
-				var questions = _accountPaymentService.GetQuestions (accountNumber);
-//				var questions = await _accountPaymentService.GetQuestions (accountNumber);
+				var questions = await _accountPaymentService.GetQuestions (accountNumber);
 				_accountPaymentQuestions.OnNext (questions);
 
 				return true;
@@ -462,6 +460,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			{
 				return false;
 			}
+		}
+
+		public async Task<bool> ValidateAndSaveAccountAnswers(AccountPaymentQuestion[] questionsAndAnswers)
+		{
+			if (questionsAndAnswers.Any (x => x.IsEnabled && string.IsNullOrEmpty (x.Answer)))
+			{
+				return false;
+			}
+
+			_accountPaymentQuestions.OnNext (questionsAndAnswers);
+
+			return true;
 		}
 
 		public async Task SetAccountNumber(string accountNumber)

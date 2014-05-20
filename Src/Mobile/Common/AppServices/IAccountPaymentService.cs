@@ -10,7 +10,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IAccountPaymentService
 	{
-//		Task<AccountPaymentQuestion[]> GetQuestions (string accountNumber);
-		AccountPaymentQuestion[] GetQuestions (string accountNumber);
+		Task<AccountPaymentQuestion[]> GetQuestions (string accountNumber);
 	}
 }

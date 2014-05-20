@@ -1514,4 +1514,19 @@
   <data name="View_InitializeOrderForAccountPayment" xml:space="preserve">
   	<value>Please answer these questions to continue</value>
   </data>
+  <data name="Error_AccountPaymentTitle" xml:space="preserve">
+  	<value>Error</value>
+  </data>
+  <data name="AccountPaymentNumberRequiredTitle" xml:space="preserve">
+  	<value>Account Number required</value>
+  </data>
+  <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
+  	<value>Please enter a valid account number</value>
+  </data>
+  <data name="Error_AccountPaymentMessage" xml:space="preserve">
+  	<value>Invalid account number</value>
+  </data>
+  <data name="Error_AccountPaymentQuestionRequiredMessage" xml:space="preserve">
+  	<value>You must answer every questions to continue</value>
+  </data>
 </root>

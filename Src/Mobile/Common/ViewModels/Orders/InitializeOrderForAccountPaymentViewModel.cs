@@ -26,9 +26,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		public async void Init()
 		{
 			var questions = await _orderWorkflowService.GetAccountPaymentQuestions ();
-			_questions = questions.Where (x => x.IsEnabled).ToList();
+			Questions = questions.ToList ();
 		}
 
+		// the use of list is important here for the binding (doesn't seem to work with an array)
 		private List<AccountPaymentQuestion> _questions;
 		public List<AccountPaymentQuestion> Questions
 		{ 
@@ -36,46 +37,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			set
 			{
 				_questions = value;
-				RaisePropertyChanged ();
-			}
-		}
-
-		public string Question1 
-		{
-			get { return _questions[0].Question; }
-			set 
-			{ 
-				_questions[0].Question = value;
-				RaisePropertyChanged ();
-			}
-		}
-
-		public string Answer1 
-		{
-			get { return _questions[0].Answer; }
-			set 
-			{ 
-				_questions[0].Answer = value;
-				RaisePropertyChanged ();
-			}
-		}
-
-		public string Question2
-		{
-			get { return _questions[1].Question; }
-			set 
-			{ 
-				_questions[1].Question = value;
-				RaisePropertyChanged ();
-			}
-		}
-
-		public string Answer2
-		{
-			get { return _questions[1].Answer; }
-			set 
-			{ 
-				_questions[1].Answer = value;
 				RaisePropertyChanged ();
 			}
 		}
@@ -90,7 +51,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					{
 						using(this.Services().Message.ShowProgress())
 						{
-							// validate and save answers first
+							var questionValidationResult = await _orderWorkflowService.ValidateAndSaveAccountAnswers(Questions.ToArray());
+							if(!questionValidationResult)
+							{
+								this.Services().Message.ShowMessage(
+									this.Services().Localize["Error_AccountPaymentTitle"], 
+									this.Services().Localize["Error_AccountPaymentQuestionRequiredMessage"]);
+
+								return;
+							}
 
 							var result = await _orderWorkflowService.ConfirmOrder();
 

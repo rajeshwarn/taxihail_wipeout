@@ -479,4 +479,9 @@
   <string name="RideSettingsAccountNumber">Account Number</string>
   <string name="Order">Order</string>
   <string name="View_InitializeOrderForAccountPayment">Please answer these questions to continue</string>
+  <string name="AccountPaymentNumberRequiredTitle">Account Number required</string>
+  <string name="Error_AccountPaymentTitle">Error</string>
+  <string name="Error_AccountPaymentMessage">Invalid account number</string>
+  <string name="AccountPaymentNumberRequiredMessage">Please enter a valid account number</string>
+  <string name="Error_AccountPaymentQuestionRequiredMessage">You must answer every questions to continue</string>
 </resources>

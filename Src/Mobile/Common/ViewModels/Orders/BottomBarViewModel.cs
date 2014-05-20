@@ -107,18 +107,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							var hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions();
 							if (!hasValidAccountNumber)
 							{
-								var accountNumber = await this.Services().Message.ShowPromptDialog("Account Number required", "Please enter a valid account number", () => { return; });
+								var accountNumber = await this.Services().Message.ShowPromptDialog(
+									this.Services().Localize["AccountPaymentNumberRequiredTitle"], 
+									this.Services().Localize["AccountPaymentNumberRequiredMessage"], 
+									() => { return; });
 
 								hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions(accountNumber);
 								if(!hasValidAccountNumber)
 								{
-									await this.Services().Message.ShowMessage("Error", "Invalid Account Number");
+									await this.Services().Message.ShowMessage(
+										this.Services().Localize["Error_AccountPaymentTitle"], 
+										this.Services().Localize["Error_AccountPaymentMessage"]);
 									return;
 								}
 
 								await _orderWorkflowService.SetAccountNumber(accountNumber);
 							}
 
+							PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
 							ShowViewModel<InitializeOrderForAccountPaymentViewModel>();
 						}
 						else
