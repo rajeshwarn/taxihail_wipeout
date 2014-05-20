@@ -55,7 +55,10 @@ namespace apcurium.MK.Booking.Database
 
             modelBuilder.Entity<AccountChargeQuestion>().ToTable("AccountChargeQuestion", SchemaName);
             modelBuilder.Entity<AccountChargeDetail>().ToTable("AccountChargeDetail", SchemaName)
-                .HasMany(x => x.Questions);
+                .HasMany(x => x.Questions)
+                .WithRequired()
+                .HasForeignKey(x => x.AccountId)
+                .WillCascadeOnDelete(true);
            
         }
 
