@@ -75,12 +75,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             return tcs.Task;
         }
-
-
+			
         public Task<AccountCharge> GetAccountCharge(string accountNumber)
         {
             var tcs = new TaskCompletionSource<AccountCharge>();
-
 
             Client.GetAsync<AccountCharge>("/admin/accountscharge/" + accountNumber,
                 tcs.SetResult,

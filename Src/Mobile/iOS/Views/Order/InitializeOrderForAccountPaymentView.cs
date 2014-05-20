@@ -7,11 +7,14 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
 	public partial class InitializeOrderForAccountPaymentView : BaseViewController<InitializeOrderForAccountPaymentViewModel>
 	{
+		private List<Tuple<int, UILabel, FlatTextField>> _controls;
+
 		public InitializeOrderForAccountPaymentView () : base ("InitializeOrderForAccountPaymentView", null)
 		{
 		}
@@ -33,86 +36,103 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			FlatButtonStyle.Green.ApplyTo(btnConfirm);
 			btnConfirm.SetTitle(Localize.GetValue("Confirm"), UIControlState.Normal);
 
+			_controls = new List<Tuple<int, UILabel, FlatTextField>> () 
+			{
+				Tuple.Create (0, lblQuestion1, txtQuestion1),
+				Tuple.Create (1, lblQuestion2, txtQuestion2),
+				Tuple.Create (2, lblQuestion3, txtQuestion3),
+				Tuple.Create (3, lblQuestion4, txtQuestion4),
+				Tuple.Create (4, lblQuestion5, txtQuestion5),
+				Tuple.Create (5, lblQuestion6, txtQuestion6),
+				Tuple.Create (6, lblQuestion7, txtQuestion7),
+				Tuple.Create (7, lblQuestion8, txtQuestion8),
+			};
+
 			ApplyBinding ();
-			HideDisabledQuestions ();
 		}
 
 		private void ApplyBinding()
 		{
 			var set = this.CreateBindingSet<InitializeOrderForAccountPaymentView, InitializeOrderForAccountPaymentViewModel> ();
 
-			set.Bind (lblQuestion1).For (v => v.Text).To (vm => vm.Questions[0].Question);
-			set.Bind (lblQuestion2).For (v => v.Text).To (vm => vm.Questions[1].Question);
-			set.Bind (lblQuestion3).For (v => v.Text).To (vm => vm.Questions[2].Question);
-			set.Bind (lblQuestion4).For (v => v.Text).To (vm => vm.Questions[3].Question);
-			set.Bind (lblQuestion5).For (v => v.Text).To (vm => vm.Questions[4].Question);
-			set.Bind (lblQuestion6).For (v => v.Text).To (vm => vm.Questions[5].Question);
-			set.Bind (lblQuestion7).For (v => v.Text).To (vm => vm.Questions[6].Question);
-			set.Bind (lblQuestion8).For (v => v.Text).To (vm => vm.Questions[7].Question);
+			var i = 0;
 
-			set.Bind (txtQuestion1).For (v => v.Text).To (vm => vm.Questions[0].Answer);
-			set.Bind (txtQuestion2).For (v => v.Text).To (vm => vm.Questions[1].Answer);
-			set.Bind (txtQuestion3).For (v => v.Text).To (vm => vm.Questions[2].Answer);
-			set.Bind (txtQuestion4).For (v => v.Text).To (vm => vm.Questions[3].Answer);
-			set.Bind (txtQuestion5).For (v => v.Text).To (vm => vm.Questions[4].Answer);
-			set.Bind (txtQuestion6).For (v => v.Text).To (vm => vm.Questions[5].Answer);
-			set.Bind (txtQuestion7).For (v => v.Text).To (vm => vm.Questions[6].Answer);
-			set.Bind (txtQuestion8).For (v => v.Text).To (vm => vm.Questions[7].Answer);
+			if (ViewModel.Questions[0].IsEnabled)
+			{
+				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[0].Question);
+				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[0].Answer);
+				i++;
+			}
+
+			if (ViewModel.Questions[1].IsEnabled)
+			{
+				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[1].Question);
+				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[1].Answer);
+				i++;
+			}
+
+			if (ViewModel.Questions[2].IsEnabled)
+			{
+				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[2].Question);
+				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[2].Answer);
+				i++;
+			}
+
+			if (ViewModel.Questions[3].IsEnabled)
+			{
+				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[3].Question);
+				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[3].Answer);
+				i++;
+			}
+
+			if (ViewModel.Questions[4].IsEnabled)
+			{
+				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[4].Question);
+				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[4].Answer);
+				i++;
+			}
+
+			if (ViewModel.Questions[5].IsEnabled)
+			{
+				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[5].Question);
+				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[5].Answer);
+				i++;
+			}
+
+			if (ViewModel.Questions[6].IsEnabled)
+			{
+				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[6].Question);
+				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[6].Answer);
+				i++;
+			}
+
+			if (ViewModel.Questions[7].IsEnabled)
+			{
+				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[7].Question);
+				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[7].Answer);
+				i++;
+			}
+
+			var nextUnassignedControls = GetTuple (i);
+			while (nextUnassignedControls != null)
+			{
+				// we remove the controls not assigned (which are going to be at the bottom of the view, above the button)
+				// the button has multiple constraints of vertical space to the other textfields
+				// it also has a constraint to the top of the scrollview, so if the server returns 0 questions, only the button will appear
+				nextUnassignedControls.Item2.RemoveFromSuperview ();
+				nextUnassignedControls.Item3.RemoveFromSuperview ();
+				i++;
+				nextUnassignedControls = GetTuple (i);
+			}
 
 			set.Bind (btnConfirm).For ("TouchUpInside").To (vm => vm.ConfirmOrder);
 
 			set.Apply ();
 		}
 
-		private void HideDisabledQuestions()
+		private Tuple<int, UILabel, FlatTextField> GetTuple(int item1Value)
 		{
-//			if (!ViewModel.Questions[0].IsEnabled)
-//			{
-//				lblQuestion1.RemoveFromSuperview ();
-//				txtQuestion1.RemoveFromSuperview ();
-//			}
-//
-//			if (!ViewModel.Questions[1].IsEnabled)
-//			{
-//				lblQuestion2.RemoveFromSuperview ();
-//				txtQuestion2.RemoveFromSuperview ();
-//			}
-//
-//			if (!ViewModel.Questions[2].IsEnabled)
-//			{
-//				lblQuestion3.RemoveFromSuperview ();
-//				txtQuestion3.RemoveFromSuperview ();
-//			}
-//
-//			if (!ViewModel.Questions[3].IsEnabled)
-//			{
-//				lblQuestion4.RemoveFromSuperview ();
-//				txtQuestion4.RemoveFromSuperview ();
-//			}
-//
-//			if (!ViewModel.Questions[4].IsEnabled)
-//			{
-//				lblQuestion5.RemoveFromSuperview ();
-//				txtQuestion5.RemoveFromSuperview ();
-//			}
-//
-//			if (!ViewModel.Questions[5].IsEnabled)
-//			{
-//				lblQuestion6.RemoveFromSuperview ();
-//				txtQuestion6.RemoveFromSuperview ();
-//			}
-//
-//			if (!ViewModel.Questions[6].IsEnabled)
-//			{
-//				lblQuestion7.RemoveFromSuperview ();
-//				txtQuestion7.RemoveFromSuperview ();
-//			}
-//
-//			if (!ViewModel.Questions[7].IsEnabled)
-//			{
-//				lblQuestion8.RemoveFromSuperview ();
-//				txtQuestion8.RemoveFromSuperview ();
-//			}
+			return _controls.FirstOrDefault (x => x.Item1 == item1Value);
 		}
 	}
 }
