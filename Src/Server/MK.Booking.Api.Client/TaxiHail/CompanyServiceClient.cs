@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.Common.Web;
@@ -75,5 +76,17 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return tcs.Task;
         }
 
+
+        public Task<AccountCharge> GetAccountCharge(string accountNumber)
+        {
+            var tcs = new TaskCompletionSource<AccountCharge>();
+
+
+            Client.GetAsync<AccountCharge>("/admin/accountscharge/" + accountNumber,
+                tcs.SetResult,
+                (result, error) => tcs.SetException(ServiceClientBaseExtensions.FixWebServiceException(error)));
+
+            return tcs.Task;
+        }
     }
 }

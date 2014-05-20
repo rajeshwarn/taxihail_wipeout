@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
             return tcs.Task;
         }
 
-        private static Exception FixWebServiceException(Exception e)
+        public static Exception FixWebServiceException(Exception e)
         {
             var wse = e as WebServiceException;
             if (wse != null && wse.StatusDescription == null)
