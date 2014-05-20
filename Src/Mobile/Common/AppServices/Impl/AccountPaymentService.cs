@@ -6,7 +6,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class AccountPaymentService : BaseService, IAccountPaymentService
 	{
-		public Task<AccountPaymentQuestion[]> GetQuestions (string accountNumber)
+		//public Task<AccountPaymentQuestion[]> GetQuestions (string accountNumber)
+		public AccountPaymentQuestion[] GetQuestions (string accountNumber)
 		{
 			var questions = new List<AccountPaymentQuestion> ();
 
@@ -19,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			questions.Add(new AccountPaymentQuestion { Question = "Question 7" });
 			questions.Add(new AccountPaymentQuestion { Question = "Question 8" });
 
-			return new Task<AccountPaymentQuestion[]>(() => questions.ToArray ());
+			return questions.ToArray();
 		}
 	}
 }

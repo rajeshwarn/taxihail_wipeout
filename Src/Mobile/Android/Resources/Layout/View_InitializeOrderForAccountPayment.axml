@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <LinearLayout
+        android:layout_margin="0dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/top_bar_color"
+            android:orientation="horizontal">
+            <TextView
+                android:text="@string/View_InitializeOrderForAccountPayment"
+                style="@style/TopTitleText"
+                android:layout_gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/top_bar_title_height"
+                android:gravity="center" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_margin="0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/top_bar_separator_color"
+            android:orientation="horizontal" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="center_horizontal">
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <LinearLayout
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="8dp"
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        local:MvxBind="Visibility Question1, Converter=HasValueToVisibilityConverter">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:paddingBottom="5dip"
+                            android:text="Question #1"
+                            style="@style/BlackTextLabel"
+                            local:MvxBind="Text Question1" />
+                        <EditText
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            local:MvxBind="Text Answer1" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        local:MvxBind="Visibility Question2, Converter=HasValueToVisibilityConverter">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:paddingBottom="5dip"
+                            android:text="Question #1"
+                            style="@style/BlackTextLabel"
+                            local:MvxBind="Text Question2" />
+                        <EditText
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            local:MvxBind="Text Answer2" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        local:MvxBind="Visibility Question3, Converter=HasValueToVisibilityConverter">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:paddingBottom="5dip"
+                            android:text="Question #1"
+                            style="@style/BlackTextLabel"
+                            local:MvxBind="Text Question3" />
+                        <EditText
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            local:MvxBind="Text Answer3" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        local:MvxBind="Visibility Question4, Converter=HasValueToVisibilityConverter">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:paddingBottom="5dip"
+                            android:text="Question #1"
+                            style="@style/BlackTextLabel"
+                            local:MvxBind="Text Question4" />
+                        <EditText
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            local:MvxBind="Text Answer4" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        local:MvxBind="Visibility Question5, Converter=HasValueToVisibilityConverter">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:paddingBottom="5dip"
+                            android:text="Question #1"
+                            style="@style/BlackTextLabel"
+                            local:MvxBind="Text Question5" />
+                        <EditText
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            local:MvxBind="Text Answer5" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        local:MvxBind="Visibility Question6, Converter=HasValueToVisibilityConverter">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:paddingBottom="5dip"
+                            android:text="Question #1"
+                            style="@style/BlackTextLabel"
+                            local:MvxBind="Text Question6" />
+                        <EditText
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            local:MvxBind="Text Answer6" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        local:MvxBind="Visibility Question7, Converter=HasValueToVisibilityConverter">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:paddingBottom="5dip"
+                            android:text="Question #1"
+                            style="@style/BlackTextLabel"
+                            local:MvxBind="Text Question7" />
+                        <EditText
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            local:MvxBind="Text Answer7" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        local:MvxBind="Visibility Question8, Converter=HasValueToVisibilityConverter">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:paddingBottom="5dip"
+                            android:text="Question #1"
+                            style="@style/BlackTextLabel"
+                            local:MvxBind="Text Question8" />
+                        <EditText
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            local:MvxBind="Text Answer8" />
+                    </LinearLayout>
+                    <Button
+                        style="@style/ButtonActionGreenStyle"
+                        android:layout_marginTop="8dip"
+                        android:id="@+id/ConfirmButton"
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/HeightButton"
+                        android:paddingTop="5dip"
+                        android:paddingBottom="5dip"
+                        android:text="@string/Confirm"
+                        local:MvxBind="Click ConfirmOrder" />
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

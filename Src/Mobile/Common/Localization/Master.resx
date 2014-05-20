@@ -1511,4 +1511,7 @@
   <data name="ScanCreditCard" xml:space="preserve">
     <value>Scan Credit Card</value>
   </data>
+  <data name="View_InitializeOrderForAccountPayment" xml:space="preserve">
+  	<value>Please answer these questions to continue</value>
+  </data>
 </root>

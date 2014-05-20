@@ -426,6 +426,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<bool> ShouldGoToAccountNumberFlow()
 		{
+			return true;
 			if (!_appSettings.Data.AccountChargeTypeId.HasValue)
 			{
 				return false;
@@ -437,6 +438,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null)
 		{
+			return false;
 			if (accountNumber == null)
 			{
 				var settings = await _bookingSettingsSubject.Take(1).ToTask();
@@ -450,7 +452,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			try
 			{
-				var questions = await _accountPaymentService.GetQuestions (accountNumber);
+				var questions = _accountPaymentService.GetQuestions (accountNumber);
+//				var questions = await _accountPaymentService.GetQuestions (accountNumber);
 				_accountPaymentQuestions.OnNext (questions);
 
 				return true;

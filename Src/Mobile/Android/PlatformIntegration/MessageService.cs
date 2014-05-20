@@ -58,14 +58,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             var tcs = new TaskCompletionSource<object>();
             TinyMessageSubscriptionToken token = null;
-// ReSharper disable once RedundantAssignment
             token = messengerHub.Subscribe<ActivityCompleted>(a =>
             {
                 tcs.TrySetResult(null);
-// ReSharper disable AccessToModifiedClosure
                 messengerHub.Unsubscribe<ActivityCompleted>(token);
                 if (token != null) token.Dispose();
-// ReSharper restore AccessToModifiedClosure
             }, a => a.OwnerId == ownerId);
 
             return tcs.Task;
@@ -292,32 +289,35 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		public Task<string> ShowPromptDialog(string title, string message, Action cancelAction)
         {
-			var tcs = new TaskCompletionSource<string>();
-
-			var alert = new AlertDialog.Builder(Context);
-
-			alert.SetTitle(title);
-			alert.SetMessage(message);
-
-			// Set an EditText view to get user input 
-			var input = new EditText(Context);
-			alert.SetView(input);
-
-			alert.SetPositiveButton(Resource.String.OkButtonText, (sender, e) => 
-			{  
-				var value = input.Text;
-				tcs.TrySetResult(value);
-			});
-
-			alert.SetNegativeButton(Resource.String.Cancel, (sender, e) => 
+			TinyIoCContainer.Current.Resolve<IMvxViewDispatcher> ().RequestMainThreadAction (() =>
 			{
-				tcs.TrySetCanceled();
-				cancelAction();
+				var tcs = new TaskCompletionSource<string> ();
+
+				var builder = new AlertDialog.Builder (Context);
+
+				builder.SetTitle (title);
+				builder.SetMessage (message);
+
+				// Set an EditText view to get user input 
+				var input = new EditText (Context);
+				builder.SetView (input);
+
+				builder.SetPositiveButton (Resource.String.OkButtonText, (sender, e) =>
+				{  
+					var value = input.Text;
+					tcs.TrySetResult (value);
+				});
+
+				builder.SetNegativeButton (Resource.String.Cancel, (sender, e) =>
+				{
+					tcs.TrySetCanceled ();
+					cancelAction ();
+				});
+
+				builder.Create ().Show ();
+
+				return tcs.Task;
 			});
-
-			alert.Show();
-
-			return tcs.Task;
         }
     }
 }

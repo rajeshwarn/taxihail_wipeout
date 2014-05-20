@@ -478,4 +478,5 @@
   <string name="PaymentErrorMessage">Details: {0}</string>
   <string name="RideSettingsAccountNumber">Account Number</string>
   <string name="Order">Order</string>
+  <string name="View_InitializeOrderForAccountPayment">Please answer these questions to continue</string>
 </resources>

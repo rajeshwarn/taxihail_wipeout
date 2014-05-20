@@ -118,7 +118,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 								await _orderWorkflowService.SetAccountNumber(accountNumber);
 							}
-								
+
 							ShowViewModel<InitializeOrderForAccountPaymentViewModel>();
 						}
 						else
