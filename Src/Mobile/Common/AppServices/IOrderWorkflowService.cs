@@ -44,8 +44,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<bool> ShouldGoToAccountNumberFlow();
 		Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null);
-		Task<AccountPaymentQuestion[]> GetAccountPaymentQuestions();
-		Task<bool> ValidateAndSaveAccountAnswers (AccountPaymentQuestion[] questionsAndAnswers);
+		Task<AccountChargeQuestion[]> GetAccountPaymentQuestions();
+		Task<bool> ValidateAndSaveAccountAnswers (AccountChargeQuestion[] questionsAndAnswers);
 
 		Task<OrderValidationResult> ValidateOrder();
 		void Rebook(Order previous);

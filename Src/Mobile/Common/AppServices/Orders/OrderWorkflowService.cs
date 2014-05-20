@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<DirectionInfo> _estimatedFareDetailSubject = new BehaviorSubject<DirectionInfo>( new DirectionInfo() );
 		readonly ISubject<string> _noteToDriverSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<bool> _loadingAddressSubject = new BehaviorSubject<bool>(false);
-		readonly ISubject<AccountPaymentQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountPaymentQuestion[]> (null);
+		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -462,7 +462,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
-		public async Task<bool> ValidateAndSaveAccountAnswers(AccountPaymentQuestion[] questionsAndAnswers)
+		public async Task<bool> ValidateAndSaveAccountAnswers(AccountChargeQuestion[] questionsAndAnswers)
 		{
 			if (questionsAndAnswers.Any (x => x.IsEnabled && string.IsNullOrEmpty (x.Answer)))
 			{
@@ -483,7 +483,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_bookingSettingsSubject.OnNext (bookingSettings);
 		}
 
-		public async Task<AccountPaymentQuestion[]> GetAccountPaymentQuestions()
+		public async Task<AccountChargeQuestion[]> GetAccountPaymentQuestions()
 		{
 			return await _accountPaymentQuestions.Take (1).ToTask ();
 		}

@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using ServiceStack.Text;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -30,8 +31,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		}
 
 		// the use of list is important here for the binding (doesn't seem to work with an array)
-		private List<AccountPaymentQuestion> _questions;
-		public List<AccountPaymentQuestion> Questions
+		private List<AccountChargeQuestion> _questions;
+		public List<AccountChargeQuestion> Questions
 		{ 
 			get { return _questions; }
 			set
