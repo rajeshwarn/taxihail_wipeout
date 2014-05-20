@@ -7,8 +7,6 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -191,9 +189,6 @@
     <Reference Include="ServiceStack.Common.MonoTouch">
       <HintPath>..\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
     </Reference>
-    <Reference Include="GoogleAnalytics">
-      <HintPath>..\Libraries\Monotouch\GoogleAnalytics.dll</HintPath>
-    </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -214,9 +209,6 @@
     </Reference>
     <Reference Include="SocialNetworks.Services.MonoTouch">
       <HintPath>..\Libraries\Monotouch\SocialNetworks.Services.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Mobile">
-      <HintPath>..\Components\xamarin.mobile-0.7.1\lib\ios\Xamarin.Mobile.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.CrossCore.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoTouch\Cirrious.CrossCore.Touch.dll</HintPath>
@@ -268,6 +260,9 @@
     </Reference>
     <Reference Include="Card.IO.iOS">
       <HintPath>..\Components\cardioios-3.7.0\lib\ios\Card.IO.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="GoogleAnalytics.iOS">
+      <HintPath>..\Components\googleanalytics-3.0.3.4\lib\ios\GoogleAnalytics.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -775,10 +770,6 @@
     <BundleResource Include="Resources\destination_small_icon_pressed%402x.png" />
   </ItemGroup>
   <ItemGroup>
-    <XamarinComponentReference Include="xamarin.mobile">
-      <Version>0.7.1</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.1</Version>
       <Visible>False</Visible>
@@ -789,6 +780,11 @@
     </XamarinComponentReference>
     <XamarinComponentReference Include="cardioios">
       <Version>3.7.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="googleanalytics">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>3.0.3.4</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
