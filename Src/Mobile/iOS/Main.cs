@@ -9,7 +9,7 @@ using MonoTouch.ObjCRuntime;
 using MonoTouch.UIKit;
 using ServiceStack.Text;
 using TinyIoC;
-using Xamarin.Contacts;
+
 
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -113,21 +113,16 @@ namespace apcurium.MK.Booking.Mobile.Client
                 JsConfig.RegisterTypeForAot<OrderStatus>();
                 JsConfig.RegisterTypeForAot<CoordinatePrecision>();
                 JsConfig.RegisterTypeForAot<CoordinateRefreshTime>();
-                JsConfig.RegisterTypeForAot<AddressType>();
-                JsConfig.RegisterTypeForAot<OrganizationType>();
-                JsConfig.RegisterTypeForAot<RelationshipType>();
-                JsConfig.RegisterTypeForAot<EmailType>();
-                JsConfig.RegisterTypeForAot<PhoneType>();
+                
                 JsConfig.RegisterTypeForAot<PushNotificationServicePlatform>();
                 JsConfig.RegisterTypeForAot<PaymentMethod> ();
-                JsConfig.RegisterTypeForAot<InstantMessagingService>();
+                
                 JsConfig.RegisterTypeForAot<ResultStatus>();
                 JsConfig.RegisterTypeForAot<AddressComponentType>();
             } catch(NullReferenceException){
                 // In the Simulator, a NullReferenceException is mysteriously thrown
             }
-			JsConfig.RegisterTypeForAot<Coordinate>();
-            JsConfig.RegisterTypeForAot<Contact>();
+			JsConfig.RegisterTypeForAot<Coordinate>();            
             JsConfig.RegisterTypeForAot<AddressComponent>();
             JsConfig.RegisterTypeForAot<Bounds>();
             JsConfig.RegisterTypeForAot<DirectionResult>();

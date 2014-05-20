@@ -126,4 +126,7 @@
   <ItemGroup>
     <Folder Include="Payments\CmtPayments\Capture\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>
