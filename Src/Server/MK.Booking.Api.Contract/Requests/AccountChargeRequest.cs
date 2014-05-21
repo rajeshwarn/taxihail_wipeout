@@ -11,8 +11,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 #if !CLIENT
     [AuthorizationRequired(ApplyTo.Post | ApplyTo.Put | ApplyTo.Delete, RoleName.Admin)]
 #endif
-    [Route("/admin/accountscharge", "GET, POST")]
-    [Route("/admin/accountscharge/{Number}", "PUT, DELETE")]
+    [Route("/admin/accountscharge", "GET, POST,PUT")]
+    [Route("/admin/accountscharge/{Number}", "GET,DELETE")]
     public class AccountChargeRequest
     {
         public Guid Id { get; set; }

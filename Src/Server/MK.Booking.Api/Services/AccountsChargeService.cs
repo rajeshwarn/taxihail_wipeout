@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
@@ -26,8 +31,96 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
-                return _dao.FindByAccountNumber(request.Number);
+                var account = _dao.FindByAccountNumber(request.Number);
+                if (account == null)
+                {
+                    throw new HttpError(HttpStatusCode.NotFound, "Account Not Found");
+                }
+                else
+                {
+                    return account;
+                }
             }
+        }
+
+        public object Post(AccountChargeRequest request)
+        {
+            var existing = _dao.FindByAccountNumber(request.Number);
+            if (existing != null)
+            {
+                throw new HttpError(HttpStatusCode.Conflict, ErrorCode.AccountCharge_AccountAlreadyExisting.ToString());
+            }
+
+            foreach (var question in request.Questions)
+            {
+                question.Id = Guid.NewGuid();
+            }
+            var addUpdateAccountCharge = new AddUpdateAccountCharge
+            {
+                AccountChargeId = Guid.NewGuid(),
+                Name = request.Name,
+                Number = request.Number,
+                Questions = request.Questions,
+                CompanyId = AppConstants.CompanyId
+            };
+
+            _commandBus.Send(addUpdateAccountCharge);
+
+            return new
+            {
+                Id = addUpdateAccountCharge.AccountChargeId
+            };
+        }
+
+        public object Put(AccountChargeRequest request)
+        {
+            var existing = _dao.FindByAccountNumber(request.Number);
+            if (existing != null
+                && existing.Id != request.Id)
+            {
+                throw new HttpError(HttpStatusCode.Conflict, ErrorCode.AccountCharge_AccountAlreadyExisting.ToString());
+            }
+            foreach (var question in request.Questions)
+            {
+                if (question.Id == Guid.Empty)
+                {
+                    question.Id = Guid.NewGuid();
+                }
+            }
+            var addUpdateAccountCharge = new AddUpdateAccountCharge
+            {
+                AccountChargeId = request.Id,
+                Name = request.Name,
+                Number = request.Number,
+                Questions = request.Questions,
+                CompanyId = AppConstants.CompanyId
+            };
+
+            _commandBus.Send(addUpdateAccountCharge);
+
+            return new
+            {
+                Id = addUpdateAccountCharge.AccountChargeId
+            };
+        }
+
+        public object Delete(AccountChargeRequest request)
+        {
+            var existing = _dao.FindByAccountNumber(request.Number);
+            if (existing == null)
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "Account Not Found");
+            }
+
+            var deleteAccountCharge = new DeleteAccountCharge
+            {
+                AccountChargeId = existing.Id,
+                CompanyId = AppConstants.CompanyId
+            };
+
+            _commandBus.Send(deleteAccountCharge);
+
+            return new HttpResult(HttpStatusCode.OK, "OK");
         }
     }
 }
