@@ -35,11 +35,11 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void AddAndGetAccountCharge()
         {
-            var request = new AccountChargeRequest()
+            var request = new AccountChargeRequest
             {
                 Id = Guid.NewGuid(),
                 Name = "VIP",
-                Number = "NUMBER",
+                Number = "NUMBER" + new Random(DateTime.Now.Millisecond).Next(0, 5236985),
                 Questions = new[]
                 {
                     new AccountChargeQuestion
@@ -57,9 +57,37 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        public void Add_Already_Existing_AccountCharge()
+        {
+            var request = new AccountChargeRequest
+            {
+                Id = Guid.NewGuid(),
+                Name = "VIP",
+                Number = "NUMBER" + new Random(DateTime.Now.Millisecond).Next(0, 5236985),
+                Questions = new[]
+                {
+                    new AccountChargeQuestion
+                    {
+                        Question = "Question?",
+                        Answer = "Answer"
+                    }
+                }
+            };
+            _sut.CreateAccountCharge(request);
+
+            Assert.Throws<WebServiceException>(() => _sut.CreateAccountCharge(request));
+        }
+
+        [Test]
+        public void GetUnknownAccountCharge()
+        {
+            Assert.Throws<WebServiceException>(() => _sut.GetAccountCharge("UNKNOWN"));
+        }
+
+        [Test]
         public void UpdatedAccountCharge()
         {
-            var request = new AccountChargeRequest()
+            var request = new AccountChargeRequest
             {
                 Id = Guid.NewGuid(),
                 Name = "VIP",

@@ -14,8 +14,8 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class AccountsChargeService : Service
     {
-        private IAccountChargeDao _dao;
-        private ICommandBus _commandBus;
+        private readonly IAccountChargeDao _dao;
+        private readonly ICommandBus _commandBus;
 
         public AccountsChargeService(IAccountChargeDao dao, ICommandBus commandBus)
         {
