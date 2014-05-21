@@ -462,7 +462,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
-		public async Task<bool> ValidateAndSaveAccountAnswers(AccountChargeQuestion[] questionsAndAnswers)
+		public Task<bool> ValidateAndSaveAccountAnswers(AccountChargeQuestion[] questionsAndAnswers)
 		{
 			if (questionsAndAnswers.Any (x => x.IsEnabled && string.IsNullOrEmpty (x.Answer)))
 			{
@@ -515,6 +515,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             order.UserLongitude = _locationService.BestPosition != null
                 ? _locationService.BestPosition.Longitude
                 : (double?)null;
+
+			order.QuestionsAndAnswers = await _accountPaymentQuestions.Take (1).ToTask ();
 
 			return order;
 		}
