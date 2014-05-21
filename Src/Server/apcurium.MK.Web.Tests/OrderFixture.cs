@@ -59,7 +59,8 @@ namespace apcurium.MK.Web.Tests
                             Passengers = 6,
                             NumberOfTaxi = 1,
                             Name = "Joe Smith",
-                            LargeBags = 1
+                            LargeBags = 1,
+                            AccountNumber = "123"
                         },
                     ClientLanguageCode = "fr"
                 };
@@ -73,6 +74,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(orderDetails.DropOffAddress.FullAddress, order.DropOffAddress.FullAddress);
             Assert.AreEqual(6, orderDetails.Settings.Passengers);
             Assert.AreEqual(1, orderDetails.Settings.LargeBags);
+            Assert.AreEqual("123", orderDetails.Settings.AccountNumber);
 
         }
 
