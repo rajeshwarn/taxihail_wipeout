@@ -23,7 +23,7 @@
             var $add = $('<a>')
                 .attr('href', '#accounts/add')
                 .addClass('new')
-                .text(TaxiHail.localize('accountsCharge.add-new'));
+                .text(this.localize('accountsCharge.add-new'));
 
             $ul.first().append($('<li>').append($add));
 
