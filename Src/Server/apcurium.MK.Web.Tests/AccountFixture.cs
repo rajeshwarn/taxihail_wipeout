@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Common.Entity;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Web.Tests
 {
