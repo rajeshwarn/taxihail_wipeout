@@ -124,6 +124,7 @@
     <Compile Include="BaseTest.cs" />
     <Compile Include="BraintreePaymentServiceClientFixture.cs" />
     <Compile Include="CmtPaymentServiceClientFixture.cs" />
+    <Compile Include="CompanyAccountChargeFixture.cs" />
     <Compile Include="CompanyClientFixture.cs" />
     <Compile Include="CompanyDefaultFavoriteAddressFixture.cs" />
     <Compile Include="CompanyPopularAddressFixture.cs" />
