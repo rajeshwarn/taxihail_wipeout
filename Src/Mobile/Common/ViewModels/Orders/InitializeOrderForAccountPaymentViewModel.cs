@@ -52,10 +52,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					{
 						using(this.Services().Message.ShowProgress())
 						{
-							var questionValidationResult = await _orderWorkflowService.ValidateAndSaveAccountAnswers(Questions.ToArray());
+							var questionValidationResult = _orderWorkflowService.ValidateAndSaveAccountAnswers(Questions.ToArray());
 							if(!questionValidationResult)
 							{
-								this.Services().Message.ShowMessage(
+								await this.Services().Message.ShowMessage(
 									this.Services().Localize["Error_AccountPaymentTitle"], 
 									this.Services().Localize["Error_AccountPaymentQuestionRequiredMessage"]);
 

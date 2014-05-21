@@ -426,7 +426,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<bool> ShouldGoToAccountNumberFlow()
 		{
-			return true;
 			if (!_appSettings.Data.AccountChargeTypeId.HasValue)
 			{
 				return false;
@@ -462,7 +461,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
-		public Task<bool> ValidateAndSaveAccountAnswers(AccountChargeQuestion[] questionsAndAnswers)
+		public bool ValidateAndSaveAccountAnswers(AccountChargeQuestion[] questionsAndAnswers)
 		{
 			if (questionsAndAnswers.Any (x => x.IsEnabled && string.IsNullOrEmpty (x.Answer)))
 			{
