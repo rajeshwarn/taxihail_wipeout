@@ -26,6 +26,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
 		{
 			get { return this["LanguageCode"]; }
 		}
+
+		public bool IsRightToLeft
+		{
+			get { return this["LanguageCode"] == "ar"; }
+		}
 	}
 }
 
