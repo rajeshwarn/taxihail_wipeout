@@ -278,7 +278,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                     new AccountChargeQuestion
                     {
                         Answer = "answer",
-                        Id = Guid.NewGuid(),
+                        Id = 1,
                         Question = "question"
                     }
                 }

@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                     new AccountChargeQuestion
                     {
                         Answer = "answer",
-                        Id = Guid.NewGuid(),
+                        Id = 0,
                         Question = "question"
                     }
                 }
@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
         }
 
         private Guid _accountChargeId = Guid.NewGuid();
-        private Guid _questionId = Guid.NewGuid();
+        private int _questionId = 1;
 
         [Test]
         public void when_account_charge_updated_then_dto_updated()
