@@ -20,7 +20,7 @@ using Cirrious.MvvmCross.ViewModels;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.MapDataProvider;
-using apcurium.MK.Booking.MapDataProvider.OpenStreetMap;
+
 
 namespace apcurium.MK.Booking.Mobile
 {

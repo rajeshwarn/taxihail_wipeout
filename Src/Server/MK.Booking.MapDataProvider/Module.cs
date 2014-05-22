@@ -12,7 +12,10 @@ namespace apcurium.MK.Booking.MapDataProvider
     {
         public void Init(IUnityContainer container)
         {
-            container.RegisterType<IMapsApiClient, MapsApiClient>();
+            container.RegisterType<IGeocoder, GoogleApiClient>();
+            container.RegisterType<IPlaceDataProvider, GoogleApiClient>();
+            container.RegisterType<IDirectionDataProvider, GoogleApiClient>();
+
         }
     }
 }

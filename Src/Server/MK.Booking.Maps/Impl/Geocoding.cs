@@ -12,6 +12,7 @@ using apcurium.MK.Common.Provider;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 
 #endregion
 
@@ -20,14 +21,14 @@ namespace apcurium.MK.Booking.Maps.Impl
     public class Geocoding : IGeocoding
     {
         private readonly IAppSettings _appSettings;
-        private readonly IMapsApiClient _mapApi;
+		private readonly IGeocoder  _mapApi;
         private readonly ILogger _logger;
 
         
 
         private readonly IPopularAddressProvider _popularAddressProvider;
 
-        public Geocoding(IMapsApiClient mapApi, IAppSettings appSettings,
+		public Geocoding(IGeocoder mapApi, IAppSettings appSettings,
             IPopularAddressProvider popularAddressProvider, ILogger logger)
         {
             _logger = logger;
@@ -61,7 +62,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             }
             else            
             {
-                var addresses = new MapDataProvider.Google.MapsApiClient(_appSettings, _logger).ConvertGeoResultToAddresses(geoResult);
+				var addresses = new MapDataProvider.Google.GoogleApiClient(_appSettings, _logger).ConvertGeoResultToAddresses(geoResult);
                  
                 if ( addresses == null )
                 {
@@ -89,7 +90,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             if (geoResult != null)
             {
-                var addresses = new MapDataProvider.Google.MapsApiClient( _appSettings, _logger ).ConvertGeoResultToAddresses(geoResult);
+				var addresses = new MapDataProvider.Google.GoogleApiClient( _appSettings, _logger ).ConvertGeoResultToAddresses(geoResult);
                 return addressesInRange.Concat(addresses.Select(a => new GeoObjToAddressMapper().ConvertToAddress(a, null, false))).ToArray();
             }
             else

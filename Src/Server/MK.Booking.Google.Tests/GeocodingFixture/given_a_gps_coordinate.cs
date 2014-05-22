@@ -17,11 +17,11 @@ namespace MK.Booking.Google.Tests.GeocodingFixture
         [SetUp]
         public void Setup()
         {
-            //_sut = new MapsApiClient(new TestConfigurationManager(), new Logger());
-            _sut = new apcurium.MK.Booking.MapDataProvider.OpenStreetMap.MapsApiClient(new TestConfigurationManager(), new Logger());
+            _sut = new GoogleApiClient(new TestConfigurationManager(), new Logger());
+            
         }
 
-        private IMapsApiClient _sut;
+        private IGeocoder _sut;
 
         [Test]
         public void coordinate1_should_return_something()

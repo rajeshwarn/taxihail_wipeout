@@ -20,8 +20,5 @@ namespace apcurium.MK.Booking.MapDataProvider.Resources
         public double Longitude { get; set; }
         public string LocationType { get; set; }
 
-        
-
-
     }
 }
