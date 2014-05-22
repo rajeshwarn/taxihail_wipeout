@@ -8,7 +8,7 @@ namespace apcurium.MK.Common.Entity
 	public class AccountChargeQuestion
 	{
         [Key, Column(Order = 1)]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         [Key, Column(Order = 2)]
         public Guid AccountId { get; set; }

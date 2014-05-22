@@ -51,10 +51,8 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.Conflict, ErrorCode.AccountCharge_AccountAlreadyExisting.ToString());
             }
 
-            foreach (var question in request.Questions)
-            {
-                question.Id = Guid.NewGuid();
-            }
+            var i = 0;
+            
             var addUpdateAccountCharge = new AddUpdateAccountCharge
             {
                 AccountChargeId = Guid.NewGuid(),
@@ -63,6 +61,12 @@ namespace apcurium.MK.Booking.Api.Services
                 Questions = request.Questions,
                 CompanyId = AppConstants.CompanyId
             };
+
+            foreach (var question in request.Questions)
+            {
+                question.Id = i++;
+                question.AccountId = addUpdateAccountCharge.AccountChargeId;
+            }
 
             _commandBus.Send(addUpdateAccountCharge);
 
@@ -80,12 +84,12 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw new HttpError(HttpStatusCode.Conflict, ErrorCode.AccountCharge_AccountAlreadyExisting.ToString());
             }
+
+            var i = 0;
             foreach (var question in request.Questions)
             {
-                if (question.Id == Guid.Empty)
-                {
-                    question.Id = Guid.NewGuid();
-                }
+                question.Id = i++;
+                question.AccountId = request.Id;
             }
             var addUpdateAccountCharge = new AddUpdateAccountCharge
             {
