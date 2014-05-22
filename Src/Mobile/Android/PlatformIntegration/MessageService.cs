@@ -18,6 +18,7 @@ using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using TinyIoC;
 using TinyMessenger;
+using Android.App;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -57,14 +58,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             var tcs = new TaskCompletionSource<object>();
             TinyMessageSubscriptionToken token = null;
-// ReSharper disable once RedundantAssignment
             token = messengerHub.Subscribe<ActivityCompleted>(a =>
             {
                 tcs.TrySetResult(null);
-// ReSharper disable AccessToModifiedClosure
                 messengerHub.Unsubscribe<ActivityCompleted>(token);
                 if (token != null) token.Dispose();
-// ReSharper restore AccessToModifiedClosure
             }, a => a.OwnerId == ownerId);
 
             return tcs.Task;
@@ -90,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 if (a.Content == positiveButtonTitle && positiveAction != null)
                 {
-                    positiveAction();
+					positiveAction();
                 }
                 else if (a.Content == negativeButtonTitle && negativeAction != null)
                 {
@@ -289,10 +287,41 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             Context.StartActivity(i);
         }
 
-        public void ShowEditTextDialog(string title, string message, string positiveButtonTitle,
-            Action<string> positionAction)
+		public Task<string> ShowPromptDialog(string title, string message, Action cancelAction)
         {
-            throw new NotImplementedException();
+			var tcs = new TaskCompletionSource<string> ();
+
+			var ownerId = Guid.NewGuid().ToString();
+			var i = new Intent(Context, typeof(EditTextDialogActivity));
+			i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+			i.PutExtra("Title", title);
+			i.PutExtra("Message", message);
+			i.PutExtra("PositiveButtonTitle", Context.GetString(Resource.String.OkButtonText));
+			i.PutExtra("NegativeButtonTitle", Context.GetString(Resource.String.Cancel));
+			i.PutExtra("OwnerId", ownerId);
+
+			var messenger = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
+
+			TinyMessageSubscriptionToken token = null;
+			token = messenger.Subscribe<ActivityCompleted>(a =>
+			{
+				if(a.Content == null)
+				{
+					tcs.TrySetCanceled ();
+					cancelAction ();
+				}
+				else
+				{
+					tcs.TrySetResult (a.Content);
+				}
+
+				messenger.Unsubscribe<ActivityCompleted>(token);
+				token.Dispose();
+			}, a => a.OwnerId == ownerId);
+
+			Context.StartActivity(i);
+
+			return tcs.Task;
         }
     }
 }

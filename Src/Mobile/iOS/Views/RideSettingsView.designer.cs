@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class RideSettingsView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UILabel lblAccountNumber { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblChargeType { get; set; }
 
 		[Outlet]
@@ -32,6 +35,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblVehicleType { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtAccountNumber { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtChargeType { get; set; }
@@ -124,6 +130,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtVehicleType != null) {
 				txtVehicleType.Dispose ();
 				txtVehicleType = null;
+			}
+
+			if (lblAccountNumber != null) {
+				lblAccountNumber.Dispose ();
+				lblAccountNumber = null;
+			}
+
+			if (txtAccountNumber != null) {
+				txtAccountNumber.Dispose ();
+				txtAccountNumber = null;
 			}
 		}
 	}

@@ -102,16 +102,44 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					try
 					{
-                        using(this.Services().Message.ShowProgress())						
+						if(await _orderWorkflowService.ShouldGoToAccountNumberFlow())
 						{
-							var result = await _orderWorkflowService.ConfirmOrder();
-
-                            PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
-							ShowViewModel<BookingStatusViewModel>(new
+							var hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions();
+							if (!hasValidAccountNumber)
 							{
-								order = result.Item1.ToJson(),
-								orderStatus = result.Item2.ToJson()
-							});
+								var accountNumber = await this.Services().Message.ShowPromptDialog(
+									this.Services().Localize["AccountPaymentNumberRequiredTitle"], 
+									this.Services().Localize["AccountPaymentNumberRequiredMessage"], 
+									() => { return; });
+
+								hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions(accountNumber);
+								if(!hasValidAccountNumber)
+								{
+									await this.Services().Message.ShowMessage(
+										this.Services().Localize["Error_AccountPaymentTitle"], 
+										this.Services().Localize["Error_AccountPaymentMessage"]);
+									return;
+								}
+
+								await _orderWorkflowService.SetAccountNumber(accountNumber);
+							}
+
+							PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
+							ShowViewModel<InitializeOrderForAccountPaymentViewModel>();
+						}
+						else
+						{
+							using(this.Services().Message.ShowProgress())
+							{
+								var result = await _orderWorkflowService.ConfirmOrder();
+
+								PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
+								ShowViewModel<BookingStatusViewModel>(new
+								{
+									order = result.Item1.ToJson(),
+									orderStatus = result.Item2.ToJson()
+								});
+							}
 						}
 					}
 					catch(OrderCreationException e)

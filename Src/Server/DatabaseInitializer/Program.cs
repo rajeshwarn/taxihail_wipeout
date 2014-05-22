@@ -207,7 +207,7 @@ namespace DatabaseInitializer
                     //migrate events
                     var migrator = container.Resolve<IEventsMigrator>();
 
-                    migrator.Do(appSettings["TaxiHail.Version"]);
+                    migrator.Do();
                 }
 
                 //Save settings so that next calls to referenceDataService has the IBS Url

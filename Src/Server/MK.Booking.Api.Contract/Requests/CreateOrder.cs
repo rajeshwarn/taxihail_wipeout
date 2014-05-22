@@ -54,5 +54,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
             public int Distance { get; set; }
         }
+
+		public AccountChargeQuestion[] QuestionsAndAnswers { get; set; }
     }
 }

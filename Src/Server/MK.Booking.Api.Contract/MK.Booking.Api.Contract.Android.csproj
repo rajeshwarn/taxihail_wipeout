@@ -116,6 +116,7 @@
     <Compile Include="Resources\AvailableVehicle.cs" />
     <Compile Include="Requests\AvailableVehicles.cs" />
     <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
+    <Compile Include="Resources\AccountCharge.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

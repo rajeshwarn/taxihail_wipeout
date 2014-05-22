@@ -8,6 +8,7 @@
     "modal.removeFavorite.message" : "Please confirm that you want to delete this favorite address.",
 	"modal.removePopular.message" : "Please confirm that you want to delete this popular address.",
     "modal.removeOrder.message" : "Please confirm that you want to remove this order from your history.",
+    "modal.removeAccount.message" : "Please confirm that you want to remove this account.",
     "modal.cancelOrder.message" : "Please confirm that you want to cancel your order.",
     "modal.deleteTariff.message" : "Please confirm that you want to delete this tariff.",
     "modal.deleteTariff.title" : "Delete Tariff",

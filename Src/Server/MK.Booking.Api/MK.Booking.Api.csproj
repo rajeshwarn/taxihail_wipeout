@@ -122,6 +122,7 @@
     <Compile Include="Security\CustomCredentialsAuthProvider.cs" />
     <Compile Include="Security\CustomFacebookAuthProvider.cs" />
     <Compile Include="Serialization\CsvCustomSerializer.cs" />
+    <Compile Include="Services\AccountsChargeService.cs" />
     <Compile Include="Services\AddressHistoryService.cs" />
     <Compile Include="Services\AccountOrderListService.cs" />
     <Compile Include="Services\AdminEnableAccountService.cs" />

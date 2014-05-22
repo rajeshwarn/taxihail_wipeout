@@ -99,6 +99,12 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString());
             }
 
+            if (request.Settings.ChargeTypeId.HasValue
+                && request.Settings.ChargeTypeId.Value == _configManager.GetSetting("Client.AccountChargeTypeId", 0))
+            {
+                // send the info to ibs
+            }
+
             var ibsOrderId = CreateIbsOrder(account, request, referenceData);
 
             if (!ibsOrderId.HasValue

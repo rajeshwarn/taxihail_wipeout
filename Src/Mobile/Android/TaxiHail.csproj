@@ -567,7 +567,12 @@
     <AndroidResource Include="Resources\drawable-xhdpi\destination_small_icon_pressed.png" />
     <AndroidResource Include="Resources\values-ar\String.xml" />
     <Compile Include="Dialog\EntryElementWithInputType.cs" />
+    <Compile Include="Activities\Book\InitializeOrderForAccountPaymentActivity.cs" />
     <Compile Include="PlatformIntegration\AndroidMapApiClient.cs" />
+    <AndroidResource Include="Resources\Layout\View_InitializeOrderForAccountPayment.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <Compile Include="Activities\EditTextDialogActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

@@ -161,7 +161,8 @@ namespace apcurium.MK.Booking.Domain
                 Passengers = settings.Passengers,
                 Phone = settings.Phone,
                 ProviderId = settings.ProviderId,
-                VehicleTypeId = settings.VehicleTypeId
+                VehicleTypeId = settings.VehicleTypeId,
+                AccountNumber = settings.AccountNumber
             });
         }
 

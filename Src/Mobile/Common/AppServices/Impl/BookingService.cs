@@ -42,8 +42,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_accountService = accountService;
 		}
 
-        
-
         public Task<OrderValidationResult> ValidateOrder (CreateOrder order)
         {
 			return Mvx.Resolve<OrderServiceClient>().ValidateOrder(order);

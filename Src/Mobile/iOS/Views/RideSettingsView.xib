@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RideSettingsView">
             <connections>
+                <outlet property="lblAccountNumber" destination="UEE-OH-9iy" id="ZoF-06-Qpo"/>
                 <outlet property="lblChargeType" destination="LEQ-dq-bRV" id="yP7-hg-oui"/>
                 <outlet property="lblCreditCard" destination="0n6-Zc-YNm" id="e5b-Wb-SXX"/>
                 <outlet property="lblName" destination="HWN-Pq-yPZ" id="K04-uw-tT9"/>
@@ -13,6 +14,7 @@
                 <outlet property="lblPhone" destination="o6C-2X-Wpz" id="yHo-VV-j8s"/>
                 <outlet property="lblTip" destination="f9f-Bd-JUM" id="Ww8-cP-vCo"/>
                 <outlet property="lblVehicleType" destination="H5h-hf-udS" id="46H-t5-5DB"/>
+                <outlet property="txtAccountNumber" destination="JGJ-v2-jC5" id="2OC-1J-a1H"/>
                 <outlet property="txtChargeType" destination="qOe-Cq-18G" id="cT5-i7-EWU"/>
                 <outlet property="txtCreditCard" destination="ncl-SZ-qgo" id="7bg-U3-uRM"/>
                 <outlet property="txtName" destination="1fn-yd-ctg" id="daH-eY-I3p"/>
@@ -33,14 +35,13 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="80">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="554"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="630"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HWN-Pq-yPZ">
-                                    <rect key="frame" x="8" y="14" width="140" height="17"/>
+                                    <rect key="frame" x="8" y="14" width="304" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="140" id="0x4-qa-zZF"/>
                                         <constraint firstAttribute="height" constant="17" id="Mrc-u0-orZ"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
@@ -57,11 +58,10 @@
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o6C-2X-Wpz">
-                                    <rect key="frame" x="8" y="90" width="140" height="17"/>
+                                    <rect key="frame" x="8" y="90" width="304" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="hhF-BC-IMo"/>
-                                        <constraint firstAttribute="width" constant="140" id="pe9-1O-3hX"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -77,10 +77,9 @@
                                     <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m1K-K7-Ypz">
-                                    <rect key="frame" x="8" y="166" width="140" height="17"/>
+                                    <rect key="frame" x="8" y="166" width="304" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="140" id="BWD-gD-uHd"/>
                                         <constraint firstAttribute="height" constant="17" id="ZFD-fw-AX4"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
@@ -97,10 +96,9 @@
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vehicle Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H5h-hf-udS">
-                                    <rect key="frame" x="8" y="242" width="140" height="17"/>
+                                    <rect key="frame" x="8" y="242" width="304" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="140" id="X6Q-n1-tG0"/>
                                         <constraint firstAttribute="height" constant="17" id="trU-OO-ooB"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
@@ -117,11 +115,10 @@
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Charge Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LEQ-dq-bRV">
-                                    <rect key="frame" x="8" y="318" width="140" height="17"/>
+                                    <rect key="frame" x="8" y="318" width="304" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="aaH-I8-vlU"/>
-                                        <constraint firstAttribute="width" constant="140" id="bvW-1K-fhB"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -136,19 +133,37 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account Number" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UEE-OH-9iy">
+                                    <rect key="frame" x="8" y="394" width="304" height="17"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="17" id="wM1-DM-ELO"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JGJ-v2-jC5" customClass="FlatTextField">
+                                    <rect key="frame" x="8" y="417" width="304" height="41"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="41" id="UQJ-ws-UEE"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Credit Card" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0n6-Zc-YNm">
-                                    <rect key="frame" x="8" y="394" width="140" height="17"/>
+                                    <rect key="frame" x="8" y="470" width="304" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="NUP-gV-WV8"/>
-                                        <constraint firstAttribute="width" constant="140" id="xUU-dn-iBg"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ncl-SZ-qgo" customClass="FlatCreditCardTextField">
-                                    <rect key="frame" x="8" y="417" width="304" height="41"/>
+                                    <rect key="frame" x="8" y="493" width="304" height="41"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="yNd-Iw-9Ph"/>
@@ -157,18 +172,17 @@
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tip" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f9f-Bd-JUM">
-                                    <rect key="frame" x="8" y="470" width="140" height="17"/>
+                                    <rect key="frame" x="8" y="546" width="304" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="bKp-1H-760"/>
-                                        <constraint firstAttribute="width" constant="140" id="s5a-AI-X4n"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TGv-zj-jdK" customClass="ModalFlatTextField">
-                                    <rect key="frame" x="8" y="493" width="304" height="41"/>
+                                    <rect key="frame" x="8" y="569" width="304" height="41"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="DwY-9Y-D2f"/>
@@ -178,11 +192,15 @@
                                 </textField>
                             </subviews>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="qOe-Cq-18G" secondAttribute="bottom" priority="1" constant="20" id="7Cb-Ut-BnR"/>
+                                <constraint firstAttribute="trailing" secondItem="0n6-Zc-YNm" secondAttribute="trailing" constant="8" id="1FE-sT-iVW"/>
                                 <constraint firstItem="mLf-L5-n69" firstAttribute="top" secondItem="m1K-K7-Ypz" secondAttribute="bottom" constant="6" id="7fM-If-HSc"/>
                                 <constraint firstItem="0n6-Zc-YNm" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="8RC-pe-0qg"/>
                                 <constraint firstItem="qvL-aD-nFd" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="9Be-DK-KaW"/>
                                 <constraint firstItem="Gk7-FK-bNN" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="9sv-vo-YwW"/>
+                                <constraint firstAttribute="trailing" secondItem="m1K-K7-Ypz" secondAttribute="trailing" constant="8" id="9yx-ro-31b"/>
+                                <constraint firstItem="UEE-OH-9iy" firstAttribute="top" secondItem="qOe-Cq-18G" secondAttribute="bottom" constant="12" id="AGn-E2-eqt"/>
+                                <constraint firstAttribute="trailing" secondItem="UEE-OH-9iy" secondAttribute="trailing" constant="8" id="C1P-qA-ZNj"/>
+                                <constraint firstItem="JGJ-v2-jC5" firstAttribute="top" secondItem="UEE-OH-9iy" secondAttribute="bottom" constant="6" id="Cgs-EB-KMf"/>
                                 <constraint firstAttribute="trailing" secondItem="mLf-L5-n69" secondAttribute="trailing" constant="8" id="Eyl-FA-wQG"/>
                                 <constraint firstItem="qvL-aD-nFd" firstAttribute="top" secondItem="o6C-2X-Wpz" secondAttribute="bottom" constant="6" id="FEh-lu-qHZ"/>
                                 <constraint firstItem="1fn-yd-ctg" firstAttribute="top" secondItem="HWN-Pq-yPZ" secondAttribute="bottom" constant="6" id="FoB-q7-AKY"/>
@@ -197,16 +215,25 @@
                                 <constraint firstItem="H5h-hf-udS" firstAttribute="top" secondItem="mLf-L5-n69" secondAttribute="bottom" constant="12" id="NlW-MK-WlF"/>
                                 <constraint firstItem="m1K-K7-Ypz" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="Ofy-Ea-rmw"/>
                                 <constraint firstAttribute="trailing" secondItem="Gk7-FK-bNN" secondAttribute="trailing" constant="8" id="PRr-CG-K0x"/>
+                                <constraint firstAttribute="trailing" secondItem="LEQ-dq-bRV" secondAttribute="trailing" constant="8" id="QRD-wv-TKq"/>
+                                <constraint firstAttribute="trailing" secondItem="JGJ-v2-jC5" secondAttribute="trailing" constant="8" id="S0a-HT-uuc"/>
+                                <constraint firstAttribute="trailing" secondItem="o6C-2X-Wpz" secondAttribute="trailing" constant="8" id="Tl1-dt-H4H"/>
+                                <constraint firstItem="UEE-OH-9iy" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="Tzd-5j-wxf"/>
                                 <constraint firstItem="TGv-zj-jdK" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="V86-NV-oPm"/>
+                                <constraint firstItem="JGJ-v2-jC5" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="VYd-Ub-a5b"/>
+                                <constraint firstItem="f9f-Bd-JUM" firstAttribute="top" secondItem="JGJ-v2-jC5" secondAttribute="bottom" priority="500" constant="12" id="VgP-d5-uCb"/>
                                 <constraint firstItem="LEQ-dq-bRV" firstAttribute="top" secondItem="Gk7-FK-bNN" secondAttribute="bottom" constant="12" id="aM8-Pd-Q6g"/>
+                                <constraint firstAttribute="trailing" secondItem="H5h-hf-udS" secondAttribute="trailing" constant="8" id="cFh-xn-UlV"/>
+                                <constraint firstItem="0n6-Zc-YNm" firstAttribute="top" secondItem="JGJ-v2-jC5" secondAttribute="bottom" constant="12" id="dot-CW-fiH"/>
                                 <constraint firstItem="TGv-zj-jdK" firstAttribute="top" secondItem="f9f-Bd-JUM" secondAttribute="bottom" constant="6" id="eJI-kW-ys9"/>
                                 <constraint firstAttribute="trailing" secondItem="qOe-Cq-18G" secondAttribute="trailing" constant="8" id="gbT-pc-geX"/>
                                 <constraint firstAttribute="bottom" secondItem="TGv-zj-jdK" secondAttribute="bottom" constant="20" id="i9T-uv-CSN"/>
-                                <constraint firstItem="f9f-Bd-JUM" firstAttribute="top" secondItem="qOe-Cq-18G" secondAttribute="bottom" priority="500" constant="92" id="j18-NO-lkm"/>
                                 <constraint firstItem="ncl-SZ-qgo" firstAttribute="top" secondItem="0n6-Zc-YNm" secondAttribute="bottom" constant="6" id="kUA-mP-jJg"/>
                                 <constraint firstAttribute="trailing" secondItem="qvL-aD-nFd" secondAttribute="trailing" constant="8" id="lf9-ex-Ixb"/>
+                                <constraint firstAttribute="bottom" secondItem="JGJ-v2-jC5" secondAttribute="bottom" priority="1" constant="20" id="nLG-lW-4es"/>
+                                <constraint firstAttribute="trailing" secondItem="f9f-Bd-JUM" secondAttribute="trailing" constant="8" id="nQD-Ng-7vz"/>
                                 <constraint firstItem="m1K-K7-Ypz" firstAttribute="top" secondItem="qvL-aD-nFd" secondAttribute="bottom" constant="12" id="pER-6b-WIV"/>
-                                <constraint firstItem="0n6-Zc-YNm" firstAttribute="top" secondItem="qOe-Cq-18G" secondAttribute="bottom" constant="12" id="q5O-33-94M"/>
+                                <constraint firstAttribute="bottom" secondItem="ncl-SZ-qgo" secondAttribute="bottom" priority="500" constant="20" id="pju-57-a57"/>
                                 <constraint firstItem="H5h-hf-udS" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="sFt-ft-Zg8"/>
                                 <constraint firstAttribute="trailing" secondItem="1fn-yd-ctg" secondAttribute="trailing" constant="8" id="tbb-lJ-Cj5"/>
                                 <constraint firstItem="HWN-Pq-yPZ" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="tyH-4y-PGs"/>
@@ -216,6 +243,7 @@
                                 <constraint firstItem="qOe-Cq-18G" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="y75-QR-SrX"/>
                                 <constraint firstItem="LEQ-dq-bRV" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="yOL-Bb-mdC"/>
                                 <constraint firstItem="f9f-Bd-JUM" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="yin-nK-WQu"/>
+                                <constraint firstAttribute="trailing" secondItem="HWN-Pq-yPZ" secondAttribute="trailing" constant="8" id="zrt-L2-Ehw"/>
                             </constraints>
                         </view>
                     </subviews>

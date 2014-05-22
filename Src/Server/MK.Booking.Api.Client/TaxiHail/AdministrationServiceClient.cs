@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 
 #endregion
@@ -97,6 +98,37 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
             var req = string.Format("/settings");
             Client.Post<string>(req, appReq);
+        }
+
+        public string CreateAccountCharge(AccountChargeRequest request)
+        {
+            var req = string.Format("/admin/accountscharge");
+            return Client.Post<string>(req, request);
+        }
+
+        public AccountCharge[]  GetAccountsCharge()
+        {
+            var req = string.Format("/admin/accountscharge");
+            return Client.Get<AccountCharge[]>(req);
+        }
+
+        public AccountCharge GetAccountCharge(string accountNumber)
+        {
+            var req = string.Format("/admin/accountscharge/" + accountNumber);
+            var result = Client.Get<AccountCharge>(req);
+            return result;
+        }
+
+        public void UpdateAccountCharge(AccountChargeRequest request)
+        {
+            var req = string.Format("/admin/accountscharge");
+            Client.Put<string>(req, request);
+        }
+
+        public void DeleteAccountCharge(string accountNumber)
+        {
+            var req = string.Format("/admin/accountscharge/" + accountNumber);
+            Client.Delete<string>(req);
         }
     }
 }
