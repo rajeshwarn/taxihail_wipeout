@@ -21,8 +21,10 @@ using MK.DeploymentService.Properties;
 using MK.DeploymentService.Service;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ServiceStack.Text;
 
 #endregion
+
 
 namespace MK.DeploymentService
 {
@@ -275,7 +277,7 @@ namespace MK.DeploymentService
 
             Log("Done Deploying Server");
 
-            if ( Settings.Default.ReplicationEnabled )
+            if ( !string.IsNullOrWhiteSpace( Settings.Default.ReplicationSharedFolder ))
             {
 
             }
@@ -309,12 +311,43 @@ namespace MK.DeploymentService
             File.WriteAllText(fileSettings, stringBuilder.ToString());
 
 
-            var exeArgs = string.Format("{0} {1} N \"{2}\" \"{3}\"", companyName, _job.Server.SqlServerInstance, string.Format(Settings.Default.SqlConnectionString, companyName ), Settings.Default.SqlConnectionStringMaster );
-            Log("Calling DB tool with : " + exeArgs);
+//            {"CompanyName":"TaxiHailStaging","MkWebConnectionString":"Data Source=CL-T077-082CL;Initial 
+
+//Catalog=TaxiHailStaging;Integrated Security=False;User 
+
+//ID=taxihaildbuser;Password=Mkc1234!;MultipleActiveResultSets=True","MasterConnectionString":"Data Source=CL-T077-082CL;Initial 
+
+//Catalog=master;Integrated Security=True; MultipleActiveResultSets=True","SqlInstanceName":"MSSQL11.MSSQLSERVER","BackupFolder":"\\cl-t077-072cn
+
+//\PreviousVersionBackup","MirroringSharedFolder":"\\10.7.8.20\mirroring_bak","MirrorMasterConnectionString":"Data Source=CL-T078-073CN;Initial 
+
+//Catalog=master;Integrated Security=True; MultipleActiveResultSets=True","MirroringMirrorPartner":"TCP://cl-t077-082cl.mksi-
+
+//iweb.local:5022","MirroringPrincipalPartner":"TCP://cl-t078-073cn.mksi-iweb.local:5022","MirroringWitness":"TCP://cl-t084-202cn.mksi-
+
+//iweb.local:5022"}
+
+
+            var p = new DatabaseInitializerParams
+            {
+                CompanyName = companyName,
+                BackupFolder = Settings.Default.BackupFolder,
+                SqlInstanceName = _job.Server.SqlServerInstance,
+                MkWebConnectionString = string.Format(Settings.Default.ToolSqlConnectionString, companyName),
+                MasterConnectionString = Settings.Default.SqlConnectionStringMaster,
+                MirroringSharedFolder = Settings.Default.MirroringSharedFolder,
+                MirroringMirrorPartner = Settings.Default.MirroringMirrorPartner,
+                MirroringWitness = Settings.Default.MirroringWitness,
+                MirroringPrincipalPartner = Settings.Default.MirroringPrincipalPartner,
+                MirrorMasterConnectionString = Settings.Default.MirrorMasterConnectionString
+            };
+
+            //var exeArgs = string.Format("{0} {1} N \"{2}\" \"{3}\"", companyName, _job.Server.SqlServerInstance, string.Format(Settings.Default.ToolSqlConnectionString, companyName ), Settings.Default.SqlConnectionStringMaster );
+            Log("Calling DB tool with : " + p.ToJson());
             var deployDb =
                 ProcessEx.GetProcess(
                     Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
-                    exeArgs, null, true);
+                    p.ToJson(), null, true);
 
 
             using (var exeProcess = Process.Start(deployDb))
@@ -376,7 +409,7 @@ namespace MK.DeploymentService
 
             
 
-            connSting.Value =string.Format(Settings.Default.SqlConnectionString, companyName );                    
+            connSting.Value =string.Format(Settings.Default.ToolSqlConnectionString, companyName );                    
 
             //log4net comn
             var document = XDocument.Load(targetWeDirectory + "log4net.xml");

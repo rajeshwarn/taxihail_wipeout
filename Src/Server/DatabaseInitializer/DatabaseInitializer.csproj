@@ -169,6 +169,10 @@
     <Compile Include="Sql\DatabaseHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DeploymentServiceTools\DeploymentServiceTools.csproj">
+      <Project>{78a8b275-4004-4586-893b-607ec1f98f26}</Project>
+      <Name>DeploymentServiceTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api\MK.Booking.Api.csproj">
       <Project>{1a931a36-d855-4a7a-ad0f-1b35d76582f3}</Project>
       <Name>MK.Booking.Api</Name>
