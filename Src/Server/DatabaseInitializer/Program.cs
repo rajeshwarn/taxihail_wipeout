@@ -359,15 +359,17 @@ namespace DatabaseInitializer
             Console.WriteLine("args : " + args.JoinBy(" "));
             if (args.Any() && !string.IsNullOrWhiteSpace(args[0]) && args[0].Trim().StartsWith("f:"))
             {
-                var paramFile = args[0].Trim().Substring(2, args[0].Trim().Length - 2);
+                var paramFile =  Path.Combine( AssemblyDirectory , args[0].Trim().Substring(2, args[0].Trim().Length - 2));
+                Console.WriteLine("Reading param file : " + paramFile );
                 if ( !File.Exists(paramFile ))
                 {
                     throw new ApplicationException("Parameteres file cannot be found");
                 }
                 var paramFileContent = File.ReadAllText(paramFile);
 
+                
                 result = ServiceStack.Text.JsonSerializer.DeserializeFromString<DatabaseInitializerParams>(paramFileContent); 
-                Console.WriteLine("sql insance : " + result.SqlInstanceName.ToSafeString());
+                
             }
             else if (args.Length > 0)
             {
