@@ -403,6 +403,7 @@ namespace DatabaseInitializer
                 result.SqlInstanceName = sqlInstanceName;
             }
 
+            
             //Company connection string
             if (string.IsNullOrWhiteSpace(result.MkWebConnectionString) && (args.Length > 3))
             {

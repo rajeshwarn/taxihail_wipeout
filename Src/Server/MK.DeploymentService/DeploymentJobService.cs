@@ -309,23 +309,7 @@ namespace MK.DeploymentService
             var stringBuilder = new StringBuilder();
             jsonSettings.WriteTo(new JsonTextWriter(new StringWriter(stringBuilder)));
             File.WriteAllText(fileSettings, stringBuilder.ToString());
-
-
-//            {"CompanyName":"TaxiHailStaging","MkWebConnectionString":"Data Source=CL-T077-082CL;Initial 
-
-//Catalog=TaxiHailStaging;Integrated Security=False;User 
-
-//ID=taxihaildbuser;Password=Mkc1234!;MultipleActiveResultSets=True","MasterConnectionString":"Data Source=CL-T077-082CL;Initial 
-
-//Catalog=master;Integrated Security=True; MultipleActiveResultSets=True","SqlInstanceName":"MSSQL11.MSSQLSERVER","BackupFolder":"\\cl-t077-072cn
-
-//\PreviousVersionBackup","MirroringSharedFolder":"\\10.7.8.20\mirroring_bak","MirrorMasterConnectionString":"Data Source=CL-T078-073CN;Initial 
-
-//Catalog=master;Integrated Security=True; MultipleActiveResultSets=True","MirroringMirrorPartner":"TCP://cl-t077-082cl.mksi-
-
-//iweb.local:5022","MirroringPrincipalPartner":"TCP://cl-t078-073cn.mksi-iweb.local:5022","MirroringWitness":"TCP://cl-t084-202cn.mksi-
-
-//iweb.local:5022"}
+ 
 
 
             var p = new DatabaseInitializerParams
@@ -411,7 +395,7 @@ namespace MK.DeploymentService
 
             
 
-            connSting.Value =string.Format(Settings.Default.ToolSqlConnectionString, companyName );                    
+            connSting.Value =string.Format(Settings.Default.SiteSqlConnectionString, companyName );                    
 
             //log4net comn
             var document = XDocument.Load(targetWeDirectory + "log4net.xml");
