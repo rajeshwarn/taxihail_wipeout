@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 	{
 		private MonerisTokenizeClient MonerisClient { get; set; }
 
-		public MonerisServiceClient(string url, string sessionId, MonerisClientSettings monerisSettings, string userAgent, ILogger logger) 
+		public MonerisServiceClient(string url, string sessionId, MonerisPaymentSettings monerisSettings, string userAgent, ILogger logger) 
 			: base(url, sessionId, userAgent)
 		{
 			MonerisClient = new MonerisTokenizeClient(monerisSettings, logger);

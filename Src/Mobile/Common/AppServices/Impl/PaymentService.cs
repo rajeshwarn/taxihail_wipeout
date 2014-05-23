@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _packageInfo.UserAgent, null);
 
 				case PaymentMethod.Moneris:
-					return new MonerisServiceClient (_baseUrl, _sessionId, settings.MonerisClientSettings, _packageInfo.UserAgent, _logger);
+                    return new MonerisServiceClient(_baseUrl, _sessionId, settings.MonerisPaymentSettings, _packageInfo.UserAgent, _logger);
 
                 case PaymentMethod.Fake:
                     return new FakePaymentClient();

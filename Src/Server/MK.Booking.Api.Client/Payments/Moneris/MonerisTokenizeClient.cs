@@ -12,12 +12,12 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 {
 	public class MonerisTokenizeClient
 	{
-		private readonly MonerisClientSettings _settings;
+        private readonly MonerisPaymentSettings _settings;
 		private readonly ILogger _logger;
 
 		private readonly string CryptType_SSLEnabledMerchant = "7";
 
-		public MonerisTokenizeClient(MonerisClientSettings settings, ILogger logger)
+        public MonerisTokenizeClient(MonerisPaymentSettings settings, ILogger logger)
 		{
 			_logger = logger;
 			_settings = settings;

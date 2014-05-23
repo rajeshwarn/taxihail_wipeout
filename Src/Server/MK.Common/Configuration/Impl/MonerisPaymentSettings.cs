@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace apcurium.MK.Common.Configuration.Impl
+﻿namespace apcurium.MK.Common.Configuration.Impl
 {
-	public class MonerisClientSettings
+	public class MonerisPaymentSettings
 	{
-		public MonerisClientSettings()
+		public MonerisPaymentSettings()
 		{
 #if DEBUG
 			StoreId = "moneris";

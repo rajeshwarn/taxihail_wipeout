@@ -7,7 +7,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             PaymentMode = PaymentMethod.None;
             CmtPaymentSettings = new CmtPaymentSettings();
             BraintreeClientSettings = new BraintreeClientSettings();
-			MonerisClientSettings = new MonerisClientSettings();
+			MonerisPaymentSettings = new MonerisPaymentSettings();
             PayPalClientSettings = new PayPalClientSettings();
 
             IsPayInTaxiEnabled = false;
@@ -17,7 +17,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         public bool IsPayInTaxiEnabled { get; set; }
         public CmtPaymentSettings CmtPaymentSettings { get; set; }
         public BraintreeClientSettings BraintreeClientSettings { get; set; }
-		public MonerisClientSettings MonerisClientSettings { get; set; }
+        public MonerisPaymentSettings MonerisPaymentSettings { get; set; }
         public PayPalClientSettings PayPalClientSettings { get; set; }
     }
 }

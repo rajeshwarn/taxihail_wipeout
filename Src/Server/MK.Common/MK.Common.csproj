@@ -99,6 +99,7 @@
     <Compile Include="Configuration\Impl\ConfigurationDbContext.cs" />
     <Compile Include="Configuration\Impl\ConfigurationManager.cs" />
     <Compile Include="Configuration\IConfigurationManager.cs" />
+    <Compile Include="Configuration\Impl\MonerisPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\PaymentMethod.cs" />
     <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
     <Compile Include="Configuration\Impl\PayPalSandboxCredentials.cs" />

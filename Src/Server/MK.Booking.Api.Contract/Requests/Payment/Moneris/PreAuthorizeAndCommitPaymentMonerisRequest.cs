@@ -1,11 +1,12 @@
 ﻿using System;
 using ServiceStack.ServiceHost;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment.Moneris
 {
 	[Authenticate]
-	[Route("/payments/braintree/preAuthorizeAndCommitPayment", "POST")]
+	[Route("/payments/moneris/preAuthorizeAndCommitPayment", "POST")]
 	public class PreAuthorizeAndCommitPaymentMonerisRequest : IReturn<CommitPreauthorizedPaymentResponse>
 	{
 		public double Amount { get; set; }
