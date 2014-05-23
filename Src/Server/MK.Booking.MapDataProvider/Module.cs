@@ -14,8 +14,8 @@ namespace apcurium.MK.Booking.MapDataProvider
     {
         public void Init(IUnityContainer container)
         {
-            container.RegisterType<IGeocoder, GoogleApiClient>();
-            container.RegisterType<IPlaceDataProvider, GoogleApiClient>();
+            container.RegisterInstance<IGeocoder>(new GoogleApiClient(container.Resolve<IAppSettings>(), container.Resolve<ILogger>(), null));
+            container.RegisterInstance<IPlaceDataProvider>(new GoogleApiClient(container.Resolve<IAppSettings>(), container.Resolve<ILogger>(), null));
             container.RegisterInstance<IDirectionDataProvider>(new GoogleApiClient(container.Resolve<IAppSettings>(), container.Resolve<ILogger>(), null));
 
         }
