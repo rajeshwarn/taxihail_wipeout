@@ -62,7 +62,15 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			return Client.PostAsync<string>("/payment/ResendConfirmationRequest", new ResendPaymentConfirmationRequest {OrderId = orderId});
 		}
 
-		private bool RequestSuccesful(MonerisTokenizeClient.Receipt receipt, out string message)
+        public static bool TestClient(MonerisPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger)
+        {
+            var cmtPaymentServiceClient = new MonerisTokenizeClient(serverPaymentSettings, logger);
+            var result = cmtPaymentServiceClient.Tokenize(number, date.ToString("yyMM"));
+            string message;
+            return RequestSuccesful(result, out message);
+        }
+
+		private static bool RequestSuccesful(MonerisTokenizeClient.Receipt receipt, out string message)
 		{
 			message = string.Empty;
 			if (!bool.Parse(receipt.GetComplete()) || bool.Parse(receipt.GetTimedOut()))

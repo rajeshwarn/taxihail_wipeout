@@ -5,8 +5,8 @@
 		public MonerisPaymentSettings()
 		{
 #if DEBUG
-			StoreId = "moneris";
-			ApiToken = "hurgle";
+            StoreId = "store5";
+            ApiToken = "yesguy";
 			SandboxHost = "esqa.moneris.com";
 			BaseHost = "esqa.moneris.com";
 			IsSandbox = true;

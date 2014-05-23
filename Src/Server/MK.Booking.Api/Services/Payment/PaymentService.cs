@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
+using apcurium.MK.Booking.Api.Client.Payments.Moneris;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Commands;
@@ -160,6 +161,35 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     {
                         IsSuccessful = true,
                         Message = "CMT Settings are valid\n"
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message += e.Message + "\n";
+            }
+
+            return response;
+        }
+
+        public TestServerPaymentSettingsResponse Post(TestMonerisSettingsRequest request)
+        {
+            var response = new TestServerPaymentSettingsResponse
+            {
+                IsSuccessful = false,
+                Message = "Moneris Settings are invalid\n"
+            };
+
+            try
+            {
+                var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Moneris).Visa;
+                var result = MonerisServiceClient.TestClient(request.MonerisPaymentSettings, cc.Number, cc.ExpirationDate, _logger);
+                if (result)
+                {
+                    return new TestServerPaymentSettingsResponse
+                    {
+                        IsSuccessful = true,
+                        Message = "Moneris Settings are valid\n"
                     };
                 }
             }

@@ -23,6 +23,13 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			_settings = settings;
 		}
 
+	    public Receipt Tokenize(string cardNumber, string expirationDate)
+	    {
+            var tokenizeCommand = new ResAddCC(cardNumber, expirationDate, CryptType_SSLEnabledMerchant);
+            var request = new HttpsPostRequest(_settings.Host, _settings.StoreId, _settings.ApiToken, tokenizeCommand, _logger);
+            return request.GetReceipt();
+	    }
+
 		public async Task<Receipt> TokenizeAsync(string cardNumber, string expirationDate)
 		{
 			var tokenizeCommand = new ResAddCC(cardNumber, expirationDate, CryptType_SSLEnabledMerchant);
@@ -89,7 +96,34 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 
 			public Receipt GetReceipt()
 			{
-				return this.receiptObj;
+                byte[] bytes = Encoding.ASCII.GetBytes(this.toXML());
+                try
+                {
+                    HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.CreateDefault(new Uri(this.url));
+                    httpWebRequest.Method = "POST";
+                    httpWebRequest.ContentType = "application/x-www-form-urlencoded";
+                    if (this.proxy != null)
+                    {
+                        httpWebRequest.Proxy = (IWebProxy)this.proxy;
+                        httpWebRequest.Credentials = this.proxy.Credentials;
+                    }
+                    httpWebRequest.ContentLength = (long)bytes.Length;
+                    httpWebRequest.UserAgent = "DOTNET - 2.5.3 - Resolver";
+                    Stream requestStream = ((WebRequest)httpWebRequest).GetRequestStream();
+                    requestStream.Write(bytes, 0, bytes.Length);
+                    requestStream.Flush();
+                    Stream responseStream = httpWebRequest.GetResponse().GetResponseStream();
+                    this.receiptObj = new Receipt(responseStream);
+                    requestStream.Close();
+                    responseStream.Close();
+                }
+                catch (Exception ex)
+                {
+                    this.receiptObj = new Receipt();
+                    Console.WriteLine("Message: " + ex.Message);
+                }
+
+			    return this.receiptObj;
 			}
 
 			public string toXML()

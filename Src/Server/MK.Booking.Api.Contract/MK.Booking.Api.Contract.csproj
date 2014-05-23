@@ -123,6 +123,7 @@
     <Compile Include="Requests\Payment\CancelPayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\Payment\CompletePayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\Payment\TestCmtSettingsRequest.cs" />
+    <Compile Include="Requests\Payment\TestMonerisSettingsRequest.cs" />
     <Compile Include="Requests\Payment\TestPayPalProductionSettingsRequest.cs" />
     <Compile Include="Requests\Payment\TestPayPalSandBoxSettingsRequest.cs" />
     <Compile Include="Requests\Payment\TestServerPaymentSettingsResponse.cs" />

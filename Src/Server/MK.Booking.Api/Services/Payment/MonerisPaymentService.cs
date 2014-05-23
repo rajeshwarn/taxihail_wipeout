@@ -147,6 +147,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     if (isSuccessful)
                     {
                         authorizationCode = commitReceipt.GetAuthCode();
+                        var commitTransactionId = commitReceipt.GetTxnNumber();
 
                         //send information to IBS
                         try
@@ -177,7 +178,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             //cancel moneris transaction
                             try
                             {
-                                var correctionCommand = new PurchaseCorrection(request.OrderId.ToString(), transactionId, CryptType_SSLEnabledMerchant);
+                                var correctionCommand = new PurchaseCorrection(request.OrderId.ToString(), commitTransactionId, CryptType_SSLEnabledMerchant);
                                 var correctionRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, correctionCommand);
                                 var correctionReceipt = correctionRequest.GetReceipt();
 
