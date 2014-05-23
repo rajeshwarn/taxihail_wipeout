@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Contract.Requests.Payment.Moneris;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 {
@@ -15,10 +16,10 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 	{
 		private MonerisTokenizeClient MonerisClient { get; set; }
 
-		public MonerisServiceClient(string url, string sessionId, MonerisClientSettings monerisSettings, string userAgent) 
+		public MonerisServiceClient(string url, string sessionId, MonerisClientSettings monerisSettings, string userAgent, ILogger logger) 
 			: base(url, sessionId, userAgent)
 		{
-			MonerisClient = new MonerisTokenizeClient(monerisSettings);
+			MonerisClient = new MonerisTokenizeClient(monerisSettings, logger);
 		}
 
 		public Task<TokenizedCreditCardResponse> Tokenize (string creditCardNumber, DateTime expiryDate, string cvv)

@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 		public async Task<Receipt> TokenizeAsync(string cardNumber, string expirationDate)
 		{
 			var tokenizeCommand = new ResAddCC(cardNumber, expirationDate, CryptType_SSLEnabledMerchant);
-			var request = new HttpsPostRequest(_settings.Host, _settings.StoreId, _settings.ApiToken, tokenizeCommand);
+			var request = new HttpsPostRequest(_settings.Host, _settings.StoreId, _settings.ApiToken, tokenizeCommand, _logger);
 			return await request.GetReceiptAsync ();
 		}
 
@@ -35,35 +35,19 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			private Receipt receiptObj = new Receipt();
 			private WebProxy proxy = (WebProxy)null;
 			private Transaction transaction;
+			private ILogger logger;
 			private string storeId;
 			private string apiToken;
 			private string status;
 			private string url;
 
-			public HttpsPostRequest(string host, string store, string apiTok, Transaction t)
+			public HttpsPostRequest(string host, string store, string apiTok, Transaction t, ILogger logger)
 			{
 				this.storeId = store;
 				this.apiToken = apiTok;
 				this.transaction = t;
 				this.url = "https://" + host + ":443/gateway2/servlet/MpgRequest";
-			}
-
-			public HttpsPostRequest(string host, string store, string apiTok, string statusCheck, Transaction t)
-			{
-				this.storeId = store;
-				this.apiToken = apiTok;
-				this.status = statusCheck;
-				this.transaction = t;
-				this.url = "https://" + host + ":443/gateway2/servlet/MpgRequest";
-			}
-
-			public HttpsPostRequest(string host, string store, string apiTok, Transaction t, WebProxy prxy)
-			{
-				this.proxy = prxy;
-				this.storeId = store;
-				this.apiToken = apiTok;
-				this.transaction = t;
-				this.url = "https://" + host + ":443/gateway2/servlet/MpgRequest";
+				this.logger = logger;
 			}
 
 			public async Task<Receipt> GetReceiptAsync()
@@ -97,7 +81,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 				catch (Exception ex)
 				{
 					this.receiptObj = new Receipt ();
-					_logger.LogError ("Message: " + ex.Message);
+					logger.LogError (ex);
 				}
 
 				return this.receiptObj;

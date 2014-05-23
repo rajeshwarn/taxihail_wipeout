@@ -8,6 +8,10 @@ using apcurium.MK.Booking.Api.Client.Payments.Fake;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Api.Client.Payments.Moneris;
+using apcurium.MK.Common.Diagnostic;
+
+
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
@@ -18,17 +22,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class PaymentService : BaseService, IPaymentService
     {
-		readonly ConfigurationClientService _serviceClient;
-		readonly ICacheService _cache;
-		readonly IPackageInfo _packageInfo;
+		private readonly ConfigurationClientService _serviceClient;
+		private readonly ICacheService _cache;
+		private readonly IPackageInfo _packageInfo;
+		private readonly ILogger _logger;
 		private static ClientPaymentSettings _cachedSettings;
 
         string _baseUrl;
         string _sessionId;
         private const string PayedCacheSuffix = "_Payed";
 
-		public PaymentService(string url, string sessionId, ConfigurationClientService serviceClient, ICacheService cache, IPackageInfo  packageInfo)
+		public PaymentService(string url, string sessionId, ConfigurationClientService serviceClient, ICacheService cache, IPackageInfo packageInfo, ILogger logger)
         {
+			_logger = logger;
 			_packageInfo = packageInfo;
             _baseUrl = url;
             _sessionId = sessionId;
@@ -81,10 +87,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 case PaymentMethod.RideLinqCmt:
                 case PaymentMethod.Cmt:
-				return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _packageInfo.UserAgent, null);
+					return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _packageInfo.UserAgent, null);
+
+				case PaymentMethod.Moneris:
+					return new MonerisServiceClient (_baseUrl, _sessionId, settings.MonerisClientSettings, _packageInfo.UserAgent, _logger);
 
                 case PaymentMethod.Fake:
                     return new FakePaymentClient();
+
                 default:
                     throw new Exception(onErrorMessage);
             }
