@@ -163,7 +163,7 @@ namespace DatabaseInitializer
                     //migrate events
                     var migrator = container.Resolve<IEventsMigrator>();
 
-                    migrator.Do(CurrentVersion);
+                    migrator.Do();
                 }
 
                 //Save settings so that next calls to referenceDataService has the IBS Url
