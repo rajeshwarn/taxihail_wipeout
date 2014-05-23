@@ -1,9 +1,3 @@
-#region
-
-
-
-#endregion
-
 namespace apcurium.MK.Common.Configuration.Impl
 {
     public class ClientPaymentSettings
@@ -13,7 +7,9 @@ namespace apcurium.MK.Common.Configuration.Impl
             PaymentMode = PaymentMethod.None;
             CmtPaymentSettings = new CmtPaymentSettings();
             BraintreeClientSettings = new BraintreeClientSettings();
+			MonerisClientSettings = new MonerisClientSettings();
             PayPalClientSettings = new PayPalClientSettings();
+
             IsPayInTaxiEnabled = false;
         }
 
@@ -21,7 +17,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         public bool IsPayInTaxiEnabled { get; set; }
         public CmtPaymentSettings CmtPaymentSettings { get; set; }
         public BraintreeClientSettings BraintreeClientSettings { get; set; }
-
+		public MonerisClientSettings MonerisClientSettings { get; set; }
         public PayPalClientSettings PayPalClientSettings { get; set; }
     }
 }

@@ -113,6 +113,7 @@
     <Compile Include="Configuration\IAppSettings.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Entity\AccountChargeQuestion.cs" />
+    <Compile Include="Configuration\Impl\MonerisClientSettings.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

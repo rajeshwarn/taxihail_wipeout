@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             var encryptedExpirationDate = braintree.Encrypt(expiryDate.ToString("MM/yyyy", CultureInfo.InvariantCulture));
             var encryptedCvv = braintree.Encrypt(cvv);
 
-            var result = await Client.PostAsync(new TokenizeCreditCardBraintreeRequest
+			var result = await Client.PostAsync(new TokenizeCreditCardBraintreeRequest
             {
                 EncryptedCreditCardNumber = encryptedNumber,
                 EncryptedExpirationDate = encryptedExpirationDate,
@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
         public Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit(string cardToken, double amount,
             double meterAmount, double tipAmount, Guid orderId)
         {
-            return Client.PostAsync(new PreAuthorizeAndCommitPaymentBraintreeRequest
+			return Client.PostAsync(new PreAuthorizeAndCommitPaymentBraintreeRequest
             {
                 Amount = (decimal) amount,
                 MeterAmount = (decimal) meterAmount,

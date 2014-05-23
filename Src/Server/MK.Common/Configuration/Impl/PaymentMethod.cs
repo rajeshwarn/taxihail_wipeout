@@ -6,6 +6,7 @@
         Cmt,
         RideLinqCmt,
         Braintree,
+		Moneris,
         Fake
     }
 }
