@@ -357,9 +357,16 @@ namespace DatabaseInitializer
             var result = new DatabaseInitializerParams();
 
             Console.WriteLine("args : " + args.JoinBy(" "));
-            if (args.Any() && !string.IsNullOrWhiteSpace(args[0]) && args[0].Trim().StartsWith("{"))
+            if (args.Any() && !string.IsNullOrWhiteSpace(args[0]) && args[0].Trim().StartsWith("f:"))
             {
-                result = args.JoinBy( " " ).To<DatabaseInitializerParams>();
+                var paramFile = args[0].Trim().Substring(2, args[0].Trim().Length - 2);
+                if ( !File.Exists(paramFile ))
+                {
+                    throw new ApplicationException("Parameteres file cannot be found");
+                }
+                var paramFileContent = File.ReadAllText(paramFile);
+
+                result = ServiceStack.Text.JsonSerializer.DeserializeFromString<DatabaseInitializerParams>(paramFileContent); 
                 Console.WriteLine("sql insance : " + result.SqlInstanceName.ToSafeString());
             }
             else if (args.Length > 0)

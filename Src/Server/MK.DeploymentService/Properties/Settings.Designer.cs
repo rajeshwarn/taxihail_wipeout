@@ -43,30 +43,10 @@ namespace MK.DeploymentService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Dev")]
-        public string ServerName {
-            get {
-                return ((string)(this["ServerName"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://customer.taxihail.com/api/")]
         public string CustomerPortalUrl {
             get {
                 return ((string)(this["CustomerPortalUrl"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=CL-T077-082CL;Failover Partner=CL-T078-073CN;Initial Catalog={0};Inte" +
-            "grated Security=False;User ID=taxihaildbuser;Password=Mkc1234!;MultipleActiveRes" +
-            "ultSets=True")]
-        public string ToolSqlConnectionString {
-            get {
-                return ((string)(this["ToolSqlConnectionString"]));
             }
         }
         
@@ -112,8 +92,8 @@ namespace MK.DeploymentService.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=CL-T077-082CL;Initial Catalog={0};Integrated Security=True; MultipleA" +
-            "ctiveResultSets=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.;Initial Catalog=master;Integrated Security=True; MultipleActiveResu" +
+            "ltSets=True")]
         public string SqlConnectionStringMaster {
             get {
                 return ((string)(this["SqlConnectionStringMaster"]));
@@ -126,15 +106,6 @@ namespace MK.DeploymentService.Properties {
         public string AppPoolFormat {
             get {
                 return ((string)(this["AppPoolFormat"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string BackupFolder {
-            get {
-                return ((string)(this["BackupFolder"]));
             }
         }
         
@@ -185,8 +156,36 @@ namespace MK.DeploymentService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=CL-T077-082CL;Initial Catalog={0};Integrated Security=False;User ID=t" +
-            "axihaildbuser;Password=Mkc1234!;MultipleActiveResultSets=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Production")]
+        public string ServerName {
+            get {
+                return ((string)(this["ServerName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultS" +
+            "ets=True")]
+        public string ToolSqlConnectionString {
+            get {
+                return ((string)(this["ToolSqlConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\\\\ALEX_WPC\\Shared")]
+        public string BackupFolder {
+            get {
+                return ((string)(this["BackupFolder"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultS" +
+            "ets=True")]
         public string SiteSqlConnectionString {
             get {
                 return ((string)(this["SiteSqlConnectionString"]));
