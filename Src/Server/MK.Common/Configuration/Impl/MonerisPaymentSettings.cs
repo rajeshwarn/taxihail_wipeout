@@ -15,8 +15,9 @@
 
 		public bool IsSandbox { get; set; }
 
-		private string BaseHost { get; set; }
-		private string SandboxHost { get; set; }
+        public string BaseHost { get; set; }
+        public string SandboxHost { get; set; }
+
 		public string Host
 		{
 			get { return IsSandbox 
