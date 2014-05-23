@@ -355,14 +355,19 @@ namespace DatabaseInitializer
         private static DatabaseInitializerParams GetParamsFromArgs(string[] args)
         {
             var result = new DatabaseInitializerParams();
+
+            Console.WriteLine("args : " + args.JoinBy(" "));
             if (args.Any() && !string.IsNullOrWhiteSpace(args[0]) && args[0].Trim().StartsWith("{"))
             {
                 result = args.JoinBy( " " ).To<DatabaseInitializerParams>();
+                Console.WriteLine("sql insance : " + result.SqlInstanceName.ToSafeString());
             }
             else if (args.Length > 0)
             {
                 result.CompanyName = args[0];
             }
+
+            
 
             result.CompanyName = string.IsNullOrWhiteSpace(result.CompanyName) ? "MKWebDev" : result.CompanyName;
 

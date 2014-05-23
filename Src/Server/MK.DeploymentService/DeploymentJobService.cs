@@ -343,11 +343,11 @@ namespace MK.DeploymentService
             };
 
             //var exeArgs = string.Format("{0} {1} N \"{2}\" \"{3}\"", companyName, _job.Server.SqlServerInstance, string.Format(Settings.Default.ToolSqlConnectionString, companyName ), Settings.Default.SqlConnectionStringMaster );
-            Log("Calling DB tool with : " + p.ToJson());
+            Log("Calling DB tool with : " + p.ToJson().Replace(@"\\",@"\"));
             var deployDb =
                 ProcessEx.GetProcess(
                     Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
-                    p.ToJson(), null, true);
+                    p.ToJson().Replace(@"\\",@"\"), null, true);
 
 
             using (var exeProcess = Process.Start(deployDb))

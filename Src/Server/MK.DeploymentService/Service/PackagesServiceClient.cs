@@ -103,9 +103,9 @@ namespace MK.DeploymentService.Service
 // ReSharper disable once RedundantAssignment
             var url = Settings.Default.CustomerPortalUrl;
 
-#if DEBUG
-            url = "http://localhost:2287/api/";
-#endif
+//#if DEBUG
+//            url = "http://localhost:2287/api/";
+//#endif
             return url;
         }
     }
