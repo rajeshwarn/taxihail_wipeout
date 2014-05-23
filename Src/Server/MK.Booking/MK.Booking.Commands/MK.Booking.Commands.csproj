@@ -51,12 +51,14 @@
     <Compile Include="AddDefaultFavoriteAddress.cs" />
     <Compile Include="AddFavoriteAddress.cs" />
     <Compile Include="AddPopularAddress.cs" />
+    <Compile Include="AddUpdateAccountCharge.cs" />
     <Compile Include="CancelOrder.cs" />
     <Compile Include="AddRatingType.cs" />
     <Compile Include="CancelPayPalExpressCheckoutPayment.cs" />
     <Compile Include="CaptureCreditCardPayment.cs" />
     <Compile Include="ChangeOrderStatus.cs" />
     <Compile Include="CompletePayPalExpressCheckoutPayment.cs" />
+    <Compile Include="DeleteAccountCharge.cs" />
     <Compile Include="DeleteAllCreditCards.cs" />
     <Compile Include="InitiateCreditCardPayment.cs" />
     <Compile Include="InitiatePayPalExpressCheckoutPayment.cs" />

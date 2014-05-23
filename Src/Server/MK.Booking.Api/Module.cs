@@ -140,6 +140,7 @@ namespace apcurium.MK.Booking.Api
 
             Mapper.CreateMap<PopularAddress, AddPopularAddress>();
             Mapper.CreateMap<PopularAddress, UpdatePopularAddress>();
+            
         }
     }
 

@@ -11,8 +11,6 @@
     <AssemblyName>MK.Booking.Api.Contract.Android</AssemblyName>
     <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -118,6 +116,7 @@
     <Compile Include="Resources\AvailableVehicle.cs" />
     <Compile Include="Requests\AvailableVehicles.cs" />
     <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
+    <Compile Include="Resources\AccountCharge.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

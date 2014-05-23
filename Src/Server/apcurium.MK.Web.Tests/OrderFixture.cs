@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
@@ -56,8 +59,10 @@ namespace apcurium.MK.Web.Tests
                             Passengers = 6,
                             NumberOfTaxi = 1,
                             Name = "Joe Smith",
-                            LargeBags = 1
-                        }
+                            LargeBags = 1,
+                            AccountNumber = "123"
+                        },
+                    ClientLanguageCode = "fr"
                 };
 
             var details = await sut.CreateOrder(order);
@@ -69,6 +74,48 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(orderDetails.DropOffAddress.FullAddress, order.DropOffAddress.FullAddress);
             Assert.AreEqual(6, orderDetails.Settings.Passengers);
             Assert.AreEqual(1, orderDetails.Settings.LargeBags);
+            Assert.AreEqual("123", orderDetails.Settings.AccountNumber);
+
+        }
+
+        [Test]
+        public async void create_order_with_user_location()
+        {
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var order = new CreateOrder
+            {
+                Id = Guid.NewGuid(),
+                UserLatitude = 46.50643,
+                UserLongitude = -74.554052,
+                PickupAddress = TestAddresses.GetAddress1(),
+                PickupDate = DateTime.Now,
+                DropOffAddress = TestAddresses.GetAddress2(),
+                Estimate = new CreateOrder.RideEstimate
+                {
+                    Price = 10,
+                    Distance = 3
+                },
+                Settings = new BookingSettings
+                {
+                    ChargeTypeId = 99,
+                    VehicleTypeId = 1,
+                    ProviderId = Provider.MobileKnowledgeProviderId,
+                    Phone = "514-555-12129",
+                    Passengers = 6,
+                    NumberOfTaxi = 1,
+                    Name = "Joe Smith",
+                    LargeBags = 1
+                }
+            };
+
+            var details = await sut.CreateOrder(order);
+
+            using (var context = new BookingDbContext(ConfigurationManager.ConnectionStrings["MKWebDev"].ConnectionString))
+            {
+                var infoGPS = context.Find<OrderUserGpsDetail>(order.Id);
+                Assert.AreEqual(order.UserLatitude, infoGPS.UserLatitude);
+                Assert.AreEqual(order.UserLongitude, infoGPS.UserLongitude);
+            }
         }
 
         [Test]
@@ -85,7 +132,8 @@ namespace apcurium.MK.Web.Tests
                 {
                     Price = 10,
                     Distance = 3
-                }
+                },
+                ClientLanguageCode = "fr"
             };
 
             Assert.Throws<WebServiceException>(async () => await sut.CreateOrder(order), "CreateOrder_SettingsRequired");
@@ -128,7 +176,8 @@ namespace apcurium.MK.Web.Tests
                             NumberOfTaxi = 1,
                             Name = "Joe Smith",
                             LargeBags = 1
-                        }
+                        },
+                    ClientLanguageCode = "fr"
                 };
             sut.CreateOrder(order).Wait();
         }

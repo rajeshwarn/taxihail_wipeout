@@ -83,6 +83,7 @@ namespace apcurium.MK.Booking.Api.Security
 
                     _commandBus.Send(new SendAccountConfirmationEmail
                     {
+                        ClientLanguageCode = account.Language,
                         EmailAddress = account.Email,
                         ConfirmationUrl =
                             new Uri(root +

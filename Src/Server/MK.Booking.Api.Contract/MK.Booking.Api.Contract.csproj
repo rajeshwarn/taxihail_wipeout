@@ -80,6 +80,7 @@
     <Compile Include="ContractDocument.cs" />
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requests\AccountChargeRequest.cs" />
     <Compile Include="Requests\AddressHistoryRequest.cs" />
     <Compile Include="Requests\AccountOrderListRequest.cs" />
     <Compile Include="BaseDTO.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="Requests\UpdatePassword.cs" />
     <Compile Include="Requests\ValidateOrderRequest.cs" />
     <Compile Include="Resources\Account.cs" />
+    <Compile Include="Resources\AccountCharge.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
     <Compile Include="Resources\AvailableVehicle.cs" />

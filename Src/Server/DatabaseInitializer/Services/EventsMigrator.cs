@@ -31,7 +31,7 @@ namespace DatabaseInitializer.Services
             _loggger = LogManager.GetLogger("DatabaseInitializer");
         }
 
-        public void Do(string version)
+        public void Do()
         {
          
                 using (var context = _contextFactory.Invoke())

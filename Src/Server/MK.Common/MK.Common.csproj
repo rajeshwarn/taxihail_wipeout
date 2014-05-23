@@ -111,6 +111,7 @@
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="DummyConfigurationManager.cs" />
+    <Compile Include="Entity\AccountChargeQuestion.cs" />
     <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\BookingSettings.cs" />
     <Compile Include="Entity\DirectionSetting.cs" />

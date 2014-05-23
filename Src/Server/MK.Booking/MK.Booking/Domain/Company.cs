@@ -71,6 +71,9 @@ namespace apcurium.MK.Booking.Domain
 
             Handles<TermsAndConditionsUpdated>(NoAction);
             Handles<TermsAndConditionsRetriggered>(NoAction);
+
+            Handles<AccountChargeAddedUpdated>(NoAction);
+            Handles<AccountChargeDeleted>(NoAction);
         }
 
         private void OnPaymentSettingUpdated(PaymentSettingUpdated obj)
@@ -432,6 +435,25 @@ namespace apcurium.MK.Booking.Domain
         public void RetriggerTermsAndConditions()
         {
             Update(new TermsAndConditionsRetriggered());
+        }
+
+        public void AddUpdateAccountCharge(Guid accountChargeId, string number, string name, AccountChargeQuestion[] questions)
+        {
+            Update(new AccountChargeAddedUpdated
+            {
+                Name = name,
+                Number = number,
+                AccountChargeId = accountChargeId,
+                Questions = questions
+            });
+        }
+
+        public void DeleteAccountCharge(Guid accountChargeId)
+        {
+            Update(new AccountChargeDeleted
+            {
+                AccountChargeId = accountChargeId
+            });
         }
     }
 }

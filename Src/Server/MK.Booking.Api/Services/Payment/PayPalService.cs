@@ -118,11 +118,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
             var transactionId = service.DoExpressCheckoutPayment(payment.PayPalToken, request.PayerId, payment.Amount);
 
-            var session = this.GetSession();
-            var account = _accountDao.FindById(new Guid(session.UserAuthId));
-
             var orderDetail = _orderDao.FindById(payment.OrderId);
-           
+            var account = _accountDao.FindById(orderDetail.AccountId);
+
             //send information to IBS
             try
             {

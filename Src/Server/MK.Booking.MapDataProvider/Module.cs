@@ -2,6 +2,8 @@
 
 
 using apcurium.MK.Booking.MapDataProvider.Google;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using Microsoft.Practices.Unity;
 
 #endregion
@@ -12,9 +14,9 @@ namespace apcurium.MK.Booking.MapDataProvider
     {
         public void Init(IUnityContainer container)
         {
-            container.RegisterType<IGeocoder, GoogleApiClient>();
-            container.RegisterType<IPlaceDataProvider, GoogleApiClient>();
-            container.RegisterType<IDirectionDataProvider, GoogleApiClient>();
+            container.RegisterInstance<IGeocoder>(new GoogleApiClient(container.Resolve<IAppSettings>(), container.Resolve<ILogger>(), null));
+            container.RegisterInstance<IPlaceDataProvider>(new GoogleApiClient(container.Resolve<IAppSettings>(), container.Resolve<ILogger>(), null));
+            container.RegisterInstance<IDirectionDataProvider>(new GoogleApiClient(container.Resolve<IAppSettings>(), container.Resolve<ILogger>(), null));
 
         }
     }

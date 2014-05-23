@@ -64,6 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			FlatButtonStyle.Main.ApplyTo (btnSignIn);
             btnSignIn.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
 
+			btnForgotPassword.SetTitle (Localize.GetValue ("LoginForgotPassword"), UIControlState.Normal);
 			btnSignIn.SetTitle (Localize.GetValue ("SignIn"), UIControlState.Normal);
 			btnSignUp.SetTitle (Localize.GetValue ("Register"), UIControlState.Normal);
             btnSignUp.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);

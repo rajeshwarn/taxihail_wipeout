@@ -26,6 +26,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			base.LayoutSubviews ();
 
 			TextLabel.SetX(5);
+
+			// we can't use UITextAlignment.Natural on iOS6 apparently 
+			// (NSInvalidArgumentException Reason: textAlignment does not accept NSTextAlignmentNatural)
+			// we detect arabic, since it's currently the only RTL language we support
+			if (this.Services ().Localize.IsRightToLeft)
+			{
+				TextLabel.TextAlignment = UITextAlignment.Right;
+			}
 		}
 
 		public bool HideBottomBar

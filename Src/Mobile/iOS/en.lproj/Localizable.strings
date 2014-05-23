@@ -474,3 +474,11 @@
 "UpdatedTermsAndConditionsAcceptButton"="Accept";
 "View_UpdatedTermsAndConditions"="New Terms and Conditions";
 "PaymentErrorMessage"="Details: {0}";
+"Order"="Order";
+"RideSettingsAccountNumber"="Account Number";
+"AccountPaymentNumberRequiredTitle"="Account Number required";
+"Error_AccountPaymentTitle"="Error";
+"Error_AccountPaymentMessage"="Invalid account number";
+"View_InitializeOrderForAccountPayment"="Please answer these questions";
+"AccountPaymentNumberRequiredMessage"="Please enter a valid account number";
+"Error_AccountPaymentQuestionRequiredMessage"="You must answer every questions to continue";

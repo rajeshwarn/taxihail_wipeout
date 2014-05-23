@@ -42,8 +42,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_accountService = accountService;
 		}
 
-        
-
         public Task<OrderValidationResult> ValidateOrder (CreateOrder order)
         {
 			return Mvx.Resolve<OrderServiceClient>().ValidateOrder(order);
@@ -57,6 +55,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<OrderStatusDetail> CreateOrder (CreateOrder order)
         {
+			order.ClientLanguageCode = _localize.CurrentLanguage;
 			var orderDetail = await UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
 
 			if (orderDetail.IBSOrderId.HasValue

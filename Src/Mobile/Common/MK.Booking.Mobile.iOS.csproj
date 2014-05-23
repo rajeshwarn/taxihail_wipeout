@@ -328,6 +328,9 @@
     <Compile Include="ViewModels\IHaveViewModel.cs" />
     <Compile Include="BindingConverter\HasValueToVisibilityConverter.cs" />
     <Compile Include="Extensions\ObservableCollectionExtentions.cs" />
+    <Compile Include="ViewModels\Orders\InitializeOrderForAccountPaymentViewModel.cs" />
+    <Compile Include="AppServices\IAccountPaymentService.cs" />
+    <Compile Include="AppServices\Impl\AccountPaymentService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
