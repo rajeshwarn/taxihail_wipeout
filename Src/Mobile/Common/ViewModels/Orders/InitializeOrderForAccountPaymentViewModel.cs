@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 							var result = await _orderWorkflowService.ConfirmOrder();
 
-							ShowViewModel<BookingStatusViewModel>(new
+								ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new
 							{
 								order = result.Item1.ToJson(),
 								orderStatus = result.Item2.ToJson()
