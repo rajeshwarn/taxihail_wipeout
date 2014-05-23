@@ -45,7 +45,17 @@
                     this.collection.add(model);
                     TaxiHail.app.navigate('accounts', { trigger: true });
 
-                }, this)
+                }, this),
+                error: function (model, xhr, options) {
+                    this.$(':submit').button('reset');
+
+                    var alert = new TaxiHail.AlertView({
+                        message: TaxiHail.localize(xhr.statusText),
+                        type: 'error'
+                    });
+                    alert.on('ok', alert.remove, alert);
+                    this.$('.errors').html(alert.render().el);
+                }
             });
         },
         

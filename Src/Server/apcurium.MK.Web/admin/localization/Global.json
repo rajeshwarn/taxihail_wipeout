@@ -36,6 +36,8 @@
 	"error.cityRequired" : "City is required",
 	"error.zipCodeRequired" : "Zip code is required",
 	"error.stateRequired" : "State is required",
+	"error.accountNumberRequired" : "Account Rider Number is required",
+	"error.accountNameRequired" : "Account Rider Name is required",
 	"Rule_InvalidPriority" : "Invalid priority ( maybe already used ? )",
 	"Rule_DuplicateName" : "Name already used",
 	"Loading" : "Loading",
@@ -51,7 +53,8 @@
 	"sendPushNotificationSuccess" : "Message has correctly been sent." ,
 	"sendPushNotificationErrorNoDevice" : "Error: Couldn't send the message to the user, no device in user account",		
 	"sendPushNotificationErrorNoAccount" : "Error: Couldn't send the message, no account with this email address",		
-	"sendPushNotificationErrorHandleDirectory" : "Error: Message couldn't be sent, please retry",			
+	"sendPushNotificationErrorHandleDirectory" : "Error: Message couldn't be sent, please retry",	
+    "AccountCharge_AccountAlreadyExisting" :  "Error: an existing account has already the same account ride number",		
 	"Default": "Default",
 
 	"/******* Begin settings Aliases *******/":"",
