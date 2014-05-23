@@ -767,6 +767,7 @@
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="googleplayservicesgingerbread">
+      <InstallationInProgress>True</InstallationInProgress>
       <Version>16.0.0.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
