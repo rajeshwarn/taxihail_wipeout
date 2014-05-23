@@ -6,24 +6,21 @@ using System.Xml;
 using System.Collections;
 using apcurium.MK.Common.Configuration.Impl;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 {
 	public class MonerisTokenizeClient
 	{
 		private readonly MonerisClientSettings _settings;
+		private readonly ILogger _logger;
+
 		private readonly string CryptType_SSLEnabledMerchant = "7";
 
-		public MonerisTokenizeClient(MonerisClientSettings settings)
+		public MonerisTokenizeClient(MonerisClientSettings settings, ILogger logger)
 		{
+			_logger = logger;
 			_settings = settings;
-		}
-
-		public Receipt Tokenize(string cardNumber, string expirationDate)
-		{
-			var tokenizeCommand = new ResAddCC(cardNumber, expirationDate, CryptType_SSLEnabledMerchant);
-			var request = new HttpsPostRequest(_settings.Host, _settings.StoreId, _settings.ApiToken, tokenizeCommand);
-			return request.GetReceipt();
 		}
 
 		public async Task<Receipt> TokenizeAsync(string cardNumber, string expirationDate)
@@ -33,7 +30,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			return await request.GetReceiptAsync ();
 		}
 
-		public class HttpsPostRequest
+		private class HttpsPostRequest
 		{
 			private Receipt receiptObj = new Receipt();
 			private WebProxy proxy = (WebProxy)null;
@@ -49,7 +46,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 				this.apiToken = apiTok;
 				this.transaction = t;
 				this.url = "https://" + host + ":443/gateway2/servlet/MpgRequest";
-//				this.SendRequest();
 			}
 
 			public HttpsPostRequest(string host, string store, string apiTok, string statusCheck, Transaction t)
@@ -59,7 +55,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 				this.status = statusCheck;
 				this.transaction = t;
 				this.url = "https://" + host + ":443/gateway2/servlet/MpgRequest";
-//				this.SendRequest();
 			}
 
 			public HttpsPostRequest(string host, string store, string apiTok, Transaction t, WebProxy prxy)
@@ -69,37 +64,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 				this.apiToken = apiTok;
 				this.transaction = t;
 				this.url = "https://" + host + ":443/gateway2/servlet/MpgRequest";
-//				this.SendRequest();
-			}
-
-			public void SendRequest()
-			{
-				byte[] bytes = Encoding.ASCII.GetBytes(this.toXML());
-				try
-				{
-					HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.CreateDefault(new Uri(this.url));
-					httpWebRequest.Method = "POST";
-					httpWebRequest.ContentType = "application/x-www-form-urlencoded";
-					if (this.proxy != null)
-					{
-						httpWebRequest.Proxy = (IWebProxy)this.proxy;
-						httpWebRequest.Credentials = this.proxy.Credentials;
-					}
-					httpWebRequest.ContentLength = (long)bytes.Length;
-					httpWebRequest.UserAgent = "DOTNET - 2.5.3 - Resolver";
-					Stream requestStream = ((WebRequest)httpWebRequest).GetRequestStream();
-					requestStream.Write(bytes, 0, bytes.Length);
-					requestStream.Flush();
-					Stream responseStream = httpWebRequest.GetResponse().GetResponseStream();
-					this.receiptObj = new Receipt(responseStream);
-					requestStream.Close();
-					responseStream.Close();
-				}
-				catch (Exception ex)
-				{
-					this.receiptObj = new Receipt();
-					Console.WriteLine("Message: " + ex.Message);
-				}
 			}
 
 			public async Task<Receipt> GetReceiptAsync()
@@ -117,20 +81,23 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 					}
 					httpWebRequest.ContentLength = (long)bytes.Length;
 					httpWebRequest.UserAgent = "DOTNET - 2.5.3 - Resolver";
-					Stream requestStream = await ((WebRequest)httpWebRequest).GetRequestStreamAsync();
-					requestStream.Write(bytes, 0, bytes.Length);
-					requestStream.Flush();
 
-					var response = await httpWebRequest.GetResponseAsync();
-					var responseStream = response.GetResponseStream();
-					this.receiptObj = new Receipt(responseStream);
-					requestStream.Close();
-					responseStream.Close();
+					using(var requestStream = await ((WebRequest)httpWebRequest).GetRequestStreamAsync())
+					{
+						requestStream.Write(bytes, 0, bytes.Length);
+						requestStream.Flush();
+
+						using(var response = await httpWebRequest.GetResponseAsync())
+						{
+							var responseStream = response.GetResponseStream();
+							this.receiptObj = new Receipt(responseStream);
+						}
+					}
 				}
 				catch (Exception ex)
 				{
 					this.receiptObj = new Receipt ();
-					Console.WriteLine("Message: " + ex.Message);
+					_logger.LogError ("Message: " + ex.Message);
 				}
 
 				return this.receiptObj;
@@ -152,6 +119,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 					return ((object)new StringBuilder(str + "<request><store_id>" + this.storeId + "</store_id><api_token>" + this.apiToken + "</api_token>" + this.transaction.toXML() + "</request>")).ToString();
 			}
 		}
+
 		public class Receipt
 		{
 			private Stream inStream = (Stream)null;
