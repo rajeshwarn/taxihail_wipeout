@@ -271,10 +271,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			var a1 = (await addresses)
 				.Where(predicate)
-				.Select(f => new AddressViewModel(f, f.FriendlyName.HasValue() ? AddressType.Favorites : AddressType.History) { IsSearchResult = true });
+				.Select(f => new AddressViewModel(f, AddressType.Favorites) { IsSearchResult = true });
 			var a2 = (await historicAddresses)
 				.Where(predicate)
-				.Select(f => new AddressViewModel(f, f.FriendlyName.HasValue() ? AddressType.Favorites : AddressType.History) { IsSearchResult = true });
+				.Select(f => new AddressViewModel(f, AddressType.History) { IsSearchResult = true });
 
 			return a1.Concat(a2).ToArray(); 
 		}
