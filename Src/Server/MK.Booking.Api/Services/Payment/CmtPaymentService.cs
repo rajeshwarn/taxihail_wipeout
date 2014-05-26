@@ -242,13 +242,16 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         }
                     }
 
-                    //payment completed
-                    _commandBus.Send(new CaptureCreditCardPayment
+                    if (isSuccessful)
                     {
-                        PaymentId = paymentId,
-                        AuthorizationCode = authorizationCode,
-						Provider = PaymentProvider.Cmt,
-                    });
+                        //payment completed
+                        _commandBus.Send(new CaptureCreditCardPayment
+                        {
+                            PaymentId = paymentId,
+                            AuthorizationCode = authorizationCode,
+                            Provider = PaymentProvider.Cmt,
+                        });
+                    }
                 }
 
                 return new CommitPreauthorizedPaymentResponse
