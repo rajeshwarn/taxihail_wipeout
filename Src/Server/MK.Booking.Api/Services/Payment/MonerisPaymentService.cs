@@ -187,7 +187,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                                 if (!correctionSuccess)
                                 {
-                                    message = message + monerisMessage;
+                                    message = string.Format("{0} {1}", message, monerisMessage);
                                     throw new Exception("Moneris PurchaseCorrection failed");
                                 }
 
