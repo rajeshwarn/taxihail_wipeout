@@ -19,6 +19,7 @@ using apcurium.MK.Common.Enumeration;
 using Cirrious.MvvmCross.ViewModels;
 using PushSharp.Client;
 using ServiceStack.Text;
+using Android.Support.V4.App;
 
 [assembly: Permission(Name = "@PACKAGE_NAME@.permission.C2D_MESSAGE")]
 //, ProtectionLevel = Android.Content.PM.Protection.Signature)]
@@ -164,41 +165,44 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             Log.Error(PushHandlerBroadcastReceiver.Tag, "GCM Error: " + errorId);
         }
 
-        private void CreateNotification(string title, string desc, Guid orderId)
-        {
-            //Create notification
-            var notificationManager = GetSystemService(NotificationService) as NotificationManager;
+		static int notificationIntentcounter = 26; //to prevent exiting app to resend 0, we start at an arbitrary number
 
-            //Create an intent to show ui
-            var uiIntent = new Intent(this, typeof (SplashActivity));
-            var request = new MvxViewModelRequest(
-                typeof (MvxNullViewModel),
+		private void CreateNotification(string title, string desc, Guid orderId)
+		{
+			//Create notification
+			var notificationManager = GetSystemService(NotificationService) as NotificationManager;
+
+			//Create an intent to show ui
+			var uiIntent = new Intent(this, typeof (SplashActivity));
+			var request = new MvxViewModelRequest(
+				typeof (MvxNullViewModel),
 				null,
 				null,
-                MvxRequestedBy.UserAction);
-            var launchData = request.ToJson();
+				MvxRequestedBy.UserAction);
+			var launchData = request.ToJson();
 
-            uiIntent.PutExtra("MvxLaunchData", launchData);
-            uiIntent.PutExtra("orderId", orderId.ToString());
+			uiIntent.PutExtra("MvxLaunchData", launchData);
+			uiIntent.PutExtra("orderId", orderId.ToString());
 
+			var contentIntent = PendingIntent.GetActivity(this, notificationIntentcounter++,
+				uiIntent, 0);
 
-            //Create the notification
-            var notification = new Notification(Resource.Drawable.notification_icon, title);
+			var builder =
+				new NotificationCompat.Builder(this)
+					.SetSmallIcon(Resource.Drawable.notification_icon)
+					.SetDefaults((int)NotificationDefaults.All)
+					.SetAutoCancel(true)
+					.SetContentTitle(title)
+					.SetContentText(desc);
 
-            //Auto cancel will remove the notification once the user touches it
-            notification.Flags = NotificationFlags.AutoCancel;
-            notification.Defaults = NotificationDefaults.All;
+			builder.SetContentIntent(contentIntent);
 
-            //Set the notification info
-            //we use the pending intent, passing our ui intent over which will get called
-            //when the notification is tapped.
-            notification.SetLatestEventInfo(this,
-                title,
-                desc,
-                PendingIntent.GetActivity(this, 0, uiIntent, 0));
+			var notification = builder.Build ();
 
-            //Show the notification
-            if (notificationManager != null) notificationManager.Notify(1, notification);
-        }
+			//Show the notification
+			if (notificationManager != null) {
+				notificationManager.Notify (1, notification);
+			}
+		}
     }
 }
