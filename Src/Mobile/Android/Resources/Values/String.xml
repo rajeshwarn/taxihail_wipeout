@@ -483,5 +483,7 @@
   <string name="Error_AccountPaymentTitle">Error</string>
   <string name="Error_AccountPaymentMessage">Invalid account ride number</string>
   <string name="AccountPaymentNumberRequiredMessage">Please enter a valid account ride number</string>
-  <string name="Error_AccountPaymentQuestionRequiredMessage">You must answer every questions marked as required to continue</string>
+  <string name="Error_AccountPaymentQuestionRequiredMessage">You must answer every questions marked as required to continue.</string>
+  <string name="AccountPaymentQuestionsPlaceHolder">{0} characters maximum</string>
+  <string name="AccountPaymentQuestionsRequired">(required)</string>
 </resources>
