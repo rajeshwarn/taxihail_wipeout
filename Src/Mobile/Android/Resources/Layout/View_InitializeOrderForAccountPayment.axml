@@ -54,7 +54,7 @@
                         android:orientation="vertical"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        local:MvxBind="Visibility Questions[0].IsEnabled, Converter=Visibility">
+                        local:MvxBind="Visibility Questions[0].Model.IsEnabled, Converter=Visibility">
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -62,19 +62,19 @@
                             android:paddingBottom="5dip"
                             android:text="Question #1"
                             style="@style/BlackTextLabel"
-                            local:MvxBind="Text Questions[0].Question" />
+                            local:MvxBind="Text Questions[0].QuestionLabel" />
                         <EditText
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:singleLine="true"
-                            local:MvxBind="Text Questions[0].Answer" />
+                            local:MvxBind="Text Questions[0].Model.Answer" />
                     </LinearLayout>
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        local:MvxBind="Visibility Questions[1].IsEnabled, Converter=Visibility">
+                        local:MvxBind="Visibility Questions[1].Model.IsEnabled, Converter=Visibility">
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -82,19 +82,19 @@
                             android:paddingBottom="5dip"
                             android:text="Question #2"
                             style="@style/BlackTextLabel"
-                            local:MvxBind="Text Questions[1].Question" />
+                            local:MvxBind="Text Questions[1].QuestionLabel" />
                         <EditText
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:singleLine="true"
-                            local:MvxBind="Text Questions[1].Answer" />
+                            local:MvxBind="Text Questions[1].Model.Answer" />
                     </LinearLayout>
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        local:MvxBind="Visibility Questions[2].IsEnabled, Converter=Visibility">
+                        local:MvxBind="Visibility Questions[2].Model.IsEnabled, Converter=Visibility">
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -102,19 +102,19 @@
                             android:paddingBottom="5dip"
                             android:text="Question #3"
                             style="@style/BlackTextLabel"
-                            local:MvxBind="Text Questions[2].Question" />
+                            local:MvxBind="Text Questions[2].QuestionLabel" />
                         <EditText
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:singleLine="true"
-                            local:MvxBind="Text Questions[2].Answer" />
+                            local:MvxBind="Text Questions[2].Model.Answer" />
                     </LinearLayout>
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        local:MvxBind="Visibility Questions[3].IsEnabled, Converter=Visibility">
+                        local:MvxBind="Visibility Questions[3].Model.IsEnabled, Converter=Visibility">
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -122,19 +122,19 @@
                             android:paddingBottom="5dip"
                             android:text="Question #4"
                             style="@style/BlackTextLabel"
-                            local:MvxBind="Text Questions[3].Question" />
+                            local:MvxBind="Text Questions[3].QuestionLabel" />
                         <EditText
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:singleLine="true"
-                            local:MvxBind="Text Questions[3].Answer" />
+                            local:MvxBind="Text Questions[3].Model.Answer" />
                     </LinearLayout>
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        local:MvxBind="Visibility Questions[4].IsEnabled, Converter=Visibility">
+                        local:MvxBind="Visibility Questions[4].Model.IsEnabled, Converter=Visibility">
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -142,19 +142,19 @@
                             android:paddingBottom="5dip"
                             android:text="Question #5"
                             style="@style/BlackTextLabel"
-                            local:MvxBind="Text Questions[4].Question" />
+                            local:MvxBind="Text Questions[4].QuestionLabel" />
                         <EditText
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:singleLine="true"
-                            local:MvxBind="Text Questions[4].Answer" />
+                            local:MvxBind="Text Questions[4].Model.Answer" />
                     </LinearLayout>
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        local:MvxBind="Visibility Questions[5].IsEnabled, Converter=Visibility">
+                        local:MvxBind="Visibility Questions[5].Model.IsEnabled, Converter=Visibility">
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
                             android:paddingBottom="5dip"
                             android:text="Question #6"
                             style="@style/BlackTextLabel"
-                            local:MvxBind="Text Questions[5].Question" />
+                            local:MvxBind="Text Questions[5].QuestionLabel" />
                         <EditText
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
@@ -174,7 +174,7 @@
                         android:orientation="vertical"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        local:MvxBind="Visibility Questions[6].IsEnabled, Converter=Visibility">
+                        local:MvxBind="Visibility Questions[6].Model.IsEnabled, Converter=Visibility">
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -182,7 +182,7 @@
                             android:paddingBottom="5dip"
                             android:text="Question #7"
                             style="@style/BlackTextLabel"
-                            local:MvxBind="Text Questions[6].Question" />
+                            local:MvxBind="Text Questions[6].QuestionLabel" />
                         <EditText
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
@@ -194,7 +194,7 @@
                         android:orientation="vertical"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        local:MvxBind="Visibility Questions[7].IsEnabled, Converter=Visibility">
+                        local:MvxBind="Visibility Questions[7].Model.IsEnabled, Converter=Visibility">
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -202,13 +202,13 @@
                             android:paddingBottom="5dip"
                             android:text="Question #8"
                             style="@style/BlackTextLabel"
-                            local:MvxBind="Text Questions[7].Question" />
+                            local:MvxBind="Text Questions[7].QuestionLabel" />
                         <EditText
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:singleLine="true"
-                            local:MvxBind="Text Questions[7].Answer" />
+                            local:MvxBind="Text Questions[7].Model.Answer" />
                     </LinearLayout>
                     <Button
                         style="@style/ButtonActionGreenStyle"
