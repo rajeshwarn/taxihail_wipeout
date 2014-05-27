@@ -463,7 +463,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public bool ValidateAndSaveAccountAnswers(AccountChargeQuestion[] questionsAndAnswers)
 		{
-			if (questionsAndAnswers.Any (x => x.IsEnabled && string.IsNullOrEmpty (x.Answer)))
+			if (questionsAndAnswers.Any (x => x.IsEnabled
+										&& x.IsRequired
+										&& string.IsNullOrEmpty (x.Answer)))
 			{
 				return false;
 			}
