@@ -61,6 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			{
 				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[0].QuestionLabel);
 				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[0].Model.Answer);
+				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[0].QuestionPlaceholder);
 				i++;
 			}
 

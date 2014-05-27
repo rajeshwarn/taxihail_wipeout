@@ -31,7 +31,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return string.Format ("{0} {1}",
 					Model.Question,
-					Model.IsRequired ? "(required)" : string.Empty);
+					Model.IsRequired ? "required" : string.Empty);
+			}
+		}
+
+		public string QuestionPlaceholder
+		{
+			get{
+				return Model.MaxLength.HasValue ? 
+					string.Format ("{0} characters maximum", Model.MaxLength)
+						: string.Empty;
 			}
 		}
 	}
