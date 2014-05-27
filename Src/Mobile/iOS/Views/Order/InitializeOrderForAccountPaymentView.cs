@@ -62,6 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[0].QuestionLabel);
 				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[0].Model.Answer);
 				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[0].QuestionPlaceholder);
+				set.Bind (GetTuple(i).Item3).For (v => v.MaxLength).To (vm => vm.Questions[0].Model.MaxLength);
 				i++;
 			}
 
@@ -69,6 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			{
 				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[1].QuestionLabel);
 				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[1].Model.Answer);
+				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[1].QuestionPlaceholder);
 				i++;
 			}
 
@@ -76,6 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			{
 				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[2].QuestionLabel);
 				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[2].Model.Answer);
+				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[2].QuestionPlaceholder);
 				i++;
 			}
 
@@ -83,6 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			{
 				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[3].QuestionLabel);
 				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[3].Model.Answer);
+				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[3].QuestionPlaceholder);
 				i++;
 			}
 
@@ -90,6 +94,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			{
 				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[4].QuestionLabel);
 				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[4].Model.Answer);
+				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[4].QuestionPlaceholder);
 				i++;
 			}
 
@@ -97,6 +102,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			{
 				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[5].QuestionLabel);
 				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[5].Model.Answer);
+				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[5].QuestionPlaceholder);
 				i++;
 			}
 
@@ -104,6 +110,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			{
 				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[6].QuestionLabel);
 				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[6].Model.Answer);
+				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[6].QuestionPlaceholder);
 				i++;
 			}
 
@@ -111,6 +118,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			{
 				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[7].QuestionLabel);
 				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[7].Model.Answer);
+				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[7].QuestionPlaceholder);
 				i++;
 			}
 

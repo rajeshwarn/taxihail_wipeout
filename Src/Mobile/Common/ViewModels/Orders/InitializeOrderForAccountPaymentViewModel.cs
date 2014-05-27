@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		public async void Init()
 		{
 			var questions = await _orderWorkflowService.GetAccountPaymentQuestions ();
-			questions [0].MaxLength = 24;
+			questions [0].MaxLength = 5;
 			Questions = questions.Select(q => new AccountChargeQuestionViewModel(q)).ToList ();
 
 		}

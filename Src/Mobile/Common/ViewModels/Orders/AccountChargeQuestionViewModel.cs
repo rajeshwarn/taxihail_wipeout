@@ -13,7 +13,7 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class AccountChargeQuestionViewModel
+	public class AccountChargeQuestionViewModel : BaseViewModel
 	{
 		public AccountChargeQuestionViewModel (AccountChargeQuestion model)
 		{
@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return string.Format ("{0} {1}",
 					Model.Question,
-					Model.IsRequired ? "required" : string.Empty);
+					Model.IsRequired ? this.Services().Localize["AccountPaymentQuestionsRequired"] : string.Empty);
 			}
 		}
 
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get{
 				return Model.MaxLength.HasValue ? 
-					string.Format ("{0} characters maximum", Model.MaxLength)
+					string.Format (this.Services().Localize["AccountPaymentQuestionsPlaceHolder"], Model.MaxLength)
 						: string.Empty;
 			}
 		}

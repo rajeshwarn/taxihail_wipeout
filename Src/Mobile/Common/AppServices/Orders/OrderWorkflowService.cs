@@ -470,6 +470,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				return false;
 			}
 
+			if (questionsAndAnswers.Any(x => x.IsEnabled
+				&& x.MaxLength != null
+				&& !string.IsNullOrEmpty(x.Answer)
+				&& x.Answer.Length > x.MaxLength))
+			{
+				return false;
+			}
+
 			_accountPaymentQuestions.OnNext (questionsAndAnswers);
 
 			return true;

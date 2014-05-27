@@ -481,4 +481,6 @@
 "Error_AccountPaymentMessage"="Invalid account ride number";
 "View_InitializeOrderForAccountPayment"="Please answer these questions";
 "AccountPaymentNumberRequiredMessage"="Please enter a valid account ride number";
-"Error_AccountPaymentQuestionRequiredMessage"="You must answer every questions marked as required to continue";
+"Error_AccountPaymentQuestionRequiredMessage"="You must answer every questions marked as required to continue.";
+"AccountPaymentQuestionsPlaceHolder"="{0} characters maximum";
+"AccountPaymentQuestionsRequired"="(required)";
