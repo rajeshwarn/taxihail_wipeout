@@ -29,7 +29,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			base.OnViewStarted (firstTime);
 			if (firstTime) {
 				var questions = await _orderWorkflowService.GetAccountPaymentQuestions ();
-				questions [0].MaxLength = 5;
 				Questions = questions.Select (q => new AccountChargeQuestionViewModel (q)).ToList ();
 			}
 		}
