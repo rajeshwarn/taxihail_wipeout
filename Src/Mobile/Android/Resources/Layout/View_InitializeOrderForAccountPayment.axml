@@ -64,7 +64,7 @@
                             style="@style/BlackTextLabel"
                             local:MvxBind="Text Questions[0].QuestionLabel" />
                         <EditText
-                            android:name="editQuestion0"
+                            android:id="@+id/editQuestion0"
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
@@ -85,7 +85,7 @@
                             style="@style/BlackTextLabel"
                             local:MvxBind="Text Questions[1].QuestionLabel" />
                         <EditText
-                            android:name="editQuestion1"
+                            android:id="@+id/editQuestion1"
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
@@ -106,7 +106,7 @@
                             style="@style/BlackTextLabel"
                             local:MvxBind="Text Questions[2].QuestionLabel" />
                         <EditText
-                            android:name="editQuestion2"
+                            android:id="@+id/editQuestion2"
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
@@ -127,7 +127,7 @@
                             style="@style/BlackTextLabel"
                             local:MvxBind="Text Questions[3].QuestionLabel" />
                         <EditText
-                            android:name="editQuestion3"
+                            android:id="@+id/editQuestion3"
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
@@ -148,7 +148,7 @@
                             style="@style/BlackTextLabel"
                             local:MvxBind="Text Questions[4].QuestionLabel" />
                         <EditText
-                            android:name="editQuestion4"
+                            android:id="@+id/editQuestion4"
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
@@ -169,7 +169,7 @@
                             style="@style/BlackTextLabel"
                             local:MvxBind="Text Questions[5].QuestionLabel" />
                         <EditText
-                            android:name="editQuestion5"
+                            android:id="@+id/editQuestion5"
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
@@ -190,7 +190,7 @@
                             style="@style/BlackTextLabel"
                             local:MvxBind="Text Questions[6].QuestionLabel" />
                         <EditText
-                            android:name="editQuestion6"
+                            android:id="@+id/editQuestion6"
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
@@ -211,7 +211,7 @@
                             style="@style/BlackTextLabel"
                             local:MvxBind="Text Questions[7].QuestionLabel" />
                         <EditText
-                            android:name="editQuestion7"
+                            android:id="@+id/editQuestion7"
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"

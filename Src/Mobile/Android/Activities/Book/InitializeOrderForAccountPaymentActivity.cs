@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 						if(ViewModel.Questions[i].Model.IsEnabled
 							&& ViewModel.Questions[i].Model.MaxLength.HasValue)
 						{
-							var resID = BaseContext.Resources.GetIdentifier("editQuestions" + i, "layout", BaseContext.PackageName);
+							var resID = BaseContext.Resources.GetIdentifier("editQuestion" + i, "id", BaseContext.PackageName);
 							var editText = FindViewById<EditText>(resID);
 							editText.SetFilters(new [] {new Android.Text.InputFilterLengthFilter(ViewModel.Questions[i].Model.MaxLength.Value)});
 						}
