@@ -41,7 +41,8 @@
             for (var i = 0; i < arrayLength; i++) {
                 model.get('questions')[i] = {
                     question: model.get('questionFields')[i],
-                    isRequired: model.get('questionIsRequiredFields' + i) == 'on'
+                    isRequired: model.get('questionIsRequiredFields' + i) == 'on',
+                    maxLength: model.get('questionMaxLengthFields')[i]
                 };
             }
 
