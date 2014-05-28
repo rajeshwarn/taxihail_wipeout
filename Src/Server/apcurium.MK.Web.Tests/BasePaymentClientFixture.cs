@@ -165,7 +165,7 @@ namespace apcurium.MK.Web.Tests
             
             var response = await client.PreAuthorizeAndCommit(token, amount, meter, tip, orderId);
             Assert.False(response.IsSuccessfull);
-            Assert.AreEqual("ibs failed the transaction has been cancelled.", response.Message);
+            Assert.AreEqual("ibs failed the Transaction has been cancelled.", response.Message);
         }
 
         [Test]
