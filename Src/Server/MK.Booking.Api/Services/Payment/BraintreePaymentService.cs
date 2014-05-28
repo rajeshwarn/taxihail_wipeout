@@ -219,11 +219,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                                             : string.Format("transaction {0} status unkonw, can't cancel it", transactionId));
                                 }
 
-								message = message + " the transaction has been cancelled.";
+								message = message + " The transaction has been cancelled.";
                             }
                             catch (Exception ex)
                             {
-                                _logger.LogMessage("can't cancel braintree transaction");
+                                _logger.LogMessage("Can't cancel Braintree transaction");
                                 _logger.LogError(ex);
                                 message = message + ex.Message;
                                 //can't cancel transaction, send a command to log
