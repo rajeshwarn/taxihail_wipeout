@@ -226,11 +226,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                                 throw new Exception("Cannot cancel cmt transaction");
                             }
 
-							message = message + " the transaction has been cancelled.";
+							message = message + " The transaction has been cancelled.";
                         }
                         catch (Exception ex)
                         {
-                            _logger.LogMessage("can't cancel cmt transaction");
+                            _logger.LogMessage("Can't cancel CMT transaction");
                             _logger.LogError(ex);
                             message = message + ex.Message;
                             //can't cancel transaction, send a command to log
