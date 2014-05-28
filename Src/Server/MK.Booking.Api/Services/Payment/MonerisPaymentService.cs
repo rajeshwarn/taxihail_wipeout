@@ -191,11 +191,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                                     throw new Exception("Moneris PurchaseCorrection failed");
                                 }
 
-                                message = message + " the transaction has been cancelled.";
+                                message = message + " The transaction has been cancelled.";
                             }
                             catch (Exception ex)
                             {
-                                _logger.LogMessage("can't cancel moneris transaction");
+                                _logger.LogMessage("Can't cancel moneris transaction");
                                 _logger.LogError(ex);
                                 message = message + ex.Message;
                                 //can't cancel transaction, send a command to log
