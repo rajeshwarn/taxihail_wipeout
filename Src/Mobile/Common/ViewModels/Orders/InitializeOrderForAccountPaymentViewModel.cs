@@ -24,15 +24,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_phone = phone;
 		}
 
-		public async void Init()
+		public async override void OnViewStarted (bool firstTime)
 		{
-			var questions = await _orderWorkflowService.GetAccountPaymentQuestions ();
-			Questions = questions.ToList ();
+			base.OnViewStarted (firstTime);
+			if (firstTime) {
+				var questions = await _orderWorkflowService.GetAccountPaymentQuestions ();
+				Questions = questions.Select (q => new AccountChargeQuestionViewModel (q)).ToList ();
+			}
 		}
 
 		// the use of list is important here for the binding (doesn't seem to work with an array)
-		private List<AccountChargeQuestion> _questions;
-		public List<AccountChargeQuestion> Questions
+		private List<AccountChargeQuestionViewModel> _questions;
+		public List<AccountChargeQuestionViewModel> Questions
 		{ 
 			get { return _questions; }
 			set
@@ -52,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					{
 						using(this.Services().Message.ShowProgress())
 						{
-							var questionValidationResult = _orderWorkflowService.ValidateAndSaveAccountAnswers(Questions.ToArray());
+							var questionValidationResult = _orderWorkflowService.ValidateAndSaveAccountAnswers(Questions.Select(x => x.Model).ToArray());
 							if(!questionValidationResult)
 							{
 								await this.Services().Message.ShowMessage(

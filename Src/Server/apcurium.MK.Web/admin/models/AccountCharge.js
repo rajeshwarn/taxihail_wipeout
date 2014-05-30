@@ -39,7 +39,11 @@
             var arrayLength = model.get('questionFields').length;
             model.set('questions', []);
             for (var i = 0; i < arrayLength; i++) {
-                model.get('questions')[i] = { question: model.get('questionFields')[i] };
+                model.get('questions')[i] = {
+                    question: model.get('questionFields')[i],
+                    isRequired: model.get('questionIsRequiredFields' + i) == 'on',
+                    maxLength: model.get('questionMaxLengthFields')[i]
+                };
             }
 
             params.data = JSON.stringify(model);

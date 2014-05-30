@@ -18,5 +18,9 @@ namespace apcurium.MK.Common.Entity
 		public string Answer { get; set; }
 
 		public bool IsEnabled { get { return Question.HasValue(); } }
+
+	    public bool IsRequired { get; set; }
+
+		public int? MaxLength { get; set; }
 	}
 }

@@ -21,54 +21,66 @@
         <br/>
         <h4 style="text-align: left">{{localize "Prompts"}}</h4>
 
-        <div class="control-group">
-            <label class="control-label" >{{localize "Prompt #1"}}</label>
-            <div class="controls">
-                <input type="text" name="questionFields" value="{{questions.[0].question}}" class='input-block-level'>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">{{localize "Prompt #2"}}</label>
-            <div class="controls">
-                <input type="text" name="questionFields" value="{{questions.[1].question}}" class='input-block-level'>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">{{localize "Prompt #3"}}</label>
-            <div class="controls">
-                <input type="text" name="questionFields" value="{{questions.[2].question}}" class='input-block-level'>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">{{localize "Prompt #4"}}</label>
-            <div class="controls">
-                <input type="text" name="questionFields" value="{{questions.[3].question}}" class='input-block-level'>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">{{localize "Prompt #5"}}</label>
-            <div class="controls">
-                <input type="text" name="questionFields" value="{{questions.[4].question}}" class='input-block-level'>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">{{localize "Prompt #6"}}</label>
-            <div class="controls">
-                <input type="text" name="questionFields" value="{{questions.[5].question}}" class='input-block-level'>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">{{localize "Prompt #7"}}</label>
-            <div class="controls">
-                <input type="text" name="questionFields" value="{{questions.[6].question}}" class='input-block-level'>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">{{localize "Prompt #8"}}</label>
-            <div class="controls">
-                <input type="text" name="questionFields" value="{{questions.[7].question}}" class='input-block-level'>
-            </div>
-        </div>
+        <table class="table">            
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th style="width: 266px;">Prompt</th>
+                    <th>Required</th>
+                    <th>Max. Length</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td><input type="text" name="questionFields" value="{{questions.[0].question}}" /> </td>
+                    <td><input type="checkbox" name="questionIsRequiredFields0" {{#if questions.[0].isRequired}}checked{{/if}}/></td>
+                    <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[0].maxLength}}" />  </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><input type="text" name="questionFields" value="{{questions.[1].question}}" /> </td>
+                    <td><input type="checkbox" name="questionIsRequiredFields1" {{#if questions.[1].isRequired}}checked{{/if}}/></td>
+                    <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[1].maxLength}}" />  </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><input type="text" name="questionFields" value="{{questions.[2].question}}" /> </td>
+                    <td><input type="checkbox" name="questionIsRequiredFields2" {{#if questions.[2].isRequired}}checked{{/if}}/></td>
+                    <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[2].maxLength}}" />  </td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><input type="text" name="questionFields" value="{{questions.[3].question}}" /> </td>
+                    <td><input type="checkbox" name="questionIsRequiredFields3" {{#if questions.[3].isRequired}}checked{{/if}}/></td>
+                    <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[3].maxLength}}" />  </td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><input type="text" name="questionFields" value="{{questions.[4].question}}" /> </td>
+                    <td><input type="checkbox" name="questionIsRequiredFields4" {{#if questions.[4].isRequired}}checked{{/if}}/></td>
+                    <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[4].maxLength}}" />  </td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td><input type="text" name="questionFields" value="{{questions.[5].question}}" /> </td>
+                    <td><input type="checkbox" name="questionIsRequiredFields5" {{#if questions.[5].isRequired}}checked{{/if}}/></td>
+                    <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[5].maxLength}}" />  </td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td><input type="text" name="questionFields" value="{{questions.[6].question}}" /> </td>
+                    <td><input type="checkbox" name="questionIsRequiredFields6" {{#if questions.[6].isRequired}}checked{{/if}}/></td>
+                    <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[6].maxLength}}" />  </td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td><input type="text" name="questionFields" value="{{questions.[7].question}}" /> </td>
+                    <td><input type="checkbox" name="questionIsRequiredFields7" {{#if questions.[7].isRequired}}checked{{/if}}/></td>
+                    <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[7].maxLength}}" />  </td>
+                </tr>
+            </thead>
+        </table>
+
+        
         
         <div class="control-group btn-right-alignment" >
           <button type='submit' class='btn btn-primary span' data-loading-text="{{localize 'Loading'}}">{{localize "Save"}}</button>

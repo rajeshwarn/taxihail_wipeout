@@ -57,59 +57,68 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 			var i = 0;
 
-			if (ViewModel.Questions[0].IsEnabled)
+			if (ViewModel.Questions[0].Model.IsEnabled)
 			{
-				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[0].Question);
-				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[0].Answer);
+				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[0].QuestionLabel);
+				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[0].Model.Answer);
+				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[0].QuestionPlaceholder);
+				set.Bind (GetTuple(i).Item3).For (v => v.MaxLength).To (vm => vm.Questions[0].Model.MaxLength);
 				i++;
 			}
 
-			if (ViewModel.Questions[1].IsEnabled)
+			if (ViewModel.Questions[1].Model.IsEnabled)
 			{
-				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[1].Question);
-				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[1].Answer);
+				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[1].QuestionLabel);
+				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[1].Model.Answer);
+				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[1].QuestionPlaceholder);
 				i++;
 			}
 
-			if (ViewModel.Questions[2].IsEnabled)
+			if (ViewModel.Questions[2].Model.IsEnabled)
 			{
-				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[2].Question);
-				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[2].Answer);
+				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[2].QuestionLabel);
+				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[2].Model.Answer);
+				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[2].QuestionPlaceholder);
 				i++;
 			}
 
-			if (ViewModel.Questions[3].IsEnabled)
+			if (ViewModel.Questions[3].Model.IsEnabled)
 			{
-				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[3].Question);
-				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[3].Answer);
+				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[3].QuestionLabel);
+				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[3].Model.Answer);
+				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[3].QuestionPlaceholder);
 				i++;
 			}
 
-			if (ViewModel.Questions[4].IsEnabled)
+			if (ViewModel.Questions[4].Model.IsEnabled)
 			{
-				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[4].Question);
-				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[4].Answer);
+				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[4].QuestionLabel);
+				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[4].Model.Answer);
+				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[4].QuestionPlaceholder);
 				i++;
 			}
 
-			if (ViewModel.Questions[5].IsEnabled)
+			if (ViewModel.Questions[5].Model.IsEnabled)
 			{
-				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[5].Question);
-				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[5].Answer);
+				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[5].QuestionLabel);
+				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[5].Model.Answer);
+				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[5].QuestionPlaceholder);
 				i++;
 			}
 
-			if (ViewModel.Questions[6].IsEnabled)
+			if (ViewModel.Questions[6].Model.IsEnabled)
 			{
-				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[6].Question);
-				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[6].Answer);
+				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[6].QuestionLabel);
+				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[6].Model.Answer);
+				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[6].QuestionPlaceholder);
 				i++;
 			}
 
-			if (ViewModel.Questions[7].IsEnabled)
+			if (ViewModel.Questions[7].Model.IsEnabled)
 			{
-				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[7].Question);
-				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[7].Answer);
+				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[7].QuestionLabel);
+				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[7].Model.Answer);
+				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[7].QuestionPlaceholder);
 				i++;
 			}
 
