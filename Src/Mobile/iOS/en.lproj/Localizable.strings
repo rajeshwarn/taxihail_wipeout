@@ -475,10 +475,10 @@
 "View_UpdatedTermsAndConditions"="New Terms and Conditions";
 "PaymentErrorMessage"="Details: {0}";
 "Order"="Order";
-"RideSettingsAccountNumber"="Account Number";
-"AccountPaymentNumberRequiredTitle"="Account Number required";
+"RideSettingsAccountNumber"="Account Rider Number";
+"AccountPaymentNumberRequiredTitle"="Account Rider Number required";
 "Error_AccountPaymentTitle"="Error";
-"Error_AccountPaymentMessage"="Invalid account number";
+"Error_AccountPaymentMessage"="Invalid account ride number";
 "View_InitializeOrderForAccountPayment"="Please answer these questions";
-"AccountPaymentNumberRequiredMessage"="Please enter a valid account number";
+"AccountPaymentNumberRequiredMessage"="Please enter a valid account ride number";
 "Error_AccountPaymentQuestionRequiredMessage"="You must answer every questions to continue";
