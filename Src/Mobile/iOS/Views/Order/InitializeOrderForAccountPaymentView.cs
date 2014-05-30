@@ -48,8 +48,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				Tuple.Create (7, lblQuestion8, txtQuestion8),
 			};
 
-			ApplyBinding ();
+			ApplyBinding();
 		}
+
+
 
 		private void ApplyBinding()
 		{

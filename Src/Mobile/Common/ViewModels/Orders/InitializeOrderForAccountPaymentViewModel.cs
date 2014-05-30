@@ -24,13 +24,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_phone = phone;
 		}
 
+		public async void Init()
+		{
+			var questions = await _orderWorkflowService.GetAccountPaymentQuestions ();
+			Questions = questions.Select (q => new AccountChargeQuestionViewModel (q)).ToList ();
+		}
+
 		public async override void OnViewStarted (bool firstTime)
 		{
 			base.OnViewStarted (firstTime);
-			if (firstTime) {
-				var questions = await _orderWorkflowService.GetAccountPaymentQuestions ();
-				Questions = questions.Select (q => new AccountChargeQuestionViewModel (q)).ToList ();
-			}
+			RaisePropertyChanged ("Questions"); //needed for Android
 		}
 
 		// the use of list is important here for the binding (doesn't seem to work with an array)
