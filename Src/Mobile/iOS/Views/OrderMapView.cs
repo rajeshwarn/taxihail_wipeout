@@ -394,7 +394,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var zoomHint = hint as ZoomToStreetLevelPresentationHint;
             if (zoomHint != null)
             {
-                this.SetCenterCoordinate(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), 17, true); 
+				this.SetCenterCoordinate(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), 14, true); 
             }
 
             var centerHint = hint as CenterMapPresentationHint;
