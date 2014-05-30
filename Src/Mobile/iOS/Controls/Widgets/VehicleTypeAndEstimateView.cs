@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using MonoTouch.CoreGraphics;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -86,7 +87,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         Theme.LabelTextColor, 
                         CGBlendMode.Normal);
 
-                    SelectedVehicleTypeLabel.Text = value.ToUpper();
+
+					SelectedVehicleTypeLabel.Text = Localize.GetValue (value.ToUpper());
                     SelectedVehicleTypeLabel.SizeToFit();
                     SelectedVehicleTypeLabel.SetHorizontalCenter(SelectedVehicleType.Center.X);
                     SelectedVehicleTypeLabel.SetY(SelectedVehicleType.Frame.Bottom);
