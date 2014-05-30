@@ -19,8 +19,6 @@
     <MandroidI18n />
     <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -569,6 +567,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\destination_small_icon_pressed.png" />
     <AndroidResource Include="Resources\values-ar\String.xml" />
     <Compile Include="PlatformIntegration\AndroidMapApiClient.cs" />
+    <Compile Include="Controls\Dialog\TaxiHailEntryElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -708,6 +707,7 @@
   <ItemGroup>
     <Folder Include="Resources\drawable-hdpi\" />
     <Folder Include="Calabash\" />
+    <Folder Include="Controls\Dialog\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">

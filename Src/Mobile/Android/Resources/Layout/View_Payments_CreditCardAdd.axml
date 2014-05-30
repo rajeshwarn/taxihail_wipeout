@@ -76,6 +76,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightEditTextFlat"
                     android:singleLine="true"
+                    android:inputType="textCapWords"
                     local:MvxBind="Text Data.NameOnCard"
                     android:layout_marginBottom="8dp" />
                 <LinearLayout

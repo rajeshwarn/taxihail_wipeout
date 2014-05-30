@@ -14,6 +14,7 @@ using CrossUI.Droid;
 using CrossUI.Droid.Dialog;
 using CrossUI.Droid.Dialog.Elements;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Client.Controls.Dialog;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
@@ -86,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			var email = new EntryElement (null, this.Services().Localize["CreateAccountEmailPlaceHolder"], null,  "DialogTop") {IsEmail = true};
 			email.Bind(bindings, vm => vm.Data.Email);
 
-			var name = new EntryElement(null, this.Services().Localize["CreateAccountFullNamePlaceHolder"], null, "DialogCenter");
+			var name = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountFullNamePlaceHolder"], null, "DialogCenter");
 			name.Bind(bindings, vm => vm.Data.Name);
 
 			var phone = new EntryElement(null, this.Services().Localize["CreateAccountPhonePlaceHolder"], null, "DialogCenter") { Numeric = true };

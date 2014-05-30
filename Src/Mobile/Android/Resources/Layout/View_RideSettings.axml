@@ -62,6 +62,7 @@
                         android:layout_marginBottom="10dip"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:singleLine="true"
+                        android:inputType="textCapWords"
                         local:MvxBind="Text Name" />
                     <TextView
                         android:layout_width="fill_parent"
