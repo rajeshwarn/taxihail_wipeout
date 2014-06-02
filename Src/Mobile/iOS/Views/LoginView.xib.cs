@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             };
 
 			ViewModel.SignInCommand.CanExecuteChanged += (sender, e) => {
-				//juts for the first one, it's a nudge to highlight the button as the next step
+				//just for the first one, it's a nudge to highlight the button as the next step
 				if(ViewModel.SignInCommand.CanExecute(null))
 				{
 					FlatButtonStyle.Main.ApplyTo (btnSignIn);
