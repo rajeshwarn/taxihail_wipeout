@@ -39,8 +39,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public override void Start()
         {
 #if DEBUG
-			Email = "john@taxihail.com";
-            Password = "password";          
+			//Email = "john@taxihail.com";
+			//Password = "password";          
 #endif
         }
 
@@ -76,6 +76,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _email = value;
 				RaisePropertyChanged();
+				_signInCommand.RaiseCanExecuteChanged ();
             }
         }
 
@@ -87,20 +88,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _password = value;
 				RaisePropertyChanged();
+				_signInCommand.RaiseCanExecuteChanged ();
             }
         }
 
-        public ICommand SignInCommand
+		private AsyncCommand _signInCommand;
+		public ICommand SignInCommand
         {
             get
             {
-				return this.GetCommand(async () =>
-                {
-					_accountService.ClearCache();
-					await SignIn();
-                });
+				if (_signInCommand == null) {
+
+					_signInCommand = (AsyncCommand)this.GetCommand(async () =>
+						{
+							_accountService.ClearCache();
+							await SignIn();
+						}, CanSignIn);
+				}
+				return _signInCommand;
             }
         }
+
+		private bool CanSignIn()
+		{
+			return Email.HasValue ()
+			&& Password.HasValue ();
+		}
 
         public ICommand SignUp
         {

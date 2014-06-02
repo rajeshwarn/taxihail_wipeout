@@ -476,4 +476,5 @@
   <string name="WarningLocationServiceDontShow">Don\'t warn</string>
   <string name="WarningLocationServiceCancel">Cancel</string>
   <string name="PaymentErrorMessage">Details: {0}</string>
+  <string name="TAXI">TAXI</string>
 </resources>
