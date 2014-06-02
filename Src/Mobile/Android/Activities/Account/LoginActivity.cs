@@ -101,6 +101,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             ApplyKeyboardEnabler(username);
             ApplyKeyboardEnabler(password);
+
+			ViewModel.SignInCommand.CanExecuteChanged += (sender, e) => {
+				//just for the first one, it's a nudge to highlight the button as the next step
+				if(ViewModel.SignInCommand.CanExecute(null))
+				{
+					FindViewById<Button>(Resource.Id.SignInButton).SetBackgroundDrawable(Resources.GetDrawable(Resource.Drawable.button_main_selector));
+				}
+			};
         }
 
         public bool ShouldUseClipboardManager()

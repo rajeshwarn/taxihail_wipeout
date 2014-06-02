@@ -61,8 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			FlatButtonStyle.Clear.ApplyTo (btnForgotPassword);
             btnForgotPassword.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
-			FlatButtonStyle.Main.ApplyTo (btnSignIn);
-            btnSignIn.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+			btnSignIn.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
 
 			btnSignIn.SetTitle (Localize.GetValue ("SignIn"), UIControlState.Normal);
 			btnSignUp.SetTitle (Localize.GetValue ("Register"), UIControlState.Normal);
@@ -77,6 +76,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     firstResponder.ResignFirstResponder();
                 }
             };
+
+			ViewModel.SignInCommand.CanExecuteChanged += (sender, e) => {
+				//just for the first one, it's a nudge to highlight the button as the next step
+				if(ViewModel.SignInCommand.CanExecute(null))
+				{
+					FlatButtonStyle.Main.ApplyTo (btnSignIn);
+				}
+			};
 
             var set = this.CreateBindingSet<LoginView, LoginViewModel>();
 
