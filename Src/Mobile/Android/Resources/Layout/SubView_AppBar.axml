@@ -36,7 +36,7 @@
                 android:layout_gravity="left|center">
                 <ImageView
                     android:id="@+id/btnEstimate"
-                    android:src="@drawable/button_estimate_image_selector"
+                    android:src="@drawable/button_destination_image_selector"
                     android:scaleType="center"
                     android:layout_gravity="center|center"
                     android:layout_width="24dip"

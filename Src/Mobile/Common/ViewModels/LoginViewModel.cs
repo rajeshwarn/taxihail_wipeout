@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _email = value;
 				RaisePropertyChanged();
-				_signInCommand.RaiseCanExecuteChanged ();
+				SignInCommand.RaiseCanExecuteChanged ();
             }
         }
 
@@ -88,12 +88,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _password = value;
 				RaisePropertyChanged();
-				_signInCommand.RaiseCanExecuteChanged ();
+				SignInCommand.RaiseCanExecuteChanged ();
             }
         }
 
 		private AsyncCommand _signInCommand;
-		public ICommand SignInCommand
+		public AsyncCommand SignInCommand
         {
             get
             {
