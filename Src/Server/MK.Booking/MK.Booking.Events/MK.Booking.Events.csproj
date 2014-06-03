@@ -60,6 +60,7 @@
     <Compile Include="CreditCardPaymentCancellationFailed.cs" />
     <Compile Include="CreditCardPaymentCaptured.cs" />
     <Compile Include="CreditCardPaymentInitiated.cs" />
+    <Compile Include="OrderFareUpdated.cs" />
     <Compile Include="OrderPairedForRideLinqCmtPayment.cs" />
     <Compile Include="OrderUnpairedForRideLinqCmtPayment.cs" />
     <Compile Include="PaymentModeChanged.cs" />
