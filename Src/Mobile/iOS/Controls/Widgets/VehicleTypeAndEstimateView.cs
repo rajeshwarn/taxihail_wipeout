@@ -10,6 +10,8 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using MonoTouch.CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -88,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         CGBlendMode.Normal);
 
 
-					SelectedVehicleTypeLabel.Text = Localize.GetValue (value.ToUpper());
+					SelectedVehicleTypeLabel.Text = TinyIoCContainer.Current.Resolve<ILocalization>()[value.ToUpper()];
                     SelectedVehicleTypeLabel.SizeToFit();
                     SelectedVehicleTypeLabel.SetHorizontalCenter(SelectedVehicleType.Center.X);
                     SelectedVehicleTypeLabel.SetY(SelectedVehicleType.Frame.Bottom);
