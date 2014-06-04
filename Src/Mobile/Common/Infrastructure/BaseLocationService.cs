@@ -9,8 +9,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 		public abstract void Stop();
 
-		public abstract bool IsLocationServicesEnabled{ get; }
-
 		public abstract bool IsStarted { get; }
 
 		public IObservable<Position> Positions { get; protected set; }
