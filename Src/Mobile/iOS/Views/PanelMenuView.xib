@@ -23,7 +23,7 @@
                                 <constraint firstAttribute="width" constant="107" id="z9i-2D-QCP"/>
                             </constraints>
                         </imageView>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="7">
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="7">
                             <rect key="frame" x="16" y="96" width="232" height="431"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -33,16 +33,6 @@
                             <color key="sectionIndexColor" red="0.30980392156862746" green="0.29803921568627451" blue="0.27843137254901962" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </tableView>
-                        <imageView contentMode="scaleAspectFit" image="apc_logo_menu.png" translatesAutoresizingMaskIntoConstraints="NO" id="8">
-                            <rect key="frame" x="130" y="536" width="72" height="19"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <gestureRecognizers/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="72" id="Kmw-RY-Cge"/>
-                                <constraint firstAttribute="height" constant="19" id="sXs-kZ-gZ2"/>
-                            </constraints>
-                        </imageView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="2.0.17" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="9">
                             <rect key="frame" x="223" y="550" width="28" height="13"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -53,30 +43,17 @@
                             <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <size key="shadowOffset" width="0.0" height="1"/>
                         </label>
-                        <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="th_logo_small.png" translatesAutoresizingMaskIntoConstraints="NO" id="bYL-3d-p1o">
-                            <rect key="frame" x="63" y="528" width="50" height="35"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="35" id="Axi-Wu-dZo"/>
-                                <constraint firstAttribute="width" constant="50" id="wUz-dr-D0w"/>
-                            </constraints>
-                        </imageView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="bYL-3d-p1o" firstAttribute="centerY" secondItem="8" secondAttribute="centerY" id="6BX-Is-2nx"/>
                         <constraint firstItem="7" firstAttribute="leading" secondItem="ZSi-EL-Atn" secondAttribute="leading" constant="16" id="7vP-0g-qeq"/>
                         <constraint firstAttribute="trailing" secondItem="9" secondAttribute="trailing" constant="15" id="B8y-Wo-asv"/>
-                        <constraint firstItem="bYL-3d-p1o" firstAttribute="leading" secondItem="ZSi-EL-Atn" secondAttribute="leading" constant="63" id="Ctf-as-KEx"/>
                         <constraint firstAttribute="bottom" secondItem="9" secondAttribute="bottom" constant="5" id="Eiq-hW-qu8"/>
                         <constraint firstAttribute="centerX" secondItem="0aM-QX-Lcs" secondAttribute="centerX" id="MlB-7o-dg4"/>
                         <constraint firstAttribute="width" constant="266" id="c9M-mO-9Ol"/>
                         <constraint firstItem="0aM-QX-Lcs" firstAttribute="top" secondItem="ZSi-EL-Atn" secondAttribute="top" constant="20" id="eud-HV-6WW"/>
                         <constraint firstItem="7" firstAttribute="top" secondItem="0aM-QX-Lcs" secondAttribute="bottom" constant="2" id="fN5-zK-fFr"/>
                         <constraint firstAttribute="trailing" secondItem="7" secondAttribute="trailing" constant="18" id="ivC-GQ-eqn"/>
-                        <constraint firstItem="bYL-3d-p1o" firstAttribute="top" secondItem="7" secondAttribute="bottom" constant="1" id="j8X-0l-Bqq"/>
-                        <constraint firstItem="9" firstAttribute="top" secondItem="8" secondAttribute="bottom" constant="-5" id="tvp-0C-s2A"/>
-                        <constraint firstItem="8" firstAttribute="leading" secondItem="bYL-3d-p1o" secondAttribute="trailing" constant="17" id="x3X-6v-2xg"/>
                     </constraints>
                 </view>
             </subviews>
@@ -89,8 +66,6 @@
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <connections>
-                <outlet property="imgLogoApcurium" destination="8" id="4Fa-pJ-RcP"/>
-                <outlet property="imgLogoMobileKnowledge" destination="bYL-3d-p1o" id="nG6-dD-e9k"/>
                 <outlet property="lblVersion" destination="9" id="rYw-pT-kaI"/>
                 <outlet property="menuContainer" destination="ZSi-EL-Atn" id="Ky0-lg-bc7"/>
                 <outlet property="menuListView" destination="7" id="uyM-Sq-xD0"/>
@@ -98,8 +73,6 @@
         </view>
     </objects>
     <resources>
-        <image name="apc_logo_menu.png" width="72" height="19"/>
         <image name="th_logo.png" width="107" height="74"/>
-        <image name="th_logo_small.png" width="50" height="35"/>
     </resources>
 </document>
