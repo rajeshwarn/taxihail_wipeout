@@ -372,6 +372,7 @@
     <None Include="Localization\TaxiHail NYC.resx" />
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <None Include="TutorialContent\Tutorial-ar.json" />
+    <None Include="Localization\Mishwar.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
