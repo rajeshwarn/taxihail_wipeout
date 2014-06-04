@@ -6,6 +6,8 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -61,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     var image = DrawableHelper.GetDrawableFromString(Resources, string.Format("{0}_badge_selected", value.ToLower()));
                     SelectedVehicleType.SetImageDrawable(image);
                     SelectedVehicleType.SetColorFilter(GetColorFilter(Resources.GetColor(Resource.Color.label_text_color)));
-					SelectedVehicleTypeLabel.Text = Localize.GetValue (value.ToUpper());
+					SelectedVehicleTypeLabel.Text = TinyIoCContainer.Current.Resolve<ILocalization>()[value.ToUpper()];
                 }
             }
         }

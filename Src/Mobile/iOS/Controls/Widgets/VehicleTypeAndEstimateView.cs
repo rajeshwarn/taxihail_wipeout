@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         CGBlendMode.Normal);
 
 
-					SelectedVehicleTypeLabel.Text = TinyIoCContainer.Current.Resolve<ILocalization>()[value.ToUpper()];
+					SelectedVehicleTypeLabel.Text = Localize.GetValue (value.ToUpper());
                     SelectedVehicleTypeLabel.SizeToFit();
                     SelectedVehicleTypeLabel.SetHorizontalCenter(SelectedVehicleType.Center.X);
                     SelectedVehicleTypeLabel.SetY(SelectedVehicleType.Frame.Bottom);
