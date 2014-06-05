@@ -8,8 +8,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
          void Stop();
 
-         bool IsLocationServicesEnabled{ get; }
-
          bool IsStarted { get; }
 
 		IObservable<Position> Positions { get;}

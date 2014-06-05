@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
         }
 
-        public override bool IsLocationServicesEnabled
+        public bool IsLocationServicesEnabled
         {
             get { return IsNetworkProviderEnabled && IsGpsProviderEnabled; }
         }
