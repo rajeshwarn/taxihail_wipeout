@@ -173,7 +173,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             var strFormat = new NSString("%@");
             var dt = new NSString(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(new Class("NSString").Handle, new Selector("stringWithFormat:").Handle, strFormat.Handle, deviceToken.Handle));
-            new PushNotificationService().SaveDeviceToken(dt);
+			TinyIoCContainer.Current.Resolve<IPushNotificationService>().SaveDeviceToken(dt);
         }
         
         public override void FailedToRegisterForRemoteNotifications (UIApplication application, NSError error)
