@@ -44,6 +44,11 @@ namespace apcurium.MK.Booking.CommandHandlers
             {
                 order.Complete(command.Fare, command.Tip, command.Toll, command.Tax);
             }
+            else if (command.Fare > 0)
+            {
+                order.AddFareInformation(command.Fare, command.Tip, command.Toll, command.Tax);
+            }
+
             _repository.Save(order, command.Id.ToString());
         }
 

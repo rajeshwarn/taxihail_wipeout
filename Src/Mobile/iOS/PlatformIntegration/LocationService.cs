@@ -1,6 +1,7 @@
 using Cirrious.CrossCore.Touch;
 using MonoTouch.CoreLocation;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -8,11 +9,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
     {
         private readonly CLLocationManager _locationManager;
         private readonly LocationManagerDelegate _locationDelegate;
-
-        public override bool IsLocationServicesEnabled
-        {
-            get { return CLLocationManager.Status == CLAuthorizationStatus.Authorized && CLLocationManager.LocationServicesEnabled ;}
-        }
 
         bool _isStarted;
         public override bool IsStarted {
@@ -37,6 +33,39 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 return;
             }
+
+
+			var cacheService = TinyIoCContainer.Current.Resolve<ICacheService> ("UserAppCache");
+			var firstStartLocationKey = "firstStartLocationKey" ;
+			var firstStart = cacheService.Get<object> (firstStartLocationKey);
+
+			if (firstStart == null) {
+				//don' t check the first time, the OS will ask permission after
+				cacheService.Set (firstStartLocationKey, new object ());
+			}
+			else{
+
+				//only warn if user has denied the app, if location are not enabled, th OS display a message
+				if (CLLocationManager.LocationServicesEnabled &&
+					CLLocationManager.Status != CLAuthorizationStatus.Authorized)
+				{ 
+					var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
+
+					var warningKey = "WarningLocationServiceDontShow";
+					var dontShowLocationWarning = (string)cacheService.Get<string>(warningKey);
+
+					if (dontShowLocationWarning != "yes")
+					{
+						TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(
+							localize["WarningLocationServiceTitle"], 
+							localize["WarningLocationService"],
+							localize[warningKey], 
+							() => cacheService.Set (warningKey, "yes"),
+							localize["WarningLocationServiceCancel"],
+							() => {});
+					}
+				}
+			}
 
             if (_locationManager.Location != null) {
                 

@@ -39,8 +39,9 @@ namespace apcurium.MK.Booking.Api.Jobs
         public void Update(IBSOrderInformation ibsStatus, OrderStatusDetail order)
         {
             var statusChanged = (ibsStatus.Status.HasValue() && order.IBSStatusId != ibsStatus.Status)
-                               || order.VehicleLatitude != ibsStatus.VehicleLatitude
-                               || order.VehicleLongitude != ibsStatus.VehicleLongitude;
+                                || order.VehicleLatitude != ibsStatus.VehicleLatitude
+                                || order.VehicleLongitude != ibsStatus.VehicleLongitude
+                                || (!order.FareAvailable && ibsStatus.Fare > 0) ; //fare was not available and ibs has the information
 
             if (!statusChanged)
             {
