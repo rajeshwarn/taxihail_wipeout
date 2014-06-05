@@ -94,6 +94,11 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
+		public void RaiseCanExecuteChanged()
+		{
+			OnCanExecuteChanged ();
+		}
+
         private static TaskScheduler GetTaskScheduler()
 		{
 			try

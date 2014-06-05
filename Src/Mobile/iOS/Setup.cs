@@ -68,8 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             container.Register<IAnalyticsService, GoogleAnalyticsService>();
 
-            var locationService = new LocationService( );
-            locationService.Start();
+            var locationService = new LocationService();
 
             container.Register<ILocationService>(locationService );
             container.Register<IMessageService, MessageService>();
@@ -81,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "UserAppCache");
 
             container.Register<IPhoneService, PhoneService>();
-            container.Register<IPushNotificationService, PushNotificationService>();
+			container.Register<IPushNotificationService>(new PushNotificationService(container.Resolve<ICacheService>()));
 
             container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
 

@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.SqlTypes;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
@@ -24,7 +25,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderStatusChanged>,
         IEventHandler<OrderVehiclePositionChanged>,
         IEventHandler<OrderPairedForRideLinqCmtPayment>,
-        IEventHandler<OrderUnpairedForRideLinqCmtPayment>
+        IEventHandler<OrderUnpairedForRideLinqCmtPayment>,
+        IEventHandler<OrderFareUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -200,6 +202,32 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (order != null)
                 {
                     order.Status = (int) @event.Status.Status;
+                    context.Save(order);
+                }
+                else
+                {
+                    _logger.LogMessage("Order Status without existing Order : " + @event.SourceId);
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        public void Handle(OrderFareUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                details.FareAvailable = true;
+                context.Save(details);
+
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                if (order != null)
+                {
+                    order.Fare = @event.Fare;
+                    order.Tip = @event.Tip;
+                    order.Toll = @event.Toll;
+                    order.Tax = @event.Tax;
                     context.Save(order);
                 }
                 else

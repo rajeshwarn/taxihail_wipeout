@@ -55,7 +55,7 @@
                                         <constraint firstAttribute="height" constant="41" id="AMJ-jy-m1o"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o6C-2X-Wpz">
                                     <rect key="frame" x="8" y="90" width="304" height="17"/>

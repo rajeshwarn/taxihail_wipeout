@@ -22,11 +22,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
+		public static readonly FlatButtonStyle Default = new DefaultButtonStyle ();
         public static readonly FlatButtonStyle Main = new MainButtonStyle(); //ok button
         public static readonly FlatButtonStyle Clear = new ClearButtonStyle();
         public static readonly FlatButtonStyle Green = new GreenButtonStyle();
         public static readonly FlatButtonStyle Red = new RedButtonStyle();
         public static readonly FlatButtonStyle Silver = new SilverButtonStyle();
+
+		private class DefaultButtonStyle: FlatButtonStyle
+		{
+			public override void ApplyTo (FlatButton button)
+			{
+				if(button == null) return;
+
+				button.SetFillColor(UIColor.Clear, UIControlState.Normal);
+				button.SetFillColor(UIColor.Clear, UIControlState.Selected);
+				button.SetFillColor(UIColor.Clear, UIControlState.Highlighted);
+
+				button.SetTitleColor(Theme.ButtonTextColor, UIControlState.Normal);
+				button.SetTitleColor(Theme.ButtonTextColor.ColorWithAlpha(0.5f), UIControlState.Selected);
+				button.SetTitleColor(Theme.ButtonTextColor.ColorWithAlpha(0.5f), UIControlState.Highlighted);
+
+				button.SetStrokeColor(UIColor.FromRGB(3, 27, 49));
+			}
+		}
 
         private class MainButtonStyle: FlatButtonStyle
         {

@@ -60,6 +60,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                       
             Map = mapFragment.Map;
 
+			Map.SetPadding(175 ,0,0,0);
+
             _touchableMap = mapFragment;
 
             _pickupOverlay = (ImageView)mapFragment.Activity.FindViewById(Resource.Id.pickupOverlay);
@@ -366,7 +368,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var zoomHint = hint as ZoomToStreetLevelPresentationHint;
             if (zoomHint != null)
             {
-                Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(zoomHint.Latitude, zoomHint.Longitude), 17));
+				Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(zoomHint.Latitude, zoomHint.Longitude), 15));
             }
 
             var centerHint = hint as CenterMapPresentationHint;

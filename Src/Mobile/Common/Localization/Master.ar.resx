@@ -1482,4 +1482,7 @@
   <data name="YesButton" xml:space="preserve">
     <value>نعم</value>
   </data>
+  <data name="TAXI" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

@@ -429,12 +429,8 @@
     <AndroidResource Include="Resources\drawable-xhdpi\location_icon_pressed.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\menu_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\menu_icon_pressed.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\estimate_icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\estimate_icon_pressed.png" />
     <AndroidResource Include="Resources\Drawable\blackcar_badge.png" />
     <AndroidResource Include="Resources\Drawable\blackcar_badge_selected.png" />
-    <AndroidResource Include="Resources\Drawable\estimate_icon.png" />
-    <AndroidResource Include="Resources\Drawable\estimate_icon_pressed.png" />
     <AndroidResource Include="Resources\Drawable\later_icon.png" />
     <AndroidResource Include="Resources\Drawable\later_icon_pressed.png" />
     <AndroidResource Include="Resources\Drawable\suv_badge.png" />
@@ -474,7 +470,6 @@
     <AndroidResource Include="Resources\Drawable\empty.xml" />
     <AndroidResource Include="Resources\Drawable\button_highlight_background_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_booklater_image_selector.axml" />
-    <AndroidResource Include="Resources\Drawable\button_estimate_image_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_highlight_text_selector.axml" />
     <Compile Include="Controls\Fragments\TouchableMap.cs" />
     <AndroidResource Include="Resources\Layout\SubView_AppBar.axml" />
@@ -572,6 +567,7 @@
     <AndroidResource Include="Resources\Layout\View_InitializeOrderForAccountPayment.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <Compile Include="Controls\Dialog\TaxiHailEntryElement.cs" />
     <Compile Include="Activities\EditTextDialogActivity.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -713,6 +709,7 @@
     <Folder Include="Resources\drawable-hdpi\" />
     <Folder Include="Calabash\" />
     <Folder Include="Dialog\" />
+    <Folder Include="Controls\Dialog\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">

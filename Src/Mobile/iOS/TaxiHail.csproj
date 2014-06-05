@@ -655,10 +655,6 @@
     <BundleResource Include="Resources\cluster%402x.png" />
     <BundleResource Include="Resources\destination_icon.png" />
     <BundleResource Include="Resources\destination_icon%402x.png" />
-    <BundleResource Include="Resources\estimate_icon_pressed.png" />
-    <BundleResource Include="Resources\estimate_icon_pressed%402x.png" />
-    <BundleResource Include="Resources\estimate_icon.png" />
-    <BundleResource Include="Resources\estimate_icon%402x.png" />
     <BundleResource Include="Resources\hail_icon.png" />
     <BundleResource Include="Resources\hail_icon%402x.png" />
     <BundleResource Include="Resources\highlight.png" />
