@@ -84,9 +84,10 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         public void when_complete_twice_order_one_event_only()
         {
             _sut.Given(new OrderCompleted {SourceId = _orderId});
-            _sut.When(new ChangeOrderStatus {Status = new OrderStatusDetail {OrderId = _orderId}});
+            _sut.When(new ChangeOrderStatus {Status = new OrderStatusDetail {OrderId = _orderId, Status = OrderStatus.Completed}, Fare = 12});
 
             Assert.AreEqual(false, _sut.ThenContains<OrderCompleted>());
+            Assert.AreEqual(0, _sut.Events.Count);
         }
 
         [Test]
@@ -146,6 +147,25 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
             Assert.AreEqual(1.234, @event.Latitude);
             Assert.AreEqual(4.321, @event.Longitude);
+        }
+
+        [Test]
+        public void when_ibs_fare_changed()
+        {
+            var status = new OrderStatusDetail
+            {
+                OrderId = _orderId
+            };
+
+            _sut.When(new ChangeOrderStatus
+            {
+                Status = status,
+                Fare = 12
+            });
+
+            var @event = _sut.ThenHasSingle<OrderFareUpdated>();
+
+            Assert.AreEqual(12, @event.Fare);
         }
 
         [Test]

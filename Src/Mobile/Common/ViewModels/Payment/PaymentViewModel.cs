@@ -61,7 +61,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			if (order.Fare.HasValue)
 			{
 				var value = order.Fare.Value + (order.Toll.HasValue ? order.Toll.Value : 0);
+				Logger.LogMessage ("Meter Amount not formatted : {0} for Order {1}", value, Order.IBSOrderId); 
 				MeterAmount = CultureProvider.FormatCurrency(value);
+				Logger.LogMessage ("Meter Amount : {0} for Order {1}", MeterAmount, Order.IBSOrderId); 
 			}
 
 			if (order.Tip.HasValue 

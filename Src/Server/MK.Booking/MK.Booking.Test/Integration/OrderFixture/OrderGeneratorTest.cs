@@ -257,6 +257,37 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         }
 
         [Test]
+        public void when_faret_information_set()
+        {
+            double fare = 12;
+            double tip = 2;
+            double toll = 5;
+            double tax = 3;
+            Sut.Handle(new OrderFareUpdated
+            {
+                SourceId = _orderId,
+                Fare = fare,
+                Tip = tip,
+                Toll = toll,
+                Tax = tax,
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<OrderDetail>(_orderId);
+                Assert.NotNull(dto);
+                Assert.AreEqual(fare, dto.Fare);
+                Assert.AreEqual(tip, dto.Tip);
+                Assert.AreEqual(tax, dto.Tax);
+                Assert.AreEqual(toll, dto.Toll);
+
+                var details = context.Find<OrderStatusDetail>(_orderId);
+                Assert.NotNull(details);
+                Assert.IsTrue(details.FareAvailable);
+            }
+        }
+
+        [Test]
         public void when_removed_then_dto_updated()
         {
             var orderRemovedFromHistory = new OrderRemovedFromHistory {SourceId = _orderId};

@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Domain
         private OrderStatus _status;
         private double? _vehicleLatitude;
         private double? _vehicleLongitude;
+        private double? _fare;
 
         protected Order(Guid id)
             : base(id)
@@ -31,6 +32,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderRated>(OnOrderRated);
             Handles<PaymentInformationSet>(NoAction);
             Handles<OrderStatusChanged>(OnOrderStatusChanged);
+            Handles<OrderFareUpdated>(OnOrderFareUpdated);
             Handles<OrderVehiclePositionChanged>(OnOrderVehiclePositionChanged);
             Handles<OrderPairedForRideLinqCmtPayment>(NoAction);
             Handles<OrderUnpairedForRideLinqCmtPayment>(NoAction);
@@ -149,6 +151,14 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
+        public void AddFareInformation(double fare, double tip, double toll, double tax)
+        {
+            if (_fare != fare)
+            {
+                Update(new OrderFareUpdated{ Fare = fare, Tip = tip, Toll = toll, Tax = tax});
+            }
+        }
+
         public void Pair(string medallion, string driverId, string pairingToken, string pairingCode,
             string tokenOfCardToBeUsedForPayment, double? autoTipAmount, int? autoTipPercentage)
         {
@@ -204,5 +214,12 @@ namespace apcurium.MK.Booking.Domain
             _vehicleLatitude = @event.Latitude;
             _vehicleLongitude = @event.Longitude;
         }
+
+        private void OnOrderFareUpdated(OrderFareUpdated @event)
+        {
+            _fare = @event.Fare;
+        }
+
+        
     }
 }
