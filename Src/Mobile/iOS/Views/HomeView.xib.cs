@@ -50,7 +50,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            ChangeThemeOfNavigationBar();
         }
 
         public override void ViewDidLoad()
