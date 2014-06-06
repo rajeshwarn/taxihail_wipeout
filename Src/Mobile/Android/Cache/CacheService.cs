@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
 
         public void Set<T>(string key, T obj) where T : class
         {
-            Set(key, obj, DateTime.MaxValue);
+			Set(key, obj, DateTime.UtcNow.AddYears(3));
         }
 
 
