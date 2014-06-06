@@ -67,6 +67,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 				}
 			}
 
+			_locationManager.StartUpdatingLocation();
+
             if (_locationManager.Location != null) {
                 
                 _locationDelegate.BestPosition = new Position
@@ -78,7 +80,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 };
             }
 
-            _locationManager.StartUpdatingLocation();
             _isStarted = true;
 
         }
@@ -86,9 +87,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         public override void Stop ()
         {   
             if(_isStarted)
-            {
+            {			
                 _locationManager.StopUpdatingLocation ();
                 _isStarted = false;
+				_locationDelegate.BestPosition = null;
             }
 
         }

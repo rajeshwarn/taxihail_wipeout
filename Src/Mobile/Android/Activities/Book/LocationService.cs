@@ -77,6 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 _isStarted = false;
                 _locationManager.RemoveUpdates(_locationListeners.GpsListener);
                 _locationManager.RemoveUpdates(_locationListeners.NetworkListener);
+				_locationListeners.BestPosition = null;
             }
         }
 
