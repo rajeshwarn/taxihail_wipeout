@@ -250,7 +250,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnStop()
         {
             base.OnStop();
-            if (ViewModel != null) ViewModel.OnViewStopped();
+			if (ViewModel != null) {
+				ViewModel.OnViewStopped ();
+			}
         }
 
         protected override void OnDestroy()
@@ -457,6 +459,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
 
         }
+
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {

@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.MapDataProvider.Resources;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -19,6 +20,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         public HomeView() : base("HomeView", null)
         {
+			this.Services().MessengerHub.Subscribe<AppActivated>(m => 
+				{
+					ViewModel.LocateMe.Execute(null);
+				});
         }
 
 		protected override void OnActivated (NSNotification notification)
@@ -45,7 +50,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            ChangeThemeOfNavigationBar();
         }
 
         public override void ViewDidLoad()
