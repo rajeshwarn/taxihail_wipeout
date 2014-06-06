@@ -563,6 +563,7 @@
     <AndroidResource Include="Resources\values-ar\String.xml" />
     <Compile Include="PlatformIntegration\AndroidMapApiClient.cs" />
     <Compile Include="Controls\Dialog\TaxiHailEntryElement.cs" />
+    <Compile Include="TaxiHailAndroidLifetimeMonitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
