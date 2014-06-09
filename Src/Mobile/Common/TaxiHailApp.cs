@@ -103,8 +103,9 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
 			_container.Register<IIbsFareClient>((c, p) => new IbsFareServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>().UserAgent));
 			
-			_container.Resolve<IMvxLifetime>().LifetimeChanged -= TaxiHailApp_LifetimeChanged;
-			_container.Resolve<IMvxLifetime>().LifetimeChanged += TaxiHailApp_LifetimeChanged;
+			var lifeTimeMonitor = _container.Resolve<IMvxLifetime> ();
+			lifeTimeMonitor.LifetimeChanged -= TaxiHailApp_LifetimeChanged;
+			lifeTimeMonitor.LifetimeChanged += TaxiHailApp_LifetimeChanged;
 
 			_container.Register<IErrorHandler, ErrorHandler>();
 

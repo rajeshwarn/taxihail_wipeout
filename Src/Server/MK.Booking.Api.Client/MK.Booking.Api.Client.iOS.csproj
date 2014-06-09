@@ -126,10 +126,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Folder Include="Payments\CmtPayments\Capture\" />
     <Folder Include="Payments\Moneris\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
 </Project>

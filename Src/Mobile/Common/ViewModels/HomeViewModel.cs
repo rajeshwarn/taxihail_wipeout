@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -78,6 +79,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				_tutorialService.DisplayTutorialToNewUser();
 				_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
+
+				this.Services().MessengerHub.Subscribe<AppActivated>(m => 
+				{
+					_locateUser = true;
+				});
 			}
 
 			if (_locateUser)

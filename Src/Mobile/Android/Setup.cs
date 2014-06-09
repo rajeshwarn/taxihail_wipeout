@@ -26,6 +26,11 @@ using TinyIoC;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Google;
 using Cirrious.CrossCore.Droid;
+using Cirrious.MvvmCross.Platform;
+using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Messages;
+using Cirrious.MvvmCross.Droid.Platform;
+using Cirrious.MvvmCross.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -90,6 +95,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             CustomBindingsLoader.Load(registry);
         }
 
+		protected override Cirrious.MvvmCross.Droid.Views.MvxAndroidLifetimeMonitor CreateLifetimeMonitor ()
+		{
+			return new TaxiHailAndroidLifetimeMonitor ();
+		}
+
 		private void InitializeSocialNetwork()
 		{
 			
@@ -127,4 +137,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             return new PhonePresenter();
         }
 	}
+
+
 }
