@@ -121,7 +121,7 @@
     <value>موافق</value>
   </data>
   <data name="AccountActivationMessage" xml:space="preserve">
-    <value>تم إرسال رسالة إلكترونية. اتبع الرابط في الرسالة لتأكيد عنوانك؟</value>
+    <value>تم إرسال رسالة إلكترونية. اتبع الرابط في الرسالة لتأكيد عنوانك</value>
   </data>
   <data name="AccountActivationTitle" xml:space="preserve">
     <value>مطلوب التأكيد</value>
@@ -135,6 +135,12 @@
   <data name="AccountNotActivated" xml:space="preserve">
     <value>لم يتم تفعيل حسابك. تم إرسال بريد الكتروني اخر للتنشيط</value>
   </data>
+  <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
+    <value>فضلا، ادخل رقم حساب صحيح</value>
+  </data>
+  <data name="AccountPaymentNumberRequiredTitle" xml:space="preserve">
+    <value>مطلوب رقم الحساب</value>
+  </data>
   <data name="AddCreditCardTitle" xml:space="preserve">
     <value>أضف بطاقة إئتمانية</value>
   </data>
@@ -142,16 +148,13 @@
     <value>هل ترغب في إضافة تنبيه على تقويمك حول هذا الموعد؟</value>
   </data>
   <data name="AddReminderTitle" xml:space="preserve">
-    <value>موعد الركوب المحدد</value>
+    <value>موعد الإلتقاء المحدد</value>
   </data>
   <data name="AddressSearchingText" xml:space="preserve">
     <value>جار البحث</value>
   </data>
   <data name="ApartmentLabel" xml:space="preserve">
     <value>شقة</value>
-  </data>
-  <data name="apcuriumUrl" xml:space="preserve">
-    <value />
   </data>
   <data name="ApplicationName" xml:space="preserve">
     <value>مشوار</value>
@@ -198,29 +201,26 @@
   <data name="BookItButton" xml:space="preserve">
     <value>احجز الآن</value>
   </data>
-  <data name="BookItButtonImageName" xml:space="preserve">
-    <value />
-  </data>
   <data name="BookItLaterButton" xml:space="preserve">
     <value>لاحقا</value>
   </data>
   <data name="BookPickupLabel" xml:space="preserve">
-    <value>اكد موقع الركوب المختار</value>
+    <value>اكد موقع الإلتقاء المختار</value>
   </data>
   <data name="BookPickupLocationButtonTitle" xml:space="preserve">
-    <value>نقطة الركوب</value>
+    <value>نقطة الإلتقاء</value>
   </data>
   <data name="BookPickupLocationEmptyPlaceholder" xml:space="preserve">
-    <value>انقر لإختيار نقطة الركوب</value>
+    <value>انقر لإختيار نقطة الإلتقاء</value>
   </data>
   <data name="BookRatingErrorMessage" xml:space="preserve">
-    <value>قم بتقييم رحلتك</value>
+    <value>قم بتقييم مشوارك</value>
   </data>
   <data name="BookRatingErrorTitle" xml:space="preserve">
     <value>خطأ</value>
   </data>
   <data name="BookViewInvalidDate" xml:space="preserve">
-    <value>تاريخ الركوب وساعة الركوب غير مقبولة.</value>
+    <value>تاريخ الإلتقاء وقت الإلتقاء غير مقبولة.</value>
   </data>
   <data name="BuildingName" xml:space="preserve">
     <value>إسم المبنى / ملاحظات</value>
@@ -238,7 +238,7 @@
     <value>اختيار غير صحيح</value>
   </data>
   <data name="CarAssigned" xml:space="preserve">
-    <value>سيارة الأجرة الخاص بك {0}</value>
+    <value>السيارة الخاصة بك {0}</value>
   </data>
   <data name="ChangeBookingSettingsButton" xml:space="preserve">
     <value>تغيير إعدادات الحجز</value>
@@ -262,16 +262,16 @@
     <value>إغلاق</value>
   </data>
   <data name="CmtCancelPayment" xml:space="preserve">
-    <value>رقم البطاقة:</value>
+    <value>الغاء</value>
   </data>
   <data name="CmtCardNumber" xml:space="preserve">
-    <value>رقم السيارة:</value>
+    <value>رقم البطاقة:</value>
   </data>
   <data name="CmtCarNumber" xml:space="preserve">
-    <value>تغيير إعدادات السداد</value>
+    <value>رقم السيارة:</value>
   </data>
   <data name="CmtChangePaymentInfo" xml:space="preserve">
-    <value>تأكيد معلومات السداد</value>
+    <value>تغيير إعدادات الدفع</value>
   </data>
   <data name="CmtConfirmPayment" xml:space="preserve">
     <value>تأكيد</value>
@@ -280,16 +280,16 @@
     <value>إلغاء</value>
   </data>
   <data name="CmtRideLinqConfirmPairView" xml:space="preserve">
-    <value />
+    <value>تأكيد معلومات الدفع</value>
   </data>
   <data name="CmtRideLinqConfirmPairViewConfirmPairDetailText" xml:space="preserve">
-    <value>تأكد من أنك داخل السيارة المشار إليها أعلاه. إن قمت بالتأكيد سيتم خصم قيمة هذه الرحلة تلقائيا باستخدام إعدادات سدادك.</value>
+    <value>تأكد من أنك داخل السيارة المشار إليها أعلاه. إن قمت بالتأكيد سيتم خصم قيمة هذه الرحلة تلقائيا باستخدام إعدادات الدفع الخاصة بك.</value>
   </data>
   <data name="CmtRideLinqErrorTitle" xml:space="preserve">
     <value>خطأ</value>
   </data>
   <data name="CmtRideLinqGenericErrorMessage" xml:space="preserve">
-    <value>حدث خطأ أثناء التوفيق، تأكد من بيانات بطاقة إئتمانك أو حاول في وقت لاحق.</value>
+    <value>حدث خطأ أثناء الإقتران، تأكد من بيانات بطاقة إئتمانك أو حاول في وقت لاحق.</value>
   </data>
   <data name="CmtRideLinqSaveChanges" xml:space="preserve">
     <value>حفظ</value>
@@ -302,9 +302,6 @@
   </data>
   <data name="CmtTipAmount" xml:space="preserve">
     <value>قيمة الإكرامية:</value>
-  </data>
-  <data name="CmtTransactionErrorMessage" xml:space="preserve">
-    <value>تم رفض المعاملة</value>
   </data>
   <data name="CmtTransactionResendConfirmationButtonText" xml:space="preserve">
     <value>إعادة إرسال</value>
@@ -325,10 +322,10 @@
     <value>تم إرسال تأكيد السداد للسائق.</value>
   </data>
   <data name="ConfirmationPaymentAmountOver100" xml:space="preserve">
-    <value>إلغاء</value>
+    <value>سنقوم بخصم {0}. يرجى تأكيد القيمة.</value>
   </data>
   <data name="ConfirmationPaymentAmountOver100Title" xml:space="preserve">
-    <value>سنقوم بخصم {0}. يرجى تأكيد القيمة.</value>
+    <value>مطلوب التأكيد</value>
   </data>
   <data name="ConfirmCompanyLabel" xml:space="preserve">
     <value>الشركة:</value>
@@ -337,13 +334,13 @@
     <value>التاريخ/ الوقت</value>
   </data>
   <data name="ConfirmDestinationLabel" xml:space="preserve">
-    <value>وجهة</value>
+    <value>الوجهة</value>
   </data>
   <data name="ConfirmNameLabel" xml:space="preserve">
     <value>الإسم:</value>
   </data>
   <data name="ConfirmOriginLablel" xml:space="preserve">
-    <value>الركوب</value>
+    <value>الإلتقاء</value>
   </data>
   <data name="ConfirmPassengerSettingsTitle" xml:space="preserve">
     <value>إعدادات الركاب</value>
@@ -352,13 +349,13 @@
     <value>عدد الركاب:</value>
   </data>
   <data name="ConfirmPhoneLabel" xml:space="preserve">
-    <value>الهاتف الجوال:</value>
+    <value>رقم الجوال:</value>
   </data>
   <data name="ConfirmRideInformationTitle" xml:space="preserve">
-    <value>بيانات الرحلة</value>
+    <value>بيانات المشوار</value>
   </data>
   <data name="ConfirmVehiculeTypeLabel" xml:space="preserve">
-    <value>نوع المركبة:</value>
+    <value>نوع السيارة:</value>
   </data>
   <data name="Continue" xml:space="preserve">
     <value>استمرار</value>
@@ -388,7 +385,7 @@
     <value>معلومات الحساب غير صحيحة</value>
   </data>
   <data name="CreateAccountInvalidPassword" xml:space="preserve">
-    <value>كلمة المرور غير صحيحة. يجب أن تتطابق كلمة المرور مع تأكيدها، يجب أيضا أن تكون بين 6 إلى 10 أحرف</value>
+    <value>كلمة المرور غير صحيحة. كلمة المرور يجب أن تكون متطابقة و تكون بين 6 إلى 10 أحرف</value>
   </data>
   <data name="CreateAccountLanguageEnglish" xml:space="preserve">
     <value>الإنجليزية</value>
@@ -404,9 +401,6 @@
   </data>
   <data name="CreateAccountPhonePlaceHolder" xml:space="preserve">
     <value>الهاتف الجوال</value>
-  </data>
-  <data name="CreateAccountTitleArray" xml:space="preserve">
-    <value />
   </data>
   <data name="CreateAccountTitleMr" xml:space="preserve">
     <value>السيد</value>
@@ -439,7 +433,7 @@
     <value>لكي تستخدم هذا التطبيق، يجب أن تضيف رقم بطاقة إئتمانية لحسابك.</value>
   </data>
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
-    <value>رقم البطاقة الائتمانية غير صالح</value>
+    <value>رقم البطاقة الائتمانية خاطئة</value>
   </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>الإسم كما يظهر على البطاقة</value>
@@ -466,19 +460,19 @@
     <value>التاريخ</value>
   </data>
   <data name="DateTimePickerPickDate" xml:space="preserve">
-    <value>اختر تاريخ الركوب:</value>
+    <value>اختر تاريخ الإلتقاء:</value>
   </data>
   <data name="DateTimePickerPickInvalidDateMessage" xml:space="preserve">
-    <value>يجب أن يكون تاريخ الركوب في المستقبل</value>
+    <value>يجب أن يكون تاريخ الإلتقاء في المستقبل</value>
   </data>
   <data name="DateTimePickerPickInvalidDateTitle" xml:space="preserve">
     <value>التاريخ / الوقت غير صحيح</value>
   </data>
   <data name="DateTimePickerPickTime" xml:space="preserve">
-    <value>اختر وقت الركوب:</value>
+    <value>اختر وقت الإلتقاء:</value>
   </data>
   <data name="DateTimePickerPickTitle" xml:space="preserve">
-    <value>تاريخ و وقت الركوب</value>
+    <value>تاريخ و وقت الإلتقاء</value>
   </data>
   <data name="DateTimePickerSetButton" xml:space="preserve">
     <value>احجز</value>
@@ -497,9 +491,6 @@
   </data>
   <data name="DeleteAddressBt" xml:space="preserve">
     <value>مسح العنوان</value>
-  </data>
-  <data name="DeleteBookItButtonImageNamePressed" xml:space="preserve">
-    <value />
   </data>
   <data name="Destination" xml:space="preserve">
     <value>الوجهة</value>
@@ -538,7 +529,10 @@
     <value>الموديل:</value>
   </data>
   <data name="DriverInfoTaxiType" xml:space="preserve">
-    <value>نوع السيارة:</value>
+    <value>نوع سيارة الأجرة:</value>
+  </data>
+  <data name="dummyaaa" xml:space="preserve">
+    <value>xaaa</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>تعديل</value>
@@ -546,14 +540,20 @@
   <data name="EmailLabel" xml:space="preserve">
     <value>بريد إلكتروني</value>
   </data>
-  <data name="EmptyString" xml:space="preserve">
-    <value>جاري تقييم قيمة رحلتك...</value>
-  </data>
   <data name="EntryCodeLabel" xml:space="preserve">
     <value>رمز الدخول</value>
   </data>
   <data name="ErrorCreatingOrderTitle" xml:space="preserve">
     <value>لا يمكن إتمام الحجز</value>
+  </data>
+  <data name="Error_AccountPaymentMessage" xml:space="preserve">
+    <value>رقم الحساب غير صحيح</value>
+  </data>
+  <data name="Error_AccountPaymentQuestionRequiredMessage" xml:space="preserve">
+    <value>يجب الإجابة على جميع الأسئلة للإستمرار</value>
+  </data>
+  <data name="Error_AccountPaymentTitle" xml:space="preserve">
+    <value>خطأ</value>
   </data>
   <data name="EstimatedFareNotAvailable" xml:space="preserve">
     <value>التكلفة المتوقعة غير متاحة</value>
@@ -571,36 +571,24 @@
     <value>إتصال لمعرفة السعر</value>
   </data>
   <data name="EstimatingFare" xml:space="preserve">
-    <value>مطلوب التأكيد</value>
+    <value>جاري تقييم قيمة مشوارك...</value>
   </data>
   <data name="Facebook" xml:space="preserve">
     <value>الدخول عبر حساب الفيسبوك</value>
   </data>
   <data name="FavoriteLocationsTitle" xml:space="preserve">
-    <value>مواقعك المفضلة</value>
+    <value>مشاويرك المفضلة</value>
   </data>
   <data name="FavoritesButton" xml:space="preserve">
-    <value>الأماكن المفضلة</value>
+    <value>المفضلة</value>
   </data>
   <data name="February" xml:space="preserve">
     <value>فبراير (02)</value>
   </data>
-  <data name="GenericTitle" xml:space="preserve">
-    <value>إغلاق</value>
-  </data>
-  <data name="GoogleMapKey" xml:space="preserve">
-    <value />
-  </data>
   <data name="GooglePlayServicesNotAvailableMessage" xml:space="preserve">
-    <value>يجب أن تقوم بتحديث خدمات غوغل بلاي لتتمكن من استخدام هذا التطبيق.</value>
-  </data>
-  <data name="GooglePlayServicesNotAvailableMessage1" xml:space="preserve">
-    <value>يجب أن تقوم بتحديث خدمات غوغل بلاي لتتمكن من استخدام هذا التطبيق.</value>
+    <value>يجب أن تقوم بتحديث خدمات Google Play لتتمكن من استخدام هذا التطبيق.</value>
   </data>
   <data name="GooglePlayServicesNotAvailableTitle" xml:space="preserve">
-    <value>مطلوب التحديث</value>
-  </data>
-  <data name="GooglePlayServicesNotAvailableTitle1" xml:space="preserve">
     <value>مطلوب التحديث</value>
   </data>
   <data name="HistoryDetailAptRingCodeLabel" xml:space="preserve">
@@ -622,10 +610,10 @@
     <value>الطلب:</value>
   </data>
   <data name="HistoryDetailPickupDateLabel" xml:space="preserve">
-    <value>تاريخ الركوب:</value>
+    <value>تاريخ الإلتقاء:</value>
   </data>
   <data name="HistoryDetailPickupLabel" xml:space="preserve">
-    <value>الركوب:</value>
+    <value>الإلتقاء:</value>
   </data>
   <data name="HistoryDetailRequestedLabel" xml:space="preserve">
     <value>المطلوب:</value>
@@ -634,7 +622,7 @@
     <value>الحالة</value>
   </data>
   <data name="HistoryInfo" xml:space="preserve">
-    <value>عرض رحلاتكم خلال الشهر الماضي</value>
+    <value>عرض حجوزاتكم خلال الشهر الماضي</value>
   </data>
   <data name="HistoryViewNoHistoryLabel" xml:space="preserve">
     <value>لا يوجد حجوزات سابقة</value>
@@ -649,7 +637,7 @@
     <value>رؤية حالة الطلب</value>
   </data>
   <data name="HistoryViewTitle" xml:space="preserve">
-    <value>المشاوير السابقة </value>
+    <value>التاريخ</value>
   </data>
   <data name="InvalidAccountOnActivatedMessage" xml:space="preserve">
     <value>لا يمكن التعرف على حسابك، يجب أن تقوم بتسجيل الدخول لاستخدام هذا التطبيق</value>
@@ -667,7 +655,7 @@
     <value>عنوان غير صحيح</value>
   </data>
   <data name="InvalidBookinInfo" xml:space="preserve">
-    <value>لحجز سيارة الأجرة، يجب أن تدخل عنوان صحيح.</value>
+    <value>لحجز سيارة الأجرة، يجب إدخال عنوان صحيح.</value>
   </data>
   <data name="InvalidBookinInfoTitle" xml:space="preserve">
     <value>بيانات الحجز غير صحيحة</value>
@@ -676,7 +664,7 @@
     <value>لحجز سيارة الأجرة، يجب أن تدخل عنوان صحيح لمكان المغادرة والوصول.</value>
   </data>
   <data name="InvalidChoiceTitle" xml:space="preserve">
-    <value>اختيار غير صالح</value>
+    <value>اختيار خاطئ</value>
   </data>
   <data name="InvalidLocalContactMessage" xml:space="preserve">
     <value>لا يمكن تأكيد العنوان الخاص بهذا الشخص.</value>
@@ -691,7 +679,7 @@
     <value>خطأ في الدخول</value>
   </data>
   <data name="InvalidPhoneErrorMessage" xml:space="preserve">
-    <value>رقم الهاتف الجوال غير صحيح، يجب أن يكون مكون من 10 ارقام</value>
+    <value>رقم الجوال غير صحيح، يجب أن يكون مكون من 10 ارقام</value>
   </data>
   <data name="InvalidPickupAddress" xml:space="preserve">
     <value>رجاء إدخال عنوان صحيح لموقعك.</value>
@@ -709,7 +697,7 @@
     <value>الإنجليزية</value>
   </data>
   <data name="LanguageCode" xml:space="preserve">
-    <value>ar</value>
+    <value>إنجليزي</value>
   </data>
   <data name="LargeBagsLabel" xml:space="preserve">
     <value>حقائب كبيرة</value>
@@ -748,10 +736,10 @@
     <value>رمز الدخول</value>
   </data>
   <data name="LocationHistoryTitle" xml:space="preserve">
-    <value>مواقع سابقة</value>
+    <value>مشاوير سابقة</value>
   </data>
   <data name="LocationNoHistory" xml:space="preserve">
-    <value>لا يد تاريخل مشاوير السابقة</value>
+    <value>لا يوجد سجل لمشاوير السابقة</value>
   </data>
   <data name="LocationServiceErrorMessage" xml:space="preserve">
     <value>خدمة تحديد الموقع غير مفعلة</value>
@@ -779,9 +767,6 @@
   </data>
   <data name="May" xml:space="preserve">
     <value>مايو (05)</value>
-  </data>
-  <data name="mobileKnowledgeUrl" xml:space="preserve">
-    <value />
   </data>
   <data name="NbPassenger" xml:space="preserve">
     <value>راكب {0})</value>
@@ -820,19 +805,19 @@
     <value>اختر وجهة للحصول على سعر تقريبي.</value>
   </data>
   <data name="NoFareTextIfDestinationIsRequired" xml:space="preserve">
-    <value>يجب أن تحدد وجهة.</value>
+    <value>يجب أن تحدد الوجهة.</value>
   </data>
   <data name="NoMailClient" xml:space="preserve">
-    <value>لا يوجد برنامج لتلقي رسائل البريد الإلكتروني مثبت.</value>
+    <value>لا يوجد برنامج لتلقي رسائل البريد الإلكتروني .</value>
   </data>
   <data name="NoOrderId" xml:space="preserve">
     <value>الطلب غير جاهز</value>
   </data>
   <data name="NoPhoneNumberMessage" xml:space="preserve">
-    <value>رقم هاتف هذا السائق غير صالح.</value>
+    <value>رقم هاتف هذا السائق خاطئ</value>
   </data>
   <data name="NoPhoneNumberTitle" xml:space="preserve">
-    <value>رقم هاتف غير صالح</value>
+    <value>رقم هاتف خاطئ</value>
   </data>
   <data name="NoPreference" xml:space="preserve">
     <value>مفضلة - لا يوجد</value>
@@ -861,6 +846,9 @@
   <data name="OkButtonText" xml:space="preserve">
     <value>موافق</value>
   </data>
+  <data name="Order" xml:space="preserve">
+    <value>اطلب</value>
+  </data>
   <data name="OrderHistoryListTitle" xml:space="preserve">
     <value>طلبية #{0} ({1:ddd, MMM d}, {1:h:mm tt})</value>
   </data>
@@ -868,7 +856,7 @@
     <value>تم الحجز من خلال الهاتف الجوال</value>
   </data>
   <data name="OrderNoteGPS" xml:space="preserve">
-    <value>استخدام الجي بي إس</value>
+    <value>استخدام الGPS</value>
   </data>
   <data name="OrderNoteGPSApproximate" xml:space="preserve">
     <value>(عنوان تقريبي)</value>
@@ -886,10 +874,10 @@
     <value>المواقع</value>
   </data>
   <data name="PanelMenuViewOrderHistoryText" xml:space="preserve">
-    <value>المشاوير السابقة </value>
+    <value>المشاوير السابقة</value>
   </data>
   <data name="PanelMenuViewReportProblemText" xml:space="preserve">
-    <value>أبلغ عن وجود مشكلة</value>
+    <value>بلغ عن وجود مشكلة</value>
   </data>
   <data name="PanelMenuViewSignOutText" xml:space="preserve">
     <value>خروج</value>
@@ -933,14 +921,17 @@
   <data name="PaymentDetails.TipAmountLabel" xml:space="preserve">
     <value>قيمة الإكرامية</value>
   </data>
+  <data name="PaymentErrorMessage" xml:space="preserve">
+    <value>تفاصيل</value>
+  </data>
   <data name="PaymentErrorTitle" xml:space="preserve">
-    <value>لا يمكن اتمام عملية السداد</value>
+    <value>لا يمكن اتمام عملية الدفع</value>
   </data>
   <data name="PaymentViewMeterAmountText" xml:space="preserve">
     <value>قيمة العداد</value>
   </data>
   <data name="PaymentViewTipText" xml:space="preserve">
-    <value>بقشيش</value>
+    <value>الإكرامية</value>
   </data>
   <data name="PaymentViewTotalText" xml:space="preserve">
     <value>الإجمالي</value>
@@ -958,10 +949,10 @@
     <value>تم إلغاء عملية الدفع</value>
   </data>
   <data name="PayPalExpressCheckoutSuccessMessage" xml:space="preserve">
-    <value>تم السداد بنجاح من PayPal. تم إرسال تأكيد للسائق.</value>
+    <value>تم الدفع بنجاح من PayPal. تم إرسال تأكيد للسائق.</value>
   </data>
   <data name="PayPalExpressCheckoutSuccessTitle" xml:space="preserve">
-    <value>تم السداد بنجاح</value>
+    <value>تم الدفع بنجاح</value>
   </data>
   <data name="PickupDateDisplay" xml:space="preserve">
     <value>الحجز لـ {0:ddd, MMM d} at {0:h:mm tt}</value>
@@ -970,10 +961,10 @@
     <value>التاريخ: اليوم</value>
   </data>
   <data name="PickupMapTitle" xml:space="preserve">
-    <value>موقع الركوب</value>
+    <value>موقع الإلتقاء</value>
   </data>
   <data name="PickupTextPlaceholder" xml:space="preserve">
-    <value>عنوان الشارع الركوب</value>
+    <value>عنوان شارع الإلتقاء</value>
   </data>
   <data name="PickupTimeTextPlaceholder" xml:space="preserve">
     <value>الوقت: الآن</value>
@@ -982,13 +973,13 @@
     <value>الوجهة  &amp;gt;&amp;gt;</value>
   </data>
   <data name="PickupViewPickupLabel" xml:space="preserve">
-    <value>الركوب</value>
+    <value>الإلتقاء</value>
   </data>
   <data name="RateRide" xml:space="preserve">
-    <value>قم بتقييم رحلتك</value>
+    <value>قم بتقييم مشوارك</value>
   </data>
   <data name="Rebook" xml:space="preserve">
-    <value>إعادة حجز المشوار </value>
+    <value>إعادة حجز المشوار</value>
   </data>
   <data name="ReceiptSent" xml:space="preserve">
     <value>تم إرسال الإيصال</value>
@@ -1000,7 +991,7 @@
     <value>التسجيل</value>
   </data>
   <data name="ReminderDetails" xml:space="preserve">
-    <value>تذكير: سييكون السائق في خدمتك من {0} الساعة {1} يوم {2}.</value>
+    <value>تذكير: سيكون السائق في خدمتك من {0} الساعة {1} يوم {2}.</value>
   </data>
   <data name="ReminderTitle" xml:space="preserve">
     <value>تم الحجز {0}</value>
@@ -1012,7 +1003,7 @@
     <value>إزالة بطاقة الائتمان</value>
   </data>
   <data name="ReSendConfirmation" xml:space="preserve">
-    <value>اخطر السائق بالدفع</value>
+    <value>بلغ السائق بالدفع</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>إعادة الضبط</value>
@@ -1039,13 +1030,16 @@
     <value>تم إعادة ضبط كلمة المرور بنجاح</value>
   </data>
   <data name="ResetPasswordSucessTitle" xml:space="preserve">
-    <value>إستعادة كلمة المرور</value>
+    <value>إعادة ضبط كلمة المرور</value>
   </data>
   <data name="ResetPasswordTitleText" xml:space="preserve">
     <value>نسيت كلمة المرور؟</value>
   </data>
   <data name="RideHistoryButton" xml:space="preserve">
-    <value>مشاوير سابقة</value>
+    <value>حجوزات سابقة</value>
+  </data>
+  <data name="RideSettingsAccountNumber" xml:space="preserve">
+    <value>رقم الحساب</value>
   </data>
   <data name="RideSettingsCannotLoadListMessage" xml:space="preserve">
     <value>لا يمكن الاتصال بالسيرفر، حاول مجددا في وقت لاحق.</value>
@@ -1054,7 +1048,7 @@
     <value>خطأ في السيرفر</value>
   </data>
   <data name="RideSettingsChargeType" xml:space="preserve">
-    <value>طريقة الدفع </value>
+    <value>طريقة الدفع</value>
   </data>
   <data name="RideSettingsCompany" xml:space="preserve">
     <value>الشركة</value>
@@ -1072,7 +1066,7 @@
     <value>الهاتف الجوال</value>
   </data>
   <data name="RideSettingsVehiculeType" xml:space="preserve">
-    <value>نوع المركبة</value>
+    <value>نوع السيارة</value>
   </data>
   <data name="RideSummarySubTitleText" xml:space="preserve">
     <value>شكرا لاختيارك {0} لرحلتك، نتطلع لخدمتك مرة أخرى قريبا.</value>
@@ -1105,7 +1099,7 @@
     <value>ارسل رسالة إلكترونية...</value>
   </data>
   <data name="SendErrorLogButton" xml:space="preserve">
-    <value>؟</value>
+    <value>إرسال سجل الخطأ</value>
   </data>
   <data name="SendMessageErrorMessage" xml:space="preserve">
     <value>حدث خطأ في التأكيد مع السائق تم إلغاء عملية الدفع</value>
@@ -1129,10 +1123,10 @@
     <value>لا يمكن إدخال الطلب. الرجاء المحاولة من جديد أو اتصل بنا.</value>
   </data>
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
-    <value>عنوان الركوب يقع خارج نطاق الخدمة المعتادة. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</value>
+    <value>عنوان الإلتقاء يقع خارج نطاق الخدمة المعتادة. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</value>
   </data>
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall" xml:space="preserve">
-    <value>عنوان الركوب يقع خارج نطاق الخدمة المعتادة.</value>
+    <value>عنوان الإلتقاء يقع خارج نطاق الخدمة المعتادة.</value>
   </data>
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
     <value>لا يمكن إدخال الطلب لأن حسابك غير فعال حاليا. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</value>
@@ -1189,7 +1183,7 @@
     <value>تسجيل الدخول</value>
   </data>
   <data name="StatusActionBookButton" xml:space="preserve">
-    <value>احجز سيارة اخرى</value>
+    <value>احجز سيارة أجرة اخرى</value>
   </data>
   <data name="StatusActionButton" xml:space="preserve">
     <value>إتصال / حجز/ إلغاء</value>
@@ -1216,7 +1210,7 @@
     <value>لا يمكن الإلغاء</value>
   </data>
   <data name="StatusConfirmNewBooking" xml:space="preserve">
-    <value>في حالة حجز سيارة اخرى فإن هذا الطلب سيظل ساري، هل ترغب في الاستمرار ؟</value>
+    <value>في حالة حجز سيارة أجرة اخرى فإن هذا الطلب سيظل ساري، هل ترغب في الاستمرار ؟</value>
   </data>
   <data name="StatusDescription" xml:space="preserve">
     <value>طلب # {0}</value>
@@ -1225,7 +1219,7 @@
     <value>الحالة غير متاحة</value>
   </data>
   <data name="StatusNewRideButton" xml:space="preserve">
-    <value>مشوار جديدة</value>
+    <value>رحلة جديدة</value>
   </data>
   <data name="StatusStatusLabel" xml:space="preserve">
     <value>الحالة:  {0}</value>
@@ -1258,13 +1252,13 @@
     <value>احجز</value>
   </data>
   <data name="TabContacts" xml:space="preserve">
-    <value>جهات الإتصال</value>
+    <value>قائمة الإتصال</value>
   </data>
   <data name="TabFavorites" xml:space="preserve">
-    <value>الأماكن المفضلة</value>
+    <value>المفضلة</value>
   </data>
   <data name="TabHistory" xml:space="preserve">
-    <value>المشاوير السابقة </value>
+    <value>السجل</value>
   </data>
   <data name="TabLocations" xml:space="preserve">
     <value>مواقع</value>
@@ -1276,7 +1270,7 @@
     <value>بحث</value>
   </data>
   <data name="TaxiMapTitle" xml:space="preserve">
-    <value>سيارتك</value>
+    <value>سيارة الأجرة الخاصه بك</value>
   </data>
   <data name="TaxiServerDownMessage" xml:space="preserve">
     <value>لا يمكن إرسال رسالة لسيارة الأجرة</value>
@@ -1303,13 +1297,13 @@
     <value>إن كانت الخريطة غير دقيقة، قم بإعادة ضبطها على موقعك الحالي</value>
   </data>
   <data name="Tuto02Top" xml:space="preserve">
-    <value>سنتمكن من تحديد موقعك بإستخدام مستقبل الجي بي إس على هاتفك.</value>
+    <value>سنتمكن من تحديد موقعك بإستخدام مستقبل الGPS على هاتفك.</value>
   </data>
   <data name="Tuto03Bottom" xml:space="preserve">
     <value>يمكنك البحث عن عنوان محدد أوإختيار عنوان من المفضلة، إتصالاتك أو قائمة بالأماكن القريبة.</value>
   </data>
   <data name="Tuto03Top" xml:space="preserve">
-    <value>يمكنك أيضا إختيار نقطة الركوب بالضغط على عنوان الركوب.</value>
+    <value>يمكنك أيضا إختيار نقطة الإلتقاء بالضغط على عنوان الإلتقاء.</value>
   </data>
   <data name="Tuto04Bottom" xml:space="preserve">
     <value>بذلك سيتم تزويدك بسعر تقريبي للرحلة.</value>
@@ -1318,7 +1312,7 @@
     <value>إن رغبت في ذلك، يمكنك أيضا ضبط وجهتك.</value>
   </data>
   <data name="Tuto05Bottom" xml:space="preserve">
-    <value>أو انقر زر لاحقا لترتيب رحلتك في وقت أو تاريخ مستقبلا.</value>
+    <value>أو انقر زر لاحقا لحجز مشوارك في وقت أو تاريخ لاحق.</value>
   </data>
   <data name="Tuto05Top" xml:space="preserve">
     <value>انقر احجز الآن وسوف يتم تخصيص سيارة في أقرب فرصة.</value>
@@ -1327,10 +1321,10 @@
     <value>انقر تأكيد عندما تكون مستعد للذهاب.</value>
   </data>
   <data name="Tuto06Top" xml:space="preserve">
-    <value>تتيح لك شاشة التأكيد تحقيق بيانات رحلتك وتغيير أي من المفضلة لهذه الرحلة تحديدا.</value>
+    <value>تتيح لك شاشة التأكيد مراجعة بيانات مشوارك وتغيير خياراتك لهذه الرحلة تحديدا.</value>
   </data>
   <data name="Tuto07Bottom" xml:space="preserve">
-    <value>يتم توفير تحديثات الحالة حين تصل السيارة لعنوان الركوب، وعند دخولك السيارة وفي نهاية الرحلة.</value>
+    <value>يتم توفير تحديثات الحالة حين تصل السيارة لعنوان الإلتقاء،  وعند دخولك السيارة وفي نهاية المشوار.</value>
   </data>
   <data name="Tuto07Top" xml:space="preserve">
     <value>ستتمكن من رؤية رقم الحجز علی شاشة الحالة. عند إتمام تخصيص السيارة، سيمكنك متابعة مسارها نحو موقعك الحالي.</value>
@@ -1348,13 +1342,16 @@
     <value>خطأ غير متوقع</value>
   </data>
   <data name="UpdateBookingSettingsEmptyField" xml:space="preserve">
-    <value>البيانات غير صالحة، يجب تعبئة كافة الخانات.</value>
+    <value>البيانات خاطئة، يجب تعبئة كافة الخانات.</value>
   </data>
   <data name="UpdateBookingSettingsInvalidDataTitle" xml:space="preserve">
-    <value>إعدادات بيانات الحجز غير صالحة.</value>
+    <value>إعدادات بيانات الحجز خاطئة.</value>
+  </data>
+  <data name="UpdatedTermsAndConditionsAcceptButton" xml:space="preserve">
+    <value>موافق</value>
   </data>
   <data name="UpdatePasswordConfirmationLabel" xml:space="preserve">
-    <value>موافق</value>
+    <value>تأكيد</value>
   </data>
   <data name="UpdatePasswordCurrentPasswordLabel" xml:space="preserve">
     <value>كلمة المرور الحالية</value>
@@ -1372,13 +1369,13 @@
     <value>رجاء تأكيد رقم سيارتك مع السائق</value>
   </data>
   <data name="VehicleNumberNotice" xml:space="preserve">
-    <value>يرجى ملاحظة أنه في حالة عدم مطابقة رقم السيارة أعلاه لرقم السيارة الفعلي لرحلتك، فإننا لن نتمكن من إتمام عملية السداد من خلال التطبيق. يرجي ضغط زر الرجوع للعودة لشاشة حالة الرحلة، وقم بالسداد للسائق مباشرة.</value>
+    <value>يرجى ملاحظة أنه في حالة عدم مطابقة رقم السيارة أعلاه لرقم السيارة الفعلي لمشوارك، فإننا لن نتمكن من إتمام عملية الدفع من خلال التطبيق. يرجي ضغط زر الرجوع للعودة لشاشة حالة الرحلة، وقم بالدفع للسائق مباشرة.</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>v{0}</value>
   </data>
   <data name="ViewAll" xml:space="preserve">
-    <value>مشاهدة الكل</value>
+    <value>عرض الكل</value>
   </data>
   <data name="ViewRatingBtn" xml:space="preserve">
     <value>رؤية التقييمات</value>
@@ -1390,7 +1387,7 @@
     <value>تفاصيل الحجز</value>
   </data>
   <data name="View_BookingDetail_TitlePickupDetails" xml:space="preserve">
-    <value>تفاصيل الركوب</value>
+    <value>تفاصيل الإلتقاء</value>
   </data>
   <data name="View_BookingDetail_TitleRideSettings" xml:space="preserve">
     <value>إعدادات الرحلة</value>
@@ -1399,7 +1396,7 @@
     <value>الوضع</value>
   </data>
   <data name="View_BookRating" xml:space="preserve">
-    <value>قم بتقييم رحلتك</value>
+    <value>قم بتقييم مشوارك</value>
   </data>
   <data name="View_BookSettingMenu" xml:space="preserve">
     <value>إعدادات</value>
@@ -1422,6 +1419,9 @@
   <data name="View_HistoryDetail" xml:space="preserve">
     <value>تفاصيل الطلب</value>
   </data>
+  <data name="View_InitializeOrderForAccountPayment" xml:space="preserve">
+    <value>يرجى الإجابة على هذه الأسئلة</value>
+  </data>
   <data name="View_LocationDetail" xml:space="preserve">
     <value>تفاصيل الموقع</value>
   </data>
@@ -1429,22 +1429,22 @@
     <value>المواقع</value>
   </data>
   <data name="View_Payment" xml:space="preserve">
-    <value>معلومات السداد</value>
+    <value>معلومات الدفع</value>
   </data>
   <data name="View_PaymentPreference" xml:space="preserve">
     <value>طرق الدفع المفضلة</value>
   </data>
   <data name="View_Payments_CmtRideLinqChangePaymentTitle" xml:space="preserve">
-    <value>تغيير بيانات السداد:</value>
+    <value>تغيير بيانات الدفع:</value>
   </data>
   <data name="View_Payments_CmtRideLinqConfirmPairTitle" xml:space="preserve">
-    <value>تأكيد بيانات السداد:</value>
+    <value>تأكيد بيانات الدفع:</value>
   </data>
   <data name="View_PayPal" xml:space="preserve">
     <value>PayPal</value>
   </data>
   <data name="View_RefineAddress" xml:space="preserve">
-    <value>بيانات نقطة الركوب</value>
+    <value>بيانات نقطة الإلتقاء</value>
   </data>
   <data name="View_RideSettings" xml:space="preserve">
     <value>الملف الشخصي</value>
@@ -1461,11 +1461,14 @@
   <data name="View_TermsAndConditions" xml:space="preserve">
     <value>الأحكام والشروط</value>
   </data>
+  <data name="View_UpdatedTermsAndConditions" xml:space="preserve">
+    <value>أحكام و شروط جديدة</value>
+  </data>
   <data name="View_UpdatePassword" xml:space="preserve">
     <value>تحديث كلمة المرور</value>
   </data>
   <data name="WarningEstimate" xml:space="preserve">
-    <value>يرجى مراعاة أن السعر المزود من خلال التطبيق هو سعر تقديري. التكلفة الحقيقية للتعرفة ينم حسابها من خلال العداد، بالإضافة إلى أي قيمة صغرى أو أي تكاليف إضافية فسيتم احتساب ذلك في نهاية الرحلة.</value>
+    <value>يرجى مراعاة أن السعر المزود من خلال التطبيق هو سعر تقديري. التكلفة الحقيقية للرحلة يتم حسابها من خلال العداد، بالإضافة إلى الحد الأدنى و أي تكاليف إضافية. سيتم احتساب ذلك في نهاية الرحلة.</value>
   </data>
   <data name="WarningEstimateDontShow" xml:space="preserve">
     <value>لا تحذر</value>
@@ -1473,13 +1476,22 @@
   <data name="WarningEstimateTitle" xml:space="preserve">
     <value>تحذير</value>
   </data>
+  <data name="WarningLocationService" xml:space="preserve">
+    <value>يرجى تشغيل خدمات الموقع ليظهر موقعك على الخريطة</value>
+  </data>
+  <data name="WarningLocationServiceCancel" xml:space="preserve">
+    <value>الغاء</value>
+  </data>
+  <data name="WarningLocationServiceDontShow" xml:space="preserve">
+    <value>لا تحذر</value>
+  </data>
+  <data name="WarningLocationServiceTitle" xml:space="preserve">
+    <value>تحذير</value>
+  </data>
   <data name="WarningTitle" xml:space="preserve">
     <value>تحذير</value>
   </data>
   <data name="YesButton" xml:space="preserve">
     <value>نعم</value>
-  </data>
-  <data name="TAXI" xml:space="preserve">
-    <value></value>
   </data>
 </root>
