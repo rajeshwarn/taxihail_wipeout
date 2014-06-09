@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Email_Body_AccountConfirmationLine1" xml:space="preserve">
+    <value>يرجى زيارة الرابط التالي لتآكيد البريد الإلكتروني</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationSuccessfulLine1" xml:space="preserve">
+    <value>تم تأكيد بريدك الإلكتروني بنجاح</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationSuccessfulLine2" xml:space="preserve">
+    <value>يمكنك الأن التسجيل في التطبيق</value>
+  </data>
+  <data name="Email_Body_AptNumber" xml:space="preserve">
+    <value>رقم الشقة</value>
+  </data>
+  <data name="Email_Body_AuthorizationNumber" xml:space="preserve">
+    <value>رقم الترخيص</value>
+  </data>
+  <data name="Email_Body_BookingConfirmation" xml:space="preserve">
+    <value>تأكيد الحجز</value>
+  </data>
+  <data name="Email_Body_ChargeType" xml:space="preserve">
+    <value>طريقة الدفع</value>
+  </data>
+  <data name="Email_Body_Date" xml:space="preserve">
+    <value>التاريخ</value>
+  </data>
+  <data name="Email_Body_Destination" xml:space="preserve">
+    <value>الوجهة</value>
+  </data>
+  <data name="Email_Body_Driver" xml:space="preserve">
+    <value>السائق</value>
+  </data>
+  <data name="Email_Body_DriverAssignedConfirmation" xml:space="preserve">
+    <value>تأكيد تعيين السائق</value>
+  </data>
+  <data name="Email_Body_EmailConfirmationRequired" xml:space="preserve">
+    <value>يجب تآكيد البريد الإكتروني</value>
+  </data>
+  <data name="Email_Body_EmailConfirmationSuccessful" xml:space="preserve">
+    <value>تم تأكيد البريد الإلكتروني بنجاح</value>
+  </data>
+  <data name="Email_Body_EstimatedFare" xml:space="preserve">
+    <value>التكلفة المتوقعة</value>
+  </data>
+  <data name="Email_Body_Fare" xml:space="preserve">
+    <value>الأجرة</value>
+  </data>
+  <data name="Email_Body_LargeBags" xml:space="preserve">
+    <value>حقائب كبيرة</value>
+  </data>
+  <data name="Email_Body_Name" xml:space="preserve">
+    <value>الإسم</value>
+  </data>
+  <data name="Email_Body_Note" xml:space="preserve">
+    <value>ملاحظات</value>
+  </data>
+  <data name="Email_Body_OrderNo" xml:space="preserve">
+    <value>رقم الطلب</value>
+  </data>
+  <data name="Email_Body_PaidWith" xml:space="preserve">
+    <value>تم الدفع ب</value>
+  </data>
+  <data name="Email_Body_Passengers" xml:space="preserve">
+    <value>الركاب</value>
+  </data>
+  <data name="Email_Body_PasswordReset" xml:space="preserve">
+    <value>إعادة ضبط كلمة المرور</value>
+  </data>
+  <data name="Email_Body_PasswordResetLine1" xml:space="preserve">
+    <value>تم إعادة ضبط كلمة المرور</value>
+  </data>
+  <data name="Email_Body_PasswordResetLine2" xml:space="preserve">
+    <value>كلمة مرور جديدة</value>
+  </data>
+  <data name="Email_Body_PaymentInformation" xml:space="preserve">
+    <value>معلومات الدفع</value>
+  </data>
+  <data name="Email_Body_PhoneNumber" xml:space="preserve">
+    <value>رقم الهاتف/جوال</value>
+  </data>
+  <data name="Email_Body_PickupLocation" xml:space="preserve">
+    <value>مكان الإلتقاء</value>
+  </data>
+  <data name="Email_Body_PickupTime" xml:space="preserve">
+    <value>وقت الإلتقاء</value>
+  </data>
+  <data name="Email_Body_PickupTimeValue" xml:space="preserve">
+    <value>{{تاريخ الإلتقاء}} الساعة{{وقت الإلتقاء}}</value>
+  </data>
+  <data name="Email_Body_Receipt" xml:space="preserve">
+    <value>الإيصال</value>
+  </data>
+  <data name="Email_Body_RingCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Email_Body_ThankYou" xml:space="preserve">
+    <value>شكرا</value>
+  </data>
+  <data name="Email_Body_TheTeam" xml:space="preserve">
+    <value>فريق {{ اسم التطبيق}}</value>
+  </data>
+  <data name="Email_Body_Tip" xml:space="preserve">
+    <value>إكرامية</value>
+  </data>
+  <data name="Email_Body_Toll" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Email_Body_TotalAmount" xml:space="preserve">
+    <value>المبلغ الإجمالي</value>
+  </data>
+  <data name="Email_Body_TotalFare" xml:space="preserve">
+    <value>إجمالي الأجرة</value>
+  </data>
+  <data name="Email_Body_TransactionId" xml:space="preserve">
+    <value>رقم المعاملة</value>
+  </data>
+  <data name="Email_Body_TransactionTime" xml:space="preserve">
+    <value>وقت المعاملة</value>
+  </data>
+  <data name="Email_Body_TransactionTimeValue" xml:space="preserve">
+    <value>{{تاريخ المعاملة}} الساعة {{وقت المعاملة}}</value>
+  </data>
+  <data name="Email_Body_VAT" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Email_Body_VehicleNumber" xml:space="preserve">
+    <value>رقم السيارة</value>
+  </data>
+  <data name="Email_Body_VehicleType" xml:space="preserve">
+    <value>نوع السيارة</value>
+  </data>
+  <data name="Email_Subject_AccountConfirmation" xml:space="preserve">
+    <value>مرحبا بكم في {{ اسم التطبيق}}</value>
+  </data>
+  <data name="Email_Subject_BookingConfirmation" xml:space="preserve">
+    <value>{{ اسم التطبيق}} - تآكيد الحجز</value>
+  </data>
+  <data name="Email_Subject_DriverAssigned" xml:space="preserve">
+    <value>{{ اسم التطبيق}} - تأكيد تعيين السائق</value>
+  </data>
+  <data name="Email_Subject_PasswordReset" xml:space="preserve">
+    <value>{{ اسم التطبيق}} - تم تغيير كلمة المرور</value>
+  </data>
+  <data name="Email_Subject_Receipt" xml:space="preserve">
+    <value>{{ اسم التطبيق}} - الإيصال</value>
+  </data>
+  <data name="OrderStatus_CabDriverETA1" xml:space="preserve">
+    <value>وقت الوصول المتوقع: {0}</value>
+  </data>
+  <data name="OrderStatus_CabDriverNumberAssigned1" xml:space="preserve">
+    <value>تم تخصيص سيارة الأجرة{0} لك</value>
+  </data>
+  <data name="OrderStatus_OrderDoneFareAvailable1" xml:space="preserve">
+    <value>تم {0}</value>
+  </data>
+  <data name="OrderStatus_wosAddrNotValid1" xml:space="preserve">
+    <value>العنوان خاطئ</value>
+  </data>
+  <data name="OrderStatus_wosARRIVED1" xml:space="preserve">
+    <value>لقد وصلت السيارة لنقطة الإلتقاء المحددة</value>
+  </data>
+  <data name="OrderStatus_wosASSIGNED1" xml:space="preserve">
+    <value>تم تعيين سائق</value>
+  </data>
+  <data name="OrderStatus_wosCANCELLED1" xml:space="preserve">
+    <value>تم الإلغاء</value>
+  </data>
+  <data name="OrderStatus_wosCANCELLED_DONE1" xml:space="preserve">
+    <value>تم الإلغاء</value>
+  </data>
+  <data name="OrderStatus_wosDONE1" xml:space="preserve">
+    <value>تم</value>
+  </data>
+  <data name="OrderStatus_wosLOADED1" xml:space="preserve">
+    <value>الركاب داخل السيارة</value>
+  </data>
+  <data name="OrderStatus_wosNone1" xml:space="preserve">
+    <value>طلب خاطئ/ رجاء الإتصال بمركز الإرسال</value>
+  </data>
+  <data name="OrderStatus_wosNOSHOW1" xml:space="preserve">
+    <value>لم يظهر</value>
+  </data>
+  <data name="OrderStatus_wosSCHED1" xml:space="preserve">
+    <value>تم الحجز</value>
+  </data>
+  <data name="OrderStatus_wosTIMEOUT1" xml:space="preserve">
+    <value>عذرا، لا توجد سيارات متاحة نتيجة للطلب الكبير، رجاء المحاولة لاحقا</value>
+  </data>
+  <data name="OrderStatus_wosWAITING1" xml:space="preserve">
+    <value>في انتظار تعيين السائق</value>
+  </data>
+  <data name="PaymentConfirmationToDriver1" xml:space="preserve">
+    <value>قام الراكب بالدفع {0:c}</value>
+  </data>
+  <data name="PaymentConfirmationToDriver2" xml:space="preserve">
+    <value>رقم التصريح {0}</value>
+  </data>
+  <data name="PushNotification_wosARRIVED1" xml:space="preserve">
+    <value>السيارة وصلت</value>
+  </data>
+  <data name="PushNotification_wosASSIGNED1" xml:space="preserve">
+    <value>تم تعيين سيارة لك</value>
+  </data>
+  <data name="PushNotification_wosTIMEOUT1" xml:space="preserve">
+    <value>عذرا، لا توجد سيارات متاحة نتيجة للطلب الكبير، رجاء المحاولة لاحقا</value>
+  </data>
+</root>

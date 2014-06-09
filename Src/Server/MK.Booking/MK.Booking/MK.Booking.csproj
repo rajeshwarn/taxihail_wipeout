@@ -189,6 +189,11 @@
     <Compile Include="ReadModel\TariffDetail.cs" />
     <Compile Include="ReadModel\OrderRatingDetails.cs" />
     <Compile Include="ReadModel\RatingScoreDetails.cs" />
+    <Compile Include="Resources\Global.ar.Designer.cs">
+      <DependentUpon>Global.ar.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Resources\Resources.cs" />
     <Compile Include="Resources\Global.fr.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -267,6 +272,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Global.ar.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Global.ar.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Global.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Global.fr.Designer.cs</LastGenOutput>
