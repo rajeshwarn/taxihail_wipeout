@@ -120,4 +120,10 @@
   <data name="TAXI" xml:space="preserve">
     <value></value>
   </data>
+  <data name="ChargeTypeLabel" xml:space="preserve">
+    <value>Payment type</value>
+  </data>
+  <data name="RideSettingsChargeType" xml:space="preserve">
+    <value>Payment type</value>
+  </data>
 </root>
