@@ -264,7 +264,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         }
                         else
                         {
-							await _accountService.SignIn(data.Email, data.Password);
+							Email = data.Email;
+							Password = data.Password;
+							Func<Task> loginAction = () =>
+							{
+								return _accountService.SignIn(data.Email, data.Password);
+							};
+							await loginAction.Retry(TimeSpan.FromSeconds(1), 5);
                         }
 
 						OnLoginSuccess();
