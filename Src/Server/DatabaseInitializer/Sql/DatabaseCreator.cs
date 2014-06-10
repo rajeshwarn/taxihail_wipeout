@@ -28,6 +28,66 @@ namespace DatabaseInitializer.Sql
             DatabaseHelper.ExecuteNonQuery(connStringMaster, exists + "DROP DATABASE [" + database + "]");
         }
 
+
+
+
+        public bool IsMirroringSet(string connStringMaster, string companyName)
+        {
+
+            var isMirrored = "SELECT mirroring_role     FROM sys.database_mirroring     WHERE DB_NAME(database_id) = N'" + companyName + "'";
+
+            var result = DatabaseHelper.ExecuteNullableScalarQuery<byte>(connStringMaster, isMirrored);
+
+            return result.HasValue && (result.Value == 1);
+        }
+
+        public void InitMirroring(string connStringMaster, string companyName)
+        {
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET AUTO_CLOSE OFF", companyName));
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET RECOVERY FULL", companyName));
+        }
+
+        public void SetMirroringPartner(string connStringMaster, string companyName, string partner)
+        {
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE  {0} SET PARTNER='{1}'", companyName,partner));          
+        }
+
+        public  void CompleteMirroring(string connStringMaster, string companyName, string partner, string witness)
+        {
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET PARTNER='{1}'", companyName, partner));
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET WITNESS='{1}'", companyName,witness));
+          
+        }
+
+        
+        
+                    
+
+
+        public void BackupDatabase(string connStringMaster, string backupFolder, string databaseName)
+        {
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"BACKUP DATABASE {0} TO DISK='{1}\{0}.bak'  WITH FORMAT", databaseName, backupFolder));
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"BACKUP LOG {0} TO DISK='{1}\{0}_log.bak'  WITH FORMAT", databaseName, backupFolder));
+        }
+
+        public void RestoreToDeleteDatabase(string connStringMaster, string backupFolder, string databaseName)
+        {
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"RESTORE DATABASE {0} FROM DISK = '{1}\{0}.bak'  WITH REPLACE, RECOVERY", databaseName, backupFolder));
+        }
+        public void RestoreDatabase(string connStringMaster, string backupFolder, string databaseName)
+        {
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"RESTORE DATABASE {0} FROM DISK = '{1}\{0}.bak'  WITH REPLACE, NORECOVERY", databaseName, backupFolder));
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"RESTORE LOG {0} FROM DISK = '{1}\{0}_log.bak'  WITH REPLACE, NORECOVERY", databaseName, backupFolder));
+        }
+
+        
+
+        public void TurnOffMirroring(string connStringMaster, string companyName)
+        {
+            var turnOff = string.Format("ALTER DATABASE {0} SET PARTNER OFF", companyName);
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, turnOff);
+        }
+
         public bool DatabaseExists(string connStringMaster, string companyName)
         {
             var exists = "SELECT count(*) FROM sys.databases WHERE name = N'" + companyName + "'";
@@ -127,7 +187,7 @@ namespace DatabaseInitializer.Sql
 
         public void FixUnorderedEvents(string connString)
         {
-            Console.WriteLine( "Checking for events in invalid order");
+            Console.WriteLine("Checking for events in invalid order");
 
             string unorderedEvents = ";WITH cte AS ";
             unorderedEvents += "( ";
@@ -142,24 +202,24 @@ namespace DatabaseInitializer.Sql
 
             var invalidAggregateId = DatabaseHelper.ExecuteListQuery<Guid>(connString, unorderedEvents);
 
-            if ( invalidAggregateId.Any() )
+            if (invalidAggregateId.Any())
             {
-                Console.WriteLine( "Found " + invalidAggregateId.Count().ToString() + " events in invalid order");
+                Console.WriteLine("Found " + invalidAggregateId.Count().ToString() + " events in invalid order");
 
                 string fixEvents = "update [Events].[Events] set EventDate =  DATEADD(MINUTE, [Version] , (select top 1 EventDate from [Events].[Events] where AggregateId='{0}')) where AggregateId='{0}'";
 
                 foreach (var invalidId in invalidAggregateId)
                 {
                     DatabaseHelper.ExecuteNonQuery(connString, string.Format(fixEvents, invalidId.ToString()));
-                }            
+                }
             }
             else
             {
-                Console.WriteLine( "No event in invalid order");
+                Console.WriteLine("No event in invalid order");
             }
 
-            
-         
+
+
 
         }
 
@@ -242,5 +302,11 @@ namespace DatabaseInitializer.Sql
                 //TODO trouver un moyen plus sexy
             }
         }
+
+
+
+
+
+        
     }
 }
