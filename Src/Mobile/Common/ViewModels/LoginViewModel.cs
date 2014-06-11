@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -264,7 +265,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         }
                         else
                         {
-							await _accountService.SignIn(data.Email, data.Password);
+							Thread.Sleep(750); //wait because of iOS navigation conflict
+							Email = data.Email;
+							Password = data.Password;
+							Func<Task> loginAction = () =>
+							{
+								return _accountService.SignIn(data.Email, data.Password);
+							};
+							await loginAction.Retry(TimeSpan.FromSeconds(1), 5); //retry because the account is maybe not yet created server-side
                         }
 
 						OnLoginSuccess();
