@@ -19,7 +19,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 			this._appId = appId;
 			this._statusCallback = new MyStatusCallback();
 		}
+		public void Init()
+		{
 
+		}
 		public Task Connect()
 		{
 			// If the session state is any of the two "open" states when the button is clicked
