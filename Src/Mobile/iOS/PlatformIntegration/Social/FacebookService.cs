@@ -3,13 +3,41 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 using MonoTouch.Foundation;
 using System.Threading.Tasks;
 using MonoTouch.FacebookConnect;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 {
 	public class FacebookService: IFacebookService
     {
+		private readonly IAppSettings _settings;
+
+		public FacebookService( IAppSettings settings )
+		{
+			_settings = settings;
+		}
+
+		public void Init()
+		{
+
+			if (_settings.Data.FacebookEnabled) 
+			{
+
+				FBSettings.DefaultAppID = _settings.Data.FacebookAppId;
+
+				if (FBSession.ActiveSession.State == FBSessionState.CreatedTokenLoaded) {
+					// If there's one, just open the session silently
+					FBSession.OpenActiveSession (new[] { "basic_info", "email" },
+						allowLoginUI: false,
+						completion: (session, status, error) => {
+						});
+				}					
+
+			}
+		}
+
 		public Task Connect()
 		{
+
 			// If the session state is any of the two "open" states when the button is clicked
 			if (FBSession.ActiveSession.State == FBSessionState.Open
 				|| FBSession.ActiveSession.State == FBSessionState.OpenTokenExtended)

@@ -165,7 +165,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     try
                     {
                         await _facebookService.Connect();
-                        await CheckFacebookAccount();
+						await CheckFacebookAccount();
                     }
                     catch (TaskCanceledException)
                     {

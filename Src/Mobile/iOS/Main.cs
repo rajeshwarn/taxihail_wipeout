@@ -25,6 +25,7 @@ using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -95,6 +96,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			//Facebook init
             if (TinyIoCContainer.Current.Resolve<IAppSettings>().Data.FacebookEnabled)
             {
+				TinyIoCContainer.Current.Resolve<IFacebookService> ().Init ();
                 FBAppCall.HandleDidBecomeActive();
             }
 

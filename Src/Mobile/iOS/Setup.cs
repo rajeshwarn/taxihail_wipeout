@@ -25,136 +25,113 @@ using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Dialog.Touch;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Google;
+using MonoTouch.Foundation;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public class Setup : MvxTouchDialogSetup
-    {
-        public Setup(MvxApplicationDelegate applicationDelegate, UIWindow window)
-			: base(applicationDelegate, window)
-        {
-        }
-        
-        #region Overrides of MvxBaseSetup
-        
-		protected override IMvxApplication CreateApp()
-        {
-			return new TaxiHailApp();
-        }
-
-		protected override List<Type> ValueConverterHolders
+	public class Setup : MvxTouchDialogSetup
+	{
+		public Setup (MvxApplicationDelegate applicationDelegate, UIWindow window)
+			: base (applicationDelegate, window)
 		{
-			get
-			{
+		}
+
+		#region Overrides of MvxBaseSetup
+
+		protected override IMvxApplication CreateApp ()
+		{
+			return new TaxiHailApp ();
+		}
+
+		protected override List<Type> ValueConverterHolders {
+			get {
 				return new List<Type> { typeof(AppConverters) };
 			}
 		}
 
 		protected override void FillTargetFactories (IMvxTargetBindingFactoryRegistry registry)
-        {
-            base.FillTargetFactories (registry);
-            registry.RegisterFactory(new MvxSimplePropertyInfoTargetBindingFactory(typeof(MvxUITextViewTargetBinding), typeof(UITextView), "Text"));
-            CustomBindingsLoader.Load(registry);
-        }
+		{
+			base.FillTargetFactories (registry);
+			registry.RegisterFactory (new MvxSimplePropertyInfoTargetBindingFactory (typeof(MvxUITextViewTargetBinding), typeof(UITextView), "Text"));
+			CustomBindingsLoader.Load (registry);
+		}
 
-		protected override void InitializeLastChance()
-        {
-			base.InitializeLastChance();
+		protected override void InitializeLastChance ()
+		{
+			base.InitializeLastChance ();
             
 
 
 			var container = TinyIoCContainer.Current;
 
-            container.Register<IAnalyticsService, GoogleAnalyticsService>();
+			container.Register<IAnalyticsService, GoogleAnalyticsService> ();
 
-            var locationService = new LocationService();
+			var locationService = new LocationService ();
 
-            container.Register<ILocationService>(locationService );
-            container.Register<IMessageService, MessageService>();
-            container.Register<IPackageInfo>(new PackageInfo());
+			container.Register<ILocationService> (locationService);
+			container.Register<IMessageService, MessageService> ();
+			container.Register<IPackageInfo> (new PackageInfo ());
 
-            container.Register<ILocalization, Localize>();
-            container.Register<ILogger, LoggerWrapper>();        
-            container.Register<ICacheService>(new CacheService());
-            container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "UserAppCache");
+			container.Register<ILocalization, Localize> ();
+			container.Register<ILogger, LoggerWrapper> ();        
+			container.Register<ICacheService> (new CacheService ());
+			container.Register<ICacheService> (new CacheService ("MK.Booking.Application.Cache"), "UserAppCache");
 
-            container.Register<IPhoneService, PhoneService>();
-			container.Register<IPushNotificationService>(new PushNotificationService(container.Resolve<ICacheService>()));
+			container.Register<IPhoneService, PhoneService> ();
+			container.Register<IPushNotificationService> (new PushNotificationService (container.Resolve<ICacheService> ()));
 
-            container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
-
-
-
-			container.Register<IGeocoder>( (c,p)=> new GoogleApiClient( c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AppleGeocoder()) );
-			container.Register<IPlaceDataProvider, GoogleApiClient>();
-			container.Register<IDirectionDataProvider, GoogleApiClient>();
-
-            InitializeSocialNetwork();
+			container.Register<IAppSettings> (new AppSettingsService (container.Resolve<ICacheService> (), container.Resolve<ILogger> ()));
 
 
-        }
 
-        private void InitializeSocialNetwork()
-        {
+			container.Register<IGeocoder> ((c, p) => new GoogleApiClient (c.Resolve<IAppSettings> (), c.Resolve<ILogger> (), new AppleGeocoder ()));
+			container.Register<IPlaceDataProvider, GoogleApiClient> ();
+			container.Register<IDirectionDataProvider, GoogleApiClient> ();
 
-            TinyIoCContainer.Current.Register<IFacebookService>((c, p) => {
-
-                var settings = c.Resolve<IAppSettings>();
-                if (settings.Data.FacebookEnabled)
-                {
-                    FBSettings.DefaultAppID = settings.Data.FacebookAppId;
-
-                    if (FBSession.ActiveSession.State == FBSessionState.CreatedTokenLoaded)
-                    {
-                        // If there's one, just open the session silently
-                        FBSession.OpenActiveSession(new[] { "basic_info", "email" },
-                            allowLoginUI: false,
-                            completion: (session, status, error) =>
-                            {
-                            });
-                    }
-
-                }
-
-                return new FacebookService();
-            });
+			InitializeSocialNetwork ();
 
 
-            TinyIoCContainer.Current.Register<ITwitterService>((c, p) => {
+		}
 
-                var settings = c.Resolve<IAppSettings>();
-                var oauthConfig = new OAuthConfig();
-                if (settings.Data.TwitterEnabled)
-                {
-                    oauthConfig = new OAuthConfig
-                    {
+		private void InitializeSocialNetwork ()
+		{
 
-                        ConsumerKey = settings.Data.TwitterConsumerKey,
-                        Callback = settings.Data.TwitterCallback,
-                        ConsumerSecret = settings.Data.TwitterConsumerSecret,
-                        RequestTokenUrl = settings.Data.TwitterRequestTokenUrl,
-                        AccessTokenUrl = settings.Data.TwitterAccessTokenUrl,
-                        AuthorizeUrl = settings.Data.TwitterAuthorizeUrl 
-                    };
+			TinyIoCContainer.Current.Register<IFacebookService,FacebookService> ();
 
-                }
-                var twitterService = new TwitterService(oauthConfig, () => Mvx.Resolve<UINavigationController>());
-                return twitterService; 
-            });
+
+			TinyIoCContainer.Current.Register<ITwitterService> ((c, p) => {
+
+				var settings = c.Resolve<IAppSettings> ();
+				var oauthConfig = new OAuthConfig ();
+				if (settings.Data.TwitterEnabled) {
+					oauthConfig = new OAuthConfig {
+
+						ConsumerKey = settings.Data.TwitterConsumerKey,
+						Callback = settings.Data.TwitterCallback,
+						ConsumerSecret = settings.Data.TwitterConsumerSecret,
+						RequestTokenUrl = settings.Data.TwitterRequestTokenUrl,
+						AccessTokenUrl = settings.Data.TwitterAccessTokenUrl,
+						AuthorizeUrl = settings.Data.TwitterAuthorizeUrl 
+					};
+
+				}
+				var twitterService = new TwitterService (oauthConfig, () => Mvx.Resolve<UINavigationController> ());
+				return twitterService; 
+			});
             
-        }
-
-		protected override Cirrious.MvvmCross.Touch.Views.Presenters.IMvxTouchViewPresenter CreatePresenter()
-		{
-			return new PhonePresenter(base.ApplicationDelegate, base.Window);
 		}
 
-		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider()
+		protected override Cirrious.MvvmCross.Touch.Views.Presenters.IMvxTouchViewPresenter CreatePresenter ()
 		{
-			return new TinyIoCProvider(TinyIoCContainer.Current);
+			return new PhonePresenter (base.ApplicationDelegate, base.Window);
 		}
 
-#endregion
-    }
+		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider ()
+		{
+			return new TinyIoCProvider (TinyIoCContainer.Current);
+		}
+
+		#endregion
+	}
 }
