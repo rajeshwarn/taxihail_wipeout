@@ -135,6 +135,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             JsConfig.RegisterTypeForAot<GeoObj>();
             JsConfig.RegisterTypeForAot<GeoResult>();
 
+
             if (_callbackFromFb)
             {    
                 _callbackFromFb = false;

@@ -23,10 +23,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 			{
 
 				FBSettings.DefaultAppID = _settings.Data.FacebookAppId;
+				FBSettings.DefaultUrlSchemeSuffix = _settings.Data.ApplicationName.ToLower ().Replace (" ", string.Empty);
 
 				if (FBSession.ActiveSession.State == FBSessionState.CreatedTokenLoaded) {
 					// If there's one, just open the session silently
-					FBSession.OpenActiveSession (new[] { "basic_info", "email" },
+					FBSession.OpenActiveSession (new[] { "public_profile", "email" },
 						allowLoginUI: false,
 						completion: (session, status, error) => {
 						});
@@ -53,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 			// You must ALWAYS ask for basic_info permissions when opening a session
 			try
 			{
-				FBSession.OpenActiveSession(new [] {"basic_info", "email"},
+				FBSession.OpenActiveSession(new [] {"public_profile", "email"},
 					allowLoginUI: true,
 					completion: (session, status, error) =>
 					{

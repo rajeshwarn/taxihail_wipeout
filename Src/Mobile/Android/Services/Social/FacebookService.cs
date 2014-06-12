@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 
 				if (openRequest != null)
 				{
-					openRequest.SetPermissions(new [] { "basic_info", "email" });
+					openRequest.SetPermissions(new [] { "public_profile", "email" });
 					openRequest.SetLoginBehavior(SessionLoginBehavior.SsoWithFallback);
 
 					session.OpenForRead(openRequest);
