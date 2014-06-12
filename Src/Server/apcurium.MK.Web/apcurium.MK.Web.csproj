@@ -353,6 +353,8 @@
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
     <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
+    <Content Include="views\QuestionItemView.js" />
+    <Content Include="views\BookAccountChargeView.js" />
     <Content Include="views\BookingConfirmationView.js" />
     <Content Include="views\BookingStatusView.js" />
     <Content Include="views\BookLaterView.js" />
@@ -419,6 +421,10 @@
     <Content Include="admin\templates\ManageAccountsCharge.handlebars" />
     <Content Include="admin\localization\ManageAccountsCharge.json" />
     <Content Include="admin\templates\AccountChargeItem.handlebars" />
+    <Content Include="templates\BookAccountCharge.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="templates\QuestionItem.handlebars" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

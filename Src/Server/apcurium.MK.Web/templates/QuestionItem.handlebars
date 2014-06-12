@@ -1,0 +1,8 @@
+﻿<div class="control-group">
+    <label class="control-label" for="inputAccountNumber">{{question}}  {{#if isRequired}}(required){{/if}}</label>
+</div>   
+<div class="control-group">
+    <div class="controls">
+        <input type="text" id="inputAnswer{{id}}" name="answer{{id}}" value="{{answer}}" class='input-block-level' {{#if maxLength}}maxlength='{{maxLength}}'{{/if}}' placeholder="{{#if maxLength}}{{maxLength}} character(s) maximum{{/if}}">
+    </div>
+</div>

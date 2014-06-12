@@ -142,14 +142,20 @@
         },
         
         book: function (form) {
-            
-            this.model.save({}, {
-                success : TaxiHail.postpone(function (model) {
-                    // Wait for order to be created before redirecting to status
-                        TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
-                }, this),
-                    error: this.showErrors
+
+            this.model.saveLocal();
+            if (this.model.isPayingWithAccountCharge()) {
+                //account charge type payment                
+                TaxiHail.app.navigate('bookaccountcharge', { trigger: true});
+            }else{
+                this.model.save({}, {
+                    success : TaxiHail.postpone(function (model) {
+                        // Wait for order to be created before redirecting to status
+                            TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
+                    }, this),
+                        error: this.showErrors
                 });
+            }
         },
         
         cancel: function (e) {
