@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                       
             Map = mapFragment.Map;
 
-			Map.SetPadding(175 ,0,0,0);
+			//Map.SetPadding(175 ,0,0,0);
 
             _touchableMap = mapFragment;
 
