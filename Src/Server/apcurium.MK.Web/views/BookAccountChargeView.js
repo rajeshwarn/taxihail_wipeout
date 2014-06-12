@@ -26,6 +26,9 @@
 
             this.model.fetchQuestions(accountNumber)
                 .done(_.bind(function (data) {
+
+                    //this.refreshValidation(data.questions);
+
                     this.$('#btloadPrompts').button('reset');
 
                     var $ul = this.$('ul');
@@ -64,8 +67,46 @@
             {
                 this.refreshPrompts(accountNumber);
             }
-        }
-
+        },
+        refreshValidation: function(questions)
+        {
+            
+            this.validate({
+                rules: {
+                    'settings.name': "required",
+                    'settings.phone': {
+                        tenOrMoreDigits: true,
+                        minlength: 10
+                    },
+                    'settings.passengers': {
+                        required: true,
+                        number: true
+                    },
+                    'settings.largeBags': {
+                        number: true
+                    }
+                },
+                messages: {
+                    'settings.name': {
+                        required: TaxiHail.localize('error.NameRequired')
+                    },
+                    'settings.phone': {
+                        required: TaxiHail.localize('error.PhoneRequired'),
+                        tenOrMoreDigits: TaxiHail.localize('error.PhoneBadFormat')
+                    },
+                    'settings.passengers': {
+                        required: TaxiHail.localize('error.PassengersRequired'),
+                        number: TaxiHail.localize('error.NotANumber')
+                    },
+                    'settings.largeBags': {
+                        number: TaxiHail.localize('error.NotANumber')
+                    }
+                },
+                submitHandler: this.book
+            });
+        },
     });
+
+    _.extend(View.prototype, TaxiHail.ValidatedView);
 
 }())
