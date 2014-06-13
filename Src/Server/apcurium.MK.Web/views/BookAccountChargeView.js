@@ -49,6 +49,8 @@
 
                     $ul.first().append(items);
 
+                    this.model.set('questionsAndAnswers', data.questions);
+
                     this.refreshValidationRules(data.questions);
 
                 }, this))
@@ -110,6 +112,13 @@
 
         book: function (form) {
 
+            var questions = this.model.get('questionsAndAnswers');
+            var answers = this.$("input[name^='answer']");
+            for (var i = 0; i < answers.length; i++) {
+                var answer = answers[i];
+                var index = answer.getAttribute('data-id');
+                questions[index].answer = answer.value;
+            }
             this.model.save({}, {
                 success: TaxiHail.postpone(function (model) {
                     // Wait for order to be created before redirecting to status
