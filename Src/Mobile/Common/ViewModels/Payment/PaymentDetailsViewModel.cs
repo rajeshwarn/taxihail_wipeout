@@ -21,13 +21,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			_accountService = accountService;
 		}
 
-		private int _defaultTypePercentage;
+		private int _defaultTipPercentage;
 
 		public void Start(PaymentInformation paymentDetails = null)
 		{
 			CreditCards.CollectionChanged += (sender, e) => RaisePropertyChanged(() => HasCreditCards);
 
-			_defaultTypePercentage = Settings.DefaultTypePercentage;
+			_defaultTipPercentage = Settings.DefaultTipPercentage;
 
 			LoadCreditCards();
 
@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				}
 				else
 				{
-					paymentDetails.TipPercent = _defaultTypePercentage;
+					paymentDetails.TipPercent = _defaultTipPercentage;
 				}
 			}
 

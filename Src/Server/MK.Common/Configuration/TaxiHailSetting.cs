@@ -22,7 +22,7 @@ namespace MK.Common.Configuration
             TutorialEnabled = true;
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
             CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink";
-			DefaultTypePercentage = 15;
+			DefaultTipPercentage = 15;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -122,7 +122,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Credit Card Is Mandatory", Description="If true, the user needs to have a card on file")]
         public bool CreditCardIsMandatory { get; private set; }
 		[Display(Name = "Default Percentage Tip", Description="default value for the tip percentage ex: 15")]
-		public int DefaultTypePercentage { get; private set; }
+		public int DefaultTipPercentage { get; private set; }
 
 		[Display(Name = "Place Types", Description="Give a list of Google Maps places types to filter search")]
 		public string PlacesTypes { get; private set; }
