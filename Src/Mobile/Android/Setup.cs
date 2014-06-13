@@ -103,12 +103,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 		private void InitializeSocialNetwork()
 		{
 			
-            _container.Register<IFacebookService>((c,prop) =>  {
-
-                var settings = c.Resolve<IAppSettings>();
-                var facebookService = new FacebookService(settings.Data.FacebookAppId, () => _container.Resolve<IMvxAndroidCurrentTopActivity>().Activity);
-                return facebookService;
-            });			
+			_container.Register<IFacebookService,FacebookService> ();
+//			(c,prop) =>  {
+//
+//                var settings = c.Resolve<IAppSettings>();
+//                var facebookService = new FacebookService(settings.Data.FacebookAppId, () => _container.Resolve<IMvxAndroidCurrentTopActivity>().Activity);
+//                return facebookService;
+//			});			
 
             _container.Register<ITwitterService>((c,p) => {
 
