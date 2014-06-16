@@ -10,7 +10,8 @@
             'click #testPayPalSandboxSettingsButton': 'testPayPalSandboxSettingsButtonClick',
             'click #payPalProductionSettingsButton': 'payPalProductionSettingsButtonClick',
             'click #brainTreeSettingsButton': 'brainTreeSettingsButtonClick',
-            'click #cmtSettingsButton': 'cmtSettingsButtonClick'
+            'click #cmtSettingsButton': 'cmtSettingsButtonClick',
+            'click #monerisSettingsButton': 'monerisSettingsButtonClick'
         },
         
         
@@ -62,6 +63,12 @@
             
             var data = this.$el.serializeObject();
             this.testConfig(this.model.testBraintree(data), this.$("#brainTreeSettingsMessageZone"));
+        },
+
+        monerisSettingsButtonClick: function() {
+
+            var data = this.$el.serializeObject();
+            this.testConfig(this.model.testMoneris(data), this.$("#monerisSettingsMessageZone"));
         },
 
         payPalProductionSettingsButtonClick: function () {
@@ -138,6 +145,7 @@
 
             var btDiv = this.$("#braintreeSettingsDiv");
             var cmtDiv = this.$("#cmtSettingsDiv");
+            var monerisDiv = this.$("#monerisSettingsDiv");
 
             var method = this.model.toJSON().serverPaymentSettings.paymentMode;
             if (newPaymentMode != method) {
@@ -153,16 +161,29 @@
                 this.saveButton.removeAttr('disabled');
             }
 
-            if (newPaymentMode == "Cmt" || newPaymentMode == "RideLinqCmt") {
+            if (newPaymentMode == "Cmt" || newPaymentMode == "RideLinqCmt")
+            {
                 btDiv.hide();
                 cmtDiv.show();
+                monerisDiv.hide();
             }
-            else if (newPaymentMode == "Braintree") {
+            else if (newPaymentMode == "Braintree")
+            {
                 btDiv.show();
                 cmtDiv.hide();
-            } else {
+                monerisDiv.hide();
+            }
+            else if (newPaymentMode == "Moneris")
+            {
                 btDiv.hide();
                 cmtDiv.hide();
+                monerisDiv.show();
+            }
+            else
+            {
+                btDiv.hide();
+                cmtDiv.hide();
+                monerisDiv.hide();
             }
         }
     });

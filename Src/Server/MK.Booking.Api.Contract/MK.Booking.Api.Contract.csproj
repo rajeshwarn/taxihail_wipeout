@@ -80,6 +80,7 @@
     <Compile Include="ContractDocument.cs" />
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requests\AccountChargeRequest.cs" />
     <Compile Include="Requests\AddressHistoryRequest.cs" />
     <Compile Include="Requests\AccountOrderListRequest.cs" />
     <Compile Include="BaseDTO.cs" />
@@ -90,6 +91,8 @@
     <Compile Include="Requests\Payment\Cmt\PairingRidelinqCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\PreAuthorizeAndCommitPaymentCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\UnpairingRidelinqCmtRequest.cs" />
+    <Compile Include="Requests\Payment\Moneris\DeleteTokenizedCreditcardMonerisRequest.cs" />
+    <Compile Include="Requests\Payment\Moneris\PreAuthorizeAndCommitPaymentMonerisRequest.cs" />
     <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\DeleteTokenizedCreditcardBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
@@ -120,6 +123,7 @@
     <Compile Include="Requests\Payment\CancelPayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\Payment\CompletePayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\Payment\TestCmtSettingsRequest.cs" />
+    <Compile Include="Requests\Payment\TestMonerisSettingsRequest.cs" />
     <Compile Include="Requests\Payment\TestPayPalProductionSettingsRequest.cs" />
     <Compile Include="Requests\Payment\TestPayPalSandBoxSettingsRequest.cs" />
     <Compile Include="Requests\Payment\TestServerPaymentSettingsResponse.cs" />
@@ -152,6 +156,7 @@
     <Compile Include="Requests\UpdatePassword.cs" />
     <Compile Include="Requests\ValidateOrderRequest.cs" />
     <Compile Include="Resources\Account.cs" />
+    <Compile Include="Resources\AccountCharge.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
     <Compile Include="Resources\AvailableVehicle.cs" />

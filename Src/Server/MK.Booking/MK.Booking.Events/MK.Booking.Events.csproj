@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountChargeDeleted.cs" />
     <Compile Include="AccountConfirmed.cs" />
     <Compile Include="AccountDisabled.cs" />
     <Compile Include="AccountPasswordReset.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="AccountRegistered.cs" />
     <Compile Include="AccountUpdated.cs" />
     <Compile Include="AddressRemovedFromHistory.cs" />
+    <Compile Include="AccountChargeAddedUpdated.cs" />
     <Compile Include="AdminRightGranted.cs" />
     <Compile Include="AppSettingsUpdated.cs" />
     <Compile Include="BookingSettingsUpdated.cs" />

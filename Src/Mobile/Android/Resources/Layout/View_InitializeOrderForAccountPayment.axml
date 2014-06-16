@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <LinearLayout
+        android:layout_margin="0dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/top_bar_color"
+            android:orientation="horizontal">
+            <TextView
+                android:text="@string/View_InitializeOrderForAccountPayment"
+                style="@style/TopTitleText"
+                android:layout_gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/top_bar_title_height"
+                android:gravity="center" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_margin="0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/top_bar_separator_color"
+            android:orientation="horizontal" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="center_horizontal">
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <LinearLayout
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="8dp"
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        local:MvxBind="Visibility Questions[0].Model.IsEnabled, Converter=Visibility">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:paddingBottom="5dip"
+                            android:text="Question #1"
+                            style="@style/BlackTextLabel"
+                            local:MvxBind="Text Questions[0].QuestionLabel" />
+                        <EditText
+                            android:id="@+id/editQuestion0"
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            local:MvxBind="Text Questions[0].Model.Answer;Hint Questions[0].QuestionPlaceholder" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        local:MvxBind="Visibility Questions[1].Model.IsEnabled, Converter=Visibility">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:paddingBottom="5dip"
+                            android:text="Question #2"
+                            style="@style/BlackTextLabel"
+                            local:MvxBind="Text Questions[1].QuestionLabel" />
+                        <EditText
+                            android:id="@+id/editQuestion1"
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            local:MvxBind="Text Questions[1].Model.Answer;Hint Questions[1].QuestionPlaceholder" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        local:MvxBind="Visibility Questions[2].Model.IsEnabled, Converter=Visibility">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:paddingBottom="5dip"
+                            android:text="Question #3"
+                            style="@style/BlackTextLabel"
+                            local:MvxBind="Text Questions[2].QuestionLabel" />
+                        <EditText
+                            android:id="@+id/editQuestion2"
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            local:MvxBind="Text Questions[2].Model.Answer;Hint Questions[2].QuestionPlaceholder" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        local:MvxBind="Visibility Questions[3].Model.IsEnabled, Converter=Visibility">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:paddingBottom="5dip"
+                            android:text="Question #4"
+                            style="@style/BlackTextLabel"
+                            local:MvxBind="Text Questions[3].QuestionLabel" />
+                        <EditText
+                            android:id="@+id/editQuestion3"
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            local:MvxBind="Text Questions[3].Model.Answer;Hint Questions[3].QuestionPlaceholder" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        local:MvxBind="Visibility Questions[4].Model.IsEnabled, Converter=Visibility">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:paddingBottom="5dip"
+                            android:text="Question #5"
+                            style="@style/BlackTextLabel"
+                            local:MvxBind="Text Questions[4].QuestionLabel" />
+                        <EditText
+                            android:id="@+id/editQuestion4"
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            local:MvxBind="Text Questions[4].Model.Answer;Hint Questions[4].QuestionPlaceholder" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        local:MvxBind="Visibility Questions[5].Model.IsEnabled, Converter=Visibility">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:paddingBottom="5dip"
+                            android:text="Question #6"
+                            style="@style/BlackTextLabel"
+                            local:MvxBind="Text Questions[5].QuestionLabel" />
+                        <EditText
+                            android:id="@+id/editQuestion5"
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            local:MvxBind="Text Questions[5].Model.Answer;Hint Questions[5].QuestionPlaceholder" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        local:MvxBind="Visibility Questions[6].Model.IsEnabled, Converter=Visibility">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:paddingBottom="5dip"
+                            android:text="Question #7"
+                            style="@style/BlackTextLabel"
+                            local:MvxBind="Text Questions[6].QuestionLabel" />
+                        <EditText
+                            android:id="@+id/editQuestion6"
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            local:MvxBind="Text Questions[6].Model.Answer;Hint Questions[6].QuestionPlaceholder" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        local:MvxBind="Visibility Questions[7].Model.IsEnabled, Converter=Visibility">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:paddingBottom="5dip"
+                            android:text="Question #8"
+                            style="@style/BlackTextLabel"
+                            local:MvxBind="Text Questions[7].QuestionLabel" />
+                        <EditText
+                            android:id="@+id/editQuestion7"
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            local:MvxBind="Text Questions[7].Model.Answer;Hint Questions[7].QuestionPlaceholder" />
+                    </LinearLayout>
+                    <Button
+                        style="@style/ButtonActionGreenStyle"
+                        android:layout_marginTop="8dip"
+                        android:id="@+id/ConfirmButton"
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/HeightButton"
+                        android:paddingTop="5dip"
+                        android:paddingBottom="5dip"
+                        android:text="@string/Confirm"
+                        local:MvxBind="Click ConfirmOrder" />
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

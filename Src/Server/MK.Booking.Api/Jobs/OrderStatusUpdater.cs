@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IConfigurationManager _configurationManager;
         private readonly IOrderPaymentDao _orderPayementDao;
         private readonly IOrderDao _orderDao;
-        private readonly dynamic _resources;
+        private readonly Resources.Resources _resources;
 
         public OrderStatusUpdater(IConfigurationManager configurationManager, ICommandBus commandBus,
             IOrderPaymentDao orderPayementDao, IOrderDao orderDao)
@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             _commandBus = commandBus;
             _orderPayementDao = orderPayementDao;
             var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
-            _resources = new DynamicResources(applicationKey);
+            _resources = new Resources.Resources(applicationKey);
         }
 
         public void Update(IBSOrderInformation ibsStatus, OrderStatusDetail order)
@@ -48,15 +48,14 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
-
+            var orderDetail = _orderDao.FindById(order.OrderId);
+            var languageCode = orderDetail != null ? orderDetail.ClientLanguageCode : "en";
             var pairingInfo = _orderDao.FindOrderPairingById(order.OrderId);
             if ((pairingInfo != null) && (pairingInfo.AutoTipPercentage.HasValue))
             {
                 double tip = ((double)pairingInfo.AutoTipPercentage.Value) / 100;
                 ibsStatus.Tip = Math.Round(ibsStatus.Fare * (tip), 2);
             }
-
-
 
             var command = new ChangeOrderStatus
             {
@@ -73,17 +72,17 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             if (ibsStatus.IsAssigned)
             {
-                description = string.Format((string)_resources.OrderStatus_CabDriverNumberAssigned, ibsStatus.VehicleNumber);
+                description = string.Format(_resources.Get("OrderStatus_CabDriverNumberAssigned", languageCode), ibsStatus.VehicleNumber);
 
                 if (ibsStatus.Eta.HasValue)
                 {
-                    description += " - " + string.Format((string)_resources.OrderStatus_CabDriverETA, ibsStatus.Eta.Value.ToString("t"));
+                    description += " - " + string.Format(_resources.Get("OrderStatus_CabDriverETA", languageCode), ibsStatus.Eta.Value.ToString("t"));
                 }
             }
             else if (ibsStatus.IsCanceled)
             {
                 order.Status = OrderStatus.Canceled;
-                description = (string)_resources.GetString("OrderStatus_" + ibsStatus.Status);
+                description = _resources.Get("OrderStatus_" + ibsStatus.Status, languageCode);
             }
             else if (ibsStatus.IsTimedOut)
             {
@@ -101,12 +100,12 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                 if (total > 0)
                 {
-                    description = string.Format((string)_resources.OrderStatus_OrderDoneFareAvailable, FormatPrice(total));
+                    description = string.Format(_resources.Get("OrderStatus_OrderDoneFareAvailable", languageCode), FormatPrice(total));
                     order.FareAvailable = true;
                 }
                 else
                 {
-                    description = (string)_resources.OrderStatus_wosDONE;
+                    description = _resources.Get("OrderStatus_wosDONE", languageCode);
                     order.FareAvailable = false;
                 }
 
@@ -119,7 +118,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             order.IBSStatusDescription = description.HasValue()
                                              ? description
-                                             : (string)_resources.GetString("OrderStatus_" + ibsStatus.Status);
+                                             : _resources.Get("OrderStatus_" + ibsStatus.Status, languageCode);
 
 
             _commandBus.Send(command);

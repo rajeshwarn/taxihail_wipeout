@@ -34,6 +34,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize ()
 		{
+			this.ShouldChangeCharacters = CheckMaxLength;
+
             BackgroundColor = UIColor.White;
 
             if(UIHelper.IsOS7orHigher)
@@ -170,6 +172,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             //Hook?
         }
+
+		public int? MaxLength { get; set; }
+
+		private bool CheckMaxLength (UITextField textField, NSRange range, string replacementString)
+		{
+			if (MaxLength.HasValue) {
+				int textLength = Text.HasValue () ? Text.Length : 0;
+				int replaceLength = replacementString.HasValue () ? replacementString.Length : 0;
+				int newLength = textLength + replaceLength - range.Length;
+				return (newLength <= MaxLength);
+			} else {
+				return true;
+			}
+		}
+
 	}
 }
 

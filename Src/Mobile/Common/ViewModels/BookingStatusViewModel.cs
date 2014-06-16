@@ -341,7 +341,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IsPayButtonVisible =  (statusId == VehicleStatuses.Common.Done
 								||statusId == VehicleStatuses.Common.Loaded)
 								&& (isPayEnabled && !_paymentService.GetPaymentFromCache(Order.Id).HasValue)
-			                    && !IsUnpairButtonVisible;
+			                    && !IsUnpairButtonVisible
+								&& (Order.Settings.ChargeTypeId == null 
+									|| Order.Settings.ChargeTypeId != Settings.AccountChargeTypeId);
 			
             IsCancelButtonVisible = statusId == null 
 			                    || statusId == VehicleStatuses.Common.Assigned 

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Common.Entity;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -88,7 +91,8 @@ namespace apcurium.MK.Web.Tests
                 ProviderId = 13,
                 VehicleTypeId = 1,
                 DefaultCreditCard = creditCardId,
-                DefaultTipPercent = defaultTipPercent
+                DefaultTipPercent = defaultTipPercent,
+                AccountNumber = "1234"
             };
 
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
@@ -106,6 +110,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(settings.VehicleTypeId, account.Settings.VehicleTypeId);
             Assert.AreEqual(creditCardId, account.DefaultCreditCard);
             Assert.AreEqual(defaultTipPercent, account.DefaultTipPercent);
+            Assert.AreEqual(settings.AccountNumber, account.Settings.AccountNumber);
         }
 
         [Test]
@@ -184,6 +189,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(account.Email, TestAccount.Email);
             Assert.AreEqual(account.Name, TestAccount.Name);
             Assert.AreEqual(account.Phone, TestAccount.Phone);
+            Assert.AreEqual(account.Language, TestAccount.Language);
         }
 
         [Test]

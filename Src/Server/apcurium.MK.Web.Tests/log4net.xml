@@ -26,9 +26,18 @@
 			<conversionPattern value="%date [%thread] %-5level %logger [%property{NDC}] - %message%newline" />
 		</layout>
 	</appender>	
+   <appender name="RollingLogFileAppender" type="log4net.Appender.RollingFileAppender">
+    <file value="logs\logfile.txt" />
+    <maxSizeRollBackups value="10" />
+    <maximumFileSize value="20MB" />
+    <layout type="log4net.Layout.PatternLayout">
+      <conversionPattern value="%date [%thread] %-5level %logger [%property{NDC}] - %message%newline" />
+    </layout>
+  </appender>
 	<root>
-		<level value="WARN" />
+		<level value="ALL" />
 		<appender-ref ref="UdpAppender" />
+		<appender-ref ref="RollingLogFileAppender" />
 	</root>
 	<logger name="apcurium.MK.Booking.Api.Services">
 		<level value="DEBUG" />

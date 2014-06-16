@@ -174,10 +174,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 		{
 			get
 			{
-				return this.GetCommand(() => this.Services().Message.ShowEditTextDialog(this.Services().Localize["BookTaxiTitle"],
-                    this.Services().Localize["BookTaxiPassengerName"],
-                    this.Services().Localize["Ok"], 
-					CreateOrder));
+				return this.GetCommand(async () => 
+				{
+					var name = await this.Services ().Message.ShowPromptDialog (
+						this.Services ().Localize["BookTaxiTitle"],
+						this.Services ().Localize["BookTaxiPassengerName"], 
+						() => { return; });
+
+					CreateOrder(name);
+				});
 			}
 		}
 

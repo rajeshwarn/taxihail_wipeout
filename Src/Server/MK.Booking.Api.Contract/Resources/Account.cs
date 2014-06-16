@@ -1,9 +1,6 @@
-﻿#region
-
-using System;
+﻿using System;
 using apcurium.MK.Common.Entity;
-
-#endregion
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {

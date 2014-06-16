@@ -60,6 +60,7 @@
             TaxiHail.parameters.showPassengerNumber = <%: ShowPassengerNumber ? "true" : "false" %>;
             TaxiHail.parameters.directionTarifMode = "<%: DirectionTarifMode %>";
             TaxiHail.parameters.directionNeedAValidTarif = <%: DirectionNeedAValidTarif ? "true" : "false" %>;
+            TaxiHail.parameters.accountChargeTypeId = '<%: AccountChargeTypeId %>';
             TaxiHail.parameters.apiRoot = "api";
 
             TaxiHail.referenceData = <%= ReferenceData %>;

@@ -88,7 +88,7 @@
  
    "GeoLoc.PopularAddress.Range" : "500",
    "GeoLoc.PlacesTypes" : "airport,amusement_park,art_gallery,bank,bar,bus_station,cafe,casino,clothing_store,convenience_store,courthouse,department_store,doctor,embassy,food,gas_station,hospital,lawyer,grocery_or_supermarket,library,liquor_store,lodging,local_government_office,movie_theater,moving_company,museum,night_club,park,parking,pharmacy,police,physiotherapist",
-   "Admin.CompanySettings": "Client.ShowEstimateWarning,Client.DestinationIsRequired,Client.HideDestination,Client.DisabledTutorialSlides,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink",
+   "Admin.CompanySettings": "Client.ShowEstimateWarning,Client.DestinationIsRequired,Client.HideDestination,Client.DisabledTutorialSlides,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink,Client.AccountChargeTypeId",
    "GCM.SenderId": "385816297456",
    "GCM.APIKey": "AIzaSyC7eWqKEHj58xo3Tsuji4EH6HA7dn0T9bY",
    "APNS.CertificatePassword": "TaxiHail",
@@ -97,7 +97,7 @@
    "AvailableVehicles.Count" : "10",
    "Client.AllowAddressRange" : "false",
    "Store.AppleLink" : "http://www.mobile-knowledge.com/",
-   "Store.PlayLink" : "http://www.mobile-knowledge.com/"   
-    
+   "Store.PlayLink" : "http://www.mobile-knowledge.com/",
+   "Client.AccountChargeTypeId" : ""
 }
 

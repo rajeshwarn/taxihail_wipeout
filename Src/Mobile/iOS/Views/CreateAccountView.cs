@@ -52,6 +52,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnCreate.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
             btnCancel.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
 
+			lblTitle.Text = Localize.GetValue ("View_CreateAccount");
+			btnCreate.SetTitle (Localize.GetValue ("Create"), UIControlState.Normal);
+			btnCancel.SetTitle (Localize.GetValue ("Cancel"), UIControlState.Normal);
+
 			BuildTableView ();
 
 			var set = this.CreateBindingSet<CreateAccountView, CreateAccountViewModel>();

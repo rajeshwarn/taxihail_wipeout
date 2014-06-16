@@ -17,7 +17,8 @@
         Tariff_DuplicateName,
         Rule_DuplicateName,
         Rule_InvalidPriority,
-        ResetPassword_AccountNotFound
+        ResetPassword_AccountNotFound,
+        AccountCharge_AccountAlreadyExisting
  // ReSharper restore InconsistentNaming
     }
 }

@@ -7,6 +7,7 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
+    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -517,6 +518,10 @@
     </Compile>
     <Compile Include="Extensions\ViewServicesExtensions.cs" />
     <Compile Include="PlatformIntegration\AppleGeocoder.cs" />
+    <Compile Include="Views\Order\InitializeOrderForAccountPaymentView.cs" />
+    <Compile Include="Views\Order\InitializeOrderForAccountPaymentView.designer.cs">
+      <DependentUpon>InitializeOrderForAccountPaymentView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -563,6 +568,7 @@
     <InterfaceDefinition Include="Views\Order\OrderEditView_Thriev.xib" />
     <InterfaceDefinition Include="Views\UpdatedTermsAndConditionsView.xib" />
     <InterfaceDefinition Include="Views\AddressPickerContainerView.xib" />
+    <InterfaceDefinition Include="Views\Order\InitializeOrderForAccountPaymentView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
@@ -764,6 +770,7 @@
     <BundleResource Include="Resources\destination_small_icon%402x.png" />
     <BundleResource Include="Resources\destination_small_icon_pressed.png" />
     <BundleResource Include="Resources\destination_small_icon_pressed%402x.png" />
+    <BundleResource Include="Resources\Icon-60%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">

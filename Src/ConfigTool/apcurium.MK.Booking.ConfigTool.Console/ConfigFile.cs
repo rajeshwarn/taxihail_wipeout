@@ -18,10 +18,17 @@ namespace apcurium.MK.Booking.ConfigTool
 
             //Todo : Here _filePathToPatch should be the equal to temp folder containing all the assets
             var sourcePath = Path.Combine(Parent.ConfigDirectoryPath, PathConverter.Convert(  Source ) );
-            if (!File.Exists(sourcePath))
+			if (!string.IsNullOrWhiteSpace(Parent.CommonDirectoryPath) && !File.Exists(sourcePath))
             {
                 sourcePath = Path.Combine(Parent.CommonDirectoryPath, PathConverter.Convert(Source));
             }
+
+			if (!File.Exists (sourcePath))
+			{
+				// source file not found, abort!
+				return;
+			}
+
             File.Copy(sourcePath, destPath, true);
         }
 

@@ -39,7 +39,8 @@
             "status/:id": "status",
             "useraccount": "useraccount",
             "useraccount/:tab": "useraccount",
-            "resetpassword": "resetpassword"
+            "resetpassword": "resetpassword",
+            "bookaccountcharge": "bookaccountcharge",
         },
 
         initialize: function (options) {
@@ -185,6 +186,12 @@
                 this.navigate('', { trigger: true });
             }
                    
+        },
+
+        bookaccountcharge:function()
+        {
+            var currentOrder = TaxiHail.orderService.getCurrentOrder();
+            renderView(TaxiHail.BookAccountChargeView, currentOrder);
         },
         
         status: function (id) {

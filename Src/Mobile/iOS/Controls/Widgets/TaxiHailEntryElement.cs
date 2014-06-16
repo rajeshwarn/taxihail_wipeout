@@ -10,10 +10,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	{
         private float Padding = 13.5f;
 		private bool _isPassword;
+		private UITextAutocapitalizationType _autocapitalizationType;
 
-		public TaxiHailEntryElement(string caption, string placeholder, string value = "", bool isPassword = false)
+		public TaxiHailEntryElement(string caption, string placeholder, string value = "", bool isPassword = false, UITextAutocapitalizationType autocapitalizationType = UITextAutocapitalizationType.None)
 			: base(caption, placeholder, value, isPassword)
 		{
+			_autocapitalizationType = autocapitalizationType;
 			_isPassword = isPassword;
 		}
 
@@ -36,9 +38,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			this.AutocorrectionType = UITextAutocorrectionType.No;
 
-			if (_isPassword)
-			{
+
+			if (_isPassword) {
 				this.AutocapitalizationType = UITextAutocapitalizationType.None;
+			}
+			else {
+				this.AutocapitalizationType = _autocapitalizationType;
 			}
 
 			return textField;

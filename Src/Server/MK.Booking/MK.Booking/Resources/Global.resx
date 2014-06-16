@@ -177,4 +177,148 @@
   <data name="PaymentConfirmationToDriver2" xml:space="preserve">
     <value>Auth #{0}</value>
   </data>
+  <data name="Email_Subject_AccountConfirmation" xml:space="preserve">
+    <value>Welcome to {{ ApplicationName }}</value>
+  </data>
+  <data name="Email_Subject_BookingConfirmation" xml:space="preserve">
+    <value>{{ ApplicationName }} - Booking confirmation</value>
+  </data>
+  <data name="Email_Subject_DriverAssigned" xml:space="preserve">
+    <value>{{ ApplicationName }} - Driver assigned confirmation</value>
+  </data>
+  <data name="Email_Subject_PasswordReset" xml:space="preserve">
+    <value>{{ ApplicationName }} - Your password has been reset</value>
+  </data>
+  <data name="Email_Subject_Receipt" xml:space="preserve">
+    <value>{{ ApplicationName }} - Receipt</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationLine1" xml:space="preserve">
+    <value>To confirm your email address, please visit this link:</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationSuccessfulLine1" xml:space="preserve">
+    <value>Your email address has been confirmed successfully.</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationSuccessfulLine2" xml:space="preserve">
+    <value>You can now sign into the application.</value>
+  </data>
+  <data name="Email_Body_AptNumber" xml:space="preserve">
+    <value>Apt&amp;nbsp;No.</value>
+  </data>
+  <data name="Email_Body_AuthorizationNumber" xml:space="preserve">
+    <value>Authorization number :</value>
+  </data>
+  <data name="Email_Body_BookingConfirmation" xml:space="preserve">
+    <value>Booking confirmation</value>
+  </data>
+  <data name="Email_Body_ChargeType" xml:space="preserve">
+    <value>Charge&amp;nbsp;Type</value>
+  </data>
+  <data name="Email_Body_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Email_Body_Destination" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="Email_Body_DriverAssignedConfirmation" xml:space="preserve">
+    <value>Driver assigned confirmation</value>
+  </data>
+  <data name="Email_Body_EmailConfirmationRequired" xml:space="preserve">
+    <value>Email confirmation required</value>
+  </data>
+  <data name="Email_Body_EmailConfirmationSuccessful" xml:space="preserve">
+    <value>Email address confirmation successful</value>
+  </data>
+  <data name="Email_Body_EstimatedFare" xml:space="preserve">
+    <value>Estimated&amp;nbsp;Fare</value>
+  </data>
+  <data name="Email_Body_Fare" xml:space="preserve">
+    <value>Fare</value>
+  </data>
+  <data name="Email_Body_LargeBags" xml:space="preserve">
+    <value>Large&amp;nbsp;bags</value>
+  </data>
+  <data name="Email_Body_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Email_Body_Note" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="Email_Body_OrderNo" xml:space="preserve">
+    <value>Order&amp;nbsp;#</value>
+  </data>
+  <data name="Email_Body_PaidWith" xml:space="preserve">
+    <value>Paid With</value>
+  </data>
+  <data name="Email_Body_Passengers" xml:space="preserve">
+    <value>Passengers</value>
+  </data>
+  <data name="Email_Body_PasswordReset" xml:space="preserve">
+    <value>Password reset</value>
+  </data>
+  <data name="Email_Body_PasswordResetLine1" xml:space="preserve">
+    <value>Your password has been reset.</value>
+  </data>
+  <data name="Email_Body_PasswordResetLine2" xml:space="preserve">
+    <value>New password:</value>
+  </data>
+  <data name="Email_Body_PaymentInformation" xml:space="preserve">
+    <value>Payment Information</value>
+  </data>
+  <data name="Email_Body_PhoneNumber" xml:space="preserve">
+    <value>Phone&amp;nbsp;Number</value>
+  </data>
+  <data name="Email_Body_PickupLocation" xml:space="preserve">
+    <value>Pickup&amp;nbsp;Location</value>
+  </data>
+  <data name="Email_Body_PickupTime" xml:space="preserve">
+    <value>Pickup&amp;nbsp;Time</value>
+  </data>
+  <data name="Email_Body_PickupTimeValue" xml:space="preserve">
+    <value>{{PickupDate}} at {{PickupTime}}</value>
+  </data>
+  <data name="Email_Body_Receipt" xml:space="preserve">
+    <value>Receipt</value>
+  </data>
+  <data name="Email_Body_RingCode" xml:space="preserve">
+    <value>Ring&amp;nbsp;Code</value>
+  </data>
+  <data name="Email_Body_ThankYou" xml:space="preserve">
+    <value>Thank you!</value>
+  </data>
+  <data name="Email_Body_TheTeam" xml:space="preserve">
+    <value>The {{ ApplicationName }} Team</value>
+  </data>
+  <data name="Email_Body_Tip" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="Email_Body_Toll" xml:space="preserve">
+    <value>Toll</value>
+  </data>
+  <data name="Email_Body_TotalAmount" xml:space="preserve">
+    <value>Total Amount</value>
+  </data>
+  <data name="Email_Body_TotalFare" xml:space="preserve">
+    <value>Total&amp;nbsp;Fare</value>
+  </data>
+  <data name="Email_Body_TransactionId" xml:space="preserve">
+    <value>Transaction Id :</value>
+  </data>
+  <data name="Email_Body_TransactionTime" xml:space="preserve">
+    <value>Transaction&amp;nbsp;Time</value>
+  </data>
+  <data name="Email_Body_TransactionTimeValue" xml:space="preserve">
+    <value>{{TransactionDate}} at {{TransactionTime}}</value>
+  </data>
+  <data name="Email_Body_VAT" xml:space="preserve">
+    <value>VAT</value>
+  </data>
+  <data name="Email_Body_VehicleNumber" xml:space="preserve">
+    <value>Vehicle #</value>
+  </data>
+  <data name="Email_Body_VehicleType" xml:space="preserve">
+    <value>Vehicle&amp;nbsp;Type</value>
+  </data>
+  <data name="Email_Body_Driver" xml:space="preserve">
+    <value>Driver</value>
+  </data>
 </root>

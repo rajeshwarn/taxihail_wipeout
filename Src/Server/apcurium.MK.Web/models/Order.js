@@ -70,6 +70,16 @@
         isValidAddress: function(attr) {
             var value = this.get(attr);
             return !!(value && value.fullAddress && value.latitude && value.longitude);
+        },
+
+        isPayingWithAccountCharge: function () {
+            var settings = this.get('settings');
+            return settings.chargeTypeId != null
+                && settings.chargeTypeId != ''
+                && settings.chargeTypeId == TaxiHail.parameters.accountChargeTypeId
+        },
+        fetchQuestions: function (accountChargeNumber) {
+            return $.get('api/admin/accountscharge/' + accountChargeNumber, function () { }, 'json');
         }
     });
 

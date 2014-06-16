@@ -121,9 +121,12 @@
     <Compile Include="Payments\CmtPayments\Pair\UnpairingRequest.cs" />
     <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
     <Compile Include="TaxiHail\CompanyServiceClient.cs" />
+    <Compile Include="Payments\Moneris\MonerisServiceClient.cs" />
+    <Compile Include="Payments\Moneris\MonerisTokenizeClient.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Folder Include="Payments\Moneris\" />
     <None Include="packages.config" />
   </ItemGroup>
 </Project>

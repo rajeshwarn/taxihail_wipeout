@@ -99,6 +99,7 @@
     <Compile Include="Configuration\Impl\ConfigurationDbContext.cs" />
     <Compile Include="Configuration\Impl\ConfigurationManager.cs" />
     <Compile Include="Configuration\IConfigurationManager.cs" />
+    <Compile Include="Configuration\Impl\MonerisPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\PaymentMethod.cs" />
     <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
     <Compile Include="Configuration\Impl\PayPalSandboxCredentials.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="DummyConfigurationManager.cs" />
+    <Compile Include="Entity\AccountChargeQuestion.cs" />
     <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\BookingSettings.cs" />
     <Compile Include="Entity\DirectionSetting.cs" />

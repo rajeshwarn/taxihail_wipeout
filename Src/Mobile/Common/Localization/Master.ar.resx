@@ -1218,6 +1218,9 @@
   <data name="StatusConfirmNewBooking" xml:space="preserve">
     <value>في حالة حجز سيارة اخرى فإن هذا الطلب سيظل ساري، هل ترغب في الاستمرار ؟</value>
   </data>
+  <data name="Order" xml:space="preserve">
+    <value>طلب</value>
+  </data>
   <data name="StatusDescription" xml:space="preserve">
     <value>طلب # {0}</value>
   </data>

@@ -4,6 +4,8 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 	{
         string this[string key] { get; }
 		bool Exists(string key);
+		string CurrentLanguage { get; }
+		bool IsRightToLeft { get; }
 	}
 }
 

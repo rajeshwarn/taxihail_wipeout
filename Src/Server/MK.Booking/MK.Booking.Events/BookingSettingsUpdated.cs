@@ -15,5 +15,6 @@ namespace apcurium.MK.Booking.Events
         public int? VehicleTypeId { get; set; }
         public int? ChargeTypeId { get; set; }
         public int NumberOfTaxi { get; set; }
+        public string AccountNumber { get; set; }
     }
 }

@@ -35,5 +35,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
             var identifier = _context.Resources.GetIdentifier(key, "string", _context.PackageName);
             return identifier != 0;
         }
+
+		public string CurrentLanguage
+		{
+			get { return this["LanguageCode"]; }
+		}
+
+		public bool IsRightToLeft
+		{
+			get { return this["LanguageCode"] == "ar"; }
+		}
     }
 }
