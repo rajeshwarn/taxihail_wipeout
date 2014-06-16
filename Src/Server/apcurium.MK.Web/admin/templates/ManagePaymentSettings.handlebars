@@ -67,6 +67,7 @@
     <option value="Cmt">{{localize "CMT Payments"}}</option>
     <option value="RideLinqCmt">{{localize "CMT RideLinQ Payments"}}</option>
     <option value="Braintree">{{localize "Braintree Payments"}}</option>
+    <option value="Moneris">{{localize "Moneris Payments"}}</option>
     <option value="Fake">{{localize "Demo Payment Service"}}</option>
   </select>
   <br />
@@ -147,6 +148,35 @@
     <button type='button' id="cmtSettingsButton" class='btn' >{{localize "Test"}}</button>    
 
   </div>
+
+<!-- MONERIS SETTINGS-->
+<div class="control-group" id="monerisSettingsDiv">
+
+    <h4 class="table-title">{{localize "Moneris Settings"}}</h4>
+
+    <label class="control-label settingsLabel">{{{localize "Use Sandbox"}}}</label>
+
+    <select name="monerisPaymentSettings.isSandbox" class="settingsBox">
+        <option value="{{monerisPaymentSettings.isSandbox}}" selected="">{{localizeBool monerisPaymentSettings.isSandbox true="Yes" false="No"}}</option>
+        <option value="{{invertedBool monerisPaymentSettings.isSandbox}}">{{localizeBool monerisPaymentSettings.isSandbox true="No" false="Yes"}}</option>
+    </select>
+
+    <label class="control-label settingsLabel">{{{localize "Host Url"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="monerisPaymentSettings.baseHost" value="{{monerisPaymentSettings.baseHost}}" />
+
+    <label class="control-label settingsLabel">{{{localize "Host Sandbox Url"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="monerisPaymentSettings.sandboxHost" value="{{monerisPaymentSettings.sandboxHost}}" />
+
+    <label class="control-label settingsLabel">{{{localize "StoreId"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="monerisPaymentSettings.storeId" value="{{monerisPaymentSettings.storeId}}" />
+
+    <label class="control-label settingsLabel">{{{localize "ApiToken"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="monerisPaymentSettings.apiToken" value="{{monerisPaymentSettings.apiToken}}" />
+
+    <div id="monerisSettingsMessageZone"></div>
+    <button type='button' id="monerisSettingsButton" class='btn'>{{localize "Test"}}</button>
+
+</div>
 
 <div>
   <div id="warning" class="alert">

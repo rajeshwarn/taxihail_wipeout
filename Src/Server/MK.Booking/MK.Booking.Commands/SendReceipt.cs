@@ -21,10 +21,13 @@ namespace apcurium.MK.Booking.Commands
         public int IBSOrderId { get; set; }
         public DateTime TransactionDate { get; set; }
         public string VehicleNumber { get; set; }
+        public string DriverName { get; set; }
         public double Tip { get; set; }
         public double Fare { get; set; }
         public double Toll { get; set; }
         public double Tax { get; set; }
+
+        public string ClientLanguageCode { get; set; }
 
         public Address PickupAddress { get; set; }
         public Address DropOffAddress { get; set; }

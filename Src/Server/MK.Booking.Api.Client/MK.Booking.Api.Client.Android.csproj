@@ -95,6 +95,8 @@
     <Compile Include="TaxiHail\PayPalServiceClient.cs" />
     <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />
     <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
+    <Compile Include="Payments\Moneris\MonerisServiceClient.cs" />
+    <Compile Include="Payments\Moneris\MonerisTokenizeClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

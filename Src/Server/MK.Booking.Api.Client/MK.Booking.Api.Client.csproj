@@ -107,6 +107,8 @@
     <Compile Include="Payments\CmtPayments\Tokenize\TokenizeResponse.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
     <Compile Include="IVehicleClient.cs" />
+    <Compile Include="Payments\Moneris\MonerisServiceClient.cs" />
+    <Compile Include="Payments\Moneris\MonerisTokenizeClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxiHail\AccountServiceClient.cs" />
     <Compile Include="TaxiHail\AdministrationServiceClient.cs" />

@@ -14,6 +14,7 @@ using CrossUI.Droid;
 using CrossUI.Droid.Dialog;
 using CrossUI.Droid.Dialog.Elements;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Client.Dialog;
 using apcurium.MK.Booking.Mobile.Client.Controls.Dialog;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
@@ -77,6 +78,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             return (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, value, dm);
         }
 
+	
+			
 		RootElement InitializeRoot()
 		{
 			var root = new RootElement();
@@ -95,6 +98,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
 			var password = new EntryElement(null, this.Services().Localize["CreateAccountPasswordPlaceHolder"], null, "DialogCenter") { Password = true };
 			password.Bind(bindings, vm => vm.Data.Password);
+
+
 
 			var passwordConfirm = new EntryElement(null, this.Services().Localize["CreateAccountPasswordConfirmationPlaceHolder"], null, "DialogBottom") { Password = true };
 			passwordConfirm.Bind(bindings, vm => vm.ConfirmPassword);

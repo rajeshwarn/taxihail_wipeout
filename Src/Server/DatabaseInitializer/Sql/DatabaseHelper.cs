@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
@@ -80,6 +81,20 @@ namespace DatabaseInitializer.Sql
             return (T) result;
         }
 
+        public static Nullable<T> ExecuteNullableScalarQuery<T>(string connectionString, string cmdText) where T : struct
+        {
+            object result;
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var sqlCommandCreate = new SqlCommand(cmdText) { Connection = connection, CommandTimeout = 600 };
+
+                connection.Open();
+                result = sqlCommandCreate.ExecuteScalar();
+                connection.Close();
+            }
+            
+            return result == DBNull.Value ? (Nullable<T>)null : (T)result;
+        }
         public static IEnumerable<T> ExecuteListQuery<T>(string connectionString, string cmdText)
         {
             var result = new List<T>(); ;

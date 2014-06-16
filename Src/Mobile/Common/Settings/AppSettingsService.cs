@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			_logger.LogMessage("load settings from server");
 			var service = TinyIoCContainer.Current.Resolve<ConfigurationClientService>();
 			IDictionary<string,string> settingsFromServer = service.GetSettings();
-			SetSettingsValue(settingsFromServer);
+			SetSettingsValue(settingsFromServer, "ServiceUrl", "CanChangeServiceUrl");
 			SaveSettings();			
 		}
 
@@ -84,51 +84,46 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			_cacheService.Set(SettingsCacheKey, Data);
 		}
 
-		void SetSettingsValue(IDictionary<string,string> values)
+		void SetSettingsValue(IDictionary<string,string> values, params string [] excludedKeys)
 		{
 			var typeOfSettings = typeof(TaxiHailSetting); 
 			foreach (KeyValuePair<string,string> item in values)
 			{
-				try
-				{
+				if ((excludedKeys == null ) || (!excludedKeys.Any (key => item.Key.Contains (key)))) {
+					try {
 #if DEBUG
-					_logger.LogMessage("setting {0} - value {1}", item.Key, item.Value);
+						_logger.LogMessage ("setting {0} - value {1} ", item.Key, item.Value);
 #endif
-					var propertyName = item.Key.Contains(".") ? 
-					                   item.Key.SplitOnLast('.')[1]
+						var propertyName = item.Key.Contains (".") ? 
+					                   item.Key.SplitOnLast ('.') [1]
 						               : item.Key;
 
-					var propertyType = typeOfSettings.GetProperty(propertyName);
+						var propertyType = typeOfSettings.GetProperty (propertyName);
 
-					if(propertyType == null)
-					{
+						if (propertyType == null) {
 #if DEBUG
-						_logger.LogMessage("property not found for {0}", item.Key);
+							_logger.LogMessage ("property not found for {0}", item.Key);
 #endif
-						continue;
-					}
+							continue;
+						}
 
-					var targetType = IsNullableType(propertyType.PropertyType) ? 
-					                 		Nullable.GetUnderlyingType(propertyType.PropertyType) 
+						var targetType = IsNullableType (propertyType.PropertyType) ? 
+					                 		Nullable.GetUnderlyingType (propertyType.PropertyType) 
 					                 		: propertyType.PropertyType;
 
-					object propertyVal = null;
-					if(targetType.IsEnum)
-					{
-						propertyVal = Enum.Parse(targetType, item.Value);
-					}
-					else
-					{
-						propertyVal = Convert.ChangeType(item.Value, targetType);	
-					}			 
-					propertyType.SetValue(Data, propertyVal);
-				}
-				catch(Exception e)
-				{
-					_logger.LogError(e);
+						object propertyVal = null;
+						if (targetType.IsEnum) {
+							propertyVal = Enum.Parse (targetType, item.Value);
+						} else {
+							propertyVal = Convert.ChangeType (item.Value, targetType);	
+						}			 
+						propertyType.SetValue (Data, propertyVal);
+					} catch (Exception e) {
+						_logger.LogError (e);
 #if DEBUG
-					_logger.LogMessage("Error can't set value for property {0}, value was {1}", item.Key, item.Value);
+						_logger.LogMessage ("Error can't set value for property {0}, value was {1}", item.Key, item.Value);
 #endif
+					}
 				}
 			}
 		}

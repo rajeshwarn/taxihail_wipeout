@@ -48,7 +48,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_twitterService = twitterService;
 			_facebookService = facebookService;
 			_appSettings = appSettings;
-
 		}
 	
         public async Task<ReferenceData> GetReferenceData()
@@ -122,12 +121,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<Address[]> GetHistoryAddresses()
         {
             var cached = UserCache.Get<Address[]> (HistoryAddressesCacheKey);
-            if (cached != null) {
+            if (cached != null) 
+			{
                 return cached;
             }
 
 			var result = await UseServiceClientAsync<IAccountServiceClient, IList<Address>>(s => s
-					.GetHistoryAddresses (CurrentAccount.Id))
+				.GetHistoryAddresses (CurrentAccount.Id))
 				.ConfigureAwait(false);
 
             UserCache.Set(HistoryAddressesCacheKey, result.ToArray());
@@ -169,11 +169,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
 			var result = await UseServiceClientAsync<IAccountServiceClient, IEnumerable<Address>>(s => s
-					.GetFavoriteAddresses())
+				.GetFavoriteAddresses())
 				.ConfigureAwait(false);
 
             var favoriteAddresses = result as Address[] ?? result.ToArray();
             UserCache.Set (FavoriteAddressesCacheKey, favoriteAddresses.ToArray ());
+
             return favoriteAddresses;
         }
 
@@ -202,7 +203,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             var cached = UserCache.Get<T[]> (key);
 
-            if ((cached != null) && (cached.Length > 0)) {
+            if ((cached != null) && (cached.Length > 0)) 
+			{
                 var list = new List<T> (cached);
                 var toDelete = list.SingleOrDefault (item => compare (toDeleteId, item));
                 list.Remove (toDelete);
@@ -212,10 +214,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<Address> FindInAccountAddresses (double latitude, double longitude)
         {
-			var found = GetAddressInRange(await GetFavoriteAddresses(), new Position(latitude, longitude), 100) ??
-				GetAddressInRange(await GetHistoryAddresses(), new Position(latitude, longitude), 75);
+			var found = GetAddressInRange(await GetFavoriteAddresses(), new Position(latitude, longitude), 100) 
+				?? GetAddressInRange(await GetHistoryAddresses(), new Position(latitude, longitude), 75);
             return found;
-
         }
 
         private Address GetAddressInRange (IEnumerable<Address> addresses, Position position, float range)
@@ -229,16 +230,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return addressesInRange.FirstOrDefault ();
         }
         
-        public Account CurrentAccount {
-            get {
-
+        public Account CurrentAccount 
+		{
+            get 
+			{
                 var account = UserCache.Get<Account> ("LoggedUser");
                 return account;
             }
-            private set {
-                if (value != null) {
+            private set 
+			{
+                if (value != null) 
+				{
                     UserCache.Set ("LoggedUser", value);    
-                } else {
+                } 
+				else 
+				{
                     UserCache.Clear ("LoggedUser");
                 }                
             }
@@ -254,25 +260,33 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 ChargeTypeId = settings.ChargeTypeId,
                 ProviderId = settings.ProviderId,
                 DefaultCreditCard = creditCardId,
-                DefaultTipPercent = tipPercent
+				DefaultTipPercent = tipPercent,
+				AccountNumber = settings.AccountNumber
             };
             
-			UseServiceClientTask<IAccountServiceClient> (service =>                                                 {                     
+			UseServiceClientTask<IAccountServiceClient> (service => {                     
 				return service.UpdateBookingSettings (bsr);                
             });
+
             var account = CurrentAccount;
             account.Settings = settings;
             account.DefaultCreditCard = creditCardId;
             account.DefaultTipPercent = tipPercent;
+
             //Set to update the cache
             CurrentAccount = account;
-            
         }
+
+		public void UpdateAccountNumber (string accountNumber)
+		{
+			var settings = CurrentAccount.Settings;
+			settings.AccountNumber = accountNumber;
+			UpdateSettings (settings, CurrentAccount.DefaultCreditCard, CurrentAccount.DefaultTipPercent);
+		}
+
         public string UpdatePassword (Guid accountId, string currentPassword, string newPassword)
         {
-			var response = UseServiceClientTask<IAccountServiceClient, string> (service => service.UpdatePassword (new UpdatePassword{ AccountId = accountId, CurrentPassword = currentPassword, NewPassword = newPassword }));
-
-            return response;
+			return UseServiceClientTask<IAccountServiceClient, string> (service => service.UpdatePassword (new UpdatePassword{ AccountId = accountId, CurrentPassword = currentPassword, NewPassword = newPassword }));
         }
 
 		public async Task<Account> SignIn (string email, string password)
@@ -329,7 +343,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				SaveCredentials (await authResponse);
 
 				return await GetAccount ();
-
 			}
 			catch(Exception e)
 			{
@@ -370,7 +383,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     CurrentAccount = account;
                     data = account;
                 }
-                
             }
 			catch (WebException ex)
 			{
@@ -387,11 +399,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Account RefreshAccount ()
         {
-            try {
+            try 
+			{
                 var account = UseServiceClientTask<IAccountServiceClient, Account>(service => service.GetMyAccount());
                 CurrentAccount = account;
                 return account;
-            } catch {
+            } 
+			catch 
+			{
                 return null;
             }
         }
@@ -404,13 +419,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task Register (RegisterAccount data)
         {
             data.AccountId = Guid.NewGuid();
-			data.Language = _localize["LanguageCode"];
+			data.Language = _localize.CurrentLanguage;
 			await UseServiceClientAsync<IAccountServiceClient> (service =>  service.RegisterAccount (data)); 
         }
 
         public void DeleteFavoriteAddress (Guid addressId)
         {
-            if (addressId.HasValue()) {
+            if (addressId.HasValue()) 
+			{
                 var toDelete = addressId;
                 
                 RemoveFromCacheArray<Address> (FavoriteAddressesCacheKey, toDelete, (id, a) => a.Id == id);                
@@ -421,7 +437,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void DeleteHistoryAddress (Guid addressId)
         {
-            if (addressId.HasValue ()) {
+            if (addressId.HasValue ()) 
+			{
                 var toDelete = addressId;
 
                 RemoveFromCacheArray<Address> (HistoryAddressesCacheKey, toDelete, (id, a) => a.Id == id);
@@ -433,17 +450,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public void UpdateAddress (Address address)
         {
             bool isNew = address.Id.IsNullOrEmpty ();
-            if (isNew) {
-                
+            if (isNew) 
+			{
                 address.Id = Guid.NewGuid ();
             }
 
-            if (address.IsHistoric) {
+            if (address.IsHistoric) 
+			{
                 address.IsHistoric = false;
                 RemoveFromCacheArray<Address> (HistoryAddressesCacheKey, address.Id, (id, a) => a.Id == id);
             }
-            UpdateCacheArray (FavoriteAddressesCacheKey, address, (a1, a2) => a1.Id.Equals (a2.Id));
 
+            UpdateCacheArray (FavoriteAddressesCacheKey, address, (a1, a2) => a1.Id.Equals (a2.Id));
 
 			UseServiceClientTask<IAccountServiceClient> (service =>
             {
@@ -455,16 +473,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 var toMove = toSave;
 
-                if (isNew) {                        
+                if (isNew) 
+				{                        
 				  return service.AddFavoriteAddress (toSave);
-                } else if (address.IsHistoric) {
+                } 
+				else if (address.IsHistoric) 
+				{
 				  return service.UpdateFavoriteAddress (toMove);
-                } else {
+                } 
+				else 
+				{
 			      return service.UpdateFavoriteAddress (toSave);
                 }
-
-            }
-            );
+            });
         }
 
 		public async Task<IList<ListItem>> GetCompaniesList ()
@@ -558,9 +579,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			await UseServiceClientAsync<IAccountServiceClient> (client => client.AddCreditCard (request));  
 
 			return true;
-
         }
     }
 }
-
-

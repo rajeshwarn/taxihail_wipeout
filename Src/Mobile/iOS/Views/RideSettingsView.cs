@@ -43,6 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblVehicleType.Text = Localize.GetValue("RideSettingsVehiculeType");
             lblChargeType.Text = Localize.GetValue("RideSettingsChargeType");
 			lblPassword.Text = Localize.GetValue("RideSettingsPassword");
+			lblAccountNumber.Text = Localize.GetValue("RideSettingsAccountNumber");
             lblCreditCard.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
             lblTip.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
             txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
@@ -79,6 +80,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(txtChargeType)
                 .For(v => v.Text)
 				.To(vm => vm.ChargeTypeName);
+
+			set.Bind(txtAccountNumber)
+				.For(v => v.Text)
+				.To(vm => vm.AccountNumber);
 
 			set.Bind(txtPassword)
 				.For(v => v.NavigateCommand)

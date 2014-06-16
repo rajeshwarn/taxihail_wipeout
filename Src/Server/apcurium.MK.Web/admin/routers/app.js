@@ -49,7 +49,12 @@
 
             /*Export*/
             "exportaccounts": "exportAccounts",
-            "exportorders": "exportOrders"
+            "exportorders": "exportOrders",
+
+            /* Charge Accounts */
+            "accounts": "manageAccounts",
+            "accounts/add": "addAccount",
+            "accounts/edit/:number": "editAccount"
         },
 
         initialize: function (options) {
@@ -172,7 +177,20 @@
 
         exportOrders: function () {
             action(TaxiHail.ExportController, 'exportOrders');
+        },
+
+        manageAccounts: function() {
+            action(TaxiHail.AccountChargeController, 'index');
+        },
+
+        addAccount: function () {
+            action(TaxiHail.AccountChargeController, 'add');
+        },
+
+        editAccount: function (id) {
+            action(TaxiHail.AccountChargeController, 'edit', id);
         }
+
     });
 
 }());

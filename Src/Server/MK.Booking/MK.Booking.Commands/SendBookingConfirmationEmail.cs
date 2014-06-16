@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.Commands
         public Address PickupAddress { get; set; }
         public Address DropOffAddress { get; set; }
         public BookingSettings Settings { get; set; }
+        public string ClientLanguageCode { get; set; }
         public string Note { get; set; }
         public Guid Id { get; set; }
 

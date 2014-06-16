@@ -360,6 +360,9 @@
   <data name="StatusViewTitle" xml:space="preserve">
     <value>Confirmed</value>
   </data>
+  <data name="Order" xml:space="preserve">
+    <value>Order</value>
+  </data>
   <data name="StatusDescription" xml:space="preserve">
     <value>Order #{0}</value>
   </data>
@@ -671,6 +674,9 @@
   </data>
   <data name="RideSettingsPassword" xml:space="preserve">
     <value>Password</value>
+  </data>
+  <data name="RideSettingsAccountNumber" xml:space="preserve">
+    <value>Account Rider Number</value>
   </data>
   <data name="CreateAccountInvalidPassword" xml:space="preserve">
     <value>The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.</value>
@@ -1504,6 +1510,30 @@
   </data>
   <data name="ScanCreditCard" xml:space="preserve">
     <value>Scan Credit Card</value>
+  </data>
+  <data name="View_InitializeOrderForAccountPayment" xml:space="preserve">
+  	<value>Please answer these questions</value>
+  </data>
+  <data name="Error_AccountPaymentTitle" xml:space="preserve">
+  	<value>Error</value>
+  </data>
+  <data name="AccountPaymentNumberRequiredTitle" xml:space="preserve">
+  	<value>Account Rider Number required</value>
+  </data>
+  <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
+  	<value>Please enter a valid account ride number</value>
+  </data>
+  <data name="Error_AccountPaymentMessage" xml:space="preserve">
+  	<value>Invalid account ride number</value>
+  </data>
+  <data name="Error_AccountPaymentQuestionRequiredMessage" xml:space="preserve">
+  	<value>You must answer every questions marked as required to continue.</value>
+  </data>
+ <data name="AccountPaymentQuestionsRequired" xml:space="preserve">
+  	<value>(required)</value>
+  </data>
+ <data name="AccountPaymentQuestionsPlaceHolder" xml:space="preserve">
+  	<value>{0} characters maximum</value>
   </data>
   <data name="TAXI" xml:space="preserve">
     <value>TAXI</value>

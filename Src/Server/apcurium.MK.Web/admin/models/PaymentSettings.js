@@ -63,6 +63,18 @@
                 }),
                 contentType: 'application/json'
             });
+        },
+
+        testMoneris: function(settings) {
+
+            return $.ajax({
+                type: 'POST',
+                url: this.urlRoot + "/test/moneris",
+                data: JSON.stringify({
+                    MonerisPaymentSettings: settings.monerisPaymentSettings
+                }),
+                contentType: 'application/json'
+            });
         }
 
     });

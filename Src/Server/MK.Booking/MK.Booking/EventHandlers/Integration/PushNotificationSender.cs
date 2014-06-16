@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IPushNotificationService _pushNotificationService;
-        private readonly dynamic _resources;
+        private readonly Resources.Resources _resources;
 
         public PushNotificationSender(Func<BookingDbContext> contextFactory,
             IPushNotificationService pushNotificationService, IConfigurationManager configurationManager)
@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _pushNotificationService = pushNotificationService;
 
             var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
-            _resources = new DynamicResources(applicationKey);
+            _resources = new Resources.Resources(applicationKey);
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -42,27 +42,28 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
             if (shouldSendPushNotification)
             {
-                string alert;
-                switch (@event.Status.IBSStatusId)
-                {
-                    case VehicleStatuses.Common.Assigned:
-                        alert = string.Format((string) _resources.PushNotification_wosASSIGNED,
-                            @event.Status.VehicleNumber);
-                        break;
-                    case VehicleStatuses.Common.Arrived:
-                        alert = string.Format((string) _resources.PushNotification_wosARRIVED,
-                            @event.Status.VehicleNumber);
-                        break;
-                    case VehicleStatuses.Common.Timeout:
-                        alert = (string) _resources.PushNotification_wosTIMEOUT;
-                        break;
-                    default:
-                        throw new InvalidOperationException("No push notification for this order status");
-                }
-
                 using (var context = _contextFactory.Invoke())
                 {
                     var order = context.Find<OrderDetail>(@event.SourceId);
+
+                    string alert;
+                    switch (@event.Status.IBSStatusId)
+                    {
+                        case VehicleStatuses.Common.Assigned:
+                            alert = string.Format(_resources.Get("PushNotification_wosASSIGNED", order.ClientLanguageCode),
+                                @event.Status.VehicleNumber);
+                            break;
+                        case VehicleStatuses.Common.Arrived:
+                            alert = string.Format(_resources.Get("PushNotification_wosARRIVED", order.ClientLanguageCode),
+                                @event.Status.VehicleNumber);
+                            break;
+                        case VehicleStatuses.Common.Timeout:
+                            alert = _resources.Get("PushNotification_wosTIMEOUT", order.ClientLanguageCode);
+                            break;
+                        default:
+                            throw new InvalidOperationException("No push notification for this order status");
+                    }
+
                     var devices =
                         context.Set<DeviceDetail>().Where(x => x.AccountId == order.AccountId);
                     var data = new Dictionary<string, object>();

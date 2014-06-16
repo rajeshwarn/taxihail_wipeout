@@ -53,6 +53,9 @@
     <Reference Include="CsvHelper">
       <HintPath>..\packages\CsvHelper.2.3.0\lib\net40-client\CsvHelper.dll</HintPath>
     </Reference>
+    <Reference Include="eSELECTplus_dotNet_API">
+      <HintPath>..\Libraries\eSELECTplus_dotNet_API.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
@@ -122,6 +125,7 @@
     <Compile Include="Security\CustomCredentialsAuthProvider.cs" />
     <Compile Include="Security\CustomFacebookAuthProvider.cs" />
     <Compile Include="Serialization\CsvCustomSerializer.cs" />
+    <Compile Include="Services\AccountsChargeService.cs" />
     <Compile Include="Services\AddressHistoryService.cs" />
     <Compile Include="Services\AccountOrderListService.cs" />
     <Compile Include="Services\AdminEnableAccountService.cs" />
@@ -130,6 +134,7 @@
     <Compile Include="Services\ApplicationInfoService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
     <Compile Include="Services\OrderPairingService.cs" />
+    <Compile Include="Services\Payment\MonerisPaymentService.cs" />
     <Compile Include="Services\Payment\ResendPaymentConfirmationSevice.cs" />
     <Compile Include="Services\Payment\BraintreePaymentService.cs" />
     <Compile Include="Services\CancelOrderService.cs" />

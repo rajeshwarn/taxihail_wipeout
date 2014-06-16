@@ -124,11 +124,13 @@
     <Compile Include="BaseTest.cs" />
     <Compile Include="BraintreePaymentServiceClientFixture.cs" />
     <Compile Include="CmtPaymentServiceClientFixture.cs" />
+    <Compile Include="CompanyAccountChargeFixture.cs" />
     <Compile Include="CompanyClientFixture.cs" />
     <Compile Include="CompanyDefaultFavoriteAddressFixture.cs" />
     <Compile Include="CompanyPopularAddressFixture.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="CreditCardFixture.cs" />
+    <Compile Include="MonerisPaymentServiceClientFixture.cs" />
     <Compile Include="PushNotificationRegistrationFixture.cs" />
     <Compile Include="PlaceDetailFixture.cs" />
     <Compile Include="RuleFixture.cs" />

@@ -174,10 +174,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\collections\AccountChargeCollection.js" />
     <Content Include="admin\collections\RuleCollection.js" />
     <Content Include="admin\collections\TariffCollection.js" />
     <Content Include="admin\controllers\Controller.js" />
     <Content Include="admin\controllers\CompanySettingsController.js" />
+    <Content Include="admin\controllers\AccountsChargeController.js" />
     <Content Include="admin\controllers\TermsAndConditionsController.js" />
     <Content Include="admin\controllers\ExportController.js" />
     <Content Include="admin\controllers\PaymentSettingsController.js" />
@@ -188,6 +190,7 @@
     <Content Include="admin\controllers\SecurityController.js" />
     <Content Include="admin\controllers\TariffsController.js" />
     <Content Include="admin\jquery.min.js" />
+    <Content Include="admin\models\AccountCharge.js" />
     <Content Include="admin\models\TermsAndConditions.js" />
     <Content Include="admin\models\PaymentSettings.js" />
     <Content Include="admin\models\Rule.js" />
@@ -203,8 +206,11 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="admin\models\CompanySettings.js" />
+    <Content Include="admin\views\AddAccountChargeView.js" />
     <Content Include="admin\views\AddFavoriteView.js" />
+    <Content Include="admin\views\AccountChargeItemView.js" />
     <Content Include="admin\views\ConfirmEmailView.js" />
+    <Content Include="admin\views\ManageAccountsChargeView.js" />
     <Content Include="admin\views\UpdateTermsAndConditionsView.js" />
     <Content Include="admin\views\ExportAccountsView.js" />
     <Content Include="admin\views\ExportOrdersView.js" />
@@ -347,6 +353,8 @@
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
     <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
+    <Content Include="views\QuestionItemView.js" />
+    <Content Include="views\BookAccountChargeView.js" />
     <Content Include="views\BookingConfirmationView.js" />
     <Content Include="views\BookingStatusView.js" />
     <Content Include="views\BookLaterView.js" />
@@ -409,6 +417,14 @@
     <Content Include="admin\templates\UpdateTermsAndConditions.handlebars">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="admin\templates\AddAccountCharge.handlebars" />
+    <Content Include="admin\templates\ManageAccountsCharge.handlebars" />
+    <Content Include="admin\localization\ManageAccountsCharge.json" />
+    <Content Include="admin\templates\AccountChargeItem.handlebars" />
+    <Content Include="templates\BookAccountCharge.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="templates\QuestionItem.handlebars" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

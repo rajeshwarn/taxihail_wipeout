@@ -118,6 +118,20 @@
                         android:layout_marginBottom="10dip"
                         local:MvxBind="Text ChargeTypeName; Data Payments; SelectedItem ChargeTypeId" />
                     <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dip"
+                        android:paddingBottom="5dip"
+                        android:text="@string/RideSettingsAccountNumber"
+                        style="@style/BlackTextLabel" />
+                    <EditText
+                        android:layout_width="fill_parent"
+                        android:layout_marginBottom="10dip"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        local:MvxBind="Text AccountNumber"
+                        android:maxLines="1"
+                        android:singleLine="true" />
+                    <TextView
                         android:id="@+id/lblCC"
                         android:text="@string/PaymentDetails.CreditCardLabel"
                         android:layout_width="fill_parent"

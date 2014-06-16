@@ -132,6 +132,9 @@
     <Compile Include="Requests\Payment\Cmt\PairingRidelinqCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\UnpairingRidelinqCmtRequest.cs" />
     <Compile Include="Requests\TermsAndConditionsRequest.cs" />
+    <Compile Include="Resources\AccountCharge.cs" />
+    <Compile Include="Requests\Payment\Moneris\DeleteTokenizedCreditcardMonerisRequest.cs" />
+    <Compile Include="Requests\Payment\Moneris\PreAuthorizeAndCommitPaymentMonerisRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">
@@ -147,4 +150,7 @@
     <BundleResource Include="Resources\OrderRatings.cs" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Requests\Payment\Moneris\" />
+  </ItemGroup>
 </Project>

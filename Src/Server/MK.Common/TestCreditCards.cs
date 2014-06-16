@@ -12,7 +12,8 @@ namespace apcurium.MK.Common
         public enum TestCreditCardSetting
         {
             Cmt,
-            Braintree
+            Braintree,
+            Moneris
         }
 
         public string[] BraintreeAmericanExpressNumbers =
@@ -20,8 +21,7 @@ namespace apcurium.MK.Common
             "378282246310005",
             "371449635398431"
         };
-
-
+        
         public string[] BraintreeDiscoverNumbers =
         {
             "6011111111111117"
@@ -64,6 +64,26 @@ namespace apcurium.MK.Common
             "4012 0000 3333 0026".Replace(" ", "")
         };
 
+        public string[] MonerisAmericanExpressNumbers =
+        {
+            "373599005095005"
+        };
+        
+        public string[] MonerisDiscoverNumbers =
+        {
+            "6011111111111117"
+        };
+
+        public string[] MonerisMasterCardNumbers =
+        {
+            "5454545454545454"
+        };
+
+        public string[] MonerisVisaNumbers =
+        {
+            "4242424242424242"
+        };
+
         public TestCreditCards(TestCreditCardSetting settings)
         {
             TypeOfCardsToFurnish = settings;
@@ -81,6 +101,8 @@ namespace apcurium.MK.Common
                         return new CreditCard(BraintreeVisaNumbers.GetRandom());
                     case TestCreditCardSetting.Cmt:
                         return new CreditCard(CmtVisaNumbers.GetRandom());
+                    case TestCreditCardSetting.Moneris:
+                        return new CreditCard(MonerisVisaNumbers.GetRandom());
                     default:
                         throw new NotImplementedException();
                 }
@@ -97,6 +119,8 @@ namespace apcurium.MK.Common
                         return new CreditCard(BraintreeMasterCardNumbers.GetRandom());
                     case TestCreditCardSetting.Cmt:
                         return new CreditCard(CmtMasterCardNumbers.GetRandom());
+                    case TestCreditCardSetting.Moneris:
+                        return new CreditCard(MonerisMasterCardNumbers.GetRandom());
                     default:
                         throw new NotImplementedException();
                 }
@@ -113,6 +137,8 @@ namespace apcurium.MK.Common
                         return new CreditCard(BraintreeAmericanExpressNumbers.GetRandom(), 1234);
                     case TestCreditCardSetting.Cmt:
                         return new CreditCard(CmtAmericanExpressNumbers.GetRandom(), 1234);
+                    case TestCreditCardSetting.Moneris:
+                        return new CreditCard(MonerisAmericanExpressNumbers.GetRandom());
                     default:
                         throw new NotImplementedException();
                 }
@@ -129,6 +155,8 @@ namespace apcurium.MK.Common
                         return new CreditCard(BraintreeDiscoverNumbers.GetRandom());
                     case TestCreditCardSetting.Cmt:
                         return new CreditCard(CmtDiscoverNumbers.GetRandom());
+                    case TestCreditCardSetting.Moneris:
+                        return new CreditCard(MonerisDiscoverNumbers.GetRandom());
                     default:
                         throw new NotImplementedException();
                 }

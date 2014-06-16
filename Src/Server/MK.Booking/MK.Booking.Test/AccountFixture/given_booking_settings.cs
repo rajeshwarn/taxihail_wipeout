@@ -50,7 +50,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 ProviderId = 85,
                 VehicleTypeId = 69,
                 DefaultCreditCard = creditCardId,
-                DefaultTipPercent = defaultTipPercent
+                DefaultTipPercent = defaultTipPercent,
+                AccountNumber = "1234"
             });
 
             var @event = _sut.ThenHasOne<BookingSettingsUpdated>();
@@ -63,6 +64,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(3, @event.Passengers);
             Assert.AreEqual(85, @event.ProviderId);
             Assert.AreEqual(69, @event.VehicleTypeId);
+            Assert.AreEqual("1234", @event.AccountNumber);
 
             var @eventPayment = _sut.ThenHasOne<PaymentProfileUpdated>();
             Assert.AreEqual(_accountId, @eventPayment.SourceId);

@@ -36,6 +36,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseInitializerParams.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MecurialTools.cs" />
     <Compile Include="MonoBuilder.cs" />

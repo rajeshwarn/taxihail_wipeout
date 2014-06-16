@@ -4,6 +4,11 @@ using Android.App;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using Xamarin.FacebookBinding;
 using Xamarin.FacebookBinding.Model;
+using Android.Content.PM;
+using Java.Security;
+using Android.Util;
+using apcurium.MK.Common.Configuration;
+using Cirrious.CrossCore.Droid.Platform;
 
 namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 {
@@ -13,15 +18,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 		readonly Func<Activity> _mainActivity;
 		readonly MyStatusCallback _statusCallback;
 
-		public FacebookService(string appId, Func<Activity> mainActivity)
+		public FacebookService()
 		{
-			this._mainActivity = mainActivity;
-			this._appId = appId;
+
+			this._mainActivity = () => TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
+			this._appId = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().Data.FacebookAppId;
 			this._statusCallback = new MyStatusCallback();
 		}
+		public void Init()
+		{
 
+		}
 		public Task Connect()
 		{
+
+ 
 			// If the session state is any of the two "open" states when the button is clicked
 			if (Session.ActiveSession != null 
 				&& (Session.ActiveSession.State == SessionState.Opened
@@ -32,6 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 				// The session state handler (in the app delegate) will be called automatically
 				Session.ActiveSession.CloseAndClearTokenInformation();
 			}
+
 
 			// Open a session showing the user the login UI
 			// You must ALWAYS ask for basic_info permissions when opening a session
@@ -48,8 +60,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 
 				if (openRequest != null)
 				{
+
 					openRequest.SetPermissions(new [] { "basic_info", "email" });
+
 					openRequest.SetLoginBehavior(SessionLoginBehavior.SsoWithFallback);
+					openRequest.SetDefaultAudience (SessionDefaultAudience.Friends);
 
 					session.OpenForRead(openRequest);
 				}
@@ -115,13 +130,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 
 			public void Call (Session session, SessionState status, Java.Lang.Exception exception)
 			{
-				if (_currentTaskSession == null || _currentTaskSession != session)
+				bool connected = status == SessionState.Opened
+					|| status == SessionState.OpenedTokenUpdated;
+
+
+				if (!connected && ( _currentTaskSession == null || _currentTaskSession != session))
 				{
 					return;
 				}
 
-				bool connected = status == SessionState.Opened
-				                 || status == SessionState.OpenedTokenUpdated;
+//				bool connected = status == SessionState.Opened
+//				                 || status == SessionState.OpenedTokenUpdated;
 
 				if (_tcs != null)
 				{

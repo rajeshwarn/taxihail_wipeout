@@ -11,6 +11,7 @@
     <array>
       <string>app.png</string>
       <string>app@2x.png</string>
+		<string>Icon-60@2x</string>
     </array>
     <key>CFBundleIdentifier</key>
     <string>com.apcurium.mk.taxihail.dev</string>
@@ -23,13 +24,14 @@
         <array>
           <string>fb134284363380764taxihail</string>
           <string>taxihail</string>
+          <string>fb134284363380764</string>
         </array>
         <key>CFBundleURLTypes</key>
         <string>Viewer</string>
       </dict>
     </array>
     <key>CFBundleVersion</key>
-    <string>1.5.22</string>
+    <string>1.5.23</string>
     <key>MinimumOSVersion</key>
     <string>4.3</string>
     <key>NSMainNibFile</key>
