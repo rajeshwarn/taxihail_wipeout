@@ -19,7 +19,6 @@ namespace apcurium.MK.Booking.Resources
 
         public Resources(string applicationKey)
         {
-            applicationKey = "Thriev";
             var names = GetType().Assembly.GetManifestResourceNames();
             var resourceName = "apcurium.MK.Booking.Resources." + applicationKey + ".resources";
 

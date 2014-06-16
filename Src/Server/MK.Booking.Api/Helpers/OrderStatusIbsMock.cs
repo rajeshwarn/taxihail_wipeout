@@ -7,6 +7,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceInterface.Auth;
+using apcurium.MK.Common.Configuration;
 
 #endregion
 
@@ -16,8 +17,8 @@ namespace apcurium.MK.Booking.Api.Helpers
     {
         private readonly OrderStatusUpdater _updater;
 
-        public OrderStatusIbsMock(IOrderDao orderDao, OrderStatusUpdater updater)
-            : base(orderDao)
+        public OrderStatusIbsMock(IOrderDao orderDao, OrderStatusUpdater updater, IConfigurationManager configManager)
+            : base(orderDao, configManager)
         {
             _updater = updater;
         }

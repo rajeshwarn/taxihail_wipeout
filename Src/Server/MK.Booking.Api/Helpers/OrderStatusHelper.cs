@@ -7,6 +7,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface.Auth;
+using apcurium.MK.Common.Configuration;
 
 #endregion
 
@@ -15,10 +16,14 @@ namespace apcurium.MK.Booking.Api.Helpers
     public class OrderStatusHelper
     {
         private readonly IOrderDao _orderDao;
+        private readonly Resources.Resources _resources;
 
-        public OrderStatusHelper(IOrderDao orderDao)
+        public OrderStatusHelper(IOrderDao orderDao, IConfigurationManager configurationManager)
         {
             _orderDao = orderDao;
+
+            var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
+            _resources = new Resources.Resources(applicationKey);
         }
 
         public virtual OrderStatusDetail GetOrderStatus(Guid orderId, IAuthSession session)
@@ -34,7 +39,7 @@ namespace apcurium.MK.Booking.Api.Helpers
                     Status = OrderStatus.Created,
                     IBSOrderId =  0,
                     IBSStatusId = "",
-                    IBSStatusDescription = "Processing your order"
+                    IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", order.ClientLanguageCode),
                 };
             }
 
