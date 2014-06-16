@@ -1,0 +1,28 @@
+﻿<div class="row" >
+    <div class="span6">
+        <div class="well clearfix">
+            <div class="errors" style="margin-top: 10px;"></div>
+            <form class="form-horizontal clearfix" id="accoutnChargePromptsForm">
+                <div class="control-group">
+                    <label class="control-label" for="inputAccountNumber">{{localize "Account Rider #"}}</label>
+                    <div class="controls">
+                        <input type="text"  id="inputAccountNumber" name="settings.accountNumber" value="{{settings.accountNumber}}" class='input-block-level'>                        
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type='button' id="btloadPrompts" data-action='loadPrompts' class='btn btn-primary' data-loading-text="{{localize 'Loading'}}">{{localize "Show Prompts"}}</button>                        
+                    </div>
+                </div>
+                <div class="control-group">
+                    <h4 style="text-align: left">Prompts</h4>
+                    <ul style="list-style-type:none;margin-left:0"></ul>
+                 </div>
+                <div class="control-group btn-right-alignment">
+                  <button type='submit' class='btn btn-primary  span' data-loading-text="{{localize 'Loading'}}">{{localize "Book Now!"}}</button>
+                  <a href='#' class='btn  span' data-action='cancel'>{{localize "Cancel"}}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

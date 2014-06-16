@@ -74,6 +74,8 @@ namespace apcurium.MK.Web.App_Start
                 "~/common/views/BootstrapConfirmationView.js",
                 "~/views/FavoriteDetailsView.js",
                 "~/views/AddFavoriteView.js",
+                "~/views/BookAccountChargeView.js",
+                "~/views/QuestionItemView.js",
                 "~/views/FavoritesView.js",
                 "~/services/OrderService.js",
                 "~/services/DirectionInfoService.js",
