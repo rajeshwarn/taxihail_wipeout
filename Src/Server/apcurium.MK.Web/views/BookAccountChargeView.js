@@ -4,8 +4,8 @@
 
         tagName: 'form',
         events: {
-            'click [data-action=loadPrompts]': 'loadPrompts',
             'click [data-action=cancel]': 'cancel',
+            'change [name=settings.accountNumber]': 'loadPrompts'
         },
 
         initialize: function() {
@@ -25,7 +25,8 @@
         },
         refreshPrompts: function(accountNumber)
         {
-            this.$('#btloadPrompts').button('loading');
+            this.$('.errors').empty();
+            this.$('#btBook').button('loading');
 
             var $ul = this.$('ul');
             $ul.first().empty();
@@ -33,7 +34,8 @@
             this.model.fetchQuestions(accountNumber)
                 .done(_.bind(function (data) {
 
-                    this.$('#btloadPrompts').button('reset');
+                    this.$('#btBook').button('reset');
+                    this.$('#title').show();
 
                     var $ul = this.$('ul');
 
@@ -56,7 +58,7 @@
                 }, this))
                 .fail(_.bind(function (response) {
 
-                    this.$('#btloadPrompts').button('reset');
+                    this.$('#btBook').button('reset');
 
                     var alert = new TaxiHail.AlertView({
                         message: TaxiHail.localize(response.statusText),
@@ -113,19 +115,25 @@
         book: function (form) {
 
             var questions = this.model.get('questionsAndAnswers');
-            var answers = this.$("input[name^='answer']");
-            for (var i = 0; i < answers.length; i++) {
-                var answer = answers[i];
-                var index = answer.getAttribute('data-id');
-                questions[index].answer = answer.value;
+            if (!questions)
+            {
+                this.loadPrompts();
+            }else
+            {
+                var answers = this.$("input[name^='answer']");
+                for (var i = 0; i < answers.length; i++) {
+                    var answer = answers[i];
+                    var index = answer.getAttribute('data-id');
+                    questions[index].answer = answer.value;
+                }
+                this.model.save({}, {
+                    success: TaxiHail.postpone(function (model) {
+                        // Wait for order to be created before redirecting to status
+                        TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
+                    }, this),
+                    error: this.showErrors
+                });
             }
-            this.model.save({}, {
-                success: TaxiHail.postpone(function (model) {
-                    // Wait for order to be created before redirecting to status
-                    TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
-                }, this),
-                error: this.showErrors
-            });
         },
 
         cancel: function (e) {
@@ -152,6 +160,17 @@
                 $alert.append($('<div />').text(this.localize(error.statusText)));
             }, this);
             this.$('.errors').html($alert);
+        },
+
+        onPropertyChanged: function (e) {
+            var $input = $(e.currentTarget),
+                attr = $input.attr('name').split('.');
+
+            if (attr.length > 1 && this.model.has(attr[0])) {
+                this.model.get(attr[0])[attr[1]] = $input.val();
+            } else {
+                this.model.set(attr[0], $input.val());
+            }
         },
     });
 
