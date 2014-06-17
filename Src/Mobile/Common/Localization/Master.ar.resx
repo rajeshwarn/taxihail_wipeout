@@ -229,7 +229,7 @@
     <value>اتصل</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>الغاء</value>
+    <value>إلغاء</value>
   </data>
   <data name="CannotCancelOrderMessage" xml:space="preserve">
     <value>لا يمكنك إلغاء هذا الطلب.</value>
@@ -361,10 +361,10 @@
     <value>استمرار</value>
   </data>
   <data name="Create" xml:space="preserve">
-    <value>إنشاء</value>
+    <value>فتح حساب</value>
   </data>
   <data name="CreateAccountEmailPlaceHolder" xml:space="preserve">
-    <value>البريد الالكتروني</value>
+    <value>البرید الإلكتروني</value>
   </data>
   <data name="CreateAccountEmptyField" xml:space="preserve">
     <value>البيانات غير صحيحة، يجب تعبئة كافة الخانات.</value>
@@ -379,7 +379,7 @@
     <value>خطأ</value>
   </data>
   <data name="CreateAccountFullNamePlaceHolder" xml:space="preserve">
-    <value>الإسم الكامل</value>
+    <value>الاسم الكامل</value>
   </data>
   <data name="CreateAccountInvalidDataTitle" xml:space="preserve">
     <value>معلومات الحساب غير صحيحة</value>
@@ -394,13 +394,13 @@
     <value>الفرنسية</value>
   </data>
   <data name="CreateAccountPasswordConfirmationPlaceHolder" xml:space="preserve">
-    <value>تأكيد كلمة المرور</value>
+    <value>تأكید كلمة السر</value>
   </data>
   <data name="CreateAccountPasswordPlaceHolder" xml:space="preserve">
-    <value>كلمة المرور</value>
+    <value>كلمة السر</value>
   </data>
   <data name="CreateAccountPhonePlaceHolder" xml:space="preserve">
-    <value>الهاتف الجوال</value>
+    <value>الجوال</value>
   </data>
   <data name="CreateAccountTitleMr" xml:space="preserve">
     <value>السيد</value>
@@ -592,7 +592,7 @@
     <value>مطلوب التحديث</value>
   </data>
   <data name="HistoryDetailAptRingCodeLabel" xml:space="preserve">
-    <value>الشقة/ رمز الدخول:</value>
+    <value>رمز السكن:</value>
   </data>
   <data name="HistoryDetailAuthorizationLabel" xml:space="preserve">
     <value>التصريح:</value>
@@ -610,16 +610,16 @@
     <value>الطلب:</value>
   </data>
   <data name="HistoryDetailPickupDateLabel" xml:space="preserve">
-    <value>تاريخ الإلتقاء:</value>
+    <value>تاریخ المشوار:</value>
   </data>
   <data name="HistoryDetailPickupLabel" xml:space="preserve">
-    <value>الإلتقاء:</value>
+    <value>موقعك:</value>
   </data>
   <data name="HistoryDetailRequestedLabel" xml:space="preserve">
-    <value>المطلوب:</value>
+    <value>وقت المشوار:</value>
   </data>
   <data name="HistoryDetailStatusLabel" xml:space="preserve">
-    <value>الحالة</value>
+    <value>الحالة:</value>
   </data>
   <data name="HistoryInfo" xml:space="preserve">
     <value>عرض حجوزاتكم خلال الشهر الماضي</value>
@@ -697,7 +697,7 @@
     <value>الإنجليزية</value>
   </data>
   <data name="LanguageCode" xml:space="preserve">
-    <value>إنجليزي</value>
+    <value>ar</value>
   </data>
   <data name="LargeBagsLabel" xml:space="preserve">
     <value>حقائب كبيرة</value>
@@ -721,7 +721,7 @@
     <value>اختر لإضافة موقع جديد</value>
   </data>
   <data name="LocationAddFavoriteTitle" xml:space="preserve">
-    <value>إضافة موقع</value>
+    <value>إضافة موقع جدید</value>
   </data>
   <data name="LocationDetailAddressLabel" xml:space="preserve">
     <value>العنوان</value>
@@ -751,16 +751,16 @@
     <value>مواقعي</value>
   </data>
   <data name="LoginForgotPassword" xml:space="preserve">
-    <value>نسيت كلمة المرور؟</value>
+    <value>ه نسيت كلمة السر ؟</value>
   </data>
   <data name="LoginForgotPasswordDetail" xml:space="preserve">
     <value>أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.</value>
   </data>
   <data name="LoginViewEmailPlaceHolder" xml:space="preserve">
-    <value>البريد الإلكتروني</value>
+    <value>البريد الإلكترونيي</value>
   </data>
   <data name="LoginViewPasswordPlaceHolder" xml:space="preserve">
-    <value>كلمة المرور</value>
+    <value>كلمة السر</value>
   </data>
   <data name="March" xml:space="preserve">
     <value>مارس (03)</value>
@@ -877,7 +877,7 @@
     <value>المشاوير السابقة</value>
   </data>
   <data name="PanelMenuViewReportProblemText" xml:space="preserve">
-    <value>بلغ عن وجود مشكلة</value>
+    <value>بلّغ عن وجود مشكلة</value>
   </data>
   <data name="PanelMenuViewSignOutText" xml:space="preserve">
     <value>خروج</value>
@@ -1060,13 +1060,13 @@
     <value>الركاب</value>
   </data>
   <data name="RideSettingsPassword" xml:space="preserve">
-    <value>كلمة المرور</value>
+    <value>كلمة السر</value>
   </data>
   <data name="RideSettingsPhone" xml:space="preserve">
     <value>الهاتف الجوال</value>
   </data>
   <data name="RideSettingsVehiculeType" xml:space="preserve">
-    <value>نوع السيارة</value>
+    <value>نوع السیارة</value>
   </data>
   <data name="RideSummarySubTitleText" xml:space="preserve">
     <value>شكرا لاختيارك {0} لرحلتك، نتطلع لخدمتك مرة أخرى قريبا.</value>
@@ -1408,7 +1408,7 @@
     <value>موافقة</value>
   </data>
   <data name="View_CreateAccount" xml:space="preserve">
-    <value>أنشيء حسابك</value>
+    <value>افتح حسابك</value>
   </data>
   <data name="View_CreditCardAdd" xml:space="preserve">
     <value>بطاقة إئتمان جديدة</value>
