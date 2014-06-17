@@ -85,22 +85,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Apply ();
 
-            imgLogoApcurium.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-                {
-                    if(ToApcuriumWebsite != null && ToApcuriumWebsite.CanExecute())
-                    {
-                        ToApcuriumWebsite.Execute();
-                    }
-                }));
+			if (ViewModel.Settings.HideMkApcuriumLogos)
+			{
+				imgLogoApcurium.Hidden = true;
+				imgLogoMobileKnowledge.Hidden = true;
+			}else{
 
-            imgLogoMobileKnowledge.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-                {
-                    if(ToMobileKnowledgeWebsite != null && ToMobileKnowledgeWebsite.CanExecute())
-                    {
-                        ToMobileKnowledgeWebsite.Execute();
-                    }
-                }));
-		
+				imgLogoApcurium.AddGestureRecognizer (new UITapGestureRecognizer (() => {
+					if (ToApcuriumWebsite != null && ToApcuriumWebsite.CanExecute ()) {
+						ToApcuriumWebsite.Execute ();
+					}
+				}));
+
+				imgLogoMobileKnowledge.AddGestureRecognizer (new UITapGestureRecognizer (() => {
+					if (ToMobileKnowledgeWebsite != null && ToMobileKnowledgeWebsite.CanExecute ()) {
+						ToMobileKnowledgeWebsite.Execute ();
+					}
+				}));
+			}
 			menuListView.AlwaysBounceVertical = false;
         }
 

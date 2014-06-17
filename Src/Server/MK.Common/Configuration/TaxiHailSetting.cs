@@ -55,6 +55,8 @@ namespace MK.Common.Configuration
         public bool AccountActivationDisabled { get; private set; }
         [Display(Name = "Show Terms and Conditions", Description="Display and require T&C screen")]
         public bool ShowTermsAndConditions { get; private set; }
+		[Display(Name = "Hide Mobile Knownledge and Apcurium logos", Description="In the menu")]
+		public bool HideMkApcuriumLogos { get; private set; }
         
         [Display(Name = "Tutorial Enabled", Description="Enable the tutorial")]
         public bool TutorialEnabled { get; private set; }
