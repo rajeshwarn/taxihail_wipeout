@@ -179,7 +179,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
-    <Compile Include="Activities\Book\BookingRateActivity.cs" />
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
@@ -570,6 +569,13 @@
     <Compile Include="Controls\Dialog\TaxiHailEntryElement.cs" />
     <Compile Include="Activities\EditTextDialogActivity.cs" />
     <Compile Include="TaxiHailAndroidLifetimeMonitor.cs" />
+    <AndroidResource Include="Resources\Drawable\star_unselected.png" />
+    <AndroidResource Include="Resources\Drawable\star_selected.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\star_selected.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\star_unselected.png" />
+    <AndroidResource Include="Resources\Drawable\star_state.xml" />
+    <Compile Include="Activities\Book\BookingRateActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_BookingRating.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -735,11 +741,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Layout\View_BookingRating.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\Layout\SimpleOrderListItem.axml" />
   </ItemGroup>
   <ItemGroup>
@@ -782,5 +783,6 @@
     <None Include="Calabash\features\support\env.rb" />
     <None Include="Calabash\features\support\hooks.rb" />
     <None Include="Calabash\features\step_definitions\my_first_steps.rb" />
+    <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
 </Project>

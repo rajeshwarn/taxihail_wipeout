@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (IsMovingFromParentViewController)
             {
                 // Back button pressed
-                ViewModel.PrepareNewOrder.Execute(null);
+				ViewModel.PrepareNewOrder.Execute(null);
             }
         }
 	}
