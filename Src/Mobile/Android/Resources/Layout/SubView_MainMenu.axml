@@ -196,6 +196,7 @@
                 android:layout_marginBottom="5dp">
                 <LinearLayout
                     android:orientation="horizontal"
+                    android:id="@+id/imgsLogosLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
                     <LinearLayout
