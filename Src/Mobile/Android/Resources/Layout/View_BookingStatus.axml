@@ -118,7 +118,7 @@
                     style="@style/BlackTextLabel"
                     android:text="@string/DriverInfoDriver"
                     android:gravity="center_vertical|end"
-                    android:layout_width="90dip"
+                    android:layout_width="100dip"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/driverValue"
@@ -131,13 +131,13 @@
                     android:lines="1"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:layout_toRightOf="@id/driverLabel" />
+                    android:layout_toEndOf="@id/driverLabel" />
                 <TextView
                     android:id="@+id/licenceLabel"
                     style="@style/BlackTextLabel"
                     android:text="@string/DriverInfoLicence"
                     android:gravity="center_vertical|end"
-                    android:layout_width="90dip"
+                    android:layout_width="100dip"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/driverLabel" />
                 <TextView
@@ -147,7 +147,7 @@
                     android:gravity="center_vertical|start"
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/licenceLabel"
+                    android:layout_toEndOf="@id/licenceLabel"
                     android:paddingStart="5dip"
                     android:layout_below="@id/driverLabel" />
                 <TextView
@@ -155,7 +155,7 @@
                     style="@style/BlackTextLabel"
                     android:text="@string/DriverInfoTaxiType"
                     android:gravity="center_vertical|end"
-                    android:layout_width="90dip"
+                    android:layout_width="100dip"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/licenceLabel"
                     local:MvxBind="Visibility VehicleTypeHidden, Converter=InvertedVisibility" />
@@ -166,7 +166,7 @@
                     android:gravity="center_vertical|start"
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/taxiTypeLabel"
+                    android:layout_toEndOf="@id/taxiTypeLabel"
                     android:paddingStart="5dip"
                     android:layout_below="@id/licenceLabel" />
                 <TextView
@@ -174,7 +174,7 @@
                     style="@style/BlackTextLabel"
                     android:text="@string/DriverInfoMake"
                     android:gravity="center_vertical|end"
-                    android:layout_width="90dip"
+                    android:layout_width="100dip"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/taxiTypeLabel"
                     local:MvxBind="Visibility VehicleMakeHidden, Converter=InvertedVisibility" />
@@ -185,7 +185,7 @@
                     android:gravity="center_vertical|start"
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/makeLabel"
+                    android:layout_toEndOf="@id/makeLabel"
                     android:paddingStart="5dip"
                     android:layout_below="@id/taxiTypeLabel" />
                 <TextView
@@ -193,7 +193,7 @@
                     style="@style/BlackTextLabel"
                     android:text="@string/DriverInfoModel"
                     android:gravity="center_vertical|end"
-                    android:layout_width="90dip"
+                    android:layout_width="100dip"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/makeLabel"
                     local:MvxBind="Visibility VehicleModelHidden, Converter=InvertedVisibility" />
@@ -204,7 +204,7 @@
                     android:gravity="center_vertical|start"
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/modelLabel"
+                    android:layout_toEndOf="@id/modelLabel"
                     android:paddingStart="5dip"
                     android:layout_below="@id/makeLabel" />
                 <TextView
@@ -212,7 +212,7 @@
                     style="@style/BlackTextLabel"
                     android:text="@string/DriverInfoColor"
                     android:gravity="center_vertical|end"
-                    android:layout_width="90dip"
+                    android:layout_width="100dip"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/modelLabel"
                     local:MvxBind="Visibility VehicleColorHidden, Converter=InvertedVisibility" />
@@ -223,16 +223,16 @@
                     android:gravity="center_vertical|start"
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/ColorLabel"
+                    android:layout_toEndOf="@id/ColorLabel"
                     android:paddingStart="5dip"
                     android:layout_below="@id/modelLabel" />
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:paddingStart="10dip"
-                    android:layout_marginRight="10dip"
-                    android:paddingRight="10dip">
+                    android:layout_marginEnd="10dip"
+                    android:paddingEnd="10dip">
                     <ImageButton
                         local:MvxBind="Click CallTaxi; Visibility IsCallTaxiVisible, Converter=Visibility"
                         android:src="@drawable/phone"
@@ -240,7 +240,7 @@
                         android:layout_marginTop="13dip"
                         android:layout_width="40dip"
                         android:layout_height="@dimen/HeightButton"
-                        android:layout_marginRight="10dip"
+                        android:layout_marginEnd="10dip"
                         android:scaleType="fitCenter" />
                 </FrameLayout>
             </RelativeLayout>
