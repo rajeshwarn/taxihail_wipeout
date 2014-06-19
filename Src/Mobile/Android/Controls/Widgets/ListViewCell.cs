@@ -89,15 +89,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				textX = 45.ToPixels();
             }
 
-            if (!TextLine1.IsNullOrEmpty())
-            {
-                DrawText(canvas, TextLine1, textX, 21.ToPixels(), 16.ToPixels(), Typeface.DefaultBold, TextColorLine1);
-                DrawText(canvas, TextLine2 ?? "", textX, 41.ToPixels(), 15.ToPixels(), Typeface.Default, TextColorLine2);
-            }
-            else
-            {
-                DrawText(canvas, TextLine2 ?? "", textX, 32.ToPixels(), 16.ToPixels(), Typeface.Default, TextColorLine2);
-            }
+            
 
 			if (ShowRightArrow)
 			{                
@@ -111,6 +103,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 					Width - (20.ToPixels()), 16.ToPixels(), null);
 			}
 
+			var imageWidth = 0;
 			if (ShowPlusSign)
 			{
 				var identifier = Resource.Drawable.add_list;
@@ -118,6 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				if (pictureTable[identifier] == null) {
 					pictureTable[identifier] = BitmapFactory.DecodeResource (Resources, identifier);								
 				}
+				imageWidth = ((Bitmap)pictureTable [identifier]).Width;
 
 				var offsetIcon = (canvas.Height - ((Bitmap)pictureTable[identifier]).Height) / 2;
 
@@ -137,12 +131,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 					pictureTable[identifier] = BitmapFactory.DecodeResource (Resources, identifier);                              
 				}
 
+				imageWidth = ((Bitmap)pictureTable [identifier]).Width;
+
 				var xIcon = 10.ToPixels ();
 				if (this.Services ().Localize.IsRightToLeft) {
 					xIcon = Width - xIcon - (ShowRightArrow ? 45.ToPixels() : 0);
 				}
 				var offsetIcon = (canvas.Height - ((Bitmap)pictureTable[identifier]).Height) / 2;
 				canvas.DrawBitmap((Bitmap)pictureTable[identifier], xIcon, offsetIcon,  null);
+			}
+
+			if (!TextLine1.IsNullOrEmpty())
+			{
+				DrawText(canvas, TextLine1, textX, 21.ToPixels(), 16.ToPixels(), Typeface.DefaultBold, TextColorLine1, imageWidth);
+				DrawText(canvas, TextLine2 ?? "", textX, 41.ToPixels(), 15.ToPixels(), Typeface.Default, TextColorLine2, imageWidth);
+			}
+			else
+			{
+				DrawText(canvas, TextLine2 ?? "", textX, 32.ToPixels(), 16.ToPixels(), Typeface.Default, TextColorLine2, imageWidth);
 			}
 
 			if (_backgroundDrawable == null) {
@@ -154,7 +160,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         private void DrawText(Canvas canvas, string text, float x, float y, float textSize, Typeface typeface,
-            Color color)
+			Color color, float pictureWidth = 0)
         {
             var paintText = new TextPaint(PaintFlags.LinearText | PaintFlags.AntiAlias)
             {
@@ -177,7 +183,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
 			if (this.Services().Localize.IsRightToLeft) {
-				x = canvas.Width - 75 - textRect.Width() - (ShowRightArrow ? 35.ToPixels() : 0);
+				x = canvas.Width - pictureWidth - 15.ToPixels() - textRect.Width() - (ShowRightArrow ? 35.ToPixels() : 0);
 			}
 
             canvas.DrawText(ellipsizedText, x, y, paintText);
