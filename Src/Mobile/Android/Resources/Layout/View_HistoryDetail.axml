@@ -52,7 +52,7 @@
                     style="@style/BlackTextLabel"
                     android:text="@string/HistoryDetailOrderLabel"
                     android:layout_width="130dp"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/ConfirmationTxt"
@@ -74,7 +74,7 @@
                     style="@style/BlackTextLabel"
                     android:text="@string/HistoryDetailRequestedLabel"
                     android:layout_width="130dp"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/RequestedTxt"
@@ -96,7 +96,7 @@
                     style="@style/BlackTextLabel"
                     android:text="@string/HistoryDetailPickupLabel"
                     android:layout_width="130dp"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/OriginTxt"
@@ -118,7 +118,7 @@
                     style="@style/BlackTextLabel"
                     android:text="@string/HistoryDetailAptRingCodeLabel"
                     android:layout_width="130dp"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/AptRingTxt"
@@ -140,7 +140,7 @@
                     style="@style/BlackTextLabel"
                     android:text="@string/DestinationViewDestinationLabel"
                     android:layout_width="130dp"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:layout_height="wrap_content"
                     local:MvxBind="Visibility Settings.HideDestination, Converter=InvertedVisibility" />
                 <TextView
@@ -163,7 +163,7 @@
                     style="@style/BlackTextLabel"
                     android:text="@string/HistoryDetailPickupDateLabel"
                     android:layout_width="130dp"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/PickUpDateTxt"
@@ -186,7 +186,7 @@
                     android:text="@string/HistoryDetailStatusLabel"
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:gravity="right" />
+                    android:gravity="end" />
                 <TextView
                     android:id="@+id/StatusTxt"
                     style="@style/DetailText"
@@ -206,7 +206,7 @@
                     style="@style/BlackTextLabel"
                     android:text="@string/HistoryDetailAuthorizationLabel"
                     android:layout_width="130dp"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:layout_height="wrap_content"
                     local:MvxBind="Visibility AuthorizationNumber, Converter=HasValueToVisibilityConverter" />
                 <TextView

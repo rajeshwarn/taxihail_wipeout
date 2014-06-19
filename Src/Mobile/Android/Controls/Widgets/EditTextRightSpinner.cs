@@ -112,7 +112,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (resource != 0)
                 {
                     _imageLeftView.SetImageResource(resource);
-                    _label.SetPadding(70.ToPixels(), 0, 0, 0);
+					if (this.Services ().Localize.IsRightToLeft) {
+						_label.SetPadding (0, 0, 70.ToPixels (), 0);
+					} else {
+						_label.SetPadding (70.ToPixels (), 0, 0, 0);
+					}
                 }
             }
             var button = (Button) layout.FindViewById(Resource.Id.openSpinnerButton);

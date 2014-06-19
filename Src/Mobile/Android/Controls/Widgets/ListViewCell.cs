@@ -120,7 +120,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				}
 
 				var offsetIcon = (canvas.Height - ((Bitmap)pictureTable[identifier]).Height) / 2;
-				canvas.DrawBitmap((Bitmap)pictureTable[identifier], 10.ToPixels(), offsetIcon, null);
+
+				var xPlus = 10.ToPixels ();
+				if (this.Services ().Localize.IsRightToLeft) {
+					xPlus = Width - (ShowRightArrow ? 40 : 25).ToPixels ();
+				}
+
+				canvas.DrawBitmap((Bitmap)pictureTable[identifier], xPlus, offsetIcon, null);
 
 			}
 			else if (Icon.HasValue())
@@ -131,8 +137,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 					pictureTable[identifier] = BitmapFactory.DecodeResource (Resources, identifier);                              
 				}
 
+				var xIcon = 10.ToPixels ();
+				if (this.Services ().Localize.IsRightToLeft) {
+					xIcon = Width - xIcon - (ShowRightArrow ? 45.ToPixels() : 0);
+				}
 				var offsetIcon = (canvas.Height - ((Bitmap)pictureTable[identifier]).Height) / 2;
-				canvas.DrawBitmap((Bitmap)pictureTable[identifier], 10.ToPixels(), offsetIcon,  null);
+				canvas.DrawBitmap((Bitmap)pictureTable[identifier], xIcon, offsetIcon,  null);
 			}
 
 			if (_backgroundDrawable == null) {
@@ -151,7 +161,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 TextSize = textSize
             };
 
-            paintText.GetTextBounds(text, 0, text.Length, new Rect());
+			var textRect = new Rect ();
+			paintText.GetTextBounds (text, 0, text.Length, textRect);
             paintText.SetARGB(color.A, color.R, color.G, color.B);
             paintText.SetTypeface(typeface);
 
@@ -164,6 +175,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 ellipsizedText = text;
             }
+
+			if (this.Services().Localize.IsRightToLeft) {
+				x = canvas.Width - 75 - textRect.Width() - (ShowRightArrow ? 35.ToPixels() : 0);
+			}
 
             canvas.DrawText(ellipsizedText, x, y, paintText);
         }

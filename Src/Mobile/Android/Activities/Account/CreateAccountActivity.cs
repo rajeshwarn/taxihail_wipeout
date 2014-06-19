@@ -90,18 +90,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			var email = new EntryElement (null, this.Services().Localize["CreateAccountEmailPlaceHolder"], null,  "DialogTop") {IsEmail = true};
 			email.Bind(bindings, vm => vm.Data.Email);
 
-			var name = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountFullNamePlaceHolder"], null, "DialogCenter");
+			var name = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountFullNamePlaceHolder"], null, "DialogCenter", InputTypes.TextFlagCapWords);
 			name.Bind(bindings, vm => vm.Data.Name);
 
 			var phone = new EntryElement(null, this.Services().Localize["CreateAccountPhonePlaceHolder"], null, "DialogCenter") { Numeric = true };
 			phone.Bind(bindings, vm => vm.Data.Phone);
 
-			var password = new EntryElement(null, this.Services().Localize["CreateAccountPasswordPlaceHolder"], null, "DialogCenter") { Password = true };
+			var password = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPasswordPlaceHolder"], null, "DialogCenter") { Password = true };
 			password.Bind(bindings, vm => vm.Data.Password);
 
 
-
-			var passwordConfirm = new EntryElement(null, this.Services().Localize["CreateAccountPasswordConfirmationPlaceHolder"], null, "DialogBottom") { Password = true };
+			var passwordConfirm = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPasswordConfirmationPlaceHolder"], null, "DialogBottom") { Password = true };
 			passwordConfirm.Bind(bindings, vm => vm.ConfirmPassword);
 
 			section.Add (new Element[] { email, name, phone });

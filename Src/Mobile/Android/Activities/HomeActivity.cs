@@ -381,7 +381,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     }
                 };
 
-                var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width);
+				var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
                 animation2.AnimationStart += (sender, e) =>
                 {
                     if (((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).Width != _frameLayout.Width)
@@ -416,7 +416,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     }
                 };
 
-                var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, 0);
+				var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, 0, this.Services().Localize.IsRightToLeft);
                 var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, -_orderOptions.Height);
 
                 _orderReview.StartAnimation(animation);
@@ -447,7 +447,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     }
                 };
 
-                var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width);
+				var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
                 var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, 0);
 
                 _orderReview.StartAnimation(animation);
