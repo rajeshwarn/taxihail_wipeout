@@ -363,6 +363,13 @@ namespace MK.DeploymentService
 
 
             CopyFiles(sourcePath, targetWeDirectory);
+             
+            if ( !string.IsNullOrEmpty( Settings.Default.ReplicatedWebSitesFolder ) )
+            {
+                Path.Combine(Settings.Default.ReplicatedWebSitesFolder, companyName, subFolder);
+                CopyFiles(sourcePath, Settings.Default.ReplicatedWebSitesFolder);
+            }
+
 
 
             var website = iisManager.Sites[Settings.Default.SiteName];

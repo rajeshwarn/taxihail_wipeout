@@ -161,5 +161,14 @@ namespace MK.DeploymentService.Properties {
                 return ((string)(this["SiteSqlConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ReplicatedWebSitesFolder {
+            get {
+                return ((string)(this["ReplicatedWebSitesFolder"]));
+            }
+        }
     }
 }
