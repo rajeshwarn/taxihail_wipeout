@@ -261,49 +261,49 @@
   <data name="Email_Subject_Receipt" xml:space="preserve">
     <value>{{ اسم التطبيق}} - الإيصال</value>
   </data>
-  <data name="OrderStatus_CabDriverETA1" xml:space="preserve">
+  <data name="OrderStatus_CabDriverETA" xml:space="preserve">
     <value>وقت الوصول المتوقع: {0}</value>
   </data>
-  <data name="OrderStatus_CabDriverNumberAssigned1" xml:space="preserve">
+  <data name="OrderStatus_CabDriverNumberAssigned" xml:space="preserve">
     <value>تم تخصيص سيارة الأجرة{0} لك</value>
   </data>
-  <data name="OrderStatus_OrderDoneFareAvailable1" xml:space="preserve">
+  <data name="OrderStatus_OrderDoneFareAvailable" xml:space="preserve">
     <value>تم {0}</value>
   </data>
-  <data name="OrderStatus_wosAddrNotValid1" xml:space="preserve">
+  <data name="OrderStatus_wosAddrNotValid" xml:space="preserve">
     <value>العنوان خاطئ</value>
   </data>
-  <data name="OrderStatus_wosARRIVED1" xml:space="preserve">
+  <data name="OrderStatus_wosARRIVED" xml:space="preserve">
     <value>لقد وصلت السيارة لنقطة الإلتقاء المحددة</value>
   </data>
-  <data name="OrderStatus_wosASSIGNED1" xml:space="preserve">
+  <data name="OrderStatus_wosASSIGNED" xml:space="preserve">
     <value>تم تعيين سائق</value>
   </data>
-  <data name="OrderStatus_wosCANCELLED1" xml:space="preserve">
+  <data name="OrderStatus_wosCANCELLED" xml:space="preserve">
     <value>تم الإلغاء</value>
   </data>
-  <data name="OrderStatus_wosCANCELLED_DONE1" xml:space="preserve">
+  <data name="OrderStatus_wosCANCELLED_DONE" xml:space="preserve">
     <value>تم الإلغاء</value>
   </data>
-  <data name="OrderStatus_wosDONE1" xml:space="preserve">
+  <data name="OrderStatus_wosDONE" xml:space="preserve">
     <value>تم</value>
   </data>
-  <data name="OrderStatus_wosLOADED1" xml:space="preserve">
+  <data name="OrderStatus_wosLOADED" xml:space="preserve">
     <value>الركاب داخل السيارة</value>
   </data>
-  <data name="OrderStatus_wosNone1" xml:space="preserve">
+  <data name="OrderStatus_wosNone" xml:space="preserve">
     <value>طلب خاطئ/ رجاء الإتصال بمركز الإرسال</value>
   </data>
-  <data name="OrderStatus_wosNOSHOW1" xml:space="preserve">
+  <data name="OrderStatus_wosNOSHOW" xml:space="preserve">
     <value>لم يظهر</value>
   </data>
-  <data name="OrderStatus_wosSCHED1" xml:space="preserve">
+  <data name="OrderStatus_wosSCHED" xml:space="preserve">
     <value>تم الحجز</value>
   </data>
-  <data name="OrderStatus_wosTIMEOUT1" xml:space="preserve">
+  <data name="OrderStatus_wosTIMEOUT" xml:space="preserve">
     <value>عذرا، لا توجد سيارات متاحة نتيجة للطلب الكبير، رجاء المحاولة لاحقا</value>
   </data>
-  <data name="OrderStatus_wosWAITING1" xml:space="preserve">
+  <data name="OrderStatus_wosWAITING" xml:space="preserve">
     <value>في انتظار تعيين السائق</value>
   </data>
   <data name="PaymentConfirmationToDriver1" xml:space="preserve">
@@ -312,13 +312,13 @@
   <data name="PaymentConfirmationToDriver2" xml:space="preserve">
     <value>رقم التصريح {0}</value>
   </data>
-  <data name="PushNotification_wosARRIVED1" xml:space="preserve">
+  <data name="PushNotification_wosARRIVED" xml:space="preserve">
     <value>السيارة وصلت</value>
   </data>
-  <data name="PushNotification_wosASSIGNED1" xml:space="preserve">
+  <data name="PushNotification_wosASSIGNED" xml:space="preserve">
     <value>تم تعيين سيارة لك</value>
   </data>
-  <data name="PushNotification_wosTIMEOUT1" xml:space="preserve">
+  <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
     <value>عذرا، لا توجد سيارات متاحة نتيجة للطلب الكبير، رجاء المحاولة لاحقا</value>
   </data>
 </root>
