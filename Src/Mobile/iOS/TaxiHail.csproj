@@ -521,6 +521,7 @@
     <Compile Include="Views\Order\InitializeOrderForAccountPaymentView.designer.cs">
       <DependentUpon>InitializeOrderForAccountPaymentView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\UILabelExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
