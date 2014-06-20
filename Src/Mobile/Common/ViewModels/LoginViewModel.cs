@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -35,7 +36,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public event EventHandler LoginSucceeded; 
 		private bool _loginWasSuccesful = false;
-
+		private bool _viewIsStarted;
+		private Action _executeOnStart;
         public override void Start()
         {
 #if DEBUG
@@ -46,16 +48,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public override void OnViewStarted(bool firstTime)
         {
+
             base.OnViewStarted(firstTime);
+
+			_viewIsStarted = true;
 
 			_locationService.Start();
 
-            CheckVersion();
+			CheckVersion();
+
+			if (_executeOnStart != null) 
+			{
+				_executeOnStart ();
+				_executeOnStart = null;
+			}
         }
 
         public override void OnViewStopped()
         {
             base.OnViewStopped();
+
+			_viewIsStarted = false;
 
             if (!_loginWasSuccesful)
             {
@@ -164,7 +177,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     try
                     {
                         await _facebookService.Connect();
-                        await CheckFacebookAccount();
+						await CheckFacebookAccount();
                     }
                     catch (TaskCanceledException)
                     {
@@ -245,6 +258,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private async void OnAccountCreated(RegisterAccount data)
         {
+
             if (data.FacebookId.HasValue() || data.TwitterId.HasValue() || data.AccountActivationDisabled)
             {
                 var facebookId = data.FacebookId;
@@ -254,19 +268,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     try
                     {
+
                         if (facebookId.HasValue())
-                        {
-							await _accountService.GetFacebookAccount(facebookId);
+                        {						
+							Func<Task> loginAction = () =>
+							{
+								return _accountService.GetFacebookAccount(facebookId);
+							};
+							await loginAction.Retry(TimeSpan.FromSeconds(1), 5); //retry because the account is maybe not yet created server-side						
+
                         }
                         else if (twitterId.HasValue())
                         {
-							await _accountService.GetTwitterAccount(twitterId);
+							Func<Task> loginAction = () =>
+							{
+								return _accountService.GetTwitterAccount(twitterId);
+							};
+							await loginAction.Retry(TimeSpan.FromSeconds(1), 5); //retry because the account is maybe not yet created server-side
+
                         }
                         else
-                        {
-							await _accountService.SignIn(data.Email, data.Password);
+                        {						
+							Email = data.Email;
+							Password = data.Password;
+							Func<Task> loginAction = () =>
+							{
+								return _accountService.SignIn(data.Email, data.Password);
+							};
+							await loginAction.Retry(TimeSpan.FromSeconds(1), 5); //retry because the account is maybe not yet created server-side
                         }
-
+							
 						OnLoginSuccess();
                     }
                     catch (Exception ex)
@@ -280,6 +311,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Email = data.Email;
             }
         }
+
 
         private void HandleTwitterConnectionStatusChanged(object sender, TwitterStatus e)
         {
@@ -296,21 +328,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService.ClearReferenceData();
         }
 
+
+
 		private void OnLoginSuccess()
         {
             _loginWasSuccesful = true;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
 
-			if (NeedsToNavigateToAddCreditCard())
-			{
-				ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel>(new { showInstructions =  true });
-				return;
-			}
+			Action showNextView = () => {
+				if (NeedsToNavigateToAddCreditCard ()) {
+					ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel> (new { showInstructions = true });
+					return;
+				}
 
-			ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser =  true });
-			if (LoginSucceeded != null)
+				ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser = true });
+				if (LoginSucceeded != null) {
+					LoginSucceeded (this, EventArgs.Empty);
+				}
+			};
+
+			if (_viewIsStarted) 
 			{
-				LoginSucceeded(this, EventArgs.Empty);
+				showNextView ();
+			}
+			else {
+				_executeOnStart = showNextView;
 			}
         }
 

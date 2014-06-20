@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 #endregion
 
@@ -10,6 +11,27 @@ namespace apcurium.MK.Common.Extensions
 {
     public static class ActionExtension
     {
+		public static async Task<T> Retry<T>(this Task<T> action, TimeSpan retryInterval, int retryCount = 3)
+		{
+			var exceptions = new List<Exception>();
+
+			for (var retry = 0; retry < retryCount; retry++)
+			{
+				try
+				{
+					var result = await action;
+					return result;
+				}
+				catch (Exception ex)
+				{
+					exceptions.Add(ex);
+					Thread.Sleep(retryInterval);
+				}
+			}
+
+			throw new AggregateException(exceptions);
+		}
+
         public static void Retry(this Action action, TimeSpan retryInterval, int retryCount = 3)
         {
             Retry<object>(() =>
