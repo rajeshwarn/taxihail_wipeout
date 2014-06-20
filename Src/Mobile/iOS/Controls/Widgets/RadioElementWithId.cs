@@ -1,6 +1,7 @@
 using MonoTouch.UIKit;
 using CrossUI.Touch.Dialog.Elements;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -28,7 +29,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             cell.TextLabel.BackgroundColor = UIColor.Clear;
             cell.TextLabel.Font = UIFont.FromName(FontName.HelveticaNeueLight, 32/2);
             cell.TextLabel.TextColor = UIColor.FromRGB(44, 44, 44);
-			cell.TextLabel.TextAlignment ();
+
+			if (UIHelper.IsOS7orHigher) 
+			{
+				this.Alignment = UITextAlignment.Natural;
+
+			} 
+			else 
+			{
+				if (cell.Services ().Localize.IsRightToLeft)
+				{
+					this.Alignment = UITextAlignment.Right;
+				}
+			}
+
 
 			cell.BackgroundView = new CustomCellBackgroundView(cell.ContentView.Frame, 10, UIColor.White, UIColor.FromRGB(190, 190, 190)) 
             {
@@ -43,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             base.UpdateDetailDisplay (cell);
 
             if (cell == null)
-                return;
+				return;
 
             if (_image != null) {                
                 cell.ImageView.Image = UIImage.FromFile (_image);                
