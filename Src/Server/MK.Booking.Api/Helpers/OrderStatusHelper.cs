@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Api.Helpers
                     Status = OrderStatus.Created,
                     IBSOrderId =  0,
                     IBSStatusId = "",
-                    IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", order.ClientLanguageCode),
+                    IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", "en"),
                 };
             }
 
