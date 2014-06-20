@@ -366,8 +366,11 @@ namespace MK.DeploymentService
              
             if ( !string.IsNullOrEmpty( Settings.Default.ReplicatedWebSitesFolder ) )
             {
-                Path.Combine(Settings.Default.ReplicatedWebSitesFolder, companyName, subFolder);
-                CopyFiles(sourcePath, Settings.Default.ReplicatedWebSitesFolder);
+                Log("Replicated IIS Site set to : " + Settings.Default.ReplicatedWebSitesFolder);
+                var replicatedTargetWeDirectory = Path.Combine(Settings.Default.ReplicatedWebSitesFolder, companyName, subFolder);
+
+                Log("Replicated IIS Site set to : " + replicatedTargetWeDirectory);
+                CopyFiles(sourcePath, replicatedTargetWeDirectory);
             }
 
 
