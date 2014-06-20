@@ -52,11 +52,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             try
             {
                 var app = await GetAppInfoAsync();
-				 
 				if ( _packageInfo.Version.Count( c=>  c == '.' ) == 2 )
 				{
-					var v = _packageInfo.Version.Split( '.' ).Take(2).JoinBy(".")+".";
-					isUpToDate = app.Version.StartsWith(v);
+
+
+					if ( ( app.Version.Count( c=>  c == '.' ) >= 2 ) &&
+						( _packageInfo.Version.Split( '.' ).Take(2).All( s=> s.All(c=> char.IsDigit(c) ) ) )  && 
+						( app.Version.Split( '.' ).Take(2).All( s=> s.All(c=> char.IsDigit(c) ) ) ) )
+					{
+						var packageNumber =  int.Parse( _packageInfo.Version.Split( '.' ).ElementAt(0) ) * 10000 + int.Parse( _packageInfo.Version.Split( '.' ).ElementAt(1) ) * 100;
+
+							var appNumber =  int.Parse( app.Version.Split( '.' ).ElementAt(0) ) * 10000 + int.Parse( app.Version.Split( '.' ).ElementAt(1) ) * 100;
+						isUpToDate = packageNumber >=  appNumber;
+
+
+
+					}
+					else 
+					{
+						var v = _packageInfo.Version.Split( '.' ).Take(2).JoinBy(".")+".";
+						isUpToDate = app.Version.StartsWith(v);
+					}
 				}
 
             }
