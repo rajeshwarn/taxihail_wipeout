@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             };
 
             lblCreditCard.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
-            lblTip.Text = Localize.GetValue("PaymentViewTipText");
+			lblTip.Text = Localize.GetValue("PaymentViewTipText");
             lblTipAmount.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
             lblMeterAmount.Text = Localize.GetValue("PaymentViewMeterAmountText");
             lblTotal.Text = Localize.GetValue("PaymentViewTotalText");
