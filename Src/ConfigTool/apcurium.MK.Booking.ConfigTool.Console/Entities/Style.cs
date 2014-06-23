@@ -11,6 +11,6 @@ namespace CustomerPortal.Web.Entities
 		public string CompanyColor { get; set; }
 		public string TitleColor { get; set; }
 		public string WebAccentColor { get; set; }
-
+        public string MenuColor { get; set; }
 	}
 }
