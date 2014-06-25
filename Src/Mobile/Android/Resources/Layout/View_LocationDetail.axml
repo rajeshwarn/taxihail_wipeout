@@ -62,7 +62,7 @@
                             android:singleLine="true"
                             android:layout_width="fill_parent"
                             android:text="@string/LocationDetailNameLabel"
-                            android:gravity="left"
+                            android:gravity="start"
                             android:layout_height="wrap_content" />
                         <EditText
                             android:id="@+id/LocationFriendlyName"

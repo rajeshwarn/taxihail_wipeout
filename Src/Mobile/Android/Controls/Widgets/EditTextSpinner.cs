@@ -99,7 +99,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             base.OnFinishInflate();
             var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
-            var layout = inflater.Inflate(Resource.Layout.SpinnerCell, this, true);
+			var layout = inflater.Inflate(Resource.Layout.SpinnerCell, this, true);
+
+			layout.SetBackgroundDrawable (this.Background);
 
             _label = (TextView) layout.FindViewById(Resource.Id.label);
             if (this.Background != null)
@@ -116,7 +118,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (resource != 0)
                 {
                     _imageLeftView.SetImageResource(resource);
-                    _label.SetPadding(70.ToPixels(), 0, 0, 0);
+					if (this.Services ().Localize.IsRightToLeft) {
+						_label.SetPadding (0, 0, 70.ToPixels (), 0);
+					} else {
+						_label.SetPadding (70.ToPixels (), 0, 0, 0);
+					}
                 }
             }
             var button = (Button) layout.FindViewById(Resource.Id.openSpinnerButton);

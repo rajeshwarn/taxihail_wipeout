@@ -40,8 +40,8 @@
                     <TextView
                         android:layout_height="match_parent"
                         android:layout_width="fill_parent"
-                        android:gravity="left|center"
-                        android:paddingLeft="8dp"
+                        android:gravity="start|center"
+                        android:paddingStart="8dp"
                         android:textColor="#000000"
                         android:text="text"
                         android:textSize="19dip"
@@ -68,8 +68,8 @@
                         <TextView
                             android:layout_height="match_parent"
                             android:layout_width="fill_parent"
-                            android:gravity="left|center"
-                            android:paddingLeft="8dp"
+                            android:gravity="start|center"
+                            android:paddingStart="8dp"
                             android:textColor="#000000"
                             android:text="text"
                             android:textSize="19dip"
@@ -90,9 +90,9 @@
                             android:layout_width="wrap_content" />
                         <TextView
                             android:layout_height="match_parent"
-                            android:layout_width="wrap_content"
-                            android:gravity="left|center"
-                            android:paddingLeft="8dp"
+                            android:layout_width="fill_parent"
+                            android:gravity="start|center"
+                            android:paddingStart="8dp"
                             android:textColor="#000000"
                             android:text="text"
                             android:textSize="19dp"
@@ -113,8 +113,8 @@
                     <TextView
                         android:layout_height="match_parent"
                         android:layout_width="fill_parent"
-                        android:gravity="left|center"
-                        android:paddingLeft="8dp"
+                        android:gravity="start|center"
+                        android:paddingStart="8dp"
                         android:textColor="#000000"
                         android:text="text"
                         android:textSize="19dip"
@@ -128,9 +128,9 @@
                     android:layout_height="35dip">
                     <LinearLayout
                         android:orientation="horizontal"
-                        android:layout_width="fill_parent"
+                        android:layout_width="0dp"
                         android:layout_weight="0.5"
-                        android:layout_height="35dip">
+                        android:layout_height="match_parent">
                         <ImageView
                             android:src="@drawable/vehicle"
                             android:layout_height="match_parent"
@@ -139,20 +139,21 @@
                         <TextView
                             android:layout_height="match_parent"
                             android:layout_width="fill_parent"
-                            android:paddingLeft="8dp"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
                             android:textColor="#000000"
                             android:text="text"
                             android:textSize="19dip"
                             android:ellipsize="end"
                             android:singleLine="true"
-                            android:gravity="left|center"
+                            android:gravity="start|center"
                             android:id="@+id/lblVehicule" />
                     </LinearLayout>
                     <LinearLayout
                         android:orientation="horizontal"
-                        android:layout_width="fill_parent"
+                        android:layout_width="0dp"
                         android:layout_weight="0.5"
-                        android:layout_height="35dip">
+                        android:layout_height="match_parent">
                         <ImageView
                             android:src="@drawable/chargetype"
                             android:layout_height="match_parent"
@@ -161,8 +162,8 @@
                         <TextView
                             android:layout_height="match_parent"
                             android:layout_width="fill_parent"
-                            android:gravity="left|center"
-                            android:paddingLeft="8dp"
+                            android:gravity="start|center"
+                            android:paddingStart="8dp"
                             android:textColor="#000000"
                             android:text="text"
                             android:textSize="19dip"
@@ -188,8 +189,8 @@
                         <TextView
                             android:layout_height="match_parent"
                             android:layout_width="fill_parent"
-                            android:gravity="left|center"
-                            android:paddingLeft="8dp"
+                            android:gravity="start|center"
+                            android:paddingStart="8dp"
                             android:textColor="#000000"
                             android:text="text"
                             android:textSize="19dip"
@@ -210,8 +211,8 @@
                         <TextView
                             android:layout_height="match_parent"
                             android:layout_width="fill_parent"
-                            android:gravity="left|center"
-                            android:paddingLeft="8dp"
+                            android:gravity="start|center"
+                            android:paddingStart="8dp"
                             android:textColor="#000000"
                             android:text="text"
                             android:textSize="19dip"
@@ -230,7 +231,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_alignParentLeft="true"
-                    android:gravity="left|top"
+                    android:gravity="start|top"
                     android:layout_marginTop="16dip"
                     android:minHeight="44dip" />
                 <LinearLayout

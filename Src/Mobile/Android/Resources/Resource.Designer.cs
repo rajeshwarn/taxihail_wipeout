@@ -2128,8 +2128,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070155
 			public const int CreditCardsListView = 2131165525;
 			
-			// aapt resource value: 0x7f0700c1
-			public const int DShadow = 2131165377;
+			// aapt resource value: 0x7f0700b2
+			public const int DShadow = 2131165362;
 			
 			// aapt resource value: 0x7f070066
 			public const int DefaultList = 2131165286;
@@ -2401,8 +2401,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f07000b
 			public const int always = 2131165195;
 			
-			// aapt resource value: 0x7f0700c0
-			public const int apc_logo_menu = 2131165376;
+			// aapt resource value: 0x7f0700c1
+			public const int apc_logo_menu = 2131165377;
 			
 			// aapt resource value: 0x7f0700be
 			public const int apcuriumLogoLayout = 2131165374;
@@ -2657,10 +2657,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int expanded_menu = 2131165234;
 			
 			// aapt resource value: 0x7f0700b1
-			public const int fakeLayout = 2131165361;
-			
-			// aapt resource value: 0x7f0700b2
-			public const int fakeLayoutRight = 2131165362;
+			public const int fakeLayoutRight = 2131165361;
 			
 			// aapt resource value: 0x7f0700f0
 			public const int hiddenTopContent = 2131165424;
@@ -2694,6 +2691,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0700b4
 			public const int imgLogo = 2131165364;
+			
+			// aapt resource value: 0x7f0700bf
+			public const int imgsLogosLayout = 2131165375;
 			
 			// aapt resource value: 0x7f070078
 			public const int label = 2131165304;
@@ -2833,8 +2833,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070012
 			public const int middle = 2131165202;
 			
-			// aapt resource value: 0x7f0700bf
-			public const int mk_logo = 2131165375;
+			// aapt resource value: 0x7f0700c0
+			public const int mk_logo = 2131165376;
 			
 			// aapt resource value: 0x7f0700f9
 			public const int modelLabel = 2131165433;

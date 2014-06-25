@@ -3,14 +3,18 @@ using CrossUI.Droid.Dialog.Elements;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using Android.Content.Res;
 using Android.Text;
+using Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
 {
 	public class TaxiHailEntryElement : EntryElement
 	{
-		public TaxiHailEntryElement (string caption, string hint, string value, string layoutName)
+		InputTypes? _inputType;
+
+		public TaxiHailEntryElement (string caption, string hint, string value, string layoutName, InputTypes? inputType = null)
 			:base(caption, hint, value, layoutName)
 		{
+			_inputType = inputType;
 
 		}
 
@@ -20,7 +24,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
 			if (cell != null) {
 				//hard coded but since we are getting rid of dialog, no need to abstract this s**t
 				var editText = cell.FindViewById<EditTextEntry> (Resource.Id.dialog_ValueField);
-				editText.InputType = InputTypes.TextFlagCapWords;
+
+				if (_inputType != null) {
+					editText.InputType = _inputType.Value;
+				}
+
+				if(this.Services().Localize.IsRightToLeft)
+				{
+					editText.Gravity = GravityFlags.Right 
+										| GravityFlags.CenterVertical;
+				}
+
 			}
 		}
 	}
