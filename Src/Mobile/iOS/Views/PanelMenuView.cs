@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Animations;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -47,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void InitializeMenu ()
         {
-			menuContainer.BackgroundColor = UIColor.FromRGB (242, 242, 242);
+            menuContainer.BackgroundColor = Theme.MenuColor;
 
             var sideLine = Line.CreateVertical(menuContainer.Frame.Width, Frame.Height, UIColor.FromRGB(190, 190, 190));
             AddSubview(sideLine);
