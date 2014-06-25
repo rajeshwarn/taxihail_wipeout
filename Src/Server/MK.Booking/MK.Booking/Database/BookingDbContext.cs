@@ -59,7 +59,8 @@ namespace apcurium.MK.Booking.Database
                 .WithRequired()
                 .HasForeignKey(x => x.AccountId)
                 .WillCascadeOnDelete(true);
-           
+
+            modelBuilder.Entity<VehicleTypeDetail>().ToTable("VehicleTypeDetail", SchemaName);
         }
 
         public T Find<T>(Guid id) where T : class

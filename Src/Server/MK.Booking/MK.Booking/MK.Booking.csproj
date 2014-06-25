@@ -136,6 +136,7 @@
     <Compile Include="EventHandlers\RuleDetailsGenerator.cs" />
     <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
     <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />
+    <Compile Include="EventHandlers\VehicleTypeDetailGenerator.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushNotifications\Impl\PushNotificationService.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="ReadModel\Query\Contract\IConfigurationDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IDeviceDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderPaymentDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IVehicleTypeDao.cs" />
     <Compile Include="ReadModel\Query\DeviceDao.cs" />
     <Compile Include="ReadModel\Query\OrderPaymentDao.cs" />
     <Compile Include="ReadModel\Query\RuleDao.cs" />
@@ -169,6 +171,7 @@
     <Compile Include="ReadModel\Query\Contract\IRuleDao.cs" />
     <Compile Include="ReadModel\Query\OrderRatingsDao.cs" />
     <Compile Include="ReadModel\Query\RatingTypeDao.cs" />
+    <Compile Include="ReadModel\Query\VehicleTypeDao.cs" />
     <Compile Include="ReadModel\RatingTypeDetail.cs" />
     <Compile Include="ReadModel\DefaultAddressDetails.cs" />
     <Compile Include="ReadModel\OrderDetail.cs" />
@@ -189,6 +192,7 @@
     <Compile Include="ReadModel\TariffDetail.cs" />
     <Compile Include="ReadModel\OrderRatingDetails.cs" />
     <Compile Include="ReadModel\RatingScoreDetails.cs" />
+    <Compile Include="ReadModel\VehicleTypeDetail.cs" />
     <Compile Include="Resources\Global.ar.Designer.cs">
       <DependentUpon>Global.ar.resx</DependentUpon>
       <AutoGen>True</AutoGen>

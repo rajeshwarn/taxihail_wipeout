@@ -35,7 +35,9 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateTermsAndConditions>,
         ICommandHandler<RetriggerTermsAndConditions>,
         ICommandHandler<AddUpdateAccountCharge>,
-        ICommandHandler<DeleteAccountCharge>
+        ICommandHandler<DeleteAccountCharge>,
+        ICommandHandler<AddUpdateVehicleType>,
+        ICommandHandler<DeleteVehicleType>
     {
         private readonly IEventSourcedRepository<Company> _repository;
 
@@ -284,6 +286,24 @@ namespace apcurium.MK.Booking.CommandHandlers
             var company = _repository.Get(command.CompanyId);
 
             company.DeleteAccountCharge(command.AccountChargeId);
+
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(AddUpdateVehicleType command)
+        {
+            var company = _repository.Get(command.CompanyId);
+
+            company.AddUpdateVehicleType(command.VehicleTypeId, command.Name, command.LogoName, command.ReferenceDataVehicleId);
+
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(DeleteVehicleType command)
+        {
+            var company = _repository.Get(command.CompanyId);
+
+            company.DeleteVehicleType(command.VehicleTypeId);
 
             _repository.Save(company, command.Id.ToString());
         }

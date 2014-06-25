@@ -155,6 +155,7 @@
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
     <Compile Include="Requests\UpdatePassword.cs" />
     <Compile Include="Requests\ValidateOrderRequest.cs" />
+    <Compile Include="Requests\VehicleTypeRequest.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AccountCharge.cs" />
     <Compile Include="Resources\AddressList.cs" />
