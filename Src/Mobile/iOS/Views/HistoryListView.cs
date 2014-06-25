@@ -30,6 +30,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			NavigationController.NavigationBar.Hidden = false;
 			NavigationItem.Title = Localize.GetValue ("View_History");
+
+            ChangeThemeOfBarStyle();
 		}
 
 		public override void ViewDidLoad ()

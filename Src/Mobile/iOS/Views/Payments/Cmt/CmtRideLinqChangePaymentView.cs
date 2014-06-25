@@ -17,6 +17,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             NavigationController.NavigationBar.Hidden = false;
             NavigationItem.HidesBackButton = true;
+
+            ChangeThemeOfBarStyle();
             ChangeRightBarButtonFontToBold();
         }
 

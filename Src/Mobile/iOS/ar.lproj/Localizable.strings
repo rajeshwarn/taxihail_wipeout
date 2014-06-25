@@ -383,7 +383,7 @@
 "UpdatePasswordConfirmationLabel"="تأكيد";
 "View_BookSettingMenu"="إعدادات";
 "DateTimePickerPickInvalidDateMessage"="يجب أن يكون تاريخ الإلتقاء في المستقبل";
-"HistoryDetailStatusLabel"="الحالة";
+"HistoryDetailStatusLabel"="الحالة:";
 "RideSettingsPhone"="الهاتف الجوال";
 "CmtRideLinqConfirmPairView"="تأكيد معلومات الدفع";
 "TechSupportEmailTitle"="دعم تطبيق الهاتف الجوال";

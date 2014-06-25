@@ -20,6 +20,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationItem.HidesBackButton = true;
             NavigationItem.Title = Localize.GetValue("View_UpdatedTermsAndConditions");
             NavigationController.NavigationBar.Hidden = false;
+
+            ChangeThemeOfBarStyle();
         }
 
         public override void ViewDidLoad ()
