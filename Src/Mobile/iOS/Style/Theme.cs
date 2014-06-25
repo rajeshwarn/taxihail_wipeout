@@ -40,6 +40,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
 			get{ return ToUIColor(_themeValues.ButtonTextColor, ref _buttonTextColor); }
 		}
 
+        static UIColor _menuColor;
+        public static UIColor MenuColor
+        {
+            get{ return ToUIColor(_themeValues.MenuColor, ref _menuColor); }
+        }
+
 		public static bool IsLightContent
 		{
 			get
@@ -83,8 +89,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
         public string LoginColor { get; set; }
 		public string LabelTextColor { get; set; }
 		public string ButtonTextColor { get; set; }
+        public string MenuColor { get; set; }
 	}
-
-
 }
 

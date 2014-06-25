@@ -2,17 +2,21 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using System.Drawing;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
 	public class PanelMenuCell : MvxStandardTableViewCell
 	{
 		private bool _hideBottomBar;
+        private const float LeftPadding = 16f;
+        private const float RightPadding = 18f;
 
 		public PanelMenuCell (string cellIdentifier, string bindingText)
 			: base (bindingText, UITableViewCellStyle.Default, new NSString (cellIdentifier), UITableViewCellAccessory.None)
 		{
-            BackgroundView = new CustomCellBackgroundView(Frame, 0, UIColor.FromRGB (242, 242, 242), UIColor.White);
+            BackgroundColor = UIColor.Clear;
+            BackgroundView = new CustomCellBackgroundView(Frame, LeftPadding, UIColor.Clear, UIColor.White);
 
             SelectionStyle = UITableViewCellSelectionStyle.None;
 			Accessory = UITableViewCellAccessory.None;
@@ -25,7 +29,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			base.LayoutSubviews ();
 
-			TextLabel.SetX(5);
+            ((CustomCellBackgroundView)BackgroundView).BottomLine.SetWidth (Frame.Width - LeftPadding - RightPadding);
+
+            TextLabel.SetX(20);
 
 			// we can't use UITextAlignment.Natural on iOS6 apparently 
 			// (NSInvalidArgumentException Reason: textAlignment does not accept NSTextAlignmentNatural)
