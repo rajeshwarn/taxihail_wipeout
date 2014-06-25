@@ -24,12 +24,14 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly IVehicleTypeDao _dao;
         private readonly ICommandBus _commandBus;
+        private readonly ReferenceDataService _referenceDataService;
 
-        public VehicleService(IBookingWebServiceClient bookingWebServiceClient, IVehicleTypeDao dao, ICommandBus commandBus)
+        public VehicleService(IBookingWebServiceClient bookingWebServiceClient, IVehicleTypeDao dao, ICommandBus commandBus, ReferenceDataService referenceDataService)
         {
             _bookingWebServiceClient = bookingWebServiceClient;
             _dao = dao;
             _commandBus = commandBus;
+            _referenceDataService = referenceDataService;
         }
 
         public AvailableVehiclesResponse Get(AvailableVehicles request)
@@ -115,6 +117,13 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK, "OK");
+        }
+
+        public object Get(UnassignedReferenceDataVehiclesRequest request)
+        {
+            var referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest());
+            var allAssigned = _dao.GetAll().Select(x => x.ReferenceDataVehicleId);
+            return referenceData.VehiclesList.Where(x => x.Id != null && !allAssigned.Contains(x.Id.Value));;
         }
     }
 }

@@ -54,7 +54,12 @@
             /* Charge Accounts */
             "accounts": "manageAccounts",
             "accounts/add": "addAccount",
-            "accounts/edit/:number": "editAccount"
+            "accounts/edit/:number": "editAccount",
+
+            /* Charge Accounts */
+            "vehicleTypes": "manageVehicleTypes",
+            "vehicleTypes/add": "addVehicleType",
+            "vehicleTypes/edit/:id": "editVehicleType"
         },
 
         initialize: function (options) {
@@ -189,6 +194,18 @@
 
         editAccount: function (id) {
             action(TaxiHail.AccountChargeController, 'edit', id);
+        },
+
+        manageVehicleTypes: function () {
+            action(TaxiHail.VehicleTypeController, 'index');
+        },
+
+        addVehicleType: function () {
+            action(TaxiHail.VehicleTypeController, 'add');
+        },
+
+        editVehicleType: function (id) {
+            action(TaxiHail.VehicleTypeController, 'edit', id);
         }
 
     });
