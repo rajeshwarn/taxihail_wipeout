@@ -20,7 +20,7 @@ namespace apcurium.MK.Web
 {
     public class Global : HttpApplication
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (Global));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(Global));
 
 
         protected IUpdateOrderStatusJob StatusJobService { get; set; }
@@ -38,25 +38,23 @@ namespace apcurium.MK.Web
 
             var configurationManager =
                 UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
-            int pollingValue;
-            if (
-                !int.TryParse(configurationManager.GetSetting("OrderStatus.ServerPollingInterval"), NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out pollingValue))
-            {
-                pollingValue = 10;
-            }
+            int pollingValue = configurationManager.GetSetting<int>("OrderStatus.ServerPollingInterval", 10);
             PollIbs(pollingValue);
         }
 
         private void PollIbs(int pollingValue)
         {
             Log.Info("Queue OrderStatusJob " + DateTime.Now.ToString("HH:MM:ss"));
+            
             Observable.Timer(TimeSpan.FromSeconds(pollingValue))
                 .Subscribe(_ =>
                 {
                     try
                     {
-                        StatusJobService.CheckStatus();
+                        string serverProcessId = GetServerProcessId();
+                        Trace.WriteLine("serverProcessId : " + serverProcessId);
+                        StatusJobService.CheckStatus(serverProcessId);
+
                     }
                     finally
                     {
@@ -65,6 +63,10 @@ namespace apcurium.MK.Web
                 });
         }
 
+        private string GetServerProcessId()
+        {
+            return string.Format("{0}_{1}", System.Environment.MachineName, Process.GetCurrentProcess().Id);
+        }
 
         protected void Session_Start(object sender, EventArgs e)
         {
@@ -87,7 +89,7 @@ namespace apcurium.MK.Web
             {
                 if (HttpContext.Current.Items["RequestLoggingWatch"] is Stopwatch)
                 {
-                    var watch = (Stopwatch) HttpContext.Current.Items["RequestLoggingWatch"];
+                    var watch = (Stopwatch)HttpContext.Current.Items["RequestLoggingWatch"];
                     watch.Stop();
 
                     var config = UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);

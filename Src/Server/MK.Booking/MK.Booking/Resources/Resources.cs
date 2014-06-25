@@ -18,8 +18,7 @@ namespace apcurium.MK.Booking.Resources
         private const string DefaultLanguageCode = "en";
 
         public Resources(string applicationKey)
-        {
-            applicationKey = "Thriev";
+        {            
             var names = GetType().Assembly.GetManifestResourceNames();
             var resourceName = "apcurium.MK.Booking.Resources." + applicationKey + ".resources";
 

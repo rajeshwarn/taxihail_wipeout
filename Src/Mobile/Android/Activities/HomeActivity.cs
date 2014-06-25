@@ -81,6 +81,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             signOutButton.Click -= PanelMenuSignOutClick;
             signOutButton.Click += PanelMenuSignOutClick;
 
+			if (ViewModel.Settings.HideMkApcuriumLogos) 
+			{
+				var logos = FindViewById<LinearLayout>(Resource.Id.imgsLogosLayout);
+				logos.Visibility = ViewStates.Invisible;
+			}
+
             _bigButton.Touch += (sender, e) => 
             {
                 if(e.Event.Action == MotionEventActions.Up)

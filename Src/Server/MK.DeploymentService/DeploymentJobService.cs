@@ -126,7 +126,7 @@ namespace MK.DeploymentService
             client.GetPackage(GetZipFileName(_job), packageFile);
             Log("Done getting the binaries from server");
 
-            var unzipDirectory = Path.Combine(packagesDirectory, MakeValidFileName(_job.Revision.Tag));
+            var unzipDirectory = Path.Combine(Settings.Default.DropFolder + @"\Decompressed\" , MakeValidFileName(_job.Revision.Tag));
 
             if (Directory.Exists(unzipDirectory))
             {
@@ -277,10 +277,7 @@ namespace MK.DeploymentService
 
             Log("Done Deploying Server");
 
-            if ( !string.IsNullOrWhiteSpace( Settings.Default.ReplicationSharedFolder ))
-            {
-
-            }
+            
 
             appPool.Start();
         }
@@ -366,6 +363,16 @@ namespace MK.DeploymentService
 
 
             CopyFiles(sourcePath, targetWeDirectory);
+             
+            if ( !string.IsNullOrEmpty( Settings.Default.ReplicatedWebSitesFolder ) )
+            {
+                Log("Replicated IIS Site set to : " + Settings.Default.ReplicatedWebSitesFolder);
+                var replicatedTargetWeDirectory = Path.Combine(Settings.Default.ReplicatedWebSitesFolder, companyName, subFolder);
+
+                Log("Replicated IIS Site set to : " + replicatedTargetWeDirectory);
+                CopyFiles(sourcePath, replicatedTargetWeDirectory);
+            }
+
 
 
             var website = iisManager.Sites[Settings.Default.SiteName];

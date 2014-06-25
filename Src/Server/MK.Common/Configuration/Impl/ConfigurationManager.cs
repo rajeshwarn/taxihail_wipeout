@@ -112,6 +112,10 @@ namespace apcurium.MK.Common.Configuration.Impl
                         var propertyVal = Enum.Parse(targetType, item.Value);
                         propertyType.SetValue(Data, propertyVal);
                     }
+                    else if ( IsNullableType(propertyType.PropertyType) && string.IsNullOrEmpty( item.Value ) )
+                    {
+                        propertyType.SetValue(Data, null);
+                    }
                     else
                     {
                         var propertyVal = Convert.ChangeType(item.Value, targetType);

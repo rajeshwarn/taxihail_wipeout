@@ -7,7 +7,7 @@ namespace apcurium.MK.Booking.Api.Jobs
     /// </summary>
     internal class UpdateOrderStatusJobStub : IUpdateOrderStatusJob
     {
-        public void CheckStatus()
+        public void CheckStatus(string uniqueId)
         {
             // No op
         }
