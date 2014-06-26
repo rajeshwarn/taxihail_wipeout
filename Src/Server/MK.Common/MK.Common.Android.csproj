@@ -96,7 +96,6 @@
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Configuration\IAppSettings.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
-    <Compile Include="Entity\AccountChargeQuestion.cs" />
     <Compile Include="Extensions\ActionExtension.cs" />
     <Compile Include="Entity\AccountChargeQuestion.cs" />
   </ItemGroup>

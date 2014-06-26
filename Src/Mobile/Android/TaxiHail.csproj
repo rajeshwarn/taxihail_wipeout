@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -481,7 +481,9 @@
     <Compile Include="Controls\Behavior\NumberAndAddressTextFieldBehavior.cs" />
     <AndroidResource Include="Resources\Layout\Control_AddressTextBox.axml" />
     <AndroidResource Include="Resources\Drawable\colored_dot.xml" />
-    <AndroidResource Include="Resources\Layout\Control_VehicleTypeAndEstimate.xml" />
+    <AndroidResource Include="Resources\Layout\Control_VehicleTypeAndEstimate.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <Compile Include="Controls\Widgets\VehicleTypeAndEstimateControl.cs" />
     <Compile Include="Helpers\DrawableHelper.cs" />
     <Compile Include="Controls\Widgets\OrderEdit.cs" />
@@ -706,12 +708,7 @@
   </Target>
   <Target Name="AfterBuild">
   </Target>
-  <ItemGroup>
-    <Folder Include="Resources\drawable-hdpi\" />
-    <Folder Include="Calabash\" />
-    <Folder Include="Dialog\" />
-    <Folder Include="Controls\Dialog\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
