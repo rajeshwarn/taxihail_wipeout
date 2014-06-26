@@ -55,6 +55,8 @@ namespace MK.Common.Configuration
         public bool AccountActivationDisabled { get; private set; }
         [Display(Name = "Show Terms and Conditions", Description="Display and require T&C screen")]
         public bool ShowTermsAndConditions { get; private set; }
+		[Display(Name = "Hide Mobile Knownledge and Apcurium logos", Description="In the menu")]
+		public bool HideMkApcuriumLogos { get; private set; }
         
         [Display(Name = "Tutorial Enabled", Description="Enable the tutorial")]
         public bool TutorialEnabled { get; private set; }
@@ -121,11 +123,11 @@ namespace MK.Common.Configuration
         public bool HideCallDispatchButton { get; private set; }
         [Display(Name = "Credit Card Is Mandatory", Description="If true, the user needs to have a card on file")]
         public bool CreditCardIsMandatory { get; private set; }
-        [Display(Name = "Account ChargeTypeId", Description = "ChargeTypeId of the Account Charge Type")]
+		[Display(Name = "Default Percentage Tip", Description="default value for the tip percentage ex: 15")]
+		public int DefaultTipPercentage { get; private set; }
+		[Display(Name = "Account ChargeTypeId", Description = "ChargeTypeId of the Account Charge Type")]
 		public int? AccountChargeTypeId { get; private set; }
 
-				[Display(Name = "Default Percentage Tip", Description="default value for the tip percentage ex: 15")]
-		public int DefaultTipPercentage { get; private set; }
 
 		[Display(Name = "Place Types", Description="Give a list of Google Maps places types to filter search")]
 		public string PlacesTypes { get; private set; }

@@ -43,6 +43,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
+        private readonly Resources.Resources _resources;
 
         public CreateOrderService(ICommandBus commandBus,
             IBookingWebServiceClient bookingWebServiceClient,
@@ -51,7 +52,8 @@ namespace apcurium.MK.Booking.Api.Services
             ReferenceDataService referenceDataService,
             IStaticDataWebServiceClient staticDataWebServiceClient,
             IRuleCalculator ruleCalculator,
-            IUpdateOrderStatusJob updateOrderStatusJob)
+            IUpdateOrderStatusJob updateOrderStatusJob, 
+            IConfigurationManager configurationManager)
         {
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
@@ -61,6 +63,9 @@ namespace apcurium.MK.Booking.Api.Services
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _ruleCalculator = ruleCalculator;
             _updateOrderStatusJob = updateOrderStatusJob;
+
+            var applicationKey = _configManager.GetSetting("TaxiHail.ApplicationKey");
+            _resources = new Resources.Resources(applicationKey);
         }
 
         public object Post(CreateOrder request)
@@ -144,14 +149,14 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             UpdateStatusAsync(command.OrderId);
-
+            
             return new OrderStatusDetail
             {
                 OrderId = command.OrderId,
                 Status = OrderStatus.Created,
                 IBSOrderId =  ibsOrderId,
                 IBSStatusId = "",
-                IBSStatusDescription = "Processing your order"
+                IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", command.ClientLanguageCode),
             };
         }
 

@@ -160,8 +160,10 @@
     <Compile Include="ReadModel\Query\Contract\IDeviceDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderPaymentDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IVehicleTypeDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IOrderStatusUpdateDao.cs" />
     <Compile Include="ReadModel\Query\DeviceDao.cs" />
     <Compile Include="ReadModel\Query\OrderPaymentDao.cs" />
+    <Compile Include="ReadModel\Query\OrderStatusUpdateDao.cs" />
     <Compile Include="ReadModel\Query\RuleDao.cs" />
     <Compile Include="ReadModel\Query\CreditCardDao.cs" />
     <Compile Include="ReadModel\CreditCardDetails.cs" />
@@ -172,6 +174,7 @@
     <Compile Include="ReadModel\Query\OrderRatingsDao.cs" />
     <Compile Include="ReadModel\Query\RatingTypeDao.cs" />
     <Compile Include="ReadModel\Query\VehicleTypeDao.cs" />
+    <Compile Include="ReadModel\OrderStatusUpdateDetail.cs" />
     <Compile Include="ReadModel\RatingTypeDetail.cs" />
     <Compile Include="ReadModel\DefaultAddressDetails.cs" />
     <Compile Include="ReadModel\OrderDetail.cs" />
@@ -198,6 +201,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Resources\MearsTaxi.Designer.cs" />
     <Compile Include="Resources\Resources.cs" />
     <Compile Include="Resources\Global.fr.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -286,6 +290,7 @@
       <LastGenOutput>Global.fr.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\MearsTaxi.resx" />
     <EmbeddedResource Include="Resources\TaxiHailNYC.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TaxiHailNYC.Designer.cs</LastGenOutput>

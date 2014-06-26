@@ -4,4 +4,5 @@
   <LoginColor>#004785</LoginColor>
   <ButtonTextColor>#ffffff</ButtonTextColor>
   <LabelTextColor>#ffffff</LabelTextColor>
+  <MenuColor>#f2f2f2</MenuColor>
 </ThemeValues>

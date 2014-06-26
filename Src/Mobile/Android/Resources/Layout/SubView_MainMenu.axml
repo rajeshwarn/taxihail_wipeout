@@ -2,23 +2,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_height="fill_parent"
-    android:layout_width="fill_parent">
-    <RelativeLayout
-        android:id="@+id/fakeLayout"
-        android:layout_marginLeft="0px"
-        android:layout_width="0dip"
-        android:layout_height="fill_parent" />
+    android:layout_width="fill_parent"
+    android:background="@color/setting_menu_color">
     <RelativeLayout
         android:id="@+id/fakeLayoutRight"
         android:layout_alignParentRight="true"
         android:layout_width="105px"
         android:layout_height="fill_parent" />
     <RelativeLayout
-        android:layout_marginRight="100px"
+        android:id="@+id/DShadow"
+        android:layout_alignParentRight="true"
+        android:layout_width="4px"
+        android:layout_height="fill_parent"
+        android:layout_toLeftOf="@id/fakeLayoutRight"
+        android:background="@drawable/drop_shadow_old"
+        android:layout_marginRight="98px" />
+    <RelativeLayout
         android:id="@+id/HeaderLayoutMenu"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_toRightOf="@id/fakeLayout">
+        android:layout_toLeftOf="@id/DShadow">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
@@ -62,7 +65,8 @@
                             android:text="@string/PanelMenuViewLocationsText"
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
-                            android:gravity="left|center_vertical"
+                            android:gravity="start|center_vertical"
+                            android:textAlignment="viewStart"
                             local:MvxBind="Click Panel.NavigateToMyLocations" />
                         <View
                             android:background="@color/setting_menu_separator_color"
@@ -79,7 +83,8 @@
                             android:text="@string/PanelMenuViewOrderHistoryText"
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
-                            android:gravity="left|center_vertical"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart"
                             local:MvxBind="Click Panel.NavigateToOrderHistory" />
                         <View
                             android:background="@color/setting_menu_separator_color"
@@ -97,7 +102,8 @@
                             android:text="@string/PanelMenuViewUpdateProfileText"
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
-                            android:gravity="left|center_vertical" />
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart" />
                         <View
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
@@ -114,7 +120,8 @@
                             android:text="@string/PanelMenuViewTutorialText"
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
-                            android:gravity="left|center_vertical" />
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart" />
                         <View
                             local:MvxBind="Visibility Panel.Settings.TutorialEnabled, Converter=Visibility"
                             android:background="@color/setting_menu_separator_color"
@@ -132,7 +139,8 @@
                             android:text="@string/PanelMenuViewCallDispatchText"
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
-                            android:gravity="left|center_vertical" />
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart" />
                         <View
                             local:MvxBind="Visibility Panel.Settings.Settings.HideCallDispatchButton, Converter=InvertedVisibility"
                             android:background="@color/setting_menu_separator_color"
@@ -150,7 +158,8 @@
                             android:text="@string/PanelMenuViewAboutUsText"
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
-                            android:gravity="left|center_vertical" />
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart" />
                         <View
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
@@ -167,7 +176,8 @@
                             android:text="@string/PanelMenuViewReportProblemText"
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
-                            android:gravity="left|center_vertical" />
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart" />
                         <View
                             local:MvxBind="Visibility Panel.Settings.HideReportProblem, Converter=InvertedVisibility"
                             android:background="@color/setting_menu_separator_color"
@@ -184,7 +194,8 @@
                             android:text="@string/PanelMenuViewSignOutText"
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
-                            android:gravity="left|center_vertical" />
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart" />
                     </LinearLayout>
                 </ScrollView>
             </LinearLayout>
@@ -192,10 +203,10 @@
                 android:id="@+id/apcuriumLogoLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/fakeLayout"
                 android:layout_marginBottom="5dp">
                 <LinearLayout
                     android:orientation="horizontal"
+                    android:id="@+id/imgsLogosLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
                     <LinearLayout
@@ -223,7 +234,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:adjustViewBounds="true"
-                            android:layout_marginLeft="17dp" />
+                            android:layout_marginStart="17dp" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="0dp"
@@ -242,12 +253,4 @@
             </FrameLayout>
         </LinearLayout>
     </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/DShadow"
-        android:layout_alignParentRight="true"
-        android:layout_width="4px"
-        android:layout_height="fill_parent"
-        android:layout_toLeftOf="@id/fakeLayoutRight"
-        android:background="@drawable/drop_shadow_old"
-        android:layout_marginRight="98px" />
 </RelativeLayout>

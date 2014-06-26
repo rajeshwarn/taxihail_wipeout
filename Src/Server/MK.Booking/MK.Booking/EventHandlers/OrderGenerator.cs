@@ -11,6 +11,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
 using Infrastructure.Messaging.Handling;
+using apcurium.MK.Common.Configuration;
 
 #endregion
 
@@ -30,11 +31,15 @@ namespace apcurium.MK.Booking.EventHandlers
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
+        private readonly Resources.Resources _resources;
 
-        public OrderGenerator(Func<BookingDbContext> contextFactory, ILogger logger)
+        public OrderGenerator(Func<BookingDbContext> contextFactory, ILogger logger, IConfigurationManager configurationManager)
         {
             _contextFactory = contextFactory;
             _logger = logger;
+
+            var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
+            _resources = new Resources.Resources(applicationKey);
         }
 
         public void Handle(OrderCancelled @event)
@@ -105,7 +110,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         AccountId = @event.AccountId,
                         IBSOrderId  = @event.IBSOrderId,
                         Status = OrderStatus.Created,
-                        IBSStatusDescription =  "Processing your order",
+                        IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", @event.ClientLanguageCode),
                         PickupDate = @event.PickupDate,
                         Name = @event.Settings != null ? @event.Settings.Name : null
                     });

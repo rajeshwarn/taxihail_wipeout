@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Animations;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -47,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void InitializeMenu ()
         {
-			menuContainer.BackgroundColor = UIColor.FromRGB (242, 242, 242);
+            menuContainer.BackgroundColor = Theme.MenuColor;
 
             var sideLine = Line.CreateVertical(menuContainer.Frame.Width, Frame.Height, UIColor.FromRGB(190, 190, 190));
             AddSubview(sideLine);
@@ -85,22 +86,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Apply ();
 
-            imgLogoApcurium.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-                {
-                    if(ToApcuriumWebsite != null && ToApcuriumWebsite.CanExecute())
-                    {
-                        ToApcuriumWebsite.Execute();
-                    }
-                }));
+			if (ViewModel.Settings.HideMkApcuriumLogos)
+			{
+				imgLogoApcurium.Hidden = true;
+				imgLogoMobileKnowledge.Hidden = true;
+			}else{
 
-            imgLogoMobileKnowledge.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-                {
-                    if(ToMobileKnowledgeWebsite != null && ToMobileKnowledgeWebsite.CanExecute())
-                    {
-                        ToMobileKnowledgeWebsite.Execute();
-                    }
-                }));
-		
+				imgLogoApcurium.AddGestureRecognizer (new UITapGestureRecognizer (() => {
+					if (ToApcuriumWebsite != null && ToApcuriumWebsite.CanExecute ()) {
+						ToApcuriumWebsite.Execute ();
+					}
+				}));
+
+				imgLogoMobileKnowledge.AddGestureRecognizer (new UITapGestureRecognizer (() => {
+					if (ToMobileKnowledgeWebsite != null && ToMobileKnowledgeWebsite.CanExecute ()) {
+						ToMobileKnowledgeWebsite.Execute ();
+					}
+				}));
+			}
 			menuListView.AlwaysBounceVertical = false;
         }
 

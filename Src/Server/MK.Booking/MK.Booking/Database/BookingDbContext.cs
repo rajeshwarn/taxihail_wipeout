@@ -39,6 +39,7 @@ namespace apcurium.MK.Booking.Database
 
             modelBuilder.Entity<AccountDetail>().ToTable("AccountDetail", SchemaName);
             modelBuilder.Entity<DeviceDetail>().ToTable("DeviceDetail", SchemaName);
+            modelBuilder.Entity<OrderStatusUpdateDetail>().ToTable("OrderStatusUpdateDetail", SchemaName);
             modelBuilder.Entity<AddressDetails>().ToTable("AddressDetails", SchemaName);
             modelBuilder.Entity<OrderDetail>().ToTable("OrderDetail", SchemaName);
             modelBuilder.Entity<TariffDetail>().ToTable("TariffDetail", SchemaName);

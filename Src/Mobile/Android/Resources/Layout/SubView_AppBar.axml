@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 local:MvxBind="Visibility Settings.HideDestination, Converter=InvertedVisibility"
-                android:layout_gravity="left|center">
+                android:layout_gravity="start|center">
                 <ImageView
                     android:id="@+id/btnEstimate"
                     android:src="@drawable/button_destination_image_selector"
@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 local:MvxBind="Visibility Settings.DisableFutureBooking, Converter=InvertedVisibility"
-                android:layout_gravity="right|center">
+                android:layout_gravity="end|center">
                 <ImageView
                     android:id="@+id/btnBookLater"
                     android:src="@drawable/button_booklater_image_selector"

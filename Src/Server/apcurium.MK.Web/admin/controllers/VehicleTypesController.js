@@ -11,7 +11,6 @@
             this.availableVehicles = new TaxiHail.UnassignedReferenceDataVehicles();
 
             $.when(this.vehicleTypes.fetch(), this.availableVehicles.fetch()).then(this.ready);
-
         },
 
         index: function() {
