@@ -72,18 +72,18 @@ namespace apcurium.MK.Booking.Api.Services
             var command = new Commands.CancelOrder { Id = Guid.NewGuid(), OrderId = request.OrderId };
             _commandBus.Send(command);
 
-            UpdateStatusAsync();
+            UpdateStatusAsync( command.Id );
 
             return new HttpResult(HttpStatusCode.OK);
         }
 
-        private void UpdateStatusAsync()
+        private void UpdateStatusAsync(Guid id)
         {
             new TaskFactory().StartNew(() =>
             {
                 //We have to wait for the order to be completed.
                 Thread.Sleep(750);
-                _updateOrderStatusJob.CheckStatus();
+                _updateOrderStatusJob.CheckStatus(id);
             });
         }
     }

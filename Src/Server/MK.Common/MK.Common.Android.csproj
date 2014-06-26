@@ -98,6 +98,7 @@
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Entity\AccountChargeQuestion.cs" />
     <Compile Include="Extensions\ActionExtension.cs" />
+    <Compile Include="Entity\AccountChargeQuestion.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

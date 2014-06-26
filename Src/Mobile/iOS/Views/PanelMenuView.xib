@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PanelMenuView"/>
@@ -24,13 +24,14 @@
                             </constraints>
                         </imageView>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="7">
-                            <rect key="frame" x="16" y="96" width="232" height="431"/>
+                            <rect key="frame" x="0.0" y="96" width="266" height="431"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <color key="tintColor" red="0.30980392159999998" green="0.29803921570000003" blue="0.2784313725" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="separatorInset" minX="16" minY="0.0" maxX="18" maxY="0.0"/>
                             <color key="sectionIndexColor" red="0.30980392156862746" green="0.29803921568627451" blue="0.27843137254901962" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </tableView>
                         <imageView contentMode="scaleAspectFit" image="apc_logo_menu.png" translatesAutoresizingMaskIntoConstraints="NO" id="8">
@@ -65,7 +66,7 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="bYL-3d-p1o" firstAttribute="centerY" secondItem="8" secondAttribute="centerY" id="6BX-Is-2nx"/>
-                        <constraint firstItem="7" firstAttribute="leading" secondItem="ZSi-EL-Atn" secondAttribute="leading" constant="16" id="7vP-0g-qeq"/>
+                        <constraint firstItem="7" firstAttribute="leading" secondItem="ZSi-EL-Atn" secondAttribute="leading" id="7vP-0g-qeq"/>
                         <constraint firstAttribute="trailing" secondItem="9" secondAttribute="trailing" constant="15" id="B8y-Wo-asv"/>
                         <constraint firstItem="bYL-3d-p1o" firstAttribute="leading" secondItem="ZSi-EL-Atn" secondAttribute="leading" constant="63" id="Ctf-as-KEx"/>
                         <constraint firstAttribute="bottom" secondItem="9" secondAttribute="bottom" constant="5" id="Eiq-hW-qu8"/>
@@ -73,7 +74,7 @@
                         <constraint firstAttribute="width" constant="266" id="c9M-mO-9Ol"/>
                         <constraint firstItem="0aM-QX-Lcs" firstAttribute="top" secondItem="ZSi-EL-Atn" secondAttribute="top" constant="20" id="eud-HV-6WW"/>
                         <constraint firstItem="7" firstAttribute="top" secondItem="0aM-QX-Lcs" secondAttribute="bottom" constant="2" id="fN5-zK-fFr"/>
-                        <constraint firstAttribute="trailing" secondItem="7" secondAttribute="trailing" constant="18" id="ivC-GQ-eqn"/>
+                        <constraint firstAttribute="trailing" secondItem="7" secondAttribute="trailing" id="ivC-GQ-eqn"/>
                         <constraint firstItem="bYL-3d-p1o" firstAttribute="top" secondItem="7" secondAttribute="bottom" constant="1" id="j8X-0l-Bqq"/>
                         <constraint firstItem="9" firstAttribute="top" secondItem="8" secondAttribute="bottom" constant="-5" id="tvp-0C-s2A"/>
                         <constraint firstItem="8" firstAttribute="leading" secondItem="bYL-3d-p1o" secondAttribute="trailing" constant="17" id="x3X-6v-2xg"/>

@@ -13,6 +13,7 @@ using apcurium.MK.Common.Entity;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
+using apcurium.MK.Booking.Common.Tests;
 
 #endregion
 
@@ -32,7 +33,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            Sut = new OrderGenerator(() => new BookingDbContext(DbName), new Logger());
+            Sut = new OrderGenerator(() => new BookingDbContext(DbName), new Logger(), new TestConfigurationManager());
         }
     }
 

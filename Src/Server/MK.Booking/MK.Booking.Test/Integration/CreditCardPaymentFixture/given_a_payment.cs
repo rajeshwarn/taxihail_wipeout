@@ -8,6 +8,7 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
+using apcurium.MK.Booking.Common.Tests;
 
 #endregion
 
@@ -29,7 +30,7 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
                 Amount = 12.34m,
                 TransactionId = "the transaction",
             });
-            var ordetailsGenerator = new OrderGenerator(() => new BookingDbContext(DbName), new Logger());
+            var ordetailsGenerator = new OrderGenerator(() => new BookingDbContext(DbName), new Logger(), new TestConfigurationManager());
             ordetailsGenerator.Handle(new OrderCreated
             {
                 SourceId = orderId,

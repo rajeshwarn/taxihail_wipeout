@@ -81,6 +81,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             signOutButton.Click -= PanelMenuSignOutClick;
             signOutButton.Click += PanelMenuSignOutClick;
 
+			if (ViewModel.Settings.HideMkApcuriumLogos) 
+			{
+				var logos = FindViewById<LinearLayout>(Resource.Id.imgsLogosLayout);
+				logos.Visibility = ViewStates.Invisible;
+			}
+
             _bigButton.Touch += (sender, e) => 
             {
                 if(e.Event.Action == MotionEventActions.Up)
@@ -192,7 +198,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
             ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = WindowManager.DefaultDisplay.Height;
-            ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = WindowManager.DefaultDisplay.Width;
+
+			if (this.Services ().Localize.IsRightToLeft) {
+				((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).RightMargin = WindowManager.DefaultDisplay.Width;
+			} else {
+				((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = WindowManager.DefaultDisplay.Width;
+			}
+            
             _orderReview.Visibility = ViewStates.Gone;
             _orderEdit.Visibility = ViewStates.Gone;
             _searchAddress.Visibility = ViewStates.Gone;
@@ -375,7 +387,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     }
                 };
 
-                var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width);
+				var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
                 animation2.AnimationStart += (sender, e) =>
                 {
                     if (((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).Width != _frameLayout.Width)
@@ -410,7 +422,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     }
                 };
 
-                var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, 0);
+				var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, 0, this.Services().Localize.IsRightToLeft);
                 var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, -_orderOptions.Height);
 
                 _orderReview.StartAnimation(animation);
@@ -441,7 +453,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     }
                 };
 
-                var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width);
+				var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
                 var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, 0);
 
                 _orderReview.StartAnimation(animation);
