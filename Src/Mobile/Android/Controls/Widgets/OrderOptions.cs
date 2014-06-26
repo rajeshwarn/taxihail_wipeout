@@ -27,9 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ViewDestination.IsDestination = true;
                 ViewPickup.IsDestination = false;
 
-                // since we don't have the vehicle selection yet, we hardcode this value
-                ViewVehicleType.VehicleType = "Taxi";
-
                 ViewPickup.SetInvisibleButton(BigInvisibleButton);
                 ViewDestination.SetInvisibleButton(BigInvisibleButton);
 
@@ -89,7 +86,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .WithConversion("Visibility");
 			set.Bind(ViewVehicleType)
 				.For(v => v.ShowEstimate)
-				.To(vm => vm.Settings.ShowEstimate);
+				.To(vm => vm.ShowEstimate);
+			set.Bind (ViewVehicleType)
+				.For (v => v.Vehicles)
+				.To (vm => vm.VehicleTypes);
+			set.Bind (ViewVehicleType)
+				.For (v => v.SelectedVehicle)
+				.To (vm => vm.SelectedVehicleType);
 
             set.Bind(ViewPickup)
                 .For("AddressClicked")

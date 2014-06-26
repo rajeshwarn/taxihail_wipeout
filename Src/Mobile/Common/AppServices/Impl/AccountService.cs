@@ -57,9 +57,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             if (cached == null)
             {
                 var refData = UseServiceClientAsync<ReferenceDataServiceClient, ReferenceData>(service => service.GetReferenceData());
-                UserCache.Set(RefDataCacheKey, await refData, DateTime.Now.AddHours(1));
-                return await refData;
-
+				UserCache.Set(RefDataCacheKey, await refData, DateTime.Now.AddHours(1));
+				return await refData;
             }
             return cached;
         }
@@ -505,22 +504,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return refData.CompaniesList;         
         }
 
-		public async Task<IList<ListItem>> GetVehiclesList ()
+		public async Task<IList<VehicleType>> GetVehiclesList ()
         {
-			var refData = await GetReferenceData();
+			return await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
 
-			if (!_appSettings.Data.HideNoPreference
-                && refData.VehiclesList != null)
-            {
-                refData.VehiclesList.Insert(0,
-					new ListItem
-                    {
-                        Id = null,
-						Display = _localize["NoPreference"]
-					});
-            }
-
-            return refData.VehiclesList;
+//			if (!_appSettings.Data.HideNoPreference
+//                && refData.VehiclesList != null)
+//            {
+//                refData.VehiclesList.Insert(0,
+//					new ListItem
+//                    {
+//                        Id = null,
+//						Display = _localize["NoPreference"]
+//					});
+//            }
         }
 
 		public async Task<IList<ListItem>> GetPaymentsList ()

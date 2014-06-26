@@ -181,6 +181,7 @@
     <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
     <Compile Include="Resources\TermsAndConditions.cs" />
+    <Compile Include="Resources\VehicleType.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
     <Compile Include="Security\AuthorizationRequiredAttribute.cs" />
   </ItemGroup>

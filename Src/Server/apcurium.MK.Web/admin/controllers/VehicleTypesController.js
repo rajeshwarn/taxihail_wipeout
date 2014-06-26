@@ -37,11 +37,11 @@
 
             var model = this.vehicleTypes.find(function (m) { return m.get('id') == id; });
             model.set('isNew', false);
-            model.set('availableVehicles', this.availableVehicles);
             
             return new TaxiHail.AddVehicleTypeView({
                 model: model,
-                collection: this.vehicleTypes
+                collection: this.vehicleTypes,
+                availableVehicles: this.availableVehicles
             })
             .on('cancel', function() {
                 TaxiHail.app.navigate('vehicleTypes', { trigger: true });

@@ -103,6 +103,7 @@
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Requests\OrderRatingRequest.cs" />
     <Compile Include="Resources\TermsAndConditions.cs" />
+    <BundleResource Include="Resources\VehicleType.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
     <Compile Include="Requests\CreditCardRequest.cs" />
     <Compile Include="Resources\CreditCardDetails.cs" />
@@ -150,7 +151,5 @@
     <BundleResource Include="Resources\OrderRatings.cs" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Folder Include="Requests\Payment\Moneris\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

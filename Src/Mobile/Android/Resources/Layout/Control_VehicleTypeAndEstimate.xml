@@ -12,34 +12,27 @@
         android:layout_height="1px"
         android:background="@color/label_text_color" />
     <LinearLayout
+        android:id="@+id/VehicleSelection"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:layout_margin="0px"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_width="fill_parent"
+        android:layout_height="52dp" />
+    <LinearLayout
+        android:id="@+id/RideEstimate"
         android:orientation="horizontal"
         android:layout_margin="0px"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:layout_width="fill_parent"
         android:layout_height="52dp">
-        <LinearLayout
+        <apcurium.mk.booking.mobile.client.controls.widgets.VehicleType
+            android:id="@+id/estimateSelectedVehicle"
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/vehicleTypeImage"
-                android:src="@drawable/taxi_badge_selected"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:scaleType="center" />
-            <TextView
-                android:id="@+id/vehicleTypeLabel"
-                android:textSize="10dp"
-                android:gravity="center|center"
-                android:textColor="@color/label_text_color"
-                android:textStyle="bold"
-                android:layout_margin="0px"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="16dp" />
-        </LinearLayout>
+            android:layout_height="match_parent" />
         <LinearLayout
             android:orientation="vertical"
             android:layout_weight="1"

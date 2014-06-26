@@ -13,10 +13,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public class VehicleTypeAndEstimateControl : LinearLayout
     {
-        private ImageView SelectedVehicleType { get; set; }
-        private TextView SelectedVehicleTypeLabel { get; set; }
         private TextView EstimatedFareLabel { get; set; }
         private View HorizontalDivider { get; set; }
+		private LinearLayout VehicleSelection { get; set; }
+		private LinearLayout RideEstimate { get; set; }
+		private VehicleType EstimateSelectedVehicleType { get; set; }
 
         public VehicleTypeAndEstimateControl(Context c, IAttributeSet attr) : base(c, attr)
         {
@@ -29,13 +30,42 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
             var layout = inflater.Inflate(Resource.Layout.Control_VehicleTypeAndEstimate, this, true);
 
-            SelectedVehicleType = (ImageView)layout.FindViewById(Resource.Id.vehicleTypeImage);
-            SelectedVehicleTypeLabel = (TextView)layout.FindViewById(Resource.Id.vehicleTypeLabel);
-            EstimatedFareLabel = (TextView)layout.FindViewById(Resource.Id.estimateFareLabel);
-            HorizontalDivider = (View)layout.FindViewById(Resource.Id.HorizontalDivider);
+			HorizontalDivider = (View)layout.FindViewById(Resource.Id.HorizontalDivider);
+			RideEstimate = (LinearLayout)layout.FindViewById (Resource.Id.RideEstimate);
+			VehicleSelection = (LinearLayout)layout.FindViewById (Resource.Id.VehicleSelection);
+
+			EstimatedFareLabel = (TextView)layout.FindViewById(Resource.Id.estimateFareLabel);
+			EstimateSelectedVehicleType = (VehicleType)layout.FindViewById (Resource.Id.estimateSelectedVehicle);
 
             this.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
         }
+			
+		public apcurium.MK.Booking.Api.Contract.Resources.VehicleType SelectedVehicle
+		{
+			get { return EstimateSelectedVehicleType.Vehicle; }
+			set
+			{
+				if (EstimateSelectedVehicleType.Vehicle != value)
+				{
+					EstimateSelectedVehicleType.Vehicle = value;
+					Redraw();
+				}
+			}
+		}
+
+		private apcurium.MK.Booking.Api.Contract.Resources.VehicleType[] _vehicles;
+		public apcurium.MK.Booking.Api.Contract.Resources.VehicleType[] Vehicles
+		{
+			get { return _vehicles; }
+			set
+			{
+				if (_vehicles != value)
+				{
+					_vehicles = value;
+					Redraw();
+				}
+			}
+		}
 
         private bool _showEstimate;
         public bool ShowEstimate
@@ -49,41 +79,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     Redraw();
                 }
             }
-        }
-
-        private string _vehicleType;
-        public string VehicleType
-        {
-            get { return _vehicleType; }
-            set
-            {
-                if (_vehicleType != value)
-                {
-                    _vehicleType = value;
-                    var image = DrawableHelper.GetDrawableFromString(Resources, string.Format("{0}_badge_selected", value.ToLower()));
-                    SelectedVehicleType.SetImageDrawable(image);
-                    SelectedVehicleType.SetColorFilter(GetColorFilter(Resources.GetColor(Resource.Color.label_text_color)));
-					SelectedVehicleTypeLabel.Text = TinyIoCContainer.Current.Resolve<ILocalization>()[value.ToUpper()];
-                }
-            }
-        }
-
-        private ColorFilter GetColorFilter(Color color)
-        {
-            int iColor = color;
-
-            int red = (iColor & 0xFF0000) / 0xFFFF;
-            int green = (iColor & 0xFF00) / 0xFF;
-            int blue = iColor & 0xFF;
-
-            float[] matrix = { 0, 0, 0, 0, red
-                , 0, 0, 0, 0, green
-                , 0, 0, 0, 0, blue
-                , 0, 0, 0, 1, 0 };
-
-            ColorFilter colorFilter = new ColorMatrixColorFilter(matrix);
-
-            return colorFilter;
         }
 
         public string EstimatedFare
@@ -102,23 +97,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             if (ShowEstimate)
             {
-				// this is the state where we show the logo and text of the selected vehicle type and the estimate
-
+				this.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
                 HorizontalDivider.Background.SetColorFilter(Resources.GetColor(Resource.Color.company_color), PorterDuff.Mode.SrcAtop);
-                SelectedVehicleType.Visibility = ViewStates.Visible;
-                SelectedVehicleTypeLabel.Visibility = ViewStates.Visible;
-                EstimatedFareLabel.Visibility = ViewStates.Visible;
+				RideEstimate.Visibility = ViewStates.Visible;
+				VehicleSelection.Visibility = ViewStates.Gone;
             }
             else
             {
-				// this is the state where we show the buttons to select vehicle type
+				this.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.white));
+				HorizontalDivider.SetBackgroundColor(Resources.GetColor(Resource.Color.orderoptions_horizontal_divider));
+				RideEstimate.Visibility = ViewStates.Gone;
+				VehicleSelection.Visibility = ViewStates.Visible;
 
-                HorizontalDivider.Background.SetColorFilter(Resources.GetColor(Resource.Color.orderoptions_horizontal_divider), PorterDuff.Mode.SrcAtop);
-                SelectedVehicleType.Visibility = ViewStates.Gone;
-                SelectedVehicleTypeLabel.Visibility = ViewStates.Gone;
-                EstimatedFareLabel.Visibility = ViewStates.Gone;
-
-                // show the buttons to select vehicle type
+				VehicleSelection.RemoveAllViews ();
+				foreach (var vehicle in Vehicles) 
+				{
+					VehicleSelection.AddView (new VehicleType (base.Context, vehicle, vehicle.Id == SelectedVehicle.Id));
+				}
             }
         }
     }

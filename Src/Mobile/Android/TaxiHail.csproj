@@ -572,6 +572,10 @@
     <Compile Include="Controls\Dialog\TaxiHailEntryElement.cs" />
     <Compile Include="Activities\EditTextDialogActivity.cs" />
     <Compile Include="TaxiHailAndroidLifetimeMonitor.cs" />
+    <Compile Include="Controls\Widgets\VehicleType.cs" />
+    <AndroidResource Include="Resources\Layout\Control_VehicleType.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

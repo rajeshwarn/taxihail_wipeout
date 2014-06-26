@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public async Task Init()
 		{
-			Vehicles = await _accountService.GetVehiclesList();
+			Vehicles = (await _accountService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
 			ChargeTypes = await _accountService.GetPaymentsList();
 
 			this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
