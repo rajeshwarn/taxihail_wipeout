@@ -14,7 +14,10 @@
         },
         
         render: function () {
-            var html = this.renderTemplate(this.model.toJSON());
+            var data = _.extend(this.model.toJSON(), {
+                availableVehicles: this.options.availableVehicles.toJSON()
+            });
+            var html = this.renderTemplate(data);
             this.$el.html(html);
 
             this.validate({

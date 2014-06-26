@@ -10,8 +10,7 @@
             this.vehicleTypes = new Collection();
             this.availableVehicles = new TaxiHail.UnassignedReferenceDataVehicles();
 
-            $.when(this.vehicleTypes.fetch()).then(this.ready);
-            $.when(this.availableVehicles.fetch()).then(this.ready);
+            $.when(this.vehicleTypes.fetch(), this.availableVehicles.fetch()).then(this.ready);
 
         },
 
@@ -23,13 +22,13 @@
 
         add: function() {
             var model = new Model({
-                isNew: true,
-                availableVehicles: this.availableVehicles
+                isNew: true
             });
 
             return new TaxiHail.AddVehicleTypeView({
                 model: model,
-                collection: this.vehicleTypes
+                collection: this.vehicleTypes,
+                availableVehicles: this.availableVehicles
             }).on('cancel', function() {
                 TaxiHail.app.navigate('vehicleTypes', { trigger: true });
             }, this);
