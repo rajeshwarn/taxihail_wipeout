@@ -28,7 +28,7 @@
         android:paddingRight="16dp"
         android:layout_width="fill_parent"
         android:layout_height="52dp">
-        <apcurium.mk.booking.mobile.client.controls.widgets.VehicleType
+        <apcurium.mk.booking.mobile.client.controls.widgets.VehicleTypeControl
             android:id="@+id/estimateSelectedVehicle"
             android:orientation="vertical"
             android:layout_width="wrap_content"

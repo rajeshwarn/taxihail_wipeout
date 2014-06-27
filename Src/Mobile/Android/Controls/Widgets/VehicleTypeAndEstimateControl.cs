@@ -8,6 +8,8 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -17,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private View HorizontalDivider { get; set; }
 		private LinearLayout VehicleSelection { get; set; }
 		private LinearLayout RideEstimate { get; set; }
-		private VehicleType EstimateSelectedVehicleType { get; set; }
+		private VehicleTypeControl EstimateSelectedVehicleType { get; set; }
 
         public VehicleTypeAndEstimateControl(Context c, IAttributeSet attr) : base(c, attr)
         {
@@ -35,12 +37,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			VehicleSelection = (LinearLayout)layout.FindViewById (Resource.Id.VehicleSelection);
 
 			EstimatedFareLabel = (TextView)layout.FindViewById(Resource.Id.estimateFareLabel);
-			EstimateSelectedVehicleType = (VehicleType)layout.FindViewById (Resource.Id.estimateSelectedVehicle);
+			EstimateSelectedVehicleType = (VehicleTypeControl)layout.FindViewById (Resource.Id.estimateSelectedVehicle);
 
             this.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
         }
 			
-		public apcurium.MK.Booking.Api.Contract.Resources.VehicleType SelectedVehicle
+		public VehicleType SelectedVehicle
 		{
 			get { return EstimateSelectedVehicleType.Vehicle; }
 			set
@@ -53,8 +55,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
-		private apcurium.MK.Booking.Api.Contract.Resources.VehicleType[] _vehicles;
-		public apcurium.MK.Booking.Api.Contract.Resources.VehicleType[] Vehicles
+		private IEnumerable<VehicleType> _vehicles = new List<VehicleType>();
+		public IEnumerable<VehicleType> Vehicles
 		{
 			get { return _vehicles; }
 			set
@@ -112,11 +114,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				VehicleSelection.RemoveAllViews ();
 				foreach (var vehicle in Vehicles) 
 				{
-					var vehicleView = new VehicleType (base.Context, vehicle, vehicle.Id == SelectedVehicle.Id);
+					var vehicleView = new VehicleTypeControl (base.Context, vehicle, vehicle.Id == SelectedVehicle.Id);
 					var layoutParameters = new LinearLayout.LayoutParams(0, LayoutParams.FillParent);
 					layoutParameters.Weight = 1.0f;
 					vehicleView.LayoutParameters = layoutParameters;
-
+					vehicleView.Click += (sender, e) => { this.Services().Message.ShowMessage("test", vehicle.ReferenceDataVehicleId.ToString()); };
 					VehicleSelection.AddView (vehicleView);
 				}
             }

@@ -7,26 +7,28 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using Android.Graphics;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-	public class VehicleType : LinearLayout
+	public class VehicleTypeControl : LinearLayout
 	{
 		private ImageView VehicleTypeImage { get; set; }
 		private TextView VehicleTypeLabel { get; set; }
 		private bool IsForSelection { get; set; }
 
-		public VehicleType(Context c, IAttributeSet attr) : base(c, attr)
+		public VehicleTypeControl(Context c, IAttributeSet attr) : base(c, attr)
 		{
 		}
 
-		public VehicleType(Context c, apcurium.MK.Booking.Api.Contract.Resources.VehicleType vehicle, bool isSelected) : base(c)
+		public VehicleTypeControl(Context c, VehicleType vehicle, bool isSelected) : base(c)
 		{
 			Initialize ();
 
 			IsForSelection = true;
 			Vehicle = vehicle;
-			IsSelected = IsSelected;
+			Selected = isSelected;
+			Clickable = true;
 		}
 
 		protected override void OnFinishInflate()
@@ -45,8 +47,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			VehicleTypeLabel = (TextView)layout.FindViewById(Resource.Id.vehicleTypeLabel);
 		}
 
-		private apcurium.MK.Booking.Api.Contract.Resources.VehicleType _vehicle;
-		public apcurium.MK.Booking.Api.Contract.Resources.VehicleType Vehicle
+		private VehicleType _vehicle;
+		public VehicleType Vehicle
 		{
 			get { return _vehicle; }
 			set
@@ -59,28 +61,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					VehicleTypeImage.SetImageDrawable(image);
 					VehicleTypeImage.SetColorFilter(GetColorFilter(DefaultColorForTextAndImage));
 					VehicleTypeLabel.Text = TinyIoCContainer.Current.Resolve<ILocalization>()[value.Name].ToUpper();
+					VehicleTypeLabel.SetTextColor (DefaultColorForTextAndImage);
 				}
 			}
 		}
 
-		private bool _isSelected;
-		public bool IsSelected
+		public override bool Selected 
 		{
-			get { return _isSelected; }
+			get { return base.Selected; }
 			set 
 			{
-				if (_isSelected != value) 
-				{
-					_isSelected = value;
+				base.Selected = value;
 
-					if (_isSelected) 
-					{
-						VehicleTypeImage.SetColorFilter(GetColorFilter(Resources.GetColor(Resource.Color.company_color)));
-					} 
-					else 
-					{
-						VehicleTypeImage.SetColorFilter(GetColorFilter(DefaultColorForTextAndImage));
-					}
+				if (value) 
+				{
+					VehicleTypeImage.SetColorFilter(GetColorFilter(Resources.GetColor(Resource.Color.company_color)));
+					VehicleTypeLabel.SetTextColor (Resources.GetColor(Resource.Color.company_color));
+				} 
+				else 
+				{
+					VehicleTypeImage.SetColorFilter(GetColorFilter(DefaultColorForTextAndImage));
+					VehicleTypeLabel.SetTextColor (DefaultColorForTextAndImage);
 				}
 			}
 		}
