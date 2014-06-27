@@ -112,7 +112,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				VehicleSelection.RemoveAllViews ();
 				foreach (var vehicle in Vehicles) 
 				{
-					VehicleSelection.AddView (new VehicleType (base.Context, vehicle, vehicle.Id == SelectedVehicle.Id));
+					var vehicleView = new VehicleType (base.Context, vehicle, vehicle.Id == SelectedVehicle.Id);
+					var layoutParameters = new LinearLayout.LayoutParams(0, LayoutParams.FillParent);
+					layoutParameters.Weight = 1.0f;
+					vehicleView.LayoutParameters = layoutParameters;
+
+					VehicleSelection.AddView (vehicleView);
 				}
             }
         }
