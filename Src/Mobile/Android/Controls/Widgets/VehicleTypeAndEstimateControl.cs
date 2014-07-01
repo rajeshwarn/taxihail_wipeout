@@ -10,6 +10,7 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Collections.Generic;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -20,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private LinearLayout VehicleSelection { get; set; }
 		private LinearLayout RideEstimate { get; set; }
 		private VehicleTypeControl EstimateSelectedVehicleType { get; set; }
+		public Action<VehicleType> VehicleSelected { get; set; }
 
         public VehicleTypeAndEstimateControl(Context c, IAttributeSet attr) : base(c, attr)
         {
@@ -42,6 +44,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             this.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
         }
 			
+		public bool IsReadOnly { get; set; }
+
 		public VehicleType SelectedVehicle
 		{
 			get { return EstimateSelectedVehicleType.Vehicle; }
@@ -115,10 +119,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				foreach (var vehicle in Vehicles) 
 				{
 					var vehicleView = new VehicleTypeControl (base.Context, vehicle, vehicle.Id == SelectedVehicle.Id);
+
 					var layoutParameters = new LinearLayout.LayoutParams(0, LayoutParams.FillParent);
 					layoutParameters.Weight = 1.0f;
 					vehicleView.LayoutParameters = layoutParameters;
-					vehicleView.Click += (sender, e) => { this.Services().Message.ShowMessage("test", vehicle.ReferenceDataVehicleId.ToString()); };
+
+					vehicleView.Click += (sender, e) => 
+					{ 
+						if(!IsReadOnly && VehicleSelected != null)
+						{
+							VehicleSelected(vehicle);
+						}
+					};
+
 					VehicleSelection.AddView (vehicleView);
 				}
             }

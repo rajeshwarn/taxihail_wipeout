@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(async () =>
 				{
-					_orderWorkflowService.SetBookingSettings(BookingSettings);
+					await _orderWorkflowService.SetBookingSettings(BookingSettings);
 					await _orderWorkflowService.SetPickupAptAndRingCode(PickupAddress.Apartment, PickupAddress.RingCode);
                     PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
 				});

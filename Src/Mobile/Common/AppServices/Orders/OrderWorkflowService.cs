@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<AddressSelectionMode> _addressSelectionModeSubject = new BehaviorSubject<AddressSelectionMode>(AddressSelectionMode.PickupSelection);
 		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
+		readonly ISubject<int?> _vehicleTypeSubject;
         readonly ISubject<BookingSettings> _bookingSettingsSubject;
 		readonly ISubject<string> _estimatedFareDisplaySubject;
 		readonly ISubject<DirectionInfo> _estimatedFareDetailSubject = new BehaviorSubject<DirectionInfo>( new DirectionInfo() );
@@ -60,6 +61,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_locationService = locationService;
 
 			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(accountService.CurrentAccount.Settings);
+			_vehicleTypeSubject = new BehaviorSubject<int?> (accountService.CurrentAccount.Settings.VehicleTypeId);
 			_localize = localize;
 			_bookingService = bookingService;
 			_accountPaymentService = accountPaymentService;
@@ -254,8 +256,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
-		public void SetBookingSettings(BookingSettings bookingSettings)
+		public async Task SetVehicleType(int? vehicleTypeId)
 		{
+			_vehicleTypeSubject.OnNext(vehicleTypeId);
+
+			var bookingSettings = await _bookingSettingsSubject.Take (1).ToTask ();
+			bookingSettings.VehicleTypeId = vehicleTypeId;
+
+			await SetBookingSettings (bookingSettings);
+		}
+
+		public async Task SetBookingSettings(BookingSettings bookingSettings)
+		{
+			var vehicleTypeId = await _vehicleTypeSubject.Take (1).ToTask ();
+			bookingSettings.VehicleTypeId = vehicleTypeId;
+
 			_bookingSettingsSubject.OnNext(bookingSettings);
 		}
 
@@ -293,6 +308,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			{
 				return await _destinationAddressSubject.Take(1).ToTask();
 			}
+		}
+
+		public IObservable<int?> GetAndObserveVehicleType()
+		{
+			return _vehicleTypeSubject;
 		}
 
 		public IObservable<BookingSettings> GetAndObserveBookingSettings()
@@ -394,21 +414,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		}
 
-		public void PrepareForNewOrder()
+		public async Task PrepareForNewOrder()
 		{
 			_noteToDriverSubject.OnNext(string.Empty);
 			_pickupAddressSubject.OnNext(new Address());
 			_destinationAddressSubject.OnNext(new Address());
 			_addressSelectionModeSubject.OnNext(AddressSelectionMode.PickupSelection);
 			_pickupDateSubject.OnNext(null);
-			_bookingSettingsSubject.OnNext(_accountService.CurrentAccount.Settings);
+			await SetBookingSettings (_accountService.CurrentAccount.Settings);
 			_estimatedFareDisplaySubject.OnNext(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		}
 
-		public void ResetOrderSettings()
+		public async Task ResetOrderSettings()
 		{
 			_noteToDriverSubject.OnNext(string.Empty);
-			_bookingSettingsSubject.OnNext(_accountService.CurrentAccount.Settings);
+			await SetBookingSettings(_accountService.CurrentAccount.Settings);
 		}
 
 		public void SetNoteToDriver(string text)
@@ -489,7 +509,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			var bookingSettings = await _bookingSettingsSubject.Take(1).ToTask();
 			bookingSettings.AccountNumber = accountNumber;
-			_bookingSettingsSubject.OnNext (bookingSettings);
+
+			await SetBookingSettings (bookingSettings);
 		}
 
 		public async Task<AccountChargeQuestion[]> GetAccountPaymentQuestions()

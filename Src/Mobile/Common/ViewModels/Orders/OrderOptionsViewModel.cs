@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			this.Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), selectionMode => AddressSelectionMode = selectionMode);
 			this.Observe(_orderWorkflowService.GetAndObserveEstimatedFare(), fare => EstimatedFare = fare);
 			this.Observe(_orderWorkflowService.GetAndObserveLoadingAddress(), loading => IsLoadingAddress = loading);
-			this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), settings => BookingSettings = settings);
+			this.Observe(_orderWorkflowService.GetAndObserveVehicleType(), vehicleType => VehicleTypeId = vehicleType);
 		}
 
 		public async Task Init()
@@ -38,18 +38,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			VehicleTypes = await _accountService.GetVehiclesList();
 		}
 
-		private BookingSettings _bookingSettings;
-		public BookingSettings BookingSettings
+		private int? _vehicleTypeId;
+		public int? VehicleTypeId
 		{
-			get { return _bookingSettings; }
+			get { return _vehicleTypeId; }
 			set
 			{
-				if (value != _bookingSettings)
-				{
-					_bookingSettings = value;
-					RaisePropertyChanged();
-					RaisePropertyChanged(() => SelectedVehicleType);
-				}
+				_vehicleTypeId = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => SelectedVehicleType);
 			}
 		}
 
@@ -72,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			
 		public VehicleType SelectedVehicleType
 		{
-			get { return VehicleTypes.FirstOrDefault(x => x.ReferenceDataVehicleId == BookingSettings.VehicleTypeId); }
+			get { return VehicleTypes.FirstOrDefault(x => x.ReferenceDataVehicleId == VehicleTypeId); }
 		} 
 
 		private Address _pickupAddress;
@@ -179,11 +176,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-				return this.GetCommand<Address>(address => {
-                    _orderWorkflowService.SetAddress(address);
+				return this.GetCommand<Address>(async address => {
+					await _orderWorkflowService.SetAddress(address);
                 });
             }
         }
+
+		public ICommand SetVehicleType
+		{
+			get
+			{
+				return this.GetCommand<VehicleType>(vehicleType => {
+					_orderWorkflowService.SetVehicleType(vehicleType.ReferenceDataVehicleId);
+				});
+			}
+		}
 
 		public ICommand ShowSearchAddress
 		{

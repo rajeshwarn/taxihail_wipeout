@@ -54,6 +54,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ViewModel.SetAddress.Execute(ViewModel.DestinationAddress);
             };
 
+			ViewVehicleType.VehicleSelected = (vehicleType) => 
+			{
+				ViewModel.SetVehicleType.Execute(vehicleType);
+			};
+
             var set = this.CreateBindingSet<OrderOptions, OrderOptionsViewModel>();
 
             set.Bind(ViewPickup)
@@ -111,16 +116,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 ViewPickup.IsReadOnly = true;
                 ViewDestination.IsReadOnly = true;
+				ViewVehicleType.IsReadOnly = true;
             }
             else if(hint.State == HomeViewModelState.PickDate)
             {
                 ViewPickup.IsReadOnly = true;
                 ViewDestination.IsReadOnly = true;
+				ViewVehicleType.IsReadOnly = true;
             }
             else if(hint.State == HomeViewModelState.Initial)
             {
                 ViewPickup.IsReadOnly = ViewModel.ShowDestination;
                 ViewDestination.IsReadOnly = false;
+				ViewVehicleType.IsReadOnly = false;
             }
         }
 
