@@ -1,4 +1,5 @@
 ﻿using System;
+using Android.Graphics.Drawables;
 using Android.Widget;
 using Android.Content;
 using Android.Util;
@@ -57,8 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				{
 					_vehicle = value;
 
-					var image = DrawableHelper.GetDrawableFromString(Resources, string.Format("{0}_badge_selected", value.LogoName.ToLower()));
-					VehicleTypeImage.SetImageDrawable(image);
+					VehicleTypeImage.SetImageDrawable(GetImage(value.LogoName));
 					VehicleTypeImage.SetColorFilter(GetColorFilter(DefaultColorForTextAndImage));
 					VehicleTypeLabel.Text = TinyIoCContainer.Current.Resolve<ILocalization>()[value.Name].ToUpper();
 					VehicleTypeLabel.SetTextColor (DefaultColorForTextAndImage);
@@ -71,7 +71,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			get { return base.Selected; }
 			set 
 			{
-				base.Selected = value;
+			    if (base.Selected != value)
+			    {
+                    VehicleTypeImage.SetImageDrawable(GetImage(Vehicle.LogoName));
+			    }
 
 				if (value) 
 				{
@@ -83,6 +86,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					VehicleTypeImage.SetColorFilter(GetColorFilter(DefaultColorForTextAndImage));
 					VehicleTypeLabel.SetTextColor (DefaultColorForTextAndImage);
 				}
+
+			    base.Selected = value;
 			}
 		}
 
@@ -113,6 +118,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			return colorFilter;
 		}
+
+        private Drawable GetImage(string vehicleTypeLogoName)
+	    {
+	        return DrawableHelper.GetDrawableFromString(Resources,
+	            string.Format(Selected 
+                    ? "{0}_badge_selected" 
+                    : "{0}_badge", 
+                vehicleTypeLogoName.ToLower()));
+	    }
 	}
 }
 
