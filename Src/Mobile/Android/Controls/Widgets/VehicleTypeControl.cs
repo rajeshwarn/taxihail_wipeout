@@ -73,21 +73,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			{
 			    if (base.Selected != value)
 			    {
+                    base.Selected = value;
+
+                    if (Vehicle == null)
+                    {
+                        return;
+                    }
+
                     VehicleTypeImage.SetImageDrawable(GetImage(Vehicle.LogoName));
-			    }
-
-				if (value) 
-				{
-					VehicleTypeImage.SetColorFilter(GetColorFilter(Resources.GetColor(Resource.Color.company_color)));
-					VehicleTypeLabel.SetTextColor (Resources.GetColor(Resource.Color.company_color));
-				} 
-				else 
-				{
-					VehicleTypeImage.SetColorFilter(GetColorFilter(DefaultColorForTextAndImage));
-					VehicleTypeLabel.SetTextColor (DefaultColorForTextAndImage);
-				}
-
-			    base.Selected = value;
+			    
+                    if (value) 
+                    {
+                        VehicleTypeImage.SetColorFilter(GetColorFilter(Resources.GetColor(Resource.Color.company_color)));
+                        VehicleTypeLabel.SetTextColor (Resources.GetColor(Resource.Color.company_color));
+                    } 
+                    else 
+                    {
+                        VehicleTypeImage.SetColorFilter(GetColorFilter(DefaultColorForTextAndImage));
+                        VehicleTypeLabel.SetTextColor (DefaultColorForTextAndImage);
+                    }
+                }
 			}
 		}
 

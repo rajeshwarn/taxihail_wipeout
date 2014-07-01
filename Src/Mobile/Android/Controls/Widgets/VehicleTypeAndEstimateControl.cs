@@ -40,6 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			EstimatedFareLabel = (TextView)layout.FindViewById(Resource.Id.estimateFareLabel);
 			EstimateSelectedVehicleType = (VehicleTypeControl)layout.FindViewById (Resource.Id.estimateSelectedVehicle);
+            EstimateSelectedVehicleType.Selected = true;
 
             this.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
         }
