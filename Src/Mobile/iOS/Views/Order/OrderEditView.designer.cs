@@ -22,6 +22,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 		MonoTouch.UIKit.UILabel lblEntryCode { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UILabel lblLargeBags { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
@@ -29,12 +32,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblPhone { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel lblVehicleType { get; set; }
-
-        [Outlet]
-        MonoTouch.UIKit.UILabel lblLargeBags { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtApartment { get; set; }
@@ -46,6 +43,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtEntryCode { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtLargeBags { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtName { get; set; }
 
 		[Outlet]
@@ -53,73 +53,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtPhone { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtVehicleType { get; set; }
-
-        [Outlet]
-        apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtLargeBags { get; set; }
-
+		
 		void ReleaseDesignerOutlets ()
 		{
-			if (lblName != null) {
-				lblName.Dispose ();
-				lblName = null;
-			}
-
-			if (txtName != null) {
-				txtName.Dispose ();
-				txtName = null;
-			}
-
-			if (lblPhone != null) {
-				lblPhone.Dispose ();
-				lblPhone = null;
-			}
-
-			if (txtPhone != null) {
-				txtPhone.Dispose ();
-				txtPhone = null;
-			}
-
-			if (lblPassengers != null) {
-				lblPassengers.Dispose ();
-				lblPassengers = null;
-			}
-
-			if (txtPassengers != null) {
-				txtPassengers.Dispose ();
-				txtPassengers = null;
-			}
-
 			if (lblApartment != null) {
 				lblApartment.Dispose ();
 				lblApartment = null;
-			}
-
-			if (txtApartment != null) {
-				txtApartment.Dispose ();
-				txtApartment = null;
-			}
-
-			if (lblEntryCode != null) {
-				lblEntryCode.Dispose ();
-				lblEntryCode = null;
-			}
-
-			if (txtEntryCode != null) {
-				txtEntryCode.Dispose ();
-				txtEntryCode = null;
-			}
-
-			if (lblVehicleType != null) {
-				lblVehicleType.Dispose ();
-				lblVehicleType = null;
-			}
-
-			if (txtVehicleType != null) {
-				txtVehicleType.Dispose ();
-				txtVehicleType = null;
 			}
 
 			if (lblChargeType != null) {
@@ -127,20 +66,65 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				lblChargeType = null;
 			}
 
+			if (lblEntryCode != null) {
+				lblEntryCode.Dispose ();
+				lblEntryCode = null;
+			}
+
+			if (lblName != null) {
+				lblName.Dispose ();
+				lblName = null;
+			}
+
+			if (lblPassengers != null) {
+				lblPassengers.Dispose ();
+				lblPassengers = null;
+			}
+
+			if (lblPhone != null) {
+				lblPhone.Dispose ();
+				lblPhone = null;
+			}
+
+			if (lblLargeBags != null) {
+				lblLargeBags.Dispose ();
+				lblLargeBags = null;
+			}
+
+			if (txtApartment != null) {
+				txtApartment.Dispose ();
+				txtApartment = null;
+			}
+
 			if (txtChargeType != null) {
 				txtChargeType.Dispose ();
 				txtChargeType = null;
 			}
 
-            if (lblLargeBags != null) {
-                lblLargeBags.Dispose ();
-                lblLargeBags = null;
-            }
+			if (txtEntryCode != null) {
+				txtEntryCode.Dispose ();
+				txtEntryCode = null;
+			}
 
-            if (txtLargeBags != null) {
-                txtLargeBags.Dispose ();
-                txtLargeBags = null;
-            }
+			if (txtName != null) {
+				txtName.Dispose ();
+				txtName = null;
+			}
+
+			if (txtPassengers != null) {
+				txtPassengers.Dispose ();
+				txtPassengers = null;
+			}
+
+			if (txtPhone != null) {
+				txtPhone.Dispose ();
+				txtPhone = null;
+			}
+
+			if (txtLargeBags != null) {
+				txtLargeBags.Dispose ();
+				txtLargeBags = null;
+			}
 		}
 	}
 }
