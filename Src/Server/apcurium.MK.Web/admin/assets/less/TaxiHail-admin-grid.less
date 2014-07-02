@@ -26,3 +26,14 @@
 .row-fluid [class*="span"].pull-right {
   float: right;
 }
+
+label > input{ /* HIDE RADIO */
+  display:none;
+}
+label > input + img{ /* IMAGE STYLES */
+  cursor:pointer;
+  border:2px solid transparent;
+}
+label > input:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
+  border:2px solid #f00;
+}

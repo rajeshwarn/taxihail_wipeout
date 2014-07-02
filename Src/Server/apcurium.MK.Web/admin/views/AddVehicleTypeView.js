@@ -14,11 +14,19 @@
         },
         
         render: function () {
+
             var data = _.extend(this.model.toJSON(), {
                 availableVehicles: this.options.availableVehicles.toJSON()
             });
             var html = this.renderTemplate(data);
             this.$el.html(html);
+
+            // this prevents the hidden radio buttons from not being validated
+            $(document).ready(function () {
+                $.validator.setDefaults({
+                    ignore: []
+                });
+            });
 
             this.validate({
                 rules: {
@@ -69,7 +77,7 @@
         destroyVehicleType: function (e) {
             e.preventDefault();
             TaxiHail.confirm({
-                title: this.localize('Remove Vehicle Type'),
+                title: this.localize('modal.removeVehicleType.title'),
                 message: this.localize('modal.removeVehicleType.message')
             }).on('ok', function () {
                 this.model.destroy({ url: TaxiHail.parameters.apiRoot + '/admin/vehicletypes/' + this.model.get('id') });

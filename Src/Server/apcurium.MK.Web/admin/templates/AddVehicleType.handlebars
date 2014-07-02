@@ -14,7 +14,18 @@
         <div class="control-group">
             <label class="control-label">{{localize 'Logo'}}</label>
             <div class="controls">
-                <input type="text" id="inputVehicleLogoName" name="logoName" value="{{logoName}}" class='input-block-level'>
+                <label class="radio">
+                    <input type="radio" id="inputVehicleLogoName" name="logoName" value="taxi" {{#if_eq logoName 'taxi'}} checked {{/if_eq}}/>
+                    <img src="assets/img/taxi_badge.png" />
+                </label>
+                <label class="radio">
+                    <input type="radio" id="inputVehicleLogoName" name="logoName" value="suv" {{#if_eq logoName 'suv' }} checked {{/if_eq}}/>
+                    <img src="assets/img/suv_badge.png" />
+                </label>
+                <label class="radio">
+                    <input type="radio" id="inputVehicleLogoName" name="logoName" value="blackcar" {{#if_eq logoName 'blackcar' }} checked {{/if_eq}}/>
+                    <img src="assets/img/blackcar_badge.png" />
+                </label>
             </div>
         </div>
         

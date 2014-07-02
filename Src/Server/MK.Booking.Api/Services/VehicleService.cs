@@ -122,7 +122,12 @@ namespace apcurium.MK.Booking.Api.Services
         public object Get(UnassignedReferenceDataVehiclesRequest request)
         {
             var referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest());
-            var allAssigned = _dao.GetAll().Select(x => x.ReferenceDataVehicleId);
+            var allAssigned = _dao.GetAll().Select(x => x.ReferenceDataVehicleId).ToList();
+            if (request.VehicleBeingEdited.HasValue)
+            {
+                allAssigned = allAssigned.Where(x => x != request.VehicleBeingEdited.Value).ToList();
+            }
+
             return referenceData.VehiclesList.Where(x => x.Id != null && !allAssigned.Contains(x.Id.Value)).Select(x => new { x.Id, x.Display }).ToArray();
         }
     }
