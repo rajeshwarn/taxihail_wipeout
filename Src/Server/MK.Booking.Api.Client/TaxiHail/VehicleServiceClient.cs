@@ -14,12 +14,13 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public async Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude)
+        public async Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int vehicleTypeId)
         {
             var response = await  Client.GetAsync(new AvailableVehicles
             {
             	Latitude = latitude,
-                Longitude = longitude
+                Longitude = longitude,
+                VehicleTypeId = vehicleTypeId
             });
             return response.ToArray();
         }
