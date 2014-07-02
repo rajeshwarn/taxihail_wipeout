@@ -129,19 +129,15 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             }
         }
 
-        private static TokenizedCreditCardResponse TokenizeSync(CmtPaymentServiceClient cmtPaymentServiceClient,
-          string accountNumber, DateTime expiryDate)
+        private static TokenizedCreditCardResponse TokenizeSyncForSettingsTest(CmtPaymentServiceClient cmtPaymentServiceClient, string accountNumber, DateTime expiryDate)
         {
             try
             {
                 var response = cmtPaymentServiceClient.PostAsync(new TokenizeRequest
                 {
                     AccountNumber = accountNumber,
-                    ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture)
-#if DEBUG
-,
-                    ValidateAccountInformation = false
-#endif
+                    ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture),
+                    ValidateAccountInformation = false //this must be false when testing because we try to tokenize a fake card
                 });
 
                 response.Wait();
@@ -168,7 +164,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
         public static bool TestClient(CmtPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger)
         {
             var cmtPaymentServiceClient = new CmtPaymentServiceClient(serverPaymentSettings, null, "test", logger);
-            var result = TokenizeSync(cmtPaymentServiceClient, number, date);
+            var result = TokenizeSyncForSettingsTest(cmtPaymentServiceClient, number, date);
             return result.IsSuccessfull;
         }
     }

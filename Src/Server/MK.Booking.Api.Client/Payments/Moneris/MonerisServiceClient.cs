@@ -64,8 +64,8 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 
         public static bool TestClient(MonerisPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger)
         {
-            var cmtPaymentServiceClient = new MonerisTokenizeClient(serverPaymentSettings, logger);
-            var result = cmtPaymentServiceClient.Tokenize(number, date.ToString("yyMM"));
+            var monerisTokenizeClient = new MonerisTokenizeClient(serverPaymentSettings, logger);
+            var result = monerisTokenizeClient.Tokenize(number, date.ToString("yyMM"));
             string message;
             return RequestSuccesful(result, out message);
         }
