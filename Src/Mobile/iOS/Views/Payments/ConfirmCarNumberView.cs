@@ -19,6 +19,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             NavigationController.NavigationBar.Hidden = false;
             NavigationItem.Title = Localize.GetValue("View_ConfirmCarNumber");
             NavigationItem.HidesBackButton = false;
+
+            ChangeThemeOfBarStyle();
         }
 
         public override void ViewDidLoad ()

@@ -19,6 +19,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             NavigationController.NavigationBar.Hidden = false;
             NavigationItem.HidesBackButton = true;
             NavigationItem.Title = Localize.GetValue("CmtRideLinqConfirmPairView");
+
+            ChangeThemeOfBarStyle();
         }
 
 		public override void ViewDidLoad()

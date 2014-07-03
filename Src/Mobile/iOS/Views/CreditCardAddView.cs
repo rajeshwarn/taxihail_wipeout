@@ -24,6 +24,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationController.NavigationBar.Hidden = false;
             NavigationItem.HidesBackButton = false;
             NavigationItem.Title = Localize.GetValue ("View_CreditCardAdd");
+
+            ChangeThemeOfBarStyle();
             ChangeRightBarButtonFontToBold();
         }
 
