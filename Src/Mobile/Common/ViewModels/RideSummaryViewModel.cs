@@ -132,11 +132,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var setting = _paymentService.GetPaymentSettings();
 				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 				return isPayEnabled 
-						&& !(Settings.RatingRequired && !HasRated)
-						&& setting.PaymentMode != PaymentMethod.RideLinqCmt 
-						&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue // TODO not sure about this
-						&& (Order.Settings.ChargeTypeId == null 
-						|| Order.Settings.ChargeTypeId != Settings.AccountChargeTypeId); 
+						&& !(Settings.RatingRequired && !HasRated)     					 // user must rate before paying
+						&& setting.PaymentMode != PaymentMethod.RideLinqCmt 			 // payment is processed automatically
+						&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue	     // not already paid
+						&& (Order.Settings.ChargeTypeId == null 						 // user is paying with a charge account
+						|| Order.Settings.ChargeTypeId != Settings.AccountChargeTypeId);
 			}
 		}
 
@@ -216,37 +216,47 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				return this.GetCommand(() =>
+				{
+					if (HasRated)
 					{
-						if (HasRated)
-						{
-							return;
-						}
+						return;
+					}
 
-						if (_ratingList.Any(c => c.Score == 0))
-						{
-							this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
-							return;
-						} 
+					if (_ratingList.Any(c => c.Score == 0))
+					{
+						this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
+						return;
+					} 
 
-						var a = Order.Id;
-						var orderRating = new apcurium.MK.Common.Entity.OrderRatings
-						{
-							Note = Note,
-							OrderId = OrderId,
-							RatingScores =
-								_ratingList.Select(
-									c => new RatingScore
-									{ 
-										RatingTypeId = c.RatingTypeId, 
-										Score = c.Score, 
-										Name = c.RatingTypeName
-									}).ToList()
-							};
+					var a = Order.Id;
+					var orderRating = new apcurium.MK.Common.Entity.OrderRatings
+					{
+						Note = Note,
+						OrderId = OrderId,
+						RatingScores =
+							_ratingList.Select(
+								c => new RatingScore
+								{ 
+									RatingTypeId = c.RatingTypeId, 
+									Score = c.Score, 
+									Name = c.RatingTypeName
+								}).ToList()
+						};
 
-						_bookingService.SendRatingReview(orderRating);
-						HasRated = true;
-					});
+					_bookingService.SendRatingReview(orderRating);
+					HasRated = true;
+				});
 			}
+		}
+
+		public bool CanUserLeaveScreen()
+		{
+			if (Settings.RatingRequired && !HasRated) 
+			{
+				this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
+				return false;
+			}
+			return true;
 		}
 	}
 }

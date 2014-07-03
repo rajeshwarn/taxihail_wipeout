@@ -30,8 +30,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 			ViewModel.PropertyChanged += (sender, e) =>
             {
-				if (ViewModel.RatingList != null) // Autosize list
+                if (e.PropertyName == "RatingList" && ViewModel.RatingList != null)
 				{
+                    // Dynamically change height of list
 					var item = LayoutInflater.Inflate(listView.Adapter.ItemTemplateId, null);
 					item.Measure(Android.Views.View.MeasureSpec.MakeMeasureSpec(0, MeasureSpecMode.Unspecified),
 						Android.Views.View.MeasureSpec.MakeMeasureSpec(0, MeasureSpecMode.Unspecified));
@@ -44,10 +45,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		{
 			if (keyCode == Keycode.Back)
 			{
-				if (ViewModel.Settings.RatingRequired && !ViewModel.HasRated) {
-					ViewModel.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
-					return false;
-				}
+                if (!ViewModel.CanUserLeaveScreen ())
+                {
+                    return false;
+                }
 			}
 
 			return base.OnKeyDown(keyCode, e);

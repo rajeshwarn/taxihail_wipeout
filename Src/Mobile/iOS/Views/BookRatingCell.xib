@@ -101,6 +101,7 @@
                         </state>
                     </button>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="12" firstAttribute="centerY" secondItem="11" secondAttribute="centerY" id="9vW-JP-0pN"/>
                     <constraint firstItem="12" firstAttribute="leading" secondItem="11" secondAttribute="trailing" constant="31" id="CaY-Dp-D5a"/>

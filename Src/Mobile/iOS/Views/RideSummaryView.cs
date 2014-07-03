@@ -36,20 +36,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			FlatButtonStyle.Green.ApplyTo(btnReSendConfirmation);
 			FlatButtonStyle.Green.ApplyTo(btnPay);
+            FlatButtonStyle.Silver.ApplyTo(btnSubmit);
 
             lblSubTitle.Text = String.Format(Localize.GetValue ("RideSummarySubTitleText"), this.Services().Settings.ApplicationName);
 
             btnPay.SetTitle(Localize.GetValue("PayNow"), UIControlState.Normal);
             btnReSendConfirmation.SetTitle(Localize.GetValue("ReSendConfirmation"), UIControlState.Normal);
-
-            // configure tableview for ratings
-            var btnSubmit = new FlatButton(new RectangleF(8f, BottomPadding, 304f, 41f));
-            FlatButtonStyle.Green.ApplyTo(btnSubmit);
             btnSubmit.SetTitle(Localize.GetValue("Submit"), UIControlState.Normal);
-
-            var footerView = new UIView(new RectangleF(0f, 0f, 320f, btnSubmit.Frame.Height + BottomPadding * 2));
-            footerView.AddSubview(btnSubmit);
-            tableRatingList.TableFooterView = footerView;
 
             var source = new MvxActionBasedTableViewSource(
                 tableRatingList,
@@ -77,6 +70,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.IsPayButtonShown)
                 .WithConversion("BoolInverter");
 
+            set.Bind (btnSubmit)
+                .For ("TouchUpInside")
+                .To (vm => vm.RateOrder);
+            set.Bind (btnSubmit)
+                .For (v => v.HiddenWithConstraints)
+                .To (vm => vm.IsRatingButtonShown)
+                .WithConversion("BoolInverter");
+
             set.Bind(btnReSendConfirmation)
 				.For("TouchUpInside")
 				.To(vm => vm.ResendConfirmationCommand);
@@ -97,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 {
                     if (ViewModel.RatingList != null)
                     {
-                        constraintRatingTableHeight.Constant = BookRatingCell.Height * ViewModel.RatingList.Count + footerView.Frame.Height;
+                        constraintRatingTableHeight.Constant = BookRatingCell.Height * ViewModel.RatingList.Count;
                     }
                     else
                     {
@@ -109,12 +110,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         public override void ViewWillDisappear(bool animated)
         {
-            base.ViewWillDisappear(animated);
             if (IsMovingFromParentViewController)
             {
                 // Back button pressed
+                if (!ViewModel.CanUserLeaveScreen ())
+                {
+                    return;
+                }
+
 				ViewModel.PrepareNewOrder.Execute(null);
             }
+
+            base.ViewWillDisappear(animated);
         }
 	}
 }

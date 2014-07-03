@@ -19,6 +19,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnReSendConfirmation { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnSubmit { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.NSLayoutConstraint constraintRatingTableHeight { get; set; }
 
 		[Outlet]
@@ -39,6 +42,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnReSendConfirmation = null;
 			}
 
+			if (constraintRatingTableHeight != null) {
+				constraintRatingTableHeight.Dispose ();
+				constraintRatingTableHeight = null;
+			}
+
 			if (lblSubTitle != null) {
 				lblSubTitle.Dispose ();
 				lblSubTitle = null;
@@ -49,9 +57,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				tableRatingList = null;
 			}
 
-			if (constraintRatingTableHeight != null) {
-				constraintRatingTableHeight.Dispose ();
-				constraintRatingTableHeight = null;
+			if (btnSubmit != null) {
+				btnSubmit.Dispose ();
+				btnSubmit = null;
 			}
 		}
 	}
