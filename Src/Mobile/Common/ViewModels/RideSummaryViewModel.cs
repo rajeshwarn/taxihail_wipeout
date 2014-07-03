@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Models;
 using System;
 using System.Linq;
+using apcurium.MK.Common.Extensions;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -30,17 +32,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_bookingService = bookingService;
 		}
 
-		public void Init(string order, string orderStatus)
+		public async void Init(string order, string orderStatus)
 		{			
 			Order = order.FromJson<Order> ();
 			OrderId = Order.Id;
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 
-			if (Settings.RatingEnabled) {
-				InitRating ();
+			if (Settings.RatingEnabled) 
+			{
+				await InitRating ();
 			}
 			RaisePropertyChanged (() => IsRatingButtonShown);
-
 		}
 
 		private List<RatingModel> _ratingList;
@@ -85,16 +87,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public async void InitRating()
+		public async Task InitRating()
 		{
-			if (OrderId != null)
+			if (OrderId.HasValue())
 			{
 				var orderRatings = await _bookingService.GetOrderRatingAsync(OrderId);
 				HasRated = orderRatings.RatingScores.Any();
 				CanRate = !HasRated;
 				var ratingTypes = _bookingService.GetRatingType();
-
-				// TODO: CanRate should be changed for a setting
 
 				if (CanRate) {
 					RatingList = ratingTypes.Select (c => new RatingModel (CanRate) {
@@ -120,17 +120,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             base.OnViewStarted(firstStart);
 			RaisePropertyChanged(() => IsPayButtonShown);
 			RaisePropertyChanged(() => IsResendConfirmationButtonShown);
-        }
-
-	    private bool _receiptSent;
-        public bool ReceiptSent 
-        {
-            get { return _receiptSent; }
-            set 
-			{
-                _receiptSent = value;
-				RaisePropertyChanged();
-            }
         }
 
 		private Order Order { get; set; }
@@ -161,7 +150,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
-		bool _isRatingButtonShow;		
 		public bool IsRatingButtonShown 
 		{
 			get 

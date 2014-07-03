@@ -5,6 +5,9 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using System.Drawing;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using apcurium.MK.Booking.Mobile.Client.Order;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -29,35 +32,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
-            FlatButtonStyle.Silver.ApplyTo(btnRateRide);
-			FlatButtonStyle.Green.ApplyTo(btnSendReceipt);
 			FlatButtonStyle.Green.ApplyTo(btnReSendConfirmation);
 			FlatButtonStyle.Green.ApplyTo(btnPay);
 
             lblSubTitle.Text = String.Format(Localize.GetValue ("RideSummarySubTitleText"), this.Services().Settings.ApplicationName);
 
-            btnSendReceipt.SetTitle(Localize.GetValue("SendReceipt"), UIControlState.Normal);
-            btnRateRide.SetTitle(Localize.GetValue("RateRide"), UIControlState.Normal);
             btnPay.SetTitle(Localize.GetValue("PayNow"), UIControlState.Normal);
             btnReSendConfirmation.SetTitle(Localize.GetValue("ReSendConfirmation"), UIControlState.Normal);
 
+            // configure tableview for ratings
+            var btnSubmit = new FlatButton(new RectangleF(8f, BottomPadding, 304f, 41f));
+            FlatButtonStyle.Green.ApplyTo(btnSubmit);
+            btnSubmit.SetTitle(Localize.GetValue("Submit"), UIControlState.Normal);
+
+            var footerView = new UIView(new RectangleF(0f, 0f, 320f, btnSubmit.Frame.Height + BottomPadding * 2));
+            footerView.AddSubview(btnSubmit);
+            tableRatingList.TableFooterView = footerView;
+
+            var source = new MvxActionBasedTableViewSource(
+                tableRatingList,
+                UITableViewCellStyle.Default,
+                BookRatingCell.Identifier ,
+                BookRatingCell.BindingText,
+                UITableViewCellAccessory.None);
+
+            source.CellCreator = (tableView, indexPath, item) =>
+            {
+                var cell = BookRatingCell.LoadFromNib(tableView);
+                cell.RemoveDelay();
+                return cell;
+            };
+
+            tableRatingList.Source = source;
+
 			var set = this.CreateBindingSet<RideSummaryView, RideSummaryViewModel> ();
-
-            set.Bind(btnSendReceipt)
-				.For("TouchUpInside")
-				.To(vm => vm.SendReceiptCommand);
-            set.Bind(btnSendReceipt)
-                .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.IsSendReceiptButtonShown)
-                .WithConversion("BoolInverter");
-
-            set.Bind(btnRateRide)
-				.For("TouchUpInside")
-				.To(vm => vm.NavigateToRatingPage);
-            set.Bind(btnRateRide)
-                .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.IsRatingButtonShown)
-                .WithConversion("BoolInverter");
 
             set.Bind(btnPay)
 				.For("TouchUpInside")
@@ -75,16 +83,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.IsResendConfirmationButtonShown)
                 .WithConversion("BoolInverter");
 
+            set.Bind(source)
+                .For(v => v.ItemsSource)
+                .To(vm => vm.RatingList);
+
 			set.Apply ();
 
-            ViewModel.PropertyChanged += (sender, e) => 
+            ViewModel.PropertyChanged += (sender, e) =>
             {
-                if(e.PropertyName == "ReceiptSent")
+                if(e.PropertyName == "RatingList")
                 {
-                    if(ViewModel.ReceiptSent)
+                    if (ViewModel.RatingList != null)
                     {
-                        btnSendReceipt.SetTitle(Localize.GetValue("ReceiptSent"), UIControlState.Normal);
-                        btnSendReceipt.Enabled = false;
+                        constraintRatingTableHeight.Constant = BookRatingCell.Height * ViewModel.RatingList.Count + footerView.Frame.Height;
+                    }
+                    else
+                    {
+                        constraintRatingTableHeight.Constant = 0;
                     }
                 }
             };

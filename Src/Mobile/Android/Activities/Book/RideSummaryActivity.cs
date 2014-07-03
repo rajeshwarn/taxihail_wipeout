@@ -30,13 +30,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 			ViewModel.PropertyChanged += (sender, e) =>
             {
-				if (ViewModel.ReceiptSent)
-                {
-					var sendReceiptBtn = FindViewById<Button>(Resource.Id.SendReceiptBtn);
-                    sendReceiptBtn.SetText(Resource.String.ReceiptSent, TextView.BufferType.Normal);
-                    sendReceiptBtn.Enabled = false;
-                }
-
 				if (ViewModel.RatingList != null) // Autosize list
 				{
 					var item = LayoutInflater.Inflate(listView.Adapter.ItemTemplateId, null);

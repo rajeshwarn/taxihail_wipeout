@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -28,7 +28,7 @@
                             <constraint firstAttribute="height" constant="32" id="geE-IZ-yB8"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                        <state key="normal" image="ecstatic.png">
+                        <state key="normal" image="star_unselected.png">
                             <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
@@ -44,7 +44,7 @@
                             <constraint firstAttribute="width" constant="33" id="aLT-ow-m4F"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                        <state key="normal" image="ecstatic.png">
+                        <state key="normal" image="star_unselected.png">
                             <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
@@ -60,7 +60,7 @@
                             <constraint firstAttribute="height" constant="32" id="yNN-fs-FcP"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                        <state key="normal" image="ecstatic.png">
+                        <state key="normal" image="star_unselected.png">
                             <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
@@ -76,7 +76,7 @@
                             <constraint firstAttribute="width" constant="33" id="ylM-5A-OAE"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                        <state key="normal" image="ecstatic.png">
+                        <state key="normal" image="star_unselected.png">
                             <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
@@ -92,7 +92,7 @@
                             <constraint firstAttribute="height" constant="32" id="Nhg-pd-lgN"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                        <state key="normal" image="ecstatic.png">
+                        <state key="normal" image="star_unselected.png">
                             <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
@@ -118,16 +118,16 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="ecstaticBtn" destination="14" id="19"/>
-                <outlet property="happyBtn" destination="13" id="18"/>
-                <outlet property="madBtn" destination="10" id="15"/>
-                <outlet property="neutralBtn" destination="12" id="17"/>
+                <outlet property="btnScoreA" destination="10" id="Htp-EQ-fCq"/>
+                <outlet property="btnScoreB" destination="11" id="x3D-gj-omu"/>
+                <outlet property="btnScoreC" destination="12" id="Ara-Bk-kfC"/>
+                <outlet property="btnScoreD" destination="13" id="GGe-I9-PPQ"/>
+                <outlet property="btnScoreE" destination="14" id="ptY-Rg-OZa"/>
                 <outlet property="ratingTypeName" destination="5" id="9"/>
-                <outlet property="unhappyBtn" destination="11" id="16"/>
             </connections>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="ecstatic.png" width="33" height="32"/>
+        <image name="star_unselected.png" width="33" height="32"/>
     </resources>
 </document>
