@@ -26,15 +26,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);
+
             NavigationController.NavigationBar.Hidden = false;
             NavigationItem.Title = Localize.GetValue("View_BookingStatus");
             NavigationItem.HidesBackButton = false;
-            if (UIHelper.IsOS7orHigher)
-            {
-                NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
-                                                              ? UIBarStyle.Black
-                                                              : UIBarStyle.Default;
-            }
+
+            ChangeThemeOfBarStyle();
         }
 
         public override void ViewDidLoad ()

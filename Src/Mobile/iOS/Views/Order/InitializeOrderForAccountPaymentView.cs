@@ -25,6 +25,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 			NavigationController.NavigationBar.Hidden = false;
 			NavigationItem.Title = Localize.GetValue("View_InitializeOrderForAccountPayment");
+
+            ChangeThemeOfBarStyle();
 		}
 
 		public override void ViewDidLoad ()
