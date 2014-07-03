@@ -58,12 +58,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			if (order == null)
 				return;
 
-			if (order.Fare.HasValue)
+			if (order.Fare.HasValue && order.Fare.Value != 0)
 			{
 				var value = order.Fare.Value + (order.Toll.HasValue ? order.Toll.Value : 0);
 				Logger.LogMessage ("Meter Amount not formatted : {0} for Order {1}", value, Order.IBSOrderId); 
-				MeterAmount = CultureProvider.FormatCurrency(value);
+				MeterAmount = CultureProvider.FormatCurrency (value);
 				Logger.LogMessage ("Meter Amount : {0} for Order {1}", MeterAmount, Order.IBSOrderId); 
+				MeterAmountPopulatedByIBS = true;
+			}
+			else
+			{
+				MeterAmountPopulatedByIBS = false;
 			}
 
 			if (order.Tip.HasValue 
@@ -71,6 +76,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				PaymentPreferences.TipListDisabled = true;
 				TipAmount = CultureProvider.FormatCurrency(order.Tip.Value);
+			}
+		}
+
+		private bool _meterAmountPopulatedByIBS;
+		public bool MeterAmountPopulatedByIBS
+		{
+			get { return _meterAmountPopulatedByIBS; }
+			set
+			{
+				_meterAmountPopulatedByIBS = value;
+				RaisePropertyChanged ();
 			}
 		}
 
