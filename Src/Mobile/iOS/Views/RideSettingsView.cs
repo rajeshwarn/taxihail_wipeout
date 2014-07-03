@@ -46,6 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblAccountNumber.Text = Localize.GetValue("RideSettingsAccountNumber");
             lblCreditCard.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
             lblTip.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
+
             txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
 
             DismissKeyboardOnReturn(txtName);

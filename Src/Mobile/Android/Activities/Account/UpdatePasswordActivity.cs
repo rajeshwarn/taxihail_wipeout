@@ -2,6 +2,7 @@ using Android.App;
 using Android.Content.PM;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
@@ -24,11 +25,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			EditText password = FindViewById<EditText>(Resource.Id.txtPasswordCurrent);
 			password.SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
 
+			if(this.Services().Localize.IsRightToLeft)
+			{
+				password.Gravity = GravityFlags.Right | GravityFlags.CenterVertical;
+			}
+
 			password = FindViewById<EditText>(Resource.Id.txtPasswordNew);
 			password.SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
 
+			if(this.Services().Localize.IsRightToLeft)
+			{
+				password.Gravity = GravityFlags.Right | GravityFlags.CenterVertical;
+			}
+
 			password = FindViewById<EditText>(Resource.Id.txtPasswordNewConfirm);
 			password.SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
+
+			if(this.Services().Localize.IsRightToLeft)
+			{
+				password.Gravity = GravityFlags.Right | GravityFlags.CenterVertical;
+			}
 
         }
     }

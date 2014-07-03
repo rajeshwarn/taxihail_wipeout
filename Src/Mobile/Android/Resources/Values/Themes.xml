@@ -46,6 +46,7 @@
       
 	<!--		Settings Item Colors -->
 
+	<color name="setting_menu_color">#f2f2f2</color>  
     <color name="setting_menu_text_color">#4f4c47</color>    
     <color name="setting_menu_separator_color">#a09f9c</color>
 	<color name="setting_item_pressed_background_color">#ffffff</color>

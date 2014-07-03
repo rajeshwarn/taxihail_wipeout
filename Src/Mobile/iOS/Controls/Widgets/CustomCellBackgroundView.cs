@@ -8,7 +8,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private UIColor _strokeColor = UIColor.FromRGB(190, 190, 190);
 		private UIColor _selectedBackgroundColor;
 		private UIColor _backgroundColor;
-		private Line _bottomLine;
+
+        public Line BottomLine;
 
 		public CustomCellBackgroundView(RectangleF rect, float padding, UIColor backgroundColor, UIColor SelectedBackgroundColor) : base(rect)
 		{
@@ -17,9 +18,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			BackgroundColor = _backgroundColor;
 
-            _bottomLine = Line.CreateHorizontal(padding, rect.Height, rect.Width - padding, _strokeColor, 1f);
-			_bottomLine.AutoresizingMask = UIViewAutoresizing.FlexibleWidth;
-			AddSubview(_bottomLine);
+            BottomLine = Line.CreateHorizontal(padding, rect.Height, rect.Width - padding, _strokeColor, 1f);
+            BottomLine.AutoresizingMask = UIViewAutoresizing.FlexibleWidth;
+            AddSubview(BottomLine);
 		}
 
 		public bool Highlighted
@@ -35,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			set
 			{
-                _bottomLine.Hidden = value;
+                BottomLine.Hidden = value;
                 SetNeedsDisplay();
 			}
 		}

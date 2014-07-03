@@ -3,6 +3,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using Android.Graphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
@@ -16,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
         {
             base.OnCreate(bundle);
             _listView = FindViewById<ListView>(Resource.Id.HistoryList);
+			_listView.CacheColorHint = Color.White;
             _listView.Divider = null;
             _listView.DividerHeight = 0;
             _listView.SetPadding(0, 0, 0, 0);

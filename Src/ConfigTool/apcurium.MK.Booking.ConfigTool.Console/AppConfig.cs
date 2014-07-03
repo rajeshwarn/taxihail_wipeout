@@ -159,7 +159,13 @@ namespace apcurium.MK.Booking.ConfigTool
 					Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
 					NodeSelector=@"//resources/color[@name=""top_bar_title_color""]", 
 					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.TitleColor) 
-				},
+                },
+                new ConfigXML(this)
+                {  
+                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
+                    NodeSelector=@"//resources/color[@name=""setting_menu_color""]", 
+                    SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.MenuColor) 
+                },
 				new ConfigFile(this){ Source="logo_1_5@2x.png", Destination=@"Mobile\Android\Resources\drawable-xhdpi\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\iOS\Resources\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5@2x.png", Destination=@"Mobile\iOS\Resources\th_logo@2x.png" },
@@ -187,7 +193,13 @@ namespace apcurium.MK.Booking.ConfigTool
 					Destination=@"Mobile\iOS\Style\Theme.xml", 
 					NodeSelector=@"//ThemeValues/LabelTextColor", 
 					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.TitleColor) 
-				}
+                },
+                new ConfigXML(this)
+                {  
+                    Destination=@"Mobile\iOS\Style\Theme.xml", 
+                    NodeSelector=@"//ThemeValues/MenuColor", 
+                    SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.MenuColor) 
+                }
 
            };
         }

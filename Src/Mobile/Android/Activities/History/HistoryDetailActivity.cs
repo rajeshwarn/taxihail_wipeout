@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using TinyIoC;
 using TinyMessenger;
+using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
@@ -19,6 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             base.OnCreate(bundle);
             _closeViewToken =
 				this.Services().MessengerHub.Subscribe<CloseViewsToRoot>(m => Finish());
+
         }
 
         protected override void OnDestroy()
