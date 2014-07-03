@@ -7,11 +7,8 @@
     var Controller = TaxiHail.VehicleTypeController = TaxiHail.Controller.extend({
         initialize: function() {
             this.vehicleTypes = new Collection();
-            this.availableVehicles = new TaxiHail.UnassignedReferenceDataVehicles();
-
-            $.when(this.vehicleTypes.fetch(), this.availableVehicles.fetch()).then(this.ready);
-
-            this.availableVehicles.on('reset', this.render, this);
+            
+            $.when(this.vehicleTypes.fetch()).then(this.ready);
         },
 
         index: function () {
@@ -30,30 +27,41 @@
                 isNew: true
             });
 
-            return new TaxiHail.AddVehicleTypeView({
+            var availableVehicles = new TaxiHail.UnassignedReferenceDataVehicles();
+
+            var view = new TaxiHail.AddVehicleTypeView({
                 model: model,
                 collection: this.vehicleTypes,
-                availableVehicles: this.availableVehicles
+                availableVehicles: availableVehicles
             }).on('cancel', function() {
                 TaxiHail.app.navigate('vehicleTypes', { trigger: true });
             }, this);
+
+            availableVehicles.on('reset', view.render, view);
+            availableVehicles.fetch();
+
+            return view;
         },
 
         edit: function(id) {
             var model = this.vehicleTypes.find(function (m) { return m.get('id') == id; });
             model.set('isNew', false);
 
-            this.availableVehicles.fetch({ data: { vehicleBeingEdited: model.get('referenceDataVehicleId') } });
+            var availableVehicles = new TaxiHail.UnassignedReferenceDataVehicles();
 
-            return new TaxiHail.AddVehicleTypeView({
+            var view = new TaxiHail.AddVehicleTypeView({
                 model: model,
                 collection: this.vehicleTypes,
-                availableVehicles: this.availableVehicles
+                availableVehicles: availableVehicles
             })
             .on('cancel', function() {
                 TaxiHail.app.navigate('vehicleTypes', { trigger: true });
             }, this);
 
+            availableVehicles.on('reset', view.render, view);
+            availableVehicles.fetch({ data: { vehicleBeingEdited: model.get('referenceDataVehicleId') } });
+
+            return view;
         }
     });
 
