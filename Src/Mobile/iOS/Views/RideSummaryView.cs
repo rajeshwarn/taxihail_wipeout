@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			base.ViewWillAppear (animated);
 
             NavigationController.NavigationBar.Hidden = false;
-			NavigationItem.HidesBackButton = false;
+            NavigationItem.HidesBackButton = true;
             NavigationItem.Title = Localize.GetValue("RideSummaryTitleText");
 
             ChangeThemeOfBarStyle();
@@ -61,6 +61,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             tableRatingList.Source = source;
 
 			var set = this.CreateBindingSet<RideSummaryView, RideSummaryViewModel> ();
+
+            NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Bordered, (o, e) => 
+            {  
+                if (ViewModel.CanUserLeaveScreen ())
+                {
+                    NavigationController.PopViewControllerAnimated(true);
+                }
+            });
 
             set.Bind(btnPay)
 				.For("TouchUpInside")
@@ -113,11 +121,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (IsMovingFromParentViewController)
             {
                 // Back button pressed
-                if (!ViewModel.CanUserLeaveScreen ())
-                {
-                    return;
-                }
-
 				ViewModel.PrepareNewOrder.Execute(null);
             }
 

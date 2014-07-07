@@ -52,7 +52,7 @@
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18" customClass="FlatButton">
-                    <rect key="frame" x="8" y="265" width="304" height="41"/>
+                    <rect key="frame" x="8" y="211" width="304" height="41"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="kjc-dh-jfj"/>
@@ -78,7 +78,7 @@
             </subviews>
             <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="18" firstAttribute="top" secondItem="YN8-Kh-ERJ" secondAttribute="bottom" priority="500" constant="13" id="4f8-8n-rT7"/>
+                <constraint firstItem="18" firstAttribute="top" secondItem="YN8-Kh-ERJ" secondAttribute="bottom" constant="13" id="4f8-8n-rT7"/>
                 <constraint firstAttribute="trailing" secondItem="YN8-Kh-ERJ" secondAttribute="trailing" constant="8" id="91H-4D-ctm"/>
                 <constraint firstAttribute="trailing" secondItem="18" secondAttribute="trailing" constant="8" id="98a-fb-s2L"/>
                 <constraint firstItem="13" firstAttribute="top" secondItem="YN8-Kh-ERJ" secondAttribute="bottom" constant="13" id="CJc-XU-bTH"/>
@@ -93,7 +93,6 @@
                 <constraint firstAttribute="trailing" secondItem="13" secondAttribute="trailing" constant="8" id="i2X-oH-YwV"/>
                 <constraint firstItem="4" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" id="oyS-Ig-Pdv"/>
                 <constraint firstItem="18" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="qnY-t9-3T5"/>
-                <constraint firstItem="18" firstAttribute="top" secondItem="13" secondAttribute="bottom" constant="13" id="rfW-Fc-gd0"/>
                 <constraint firstItem="13" firstAttribute="top" secondItem="lxr-AS-1xd" secondAttribute="bottom" priority="500" constant="13" id="u5d-hw-eVe"/>
                 <constraint firstItem="13" firstAttribute="top" secondItem="4" secondAttribute="bottom" priority="500" constant="30" id="ufP-Lu-9nm"/>
                 <constraint firstAttribute="trailing" secondItem="lxr-AS-1xd" secondAttribute="trailing" id="xWb-fu-PxE"/>

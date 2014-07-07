@@ -57,9 +57,9 @@
                 android:layout_margin="12dip"
                 android:layout_weight="1"
                 local:MvxItemTemplate="@layout/ratinglistitem"
-                local:MvxBind="ItemsSource RatingList; Visibility IsRatingButtonShown, Converter=Visibility" />
+                local:MvxBind="ItemsSource RatingList; Visibility RatingList, Converter=Visibility" />
             <Button
-                style="@style/ButtonActionGreenStyle"
+                style="@style/ButtonActionGrayStyle"
                 android:layout_marginTop="6dip"
                 android:id="@+id/RateOrderButton"
                 android:text="@string/Submit"
@@ -68,12 +68,14 @@
                 local:MvxBind="Click RateOrder; Visibility IsRatingButtonShown, Converter=Visibility" />
             <Button
                 style="@style/ButtonActionGreenStyle"
+                android:layout_marginTop="6dip"
                 local:MvxBind="Click ResendConfirmationCommand; Visibility IsResendConfirmationButtonShown, Converter=Visibility"
                 android:text="@string/ReSendConfirmation"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/HeightButton" />
             <Button
                 style="@style/ButtonActionGreenStyle"
+                android:layout_marginTop="6dip"
                 local:MvxBind="Click PayCommand; Visibility IsPayButtonShown, Converter=Visibility"
                 android:text="@string/PayNow"
                 android:layout_width="fill_parent"

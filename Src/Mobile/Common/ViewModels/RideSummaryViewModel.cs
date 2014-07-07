@@ -132,7 +132,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var setting = _paymentService.GetPaymentSettings();
 				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 				return isPayEnabled 
-						&& !(Settings.RatingRequired && !HasRated)     					 // user must rate before paying
+						&& !(Settings.RatingEnabled && Settings.RatingRequired && !HasRated)     					 // user must rate before paying
 						&& setting.PaymentMode != PaymentMethod.RideLinqCmt 			 // payment is processed automatically
 						&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue	     // not already paid
 						&& (Order.Settings.ChargeTypeId == null 						 // user is paying with a charge account
@@ -251,7 +251,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool CanUserLeaveScreen()
 		{
-			if (Settings.RatingRequired && !HasRated) 
+			if (Settings.RatingEnabled && Settings.RatingRequired && !HasRated) 
 			{
 				this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
 				return false;
