@@ -580,5 +580,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			return true;
         }
+
+		public void LogApplicationStartUp()
+		{
+			try
+			{
+				var packageInfo = Mvx.Resolve<IPackageInfo> ();
+
+				var request = new LogApplicationStartUpRequest
+				{
+					User = CurrentAccount.Email,
+					StartUpDate = DateTime.UtcNow,
+					Platform = packageInfo.Platform,
+					PlatformDetails = packageInfo.PlatformDetails,
+					ApplicationVersion = packageInfo.Version
+				};
+
+				// No need to await since we do not want to slowdown the app
+				UseServiceClientAsync<IAccountServiceClient> (client => client.LogApplicationStartUp(request));
+			}
+			catch 
+			{
+				// If logging fails, run app anyway
+			}
+		}
     }
 }

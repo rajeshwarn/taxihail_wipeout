@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
 		Task<bool> AddCreditCard(CreditCardInfos creditCard);
 
-        
+		void LogApplicationStartUp ();
     }
 }
 

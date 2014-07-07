@@ -3,6 +3,7 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using TinyIoC;
 using Cirrious.CrossCore.Core;
+using apcurium.MK.Booking.Mobile.Client.Helper;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -14,6 +15,16 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             get { return "iOS"; }
         }
+
+		public string PlatformDetails
+		{
+			get
+			{
+				return string.Format ("{0} {1}",
+					HardwareInfo.Version,
+					UIDevice.CurrentDevice.SystemVersion);
+			}
+		}
 
         public string Version
         {

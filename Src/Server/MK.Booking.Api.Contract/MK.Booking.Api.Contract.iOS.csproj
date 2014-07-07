@@ -135,6 +135,7 @@
     <Compile Include="Resources\AccountCharge.cs" />
     <Compile Include="Requests\Payment\Moneris\DeleteTokenizedCreditcardMonerisRequest.cs" />
     <Compile Include="Requests\Payment\Moneris\PreAuthorizeAndCommitPaymentMonerisRequest.cs" />
+    <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">
