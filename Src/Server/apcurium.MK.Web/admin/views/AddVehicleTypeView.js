@@ -16,17 +16,11 @@
         render: function () {
 
             var data = _.extend(this.model.toJSON(), {
-                availableVehicles: this.options.availableVehicles.toJSON()
+                availableVehicles: this.options.availableVehicles.toJSON(),
+                isNew: this.model.isNew()
             });
             var html = this.renderTemplate(data);
             this.$el.html(html);
-
-            // this prevents the hidden radio buttons from not being validated
-            $(document).ready(function () {
-                $.validator.setDefaults({
-                    ignore: []
-                });
-            });
 
             this.validate({
                 rules: {

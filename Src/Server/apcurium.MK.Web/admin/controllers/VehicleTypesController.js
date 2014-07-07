@@ -23,14 +23,10 @@
                 TaxiHail.app.navigate('vehicleTypes', { trigger: true });
             }
 
-            var model = new Model({
-                isNew: true
-            });
-
             var availableVehicles = new TaxiHail.UnassignedReferenceDataVehicles();
 
             var view = new TaxiHail.AddVehicleTypeView({
-                model: model,
+                model: new Model(),
                 collection: this.vehicleTypes,
                 availableVehicles: availableVehicles
             }).on('cancel', function() {
@@ -45,7 +41,6 @@
 
         edit: function(id) {
             var model = this.vehicleTypes.find(function (m) { return m.get('id') == id; });
-            model.set('isNew', false);
 
             var availableVehicles = new TaxiHail.UnassignedReferenceDataVehicles();
 

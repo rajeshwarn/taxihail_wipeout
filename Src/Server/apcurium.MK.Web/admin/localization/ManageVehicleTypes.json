@@ -1,3 +1,4 @@
 {
-	"vehicleType.add-new" : "Add a new vehicle type"
+	"vehicleType.add-new" : "Add a new vehicle type",
+    "vehicleType.limitMessage" :  "You can have a maximum of 4 vehicle types"
 }

@@ -56,7 +56,7 @@
             "accounts/add": "addAccount",
             "accounts/edit/:number": "editAccount",
 
-            /* Charge Accounts */
+            /* Vehicle Types */
             "vehicleTypes": "manageVehicleTypes",
             "vehicleTypes/add": "addVehicleType",
             "vehicleTypes/edit/:id": "editVehicleType"

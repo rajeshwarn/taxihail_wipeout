@@ -4,13 +4,13 @@ label.radio {
     display: inline;
 }
 
-label.radio > input{ /* HIDE RADIO */
+label.radio > input.radio{ /* HIDE RADIO */
   display:none;
 }
-label.radio > input + img{ /* IMAGE STYLES */
+label.radio > input.radio + img{ /* IMAGE STYLES */
   cursor:pointer;
   border:2px solid transparent;
 }
-label.radio > input:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
+label.radio > input.radio:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
   border:2px solid #1069b8;
 }

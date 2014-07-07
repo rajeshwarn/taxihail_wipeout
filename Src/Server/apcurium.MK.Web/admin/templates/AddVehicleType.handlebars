@@ -15,15 +15,15 @@
             <label class="control-label">{{localize 'Logo'}}</label>
             <div class="controls">
                 <label class="radio">
-                    <input type="radio" id="inputVehicleLogoName" name="logoName" value="taxi" {{#if_eq logoName 'taxi'}} checked {{/if_eq}}/>
+                    <input class="radio" type="radio" id="inputVehicleLogoName" name="logoName" value="taxi" {{#ifCond logoName 'taxi'}} checked {{/ifCond}}/>
                     <img src="assets/img/taxi_badge.png" />
                 </label>
                 <label class="radio">
-                    <input type="radio" id="inputVehicleLogoName" name="logoName" value="suv" {{#if_eq logoName 'suv' }} checked {{/if_eq}}/>
+                    <input class="radio" type="radio" id="inputVehicleLogoName" name="logoName" value="suv" {{#ifCond logoName 'suv' }} checked {{/ifCond}}/>
                     <img src="assets/img/suv_badge.png" />
                 </label>
                 <label class="radio">
-                    <input type="radio" id="inputVehicleLogoName" name="logoName" value="blackcar" {{#if_eq logoName 'blackcar' }} checked {{/if_eq}}/>
+                    <input class="radio" type="radio" id="inputVehicleLogoName" name="logoName" value="blackcar" {{#ifCond logoName 'blackcar' }} checked {{/ifCond}}/>
                     <img src="assets/img/blackcar_badge.png" />
                 </label>
             </div>

@@ -274,13 +274,6 @@
         return new Handlebars.SafeString(TaxiHail.date.numericDate(date));
     });
 
-    Handlebars.registerHelper('if_eq', function (a, b, opts) {
-        if (a == b) // Or === depending on your needs
-            return opts.fn(this);
-        else
-            return opts.inverse(this);
-    });
-
     $.validator.addMethod("checkboxesNotAllChecked", function (value, elem, param) {
         if ($(elem).closest("div").find(":checked").length == param.options.length) {
             return false;
@@ -289,5 +282,8 @@
         }
     }, TaxiHail.localize("You cannot exclude all options from a list."));
 
-
+    // this prevents the hidden radio buttons from not being validated
+    $.validator.setDefaults({
+        ignore: []
+    });
 }());
