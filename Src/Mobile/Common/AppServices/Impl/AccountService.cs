@@ -507,17 +507,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<IList<VehicleType>> GetVehiclesList ()
         {
 			return await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
-
-//			if (!_appSettings.Data.HideNoPreference
-//                && refData.VehiclesList != null)
-//            {
-//                refData.VehiclesList.Insert(0,
-//					new ListItem
-//                    {
-//                        Id = null,
-//						Display = _localize["NoPreference"]
-//					});
-//            }
         }
 
 		public async Task<IList<ListItem>> GetPaymentsList ()

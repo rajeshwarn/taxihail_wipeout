@@ -268,6 +268,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task SetBookingSettings(BookingSettings bookingSettings)
 		{
+			// Get the vehicle type selected on the home screen and put them in the 
+			// bookingsettings to prevent the default vehicle type to override the selected value
 			var vehicleTypeId = await _vehicleTypeSubject.Take (1).ToTask ();
 			bookingSettings.VehicleTypeId = vehicleTypeId;
 
