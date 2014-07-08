@@ -589,7 +589,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 				var request = new LogApplicationStartUpRequest
 				{
-					User = CurrentAccount.Email,
 					StartUpDate = DateTime.UtcNow,
 					Platform = packageInfo.Platform,
 					PlatformDetails = packageInfo.PlatformDetails,

@@ -54,10 +54,6 @@ namespace apcurium.MK.Booking.Mobile
             }
             else
             {
-				// Log user last session
-				var accountService = Mvx.Resolve<IAccountService> ();
-				accountService.LogApplicationStartUp ();
-
 				ShowViewModel<HomeViewModel>(new { locateUser =  true });
             }
 

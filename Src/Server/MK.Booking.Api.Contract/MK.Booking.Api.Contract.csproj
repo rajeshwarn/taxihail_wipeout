@@ -85,6 +85,7 @@
     <Compile Include="Requests\AccountOrderListRequest.cs" />
     <Compile Include="BaseDTO.cs" />
     <Compile Include="Requests\IbsFareRequest.cs" />
+    <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
     <Compile Include="Requests\OrderPairingRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\PreAuthorizeAndCommitPaymentBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\CallbackRequest.cs" />

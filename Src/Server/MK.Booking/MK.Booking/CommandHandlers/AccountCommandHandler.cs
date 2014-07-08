@@ -1,8 +1,12 @@
 ﻿#region
 
+using System;
+using System.Reflection;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
@@ -32,15 +36,18 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<AddFavoriteAddress>,
         ICommandHandler<RemoveFavoriteAddress>,
         ICommandHandler<UpdateFavoriteAddress>,
-        ICommandHandler<RemoveAddressFromHistory>
+        ICommandHandler<RemoveAddressFromHistory>,
+        ICommandHandler<LogApplicationStartUp>
     {
         private readonly IPasswordService _passwordService;
+        private readonly Func<BookingDbContext> _contextFactory;
         private readonly IEventSourcedRepository<Account> _repository;
 
-        public AccountCommandHandler(IEventSourcedRepository<Account> repository, IPasswordService passwordService)
+        public AccountCommandHandler(IEventSourcedRepository<Account> repository, IPasswordService passwordService, Func<BookingDbContext> contextFactory)
         {
             _repository = repository;
             _passwordService = passwordService;
+            _contextFactory = contextFactory;
         }
 
         public void Handle(AddCreditCard command)
@@ -206,5 +213,25 @@ namespace apcurium.MK.Booking.CommandHandlers
         }
 
         #endregion
+
+        public void Handle(LogApplicationStartUp command)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var log = new AppStartUpLogDetail
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = command.UserId,
+                    Email = command.Email,
+                    DateOccured = command.DateOccured,
+                    ApplicationVersion = command.ApplicationVersion,
+                    Platform = command.Platform,
+                    PlatformDetails = command.PlatformDetails,
+                    ServerVersion = Assembly.GetAssembly(typeof(AppStartUpLogDetail)).GetName().Version.ToString()
+                };
+
+                context.Save(log);
+            }
+        }
     }
 }

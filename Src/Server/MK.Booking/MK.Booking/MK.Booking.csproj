@@ -144,6 +144,7 @@
     <Compile Include="ReadModel\AccountChargeDetail.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
+    <Compile Include="ReadModel\AppStartUpLogDetail.cs" />
     <Compile Include="ReadModel\CompanyDetail.cs" />
     <Compile Include="ReadModel\OrderPaymentDetail.cs" />
     <Compile Include="ReadModel\OrderUserGpsDetail.cs" />

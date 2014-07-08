@@ -53,6 +53,7 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<OrderPaymentDetail>().ToTable("OrderPaymentDetail", SchemaName);
             modelBuilder.Entity<CompanyDetail>().ToTable("CompanyDetail", SchemaName);
             modelBuilder.Entity<OrderUserGpsDetail>().ToTable("OrderUserGpsDetail", SchemaName);
+            modelBuilder.Entity<AppStartUpLogDetail>().ToTable("AppStartUpLogDetail", SchemaName);
 
             modelBuilder.Entity<AccountChargeQuestion>().ToTable("AccountChargeQuestion", SchemaName);
             modelBuilder.Entity<AccountChargeDetail>().ToTable("AccountChargeDetail", SchemaName)
