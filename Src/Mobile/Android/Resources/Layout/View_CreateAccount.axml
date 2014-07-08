@@ -75,7 +75,7 @@
                     android:orientation="horizontal">
                     <CheckBox
                         android:id="@+id/cbTermsAndConditions"
-                        local:MvxBind="Selected TermsAndConditionsAcknowledged"
+                        local:MvxBind="Checked TermsAndConditionsAcknowledged"
                         android:layout_height="32dp"
                         android:layout_width="38dp"
                         android:layout_marginTop="10dp"
@@ -118,7 +118,7 @@
                         android:visibility="invisible" />
                     <Button
                         android:id="@+id/btnCreate"
-                        local:MvxBind="Click CreateAccount"
+                        local:MvxBind="Click CreateAccount;Enabled TermsAndConditionsAcknowledged"
                         android:text="@string/Create"
                         android:layout_weight=".475"
                         android:layout_width="0dip"
