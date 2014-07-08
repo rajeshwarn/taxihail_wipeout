@@ -6,11 +6,7 @@ namespace apcurium.MK.Booking.ReadModel
     public class AppStartUpLogDetail
     {
         [Key]
-        public Guid Id { get; set; }
-
         public Guid UserId { get; set; }
-
-        public string Email { get; set; }
 
         public DateTime DateOccured { get; set; }
 

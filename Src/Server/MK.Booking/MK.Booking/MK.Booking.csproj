@@ -150,12 +150,14 @@
     <Compile Include="ReadModel\OrderPaymentDetail.cs" />
     <Compile Include="ReadModel\OrderUserGpsDetail.cs" />
     <Compile Include="ReadModel\Query\AccountChargeDao.cs" />
+    <Compile Include="ReadModel\Query\AppStartUpLogDao.cs" />
     <Compile Include="ReadModel\Query\CompanyDao.cs" />
     <Compile Include="ReadModel\Query\ConfigurationDao.cs" />
     <Compile Include="ReadModel\DeviceDetail.cs" />
     <Compile Include="ReadModel\OrderDetailWithAccount.cs" />
     <Compile Include="ReadModel\PaymentInformationDetails.cs" />
     <Compile Include="ReadModel\Query\Contract\IAccountChargeDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IAppStartUpLogDao.cs" />
     <Compile Include="ReadModel\Query\Contract\ICompanyDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IConfigurationDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IDeviceDao.cs" />
