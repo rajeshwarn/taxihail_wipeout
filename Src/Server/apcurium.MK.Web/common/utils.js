@@ -282,5 +282,8 @@
         }
     }, TaxiHail.localize("You cannot exclude all options from a list."));
 
-
+    // this prevents the hidden radio buttons from not being validated
+    $.validator.setDefaults({
+        ignore: []
+    });
 }());

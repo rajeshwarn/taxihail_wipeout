@@ -60,7 +60,7 @@
             var data = this.model.toJSON();
 
             _.extend(data, {
-                vehiclesList: TaxiHail.referenceData.vehiclesList,
+                vehiclesList: TaxiHail.vehicleTypes,
                 paymentsList: TaxiHail.referenceData.paymentsList,
                 showPassengerNumber: TaxiHail.parameters.showPassengerNumber
             });

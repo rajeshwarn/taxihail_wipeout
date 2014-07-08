@@ -12,6 +12,8 @@ using MonoTouch.CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -19,15 +21,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     public class VehicleTypeAndEstimateView : UIView
     {
         private UIView HorizontalDividerTop { get; set; }
-        private UIImageView SelectedVehicleType { get; set; }
-        private UILabel SelectedVehicleTypeLabel { get; set; }
+        private VehicleTypeView EstimateSelectedVehicleType { get; set; }
         private UILabel EstimatedFareLabel { get; set; }
+        private UIView VehicleSelection { get; set; }
+        public Action<VehicleType> VehicleSelected { get; set; }
 
-        public VehicleTypeAndEstimateView(IntPtr h):base(h)
+        public VehicleTypeAndEstimateView(IntPtr h) : base(h)
         {
             Initialize();
         }
-        public VehicleTypeAndEstimateView ( )
+        public VehicleTypeAndEstimateView ()
         {
             Initialize();
         }
@@ -39,15 +42,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 BackgroundColor = Theme.LabelTextColor 
             };
 
-            SelectedVehicleType = new UIImageView(new RectangleF(7f, 4f, 34f, 34f));
+            EstimateSelectedVehicleType = new VehicleTypeView(new RectangleF(0f, 0f, 50f, this.Frame.Height));
 
-            SelectedVehicleTypeLabel = new UILabel
-            {
-                BackgroundColor = UIColor.Clear,
-                Font = UIFont.FromName(FontName.HelveticaNeueBold, 18 / 2),
-                TextColor = Theme.LabelTextColor,
-                ShadowColor = UIColor.Clear
-            };
+            VehicleSelection = new UIView (this.Bounds);
 
             EstimatedFareLabel = new UILabel
             {
@@ -60,8 +57,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             this.SetRoundedCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 3f);
 
-            AddSubviews(HorizontalDividerTop, SelectedVehicleType, SelectedVehicleTypeLabel, EstimatedFareLabel);
+            AddSubviews(HorizontalDividerTop, EstimateSelectedVehicleType, EstimatedFareLabel, VehicleSelection);
         }
+
+        public bool IsReadOnly { get; set; }
 
         private bool _showEstimate;
         public bool ShowEstimate
@@ -77,23 +76,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
-        private string _vehicleType;
-        public string VehicleType
+        public VehicleType SelectedVehicle
         {
-            get { return _vehicleType; }
+            get { return EstimateSelectedVehicleType.Vehicle; }
             set
             {
-                if (_vehicleType != value)
+                if (EstimateSelectedVehicleType.Vehicle != value)
                 {
-                    SelectedVehicleType.Image = ImageHelper.ApplyColorToImage(string.Format("{0}_badge_selected.png", value.ToLower()), 
-                        Theme.LabelTextColor, 
-                        CGBlendMode.Normal);
+                    EstimateSelectedVehicleType.Vehicle = value;
+                    Redraw();
+                }
+            }
+        }
 
-
-					SelectedVehicleTypeLabel.Text = Localize.GetValue (value.ToUpper());
-                    SelectedVehicleTypeLabel.SizeToFit();
-                    SelectedVehicleTypeLabel.SetHorizontalCenter(SelectedVehicleType.Center.X);
-                    SelectedVehicleTypeLabel.SetY(SelectedVehicleType.Frame.Bottom);
+        private IEnumerable<VehicleType> _vehicles = new List<VehicleType>();
+        public IEnumerable<VehicleType> Vehicles
+        {
+            get { return _vehicles; }
+            set
+            {
+                if (_vehicles != value)
+                {
+                    _vehicles = value;
+                    Redraw();
                 }
             }
         }
@@ -119,23 +124,47 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             if (ShowEstimate)
             {
-				// this is the state where we show the logo and text of the selected vehicle type and the estimate
-
                 BackgroundColor = Theme.CompanyColor;
                 HorizontalDividerTop.BackgroundColor = Theme.LabelTextColor;
-                SelectedVehicleType.Hidden = false;
-                SelectedVehicleTypeLabel.Hidden = false;
+                EstimateSelectedVehicleType.Hidden = false;
                 EstimatedFareLabel.Hidden = false;
+                VehicleSelection.Hidden = true;
             }
             else
             {
-				// this is the state where we show the buttons to select vehicle type
-
                 BackgroundColor = UIColor.Clear;
                 HorizontalDividerTop.BackgroundColor = UIColor.FromRGB(177, 177, 177);
-                SelectedVehicleType.Hidden = true;
-                SelectedVehicleTypeLabel.Hidden = true;
+                EstimateSelectedVehicleType.Hidden = true;
                 EstimatedFareLabel.Hidden = true;
+
+                VehicleSelection.Hidden = false;
+                VehicleSelection.Subviews.ForEach (x => x.RemoveFromSuperview ());
+
+                if (Vehicles.None ())
+                    return;
+
+                var leftPadding = 16f;
+                var width = (this.Frame.Width - leftPadding * 2) / Vehicles.Count ();
+                var i = 0;
+                foreach (var vehicle in Vehicles) 
+                {
+                    var vehicleView = new VehicleTypeView (
+                        new RectangleF (leftPadding + i * width, 0f, width, this.Frame.Height), 
+                        vehicle, 
+                        vehicle.Id == SelectedVehicle.Id);
+
+                    vehicleView.TouchUpInside += (sender, e) => 
+                    { 
+                        if(!IsReadOnly && VehicleSelected != null)
+                        {
+                            VehicleSelected(vehicle);
+                        }
+                    };
+
+                    VehicleSelection.Add (vehicleView);
+
+                    i++;
+                }
             }
         }
 

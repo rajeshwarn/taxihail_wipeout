@@ -26,9 +26,9 @@ namespace apcurium.MK.Booking.IBS
 
 
         bool SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId);
-        
 
-        IbsVehiclePosition[] GetAvailableVehicles(double latitude, double longitude);
+
+        IbsVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int vehicleTypeId);
 
         bool ConfirmExternalPayment(Guid orderId, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
             string authorizationCode, string cardToken, int accountID, string name, string phone, string email, string os, string userAgent);

@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             _staticDataWebServiceClient = staticDataWebServiceClient;
         }
 
-        public IbsVehiclePosition[] GetAvailableVehicles(double latitude, double longitude)
+        public IbsVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int vehicleTypeId)
         {
             var result = new IbsVehiclePosition[0];
 

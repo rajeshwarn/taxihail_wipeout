@@ -12,6 +12,7 @@
         <meta http-equiv="cleartype" content="on">
         <link rel="stylesheet" href='../themes/<%: ApplicationKey %>/less/combined.less'/>
         <link rel="stylesheet" href='assets/less/TaxiHail-admin-grid.less'/>
+        <link rel="stylesheet" href='assets/css/admin.css'/>
         <link rel="stylesheet" href='../themes/<%: ApplicationKey %>/less/combined-responsive.less'/>
         <script src="../assets/js/modernizr.min.js"></script>
     </head>
