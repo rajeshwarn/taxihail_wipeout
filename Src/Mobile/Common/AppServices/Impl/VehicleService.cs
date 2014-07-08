@@ -20,12 +20,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			_availableVehiclesObservable = _timerSubject
 				.Switch()
-				.CombineLatest(orderWorkflowService.GetAndObservePickupAddress(), (_, address) => address)
-				.Where(a => a.HasValidCoordinate())
-				.SelectMany(a => CheckForAvailableVehicles(a));
-
+				.CombineLatest(
+					orderWorkflowService.GetAndObservePickupAddress(), 
+					orderWorkflowService.GetAndObserveVehicleType(), 
+					(_, address, vehicleTypeId) => new { address, vehicleTypeId })
+				.Where(x => x.address.HasValidCoordinate() && x.vehicleTypeId.HasValue)
+				.SelectMany(x => CheckForAvailableVehicles(x.address, x.vehicleTypeId.Value));
 		}
-
 
 		public void Start()
 		{   
@@ -39,12 +40,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_timerSubject.OnNext(Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds (5)));
 		}
 
-		private async Task<AvailableVehicle[]> CheckForAvailableVehicles(Address address)
+		private async Task<AvailableVehicle[]> CheckForAvailableVehicles(Address address, int vehicleTypeId)
 		{
 			try
 			{
 				return await UseServiceClientAsync<IVehicleClient, AvailableVehicle[]>(service => 
-                    service.GetAvailableVehiclesAsync(address.Latitude, address.Longitude))
+					service.GetAvailableVehiclesAsync(address.Latitude, address.Longitude, vehicleTypeId))
 						.ConfigureAwait(false);
 			}
 			catch (Exception e)

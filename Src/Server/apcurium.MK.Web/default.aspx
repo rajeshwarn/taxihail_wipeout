@@ -64,6 +64,7 @@
             TaxiHail.parameters.apiRoot = "api";
 
             TaxiHail.referenceData = <%= ReferenceData %>;
+            TaxiHail.vehicleTypes = <%= VehicleTypes %>;
         </script>
 
         <%: Scripts.Render("~/bundles/app") %>

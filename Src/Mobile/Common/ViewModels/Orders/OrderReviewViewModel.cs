@@ -30,9 +30,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private async Task SettingsUpdated(BookingSettings settings)
 		{
 			Settings = settings;
-			var list = await _accountService.GetVehiclesList();
-			VehiculeType = list.First(x => x.Id == settings.VehicleTypeId).Display;
-			list = await _accountService.GetPaymentsList();
+			VehiculeType = (await _accountService.GetVehiclesList()).First(x => x.ReferenceDataVehicleId == settings.VehicleTypeId).Name;
+			var list = await _accountService.GetPaymentsList();
 			ChargeType = list.First(x => x.Id == settings.ChargeTypeId).Display;
 		}
 

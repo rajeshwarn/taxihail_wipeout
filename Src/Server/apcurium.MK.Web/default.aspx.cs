@@ -1,13 +1,17 @@
 ﻿#region
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Services;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Configuration;
 using Microsoft.Practices.ServiceLocation;
+using ServiceStack.Text;
 
 #endregion
 
@@ -36,6 +40,7 @@ namespace apcurium.MK.Web
         protected bool DirectionNeedAValidTarif { get; private set; }
         protected bool ShowPassengerNumber { get; private set; }
         protected string ReferenceData { get; private set; }
+        protected string VehicleTypes { get; private set; }
         protected string AccountChargeTypeId { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -80,6 +85,10 @@ namespace apcurium.MK.Web
             var referenceDataService = ServiceLocator.Current.GetInstance<ReferenceDataService>();
             var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
             ReferenceData = referenceData.ToString();
+
+            var vehicleService = ServiceLocator.Current.GetInstance<VehicleService>();
+            var vehicleTypes = (IList<VehicleTypeDetail>)vehicleService.Get(new VehicleTypeRequest());
+            VehicleTypes = JsonSerializer.SerializeToString(vehicleTypes, vehicleTypes.GetType());
         }
 
         protected string FindParam(string[] filters, string param)

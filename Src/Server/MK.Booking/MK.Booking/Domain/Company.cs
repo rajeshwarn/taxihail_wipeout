@@ -74,6 +74,9 @@ namespace apcurium.MK.Booking.Domain
 
             Handles<AccountChargeAddedUpdated>(NoAction);
             Handles<AccountChargeDeleted>(NoAction);
+
+            Handles<VehicleTypeAddedUpdated>(NoAction);
+            Handles<VehicleTypeDeleted>(NoAction);
         }
 
         private void OnPaymentSettingUpdated(PaymentSettingUpdated obj)
@@ -453,6 +456,25 @@ namespace apcurium.MK.Booking.Domain
             Update(new AccountChargeDeleted
             {
                 AccountChargeId = accountChargeId
+            });
+        }
+
+        public void AddUpdateVehicleType(Guid vehicleTypeId, string name, string logoName, int referenceDataVehicleId)
+        {
+            Update(new VehicleTypeAddedUpdated
+            {
+                Name = name,
+                LogoName = logoName,
+                VehicleTypeId = vehicleTypeId,
+                ReferenceDataVehicleId = referenceDataVehicleId
+            });
+        }
+
+        public void DeleteVehicleType(Guid vehicleTypeId)
+        {
+            Update(new VehicleTypeDeleted
+            {
+                VehicleTypeId = vehicleTypeId
             });
         }
     }

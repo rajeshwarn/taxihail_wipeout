@@ -52,6 +52,7 @@
     <Compile Include="AddFavoriteAddress.cs" />
     <Compile Include="AddPopularAddress.cs" />
     <Compile Include="AddUpdateAccountCharge.cs" />
+    <Compile Include="AddUpdateVehicleType.cs" />
     <Compile Include="CancelOrder.cs" />
     <Compile Include="AddRatingType.cs" />
     <Compile Include="CancelPayPalExpressCheckoutPayment.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="CompletePayPalExpressCheckoutPayment.cs" />
     <Compile Include="DeleteAccountCharge.cs" />
     <Compile Include="DeleteAllCreditCards.cs" />
+    <Compile Include="DeleteVehicleType.cs" />
     <Compile Include="InitiateCreditCardPayment.cs" />
     <Compile Include="InitiatePayPalExpressCheckoutPayment.cs" />
     <Compile Include="LogApplicationStartUp.cs" />

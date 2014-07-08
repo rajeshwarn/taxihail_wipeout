@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								return;
 						}
 					}
-					_orderWorkflowService.ResetOrderSettings();
+					await _orderWorkflowService.ResetOrderSettings();
                     PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
 					await ShowFareEstimateAlertDialogIfNecessary();
 					await PreValidateOrder();
