@@ -21,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationController.NavigationBar.Hidden = false;
 			NavigationItem.HidesBackButton = false;
             NavigationItem.Title = Localize.GetValue("RideSummaryTitleText");
+
+            ChangeThemeOfBarStyle();
 		}
 
 		public override void ViewDidLoad ()

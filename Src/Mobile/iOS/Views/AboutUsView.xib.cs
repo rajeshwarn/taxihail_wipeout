@@ -2,6 +2,9 @@ using MonoTouch.Foundation;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Touch.Views;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Style;
+using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -34,6 +37,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			NavigationController.NavigationBar.Hidden = false;
 			NavigationItem.Title = Localize.GetValue ("View_AboutUs");
+
+            if (UIHelper.IsOS7orHigher)
+            {
+                NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
+                    ? UIBarStyle.Black
+                    : UIBarStyle.Default;
+            }
 		}
 	}
 }
