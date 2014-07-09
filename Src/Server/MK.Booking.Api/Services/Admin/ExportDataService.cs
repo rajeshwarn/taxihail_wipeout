@@ -49,35 +49,32 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                     var startUpLogs = _appStartUpLogDao.GetAll().ToList();
 
                     // We join each accound details with their "last launch details"
-                    var startUpLogDetails =
-                        from a in accounts
-                        join s in startUpLogs on a.Id equals s.UserId into matchingLog
-                        from m in matchingLog.DefaultIfEmpty()
-                        select new
-                        {
-                            a.Id,
-                            a.IBSAccountId,
-                            CreateDate = a.CreationDate.ToLocalTime().ToString("d", CultureInfo.InvariantCulture),
-                            CreateTime = a.CreationDate.ToLocalTime().ToString("t", CultureInfo.InvariantCulture),
-                            a.Settings.Name,
-                            a.Settings.Phone,
-                            a.Email,
-                            a.DefaultCreditCard,
-                            a.DefaultTipPercent,
-                            a.Language,
-                            a.TwitterId,
-                            a.FacebookId,
-                            a.IsAdmin,
-                            a.IsConfirmed,
-                            a.DisabledByAdmin,
-                            LastLaunch = (m == null ? null : m.DateOccured.ToLocalTime().ToString(CultureInfo.InvariantCulture)),
-                            Platform = (m == null ? null : m.Platform),
-                            PlatformDetails = (m == null ? null : m.PlatformDetails),
-                            ApplicationVersion = (m == null ? null : m.ApplicationVersion),
-                            ServerVersion = (m == null ? null : m.ServerVersion)
-                        };
-
-                    return startUpLogDetails;
+                    return from a in accounts
+                            join s in startUpLogs on a.Id equals s.UserId into matchingLog
+                            from m in matchingLog.DefaultIfEmpty()
+                            select new
+                            {
+                                a.Id,
+                                a.IBSAccountId,
+                                CreateDate = a.CreationDate.ToLocalTime().ToString("d", CultureInfo.InvariantCulture),
+                                CreateTime = a.CreationDate.ToLocalTime().ToString("t", CultureInfo.InvariantCulture),
+                                a.Settings.Name,
+                                a.Settings.Phone,
+                                a.Email,
+                                a.DefaultCreditCard,
+                                a.DefaultTipPercent,
+                                a.Language,
+                                a.TwitterId,
+                                a.FacebookId,
+                                a.IsAdmin,
+                                a.IsConfirmed,
+                                a.DisabledByAdmin,
+                                LastLaunch = (m == null ? null : m.DateOccured.ToLocalTime().ToString(CultureInfo.InvariantCulture)),
+                                Platform = (m == null ? null : m.Platform),
+                                PlatformDetails = (m == null ? null : m.PlatformDetails),
+                                ApplicationVersion = (m == null ? null : m.ApplicationVersion),
+                                ServerVersion = (m == null ? null : m.ServerVersion)
+                            };
                 case DataType.Orders:
                     var orders = _orderDao.GetAllWithAccountSummary();
 
