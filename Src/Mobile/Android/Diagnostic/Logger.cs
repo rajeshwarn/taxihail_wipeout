@@ -130,13 +130,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 
                 
 
-                message += string.Format(" by : {0} with version {1} - company {2} - platform {3} {4} {5}",
+                message += string.Format(" by : {0} with version {1} - company {2} - platform {3}",
                     user,
                     packageInfo.Version,
                     settings.ApplicationName,
-                    Android.OS.Build.VERSION.Release,
-                    Android.OS.Build.Manufacturer,
-                    Android.OS.Build.Model);
+					packageInfo.PlatformDetails);
 
                 Console.WriteLine(message);
 

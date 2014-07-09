@@ -129,12 +129,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
                     : account.Email;
 
                 var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
-                message += string.Format(" by : {0} with version {1} - company {2} - platform {3} {4}",
+                message += string.Format(" by : {0} with version {1} - company {2} - platform {3}",
                     user,
                     packageInfo.Version,
                     settings.ApplicationName,
-                    HardwareInfo.Version,
-                    UIDevice.CurrentDevice.SystemVersion);
+					packageInfo.PlatformDetails);
 
                 Console.WriteLine (message);            
             

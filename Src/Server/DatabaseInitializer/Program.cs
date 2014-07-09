@@ -124,6 +124,7 @@ namespace DatabaseInitializer
                 if (isUpdate)
                 {
                     creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, oldDatabase, param.CompanyName);
+                    creatorDb.CopyAppStartUpLogTable(param.MasterConnectionString, oldDatabase, param.CompanyName);
                     creatorDb.FixUnorderedEvents(connectionString.ConnectionString);
                 }
 

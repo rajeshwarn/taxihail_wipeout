@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Web.UI.WebControls.WebParts;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -22,12 +23,14 @@ namespace apcurium.MK.Booking.Api.Services.Admin
         private readonly IAccountDao _accountDao;
         private readonly IConfigurationManager _configurationManager;
         private readonly IOrderDao _orderDao;
+        private readonly IAppStartUpLogDao _appStartUpLogDao;
 
-        public ExportDataService(IAccountDao accountDao, IOrderDao orderDao, IConfigurationManager configurationManager)
+        public ExportDataService(IAccountDao accountDao, IOrderDao orderDao, IConfigurationManager configurationManager, IAppStartUpLogDao appStartUpLogDao)
         {
             _accountDao = accountDao;
             _orderDao = orderDao;
             _configurationManager = configurationManager;
+            _appStartUpLogDao = appStartUpLogDao;
         }
 
         public object Post(ExportDataRequest request)
@@ -42,28 +45,42 @@ namespace apcurium.MK.Booking.Api.Services.Admin
             switch (request.Target)
             {
                 case DataType.Accounts:
-                    var accounts = _accountDao.GetAll();
-                    return accounts.Where(x => x.CreationDate >= startDate && x.CreationDate <= endDate).Select(x => new
-                    {
-                        x.Id,
-                        x.IBSAccountId,
-                        CreateDate = x.CreationDate.ToLocalTime().ToString("d", CultureInfo.InvariantCulture),
-                        CreateTime = x.CreationDate.ToLocalTime().ToString("t", CultureInfo.InvariantCulture),
-                        x.Settings.Name,
-                        x.Settings.Phone,
-                        x.Email,
-                        x.DefaultCreditCard,
-                        x.DefaultTipPercent,
-                        x.Language,
-                        x.TwitterId,
-                        x.FacebookId,
-                        x.IsAdmin,
-                        x.IsConfirmed,
-                        x.DisabledByAdmin
-                    });
+                    var accounts = _accountDao.GetAll().Where(x => x.CreationDate >= startDate && x.CreationDate <= endDate).ToList();
+                    var startUpLogs = _appStartUpLogDao.GetAll().ToList();
+
+                    // We join each accound details with their "last launch details"
+                    var startUpLogDetails =
+                        from a in accounts
+                        join s in startUpLogs on a.Id equals s.UserId into matchingLog
+                        from m in matchingLog.DefaultIfEmpty()
+                        select new
+                        {
+                            a.Id,
+                            a.IBSAccountId,
+                            CreateDate = a.CreationDate.ToLocalTime().ToString("d", CultureInfo.InvariantCulture),
+                            CreateTime = a.CreationDate.ToLocalTime().ToString("t", CultureInfo.InvariantCulture),
+                            a.Settings.Name,
+                            a.Settings.Phone,
+                            a.Email,
+                            a.DefaultCreditCard,
+                            a.DefaultTipPercent,
+                            a.Language,
+                            a.TwitterId,
+                            a.FacebookId,
+                            a.IsAdmin,
+                            a.IsConfirmed,
+                            a.DisabledByAdmin,
+                            LastLaunch = (m == null ? null : m.DateOccured.ToLocalTime().ToString(CultureInfo.InvariantCulture)),
+                            Platform = (m == null ? null : m.Platform),
+                            PlatformDetails = (m == null ? null : m.PlatformDetails),
+                            ApplicationVersion = (m == null ? null : m.ApplicationVersion),
+                            ServerVersion = (m == null ? null : m.ServerVersion)
+                        };
+
+                    return startUpLogDetails;
                 case DataType.Orders:
                     var orders = _orderDao.GetAllWithAccountSummary();
-                    //return
+
                     var testResult = orders.Where(x => x.CreatedDate >= startDate && x.CreatedDate <= endDate)
                         .Select(x =>
                     {

@@ -145,6 +145,7 @@
     <Compile Include="Services\Admin\ExportDataService.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
+    <Compile Include="Services\LogApplicationStartUpService.cs" />
     <Compile Include="Services\OrderPairingService.cs" />
     <Compile Include="Services\Payment\MonerisPaymentService.cs" />
     <Compile Include="Services\Payment\ResendPaymentConfirmationSevice.cs" />
