@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             _accountId = Guid.NewGuid();
             _addressId = Guid.NewGuid();
             _sut = new EventSourcingTestHelper<Account>();
-            _sut.Setup(new AccountCommandHandler(_sut.Repository, null, null, null));
+            _sut.Setup(new AccountCommandHandler(_sut.Repository, null, null));
             _sut.Given(new AccountRegistered
             {
                 SourceId = _accountId,

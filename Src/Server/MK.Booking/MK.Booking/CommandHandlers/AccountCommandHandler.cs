@@ -43,14 +43,12 @@ namespace apcurium.MK.Booking.CommandHandlers
         private readonly IPasswordService _passwordService;
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IEventSourcedRepository<Account> _repository;
-        private readonly IAppStartUpLogDao _appStartUpLogDao;
 
-        public AccountCommandHandler(IEventSourcedRepository<Account> repository, IPasswordService passwordService, Func<BookingDbContext> contextFactory, IAppStartUpLogDao appStartUpLogDao)
+        public AccountCommandHandler(IEventSourcedRepository<Account> repository, IPasswordService passwordService, Func<BookingDbContext> contextFactory)
         {
             _repository = repository;
             _passwordService = passwordService;
             _contextFactory = contextFactory;
-            _appStartUpLogDao = appStartUpLogDao;
         }
 
         public void Handle(AddCreditCard command)
