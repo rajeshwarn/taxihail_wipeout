@@ -6,10 +6,11 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "BookPayPalActivity", Theme = "@android:style/Theme.NoTitleBar",
-        ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "BookPayPalActivity", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = ScreenOrientation.Portrait)]
     public class BookPayPalActivity : BaseBindingActivity<PayPalViewModel>
     {
+        private WebView _webView;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -21,12 +22,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		{
 			base.OnViewModelSet ();
 
-            var webView = new WebView(this);
-            webView.SetWebViewClient(new PayPalWebViewClient(ViewModel));
-            SetContentView(webView);
-            webView.Settings.JavaScriptEnabled = true;
+            _webView = new WebView(this);
+            _webView.SetWebViewClient(new PayPalWebViewClient(ViewModel));
+            SetContentView(_webView);
+            _webView.Settings.JavaScriptEnabled = true;
 
-            webView.LoadUrl(ViewModel.Url);
+            _webView.LoadUrl(ViewModel.Url);
         }
     }
 
