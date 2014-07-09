@@ -242,6 +242,24 @@ namespace DatabaseInitializer.Sql
             DatabaseHelper.ExecuteNonQuery(connString, queryForCache);
         }
 
+        public void CopyAppStartUpLogTable(string connString, string oldDatabase, string newDatabase)
+        {
+            var query =
+                string.Format(
+                    "INSERT INTO [{0}].[Booking].[AppStartUpLogDetail]([UserId] ,[DateOccured] ,[ApplicationVersion] ,[Platform] ,[PlatformDetails], [ServerVersion]) " +
+                    "SELECT [UserId] ,[DateOccured] ,[ApplicationVersion] ,[Platform] ,[PlatformDetails], [ServerVersion] " +
+                    "FROM [{1}].[Booking].[AppStartUpLogDetail] ", newDatabase, oldDatabase);
+
+            try
+            {
+                DatabaseHelper.ExecuteNonQuery(connString, query);
+            }
+            catch (Exception)
+            {
+                // Ignore possible exceptions. Most probable case is trying to copy from source DB without this table
+            }
+        }
+
         private string GetLogPath(string instanceName)
         {
             return string.Format("{0}\\{1}", GetSqlRootPath(instanceName), "Log");
