@@ -54,6 +54,9 @@ namespace apcurium.MK.Booking.Mobile
             }
             else
             {
+                // Log user session start
+                TinyIoCContainer.Current.Resolve<IAccountService>().LogApplicationStartUp();
+
 				ShowViewModel<HomeViewModel>(new { locateUser =  true });
             }
 
