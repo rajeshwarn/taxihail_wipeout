@@ -173,7 +173,6 @@
     <Compile Include="Framework\Params.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
-    <Compile Include="Infrastructure\IPackageInfo.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
     <Compile Include="Localization\AppLanguage.cs" />
     <Compile Include="Localization\Taxiworld.Designer.cs">
