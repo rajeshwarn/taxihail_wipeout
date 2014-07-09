@@ -80,9 +80,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_tutorialService.DisplayTutorialToNewUser();
 				_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
 
-                // Log user session start
-                _accountService.LogApplicationStartUp();
-
 				this.Services().MessengerHub.Subscribe<AppActivated>(m => 
 				{
 					_locateUser = true;
