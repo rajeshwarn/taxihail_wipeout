@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_bookingSettings = bookingSettings.FromJson<BookingSettings>();
 
 			var v = await _accountService.GetVehiclesList();
-			_vehicules = v == null ? new ListItem[0] : v.ToArray();
+			_vehicules = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
 			RaisePropertyChanged(() => Vehicles );
 			RaisePropertyChanged(() => VehicleTypeId );
 			RaisePropertyChanged(() => VehicleTypeName );

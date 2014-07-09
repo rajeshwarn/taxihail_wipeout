@@ -1,0 +1,16 @@
+/* STYLE FOR RADIO BUTTONS IN VEHICLE TYPE */
+
+label.radio {
+    display: inline;
+}
+
+label.radio > input.radio{ /* HIDE RADIO */
+  display:none;
+}
+label.radio > input.radio + img{ /* IMAGE STYLES */
+  cursor:pointer;
+  border:2px solid transparent;
+}
+label.radio > input.radio:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
+  border:2px solid #1069b8;
+}

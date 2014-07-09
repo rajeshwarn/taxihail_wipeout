@@ -75,10 +75,10 @@
                     <div class="controls">
                         <select name="settings.vehicleTypeId" class='input-block-level'>
                             {{#each vehiclesList}}
-                            {{#ifCond this.id ../settings.vehicleTypeId}}
-                            <option value="{{this.id}}" selected>{{this.display}}</option>
+                            {{#ifCond this.referenceDataVehicleId ../settings.vehicleTypeId}}
+                            <option value="{{this.referenceDataVehicleId}}" selected>{{this.name}}</option>
                             {{else}}
-                            <option value="{{this.id}}">{{this.display}}</option>
+                            <option value="{{this.referenceDataVehicleId}}">{{this.name}}</option>
                             {{/ifCond}}
                             {{/each}}
                         </select>

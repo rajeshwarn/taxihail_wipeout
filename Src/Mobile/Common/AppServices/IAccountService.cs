@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
 		Task<IList<ListItem>> GetCompaniesList();
         
-		Task<IList<ListItem>> GetVehiclesList();
+		Task<IList<VehicleType>> GetVehiclesList();
         
 		Task<IList<ListItem>> GetPaymentsList();
         

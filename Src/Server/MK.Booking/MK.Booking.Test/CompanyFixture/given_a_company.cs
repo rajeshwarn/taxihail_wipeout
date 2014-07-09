@@ -310,5 +310,42 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual(deleteAccountCharge.AccountChargeId, evt.AccountChargeId);
         }
+
+        [Test]
+        public void when_adding_vehicletype_successfully()
+        {
+            var command = new AddUpdateVehicleType
+            {
+                CompanyId = _companyId,
+                VehicleTypeId = Guid.NewGuid(),
+                Name = "Taxi",
+                LogoName = "Taxi",
+                ReferenceDataVehicleId = 123
+            };
+
+            _sut.When(command);
+
+            var evt = _sut.ThenHasSingle<VehicleTypeAddedUpdated>();
+            Assert.AreEqual(_companyId, evt.SourceId);
+            Assert.AreEqual(command.Name, evt.Name);
+            Assert.AreEqual(command.LogoName, evt.LogoName);
+            Assert.AreEqual(command.VehicleTypeId, evt.VehicleTypeId);
+            Assert.AreEqual(command.ReferenceDataVehicleId, evt.ReferenceDataVehicleId);
+        }
+
+        [Test]
+        public void when_deleting_vehicletype_successfully()
+        {
+            var command = new DeleteVehicleType
+            {
+                CompanyId = _companyId,
+                VehicleTypeId = Guid.NewGuid()
+            };
+            _sut.When(command);
+
+            var evt = _sut.ThenHasSingle<VehicleTypeDeleted>();
+            Assert.AreEqual(_companyId, evt.SourceId);
+            Assert.AreEqual(command.VehicleTypeId, evt.VehicleTypeId);
+        }
     }
 }

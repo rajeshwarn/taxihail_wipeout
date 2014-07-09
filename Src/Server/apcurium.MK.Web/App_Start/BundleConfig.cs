@@ -148,6 +148,8 @@ namespace apcurium.MK.Web.App_Start
                 "~/admin/models/PaymentSettings.js",
                 "~/admin/models/TermsAndConditions.js",
                 "~/admin/models/AccountCharge.js",
+                "~/admin/models/VehicleType.js",
+                "~/admin/models/UnassignedReferenceDataVehicles.js",
                 /* Collections */
                 "~/common/collections/AddressCollection.js",
                 "~/common/collections/AvailableVehicleCollection.js",
@@ -155,6 +157,7 @@ namespace apcurium.MK.Web.App_Start
                 "~/admin/collections/TariffCollection.js",
                 "~/admin/collections/RuleCollection.js",
                 "~/admin/collections/AccountChargeCollection.js",
+                "~/admin/collections/VehicleTypeCollection.js",
                 /* Controllers */
                 "~/admin/controllers/Controller.js",
                 "~/admin/controllers/SecurityController.js",
@@ -168,6 +171,7 @@ namespace apcurium.MK.Web.App_Start
                 "~/admin/controllers/ExportController.js",
                 "~/admin/controllers/TermsAndConditionsController.js",
                 "~/admin/controllers/AccountsChargeController.js",
+                "~/admin/controllers/VehicleTypesController.js",
                 /* Views */
                 "~/admin/views/AddPopularAddressView.js",
                 "~/common/views/AlertView.js",
@@ -199,6 +203,9 @@ namespace apcurium.MK.Web.App_Start
                 "~/admin/views/AddAccountChargeView.js",
                 "~/admin/views/ManageAccountsChargeView.js",
                 "~/admin/views/AccountChargeItemView.js",
+                "~/admin/views/AddVehicleTypeView.js",
+                "~/admin/views/ManageVehicleTypesView.js",
+                "~/admin/views/VehicleTypeItemView.js",
                 /* Services */
                 "~/common/services/AuthService.js",
                 "~/common/services/GeocodingService.js",

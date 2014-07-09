@@ -32,9 +32,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             viewPickup.IsDestination = false;
             viewDestination.IsDestination = true;
-
-            // since we don't have the vehicle selection yet, we hardcode this value
-            viewVehicleType.VehicleType = "Taxi";
         }
 
         private void InitializeBinding()
@@ -53,6 +50,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ViewModel.DestinationAddress.FullAddress = fullAddress;
 
                 ViewModel.SetAddress.Execute(ViewModel.DestinationAddress);
+            };
+
+            viewVehicleType.VehicleSelected = (vehicleType) => 
+            {
+                ViewModel.SetVehicleType.Execute(vehicleType);
             };
 
             var set = this.CreateBindingSet<OrderOptionsControl, OrderOptionsViewModel>();
@@ -85,7 +87,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .WithConversion("BoolInverter");
             set.Bind(viewVehicleType)
                 .For(v => v.ShowEstimate)
-				.To(vm => vm.Settings.ShowEstimate);
+				.To(vm => vm.ShowEstimate);
+            set.Bind (viewVehicleType)
+                .For (v => v.Vehicles)
+                .To (vm => vm.VehicleTypes);
+            set.Bind (viewVehicleType)
+                .For (v => v.SelectedVehicle)
+                .To (vm => vm.SelectedVehicleType);
 
             set.Bind(viewPickup)
                 .For("AddressClicked")
@@ -126,14 +134,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 case HomeViewModelState.Review:
                     viewPickup.IsReadOnly = true;
                     viewDestination.IsReadOnly = true;
+                    viewVehicleType.IsReadOnly = true;
                     break;
                 case HomeViewModelState.PickDate:
                     viewPickup.IsReadOnly = true;
                     viewDestination.IsReadOnly = true;
+                    viewVehicleType.IsReadOnly = true;
                     break;
                 case HomeViewModelState.Initial:
                     viewPickup.IsReadOnly = ViewModel.ShowDestination;
                     viewDestination.IsReadOnly = false;
+                    viewVehicleType.IsReadOnly = false;
                     break;
             }
         }

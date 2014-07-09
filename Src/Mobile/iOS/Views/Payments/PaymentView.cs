@@ -139,6 +139,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             // Other bindings in layout
 
+            set.Bind(txtMeterAmount)
+                .For(v => v.Enabled)
+                .To(vm => vm.MeterAmountPopulatedByIBS)
+                .WithConversion("BoolInverter");
+
 			set.Bind(payPalToggle)
 				.For(v => v.PayPalSelected)
 				.To(vm => vm.PayPalSelected);
