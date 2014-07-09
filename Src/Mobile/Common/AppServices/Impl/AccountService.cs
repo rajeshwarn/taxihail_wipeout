@@ -584,9 +584,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				// No need to await since we do not want to slowdown the app
 				UseServiceClientAsync<IAccountServiceClient> (client => client.LogApplicationStartUp(request));
 			}
-			catch 
+			catch (Exception e)
 			{
-				// If logging fails, run app anyway
+				// If logging fails, run app anyway and log exception
+                Logger.LogError(e);
 			}
 		}
     }
