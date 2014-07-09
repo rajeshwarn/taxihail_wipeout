@@ -111,7 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
             else
             {
-				this.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.white));
+                this.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Color.Transparent);
 				HorizontalDivider.SetBackgroundColor(Resources.GetColor(Resource.Color.orderoptions_horizontal_divider));
 				RideEstimate.Visibility = ViewStates.Gone;
 				VehicleSelection.Visibility = ViewStates.Visible;

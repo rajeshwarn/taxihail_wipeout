@@ -6,53 +6,52 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Models
 {
-    //todo remove unused private field
     public class RatingModel : BaseViewModel
     {
         public Guid RatingTypeId { get; set; }
         public string RatingTypeName { get; set; }
-        public int Score { get; set; }
+        
+		public int Score { get; set; }
 		        
-        public bool MadSelected
+        public bool ScoreASelected
         {
-            get { return Score == 1; }
+			get { return Score > 0; }
             set
             {
 				RaisePropertyChanged();
             }
         }
         
-        public bool UnhappySelected
+        public bool ScoreBSelected
         {
-            get { return Score == 2; }
+			get { return Score > 1; }
             set
             {
 				RaisePropertyChanged();
             }
         }
 
-		public bool NeutralSelected
+		public bool ScoreCSelected
         {
-            get { return Score == 3; }
+			get { return Score > 2; }
             set
 			{
 				RaisePropertyChanged();
             }
         }
         
-        public bool HappySelected
+        public bool ScoreDSelected
         {
-            get { return Score == 4; }
+			get { return Score > 3; }
             set
 			{                
 				RaisePropertyChanged();
             }
         }
-
         
-        public bool EcstaticSelected
+        public bool ScoreESelected
         {
-            get { return Score == 5; }
+			get { return Score > 4; }
             set
             {
 				RaisePropertyChanged();
@@ -64,16 +63,16 @@ namespace apcurium.MK.Booking.Mobile.Models
 			CanRate = canRate;
         }
 
-        private enum RatingState { Mad = 1, Unhappy = 2, Neutral = 3, Happy = 4, Ecstatic = 5 }
+        public enum RatingState { ScoreA = 1, ScoreB = 2, ScoreC = 3, ScoreD = 4, ScoreE = 5 }
 
-        private void DeselectAllState()
-        {
-            EcstaticSelected = false;
-            HappySelected = false;
-            NeutralSelected = false;
-            UnhappySelected = false;
-            MadSelected = false;
-        }
+		private void UpdateButtonsState()
+		{
+			RaisePropertyChanged ("ScoreASelected");
+			RaisePropertyChanged ("ScoreBSelected");
+			RaisePropertyChanged ("ScoreCSelected");
+			RaisePropertyChanged ("ScoreDSelected");
+			RaisePropertyChanged ("ScoreESelected");
+		}
 
 		private bool _canRate;
 		public bool CanRate
@@ -87,41 +86,24 @@ namespace apcurium.MK.Booking.Mobile.Models
 				_canRate = value;
 				RaisePropertyChanged();
 			}
-
         }
 
         public ICommand SetRateCommand
         {
             get
             {
-                return this.GetCommand<object>(param => param.Maybe(tag =>
-                    {
-					RatingState state;
-					if(CanRate
-					   && param != null
-					   && Enum.TryParse(param.ToString(), true, out state))
+				return this.GetCommand<object> (param => param.Maybe (tag => {
+					if (!CanRate)
 					{
-						Score = (int)state;
-						DeselectAllState();
-						switch (state)
-						{
-							case RatingState.Mad:
-						    	MadSelected = true;
-						    	break;
-							case RatingState.Unhappy:
-						    	UnhappySelected = true;
-						    	break;
-							case RatingState.Neutral:
-						    	NeutralSelected = true;
-						     	break;
-						 	case RatingState.Happy:
-						     	HappySelected = true;
-						     	break;
-						 	case RatingState.Ecstatic:
-						     	EcstaticSelected = true;
-						     	break;
-						}
+						return;
 					}
+
+					RatingState state;
+					Score = 0;
+					if (param != null && Enum.TryParse (param.ToString (), true, out state)) {
+						Score = (int)state;
+					}
+					UpdateButtonsState ();
 				}));
             }
         }

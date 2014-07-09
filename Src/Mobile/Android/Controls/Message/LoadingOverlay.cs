@@ -93,13 +93,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _layoutCenter.ClearAnimation();
             _layoutImage.SetBackgroundDrawable(null);
 
-            if (_car != null)
+            if (_car != null && !_car.IsRecycled)
             {
                 _car.Recycle();
+                _car = null;
             }
             _car = BitmapFactory.DecodeResource(_activity.Resources, Resource.Drawable.taxi_progress);
 
-            if (_progressImage != null)
+            if (_progressImage != null && !_progressImage.IsRecycled)
             {
                 _progressImage.Recycle();
                 _progressImage = null;

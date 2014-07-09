@@ -179,7 +179,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
-    <Compile Include="Activities\Book\BookingRateActivity.cs" />
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
@@ -386,16 +385,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\password_cell.9.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\paypal.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\phone.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\rate_ecstatic_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\rate_ecstatic.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\rate_happy_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\rate_happy.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\rate_mad_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\rate_mad.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\rate_neutral_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\rate_neutral.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\rate_unhappy_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\rate_unhappy.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\right_arrow.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\scheduled.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\server_button.png" />
@@ -572,10 +561,17 @@
     <Compile Include="Controls\Dialog\TaxiHailEntryElement.cs" />
     <Compile Include="Activities\EditTextDialogActivity.cs" />
     <Compile Include="TaxiHailAndroidLifetimeMonitor.cs" />
+    <AndroidResource Include="Resources\Drawable\star_unselected.png" />
+    <AndroidResource Include="Resources\Drawable\star_selected.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\star_selected.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\star_unselected.png" />
     <AndroidResource Include="Resources\Layout\Control_VehicleType.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <Compile Include="Controls\Widgets\VehicleTypeControl.cs" />
+    <AndroidResource Include="Resources\Drawable\star_state.xml" />
+    <Compile Include="Activities\Book\BookingRateActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_BookingRating.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -670,21 +666,6 @@
     <AndroidResource Include="Resources\Drawable\cancel.png" />
     <AndroidResource Include="Resources\Values\FontSize.xml" />
     <AndroidResource Include="Resources\Drawable\poweredby2.png" />
-    <AndroidResource Include="Resources\Drawable\rate_unhappy_selected.png" />
-    <AndroidResource Include="Resources\Drawable\rate_ecstatic.png" />
-    <AndroidResource Include="Resources\Drawable\rate_ecstatic_selected.png" />
-    <AndroidResource Include="Resources\Drawable\rate_happy.png" />
-    <AndroidResource Include="Resources\Drawable\rate_happy_selected.png" />
-    <AndroidResource Include="Resources\Drawable\rate_mad.png" />
-    <AndroidResource Include="Resources\Drawable\rate_mad_selected.png" />
-    <AndroidResource Include="Resources\Drawable\rate_neutral.png" />
-    <AndroidResource Include="Resources\Drawable\rate_neutral_selected.png" />
-    <AndroidResource Include="Resources\Drawable\rate_unhappy.png" />
-    <AndroidResource Include="Resources\Drawable\rate_ecstatic_state.xml" />
-    <AndroidResource Include="Resources\Drawable\rate_happy_state.xml" />
-    <AndroidResource Include="Resources\Drawable\rate_mad_state.xml" />
-    <AndroidResource Include="Resources\Drawable\rate_neutral_state.xml" />
-    <AndroidResource Include="Resources\Drawable\rate_unhappy_state.xml" />
     <AndroidResource Include="Resources\Drawable\erase_cross_btn.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_background.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_grey_circle.png" />
@@ -736,11 +717,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Layout\View_BookingRating.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\Layout\SimpleOrderListItem.axml" />
   </ItemGroup>
   <ItemGroup>
@@ -783,5 +759,6 @@
     <None Include="Calabash\features\support\env.rb" />
     <None Include="Calabash\features\support\hooks.rb" />
     <None Include="Calabash\features\step_definitions\my_first_steps.rb" />
+    <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
 </Project>

@@ -8,6 +8,12 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
+using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Models;
+using System;
+using System.Linq;
+using apcurium.MK.Common.Extensions;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -26,12 +32,87 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_bookingService = bookingService;
 		}
 
-		public void Init(string order, string orderStatus)
+		public async void Init(string order, string orderStatus)
 		{			
 			Order = order.FromJson<Order> ();
+			OrderId = Order.Id;
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 
-			IsRatingButtonShown = Settings.RatingEnabled;  
+			if (Settings.RatingEnabled) 
+			{
+				await InitRating ();
+			}
+			RaisePropertyChanged (() => IsRatingButtonShown);
+		}
+
+		private List<RatingModel> _ratingList;
+		public List<RatingModel> RatingList
+		{
+			get { return _ratingList; }
+			set { 
+				_ratingList = value; 
+				RaisePropertyChanged();
+			}
+		}
+
+		private string _note;
+		public string Note
+		{
+			get { return _note; }
+			set { 
+				_note = value; 
+				RaisePropertyChanged();
+			}
+		}
+
+		private bool _canRate;
+		public bool CanRate
+		{
+			get { return _canRate; }
+			set {
+				_canRate = value;
+				RaisePropertyChanged(); 
+				RaisePropertyChanged (() => IsRatingButtonShown);
+			}
+		}
+
+		private Guid _orderId;
+		public Guid OrderId
+		{
+			get { return _orderId; }
+			set 
+			{
+				_orderId = value; 
+				RaisePropertyChanged(); 
+			}
+		}
+
+		public async Task InitRating()
+		{
+			if (OrderId.HasValue())
+			{
+				var orderRatings = await _bookingService.GetOrderRatingAsync(OrderId);
+				HasRated = orderRatings.RatingScores.Any();
+				CanRate = !HasRated;
+				var ratingTypes = _bookingService.GetRatingType();
+
+				if (CanRate) {
+					RatingList = ratingTypes.Select (c => new RatingModel (CanRate) {
+						RatingTypeId = c.Id, 
+						RatingTypeName = c.Name 
+					}).OrderBy (c => c.RatingTypeId).ToList ();
+				}
+				else
+				{
+					Note = orderRatings.Note;
+					RatingList = orderRatings.RatingScores.Select(c=> new RatingModel
+						{
+							RatingTypeId = c.RatingTypeId,
+							Score = c.Score,
+							RatingTypeName = c.Name
+						}).OrderBy(c=>c.RatingTypeId).ToList();
+				}
+			}
 		}
 
         public override void OnViewStarted(bool firstStart = false)
@@ -39,18 +120,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             base.OnViewStarted(firstStart);
 			RaisePropertyChanged(() => IsPayButtonShown);
 			RaisePropertyChanged(() => IsResendConfirmationButtonShown);
-			RaisePropertyChanged(() => IsSendReceiptButtonShown);
-        }
-
-	    private bool _receiptSent;
-        public bool ReceiptSent 
-        {
-            get { return _receiptSent; }
-            set 
-			{
-                _receiptSent = value;
-				RaisePropertyChanged();
-            }
         }
 
 		private Order Order { get; set; }
@@ -63,10 +132,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var setting = _paymentService.GetPaymentSettings();
 				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 				return isPayEnabled 
-						&& setting.PaymentMode != PaymentMethod.RideLinqCmt 
-						&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue // TODO not sure about this
-						&& (Order.Settings.ChargeTypeId == null 
-						|| Order.Settings.ChargeTypeId != Settings.AccountChargeTypeId); 
+						&& !(Settings.RatingEnabled && Settings.RatingRequired && !HasRated)     					 // user must rate before paying
+						&& setting.PaymentMode != PaymentMethod.RideLinqCmt 			 // payment is processed automatically
+						&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue	     // not already paid
+						&& (Order.Settings.ChargeTypeId == null 						 // user is paying with a charge account
+						|| Order.Settings.ChargeTypeId != Settings.AccountChargeTypeId);
 			}
 		}
 
@@ -80,50 +150,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
-		public bool IsSendReceiptButtonShown 
-		{
-			get
-			{
-				var fareIsAvailable = OrderStatus.FareAvailable || _paymentService.GetPaymentFromCache(Order.Id).HasValue;
-				return (OrderStatus != null) && fareIsAvailable && Settings.SendReceiptAvailable;
-			}
-		}
-
-		bool _isRatingButtonShow;		
 		public bool IsRatingButtonShown 
 		{
 			get 
 			{ 
-				return _isRatingButtonShow;
+				return CanRate && !HasRated && Settings.RatingEnabled;
+			}
+		}
+
+		bool _hasRated;		
+		public bool HasRated 
+		{
+			get 
+			{ 
+				return _hasRated;
 			}
 			set 
 			{ 
-				_isRatingButtonShow = value;
+				_hasRated = value;
 				RaisePropertyChanged ();
-			}
-		}
-
-		public ICommand SendReceiptCommand
-        {
-			get {
-				return this.GetCommand(() =>
-				{
-					_bookingService.SendReceipt(Order.Id);
-                    ReceiptSent = true;
-				});
-			}
-		}
-
-		public ICommand NavigateToRatingPage
-        {
-			get {
-				return this.GetCommand(() => 
-					ShowSubViewModel<BookRatingViewModel, OrderRated>(
-						new 
-						{
-							orderId = Order.Id, 
-							canRate = true, 
-						}, _ => IsRatingButtonShown = false));
+				RaisePropertyChanged(() => IsPayButtonShown);
+				RaisePropertyChanged (() => IsRatingButtonShown);
 			}
 		}
 
@@ -138,16 +185,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public ICommand PayCommand
-        {
+		public ICommand PayCommand {
 			get {
-				return this.GetCommand(() => 
-					ShowViewModel<ConfirmCarNumberViewModel>(
-					    new 
-					    { 
-					        order = Order.ToJson(),
-					        orderStatus = OrderStatus.ToJson()
-					    }));
+				return this.GetCommand (() => 
+					{ 
+						ShowViewModel<ConfirmCarNumberViewModel> (new 
+							{ 
+								order = Order.ToJson (), orderStatus = OrderStatus.ToJson () 
+							});
+					});
 			}
 		}
 
@@ -163,6 +209,54 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 				});
 			}
+		}
+
+		public ICommand RateOrder
+		{
+			get
+			{
+				return this.GetCommand(() =>
+				{
+					if (HasRated)
+					{
+						return;
+					}
+
+					if (_ratingList.Any(c => c.Score == 0))
+					{
+						this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
+						return;
+					} 
+
+					var a = Order.Id;
+					var orderRating = new apcurium.MK.Common.Entity.OrderRatings
+					{
+						Note = Note,
+						OrderId = OrderId,
+						RatingScores =
+							_ratingList.Select(
+								c => new RatingScore
+								{ 
+									RatingTypeId = c.RatingTypeId, 
+									Score = c.Score, 
+									Name = c.RatingTypeName
+								}).ToList()
+						};
+
+					_bookingService.SendRatingReview(orderRating);
+					HasRated = true;
+				});
+			}
+		}
+
+		public bool CanUserLeaveScreen()
+		{
+			if (Settings.RatingEnabled && Settings.RatingRequired && !HasRated) 
+			{
+				this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
+				return false;
+			}
+			return true;
 		}
 	}
 }

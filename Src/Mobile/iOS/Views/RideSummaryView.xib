@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RideSummaryView">
             <connections>
                 <outlet property="btnPay" destination="13" id="4eG-JV-K6f"/>
-                <outlet property="btnRateRide" destination="3aA-Yd-tUT" id="eiz-OZ-01f"/>
                 <outlet property="btnReSendConfirmation" destination="18" id="uar-tO-hJ4"/>
-                <outlet property="btnSendReceipt" destination="6" id="UmE-Fd-q3n"/>
+                <outlet property="btnSubmit" destination="YN8-Kh-ERJ" id="Z3x-qE-yAb"/>
+                <outlet property="constraintRatingTableHeight" destination="NGo-Ev-Jdl" id="w2x-aJ-Xlz"/>
                 <outlet property="lblSubTitle" destination="4" id="rgm-Vd-5cH"/>
+                <outlet property="tableRatingList" destination="lxr-AS-1xd" id="h07-zC-KGF"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -26,32 +27,8 @@
                     <color key="textColor" red="0.39215686274509803" green="0.39215686274509803" blue="0.39215686274509803" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6" customClass="FlatButton">
-                    <rect key="frame" x="8" y="108" width="304" height="41"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="41" id="yH4-vp-9XA"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
-                    <state key="normal" title="Send Receipt">
-                        <color key="titleColor" red="0.0" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3aA-Yd-tUT" customClass="FlatButton">
-                    <rect key="frame" x="8" y="162" width="304" height="41"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="41" id="E6Z-Fa-gU1"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
-                    <state key="normal" title="Rate my Ride">
-                        <color key="titleColor" red="0.0" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="13" customClass="FlatButton">
-                    <rect key="frame" x="8" y="216" width="304" height="41"/>
+                    <rect key="frame" x="8" y="211" width="304" height="41"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="uLV-tb-Llr"/>
@@ -62,8 +39,20 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YN8-Kh-ERJ" customClass="FlatButton">
+                    <rect key="frame" x="8" y="157" width="304" height="41"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="41" id="KHU-5y-2EI"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
+                    <state key="normal" title="Submit">
+                        <color key="titleColor" red="0.0" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18" customClass="FlatButton">
-                    <rect key="frame" x="8" y="270" width="304" height="41"/>
+                    <rect key="frame" x="8" y="211" width="304" height="41"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="kjc-dh-jfj"/>
@@ -74,32 +63,49 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="69" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="lxr-AS-1xd">
+                    <rect key="frame" x="0.0" y="100" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="NGo-Ev-Jdl"/>
+                    </constraints>
+                    <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="sectionIndexColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </tableView>
             </subviews>
             <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="3aA-Yd-tUT" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="69U-dE-coQ"/>
+                <constraint firstItem="18" firstAttribute="top" secondItem="YN8-Kh-ERJ" secondAttribute="bottom" constant="13" id="4f8-8n-rT7"/>
+                <constraint firstAttribute="trailing" secondItem="YN8-Kh-ERJ" secondAttribute="trailing" constant="8" id="91H-4D-ctm"/>
                 <constraint firstAttribute="trailing" secondItem="18" secondAttribute="trailing" constant="8" id="98a-fb-s2L"/>
-                <constraint firstItem="18" firstAttribute="top" secondItem="3aA-Yd-tUT" secondAttribute="bottom" priority="635" constant="67" id="AT5-fk-kPR"/>
-                <constraint firstItem="6" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="Iq8-KA-sBM"/>
-                <constraint firstAttribute="trailing" secondItem="6" secondAttribute="trailing" constant="8" id="ME5-wv-uYp"/>
-                <constraint firstItem="13" firstAttribute="top" secondItem="4" secondAttribute="bottom" priority="580" constant="136" id="NHc-hp-RAe"/>
-                <constraint firstItem="6" firstAttribute="top" secondItem="4" secondAttribute="bottom" constant="28" id="PLp-fH-J0N"/>
+                <constraint firstItem="13" firstAttribute="top" secondItem="YN8-Kh-ERJ" secondAttribute="bottom" constant="13" id="CJc-XU-bTH"/>
+                <constraint firstItem="YN8-Kh-ERJ" firstAttribute="top" secondItem="lxr-AS-1xd" secondAttribute="bottom" constant="13" id="Fws-oL-TZN"/>
+                <constraint firstItem="lxr-AS-1xd" firstAttribute="top" secondItem="4" secondAttribute="bottom" constant="20" id="Gwa-Tm-0X3"/>
+                <constraint firstItem="YN8-Kh-ERJ" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="Hq8-4E-9ye"/>
+                <constraint firstItem="18" firstAttribute="top" secondItem="4" secondAttribute="bottom" priority="500" constant="30" id="LbX-6V-6kF"/>
+                <constraint firstItem="lxr-AS-1xd" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="UOm-Mb-Tcj"/>
                 <constraint firstItem="13" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="XOw-aA-ptU"/>
-                <constraint firstItem="13" firstAttribute="top" secondItem="3aA-Yd-tUT" secondAttribute="bottom" constant="13" id="Xkc-Di-waO"/>
-                <constraint firstItem="18" firstAttribute="top" secondItem="4" secondAttribute="bottom" priority="536" constant="190" id="YsO-hi-umR"/>
                 <constraint firstAttribute="centerX" secondItem="4" secondAttribute="centerX" id="aCe-DA-9xw"/>
-                <constraint firstItem="18" firstAttribute="top" secondItem="6" secondAttribute="bottom" priority="570" constant="121" id="frS-nM-wJI"/>
+                <constraint firstItem="18" firstAttribute="top" secondItem="lxr-AS-1xd" secondAttribute="bottom" priority="500" constant="13" id="hx5-6h-ElB"/>
                 <constraint firstAttribute="trailing" secondItem="13" secondAttribute="trailing" constant="8" id="i2X-oH-YwV"/>
                 <constraint firstItem="4" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" id="oyS-Ig-Pdv"/>
                 <constraint firstItem="18" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="qnY-t9-3T5"/>
-                <constraint firstItem="18" firstAttribute="top" secondItem="13" secondAttribute="bottom" constant="13" id="rfW-Fc-gd0"/>
-                <constraint firstItem="3aA-Yd-tUT" firstAttribute="top" secondItem="6" secondAttribute="bottom" constant="13" id="tz1-nx-lZ3"/>
-                <constraint firstItem="13" firstAttribute="top" secondItem="6" secondAttribute="bottom" priority="644" constant="67" id="xJd-Ds-54O"/>
-                <constraint firstItem="3aA-Yd-tUT" firstAttribute="top" secondItem="4" secondAttribute="bottom" priority="645" constant="82" id="xfN-Ox-lt8"/>
-                <constraint firstAttribute="trailing" secondItem="3aA-Yd-tUT" secondAttribute="trailing" constant="8" id="z2l-es-kbJ"/>
+                <constraint firstItem="13" firstAttribute="top" secondItem="lxr-AS-1xd" secondAttribute="bottom" priority="500" constant="13" id="u5d-hw-eVe"/>
+                <constraint firstItem="13" firstAttribute="top" secondItem="4" secondAttribute="bottom" priority="500" constant="30" id="ufP-Lu-9nm"/>
+                <constraint firstAttribute="trailing" secondItem="lxr-AS-1xd" secondAttribute="trailing" id="xWb-fu-PxE"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
         </view>
+        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cR5-az-1bu">
+            <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+            <nil key="highlightedColor"/>
+        </label>
     </objects>
 </document>

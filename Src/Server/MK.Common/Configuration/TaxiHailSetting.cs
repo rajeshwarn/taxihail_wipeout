@@ -113,6 +113,8 @@ namespace MK.Common.Configuration
         public bool SendReceiptAvailable { get; private set; }
         [Display(Name = "Rating Enabled", Description="Can the user rate the order when it's done")]
 		public bool RatingEnabled { get; private set; }		
+		[Display(Name = "User needs to rate before booking again", Description="Can the user book if he hasn't rate the last ride")]
+		public bool RatingRequired { get; private set; }		
         [Display(Name = "Show Call Driver", Description="Show button on the status screen to call the driver")]
 		public bool ShowCallDriver { get; private set; }
         [Display(Name = "Show Vehicule Information", Description="Show vehicule informatino when available")]
