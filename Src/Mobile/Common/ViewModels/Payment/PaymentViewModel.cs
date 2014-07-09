@@ -348,14 +348,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         private void PayPalFlow()
         {
-			this.Services().Message.ShowProgress(true);
-
             if (CanProceedToPayment(false))
             {
 				_palExpressCheckoutService.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount), Convert.ToDecimal(CultureProvider.ParseCurrency(MeterAmount)), Convert.ToDecimal(Math.Round(CultureProvider.ParseCurrency (TipAmount), 2)))
 					.ToObservable()
-                    // Always Hide progress indicator
-                    .Do(_ => this.Services().Message.ShowProgress(false), _ => this.Services().Message.ShowProgress(false))
 					.Subscribe(checkoutUrl => {
                         var @params = new Dictionary<string, string> { { "url", checkoutUrl } };
 						ShowSubViewModel<PayPalViewModel, bool>(@params, success =>
@@ -385,10 +381,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					var response = await _paymentService.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, meterAmount, tipAmount, Order.Id);
                     if (!response.IsSuccessfull)
                     {
-							this.Services().Message.ShowProgress(false);
-							this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], 
-								string.Format(this.Services().Localize["PaymentErrorMessage"], response.Message));
-							return;
+						this.Services().Message.ShowProgress(false);
+						this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], 
+							string.Format(this.Services().Localize["PaymentErrorMessage"], response.Message));
+						return;
                     }
 
 					_paymentService.SetPaymentFromCache(Order.Id, Amount);

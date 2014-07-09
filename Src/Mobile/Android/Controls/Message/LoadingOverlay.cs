@@ -96,7 +96,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             if (_car != null && !_car.IsRecycled)
             {
                 _car.Recycle();
-                _car = null;
             }
             _car = BitmapFactory.DecodeResource(_activity.Resources, Resource.Drawable.taxi_progress);
 
