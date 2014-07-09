@@ -5,6 +5,7 @@ using MonoTouch.Foundation;
 using MonoTouch.ObjCRuntime;
 using MonoTouch.UIKit;
 using System.Collections.Generic;
+using RatingState = apcurium.MK.Booking.Mobile.Models.RatingModel.RatingState;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
@@ -112,35 +113,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 		private void OnScoreATouchUpInside (object sender, EventArgs args)
 		{
 			if (SetRateCommand != null) {
-				SetRateCommand.Execute ("ScoreA");
+                SetRateCommand.Execute (RatingState.ScoreA);
 			}
 		}
 
         private void OnScoreBTouchUpInside (object sender, EventArgs args)
 		{
 			if (SetRateCommand != null) {
-				SetRateCommand.Execute ("ScoreB");
+                SetRateCommand.Execute (RatingState.ScoreB);
 			}
 		}
 
 		private void OnScoreCTouchUpInside (object sender, EventArgs args)
 		{
 			if (SetRateCommand != null) {
-				SetRateCommand.Execute ("ScoreC");
+                SetRateCommand.Execute (RatingState.ScoreC);
 			}
 		}
 
 		private void OnScoreDTouchUpInside (object sender, EventArgs args)
 		{
 			if (SetRateCommand != null) {
-				SetRateCommand.Execute ("ScoreD");
+                SetRateCommand.Execute (RatingState.ScoreD);
 			}
 		}
 
 		private void OnScoreETouchUpInside (object sender, EventArgs args)
 		{
 			if (SetRateCommand != null) {
-				SetRateCommand.Execute ("ScoreE");
+                SetRateCommand.Execute (RatingState.ScoreE);
 			}
 		}
 

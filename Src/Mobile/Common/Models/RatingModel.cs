@@ -6,7 +6,6 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Models
 {
-    //todo remove unused private field
     public class RatingModel : BaseViewModel
     {
         public Guid RatingTypeId { get; set; }
@@ -64,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Models
 			CanRate = canRate;
         }
 
-        private enum RatingState { ScoreA = 1, ScoreB = 2, ScoreC = 3, ScoreD = 4, ScoreE = 5 }
+        public enum RatingState { ScoreA = 1, ScoreB = 2, ScoreC = 3, ScoreD = 4, ScoreE = 5 }
 
 		private void UpdateButtonsState()
 		{
