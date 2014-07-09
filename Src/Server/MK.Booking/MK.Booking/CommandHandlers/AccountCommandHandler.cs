@@ -222,7 +222,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             using (var context = _contextFactory.Invoke())
             {
                 // Check with a log with from this user already exists. If not, create it.
-                var log = _appStartUpLogDao.FindById(command.Id) ?? new AppStartUpLogDetail
+                var log = context.Find<AppStartUpLogDetail>(command.UserId) ?? new AppStartUpLogDetail
                 {
                     UserId = command.UserId,
                 };

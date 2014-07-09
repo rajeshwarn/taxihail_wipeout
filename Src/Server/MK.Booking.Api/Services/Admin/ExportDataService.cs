@@ -48,6 +48,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                     var accounts = _accountDao.GetAll().Where(x => x.CreationDate >= startDate && x.CreationDate <= endDate).ToList();
                     var startUpLogs = _appStartUpLogDao.GetAll().ToList();
 
+                    // We join each accound details with their "last launch details"
                     var startUpLogDetails =
                         from a in accounts
                         join s in startUpLogs on a.Id equals s.UserId into matchingLog
@@ -69,7 +70,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             a.IsAdmin,
                             a.IsConfirmed,
                             a.DisabledByAdmin,
-                            Date = (m == null ? null : m.DateOccured.ToString("d", CultureInfo.InvariantCulture)),
+                            LastLaunch = (m == null ? null : m.DateOccured.ToLocalTime().ToString(CultureInfo.InvariantCulture)),
                             Platform = (m == null ? null : m.Platform),
                             PlatformDetails = (m == null ? null : m.PlatformDetails),
                             ApplicationVersion = (m == null ? null : m.ApplicationVersion),
@@ -77,25 +78,6 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                         };
 
                     return startUpLogDetails;
-
-                    //return accounts.Where(x => x.CreationDate >= startDate && x.CreationDate <= endDate).Select(x => new
-                    //{
-                    //    x.Id,
-                    //    x.IBSAccountId,
-                    //    CreateDate = x.CreationDate.ToLocalTime().ToString("d", CultureInfo.InvariantCulture),
-                    //    CreateTime = x.CreationDate.ToLocalTime().ToString("t", CultureInfo.InvariantCulture),
-                    //    x.Settings.Name,
-                    //    x.Settings.Phone,
-                    //    x.Email,
-                    //    x.DefaultCreditCard,
-                    //    x.DefaultTipPercent,
-                    //    x.Language,
-                    //    x.TwitterId,
-                    //    x.FacebookId,
-                    //    x.IsAdmin,
-                    //    x.IsConfirmed,
-                    //    x.DisabledByAdmin
-                    //});
                 case DataType.Orders:
                     var orders = _orderDao.GetAllWithAccountSummary();
 
