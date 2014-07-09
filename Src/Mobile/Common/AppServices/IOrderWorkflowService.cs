@@ -10,6 +10,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
     public interface IOrderWorkflowService
     {
+
+
 		void PrepareForNewOrder();
 
 		Task SetAddress(Address address);
@@ -38,6 +40,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<string> GetAndObserveEstimatedFare();
 		IObservable<string> GetAndObserveNoteToDriver();
 		IObservable<bool> GetAndObserveLoadingAddress();
+		IObservable<bool> GetAndObserveOrderCanBeConfirmed ();
 
 		Task<bool> ShouldWarnAboutEstimate();
 
@@ -47,6 +50,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         bool ValidateAndSaveAccountAnswers(AccountChargeQuestion[] questionsAndAnswers);
 
 		Task<OrderValidationResult> ValidateOrder();
+		void ConfirmValidationOrder ();
+
 		void Rebook(Order previous);
 
 		Task<Address> GetCurrentAddress();

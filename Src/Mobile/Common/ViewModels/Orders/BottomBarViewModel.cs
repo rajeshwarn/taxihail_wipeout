@@ -7,6 +7,8 @@ using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
 using ServiceStack.Text;
+using System.Reactive.Threading.Tasks;
+using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -102,6 +104,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					try
 					{
+								
+							var canBeConfirmed = await _orderWorkflowService.GetAndObserveOrderCanBeConfirmed().Take(1).ToTask();
+
+								if ( ! canBeConfirmed )
+							{
+								return;
+							}
+
+
+
+
 						if(await _orderWorkflowService.ShouldGoToAccountNumberFlow())
 						{
 							var hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions();
@@ -169,7 +182,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					}
 
 
-				});
+					});
 			}
 		}
 
@@ -254,16 +267,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private async Task PreValidateOrder()
 		{
 			var validationInfo = await _orderWorkflowService.ValidateOrder();
-			if (validationInfo.HasWarning)
-			{
-				this.Services().Message.ShowMessage(this.Services().Localize["WarningTitle"], 
+			if (validationInfo.HasWarning) {
+				this.Services ().Message.ShowMessage (this.Services ().Localize ["WarningTitle"], 
 					validationInfo.Message, 
-					this.Services().Localize["Continue"], 
-					delegate{}, 
-					this.Services().Localize["Cancel"], 
-                    () => { PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
-				});
+					this.Services ().Localize ["Continue"], 
+					delegate {
+						_orderWorkflowService.ConfirmValidationOrder ();
+					}, 
+					this.Services ().Localize ["Cancel"], 
+					() => {
+						PresentationStateRequested.Raise (this, new HomeViewModelStateRequestedEventArgs (HomeViewModelState.Initial));
+					});
 			}
+			else 
+			{
+				_orderWorkflowService.ConfirmValidationOrder();
+			}
+
+
 		}
 
     }

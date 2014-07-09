@@ -44,6 +44,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<bool> _loadingAddressSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 
+		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
+
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
 			IGeolocService geolocService,
@@ -310,6 +312,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _noteToDriverSubject;
 		}
 
+		public IObservable<bool> GetAndObserveOrderCanBeConfirmed()
+		{
+			return _orderCanBeConfirmed;
+		}
+
 		public IObservable<DateTime?> GetAndObservePickupDate()
 		{
 			return _pickupDateSubject;
@@ -403,6 +410,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_pickupDateSubject.OnNext(null);
 			_bookingSettingsSubject.OnNext(_accountService.CurrentAccount.Settings);
 			_estimatedFareDisplaySubject.OnNext(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
+			_orderCanBeConfirmed.OnNext (false);
 		}
 
 		public void ResetOrderSettings()
@@ -502,6 +510,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var orderToValidate = await GetOrder();
 			var validationResult = await _bookingService.ValidateOrder(orderToValidate);
 			return validationResult;
+		}
+
+		public void ConfirmValidationOrder()
+		{
+			_orderCanBeConfirmed.OnNext (true);
 		}
 
 		private async Task<CreateOrder> GetOrder()
