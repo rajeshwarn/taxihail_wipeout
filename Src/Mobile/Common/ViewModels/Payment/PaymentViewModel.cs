@@ -350,10 +350,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             if (CanProceedToPayment(false))
             {
+				this.Services().Message.ShowProgress(true);
 				_palExpressCheckoutService.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount), Convert.ToDecimal(CultureProvider.ParseCurrency(MeterAmount)), Convert.ToDecimal(Math.Round(CultureProvider.ParseCurrency (TipAmount), 2)))
 					.ToObservable()
 					.Subscribe(checkoutUrl => {
                         var @params = new Dictionary<string, string> { { "url", checkoutUrl } };
+						this.Services().Message.ShowProgress(false);
 						ShowSubViewModel<PayPalViewModel, bool>(@params, success =>
                         {
                             if (success)
