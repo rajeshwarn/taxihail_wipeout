@@ -1,38 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:focusable="true"
     android:focusableInTouchMode="true">
     <LinearLayout
-        android:layout_margin="0dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-        <LinearLayout
+        android:background="@color/top_bar_color"
+        android:orientation="horizontal">
+        <TextView
+            android:text="@string/RideSummaryTitleText"
+            style="@style/TopTitleText"
+            android:layout_gravity="center"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/top_bar_color"
-            android:orientation="horizontal">
-            <TextView
-                android:text="@string/RideSummaryTitleText"
-                style="@style/TopTitleText"
-                android:layout_gravity="center"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/top_bar_title_height"
-                android:gravity="center" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_margin="0dip"
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/top_bar_separator_color"
-            android:orientation="horizontal" />
+            android:layout_height="@dimen/top_bar_title_height"
+            android:gravity="center" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_margin="0dip"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/top_bar_separator_color"
+        android:orientation="horizontal" />
+    <ScrollView
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
         <LinearLayout
             android:orientation="vertical"
             android:paddingLeft="15dp"
@@ -53,32 +50,36 @@
                 android:layout_height="fill_parent"
                 android:layout_gravity="center_horizontal"
                 android:paddingBottom="10dip" />
-            <Button
-                style="@style/ButtonActionGreenStyle"
-                android:layout_marginTop="6dp"
-                android:id="@+id/SendReceiptBtn"
-                local:MvxBind="Click SendReceiptCommand; Visibility IsSendReceiptButtonShown, Converter=Visibility"
-                android:text="@string/SendReceipt"
+            <cirrious.mvvmcross.binding.droid.views.MvxListView
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/HeightButton" />
+                android:layout_height="wrap_content"
+                android:id="@+id/RatingListView"
+                android:layout_margin="12dip"
+                android:layout_weight="1"
+                local:MvxItemTemplate="@layout/ratinglistitem"
+                local:MvxBind="ItemsSource RatingList; Visibility RatingList, Converter=Visibility" />
             <Button
-                style="@style/ButtonActionGreenStyle"
-                local:MvxBind="Click NavigateToRatingPage; Visibility IsRatingButtonShown, Converter=Visibility"
-                android:text="@string/RateRide"
+                style="@style/ButtonActionGrayStyle"
+                android:layout_marginTop="6dip"
+                android:id="@+id/RateOrderButton"
+                android:text="@string/Submit"
+                android:layout_height="@dimen/HeightButton"
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/HeightButton" />
+                local:MvxBind="Click RateOrder; Visibility IsRatingButtonShown, Converter=Visibility" />
             <Button
                 style="@style/ButtonActionGreenStyle"
+                android:layout_marginTop="6dip"
                 local:MvxBind="Click ResendConfirmationCommand; Visibility IsResendConfirmationButtonShown, Converter=Visibility"
                 android:text="@string/ReSendConfirmation"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/HeightButton" />
             <Button
                 style="@style/ButtonActionGreenStyle"
+                android:layout_marginTop="6dip"
                 local:MvxBind="Click PayCommand; Visibility IsPayButtonShown, Converter=Visibility"
                 android:text="@string/PayNow"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/HeightButton" />
         </LinearLayout>
-    </LinearLayout>
-</RelativeLayout>
+    </ScrollView>
+</LinearLayout>

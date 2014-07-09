@@ -93,9 +93,8 @@
                 android:layout_width="0dip"
                 android:layout_height="@dimen/HeightButton" />
         </LinearLayout>
-    <!-- Unknown spacer here? -->
         <View
-            android:layout_height="6dip"
+            android:layout_height="@dimen/VerticalPadding"
             android:layout_width="fill_parent"
             android:gravity="center" />
         <Button

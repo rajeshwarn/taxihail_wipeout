@@ -5,6 +5,9 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using System.Drawing;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using apcurium.MK.Booking.Mobile.Client.Order;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -19,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			base.ViewWillAppear (animated);
 
             NavigationController.NavigationBar.Hidden = false;
-			NavigationItem.HidesBackButton = false;
+            NavigationItem.HidesBackButton = true;
             NavigationItem.Title = Localize.GetValue("RideSummaryTitleText");
 
             ChangeThemeOfBarStyle();
@@ -31,35 +34,41 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
-            FlatButtonStyle.Silver.ApplyTo(btnRateRide);
-			FlatButtonStyle.Green.ApplyTo(btnSendReceipt);
 			FlatButtonStyle.Green.ApplyTo(btnReSendConfirmation);
 			FlatButtonStyle.Green.ApplyTo(btnPay);
+            FlatButtonStyle.Silver.ApplyTo(btnSubmit);
 
             lblSubTitle.Text = String.Format(Localize.GetValue ("RideSummarySubTitleText"), this.Services().Settings.ApplicationName);
 
-            btnSendReceipt.SetTitle(Localize.GetValue("SendReceipt"), UIControlState.Normal);
-            btnRateRide.SetTitle(Localize.GetValue("RateRide"), UIControlState.Normal);
             btnPay.SetTitle(Localize.GetValue("PayNow"), UIControlState.Normal);
             btnReSendConfirmation.SetTitle(Localize.GetValue("ReSendConfirmation"), UIControlState.Normal);
+            btnSubmit.SetTitle(Localize.GetValue("Submit"), UIControlState.Normal);
+
+            var source = new MvxActionBasedTableViewSource(
+                tableRatingList,
+                UITableViewCellStyle.Default,
+                BookRatingCell.Identifier ,
+                BookRatingCell.BindingText,
+                UITableViewCellAccessory.None);
+
+            source.CellCreator = (tableView, indexPath, item) =>
+            {
+                var cell = BookRatingCell.LoadFromNib(tableView);
+                cell.RemoveDelay();
+                return cell;
+            };
+
+            tableRatingList.Source = source;
 
 			var set = this.CreateBindingSet<RideSummaryView, RideSummaryViewModel> ();
 
-            set.Bind(btnSendReceipt)
-				.For("TouchUpInside")
-				.To(vm => vm.SendReceiptCommand);
-            set.Bind(btnSendReceipt)
-                .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.IsSendReceiptButtonShown)
-                .WithConversion("BoolInverter");
-
-            set.Bind(btnRateRide)
-				.For("TouchUpInside")
-				.To(vm => vm.NavigateToRatingPage);
-            set.Bind(btnRateRide)
-                .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.IsRatingButtonShown)
-                .WithConversion("BoolInverter");
+            NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Bordered, (o, e) => 
+            {  
+                if (ViewModel.CanUserLeaveScreen ())
+                {
+                    NavigationController.PopViewControllerAnimated(true);
+                }
+            });
 
             set.Bind(btnPay)
 				.For("TouchUpInside")
@@ -67,6 +76,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnPay)
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.IsPayButtonShown)
+                .WithConversion("BoolInverter");
+
+            set.Bind (btnSubmit)
+                .For ("TouchUpInside")
+                .To (vm => vm.RateOrder);
+            set.Bind (btnSubmit)
+                .For (v => v.HiddenWithConstraints)
+                .To (vm => vm.IsRatingButtonShown)
                 .WithConversion("BoolInverter");
 
             set.Bind(btnReSendConfirmation)
@@ -77,16 +94,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.IsResendConfirmationButtonShown)
                 .WithConversion("BoolInverter");
 
+            set.Bind(source)
+                .For(v => v.ItemsSource)
+                .To(vm => vm.RatingList);
+
 			set.Apply ();
 
-            ViewModel.PropertyChanged += (sender, e) => 
+            ViewModel.PropertyChanged += (sender, e) =>
             {
-                if(e.PropertyName == "ReceiptSent")
+                if(e.PropertyName == "RatingList")
                 {
-                    if(ViewModel.ReceiptSent)
+                    if (ViewModel.RatingList != null)
                     {
-                        btnSendReceipt.SetTitle(Localize.GetValue("ReceiptSent"), UIControlState.Normal);
-                        btnSendReceipt.Enabled = false;
+                        constraintRatingTableHeight.Constant = BookRatingCell.Height * ViewModel.RatingList.Count;
+                    }
+                    else
+                    {
+                        constraintRatingTableHeight.Constant = 0;
                     }
                 }
             };
@@ -94,12 +118,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         public override void ViewWillDisappear(bool animated)
         {
-            base.ViewWillDisappear(animated);
             if (IsMovingFromParentViewController)
             {
                 // Back button pressed
-                ViewModel.PrepareNewOrder.Execute(null);
+				ViewModel.PrepareNewOrder.Execute(null);
             }
+
+            base.ViewWillDisappear(animated);
         }
 	}
 }

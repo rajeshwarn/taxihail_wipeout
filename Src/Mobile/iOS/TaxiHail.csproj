@@ -629,26 +629,6 @@
     <BundleResource Include="Resources\vehicle%402x.png" />
     <BundleResource Include="Resources\account.png" />
     <BundleResource Include="Resources\account%402x.png" />
-    <BundleResource Include="Resources\ecstatic-selected.png" />
-    <BundleResource Include="Resources\ecstatic-selected%402x.png" />
-    <BundleResource Include="Resources\ecstatic.png" />
-    <BundleResource Include="Resources\ecstatic%402x.png" />
-    <BundleResource Include="Resources\happy-selected.png" />
-    <BundleResource Include="Resources\happy-selected%402x.png" />
-    <BundleResource Include="Resources\happy.png" />
-    <BundleResource Include="Resources\happy%402x.png" />
-    <BundleResource Include="Resources\mad-selected.png" />
-    <BundleResource Include="Resources\mad-selected%402x.png" />
-    <BundleResource Include="Resources\mad.png" />
-    <BundleResource Include="Resources\mad%402x.png" />
-    <BundleResource Include="Resources\neutral-selected.png" />
-    <BundleResource Include="Resources\neutral-selected%402x.png" />
-    <BundleResource Include="Resources\neutral.png" />
-    <BundleResource Include="Resources\neutral%402x.png" />
-    <BundleResource Include="Resources\unhappy-selected.png" />
-    <BundleResource Include="Resources\unhappy-selected%402x.png" />
-    <BundleResource Include="Resources\unhappy.png" />
-    <BundleResource Include="Resources\unhappy%402x.png" />
     <BundleResource Include="Resources\blackcar_badge_selected.png" />
     <BundleResource Include="Resources\blackcar_badge_selected%402x.png" />
     <BundleResource Include="Resources\blackcar_badge.png" />
@@ -772,6 +752,10 @@
     <BundleResource Include="Resources\destination_small_icon_pressed.png" />
     <BundleResource Include="Resources\destination_small_icon_pressed%402x.png" />
     <BundleResource Include="Resources\Icon-60%402x.png" />
+    <BundleResource Include="Resources\star_selected.png" />
+    <BundleResource Include="Resources\star_selected%402x.png" />
+    <BundleResource Include="Resources\star_unselected.png" />
+    <BundleResource Include="Resources\star_unselected%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">
