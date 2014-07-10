@@ -60,6 +60,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                       
             Map = mapFragment.Map;
 
+            // add padding to the map to move the Google logo around
+            // the padding must be the same for left/right and top/bottom for the pins to be correctly aligned
+            Map.SetPadding (60.ToPixels(), 6.ToPixels(), 60.ToPixels(), 6.ToPixels());
+
             _touchableMap = mapFragment;
 
             _pickupOverlay = (ImageView)mapFragment.Activity.FindViewById(Resource.Id.pickupOverlay);
