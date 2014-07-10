@@ -16,7 +16,6 @@ namespace apcurium.MK.Common.Entity
         public double PerMinuteRate { get; set; }
         public double MarginOfError { get; set; }
         public double KilometerIncluded { get; set; }
-        public decimal PassengerRate { get; set; }
         public int DaysOfTheWeek { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }

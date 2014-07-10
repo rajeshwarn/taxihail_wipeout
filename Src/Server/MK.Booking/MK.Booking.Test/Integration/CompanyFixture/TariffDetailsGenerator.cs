@@ -48,13 +48,13 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 TariffId = tariffId,
                 FlatRate = 3.50m,
                 KilometricRate = 1.1,
+                PerMinuteRate = 1.5,
                 MarginOfError = 1.2,
                 KilometerIncluded = 1.6,
-                PassengerRate = 2.0m,
                 DaysOfTheWeek = DayOfTheWeek.Saturday | DayOfTheWeek.Sunday,
                 StartTime = DateTime.Today.AddHours(12).AddMinutes(55),
                 EndTime = DateTime.Today.AddHours(20).AddMinutes(15),
-                Type = TariffType.Day,
+                Type = TariffType.Day
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -67,8 +67,8 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 Assert.AreEqual(3.50m, dto.FlatRate);
                 Assert.AreEqual(1.1, dto.KilometricRate);
                 Assert.AreEqual(1.2, dto.MarginOfError);
+                Assert.AreEqual(1.5, dto.PerMinuteRate);
                 Assert.AreEqual(1.6, dto.KilometerIncluded);
-                Assert.AreEqual(2.0m, dto.PassengerRate);
                 Assert.AreEqual((int) (DayOfTheWeek.Saturday | DayOfTheWeek.Sunday), dto.DaysOfTheWeek);
                 Assert.AreEqual(12, dto.StartTime.Hour);
                 Assert.AreEqual(55, dto.StartTime.Minute);
@@ -123,8 +123,8 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 TariffId = _tariffId,
                 DaysOfTheWeek = DayOfTheWeek.Tuesday,
                 KilometricRate = 19,
+                PerMinuteRate = 20,
                 FlatRate = 20,
-                PassengerRate = 21,
                 MarginOfError = 22,
                 KilometerIncluded = 26,
                 StartTime = DateTime.Today.AddHours(23),
@@ -141,9 +141,9 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 Assert.AreEqual(_companyId, dto.CompanyId);
                 Assert.AreEqual(20, dto.FlatRate);
                 Assert.AreEqual(19, dto.KilometricRate);
+                Assert.AreEqual(20, dto.PerMinuteRate);
                 Assert.AreEqual(22, dto.MarginOfError);
                 Assert.AreEqual(26, dto.KilometerIncluded);
-                Assert.AreEqual(21, dto.PassengerRate);
                 Assert.AreEqual((int) (DayOfTheWeek.Tuesday), dto.DaysOfTheWeek);
                 Assert.AreEqual(23, dto.StartTime.Hour);
                 Assert.AreEqual(0, dto.EndTime.Hour);

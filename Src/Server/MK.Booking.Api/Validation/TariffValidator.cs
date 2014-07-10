@@ -19,8 +19,7 @@ namespace apcurium.MK.Booking.Api.Validation
                 RuleFor(r => r.FlatRate).GreaterThanOrEqualTo(0);
                 RuleFor(r => r.KilometricRate).GreaterThanOrEqualTo(0);
                 RuleFor(r => r.MarginOfError).GreaterThanOrEqualTo(0);
-                RuleFor(r => r.KilometricRate).GreaterThanOrEqualTo(0);
-                RuleFor(r => r.PassengerRate).GreaterThanOrEqualTo(0);
+                RuleFor(r => r.PerMinuteRate).GreaterThanOrEqualTo(0);
             });
         }
     }

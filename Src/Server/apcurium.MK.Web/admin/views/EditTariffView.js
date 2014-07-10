@@ -56,7 +56,7 @@
                         required: true,
                         min: 0
                     },
-                    passengerRate: {
+                    perMinuteRate: {
                         required: true,
                         min: 0
                     },

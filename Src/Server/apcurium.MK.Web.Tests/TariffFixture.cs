@@ -25,8 +25,8 @@ namespace apcurium.MK.Web.Tests
                     Name = "Rate " + Guid.NewGuid(),
                     KilometricRate = 1.1,
                     FlatRate = 1.2m,
-                    PassengerRate = 1.3m,
                     MarginOfError = 1.4,
+                    PerMinuteRate = 0,
                     KilometerIncluded = 0,
                 }).Wait();
         }
@@ -61,8 +61,8 @@ namespace apcurium.MK.Web.Tests
                     Name = "Rate " + tariffId,
                     KilometricRate = 1.1,
                     FlatRate = 1.2m,
-                    PassengerRate = 1.3m,
                     MarginOfError = 1.4,
+                    PerMinuteRate = 1.5,
                     KilometerIncluded = 1.6
                 });
 
@@ -76,8 +76,8 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(3, rate.EndTime.Hour);
             Assert.AreEqual(1.1, rate.KilometricRate);
             Assert.AreEqual(1.2m, rate.FlatRate);
-            Assert.AreEqual(1.3m, rate.PassengerRate);
             Assert.AreEqual(1.4, rate.MarginOfError);
+            Assert.AreEqual(1.5, rate.PerMinuteRate);
             Assert.AreEqual(1.6, rate.KilometerIncluded);
         }
 
