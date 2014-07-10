@@ -27,7 +27,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void GetInfo()
         {
-            var client = new ApplicationInfoServiceClient(BaseUrl, null, "Test");
+            var client = new ApplicationInfoServiceClient(BaseUrl, null, new PackageInfo());
             var appInfo = await client.GetAppInfoAsync();
             
             Assert.AreEqual(GetType().Assembly.GetName().Version.ToString(), appInfo.Version);

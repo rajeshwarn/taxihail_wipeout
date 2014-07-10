@@ -4,6 +4,7 @@ using System;
 using System.Net;
 using apcurium.MK.Booking.Api.Client.Cmt.OAuth;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using ServiceStack.ServiceHost;
 
@@ -13,10 +14,10 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 {
     public class CmtMobileServiceClient : BaseServiceClient
     {
-        public CmtMobileServiceClient(CmtPaymentSettings cmtSettings, string sessionId, string userAgent)
+        public CmtMobileServiceClient(CmtPaymentSettings cmtSettings, string sessionId, IPackageInfo packageInfo)
             : base(cmtSettings.IsSandbox
                 ? cmtSettings.SandboxMobileBaseUrl
-                : cmtSettings.MobileBaseUrl, sessionId, userAgent)
+                : cmtSettings.MobileBaseUrl, sessionId, packageInfo)
         {
             Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
             Client.LocalHttpWebRequestFilter = SignRequest;

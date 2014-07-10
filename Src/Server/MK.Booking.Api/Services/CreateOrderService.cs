@@ -125,6 +125,7 @@ namespace apcurium.MK.Booking.Api.Services
             command.IBSOrderId = emailCommand.IBSOrderId = ibsOrderId.Value;
             command.AccountId = account.Id;
             command.UserAgent = base.Request.UserAgent;
+            command.Version = base.Request.Headers.Get("Version");
             emailCommand.EmailAddress = account.Email;
 
             // Get Charge Type and Vehicle Type from reference data

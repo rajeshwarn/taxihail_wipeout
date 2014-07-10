@@ -51,10 +51,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _ordrPaymentDao = ordrPaymentDao;
             _cmtPaymentServiceClient =
                 new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null,
-                    "TaxiHail", logger);
+                    null, logger);
             _cmtMobileServiceClient =
                 new CmtMobileServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null,
-                    "TaxiHail");
+                    null);
         }
 
         public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardCmtRequest request)

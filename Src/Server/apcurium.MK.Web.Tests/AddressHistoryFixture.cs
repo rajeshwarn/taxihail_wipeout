@@ -32,7 +32,7 @@ namespace apcurium.MK.Web.Tests
         {
             //Arrange
             var newAccount = await CreateAndAuthenticateTestAccount();
-            var orderService = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var orderService = new OrderServiceClient(BaseUrl, SessionId, new PackageInfo());
 
             //Act
             var order = new CreateOrder
@@ -60,7 +60,7 @@ namespace apcurium.MK.Web.Tests
             await orderService.CreateOrder(order);
 
             //Assert
-            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new PackageInfo());
             var addresses = await sut.GetHistoryAddresses(newAccount.Id);
             Assert.AreEqual(1, addresses.Count());
             var address = addresses.Single();
@@ -78,8 +78,8 @@ namespace apcurium.MK.Web.Tests
         {
             //Arrange
             var newAccount = await CreateAndAuthenticateTestAccount();
-            var orderService = new OrderServiceClient(BaseUrl, SessionId, "Test");
-            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
+            var orderService = new OrderServiceClient(BaseUrl, SessionId, new PackageInfo());
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new PackageInfo());
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
@@ -140,7 +140,7 @@ namespace apcurium.MK.Web.Tests
         {
             //Arrange
             var newAccount = await CreateAndAuthenticateTestAccount();
-            var orderService = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var orderService = new OrderServiceClient(BaseUrl, SessionId, new PackageInfo());
             
             var order = new CreateOrder
                 {
@@ -166,7 +166,7 @@ namespace apcurium.MK.Web.Tests
                 };
             await orderService.CreateOrder(order);
 
-            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new PackageInfo());
             var addresses = await sut.GetHistoryAddresses(newAccount.Id);
 
             //Act

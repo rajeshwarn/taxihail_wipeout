@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 
 #endregion
@@ -11,8 +12,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class RulesServiceClient : BaseServiceClient
     {
-        public RulesServiceClient(string url, string sessionId, string userAgent)
-            : base(url, sessionId, userAgent)
+        public RulesServiceClient(string url, string sessionId, IPackageInfo packageInfo)
+            : base(url, sessionId, packageInfo)
         {
         }
 

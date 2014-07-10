@@ -37,7 +37,7 @@ namespace apcurium.MK.Web.Tests
         public async void when_creating_an_order_with_a_nearby_place()
         {
             var orderId = Guid.NewGuid();
-            var addresses = await new NearbyPlacesClient(BaseUrl, SessionId, "Test").GetNearbyPlaces(Latitude, Longitude);
+            var addresses = await new NearbyPlacesClient(BaseUrl, SessionId, new PackageInfo()).GetNearbyPlaces(Latitude, Longitude);
             var address = addresses.FirstOrDefault();
 
             if (address == null)
@@ -45,7 +45,7 @@ namespace apcurium.MK.Web.Tests
                 Assert.Inconclusive("no places returned");
             }
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new PackageInfo());
 
             await sut.CreateOrder(new CreateOrder
                 {
@@ -77,14 +77,14 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_location_is_not_provided()
         {
-            var sut = new NearbyPlacesClient(BaseUrl, SessionId, "Test");
+            var sut = new NearbyPlacesClient(BaseUrl, SessionId, new PackageInfo());
             Assert.Throws<WebServiceException>(async () => await sut.GetNearbyPlaces(null, null), ErrorCode.NearbyPlaces_LocationRequired.ToString());
         }
 
         [Test]
         public async void when_searching_for_nearby_places()
         {
-            var sut = new NearbyPlacesClient(BaseUrl, SessionId, "Test");
+            var sut = new NearbyPlacesClient(BaseUrl, SessionId, new PackageInfo());
             var addresses = await sut.GetNearbyPlaces(Latitude, Longitude);
 
             if (!addresses.Any())
@@ -100,7 +100,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void when_searching_for_nearby_places_with_a_max_radius()
         {
-            var sut = new NearbyPlacesClient(BaseUrl, SessionId, "Test");
+            var sut = new NearbyPlacesClient(BaseUrl, SessionId, new PackageInfo());
             var greatRadius = await sut.GetNearbyPlaces(Latitude, Longitude, 100);
             var smallRadius = await sut.GetNearbyPlaces(Latitude, Longitude, 10);
 

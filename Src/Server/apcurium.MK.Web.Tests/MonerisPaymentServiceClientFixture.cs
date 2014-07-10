@@ -17,7 +17,7 @@ namespace apcurium.MK.Web.Tests
 
         protected override IPaymentServiceClient GetPaymentClient()
         {
-            return new MonerisServiceClient(BaseUrl, SessionId, new MonerisPaymentSettings(), "Test", new Logger());
+            return new MonerisServiceClient(BaseUrl, SessionId, new MonerisPaymentSettings(), new PackageInfo(), new Logger());
         }
 
         protected override PaymentProvider GetProvider()

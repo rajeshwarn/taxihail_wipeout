@@ -41,6 +41,9 @@ namespace apcurium.MK.Booking.Commands
         public double? UserLongitude { get; set; }
 
         public string UserAgent { get; set; }
+
+        public string Version { get; set; }
+
         public Guid Id { get; private set; }
 
         public class PaymentInformation
