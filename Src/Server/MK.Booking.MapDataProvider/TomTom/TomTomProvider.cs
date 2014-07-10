@@ -47,8 +47,8 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
                 return new GeoDirection
                 { 
                     Distance = direction.Route.Summary.TotalDistanceMeters,
-                    Duration = direction.Route.Summary.TotalTimeSeconds,
-                    TrafficDelay = direction.Route.Summary.TotalDelaySeconds //this will only be available if date = null, otherwise it's 0
+                    Duration = direction.Route.Summary.TotalTimeSeconds, // based on history for given day and time
+                    TrafficDelay = direction.Route.Summary.TotalDelaySeconds // this will only be available if date = null, otherwise it's 0
                 };
             }
             catch(Exception e)
