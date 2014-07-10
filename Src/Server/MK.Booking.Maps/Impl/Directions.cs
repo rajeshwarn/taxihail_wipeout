@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 				result.Distance = direction.Distance;
 
                 var durationWithoutDelay = direction.Duration.HasValue 
-                    ? (direction.Duration - direction.TrafficDelay.HasValue ? direction.TrafficDelay : 0)
+                    ? direction.Duration - (direction.TrafficDelay.HasValue ? direction.TrafficDelay : 0)
                     : (int?)null;
                 result.Price = _priceCalculator.GetPrice (
                     direction.Distance, 
