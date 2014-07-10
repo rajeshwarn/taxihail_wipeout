@@ -151,7 +151,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     var vehicleView = new VehicleTypeView (
                         new RectangleF (leftPadding + i * width, 0f, width, this.Frame.Height), 
                         vehicle, 
-                        vehicle.Id == SelectedVehicle.Id);
+                        SelectedVehicle != null ? vehicle.Id == SelectedVehicle.Id : false);
 
                     vehicleView.TouchUpInside += (sender, e) => 
                     { 
