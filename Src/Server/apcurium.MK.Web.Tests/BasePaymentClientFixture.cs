@@ -71,7 +71,7 @@ namespace apcurium.MK.Web.Tests
         [Ignore("Too much components tested, the notification to IBS is not working so the test failed. No easy way to disable the event handler of notification")]
         public async void when_authorized_a_credit_card_payment_and_resending_confirmation()
         {
-            var orderServiceClient = new OrderServiceClient(BaseUrl, SessionId, new PackageInfo());
+            var orderServiceClient = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var orderId = Guid.NewGuid();
             var order = new CreateOrder
             {

@@ -28,7 +28,7 @@ namespace apcurium.MK.Web.Tests
             var task = CreateAndAuthenticateTestAdminAccount();
             task.Wait();
 
-            new AdministrationServiceClient(BaseUrl, SessionId, new PackageInfo()).AddOrUpdateAppSettings(new ConfigurationsRequest
+            new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo()).AddOrUpdateAppSettings(new ConfigurationsRequest
             {
                 AppSettings = new Dictionary<string, string> {{"Key.DefaultSetupWeb", "Value.DefaultSetupWeb"}}
             });
@@ -37,7 +37,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void UpdateAppSettings()
         {
-            new AdministrationServiceClient(BaseUrl, SessionId, new PackageInfo()).AddOrUpdateAppSettings(new ConfigurationsRequest
+            new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo()).AddOrUpdateAppSettings(new ConfigurationsRequest
             {
                 AppSettings = new Dictionary<string, string> {{"Key.DefaultSetupWeb", "Value.DefaultSetupWebUpdated"}}
             });

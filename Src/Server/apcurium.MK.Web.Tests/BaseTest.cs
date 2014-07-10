@@ -15,7 +15,7 @@ namespace apcurium.MK.Web.Tests
 {
     public class BaseTest
     {
-        protected class PackageInfo : IPackageInfo
+        protected class DummyPackageInfo : IPackageInfo
         {
             public string Platform { get { return "Android"; } }
 
@@ -33,7 +33,7 @@ namespace apcurium.MK.Web.Tests
         protected string TestAdminAccountPassword { get { return "password1"; } }
         protected string TestAccountPassword { get { return "password1"; } }
         protected string SessionId { get; set; }
-        protected AccountServiceClient AccountService { get { return new AccountServiceClient(BaseUrl, SessionId, new PackageInfo(), GetFakePaymentClient()); } }
+        protected AccountServiceClient AccountService { get { return new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), GetFakePaymentClient()); } }
         protected DummyConfigManager DummyConfigManager { get { return new DummyConfigManager(); } }
         static BaseTest()
         {
@@ -57,7 +57,7 @@ namespace apcurium.MK.Web.Tests
 
         public virtual void Setup()
         {
-            var authResponseTask = new AuthServiceClient(BaseUrl, null, new PackageInfo())
+            var authResponseTask = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo())
                 .Authenticate(TestAccount.Email, TestAccountPassword);
             authResponseTask.Wait();
             SessionId = authResponseTask.Result.SessionId;
@@ -76,7 +76,7 @@ namespace apcurium.MK.Web.Tests
         protected async Task<Account> CreateAndAuthenticateTestAccount()
         {
             var newAccount = await AccountService.CreateTestAccount();
-            var authResponse = await new AuthServiceClient(BaseUrl, null, new PackageInfo()).Authenticate(newAccount.Email, TestAccountPassword);
+            var authResponse = await new AuthServiceClient(BaseUrl, null, new DummyPackageInfo()).Authenticate(newAccount.Email, TestAccountPassword);
             SessionId = authResponse.SessionId;
             return newAccount;
         }
@@ -84,7 +84,7 @@ namespace apcurium.MK.Web.Tests
         protected async Task<Account> CreateAndAuthenticateTestAdminAccount()
         {
             var newAccount = await AccountService.CreateTestAdminAccount();
-            var authResponse = await new AuthServiceClient(BaseUrl, null, new PackageInfo()).Authenticate(newAccount.Email, TestAccountPassword);
+            var authResponse = await new AuthServiceClient(BaseUrl, null, new DummyPackageInfo()).Authenticate(newAccount.Email, TestAccountPassword);
             SessionId = authResponse.SessionId;
             return newAccount;
         }
@@ -94,7 +94,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = Guid.NewGuid().ToString(), Language = "en" };
             await AccountService.RegisterAccount(newAccount);
 
-            var client = new AuthServiceClient(BaseUrl, null, new PackageInfo());
+            var client = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo());
             var authResponse = await client.AuthenticateFacebook(newAccount.FacebookId);
             SessionId = authResponse.SessionId;
 
@@ -106,7 +106,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = Guid.NewGuid().ToString(), Language = "en" };
             await AccountService.RegisterAccount(newAccount);
 
-            var authResponse = await new AuthServiceClient(BaseUrl, null, new PackageInfo()).AuthenticateTwitter(newAccount.TwitterId);
+            var authResponse = await new AuthServiceClient(BaseUrl, null, new DummyPackageInfo()).AuthenticateTwitter(newAccount.TwitterId);
             SessionId = authResponse.SessionId;
 
             return await AccountService.GetMyAccount();

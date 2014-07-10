@@ -28,7 +28,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void AdvancedNameSearch()
         {
-            var sut = new GeocodingServiceClient(BaseUrl, SessionId, new PackageInfo());
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var addresses = sut.Search("5661 avenue chateaubriand, Montreal");
             Assert.AreEqual(2, addresses.Count());
             var address = addresses.ElementAt(0);
@@ -42,7 +42,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void BasicCoordinateSearch()
         {
-            var sut = new GeocodingServiceClient(BaseUrl, SessionId, new PackageInfo());
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var addresses = await sut.Search(45.5062, -73.5726);
             Assert.True(addresses.Any());
         }
@@ -50,7 +50,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void BasicNameSearch()
         {
-            var sut = new GeocodingServiceClient(BaseUrl, SessionId, new PackageInfo());
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var addresses = sut.Search("11 hines");
             Assert.True(addresses.Count() == 1);
             Assert.True(addresses.ElementAt(0).FullAddress.Contains("11"));
@@ -59,7 +59,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void DefaultLocationIsAnAddress()
         {
-            var sut = new GeocodingServiceClient(BaseUrl, SessionId, new PackageInfo());
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var address = await sut.DefaultLocation();
 
             Assert.IsNotNull(address);
@@ -70,7 +70,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void RangeCoordinateSearch()
         {
-            var sut = new GeocodingServiceClient(BaseUrl, SessionId, new PackageInfo());
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var addresses = await sut.Search(45.5364, -73.6103);
             Assert.True(addresses.Any());
 
@@ -81,7 +81,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void SearchMiddleField()
         {
-            var sut = new GeocodingServiceClient(BaseUrl, SessionId, new PackageInfo());
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var addresses = await sut.Search(45.5364, -73.6103);
             
             Assert.True(addresses.Any());
