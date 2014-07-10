@@ -153,7 +153,6 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 			}
 
 			return new GeoDirection ();
-			//return 
         }
 
         public GeoAddress[] GeocodeAddress(string address)

@@ -6,8 +6,6 @@ namespace apcurium.MK.Booking.MapDataProvider
 {
 	public interface IDirectionDataProvider
 	{
-
-
 		GeoDirection GetDirections(double originLatitude, double originLongitude, double destinationLatitude,
 			double destinationLongitude);
 	}

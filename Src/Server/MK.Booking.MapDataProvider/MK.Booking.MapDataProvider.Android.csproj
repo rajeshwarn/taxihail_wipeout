@@ -85,6 +85,8 @@
     <Compile Include="Resources\GeoDirection.cs" />
     <Compile Include="Google\GoogleApiClient.cs" />
     <Compile Include="Resources\GeoPlace.cs" />
+    <Compile Include="TomTom\TomTomProvider.cs" />
+    <Compile Include="TomTom\Resources\RoutingResponse.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -104,5 +106,6 @@
     <Folder Include="Foursquare\" />
     <Folder Include="Google\Resources\" />
     <Folder Include="Resources\" />
+    <Folder Include="TomTom\Resources\" />
   </ItemGroup>
 </Project>

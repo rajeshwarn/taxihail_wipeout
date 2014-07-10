@@ -31,11 +31,12 @@ using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
 using Cirrious.MvvmCross.Droid.Platform;
 using Cirrious.MvvmCross.Droid.Views;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.MapDataProvider.TomTom;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public class Setup
-        : MvxAndroidDialogSetup
+	public class Setup : MvxAndroidDialogSetup
     {
         readonly TinyIoCContainer _container;
 
@@ -74,12 +75,22 @@ namespace apcurium.MK.Booking.Mobile.Client
             _container.Register<IPhoneService>(new PhoneService(ApplicationContext));
             _container.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IAppSettings>()));
 
-            _container.Register<IAppSettings>(new AppSettingsService(_container.Resolve<ICacheService>(), _container.Resolve<ILogger>()));
+            _container.Register<IAppSettings>(new AppSettingsService (_container.Resolve<ICacheService> (), _container.Resolve<ILogger> ()));
 
-			_container.Register<IGeocoder>( (c,p)=> new GoogleApiClient( c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())) );
+            _container.Register<IGeocoder>( (c,p)=> new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())) );
 			_container.Register<IPlaceDataProvider, GoogleApiClient>();
-			_container.Register<IDirectionDataProvider, GoogleApiClient>();
-
+			
+            _container.Register<IDirectionDataProvider> ((c, p) =>
+            {
+                switch (c.Resolve<IAppSettings>().Data.DirectionDataProvider)
+                {
+                case MapProvider.TomTom:
+                    return new TomTomProvider(c.Resolve<IAppSettings>(), c.Resolve<ILogger>());
+                case MapProvider.Google:
+                default:
+                    return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
+                }
+            });
 
 			InitializeSocialNetwork();
         }
@@ -102,17 +113,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void InitializeSocialNetwork()
 		{
-			
 			_container.Register<IFacebookService,FacebookService> ();
-//			(c,prop) =>  {
-//
-//                var settings = c.Resolve<IAppSettings>();
-//                var facebookService = new FacebookService(settings.Data.FacebookAppId, () => _container.Resolve<IMvxAndroidCurrentTopActivity>().Activity);
-//                return facebookService;
-//			});			
 
-            _container.Register<ITwitterService>((c,p) => {
-
+            _container.Register<ITwitterService>((c,p) => 
+            {
                 var settings = c.Resolve<IAppSettings>();
                 var oauthConfig = new OAuthConfig
                 {
@@ -124,7 +128,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                     AuthorizeUrl = settings.Data.TwitterAuthorizeUrl
                 };
                 return new TwitterServiceMonoDroid( oauthConfig, c.Resolve<IMvxAndroidCurrentTopActivity>());
-            
             });
 		}
 
@@ -137,7 +140,5 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             return new PhonePresenter();
         }
-	}
-
-
+    }
 }
