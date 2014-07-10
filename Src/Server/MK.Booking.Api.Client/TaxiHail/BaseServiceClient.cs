@@ -53,7 +53,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             }
 
             // When packageInfo is not specified, we use a default value as the useragent
-            //client.LocalHttpWebRequestFilter = request => request.UserAgent = _packageInfo == null ? DefaultUserAgent : _packageInfo.UserAgent;
             client.LocalHttpWebRequestFilter = request =>
             {
                 request.UserAgent = _packageInfo == null ? DefaultUserAgent : _packageInfo.UserAgent;
