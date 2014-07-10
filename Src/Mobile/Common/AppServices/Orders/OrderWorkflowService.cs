@@ -131,9 +131,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_destinationAddressSubject.OnNext(new Address());
 		}
 
-		public void SetPickupDate(DateTime? date)
+		public async Task SetPickupDate(DateTime? date)
 		{
 			_pickupDateSubject.OnNext(date);
+
+			await CalculateEstimatedFare();
 		}
 
 		public async Task ToggleBetweenPickupAndDestinationSelectionMode()

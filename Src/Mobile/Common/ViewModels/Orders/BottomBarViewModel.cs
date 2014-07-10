@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand<DateTime?>(async date =>
 				{
-					_orderWorkflowService.SetPickupDate(date);
+					await _orderWorkflowService.SetPickupDate(date);
 					try
 					{
 						await _orderWorkflowService.ValidatePickupDestinationAndTime();
@@ -211,7 +211,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
 			{
-				return this.GetCommand(() => {
+				return this.GetCommand(() => 
+				{
+					// set pickup date to null to reset the estimate for now and not the possible date set by book later
+					_orderWorkflowService.SetPickupDate(null);
                     PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
 				});
 			}

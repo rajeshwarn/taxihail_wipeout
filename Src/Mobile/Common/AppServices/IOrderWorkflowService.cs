@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken);
 
-		void SetPickupDate(DateTime? date);
+		Task SetPickupDate(DateTime? date);
 
 		Task ToggleBetweenPickupAndDestinationSelectionMode();
 

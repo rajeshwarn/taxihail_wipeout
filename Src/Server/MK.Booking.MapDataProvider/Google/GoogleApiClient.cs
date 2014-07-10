@@ -134,7 +134,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             
         }
 
-		public GeoDirection GetDirections(double originLat, double originLng, double destLat, double destLng)
+        public GeoDirection GetDirections(double originLat, double originLng, double destLat, double destLng, DateTime? date)
         {
             var client = new JsonServiceClient(MapsServiceUrl);
             var resource = string.Format(CultureInfo.InvariantCulture,

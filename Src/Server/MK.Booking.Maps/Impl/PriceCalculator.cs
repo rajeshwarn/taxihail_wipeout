@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             _logger = logger;
         }
 
-        public double? GetPrice(int? distance, DateTime pickupDate)
+        public double? GetPrice(int? distance, DateTime pickupDate, int? durationWithoutAnyDelayInSeconds, int? trafficDelayInSeconds)
         {
             var tariff = GetTariffFor(pickupDate);
 
