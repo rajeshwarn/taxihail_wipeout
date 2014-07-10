@@ -59,6 +59,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string UserAgent { get; set; }
 
+        public string Version { get; set; }
+
 
         public string VehicleNumber { get; set; }
 

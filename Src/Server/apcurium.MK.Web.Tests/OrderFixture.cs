@@ -75,7 +75,6 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(6, orderDetails.Settings.Passengers);
             Assert.AreEqual(1, orderDetails.Settings.LargeBags);
             Assert.AreEqual("123", orderDetails.Settings.AccountNumber);
-
         }
 
         [Test]

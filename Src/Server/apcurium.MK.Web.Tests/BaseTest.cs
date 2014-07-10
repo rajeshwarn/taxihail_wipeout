@@ -17,13 +17,13 @@ namespace apcurium.MK.Web.Tests
     {
         protected class PackageInfo : IPackageInfo
         {
-            public string Platform { get { return string.Empty; } }
+            public string Platform { get { return "Android"; } }
 
-            public string PlatformDetails { get { return string.Empty; } }
+            public string PlatformDetails { get { return "4.4.4 LGE Nexus 4"; } }
 
-            public string Version { get { return string.Empty; } }
+            public string Version { get { return "1.0.0"; } }
 
-            public string UserAgent { get { return "Test"; } }
+            public string UserAgent { get { return "TestUserAgent"; } }
         }
 
         protected static readonly AppHost AppHost;

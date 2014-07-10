@@ -136,6 +136,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 
                         excelResult["Operating System"] = operatingSystem;
                         excelResult["User Agent"] = x.UserAgent;
+                        excelResult["Version"] = x.Version;
 
                         foreach (var rate in x.Rating)
                         {
