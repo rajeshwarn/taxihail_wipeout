@@ -10,9 +10,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
     public interface IOrderWorkflowService
     {
-
-
-		void PrepareForNewOrder();
+		Task PrepareForNewOrder();
 
 		Task SetAddress(Address address);
 		Task SetPickupAptAndRingCode(string apt, string ringCode);
