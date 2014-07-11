@@ -38,7 +38,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void create_order()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var order = new CreateOrder
                 {
                     Id = Guid.NewGuid(),
@@ -75,13 +75,12 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(6, orderDetails.Settings.Passengers);
             Assert.AreEqual(1, orderDetails.Settings.LargeBags);
             Assert.AreEqual("123", orderDetails.Settings.AccountNumber);
-
         }
 
         [Test]
         public async void create_order_with_user_location()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
@@ -121,7 +120,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_creating_order_without_passing_settings()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
@@ -149,12 +148,12 @@ namespace apcurium.MK.Web.Tests
         {
             base.TestFixtureSetup();
 
-            var authTask = new AuthServiceClient(BaseUrl, SessionId, "Test").Authenticate(TestAccount.Email, TestAccountPassword);
+            var authTask = new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo()).Authenticate(TestAccount.Email, TestAccountPassword);
             authTask.Wait();
             var auth = authTask.Result;
             SessionId = auth.SessionId;
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var order = new CreateOrder
                 {
                     Id = _orderId,
@@ -191,7 +190,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void ibs_order_was_created()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var order = await sut.GetOrder(_orderId);
 
             Assert.IsNotNull(order);
@@ -203,14 +202,14 @@ namespace apcurium.MK.Web.Tests
         {
             await CreateAndAuthenticateTestAccount();
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             Assert.Throws<WebServiceException>(async () => await sut.GetOrder(_orderId));
         }
 
         [Test]
         public async void can_cancel_it()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             await sut.CancelOrder(_orderId);
 
             OrderStatusDetail status = null;
@@ -237,7 +236,7 @@ namespace apcurium.MK.Web.Tests
         {
             await CreateAndAuthenticateTestAccount();
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
             Assert.Throws<WebServiceException>(async () => await sut.CancelOrder(_orderId));
         }
@@ -245,7 +244,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void when_remove_it_should_not_be_in_history()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
             await sut.RemoveFromHistory(_orderId);
 
@@ -256,7 +255,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void when_order_rated_ratings_should_not_be_null()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
             var orderRatingsRequest = new OrderRatingsRequest
             {
@@ -281,7 +280,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void GetOrderList()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
             var orders = await sut.GetOrders();
             Assert.NotNull(orders);
@@ -290,7 +289,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void GetOrder()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
             var orders = await sut.GetOrder(_orderId);
             Assert.NotNull(orders);

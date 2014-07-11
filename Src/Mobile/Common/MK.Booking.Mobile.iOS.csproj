@@ -182,7 +182,6 @@
     <Compile Include="AppServices\Impl\GoogleService.cs" />
     <Compile Include="AppServices\Impl\ApplicationInfoService.cs" />
     <Compile Include="AppServices\IApplicationInfoService.cs" />
-    <Compile Include="Infrastructure\IPackageInfo.cs" />
     <Compile Include="Style\StyleManager.cs" />
     <Compile Include="Style\ButtonStyle.cs" />
     <Compile Include="Style\ColorDefinition.cs" />
