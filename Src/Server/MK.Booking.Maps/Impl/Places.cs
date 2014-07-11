@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             return result;
         }
 
-        public Address[] SearchPlaces(string name, double? latitude, double? longitude, int? radius)
+		public Address[] SearchPlaces(string name, double? latitude, double? longitude, int? radius, string currentLanguage)
         {
             int defaultRadius = _appSettings.Data.DefaultRadius;
 
@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             if (string.IsNullOrWhiteSpace(name))
             {
                 googlePlaces =
-                    _client.GetNearbyPlaces(latitude, longitude, "en", false,
+					_client.GetNearbyPlaces(latitude, longitude, currentLanguage, false,
                         radius.HasValue ? radius.Value : defaultRadius).Take(15);
             }
             else
@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                 var priceFormat = new RegionInfo(_appSettings.Data.PriceFormat);
 
                 googlePlaces =
-                    _client.SearchPlaces(latitude, longitude, name, "en", false,
+					_client.SearchPlaces(latitude, longitude, name, currentLanguage, false,
                         radius.HasValue ? radius.Value : defaultRadius, priceFormat.TwoLetterISORegionName.ToLower())
                         .Take(15);
             }
@@ -100,20 +100,11 @@ namespace apcurium.MK.Booking.Maps.Impl
 
 		private Address ConvertToAddress(GeoPlace place)
         {
-            var txtInfo = new CultureInfo("en-US", false).TextInfo;
-
-            var typesToHide = new[] {"establishment", "geocode"};
-            var placeType = place.Types.FirstOrDefault().ToSafeString();
-            var hidePlaceType = (string.IsNullOrWhiteSpace(placeType) || typesToHide.Contains(placeType));
-            var displayPlaceType = hidePlaceType ? "" : " (" + txtInfo.ToTitleCase(placeType.Replace("_", " ")) + ")";
-
-            //string diplay = placeType//
-
             var address = new Address
             {
                 Id = Guid.NewGuid(),
 				PlaceReference = place.Id,
-                FriendlyName = place.Name + displayPlaceType,
+                FriendlyName = place.Name,
 				FullAddress = place.Address.FullAddress,
 				Latitude = place.Address.Latitude,
 				Longitude = place.Address.Longitude ,
