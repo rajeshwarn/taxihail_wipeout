@@ -13,7 +13,7 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
             CreateAndAuthenticateTestAdminAccount().Wait();
-            var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             sut.Register(_knownDeviceToken, PushNotificationServicePlatform.Android).Wait();
         }
 
@@ -34,7 +34,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void RegisterDevice()
         {
-            var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var deviceToken = Guid.NewGuid().ToString();
 
             await sut.Register(deviceToken, PushNotificationServicePlatform.Android);
@@ -45,7 +45,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void UnregisterDevice()
         {
-            var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
             await sut.Unregister(_knownDeviceToken);
 

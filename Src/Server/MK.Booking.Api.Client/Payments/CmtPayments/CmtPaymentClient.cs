@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Cmt;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 
@@ -26,10 +27,10 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
     public class CmtPaymentClient : BaseServiceClient, IPaymentServiceClient
     {
         public CmtPaymentClient(string baseUrl, string sessionId, CmtPaymentSettings cmtSettings,
-            string userAgent, ILogger logger)
-            : base(baseUrl, sessionId, userAgent)
+            IPackageInfo packageInfo, ILogger logger)
+            : base(baseUrl, sessionId, packageInfo)
         {
-            CmtPaymentServiceClient = new CmtPaymentServiceClient(cmtSettings, null, userAgent, logger);
+            CmtPaymentServiceClient = new CmtPaymentServiceClient(cmtSettings, null, packageInfo, logger);
         }
 
         private CmtPaymentServiceClient CmtPaymentServiceClient { get; set; }
@@ -163,7 +164,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         public static bool TestClient(CmtPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger)
         {
-            var cmtPaymentServiceClient = new CmtPaymentServiceClient(serverPaymentSettings, null, "test", logger);
+            var cmtPaymentServiceClient = new CmtPaymentServiceClient(serverPaymentSettings, null, null, logger);
             var result = TokenizeSyncForSettingsTest(cmtPaymentServiceClient, number, date);
             return result.IsSuccessfull;
         }

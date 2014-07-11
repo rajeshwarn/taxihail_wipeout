@@ -1,14 +1,15 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class GeocodingServiceClient : BaseServiceClient
     {
-        public GeocodingServiceClient(string url, string sessionId, string userAgent)
-            : base(url, sessionId, userAgent)
+        public GeocodingServiceClient(string url, string sessionId, IPackageInfo packageInfo)
+            : base(url, sessionId, packageInfo)
         {
         }
         

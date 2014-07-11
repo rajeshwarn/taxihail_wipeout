@@ -14,8 +14,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
     {
         private readonly ICacheService _cacheService;
 
-        public CompanyServiceClient(string url, string sessionId, string userAgent, ICacheService cacheService) 
-            : base(url, sessionId, userAgent)
+        public CompanyServiceClient(string url, string sessionId, IPackageInfo packageInfo, ICacheService cacheService)
+            : base(url, sessionId, packageInfo)
         {
             _cacheService = cacheService;
         }

@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Api.Client.Extensions;
 using System.Globalization;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 #endregion
 
@@ -11,8 +12,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class IbsFareServiceClient : BaseServiceClient, IIbsFareClient
     {
-        public IbsFareServiceClient(string url, string sessionId, string userAgent)
-            : base(url, sessionId, userAgent)
+        public IbsFareServiceClient(string url, string sessionId, IPackageInfo packageInfo)
+            : base(url, sessionId, packageInfo)
         {
         }
 
