@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 UserLatitude = 46.50643,
                 UserLongitude = -74.554052,
                 UserAgent = "TestUserAgent",
-                Version = "1.0.0"
+                ClientVersion = "1.0.0"
             };
             order.Settings = new BookingSettings
             {
@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(46.50643, orderCreated.UserLatitude);
             Assert.AreEqual(-74.554052, orderCreated.UserLongitude);
             Assert.AreEqual("TestUserAgent", orderCreated.UserAgent);
-            Assert.AreEqual("1.0.0", orderCreated.Version);
+            Assert.AreEqual("1.0.0", orderCreated.ClientVersion);
         }
 
         [Test]

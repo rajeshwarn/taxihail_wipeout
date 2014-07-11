@@ -58,7 +58,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 request.UserAgent = _packageInfo == null ? DefaultUserAgent : _packageInfo.UserAgent;
 
                 if (_packageInfo != null)
-                    request.Headers.Add("Version", _packageInfo.Version);
+                {
+                    request.Headers.Add("ClientVersion", _packageInfo.Version);
+                }  
             };
 
             return client;

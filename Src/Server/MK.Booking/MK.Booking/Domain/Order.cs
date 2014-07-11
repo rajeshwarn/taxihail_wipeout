@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Domain
 
         public Order(Guid id, Guid accountId, int ibsOrderId, DateTime pickupDate, Address pickupAddress,
             Address dropOffAddress, BookingSettings settings, double? estimatedFare, string userAgent,
-            string clientLanguageCode, double? userLatitude, double? userLongitude, string version) : this(id)
+            string clientLanguageCode, double? userLatitude, double? userLongitude, string clientVersion) : this(id)
         {
             if ((settings == null) || pickupAddress == null || ibsOrderId <= 0 ||
                 (Params.Get(pickupAddress.FullAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty())))
@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Domain
                 ClientLanguageCode = clientLanguageCode,
                 UserLatitude = userLatitude,
                 UserLongitude = userLongitude,
-                Version = version
+                ClientVersion = clientVersion
             });
         }
 

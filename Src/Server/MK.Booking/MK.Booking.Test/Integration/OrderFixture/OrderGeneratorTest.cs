@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 CreatedDate = createdDate,
                 ClientLanguageCode = "fr",
                 UserAgent = "TestUserAgent",
-                Version = "1.0.0"
+                ClientVersion = "1.0.0"
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -100,7 +100,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual(pickupDate.ToLongDateString(), dto.PickupDate.ToLongDateString());
                 Assert.AreEqual("fr", dto.ClientLanguageCode);
                 Assert.AreEqual("TestUserAgent", dto.UserAgent);
-                Assert.AreEqual("1.0.0", dto.Version);
+                Assert.AreEqual("1.0.0", dto.ClientVersion);
 
                 //Settings
                 Assert.AreEqual(99, dto.Settings.ChargeTypeId);

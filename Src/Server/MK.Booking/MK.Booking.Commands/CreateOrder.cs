@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Commands
 
         public string UserAgent { get; set; }
 
-        public string Version { get; set; }
+        public string ClientVersion { get; set; }
 
         public Guid Id { get; private set; }
 
