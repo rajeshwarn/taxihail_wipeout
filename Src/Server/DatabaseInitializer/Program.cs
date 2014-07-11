@@ -562,7 +562,6 @@ namespace DatabaseInitializer
                 KilometricRate = double.Parse(ratePerKm, CultureInfo.InvariantCulture),
                 FlatRate = decimal.Parse(flatRate, CultureInfo.InvariantCulture),
                 MarginOfError = 20,
-                PassengerRate = 0m,
                 CompanyId = AppConstants.CompanyId,
                 TariffId = Guid.NewGuid(),
             });

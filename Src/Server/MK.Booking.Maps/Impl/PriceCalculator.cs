@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             _logger = logger;
         }
 
-        public double? GetPrice(int? distance, DateTime pickupDate)
+        public double? GetPrice(int? distance, DateTime pickupDate, int? durationInSeconds)
         {
             var tariff = GetTariffFor(pickupDate);
 
@@ -36,12 +36,21 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 if (distance.HasValue && (distance.Value > 0))
                 {
-                    var km = ((double) distance.Value/1000) - tariff.KilometerIncluded;
-                    km = km < 0 ? 0 : km;
+                    var distanceInKm = ((double) distance.Value/1000) - tariff.KilometerIncluded;
+                    distanceInKm = Math.Max(distanceInKm, 0);
 
-                    if (km < maxDistance)
+                    var durationInMinutes = (double)0;
+                    if(durationInSeconds.HasValue && durationInSeconds > 0)
                     {
-                        price = ((double) tariff.FlatRate + (km*tariff.KilometricRate))*(1 + tariff.MarginOfError/100);
+                        durationInMinutes = ((double) durationInSeconds.Value/60);
+                    }
+
+                    if (distanceInKm < maxDistance)
+                    {
+                        price = (double)tariff.FlatRate + (distanceInKm * tariff.KilometricRate) + (durationInMinutes * tariff.PerMinuteRate);
+
+                        // add overhead
+                        price = price * (1 + tariff.MarginOfError/100);
                     }
                     else
                     {
@@ -60,7 +69,6 @@ namespace apcurium.MK.Booking.Maps.Impl
                     }
                     price = q*5;
                     price = price.Value/100;
-                    
                 }
             }
             catch(Exception e)

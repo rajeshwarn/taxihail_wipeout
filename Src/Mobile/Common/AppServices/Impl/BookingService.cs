@@ -150,16 +150,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool IsCallboxStatusCompleted(string statusId)
         {
-            return
-                statusId.SoftEqual(VehicleStatuses.Common.Arrived) ;
+            return statusId.SoftEqual(VehicleStatuses.Common.Arrived) ;
         }
 
         public bool IsStatusDone (string statusId)
         {
             return statusId.SoftEqual(VehicleStatuses.Common.Done) || statusId.SoftEqual(VehicleStatuses.Common.MeterOffNotPayed);
         }
-
-
 
 		public async Task<DirectionInfo> GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate)
         {
@@ -168,7 +165,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             
             if (pickup.HasValidCoordinate() && destination.HasValidCoordinate())
             {
-
                 if (tarifMode != TarifMode.AppTarif)
                 {
 					directionInfo = await UseServiceClientAsync<IIbsFareClient, DirectionInfo>(service => service.GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude));                                                            
@@ -180,9 +176,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 }            
 
 				return directionInfo ?? new DirectionInfo();
-
-
             }
+
             return new DirectionInfo();
         }
 
@@ -192,8 +187,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			if (direction.Distance.HasValue)
             {
-
-
 				var willShowFare = direction.Price.HasValue && direction.Price.Value > 0;                                
 
 				if (direction.Price.HasValue && willShowFare)
