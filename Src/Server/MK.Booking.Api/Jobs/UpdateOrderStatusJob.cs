@@ -60,16 +60,9 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     var orderStatus = _orderDao.FindOrderStatusById(orderId);
                     var account = _accountDao.FindById(order.AccountId);
-                    var status = _bookingWebServiceClient.GetOrderStatus(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
-
-                    var ibsStatus = new IBSOrderInformation
-                    {
-                        Status = status.Status,
-                        IBSOrderId = order.IBSOrderId.Value,
-                    };
-
-
-                    _orderStatusUpdater.Update(ibsStatus, orderStatus);
+                    var status = _bookingWebServiceClient.GetOrdersStatus( new int[] { order.IBSOrderId.Value });
+                 
+                    _orderStatusUpdater.Update(status.ElementAt(0), orderStatus);
                 }
             }
             catch
