@@ -1,5 +1,4 @@
 ﻿using System;
-using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Configuration;
