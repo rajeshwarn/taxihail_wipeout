@@ -33,7 +33,8 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var language = CultureInfo.CurrentUICulture.Name;
-            if (this.GetSession() != null)
+            if (this.GetSession() != null
+                && this.GetSession().UserAuthId != null)
             {
                 var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
                 if (account != null)
