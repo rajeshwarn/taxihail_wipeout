@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.NearbyPlaces_LocationRequired.ToString());
             }
 
-            return _client.SearchPlaces(request.Name, request.Lat, request.Lng, request.Radius);
+            return _client.SearchPlaces(request.Name, request.Lat, request.Lng, request.Radius, "en");
         }
     }
 }

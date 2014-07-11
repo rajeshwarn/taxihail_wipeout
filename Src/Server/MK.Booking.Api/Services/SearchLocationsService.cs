@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.Search_Locations_NameRequired.ToString());
             }
             return _client.Search(request.Name, request.Lat.GetValueOrDefault(), request.Lng.GetValueOrDefault(),
-                request.GeoResult);
+                "en", request.GeoResult);
         }
     }
 }
