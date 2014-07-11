@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Maps.Impl
         /// <param name="geoResult">
         ///     
         /// </param>
-        public Address[] Search(string name, double? latitude, double? longitude, GeoResult geoResult = null)
+		public Address[] Search(string name, double? latitude, double? longitude, string currentLanguage, GeoResult geoResult = null)
         {
             if (name.IsNullOrEmpty())
             {
@@ -83,7 +83,8 @@ namespace apcurium.MK.Booking.Maps.Impl
             if (!int.TryParse(term + "", out n))
             {
 				var nearbyService = new Places(_placeProvider, _appSettings, _popularAddressProvider);
-                addressesPlaces = nearbyService.SearchPlaces(name, latitude, longitude, null);
+
+				addressesPlaces = nearbyService.SearchPlaces(name, latitude, longitude, null, currentLanguage);
             }
 
 //TODO not sure what this code is doing

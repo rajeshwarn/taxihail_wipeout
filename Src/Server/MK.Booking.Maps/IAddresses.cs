@@ -11,6 +11,6 @@ namespace apcurium.MK.Booking.Maps
 {
     public interface IAddresses
     {
-        Address[] Search(string name, double? latitude, double? longitude, GeoResult geoResult = null);
+		Address[] Search(string name, double? latitude, double? longitude, string currentLanguage, GeoResult geoResult = null);
     }
 }

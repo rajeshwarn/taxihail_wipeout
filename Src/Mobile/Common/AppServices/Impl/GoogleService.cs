@@ -1,6 +1,7 @@
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Entity;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -13,7 +14,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
         public Address[] GetNearbyPlaces(double? latitude, double? longitude, string name = null, int? radius = null)
 		{
-			var places = TinyIoCContainer.Current.Resolve<IPlaces>().SearchPlaces( name, latitude, longitude, radius);
+			string currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization>().CurrentLanguage;
+			var places = TinyIoCContainer.Current.Resolve<IPlaces>().SearchPlaces( name, latitude, longitude, radius, currentLanguage);
 			return places;
 		}
 	}
