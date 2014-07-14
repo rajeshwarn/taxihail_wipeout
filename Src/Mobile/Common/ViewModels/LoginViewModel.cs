@@ -238,6 +238,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             this.Services().Message.ShowMessage(title, message);
                         }
                             break;
+						case AuthFailure.AccountNotActivated:
+						{
+							var title = localize["InvalidLoginMessageTitle"];
+							var message = localize ["AccountNotActivated"];
+							this.Services ().Message.ShowMessage (title, message);
+						}
+							break;
                     }
                 }
                 catch (Exception e)
