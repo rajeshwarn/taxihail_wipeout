@@ -141,12 +141,14 @@ namespace apcurium.MK.Web.Tests
 
     public class given_an_existing_order : BaseTest
     {
-        private readonly Guid _orderId = Guid.NewGuid();
+        private Guid _orderId;
 
         [TestFixtureSetUp]
         public new void TestFixtureSetup()
         {
             base.TestFixtureSetup();
+
+            _orderId = Guid.NewGuid();
 
             var authTask = new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo()).Authenticate(TestAccount.Email, TestAccountPassword);
             authTask.Wait();
@@ -305,9 +307,9 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(TestAddresses.GetAddress2().Latitude, orders.DropOffAddress.Latitude);
             Assert.AreEqual(TestAddresses.GetAddress2().Longitude, orders.DropOffAddress.Longitude);
             Assert.AreNotEqual(OrderStatus.Completed, orders.Status);
-            Assert.IsNull(orders.Fare);
-            Assert.IsNull(orders.Toll);
-            Assert.IsNull(orders.Tip);
+            Assert.That(orders.Fare, Is.EqualTo(10));
+            Assert.That(orders.Tip, Is.EqualTo(0));
+            Assert.That(orders.Toll, Is.EqualTo(0));
         }
     }
 }
