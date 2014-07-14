@@ -1,52 +1,60 @@
 { 
-  "Items": [
-    {
-      "Position": "1",
-      "Title": "Welcome!",
-      "Text": "Here's how to book a ride with just a couple of taps",
-      "ImageUri":"tutorial_screen01"
-    }
-    ,
-    {
-      "Position": "2",
-      "Title": "Refine Address",
-      "Text": "Tap on the hashtag to refine your address number.",
-      "ImageUri":"tutorial_screen02"
-    }
-    ,
-    {
-      "Position": "3",
-      "Title": "Cards on File",
-      "Text": "Use multiple credit cards for your account.",
-      "ImageUri":"tutorial_screen03"
-    }                   
-    ,
-    {
-      "Position": "4",
-      "Title": "Future Booking",
-      "Text": "Book in the future.",
-      "ImageUri":"tutorial_screen04"
-    }                   
-    ,
-    {
-      "Position": "5",
-      "Title": "Locations",
-      "Text": "Add locations",
-      "ImageUri":"tutorial_screen05"
-    }                   
-    ,
-    {
-      "Position": "6",
-      "Title": "History",
-      "Text": "Remember all your rides past, present and future with your history list.",
-      "ImageUri":"tutorial_screen06"
-    }                   
-    ,
-    {
-      "Position": "7",
-      "Title": "Edit Details",
-      "Text": "Edit your details.",
-      "ImageUri":"tutorial_screen07"
-    }                   
-  ]
+ "Items": [
+   {
+     "Position": "1",
+     "Title": "Book Now.",
+     "Text": "",
+     "ImageUri":"tutorial_screen01"
+   }
+   ,
+   {
+     "Position": "2",
+     "Title": "Enter Address.",
+     "Text": "Type any address or location name to search",
+     "ImageUri":"tutorial_screen02"
+   }
+   ,
+   {
+     "Position": "3",
+     "Title": "Estimate",
+     "Text": "Drag Location and Get an Estimated Fare.",
+     "ImageUri":"tutorial_screen03"
+   }                   
+   ,
+
+   {
+     "Position": "4",
+     "Title": "Future Booking",
+     "Text": "",
+     "ImageUri":"tutorial_screen04"
+   }                   
+   ,
+   {
+     "Position": "5",
+     "Title": "Payment Type",
+     "Text": "",
+     "ImageUri":"tutorial_screen05"
+   }                   
+   ,
+   {
+     "Position": "6",
+     "Title": "Locations",
+     "Text": "",
+     "ImageUri":"tutorial_screen06"
+   }                   
+   ,
+   {
+     "Position": "7",
+     "Title": "History",
+     "Text": "This shows all your previous destinations.",
+     "ImageUri":"tutorial_screen07"
+   }                   
+ ,
+   {
+     "Position": "8",
+     "Title": "Profile",
+     "Text": "Edit your information and car preferences",
+     "ImageUri":"tutorial_screen08"
+   }                   
+ ]
 }

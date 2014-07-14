@@ -571,6 +571,24 @@
     <Compile Include="Controls\Dialog\TaxiHailEntryElement.cs" />
     <Compile Include="Activities\EditTextDialogActivity.cs" />
     <Compile Include="TaxiHailAndroidLifetimeMonitor.cs" />
+    <AndroidResource Include="Resources\drawable-ar\tutorial_screen07.png" />
+    <AndroidResource Include="Resources\drawable-ar\tutorial_screen08.png" />
+    <AndroidResource Include="Resources\drawable-ar\tutorial_screen03.png" />
+    <AndroidResource Include="Resources\drawable-ar\tutorial_screen04.png" />
+    <AndroidResource Include="Resources\drawable-ar\tutorial_screen05.png" />
+    <AndroidResource Include="Resources\drawable-ar\tutorial_screen06.png" />
+    <AndroidResource Include="Resources\drawable-ar\tutorial_screen01.png" />
+    <AndroidResource Include="Resources\drawable-ar\tutorial_screen02.png" />
+    <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen08.png" />
+    <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen07.png" />
+    <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen06.png" />
+    <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen05.png" />
+    <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen04.png" />
+    <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen03.png" />
+    <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen02.png" />
+    <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen01.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen08.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -712,6 +730,8 @@
     <Folder Include="Calabash\" />
     <Folder Include="Dialog\" />
     <Folder Include="Controls\Dialog\" />
+    <Folder Include="Resources\drawable-ar\" />
+    <Folder Include="Resources\drawable-ar-xhdpi\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
