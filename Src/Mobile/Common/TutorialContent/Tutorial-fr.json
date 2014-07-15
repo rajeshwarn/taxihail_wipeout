@@ -1,0 +1,52 @@
+﻿{ 
+  "Items": [
+    {
+      "Position": "1",
+      "Title": "Bienvenue!",
+      "Text": "Voici comment réserver une voiture en juste quelques touchers",
+      "ImageUri":"tutorial_screen01"
+    }
+    ,
+    {
+      "Position": "2",
+      "Title": "Affiner l'Adresse",
+      "Text": "Touchez le symbole dièse pour affiner l\'adresse à entrer.",
+      "ImageUri":"tutorial_screen02"
+    }
+    ,
+    {
+      "Position": "3",
+      "Title": "Cartes en mémoire",
+      "Text": "Utilisez plusieurs cartes de crédits par compte.",
+      "ImageUri":"tutorial_screen03"
+    }                   
+    ,
+    {
+      "Position": "4",
+      "Title": "Réservations ultérieures",
+      "Text": "Réservez un véhicule pour une date ultérieure.",
+      "ImageUri":"tutorial_screen04"
+    }                   
+    ,
+    {
+      "Position": "5",
+      "Title": "Lieux",
+      "Text": "Sauvegardez des lieux",
+      "ImageUri":"tutorial_screen05"
+    }                   
+    ,
+    {
+      "Position": "6",
+      "Title": "Historique",
+      "Text": "Souvenez-vous de trajets passés, actuels et ultérieurs grace à l\'historique.",
+      "ImageUri":"tutorial_screen06"
+    }                   
+    ,
+    {
+      "Position": "7",
+      "Title": "Informations personnelles",
+      "Text": "Modifiez vos informations personnelles",
+      "ImageUri":"tutorial_screen07"
+    }                   
+  ]
+}
