@@ -362,7 +362,9 @@
     <None Include="Localization\Master.resx">
       <SubType>Designer</SubType>
     </None>
-    <EmbeddedResource Include="Localization\Master.fr.resx" />
+    <EmbeddedResource Include="Localization\Master.fr.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\Taxiworld.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Taxiworld.Designer.cs</LastGenOutput>

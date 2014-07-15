@@ -29,7 +29,7 @@
   <string name="BookDropoffLocationEmptyPlaceholder">Choisissez votre lieu d\'arrivée sur la carte</string>
   <string name="BookingService_MobileBookingNote">Réservé via téléphone mobile</string>
   <string name="BookingService_MobileBookingNoteBuildingName">Bâtiment n° {0}</string>
-  <string name="BookItButton">Réserver maintenant</string>
+  <string name="BookItButton">Réserver</string>
   <string name="BookItButtonImageName">Assets/Button/btnBookIt_en.png</string>
   <string name="BookItLaterButton">Plus tard</string>
   <string name="BookPickupLabel">Confirmer votre adresse de départ</string>
@@ -385,7 +385,7 @@
   <string name="StreetNumberSearchBt">Utiliser une autre adresse</string>
   <string name="StreetNumberTitle">Détails de l\'adresse</string>
   <string name="Submit">Envoyer</string>
-  <string name="SupportEmail">support@CINQ-S.com</string>
+  <string name="SupportEmail">techsupport@apcurium.com</string>
   <string name="TabBook">Réserver maintenant!</string>
   <string name="TabContacts">Contacts</string>
   <string name="TabFavorites">Favoris</string>
@@ -407,8 +407,8 @@
   <string name="Tuto03Top">Vous pouvez également nous communiquer votre position en saisissant directement une adresse</string>
   <string name="Tuto04Bottom">En faisant cela vous aurez une estimation du coût de votre trajet.</string>
   <string name="Tuto04Top">Vous pouvez également saisir votre destination</string>
-  <string name="Tuto05Bottom">Afin de convenir d\'une date/heure de départ ultéreure, merci de sélectionner "Plus tard" sur votre écran</string>
-  <string name="Tuto05Top">Sélectionner "Commander maintenant" afin que nous puissions vous attribuer un véhicule dans les meilleurs délais</string>
+  <string name="Tuto05Bottom">Afin de convenir d\'une date/heure de départ ultéreure, merci de sélectionner \'Plus tard\' sur votre écran</string>
+  <string name="Tuto05Top">Sélectionner \'Commander maintenant\' afin que nous puissions vous attribuer un véhicule dans les meilleurs délais</string>
   <string name="Tuto06Bottom">Appuyer sur confirmer lorsque vous êtes prêt </string>
   <string name="Tuto06Top">L\'écran de confirmation vous permet de vérifier que les détails de votre trajet sont corrects. En cas d\'erreur, merci d\'effectuer les modifications</string>
   <string name="Tuto07Bottom">Des mises à jour sont envoyées lorsque le véhicule arrive à l\'addresse de départ, quand vous entrez dans le véhicule et à la fin du trajet.</string>

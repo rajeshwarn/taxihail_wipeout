@@ -27,7 +27,7 @@
 "BookDropoffLocationEmptyPlaceholder"="Choisissez votre lieu d'arrivée sur la carte";
 "BookingService_MobileBookingNote"="Réservé via téléphone mobile";
 "BookingService_MobileBookingNoteBuildingName"="Bâtiment n° {0}";
-"BookItButton"="Réserver maintenant";
+"BookItButton"="Réserver";
 "BookItButtonImageName"="Assets/Button/btnBookIt_en.png";
 "BookItLaterButton"="Plus tard";
 "BookPickupLabel"="Confirmer votre adresse de départ";
@@ -383,7 +383,7 @@
 "StreetNumberSearchBt"="Utiliser une autre adresse";
 "StreetNumberTitle"="Détails de l'adresse";
 "Submit"="Envoyer";
-"SupportEmail"="support@CINQ-S.com";
+"SupportEmail"="techsupport@apcurium.com";
 "TabBook"="Réserver maintenant!";
 "TabContacts"="Contacts";
 "TabFavorites"="Favoris";

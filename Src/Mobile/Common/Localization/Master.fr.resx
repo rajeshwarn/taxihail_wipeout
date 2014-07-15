@@ -205,7 +205,7 @@
     <value>Bâtiment n° {0}</value>
   </data>
   <data name="BookItButton" xml:space="preserve">
-    <value>Réserver maintenant</value>
+    <value>Réserver</value>
   </data>
   <data name="BookItButtonImageName" xml:space="preserve">
     <value>Assets/Button/btnBookIt_en.png</value>
@@ -1273,7 +1273,7 @@
     <value>Envoyer</value>
   </data>
   <data name="SupportEmail" xml:space="preserve">
-    <value>support@CINQ-S.com</value>
+    <value>techsupport@apcurium.com</value>
   </data>
   <data name="TabBook" xml:space="preserve">
     <value>Réserver maintenant!</value>
@@ -1339,10 +1339,10 @@
     <value>Vous pouvez également saisir votre destination</value>
   </data>
   <data name="Tuto05Bottom" xml:space="preserve">
-    <value>Afin de convenir d'une date/heure de départ ultéreure, merci de sélectionner "Plus tard" sur votre écran</value>
+    <value>Afin de convenir d'une date/heure de départ ultéreure, merci de sélectionner 'Plus tard' sur votre écran</value>
   </data>
   <data name="Tuto05Top" xml:space="preserve">
-    <value>Sélectionner "Commander maintenant" afin que nous puissions vous attribuer un véhicule dans les meilleurs délais</value>
+    <value>Sélectionner 'Commander maintenant' afin que nous puissions vous attribuer un véhicule dans les meilleurs délais</value>
   </data>
   <data name="Tuto06Bottom" xml:space="preserve">
     <value>Appuyer sur confirmer lorsque vous êtes prêt </value>

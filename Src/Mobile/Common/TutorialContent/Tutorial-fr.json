@@ -3,7 +3,7 @@
     {
       "Position": "1",
       "Title": "Bienvenue!",
-      "Text": "Voici comment réserver une voiture en juste quelques touchers",
+      "Text": "Voici comment réserver une voiture en juste quelques touchers.",
       "ImageUri":"tutorial_screen01"
     }
     ,
@@ -31,7 +31,7 @@
     {
       "Position": "5",
       "Title": "Lieux",
-      "Text": "Sauvegardez des lieux",
+      "Text": "Sauvegardez des lieux.",
       "ImageUri":"tutorial_screen05"
     }                   
     ,
@@ -45,7 +45,7 @@
     {
       "Position": "7",
       "Title": "Informations personnelles",
-      "Text": "Modifiez vos informations personnelles",
+      "Text": "Modifiez vos informations personnelles.",
       "ImageUri":"tutorial_screen07"
     }                   
   ]
