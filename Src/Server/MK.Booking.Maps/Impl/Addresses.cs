@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             var geoCodingService = new Geocoding(_geocoder, _appSettings, _popularAddressProvider, _logger);
 
-            var allResults = geoCodingService.Search(name, geoResult);
+			var allResults = geoCodingService.Search(name, currentLanguage, geoResult);
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
             if (latitude.HasValue && longitude.HasValue && (latitude.Value != 0 || longitude.Value != 0))

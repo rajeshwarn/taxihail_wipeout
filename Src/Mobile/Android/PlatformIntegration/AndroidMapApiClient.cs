@@ -33,8 +33,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		}
 
-		public GeoAddress[] GeocodeAddress (string address)
+		public GeoAddress[] GeocodeAddress (string address, string currentLanguage)
 		{
+			// Do nothing with currentLanguage parameter since Android Geocoder
+			// automatically gets the results using the system language
 
 			var geocoder = new Geocoder (_androidGlobals.ApplicationContext);
 
@@ -60,9 +62,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 				
 		}
 
-		public GeoAddress[] GeocodeLocation (double latitude, double longitude)
+		public GeoAddress[] GeocodeLocation (double latitude, double longitude, string currentLanguage)
 		{
-
+			// Do nothing with currentLanguage parameter since Android Geocoder
+			// automatically gets the results using the system language
 
 			var geocoder = new Geocoder (_androidGlobals.ApplicationContext);
 
