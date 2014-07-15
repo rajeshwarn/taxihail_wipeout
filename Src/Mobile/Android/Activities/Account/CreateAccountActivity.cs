@@ -62,14 +62,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 		{
             var signMenu = new DialogListView(this);
             signMenu.LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.FillParent,  ViewGroup.LayoutParams.WrapContent);
-            signMenu.LayoutParameters.Height = GetDipInPixels(5 * CellHeightInDip + (ViewModel.HasSocialInfo ? GetDipInPixels(2 * CellHeightInDip) : 0));
+			signMenu.LayoutParameters.Height = GetDipInPixels((ViewModel.HasSocialInfo ? 3 : 5) * CellHeightInDip);
             signMenu.Root = InitializeRoot();			
             signMenu.SetScrollContainer (false);
 
             registerContainer.AddView(signMenu, positionInContainer);
 		}
 
-        private int CellHeightInDip = 41;
+        private int CellHeightInDip = 42;
 
         private int GetDipInPixels(int value)
         {
@@ -93,7 +93,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			var name = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountFullNamePlaceHolder"], null, "DialogCenter", InputTypes.TextFlagCapWords);
 			name.Bind(bindings, vm => vm.Data.Name);
 
-			var phone = new EntryElement(null, this.Services().Localize["CreateAccountPhonePlaceHolder"], null, "DialogCenter") { Numeric = true };
+			var layoutCell = "DialogCenter";
+			if (ViewModel.HasSocialInfo) {
+				layoutCell = "DialogBottom";
+			}
+
+			var phone = new EntryElement(null, this.Services().Localize["CreateAccountPhonePlaceHolder"], null, layoutCell) { Numeric = true };
 			phone.Bind(bindings, vm => vm.Data.Phone);
 
 			var password = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPasswordPlaceHolder"], null, "DialogCenter") { Password = true };
