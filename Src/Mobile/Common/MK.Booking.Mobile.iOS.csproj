@@ -353,10 +353,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Localization\Master.fr.resx">
+      <SubType>Designer</SubType>
+    </None>
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="Style\Style.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />
+    <BundleResource Include="TutorialContent\Tutorial-fr.json" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

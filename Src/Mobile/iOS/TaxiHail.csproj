@@ -280,6 +280,7 @@
     <Compile Include="Converters\AppConverters.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Content Include="fr.lproj\Localizable.strings" />
     <Compile Include="Main.cs" />
     <Compile Include="MainWindow.xib.designer.cs">
       <DependentUpon>MainWindow.xib</DependentUpon>
@@ -772,16 +773,7 @@
     </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Folder Include="Resources\" />
-    <Folder Include="Controls\Widgets\" />
-    <Folder Include="Controls\Behavior\" />
-    <Folder Include="Controls\Widgets\Booking\" />
-    <Folder Include="Views\Order\" />
-    <Folder Include="Views\AddressPicker\" />
-    <Folder Include="Controls\Message\" />
-    <Folder Include="Controls\Delegate\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Style\Theme.xml">
       <LogicalName>Theme.xml</LogicalName>

@@ -434,7 +434,9 @@
     <AndroidResource Include="Resources\drawable-xhdpi\suv_badge_selected.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\highlight.png" />
     <AndroidResource Include="Resources\Drawable\home_car_text_selector.xml" />
-    <AndroidResource Include="Resources\Values\String.xml" />
+    <AndroidResource Include="Resources\Values\String.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <Compile Include="Activities\Utilities\MvxFragmentActivity.cs" />
     <Compile Include="Activities\Utilities\MvxEventSourceFragmentActivity.cs" />
     <Compile Include="Activities\Utilities\MvxTabsFragmentActivity.cs" />
@@ -684,6 +686,9 @@
     <AndroidResource Include="Resources\Drawable\button_main_rounded.xml" />
     <AndroidResource Include="Resources\Drawable\button_main_selector.xml" />
     <AndroidResource Include="Resources\Drawable\edit_text_flat.xml" />
+    <AndroidResource Include="Resources\values-fr\String.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
