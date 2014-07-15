@@ -134,11 +134,11 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             
         }
 
-        public GeoDirection GetDirections(double originLat, double originLng, double destLat, double destLng, DateTime? date)
+		public GeoDirection GetDirections(double originLat, double originLng, double destLat, double destLng, DateTime? date)
         {
             var client = new JsonServiceClient(MapsServiceUrl);
             var resource = string.Format(CultureInfo.InvariantCulture,
-                "directions/json?origin={0},{1}&destination={2},{3}&sensor=true", originLat, originLng, destLat, destLng);
+				"directions/json?origin={0},{1}&destination={2},{3}&sensor=true", originLat, originLng, destLat, destLng);
 
 			var direction = client.Get<DirectionResult>(resource);
 			if (direction.Status == ResultStatus.OK)
@@ -155,49 +155,44 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 			return new GeoDirection ();
         }
 
-        public GeoAddress[] GeocodeAddress(string address)
+		public GeoAddress[] GeocodeAddress(string address, string currentLanguage)
         {
             var client = new JsonServiceClient(MapsServiceUrl);
-            var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=true", address);
+
+			var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=true&language={1}", address, currentLanguage);
             _logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
 
             var result = client.Get<GeoResult>(resource);
 
 			if ( (result.Status == ResultStatus.OVER_QUERY_LIMIT || result.Status == ResultStatus.REQUEST_DENIED) && (_fallbackGeocoder != null )) {
-				return _fallbackGeocoder.GeocodeAddress (address);
+				return _fallbackGeocoder.GeocodeAddress (address, currentLanguage);
 			} else if (result.Status == ResultStatus.OK) {
 				return ConvertGeoResultToAddresses(result);
 			} else {
 				return new GeoAddress [0];
 			}
-
-            
-           
         }
 
-        public GeoAddress[] GeocodeLocation(double latitude, double longitude)
+		public GeoAddress[] GeocodeLocation(double latitude, double longitude, string currentLanguage)
         {
             var client = new JsonServiceClient(MapsServiceUrl);
 
-            var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?latlng={0},{1}&sensor=true",
-                latitude, longitude);
+			var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?latlng={0},{1}&sensor=true&language={2}",
+				latitude, longitude, currentLanguage);
 
             _logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
 
             
             var result = client.Get<GeoResult>(resource);
 			if ( (result.Status == ResultStatus.OVER_QUERY_LIMIT || result.Status == ResultStatus.REQUEST_DENIED) && (_fallbackGeocoder != null )) {
-				return _fallbackGeocoder.GeocodeLocation (latitude, longitude);
+				return _fallbackGeocoder.GeocodeLocation (latitude, longitude, currentLanguage);
 			} else if (result.Status == ResultStatus.OK) {
 				return ConvertGeoResultToAddresses (result);
 			} else {
 				return new GeoAddress [0];
 			}
-           
         }
 
-
-				
 		private GeoPlace ConvertPlaceToGeoPlaces(Place place)
 		{            
 			return
@@ -209,7 +204,6 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
 			};
 		}
-
 
 		private IEnumerable<GeoPlace> ConvertPredictionToPlaces(IEnumerable<Prediction> result)
         {            

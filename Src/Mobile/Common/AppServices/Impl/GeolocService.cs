@@ -32,8 +32,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
-				var addresses = _geocoding.Search(address);
-                return addresses.FirstOrDefault();
+				string currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
+				var addresses = _geocoding.Search(address, currentLanguage);
+                
+				return addresses.FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -45,8 +47,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Address[] SearchAddress(double latitude, double longitude, bool searchPopularAddresses = false)
         {
             try
-            {                
-				var addresses = _geocoding.Search(latitude, longitude, geoResult: null, searchPopularAddresses: searchPopularAddresses);
+            {   
+				string currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
+				var addresses = _geocoding.Search(latitude, longitude, currentLanguage, geoResult: null, searchPopularAddresses: searchPopularAddresses);
                 return addresses;
             }
             catch (Exception ex)

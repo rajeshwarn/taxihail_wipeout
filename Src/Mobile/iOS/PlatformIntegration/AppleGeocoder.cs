@@ -13,8 +13,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		{
 		}
 
-		public GeoAddress[] GeocodeAddress (string address)
-		{		
+		public GeoAddress[] GeocodeAddress (string address, string currentLanguage)
+		{	
+			// Do nothing with currentLanguage parameter since Apple Geocoder
+			// automatically gets the results using the system language
+
 			var geocoder = new CLGeocoder ();
 			var result = geocoder.GeocodeAddressAsync (address.Replace ("+", " "));
 			result.Wait ();
@@ -25,9 +28,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			return result.Result.Select (ConvertPlacemarkToAddress).ToArray ();			
 		}
 
-		public GeoAddress[] GeocodeLocation (double latitude, double longitude)
+		public GeoAddress[] GeocodeLocation (double latitude, double longitude, string currentLanguage)
 		{
-
+			// Do nothing with currentLanguage parameter since Apple Geocoder
+			// automatically gets the results using the system language
 
 			var geocoder = new CLGeocoder ();
 
