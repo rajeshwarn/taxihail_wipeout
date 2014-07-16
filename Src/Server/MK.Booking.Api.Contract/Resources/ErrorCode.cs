@@ -9,6 +9,7 @@
         CreateOrder_InvalidProvider,
         CreateOrder_RuleDisable,
         CreateOrder_NoFareEstimateAvailable,
+        CreateOrder_PendingOrder,
         NearbyPlaces_LocationRequired,
         Search_Locations_NameRequired,
         UpdatePassword_NotSame,
@@ -18,7 +19,7 @@
         Rule_DuplicateName,
         Rule_InvalidPriority,
         ResetPassword_AccountNotFound,
-        AccountCharge_AccountAlreadyExisting
+        AccountCharge_AccountAlreadyExisting,
  // ReSharper restore InconsistentNaming
     }
 }

@@ -35,6 +35,7 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (CreateOrderService));
         private readonly IAccountDao _accountDao;
+        private readonly IOrderDao _orderDao;
 
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly ICommandBus _commandBus;
@@ -53,7 +54,8 @@ namespace apcurium.MK.Booking.Api.Services
             IStaticDataWebServiceClient staticDataWebServiceClient,
             IRuleCalculator ruleCalculator,
             IUpdateOrderStatusJob updateOrderStatusJob, 
-            IConfigurationManager configurationManager)
+            IConfigurationManager configurationManager,
+            IOrderDao orderDao)
         {
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
@@ -63,15 +65,23 @@ namespace apcurium.MK.Booking.Api.Services
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _ruleCalculator = ruleCalculator;
             _updateOrderStatusJob = updateOrderStatusJob;
+            _orderDao = orderDao;
 
             var applicationKey = _configManager.GetSetting("TaxiHail.ApplicationKey");
             _resources = new Resources.Resources(applicationKey);
         }
 
+        
+
         public object Post(CreateOrder request)
         {
             Log.Info("Create order request : " + request.ToJson());
+            
+            Guid pendingOrderId = GetPendingOrder();
 
+            // We don't allow order creation if there's already on order being scheduled
+            if (pendingOrderId != Guid.Empty)
+                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
 
             var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue,
                 request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),
@@ -293,6 +303,14 @@ namespace apcurium.MK.Booking.Api.Services
 
             var taxPercentage = _configManager.GetSetting("VATPercentage", 0d);
             return Fare.FromAmountInclTax((decimal) estimate.Price.Value, (decimal) taxPercentage);
+        }
+
+        private Guid GetPendingOrder()
+        {
+            var activeOrders = _orderDao.GetOrdersInProgressByAccountId(new Guid(this.GetSession().UserAuthId));
+
+            return activeOrders.FirstOrDefault(o => o.IBSStatusId != VehicleStatuses.Common.Scheduled)
+                               .SelectOrDefault(o => o.OrderId);
         }
     }
 }
