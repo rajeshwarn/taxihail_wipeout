@@ -228,7 +228,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                     case "CreateOrder_PendingOrder":
 				        {
 				            string pendingOrderId = e.ErrorMessage;
-                            throw new OrderCreationException(message, pendingOrderId);
+                            throw new OrderCreationException(e.ErrorCode, pendingOrderId);
 				        }
 					case "CreateOrder_RuleDisable":
 						// Exception message comes from Rules admin tool, already localized

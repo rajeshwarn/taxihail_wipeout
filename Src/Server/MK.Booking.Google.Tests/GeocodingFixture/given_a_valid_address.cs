@@ -31,7 +31,7 @@ namespace MK.Booking.Google.Tests.GeocodingFixture
         {
             _config.SetSetting("PriceFormat", "en-ca");
     
-            var a = _sut.GeocodeAddress("5250 ferrier".Split(' ').JoinBy("+"));
+            var a = _sut.GeocodeAddress("5250 ferrier".Split(' ').JoinBy("+"), "en");
             Assert.IsTrue(a.Any());
         }
 
@@ -40,7 +40,7 @@ namespace MK.Booking.Google.Tests.GeocodingFixture
         {
 
             _config.SetSetting("PriceFormat", "en-ca");
-            var a = _sut.GeocodeAddress("yul");
+            var a = _sut.GeocodeAddress("yul", "en");
             Assert.IsTrue(a.Any());
         }
 
