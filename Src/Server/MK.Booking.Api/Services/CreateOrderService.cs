@@ -76,12 +76,16 @@ namespace apcurium.MK.Booking.Api.Services
         public object Post(CreateOrder request)
         {
             Log.Info("Create order request : " + request.ToJson());
-            
-            Guid pendingOrderId = GetPendingOrder();
 
-            // We don't allow order creation if there's already on order being scheduled
-            if (pendingOrderId != Guid.Empty)
-                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
+            // User can still create future order, but we allow only one active Book now order.
+            if (!request.PickupDate.HasValue)
+            {
+                Guid pendingOrderId = GetPendingOrder();
+
+                // We don't allow order creation if there's already on order being scheduled
+                if (pendingOrderId != Guid.Empty)
+                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
+            }
 
             var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue,
                 request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),
