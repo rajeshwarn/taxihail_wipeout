@@ -17,5 +17,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public double? DestinationLng { get; set; }
 
         public DateTime? Date { get; set; }
+
+        public int? VehicleTypeId { get; set; }
     }
 }

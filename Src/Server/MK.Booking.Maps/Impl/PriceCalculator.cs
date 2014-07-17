@@ -24,9 +24,9 @@ namespace apcurium.MK.Booking.Maps.Impl
             _logger = logger;
         }
 
-        public double? GetPrice(int? distance, DateTime pickupDate, int? durationInSeconds)
+        public double? GetPrice(int? distance, DateTime pickupDate, int? durationInSeconds, int? vehicleTypeId)
         {
-            var tariff = GetTariffFor(pickupDate);
+            var tariff = GetTariffFor(pickupDate, vehicleTypeId);
 
             if (tariff == null) return null;
 
@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             return price;
         }
 
-        public Tariff GetTariffFor(DateTime pickupDate)
+        public Tariff GetTariffFor(DateTime pickupDate, int? vehicleTypeId = null)
         {
             var tariffs = _tariffProvider.GetTariffs().ToArray();
 
@@ -98,12 +98,16 @@ namespace apcurium.MK.Booking.Maps.Impl
                     select r).FirstOrDefault();
             }
 
-            if (tariff == null)
+            // Case 3: Use vehicle tariff
+            if (tariff == null && vehicleTypeId.HasValue)
             {
-                // TODO: check if there is a vehicule tariff for the current selected vehicule type
+                tariff = (from r in tariffs
+                    where r.Type == (int) TariffType.Vehicle
+                    where r.VehicleTypeId == vehicleTypeId.Value
+                    select r).FirstOrDefault();
             }
 
-            // Case 3: Use default tariff
+            // Case 4: Use default tariff
             if (tariff == null)
             {
                 tariff = tariffs.FirstOrDefault(x => x.Type == (int) TariffType.Default);

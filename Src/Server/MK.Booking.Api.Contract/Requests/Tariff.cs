@@ -33,6 +33,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public DayOfTheWeek DaysOfTheWeek { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public int? VehicleTypeId { get; set; }
     }
 
     public class TariffResponse : IHasResponseStatus

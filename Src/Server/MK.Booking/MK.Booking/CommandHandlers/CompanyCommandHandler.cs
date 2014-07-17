@@ -109,7 +109,9 @@ namespace apcurium.MK.Booking.CommandHandlers
             }
             else if (command.Type == TariffType.Vehicle)
             {
-                // TODO
+                company.CreateDefaultVehiculeTariff(command.TariffId, command.Name, command.FlatRate, command.KilometricRate,
+                    command.PerMinuteRate, command.MarginOfError,
+                    command.KilometerIncluded, command.VehicleTypeId);
             }
             else if (command.Type == TariffType.Recurring)
             {
@@ -201,7 +203,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             company.UpdateTariff(command.TariffId, command.Name, command.FlatRate, command.KilometricRate,
                 command.PerMinuteRate, command.MarginOfError, command.KilometerIncluded, command.DaysOfTheWeek,
-                command.StartTime, command.EndTime);
+                command.StartTime, command.EndTime, command.VehicleTypeId);
 
             _repository.Save(company, command.Id.ToString());
         }
