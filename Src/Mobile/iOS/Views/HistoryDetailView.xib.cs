@@ -18,8 +18,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			base.ViewWillAppear(animated);
 
+			NavigationController.NavigationBar.Hidden = false;
 			NavigationItem.HidesBackButton = false;
 			NavigationItem.Title = Localize.GetValue("View_HistoryDetail");
+
+			ChangeThemeOfBarStyle();
 		}
 
 		public override void ViewDidLoad()
