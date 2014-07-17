@@ -98,6 +98,11 @@ namespace apcurium.MK.Booking.Maps.Impl
                     select r).FirstOrDefault();
             }
 
+            if (tariff == null)
+            {
+                // TODO: check if there is a vehicule tariff for the current selected vehicule type
+            }
+
             // Case 3: Use default tariff
             if (tariff == null)
             {

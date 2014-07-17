@@ -107,6 +107,10 @@ namespace apcurium.MK.Booking.CommandHandlers
                     command.PerMinuteRate, command.MarginOfError,
                     kilometerIncluded: command.KilometerIncluded);
             }
+            else if (command.Type == TariffType.Vehicle)
+            {
+                // TODO
+            }
             else if (command.Type == TariffType.Recurring)
             {
                 company.CreateRecurringTariff(command.TariffId, command.Name, command.FlatRate, command.KilometricRate,

@@ -201,6 +201,12 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void CreateDefaultVehiculeTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double perMinuteRate,
+            double timeAdustmentFactor, double kilometerIncluded /* TODO: vehicle type */)
+        {
+            // TODO
+            throw new NotImplementedException();
+        }
 
         public void CreateRecurringTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double perMinuteRate,
             double timeAdustmentFactor, double kilometerIncluded, DayOfTheWeek daysOfTheWeek,
