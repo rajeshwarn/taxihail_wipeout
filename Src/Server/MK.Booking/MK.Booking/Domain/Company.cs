@@ -209,7 +209,7 @@ namespace apcurium.MK.Booking.Domain
             Update(new TariffCreated
             {
                 TariffId = tariffId,
-                Type = TariffType.Default,
+                Type = TariffType.Vehicle,
                 Name = name,
                 FlatRate = flatRate,
                 KilometricRate = distanceMultiplicator,
