@@ -80,11 +80,13 @@ namespace apcurium.MK.Booking.Api.Services
             // User can still create future order, but we allow only one active Book now order.
             if (!request.PickupDate.HasValue)
             {
-                Guid pendingOrderId = GetPendingOrder();
+                Guid? pendingOrderId = GetPendingOrder();
 
                 // We don't allow order creation if there's already on order being scheduled
-                if (pendingOrderId != Guid.Empty)
+                if (pendingOrderId != null)
+                {
                     throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
+                }
             }
 
             var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue,
@@ -309,12 +311,17 @@ namespace apcurium.MK.Booking.Api.Services
             return Fare.FromAmountInclTax((decimal) estimate.Price.Value, (decimal) taxPercentage);
         }
 
-        private Guid GetPendingOrder()
+        private Guid? GetPendingOrder()
         {
             var activeOrders = _orderDao.GetOrdersInProgressByAccountId(new Guid(this.GetSession().UserAuthId));
 
-            return activeOrders.FirstOrDefault(o => o.IBSStatusId != VehicleStatuses.Common.Scheduled)
-                               .SelectOrDefault(o => o.OrderId);
+            var latestActiveOrder = activeOrders.FirstOrDefault(o => o.IBSStatusId != VehicleStatuses.Common.Scheduled);
+            if (latestActiveOrder != null)
+            {
+                return latestActiveOrder.OrderId;
+            }
+
+            return null;
         }
     }
 }

@@ -50,6 +50,7 @@ namespace apcurium.MK.Web.Tests
             await sut.CreateOrder(new CreateOrder
                 {
                     Id = orderId,
+                    PickupDate = DateTime.Now,
                     PickupAddress = address,
                     Settings =
                         new BookingSettings
