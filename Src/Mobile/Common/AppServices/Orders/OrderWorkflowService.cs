@@ -225,7 +225,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 				switch (e.ErrorCode)
 				{
-
+					case "CreateOrder_PendingOrder":
+						// Quick workaround for a bug in service stack where the response is not properly deserialized
+						var cancelOrderError = e.ResponseBody.FromJson<ErrorResponse> ();
+						if (cancelOrderError.ResponseStatus != null) {
+							string pendingOrderId = cancelOrderError.ResponseStatus.Message;
+							throw new OrderCreationException (e.ErrorCode, pendingOrderId);
+						} 
+						else 
+						{
+							goto default;
+						}
 					case "CreateOrder_RuleDisable":
 						// Exception message comes from Rules admin tool, already localized
 						// Quick workaround for a bug in service stack where the response is not properly deserialized

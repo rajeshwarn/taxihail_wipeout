@@ -162,19 +162,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						var settings = this.Services().Settings;
 						var title = this.Services().Localize["ErrorCreatingOrderTitle"];
 
-						if (!Settings.HideCallDispatchButton)
-						{
-							this.Services().Message.ShowMessage(title,
-								e.Message,
-								"Call",
-								() => _phone.MakePhoneCall (settings.ApplicationName, settings.DefaultPhoneNumber),
-								"Cancel",
-								delegate { });
-						}
-						else
-						{
-							this.Services().Message.ShowMessage(title, e.MessageNoCall);
-						}
+					    switch (e.Message)
+					    {
+                            case "CreateOrder_PendingOrder":
+					        {
+					            Guid pendingOrderId;
+					            Guid.TryParse(e.MessageNoCall, out pendingOrderId);
+
+								this.Services().Message.ShowMessage(title, "You cannot book this ride since an order is already pending. View the order status?",
+                                    "View", () => ShowViewModel<HistoryDetailViewModel>(new {orderId = pendingOrderId}),
+                                    "Cancel", delegate { });
+					        }
+					            break;
+                            default:
+					        {
+                                if (!Settings.HideCallDispatchButton)
+                                {
+                                    this.Services().Message.ShowMessage(title,
+                                        e.Message,
+                                        "Call",
+                                        () => _phone.MakePhoneCall(settings.ApplicationName, settings.DefaultPhoneNumber),
+                                        "Cancel",
+                                        delegate { });
+                                }
+                                else
+                                {
+                                    this.Services().Message.ShowMessage(title, e.MessageNoCall);
+                                }
+					        }
+					            break;
+					    }
 					}
 					catch(Exception e)
 					{
