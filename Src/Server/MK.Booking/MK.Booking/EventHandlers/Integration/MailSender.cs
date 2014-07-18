@@ -14,6 +14,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
+using Microsoft.Practices.Unity;
 
 #endregion
 
@@ -28,17 +29,20 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IConfigurationManager _configurationManager;
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ICreditCardDao _creditCardDao;
+        private readonly IUnityContainer _container;
 
         public MailSender(Func<BookingDbContext> contextFactory,
             ICommandBus commandBus,
             IConfigurationManager configurationManager,
-            ICreditCardDao creditCardDao
+            ICreditCardDao creditCardDao,
+            IUnityContainer container
             )
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _configurationManager = configurationManager;
             _creditCardDao = creditCardDao;
+            _container = container;
         }
 
         public void Handle(CreditCardPaymentCaptured @event)
@@ -111,10 +115,13 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                     if (orderPayment != null)
                     {
+                        //todo inject this in the ctor
+                        var baseUrl = _container.Resolve<string>("BaseUrl");
+
                         var command = SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
                             orderStatus.VehicleNumber, orderStatus.DriverInfos.FullName,
                             Convert.ToDouble(orderPayment.Meter), 0, Convert.ToDouble(orderPayment.Tip), 0, orderPayment,
-                            card);
+                            card, new Uri(baseUrl));
                         
                         _commandBus.Send(command);
                     }

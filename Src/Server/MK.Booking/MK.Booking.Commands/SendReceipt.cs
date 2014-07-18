@@ -40,6 +40,7 @@ namespace apcurium.MK.Booking.Commands
         }
 
         public Guid Id { get; set; }
+        public Uri BaseUrl { get; set; }
 
         public class CardOnFile
         {

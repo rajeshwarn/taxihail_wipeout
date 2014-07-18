@@ -225,6 +225,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                 CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
                 PickupAddress = command.PickupAddress.DisplayAddress,
                 DropOffAddress = hasDropOffAddress ? command.DropOffAddress.DisplayAddress : "-",
+                command.BaseUrl
             };
 
 

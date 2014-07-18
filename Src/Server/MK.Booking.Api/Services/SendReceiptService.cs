@@ -4,6 +4,7 @@ using System;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.CommandBuilder;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -70,11 +71,13 @@ namespace apcurium.MK.Booking.Api.Services
             var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
             var orderStatus = _orderDao.FindOrderStatusById(request.OrderId);
 
+            var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
+
             if ((orderPayment != null) && (orderPayment.IsCompleted))
             {
                 var creditCard = orderPayment.CardToken.HasValue() ? _creditCardDao.FindByToken(orderPayment.CardToken) : null;
                 _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos.FullName,
-                    Convert.ToDouble(orderPayment.Meter), 0, Convert.ToDouble(orderPayment.Tip), 0, orderPayment, creditCard));
+                    Convert.ToDouble(orderPayment.Meter), 0, Convert.ToDouble(orderPayment.Tip), 0, orderPayment, creditCard, new Uri(root)));
             }
             else if ((pairingInfo != null) && (pairingInfo.AutoTipPercentage.HasValue))
             {
@@ -83,18 +86,18 @@ namespace apcurium.MK.Booking.Api.Services
                 if ((tripData != null) && (tripData.EndTime.HasValue))
                 {
                     _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos.FullName,
-                        Math.Round(((double)tripData.Fare / 100), 2), Math.Round(((double)tripData.Extra / 2), 2), Math.Round(((double)tripData.Tip / 100), 2), Math.Round(((double)tripData.Tax / 100), 2), null, creditCard));
+                        Math.Round(((double)tripData.Fare / 100), 2), Math.Round(((double)tripData.Extra / 2), 2), Math.Round(((double)tripData.Tip / 100), 2), Math.Round(((double)tripData.Tax / 100), 2), null, creditCard, new Uri(root)));
                 }
                 else
                 {
 
                     _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos.FullName,
-                        ibsOrder.Fare, ibsOrder.Toll, Math.Round(((double)pairingInfo.AutoTipPercentage.Value) / 100, 2), ibsOrder.VAT, null, creditCard));
+                        ibsOrder.Fare, ibsOrder.Toll, Math.Round(((double)pairingInfo.AutoTipPercentage.Value) / 100, 2), ibsOrder.VAT, null, creditCard, new Uri(root)));
                 }
             }
             else
             {
-                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos.FullName, ibsOrder.Fare, ibsOrder.Toll, ibsOrder.Tip, ibsOrder.VAT, null, null));
+                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos.FullName, ibsOrder.Fare, ibsOrder.Toll, ibsOrder.Tip, ibsOrder.VAT, null, null, new Uri(root)));
             }
 
             return new HttpResult(HttpStatusCode.OK, "OK");

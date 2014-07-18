@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.CommandBuilder
     {
         public static SendReceipt GetSendReceiptCommand(OrderDetail order, AccountDetail account, string vehicleNumber, string driverName,
             double? fare, double? toll, double? tip, double? tax, OrderPaymentDetail orderPayment = null,
-            CreditCardDetails creditCard = null)
+            CreditCardDetails creditCard = null, Uri baseUrl = null)
         {
             var command = new SendReceipt
             {
@@ -31,7 +31,8 @@ namespace apcurium.MK.Booking.CommandBuilder
                 Tax = tax.GetValueOrDefault(),
                 PickupAddress = order.PickupAddress,
                 DropOffAddress = order.DropOffAddress,
-                ClientLanguageCode = order.ClientLanguageCode
+                ClientLanguageCode = order.ClientLanguageCode,
+                BaseUrl = baseUrl
             };
             
             if (orderPayment != null)
