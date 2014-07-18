@@ -447,7 +447,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_orderCanBeConfirmed.OnNext (false);
 		}
 
-		public async Task ResetOrderSettings()
+		public void BeginCreateOrder()
+		{
+			_orderCanBeConfirmed.OnNext (false);
+		}
+
+		public void EndCreateOrder()
+		{
+			Observable.Timer( TimeSpan.FromSeconds( 1 )).Subscribe( _ => _orderCanBeConfirmed.OnNext (true));
+		}
+
+		public async void ResetOrderSettings()
 		{
 			_noteToDriverSubject.OnNext(string.Empty);
 			await SetBookingSettings(_accountService.CurrentAccount.Settings);

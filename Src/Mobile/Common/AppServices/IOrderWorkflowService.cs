@@ -8,9 +8,13 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
-    public interface IOrderWorkflowService
+	public interface IOrderWorkflowService
     {
 		Task PrepareForNewOrder();
+
+		void BeginCreateOrder ();
+
+		void EndCreateOrder ();
 
 		Task SetAddress(Address address);
 		Task SetPickupAptAndRingCode(string apt, string ringCode);
