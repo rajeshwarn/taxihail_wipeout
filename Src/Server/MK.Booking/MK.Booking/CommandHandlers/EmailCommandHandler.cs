@@ -3,7 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Net.Mail;
+using System.Reflection;
 using System.Text;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Email;
@@ -64,9 +67,11 @@ namespace apcurium.MK.Booking.CommandHandlers
             var templateData = new
             {
                 command.ConfirmationUrl,
+                command.BaseUrl,
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
                 AccentColor = _configurationManager.GetSetting(AccentColorSetting)
             };
+            
 
             SendEmail(command.EmailAddress, AccountConfirmationTemplateName, AccountConfirmationEmailSubject, templateData, command.ClientLanguageCode);
         }
@@ -252,7 +257,10 @@ namespace apcurium.MK.Booking.CommandHandlers
             {
                 foreach (var image in embeddedIMages)
                 {
-                    var linkedImage = new LinkedResource(image.Value) {ContentId = image.Key};
+                    var outPutDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+                    var imagePath = Path.Combine(outPutDirectory, image.Value);
+                    var path = new Uri(imagePath).LocalPath;
+                    var linkedImage = new LinkedResource(path) { ContentId = image.Key };
                     view.LinkedResources.Add(linkedImage);
                 }
             }

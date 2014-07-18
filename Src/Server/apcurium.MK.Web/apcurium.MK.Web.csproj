@@ -238,6 +238,21 @@
     <Content Include="assets\img\app-stores-itunes.png" />
     <Content Include="assets\img\appstores-bg.png" />
     <Content Include="assets\img\appstores-play.png" />
+    <Content Include="assets\img\email\bg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\email\bg1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\email\fb.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\email\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\email\tw.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\img\nearby_cab.png" />
     <Content Include="assets\img\pin_cluster.png" />
     <Content Include="assets\js\storage-polyfill.js" />
