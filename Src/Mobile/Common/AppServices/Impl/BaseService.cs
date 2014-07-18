@@ -26,15 +26,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             catch (Exception ex)
             {                    
                 Logger.LogError(ex);
+				var handled = false;
 				if (errorHandler == null)
 				{
-					TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
+					handled = TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
 				}
 				else
 				{
 					errorHandler (ex);
+					handled = true;
 				} 
-                throw;
+				if (!handled) {
+					throw;
+				}else{
+					return default(TResult);
+				}
             }
         }
 
@@ -52,15 +58,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			catch (Exception ex)
 			{                    
 				Logger.LogError(ex);
+				var handled = false;
 				if (errorHandler == null)
 				{
-					TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
+					handled = TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
 				}
 				else
 				{
 					errorHandler (ex);
+					handled = true;
 				} 
-				throw;
+				if (!handled) {
+					throw;
+				}
 			}
 		}
 
