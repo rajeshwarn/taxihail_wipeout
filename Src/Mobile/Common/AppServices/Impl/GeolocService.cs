@@ -7,6 +7,8 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -30,8 +32,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
-				var addresses = _geocoding.Search(address);
-                return addresses.FirstOrDefault();
+				string currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
+				var addresses = _geocoding.Search(address, currentLanguage);
+                
+				return addresses.FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -43,8 +47,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Address[] SearchAddress(double latitude, double longitude, bool searchPopularAddresses = false)
         {
             try
-            {                
-				var addresses = _geocoding.Search(latitude, longitude, geoResult: null, searchPopularAddresses: searchPopularAddresses);
+            {   
+				string currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
+				var addresses = _geocoding.Search(latitude, longitude, currentLanguage, geoResult: null, searchPopularAddresses: searchPopularAddresses);
                 return addresses;
             }
             catch (Exception ex)
@@ -57,8 +62,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Address[] SearchAddress(string address, double? latitude = null, double? longitude = null)
         {
             try
-            {                
-				var addresses = _addresses.Search(address, latitude, longitude);
+            {         
+				string currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
+				var addresses = _addresses.Search(address, latitude, longitude, currentLanguage);
                 return addresses;
             }
             catch( Exception ex )

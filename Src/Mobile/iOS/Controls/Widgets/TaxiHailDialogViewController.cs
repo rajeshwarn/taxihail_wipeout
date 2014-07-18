@@ -82,6 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 cell.Frame  = cell.ContentView.Frame.SetWidth(cellWidth);
                 cell.ContentView.Frame = cell.ContentView.Frame.SetWidth(cellWidth);
 
+
                 UIRectCorner cornerPlace = 0;
                 var borders = Border.Right | Border.Left | Border.Bottom;
 

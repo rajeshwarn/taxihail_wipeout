@@ -26,11 +26,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private EditText _txtLargeBags;
         private EditText _txtApartment;
         private EditText _txtEntryCode;
-        private EditTextSpinner _txtVehicleType;
         private EditTextSpinner _txtChargeType;
         private LinearLayout _bottomPadding;
 
-        public OrderEdit(Context context, IAttributeSet attrs) : base(LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderEdit, context), context, attrs)
+		public OrderEdit(Context context, IAttributeSet attrs) : base(LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderEdit, context), context, attrs)
         {
             this.DelayBind(() => 
             {
@@ -43,7 +42,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _txtLargeBags = Content.FindViewById<EditText>(Resource.Id.txtLargeBags);
                 _txtApartment = Content.FindViewById<EditText>(Resource.Id.txtApartment);
                 _txtEntryCode = Content.FindViewById<EditText>(Resource.Id.txtEntryCode);
-                _txtVehicleType = Content.FindViewById<EditTextSpinner>(Resource.Id.txtVehicleType);
                 _txtChargeType = Content.FindViewById<EditTextSpinner>(Resource.Id.txtChargeType);
 
                 // hack for scroll in view when in EditText
@@ -105,17 +103,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.BindSafe(_txtEntryCode)
                 .For(v => v.Text)
                 .To(vm => vm.PickupAddress.RingCode);
-
-            set.Bind(_txtVehicleType)
-                .For("Text")
-                .To(vm => vm.VehicleTypeName);
-            set.Bind(_txtVehicleType)
-                .For("Data")
-                .To(vm => vm.Vehicles);
-            set.Bind(_txtVehicleType)
-                .For("SelectedItem")
-                .To(vm => vm.VehicleTypeId);
-
+                
             set.Bind(_txtChargeType)
                 .For("Text")
                 .To(vm => vm.ChargeTypeName);

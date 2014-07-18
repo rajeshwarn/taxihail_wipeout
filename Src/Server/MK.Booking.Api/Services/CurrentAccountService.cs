@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using AutoMapper;
+using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
 
 #endregion

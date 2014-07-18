@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Api.Client.Extensions;
 
@@ -16,9 +17,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
     {
         private readonly IPaymentServiceClient _paymentService;
 
-        public AccountServiceClient(string url, string sessionId, string userAgent,
+        public AccountServiceClient(string url, string sessionId, IPackageInfo packageInfo,
             IPaymentServiceClient tokenizationService = null)
-            : base(url, sessionId, userAgent)
+            : base(url, sessionId, packageInfo)
         {
             _paymentService = tokenizationService;
         }
@@ -129,5 +130,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             var result = Client.GetAsync<Account>("/account/test/admin/" + Guid.NewGuid());
             return result;
         }
+
+		public Task LogApplicationStartUp(LogApplicationStartUpRequest request)
+		{
+			return Client.PostAsync<string> ("/account/logstartup", request);
+		}
     }
 }

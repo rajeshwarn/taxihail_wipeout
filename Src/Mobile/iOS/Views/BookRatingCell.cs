@@ -4,21 +4,24 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.Foundation;
 using MonoTouch.ObjCRuntime;
 using MonoTouch.UIKit;
+using System.Collections.Generic;
+using RatingState = apcurium.MK.Booking.Mobile.Models.RatingModel.RatingState;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
 	public partial class BookRatingCell : MvxStandardTableViewCell
 	{
+        public static float Height = 69f;
 		public static NSString Identifier = new NSString("BookRatingCell");
 		public const string BindingText = @"
             RatingTypeName RatingTypeName;
             SetRateCommand SetRateCommand;
             CanRate CanRate;
-            MadSelected MadSelected;
-            UnhappySelected UnhappySelected;
-            NeutralSelected NeutralSelected;
-            HappySelected HappySelected;
-            EcstaticSelected EcstaticSelected;";
+            ScoreASelected ScoreASelected;
+            ScoreBSelected ScoreBSelected;
+            ScoreCSelected ScoreCSelected;
+            ScoreDSelected ScoreDSelected;
+            ScoreESelected ScoreESelected;";
 		
 		public static BookRatingCell LoadFromNib(NSObject owner)
 		{
@@ -52,25 +55,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 		
 		private void Initialise()
 		{
-			madBtn.SetImage(UIImage.FromFile("mad.png"), UIControlState.Normal);
-			madBtn.SetImage(UIImage.FromFile("mad-selected.png"), UIControlState.Selected);
-			madBtn.TouchUpInside += OnMadBtnTouchUpInside;
+            var star = UIImage.FromBundle ("star_unselected");
+            var selectedStar = UIImage.FromBundle ("star_selected");
 
-			unhappyBtn.SetImage(UIImage.FromFile("unhappy.png"), UIControlState.Normal);
-			unhappyBtn.SetImage(UIImage.FromFile("unhappy-selected.png"), UIControlState.Selected);
-			unhappyBtn.TouchUpInside += OnUnhappyBtnTouchUpInside;
+            var buttons = new List<UIButton> () { btnScoreA, btnScoreB, btnScoreC, btnScoreD, btnScoreE };
+            foreach (var button in buttons)
+            {
+                button.SetImage (star, UIControlState.Normal);
+                button.SetImage (selectedStar, UIControlState.Selected);
+            }
 
-			neutralBtn.SetImage(UIImage.FromFile("neutral.png"), UIControlState.Normal);
-			neutralBtn.SetImage(UIImage.FromFile("neutral-selected.png"), UIControlState.Selected);
-			neutralBtn.TouchUpInside += OnNeutralBtnTouchUpInside;
-
-			happyBtn.SetImage(UIImage.FromFile("happy.png"), UIControlState.Normal);
-			happyBtn.SetImage(UIImage.FromFile("happy-selected.png"), UIControlState.Selected);
-			happyBtn.TouchUpInside += OnHappyBtnTouchUpInside;
-
-			ecstaticBtn.SetImage(UIImage.FromFile("ecstatic.png"), UIControlState.Normal);
-			ecstaticBtn.SetImage(UIImage.FromFile("ecstatic-selected.png"), UIControlState.Selected);
-			ecstaticBtn.TouchUpInside += OnEcstasticBtnTouchUpInside;
+            btnScoreA.TouchUpInside += OnScoreATouchUpInside;
+            btnScoreB.TouchUpInside += OnScoreBTouchUpInside;
+            btnScoreC.TouchUpInside += OnScoreCTouchUpInside;
+            btnScoreD.TouchUpInside += OnScoreDTouchUpInside;
+            btnScoreE.TouchUpInside += OnScoreETouchUpInside;
 		}	
 		
 		protected override void Dispose (bool disposing)
@@ -111,64 +110,64 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 			}
 		}
 
-		private void OnMadBtnTouchUpInside (object sender, EventArgs args)
+		private void OnScoreATouchUpInside (object sender, EventArgs args)
 		{
 			if (SetRateCommand != null) {
-				SetRateCommand.Execute ("Mad");
+                SetRateCommand.Execute (RatingState.ScoreA);
 			}
 		}
 
-		private void OnUnhappyBtnTouchUpInside (object sender, EventArgs args)
+        private void OnScoreBTouchUpInside (object sender, EventArgs args)
 		{
 			if (SetRateCommand != null) {
-				SetRateCommand.Execute ("Unhappy");
+                SetRateCommand.Execute (RatingState.ScoreB);
 			}
 		}
 
-		private void OnNeutralBtnTouchUpInside (object sender, EventArgs args)
+		private void OnScoreCTouchUpInside (object sender, EventArgs args)
 		{
 			if (SetRateCommand != null) {
-				SetRateCommand.Execute ("Neutral");
+                SetRateCommand.Execute (RatingState.ScoreC);
 			}
 		}
 
-		private void OnHappyBtnTouchUpInside (object sender, EventArgs args)
+		private void OnScoreDTouchUpInside (object sender, EventArgs args)
 		{
 			if (SetRateCommand != null) {
-				SetRateCommand.Execute ("Happy");
+                SetRateCommand.Execute (RatingState.ScoreD);
 			}
 		}
 
-		private void OnEcstasticBtnTouchUpInside (object sender, EventArgs args)
+		private void OnScoreETouchUpInside (object sender, EventArgs args)
 		{
 			if (SetRateCommand != null) {
-				SetRateCommand.Execute ("Ecstatic");
+                SetRateCommand.Execute (RatingState.ScoreE);
 			}
 		}
 
-		public bool MadSelected {
-			get{ return madBtn.Selected;}
-			set{ if(madBtn != null) madBtn.Selected = value; }
+		public bool ScoreASelected {
+            get{ return btnScoreA.Selected;}
+            set{ if(btnScoreA != null) btnScoreA.Selected = value; }
 		}
 
-		public bool UnhappySelected {
-			get{ return unhappyBtn.Selected;}
-			set{ if(unhappyBtn != null) unhappyBtn.Selected = value; }
+		public bool ScoreBSelected {
+            get{ return btnScoreB.Selected;}
+            set{ if(btnScoreB != null) btnScoreB.Selected = value; }
 		}
 
-		public bool NeutralSelected {
-			get{ return neutralBtn.Selected;}
-			set{ if(neutralBtn != null) neutralBtn.Selected = value; }
+		public bool ScoreCSelected {
+            get{ return btnScoreC.Selected;}
+            set{ if(btnScoreC != null) btnScoreC.Selected = value; }
 		}
 
-		public bool HappySelected {
-			get{ return happyBtn.Selected;}
-			set{ if(happyBtn != null) happyBtn.Selected = value; }
+		public bool ScoreDSelected {
+            get{ return btnScoreD.Selected;}
+            set{ if(btnScoreD != null) btnScoreD.Selected = value; }
 		}
 
-		public bool EcstaticSelected {
-			get{ return ecstaticBtn.Selected;}
-			set{ if(ecstaticBtn != null) ecstaticBtn.Selected = value; }
+		public bool ScoreESelected {
+            get{ return btnScoreE.Selected;}
+            set{ if(btnScoreE != null) btnScoreE.Selected = value; }
 		}
 	}
 }

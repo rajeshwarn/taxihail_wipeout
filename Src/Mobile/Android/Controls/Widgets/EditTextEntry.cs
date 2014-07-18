@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public EditTextEntry(IntPtr ptr, JniHandleOwnership handle)
 			: base(ptr, handle)
 		{
+
 		}
 
         public override bool OnPreDraw ()

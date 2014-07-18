@@ -59,5 +59,7 @@ namespace apcurium.MK.Booking.ReadModel
         public string UserAgent { get; set; }
 
         public string ClientLanguageCode { get; set; }
+
+        public string ClientVersion { get; set; }
     }
 }

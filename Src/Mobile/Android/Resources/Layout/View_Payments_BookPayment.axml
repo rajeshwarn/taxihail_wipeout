@@ -123,13 +123,13 @@
                         android:layout_width="0dp"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_weight="0.9"
-                        android:paddingRight="12dp"
+                        android:paddingEnd="12dp"
                         style="@style/BlackTextLabel"
                         android:textSize="@dimen/payment_text_size"
                         android:gravity="center_vertical" />
                     <EditText
                         android:id="@+id/meterAmountTextView"
-                        local:MvxBind="Hint PlaceholderAmount; Text MeterAmount"
+                        local:MvxBind="Hint PlaceholderAmount; Text MeterAmount; Enabled MeterAmountPopulatedByIBS, Converter=BoolInverter"
                         android:selectAllOnFocus="true"
                         android:layout_width="100dp"
                         android:layout_height="@dimen/HeightEditTextFlat"
@@ -137,7 +137,7 @@
                         android:inputType="numberDecimal|textNoSuggestions"
                         android:imeOptions="actionDone"
                         android:textSize="@dimen/payment_text_size"
-                        android:gravity="center_vertical|right" />
+                        android:gravity="center_vertical|end" />
                 </LinearLayout>
                 <View
                     android:orientation="vertical"
@@ -153,7 +153,7 @@
                         android:layout_width="0dp"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_weight="0.9"
-                        android:paddingRight="12dp"
+                        android:paddingEnd="12dp"
                         style="@style/BlackTextLabel"
                         android:textSize="@dimen/payment_text_size"
                         android:gravity="center_vertical" />
@@ -164,7 +164,7 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_weight="0.1"
                         android:textSize="@dimen/payment_text_size"
-                        android:gravity="center_vertical|right" />
+                        android:gravity="center_vertical|end" />
                 </LinearLayout>
                 <View
                     android:orientation="vertical"
@@ -179,7 +179,7 @@
                         android:layout_width="0dp"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_weight="0.9"
-                        android:paddingRight="12dp"
+                        android:paddingEnd="12dp"
                         style="@style/BlackTextLabel"
                         android:textSize="@dimen/payment_text_size"
                         android:gravity="center_vertical" />
@@ -193,7 +193,7 @@
                         android:inputType="numberDecimal|textNoSuggestions"
                         android:textSize="@dimen/payment_text_size"
                         android:imeOptions="actionDone"
-                        android:gravity="center_vertical|right" />
+                        android:gravity="center_vertical|end" />
                 </LinearLayout>
                 <View
                     android:orientation="vertical"
@@ -209,23 +209,23 @@
                         android:layout_width="0dp"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_weight="0.9"
-                        android:layout_gravity="left"
+                        android:layout_gravity="start"
                         style="@style/BlackTextLabel"
                         android:textStyle="bold"
                         android:textSize="@dimen/payment_text_bold_size"
-                        android:gravity="center_vertical|left" />
+                        android:gravity="center_vertical|start" />
                     <TextView
                         android:id="@+id/totalAmountTextView"
                         local:MvxBind="Text TotalAmount, Mode=TwoWay"
                         android:layout_weight="0.9"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/HeightEditTextFlat"
-                        android:layout_gravity="right"
+                        android:layout_gravity="end"
                         android:paddingRight="10dip"
                         style="@style/BlackTextLabel"
                         android:textStyle="bold"
                         android:textSize="@dimen/payment_text_bold_size"
-                        android:gravity="center_vertical|right" />
+                        android:gravity="center_vertical|end" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="fill_parent"

@@ -16,8 +16,9 @@ namespace apcurium.MK.Booking.Mobile
         public static DateTime LastConnectError = DateTime.MinValue;
 
 
-        public void HandleError (Exception ex)
+        public bool HandleError (Exception ex)
         {
+			var handled = false;
 			if (ex is WebServiceException && ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.Unauthorized) 
             {
 				var mService = TinyIoCContainer.Current.Resolve<IMessageService> ();
@@ -31,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile
 					TinyIoCContainer.Current.Resolve<IOrderWorkflowService> ().PrepareForNewOrder ();
 					TinyIoCContainer.Current.Resolve<IAccountService> ().SignOut ();
 				});
+				handled=  true;
 			}
 			else if (ex is WebException 
 				&& (((WebException)ex).Status == WebExceptionStatus.ConnectFailure 
@@ -45,7 +47,9 @@ namespace apcurium.MK.Booking.Mobile
 					var mService = TinyIoCContainer.Current.Resolve<IMessageService> ();
 					mService.ShowMessage (title, msg);
 				}
+				handled =  true;
 			}
+			return handled;
         }
     }
 }

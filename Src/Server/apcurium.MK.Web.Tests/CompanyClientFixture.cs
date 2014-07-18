@@ -61,7 +61,7 @@ namespace apcurium.MK.Web.Tests
             base.Setup();
             CreateAndAuthenticateTestAdminAccount().Wait();
             _cacheService = new DummyCache();
-            _sut = new CompanyServiceClient(BaseUrl, SessionId, "Test", _cacheService);
+            _sut = new CompanyServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), _cacheService);
         }
 
         [Test]

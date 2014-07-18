@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             _popularAddressProvider = popularAddressProvider;
         }
 
-        public Address[] Search(string addressName, GeoResult geoResult = null)
+		public Address[] Search(string addressName, string currentLanguage, GeoResult geoResult = null)
         {
             
 
@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             if (geoResult == null)
             {
-                var addresses = SearchUsingName(addressName, true);
+				var addresses = SearchUsingName(addressName, true, currentLanguage);
                 if ( addresses == null )
                 {
                     return popularPlaces;
@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Maps.Impl
         }
 
 
-        public Address[] Search(double latitude, double longitude, GeoResult geoResult = null,
+		public Address[] Search(double latitude, double longitude, string currentLanguage, GeoResult geoResult = null,
             bool searchPopularAddress = false)
         {
             var addressesInRange = new Address[0];
@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             }
             else
             {
-                var addresses = _mapApi.GeocodeLocation(latitude, longitude);
+				var addresses = _mapApi.GeocodeLocation(latitude, longitude, currentLanguage);
                 var rr = addresses.Select(r => new GeoObjToAddressMapper().ConvertToAddress(r, null, false));
                 return addressesInRange.Concat(rr).ToArray();
 
@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             
         }
 
-        private GeoAddress[] SearchUsingName(string name, bool useFilter)
+		private GeoAddress[] SearchUsingName(string name, bool useFilter, string currentLanguage)
         {
             var filter = _appSettings.Data.SearchFilter;
             if (name != null)
@@ -112,9 +112,9 @@ namespace apcurium.MK.Booking.Maps.Impl
                 if ((filter.HasValue()) && (useFilter))
                 {
                     var filteredName = string.Format(filter, name.Split(' ').JoinBy("+"));
-                    return _mapApi.GeocodeAddress(filteredName);
+					return _mapApi.GeocodeAddress(filteredName, currentLanguage);
                 }
-                return _mapApi.GeocodeAddress(name.Split(' ').JoinBy("+"));
+				return _mapApi.GeocodeAddress(name.Split(' ').JoinBy("+"), currentLanguage);
             }
             return null;
         }

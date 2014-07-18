@@ -11,4 +11,10 @@ namespace apcurium.MK.Common.Entity
         Ibs,
         Both
     }
+
+    public enum MapProvider
+    {
+        Google,
+        TomTom
+    }
 }

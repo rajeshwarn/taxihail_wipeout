@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using BraintreeEncryption.Library;
 
 #endregion
@@ -16,8 +17,8 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 {
     public class BraintreeServiceClient : BaseServiceClient, IPaymentServiceClient
     {
-        public BraintreeServiceClient(string url, string sessionId, string clientKey, string userAgent)
-            : base(url, sessionId, userAgent)
+        public BraintreeServiceClient(string url, string sessionId, string clientKey, IPackageInfo packageInfo)
+            : base(url, sessionId, packageInfo)
         {
             ClientKey = clientKey;
         }

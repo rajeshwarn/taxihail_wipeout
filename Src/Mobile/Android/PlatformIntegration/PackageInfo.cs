@@ -17,15 +17,22 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             _appContext = appContext;
         }
-
-        #region IPackageInfo implementation
-
+			
         public string Platform
         {
             get { return "Android"; }
         }
 
-        #endregion
+		public string PlatformDetails
+		{
+			get
+			{
+				return string.Format ("{0} {1} {2}",
+					Android.OS.Build.VERSION.Release,
+					Android.OS.Build.Manufacturer,
+					Android.OS.Build.Model);
+			}
+		}
 
         public string Version
         {

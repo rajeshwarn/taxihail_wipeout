@@ -432,7 +432,7 @@
   <string name="DriverInfoMake">Make:</string>
   <string name="DontHaveAnAccountLabel">Don\'t have an account?</string>
   <string name="DriverInfoColor">Color:</string>
-  <string name="Submit">Submit</string>
+  <string name="Submit">Submit Rating</string>
   <string name="SaveAddressEmptyFieldTitle">Friendly name required</string>
   <string name="ResetPasswordTitleText">Forgot your password?</string>
   <string name="CreateAccountEmailPlaceHolder">Email</string>

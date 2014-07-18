@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Data;
@@ -58,9 +59,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             TutorialContent result = null;
             var resourceName = "";
             
-            foreach (var name in typeof(TutorialService).Assembly.GetManifestResourceNames()) 
-			{ 
-				if (name.ToLower ().EndsWith (string.Format(".tutorial-{0}.json", TinyIoCContainer.Current.Resolve<ILocalization>().CurrentLanguage)))
+            foreach (var name in typeof(TutorialService).Assembly.GetManifestResourceNames())
+            {
+                if (name.ToLower ().EndsWith (string.Format(".tutorial-{0}.json", TinyIoCContainer.Current.Resolve<ILocalization>().CurrentLanguage)))
 				{
                     resourceName = name;
                     break;

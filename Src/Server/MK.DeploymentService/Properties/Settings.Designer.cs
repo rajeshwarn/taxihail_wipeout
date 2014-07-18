@@ -170,5 +170,35 @@ namespace MK.DeploymentService.Properties {
                 return ((string)(this["ReplicatedWebSitesFolder"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultS" +
+            "ets=True")]
+        public string SqlConnectionStringAllLocal {
+            get {
+                return ((string)(this["SqlConnectionStringAllLocal"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=CL-T077-082CL;Failover Partner=CL-T078-073CN;Initial Catalog={0};Inte" +
+            "grated Security=False;User ID=taxihaildbuser;Password=Mkc1234!;MultipleActiveRes" +
+            "ultSets=True")]
+        public string SqlConnectionStringDbServer {
+            get {
+                return ((string)(this["SqlConnectionStringDbServer"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ReplicationSharedFolder {
+            get {
+                return ((string)(this["ReplicationSharedFolder"]));
+            }
+        }
     }
 }

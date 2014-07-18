@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand<DateTime?>(async date =>
 				{
-					_orderWorkflowService.SetPickupDate(date);
+					await _orderWorkflowService.SetPickupDate(date);
 					try
 					{
 						await _orderWorkflowService.ValidatePickupDestinationAndTime();
@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								return;
 						}
 					}
-					_orderWorkflowService.ResetOrderSettings();
+					await _orderWorkflowService.ResetOrderSettings();
                     PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
 					await ShowFareEstimateAlertDialogIfNecessary();
 					await PreValidateOrder();
@@ -96,6 +96,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		 
 		public ICommand ConfirmOrder
 		{
 			get
@@ -104,16 +105,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					try
 					{
-								
-							var canBeConfirmed = await _orderWorkflowService.GetAndObserveOrderCanBeConfirmed().Take(1).ToTask();
 
-								if ( ! canBeConfirmed )
-							{
-								return;
-							}
+						var canBeConfirmed = await _orderWorkflowService.GetAndObserveOrderCanBeConfirmed().Take(1).ToTask();
 
-
-
+						if ( ! canBeConfirmed )
+						{
+							return;
+						}
+						_orderWorkflowService.BeginCreateOrder ();
 
 						if(await _orderWorkflowService.ShouldGoToAccountNumberFlow())
 						{
@@ -162,27 +161,50 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						var settings = this.Services().Settings;
 						var title = this.Services().Localize["ErrorCreatingOrderTitle"];
 
-						if (!Settings.HideCallDispatchButton)
-						{
-							this.Services().Message.ShowMessage(title,
-								e.Message,
-								"Call",
-								() => _phone.MakePhoneCall (settings.ApplicationName, settings.DefaultPhoneNumber),
-								"Cancel",
-								delegate { });
-						}
-						else
-						{
-							this.Services().Message.ShowMessage(title, e.MessageNoCall);
-						}
+					    switch (e.Message)
+					    {
+                            case "CreateOrder_PendingOrder":
+					        {
+					            Guid pendingOrderId;
+					            Guid.TryParse(e.MessageNoCall, out pendingOrderId);
+
+								this.Services().Message.ShowMessage(title, "You cannot book this ride since an order is already pending. View the order status?",
+                                    "View", () => ShowViewModel<HistoryDetailViewModel>(new {orderId = pendingOrderId}),
+                                    "Cancel", delegate { });
+					        }
+					            break;
+                            default:
+					        {
+                                if (!Settings.HideCallDispatchButton)
+                                {
+                                    this.Services().Message.ShowMessage(title,
+                                        e.Message,
+                                        "Call",
+                                        () => _phone.MakePhoneCall(settings.ApplicationName, settings.DefaultPhoneNumber),
+                                        "Cancel",
+                                        delegate { });
+                                }
+                                else
+                                {
+                                    this.Services().Message.ShowMessage(title, e.MessageNoCall);
+                                }
+					        }
+					            break;
+					    }
 					}
 					catch(Exception e)
 					{
 						Logger.LogError(e);
 					}
+ finally {
+
+								
+							_orderWorkflowService.EndCreateOrder ();
+						}
 
 
 					});
+				 
 			}
 		}
 
@@ -224,7 +246,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
 			{
-				return this.GetCommand(() => {
+				return this.GetCommand(() => 
+				{
+					// set pickup date to null to reset the estimate for now and not the possible date set by book later
+					_orderWorkflowService.SetPickupDate(null);
                     PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
 				});
 			}

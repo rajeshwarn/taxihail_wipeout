@@ -3,7 +3,6 @@
     android:id="@+id/spinnerCell"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="#00000000"
     android:orientation="horizontal">
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -16,13 +15,13 @@
             android:paddingRight="40dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:gravity="right|center_vertical" />
+            android:gravity="start|center_vertical" />
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="1dp"
             android:layout_height="1dp"
             android:visibility="invisible"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:focusable="true"
             android:focusableInTouchMode="true" />
         <ImageView

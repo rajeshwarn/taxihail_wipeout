@@ -238,6 +238,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             this.Services().Message.ShowMessage(title, message);
                         }
                             break;
+						case AuthFailure.AccountNotActivated:
+						{
+							var title = localize["InvalidLoginMessageTitle"];
+							var message = localize ["AccountNotActivated"];
+							this.Services ().Message.ShowMessage (title, message);
+						}
+							break;
                     }
                 }
                 catch (Exception e)
@@ -335,7 +342,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _loginWasSuccesful = true;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
 
-			Action showNextView = () => {
+			Action showNextView = () => 
+            {
 				if (NeedsToNavigateToAddCreditCard ()) {
 					ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel> (new { showInstructions = true });
 					return;
@@ -346,6 +354,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					LoginSucceeded (this, EventArgs.Empty);
 				}
 			};
+
+            // Log user session start
+            _accountService.LogApplicationStartUp();
 
 			if (_viewIsStarted) 
 			{

@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.CommandBuilder;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
@@ -107,7 +108,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             try
             {
-                var cmtClient = new CmtMobileServiceClient(_configurationManager.GetPaymentSettings().CmtPaymentSettings, null, "TaxiHail");
+                var cmtClient = new CmtMobileServiceClient(_configurationManager.GetPaymentSettings().CmtPaymentSettings, null, null);
                 var trip = cmtClient.Get(new TripRequest { Token = pairingToken });
 
                 return trip;

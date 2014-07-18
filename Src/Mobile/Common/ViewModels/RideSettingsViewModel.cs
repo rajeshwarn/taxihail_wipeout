@@ -13,10 +13,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
 
 		public RideSettingsViewModel(IAccountService accountService, 
-			IPaymentService paymentService)
+			IPaymentService paymentService,
+			IOrderWorkflowService orderWorkflowService)
 		{
+			_orderWorkflowService = orderWorkflowService;
 			_paymentService = paymentService;
 			_accountService = accountService;
 		}
@@ -28,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_bookingSettings = bookingSettings.FromJson<BookingSettings>();
 
 			var v = await _accountService.GetVehiclesList();
-			_vehicules = v == null ? new ListItem[0] : v.ToArray();
+			_vehicules = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
 			RaisePropertyChanged(() => Vehicles );
 			RaisePropertyChanged(() => VehicleTypeId );
 			RaisePropertyChanged(() => VehicleTypeName );
@@ -103,6 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _bookingSettings.VehicleTypeId = value;
 					RaisePropertyChanged();
 					RaisePropertyChanged(() => VehicleTypeName);
+					_orderWorkflowService.SetVehicleType (value);
                 }
             }
         }

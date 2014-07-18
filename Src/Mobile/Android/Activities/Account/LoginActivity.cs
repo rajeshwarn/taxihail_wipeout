@@ -99,6 +99,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             var password = FindViewById<EditText>(Resource.Id.Password);
 			password.SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
 
+			if(this.Services().Localize.IsRightToLeft)
+			{
+				password.Gravity = GravityFlags.Right | GravityFlags.CenterVertical;
+			}
+
             ApplyKeyboardEnabler(username);
             ApplyKeyboardEnabler(password);
 

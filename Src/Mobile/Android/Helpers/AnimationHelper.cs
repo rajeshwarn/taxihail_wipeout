@@ -2,28 +2,29 @@ using Android.App;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
+using Android.Text;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
     public static class AnimationHelper
     {
-        public static TranslateAnimation GetForXTranslation(View view, float desiredX)
+		public static TranslateAnimation GetForXTranslation(View view, float desiredX, bool isRTL = false)
         {
             return PlatformHelper.IsAndroid23 
-                ? GetAnimationFor23(view, desiredX, null)
-                : GetAnimationFor(view, desiredX, null);
+				? GetAnimationFor23(view, desiredX, null, isRTL)
+					: GetAnimationFor(view, desiredX, null, isRTL);
         }
 
         public static TranslateAnimation GetForYTranslation(View view, float desiredY)
         {
             return PlatformHelper.IsAndroid23
-                ? GetAnimationFor23(view, null, desiredY)
+				? GetAnimationFor23(view, null, desiredY)
                 : GetAnimationFor(view, null, desiredY);
         }
 
-        private static TranslateAnimation GetAnimationFor23(View view, float? desiredX, float? desiredY)
+		private static TranslateAnimation GetAnimationFor23(View view, float? desiredX, float? desiredY, bool isRTL = false)
         {
-            var layoutParams = (FrameLayout.LayoutParams)view.LayoutParameters;
+			var layoutParams = (FrameLayout.LayoutParams)view.LayoutParameters;
 
             var animation = new TranslateAnimation(
                 Dimension.Absolute, 0, Dimension.Absolute, 0, 
@@ -36,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             int deltaX = 0;
             if (desiredX.HasValue)
             {
-                deltaX = (int)desiredX.Value - layoutParams.LeftMargin;
+				deltaX = (int)desiredX.Value - (isRTL ? layoutParams.RightMargin : layoutParams.LeftMargin);
             }
 
             int deltaY = 0;
@@ -73,7 +74,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             {
                 if(desiredX.HasValue)
                 {
-                    layoutParams.LeftMargin = (int)desiredX.Value;
+					if(isRTL)
+					{
+						layoutParams.RightMargin = (int)desiredX.Value;
+					}else{
+						layoutParams.LeftMargin = (int)desiredX.Value;
+					}
                 }
 
                 if(desiredY.HasValue)
@@ -94,14 +100,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             return animation;
         }
 
-        private static TranslateAnimation GetAnimationFor(View view, float? desiredX, float? desiredY)
+		private static TranslateAnimation GetAnimationFor(View view, float? desiredX, float? desiredY, bool isRTL = false)
         {
             var layoutParams = (LinearLayout.MarginLayoutParams)view.LayoutParameters;
 
             int deltaX = 0;
             if (desiredX.HasValue)
             {
-                deltaX = (int)desiredX.Value - layoutParams.LeftMargin;
+				deltaX = (int)desiredX.Value - (isRTL ? layoutParams.RightMargin : layoutParams.LeftMargin);
             }
 
             int deltaY = 0;
@@ -126,7 +132,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             {
                 if(desiredX.HasValue && deltaX != 0)
                 {
-                    layoutParams.LeftMargin = (int)desiredX.Value;
+					if(isRTL)
+					{
+						layoutParams.RightMargin = (int)desiredX.Value;
+					}else{
+						layoutParams.LeftMargin = (int)desiredX.Value;
+					}
                 }
 
                 if(desiredY.HasValue && deltaY != 0)

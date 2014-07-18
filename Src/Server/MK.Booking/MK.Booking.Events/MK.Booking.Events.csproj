@@ -108,6 +108,8 @@
     <Compile Include="RatingTypeUpdated.cs" />
     <Compile Include="TermsAndConditionsRetriggered.cs" />
     <Compile Include="TermsAndConditionsUpdated.cs" />
+    <Compile Include="VehicleTypeAddedUpdated.cs" />
+    <Compile Include="VehicleTypeDeleted.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">

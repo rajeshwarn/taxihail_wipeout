@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 
 #endregion
@@ -10,8 +11,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class ConfigurationClientService : BaseServiceClient
     {
-        public ConfigurationClientService(string url, string sessionId, string userAgent)
-            : base(url, sessionId, userAgent)
+        public ConfigurationClientService(string url, string sessionId, IPackageInfo packageInfo)
+            : base(url, sessionId, packageInfo)
         {
         }
 

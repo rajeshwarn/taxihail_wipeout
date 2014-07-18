@@ -23,6 +23,7 @@ namespace MK.Common.Configuration
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
             CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink,Client.AccountChargeTypeId";
 			DefaultTipPercentage = 15;
+            DirectionDataProvider = MapProvider.Google;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -113,6 +114,8 @@ namespace MK.Common.Configuration
         public bool SendReceiptAvailable { get; private set; }
         [Display(Name = "Rating Enabled", Description="Can the user rate the order when it's done")]
 		public bool RatingEnabled { get; private set; }		
+		[Display(Name = "User needs to rate before booking again", Description="Can the user book if he hasn't rate the last ride")]
+		public bool RatingRequired { get; private set; }		
         [Display(Name = "Show Call Driver", Description="Show button on the status screen to call the driver")]
 		public bool ShowCallDriver { get; private set; }
         [Display(Name = "Show Vehicule Information", Description="Show vehicule informatino when available")]
@@ -157,7 +160,12 @@ namespace MK.Common.Configuration
         [Display(Name = "Foursquare Categories", Description = "filter venues for include only those categories")]
         public string FoursquarePlacesTypes { get; private set; }
 
-         
+        [Display(Name = "TomTom Map Toolkit API Key", Description = "TomTom Map Toolkit API Key")]
+        public string TomTomMapToolkitKey { get; private set; }
+
+        [Display(Name = "Direction Map Provider", Description = "Map Provider to use for Directions/Estimates")]
+        public MapProvider DirectionDataProvider { get; private set; }
+
         public bool AllowAddressRange { get; private set; }
 
         [Display(Name = "Need a Valid Tarif", Description="Prevent order when tarif is not available")]

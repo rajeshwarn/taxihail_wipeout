@@ -29,7 +29,7 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
             CreateAndAuthenticateTestAdminAccount().Wait();
-            _sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
+            _sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
         }
 
         [Test]

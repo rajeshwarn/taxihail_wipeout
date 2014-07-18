@@ -182,7 +182,6 @@
     <Compile Include="AppServices\Impl\GoogleService.cs" />
     <Compile Include="AppServices\Impl\ApplicationInfoService.cs" />
     <Compile Include="AppServices\IApplicationInfoService.cs" />
-    <Compile Include="Infrastructure\IPackageInfo.cs" />
     <Compile Include="Style\StyleManager.cs" />
     <Compile Include="Style\ButtonStyle.cs" />
     <Compile Include="Style\ColorDefinition.cs" />
@@ -354,10 +353,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Localization\Master.fr.resx">
+      <SubType>Designer</SubType>
+    </None>
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="Style\Style.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />
+    <BundleResource Include="TutorialContent\Tutorial-fr.json" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

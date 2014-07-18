@@ -173,7 +173,6 @@
     <Compile Include="Framework\Params.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
-    <Compile Include="Infrastructure\IPackageInfo.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
     <Compile Include="Localization\AppLanguage.cs" />
     <Compile Include="Localization\Taxiworld.Designer.cs">
@@ -363,6 +362,9 @@
     <None Include="Localization\Master.resx">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="Localization\Master.fr.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\Taxiworld.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Taxiworld.Designer.cs</LastGenOutput>
@@ -377,6 +379,7 @@
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <None Include="Localization\Mishwar.resx" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />
+    <EmbeddedResource Include="TutorialContent\Tutorial-fr.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">

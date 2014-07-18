@@ -83,14 +83,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             switch (settings.PaymentMode)
             {
                 case PaymentMethod.Braintree:
-					return new BraintreeServiceClient(_baseUrl, _sessionId, settings.BraintreeClientSettings.ClientKey, _packageInfo.UserAgent);
+					return new BraintreeServiceClient(_baseUrl, _sessionId, settings.BraintreeClientSettings.ClientKey, _packageInfo);
 
                 case PaymentMethod.RideLinqCmt:
                 case PaymentMethod.Cmt:
-					return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _packageInfo.UserAgent, null);
+					return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _packageInfo, null);
 
 				case PaymentMethod.Moneris:
-                    return new MonerisServiceClient(_baseUrl, _sessionId, settings.MonerisPaymentSettings, _packageInfo.UserAgent, _logger);
+                    return new MonerisServiceClient(_baseUrl, _sessionId, settings.MonerisPaymentSettings, _packageInfo, _logger);
 
                 case PaymentMethod.Fake:
                     return new FakePaymentClient();
