@@ -54,19 +54,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             Progress = 0;
             _isLoading = true;
 
-            var contentView = rootView.GetChildAt(0);
-            rootView.RemoveView(contentView);
-            var masterLayout = new RelativeLayout(_activity.ApplicationContext);
-            masterLayout.LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
-            masterLayout.AddView(contentView);
+			var contentView = rootView.GetChildAt (0).FindViewById<FrameLayout>(Android.Resource.Id.Content);
 
             var layoutParent = new LinearLayout(_activity);
             _layoutCenter = new LinearLayout(_activity);
             _layoutImage = new LinearLayout(_activity);
 
-            var layoutParentParameters = new ViewGroup.LayoutParams(-1, -1);
-            layoutParentParameters.Width = masterLayout.LayoutParameters.Width;
-            layoutParentParameters.Height = masterLayout.LayoutParameters.Height;
+			var layoutParentParameters = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.FillParent, LinearLayout.LayoutParams.FillParent);
             layoutParent.LayoutParameters = layoutParentParameters;
 			layoutParent.SetBackgroundDrawable(_activity.Resources.GetDrawable(Resource.Drawable.loading_overlay));
 
@@ -86,9 +80,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             _layoutCenter.AddView(_layoutImage);
             layoutParent.AddView(_layoutCenter);
-            masterLayout.AddView(layoutParent, layoutParentParameters);
-
-            rootView.AddView(masterLayout);
+            
+			contentView.AddView (layoutParent, layoutParentParameters);
+			layoutParent.BringToFront ();
 
             _layoutCenter.ClearAnimation();
             _layoutImage.SetBackgroundDrawable(null);
@@ -176,7 +170,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
                 if (_layoutCenter.Parent != null)
                 {
-                    RelativeLayout root = (RelativeLayout)_layoutCenter.Parent.Parent;
+					var root = _layoutCenter.Parent.Parent as ViewGroup;
                     if (root != null)
                     {
                         root.RemoveView((LinearLayout)_layoutCenter.Parent);
