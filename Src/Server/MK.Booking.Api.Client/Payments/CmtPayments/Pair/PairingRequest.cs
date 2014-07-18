@@ -22,5 +22,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Pair
         public int? AutoTipPercentage { get; set; }
         public double? AutoTipAmount { get; set; }
         public string CardOnFileId { get; set; }
+        
+        public string Market { get; set; }        
     }
 }
