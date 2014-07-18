@@ -91,7 +91,7 @@ namespace apcurium.MK.Web.Tests
             await sut.CreateTariff(new Tariff
             {
                 Id = tariffId,
-                Type = (int)TariffType.Vehicle,
+                Type = (int)TariffType.VehicleDefault,
                 Name = "Rate " + tariffId,
                 KilometricRate = 1.1,
                 FlatRate = 1.2m,

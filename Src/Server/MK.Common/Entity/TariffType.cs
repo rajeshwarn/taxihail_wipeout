@@ -5,6 +5,6 @@
         Default = 0,
         Recurring = 1,
         Day = 2,
-        Vehicle = 3
+        VehicleDefault = 3
     }
 }

@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                     command.PerMinuteRate, command.MarginOfError,
                     kilometerIncluded: command.KilometerIncluded);
             }
-            else if (command.Type == TariffType.Vehicle)
+            else if (command.Type == TariffType.VehicleDefault)
             {
                 company.CreateDefaultVehiculeTariff(command.TariffId, command.Name, command.FlatRate, command.KilometricRate,
                     command.PerMinuteRate, command.MarginOfError,
@@ -120,7 +120,8 @@ namespace apcurium.MK.Booking.CommandHandlers
                     daysOfTheWeek: command.DaysOfTheWeek,
                     kilometerIncluded: command.KilometerIncluded,
                     startTime: command.StartTime,
-                    endTime: command.EndTime);
+                    endTime: command.EndTime,
+                    vehicleTypeId: command.VehicleTypeId);
             }
             else if (command.Type == TariffType.Day)
             {
@@ -128,7 +129,8 @@ namespace apcurium.MK.Booking.CommandHandlers
                     command.PerMinuteRate, command.MarginOfError,
                     kilometerIncluded: command.KilometerIncluded,
                     startTime: command.StartTime,
-                    endTime: command.EndTime);
+                    endTime: command.EndTime,
+                    vehicleTypeId: command.VehicleTypeId);
             }
 
             _repository.Save(company, command.Id.ToString());

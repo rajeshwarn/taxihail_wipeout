@@ -82,32 +82,55 @@ namespace apcurium.MK.Booking.Maps.Impl
         public Tariff GetTariffFor(DateTime pickupDate, int? vehicleTypeId = null)
         {
             var tariffs = _tariffProvider.GetTariffs().ToArray();
+            const int allVehicleTypesId = 99; // TODO
 
             // Case 1: A tariff exists for the specific date
             var tariff = (from r in tariffs
                 where r.Type == (int) TariffType.Day
+                where vehicleTypeId.HasValue && r.VehicleTypeId == vehicleTypeId.Value
                 where IsDayMatch(r, pickupDate)
                 select r).FirstOrDefault();
 
-            // Case 2: A tariff exists for the day of the week
+            // Case 2: A tariff exists for the specific date for all vehicle types
+            if (tariff == null)
+            {
+                tariff = (from r in tariffs
+                          where r.Type == (int)TariffType.Day
+                          where vehicleTypeId.HasValue && r.VehicleTypeId == allVehicleTypesId
+                          where IsDayMatch(r, pickupDate)
+                          select r).FirstOrDefault();
+            }
+
+            // Case 3: A tariff exists for the day of the week for my vehicle type
             if (tariff == null)
             {
                 tariff = (from r in tariffs
                     where r.Type == (int) TariffType.Recurring
+                    where vehicleTypeId.HasValue && r.VehicleTypeId == vehicleTypeId.Value
                     where IsRecurringMatch(r, pickupDate)
                     select r).FirstOrDefault();
             }
 
-            // Case 3: Use vehicle tariff
-            if (tariff == null && vehicleTypeId.HasValue)
+            // Case 4: A tariff exists for the day of the week for all vehicle types
+            if (tariff == null)
             {
                 tariff = (from r in tariffs
-                    where r.Type == (int) TariffType.Vehicle
-                    where r.VehicleTypeId == vehicleTypeId.Value
+                          where r.Type == (int)TariffType.Recurring
+                          where vehicleTypeId.HasValue && r.VehicleTypeId == allVehicleTypesId
+                          where IsRecurringMatch(r, pickupDate)
+                          select r).FirstOrDefault();
+            }
+
+            // Case 5: A tariff default tariff exists for my vehicle type
+            if (tariff == null)
+            {
+                tariff = (from r in tariffs
+                    where r.Type == (int) TariffType.VehicleDefault
+                    where vehicleTypeId.HasValue && r.VehicleTypeId == vehicleTypeId.Value
                     select r).FirstOrDefault();
             }
 
-            // Case 4: Use default tariff
+            // Case 6: Use default tariff for all vehicle types
             if (tariff == null)
             {
                 tariff = tariffs.FirstOrDefault(x => x.Type == (int) TariffType.Default);
