@@ -87,20 +87,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _layoutCenter.ClearAnimation();
             _layoutImage.SetBackgroundDrawable(null);
 
-            if (_car != null)
-            {
-                _car.Recycle();
-            }
-            _car = BitmapFactory.DecodeResource(_activity.Resources, Resource.Drawable.taxi_progress);
-
-            if (_progressImage != null)
-            {
-                _progressImage.Recycle();
-                _progressImage = null;
-            }
-
-            _colorToUse = (Android.Graphics.Color)_activity.Resources.GetColor(Resource.Color.company_color);
-            _car = DrawHelper.Colorize(_car, _colorToUse);
+			if (_car == null) {
+				_car = BitmapFactory.DecodeResource (_activity.Resources, Resource.Drawable.taxi_progress);
+				_colorToUse = (Android.Graphics.Color)_activity.Resources.GetColor (Resource.Color.company_color);
+				_car = DrawHelper.Colorize (_car, _colorToUse);
+			}
 
             var displaySize = _activity.Resources.DisplayMetrics;
             var windowHeight = (int)(_car.Width * 1.5f);
