@@ -1,106 +1,224 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>{{ localize "Email_Subject_Receipt" }}</title>
-    </head>
-    <body style="font-family:Calibri,Helvetica, sans-serif; color:#686868">
-        <table width="300" cellpadding="0" cellspacing="0" style="width:300px;border-right:1px solid {{ AccentColor }};border-left:1px solid {{ AccentColor }};" id="backgroundTable">       
-		    <tr style="background-color:{{ AccentColor }}">
-			    <td colspan="2">&nbsp;</td>
-		    </tr>
-            <tr>
-                <td colspan="2">
-                    <h1 style="width:300px;color:{{ AccentColor }};padding-left:45px;padding-right:20px;">{{ ApplicationName }}<br/>{{ localize "Email_Body_Receipt" }}</h1>
-                </td>
-            </tr>
-		    <tr>
-			    <td colspan='2'>
-				    <table cellpadding="1" cellspacing="0" border="0" style="border:none;margin-left:45px;margin-right:20px;width:300px;">
-				        <tr>
-				            <td width=1><strong>{{ localize "Email_Body_Date" }}</strong></td>
-                            <td>{{Date}}</td>
-				        </tr>
-                        <tr>
-						    <td valign=top><strong>{{ localize "Email_Body_PickupLocation" }}</strong></td>
-						    <td valign=top>{{PickupAddress}}</td>
-					    </tr>
-					    <tr>
-						    <td valign=top><strong>{{ localize "Email_Body_Destination" }}</strong></td>
-						    <td valign=top>{{DropOffAddress}}</td>
-					    </tr>
-					    <tr>
-					        <td><strong>{{ localize "Email_Body_OrderNo" }}&nbsp;&nbsp;</strong></td>
-                            <td>{{IBSOrderId}}</td>
-					    </tr>
-					    <tr>
-					        <td><strong>{{ localize "Email_Body_VehicleNumber" }}</strong></td>
-                            <td>{{VehicleNumber}}</td>
-					    </tr>
-					    <tr>
-					    	<td><strong>{{ localize "Email_Body_Driver" }}</strong></td>
-                        	<td>{{DriverName}}</td>
-					   	</tr>
-				        <tr>
-				            <td><strong>{{ localize "Email_Body_Fare"}}</strong></td>
-                            <td>{{Fare}}</td>
-				        </tr>
-                    
-      {{#VatEnabled}}
-				        <tr id="vatRow" >
-				            <td><strong>{{ localize "Email_Body_VAT"}}</strong></td>
-                            <td>{{VATAmount}} (#: {{VATRegistrationNumber}})</td>
-				        </tr>
-      {{/VatEnabled}}
-					    <tr>
-					        <td><strong>{{ localize "Email_Body_Toll"}}</strong></td>
-                            <td>{{Toll}}</td>
-					    </tr>
-					    <tr>
-					        <td><strong>{{ localize "Email_Body_Tip"}}</strong></td>
-                            <td>{{Tip}}</td>
-					    </tr>
-				        <tr>
-				            <td><strong>{{ localize "Email_Body_TotalFare"}}</strong></td>
-                            <td>{{TotalFare}}</td>
-				        </tr>
-	  {{#IsCardOnFile}}
+<head>
+    <meta charset="UTF-8">
+    <title>Mishwar</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 20px auto;
+        }
 
-				        <tr>
-				            <td colspan="2">&nbsp;</td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"><strong>{{ localize "Email_Body_PaymentInformation" }}</strong></td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"></td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"><strong>{{ localize "Email_Body_PaidWith" }}</strong> {{ CardNumber }}</td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"><strong>{{ localize "Email_Body_TotalAmount" }}</strong> {{ CardOnFileAmount }}</td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"><strong>{{ localize "Email_Body_TransactionId" }}</strong>{{ CardOnFileTransactionId }}</td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"><strong>{{ localize "Email_Body_AuthorizationNumber" }}</strong>{{ CardOnFileAuthorizationCode }}</td>
-				        </tr>
-    {{/IsCardOnFile}}                    
+        img {
+            display: block;
+        }
+    </style>
+</head>
 
-				    </table>
-			    </td>
-		    </tr>
-            <tr>
-                <td colspan="2">
-                    <p style="padding-left:45px;padding-right:20px;width:300px;">{{{Note}}}</p>
-                </td>
-            </tr>
-            <tr style="background-color:{{ AccentColor }}">
-                <td colspan="2">&nbsp;</td>
-            </tr>
-        </table>
-    </body>
+<body>
+    <table align="center" style="border-radius:15px; border:2px solid #797979" width="600" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td>
+                <table width="600" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="30">&nbsp;</td>
+                        <td width="515" style=" padding:10px 0px;border-bottom:2px solid #bdbcc1">
+                            <table width="498" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td width="98"><img src="{{ BaseUrl }}/assets/img/email/logo.png" width="71" height="86" alt="" /></td>
+                                    <td width="339" align="center">
+                                        <div>
+                                            <p style="font-size:38px; color:#838488; font-weight:bold; margin:0px; padding:5px;">فاتورة مشوار</p>
+                                            <p style="font-size:30px; color:#838488; font-weight:bold; margin:0px; padding:5px;">Mishwar Receipt</p>
+                                        </div>
+                                    </td>
+                                    <td width="61">&nbsp;</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="30">&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-top:20px">
+                <table width="600" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+
+                        <td width="362" style="vertical-align:top;color:#838488; font-size:20px; text-align:right; line-height:30px;">
+                            {{Date}}<br>
+                            {{PickupAddress}}<br>-<br>{{DropOffAddress}}<br> {{IBSOrderId}}<br>{{VehicleNumber}}<br>{{Fare}}<br>{{Toll}}<br>{{TotalFare}}<br>
+                        </td>
+                        <td width="188" style="color:#838488; font-size:20px; font-weight:bold;text-align:right;line-height:30px;">
+                            اﻟﺘﺎرﻳﺦ<br>ﻣﻮﻗﻊ اﻟﻤﻐﺎدرة<br>ﻣﻮﻗﻊ اﻟﻮﺻﻮل<br>رﻗﻢ اﻟﻄﻠﺐ #<br>ﺳﻴﺎرة اﺟﺮة<br>أﺟﺮة اﻟﻤﺸﻮار<br>رﺳﻮم
+                            <br>ﺑﻘﺸﻴﺶ<br>اﻻﺟﻤﺎﻟﻲ<br><span style="text-decoration:underline; font-size:22px;line-height:35px;">
+                                :
+                                ﻣﻌﻠﻮﻣﺎت اﻟﺪﻓﻊ
+                            </span><br>
+                        </td>
+                        <td width="50">&nbsp;</td>
+                    </tr>
+
+
+                </table>
+            </td>
+        </tr>
+        <tr>
+        <tr>
+            <td>
+                <table width="600" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="102" style="color:#838488; font-size:16px;text-align:right;line-height:30px;">{{ CardOnFileTransactionId }}<br>{{ CardOnFileAuthorizationCode }}</td>
+                        <td width="134" style="color:#838488; font-size:20px; font-weight:bold;text-align:right;line-height:30px;">ﻣﻌﺮف اﻟﻤﻌﺎﻣﻠﺔ<br>رﻗﻢ اﻟﺘﺼﺮﻳﺢ</td>
+                        <td width="127" style="color:#838488; font-size:16px; font-weight:bold;text-align:right;line-height:30px;">
+                            {{ CardNumber }}
+                            <br>$ {{ CardOnFileAmount }}
+                        </td>
+                        <td width="187" style="color:#838488; font-size:20px; font-weight:bold;text-align:right;line-height:30px;">ﺗﻢ اﻟﺪﻓﻊ ﻋﻦ ﻃﺮﻳﻖ<br>إﺟﻤﺎﻟﻲ اﻟﻤﺒﻠﻎ</td>
+                        <td width="50">&nbsp;</td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table width="600" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td style="color:#838488; font-size:16px; font-weight:bold;text-align:right; padding-top:20px;">ﺷﻜﺮ ﻟﺘﻌﺎﻣﻠﻜﻢ ﻣﻊ ﻓﺮﻳﻖ ﻣﺸﻮار</td>
+                        <td width="50">&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <table width="600" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="50">&nbsp;</td>
+                        <td style="border-bottom:2px solid #bdbcc1">&nbsp;</td>
+                        <td width="50">&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-top:30px;">
+                <table width="600" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="30">&nbsp;</td>
+                        <td style="color:#838488; font-size:16px; font-weight:bold">
+                            Date<br>
+                            <br>
+                            Pickup<br>
+                            <br>
+                            Location<br>
+                            <br>
+                            Destination<br>
+                            <br>
+                            Order #<br>
+                            <br>
+                            Cab #<br>
+                            <br>
+                            Fare <br>
+                            <br>
+                            Toll<br>
+                            <br>
+                            Tip<br>
+                            <br>
+                            Total Fare<br>
+                            <br>
+                        </td>
+                        <td style="color:#838488; font-size:16px;">
+                            {{Date}}<br>
+                            <br>
+                            {{PickupAddress}}<br>
+                            <br>
+                            - <br>
+                            <br>
+                            {{DropOffAddress}} <br>
+                            <br>
+                            {{IBSOrderId}} <br>
+                            <br>
+                            {{VehicleNumber}}<br>
+                            <br>
+                            {{Fare}}<br>
+                            <br>
+                            {{Toll}} <br>
+                            <br>
+                            {{Tip}} <br>
+                            <br>
+                            {{TotalFare}}<br>
+                            <br>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table width="600" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="30">&nbsp;</td>
+                        <td style="padding-bottom:10px; padding-top:20px; text-decoration:underline;color:#838488; font-size:16px; font-weight:bold">Payment Information :</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table width="600" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="30">&nbsp;</td>
+                        <td width="302" style="color:#838488; font-size:16px; font-weight:bold">
+                            <table width="300" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td>
+                                        Payed With<br>
+                                        <br>
+                                        Total Amount
+                                    </td>
+                                    <td style="color:#838488; font-size:16px; font-weight:normal">
+                                        {{ CardNumber }}<br>
+                                        <br>
+                                        {{ CardOnFileAmount }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="142" style=" color:#838488; font-size:16px; font-weight:bold">
+                            Transaction Id<br>
+                            <br>
+                            Authorizatio No.
+                        </td>
+                        <td width="101" style="color:#838488; font-size:16px;">
+                            {{ CardOnFileTransactionId }}<br>
+                            <br>
+                            {{ CardOnFileAuthorizationCode }}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td align="center" style="color:#838488; font-size:14px; padding:20px 0px 0px;">
+                <table width="600" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td valign="bottom">
+                            <div style="padding-left:60px; padding-bottom:20px">
+                                Thank you - The Mishwar Team<br>
+                                <br>
+                                Need Help <a href="#" target="_blank"><img style="vertical-align:middle;display:inline-block" src="{{ BaseUrl }}/assets/img/email/tw.png" width="23" height="24" alt="" /></a> <a href="#" target="_blank"><img style="vertical-align:middle;display:inline-block" src="{{ BaseUrl }}/assets/img/email/fb.png" width="24" height="24" alt="" /></a> <a style="color:#0756a3;" href="#" target="_blank"> Contact us</a>
+                            </div>
+                            <img src="{{ BaseUrl }}/assets/img/email/bg1.png" width="384" height="14" alt="" />
+                        </td>
+                        <td align="right" valign="bottom"><img src="{{ BaseUrl }}/assets/img/email/bg.png" width="218" height="152" alt="" /></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
 </html>
