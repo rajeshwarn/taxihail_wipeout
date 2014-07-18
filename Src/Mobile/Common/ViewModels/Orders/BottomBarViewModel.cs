@@ -104,16 +104,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					try
 					{
-								
-							var canBeConfirmed = await _orderWorkflowService.GetAndObserveOrderCanBeConfirmed().Take(1).ToTask();
 
-								if ( ! canBeConfirmed )
-							{
-								return;
-							}
+						var canBeConfirmed = await _orderWorkflowService.GetAndObserveOrderCanBeConfirmed().Take(1).ToTask();
 
-
-
+						if ( ! canBeConfirmed )
+						{
+							return;
+						}
 
 						if(await _orderWorkflowService.ShouldGoToAccountNumberFlow())
 						{
