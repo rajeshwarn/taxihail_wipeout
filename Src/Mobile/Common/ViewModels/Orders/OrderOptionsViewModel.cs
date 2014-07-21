@@ -69,7 +69,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			
 		public VehicleType SelectedVehicleType
 		{
-			get { return VehicleTypes.FirstOrDefault(x => x.ReferenceDataVehicleId == VehicleTypeId); }
+			get { 
+				VehicleType type = null;
+				if (VehicleTypeId.HasValue) {
+					type = VehicleTypes.FirstOrDefault (x => x.ReferenceDataVehicleId == VehicleTypeId); 
+				}
+
+				if (type == null) {
+					type = VehicleTypes.FirstOrDefault (); 
+				}
+				return type;
+			}
 		} 
 
 		private Address _pickupAddress;

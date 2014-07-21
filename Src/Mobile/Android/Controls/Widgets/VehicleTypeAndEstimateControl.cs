@@ -117,9 +117,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				VehicleSelection.Visibility = ViewStates.Visible;
 
 				VehicleSelection.RemoveAllViews ();
-				foreach (var vehicle in Vehicles) 
+ 				foreach (var vehicle in Vehicles) 
 				{
-					var vehicleView = new VehicleTypeControl (base.Context, vehicle, vehicle.Id == SelectedVehicle.Id);
+					var vehicleView = new VehicleTypeControl (base.Context, vehicle, SelectedVehicle == null ? false  : vehicle.Id == SelectedVehicle.Id);
 
 					var layoutParameters = new LinearLayout.LayoutParams(0, LayoutParams.FillParent);
 					layoutParameters.Weight = 1.0f;
