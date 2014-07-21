@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 tariff = (from r in tariffs
                           where r.Type == (int)TariffType.Day
-                          where !vehicleTypeId.HasValue  // NULL vehicle type means it applies to ALL vehicles
+                          where !r.VehicleTypeId.HasValue  // NULL vehicle type means it applies to ALL vehicles
                           where IsDayMatch(r, pickupDate)
                           select r).FirstOrDefault();
             }
@@ -115,7 +115,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 tariff = (from r in tariffs
                           where r.Type == (int)TariffType.Recurring
-                          where !vehicleTypeId.HasValue  // NULL vehicle type means it applies to ALL vehicles
+                          where !r.VehicleTypeId.HasValue  // NULL vehicle type means it applies to ALL vehicles
                           where IsRecurringMatch(r, pickupDate)
                           select r).FirstOrDefault();
             }

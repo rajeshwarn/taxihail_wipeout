@@ -21,20 +21,27 @@
                 {{/if}}
             </div>
         </div>
-      
+
         <div class="control-group">
           <label class="control-label">{{localize 'Vechicule Type'}}</label>
-          <select name="vehicleTypeId">
-            {{#select vehicleTypeId}}
-              <option value="null">All</option>
-              {{#unless isDefault}}
-                {{#each availableVehicleTypes}}
-                  <option value="{{referenceDataVehicleId}}">{{name}}</option>
-                {{/each}}
-              {{/unless}}
-            {{/select}}
-          </select>
+          <div class="controls">
+            {{#if isDefault}}
+              <label>{{localize "All"}}</label>
+            {{else}}
+              <select name="vehicleTypeId">
+                {{#select vehicleTypeId}}
+                  {{#unless isVehicleDefault}}
+                    <option value="null">All</option>
+                  {{/unless}}
+                  {{#each availableVehicleTypes}}
+                    <option value="{{referenceDataVehicleId}}">{{name}}</option>
+                  {{/each}}
+                {{/select}}
+              </select>
+            {{/if}}
+          </div>
         </div>
+      
         <div class="control-group">
             <label class="control-label">{{localize 'Flat Rate'}}</label>
             <div class="controls">
