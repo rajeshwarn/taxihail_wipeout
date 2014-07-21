@@ -1,32 +1,84 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html>
-    <head>
-        <meta charset='utf-8' />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>{{ ApplicationName }} - {{ localize "Email_Body_EmailConfirmationSuccessful" }}</title>
-    </head>
-	<body style="font-family:Calibri,Helvetica, sans-serif; color:#686868">
-	    <table width="300px" cellpadding="0" cellspacing="0" style="margin-right:auto;margin-left:auto;border-right:1px solid {{ AccentColor }};border-left:1px solid {{ AccentColor }};width:300px;" id="backgroundTable">       
-		    <tr style="background-color:{{ AccentColor }}">
-			    <td colspan="2">&nbsp;</td>
-		    </tr>
-			<tr>
-				<td colspan="2">
-					<h1 style="color:{{ AccentColor }};padding-left:45px;padding-right:20px;width:300px;">{{ localize "Email_Subject_AccountConfirmation" }}</h1>
-				</td>
-			</tr>
-		    <tr>
-				<td colspan="2">
-                    <div style="padding-left:45px;padding-right:20px;width:300px;">
-				        <p>{{ localize "Email_Body_AccountConfirmationSuccessfulLine1" }}</p>
-				        <p>{{ localize "Email_Body_AccountConfirmationSuccessfulLine2" }}</p>
-				        <br />
-                    </div>
-				</td>
-		    </tr>
-		    <tr style="background-color:{{ AccentColor }}">
-			    <td colspan="2">&nbsp;</td>
-		    </tr>
-		</table>
-	</body>    
+<head>
+    <meta charset="UTF-8">
+    <title>{{ ApplicationName }} - {{ localize "Email_Body_EmailConfirmationRequired" }}</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 20px auto;
+        }
+
+        img {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <table align="center" style="border-radius:15px; border:2px solid #797979" width="600" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td>
+                <table width="600" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="55">&nbsp;</td>
+                        <td width="490" style=" padding:50px 0px 30px;border-bottom:2px solid #bdbcc1">
+                            <table width="490" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td width="86"><img src="/Mishwar/assets/img/email/logo.png" width="71" height="86" alt="" /></td>
+                                    <td width="322">
+                                        <div>
+                                            <p style="font-size:43px; color:#838488; font-weight:bold; margin:0px; ">أﻫـﻼً ﺑﻜـﻢ ﻓﻲ ﻣﺸــﻮار</p>
+
+                                        </div>
+                                    </td>
+                                    <td width="82">&nbsp;</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="55">&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table width="600" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="55">&nbsp;</td>
+                        <td width="490" align="center" style=" padding:30px 0px;border-bottom:2px solid #bdbcc1">
+                            <div>
+                                <p style="font-size:33px;color:#838488; font-weight:bold; margin:0px; padding:0px;">Welcome to Mishwar</p>
+                            </div>
+                        </td>
+                        <td width="55">&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td align="center" style="padding:30px 0px 0px"> <a style="color:#0756a3; font-size:18px; line-height:24px" href="{{ ConfirmationUrl }}" target="_blank">{{ ConfirmationUrl }}</a> </td>
+        </tr>
+        <tr>
+            <td align="center" style="color:#838488; font-size:14px; padding:20px 0px 0px;">
+                <table width="600" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td valign="bottom">
+                            <div style="padding-left:100px; padding-bottom:20px">
+                                ﺷـــﻜـــــﺮ ﻟـﻜـــــﻢ ــ ﻓــﺮﻳــــــﻖ ﻣـــﺸـــــﻮار<br><br>
+                                Thank you - The Mishwar Team<br><br>
+                                Need Help
+                                <a href="#" target="_blank"><img style="vertical-align:middle;display:inline-block" src="/Mishwar/assets/img/email/tw.png" width="23" height="24" alt="" /></a>
+                                <a href="#" target="_blank"><img style="vertical-align:middle;display:inline-block" src="/Mishwar/assets/img/email/fb.png" width="24" height="24" alt="" /></a>
+                                <a style="color:#0756a3;" href="#" target="_blank"> Contact us</a>
+                            </div>
+                            <img src="/Mishwar/assets/img/email/bg1.png" width="384" height="14" alt="" />
+                        </td>
+                        <td align="right" valign="bottom"><img src="/Mishwar/assets/img/email/bg.png" width="218" height="152" alt="" /></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
 </html>
