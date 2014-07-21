@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -35,7 +36,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public async Task Init()
 		{
-			VehicleTypes = await _accountService.GetVehiclesList();
+			var list = await _accountService.GetVehiclesList();
+
+			if (list.None ()) 
+			{
+				SetDefaultVehicleType ();
+			} else {
+				VehicleTypes = list;
+			}
+		}
+
+		async Task SetDefaultVehicleType ()
+		{
+			var data = await _accountService.GetReferenceData ();
+			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault.Value);
+			var defaultId = defaultVehicleType != null ? defaultVehicleType.Id.Value : 0;
+			VehicleTypes = new List<VehicleType> {
+				new VehicleType {
+					LogoName = "taxi",
+					Name = "TAXI",
+					ReferenceDataVehicleId = defaultId
+				}
+			};
+			VehicleTypeId = defaultId;
 		}
 
 		private int? _vehicleTypeId;
@@ -69,7 +92,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			
 		public VehicleType SelectedVehicleType
 		{
-			get { return VehicleTypes.FirstOrDefault(x => x.ReferenceDataVehicleId == VehicleTypeId); }
+			get { 
+				VehicleType type = null;
+				if (VehicleTypeId.HasValue) {
+					type = VehicleTypes.FirstOrDefault (x => x.ReferenceDataVehicleId == VehicleTypeId); 
+				}
+
+				if (type == null) {
+					type = VehicleTypes.FirstOrDefault (); 
+				}
+				return type;
+			}
 		} 
 
 		private Address _pickupAddress;
