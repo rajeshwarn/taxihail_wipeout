@@ -448,6 +448,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_orderCanBeConfirmed.OnNext (false);
 		}
 
+		public void BeginCreateOrder()
+		{
+			_orderCanBeConfirmed.OnNext (false);
+		}
+
+		public void EndCreateOrder()
+		{
+			Observable.Timer( TimeSpan.FromSeconds( 1 )).Subscribe( _ => _orderCanBeConfirmed.OnNext (true));
+		}
+
 		public async Task ResetOrderSettings()
 		{
 			_noteToDriverSubject.OnNext(string.Empty);

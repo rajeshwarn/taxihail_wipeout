@@ -308,7 +308,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
                     Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
                     Medallion = orderStatusDetail.VehicleNumber,
-                    CardOnFileId = request.CardToken
+                    CardOnFileId = request.CardToken,
+                    Market = "PHL"
                 };
 
 

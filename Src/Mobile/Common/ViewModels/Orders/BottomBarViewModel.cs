@@ -96,6 +96,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		 
 		public ICommand ConfirmOrder
 		{
 			get
@@ -104,16 +105,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					try
 					{
-								
-							var canBeConfirmed = await _orderWorkflowService.GetAndObserveOrderCanBeConfirmed().Take(1).ToTask();
 
-								if ( ! canBeConfirmed )
-							{
-								return;
-							}
+						var canBeConfirmed = await _orderWorkflowService.GetAndObserveOrderCanBeConfirmed().Take(1).ToTask();
 
-
-
+						if ( ! canBeConfirmed )
+						{
+							return;
+						}
+						_orderWorkflowService.BeginCreateOrder ();
 
 						if(await _orderWorkflowService.ShouldGoToAccountNumberFlow())
 						{
@@ -197,9 +196,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					{
 						Logger.LogError(e);
 					}
+ finally {
+
+								
+							_orderWorkflowService.EndCreateOrder ();
+						}
 
 
 					});
+				 
 			}
 		}
 
