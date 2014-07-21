@@ -9,6 +9,7 @@
     <div class="errors" style="margin-top: 10px;"></div>
     <form class="form-horizontal clearfix" >
         <input type='hidden' name='type' value='{{type}}' />
+      
         <div class="control-group">
             <label class="control-label">{{localize 'Name'}}</label>
             <div class="controls">
@@ -19,6 +20,20 @@
                     <input type="text" name="name"  value="{{name}}" class='input-block-level'>
                 {{/if}}
             </div>
+        </div>
+      
+        <div class="control-group">
+          <label class="control-label">{{localize 'Vechicule Type'}}</label>
+          <select name="vehicleTypeId">
+            {{#select vehicleTypeId}}
+              <option value="null">All</option>
+              {{#unless isDefault}}
+                {{#each availableVehicleTypes}}
+                  <option value="{{referenceDataVehicleId}}">{{name}}</option>
+                {{/each}}
+              {{/unless}}
+            {{/select}}
+          </select>
         </div>
         <div class="control-group">
             <label class="control-label">{{localize 'Flat Rate'}}</label>
@@ -55,6 +70,7 @@
         </div>
       
         {{#unless isDefault}}
+          {{#unless isVehicleDefault}}
             <div class='clearfix'>
                 <div class="control-group">
                     <label class="control-label">{{localize 'Start Time'}}</label>
@@ -115,6 +131,7 @@
                 </div>
             </div>
             {{/if}} <!-- /if recurring -->
+          {{/unless}} <!-- /unless isVehicleDefault -->
         {{/unless}} <!-- /unless isDefault -->
         <button type='submit' class='btn btn-primary'>{{localize "Save Tariff"}}</button>
     </form>

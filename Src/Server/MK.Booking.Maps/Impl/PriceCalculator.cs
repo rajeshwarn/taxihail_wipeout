@@ -82,7 +82,6 @@ namespace apcurium.MK.Booking.Maps.Impl
         public Tariff GetTariffFor(DateTime pickupDate, int? vehicleTypeId = null)
         {
             var tariffs = _tariffProvider.GetTariffs().ToArray();
-            const int allVehicleTypesId = 99; // TODO
 
             // Case 1: A tariff exists for the specific date
             var tariff = (from r in tariffs
@@ -96,7 +95,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 tariff = (from r in tariffs
                           where r.Type == (int)TariffType.Day
-                          where vehicleTypeId.HasValue && r.VehicleTypeId == allVehicleTypesId
+                          where !vehicleTypeId.HasValue  // NULL vehicle type means it applies to ALL vehicles
                           where IsDayMatch(r, pickupDate)
                           select r).FirstOrDefault();
             }
@@ -116,7 +115,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 tariff = (from r in tariffs
                           where r.Type == (int)TariffType.Recurring
-                          where vehicleTypeId.HasValue && r.VehicleTypeId == allVehicleTypesId
+                          where !vehicleTypeId.HasValue  // NULL vehicle type means it applies to ALL vehicles
                           where IsRecurringMatch(r, pickupDate)
                           select r).FirstOrDefault();
             }

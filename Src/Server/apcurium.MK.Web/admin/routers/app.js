@@ -32,6 +32,7 @@
             "tariffs": "manageTariffs", //#tariffs
             "tariffs/add/recurring": "addRecurringTariff", //#tariffs/add/recurring
             "tariffs/add/day": "addDayTariff", //#tariffs/add/day
+            "tariffs/add/vehicle": "addVehicleTariff", //#tariffs/add/vehicle
             "tariffs/edit/:id": "editTariff", //#tariffs/edit/{GUID}
 
             /* Rules */
@@ -131,6 +132,10 @@
 
         addDayTariff: function() {
             action(TaxiHail.TariffsController, 'addDay');
+        },
+
+        addVehicleTariff: function () {
+            action(TaxiHail.TariffsController, 'addVehicle');
         },
 
         editTariff: function(id) {

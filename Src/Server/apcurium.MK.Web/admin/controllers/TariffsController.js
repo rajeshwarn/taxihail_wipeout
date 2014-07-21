@@ -4,7 +4,12 @@
 
         initialize: function() {
             this.collection = new TaxiHail.TariffCollection();
-            $.when(this.collection.fetch()).then(this.ready);
+            this.vehicleTypes = new TaxiHail.VehicleTypeCollection();
+
+            $.when(
+               this.collection.fetch(),
+               this.vehicleTypes.fetch()
+            ).then(this.ready);
         },
 
         index: function() {
@@ -13,29 +18,46 @@
             });
         },
 
-        addRecurring: function() {
+        addRecurring: function () {
+
             return new TaxiHail.EditTariffView({
                 collection: this.collection,
                 model: new TaxiHail.Tariff({
                     type: TaxiHail.Tariff.type.recurring
-                })
+                }),
+                availableVehicleTypes: this.vehicleTypes
             });
         },
 
-        addDay: function() {
+        addDay: function () {
+
             return new TaxiHail.EditTariffView({
                 collection: this.collection,
                 model: new TaxiHail.Tariff({
                     type: TaxiHail.Tariff.type.day
-                })
+                }),
+                availableVehicleTypes: this.vehicleTypes
+            });
+        },
+
+        addVehicle: function () {
+
+            return new TaxiHail.EditTariffView({
+                collection: this.collection,
+                model: new TaxiHail.Tariff({
+                    type: TaxiHail.Tariff.type.vehicleDefault
+                }),
+                availableVehicleTypes: this.vehicleTypes
             });
         },
 
         edit: function(id) {
             var model = this.collection.get(id);
+
             return new TaxiHail.EditTariffView({
                 collection: this.collection,
-                model: model
+                model: model,
+                availableVehicleTypes: this.vehicleTypes
             });
         }
 

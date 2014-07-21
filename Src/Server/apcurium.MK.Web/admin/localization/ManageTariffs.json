@@ -4,5 +4,6 @@
     "Days": "Days",
     "Time": "Time",
     "Add Tariff (Recurring)": "Add Recurring Rate",
-    "Add Tariff (One day)": "Add Rate by Date"
+    "Add Tariff (One day)": "Add Rate by Date",
+	"Add Tariff (Vehicle)": "Add Default by Vehicle Types"
 }

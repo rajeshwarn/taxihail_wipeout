@@ -274,6 +274,14 @@
         return new Handlebars.SafeString(TaxiHail.date.numericDate(date));
     });
 
+    // Select a dropdown box item.
+    // Usage: wrap <option></option> tags with {{#select value}}{{/select}}
+    Handlebars.registerHelper('select', function (value, options) {
+        var $el = $('<select />').html(options.fn(this));
+        $el.find('[value=' + value + ']').attr({ 'selected': 'selected' });
+        return $el.html();
+    });
+
     $.validator.addMethod("checkboxesNotAllChecked", function (value, elem, param) {
         if ($(elem).closest("div").find(":checked").length == param.options.length) {
             return false;
