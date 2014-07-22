@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			if (list.None ()) 
 			{
-				SetDefaultVehicleType ();
+				await SetDefaultVehicleType ();
 			} else {
 				VehicleTypes = list;
 			}
