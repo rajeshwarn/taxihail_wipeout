@@ -393,7 +393,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }.ToStringDictionary());
         }
 
-        private async void CenterMap ()
+        private void CenterMap ()
         {   
 			if (Order == null) {
 				return;
