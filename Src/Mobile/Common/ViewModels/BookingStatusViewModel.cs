@@ -393,19 +393,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }.ToStringDictionary());
         }
 
-        private void CenterMap ()
-        {            
-            var pickup = CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true);
-			if (OrderStatusDetail.IBSStatusId != VehicleStatuses.Common.Waiting && OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue) 
+        private async void CenterMap ()
+        {   
+			if (Order == null) {
+				return;
+			}
+
+			var pickup = CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true);
+
+			if (OrderStatusDetail != null &&
+				OrderStatusDetail.IBSStatusId != VehicleStatuses.Common.Waiting &&
+				OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue) 
 			{
-                MapCenter = new[] 
+				MapCenter = new[] 
 				{ 
 					pickup,
 					CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value)                   
-                };
-            } else {
-                MapCenter = new[] { pickup };
-            }
+				};
+			} else {
+				MapCenter = new[] { pickup };
+			}
         }
 
 		#region Commands
