@@ -206,7 +206,9 @@
     <Content Include="admin\localization\ManageExclusions.json" />
     <Content Include="admin\localization\ManageTariffs.json" />
     <Content Include="admin\localization\TariffItem.json" />
-    <Content Include="admin\templates\EditTariff.handlebars" />
+    <Content Include="admin\templates\EditTariff.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\assets\less\TaxiHail-admin-grid.less" />
     <Content Include="admin\localization\ManageCompanySettings.json" />
     <Content Include="admin\templates\ManageCompanySettings.handlebars">
