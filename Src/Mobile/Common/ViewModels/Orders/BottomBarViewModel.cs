@@ -9,6 +9,8 @@ using Cirrious.MvvmCross.Plugins.PhoneCall;
 using ServiceStack.Text;
 using System.Reactive.Threading.Tasks;
 using System.Reactive.Linq;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -16,13 +18,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
     {
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IMvxPhoneCallTask _phone;
+		private readonly IAccountService _accountService;
 
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
-		public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, IMvxPhoneCallTask phone)
+		public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, IMvxPhoneCallTask phone, IAccountService accountService)
 		{
 			_phone = phone;
 			_orderWorkflowService = orderWorkflowService;
+			_accountService = accountService;
 
 			this.Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(),
 				m => EstimateSelected = m == AddressSelectionMode.DropoffSelection);
@@ -144,7 +148,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							using(this.Services().Message.ShowProgress())
 							{
 								var result = await _orderWorkflowService.ConfirmOrder();
-
+								
 								PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
 								ShowViewModel<BookingStatusViewModel>(new
 								{
@@ -169,7 +173,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					            Guid.TryParse(e.MessageNoCall, out pendingOrderId);
 
 								this.Services().Message.ShowMessage(title, "You cannot book this ride since an order is already pending. View the order status?",
-                                    "View", () => ShowViewModel<HistoryDetailViewModel>(new {orderId = pendingOrderId}),
+										"View", async () =>
+										{
+											var orderInfos = await GetOrderInfos(pendingOrderId);
+
+											PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
+											ShowViewModel<BookingStatusViewModel>(new {order = orderInfos.Item1, status = orderInfos.Item2});
+										},
                                     "Cancel", delegate { });
 					        }
 					            break;
@@ -207,7 +217,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				 
 			}
 		}
-
+			
         public ICommand BookLater
         {
             get
@@ -308,8 +318,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				_orderWorkflowService.ConfirmValidationOrder();
 			}
+		}
 
+		private async Task<Tuple<string, string>> GetOrderInfos(Guid pendingOrderId)
+		{
+			var order = await _accountService.GetHistoryOrderAsync(pendingOrderId);
 
+			var orderStatus = new OrderStatusDetail
+			{ 
+				IBSOrderId = order.IBSOrderId,
+				IBSStatusDescription = this.Services().Localize["LoadingMessage"],
+				IBSStatusId = "",
+				OrderId = pendingOrderId,
+				Status = OrderStatus.Unknown,
+				VehicleLatitude = null,
+				VehicleLongitude = null
+			};
+
+			return Tuple.Create(order.ToJson(), orderStatus.ToJson());
 		}
 
     }
