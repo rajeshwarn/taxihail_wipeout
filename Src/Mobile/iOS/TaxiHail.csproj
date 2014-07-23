@@ -90,7 +90,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <CodesignKey>iPhone Distribution</CodesignKey>
+    <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchI18n>
     </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
@@ -100,7 +100,6 @@
     <CrashReportingApiKey>
     </CrashReportingApiKey>
     <AssemblyName>TaxiMobileApp</AssemblyName>
-    <MtouchSdkVersion>6.0</MtouchSdkVersion>
     <MtouchExtraArgs>-aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <DefineConstants>MONOTOUCH;NET35;SILVERLIGHT;CLIENT;</DefineConstants>
     <MtouchArch>ARMv7</MtouchArch>
@@ -110,7 +109,6 @@
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
       </CustomCommands>
     </CustomCommands>
-    <CodesignProvision>Automatic:AdHoc</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>none</DebugType>
