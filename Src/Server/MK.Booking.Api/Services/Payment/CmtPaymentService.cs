@@ -146,7 +146,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     Extras = 0,
                     Surcharge = 0,
                     Tax = 0,
-                    
                     Tolls = 0
                 };
 
@@ -296,6 +295,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
 
                 // send pairing request                                
+                var cmtPaymentSettings = _configurationManager.GetPaymentSettings().CmtPaymentSettings;
                 var pairingRequest = new PairingRequest
                 {
                     AutoTipAmount = request.AutoTipAmount,
@@ -309,12 +309,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
                     Medallion = orderStatusDetail.VehicleNumber,
                     CardOnFileId = request.CardToken,
-                    Market = "PHL"
+                    Market = cmtPaymentSettings.Market
                 };
 
 
                 _logger.LogMessage("Pairing request : " + pairingRequest.ToJson());
-                _logger.LogMessage("PaymentSettings request : " + _configurationManager.GetPaymentSettings().CmtPaymentSettings.ToJson());
+                _logger.LogMessage("PaymentSettings request : " + cmtPaymentSettings.ToJson());
 
 
                 var response = _cmtMobileServiceClient.Post(pairingRequest);
