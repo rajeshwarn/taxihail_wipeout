@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (vehicleTypeDetail == null)
                 {
                     vehicleTypeDetail = new VehicleTypeDetail { Id = @event.VehicleTypeId };
+                    vehicleTypeDetail.CreatedDate = @event.EventDate;
                 }
                 
                 vehicleTypeDetail.Name = @event.Name;
