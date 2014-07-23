@@ -21,20 +21,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITwitterService _twitterService;
 		private readonly ILocationService _locationService;
 		private readonly IAccountService _accountService;
-		private readonly IPaymentService _paymentService;
 
         public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocationService locationService,
-			IAccountService accountService,
-			IPaymentService paymentService)
+			IAccountService accountService)
         {
             _facebookService = facebookService;
 			_twitterService = twitterService;
 			_twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
 			_locationService = locationService;
 			_accountService = accountService;
-			_paymentService = paymentService;
         }
 
 		public event EventHandler LoginSucceeded; 
@@ -372,7 +369,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool NeedsToNavigateToAddCreditCard()
 		{
-			var paymentSettings = _paymentService.GetPaymentSettings();
+            // Resolve via TinyIoC because we cannot pass it via the constructor since it the PaymentService needs
+            // the user to be authenticated and it may not be when the class is initialized
+			var paymentSettings = TinyIoC.TinyIoCContainer.Current.Resolve<IPaymentService>().GetPaymentSettings();
 
 			if (this.Settings.CreditCardIsMandatory && paymentSettings.IsPayInTaxiEnabled)
 			{
