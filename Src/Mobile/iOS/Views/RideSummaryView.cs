@@ -61,8 +61,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			var set = this.CreateBindingSet<RideSummaryView, RideSummaryViewModel> ();
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Bordered, (o, e) => 
-            {  
-				ViewModel.RateOrder();
+            {
+                ViewModel.ProcessOrderRating();
                 if (ViewModel.CanUserLeaveScreen ())
                 {
                     NavigationController.PopViewControllerAnimated(true);

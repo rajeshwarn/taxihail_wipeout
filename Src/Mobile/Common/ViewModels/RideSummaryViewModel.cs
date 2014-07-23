@@ -164,6 +164,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+	    public ICommand RateOrder
+	    {
+	        get
+	        {
+	            return this.GetCommand(() =>
+	            {
+	                ProcessOrderRating();
+	            });
+	        }
+	    }
+
 		public ICommand PayCommand {
 			get {
 				return this.GetCommand (() => 
@@ -190,17 +201,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public void RateOrder()
+        public void ProcessOrderRating()
 		{
 			if (HasRated)
 			{
 				return;
 			}
 
-			if (Settings.RatingRequired && _ratingList.Any(c => c.Score == 0))
+			if (_ratingList.Any(c => c.Score == 0))
 			{
-				this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
-				return;
+			    if (Settings.RatingRequired)
+			    {
+                    this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
+                    return;
+			    }
+
+                // We don't send the review since it's not complete. The user will have the
+                // possibility to go back to the order history to rate it later if he so desires
+			    return;
 			} 
 
 			var a = Order.Id;
