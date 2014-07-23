@@ -44,7 +44,8 @@ namespace apcurium.MK.Booking.EventHandlers
                         @event.EndTime < (DateTime) SqlDateTime.MinValue
                             ? (DateTime) SqlDateTime.MinValue
                             : @event.EndTime,
-                    Type = (int) @event.Type
+                    Type = (int) @event.Type,
+                    VehicleTypeId = @event.VehicleTypeId
                 });
             }
         }
@@ -80,6 +81,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 tariff.EndTime = @event.EndTime < (DateTime) SqlDateTime.MinValue
                     ? (DateTime) SqlDateTime.MinValue
                     : @event.EndTime;
+                tariff.VehicleTypeId = @event.VehicleTypeId;
 
                 context.SaveChanges();
             }

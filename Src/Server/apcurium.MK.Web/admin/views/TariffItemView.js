@@ -27,6 +27,7 @@
             data.daysOfTheWeek = selectedDays.join(' - ');
             data.recurring = +this.model.get('type') === TaxiHail.Tariff.type.recurring;
             data.isDefault = +this.model.get('type') === TaxiHail.Tariff.type['default'];
+            data.isVehicleDefault = +this.model.get('type') === TaxiHail.Tariff.type.vehicleDefault;
 
             this.$el.html(this.renderTemplate(data));
 

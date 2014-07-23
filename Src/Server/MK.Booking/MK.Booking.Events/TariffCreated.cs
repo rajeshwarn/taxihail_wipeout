@@ -21,5 +21,6 @@ namespace apcurium.MK.Booking.Events
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public TariffType Type { get; set; }
+        public int? VehicleTypeId { get; set; }
     }
 }

@@ -418,8 +418,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var pickupAddress = await _pickupAddressSubject.Take(1).ToTask();
 			var destinationAddress = await _destinationAddressSubject.Take(1).ToTask();
 			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
+		    var bookingSettings = await _bookingSettingsSubject.Take(1).ToTask();
 
-			var direction = await _bookingService.GetFareEstimate (pickupAddress, destinationAddress, pickupDate);
+            var direction = await _bookingService.GetFareEstimate(pickupAddress, destinationAddress, bookingSettings.VehicleTypeId, pickupDate);
 
 			var estimatedFareString = await _bookingService.GetFareEstimateDisplay(direction, "EstimatePriceFormat", 
 				_appSettings.Data.DestinationIsRequired 
