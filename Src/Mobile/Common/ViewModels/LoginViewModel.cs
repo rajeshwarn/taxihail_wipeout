@@ -21,17 +21,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITwitterService _twitterService;
 		private readonly ILocationService _locationService;
 		private readonly IAccountService _accountService;
+		private readonly IPaymentService _paymentService;
 
         public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocationService locationService,
-			IAccountService accountService)
+			IAccountService accountService,
+			IPaymentService paymentService)
         {
             _facebookService = facebookService;
 			_twitterService = twitterService;
 			_twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
 			_locationService = locationService;
 			_accountService = accountService;
+			_paymentService = paymentService;
         }
 
 		public event EventHandler LoginSucceeded; 
@@ -369,7 +372,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool NeedsToNavigateToAddCreditCard()
 		{
-			if (this.Settings.CreditCardIsMandatory)
+			var paymentSettings = _paymentService.GetPaymentSettings();
+
+			if (this.Settings.CreditCardIsMandatory && paymentSettings.IsPayInTaxiEnabled)
 			{
 				if (!_accountService.CurrentAccount.DefaultCreditCard.HasValue)
 				{
