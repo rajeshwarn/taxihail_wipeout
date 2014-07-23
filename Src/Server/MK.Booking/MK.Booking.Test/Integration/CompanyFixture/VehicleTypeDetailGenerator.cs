@@ -104,6 +104,46 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
         }
 
         [Test]
+        public void when_adding_multiple_vehicle_types()
+        {
+            var @vehicleEvent1 = new VehicleTypeAddedUpdated
+            {
+                SourceId = Guid.NewGuid(),
+                VehicleTypeId = _vehicleTypeId,
+                LogoName = "taxi1",
+                Name = "Taxi1",
+                ReferenceDataVehicleId = 111
+            };
+            
+            var @vehicleEvent2 = new VehicleTypeAddedUpdated
+            {
+                SourceId = Guid.NewGuid(),
+                VehicleTypeId = Guid.NewGuid(),
+                LogoName = "taxi2",
+                Name = "Taxi2",
+                ReferenceDataVehicleId = 10
+            };
+
+            Sut.Handle(@vehicleEvent1);
+            Sut.Handle(@vehicleEvent2);
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var vehicleTypes = context.Query<VehicleTypeDetail>().OrderBy(x => x.CreatedDate).ToList();
+
+                Assert.AreEqual(2, vehicleTypes.Count());
+                
+                var firstDto = vehicleTypes.FirstOrDefault();
+                Assert.IsNotNull(firstDto);
+                Assert.AreEqual(@vehicleEvent1.Name, firstDto.Name);
+                
+                var secondDto = vehicleTypes.LastOrDefault();
+                Assert.IsNotNull(secondDto);
+                Assert.AreEqual(@vehicleEvent2.Name, secondDto.Name);
+            }
+        }
+
+        [Test]
         public void when_vehicle_type_deleted_then_dto_removed()
         {
             Sut.Handle(new VehicleTypeDeleted
