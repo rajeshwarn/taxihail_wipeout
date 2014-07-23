@@ -58,14 +58,14 @@
                 android:layout_weight="1"
                 local:MvxItemTemplate="@layout/ratinglistitem"
                 local:MvxBind="ItemsSource RatingList; Visibility RatingList, Converter=Visibility" />
-            <Button
+            <!--<Button
                 style="@style/ButtonActionGrayStyle"
                 android:layout_marginTop="6dip"
                 android:id="@+id/RateOrderButton"
                 android:text="@string/Submit"
                 android:layout_height="@dimen/HeightButton"
                 android:layout_width="fill_parent"
-                local:MvxBind="Click RateOrder; Visibility IsRatingButtonShown, Converter=Visibility" />
+                local:MvxBind="Click RateOrder; Visibility IsRatingButtonShown, Converter=Visibility" />-->
             <Button
                 style="@style/ButtonActionGreenStyle"
                 android:layout_marginTop="6dip"
