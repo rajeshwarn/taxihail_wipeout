@@ -321,6 +321,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		private async void AddCrediCard ()
         {
+			this.Services().Analytics.LogEvent("AddCOF");
 			Data.FriendlyName = CreditCardCategoryName;
             Data.CreditCardCompany = CreditCardTypeName;
             if (Params.Get (Data.NameOnCard, Data.CardNumber, 

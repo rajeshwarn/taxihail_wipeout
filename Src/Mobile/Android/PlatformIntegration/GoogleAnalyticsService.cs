@@ -49,6 +49,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             Tracker.SendEvent("Interaction", "Command Issued", commandName + "(" + parameter + ")", new Long(0));
         }
 
+		public void LogEvent(string @event)
+		{
+			Tracker.SendEvent("Interaction", "Event", @event, new Long(0));
+		}
+
         public void LogException(string className, string methodName, Exception e, bool isFatal = false)
         {
             Tracker.TrackException(className + ":" + methodName + ": " + e.Message, isFatal);

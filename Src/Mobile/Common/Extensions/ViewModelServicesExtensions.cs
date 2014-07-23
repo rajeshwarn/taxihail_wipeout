@@ -38,5 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Extensions
         public IApplicationInfoService ApplicationInfo { get { return _container.Resolve<IApplicationInfoService>(); } }        
 
         public IPackageInfo PackageInfo { get { return _container.Resolve<IPackageInfo>(); } }
+
+		public IAnalyticsService Analytics { get { return _container.Resolve<IAnalyticsService>(); } }
     }
 }
