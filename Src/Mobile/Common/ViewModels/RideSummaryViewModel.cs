@@ -42,7 +42,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				await InitRating ();
 			}
-			RaisePropertyChanged (() => IsRatingButtonShown);
 		}
 
 		private List<RatingModel> _ratingList;
@@ -64,18 +63,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged();
 			}
 		}
-
-		private bool _canRate;
-		public bool CanRate
-		{
-			get { return _canRate; }
-			set {
-				_canRate = value;
-				RaisePropertyChanged(); 
-				RaisePropertyChanged (() => IsRatingButtonShown);
-			}
-		}
-
+			
 		private Guid _orderId;
 		public Guid OrderId
 		{
@@ -93,11 +81,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				var orderRatings = await _bookingService.GetOrderRatingAsync(OrderId);
 				HasRated = orderRatings.RatingScores.Any();
-				CanRate = !HasRated;
+				bool canRate = !HasRated;
 				var ratingTypes = _bookingService.GetRatingType();
 
-				if (CanRate) {
-					RatingList = ratingTypes.Select (c => new RatingModel (CanRate) {
+				if (canRate) {
+					RatingList = ratingTypes.Select (c => new RatingModel (canRate) {
 						RatingTypeId = c.Id, 
 						RatingTypeName = c.Name 
 					}).OrderBy (c => c.RatingTypeId).ToList ();
@@ -149,15 +137,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return isPayEnabled && setting.PaymentMode != PaymentMethod.RideLinqCmt && _paymentService.GetPaymentFromCache(Order.Id).HasValue;
 	        }
 	    }
-
-		public bool IsRatingButtonShown 
-		{
-			get 
-			{ 
-				return CanRate && !HasRated && Settings.RatingEnabled;
-			}
-		}
-
+			
 		bool _hasRated;		
 		public bool HasRated 
 		{
@@ -170,7 +150,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_hasRated = value;
 				RaisePropertyChanged ();
 				RaisePropertyChanged(() => IsPayButtonShown);
-				RaisePropertyChanged (() => IsRatingButtonShown);
 			}
 		}
 
@@ -211,47 +190,41 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public ICommand RateOrder
+		public void RateOrder()
 		{
-			get
+			if (HasRated)
 			{
-				return this.GetCommand(() =>
-				{
-					if (HasRated)
-					{
-						return;
-					}
-
-					if (_ratingList.Any(c => c.Score == 0))
-					{
-						this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
-						return;
-					} 
-
-					var a = Order.Id;
-					var orderRating = new apcurium.MK.Common.Entity.OrderRatings
-					{
-						Note = Note,
-						OrderId = OrderId,
-						RatingScores =
-							_ratingList.Select(
-								c => new RatingScore
-								{ 
-									RatingTypeId = c.RatingTypeId, 
-									Score = c.Score, 
-									Name = c.RatingTypeName
-								}).ToList()
-						};
-
-					_bookingService.SendRatingReview(orderRating);
-					HasRated = true;
-				});
+				return;
 			}
+
+			if (Settings.RatingRequired && _ratingList.Any(c => c.Score == 0))
+			{
+				this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
+				return;
+			} 
+
+			var a = Order.Id;
+			var orderRating = new apcurium.MK.Common.Entity.OrderRatings
+			{
+				Note = Note,
+				OrderId = OrderId,
+				RatingScores =
+					_ratingList.Select(
+						c => new RatingScore
+						{ 
+							RatingTypeId = c.RatingTypeId, 
+							Score = c.Score, 
+							Name = c.RatingTypeName
+						}).ToList()
+				};
+
+			_bookingService.SendRatingReview(orderRating);
+			HasRated = true;
 		}
 
 		public bool CanUserLeaveScreen()
 		{
-			if (Settings.RatingEnabled && Settings.RatingRequired && !HasRated) 
+			if (Settings.RatingRequired && !HasRated)
 			{
 				this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
 				return false;
