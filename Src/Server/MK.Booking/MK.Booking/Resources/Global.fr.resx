@@ -117,25 +117,167 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Email_Body_AccountConfirmationLine1" xml:space="preserve">
+    <value>Pour confirmer votre email, utilisez le lien suivant</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationSuccessfulLine1" xml:space="preserve">
+    <value>Votre adresse email est bien enregistré</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationSuccessfulLine2" xml:space="preserve">
+    <value>Vous pouvez dès à présent vous connecter à l'application</value>
+  </data>
+  <data name="Email_Body_AptNumber" xml:space="preserve">
+    <value>Numéro d'appartement</value>
+  </data>
+  <data name="Email_Body_AuthorizationNumber" xml:space="preserve">
+    <value>Numéro d'autorisation:</value>
+  </data>
+  <data name="Email_Body_BookingConfirmation" xml:space="preserve">
+    <value>Confirmation de réservation</value>
+  </data>
+  <data name="Email_Body_ChargeType" xml:space="preserve">
+    <value>Type de paiment</value>
+  </data>
+  <data name="Email_Body_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Email_Body_Destination" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="Email_Body_Driver" xml:space="preserve">
+    <value>Chauffeur</value>
+  </data>
+  <data name="Email_Body_DriverAssignedConfirmation" xml:space="preserve">
+    <value>Votre chauffeur est en chemin</value>
+  </data>
+  <data name="Email_Body_EmailConfirmationRequired" xml:space="preserve">
+    <value>Adresse email à confirmer</value>
+  </data>
+  <data name="Email_Body_EmailConfirmationSuccessful" xml:space="preserve">
+    <value>Votre adresse mail a bien été prise en compte</value>
+  </data>
+  <data name="Email_Body_EstimatedFare" xml:space="preserve">
+    <value>Prix estimé du trajet</value>
+  </data>
+  <data name="Email_Body_Fare" xml:space="preserve">
+    <value>Prix</value>
+  </data>
+  <data name="Email_Body_LargeBags" xml:space="preserve">
+    <value>Volume &amp; nombre de bagages</value>
+  </data>
+  <data name="Email_Body_Name" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="Email_Body_Note" xml:space="preserve">
+    <value>Remarques</value>
+  </data>
+  <data name="Email_Body_OrderNo" xml:space="preserve">
+    <value>Commande numéro #</value>
+  </data>
+  <data name="Email_Body_PaidWith" xml:space="preserve">
+    <value>Moyen de paiement</value>
+  </data>
+  <data name="Email_Body_Passengers" xml:space="preserve">
+    <value>Passagers</value>
+  </data>
+  <data name="Email_Body_PasswordReset" xml:space="preserve">
+    <value>Réinitiallisation de votre mot de passe</value>
+  </data>
+  <data name="Email_Body_PasswordResetLine1" xml:space="preserve">
+    <value>Votre mot de passe a bien été réinitiallisé</value>
+  </data>
+  <data name="Email_Body_PasswordResetLine2" xml:space="preserve">
+    <value>Nouveau mot de passe</value>
+  </data>
+  <data name="Email_Body_PaymentInformation" xml:space="preserve">
+    <value>Informations bancaires</value>
+  </data>
+  <data name="Email_Body_PhoneNumber" xml:space="preserve">
+    <value>Numéro de téléphone</value>
+  </data>
+  <data name="Email_Body_PickupLocation" xml:space="preserve">
+    <value>Lieu de rendez-vous</value>
+  </data>
+  <data name="Email_Body_PickupTime" xml:space="preserve">
+    <value>Heure du rendez-vous</value>
+  </data>
+  <data name="Email_Body_PickupTimeValue" xml:space="preserve">
+    <value>{{PickupDate}} à {{PickupTime}}</value>
+  </data>
+  <data name="Email_Body_Receipt" xml:space="preserve">
+    <value>Reçu</value>
+  </data>
+  <data name="Email_Body_RingCode" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="Email_Body_ThankYou" xml:space="preserve">
+    <value>Merci!</value>
+  </data>
+  <data name="Email_Body_TheTeam" xml:space="preserve">
+    <value>L'équipe {{ ApplicationName }}</value>
+  </data>
+  <data name="Email_Body_Tip" xml:space="preserve">
+    <value>Pourboire</value>
+  </data>
+  <data name="Email_Body_Toll" xml:space="preserve">
+    <value>Péage</value>
+  </data>
+  <data name="Email_Body_TotalAmount" xml:space="preserve">
+    <value>Montant total</value>
+  </data>
+  <data name="Email_Body_TotalFare" xml:space="preserve">
+    <value>Montant de la course</value>
+  </data>
+  <data name="Email_Body_TransactionId" xml:space="preserve">
+    <value>Numéro de transaction</value>
+  </data>
+  <data name="Email_Body_TransactionTime" xml:space="preserve">
+    <value>Heure de la transaction</value>
+  </data>
+  <data name="Email_Body_TransactionTimeValue" xml:space="preserve">
+    <value>{{TransactionDate}} à {{TransactionTime}}</value>
+  </data>
+  <data name="Email_Body_VAT" xml:space="preserve">
+    <value>TVA</value>
+  </data>
+  <data name="Email_Body_VehicleNumber" xml:space="preserve">
+    <value>Véhicule #</value>
+  </data>
+  <data name="Email_Body_VehicleType" xml:space="preserve">
+    <value>Type de véhicule</value>
+  </data>
+  <data name="Email_Subject_AccountConfirmation" xml:space="preserve">
+    <value>Bienvenue chez {{ ApplicationName }}</value>
+  </data>
+  <data name="Email_Subject_BookingConfirmation" xml:space="preserve">
+    <value>{{ ApplicationName }} : Réservation confirmation</value>
+  </data>
+  <data name="Email_Subject_DriverAssigned" xml:space="preserve">
+    <value>{{ ApplicationName }} : Votre chauffeur est en chemin</value>
+  </data>
+  <data name="Email_Subject_PasswordReset" xml:space="preserve">
+    <value>{{ ApplicationName }} : Votre mot de passe a été réinitiallisé</value>
+  </data>
+  <data name="Email_Subject_Receipt" xml:space="preserve">
+    <value>{{ ApplicationName }} : Reçu</value>
+  </data>
   <data name="OrderStatus_CabDriverETA" xml:space="preserve">
-    <value>ETA: {0}</value>
-    <comment>not translated</comment>
+    <value>Heure estimée d'arrivée : {0}</value>
   </data>
   <data name="OrderStatus_CabDriverNumberAssigned" xml:space="preserve">
-    <value>Taxi {0} vous est assigné</value>
+    <value>Le véhicule {0} vous a été réservée</value>
   </data>
   <data name="OrderStatus_OrderDoneFareAvailable" xml:space="preserve">
     <value>Complété ({0})</value>
   </data>
   <data name="OrderStatus_wosAddrNotValid" xml:space="preserve">
-    <value>L'adresse est invalide</value>
+    <value>L'adresse est incorrecte</value>
   </data>
   <data name="OrderStatus_wosARRIVED" xml:space="preserve">
-    <value>Taxi is at pickup location</value>
-    <comment>not translated</comment>
+    <value>Votre véhicule vous attend</value>
   </data>
   <data name="OrderStatus_wosASSIGNED" xml:space="preserve">
-    <value>Conducteur assigné</value>
+    <value>Votre chauffeur est en chemin</value>
   </data>
   <data name="OrderStatus_wosCANCELLED" xml:space="preserve">
     <value>Annulé</value>
@@ -144,35 +286,39 @@
     <value>Annulé</value>
   </data>
   <data name="OrderStatus_wosDONE" xml:space="preserve">
-    <value>Complété</value>
+    <value>Réalisé</value>
   </data>
   <data name="OrderStatus_wosLOADED" xml:space="preserve">
-    <value>Les passagers sont dans le taxi</value>
+    <value>Passagers à bord</value>
   </data>
   <data name="OrderStatus_wosNone" xml:space="preserve">
-    <value>Invalid order, please call dispatch center</value>
-    <comment>not translated</comment>
+    <value>Votre commande ne peut pas être prise en compte, merci de joindre le support</value>
   </data>
   <data name="OrderStatus_wosNOSHOW" xml:space="preserve">
-    <value>No show</value>
-    <comment>not translated</comment>
+    <value>Client ne s'est pas présenté</value>
   </data>
   <data name="OrderStatus_wosSCHED" xml:space="preserve">
-    <value>Cédulé</value>
-  </data>
-  <data name="OrderStatus_wosWAITING" xml:space="preserve">
-    <value>En attente d'un conducteur</value>
-  </data>
-  <data name="PushNotification_wosARRIVED" xml:space="preserve">
-    <value>Votre Taxi (#{0}) est arrivé</value>
-  </data>
-  <data name="PushNotification_wosASSIGNED" xml:space="preserve">
-    <value>Taxi #{0} vous a été assigné</value>
+    <value>Plannifié(e) ?</value>
   </data>
   <data name="OrderStatus_wosTIMEOUT" xml:space="preserve">
-    <value>Désolé, pas de voiture disponible, veuillez réessayer plus tard</value>
+    <value>Veuillez nous excuser, en raison d'un grand nombre de demandes nous n'avons pas de véhicule disponible, merci d'essayer ultérieurement.</value>
+  </data>
+  <data name="OrderStatus_wosWAITING" xml:space="preserve">
+    <value>En attente d'affectation</value>
+  </data>
+  <data name="PaymentConfirmationToDriver1" xml:space="preserve">
+    <value>Le passager à payé un montant de  {0:c}</value>
+  </data>
+  <data name="PaymentConfirmationToDriver2" xml:space="preserve">
+    <value>Numéro d'authorisation {0}</value>
+  </data>
+  <data name="PushNotification_wosARRIVED" xml:space="preserve">
+    <value>Votre véhicule (#{0}) est arrivé</value>
+  </data>
+  <data name="PushNotification_wosASSIGNED" xml:space="preserve">
+    <value>Votre véhicule (#{0}) est en chemin</value>
   </data>
   <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
-    <value>Désolé, pas de voiture disponible, veuillez réessayer plus tard</value>
+    <value>Veuillez nous excuser, en raison d'un grand nombre de demandes nous n'avons pas de véhicule disponible, merci d'essayer ultérieurement.</value>
   </data>
 </root>

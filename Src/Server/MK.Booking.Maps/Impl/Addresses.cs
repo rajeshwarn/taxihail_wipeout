@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Maps.Impl
         /// <param name="geoResult">
         ///     
         /// </param>
-        public Address[] Search(string name, double? latitude, double? longitude, GeoResult geoResult = null)
+		public Address[] Search(string name, double? latitude, double? longitude, string currentLanguage, GeoResult geoResult = null)
         {
             if (name.IsNullOrEmpty())
             {
@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             var geoCodingService = new Geocoding(_geocoder, _appSettings, _popularAddressProvider, _logger);
 
-            var allResults = geoCodingService.Search(name, geoResult);
+			var allResults = geoCodingService.Search(name, currentLanguage, geoResult);
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
             if (latitude.HasValue && longitude.HasValue && (latitude.Value != 0 || longitude.Value != 0))
@@ -83,7 +83,8 @@ namespace apcurium.MK.Booking.Maps.Impl
             if (!int.TryParse(term + "", out n))
             {
 				var nearbyService = new Places(_placeProvider, _appSettings, _popularAddressProvider);
-                addressesPlaces = nearbyService.SearchPlaces(name, latitude, longitude, null);
+
+				addressesPlaces = nearbyService.SearchPlaces(name, latitude, longitude, null, currentLanguage);
             }
 
 //TODO not sure what this code is doing

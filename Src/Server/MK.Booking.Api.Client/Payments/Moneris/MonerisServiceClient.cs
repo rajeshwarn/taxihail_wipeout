@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Moneris;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Diagnostic;
@@ -16,8 +17,8 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 	{
 		private MonerisTokenizeClient MonerisClient { get; set; }
 
-		public MonerisServiceClient(string url, string sessionId, MonerisPaymentSettings monerisSettings, string userAgent, ILogger logger) 
-			: base(url, sessionId, userAgent)
+		public MonerisServiceClient(string url, string sessionId, MonerisPaymentSettings monerisSettings, IPackageInfo packageInfo, ILogger logger)
+            : base(url, sessionId, packageInfo)
 		{
 			MonerisClient = new MonerisTokenizeClient(monerisSettings, logger);
 		}
@@ -64,8 +65,8 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 
         public static bool TestClient(MonerisPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger)
         {
-            var cmtPaymentServiceClient = new MonerisTokenizeClient(serverPaymentSettings, logger);
-            var result = cmtPaymentServiceClient.Tokenize(number, date.ToString("yyMM"));
+            var monerisTokenizeClient = new MonerisTokenizeClient(serverPaymentSettings, logger);
+            var result = monerisTokenizeClient.Tokenize(number, date.ToString("yyMM"));
             string message;
             return RequestSuccesful(result, out message);
         }

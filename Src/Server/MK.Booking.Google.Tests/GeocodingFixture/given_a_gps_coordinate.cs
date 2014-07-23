@@ -26,7 +26,7 @@ namespace MK.Booking.Google.Tests.GeocodingFixture
         [Test]
         public void coordinate1_should_return_something()
         {
-            var a = _sut.GeocodeLocation(38.9040692, -77.0575374);
+            var a = _sut.GeocodeLocation(38.9040692, -77.0575374, "en");
             Assert.IsTrue(a.Any());
         }
     }

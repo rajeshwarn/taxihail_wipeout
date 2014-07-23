@@ -26,7 +26,8 @@ using Cirrious.MvvmCross.Dialog.Touch;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Google;
 using MonoTouch.Foundation;
-
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.MapDataProvider.TomTom;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -36,8 +37,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			: base (applicationDelegate, window)
 		{
 		}
-
-		#region Overrides of MvxBaseSetup
 
 		protected override IMvxApplication CreateApp ()
 		{
@@ -60,9 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		protected override void InitializeLastChance ()
 		{
 			base.InitializeLastChance ();
-            
-
-
+         
 			var container = TinyIoCContainer.Current;
 
 			container.Register<IAnalyticsService, GoogleAnalyticsService> ();
@@ -81,27 +78,32 @@ namespace apcurium.MK.Booking.Mobile.Client
 			container.Register<IPhoneService, PhoneService> ();
 			container.Register<IPushNotificationService> (new PushNotificationService (container.Resolve<ICacheService> ()));
 
-			container.Register<IAppSettings> (new AppSettingsService (container.Resolve<ICacheService> (), container.Resolve<ILogger> ()));
+            container.Register<IAppSettings> (new AppSettingsService (container.Resolve<ICacheService> (), container.Resolve<ILogger> ()));
 
-
-
-			container.Register<IGeocoder> ((c, p) => new GoogleApiClient (c.Resolve<IAppSettings> (), c.Resolve<ILogger> (), new AppleGeocoder ()));
+            container.Register<IGeocoder> ((c, p) => new GoogleApiClient (c.Resolve<IAppSettings>(), c.Resolve<ILogger> (), new AppleGeocoder ()));
 			container.Register<IPlaceDataProvider, GoogleApiClient> ();
-			container.Register<IDirectionDataProvider, GoogleApiClient> ();
+
+            container.Register<IDirectionDataProvider> ((c, p) =>
+            {
+                switch (c.Resolve<IAppSettings>().Data.DirectionDataProvider)
+                {
+                    case MapProvider.TomTom:
+                        return new TomTomProvider(c.Resolve<IAppSettings>(), c.Resolve<ILogger>());
+                    case MapProvider.Google:
+                    default:
+                        return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AppleGeocoder());
+                }
+            });
 
 			InitializeSocialNetwork ();
-
-
 		}
 
 		private void InitializeSocialNetwork ()
 		{
-
 			TinyIoCContainer.Current.Register<IFacebookService,FacebookService> ();
 
-
-			TinyIoCContainer.Current.Register<ITwitterService> ((c, p) => {
-
+			TinyIoCContainer.Current.Register<ITwitterService> ((c, p) => 
+            {
 				var settings = c.Resolve<IAppSettings> ();
 				var oauthConfig = new OAuthConfig ();
 				if (settings.Data.TwitterEnabled) {
@@ -119,7 +121,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 				var twitterService = new TwitterService (oauthConfig, () => Mvx.Resolve<UINavigationController> ());
 				return twitterService; 
 			});
-            
 		}
 
 		protected override Cirrious.MvvmCross.Touch.Views.Presenters.IMvxTouchViewPresenter CreatePresenter ()
@@ -131,7 +132,5 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			return new TinyIoCProvider (TinyIoCContainer.Current);
 		}
-
-		#endregion
 	}
 }

@@ -1215,6 +1215,9 @@
   <data name="Order" xml:space="preserve">
     <value>طلب</value>
   </data>
+  <data name="Order" xml:space="preserve">
+    <value>طلب</value>
+  </data>
   <data name="StatusDescription" xml:space="preserve">
     <value>طلب # {0}</value>
   </data>

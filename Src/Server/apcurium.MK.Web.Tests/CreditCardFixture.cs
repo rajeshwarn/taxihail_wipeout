@@ -62,7 +62,7 @@ namespace apcurium.MK.Web.Tests
         {
             var client = GetFakePaymentClient();
 
-            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test", client);
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), client);
 
             const string creditCardComapny = "visa";
             const string friendlyName = "work credit card";

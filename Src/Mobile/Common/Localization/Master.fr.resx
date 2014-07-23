@@ -1,0 +1,1524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AcceptButton" xml:space="preserve">
+    <value>Accepter</value>
+  </data>
+  <data name="AccountActivationMessage" xml:space="preserve">
+    <value>Vous allez recevoir un email de confirmation. Merci de cliquer sur le lien pour valider votre inscription</value>
+  </data>
+  <data name="AccountActivationTitle" xml:space="preserve">
+    <value>Confirmation nécessaire</value>
+  </data>
+  <data name="AccountDisabled" xml:space="preserve">
+    <value>Votre compte a été désactivé, merci de contacter le {0} au {1} pour le réactiver</value>
+  </data>
+  <data name="AccountDisabled_NoCall" xml:space="preserve">
+    <value>Votre compte a été désactivé</value>
+  </data>
+  <data name="AccountNotActivated" xml:space="preserve">
+    <value>Votre compte n'a pas pu être activé. Merci d'activer le compte à l'aide de l'email qui vient de vous être envoyé</value>
+  </data>
+  <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
+    <value>Merci de saisir un numéro de compte valide</value>
+  </data>
+  <data name="AccountPaymentNumberRequiredTitle" xml:space="preserve">
+    <value>Numéro de compte requis</value>
+  </data>
+  <data name="AddCreditCardTitle" xml:space="preserve">
+    <value>Ajouter une carte de paiement</value>
+  </data>
+  <data name="AddReminderMessage" xml:space="preserve">
+    <value>Souhaitez-vous qu'un rendez-vous soit créé dans votre calendrier pour ce trajet?</value>
+  </data>
+  <data name="AddReminderTitle" xml:space="preserve">
+    <value>Départ(s) programmé(s)</value>
+  </data>
+  <data name="AddressSearchingText" xml:space="preserve">
+    <value>Recherche…</value>
+  </data>
+  <data name="ApartmentLabel" xml:space="preserve">
+    <value>Appartement</value>
+  </data>
+  <data name="apcuriumUrl" xml:space="preserve">
+    <value>http://www.apcurium.com/</value>
+  </data>
+  <data name="ApplicationName" xml:space="preserve">
+    <value>TaxiHail</value>
+  </data>
+  <data name="AppNeedUpdateMessage" xml:space="preserve">
+    <value>Une nouvelle version de l'application est disponible, merci de la télécharger pour continuer</value>
+  </data>
+  <data name="AppNeedUpdateTitle" xml:space="preserve">
+    <value>Nouvelle version disponible</value>
+  </data>
+  <data name="ApproxPrice" xml:space="preserve">
+    <value>Prix estimé</value>
+  </data>
+  <data name="app_id" xml:space="preserve">
+    <value>134284363380764</value>
+  </data>
+  <data name="April" xml:space="preserve">
+    <value>Avril (04)</value>
+  </data>
+  <data name="AptNumber" xml:space="preserve">
+    <value>Appartement n°</value>
+  </data>
+  <data name="August" xml:space="preserve">
+    <value>Août (08)</value>
+  </data>
+  <data name="BackButton" xml:space="preserve">
+    <value>Retour</value>
+  </data>
+  <data name="BookDateLabel" xml:space="preserve">
+    <value>Départ différé</value>
+  </data>
+  <data name="BookDestinationLabel" xml:space="preserve">
+    <value>Saisir votre destination</value>
+  </data>
+  <data name="BookDropoffLocationButtonTitle" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="BookDropoffLocationEmptyPlaceholder" xml:space="preserve">
+    <value>Choisissez votre lieu d'arrivée sur la carte</value>
+  </data>
+  <data name="BookingService_MobileBookingNote" xml:space="preserve">
+    <value>Réservé via téléphone mobile</value>
+  </data>
+  <data name="BookingService_MobileBookingNoteBuildingName" xml:space="preserve">
+    <value>Bâtiment n° {0}</value>
+  </data>
+  <data name="BookItButton" xml:space="preserve">
+    <value>Réserver</value>
+  </data>
+  <data name="BookItButtonImageName" xml:space="preserve">
+    <value>Assets/Button/btnBookIt_en.png</value>
+  </data>
+  <data name="BookItLaterButton" xml:space="preserve">
+    <value>Plus tard</value>
+  </data>
+  <data name="BookPickupLabel" xml:space="preserve">
+    <value>Confirmer votre adresse de départ</value>
+  </data>
+  <data name="BookPickupLocationButtonTitle" xml:space="preserve">
+    <value>Départ</value>
+  </data>
+  <data name="BookPickupLocationEmptyPlaceholder" xml:space="preserve">
+    <value>Choisissez votre lieu de départ sur la carte</value>
+  </data>
+  <data name="BookRatingErrorMessage" xml:space="preserve">
+    <value>Merci de noter la qualité de votre dernier trajet</value>
+  </data>
+  <data name="BookRatingErrorTitle" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="BookViewInvalidDate" xml:space="preserve">
+    <value>La date et l'heure de départ sont invalides</value>
+  </data>
+  <data name="BuildingName" xml:space="preserve">
+    <value>Nom du bâtiment / commentaires</value>
+  </data>
+  <data name="CallButton" xml:space="preserve">
+    <value>Appeler</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="CannotCancelOrderMessage" xml:space="preserve">
+    <value>Désolé, vous ne pouvez plus annuler cette demande</value>
+  </data>
+  <data name="CannotCancelOrderTitle" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="CarAssigned" xml:space="preserve">
+    <value>Votre véhicule {0}</value>
+  </data>
+  <data name="ChangeBookingSettingsButton" xml:space="preserve">
+    <value>Modifier votre commande</value>
+  </data>
+  <data name="ChangePasswordConfirmmation" xml:space="preserve">
+    <value>Votre mot de passe a été mis à jour, merci de vous connecter.</value>
+  </data>
+  <data name="ChangeServer" xml:space="preserve">
+    <value>Changer de serveur</value>
+  </data>
+  <data name="ChargeTypeCreditCardFile" xml:space="preserve">
+    <value>Carte de paiement déjà engistrée</value>
+  </data>
+  <data name="ChargeTypeLabel" xml:space="preserve">
+    <value>Type de facturation</value>
+  </data>
+  <data name="ChooseProviderDialogTitle" xml:space="preserve">
+    <value>Choisissez un prestataire</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="CmtCancelPayment" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="CmtCardNumber" xml:space="preserve">
+    <value>Numéro de carte:</value>
+  </data>
+  <data name="CmtCarNumber" xml:space="preserve">
+    <value>Numéro du véhicule: </value>
+  </data>
+  <data name="CmtChangePaymentInfo" xml:space="preserve">
+    <value>Modifier les paramètres de paiement</value>
+  </data>
+  <data name="CmtConfirmPayment" xml:space="preserve">
+    <value>Confirmer</value>
+  </data>
+  <data name="CmtRideLinqCancelChanges" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="CmtRideLinqConfirmPairView" xml:space="preserve">
+    <value>Confirmer les informations relatives au paiement</value>
+  </data>
+  <data name="CmtRideLinqConfirmPairViewConfirmPairDetailText" xml:space="preserve">
+    <value>Merci de vérifier que vous être dans le véhicule indiquée ci-dessus. Après confirmation, le paiement sera effectué automatiquement en utilisant les paramètres de paiement par défaut.</value>
+  </data>
+  <data name="CmtRideLinqErrorTitle" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="CmtRideLinqGenericErrorMessage" xml:space="preserve">
+    <value>Désolé, il semble qu'il y ait eu une erreur lors du paiement. Merci de vérifier les paramètres de paiement ou réessayez ultérieurement.</value>
+  </data>
+  <data name="CmtRideLinqSaveChanges" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
+  <data name="CmtRideLinqUnpair" xml:space="preserve">
+    <value>Réinitialiser</value>
+  </data>
+  <data name="CmtRideLinqUnpairErrorMessage" xml:space="preserve">
+    <value>Désolé, le système a rencontré un problème lors de la réinitialisation</value>
+  </data>
+  <data name="CmtTipAmount" xml:space="preserve">
+    <value>Montant du pourboire:</value>
+  </data>
+  <data name="CmtTransactionResendConfirmationButtonText" xml:space="preserve">
+    <value>Envoyer de nouveau</value>
+  </data>
+  <data name="CmtTransactionSuccessMessage" xml:space="preserve">
+    <value>Confirmation envoyée au chauffeur (code: {0})</value>
+  </data>
+  <data name="CmtTransactionSuccessTitle" xml:space="preserve">
+    <value>Paiement effectué</value>
+  </data>
+  <data name="Collapse" xml:space="preserve">
+    <value>Cacher</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirmer</value>
+  </data>
+  <data name="ConfirmationOfPaymentSent" xml:space="preserve">
+    <value>Confirmation du paiement envoyée au chauffeur</value>
+  </data>
+  <data name="ConfirmationPaymentAmountOver100" xml:space="preserve">
+    <value>Vous allez être débité d'un montant de {0}. Merci de confirmer le montant.</value>
+  </data>
+  <data name="ConfirmationPaymentAmountOver100Title" xml:space="preserve">
+    <value>Confirmation nécessaire</value>
+  </data>
+  <data name="ConfirmCompanyLabel" xml:space="preserve">
+    <value>Société: </value>
+  </data>
+  <data name="ConfirmDateTimeLabel" xml:space="preserve">
+    <value>Date / heure</value>
+  </data>
+  <data name="ConfirmDestinationLabel" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="ConfirmNameLabel" xml:space="preserve">
+    <value>Nom: </value>
+  </data>
+  <data name="ConfirmOriginLablel" xml:space="preserve">
+    <value>Départ</value>
+  </data>
+  <data name="ConfirmPassengerSettingsTitle" xml:space="preserve">
+    <value>Concernant les passagers</value>
+  </data>
+  <data name="ConfirmPassengersLabel" xml:space="preserve">
+    <value>Nombre de passagers:</value>
+  </data>
+  <data name="ConfirmPhoneLabel" xml:space="preserve">
+    <value>Ligne mobile:</value>
+  </data>
+  <data name="ConfirmRideInformationTitle" xml:space="preserve">
+    <value>Information sur le trajet</value>
+  </data>
+  <data name="ConfirmVehiculeTypeLabel" xml:space="preserve">
+    <value>Type de véhicule</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Continuer</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Créer</value>
+  </data>
+  <data name="CreateAccountEmailPlaceHolder" xml:space="preserve">
+    <value>Email (adresse électronique)</value>
+  </data>
+  <data name="CreateAccountEmptyField" xml:space="preserve">
+    <value>Votre demande ne peut être validée, merci de remplir les champs obligatoires</value>
+  </data>
+  <data name="CreateAccountErrorMessage" xml:space="preserve">
+    <value>Le compte de peut malheureusement pas être créé</value>
+  </data>
+  <data name="CreateAccountErrorNotSpecified" xml:space="preserve">
+    <value>Le serveur ne précise pas pourquoi le compte ne peut pas se créer, si l'erreur persiste merci d'essayer de créer le compte depuis le site web. </value>
+  </data>
+  <data name="CreateAccountErrorTitle" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="CreateAccountFullNamePlaceHolder" xml:space="preserve">
+    <value>Nom complet</value>
+  </data>
+  <data name="CreateAccountInvalidDataTitle" xml:space="preserve">
+    <value>Données invalides</value>
+  </data>
+  <data name="CreateAccountInvalidPassword" xml:space="preserve">
+    <value>Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit faire entre 6 et 10 caractères.</value>
+  </data>
+  <data name="CreateAccountLanguageEnglish" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="CreateAccountLanguageFrench" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="CreateAccountPasswordConfirmationPlaceHolder" xml:space="preserve">
+    <value>Confirmation du mot de passe</value>
+  </data>
+  <data name="CreateAccountPasswordPlaceHolder" xml:space="preserve">
+    <value>Mot de passe</value>
+  </data>
+  <data name="CreateAccountPhonePlaceHolder" xml:space="preserve">
+    <value>Ligne mobile</value>
+  </data>
+  <data name="CreateAccountTitleArray" xml:space="preserve">
+    <value>MrMme</value>
+  </data>
+  <data name="CreateAccountTitleMr" xml:space="preserve">
+    <value>Mr</value>
+  </data>
+  <data name="CreateAccountTitleMrs" xml:space="preserve">
+    <value>Mme</value>
+  </data>
+  <data name="CreateAccount_AccountAlreadyExist" xml:space="preserve">
+    <value>Le compte ne peut malheureusement pas être créé, email déjà utilisé!</value>
+  </data>
+  <data name="CreditCard" xml:space="preserve">
+    <value>Carte de paiement</value>
+  </data>
+  <data name="CreditCardCategory" xml:space="preserve">
+    <value>Catégorie</value>
+  </data>
+  <data name="CreditCardCCV" xml:space="preserve">
+    <value>Code sécurité</value>
+  </data>
+  <data name="CreditCardErrorTitle" xml:space="preserve">
+    <value>Cette carte ne peut être ajoutée</value>
+  </data>
+  <data name="CreditCardExpMonth" xml:space="preserve">
+    <value>Date d'expiration (mois)</value>
+  </data>
+  <data name="CreditCardExpYear" xml:space="preserve">
+    <value>Date d'expiration (année)</value>
+  </data>
+  <data name="CreditCardInstructions" xml:space="preserve">
+    <value>Afin d'utiliser l'application, vous devez ajouter une carte de crédit à votre compte.</value>
+  </data>
+  <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
+    <value>Le numéro de la carte ne semble pas être valide</value>
+  </data>
+  <data name="CreditCardName" xml:space="preserve">
+    <value>Nom du titualire (tel qu'il apparaît sur la carte)</value>
+  </data>
+  <data name="CreditCardNumber" xml:space="preserve">
+    <value>Numéro de la carte</value>
+  </data>
+  <data name="CreditCardRemoveErrorMessage" xml:space="preserve">
+    <value>Vous devez avoir au moins une carte de crédit relier à votre compte. Vous devez ajouter une autre carte avant d'en supprimer une.</value>
+  </data>
+  <data name="CreditCardRemoveErrorTitle" xml:space="preserve">
+    <value>La carte ne peut être supprimée</value>
+  </data>
+  <data name="CreditCardRequiredFields" xml:space="preserve">
+    <value>Tous les champs obligatoires doivent être remplis</value>
+  </data>
+  <data name="CreditCardType" xml:space="preserve">
+    <value>Type de la carte</value>
+  </data>
+  <data name="CreditCardZipCode" xml:space="preserve">
+    <value>Code postal</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="DateTimePickerPickDate" xml:space="preserve">
+    <value>Sélectionner la date de départ:</value>
+  </data>
+  <data name="DateTimePickerPickInvalidDateMessage" xml:space="preserve">
+    <value>La date de départ ne peut pas être antérieure à la date de commande</value>
+  </data>
+  <data name="DateTimePickerPickInvalidDateTitle" xml:space="preserve">
+    <value>Date / heure invalide</value>
+  </data>
+  <data name="DateTimePickerPickTime" xml:space="preserve">
+    <value>Sélectionner l'heure de départ</value>
+  </data>
+  <data name="DateTimePickerPickTitle" xml:space="preserve">
+    <value>Date et heure de départ</value>
+  </data>
+  <data name="DateTimePickerSetButton" xml:space="preserve">
+    <value>Réserver maintenant!</value>
+  </data>
+  <data name="DateToday" xml:space="preserve">
+    <value>Aujourd'hui</value>
+  </data>
+  <data name="December" xml:space="preserve">
+    <value>Décembre (12)</value>
+  </data>
+  <data name="DefaultRideSettingsViewTitle" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="DeleteAddressBt" xml:space="preserve">
+    <value>Supprimer l'adresse</value>
+  </data>
+  <data name="DeleteBookItButtonImageNamePressed" xml:space="preserve">
+    <value>Assets/Button/btnBookIt-Pressed_en.png</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="DestinationMapTitle" xml:space="preserve">
+    <value>Lieu de destination</value>
+  </data>
+  <data name="DestinationNotSpecifiedText" xml:space="preserve">
+    <value>Adresse de destination manquante</value>
+  </data>
+  <data name="DestinationTextPlaceholder" xml:space="preserve">
+    <value>Adresse de destination</value>
+  </data>
+  <data name="DestinationViewDestinationLabel" xml:space="preserve">
+    <value>Destination:</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>Terminé</value>
+  </data>
+  <data name="DontHaveAnAccountLabel" xml:space="preserve">
+    <value>Souhaitez-vous créer un compte?</value>
+  </data>
+  <data name="DriverInfoColor" xml:space="preserve">
+    <value>Coloris:</value>
+  </data>
+  <data name="DriverInfoDriver" xml:space="preserve">
+    <value>Chauffeur:</value>
+  </data>
+  <data name="DriverInfoLicence" xml:space="preserve">
+    <value>Licence:</value>
+  </data>
+  <data name="DriverInfoMake" xml:space="preserve">
+    <value>Marque:</value>
+  </data>
+  <data name="DriverInfoModel" xml:space="preserve">
+    <value>Modèle:</value>
+  </data>
+  <data name="DriverInfoTaxiType" xml:space="preserve">
+    <value>Type de véhicule:</value>
+  </data>
+  <data name="dummyaaa" xml:space="preserve">
+    <value>xaaa</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Editer</value>
+  </data>
+  <data name="EmailLabel" xml:space="preserve">
+    <value>Email (adresse électronique)</value>
+  </data>
+  <data name="EmptyString" xml:space="preserve">
+    <value />
+  </data>
+  <data name="EntryCodeLabel" xml:space="preserve">
+    <value>Saisissez un code</value>
+  </data>
+  <data name="ErrorCreatingOrderTitle" xml:space="preserve">
+    <value>Désolé, la réservation ne peut être complétée</value>
+  </data>
+  <data name="Error_AccountPaymentMessage" xml:space="preserve">
+    <value>Le numéro de compte semble invalide</value>
+  </data>
+  <data name="Error_AccountPaymentQuestionRequiredMessage" xml:space="preserve">
+    <value>Vous devez saisir tous les champs pour continuer</value>
+  </data>
+  <data name="Error_AccountPaymentTitle" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="EstimatedFareNotAvailable" xml:space="preserve">
+    <value>Le prix ne peut être estimé pour le moment</value>
+  </data>
+  <data name="EstimateDistance" xml:space="preserve">
+    <value>({0})</value>
+  </data>
+  <data name="EstimatePrice" xml:space="preserve">
+    <value>Prix estimé</value>
+  </data>
+  <data name="EstimatePriceFormat" xml:space="preserve">
+    <value>Prix estimé: {0}</value>
+  </data>
+  <data name="EstimatePriceOver100" xml:space="preserve">
+    <value>Appelez-nous pour connaître le prix!</value>
+  </data>
+  <data name="EstimatingFare" xml:space="preserve">
+    <value>Calcul du prix en cours…</value>
+  </data>
+  <data name="Facebook" xml:space="preserve">
+    <value>Connexion Facebook</value>
+  </data>
+  <data name="FavoriteLocationsTitle" xml:space="preserve">
+    <value>Lieu de départ / destination favoris</value>
+  </data>
+  <data name="FavoritesButton" xml:space="preserve">
+    <value>Favoris</value>
+  </data>
+  <data name="February" xml:space="preserve">
+    <value>Février (02)</value>
+  </data>
+  <data name="GenericTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="GoogleMapKey" xml:space="preserve">
+    <value>0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</value>
+  </data>
+  <data name="GooglePlayServicesNotAvailableMessage" xml:space="preserve">
+    <value>Merci de mettre à jour Google Play pour utiliser cette application mobile.</value>
+  </data>
+  <data name="GooglePlayServicesNotAvailableTitle" xml:space="preserve">
+    <value>Mise à jour requise</value>
+  </data>
+  <data name="HistoryDetailAptRingCodeLabel" xml:space="preserve">
+    <value>Appartement / digicode:</value>
+  </data>
+  <data name="HistoryDetailAuthorizationLabel" xml:space="preserve">
+    <value>Autorisation:</value>
+  </data>
+  <data name="HistoryDetailBuildingNameLabel" xml:space="preserve">
+    <value>Nom du bâtiment:</value>
+  </data>
+  <data name="HistoryDetailBuildingNameNotSpecified" xml:space="preserve">
+    <value>Non spécifié</value>
+  </data>
+  <data name="HistoryDetailDestinationLabel" xml:space="preserve">
+    <value>Destination:</value>
+  </data>
+  <data name="HistoryDetailOrderLabel" xml:space="preserve">
+    <value>Commande:</value>
+  </data>
+  <data name="HistoryDetailPickupDateLabel" xml:space="preserve">
+    <value>Date de départ:</value>
+  </data>
+  <data name="HistoryDetailPickupLabel" xml:space="preserve">
+    <value>Départ:</value>
+  </data>
+  <data name="HistoryDetailRequestedLabel" xml:space="preserve">
+    <value>Requis:</value>
+  </data>
+  <data name="HistoryDetailStatusLabel" xml:space="preserve">
+    <value>Statut:</value>
+  </data>
+  <data name="HistoryInfo" xml:space="preserve">
+    <value>Synthèse des trajets effectués le mois dernier</value>
+  </data>
+  <data name="HistoryViewNoHistoryLabel" xml:space="preserve">
+    <value>Pas d'historique</value>
+  </data>
+  <data name="HistoryViewSendReceiptButton" xml:space="preserve">
+    <value>Je souhaite recevoir une facture</value>
+  </data>
+  <data name="HistoryViewSendReceiptError" xml:space="preserve">
+    <value>Désolé, nous avons rencontré un problème lors de l'envoi de la facture</value>
+  </data>
+  <data name="HistoryViewStatusButton" xml:space="preserve">
+    <value>Voir le statut</value>
+  </data>
+  <data name="HistoryViewTitle" xml:space="preserve">
+    <value>Historique</value>
+  </data>
+  <data name="InvalidAccountOnActivatedMessage" xml:space="preserve">
+    <value>Votre compte semble ne pas exister. Merci de vérifier la saisie</value>
+  </data>
+  <data name="InvalidAccountOnActivatedTitle" xml:space="preserve">
+    <value>Compte non valide</value>
+  </data>
+  <data name="InvalidAddressMessage" xml:space="preserve">
+    <value>Désolé, l'adresse saisie semble invalide. Merci de saisir de nouveau</value>
+  </data>
+  <data name="InvalidAddressTextEdit" xml:space="preserve">
+    <value>Désolé, l'adresse semble inconnue</value>
+  </data>
+  <data name="InvalidAddressTitle" xml:space="preserve">
+    <value>Adresse invalide</value>
+  </data>
+  <data name="InvalidBookinInfo" xml:space="preserve">
+    <value>Pour commander une Audi, merci d'entrer une adresse valide</value>
+  </data>
+  <data name="InvalidBookinInfoTitle" xml:space="preserve">
+    <value>Informations de commande invalides</value>
+  </data>
+  <data name="InvalidBookinInfoWhenDestinationIsRequired" xml:space="preserve">
+    <value>Pour commander une Audi, vous devez entrez des adresses de départ et de destination valides.</value>
+  </data>
+  <data name="InvalidChoiceTitle" xml:space="preserve">
+    <value>Choix invalide</value>
+  </data>
+  <data name="InvalidLocalContactMessage" xml:space="preserve">
+    <value>L'adresse semble ne pas correspondre au contact</value>
+  </data>
+  <data name="InvalidLocalContactTitle" xml:space="preserve">
+    <value>Informations erronées</value>
+  </data>
+  <data name="InvalidLoginMessage" xml:space="preserve">
+    <value>L'email et/ou le mot de passe semblent invalides</value>
+  </data>
+  <data name="InvalidLoginMessageTitle" xml:space="preserve">
+    <value>Erreur de connection</value>
+  </data>
+  <data name="InvalidPhoneErrorMessage" xml:space="preserve">
+    <value>Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau 10 chiffres.</value>
+  </data>
+  <data name="InvalidPickupAddress" xml:space="preserve">
+    <value>Merci d'entrer une adresse de départ valide</value>
+  </data>
+  <data name="January" xml:space="preserve">
+    <value>Janvier (01)</value>
+  </data>
+  <data name="July" xml:space="preserve">
+    <value>Juillet (07)</value>
+  </data>
+  <data name="June" xml:space="preserve">
+    <value>Juin (06)</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="LanguageCode" xml:space="preserve">
+    <value>fr</value>
+  </data>
+  <data name="LargeBagsLabel" xml:space="preserve">
+    <value>Bagages encombrants</value>
+  </data>
+  <data name="ListPromptSelectOne" xml:space="preserve">
+    <value>Selectionner</value>
+  </data>
+  <data name="LoadingMessage" xml:space="preserve">
+    <value>Chargement…</value>
+  </data>
+  <data name="LocalContactCannotBeResolverMessage" xml:space="preserve">
+    <value>L'adresse semble ne pas correspondre au contact</value>
+  </data>
+  <data name="LocalContactCannotBeResolverTitle" xml:space="preserve">
+    <value>Informations erronées</value>
+  </data>
+  <data name="Locating" xml:space="preserve">
+    <value>Recherche de votre position</value>
+  </data>
+  <data name="LocationAddFavoriteSubtitle" xml:space="preserve">
+    <value>Saisissez une nouvelle adresse</value>
+  </data>
+  <data name="LocationAddFavoriteTitle" xml:space="preserve">
+    <value>Ajouter une position</value>
+  </data>
+  <data name="LocationDetailAddressLabel" xml:space="preserve">
+    <value>Adresse</value>
+  </data>
+  <data name="LocationDetailApartmentLabel" xml:space="preserve">
+    <value>Appartement</value>
+  </data>
+  <data name="LocationDetailNameLabel" xml:space="preserve">
+    <value>Surnom</value>
+  </data>
+  <data name="LocationDetailRingCodeLabel" xml:space="preserve">
+    <value>Saisissez un code</value>
+  </data>
+  <data name="LocationHistoryTitle" xml:space="preserve">
+    <value>Historique des positions</value>
+  </data>
+  <data name="LocationNoHistory" xml:space="preserve">
+    <value>Pas d'historique</value>
+  </data>
+  <data name="LocationServiceErrorMessage" xml:space="preserve">
+    <value>Le service de localisation est inactif</value>
+  </data>
+  <data name="LocationServiceErrorTitle" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="LocationViewTitle" xml:space="preserve">
+    <value>Mes positions</value>
+  </data>
+  <data name="LoginForgotPassword" xml:space="preserve">
+    <value>Mot de passe oublié?</value>
+  </data>
+  <data name="LoginForgotPasswordDetail" xml:space="preserve">
+    <value>Saisissez votre email pour recevoir votre nouveau mot de passe</value>
+  </data>
+  <data name="LoginViewEmailPlaceHolder" xml:space="preserve">
+    <value>Email (adresse électronique)</value>
+  </data>
+  <data name="LoginViewPasswordPlaceHolder" xml:space="preserve">
+    <value>Mot de passe</value>
+  </data>
+  <data name="March" xml:space="preserve">
+    <value>Mars (03)</value>
+  </data>
+  <data name="May" xml:space="preserve">
+    <value>Mai (05)</value>
+  </data>
+  <data name="mobileKnowledgeUrl" xml:space="preserve">
+    <value>http://www.mobile-knowledge.com/</value>
+  </data>
+  <data name="NbPassenger" xml:space="preserve">
+    <value> ({0} passager)</value>
+  </data>
+  <data name="NbPassengers" xml:space="preserve">
+    <value> ({0} passagers)</value>
+  </data>
+  <data name="NearbyPlacesTitle" xml:space="preserve">
+    <value>À proximité</value>
+  </data>
+  <data name="NetworkErrorMessage" xml:space="preserve">
+    <value>Echec de la connexion. Merci de vérifier vos paramètres de connexion et réessayer.</value>
+  </data>
+  <data name="NetworkErrorTitle" xml:space="preserve">
+    <value>Aucune connexion disponible</value>
+  </data>
+  <data name="NoAmountSelectedMessage" xml:space="preserve">
+    <value>Merci de saisir un montant</value>
+  </data>
+  <data name="NoAptText" xml:space="preserve">
+    <value>Numéro d'appartement</value>
+  </data>
+  <data name="NoButton" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="NoConnectionMessage" xml:space="preserve">
+    <value>Echec de connexion, le serveur peut ne pas fonctionnner de manière temporaire ou vous avez peut-être perdu votre connection internet.</value>
+  </data>
+  <data name="NoConnectionTitle" xml:space="preserve">
+    <value>Erreur de connexion</value>
+  </data>
+  <data name="NoCreditCardSelected" xml:space="preserve">
+    <value>Merci de sélectionner une carte de paiement</value>
+  </data>
+  <data name="NoFareText" xml:space="preserve">
+    <value>Vous devez saisir une destination pour obtenir une estimation du prix du trajet</value>
+  </data>
+  <data name="NoFareTextIfDestinationIsRequired" xml:space="preserve">
+    <value>Vous devez saisir une destination</value>
+  </data>
+  <data name="NoMailClient" xml:space="preserve">
+    <value>Il n'y a pas d'adresse email client enregistrée</value>
+  </data>
+  <data name="NoOrderId" xml:space="preserve">
+    <value>La commande n'est pas encore finalisée</value>
+  </data>
+  <data name="NoPhoneNumberMessage" xml:space="preserve">
+    <value>Le numéro de téléphone ne semble pas correcpondre au chauffeur</value>
+  </data>
+  <data name="NoPhoneNumberTitle" xml:space="preserve">
+    <value>Le numéro de téléphone ne semble pas valide</value>
+  </data>
+  <data name="NoPreference" xml:space="preserve">
+    <value>Pas de préférence</value>
+  </data>
+  <data name="NoRingCodeText" xml:space="preserve">
+    <value>Pas de code</value>
+  </data>
+  <data name="NotAvailable" xml:space="preserve">
+    <value>Information non disponible</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Commentaires</value>
+  </data>
+  <data name="NotesToDriveLabel" xml:space="preserve">
+    <value>Commentaires à destination du chauffeur</value>
+  </data>
+  <data name="November" xml:space="preserve">
+    <value>Novembre (11)</value>
+  </data>
+  <data name="Now" xml:space="preserve">
+    <value>Immédiatement</value>
+  </data>
+  <data name="October" xml:space="preserve">
+    <value>Octobre (10)</value>
+  </data>
+  <data name="OkButtonText" xml:space="preserve">
+    <value>Valider</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Commander</value>
+  </data>
+  <data name="OrderHistoryListTitle" xml:space="preserve">
+    <value>Commande n°{0} ({1:ddd, MMM d}, {1:h:mm tt})</value>
+  </data>
+  <data name="OrderNote" xml:space="preserve">
+    <value>Réserver sur votre mobile</value>
+  </data>
+  <data name="OrderNoteGPS" xml:space="preserve">
+    <value>Utiliser un GPS</value>
+  </data>
+  <data name="OrderNoteGPSApproximate" xml:space="preserve">
+    <value>(adresse approximative)</value>
+  </data>
+  <data name="OrderNumber" xml:space="preserve">
+    <value>Commande n°</value>
+  </data>
+  <data name="PanelMenuViewAboutUsText" xml:space="preserve">
+    <value>À propos de nous</value>
+  </data>
+  <data name="PanelMenuViewCallDispatchText" xml:space="preserve">
+    <value>Appeler</value>
+  </data>
+  <data name="PanelMenuViewLocationsText" xml:space="preserve">
+    <value>Positions</value>
+  </data>
+  <data name="PanelMenuViewOrderHistoryText" xml:space="preserve">
+    <value>Historique</value>
+  </data>
+  <data name="PanelMenuViewReportProblemText" xml:space="preserve">
+    <value>Signaler un problème</value>
+  </data>
+  <data name="PanelMenuViewSignOutText" xml:space="preserve">
+    <value>Déconnexion</value>
+  </data>
+  <data name="PanelMenuViewTutorialText" xml:space="preserve">
+    <value>Voir l'aide</value>
+  </data>
+  <data name="PanelMenuViewUpdateProfileText" xml:space="preserve">
+    <value>Mise à jour du compte</value>
+  </data>
+  <data name="ParameterButton" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="PassengerNameLabel" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="PassengerNumberLabel" xml:space="preserve">
+    <value>Passagers</value>
+  </data>
+  <data name="PassengerPhoneLabel" xml:space="preserve">
+    <value>Téléphone</value>
+  </data>
+  <data name="PasswordLabel" xml:space="preserve">
+    <value>Mot de passe</value>
+  </data>
+  <data name="PaymentConfirmationMessageToDriver" xml:space="preserve">
+    <value>Paiement effectué par le passager pour un montant de {0} (code: {1})</value>
+  </data>
+  <data name="PaymentDetails.CreditCardLabel" xml:space="preserve">
+    <value>Cartes de paiement</value>
+  </data>
+  <data name="PaymentDetails.InvalidDataTitle" xml:space="preserve">
+    <value>Informations relatives au paiement invalides</value>
+  </data>
+  <data name="PaymentDetails.InvalidTipAmount" xml:space="preserve">
+    <value>Le montant du pourboire n'est pas valide</value>
+  </data>
+  <data name="PaymentDetails.Optional" xml:space="preserve">
+    <value>(Facultatif)</value>
+  </data>
+  <data name="PaymentDetails.TipAmountLabel" xml:space="preserve">
+    <value>Montant du pourboire</value>
+  </data>
+  <data name="PaymentErrorMessage" xml:space="preserve">
+    <value>Détails: {0}</value>
+  </data>
+  <data name="PaymentErrorTitle" xml:space="preserve">
+    <value>Le paiement n'a pas pu être effectué</value>
+  </data>
+  <data name="PaymentViewMeterAmountText" xml:space="preserve">
+    <value>Distance</value>
+  </data>
+  <data name="PaymentViewTipText" xml:space="preserve">
+    <value>Pourboire</value>
+  </data>
+  <data name="PaymentViewTotalText" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="PayNow" xml:space="preserve">
+    <value>Payer maintenant!</value>
+  </data>
+  <data name="PayPalButton" xml:space="preserve">
+    <value>Payer avec votre compte PayPal</value>
+  </data>
+  <data name="PayPalExpressCheckoutCancelMessage" xml:space="preserve">
+    <value>Votre paiement PayPal a été annulé. Votre compte n'a pas été débité</value>
+  </data>
+  <data name="PayPalExpressCheckoutCancelTitle" xml:space="preserve">
+    <value>Paiement annulé</value>
+  </data>
+  <data name="PayPalExpressCheckoutSuccessMessage" xml:space="preserve">
+    <value>Votre paiement PayPal a été confirmé et transmis au chauffeur</value>
+  </data>
+  <data name="PayPalExpressCheckoutSuccessTitle" xml:space="preserve">
+    <value>Paiement confirmé</value>
+  </data>
+  <data name="PickupDateDisplay" xml:space="preserve">
+    <value>Réservation pour {0:ddd, MMM d} à {0:h:mm tt}</value>
+  </data>
+  <data name="PickupDateTextPlaceholder" xml:space="preserve">
+    <value>Date: Aujourd'hui</value>
+  </data>
+  <data name="PickupMapTitle" xml:space="preserve">
+    <value>Lieu de départ</value>
+  </data>
+  <data name="PickupTextPlaceholder" xml:space="preserve">
+    <value>Adresse de départ</value>
+  </data>
+  <data name="PickupTimeTextPlaceholder" xml:space="preserve">
+    <value>Heure: maintenant</value>
+  </data>
+  <data name="PickupViewDestinationLabel" xml:space="preserve">
+    <value>Destination &gt;&gt;</value>
+  </data>
+  <data name="PickupViewPickupLabel" xml:space="preserve">
+    <value>Départ:</value>
+  </data>
+  <data name="RateRide" xml:space="preserve">
+    <value>Calculer le prix du trajet</value>
+  </data>
+  <data name="Rebook" xml:space="preserve">
+    <value>Réinitialiser le trajet</value>
+  </data>
+  <data name="ReceiptSent" xml:space="preserve">
+    <value>Facture envoyée</value>
+  </data>
+  <data name="RefineAddressTitle" xml:space="preserve">
+    <value>Affiner l'adresse</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>S'enregistrer</value>
+  </data>
+  <data name="ReminderDetails" xml:space="preserve">
+    <value>Rappel: votre Audi arrivera au {0} à {1} le {2}</value>
+  </data>
+  <data name="ReminderTitle" xml:space="preserve">
+    <value>{0} Enregistré</value>
+  </data>
+  <data name="RemoveCreditCardMessage" xml:space="preserve">
+    <value>Etes-vous sur de vouloir supprimer cette carte de paiement?</value>
+  </data>
+  <data name="RemoveCreditCardTitle" xml:space="preserve">
+    <value>Supprimer cette carte de paiement</value>
+  </data>
+  <data name="ReSendConfirmation" xml:space="preserve">
+    <value>Signaler au chauffeur le mode de paiement</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Réinitialiser</value>
+  </data>
+  <data name="ResetPasswordConfirmationMessage" xml:space="preserve">
+    <value>Un nouveau mot de passe vous a été envoyé par email</value>
+  </data>
+  <data name="ResetPasswordConfirmationTitle" xml:space="preserve">
+    <value>Mot de passe envoyé</value>
+  </data>
+  <data name="ResetPasswordEmailPlaceHolder" xml:space="preserve">
+    <value>Email (adresse électronique)</value>
+  </data>
+  <data name="ResetPasswordInvalidDataMessage" xml:space="preserve">
+    <value>Désolé, cet email n'est pas valide</value>
+  </data>
+  <data name="ResetPasswordInvalidDataTitle" xml:space="preserve">
+    <value>Cet email n'est pas valide</value>
+  </data>
+  <data name="ResetPasswordSubtitleText" xml:space="preserve">
+    <value>Saisissez votre email pour recevoir votre nouveau mot de passe</value>
+  </data>
+  <data name="ResetPasswordSucessMessage" xml:space="preserve">
+    <value>Le mot de passe a été réinitialisé avec succès</value>
+  </data>
+  <data name="ResetPasswordSucessTitle" xml:space="preserve">
+    <value>Mot de passe réinitialisé</value>
+  </data>
+  <data name="ResetPasswordTitleText" xml:space="preserve">
+    <value>Mot de passe oublié?</value>
+  </data>
+  <data name="RideHistoryButton" xml:space="preserve">
+    <value>Historique des trajets</value>
+  </data>
+  <data name="RideSettingsAccountNumber" xml:space="preserve">
+    <value>Numéro de compte</value>
+  </data>
+  <data name="RideSettingsCannotLoadListMessage" xml:space="preserve">
+    <value>Désolé, échec de la connexion, merci de réessayer ultérieurement</value>
+  </data>
+  <data name="RideSettingsCannotLoadListTitle" xml:space="preserve">
+    <value>Echec de la connexion</value>
+  </data>
+  <data name="RideSettingsChargeType" xml:space="preserve">
+    <value>Type de facturation</value>
+  </data>
+  <data name="RideSettingsCompany" xml:space="preserve">
+    <value>Société</value>
+  </data>
+  <data name="RideSettingsName" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="RideSettingsPassengers" xml:space="preserve">
+    <value>Passagers</value>
+  </data>
+  <data name="RideSettingsPassword" xml:space="preserve">
+    <value>Mot de passe</value>
+  </data>
+  <data name="RideSettingsPhone" xml:space="preserve">
+    <value>Ligne mobile</value>
+  </data>
+  <data name="RideSettingsVehiculeType" xml:space="preserve">
+    <value>Type de véhicule</value>
+  </data>
+  <data name="RideSummarySubTitleText" xml:space="preserve">
+    <value>Merci d'avoir choisi {0} pour votre trajet, nous espérons vous revoir bientôt.</value>
+  </data>
+  <data name="RideSummaryTitleText" xml:space="preserve">
+    <value>Merci</value>
+  </data>
+  <data name="RingCode" xml:space="preserve">
+    <value>Saisissez un code</value>
+  </data>
+  <data name="RingCodeTextPlaceholder" xml:space="preserve">
+    <value>Saisissez un code</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
+  <data name="SaveAddressEmptyFieldMessage" xml:space="preserve">
+    <value>Désolé, les données ne semble pas valides. Merci de saisir les informations</value>
+  </data>
+  <data name="SaveAddressEmptyFieldTitle" xml:space="preserve">
+    <value>Merci de resaisir le nom</value>
+  </data>
+  <data name="ScanCreditCard" xml:space="preserve">
+    <value>Scanner la carte de paiement</value>
+  </data>
+  <data name="searchHint" xml:space="preserve">
+    <value>Rechercher</value>
+  </data>
+  <data name="SendEmail" xml:space="preserve">
+    <value>Envoyer un email…</value>
+  </data>
+  <data name="SendErrorLogButton" xml:space="preserve">
+    <value>Signaler une erreur de connexion</value>
+  </data>
+  <data name="SendMessageErrorMessage" xml:space="preserve">
+    <value>Nous avons rencontré un problème lors de la confirmation de l'annulation du paiement avec le chauffeur</value>
+  </data>
+  <data name="SendReceipt" xml:space="preserve">
+    <value>Je souhaite recevoir une facture</value>
+  </data>
+  <data name="September" xml:space="preserve">
+    <value>Septembre (09)</value>
+  </data>
+  <data name="ServerInfo" xml:space="preserve">
+    <value>({0} v{1})</value>
+  </data>
+  <data name="ServiceErrorCallTitle" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
+    <value>Cette adresse email est déjà utilisée</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs" xml:space="preserve">
+    <value>La commande ne peut être créée. Merci d'essayer une nouvelle fois ou de nous appeler.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
+    <value>L'adresse de départ est en dehors de la zone de service. Merci de contacter {0} à {1} pour plus d'assistance.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall" xml:space="preserve">
+    <value>L'adresse de départ est en dehors de la zone de service normale. </value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
+    <value>La commande ne peut être créée car votre compte est actuellement désactivé. Merci de contacter {0} à {1} pour plus d'assistance.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall" xml:space="preserve">
+    <value>La commande ne peut être créée car votre compte est actuellement désactivé</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
+    <value>La commande ne peut être créé car le fournisseur est invalide. Merci de contacter {0} à {1} pour plus d'assistance.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_InvalidProvider_NoCall" xml:space="preserve">
+    <value>Désolé, la demande ne peut être prise en compte. Le fournisseur n'est pas valide.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
+    <value>Désolé, nous n'avons pas pu estimer le montant de votre trajet. Merci de contacter {0} au {1} pour toute demande d'assistance</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
+    <value>Désolé, nous n'avons pas pu estimer le montant de votre trajet</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_NoProvider" xml:space="preserve">
+    <value>Désolé, la demande ne peut être prise en compte car vous n'avez pas choisi de fournisseur. Merci de réessayer ultérieurement ou de nous joindre au {0}.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_VehiculeType" xml:space="preserve">
+    <value>Désolé, la demande ne peut être prise en compte car le type de véhicule choisi n'est pas valide. Merci de réessayer ultérieurement ou de nous joindre au {0}</value>
+  </data>
+  <data name="ServiceErrorDefaultMessage" xml:space="preserve">
+    <value>Désolé, nous avons rencontré un problème. Merci de réessayer ultérieurement</value>
+  </data>
+  <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
+    <value>Aucun compte n'a été trouvé pour cet email</value>
+  </data>
+  <data name="ServiceErrorUnauthorized" xml:space="preserve">
+    <value>Désolé, votre session a expirée. Merci de réessayer ultérieurement</value>
+  </data>
+  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+    <value>Désolé, le mot de passe saisi n'est pas valide</value>
+  </data>
+  <data name="ServiceError_ErrorCreatingOrderMessage" xml:space="preserve">
+    <value>Merci de contacter {0} au {1} pour toute demande d'assistance</value>
+  </data>
+  <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
+    <value>Votre demande n'a pas pu être prise en compte</value>
+  </data>
+  <data name="SettingsViewTitle" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="SettingViewLoginInfo" xml:space="preserve">
+    <value>Vous vous être identifié comme: {0}</value>
+  </data>
+  <data name="SettingViewNotSignedIn" xml:space="preserve">
+    <value>Désolé, vous n'êtes pas identifié. Merci de vous identifier pour pouvoir utiliser l'application</value>
+  </data>
+  <data name="SignIn" xml:space="preserve">
+    <value>S'identifier</value>
+  </data>
+  <data name="StatusActionBookButton" xml:space="preserve">
+    <value>Réserver un nouveau véhicule</value>
+  </data>
+  <data name="StatusActionButton" xml:space="preserve">
+    <value>Appeler/Réserver/Annuler</value>
+  </data>
+  <data name="StatusActionCancelButton" xml:space="preserve">
+    <value>Annuler cette demande</value>
+  </data>
+  <data name="StatusCallButton" xml:space="preserve">
+    <value>Appeler</value>
+  </data>
+  <data name="StatusCancelButton" xml:space="preserve">
+    <value>Annuler cette demande</value>
+  </data>
+  <data name="StatusCannotBeDisplayed" xml:space="preserve">
+    <value>Information non disponible. Merci de nous contacter.</value>
+  </data>
+  <data name="StatusConfirmCancelRide" xml:space="preserve">
+    <value>Cette action annulera votre commande, souhaitez-vous continuer?</value>
+  </data>
+  <data name="StatusConfirmCancelRideError" xml:space="preserve">
+    <value>Désolé, vous ne pouvez plus annuler cette demande. Merci de nous contacter</value>
+  </data>
+  <data name="StatusConfirmCancelRideErrorTitle" xml:space="preserve">
+    <value>Impossible d'annuler</value>
+  </data>
+  <data name="StatusConfirmNewBooking" xml:space="preserve">
+    <value>Attention, la commande d'un nouveau véhicule n'annulera pas la précédente. Souhaitez-vous continuer?</value>
+  </data>
+  <data name="StatusDescription" xml:space="preserve">
+    <value>Commande n°{0}</value>
+  </data>
+  <data name="StatusInvalid" xml:space="preserve">
+    <value>Indisponible</value>
+  </data>
+  <data name="StatusNewRideButton" xml:space="preserve">
+    <value>Nouveau trajet</value>
+  </data>
+  <data name="StatusStatusLabel" xml:space="preserve">
+    <value>Statut: {0}</value>
+  </data>
+  <data name="StatusViewTitle" xml:space="preserve">
+    <value>Confirmé</value>
+  </data>
+  <data name="StreetNumberDoneBt" xml:space="preserve">
+    <value>Utiliser cette adresse</value>
+  </data>
+  <data name="StreetNumberLabel" xml:space="preserve">
+    <value>Affiner l'adresse</value>
+  </data>
+  <data name="StreetNumberPlacesBt" xml:space="preserve">
+    <value>Rechercher un point d'intérêt</value>
+  </data>
+  <data name="StreetNumberSearchBt" xml:space="preserve">
+    <value>Utiliser une autre adresse</value>
+  </data>
+  <data name="StreetNumberTitle" xml:space="preserve">
+    <value>Détails de l'adresse</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Envoyer</value>
+  </data>
+  <data name="SupportEmail" xml:space="preserve">
+    <value>techsupport@apcurium.com</value>
+  </data>
+  <data name="TabBook" xml:space="preserve">
+    <value>Réserver maintenant!</value>
+  </data>
+  <data name="TabContacts" xml:space="preserve">
+    <value>Contacts</value>
+  </data>
+  <data name="TabFavorites" xml:space="preserve">
+    <value>Favoris</value>
+  </data>
+  <data name="TabHistory" xml:space="preserve">
+    <value>Historique</value>
+  </data>
+  <data name="TabLocations" xml:space="preserve">
+    <value>Positions</value>
+  </data>
+  <data name="TabPlaces" xml:space="preserve">
+    <value>Points d'intérêt</value>
+  </data>
+  <data name="TabSearch" xml:space="preserve">
+    <value>Rechercher</value>
+  </data>
+  <data name="TaxiMapTitle" xml:space="preserve">
+    <value>Votre véhicule</value>
+  </data>
+  <data name="TaxiServerDownMessage" xml:space="preserve">
+    <value>Désolé, impossible de contacter le chauffeur</value>
+  </data>
+  <data name="TechSupportEmailTitle" xml:space="preserve">
+    <value>Support application mobile</value>
+  </data>
+  <data name="TermsAndConditionsAcknowledgment" xml:space="preserve">
+    <value>Je reconnais avoir pris connaissance des conditions générales d'utilisation</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Heure</value>
+  </data>
+  <data name="TimeNow" xml:space="preserve">
+    <value>Dès que possible.</value>
+  </data>
+  <data name="Tuto01Bottom" xml:space="preserve">
+    <value>Commencez par sélectionner votre position actuelle.</value>
+  </data>
+  <data name="Tuto01Top" xml:space="preserve">
+    <value>Réserver un véhicule en quelques secondes</value>
+  </data>
+  <data name="Tuto02Bottom" xml:space="preserve">
+    <value>Si le curseur n'est pas tout à fait à votre position actuelle, veuillez simplement le repositionner.</value>
+  </data>
+  <data name="Tuto02Top" xml:space="preserve">
+    <value>Nous devrions être capable de vous localiser en utilisant le GPS de votre smartphone.</value>
+  </data>
+  <data name="Tuto03Bottom" xml:space="preserve">
+    <value>Vous pouvez selectionner une nouvelle adresse ou en choisir parmi vos favoris, ou les Points d'Intérêt les plus proches</value>
+  </data>
+  <data name="Tuto03Top" xml:space="preserve">
+    <value>Vous pouvez également nous communiquer votre position en saisissant directement une adresse</value>
+  </data>
+  <data name="Tuto04Bottom" xml:space="preserve">
+    <value>En faisant cela vous aurez une estimation du coût de votre trajet.</value>
+  </data>
+  <data name="Tuto04Top" xml:space="preserve">
+    <value>Vous pouvez également saisir votre destination</value>
+  </data>
+  <data name="Tuto05Bottom" xml:space="preserve">
+    <value>Afin de convenir d'une date/heure de départ ultéreure, merci de sélectionner 'Plus tard' sur votre écran</value>
+  </data>
+  <data name="Tuto05Top" xml:space="preserve">
+    <value>Sélectionner 'Commander maintenant' afin que nous puissions vous attribuer un véhicule dans les meilleurs délais</value>
+  </data>
+  <data name="Tuto06Bottom" xml:space="preserve">
+    <value>Appuyer sur confirmer lorsque vous êtes prêt </value>
+  </data>
+  <data name="Tuto06Top" xml:space="preserve">
+    <value>L'écran de confirmation vous permet de vérifier que les détails de votre trajet sont corrects. En cas d'erreur, merci d'effectuer les modifications</value>
+  </data>
+  <data name="Tuto07Bottom" xml:space="preserve">
+    <value>Des mises à jour sont envoyées lorsque le véhicule arrive à l'addresse de départ, quand vous entrez dans le véhicule et à la fin du trajet.</value>
+  </data>
+  <data name="Tuto07Top" xml:space="preserve">
+    <value>Sur l'écran de statut, vous verrez un numéro de réservation qui confirme votre commande. Une fois qu'un véhicule sera assigné, vous pouvez suivre sa position jusqu'à ce qu'il arrive à vous.</value>
+  </data>
+  <data name="Tuto08Bottom" xml:space="preserve">
+    <value>Nous espérons que la simplicité et l'efficacité de notre application vous aura convaincue.</value>
+  </data>
+  <data name="Tuto08Top" xml:space="preserve">
+    <value>Vous avez la possibilité de revoir l'historique de vos trajets et donc de renouveler une commande en sélectionnant le trajet souhaité.</value>
+  </data>
+  <data name="Twitter" xml:space="preserve">
+    <value>Connexion Twitter</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>Erreur inattendue</value>
+  </data>
+  <data name="UpdateBookingSettingsEmptyField" xml:space="preserve">
+    <value>Votre demande ne peut être validée, merci de remplir les champs obligatoires</value>
+  </data>
+  <data name="UpdateBookingSettingsInvalidDataTitle" xml:space="preserve">
+    <value>Détails de la réservation incorrects</value>
+  </data>
+  <data name="UpdatedTermsAndConditionsAcceptButton" xml:space="preserve">
+    <value>Accepter</value>
+  </data>
+  <data name="UpdatePasswordConfirmationLabel" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="UpdatePasswordCurrentPasswordLabel" xml:space="preserve">
+    <value>Mot de passe actuel</value>
+  </data>
+  <data name="UpdatePasswordNewPasswordLabel" xml:space="preserve">
+    <value>Nouveau mot de passe</value>
+  </data>
+  <data name="VehicleNumberErrorMessage" xml:space="preserve">
+    <value>Désolé, nous n'avons pas pu identifier le véhicule en approche. Merci d'effectuer le paiement à bord.</value>
+  </data>
+  <data name="VehicleNumberErrorTitle" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="VehicleNumberInfo" xml:space="preserve">
+    <value>Merci de valider l'immatriculation du véhicule avec le chauffeur</value>
+  </data>
+  <data name="VehicleNumberNotice" xml:space="preserve">
+    <value>Veuillez noter que si le numéro du véhicule ci-haut ne correspond pas au numéro actuel de votre Audi, nous regrettons de vous informer qu'il sera impossible de procéder au paiement via l'application. Veuillez retourner à l'écran précédant et payez directement au chauffeur.</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>v{0}</value>
+  </data>
+  <data name="ViewAll" xml:space="preserve">
+    <value>Voir</value>
+  </data>
+  <data name="ViewRatingBtn" xml:space="preserve">
+    <value>Voir les notes</value>
+  </data>
+  <data name="View_AboutUs" xml:space="preserve">
+    <value>À propos de nous</value>
+  </data>
+  <data name="View_BookingDetail" xml:space="preserve">
+    <value>Détails de la réservation</value>
+  </data>
+  <data name="View_BookingDetail_TitlePickupDetails" xml:space="preserve">
+    <value>Informations concernant le départ</value>
+  </data>
+  <data name="View_BookingDetail_TitleRideSettings" xml:space="preserve">
+    <value>Détails du trajet</value>
+  </data>
+  <data name="View_BookingStatus" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="View_BookRating" xml:space="preserve">
+    <value>Noter votre trajet</value>
+  </data>
+  <data name="View_BookSettingMenu" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="View_ConfirmCarNumber" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="View_CreateAccount" xml:space="preserve">
+    <value>Créer votre compte</value>
+  </data>
+  <data name="View_CreditCardAdd" xml:space="preserve">
+    <value>Nouvelle carte de paiement</value>
+  </data>
+  <data name="View_CreditCardsList" xml:space="preserve">
+    <value>Cartes de paiement</value>
+  </data>
+  <data name="View_History" xml:space="preserve">
+    <value>Historique</value>
+  </data>
+  <data name="View_HistoryDetail" xml:space="preserve">
+    <value>Détail de la commande</value>
+  </data>
+  <data name="View_InitializeOrderForAccountPayment" xml:space="preserve">
+    <value>Votre avis nous intéresse</value>
+  </data>
+  <data name="View_LocationDetail" xml:space="preserve">
+    <value>Détails sur votre position</value>
+  </data>
+  <data name="View_MyLocations" xml:space="preserve">
+    <value>Positions</value>
+  </data>
+  <data name="View_Payment" xml:space="preserve">
+    <value>Paiement: informations</value>
+  </data>
+  <data name="View_PaymentPreference" xml:space="preserve">
+    <value>Paiement: préférences</value>
+  </data>
+  <data name="View_Payments_CmtRideLinqChangePaymentTitle" xml:space="preserve">
+    <value>Modifier les informations relatives au paiement</value>
+  </data>
+  <data name="View_Payments_CmtRideLinqConfirmPairTitle" xml:space="preserve">
+    <value>Confirmer les informations relatives au paiement</value>
+  </data>
+  <data name="View_PayPal" xml:space="preserve">
+    <value>PayPal</value>
+  </data>
+  <data name="View_RefineAddress" xml:space="preserve">
+    <value>Informations concernant le départ</value>
+  </data>
+  <data name="View_RideSettings" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="View_RideSummary" xml:space="preserve">
+    <value>Résumé du trajet</value>
+  </data>
+  <data name="View_SearchAddress" xml:space="preserve">
+    <value>Rechercher une adresse</value>
+  </data>
+  <data name="View_SignIn" xml:space="preserve">
+    <value>Se connecter</value>
+  </data>
+  <data name="View_TermsAndConditions" xml:space="preserve">
+    <value>Conditions d'utilisation</value>
+  </data>
+  <data name="View_UpdatedTermsAndConditions" xml:space="preserve">
+    <value>Nouvelles conditions d'utilisation</value>
+  </data>
+  <data name="View_UpdatePassword" xml:space="preserve">
+    <value>Mettre a jour votre mot de passe</value>
+  </data>
+  <data name="WarningEstimate" xml:space="preserve">
+    <value>Veuillez noter que le prix fournit par cette application n'est seulement qu'un estimé. Le tarif calculé par le compteur, incluant tout frais minimum et extras, seront facturés à la fin du trajet.</value>
+  </data>
+  <data name="WarningEstimateDontShow" xml:space="preserve">
+    <value>Ne pas signaler</value>
+  </data>
+  <data name="WarningEstimateTitle" xml:space="preserve">
+    <value>Signaler</value>
+  </data>
+  <data name="WarningLocationService" xml:space="preserve">
+    <value>Merci d'activer la géolocalisation afin de pouvoir utiliser la carte</value>
+  </data>
+  <data name="WarningLocationServiceCancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="WarningLocationServiceDontShow" xml:space="preserve">
+    <value>Ne pas signaler</value>
+  </data>
+  <data name="WarningLocationServiceTitle" xml:space="preserve">
+    <value>Avertissement</value>
+  </data>
+  <data name="WarningTitle" xml:space="preserve">
+    <value>Avertissement</value>
+  </data>
+  <data name="YesButton" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+</root>

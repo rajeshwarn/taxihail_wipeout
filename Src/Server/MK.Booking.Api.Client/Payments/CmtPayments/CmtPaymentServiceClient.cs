@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Client.Cmt.OAuth;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Common.Web;
@@ -22,10 +23,10 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
     public class CmtPaymentServiceClient : BaseServiceClient
     {
         private readonly ILogger _logger;
-        public CmtPaymentServiceClient(CmtPaymentSettings cmtSettings, string sessionId, string userAgent, ILogger logger)
+        public CmtPaymentServiceClient(CmtPaymentSettings cmtSettings, string sessionId, IPackageInfo packageInfo, ILogger logger)
             : base(cmtSettings.IsSandbox
                 ? cmtSettings.SandboxBaseUrl
-                : cmtSettings.BaseUrl, sessionId, userAgent)
+                : cmtSettings.BaseUrl, sessionId, packageInfo)
         {
             _logger = logger;
             Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);

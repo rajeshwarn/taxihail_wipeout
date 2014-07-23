@@ -16,16 +16,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnPay { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnRateRide { get; set; }
-
-		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnReSendConfirmation { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnSendReceipt { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnSubmit { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.NSLayoutConstraint constraintRatingTableHeight { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblSubTitle { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UITableView tableRatingList { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -34,24 +37,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnPay = null;
 			}
 
-			if (btnRateRide != null) {
-				btnRateRide.Dispose ();
-				btnRateRide = null;
-			}
-
 			if (btnReSendConfirmation != null) {
 				btnReSendConfirmation.Dispose ();
 				btnReSendConfirmation = null;
 			}
 
-			if (btnSendReceipt != null) {
-				btnSendReceipt.Dispose ();
-				btnSendReceipt = null;
+			if (constraintRatingTableHeight != null) {
+				constraintRatingTableHeight.Dispose ();
+				constraintRatingTableHeight = null;
 			}
 
 			if (lblSubTitle != null) {
 				lblSubTitle.Dispose ();
 				lblSubTitle = null;
+			}
+
+			if (tableRatingList != null) {
+				tableRatingList.Dispose ();
+				tableRatingList = null;
+			}
+
+			if (btnSubmit != null) {
+				btnSubmit.Dispose ();
+				btnSubmit = null;
 			}
 		}
 	}

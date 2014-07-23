@@ -27,9 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ViewDestination.IsDestination = true;
                 ViewPickup.IsDestination = false;
 
-                // since we don't have the vehicle selection yet, we hardcode this value
-                ViewVehicleType.VehicleType = "Taxi";
-
                 ViewPickup.SetInvisibleButton(BigInvisibleButton);
                 ViewDestination.SetInvisibleButton(BigInvisibleButton);
 
@@ -56,6 +53,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 ViewModel.SetAddress.Execute(ViewModel.DestinationAddress);
             };
+
+			ViewVehicleType.VehicleSelected = (vehicleType) => 
+			{
+				ViewModel.SetVehicleType.Execute(vehicleType);
+			};
 
             var set = this.CreateBindingSet<OrderOptions, OrderOptionsViewModel>();
 
@@ -89,7 +91,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .WithConversion("Visibility");
 			set.Bind(ViewVehicleType)
 				.For(v => v.ShowEstimate)
-				.To(vm => vm.Settings.ShowEstimate);
+				.To(vm => vm.ShowEstimate);
+			set.Bind (ViewVehicleType)
+				.For (v => v.Vehicles)
+				.To (vm => vm.VehicleTypes);
+			set.Bind (ViewVehicleType)
+				.For (v => v.SelectedVehicle)
+				.To (vm => vm.SelectedVehicleType);
 
             set.Bind(ViewPickup)
                 .For("AddressClicked")
@@ -108,16 +116,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 ViewPickup.IsReadOnly = true;
                 ViewDestination.IsReadOnly = true;
+				ViewVehicleType.IsReadOnly = true;
             }
             else if(hint.State == HomeViewModelState.PickDate)
             {
                 ViewPickup.IsReadOnly = true;
                 ViewDestination.IsReadOnly = true;
+				ViewVehicleType.IsReadOnly = true;
             }
             else if(hint.State == HomeViewModelState.Initial)
             {
                 ViewPickup.IsReadOnly = ViewModel.ShowDestination;
                 ViewDestination.IsReadOnly = false;
+				ViewVehicleType.IsReadOnly = false;
             }
         }
 

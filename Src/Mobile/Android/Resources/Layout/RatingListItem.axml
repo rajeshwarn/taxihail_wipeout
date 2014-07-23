@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         local:MvxBind="Text RatingTypeName"
-        android:layout_gravity="center_horizontal"
         android:gravity="left"
         android:text=""
         android:textAppearance="@style/ListTitle" />
@@ -24,57 +23,57 @@
         android:gravity="center_horizontal">
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore1"
-            android:background="@drawable/rate_mad_state"
+            android:background="@drawable/star_state"
             android:layout_height="40dip"
             android:layout_gravity="fill"
             android:layout_width="40dip"
             android:padding="7dip"
             android:layout_marginTop="1dip"
-            android:tag="Mad"
-            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected MadSelected; Enabled CanRate"
+            android:tag="ScoreA"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected ScoreASelected; Enabled CanRate"
             android:layout_marginRight="15dip" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore2"
-            android:background="@drawable/rate_unhappy_state"
+            android:background="@drawable/star_state"
             android:layout_height="40dip"
             android:layout_gravity="fill"
             android:layout_width="40dip"
             android:padding="7dip"
             android:layout_marginTop="1dip"
-            android:tag="Unhappy"
-            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected UnhappySelected; Enabled CanRate"
+            android:tag="ScoreB"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected ScoreBSelected; Enabled CanRate"
             android:layout_marginRight="15dip" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore3"
-            android:background="@drawable/rate_neutral_state"
+            android:background="@drawable/star_state"
             android:layout_height="40dip"
             android:layout_gravity="fill"
             android:layout_width="40dip"
             android:padding="7dip"
             android:layout_marginTop="1dip"
-            android:tag="Neutral"
-            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected NeutralSelected; Enabled CanRate"
+            android:tag="ScoreC"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected ScoreCSelected; Enabled CanRate"
             android:layout_marginRight="15dip" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore4"
-            android:background="@drawable/rate_happy_state"
+            android:background="@drawable/star_state"
             android:layout_height="40dip"
             android:layout_gravity="fill"
             android:layout_width="40dip"
             android:padding="7dip"
             android:layout_marginTop="1dip"
-            android:tag="Happy"
-            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected HappySelected; Enabled CanRate"
+            android:tag="ScoreD"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected ScoreDSelected; Enabled CanRate"
             android:layout_marginRight="15dip" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore5"
-            android:background="@drawable/rate_ecstatic_state"
+            android:background="@drawable/star_state"
             android:layout_height="40dip"
             android:layout_gravity="fill"
             android:layout_width="40dip"
             android:padding="7dip"
             android:layout_marginTop="1dip"
-            android:tag="Ecstatic"
-            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected EcstaticSelected; Enabled CanRate" />
+            android:tag="ScoreE"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected ScoreESelected; Enabled CanRate" />
     </LinearLayout>
 </LinearLayout>

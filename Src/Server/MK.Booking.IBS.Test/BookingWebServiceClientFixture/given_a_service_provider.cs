@@ -22,7 +22,7 @@ namespace MK.Booking.IBS.Test.BookingWebServiceClientFixture
 
             var service = new BookingWebServiceClient(new FakeConfigurationManager(), new Logger(), null);
 
-            var test = service.GetAvailableVehicles(45.498247, -73.656673).ToList();
+            var test = service.GetAvailableVehicles(45.498247, -73.656673, 1).ToList();
 
             Console.WriteLine(test.Count);
         }

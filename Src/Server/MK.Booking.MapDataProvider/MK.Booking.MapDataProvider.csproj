@@ -102,6 +102,8 @@
     <Compile Include="Resources\GeoAddress.cs" />
     <Compile Include="Resources\GeoDirection.cs" />
     <Compile Include="Resources\GeoPlace.cs" />
+    <Compile Include="TomTom\Resources\RoutingResponse.cs" />
+    <Compile Include="TomTom\TomTomProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

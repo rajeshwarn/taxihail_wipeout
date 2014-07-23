@@ -4,25 +4,106 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
+using System.Collections.Generic;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
 	public class OrderOptionsViewModel : BaseViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IAccountService _accountService;
 
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
-		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService)
+		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService)
 		{
 			_orderWorkflowService = orderWorkflowService;
+			_accountService = accountService;
 
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
 			this.Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
 			this.Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), selectionMode => AddressSelectionMode = selectionMode);
 			this.Observe(_orderWorkflowService.GetAndObserveEstimatedFare(), fare => EstimatedFare = fare);
 			this.Observe(_orderWorkflowService.GetAndObserveLoadingAddress(), loading => IsLoadingAddress = loading);
+			this.Observe(_orderWorkflowService.GetAndObserveVehicleType(), vehicleType => VehicleTypeId = vehicleType);
 		}
+
+		public async Task Init()
+		{
+			var list = await _accountService.GetVehiclesList();
+
+			if (list.None ()) 
+			{
+				await SetDefaultVehicleType ();
+			} else {
+				VehicleTypes = list;
+			}
+		}
+
+		async Task SetDefaultVehicleType ()
+		{
+			var data = await _accountService.GetReferenceData ();
+			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault.Value);
+			var defaultId = defaultVehicleType != null ? defaultVehicleType.Id.Value : 0;
+			VehicleTypes = new List<VehicleType> {
+				new VehicleType {
+					LogoName = "taxi",
+					Name = "TAXI",
+					ReferenceDataVehicleId = defaultId
+				}
+			};
+			VehicleTypeId = defaultId;
+		}
+
+		private int? _vehicleTypeId;
+		public int? VehicleTypeId
+		{
+			get { return _vehicleTypeId; }
+			set
+			{
+				_vehicleTypeId = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => SelectedVehicleType);
+			}
+		}
+
+		private IEnumerable<VehicleType> _vehicleTypes = new List<VehicleType>();
+		public IEnumerable<VehicleType> VehicleTypes
+		{
+			get
+			{
+				return _vehicleTypes;
+			}
+			set
+			{
+				_vehicleTypes = value ?? new List<VehicleType>();
+
+				RaisePropertyChanged ();
+				RaisePropertyChanged (() => SelectedVehicleType);
+				RaisePropertyChanged (() => VehicleAndEstimateBoxIsVisible);
+			}
+		}
+			
+		public VehicleType SelectedVehicleType
+		{
+			get { 
+				VehicleType type = null;
+				if (VehicleTypeId.HasValue) {
+					type = VehicleTypes.FirstOrDefault (x => x.ReferenceDataVehicleId == VehicleTypeId); 
+				}
+
+				if (type == null) {
+					type = VehicleTypes.FirstOrDefault (); 
+				}
+				return type;
+			}
+		} 
 
 		private Address _pickupAddress;
 		public Address PickupAddress
@@ -96,6 +177,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				_showDestination = value && !Settings.HideDestination;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => VehicleAndEstimateBoxIsVisible);
+				RaisePropertyChanged (() => ShowEstimate);
 			}
 		}
 
@@ -115,6 +197,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public bool VehicleAndEstimateBoxIsVisible
 		{
+			get { return VehicleTypes.Count() > 1 || ShowEstimate; }
+		}
+
+		public bool ShowEstimate
+		{
 			get { return ShowDestination && Settings.ShowEstimate; }
 		}
 
@@ -122,11 +209,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-				return this.GetCommand<Address>(address => {
-                    _orderWorkflowService.SetAddress(address);
+				return this.GetCommand<Address>(async address => {
+					await _orderWorkflowService.SetAddress(address);
                 });
             }
         }
+
+		public ICommand SetVehicleType
+		{
+			get
+			{
+				return this.GetCommand<VehicleType>(vehicleType => {
+					_orderWorkflowService.SetVehicleType(vehicleType.ReferenceDataVehicleId);
+				});
+			}
+		}
 
 		public ICommand ShowSearchAddress
 		{

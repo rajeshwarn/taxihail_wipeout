@@ -34,7 +34,7 @@ namespace DatabaseInitializer
 {
     public class Program
     {
-        public static string AssemblyDirectory
+        private static string AssemblyDirectory
         {
             get
             {
@@ -45,7 +45,7 @@ namespace DatabaseInitializer
             }
         }
 
-        public static string CurrentVersion
+        private static string CurrentVersion
         {
             get
             {
@@ -53,55 +53,42 @@ namespace DatabaseInitializer
             }
         }
 
-
-   
         public static int Main(string[] args)
         {
-            
             var loggger = LogManager.GetLogger("DatabaseInitializer");
             try
             {
-
-                Console.WriteLine("Upgrading to version : " + CurrentVersion);
+                Console.WriteLine("Creating/updating database for version {0}", CurrentVersion);
 
                 var param = GetParamsFromArgs(args);
-
-                var connectionString = new ConnectionStringSettings("MkWeb", param.MkWebConnectionString); ;
-
+                var connectionString = new ConnectionStringSettings("MkWeb", param.MkWebConnectionString);
                 
                 Console.WriteLine("Working..." );
 
                 var creatorDb = new DatabaseCreator();
-
                 var isUpdate = creatorDb.DatabaseExists(param.MasterConnectionString , param.CompanyName);
-                
-                if ( isUpdate )
+                if (isUpdate)
                 {
                     Console.WriteLine("Updating database...");
                     var mirrored = creatorDb.IsMirroringSet(param.MasterConnectionString, param.CompanyName);
                     if (mirrored)
                     {
-                        Console.WriteLine("Turning database mirroring...");
+                        Console.WriteLine("Turning off database mirroring...");
                         creatorDb.TurnOffMirroring(param.MasterConnectionString, param.CompanyName);
                         Console.WriteLine("Database mirroring turned off.");
                     }                    
                 }
-
-
+                
                 string oldDatabase = null;
                 var container = new UnityContainer();
                 var module = new Module();
                 module.Init(container, connectionString);
                 
-                var configurationManager = new
-                    ConfigurationManager(
-                    () => new ConfigurationDbContext(connectionString.ConnectionString), container.Resolve<ILogger>());
-
-                
+                var configurationManager = new ConfigurationManager
+                    (() => new ConfigurationDbContext(connectionString.ConnectionString), container.Resolve<ILogger>());
 
                 //for dev company, delete old database to prevent keeping too many databases
-                if (param.CompanyName == "MKWebDev"
-                    && isUpdate)
+                if (param.CompanyName == "MKWebDev" && isUpdate)
                 {
 #if DEBUG
                     Console.WriteLine("Drop Existing Database? Y or N");
@@ -113,8 +100,6 @@ namespace DatabaseInitializer
                     }
 #endif
                 }
-
-                
 
                 var appSettings = GetCombinedSettings(isUpdate ? configurationManager.GetSettings() : null, param.CompanyName);
 
@@ -139,9 +124,9 @@ namespace DatabaseInitializer
                 if (isUpdate)
                 {
                     creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, oldDatabase, param.CompanyName);
+                    creatorDb.CopyAppStartUpLogTable(param.MasterConnectionString, oldDatabase, param.CompanyName);
                     creatorDb.FixUnorderedEvents(connectionString.ConnectionString);
                 }
-                
 
                 //Init data
                 var commandBus = container.Resolve<ICommandBus>();
@@ -188,7 +173,6 @@ namespace DatabaseInitializer
                     Console.WriteLine("Done playing events...");
 
                     EnsureDefaultAccountsExists(connectionString, commandBus);
-
                 }
                 else
                 {                    
@@ -225,7 +209,6 @@ namespace DatabaseInitializer
                     Console.WriteLine("Backup for mirroring...");
                     creatorDb.BackupDatabase(param.MasterConnectionString, backupFolder, param.CompanyName);
 
-                    
                     var mirrorDbExist = creatorDb.DatabaseExists(param.MirrorMasterConnectionString, param.CompanyName);
                     if ( mirrorDbExist )
                     {
@@ -233,21 +216,13 @@ namespace DatabaseInitializer
                         creatorDb.RestoreToDeleteDatabase(param.MirrorMasterConnectionString, backupFolder, param.CompanyName);
                         creatorDb.DropDatabase(param.MirrorMasterConnectionString, param.CompanyName);
                     }
+
                     Console.WriteLine("Restoring mirroring backup...");
                     creatorDb.RestoreDatabase(param.MirrorMasterConnectionString, backupFolder, param.CompanyName);
                     
                     creatorDb.SetMirroringPartner(param.MirrorMasterConnectionString, param.CompanyName, param.MirroringMirrorPartner );
-
-
-
                     creatorDb.CompleteMirroring(param.MasterConnectionString , param.CompanyName, param.MirroringPrincipalPartner, param.MirroringWitness );
-
-
-
                 }
-             
-
-
             }
             catch (Exception e)
             {
@@ -307,13 +282,11 @@ namespace DatabaseInitializer
                     registerAccountCommand.Phone);
             commandBus.Send(registerAccountCommand);
 
-
             commandBus.Send(new ConfirmAccount
             {
                 AccountId = registerAccountCommand.AccountId,
                 ConfimationToken = registerAccountCommand.ConfimationToken
             });
-
 
             //Register admin account
             Console.WriteLine("Register admin account...");
@@ -344,7 +317,6 @@ namespace DatabaseInitializer
                 RoleName = RoleName.SuperAdmin,
             });
 
-
             commandBus.Send(new ConfirmAccount
             {
                 AccountId = registerAdminAccountCommand.AccountId,
@@ -367,16 +339,12 @@ namespace DatabaseInitializer
                 }
                 var paramFileContent = File.ReadAllText(paramFile);
 
-                
                 result = ServiceStack.Text.JsonSerializer.DeserializeFromString<DatabaseInitializerParams>(paramFileContent); 
-                
             }
             else if (args.Length > 0)
             {
                 result.CompanyName = args[0];
             }
-
-            
 
             result.CompanyName = string.IsNullOrWhiteSpace(result.CompanyName) ? "MKWebDev" : result.CompanyName;
 
@@ -402,7 +370,6 @@ namespace DatabaseInitializer
 
                 result.SqlInstanceName = sqlInstanceName;
             }
-
             
             //Company connection string
             if (string.IsNullOrWhiteSpace(result.MkWebConnectionString) && (args.Length > 3))
@@ -431,7 +398,6 @@ namespace DatabaseInitializer
 
             return result;
         }
-
 
         private static void FetchingIbsDefaults(UnityContainer container, ICommandBus commandBus)
         {
@@ -573,7 +539,6 @@ namespace DatabaseInitializer
                 settingsInDb.ForEach(setting => appSettings[setting.Key] = setting.Value);
             }
 
-
             return appSettings;
         }
 
@@ -591,14 +556,12 @@ namespace DatabaseInitializer
             var flatRate = configurationManager.GetSetting("Direction.FlateRate");
             var ratePerKm = configurationManager.GetSetting("Direction.RatePerKm");
 
-
             commandBus.Send(new CreateTariff
             {
                 Type = TariffType.Default,
                 KilometricRate = double.Parse(ratePerKm, CultureInfo.InvariantCulture),
                 FlatRate = decimal.Parse(flatRate, CultureInfo.InvariantCulture),
                 MarginOfError = 20,
-                PassengerRate = 0m,
                 CompanyId = AppConstants.CompanyId,
                 TariffId = Guid.NewGuid(),
             });

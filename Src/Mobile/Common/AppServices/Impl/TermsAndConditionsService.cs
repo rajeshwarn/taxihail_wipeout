@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using System.Net;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -35,6 +36,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 
 			var response = await GetTerms();
+			if (response == null) 
+			{
+				return;
+			}
 
 			var ackKey = GetTermsAcknowledgmentKey (_accountService.CurrentAccount.Email);
 			var termsAcknowledged = _cacheService.Get<string>(ackKey);

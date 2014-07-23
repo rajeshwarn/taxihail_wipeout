@@ -136,6 +136,7 @@
     <Compile Include="EventHandlers\RuleDetailsGenerator.cs" />
     <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
     <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />
+    <Compile Include="EventHandlers\VehicleTypeDetailGenerator.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushNotifications\Impl\PushNotificationService.cs" />
@@ -144,20 +145,24 @@
     <Compile Include="ReadModel\AccountChargeDetail.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
+    <Compile Include="ReadModel\AppStartUpLogDetail.cs" />
     <Compile Include="ReadModel\CompanyDetail.cs" />
     <Compile Include="ReadModel\OrderPaymentDetail.cs" />
     <Compile Include="ReadModel\OrderUserGpsDetail.cs" />
     <Compile Include="ReadModel\Query\AccountChargeDao.cs" />
+    <Compile Include="ReadModel\Query\AppStartUpLogDao.cs" />
     <Compile Include="ReadModel\Query\CompanyDao.cs" />
     <Compile Include="ReadModel\Query\ConfigurationDao.cs" />
     <Compile Include="ReadModel\DeviceDetail.cs" />
     <Compile Include="ReadModel\OrderDetailWithAccount.cs" />
     <Compile Include="ReadModel\PaymentInformationDetails.cs" />
     <Compile Include="ReadModel\Query\Contract\IAccountChargeDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IAppStartUpLogDao.cs" />
     <Compile Include="ReadModel\Query\Contract\ICompanyDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IConfigurationDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IDeviceDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderPaymentDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IVehicleTypeDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderStatusUpdateDao.cs" />
     <Compile Include="ReadModel\Query\DeviceDao.cs" />
     <Compile Include="ReadModel\Query\OrderPaymentDao.cs" />
@@ -171,6 +176,7 @@
     <Compile Include="ReadModel\Query\Contract\IRuleDao.cs" />
     <Compile Include="ReadModel\Query\OrderRatingsDao.cs" />
     <Compile Include="ReadModel\Query\RatingTypeDao.cs" />
+    <Compile Include="ReadModel\Query\VehicleTypeDao.cs" />
     <Compile Include="ReadModel\OrderStatusUpdateDetail.cs" />
     <Compile Include="ReadModel\RatingTypeDetail.cs" />
     <Compile Include="ReadModel\DefaultAddressDetails.cs" />
@@ -192,6 +198,7 @@
     <Compile Include="ReadModel\TariffDetail.cs" />
     <Compile Include="ReadModel\OrderRatingDetails.cs" />
     <Compile Include="ReadModel\RatingScoreDetails.cs" />
+    <Compile Include="ReadModel\VehicleTypeDetail.cs" />
     <Compile Include="Resources\Global.ar.Designer.cs">
       <DependentUpon>Global.ar.resx</DependentUpon>
       <AutoGen>True</AutoGen>

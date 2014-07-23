@@ -174,9 +174,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\assets\img\blackcar_badge.png" />
+    <Content Include="admin\assets\img\suv_badge.png" />
+    <Content Include="admin\assets\img\taxi_badge.png" />
+    <Content Include="admin\collections\VehicleTypeCollection.js" />
     <Content Include="admin\collections\AccountChargeCollection.js" />
     <Content Include="admin\collections\RuleCollection.js" />
     <Content Include="admin\collections\TariffCollection.js" />
+    <Content Include="admin\controllers\VehicleTypesController.js" />
     <Content Include="admin\controllers\Controller.js" />
     <Content Include="admin\controllers\CompanySettingsController.js" />
     <Content Include="admin\controllers\AccountsChargeController.js" />
@@ -190,6 +195,8 @@
     <Content Include="admin\controllers\SecurityController.js" />
     <Content Include="admin\controllers\TariffsController.js" />
     <Content Include="admin\jquery.min.js" />
+    <Content Include="admin\models\UnassignedReferenceDataVehicles.js" />
+    <Content Include="admin\models\VehicleType.js" />
     <Content Include="admin\models\AccountCharge.js" />
     <Content Include="admin\models\TermsAndConditions.js" />
     <Content Include="admin\models\PaymentSettings.js" />
@@ -206,10 +213,13 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="admin\models\CompanySettings.js" />
+    <Content Include="admin\views\AddVehicleTypeView.js" />
+    <Content Include="admin\views\VehicleTypeItemView.js" />
     <Content Include="admin\views\AddAccountChargeView.js" />
     <Content Include="admin\views\AddFavoriteView.js" />
     <Content Include="admin\views\AccountChargeItemView.js" />
     <Content Include="admin\views\ConfirmEmailView.js" />
+    <Content Include="admin\views\ManageVehicleTypesView.js" />
     <Content Include="admin\views\ManageAccountsChargeView.js" />
     <Content Include="admin\views\UpdateTermsAndConditionsView.js" />
     <Content Include="admin\views\ExportAccountsView.js" />
@@ -425,6 +435,11 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="templates\QuestionItem.handlebars" />
+    <Content Include="admin\templates\VehicleTypeItem.handlebars" />
+    <Content Include="admin\templates\ManageVehicleTypes.handlebars" />
+    <Content Include="admin\templates\AddVehicleType.handlebars" />
+    <Content Include="admin\localization\ManageVehicleTypes.json" />
+    <Content Include="admin\assets\css\admin.css" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
