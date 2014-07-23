@@ -242,7 +242,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool CanUserLeaveScreen()
 		{
-			if (Settings.RatingRequired && !HasRated)
+			if (Settings.RatingEnabled && Settings.RatingRequired && !HasRated)
 			{
 				this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
 				return false;
