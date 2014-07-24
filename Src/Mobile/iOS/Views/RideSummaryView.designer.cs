@@ -42,6 +42,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnReSendConfirmation = null;
 			}
 
+			if (btnSubmit != null) {
+				btnSubmit.Dispose ();
+				btnSubmit = null;
+			}
+
 			if (constraintRatingTableHeight != null) {
 				constraintRatingTableHeight.Dispose ();
 				constraintRatingTableHeight = null;
@@ -55,11 +60,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (tableRatingList != null) {
 				tableRatingList.Dispose ();
 				tableRatingList = null;
-			}
-
-			if (btnSubmit != null) {
-				btnSubmit.Dispose ();
-				btnSubmit = null;
 			}
 		}
 	}

@@ -76,6 +76,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
         }
 
         private Guid _vehicleTypeId = Guid.NewGuid();
+        private Guid _vehicleTypeId2 = Guid.NewGuid();
 
         [Test]
         public void when_vehicle_type_updated_then_dto_updated()
@@ -118,7 +119,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
             var @vehicleEvent2 = new VehicleTypeAddedUpdated
             {
                 SourceId = Guid.NewGuid(),
-                VehicleTypeId = Guid.NewGuid(),
+                VehicleTypeId = _vehicleTypeId2,
                 LogoName = "taxi2",
                 Name = "Taxi2",
                 ReferenceDataVehicleId = 10
@@ -149,6 +150,10 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
             Sut.Handle(new VehicleTypeDeleted
             {
                 VehicleTypeId = _vehicleTypeId
+            });
+            Sut.Handle(new VehicleTypeDeleted
+            {
+                VehicleTypeId = _vehicleTypeId2
             });
 
 
