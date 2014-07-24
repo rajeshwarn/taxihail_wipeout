@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -8,7 +8,6 @@
             <connections>
                 <outlet property="btnPay" destination="13" id="4eG-JV-K6f"/>
                 <outlet property="btnReSendConfirmation" destination="18" id="uar-tO-hJ4"/>
-                <outlet property="btnSubmit" destination="YN8-Kh-ERJ" id="Z3x-qE-yAb"/>
                 <outlet property="constraintRatingTableHeight" destination="NGo-Ev-Jdl" id="w2x-aJ-Xlz"/>
                 <outlet property="lblSubTitle" destination="4" id="rgm-Vd-5cH"/>
                 <outlet property="tableRatingList" destination="lxr-AS-1xd" id="h07-zC-KGF"/>
@@ -28,7 +27,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="13" customClass="FlatButton">
-                    <rect key="frame" x="8" y="211" width="304" height="41"/>
+                    <rect key="frame" x="8" y="157" width="304" height="41"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="uLV-tb-Llr"/>
@@ -39,20 +38,8 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YN8-Kh-ERJ" customClass="FlatButton">
-                    <rect key="frame" x="8" y="157" width="304" height="41"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="41" id="KHU-5y-2EI"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
-                    <state key="normal" title="Submit">
-                        <color key="titleColor" red="0.0" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18" customClass="FlatButton">
-                    <rect key="frame" x="8" y="211" width="304" height="41"/>
+                    <rect key="frame" x="8" y="157" width="304" height="41"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="kjc-dh-jfj"/>
@@ -78,23 +65,16 @@
             </subviews>
             <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="18" firstAttribute="top" secondItem="YN8-Kh-ERJ" secondAttribute="bottom" constant="13" id="4f8-8n-rT7"/>
-                <constraint firstAttribute="trailing" secondItem="YN8-Kh-ERJ" secondAttribute="trailing" constant="8" id="91H-4D-ctm"/>
                 <constraint firstAttribute="trailing" secondItem="18" secondAttribute="trailing" constant="8" id="98a-fb-s2L"/>
-                <constraint firstItem="13" firstAttribute="top" secondItem="YN8-Kh-ERJ" secondAttribute="bottom" constant="13" id="CJc-XU-bTH"/>
-                <constraint firstItem="YN8-Kh-ERJ" firstAttribute="top" secondItem="lxr-AS-1xd" secondAttribute="bottom" constant="13" id="Fws-oL-TZN"/>
                 <constraint firstItem="lxr-AS-1xd" firstAttribute="top" secondItem="4" secondAttribute="bottom" constant="20" id="Gwa-Tm-0X3"/>
-                <constraint firstItem="YN8-Kh-ERJ" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="Hq8-4E-9ye"/>
-                <constraint firstItem="18" firstAttribute="top" secondItem="4" secondAttribute="bottom" priority="500" constant="30" id="LbX-6V-6kF"/>
                 <constraint firstItem="lxr-AS-1xd" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="UOm-Mb-Tcj"/>
                 <constraint firstItem="13" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="XOw-aA-ptU"/>
                 <constraint firstAttribute="centerX" secondItem="4" secondAttribute="centerX" id="aCe-DA-9xw"/>
-                <constraint firstItem="18" firstAttribute="top" secondItem="lxr-AS-1xd" secondAttribute="bottom" priority="500" constant="13" id="hx5-6h-ElB"/>
+                <constraint firstItem="13" firstAttribute="top" secondItem="lxr-AS-1xd" secondAttribute="bottom" constant="13" id="e0O-Ex-tI7"/>
                 <constraint firstAttribute="trailing" secondItem="13" secondAttribute="trailing" constant="8" id="i2X-oH-YwV"/>
+                <constraint firstItem="18" firstAttribute="top" secondItem="lxr-AS-1xd" secondAttribute="bottom" constant="13" id="lRV-NU-Up5"/>
                 <constraint firstItem="4" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" id="oyS-Ig-Pdv"/>
                 <constraint firstItem="18" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="qnY-t9-3T5"/>
-                <constraint firstItem="13" firstAttribute="top" secondItem="lxr-AS-1xd" secondAttribute="bottom" priority="500" constant="13" id="u5d-hw-eVe"/>
-                <constraint firstItem="13" firstAttribute="top" secondItem="4" secondAttribute="bottom" priority="500" constant="30" id="ufP-Lu-9nm"/>
                 <constraint firstAttribute="trailing" secondItem="lxr-AS-1xd" secondAttribute="trailing" id="xWb-fu-PxE"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

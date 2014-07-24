@@ -36,13 +36,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			FlatButtonStyle.Green.ApplyTo(btnReSendConfirmation);
 			FlatButtonStyle.Green.ApplyTo(btnPay);
-            FlatButtonStyle.Silver.ApplyTo(btnSubmit);
 
             lblSubTitle.Text = String.Format(Localize.GetValue ("RideSummarySubTitleText"), this.Services().Settings.ApplicationName);
 
             btnPay.SetTitle(Localize.GetValue("PayNow"), UIControlState.Normal);
             btnReSendConfirmation.SetTitle(Localize.GetValue("ReSendConfirmation"), UIControlState.Normal);
-            btnSubmit.SetTitle(Localize.GetValue("Submit"), UIControlState.Normal);
 
             var source = new MvxActionBasedTableViewSource(
                 tableRatingList,
@@ -64,6 +62,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Bordered, (o, e) => 
             {  
+				ViewModel.CheckAndSendRatings();
+
                 if (ViewModel.CanUserLeaveScreen ())
                 {
                     NavigationController.PopViewControllerAnimated(true);
@@ -76,14 +76,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnPay)
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.IsPayButtonShown)
-                .WithConversion("BoolInverter");
-
-            set.Bind (btnSubmit)
-                .For ("TouchUpInside")
-                .To (vm => vm.RateOrder);
-            set.Bind (btnSubmit)
-                .For (v => v.HiddenWithConstraints)
-                .To (vm => vm.IsRatingButtonShown)
                 .WithConversion("BoolInverter");
 
             set.Bind(btnReSendConfirmation)
