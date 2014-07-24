@@ -753,6 +753,9 @@
   <data name="LoginForgotPassword" xml:space="preserve">
     <value>ه نسيت كلمة السر ؟</value>
   </data>
+  <data name="LoginSupport" xml:space="preserve">
+   	<value>Need support?</value>
+  </data>
   <data name="LoginForgotPasswordDetail" xml:space="preserve">
     <value>أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.</value>
   </data>
