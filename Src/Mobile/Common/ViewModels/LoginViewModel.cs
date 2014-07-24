@@ -371,7 +371,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
             // Resolve via TinyIoC because we cannot pass it via the constructor since it the PaymentService needs
             // the user to be authenticated and it may not be when the class is initialized
-			var paymentSettings = TinyIoC.TinyIoCContainer.Current.Resolve<IPaymentService>().GetPaymentSettings();
+            var paymentSettings = TinyIoC.TinyIoCContainer.Current.Resolve<IPaymentService>().GetPaymentSettings();
 
 			if (this.Settings.CreditCardIsMandatory && paymentSettings.IsPayInTaxiEnabled)
 			{

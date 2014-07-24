@@ -131,7 +131,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             get
             {
-				return this.GetCommand(() => ShowSubViewModel<CreditCardAddViewModel,CreditCardInfos>(null, newCreditCard =>
+				return this.GetCommand(() => ShowSubViewModel<CreditCardAddViewModel,CreditCardInfos>(new { showInstructions = false }, newCreditCard =>
                 {
                     InvokeOnMainThread(()=>
                     {

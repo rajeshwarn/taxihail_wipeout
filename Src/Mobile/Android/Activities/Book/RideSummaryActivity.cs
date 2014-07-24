@@ -45,6 +45,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		{
 			if (keyCode == Keycode.Back)
 			{
+				ViewModel.CheckAndSendRatings();
+
                 if (!ViewModel.CanUserLeaveScreen ())
                 {
                     return false;
