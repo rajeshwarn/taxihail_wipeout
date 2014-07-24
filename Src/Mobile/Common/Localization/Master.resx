@@ -615,6 +615,9 @@
   <data name="LoginForgotPassword" xml:space="preserve">
    	<value>Forgot your password?</value>
   </data>
+<data name="LoginSupport" xml:space="preserve">
+   	<value>Need support?</value>
+  </data>
   <data name="LoginForgotPasswordDetail" xml:space="preserve">
    	<value>Enter your email and we'll send you a new one.</value>
   </data>

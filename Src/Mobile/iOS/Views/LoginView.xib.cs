@@ -60,10 +60,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			};  
 
 			FlatButtonStyle.Clear.ApplyTo (btnForgotPassword);
-            btnForgotPassword.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+			btnForgotPassword.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+
+			FlatButtonStyle.Clear.ApplyTo (btnSupport);
+			btnSupport.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+
+
 			btnSignIn.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
 
 			btnForgotPassword.SetTitle (Localize.GetValue ("LoginForgotPassword"), UIControlState.Normal);
+			btnSupport.SetTitle (Localize.GetValue ("LoginSupport"), UIControlState.Normal);
+
 			btnSignIn.SetTitle (Localize.GetValue ("SignIn"), UIControlState.Normal);
 			btnSignUp.SetTitle (Localize.GetValue ("Register"), UIControlState.Normal);
             btnSignUp.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
@@ -122,6 +129,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnForgotPassword)
                 .For("TouchUpInside")
                 .To(vm => vm.ResetPassword);
+
+			set.Bind(btnSupport)
+				.For("TouchUpInside")
+				.To(vm => vm.Support);
 
             set.Bind(btnSignUp)
                 .For("TouchUpInside")
