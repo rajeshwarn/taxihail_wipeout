@@ -174,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{
 					if(CreditCards.Count == 0)
 					{
-						ShowSubViewModel<CreditCardAddViewModel,CreditCardInfos>(null, newCreditCard => InvokeOnMainThread(()=>
+							ShowSubViewModel<CreditCardAddViewModel,CreditCardInfos>(new { showInstructions = false }, newCreditCard => InvokeOnMainThread(()=>
 						{
 							CreditCards.Add (new CreditCardDetails
 								{
