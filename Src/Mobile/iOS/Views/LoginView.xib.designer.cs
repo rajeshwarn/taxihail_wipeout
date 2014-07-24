@@ -28,6 +28,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnSignUp { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnSupport { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnTwLogin { get; set; }
 
 		[Outlet]
@@ -76,6 +79,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtPassword != null) {
 				txtPassword.Dispose ();
 				txtPassword = null;
+			}
+
+			if (btnSupport != null) {
+				btnSupport.Dispose ();
+				btnSupport = null;
 			}
 		}
 	}
