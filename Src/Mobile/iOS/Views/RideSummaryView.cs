@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Bordered, (o, e) => 
             {  
-				ViewModel.ProcessOrderRating();
+				ViewModel.CheckAndSendRatings();
 
                 if (ViewModel.CanUserLeaveScreen ())
                 {

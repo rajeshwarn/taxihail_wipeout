@@ -170,7 +170,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        {
 	            return this.GetCommand(() =>
 	            {
-	                ProcessOrderRating();
+					CheckAndSendRatings();
 	            });
 	        }
 	    }
@@ -201,7 +201,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public void ProcessOrderRating()
+		public void CheckAndSendRatings()
 		{
 			if (HasRated)
 			{
@@ -212,7 +212,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 			    if (Settings.RatingRequired)
 			    {
-                    this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
+                    this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"],
+														this.Services().Localize["BookRatingErrorMessage"]);
                     return;
 			    }
 
@@ -220,8 +221,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 // possibility to go back to the order history to rate it later if he so desires
 			    return;
 			} 
-
-			var a = Order.Id;
+				
 			var orderRating = new apcurium.MK.Common.Entity.OrderRatings
 			{
 				Note = Note,
@@ -242,9 +242,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool CanUserLeaveScreen()
 		{
-			if (Settings.RatingEnabled && Settings.RatingRequired && !HasRated)
+			if (!HasRated 
+				&& Settings.RatingEnabled 
+				&& Settings.RatingRequired)
 			{
-				this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"], this.Services().Localize["BookRatingErrorMessage"]);
+				this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"],
+													this.Services().Localize["BookRatingErrorMessage"]);
 				return false;
 			}
 			return true;
