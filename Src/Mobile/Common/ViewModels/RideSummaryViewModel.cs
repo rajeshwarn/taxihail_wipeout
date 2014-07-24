@@ -179,6 +179,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get {
 				return this.GetCommand (() => 
 					{ 
+						this.Services().Analytics.LogEvent("PayButtonTapped");
 						ShowViewModel<ConfirmCarNumberViewModel> (new 
 							{ 
 								order = Order.ToJson (), orderStatus = OrderStatus.ToJson () 

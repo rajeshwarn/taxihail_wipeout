@@ -53,7 +53,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return this.GetCommand(() => {
+				return this.GetCommand(async () => {
+					var mode = await _orderWorkflowService.GetAndObserveAddressSelectionMode().Take(1).ToTask();
+					if(mode == AddressSelectionMode.PickupSelection)
+					{
+						this.Services().Analytics.LogEvent("DestinationButtonTapped");
+					}
 					_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
 				});
 			}
@@ -149,6 +154,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							{
 								var result = await _orderWorkflowService.ConfirmOrder();
 								
+								this.Services().Analytics.LogEvent("Book");
 								PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
 								ShowViewModel<BookingStatusViewModel>(new
 								{
@@ -233,6 +239,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get
 			{
 				return this.GetCommand(() => {
+					this.Services().Analytics.LogEvent("EditOrderSettingsTapped");
                     PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Edit));
 				});
 			}

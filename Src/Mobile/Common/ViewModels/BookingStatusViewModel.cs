@@ -455,6 +455,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							}
                             if (isSuccess) 
                             {
+								this.Services().Analytics.LogEvent("BookCancelled");
 								_bookingService.ClearLastOrder();                                
                                 ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser =  true });
                             } 
@@ -483,6 +484,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 #endif
 					IsPayButtonVisible = false;
+					this.Services().Analytics.LogEvent("PayButtonTapped");
                     if (IsCmtRideLinq)
                     {
                         GoToCmtPairScreen();

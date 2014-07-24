@@ -45,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			get {
 				return this.GetCommand (() =>
 				{ 
+					this.Services().Analytics.LogEvent("ConfirmCarNumber");
 					ShowViewModelAndRemoveFromHistory<PaymentViewModel>(new { 
 						order = Order.ToJson(),
 						orderStatus = OrderStatus.ToJson()

@@ -62,7 +62,6 @@
         onsubmit: function (form) {
             var $email = this.$('[name=email]'),
                 $password = this.$('[name=password]');
-            
             TaxiHail.auth.login($email.val(), $password.val(), this.options.returnUrl)
                 .fail(_.bind(this.showErrors, this, this.model));
             if (!this.options.returnUrl) {
