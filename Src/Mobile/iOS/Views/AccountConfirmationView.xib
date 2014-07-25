@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AccountConfirmationView">
+            <connections>
+                <outlet property="btnConfirm" destination="29" id="neJ-7I-uSp"/>
+                <outlet property="imgViewLogo" destination="33" id="H8z-nT-Ae7"/>
+                <outlet property="lblSubTitle" destination="Ak6-GX-u9S" id="Him-sY-g8p"/>
+                <outlet property="lblTitle" destination="PTX-Cf-ywY" id="cNs-DV-8VZ"/>
+                <outlet property="txtCode" destination="1eE-vQ-Tkn" id="t5Z-VN-g7b"/>
+                <outlet property="view" destination="1" id="3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm Your Account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTX-Cf-ywY">
+                    <rect key="frame" x="88" y="114" width="145" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A text message with the code has been sent to your phone." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="221" translatesAutoresizingMaskIntoConstraints="NO" id="Ak6-GX-u9S">
+                    <rect key="frame" x="50" y="139" width="221" height="34"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Code" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1eE-vQ-Tkn" customClass="FlatTextField">
+                    <rect key="frame" x="10" y="191" width="300" height="40"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="NWr-I7-u1W"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" enablesReturnKeyAutomatically="YES"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="29" customClass="FlatButton">
+                    <rect key="frame" x="10" y="239" width="300" height="41"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="41" id="Jjk-DN-eEn"/>
+                        <constraint firstAttribute="width" constant="300" id="Jti-N9-9sC"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <state key="normal" title="Confirm">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="th_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="33">
+                    <rect key="frame" x="107" y="30" width="107" height="74"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="107" id="out-dB-m7A"/>
+                        <constraint firstAttribute="height" constant="74" id="qCe-30-2bu"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.28235294117647058" blue="0.50588235294117645" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="centerX" secondItem="33" secondAttribute="centerX" id="3ZN-Bo-upv"/>
+                <constraint firstAttribute="centerX" secondItem="Ak6-GX-u9S" secondAttribute="centerX" id="DSa-hU-k3I"/>
+                <constraint firstItem="33" firstAttribute="top" secondItem="1" secondAttribute="top" constant="30" id="ISJ-HJ-ihg"/>
+                <constraint firstAttribute="centerX" secondItem="PTX-Cf-ywY" secondAttribute="centerX" id="N36-Ea-ad8"/>
+                <constraint firstItem="Ak6-GX-u9S" firstAttribute="top" secondItem="PTX-Cf-ywY" secondAttribute="bottom" constant="8" id="RLS-nV-0oH"/>
+                <constraint firstItem="PTX-Cf-ywY" firstAttribute="top" secondItem="33" secondAttribute="bottom" constant="10" id="T7g-6k-Qoz"/>
+                <constraint firstAttribute="trailing" secondItem="29" secondAttribute="trailing" constant="10" id="fiO-xL-OJY"/>
+                <constraint firstItem="29" firstAttribute="top" secondItem="1eE-vQ-Tkn" secondAttribute="bottom" constant="8" id="hVw-ze-iIM"/>
+                <constraint firstItem="1eE-vQ-Tkn" firstAttribute="top" secondItem="Ak6-GX-u9S" secondAttribute="bottom" constant="18" id="jnW-4l-lwR"/>
+                <constraint firstItem="1eE-vQ-Tkn" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="kfP-pQ-D1j"/>
+                <constraint firstAttribute="centerX" secondItem="1eE-vQ-Tkn" secondAttribute="centerX" id="lN0-79-Pjy"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="th_logo.png" width="107" height="74"/>
+    </resources>
+</document>

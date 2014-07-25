@@ -522,6 +522,10 @@
     </Compile>
     <Compile Include="Extensions\UILabelExtensions.cs" />
     <Compile Include="Controls\Widgets\VehicleTypeView.cs" />
+    <Compile Include="Views\AccountConfirmationView.designer.cs">
+      <DependentUpon>AccountConfirmationView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AccountConfirmationView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -569,6 +573,7 @@
     <InterfaceDefinition Include="Views\UpdatedTermsAndConditionsView.xib" />
     <InterfaceDefinition Include="Views\AddressPickerContainerView.xib" />
     <InterfaceDefinition Include="Views\Order\InitializeOrderForAccountPaymentView.xib" />
+    <InterfaceDefinition Include="Views\AccountConfirmationView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

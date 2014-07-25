@@ -9,14 +9,11 @@ using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	[Register ("ResetPasswordView")]
-	partial class ResetPasswordView
+	[Register ("AccountConfirmationView")]
+	partial class AccountConfirmationView
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCancel { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnReset { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnConfirm { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIImageView imgViewLogo { get; set; }
@@ -28,18 +25,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UILabel lblTitle { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtEmail { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtCode { get; set; }
 
 		void ReleaseDesignerOutlets ()
 		{
-			if (btnCancel != null) {
-				btnCancel.Dispose ();
-				btnCancel = null;
-			}
-
-			if (btnReset != null) {
-				btnReset.Dispose ();
-				btnReset = null;
+			if (txtCode != null) {
+				txtCode.Dispose ();
+				txtCode = null;
 			}
 
 			if (imgViewLogo != null) {
@@ -57,9 +49,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblTitle = null;
 			}
 
-			if (txtEmail != null) {
-				txtEmail.Dispose ();
-				txtEmail = null;
+			if (btnConfirm != null) {
+				btnConfirm.Dispose ();
+				btnConfirm = null;
 			}
 		}
 	}
