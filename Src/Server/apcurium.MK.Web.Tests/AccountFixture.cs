@@ -31,6 +31,26 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        public async void ConfirmAccount()
+        {
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            string confirmationToken = Guid.NewGuid().ToString();
+            string tempEmail = GetTempEmail();
+
+            var request = new ConfirmAccountRequest
+            {
+                EmailAddress = tempEmail,
+                ConfirmationToken = confirmationToken
+            };
+
+            await sut.ConfirmAccount(request);
+
+            // TODO
+            var auth = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo());
+            Assert.DoesNotThrow(() => auth.Authenticate(tempEmail, "password"));
+        }
+
+        [Test]
         public async void RegisteringFacebookAccountTest()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());

@@ -36,6 +36,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.PostAsync<Account>("/account/register", account);
         }
 
+        public Task ConfirmAccount(ConfirmAccountRequest request)
+        {
+            return Client.PostAsync<Account>("/account/confirm/", request);
+        }
+
         public Task UpdateBookingSettings(BookingSettingsRequest settings)
         {
             return Client.PutAsync<string>("/account/bookingsettings", settings);
