@@ -11,12 +11,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class CreateAccountViewModel: PageViewModel, ISubViewModel<RegisterAccount>
 	{
-		private readonly IAccountService _accountService;
+		private readonly IRegisterWorkflowService _registerService;
 		private readonly ITermsAndConditionsService _termsService;
 
-		public CreateAccountViewModel(IAccountService accountService, ITermsAndConditionsService termsService)
+		public CreateAccountViewModel(IRegisterWorkflowService registerService, ITermsAndConditionsService termsService)
 		{
-			_accountService = accountService;	
+			_registerService = registerService;	
 			_termsService = termsService;
 		}
 
@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						Data.AccountActivationDisabled = Settings.AccountActivationDisabled;
 						try
 						{
-							await _accountService.Register(Data);
+							await _registerService.RegisterAccount(Data);
 							if (!HasSocialInfo && !Data.AccountActivationDisabled)
 							{
 								this.Services().Message.ShowMessage(this.Services().Localize["AccountActivationTitle"], this.Services().Localize["AccountActivationMessage"]);
@@ -124,8 +124,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								}
 								catch {}
 							}
-
-							this.ReturnResult(Data);
+						    Close(this);
+							_registerService.RegistrationFinished();
+							
 
 						}catch(Exception e)
 						{

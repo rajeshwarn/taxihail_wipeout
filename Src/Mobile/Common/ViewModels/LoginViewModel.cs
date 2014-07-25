@@ -21,12 +21,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITwitterService _twitterService;
 		private readonly ILocationService _locationService;
 		private readonly IAccountService _accountService;
+		private readonly IRegisterWorkflowService _registrationService;
 
         public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocationService locationService,
-			IAccountService accountService)
+			IAccountService accountService,
+			IRegisterWorkflowService registrationService)
         {
+			_registrationService = registrationService;
             _facebookService = facebookService;
 			_twitterService = twitterService;
 			_twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
@@ -44,6 +47,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Email = "john@taxihail.com";
 			Password = "password";          
 #endif
+			_registrationService
+				.GetAndObserveRegistration()
+				.Subscribe(x => OnAccountCreated(x));
         }
 
         public override void OnViewStarted(bool firstTime)
@@ -260,13 +266,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void DoSignUp(object registerDataFromSocial = null)
         {
-			ShowSubViewModel<CreateAccountViewModel, RegisterAccount>(registerDataFromSocial, OnAccountCreated);
+			ShowViewModel<CreateAccountViewModel>(registerDataFromSocial);
         }
 
         private async void OnAccountCreated(RegisterAccount data)
         {
+			if (data == null) 
+			{
+				return;
+			}
 
-            if (data.FacebookId.HasValue() || data.TwitterId.HasValue() || data.AccountActivationDisabled)
+            if (data.FacebookId.HasValue() 
+				|| data.TwitterId.HasValue() 
+				|| data.AccountActivationDisabled)
             {
                 var facebookId = data.FacebookId;
                 var twitterId = data.TwitterId;
