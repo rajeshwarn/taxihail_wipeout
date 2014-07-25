@@ -18,6 +18,8 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Booking.SMS;
+using apcurium.MK.Booking.SMS.Impl;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
@@ -35,6 +37,7 @@ namespace apcurium.MK.Booking
         public void Init(IUnityContainer container)
         {
             System.Data.Entity.Database.SetInitializer<BookingDbContext>(null);
+            container.RegisterType<ISmsService, TwilioService>();
             container.RegisterType<BookingDbContext>(new TransientLifetimeManager(),
                 new InjectionConstructor(
                     container.Resolve<ConnectionStringSettings>(Common.Module.MkConnectionString).ConnectionString));
