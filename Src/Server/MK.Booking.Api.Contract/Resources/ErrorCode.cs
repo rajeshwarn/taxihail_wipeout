@@ -4,6 +4,7 @@
     {
 // ReSharper disable InconsistentNaming
         CreateAccount_AccountAlreadyExist,
+        CreateAccount_CannotSendSMS,
         CreateOrder_CannotCreateInIbs,
         CreateOrder_SettingsRequired,
         CreateOrder_InvalidProvider,

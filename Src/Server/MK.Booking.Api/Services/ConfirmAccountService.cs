@@ -12,6 +12,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 
 #endregion
@@ -50,24 +51,39 @@ namespace apcurium.MK.Booking.Api.Services
             var account = _accountDao.FindByEmail(request.EmailAddress);
             if (account == null) throw new HttpError(HttpStatusCode.NotFound, "Not Found");
 
-            _commandBus.Send(new ConfirmAccount
-            {
-                AccountId = account.Id,
-                ConfimationToken = request.ConfirmationToken
-            });
+            var setting = _configurationManager.GetSetting("SMSConfirmationEnabled");
+            var smsConfirmationEnabled =
+                bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
 
-            // Determine the root path to the app 
-            var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
-
-            var template = _templateService.Find("AccountConfirmationSuccess");
-            var templateData = new
+            if (smsConfirmationEnabled)
             {
-                ApplicationName = _configurationManager.GetSetting("TaxiHail.ApplicationName"),
-                RootUrl = root,
-                AccentColor = _configurationManager.GetSetting("TaxiHail.AccentColor")
-            };
-            var body = _templateService.Render(template, templateData);
-            return new HttpResult(body, ContentType.Html);
+                if (account.ConfirmationToken != request.ConfirmationToken)
+                {
+                    throw new HttpError(HttpStatusCode.Unauthorized, "Invalid confirmation token");
+                }
+                return new HttpResult(HttpStatusCode.OK);
+            }
+            else
+            {
+                _commandBus.Send(new ConfirmAccount
+                {
+                    AccountId = account.Id,
+                    ConfimationToken = request.ConfirmationToken
+                });
+
+                // Determine the root path to the app 
+                var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
+
+                var template = _templateService.Find("AccountConfirmationSuccess");
+                var templateData = new
+                {
+                    ApplicationName = _configurationManager.GetSetting("TaxiHail.ApplicationName"),
+                    RootUrl = root,
+                    AccentColor = _configurationManager.GetSetting("TaxiHail.AccentColor")
+                };
+                var body = _templateService.Render(template, templateData);
+                return new HttpResult(body, ContentType.Html);
+            }
         }
     }
 }
