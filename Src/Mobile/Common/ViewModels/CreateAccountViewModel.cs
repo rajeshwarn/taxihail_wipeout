@@ -118,7 +118,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							await _registerService.RegisterAccount(Data);
 							if (!HasSocialInfo && !Data.AccountActivationDisabled)
 							{
-								if(Settings.ConfirmationBySMS)
+								if(Settings.SMSConfirmationEnabled)
 								{
 									ShowViewModelAndRemoveFromHistory<AccountConfirmationViewModel>(null);								
 								}else{

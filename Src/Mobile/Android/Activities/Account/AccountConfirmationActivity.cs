@@ -22,6 +22,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 		{
 			base.OnViewModelSet ();
 			SetContentView (Resource.Layout.View_AccountConfirmation);
+
+			var editText = this.FindViewById<EditText> (Resource.Id.ConfirmationCode);
+			if (editText.RequestFocus ()) 
+			{
+				Window.SetSoftInputMode (SoftInput.StateAlwaysVisible);
+			}
 		}
 	}
 }

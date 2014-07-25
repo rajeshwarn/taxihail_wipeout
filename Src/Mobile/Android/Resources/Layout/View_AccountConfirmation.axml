@@ -50,7 +50,7 @@
             android:layout_height="12dip"
             android:layout_width="fill_parent" />
         <EditText
-            android:id="@+id/Username"
+            android:id="@+id/ConfirmationCode"
             local:MvxBind="Text Code"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/HeightEditText"
