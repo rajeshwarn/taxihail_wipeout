@@ -22,6 +22,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
                 return null;
             }
         }
+
+        public static int? GetIdFromString(Resources resources, string resourceKey)
+        {
+            try
+            {
+                var drawableType = typeof(Resource.Drawable);
+                var field = drawableType.GetField(resourceKey);
+                return (int)field.GetValue(null); 
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }
 

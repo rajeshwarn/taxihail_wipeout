@@ -143,7 +143,8 @@ namespace apcurium.MK.Booking.Api
         protected override void Configure()
         {
             CreateMap<IbsVehiclePosition, AvailableVehicle>()
-                .ForMember(p => p.VehicleNumber, opt => opt.ResolveUsing(x => x.VehicleNumber));
+                .ForMember(p => p.VehicleNumber, opt => opt.ResolveUsing(x => x.VehicleNumber))
+                .ForMember(p => p.LogoName, opt => opt.Ignore());
         }
     }
 }

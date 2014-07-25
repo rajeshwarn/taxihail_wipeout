@@ -17,16 +17,19 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
 	public class AddressAnnotation : MKAnnotation
 	{
-        public AddressAnnotation (CLLocationCoordinate2D coord, AddressAnnotationType type, string t, string s, bool useThemeColorForIcons)
+        public AddressAnnotation(CLLocationCoordinate2D coord, AddressAnnotationType type, string t, string s, bool useThemeColorForIcons, string vehicleTypeLogoName = null)
 		{
 			AddressType = type;
 			_coordinate = coord;
 			_title = t;
 			_subtitle = s;
             UseThemeColorForIcons = useThemeColorForIcons;
+            _vehicleTypeLogoName = vehicleTypeLogoName;
 		}
 		
 		private CLLocationCoordinate2D _coordinate;
+        private string _vehicleTypeLogoName;
+
 	    public override CLLocationCoordinate2D Coordinate {
 			get { return _coordinate; }
 			set { _coordinate = value; }
@@ -48,11 +51,13 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
         public UIImage GetImage()
         {
-            return GetImage(AddressType);
+            return GetImage(AddressType, _vehicleTypeLogoName);
         }
 
-        public static UIImage GetImage(AddressAnnotationType addressType)
+        public static UIImage GetImage(AddressAnnotationType addressType, string vehicleTypeLogoName = null)
         {
+            const string defaultIconName = "taxi";
+
             switch (addressType)
             {
                 case AddressAnnotationType.Destination:
@@ -60,11 +65,11 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                         ? ImageHelper.ApplyThemeColorToImage("destination_icon.png", CGBlendMode.Hue)
                             : UIImage.FromFile("destination_icon.png");
                 case AddressAnnotationType.Taxi:
-                    return ImageHelper.ApplyThemeColorToImage("taxi_icon.png", CGBlendMode.Hue);
+                    return ImageHelper.ApplyThemeColorToImage("taxi_icon.png", CGBlendMode.Hue); // TODO also
                 case AddressAnnotationType.NearbyTaxi:
-                    return ImageHelper.ApplyThemeColorToImage("nearby_taxi.png", CGBlendMode.Hue);
+                    return ImageHelper.ApplyThemeColorToImage(string.Format("nearby_{0}.png", vehicleTypeLogoName ?? defaultIconName), CGBlendMode.Hue);
                 case AddressAnnotationType.NearbyTaxiCluster:
-                    return ImageHelper.ApplyThemeColorToImage("cluster.png", CGBlendMode.Hue);
+                    return ImageHelper.ApplyThemeColorToImage(string.Format("cluster_{0}.png", vehicleTypeLogoName ?? defaultIconName), CGBlendMode.Hue);
                 default:
                     return UseThemeColorForIcons
                         ? ImageHelper.ApplyThemeColorToImage("hail_icon.png", CGBlendMode.Hue)
