@@ -39,11 +39,20 @@
                             FB.api('/me', _.bind(function (me) {
                                 if (me.name) {
 
-                                    $.post('api/auth/credentialsfb', {
-                                        userName: me.id,
-                                        password: me.id
-                                    }, 'json')
-                                        .success(_.bind(function () {
+                                    $.ajax({
+                                        headers: {          
+                                            Accept : "application/json; charset=utf-8",         
+                                            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+                                        },
+                                        url:'api/auth/credentialsfb', 
+                                        type: 'POST',
+                                        data: {
+                                            userName: me.id,
+                                            password: me.id
+                                        }
+                                    , dataType:'json'})
+                                        
+                                        .success(_.bind(function (d) {
                                             isLoggedIn = true;
                                             this.trigger('change', isLoggedIn,url);
                                         }, this))
