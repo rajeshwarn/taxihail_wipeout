@@ -84,6 +84,13 @@
     <Reference Include="PushSharp.Core">
       <HintPath>..\..\packages\PushSharp.2.0.4.0\lib\net40\PushSharp.Core.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp, Version=104.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\..\packages\ServiceStack.Text.3.9.71\lib\net35\ServiceStack.Text.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -94,6 +101,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Twilio.Api, Version=3.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Twilio.3.6.16\lib\3.5\Twilio.Api.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Calculator\IRuleCalculator.cs" />
@@ -229,6 +240,8 @@
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
     <Compile Include="Security\RolesPermissions.cs" />
+    <Compile Include="SMS\Impl\TwilioService.cs" />
+    <Compile Include="SMS\ISmsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Email\Images\header-gradient.png">
