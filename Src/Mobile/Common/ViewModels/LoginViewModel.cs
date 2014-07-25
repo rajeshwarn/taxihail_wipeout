@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #endif
 			_registrationService
 				.GetAndObserveRegistration()
-				.Subscribe(x => OnAccountCreated(x));
+				.Subscribe(x => OnRegistrationFinished(x));
         }
 
         public override void OnViewStarted(bool firstTime)
@@ -269,16 +269,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			ShowViewModel<CreateAccountViewModel>(registerDataFromSocial);
         }
 
-        private async void OnAccountCreated(RegisterAccount data)
+        private async void OnRegistrationFinished(RegisterAccount data)
         {
 			if (data == null) 
 			{
 				return;
 			}
 
+			//no confirmation required
             if (data.FacebookId.HasValue() 
 				|| data.TwitterId.HasValue() 
-				|| data.AccountActivationDisabled)
+				|| data.AccountActivationDisabled
+				|| data.IsConfirmed)
             {
                 var facebookId = data.FacebookId;
                 var twitterId = data.TwitterId;

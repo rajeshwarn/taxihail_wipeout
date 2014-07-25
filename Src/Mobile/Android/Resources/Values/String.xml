@@ -490,4 +490,8 @@
   <string name="Error_AccountPaymentQuestionRequiredMessage">You must answer every questions marked as required to continue.</string>
   <string name="AccountPaymentQuestionsPlaceHolder">{0} characters maximum</string>
   <string name="AccountPaymentQuestionsRequired">(required)</string>
+  <string name="View_AccountConfirmation_Button">Confirm</string>
+  <string name="View_AccountConfirmationTitle">Account Confirmation</string>
+  <string name="View_AccountConfirmation_Label_Code">Code</string>
+  <string name="View_AccountConfirmation_Label_Instructions">A text message with your code has been sent to your phone.</string>
 </resources>

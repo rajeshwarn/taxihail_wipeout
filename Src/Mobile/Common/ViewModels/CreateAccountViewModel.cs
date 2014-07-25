@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -34,6 +35,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				Name = name,
 				Email = email,
 			};
+			#if DEBUG
+			Data.Email = "toto2@titi.com";
+			Data.Name = "Matthieu Duluc" ;
+			Data.Phone = "5146543024";
+			Data.Password = "password";
+			ConfirmPassword = "password";
+			#endif
 		}
 
 		private bool IsEmail(string inputEmail)
@@ -110,7 +118,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							await _registerService.RegisterAccount(Data);
 							if (!HasSocialInfo && !Data.AccountActivationDisabled)
 							{
-								this.Services().Message.ShowMessage(this.Services().Localize["AccountActivationTitle"], this.Services().Localize["AccountActivationMessage"]);
+								if(Settings.ConfirmationBySMS)
+								{
+									ShowViewModelAndRemoveFromHistory<AccountConfirmationViewModel>(null);								
+								}else{
+									this.Services().Message.ShowMessage(this.Services().Localize["AccountActivationTitle"], 
+										this.Services().Localize["AccountActivationMessage"]);	
+								}
+								
+
+
+							}else{
+
+								Close(this);
+								_registerService.RegistrationFinished();
 							}
 							
 							if(Settings.ShowTermsAndConditions)
@@ -124,8 +145,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								}
 								catch {}
 							}
-						    Close(this);
-							_registerService.RegistrationFinished();
+						   
 							
 
 						}catch(Exception e)

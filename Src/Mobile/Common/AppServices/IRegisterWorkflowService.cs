@@ -11,12 +11,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<RegisterAccount> GetAndObserveRegistration();
 		Task RegisterAccount (RegisterAccount data);
 		void RegistrationFinished();
+		RegisterAccount Account { get; }
 	}
 
 	public class RegisterWorkflowService : IRegisterWorkflowService
 	{
 		readonly IAccountService _accountService;
-		readonly ISubject<RegisterAccount> _registrationAddressSubject = new BehaviorSubject<RegisterAccount>(new RegisterAccount());
+		readonly ISubject<RegisterAccount> _registrationAddressSubject = new BehaviorSubject<RegisterAccount>(null);
 		RegisterAccount _account;
 
 		public RegisterWorkflowService (IAccountService accountService)
@@ -43,6 +44,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		public void RegistrationFinished ()
 		{
 			_registrationAddressSubject.OnNext (_account);
+		}
+
+		public RegisterAccount Account {
+			get 
+			{
+				return _account;
+			}
 		}
 	}
 }
