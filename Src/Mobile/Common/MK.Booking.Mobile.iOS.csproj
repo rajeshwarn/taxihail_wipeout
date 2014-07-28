@@ -360,7 +360,7 @@
     <EmbeddedResource Include="Style\Style.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />
-    <BundleResource Include="TutorialContent\Tutorial-fr.json" />
+    <EmbeddedResource Include="TutorialContent\Tutorial-fr.json" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
