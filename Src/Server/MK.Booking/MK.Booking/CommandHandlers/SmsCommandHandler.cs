@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(SendAccountConfirmationSMS command)
         {
             var template = _resources.Get("AccountConfirmationSmsBody", command.ClientLanguageCode);
-            var message = string.Format(template, command.Code, _configurationManager.GetSetting("TaxiHail.ApplicationName"));
+            var message = string.Format(template, _configurationManager.GetSetting("TaxiHail.ApplicationName"), command.Code);
 
             var phoneNumber = command.PhoneNumber.Length == 11
                                   ? command.PhoneNumber
