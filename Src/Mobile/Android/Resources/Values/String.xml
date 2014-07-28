@@ -494,4 +494,6 @@
   <string name="View_AccountConfirmationTitle">Account Confirmation</string>
   <string name="View_AccountConfirmation_Label_Code">Code</string>
   <string name="View_AccountConfirmation_Label_Instructions">A text message with your code has been sent to your phone.</string>
+  <string name="AccountConfirmation_ErrorTitle">Cannot confirm account</string>
+  <string name="ServiceErrorCreateAccount_CannotSendSMS">The confirmation code is incorrect.</string>
 </resources>

@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Extensions;
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -33,15 +34,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					if(Code.HasValue())
 					{
 						try{
-							_registerService.ConfirmAccount(Code);
-							//all good
+							await _registerService.ConfirmAccount(Code);
 							_account.IsConfirmed = true;
 							Close(this);
 							_registerService.RegistrationFinished();
 
-						}catch()
+						}catch(WebServiceException e)
 						{
+							var errorMessage = this.Services().Localize["ServiceError" + e.Message];
+							if(errorMessage == this.Services().Localize["ServiceError" + e.Message])
+							{
+								errorMessage = e.Message;
+							}
 
+							this.Services().Message.ShowMessage(this.Services().Localize["AccountConfirmation_ErrorTitle"], errorMessage);
 						}
 					}
 				});

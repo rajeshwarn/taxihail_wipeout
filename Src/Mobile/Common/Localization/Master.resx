@@ -1559,4 +1559,10 @@
   <data name="View_AccountConfirmation_Label_Instructions" xml:space="preserve">
     <value>A text message with your code has been sent to your phone.</value>
   </data>
+ <data name="AccountConfirmation_ErrorTitle" xml:space="preserve">
+    <value>Cannot confirm account</value>
+  </data>
+ <data name="ServiceErrorCreateAccount_CannotSendSMS" xml:space="preserve">
+    <value>The confirmation code is incorrect.</value>
+  </data>
 </root>

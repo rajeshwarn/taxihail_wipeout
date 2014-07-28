@@ -41,7 +41,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			await _accountServiceClient.ConfirmAccount (new ConfirmAccountRequest 
 			{
 				ConfirmationToken = code,
-				EmailAddress = _account.Email
+				EmailAddress = _account.Email,
+				IsSMSConfirmation = true
 			});
 		}
 
