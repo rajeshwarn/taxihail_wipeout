@@ -9,6 +9,7 @@ using Java.Security;
 using Android.Util;
 using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore.Droid.Platform;
+using Android.Content;
 
 namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 {
@@ -61,8 +62,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 				if (openRequest != null)
 				{
 
-					openRequest.SetPermissions(new [] { "basic_info", "email" });
-
+					//Ugly hack until we upgrade the facebook sdk.
+					if (IsFacebookInstalled ()) { 
+						openRequest.SetPermissions (new [] { "basic_info", "email" });
+					} else {
+						openRequest.SetPermissions (new [] { "public_profile", "email"  });
+					}
 					openRequest.SetLoginBehavior(SessionLoginBehavior.SsoWithFallback);
 					openRequest.SetDefaultAudience (SessionDefaultAudience.Friends);
 
@@ -79,6 +84,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 			}
 			return tcs.Task;
 		}
+
+		private bool IsFacebookInstalled()
+		{
+			try{
+
+				var dataUri = Android.Net.Uri.Parse("fb://....");
+				var  receiverIntent = new Intent(Intent.ActionView, dataUri);
+				var packageManager =  TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity.PackageManager;
+				var activities = packageManager.QueryIntentActivities(receiverIntent, (PackageInfoFlags) 0);
+
+				return activities.Count  > 0;
+					 
+			}
+				catch
+				{
+					return false;
+				}
+			}
+
 
 		public void Disconnect()
 		{
