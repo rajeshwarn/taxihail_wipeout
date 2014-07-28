@@ -19,9 +19,9 @@ namespace apcurium.MK.Booking.SMS.Impl
 
         public void Send(string toNumber, string message)
         {
-            var accountSid = _configurationManager.GetSetting("Client.SMSAccountSid");
-            var authToken = _configurationManager.GetSetting("Client.SMSAuthToken");
-            var fromNumber = _configurationManager.GetSetting("Client.SMSFromNumber");
+            var accountSid = _configurationManager.GetSetting("SMSAccountSid");
+            var authToken = _configurationManager.GetSetting("SMSAuthToken");
+            var fromNumber = _configurationManager.GetSetting("SMSFromNumber");
             var twilio = new TwilioRestClient(accountSid, authToken);
             var response = twilio.SendSmsMessage("+" + fromNumber, "+" + toNumber, message, "");
 
