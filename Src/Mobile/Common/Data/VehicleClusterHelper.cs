@@ -9,9 +9,6 @@ namespace apcurium.MK.Booking.Mobile.Data
 {
 	public static class VehicleClusterHelper
 	{
-		// Maximum number of vehicles in a cell before we start displaying a cluster
-		private const int _cellThreshold = 1;
-
 		public static AvailableVehicle[] Clusterize(AvailableVehicle[] vehicles, MapBounds mapBounds) 
 		{
 			var result = new List<AvailableVehicle>();
