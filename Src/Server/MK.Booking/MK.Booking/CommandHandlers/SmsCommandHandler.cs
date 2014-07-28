@@ -23,7 +23,12 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var template = _resources.Get("AccountConfirmationSmsBody", command.ClientLanguageCode);
             var message = string.Format(template, command.Code, _configurationManager.GetSetting("TaxiHail.ApplicationName"));
-            _smsService.Send(command.PhoneNumber,message);
+
+            var phoneNumber = command.PhoneNumber.Length == 11
+                                  ? command.PhoneNumber
+                                  : string.Concat("1", command.PhoneNumber);
+
+            _smsService.Send(phoneNumber, message);
         }
     }
 }
