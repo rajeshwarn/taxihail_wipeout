@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Api.Services
                 var accountActivationDisabled =
                     bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
 
-                setting = _configManager.GetSetting("SMSConfirmationEnabled");
+                setting = _configManager.GetSetting("Client.SMSConfirmationEnabled");
                 var smsConfirmationEnabled =
                     bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
 

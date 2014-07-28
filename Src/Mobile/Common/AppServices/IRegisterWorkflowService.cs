@@ -2,6 +2,7 @@
 using apcurium.MK.Booking.Api.Contract.Requests;
 using System.Threading.Tasks;
 using System.Reactive.Subjects;
+using apcurium.MK.Booking.Api.Client;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -10,48 +11,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		void BeginRegistration ();
 		IObservable<RegisterAccount> GetAndObserveRegistration();
 		Task RegisterAccount (RegisterAccount data);
+		Task ConfirmAccount (string code);
 		void RegistrationFinished();
 		RegisterAccount Account { get; }
 	}
-
-	public class RegisterWorkflowService : IRegisterWorkflowService
-	{
-		readonly IAccountService _accountService;
-		readonly ISubject<RegisterAccount> _registrationAddressSubject = new BehaviorSubject<RegisterAccount>(null);
-		RegisterAccount _account;
-
-		public RegisterWorkflowService (IAccountService accountService)
-		{
-			_accountService = accountService;			
-		}
-
-		public void BeginRegistration ()
-		{
-			_account = null;
-		}
-
-		public IObservable<RegisterAccount> GetAndObserveRegistration ()
-		{
-			return _registrationAddressSubject;
-		}
-
-		public async Task RegisterAccount (RegisterAccount data)
-		{
-			await _accountService.Register(data);
-			_account = data;
-		}
-
-		public void RegistrationFinished ()
-		{
-			_registrationAddressSubject.OnNext (_account);
-		}
-
-		public RegisterAccount Account {
-			get 
-			{
-				return _account;
-			}
-		}
-	}
 }
-
