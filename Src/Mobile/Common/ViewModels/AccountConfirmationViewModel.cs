@@ -30,15 +30,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand (async () => 
 				{
-						if(Code.HasValue())
-						{
-							//send confirm code here
-
+					if(Code.HasValue())
+					{
+						try{
+							_registerService.ConfirmAccount(Code);
 							//all good
 							_account.IsConfirmed = true;
 							Close(this);
 							_registerService.RegistrationFinished();
+
+						}catch()
+						{
+
 						}
+					}
 				});
 			}
 		}
