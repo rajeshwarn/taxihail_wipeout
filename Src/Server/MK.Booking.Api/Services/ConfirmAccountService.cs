@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Api.Services
             var account = _accountDao.FindByEmail(request.EmailAddress);
             if (account == null) throw new HttpError(HttpStatusCode.NotFound, "Not Found");
 
-            if (request.IsSMSConfirmation)
+            if (request.IsSMSConfirmation.HasValue && request.IsSMSConfirmation.Value)
             {
                 if (account.ConfirmationToken != request.ConfirmationToken)
                 {
