@@ -337,6 +337,7 @@
     <Compile Include="ViewModels\Orders\AccountChargeQuestionViewModel.cs" />
     <Compile Include="ViewModels\AccountConfirmationViewModel.cs" />
     <Compile Include="AppServices\IRegisterWorkflowService.cs" />
+    <Compile Include="AppServices\Impl\RegisterWorkflowService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
