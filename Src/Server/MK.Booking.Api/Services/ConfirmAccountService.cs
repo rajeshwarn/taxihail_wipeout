@@ -51,11 +51,7 @@ namespace apcurium.MK.Booking.Api.Services
             var account = _accountDao.FindByEmail(request.EmailAddress);
             if (account == null) throw new HttpError(HttpStatusCode.NotFound, "Not Found");
 
-            var setting = _configurationManager.GetSetting("SMSConfirmationEnabled");
-            var smsConfirmationEnabled =
-                bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
-
-            if (smsConfirmationEnabled)
+            if (request.IsSMSConfirmation)
             {
                 if (account.ConfirmationToken != request.ConfirmationToken)
                 {
