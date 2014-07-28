@@ -21,17 +21,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITwitterService _twitterService;
 		private readonly ILocationService _locationService;
 		private readonly IAccountService _accountService;
+		private readonly IPhoneService _phoneService;
 
         public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocationService locationService,
-			IAccountService accountService)
+			IAccountService accountService,
+			IPhoneService phoneService)
         {
             _facebookService = facebookService;
 			_twitterService = twitterService;
 			_twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
 			_locationService = locationService;
 			_accountService = accountService;
+			_phoneService = phoneService;
         }
 
 		public event EventHandler LoginSucceeded; 
@@ -149,6 +152,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }));
             }
         }
+
+		public ICommand Support
+		{
+			get
+			{
+				return this.GetCommand(() =>
+					{
+
+						InvokeOnMainThread(() => _phoneService.SendFeedbackErrorLog(Settings.SupportEmail, this.Services().Localize["TechSupportEmailTitle"]));
+					});
+			}
+		}
+
 
         public ICommand LoginTwitter
         {
@@ -369,7 +385,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool NeedsToNavigateToAddCreditCard()
 		{
-			if (this.Settings.CreditCardIsMandatory)
+            // Resolve via TinyIoC because we cannot pass it via the constructor since it the PaymentService needs
+            // the user to be authenticated and it may not be when the class is initialized
+            var paymentSettings = TinyIoC.TinyIoCContainer.Current.Resolve<IPaymentService>().GetPaymentSettings();
+
+			if (this.Settings.CreditCardIsMandatory && paymentSettings.IsPayInTaxiEnabled)
 			{
 				if (!_accountService.CurrentAccount.DefaultCreditCard.HasValue)
 				{

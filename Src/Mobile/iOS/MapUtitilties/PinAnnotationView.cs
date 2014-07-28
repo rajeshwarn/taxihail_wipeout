@@ -4,6 +4,7 @@ using MonoTouch.Foundation;
 using MonoTouch.MapKit;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Style;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {
@@ -26,7 +27,16 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
 		public override sealed NSObject Annotation
 		{
-			get { return base.Annotation; }
+			get 
+			{
+				#if DEBUG
+				//problem of getting UIKit Consistency error
+				if (Thread.CurrentThread.IsBackground) {
+					return null;
+				}
+				#endif
+				return base.Annotation; 
+			}
 			set
 			{
 				base.Annotation = value;

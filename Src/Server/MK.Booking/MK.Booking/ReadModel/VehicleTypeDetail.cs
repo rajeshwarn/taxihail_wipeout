@@ -13,5 +13,7 @@ namespace apcurium.MK.Booking.ReadModel
         public string LogoName { get; set; }
 
         public int ReferenceDataVehicleId { get; set; }
+
+        public DateTime CreatedDate { get; set; }
     }
 }

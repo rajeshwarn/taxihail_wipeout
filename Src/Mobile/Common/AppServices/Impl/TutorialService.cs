@@ -31,8 +31,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			if(_settings.Data.TutorialEnabled
 				&& _cacheService.Get<object>("TutorialDisplayed") == null)
 			{
-				_messageService.ShowDialog(typeof(TutorialViewModel));
 				_cacheService.Set("TutorialDisplayed", new object());
+				_messageService.ShowDialog(typeof(TutorialViewModel));
+
 			}
 		}
 
