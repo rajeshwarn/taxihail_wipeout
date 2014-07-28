@@ -47,6 +47,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Email = "john@taxihail.com";
 			Password = "password";          
 #endif
+			_registrationService.PrepareNewRegistration ();
 			_registrationService
 				.GetAndObserveRegistration()
 				.Subscribe(x => OnRegistrationFinished(x));
@@ -275,6 +276,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return;
 			}
+
+			_registrationService.PrepareNewRegistration ();
 
 			//no confirmation required
             if (data.FacebookId.HasValue() 

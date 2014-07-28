@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						}catch(WebServiceException e)
 						{
 							var errorMessage = this.Services().Localize["ServiceError" + e.Message];
-							if(errorMessage == this.Services().Localize["ServiceError" + e.Message])
+							if(errorMessage == "ServiceError" + e.Message)
 							{
 								errorMessage = e.Message;
 							}
