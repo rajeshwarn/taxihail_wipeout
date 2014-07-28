@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Threading;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
@@ -28,6 +32,51 @@ namespace apcurium.MK.Web.Tests
         public override void TestFixtureTearDown()
         {
             base.TestFixtureTearDown();
+        }
+
+        [Test]
+        [Ignore("User must set a confirmed Twilio phone number")]
+        public async void ConfirmAccountViaSMS()
+        {
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            ConfigurationManager.AppSettings.Set("Client.SMSConfirmationEnabled", "true");
+
+            Guid accountId = Guid.NewGuid();
+            string tempEmail = GetTempEmail();
+
+            var newAccount = new RegisterAccount
+            {
+                AccountId = accountId,
+                Phone = "", // TODO: set phone number here
+                Email = tempEmail,
+                Name = "First Name Test",
+                Language = "en",
+                AccountActivationDisabled = false
+            };
+
+            await sut.RegisterAccount(newAccount);
+
+            using (var context = new BookingDbContext(ConfigurationManager.ConnectionStrings["MKWebDev"].ConnectionString))
+            {
+                var unconfirmedAccount = context.Find<AccountDetail>(accountId);
+
+                var request = new ConfirmAccountRequest
+                {
+                    EmailAddress = tempEmail,
+                    ConfirmationToken = unconfirmedAccount.ConfirmationToken,
+                    IsSMSConfirmation = true
+                };
+
+                await sut.ConfirmAccount(request);                
+            }
+
+            ConfigurationManager.AppSettings.Set("Client.SMSConfirmationEnabled", "false");
+
+            using (var context = new BookingDbContext(ConfigurationManager.ConnectionStrings["MKWebDev"].ConnectionString))
+            {
+                var confirmedAccount = context.Find<AccountDetail>(accountId);
+                Assert.AreEqual(true, confirmedAccount.IsConfirmed);
+            } 
         }
 
         [Test]
