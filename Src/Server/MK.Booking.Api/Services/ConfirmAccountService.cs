@@ -58,6 +58,12 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     throw new HttpError(ErrorCode.CreateAccount_InvalidConfirmationToken.ToString());
                 }
+
+                _commandBus.Send(new ConfirmAccount
+                {
+                    AccountId = account.Id,
+                    ConfimationToken = request.ConfirmationToken
+                });
                 return new HttpResult(HttpStatusCode.OK);
             }
             else

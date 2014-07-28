@@ -1562,7 +1562,7 @@
  <data name="AccountConfirmation_ErrorTitle" xml:space="preserve">
     <value>Cannot confirm account</value>
   </data>
- <data name="ServiceErrorCreateAccount_CannotSendSMS" xml:space="preserve">
+ <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
     <value>The confirmation code is incorrect.</value>
   </data>
 </root>
