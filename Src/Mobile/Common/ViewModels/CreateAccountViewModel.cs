@@ -6,17 +6,18 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class CreateAccountViewModel: PageViewModel, ISubViewModel<RegisterAccount>
 	{
-		private readonly IAccountService _accountService;
+		private readonly IRegisterWorkflowService _registerService;
 		private readonly ITermsAndConditionsService _termsService;
 
-		public CreateAccountViewModel(IAccountService accountService, ITermsAndConditionsService termsService)
+		public CreateAccountViewModel(IRegisterWorkflowService registerService, ITermsAndConditionsService termsService)
 		{
-			_accountService = accountService;	
+			_registerService = registerService;	
 			_termsService = termsService;
 		}
 
@@ -34,6 +35,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				Name = name,
 				Email = email,
 			};
+			#if DEBUG
+			Data.Email = "toto2@titi.com";
+			Data.Name = "Matthieu Duluc" ;
+			Data.Phone = "5146543024";
+			Data.Password = "password";
+			ConfirmPassword = "password";
+			#endif
 		}
 
 		private bool IsEmail(string inputEmail)
@@ -107,10 +115,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						Data.AccountActivationDisabled = Settings.AccountActivationDisabled;
 						try
 						{
-							await _accountService.Register(Data);
+							await _registerService.RegisterAccount(Data);
 							if (!HasSocialInfo && !Data.AccountActivationDisabled)
 							{
-								this.Services().Message.ShowMessage(this.Services().Localize["AccountActivationTitle"], this.Services().Localize["AccountActivationMessage"]);
+								if(Settings.SMSConfirmationEnabled)
+								{
+									ShowViewModelAndRemoveFromHistory<AccountConfirmationViewModel>(null);								
+								}else
+								{
+									this.Services().Message.ShowMessage(this.Services().Localize["AccountActivationTitle"], 
+										this.Services().Localize["AccountActivationMessage"]);
+									Close(this);
+								}
+							}else
+							{
+								Close(this);
+								_registerService.RegistrationFinished();
 							}
 							
 							if(Settings.ShowTermsAndConditions)
@@ -124,8 +144,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								}
 								catch {}
 							}
-
-							this.ReturnResult(Data);
+						   
+							
 
 						}catch(Exception e)
 						{

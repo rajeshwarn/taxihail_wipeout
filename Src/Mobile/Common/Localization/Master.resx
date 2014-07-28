@@ -1547,4 +1547,22 @@
   <data name="WarningPushServiceAction" xml:space="preserve">
     <value>Thanks for letting me know</value>
   </data>
+  <data name="View_AccountConfirmation_Button" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+ <data name="View_AccountConfirmationTitle" xml:space="preserve">
+    <value>Account Confirmation</value>
+  </data>
+ <data name="View_AccountConfirmation_Label_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="View_AccountConfirmation_Label_Instructions" xml:space="preserve">
+    <value>A text message with your code has been sent to your phone.</value>
+  </data>
+ <data name="AccountConfirmation_ErrorTitle" xml:space="preserve">
+    <value>Cannot confirm account</value>
+  </data>
+ <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
+    <value>The confirmation code is incorrect.</value>
+  </data>
 </root>

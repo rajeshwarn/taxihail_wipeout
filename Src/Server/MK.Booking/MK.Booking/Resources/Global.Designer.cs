@@ -61,6 +61,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your verification code for {0} is {1}.
+        /// </summary>
+        public static string AccountConfirmationSmsBody {
+            get {
+                return ResourceManager.GetString("AccountConfirmationSmsBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To confirm your email address, please visit this link:.
         /// </summary>
         public static string Email_Body_AccountConfirmationLine1 {
@@ -138,6 +147,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Body_Destination {
             get {
                 return ResourceManager.GetString("Email_Body_Destination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Driver.
+        /// </summary>
+        public static string Email_Body_Driver {
+            get {
+                return ResourceManager.GetString("Email_Body_Driver", resourceCulture);
             }
         }
         

@@ -24,7 +24,10 @@ namespace MK.DeploymentService.Service
                 using (var client = new HttpClient(new HttpClientHandler
                 {
                     Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
-                }))
+                })
+                {
+                    Timeout = TimeSpan.FromMinutes(10) //as the webserver
+                })
                 {
                     client.BaseAddress = new Uri(GetUrl());
 

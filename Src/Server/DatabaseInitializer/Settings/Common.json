@@ -76,6 +76,10 @@
    "Client.HideDestination" : "false",      
    "Client.AboutUsUrl" : "http://www.mobile-knowledge.com/index.html",   
    "Client.DisabledTutorialSlides" : "",
+   "Client.SMSConfirmationEnabled" :"false",
+   "SMSFromNumber" :"",
+   "SMSAccountSid" : "",
+   "SMSAuthToken" : "",
 
    "Client.FoursquareClientId" : "",
 	"Client.FoursquareClientSecret" : "",
