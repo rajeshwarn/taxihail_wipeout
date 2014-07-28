@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IRegisterWorkflowService
 	{
-		void BeginRegistration ();
+		void PrepareNewRegistration ();
 		IObservable<RegisterAccount> GetAndObserveRegistration();
 		Task RegisterAccount (RegisterAccount data);
 		Task ConfirmAccount (string code);

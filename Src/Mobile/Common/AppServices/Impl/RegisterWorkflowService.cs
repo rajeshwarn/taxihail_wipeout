@@ -20,9 +20,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_accountService = accountService;			
 		}
 
-		public void BeginRegistration ()
+		public void PrepareNewRegistration ()
 		{
 			_account = null;
+			_registrationAddressSubject.OnNext (null);
 		}
 
 		public IObservable<RegisterAccount> GetAndObserveRegistration ()
