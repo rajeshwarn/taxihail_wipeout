@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Email;
@@ -55,7 +56,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 if (account.ConfirmationToken != request.ConfirmationToken)
                 {
-                    throw new HttpError(HttpStatusCode.Unauthorized, "Invalid confirmation token");
+                    throw new HttpError(ErrorCode.CreateAccount_InvalidConfirmationToken.ToString());
                 }
                 return new HttpResult(HttpStatusCode.OK);
             }
