@@ -2,60 +2,76 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using System.Drawing;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Data
 {
 	public static class VehicleClusterHelper
 	{
-		public static AvailableVehicle[] Clusterize(AvailableVehicle[] vehicles, MapBounds mapBounds)
+		// Maximum number of vehicles in a cell before we start displaying a cluster
+		private const int _cellThreshold = 1;
+
+		public static AvailableVehicle[] Clusterize(AvailableVehicle[] vehicles, MapBounds mapBounds) 
 		{
 			var result = new List<AvailableVehicle>();
-			if (vehicles != null && vehicles.Any())
-			{
-				// Divide the map in 25 cells (5*5)
-				const int numberOfRows = 5;
-				const int numberOfColumns = 5;
-				// Maximum number of vehicles in a cell before we start displaying a cluster
-				const int cellThreshold = 1;
 
-				var clusterWidth = (float)mapBounds.LongitudeDelta / numberOfColumns;
-				var clusterHeight = (float)mapBounds.LatitudeDelta / numberOfRows;
+			if (vehicles != null && vehicles.Any ())
+			{
+				var radius = (float)mapBounds.LongitudeDelta / 20;
 
 				var list = new List<AvailableVehicle>(vehicles);
 
-				for (var rowIndex = 0; rowIndex < numberOfRows; rowIndex++)
+				/* Loop until all markers have been compared. */
+				while(list.Count > 0)
 				{
-					for (var colIndex = 0; colIndex < numberOfColumns; colIndex++)
+					var cluster = new VehicleClusterBuilder ();
+					var toRemove = new List<AvailableVehicle>();
+
+					var marker = list.First();
+					list.Remove (marker);
+
+					/* Compare against all markers which are left. */
+					foreach (var target in list) 
 					{
-						var bounds = new MapBounds()
-						{
-							NorthBound = mapBounds.NorthBound + clusterHeight * rowIndex,
-							SouthBound = mapBounds.NorthBound - clusterHeight * (rowIndex + 1),
-							WestBound = mapBounds.WestBound + clusterWidth * colIndex,
-							EastBound = mapBounds.WestBound + clusterWidth * (colIndex + 1)
-						};
+						var distance = GetDistanceBetweenPoints (
+							new PointF ((float)marker.Latitude, (float)marker.Longitude), 
+							new PointF ((float)target.Latitude, (float)target.Longitude));
 
-						var vehiclesInRect = list.Where(v => bounds.Contains(v.Latitude, v.Longitude)).ToArray();
-						if (vehiclesInRect.Length > cellThreshold)
+						/* If two markers are closer than given distance remove */
+						/* target marker from array and add it to cluster.      */
+						if (radius > distance) 
 						{
-							var clusterBuilder = new VehicleClusterBuilder();
-							foreach (var v in vehiclesInRect)
-								clusterBuilder.Add(v);
-							result.Add(clusterBuilder.Build());
+							toRemove.Add(target);
+							cluster.Add(target);
 						}
-						else
-						{
-							result.AddRange(vehiclesInRect);
-						}
+					}
 
-						foreach (var v in vehiclesInRect)
-						{
-							list.Remove(v);
-						}
+					foreach (var itemToRemove in toRemove)
+					{
+						list.Remove (itemToRemove);
+					}
+
+					/* If a marker has been added to cluster, add also the one  */
+					/* we were comparing to									    */
+					if (!cluster.IsEmpty) 
+					{
+						cluster.Add(marker);
+						result.Add(cluster.Build());
+					}
+					else 
+					{
+						result.Add(marker);
 					}
 				}
 			}
+
 			return result.ToArray();
+		}
+
+		private static double GetDistanceBetweenPoints(PointF point1, PointF point2)
+		{
+			return Math.Sqrt (Math.Pow (point2.X - point1.X, 2) + Math.Pow (point2.Y - point1.Y, 2));
 		}
 	}
 }
