@@ -32,6 +32,25 @@
             var itemfb = TaxiHail.localStorage.getItem('fbinfos');
             var itemtw = TaxiHail.localStorage.getItem('twinfos');
             var infos;
+            var validationRules =   {
+                email: {
+                    required:true,
+                    email:true
+                },
+                name: "required",
+                phone: {
+                    tenOrMoreDigits: true,
+                    required: true
+                },
+                password: {
+                    required: true
+                },
+                confirmPassword: {
+                    required: true,
+                    equalTo: "#signup-password"
+                }
+            };
+
             if (itemfb) {
                 infos = JSON.parse(itemfb);
                 TaxiHail.localStorage.removeItem('fbinfos');
@@ -49,27 +68,23 @@
                 this.model.set('name', infos.name);
                 this.$('#signup-password-div').addClass('hidden');
                 this.$('#signup-confirm-password-div').addClass('hidden');
-            }
-           
-            this.validate({
-                rules: {
+
+                                
+                validationRules = {
                     email: {
-                        required:true,
-                        email:true
+                        required: true,
+                        email: true
                     },
                     name: "required",
                     phone: {
                         tenOrMoreDigits: true,
                         required: true
-                    },
-                    password: {
-                        required: true
-                    },
-                    confirmPassword: {
-                        required: true,
-                        equalTo: "#signup-password"
-                    }
-                },
+                    }                    
+                };
+            }
+           
+            this.validate({
+                rules: validationRules,
                 messages: {
                     email: {
                         required: TaxiHail.localize('error.EmailRequired'),
