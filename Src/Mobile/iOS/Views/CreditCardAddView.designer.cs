@@ -19,9 +19,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UILabel lblCardNumber { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblCategory { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UILabel lblCvv { get; set; }
 
 		[Outlet]
@@ -38,9 +35,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtCardNumber { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtCategory { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtCvv { get; set; }
@@ -64,11 +58,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblCardNumber != null) {
 				lblCardNumber.Dispose ();
 				lblCardNumber = null;
-			}
-
-			if (lblCategory != null) {
-				lblCategory.Dispose ();
-				lblCategory = null;
 			}
 
 			if (lblCvv != null) {
@@ -99,11 +88,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtCardNumber != null) {
 				txtCardNumber.Dispose ();
 				txtCardNumber = null;
-			}
-
-			if (txtCategory != null) {
-				txtCategory.Dispose ();
-				txtCategory = null;
 			}
 
 			if (txtCvv != null) {

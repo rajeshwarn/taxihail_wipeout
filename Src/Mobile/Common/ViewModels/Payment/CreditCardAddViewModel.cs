@@ -65,18 +65,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public override void Start()
         {
-            Data = new CreditCardInfos();
-
-			Data.NameOnCard = _accountService.CurrentAccount.Name;
-
-			CardCategories = new List<ListItem>
-			{
-			    new ListItem {Id = 0, Display = "Personal"},
-			    new ListItem {Id = 1, Display = "Work"},
-			    new ListItem {Id = 2, Display = "Other"}
-			};
-		    CreditCardCategory = 0;
-
             CreditCardCompanies = new List<ListItem>
             {
 				new ListItem {Display = Visa, Id = 0},
@@ -86,57 +74,91 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 new ListItem {Display = CreditCardGeneric, Id = 4}
             };
 
-		    var id = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
-		    if (id != null)
-		    {
-		        CreditCardType = (int)id;
+			ExpirationYears = new List<ListItem>();
+			for (var i = 0; i <= 15; i++)
+			{
+				ExpirationYears.Add (new ListItem { Id = DateTime.Today.AddYears(i).Year, Display = DateTime.Today.AddYears(i).Year.ToString(CultureInfo.InvariantCulture) });
+			}
 
-		        ExpirationYears = new List<ListItem>();
-		        for (var i = 0; i <= 15; i++)
-		        {
-		            ExpirationYears.Add (new ListItem { Id = DateTime.Today.AddYears(i).Year, Display = DateTime.Today.AddYears(i).Year.ToString(CultureInfo.InvariantCulture) });
-		        }
+			ExpirationMonths = new List<ListItem>
+			{
+				new ListItem {Display = this.Services().Localize["January"], Id = 1},
+				new ListItem {Display = this.Services().Localize["February"], Id = 2},
+				new ListItem {Display = this.Services().Localize["March"], Id = 3},
+				new ListItem {Display = this.Services().Localize["April"], Id = 4},
+				new ListItem {Display = this.Services().Localize["May"], Id = 5},
+				new ListItem {Display = this.Services().Localize["June"], Id = 6},
+				new ListItem {Display = this.Services().Localize["July"], Id = 7},
+				new ListItem {Display = this.Services().Localize["August"], Id = 8},
+				new ListItem {Display = this.Services().Localize["September"], Id = 9},
+				new ListItem {Display = this.Services().Localize["October"], Id = 10},
+				new ListItem {Display = this.Services().Localize["November"], Id = 11},
+				new ListItem {Display = this.Services().Localize["December"], Id = 12}
+			};
 
-		        ExpirationMonths = new List<ListItem>
-		        {
-		            new ListItem {Display = this.Services().Localize["January"], Id = 1},
-		            new ListItem {Display = this.Services().Localize["February"], Id = 2},
-		            new ListItem {Display = this.Services().Localize["March"], Id = 3},
-		            new ListItem {Display = this.Services().Localize["April"], Id = 4},
-		            new ListItem {Display = this.Services().Localize["May"], Id = 5},
-		            new ListItem {Display = this.Services().Localize["June"], Id = 6},
-		            new ListItem {Display = this.Services().Localize["July"], Id = 7},
-		            new ListItem {Display = this.Services().Localize["August"], Id = 8},
-		            new ListItem {Display = this.Services().Localize["September"], Id = 9},
-		            new ListItem {Display = this.Services().Localize["October"], Id = 10},
-		            new ListItem {Display = this.Services().Localize["November"], Id = 11},
-		            new ListItem {Display = this.Services().Localize["December"], Id = 12}
-		        };
-		    }
+			var creditCard = _accountService.GetCreditCard ();
+			if (creditCard == null)
+			{
+				Data = new CreditCardInfos ();
+				Data.NameOnCard = _accountService.CurrentAccount.Name;
+
+				var id = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
+				CreditCardType = (int)id;
 
 #if DEBUG
-			if (_paymentService.GetPaymentSettings().PaymentMode == PaymentMethod.Braintree)
-			{
-				CreditCardNumber = DummyVisa.BraintreeNumber;
+				if (_paymentService.GetPaymentSettings().PaymentMode == PaymentMethod.Braintree)
+				{
+					CreditCardNumber = DummyVisa.BraintreeNumber;
+				}
+				else
+				{
+					CreditCardNumber = DummyVisa.CmtNumber;
+				}
+
+				Data.CCV = DummyVisa.AvcCvvCvv2+"";
+				Data.ExpirationMonth = DummyVisa.ExpirationDate.Month+"";
+				Data.ExpirationYear = DummyVisa.ExpirationDate.Year + "";
+#endif         
 			}
 			else
 			{
-				CreditCardNumber = DummyVisa.CmtNumber;
-			}
+				IsEditing = true;
 
-			Data.CCV = DummyVisa.AvcCvvCvv2+"";
-			Data.ExpirationMonth = DummyVisa.ExpirationDate.Month+"";
-			Data.ExpirationYear = DummyVisa.ExpirationDate.Year + "";
-			RaisePropertyChanged(() => CreditCardNumber);
-#endif            
+				Data = new CreditCardInfos
+				{
+					CreditCardId = creditCard.CreditCardId,
+					CardNumber = "************" + creditCard.Last4Digits,
+					NameOnCard = creditCard.NameOnCard,
+					CreditCardCompany = creditCard.CreditCardCompany,
+					ExpirationMonth = creditCard.ExpirationMonth,
+					ExpirationYear = creditCard.ExpirationYear
+				};
+
+				var id = CreditCardCompanies.Find(x => x.Display == creditCard.CreditCardCompany).Id;
+				if (id != null)
+				{
+					CreditCardType = (int) id;
+				}
+			}
         }
 			
         public CreditCardInfos Data { get; set; }
 
+		private bool _isEditing;
+		public bool IsEditing
+		{
+			get { return _isEditing; }
+			set
+			{
+				_isEditing = value;
+				RaisePropertyChanged ();
+			}
+		}
+
         //todo: refactorer le setter
         public string CreditCardNumber
         {
-            get{ return Data.CardNumber;}
+            get{ return Data.CardNumber; }
             set
             {
                 Data.CardNumber = value;
@@ -195,29 +217,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				RaisePropertyChanged();
             }
         }
-
-		int _creditCardCategory;
-		public int CreditCardCategory 
-		{
-			get { return _creditCardCategory; }
-			set 
-			{
-				_creditCardCategory = value;
-				RaisePropertyChanged();
-				RaisePropertyChanged(() => CreditCardCategoryName);
-			}
-		}
-
-		public string CreditCardCategoryName 
-		{ 
-			get 
-			{
-				var category = CardCategories.FirstOrDefault(x=>x.Id == CreditCardCategory);
-				if(category == null) return null;
-				return category.Display; 
-			}
-		}
-
+			
         int _creditCardType;
         public int CreditCardType 
 		{
@@ -303,8 +303,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-		public List<ListItem> CardCategories { get; set; }
-
         public List<ListItem> CreditCardCompanies { get; set; }
 
         public List<ListItem> ExpirationYears { get; set; }
@@ -321,16 +319,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			} 
 		}
 
-		public ICommand AddCreditCardCommand { get { return this.GetCommand(() => AddCrediCard()); } }
+		// TODO add or edit
+		public ICommand SaveCreditCardCommand { get { return this.GetCommand(() => AddCrediCard()); } }
 
 		public bool ShowInstructions { get; set; }
 
 		private async void AddCrediCard ()
         {
-			Data.FriendlyName = CreditCardCategoryName;
             Data.CreditCardCompany = CreditCardTypeName;
             if (Params.Get (Data.NameOnCard, Data.CardNumber, 
-                                   Data.CreditCardCompany, Data.FriendlyName, 
+                                   Data.CreditCardCompany, 
                                    Data.ExpirationMonth, 
                                    Data.ExpirationYear, 
                                    Data.CCV).Any (x => x.IsNullOrEmpty ())) 
@@ -353,7 +351,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	                Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
 	                Data.CreditCardId = Guid.NewGuid();
 
-					success = await _accountService.AddCreditCard(Data);
+					success = await _accountService.AddCreditCard2(Data);
 				}
 				if (success)
 				{	

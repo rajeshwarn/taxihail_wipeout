@@ -38,7 +38,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblInstructions.Text = Localize.GetValue("CreditCardInstructions");
             lblNameOnCard.Text = Localize.GetValue("CreditCardName");
             lblCardNumber.Text = Localize.GetValue("CreditCardNumber");
-            lblCategory.Text = Localize.GetValue("CreditCardCategory");
             lblExpMonth.Text = Localize.GetValue("CreditCardExpMonth");
             lblExpYear.Text = Localize.GetValue("CreditCardExpYear");
             lblCvv.Text = Localize.GetValue("CreditCardCCV");
@@ -52,7 +51,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.CreditCardCompanies[3].Image = "visa_electron.png";
 			ViewModel.CreditCardCompanies[4].Image = "credit_card_generic.png";
 
-            txtCategory.Configure(Localize.GetValue("CreditCardCategory"), () => ViewModel.CardCategories.ToArray(), () => (int?)ViewModel.CreditCardCategory, x => ViewModel.CreditCardCategory =  x.Id.GetValueOrDefault());
             txtExpMonth.Configure(Localize.GetValue("CreditCardExpMonth"), () => ViewModel.ExpirationMonths.ToArray(), () => ViewModel.ExpirationMonth, x => ViewModel.ExpirationMonth = x.Id);
             txtExpYear.Configure(Localize.GetValue("CreditCardExpYear"), () => ViewModel.ExpirationYears.ToArray(), () => ViewModel.ExpirationYear, x => ViewModel.ExpirationYear = x.Id);
 
@@ -78,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             set.Bind(NavigationItem.RightBarButtonItem)
                 .For("Clicked")
-                .To(vm => vm.AddCreditCardCommand);
+                .To(vm => vm.SaveCreditCardCommand);
 
             set.Bind(txtNameOnCard)
 				.For(v => v.Text)
@@ -90,10 +88,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(txtCardNumber)
 				.For(v => v.ImageLeftSource)
 				.To(vm => vm.CreditCardImagePath);
-
-            set.Bind(txtCategory)
-                .For(v => v.Text)
-				.To(vm => vm.CreditCardCategoryName);
 
             set.Bind(txtExpMonth)
                 .For(v => v.Text)

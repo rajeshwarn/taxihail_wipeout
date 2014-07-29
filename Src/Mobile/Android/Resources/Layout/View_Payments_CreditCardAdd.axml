@@ -58,17 +58,6 @@
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/CreditCardCategory"
-                    style="@style/BlackTextLabel"
-                    android:layout_marginBottom="4dp" />
-                <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    local:MvxBind="Text CreditCardCategoryName; Data CardCategories; SelectedItem CreditCardCategory"
-                    android:layout_marginBottom="8dp" />
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
                     android:text="@string/CreditCardName"
                     style="@style/BlackTextLabel"
                     android:layout_marginBottom="4dp" />
@@ -186,7 +175,7 @@
                     android:singleLine="true"
                     android:lines="1"
                     android:text="@string/Save"
-                    local:MvxBind="Click AddCreditCardCommand"
+                    local:MvxBind="Click SaveCreditCardCommand"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp" />
             </LinearLayout>

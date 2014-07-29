@@ -1176,9 +1176,6 @@
   <data name="CreditCardNumber" xml:space="preserve">
     <value>Card Number</value>
   </data>
-  <data name="CreditCardCategory" xml:space="preserve">
-    <value>Category</value>
-  </data>
   <data name="CreditCardType" xml:space="preserve">
     <value>Type of Card</value>
   </data>

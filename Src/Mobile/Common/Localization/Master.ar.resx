@@ -414,9 +414,6 @@
   <data name="CreditCard" xml:space="preserve">
     <value>بطاقة الائتمان</value>
   </data>
-  <data name="CreditCardCategory" xml:space="preserve">
-    <value>التصنيف</value>
-  </data>
   <data name="CreditCardCCV" xml:space="preserve">
     <value>CVV</value>
   </data>

@@ -103,23 +103,28 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task AddCreditCard(CreditCardRequest creditCardRequest)
         {
-            var req = string.Format("/account/creditcards");
-            return Client.PostAsync<string>(req, creditCardRequest);
+            return Client.PostAsync<string>("/account/creditcard", creditCardRequest);
         }
 
         public Task<IEnumerable<CreditCardDetails>> GetCreditCards()
         {
-            return Client.GetAsync<IEnumerable<CreditCardDetails>>("/account/creditcards");
+            return Client.GetAsync<IEnumerable<CreditCardDetails>>("/account/creditcard");
         }
 
-        public Task RemoveCreditCard(Guid creditCardId, string cardOnFileToken)
+        public async Task RemoveCreditCard()
         {
-            if (!string.IsNullOrWhiteSpace(cardOnFileToken))
+            // previously, it was possible to add multiple cards, this is why we unregister every card here
+            var cards = await GetCreditCards ();
+            foreach (var card in cards)
             {
-                _paymentService.ForgetTokenizedCard(cardOnFileToken);
+                if (!string.IsNullOrWhiteSpace(card.Token))
+                {
+                    await _paymentService.ForgetTokenizedCard(card.Token);
+                }
             }
-            var req = string.Format("/account/creditcards/" + creditCardId);
-            return Client.DeleteAsync<string>(req);
+
+            // server-side, this should delete every card of the user
+            await Client.DeleteAsync<string>("/account/creditcard");
         }
 
         public Task<Account> GetTestAccount(int index)

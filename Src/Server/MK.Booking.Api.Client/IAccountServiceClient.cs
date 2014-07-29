@@ -25,9 +25,11 @@ namespace apcurium.MK.Booking.Api.Client
         Task ResetPassword(string emailAddress);
         Task<string> UpdatePassword(UpdatePassword updatePassword);
         Task RemoveAddress(Guid addressId);
-        Task AddCreditCard(CreditCardRequest creditCardRequest);
+
         Task<IEnumerable<CreditCardDetails>> GetCreditCards();
-        Task RemoveCreditCard(Guid creditCardId, string token);
+        Task AddCreditCard(CreditCardRequest creditCardRequest);
+        Task RemoveCreditCard();
+
 		Task LogApplicationStartUp(LogApplicationStartUpRequest request);
     }
 }

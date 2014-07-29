@@ -426,9 +426,6 @@
   <data name="CreditCard" xml:space="preserve">
     <value>Carte de paiement</value>
   </data>
-  <data name="CreditCardCategory" xml:space="preserve">
-    <value>Catégorie</value>
-  </data>
   <data name="CreditCardCCV" xml:space="preserve">
     <value>Code sécurité</value>
   </data>

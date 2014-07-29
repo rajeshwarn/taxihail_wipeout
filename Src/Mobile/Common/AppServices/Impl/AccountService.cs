@@ -538,18 +538,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return refData.PaymentsList;
         }
 
-        public IEnumerable<CreditCardDetails> GetCreditCards ()
+        public CreditCardDetails GetCreditCard ()
         {
+			// the server can return multiple credit cards if the user added more cards with a previous version, we get the first one only.
             var result = UseServiceClientTask<IAccountServiceClient, IEnumerable<CreditCardDetails>>(service => service.GetCreditCards());
-            return result;
+			return result.FirstOrDefault();
         }
 
-        public void RemoveCreditCard (Guid creditCardId)
-        {
-			UseServiceClientTask<IAccountServiceClient>(client => client.RemoveCreditCard(creditCardId,""));
-        }
-
-		public async Task<bool> AddCreditCard (CreditCardInfos creditCard)
+		public async Task<bool> AddCreditCard2 (CreditCardInfos creditCard)
         {
 			try
 			{
@@ -568,15 +564,28 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 CreditCardCompany = creditCard.CreditCardCompany,
                 CreditCardId = creditCard.CreditCardId,
-                FriendlyName = creditCard.FriendlyName,
+				NameOnCard = creditCard.NameOnCard,
                 Last4Digits = creditCard.Last4Digits,
-                Token = creditCard.Token
+                Token = creditCard.Token,
+				ExpirationMonth = creditCard.ExpirationMonth,
+				ExpirationYear = creditCard.ExpirationYear
             };
             
 			await UseServiceClientAsync<IAccountServiceClient> (client => client.AddCreditCard (request));  
 
 			return true;
         }
+
+		public async Task<bool> UpdateCreditCard2(CreditCardInfos creditCard)
+		{
+			await RemoveCreditCard2 ();
+			return await AddCreditCard2 (creditCard);
+		}
+
+		public async Task RemoveCreditCard2()
+		{
+			await UseServiceClientAsync<IAccountServiceClient>(client => client.RemoveCreditCard());
+		}
 
 		public void LogApplicationStartUp()
 		{

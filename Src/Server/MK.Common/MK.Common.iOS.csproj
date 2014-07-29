@@ -116,6 +116,7 @@
     <Compile Include="Configuration\IAppSettings.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Entity\AccountChargeQuestion.cs" />
+    <Compile Include="Enumeration\ChargeTypes.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
