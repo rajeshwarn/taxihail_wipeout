@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Reflection;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -405,6 +406,7 @@ namespace DatabaseInitializer
             Console.WriteLine("Calling ibs...");
             //Get default settings from IBS
             var referenceDataService = container.Resolve<IStaticDataWebServiceClient>();
+
             var defaultCompany = referenceDataService.GetCompaniesList()
                 .FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
                                  ?? referenceDataService.GetCompaniesList().FirstOrDefault();
@@ -419,9 +421,13 @@ namespace DatabaseInitializer
                     referenceDataService.GetVehiclesList(defaultCompany).First();
                 appSettings["DefaultBookingSettings.VehicleTypeId"] = defaultvehicule.Id.ToString();
 
-                var defaultchargetype = referenceDataService.GetPaymentsList(defaultCompany)
+                //var defaultchargetype = referenceDataService.GetPaymentsList(defaultCompany)
+                //    .FirstOrDefault(x => x.Display.HasValue() && x.Display.Contains("Cash"))
+                //                        ?? referenceDataService.GetPaymentsList(defaultCompany).First();
+
+                var defaultchargetype = ChargeTypesClient.GetPaymentsList(defaultCompany)
                     .FirstOrDefault(x => x.Display.HasValue() && x.Display.Contains("Cash"))
-                                        ?? referenceDataService.GetPaymentsList(defaultCompany).First();
+                                        ?? ChargeTypesClient.GetPaymentsList(defaultCompany).First();
 
 
                 appSettings["DefaultBookingSettings.ChargeTypeId"] = defaultchargetype.Id.ToString();

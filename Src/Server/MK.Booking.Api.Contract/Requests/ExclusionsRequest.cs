@@ -17,7 +17,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     public class ExclusionsRequest
     {
         public int[] ExcludedVehicleTypeId { get; set; }
-        public int[] ExcludedPaymentTypeId { get; set; }
         public int[] ExcludedProviderId { get; set; }
     }
 
@@ -30,7 +29,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         }
 
         public int[] ExcludedVehicleTypeId { get; set; }
-        public int[] ExcludedPaymentTypeId { get; set; }
         public int[] ExcludedProviderId { get; set; }
         public ResponseStatus ResponseStatus { get; set; }
     }

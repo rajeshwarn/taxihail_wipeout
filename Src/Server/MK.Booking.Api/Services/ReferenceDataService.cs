@@ -5,6 +5,7 @@ using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -22,7 +23,9 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IConfigurationManager _configManager;
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
 
-        public ReferenceDataService(IStaticDataWebServiceClient staticDataWebServiceClient, ICacheClient cacheClient,
+        public ReferenceDataService(
+            IStaticDataWebServiceClient staticDataWebServiceClient,
+            ICacheClient cacheClient,
             IConfigurationManager configManager)
         {
             _staticDataWebServiceClient = staticDataWebServiceClient;
@@ -44,7 +47,6 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 result.VehiclesList = FilterReferenceData(result.VehiclesList, "IBS.ExcludedVehicleTypeId");
                 result.CompaniesList = FilterReferenceData(result.CompaniesList, "IBS.ExcludedProviderId");
-                result.PaymentsList = FilterReferenceData(result.PaymentsList, "IBS.ExcludedPaymentTypeId");
             }
 
             return result;
@@ -59,7 +61,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             foreach (var company in companies)
             {
-                payments.AddRange(_staticDataWebServiceClient.GetPaymentsList(company));
+                payments.AddRange(ChargeTypesClient.GetPaymentsList(company));
                 vehicles.AddRange(_staticDataWebServiceClient.GetVehiclesList(company));
             }
 

@@ -5,14 +5,6 @@
 
   <div class='clearfix'>
       <div class='span2'>
-        <label>{{localize "Payment Types"}}</label>
-        {{#each paymentsList}}
-        <label class="checkbox">
-            <input type="checkbox" name='paymentsList' value="{{id}}" {{checked}} >{{display}}
-        </label>
-        {{/each}}
-      </div>
-      <div class='span2'>
         <label>{{localize "Vehicle Types"}}</label>
         {{#each vehiclesList}}
         <label class="checkbox">
