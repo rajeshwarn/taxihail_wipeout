@@ -204,12 +204,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void CheckAndSendRatings()
 		{
-			if (HasRated)
+            if (Settings.RatingEnabled || HasRated)
 			{
 				return;
 			}
 
-            if (Settings.RatingEnabled && _ratingList.Any(c => c.Score == 0))
+            if (_ratingList.Any(c => c.Score == 0))
 			{
 			    if (Settings.RatingRequired)
 			    {

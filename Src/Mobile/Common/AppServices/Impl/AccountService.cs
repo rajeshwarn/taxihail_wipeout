@@ -523,6 +523,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<IList<ListItem>> GetPaymentsList ()
         {
 			var refData = await GetReferenceData();
+		    var hasCardOnFile = GetCreditCards().Any();
 		
 			if (!_appSettings.Data.HideNoPreference
                 && refData.PaymentsList != null)
@@ -534,6 +535,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					    Display = _localize["NoPreference"]
                 	});
             }
+
+		    if (!hasCardOnFile)
+		    {
+		        refData.PaymentsList.Remove(i => i.Id == (int) ChargeTypes.Credit);
+		    }
 
             return refData.PaymentsList;
         }

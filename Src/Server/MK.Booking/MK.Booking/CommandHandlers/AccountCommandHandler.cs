@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<AddCreditCard>,
         ICommandHandler<RemoveCreditCard>,
         ICommandHandler<DeleteAllCreditCards>,
+        ICommandHandler<DeleteAccountCreditCards>,
         ICommandHandler<RegisterDeviceForPushNotifications>,
         ICommandHandler<UnregisterDeviceForPushNotifications>,
         ICommandHandler<AddFavoriteAddress>,
@@ -81,6 +82,13 @@ namespace apcurium.MK.Booking.CommandHandlers
                 account.RemoveAllCreditCards();
                 _repository.Save(account, command.Id.ToString());
             }
+        }
+
+        public void Handle(DeleteAccountCreditCards command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.RemoveAllCreditCards();
+            _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(DisableAccountByAdmin command)
