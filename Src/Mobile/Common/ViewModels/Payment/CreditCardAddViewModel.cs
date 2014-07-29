@@ -15,7 +15,7 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-	public class CreditCardAddViewModel : PageViewModel, ISubViewModel<CreditCardInfos>
+	public class CreditCardAddViewModel : PageViewModel
     {
 		private readonly ILocationService _locationService;
 		private readonly IPaymentService _paymentService;
@@ -142,19 +142,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
         }
 			
-        public CreditCardInfos Data { get; set; }
-
-		private bool _isEditing;
-		public bool IsEditing
-		{
-			get { return _isEditing; }
-			set
-			{
-				_isEditing = value;
-				RaisePropertyChanged ();
-			}
-		}
-
         //todo: refactorer le setter
         public string CreditCardNumber
         {
@@ -319,12 +306,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			} 
 		}
 
-		// TODO add or edit
-		public ICommand SaveCreditCardCommand { get { return this.GetCommand(() => AddCrediCard()); } }
-
 		public bool ShowInstructions { get; set; }
 
-		private async void AddCrediCard ()
+		public CreditCardInfos Data { get; set; }
+
+		public bool IsEditing { get; set; }
+
+		public ICommand SaveCreditCardCommand { get { return this.GetCommand(() => SaveCrediCard()); } }
+
+		private async void SaveCrediCard ()
         {
             Data.CreditCardCompany = CreditCardTypeName;
             if (Params.Get (Data.NameOnCard, Data.CardNumber, 
@@ -351,7 +341,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	                Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
 	                Data.CreditCardId = Guid.NewGuid();
 
-					success = await _accountService.AddCreditCard2(Data);
+					success = IsEditing 
+						? await _accountService.UpdateCreditCard(Data) 
+						: await _accountService.AddCreditCard(Data);
 				}
 				if (success)
 				{	
@@ -359,30 +351,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.CardNumber = null;
 					Data.CCV = null;
 
-					if(ShowInstructions)
-					{
-						ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser =  true });
-						if(!_accountService.CurrentAccount.DefaultCreditCard.HasValue)
-						{
-							var account = _accountService.CurrentAccount;
-							account.DefaultCreditCard = Data.CreditCardId;
-							_accountService.UpdateSettings(account.Settings, Data.CreditCardId, account.DefaultTipPercent);
-						}
-					}
-					else
-					{
-						this.ReturnResult(Data);
-					}
+					ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = ShowInstructions ? bool.TrueString : bool.FalseString });
+
+					// update default card
+					var account = _accountService.CurrentAccount;
+					account.DefaultCreditCard = Data.CreditCardId;
+					_accountService.UpdateSettings(account.Settings, Data.CreditCardId, account.DefaultTipPercent);
 				}
 				else
 				{
                     this.Services().Message.ShowMessage("Validation", "Cannot validate the credit card.");
 				}
             }
-            finally 
+			finally 
 			{
-                this.Services().Cache.Clear("Account.CreditCards");                
-            }
+				this.Services().Cache.Clear("Account.CreditCards");                
+			}
         }
 
         private bool IsValid(string cardNumber)

@@ -66,9 +66,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         void SignOut();
         
 		CreditCardDetails GetCreditCard();
-		Task<bool> AddCreditCard2 (CreditCardInfos creditCard);
-		Task<bool> UpdateCreditCard2 (CreditCardInfos creditCard);
-		Task RemoveCreditCard2 ();
+		Task<bool> AddCreditCard (CreditCardInfos creditCard);
+		Task<bool> UpdateCreditCard (CreditCardInfos creditCard);
+		Task RemoveCreditCard ();
 
 		void LogApplicationStartUp ();
     }

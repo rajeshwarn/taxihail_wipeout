@@ -523,7 +523,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<IList<ListItem>> GetPaymentsList ()
         {
 			var refData = await GetReferenceData();
-		    var hasCardOnFile = GetCreditCards().Any();
+		    var hasCardOnFile = GetCreditCard() != null;
 		
 			if (!_appSettings.Data.HideNoPreference
                 && refData.PaymentsList != null)
@@ -551,7 +551,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return result.FirstOrDefault();
         }
 
-		public async Task<bool> AddCreditCard2 (CreditCardInfos creditCard)
+		public async Task<bool> AddCreditCard (CreditCardInfos creditCard)
         {
 			try
 			{
@@ -582,13 +582,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return true;
         }
 
-		public async Task<bool> UpdateCreditCard2(CreditCardInfos creditCard)
+		public async Task<bool> UpdateCreditCard(CreditCardInfos creditCard)
 		{
-			await RemoveCreditCard2 ();
-			return await AddCreditCard2 (creditCard);
+			await RemoveCreditCard ();
+			return await AddCreditCard (creditCard);
 		}
 
-		public async Task RemoveCreditCard2()
+		public async Task RemoveCreditCard()
 		{
 			await UseServiceClientAsync<IAccountServiceClient>(client => client.RemoveCreditCard());
 		}
