@@ -5,11 +5,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Web.UI.WebControls;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 using Microsoft.Practices.ServiceLocation;
 using ServiceStack.Text;
 
@@ -84,6 +86,8 @@ namespace apcurium.MK.Web
 
             var referenceDataService = ServiceLocator.Current.GetInstance<ReferenceDataService>();
             var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
+            referenceData.PaymentsList = HidePaymentType(referenceData.PaymentsList, ChargeTypes.Credit);
+
             ReferenceData = referenceData.ToString();
 
             var vehicleService = ServiceLocator.Current.GetInstance<VehicleService>();
@@ -97,6 +101,11 @@ namespace apcurium.MK.Web
             return pair == null
                 ? string.Empty
                 : Uri.UnescapeDataString(pair.Split('=')[1]);
+        }
+
+        private List<Common.Entity.ListItem> HidePaymentType(IEnumerable<Common.Entity.ListItem> paymentList, ChargeTypes paymentTypeToHide)
+        {
+            return paymentList.Where(i => i.Id != (int)paymentTypeToHide).ToList();
         }
     }
 }
