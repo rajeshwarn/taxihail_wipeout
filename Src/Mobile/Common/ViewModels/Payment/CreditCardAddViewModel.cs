@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			_locationService.Stop();
 		}
 
-		public override void Start()
+		public override async void Start()
         {
             CreditCardCompanies = new List<ListItem>
             {
@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				new ListItem {Display = this.Services().Localize["December"], Id = 12}
 			};
 
-			var creditCard = _accountService.GetCreditCard ();
+			var creditCard = await _accountService.GetCreditCard ();
 			if (creditCard == null)
 			{
 				Data = new CreditCardInfos ();

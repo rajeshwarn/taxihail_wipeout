@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		private int _defaultTipPercentage;
 
-		public void Start(PaymentInformation paymentDetails = null)
+		public async void Start(PaymentInformation paymentDetails = null)
 		{
 			_defaultTipPercentage = Settings.DefaultTipPercentage;
 
@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				paymentDetails = new PaymentInformation();
 			}
 
-			SelectedCreditCard = _accountService.GetCreditCard();
+			SelectedCreditCard = await _accountService.GetCreditCard();
 			if (SelectedCreditCard != null)
 			{
 				paymentDetails.CreditCardId = SelectedCreditCard.CreditCardId;

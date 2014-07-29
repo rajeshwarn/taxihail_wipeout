@@ -544,10 +544,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return refData.PaymentsList;
         }
 
-        public CreditCardDetails GetCreditCard ()
+        public async Task<CreditCardDetails> GetCreditCard ()
         {
 			// the server can return multiple credit cards if the user added more cards with a previous version, we get the first one only.
-            var result = UseServiceClientTask<IAccountServiceClient, IEnumerable<CreditCardDetails>>(service => service.GetCreditCards());
+            var result = await UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(service => service.GetCreditCards());
 			return result.FirstOrDefault();
         }
 
