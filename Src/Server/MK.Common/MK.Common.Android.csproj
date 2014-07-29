@@ -62,6 +62,7 @@
     <Compile Include="Entity\Tariff.cs" />
     <Compile Include="Entity\TariffType.cs" />
     <Compile Include="Entity\RatingType.cs" />
+    <Compile Include="Enumeration\ChargeTypes.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />

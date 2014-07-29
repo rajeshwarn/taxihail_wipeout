@@ -35,9 +35,6 @@ namespace apcurium.MK.Booking.Api.Services.Admin
             var excludedVehicleTypeId = _configManager.GetSetting("IBS.ExcludedVehicleTypeId").SelectOrDefault(s => s
                 .Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries)
                 .Select(int.Parse).ToArray(), new int[0]);
-            var excludedPaymentTypeId = _configManager.GetSetting("IBS.ExcludedPaymentTypeId").SelectOrDefault(s => s
-                .Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries)
-                .Select(int.Parse).ToArray(), new int[0]);
             var excludedProviderId = _configManager.GetSetting("IBS.ExcludedProviderId").SelectOrDefault(s => s
                 .Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries)
                 .Select(int.Parse).ToArray(), new int[0]);
@@ -45,7 +42,6 @@ namespace apcurium.MK.Booking.Api.Services.Admin
             return new ExclusionsRequestResponse
             {
                 ExcludedVehicleTypeId = excludedVehicleTypeId,
-                ExcludedPaymentTypeId = excludedPaymentTypeId,
                 ExcludedProviderId = excludedProviderId
             };
         }
@@ -59,12 +55,6 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                     request.ExcludedVehicleTypeId == null
                         ? null
                         : string.Join(";", request.ExcludedVehicleTypeId.Select(x => x.ToString(CultureInfo.InvariantCulture)))
-                },
-                {
-                    "IBS.ExcludedPaymentTypeId",
-                    request.ExcludedPaymentTypeId == null
-                        ? null
-                        : string.Join(";", request.ExcludedPaymentTypeId.Select(x => x.ToString(CultureInfo.InvariantCulture)))
                 },
                 {
                     "IBS.ExcludedProviderId",

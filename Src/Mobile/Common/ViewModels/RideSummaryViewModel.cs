@@ -209,7 +209,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return;
 			}
 
-			if (_ratingList.Any(c => c.Score == 0))
+            if (Settings.RatingEnabled && _ratingList.Any(c => c.Score == 0))
 			{
 			    if (Settings.RatingRequired)
 			    {

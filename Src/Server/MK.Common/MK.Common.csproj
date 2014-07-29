@@ -90,6 +90,7 @@
     <Compile Include="Caching\CacheItem.cs" />
     <Compile Include="Caching\CachingDbContext.cs" />
     <Compile Include="Caching\EFCacheClient.cs" />
+    <Compile Include="ChargeTypesClient.cs" />
     <Compile Include="Configuration\IAppSettings.cs" />
     <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
     <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Entity\RatingType.cs" />
     <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
+    <Compile Include="Enumeration\ChargeTypes.cs" />
     <Compile Include="Enumeration\PaymentProvider.cs" />
     <Compile Include="Enumeration\PaymentType.cs" />
     <Compile Include="Enumeration\PushNotificationServicePlatform.cs" />

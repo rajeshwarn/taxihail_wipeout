@@ -22,7 +22,6 @@
    "IBS.OrderPriority" : "true",   
    "IBS.DefaultAccountPassword" : "password",
    "IBS.ExcludedVehicleTypeId" : "22;21",
-   "IBS.ExcludedPaymentTypeId" : "",
    "IBS.ExcludedProviderId" : "", 
    "IBS.TimeDifference" : "0",
    "IBS.DestinationZoneToExclude" : "",
