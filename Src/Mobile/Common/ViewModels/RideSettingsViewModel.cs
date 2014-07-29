@@ -52,15 +52,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public bool ShouldDisplayCreditCards
-        {
-            get
-            {
-				var setting = _paymentService.GetPaymentSettings();
-                return setting.IsPayInTaxiEnabled;
-            }
-        }
-
         private PaymentDetailsViewModel _paymentPreferences;
         public PaymentDetailsViewModel PaymentPreferences
         {

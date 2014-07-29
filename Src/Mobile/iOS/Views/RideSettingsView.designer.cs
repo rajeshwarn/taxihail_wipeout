@@ -19,9 +19,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UILabel lblChargeType { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblCreditCard { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
@@ -43,9 +40,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtChargeType { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatCreditCardTextField txtCreditCard { get; set; }
-
-		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtName { get; set; }
 
 		[Outlet]
@@ -62,14 +56,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblAccountNumber != null) {
+				lblAccountNumber.Dispose ();
+				lblAccountNumber = null;
+			}
+
 			if (lblChargeType != null) {
 				lblChargeType.Dispose ();
 				lblChargeType = null;
-			}
-
-			if (lblCreditCard != null) {
-				lblCreditCard.Dispose ();
-				lblCreditCard = null;
 			}
 
 			if (lblName != null) {
@@ -97,14 +91,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblVehicleType = null;
 			}
 
+			if (txtAccountNumber != null) {
+				txtAccountNumber.Dispose ();
+				txtAccountNumber = null;
+			}
+
 			if (txtChargeType != null) {
 				txtChargeType.Dispose ();
 				txtChargeType = null;
-			}
-
-			if (txtCreditCard != null) {
-				txtCreditCard.Dispose ();
-				txtCreditCard = null;
 			}
 
 			if (txtName != null) {
@@ -130,16 +124,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtVehicleType != null) {
 				txtVehicleType.Dispose ();
 				txtVehicleType = null;
-			}
-
-			if (lblAccountNumber != null) {
-				lblAccountNumber.Dispose ();
-				lblAccountNumber = null;
-			}
-
-			if (txtAccountNumber != null) {
-				txtAccountNumber.Dispose ();
-				txtAccountNumber = null;
 			}
 		}
 	}

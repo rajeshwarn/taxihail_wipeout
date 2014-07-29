@@ -22,9 +22,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		MonoTouch.UIKit.UIImageView imgPayPal { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblCreditCard { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UILabel lblMeterAmount { get; set; }
 
 		[Outlet]
@@ -40,10 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		MonoTouch.UIKit.UILabel lblTotalValue { get; set; }
 
 		[Outlet]
-        apcurium.MK.Booking.Mobile.Client.Controls.Widgets.PaymentSelector payPalToggle { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatCreditCardTextField txtCreditCard { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.PaymentSelector payPalToggle { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtMeterAmount { get; set; }
@@ -69,11 +63,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 			if (imgPayPal != null) {
 				imgPayPal.Dispose ();
 				imgPayPal = null;
-			}
-
-			if (lblCreditCard != null) {
-				lblCreditCard.Dispose ();
-				lblCreditCard = null;
 			}
 
 			if (lblMeterAmount != null) {
@@ -104,11 +93,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 			if (payPalToggle != null) {
 				payPalToggle.Dispose ();
 				payPalToggle = null;
-			}
-
-			if (txtCreditCard != null) {
-				txtCreditCard.Dispose ();
-				txtCreditCard = null;
 			}
 
 			if (txtMeterAmount != null) {
