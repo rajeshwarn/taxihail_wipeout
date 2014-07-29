@@ -3,8 +3,10 @@ using System.Linq;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -41,6 +43,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			RaisePropertyChanged(() => Payments );
 			RaisePropertyChanged(() => ChargeTypeId );
 			RaisePropertyChanged(() => ChargeTypeName );
+
+            // Set default payment method to credit if there is a card on file
+		    if (_paymentPreferences.HasCreditCards)
+		    {
+                ChargeTypeId = _payments.FirstOrDefault(x => x.Id == (int)ChargeTypes.Credit).SelectOrDefault(x => x.Id);
+		    }
         }
 
         public bool ShouldDisplayTip

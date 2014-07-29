@@ -421,14 +421,9 @@ namespace DatabaseInitializer
                     referenceDataService.GetVehiclesList(defaultCompany).First();
                 appSettings["DefaultBookingSettings.VehicleTypeId"] = defaultvehicule.Id.ToString();
 
-                //var defaultchargetype = referenceDataService.GetPaymentsList(defaultCompany)
-                //    .FirstOrDefault(x => x.Display.HasValue() && x.Display.Contains("Cash"))
-                //                        ?? referenceDataService.GetPaymentsList(defaultCompany).First();
-
                 var defaultchargetype = ChargeTypesClient.GetPaymentsList(defaultCompany)
                     .FirstOrDefault(x => x.Display.HasValue() && x.Display.Contains("Cash"))
                                         ?? ChargeTypesClient.GetPaymentsList(defaultCompany).First();
-
 
                 appSettings["DefaultBookingSettings.ChargeTypeId"] = defaultchargetype.Id.ToString();
             }
