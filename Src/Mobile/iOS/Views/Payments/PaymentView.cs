@@ -43,8 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             ClearKeyboardButton.TouchUpInside += (sender, e) => {
                 this.View.ResignFirstResponderOnSubviews();
             };
-
-            lblCreditCard.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
+                
 			lblTip.Text = Localize.GetValue("PaymentViewTipText");
             lblTipAmount.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
             lblMeterAmount.Text = Localize.GetValue("PaymentViewMeterAmountText");
@@ -152,30 +151,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				.For(v => v.Hidden)
 				.To(vm => vm.PaymentSelectorToggleIsVisible)
 				.WithConversion("BoolInverter");
-
-            set.Bind(txtCreditCard)
-                .For(v => v.Text)
-				.To(vm => vm.PaymentPreferences.SelectedCreditCard.FriendlyName);
-
-            set.Bind(txtCreditCard)
-				.For(v => v.Last4Digits)
-				.To(vm => vm.PaymentPreferences.SelectedCreditCard.Last4Digits);
-
-            set.Bind(txtCreditCard)
-				.For("CreditCardCompany")
-				.To(vm => vm.PaymentPreferences.SelectedCreditCard.CreditCardCompany);
-
-            set.Bind(txtCreditCard)
-				.For(v => v.NavigateCommand)
-				.To(vm => vm.PaymentPreferences.NavigateToCreditCardsList);
-
-            set.Bind(txtCreditCard)
-                .For(v => v.Hidden)
-                .To(vm => vm.PayPalSelected);
-
-            set.Bind(lblCreditCard)
-                .For(v => v.Hidden)
-                .To(vm => vm.PayPalSelected);
 
             set.Bind(imgPayPal)
                 .For(v => v.Hidden)

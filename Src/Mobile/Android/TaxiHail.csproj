@@ -239,7 +239,6 @@
     <AndroidResource Include="Resources\Drawable\mastercard.png" />
     <AndroidResource Include="Resources\Drawable\visa.png" />
     <AndroidResource Include="Resources\Layout\SpinnerTextWithImage.axml" />
-    <AndroidResource Include="Resources\Layout\Control_CreditCardButton.axml" />
     <AndroidResource Include="Resources\Drawable\segmented_button_left.xml" />
     <AndroidResource Include="Resources\Drawable\segmented_button_right.xml" />
     <AndroidResource Include="Resources\Drawable\segmented_button_text_color.xml" />
@@ -322,7 +321,6 @@
     <AndroidResource Include="Resources\Drawable\completed.png" />
     <AndroidResource Include="Resources\Drawable\scheduled.png" />
     <Compile Include="Resources\Resource.Designer.cs" />
-    <Compile Include="Controls\Widgets\CreditCardButton.cs" />
     <Compile Include="Controls\Widgets\ListViewCell.cs" />
     <Compile Include="Controls\Widgets\EditTextLeftImage.cs" />
     <Compile Include="Controls\Widgets\BindableSelectionButton.cs" />
