@@ -972,6 +972,9 @@
   <data name="PanelMenuViewUpdateProfileText" xml:space="preserve">
     <value>Update Account</value>
   </data>
+  <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
+    <value>Payment Info</value>
+  </data>
   <data name="PanelMenuViewTutorialText" xml:space="preserve">
     <value>View Tutorial</value>
   </data>

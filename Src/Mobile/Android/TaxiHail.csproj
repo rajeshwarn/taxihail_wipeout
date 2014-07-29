@@ -233,7 +233,6 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\closeButton.png" />
     <AndroidResource Include="Resources\Drawable\right_arrow_light.png" />
-    <Compile Include="Activities\Setting\CreditCardsListActivity.cs" />
     <Compile Include="Activities\Setting\CreditCardAddActivity.cs" />
     <AndroidResource Include="Resources\Drawable\amex.png" />
     <AndroidResource Include="Resources\Drawable\mastercard.png" />
@@ -253,7 +252,6 @@
     <AndroidResource Include="Resources\Drawable\visa_electron.png" />
     <Compile Include="Activities\Book\BookPaymentActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardAdd.axml" />
-    <AndroidResource Include="Resources\Layout\View_Payments_CreditCardsList.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_BookPayment.axml" />
     <Compile Include="Binding\CustomBindings.cs" />
     <Compile Include="Binding\TextViewBinding.cs" />
@@ -727,11 +725,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\TutorialListItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Layout\CreditCardListItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

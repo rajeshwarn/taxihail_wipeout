@@ -7,6 +7,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using Params = System.Collections.Generic.Dictionary<string, string>;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -23,7 +25,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IMvxWebBrowserTask browserTask, 
 			IOrderWorkflowService orderWorkflowService,
 			IAccountService accountService,
-			IPhoneService phoneService)
+			IPhoneService phoneService,
+			IPaymentService paymentService)
         {
             _parent = parent;
 			_browserTask = browserTask;
@@ -32,10 +35,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService = accountService;
 			_phoneService = phoneService;
 
+			PaymentSettings = paymentService.GetPaymentSettings();
+
 			ItemMenuList = new ObservableCollection<ItemMenuModel>();
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile});
+			if (PaymentSettings.IsPayInTaxiEnabled)
+				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation});
 			if (Settings.TutorialEnabled)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial});
 			if (!Settings.HideCallDispatchButton)
@@ -45,7 +52,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewSignOutText"], NavigationCommand = SignOut});
         }
-		
+
+		public ClientPaymentSettings PaymentSettings { get; set; }
+
 		private ObservableCollection<ItemMenuModel> _itemMenuList;
 		public ObservableCollection<ItemMenuModel> ItemMenuList
 		{
@@ -172,6 +181,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+
+		public ICommand NavigateToPaymentInformation
+		{
+			get 
+			{
+				return this.GetCommand(() =>
+				{
+					MenuIsOpen = false;
+					ShowViewModel<CreditCardAddViewModel>();
+				});
+			}
+		}
 
 		public ICommand NavigateToAboutUs
         {

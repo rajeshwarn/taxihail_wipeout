@@ -360,10 +360,6 @@
     <Compile Include="Views\CreditCardAddView.designer.cs">
       <DependentUpon>CreditCardAddView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\CreditCardsListView.cs" />
-    <Compile Include="Views\CreditCardsListView.designer.cs">
-      <DependentUpon>CreditCardsListView.cs</DependentUpon>
-    </Compile>
     <Compile Include="PlatformIntegration\PushNotificationService.cs" />
     <Compile Include="Binding\MvxUITextViewTargetBinding.cs" />
     <Compile Include="Extensions\UIScrollViewerExtensions.cs" />
@@ -411,7 +407,6 @@
       <DependentUpon>RideSummaryView.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Widgets\BindableTableViewSource.cs" />
-    <Compile Include="Controls\Widgets\SingleLinePictureCell.cs" />
     <Compile Include="Views\AboutUsView.xib.cs">
       <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
@@ -549,7 +544,6 @@
     <InterfaceDefinition Include="Views\CreateAccountView.xib" />
     <InterfaceDefinition Include="Views\ResetPasswordView.xib" />
     <InterfaceDefinition Include="Views\CreditCardAddView.xib" />
-    <InterfaceDefinition Include="Views\CreditCardsListView.xib" />
     <InterfaceDefinition Include="Views\Payments\PayPalView.xib" />
     <InterfaceDefinition Include="Views\TermsAndConditionsView.xib" />
     <InterfaceDefinition Include="Views\RideSummaryView.xib" />

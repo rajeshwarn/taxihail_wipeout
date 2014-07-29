@@ -165,50 +165,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             return CreditCards.Select(x=> new ListItem<Guid> { Id = x.CreditCardId, Display = x.FriendlyName }).ToArray();
         }
-
-		public ICommand NavigateToCreditCardsList
-        {
-			get 
-			{
-			    return this.GetCommand (()=>
-				{
-					if(CreditCards.Count == 0)
-					{
-							ShowSubViewModel<CreditCardAddViewModel,CreditCardInfos>(new { showInstructions = false }, newCreditCard => InvokeOnMainThread(()=>
-						{
-							CreditCards.Add (new CreditCardDetails
-								{
-								   CreditCardCompany = newCreditCard.CreditCardCompany,
-								   CreditCardId = newCreditCard.CreditCardId,
-								   FriendlyName = newCreditCard.FriendlyName,
-								   Last4Digits = newCreditCard.Last4Digits
-								});
-							SelectedCreditCardId = newCreditCard.CreditCardId;
-							//save as default if none
-							if(!_accountService.CurrentAccount.DefaultCreditCard.HasValue)
-							{
-								var account = _accountService.CurrentAccount;
-								account.DefaultCreditCard = newCreditCard.CreditCardId;
-								_accountService.UpdateSettings(account.Settings, newCreditCard.CreditCardId, account.DefaultTipPercent);
-							}
-						}));
-					}
-					else
-					{
-						ShowSubViewModel<CreditCardsListViewModel, Guid>(null, result => 
-						{
-							if(result != default(Guid))
-							{
-								SelectedCreditCardId = result;
-
-								//Reload credit cards in case the credit card list has changed (add/remove)
-								LoadCreditCards();
-							}
-               			});
-					}
-				});
-			}
-		}
     
         public Task LoadCreditCards ()
         {

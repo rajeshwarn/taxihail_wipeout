@@ -494,3 +494,4 @@
 "View_AccountConfirmation_Label_Code"="Code";
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
 "AccountConfirmation_ErrorTitle"="Cannot confirm account";
+"PanelMenuViewPaymentInfoText"="Payment Info";

@@ -119,11 +119,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				CreditCardNumber = DummyVisa.BraintreeNumber;
 			}
-			else{
+			else
+			{
 				CreditCardNumber = DummyVisa.CmtNumber;
 			}
-			Data.CCV = DummyVisa.AvcCvvCvv2+"";
 
+			Data.CCV = DummyVisa.AvcCvvCvv2+"";
 			Data.ExpirationMonth = DummyVisa.ExpirationDate.Month+"";
 			Data.ExpirationYear = DummyVisa.ExpirationDate.Year + "";
 			RaisePropertyChanged(() => CreditCardNumber);
@@ -248,7 +249,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-        public int? ExpirationYear {
+        public int? ExpirationYear 
+		{
             get 
 			{
                 return string.IsNullOrEmpty(Data.ExpirationYear) 
@@ -311,9 +313,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public ICommand SetCreditCardCompanyCommand
         {
-            get { return this.GetCommand<object>(item => {
+            get 
+			{ 
+				return this.GetCommand<object>(item => {
 					Data.CreditCardCompany = item.ToSafeString();	
-		}); } }
+				}); 
+			} 
+		}
 
 		public ICommand AddCreditCardCommand { get { return this.GetCommand(() => AddCrediCard()); } }
 
@@ -333,7 +339,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				return;
             }
 
-            if (!IsValidate (Data.CardNumber)) 
+			if (!IsValid (Data.CardNumber)) 
 			{
                 this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNUmber"]);
 				return;
@@ -381,7 +387,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-        private bool IsValidate(string cardNumber)
+        private bool IsValid(string cardNumber)
         {
             var number = new byte[16]; // number to validate
             

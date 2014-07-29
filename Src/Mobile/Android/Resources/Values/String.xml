@@ -497,4 +497,5 @@
   <string name="AccountConfirmation_ErrorTitle">Cannot confirm account</string>
   <string name="ServiceErrorCreateAccount_CannotSendSMS">The confirmation code is incorrect.</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
+  <string name="PanelMenuViewPaymentInfoText">Payment Info</string>
 </resources>
