@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Commands;
@@ -108,7 +109,9 @@ namespace apcurium.MK.Booking.Api.Services
                 if (!accountActivationDisabled)
                 {
 
-                    if (smsConfirmationEnabled)
+                    if (smsConfirmationEnabled
+                        && (request.ActivationMethod == null  
+                                || request.ActivationMethod == ActivationMethod.Sms))
                     {
                         _commandBus.Send(new SendAccountConfirmationSMS
                         {

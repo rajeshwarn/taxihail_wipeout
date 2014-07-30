@@ -35,5 +35,10 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public bool AccountActivationDisabled { get; set; }
 
 		public bool IsConfirmed { get; set; }
+
+        /// <summary>
+        /// if null we will use the company settings to know if we need to send an email or a sms
+        /// </summary>
+        public ActivationMethod? ActivationMethod { get; set; }
     }
 }

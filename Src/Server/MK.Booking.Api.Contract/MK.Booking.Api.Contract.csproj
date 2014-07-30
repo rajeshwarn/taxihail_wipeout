@@ -81,6 +81,7 @@
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\AccountChargeRequest.cs" />
+    <Compile Include="Requests\ActivationMethod.cs" />
     <Compile Include="Requests\AddressHistoryRequest.cs" />
     <Compile Include="Requests\AccountOrderListRequest.cs" />
     <Compile Include="BaseDTO.cs" />
