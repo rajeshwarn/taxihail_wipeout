@@ -17,5 +17,8 @@ namespace apcurium.MK.Booking.Events
         public string ExpirationMonth { get; set; }
         public string ExpirationYear { get; set; }
         public string CreditCardCompany { get; set; }
+
+        // not used anymore but to prevent incompatible event deserialization in dbinit
+        public string FriendlyName { get; set; } 
     }
 }
