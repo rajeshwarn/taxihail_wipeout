@@ -465,3 +465,5 @@
 "WarningLocationServiceTitle"="Avertissement";
 "WarningTitle"="Avertissement";
 "YesButton"="Oui";
+"DeleteCreditCardTitle"="Supprimer la carte";
+"DeleteCreditCard"="Supprimer la carte associée à ce compte?";

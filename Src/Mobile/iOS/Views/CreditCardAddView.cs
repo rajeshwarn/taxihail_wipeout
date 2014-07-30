@@ -35,6 +35,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.BackgroundColor = UIColor.FromRGB (242, 242, 242);
 
+			btnDeleteCard.SetTitle(Localize.GetValue("DeleteCreditCardTitle"), UIControlState.Normal);
+
             lblInstructions.Text = Localize.GetValue("CreditCardInstructions");
             lblNameOnCard.Text = Localize.GetValue("CreditCardName");
             lblCardNumber.Text = Localize.GetValue("CreditCardNumber");
@@ -67,17 +69,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 btnScanCard.RemoveFromSuperview();
             }
-
+				
             if (!ViewModel.ShowInstructions)
             {
                 lblInstructions.RemoveFromSuperview();
             }
+				
+			FlatButtonStyle.Red.ApplyTo (btnDeleteCard);
 
 			var set = this.CreateBindingSet<CreditCardAddView, CreditCardAddViewModel>();
 
             set.Bind(NavigationItem.RightBarButtonItem)
                 .For("Clicked")
-                .To(vm => vm.SaveCreditCardCommand);
+				.To(vm => vm.SaveCreditCardCommand);
+
+			set.Bind(btnDeleteCard)
+				.For("TouchUpInside")
+				.To(vm => vm.DeleteCreditCardCommand);
+
+			set.Bind(btnDeleteCard)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsEditing)
+				.WithConversion("BoolInverter");
 
             set.Bind(txtNameOnCard)
 				.For(v => v.Text)

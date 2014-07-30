@@ -495,3 +495,5 @@
 "AccountConfirmation_ErrorTitle"="Cannot confirm account";
 "PanelMenuViewPaymentInfoText"="Payment Info";
 "View_CreditCard"="Credit Card";
+"DeleteCreditCardTitle"="Delete credit card";
+"DeleteCreditCard"="Delete the credit card registered to this account?";

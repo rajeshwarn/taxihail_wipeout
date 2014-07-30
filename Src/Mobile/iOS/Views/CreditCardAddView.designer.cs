@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class CreditCardAddView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnDeleteCard { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnScanCard { get; set; }
 
 		[Outlet]
@@ -108,6 +111,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtNameOnCard != null) {
 				txtNameOnCard.Dispose ();
 				txtNameOnCard = null;
+			}
+
+			if (btnDeleteCard != null) {
+				btnDeleteCard.Dispose ();
+				btnDeleteCard = null;
 			}
 		}
 	}
