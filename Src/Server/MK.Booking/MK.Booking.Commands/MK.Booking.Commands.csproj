@@ -87,7 +87,6 @@
     <Compile Include="HideRatingType.cs" />
     <Compile Include="RateOrder.cs" />
     <Compile Include="RegisterDeviceForPushNotifications.cs" />
-    <Compile Include="RemoveCreditCard.cs" />
     <Compile Include="RemovePopularAddress.cs" />
     <Compile Include="SendBookingConfirmationEmail.cs" />
     <Compile Include="CreateCompany.cs" />
