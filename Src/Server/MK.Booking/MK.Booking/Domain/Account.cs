@@ -205,15 +205,17 @@ namespace apcurium.MK.Booking.Domain
         }
 
 
-        public void AddCreditCard(string creditCardCompany, Guid creditCardId, string friendlyName, string last4Digits,
-            string token)
+        public void AddCreditCard(string creditCardCompany, Guid creditCardId, string nameOnCard, 
+            string last4Digits, string expirationMonth, string expirationYear, string token)
         {
             Update(new CreditCardAdded
             {
                 CreditCardCompany = creditCardCompany,
                 CreditCardId = creditCardId,
-                FriendlyName = friendlyName,
+                NameOnCard = nameOnCard,
                 Last4Digits = last4Digits,
+                ExpirationMonth = expirationMonth,
+                ExpirationYear = expirationYear,
                 Token = token
             });
 

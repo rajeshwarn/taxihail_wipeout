@@ -45,10 +45,10 @@ namespace apcurium.MK.Booking.Api.Services
         public object Delete(CreditCardRequest request)
         {
             var session = this.GetSession();
-            var command = new RemoveCreditCard
+
+            var command = new DeleteAccountCreditCards
             {
-                AccountId = new Guid(session.UserAuthId),
-                CreditCardId = request.CreditCardId
+                AccountId = new Guid(session.UserAuthId)
             };
 
             _bus.Send(command);

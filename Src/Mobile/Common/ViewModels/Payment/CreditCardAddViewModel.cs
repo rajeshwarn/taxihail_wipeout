@@ -141,7 +141,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				}
 			}
         }
-			
+
+	    public string NameOnCreditCard
+	    {
+            get { return Data.NameOnCard; }
+	        set
+	        {
+	            if (Data.NameOnCard != value)
+	            {
+                    Data.NameOnCard = value;
+                    RaisePropertyChanged();
+	            }
+	        }
+	    }
+
         //todo: refactorer le setter
         public string CreditCardNumber
         {
@@ -310,11 +323,39 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public CreditCardInfos Data { get; set; }
 
-		public bool IsEditing { get; set; }
+	    private bool _isEditing;
 
-		public ICommand SaveCreditCardCommand { get { return this.GetCommand(() => SaveCrediCard()); } }
+	    public bool IsEditing
+	    {
+            get { return _isEditing; }
+	        set
+	        {
+	            if (_isEditing != value)
+	            {
+                    _isEditing = value;
+                    RaisePropertyChanged(()=> IsEditing);
+	            }
+	        }
+	    }
 
-		private async void SaveCrediCard ()
+		public ICommand SaveCreditCardCommand { get { return this.GetCommand(() => SaveCreditCard()); } }
+
+        public ICommand DeleteCreditCardCommand { get { return this.GetCommand(() => DeleteCreditCard()); } }
+
+        private void DeleteCreditCard()
+        {
+            // TODO: Localize strings
+            this.Services().Message.ShowMessage("Delete credit card", "Delete the credit card registered to this account?",
+                this.Services().Localize["Delete"], () =>
+                {
+                    _accountService.RemoveCreditCard();
+                    this.Services().Cache.Clear("Account.CreditCards");
+                    ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = ShowInstructions ? bool.TrueString : bool.FalseString });
+                },
+                this.Services().Localize["Cancel"], () => { });
+        }
+
+		private async void SaveCreditCard ()
         {
             Data.CreditCardCompany = CreditCardTypeName;
             if (Params.Get (Data.NameOnCard, Data.CardNumber, 
@@ -365,7 +406,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
 			finally 
 			{
-				this.Services().Cache.Clear("Account.CreditCards");                
+				this.Services().Cache.Clear("Account.CreditCards");
 			}
         }
 

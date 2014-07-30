@@ -55,8 +55,14 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(AddCreditCard command)
         {
             var account = _repository.Find(command.AccountId);
-            account.AddCreditCard(command.CreditCardCompany, command.CreditCardId, command.FriendlyName,
-                command.Last4Digits, command.Token);
+            account.AddCreditCard(
+                command.CreditCardCompany,
+                command.CreditCardId,
+                command.NameOnCard,
+                command.Last4Digits,
+                command.ExpirationMonth,
+                command.ExpirationYear,
+                command.Token);
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -71,23 +77,6 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
             account.ConfirmAccount(command.ConfimationToken);
-            _repository.Save(account, command.Id.ToString());
-        }
-
-        public void Handle(DeleteAllCreditCards command)
-        {
-            foreach (var accountId in command.AccountIds)
-            {
-                var account = _repository.Find(accountId);
-                account.RemoveAllCreditCards();
-                _repository.Save(account, command.Id.ToString());
-            }
-        }
-
-        public void Handle(DeleteAccountCreditCards command)
-        {
-            var account = _repository.Find(command.AccountId);
-            account.RemoveAllCreditCards();
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -146,6 +135,23 @@ namespace apcurium.MK.Booking.CommandHandlers
             var account = _repository.Find(command.AccountId);
             account.RemoveCreditCard(command.CreditCardId);
             _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(DeleteAccountCreditCards command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.RemoveAllCreditCards();
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(DeleteAllCreditCards command)
+        {
+            foreach (var accountId in command.AccountIds)
+            {
+                var account = _repository.Find(accountId);
+                account.RemoveAllCreditCards();
+                _repository.Save(account, command.Id.ToString());
+            }
         }
 
         public void Handle(ResetAccountPassword command)

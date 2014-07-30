@@ -178,6 +178,17 @@
                     local:MvxBind="Click SaveCreditCardCommand"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp" />
+                <Button
+                    style="@style/ButtonActionRedStyle"
+                    android:id="@+id/DeleteCreditCardButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/HeightButton"
+                    android:singleLine="true"
+                    android:lines="1"
+                    android:text="Delete Credit Card"
+                    local:MvxBind="Click DeleteCreditCardCommand; Visibility IsEditing, Converter=Visibility"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

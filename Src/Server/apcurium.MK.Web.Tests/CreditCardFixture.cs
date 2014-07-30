@@ -32,7 +32,6 @@ namespace apcurium.MK.Web.Tests
         public async void AddCreditCard()
         {
             const string creditCardComapny = "visa";
-            const string friendlyName = "work credit card";
             var creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
             const string token = "jjwcnSLWm85";
@@ -40,7 +39,6 @@ namespace apcurium.MK.Web.Tests
             await AccountService.AddCreditCard(new CreditCardRequest
             {
                 CreditCardCompany = creditCardComapny,
-                FriendlyName = friendlyName,
                 CreditCardId = creditCardId,
                 Last4Digits = last4Digits,
                 Token = token
@@ -51,7 +49,6 @@ namespace apcurium.MK.Web.Tests
             Assert.NotNull(creditcard);
             Assert.AreEqual(TestAccount.Id, creditcard.AccountId);
             Assert.AreEqual(creditCardComapny, creditcard.CreditCardCompany);
-            Assert.AreEqual(friendlyName, creditcard.FriendlyName);
             Assert.AreEqual(creditCardId, creditcard.CreditCardId);
             Assert.AreEqual(last4Digits, creditcard.Last4Digits);
             Assert.AreEqual(token, creditcard.Token);
@@ -65,9 +62,11 @@ namespace apcurium.MK.Web.Tests
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), client);
 
             const string creditCardComapny = "visa";
-            const string friendlyName = "work credit card";
+            const string nameOnCard = "Bob";
             var creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
+            const string expirationMonth = "5";
+            const string expirationYear = "2020";
 
             var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt);
             var tokenResponse = await client.Tokenize(cc.Discover.Number, cc.Discover.ExpirationDate, cc.Discover.AvcCvvCvv2 + "");
@@ -75,13 +74,15 @@ namespace apcurium.MK.Web.Tests
             await sut.AddCreditCard(new CreditCardRequest
             {
                 CreditCardCompany = creditCardComapny,
-                FriendlyName = friendlyName,
+                NameOnCard = nameOnCard,
                 CreditCardId = creditCardId,
                 Last4Digits = last4Digits,
+                ExpirationMonth = expirationMonth,
+                ExpirationYear = expirationYear,
                 Token = tokenResponse.CardOnFileToken
             });
 
-            await sut.RemoveCreditCard(creditCardId, tokenResponse.CardOnFileToken);
+            await sut.RemoveCreditCard();
 
             var creditCards = await sut.GetCreditCards();
             Assert.IsEmpty(creditCards.Where(x => x.CreditCardId == creditCardId));

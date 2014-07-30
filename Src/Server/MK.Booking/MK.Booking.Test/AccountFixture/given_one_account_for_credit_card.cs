@@ -40,18 +40,22 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         public void when_add_first_credit_card()
         {
             const string creditCardCompany = "visa";
-            const string friendlyName = "work credit card";
+            const string nameOnCard = "Bob";
             var creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
+            const string expirationMonth = "5";
+            const string expirationYear = "2020";
             const string token = "jjwcnSLWm85";
 
             _sut.When(new AddCreditCard
             {
                 AccountId = _accountId,
                 CreditCardCompany = creditCardCompany,
-                FriendlyName = friendlyName,
+                NameOnCard = nameOnCard,
                 CreditCardId = creditCardId,
                 Last4Digits = last4Digits,
+                ExpirationMonth = expirationMonth,
+                ExpirationYear = expirationYear,
                 Token = token,
                 Id = Guid.NewGuid()
             });
@@ -59,9 +63,11 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             var @event = _sut.ThenHasOne<CreditCardAdded>();
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual(creditCardCompany, @event.CreditCardCompany);
-            Assert.AreEqual(friendlyName, @event.FriendlyName);
+            Assert.AreEqual(nameOnCard, @event.NameOnCard);
             Assert.AreEqual(creditCardId, @event.CreditCardId);
             Assert.AreEqual(last4Digits, @event.Last4Digits);
+            Assert.AreEqual(expirationMonth, @event.ExpirationMonth);
+            Assert.AreEqual(expirationYear, @event.ExpirationYear);
             Assert.AreEqual(token, @event.Token);
 
             var secondEvent = _sut.ThenHasOne<PaymentProfileUpdated>();
@@ -73,9 +79,11 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         public void when_add_second_credit_card()
         {
             const string creditCardCompany = "visa";
-            const string friendlyName = "work credit card";
+            const string nameOnCard = "Bob";
             var creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
+            const string expirationMonth = "5";
+            const string expirationYear = "2020";
             const string token = "jjwcnSLWm85";
 
             _sut.Given(new CreditCardAdded {SourceId = _accountId});
@@ -84,9 +92,11 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             {
                 AccountId = _accountId,
                 CreditCardCompany = creditCardCompany,
-                FriendlyName = friendlyName,
                 CreditCardId = creditCardId,
+                NameOnCard = nameOnCard,
                 Last4Digits = last4Digits,
+                ExpirationMonth = expirationMonth,
+                ExpirationYear = expirationYear,
                 Token = token,
                 Id = Guid.NewGuid()
             });
@@ -94,9 +104,11 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             var @event = _sut.ThenHasSingle<CreditCardAdded>();
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual(creditCardCompany, @event.CreditCardCompany);
-            Assert.AreEqual(friendlyName, @event.FriendlyName);
+            Assert.AreEqual(nameOnCard, @event.NameOnCard);
             Assert.AreEqual(creditCardId, @event.CreditCardId);
             Assert.AreEqual(last4Digits, @event.Last4Digits);
+            Assert.AreEqual(expirationMonth, @event.ExpirationMonth);
+            Assert.AreEqual(expirationYear, @event.ExpirationYear);
             Assert.AreEqual(token, @event.Token);
         }
 
