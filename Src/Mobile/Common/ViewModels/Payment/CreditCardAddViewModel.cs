@@ -129,10 +129,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					CreditCardId = creditCard.CreditCardId,
 					CardNumber = "************" + creditCard.Last4Digits,
 					NameOnCard = creditCard.NameOnCard,
-					CreditCardCompany = creditCard.CreditCardCompany,
-					ExpirationMonth = creditCard.ExpirationMonth,
-					ExpirationYear = creditCard.ExpirationYear
+					CreditCardCompany = creditCard.CreditCardCompany
 				};
+
+				ExpirationMonth = string.IsNullOrWhiteSpace(creditCard.ExpirationMonth) ? 1 : int.Parse(creditCard.ExpirationMonth);
+				ExpirationYear = string.IsNullOrWhiteSpace(creditCard.ExpirationYear) ? DateTime.Today.Year : int.Parse(creditCard.ExpirationYear);
 
 				var id = CreditCardCompanies.Find(x => x.Display == creditCard.CreditCardCompany).Id;
 				if (id != null)
