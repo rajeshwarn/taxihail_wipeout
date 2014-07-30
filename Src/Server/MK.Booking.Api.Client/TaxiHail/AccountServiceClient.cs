@@ -103,12 +103,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task AddCreditCard(CreditCardRequest creditCardRequest)
         {
-            return Client.PostAsync<string>("/account/creditcard", creditCardRequest);
+            return Client.PostAsync<string>("/account/creditcards", creditCardRequest);
         }
 
         public Task<IEnumerable<CreditCardDetails>> GetCreditCards()
         {
-            return Client.GetAsync<IEnumerable<CreditCardDetails>>("/account/creditcard");
+            return Client.GetAsync<IEnumerable<CreditCardDetails>>("/account/creditcards");
         }
 
         public async Task RemoveCreditCard()
@@ -124,7 +124,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             }
 
             // server-side, this should delete every card of the user
-            await Client.DeleteAsync<string>("/account/creditcard");
+            await Client.DeleteAsync<string>("/account/creditcards");
         }
 
         public Task<Account> GetTestAccount(int index)

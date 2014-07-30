@@ -141,84 +141,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				}
 			}
         }
-
-	    public string NameOnCreditCard
-	    {
-            get { return Data.NameOnCard; }
-	        set
-	        {
-	            if (Data.NameOnCard != value)
-	            {
-                    Data.NameOnCard = value;
-                    RaisePropertyChanged();
-	            }
-	        }
-	    }
-
-        //todo: refactorer le setter
+			
         public string CreditCardNumber
         {
             get{ return Data.CardNumber; }
             set
             {
                 Data.CardNumber = value;
+				DetermineCompany (value);
 
-				var visaRgx = new Regex(VisaPattern, RegexOptions.IgnoreCase);
-				var matches = visaRgx.Matches(Data.CardNumber);
-
-                if (matches.Count > 0)
-                {
-                    if (_visaElectronFirstNumbers.Any(x => Data.CardNumber.StartsWith(x)) &&
-                        Data.CardNumber.Count() == 16)
-                    {
-                        var id = CreditCardCompanies.Find(x => x.Display == VisaElectron).Id;
-                        if (id != null)
-                        {
-                            CreditCardType = (int) id;
-                        }
-                    }
-                    else
-                    {
-                        var id = CreditCardCompanies.Find(x => x.Display == Visa).Id;
-                        if (id != null)
-                        {
-                            CreditCardType = (int) id;
-                        }
-                    }
-                }
-                else
-                {
-					var masterRgx = new Regex(MasterPattern, RegexOptions.IgnoreCase);
-                    matches = masterRgx.Matches(Data.CardNumber);
-                    if (matches.Count > 0)
-                    {
-                        var id = CreditCardCompanies.Find(x=> x.Display == MasterCard).Id;
-                        if (id != null)
-                            CreditCardType = (int)id;
-                    }
-                    else
-                    {
-                        var amexRgx = new Regex(AmexPattern, RegexOptions.IgnoreCase);
-                        matches = amexRgx.Matches(Data.CardNumber);
-                        if (matches.Count > 0)
-                        {
-                            var id = CreditCardCompanies.Find(x => x.Display == Amex).Id;
-                            if (id != null)
-                                CreditCardType = (int)id;
-                        }
-                        else
-                        {
-                            var i = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
-                            if (i != null)
-                                CreditCardType = (int)i;
-                        }
-                    }
-                }
 				RaisePropertyChanged();
             }
         }
 			
-        int _creditCardType;
+        private int _creditCardType;
         public int CreditCardType 
 		{
 			get { return _creditCardType; }
@@ -304,27 +240,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         }
 
         public List<ListItem> CreditCardCompanies { get; set; }
-
         public List<ListItem> ExpirationYears { get; set; }
-
         public List<ListItem> ExpirationMonths { get; set; }
-
-		public ICommand SetCreditCardCompanyCommand
-        {
-            get 
-			{ 
-				return this.GetCommand<object>(item => {
-					Data.CreditCardCompany = item.ToSafeString();	
-				}); 
-			} 
-		}
-
 		public bool ShowInstructions { get; set; }
 
-		public CreditCardInfos Data { get; set; }
+		private CreditCardInfos _data;
+		public CreditCardInfos Data 
+		{ 
+			get { return _data; }
+			set
+			{
+				_data = value;
+				RaisePropertyChanged ();
+				RaisePropertyChanged (() => CreditCardNumber);
+			}
+		}
 
 	    private bool _isEditing;
-
 	    public bool IsEditing
 	    {
             get { return _isEditing; }
@@ -333,14 +265,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	            if (_isEditing != value)
 	            {
                     _isEditing = value;
-                    RaisePropertyChanged(()=> IsEditing);
+                    RaisePropertyChanged();
 	            }
 	        }
 	    }
-
+			
 		public ICommand SaveCreditCardCommand { get { return this.GetCommand(() => SaveCreditCard()); } }
-
-        public ICommand DeleteCreditCardCommand { get { return this.GetCommand(() => DeleteCreditCard()); } }
+		public ICommand DeleteCreditCardCommand { get { return this.GetCommand(() => DeleteCreditCard()); } }
 
         private void DeleteCreditCard()
         {
@@ -439,6 +370,61 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
             return (sum % 10 == 0);
         }
+
+		private void DetermineCompany(string cardNumber)
+		{
+			var visaRgx = new Regex(VisaPattern, RegexOptions.IgnoreCase);
+			var matches = visaRgx.Matches(cardNumber);
+
+			if (matches.Count > 0)
+			{
+				if (_visaElectronFirstNumbers.Any(x => cardNumber.StartsWith(x)) &&
+					cardNumber.Count() == 16)
+				{
+					var id = CreditCardCompanies.Find(x => x.Display == VisaElectron).Id;
+					if (id != null)
+					{
+						CreditCardType = (int) id;
+					}
+				}
+				else
+				{
+					var id = CreditCardCompanies.Find(x => x.Display == Visa).Id;
+					if (id != null)
+					{
+						CreditCardType = (int) id;
+					}
+				}
+			}
+			else
+			{
+				var masterRgx = new Regex(MasterPattern, RegexOptions.IgnoreCase);
+				matches = masterRgx.Matches(cardNumber);
+				if (matches.Count > 0)
+				{
+					var id = CreditCardCompanies.Find(x=> x.Display == MasterCard).Id;
+					if (id != null)
+						CreditCardType = (int)id;
+				}
+				else
+				{
+					var amexRgx = new Regex(AmexPattern, RegexOptions.IgnoreCase);
+					matches = amexRgx.Matches(cardNumber);
+					if (matches.Count > 0)
+					{
+						var id = CreditCardCompanies.Find(x => x.Display == Amex).Id;
+						if (id != null)
+							CreditCardType = (int)id;
+					}
+					else
+					{
+						var i = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
+						if (i != null)
+							CreditCardType = (int)i;
+					}
+				}
+			}
+		}
     }
 }
 
