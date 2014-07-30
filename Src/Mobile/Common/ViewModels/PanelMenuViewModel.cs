@@ -35,13 +35,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService = accountService;
 			_phoneService = phoneService;
 
-			PaymentSettings = paymentService.GetPaymentSettings();
+			var payInTaxiEnabled = false;
+			try
+			{
+				var paymentSettings = paymentService.GetPaymentSettings();
+				payInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
+			}
+			catch
+			{
+				// if we get an unauthorized error, don't throw here, something else will tell the user elegantly
+			}
 
 			ItemMenuList = new ObservableCollection<ItemMenuModel>();
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile});
-			if (PaymentSettings.IsPayInTaxiEnabled)
+			if (payInTaxiEnabled)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation});
 			if (Settings.TutorialEnabled)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial});
@@ -52,8 +61,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewSignOutText"], NavigationCommand = SignOut});
         }
-
-		public ClientPaymentSettings PaymentSettings { get; set; }
 
 		private ObservableCollection<ItemMenuModel> _itemMenuList;
 		public ObservableCollection<ItemMenuModel> ItemMenuList
