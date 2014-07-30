@@ -498,4 +498,6 @@
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
   <string name="PanelMenuViewPaymentInfoText">Payment Info</string>
   <string name="View_CreditCard">Credit Card</string>
+  <string name="DeleteCreditCard">Delete the credit card registered to this account?</string>
+  <string name="DeleteCreditCardTitle">Delete credit card</string>
 </resources>

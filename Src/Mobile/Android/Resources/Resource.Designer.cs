@@ -3898,6 +3898,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0500a6
 			public const int DeleteBookItButtonImageNamePressed = 2131034278;
 			
+			// aapt resource value: 0x7f050239
+			public const int DeleteCreditCard = 2131034681;
+			
+			// aapt resource value: 0x7f05023a
+			public const int DeleteCreditCardTitle = 2131034682;
+			
 			// aapt resource value: 0x7f05021d
 			public const int Destination = 2131034653;
 			
@@ -4009,14 +4015,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050109
 			public const int GooglePlayServicesNotAvailableMessage = 2131034377;
 			
-			// aapt resource value: 0x7f050239
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034681;
+			// aapt resource value: 0x7f05023b
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034683;
 			
 			// aapt resource value: 0x7f050069
 			public const int GooglePlayServicesNotAvailableTitle = 2131034217;
 			
-			// aapt resource value: 0x7f05023a
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034682;
+			// aapt resource value: 0x7f05023c
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034684;
 			
 			// aapt resource value: 0x7f05005e
 			public const int HistoryDetailAptRingCodeLabel = 2131034206;

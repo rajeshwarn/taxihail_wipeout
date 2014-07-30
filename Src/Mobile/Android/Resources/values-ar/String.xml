@@ -471,4 +471,6 @@
   <string name="Error_AccountPaymentQuestionRequiredMessage">يجب الإجابة على جميع الأسئلة للإستمرار</string>
   <string name="View_UpdatedTermsAndConditions">أحكام و شروط جديدة</string>
   <string name="View_CreditCard">بطاقة إئتمان</string>
+  <string name="DeleteCreditCardTitle">حذف بطاقة الائتمان</string>
+  <string name="DeleteCreditCard">حذف بطاقة الائتمان المسجلة في هذا الحساب؟</string>
 </resources>

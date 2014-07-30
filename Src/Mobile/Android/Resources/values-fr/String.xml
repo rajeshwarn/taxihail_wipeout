@@ -468,4 +468,6 @@
   <string name="WarningLocationServiceTitle">Avertissement</string>
   <string name="WarningTitle">Avertissement</string>
   <string name="YesButton">Oui</string>
+  <string name="DeleteCreditCard">Supprimer la carte associée à ce compte?</string>
+  <string name="DeleteCreditCardTitle">Supprimer la carte</string>
 </resources>

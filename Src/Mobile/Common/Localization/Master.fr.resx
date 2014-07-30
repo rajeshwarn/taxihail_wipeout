@@ -1518,4 +1518,10 @@
   <data name="YesButton" xml:space="preserve">
     <value>Oui</value>
   </data>
+  <data name="DeleteCreditCard" xml:space="preserve">
+    <value>Supprimer la carte associée à ce compte?</value>
+  </data>
+  <data name="DeleteCreditCardTitle" xml:space="preserve">
+    <value>Supprimer la carte</value>
+  </data>
 </root>

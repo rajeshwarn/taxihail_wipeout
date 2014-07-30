@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ApplicationName" xml:space="preserve">
-  	<value>TaxiHail</value>
+    <value>TaxiHail</value>
   </data>
   <data name="GoogleMapKey" xml:space="preserve">
-  	<value>0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</value>
+    <value>0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>English</value>
@@ -208,7 +208,7 @@
     <value>Accept</value>
   </data>
   <data name="TermsAndConditionsAcknowledgment" xml:space="preserve">
-	<value>I acknowledge that I have read and understood the Terms and Conditions.</value>
+    <value>I acknowledge that I have read and understood the Terms and Conditions.</value>
   </data>
   <data name="AcceptButton" xml:space="preserve">
     <value>Accept</value>
@@ -222,7 +222,7 @@
   <data name="app_id" xml:space="preserve">
     <value>134284363380764</value>
   </data>
- 	<data name="ChangeServer" xml:space="preserve">
+  <data name="ChangeServer" xml:space="preserve">
     <value>Change server</value>
   </data>
   <data name="Facebook" xml:space="preserve">
@@ -405,7 +405,7 @@
   <data name="LocationDetailRingCodeLabel" xml:space="preserve">
     <value>Entry code</value>
   </data>
-	<data name="Rebook" xml:space="preserve">
+  <data name="Rebook" xml:space="preserve">
     <value>Rebook trip</value>
   </data>
   <data name="ApartmentLabel" xml:space="preserve">
@@ -417,7 +417,7 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
-<data name="Delete" xml:space="preserve">
+  <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
   <data name="InvalidAddressTextEdit" xml:space="preserve">
@@ -604,19 +604,19 @@
     <value>View Status</value>
   </data>
   <data name="ResetPasswordTitleText" xml:space="preserve">
-  	<value>Forgot your password?</value>
+    <value>Forgot your password?</value>
   </data>
   <data name="ResetPasswordSubtitleText" xml:space="preserve">
-   	<value>Enter your email and we'll send you a new one.</value>
+    <value>Enter your email and we'll send you a new one.</value>
   </data>
- <data name="ResetPasswordEmailPlaceHolder" xml:space="preserve">
+  <data name="ResetPasswordEmailPlaceHolder" xml:space="preserve">
     <value>Email</value>
   </data>
   <data name="LoginForgotPassword" xml:space="preserve">
-   	<value>Forgot your password?</value>
+    <value>Forgot your password?</value>
   </data>
   <data name="LoginForgotPasswordDetail" xml:space="preserve">
-   	<value>Enter your email and we'll send you a new one.</value>
+    <value>Enter your email and we'll send you a new one.</value>
   </data>
   <data name="TechSupportEmailTitle" xml:space="preserve">
     <value>Support Application Mobile</value>
@@ -1272,7 +1272,6 @@
   <data name="LargeBagsLabel" xml:space="preserve">
     <value>Large Bags</value>
   </data>
-
   <data name="View_RideSummary" xml:space="preserve">
     <value>Ride Summary</value>
   </data>
@@ -1297,7 +1296,6 @@
   <data name="ReceiptSent" xml:space="preserve">
     <value>Receipt sent</value>
   </data>
-
   <data name="CmtTransactionSuccessMessage" xml:space="preserve">
     <value>Confirmation sent to the driver (Authorization Code:  {0})</value>
   </data>
@@ -1462,12 +1460,6 @@
   </data>
   <data name="View_Payments_CmtRideLinqChangePaymentTitle" xml:space="preserve">
     <value>Change Payment Info</value>
-  </data>  
-  <data name="GooglePlayServicesNotAvailableTitle" xml:space="preserve">
-    <value>Update required</value>
-  </data>
-  <data name="GooglePlayServicesNotAvailableMessage" xml:space="preserve">
-    <value>You need to update Google Play Services in order to use this application.</value>
   </data>
   <data name="GooglePlayServicesNotAvailableTitle" xml:space="preserve">
     <value>Update required</value>
@@ -1512,33 +1504,33 @@
     <value>Scan Credit Card</value>
   </data>
   <data name="View_InitializeOrderForAccountPayment" xml:space="preserve">
-  	<value>Please answer these questions</value>
+    <value>Please answer these questions</value>
   </data>
   <data name="Error_AccountPaymentTitle" xml:space="preserve">
-  	<value>Error</value>
+    <value>Error</value>
   </data>
   <data name="AccountPaymentNumberRequiredTitle" xml:space="preserve">
-  	<value>Account Rider Number required</value>
+    <value>Account Rider Number required</value>
   </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
-  	<value>Please enter a valid account ride number</value>
+    <value>Please enter a valid account ride number</value>
   </data>
   <data name="Error_AccountPaymentMessage" xml:space="preserve">
-  	<value>Invalid account ride number</value>
+    <value>Invalid account ride number</value>
   </data>
   <data name="Error_AccountPaymentQuestionRequiredMessage" xml:space="preserve">
-  	<value>You must answer every questions marked as required to continue.</value>
+    <value>You must answer every questions marked as required to continue.</value>
   </data>
- <data name="AccountPaymentQuestionsRequired" xml:space="preserve">
-  	<value>(required)</value>
+  <data name="AccountPaymentQuestionsRequired" xml:space="preserve">
+    <value>(required)</value>
   </data>
- <data name="AccountPaymentQuestionsPlaceHolder" xml:space="preserve">
-  	<value>{0} characters maximum</value>
+  <data name="AccountPaymentQuestionsPlaceHolder" xml:space="preserve">
+    <value>{0} characters maximum</value>
   </data>
   <data name="TAXI" xml:space="preserve">
     <value>TAXI</value>
   </data>
-	<data name="WarningPushServiceTitle" xml:space="preserve">
+  <data name="WarningPushServiceTitle" xml:space="preserve">
     <value>Push Notifications</value>
   </data>
   <data name="WarningPushServiceMessage" xml:space="preserve">
@@ -1550,19 +1542,25 @@
   <data name="View_AccountConfirmation_Button" xml:space="preserve">
     <value>Confirm</value>
   </data>
- <data name="View_AccountConfirmationTitle" xml:space="preserve">
+  <data name="View_AccountConfirmationTitle" xml:space="preserve">
     <value>Account Confirmation</value>
   </data>
- <data name="View_AccountConfirmation_Label_Code" xml:space="preserve">
+  <data name="View_AccountConfirmation_Label_Code" xml:space="preserve">
     <value>Code</value>
   </data>
   <data name="View_AccountConfirmation_Label_Instructions" xml:space="preserve">
     <value>A text message with your code has been sent to your phone.</value>
   </data>
- <data name="AccountConfirmation_ErrorTitle" xml:space="preserve">
+  <data name="AccountConfirmation_ErrorTitle" xml:space="preserve">
     <value>Cannot confirm account</value>
   </data>
- <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
+  <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
     <value>The confirmation code is incorrect.</value>
+  </data>
+  <data name="DeleteCreditCard" xml:space="preserve">
+    <value>Delete the credit card registered to this account?</value>
+  </data>
+  <data name="DeleteCreditCardTitle" xml:space="preserve">
+    <value>Delete credit card</value>
   </data>
 </root>

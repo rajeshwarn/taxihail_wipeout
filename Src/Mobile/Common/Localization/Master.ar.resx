@@ -844,7 +844,7 @@
     <value>موافق</value>
   </data>
   <data name="Order" xml:space="preserve">
-    <value>اطلب</value>
+    <value>طلب</value>
   </data>
   <data name="OrderHistoryListTitle" xml:space="preserve">
     <value>طلبية #{0} ({1:ddd, MMM d}, {1:h:mm tt})</value>
@@ -1209,12 +1209,6 @@
   <data name="StatusConfirmNewBooking" xml:space="preserve">
     <value>في حالة حجز سيارة أجرة اخرى فإن هذا الطلب سيظل ساري، هل ترغب في الاستمرار ؟</value>
   </data>
-  <data name="Order" xml:space="preserve">
-    <value>طلب</value>
-  </data>
-  <data name="Order" xml:space="preserve">
-    <value>طلب</value>
-  </data>
   <data name="StatusDescription" xml:space="preserve">
     <value>طلب # {0}</value>
   </data>
@@ -1496,5 +1490,11 @@
   </data>
   <data name="YesButton" xml:space="preserve">
     <value>نعم</value>
+  </data>
+  <data name="DeleteCreditCard" xml:space="preserve">
+    <value>حذف بطاقة الائتمان المسجلة في هذا الحساب؟</value>
+  </data>
+  <data name="DeleteCreditCardTitle" xml:space="preserve">
+    <value>حذف بطاقة الائتمان</value>
   </data>
 </root>

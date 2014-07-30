@@ -276,8 +276,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         private void DeleteCreditCard()
         {
-            // TODO: Localize strings
-            this.Services().Message.ShowMessage("Delete credit card", "Delete the credit card registered to this account?",
+            this.Services().Message.ShowMessage(
+                this.Services().Localize["DeleteCreditCardTitle"],
+                this.Services().Localize["DeleteCreditCard"],
                 this.Services().Localize["Delete"], () =>
                 {
                     _accountService.RemoveCreditCard();
