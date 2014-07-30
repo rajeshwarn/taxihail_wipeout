@@ -1,10 +1,18 @@
 ﻿
+using System.Collections.Generic;
+using apcurium.MK.Common.Entity;
+
 namespace apcurium.MK.Common.Enumeration
 {
-    public enum ChargeTypes
+    public static class ChargeTypes
     {
-        Cash = 1,
-        Account = 2,
-        Credit = 3
+        public static ListItem PaymentInCar = new ListItem { Id = 1, Display = "Payment In Car" };
+        public static ListItem Account = new ListItem { Id = 2, Display = "Charge Account" };
+        public static ListItem CardOnFile = new ListItem { Id = 3, Display = "Card on File" };
+
+        public static IEnumerable<ListItem> GetList()
+        {
+            return new List<ListItem> { PaymentInCar, Account, CardOnFile };
+        }
     }
 }

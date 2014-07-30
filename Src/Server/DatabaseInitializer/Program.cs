@@ -18,6 +18,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using DatabaseInitializer.Services;
 using DatabaseInitializer.Sql;
@@ -421,11 +422,7 @@ namespace DatabaseInitializer
                     referenceDataService.GetVehiclesList(defaultCompany).First();
                 appSettings["DefaultBookingSettings.VehicleTypeId"] = defaultvehicule.Id.ToString();
 
-                var defaultchargetype = ChargeTypesClient.GetPaymentsList(defaultCompany)
-                    .FirstOrDefault(x => x.Display.HasValue() && x.Display.Contains("Cash"))
-                                        ?? ChargeTypesClient.GetPaymentsList(defaultCompany).First();
-
-                appSettings["DefaultBookingSettings.ChargeTypeId"] = defaultchargetype.Id.ToString();
+                appSettings["DefaultBookingSettings.ChargeTypeId"] = ChargeTypes.PaymentInCar.Id.ToString();
             }
 
             //Save settings so that registerAccountCommand succeed

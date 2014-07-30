@@ -12,13 +12,12 @@ namespace apcurium.MK.Common
             if (company == null) throw new ArgumentNullException("company");
             if (company.Id == null) throw new ArgumentException("company Id should not be null");
 
-            return (from type in (ChargeTypes[])Enum.GetValues(typeof(ChargeTypes))
-                    select new ListItem
-                    {
-                        Id = (int)type,
-                        Display = type.ToString(),
-                        Parent = company
-                    }).ToArray();
+            return ChargeTypes.GetList().Select(x => new ListItem
+            {
+                Id = x.Id,
+                Display = x.Display,
+                Parent = company
+            }).ToArray();
         }
     }
 }

@@ -538,7 +538,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		    if (!hasCardOnFile)
 		    {
-		        refData.PaymentsList.Remove(i => i.Id == (int) ChargeTypes.Credit);
+		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
 		    }
 
             return refData.PaymentsList;
