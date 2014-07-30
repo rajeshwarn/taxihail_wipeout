@@ -30,7 +30,6 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateAccountPassword>,
         ICommandHandler<AddRoleToUserAccount>,
         ICommandHandler<AddCreditCard>,
-        ICommandHandler<RemoveCreditCard>,
         ICommandHandler<DeleteAllCreditCards>,
         ICommandHandler<DeleteAccountCreditCards>,
         ICommandHandler<RegisterDeviceForPushNotifications>,
@@ -127,13 +126,6 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = new Account(command.AccountId, command.Name, command.Phone, command.Email,
                 command.IbsAccountId, twitterId: command.TwitterId, language: command.Language);
-            _repository.Save(account, command.Id.ToString());
-        }
-
-        public void Handle(RemoveCreditCard command)
-        {
-            var account = _repository.Find(command.AccountId);
-            account.RemoveCreditCard(command.CreditCardId);
             _repository.Save(account, command.Id.ToString());
         }
 
