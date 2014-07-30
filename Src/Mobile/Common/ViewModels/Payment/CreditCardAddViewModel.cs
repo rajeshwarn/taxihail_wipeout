@@ -96,10 +96,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				new ListItem {Display = this.Services().Localize["December"], Id = 12}
 			};
 
+			Data = new CreditCardInfos ();
+
 			var creditCard = await _accountService.GetCreditCard ();
 			if (creditCard == null)
 			{
-				Data = new CreditCardInfos ();
 				Data.NameOnCard = _accountService.CurrentAccount.Name;
 
 				var id = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
@@ -124,13 +125,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				IsEditing = true;
 
-				Data = new CreditCardInfos
-				{
-					CreditCardId = creditCard.CreditCardId,
-					CardNumber = "************" + creditCard.Last4Digits,
-					NameOnCard = creditCard.NameOnCard,
-					CreditCardCompany = creditCard.CreditCardCompany
-				};
+				Data.CreditCardId = creditCard.CreditCardId;
+				Data.CardNumber = "************" + creditCard.Last4Digits;
+				Data.NameOnCard = creditCard.NameOnCard;
+				Data.CreditCardCompany = creditCard.CreditCardCompany;
 
 				ExpirationMonth = string.IsNullOrWhiteSpace(creditCard.ExpirationMonth) ? 1 : int.Parse(creditCard.ExpirationMonth);
 				ExpirationYear = string.IsNullOrWhiteSpace(creditCard.ExpirationYear) ? DateTime.Today.Year : int.Parse(creditCard.ExpirationYear);
@@ -283,7 +281,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 {
                     _accountService.RemoveCreditCard();
                     this.Services().Cache.Clear("Account.CreditCards");
-                    ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = ShowInstructions ? bool.TrueString : bool.FalseString });
+                    ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
                 },
                 this.Services().Localize["Cancel"], () => { });
         }
@@ -325,7 +323,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.CardNumber = null;
 					Data.CCV = null;
 
-					ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = ShowInstructions ? bool.TrueString : bool.FalseString });
+					ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
 
 					// update default card
 					var account = _accountService.CurrentAccount;

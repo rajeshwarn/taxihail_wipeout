@@ -24,9 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         [Register(".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;)V", "")]
         public EditTextLeftImage(Context context, IAttributeSet attrs) : base(context, attrs)
         {
-
         }
-
 
         public string CreditCardNumber
         {
@@ -63,7 +61,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public event EventHandler<AfterTextChangedEventArgs> AfterCreditCardNumberChanged;
 
-
         protected override void OnFinishInflate()
         {
             base.OnFinishInflate();
@@ -74,7 +71,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _textViewLabel.Text = CreditCardNumber;
             _textViewLabel.AfterTextChanged += HandleCreditCardNumberChanged;
             _textViewLabel.InputType = InputTypes.ClassNumber;
-           
+            _textViewLabel.SetSelectAllOnFocus (true);
+
             _imageLeftView = (ImageView) layout.FindViewById(Resource.Id.CreditCardImagePath);
             if (LeftImage != null)
             {

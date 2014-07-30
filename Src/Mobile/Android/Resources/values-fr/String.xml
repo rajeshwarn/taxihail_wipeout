@@ -439,7 +439,6 @@
   <string name="View_BookSettingMenu">Paramètres</string>
   <string name="View_ConfirmCarNumber">Confirmation</string>
   <string name="View_CreateAccount">Créer votre compte</string>
-  <string name="View_CreditCardAdd">Nouvelle carte de paiement</string>
   <string name="View_CreditCardsList">Cartes de paiement</string>
   <string name="View_History">Historique</string>
   <string name="View_HistoryDetail">Détail de la commande</string>
