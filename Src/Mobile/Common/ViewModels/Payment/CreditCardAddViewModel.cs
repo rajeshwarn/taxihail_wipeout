@@ -350,11 +350,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             var len = 0;
             for(var i = 0; i < cardNumber.Length; i++)
             {
-                if(char.IsDigit(cardNumber, i))
-                {
-                    if(len == 16) return false; // number has too many digits
-                    number[len++] = byte.Parse(cardNumber[i].ToString(CultureInfo.InvariantCulture), null);
-                }
+				if (char.IsDigit (cardNumber, i))
+				{
+					if (len == 16)
+						return false; // number has too many digits
+					number[len++] = byte.Parse (cardNumber[i].ToString (CultureInfo.InvariantCulture), null);
+				}
+				else
+				{
+					return false; // non-digit char
+				}
             }
 
             // Use Luhn Algorithm to validate

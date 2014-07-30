@@ -1410,8 +1410,8 @@
   <data name="View_CreateAccount" xml:space="preserve">
     <value>افتح حسابك</value>
   </data>
-  <data name="View_CreditCardAdd" xml:space="preserve">
-    <value>بطاقة إئتمان جديدة</value>
+  <data name="View_CreditCard" xml:space="preserve">
+    <value>بطاقة إئتمان</value>
   </data>
   <data name="View_CreditCardsList" xml:space="preserve">
     <value>بطاقات إئتمان</value>

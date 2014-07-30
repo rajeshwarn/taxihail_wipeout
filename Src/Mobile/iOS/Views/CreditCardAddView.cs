@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             NavigationController.NavigationBar.Hidden = false;
             NavigationItem.HidesBackButton = false;
-            NavigationItem.Title = Localize.GetValue ("View_CreditCardAdd");
+            NavigationItem.Title = Localize.GetValue ("View_CreditCard");
 
             ChangeThemeOfBarStyle();
             ChangeRightBarButtonFontToBold();
@@ -42,6 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblExpYear.Text = Localize.GetValue("CreditCardExpYear");
             lblCvv.Text = Localize.GetValue("CreditCardCCV");
 
+            txtCardNumber.ClearsOnBeginEditing = true;
             txtCardNumber.ShowCloseButtonOnKeyboard();
             txtCvv.ShowCloseButtonOnKeyboard();
 

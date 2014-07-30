@@ -80,7 +80,6 @@
 "HistoryInfo"="عرض حجوزاتكم خلال الشهر الماضي";
 "ConfirmPassengerSettingsTitle"="إعدادات الركاب";
 "ChangeBookingSettingsButton"="تغيير إعدادات الحجز";
-"View_CreditCardAdd"="بطاقة إئتمان جديدة";
 "Tuto03Bottom"="يمكنك البحث عن عنوان محدد أوإختيار عنوان من المفضلة، إتصالاتك أو قائمة بالأماكن القريبة.";
 "OrderHistoryListTitle"="طلبية #{0} ({1:ddd, MMM d}, {1:h:mm tt})";
 "ServiceError_ErrorCreatingOrderMessage_NoCall"="لا يمكن إدخال الطلب.";
@@ -469,3 +468,4 @@
 "dummyaaa"="xaaa";
 "Error_AccountPaymentQuestionRequiredMessage"="يجب الإجابة على جميع الأسئلة للإستمرار";
 "View_UpdatedTermsAndConditions"="أحكام و شروط جديدة";
+"View_CreditCard"="بطاقة إئتمان";

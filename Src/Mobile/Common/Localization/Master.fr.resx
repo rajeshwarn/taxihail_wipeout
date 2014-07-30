@@ -1431,8 +1431,8 @@
   <data name="View_CreateAccount" xml:space="preserve">
     <value>Créer votre compte</value>
   </data>
-  <data name="View_CreditCardAdd" xml:space="preserve">
-    <value>Nouvelle carte de paiement</value>
+  <data name="View_CreditCard" xml:space="preserve">
+    <value>Carte de paiement</value>
   </data>
   <data name="View_CreditCardsList" xml:space="preserve">
     <value>Cartes de paiement</value>

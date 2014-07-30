@@ -4879,9 +4879,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050185
 			public const int View_CreateAccount = 2131034501;
 			
-			// aapt resource value: 0x7f05020f
-			public const int View_CreditCardAdd = 2131034639;
-			
 			// aapt resource value: 0x7f050211
 			public const int View_CreditCardsList = 2131034641;
 			

@@ -1158,8 +1158,8 @@
   <data name="PaymentDetails.InvalidDataTitle" xml:space="preserve">
     <value>Invalid payment information</value>
   </data>
-  <data name="View_CreditCardAdd" xml:space="preserve">
-    <value>New Credit Card</value>
+  <data name="View_CreditCard" xml:space="preserve">
+    <value>Credit Card</value>
   </data>
   <data name="CreditCardInstructions" xml:space="preserve">
     <value>In order to use the application, you need to add a credit card to your account.</value>
