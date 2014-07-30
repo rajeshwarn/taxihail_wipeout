@@ -123,7 +123,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == _configManager.GetSetting("Client.AccountChargeTypeId", 0))
             {
-                // send the info to ibs
+                // TODO (waiting for IBS endpoint to be done): send the info to ibs
             }
 
             var ibsOrderId = CreateIbsOrder(account, request, referenceData);
@@ -223,7 +223,7 @@ namespace apcurium.MK.Booking.Api.Services
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
             var result = _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId,
                 request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
-                request.Settings.VehicleTypeId, request.Settings.ChargeTypeId, note, request.PickupDate.Value,
+                request.Settings.VehicleTypeId, null, note, request.PickupDate.Value,
                 ibsPickupAddress, ibsDropOffAddress, fare);
 
             return result;
