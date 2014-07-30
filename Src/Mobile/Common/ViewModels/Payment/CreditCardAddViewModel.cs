@@ -117,8 +117,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				}
 
 				Data.CCV = DummyVisa.AvcCvvCvv2+"";
-				Data.ExpirationMonth = DummyVisa.ExpirationDate.Month+"";
-				Data.ExpirationYear = DummyVisa.ExpirationDate.Year + "";
+
+				ExpirationMonth = DummyVisa.ExpirationDate.Month;
+				ExpirationYear = DummyVisa.ExpirationDate.Year;
 #endif         
 			}
 			else
@@ -139,6 +140,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					CreditCardType = (int) id;
 				}
 			}
+
+			RaisePropertyChanged(() => Data);
+            RaisePropertyChanged(() => CreditCardNumber);
         }
 			
         public string CreditCardNumber
@@ -194,16 +198,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
             set 
 			{
-                var year = value;
-                var current = string.IsNullOrEmpty(Data.ExpirationYear) 
-					? default(int?) 
-					: int.Parse(Data.ExpirationYear);
-
-                if(year != current)
-				{
-                    Data.ExpirationYear = year.ToSafeString();
-					RaisePropertyChanged();
-                }
+				Data.ExpirationYear = value.ToSafeString();
+				RaisePropertyChanged();
             }
         }
 
@@ -217,15 +213,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
             set 
 			{
-                var month = value;
-                var current = string.IsNullOrEmpty(Data.ExpirationMonth) ? default(int?) : int.Parse(Data.ExpirationMonth);
+				Data.ExpirationMonth = value.ToSafeString();
 
-                if(month != current)
-				{
-                    Data.ExpirationMonth = month.ToSafeString();
-					RaisePropertyChanged(() => ExpirationMonth);
-					RaisePropertyChanged(() => ExpirationMonthDisplay);
-                }
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => ExpirationMonthDisplay);
             }
         }
 
