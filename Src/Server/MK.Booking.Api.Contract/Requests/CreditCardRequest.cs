@@ -9,7 +9,7 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [Route("/account/creditcards", "GET,POST,DELETE")]
+    [Route("/account/creditcard", "GET,POST,DELETE")]
     public class CreditCardRequest
     {
         public Guid CreditCardId { get; set; }
