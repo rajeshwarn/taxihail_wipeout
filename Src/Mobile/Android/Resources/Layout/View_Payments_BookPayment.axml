@@ -91,6 +91,31 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    local:MvxBind="Visibility PayPalSelected, Converter=InvertedVisibility">
+                    <TextView
+                        android:text="@string/CreditCard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:paddingRight="12dp"
+                        style="@style/BlackTextLabel"
+                        android:textSize="@dimen/payment_text_size"
+                        android:gravity="center_vertical" />
+                    <apcurium.mk.booking.mobile.client.controls.CreditCardButton
+                        local:MvxBind="Text PaymentPreferences.SelectedCreditCard.NameOnCard; CreditCardCompany PaymentPreferences.SelectedCreditCard.CreditCardCompany; Last4Digits PaymentPreferences.SelectedCreditCard.Last4Digits"
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:textSize="@dimen/payment_text_size"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+                <View
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    local:MvxBind="Visibility PayPalSelected, Converter=InvertedVisibility"
+                    android:layout_height="14dp" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal">
                     <TextView

@@ -116,24 +116,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 }
             }
         }
-
+            
+        private UIImageView _rightArrow { get; set; }
         private bool _hasRightArrow { get; set; }
         public bool HasRightArrow {
             get { return _hasRightArrow; }
             set 
             {
-                _hasRightArrow = value;
-
-                if(value)
+                if (_hasRightArrow != value)
                 {
-                    var image = UIImage.FromFile("right_arrow.png");
-                    var rightArrow = new UIImageView(new RectangleF(Frame.Width - image.Size.Width - Padding, (Frame.Height - image.Size.Height)/2, image.Size.Width, image.Size.Height));
-                    rightArrow.Image = image;
+                    _hasRightArrow = value;
 
-                    RightView.Frame = RightView.Frame.IncrementWidth(image.Size.Width + Padding); // this is to keep the same padding between the end of the text and the right arrow
-                    AddSubview(rightArrow);
+                    if (value)
+                    {
+                        var image = UIImage.FromFile ("right_arrow.png");
+                        _rightArrow = new UIImageView (new RectangleF (Frame.Width - image.Size.Width - Padding, (Frame.Height - image.Size.Height) / 2, image.Size.Width, image.Size.Height));
+                        _rightArrow.Image = image;
 
-                    SetNeedsDisplay();
+                        RightView.Frame = RightView.Frame.IncrementWidth (image.Size.Width + Padding); // this is to keep the same padding between the end of the text and the right arrow
+                        AddSubview (_rightArrow);
+
+                        SetNeedsDisplay ();
+                    }
+                    else
+                    {
+                        if (_rightArrow != null)
+                        {
+                            var imageWidth = _rightArrow.Image != null ? _rightArrow.Image.Size.Width : 0;
+                            RightView.Frame = RightView.Frame.IncrementWidth (-(imageWidth + Padding));
+                            _rightArrow.RemoveFromSuperview ();
+
+                            SetNeedsDisplay ();
+                        }
+                    }
                 }
             }
         }

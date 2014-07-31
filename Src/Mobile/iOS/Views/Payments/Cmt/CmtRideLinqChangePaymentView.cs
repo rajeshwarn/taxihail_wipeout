@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             View.BackgroundColor = UIColor.FromRGB(242, 242, 242); 
 
+            lblCardOnFile.Text = Localize.GetValue("CreditCard");
             lblTipAmount.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
 
             NavigationItem.LeftBarButtonItem = new UIBarButtonItem(Localize.GetValue("Cancel"), UIBarButtonItemStyle.Plain, null);
@@ -44,6 +45,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             set.Bind(NavigationItem.RightBarButtonItem)
                 .For("Clicked")
                 .To(vm => vm.SaveCommand);
+
+            set.Bind(txtCreditCard)
+                .For(v => v.Text)
+                .To(vm => vm.PaymentPreferences.SelectedCreditCard.NameOnCard);
+            set.Bind(txtCreditCard)
+				.For(v => v.Last4Digits)
+				.To(vm => vm.PaymentPreferences.SelectedCreditCard.Last4Digits);
+            set.Bind(txtCreditCard)
+				.For("CreditCardCompany")
+				.To(vm => vm.PaymentPreferences.SelectedCreditCard.CreditCardCompany);
 
             set.Bind(txtTip)
                 .For(v => v.Text)

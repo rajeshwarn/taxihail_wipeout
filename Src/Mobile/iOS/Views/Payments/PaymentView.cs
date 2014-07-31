@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
                 this.View.ResignFirstResponderOnSubviews();
             };
                 
+            lblCreditCard.Text = Localize.GetValue("CreditCard");
 			lblTip.Text = Localize.GetValue("PaymentViewTipText");
             lblTipAmount.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
             lblMeterAmount.Text = Localize.GetValue("PaymentViewMeterAmountText");
@@ -151,6 +152,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				.For(v => v.Hidden)
 				.To(vm => vm.PaymentSelectorToggleIsVisible)
 				.WithConversion("BoolInverter");
+
+            set.Bind(txtCreditCard)
+                .For(v => v.Text)
+                .To(vm => vm.PaymentPreferences.SelectedCreditCard.NameOnCard);
+
+            set.Bind(txtCreditCard)
+                .For(v => v.Last4Digits)
+                .To(vm => vm.PaymentPreferences.SelectedCreditCard.Last4Digits);
+
+            set.Bind(txtCreditCard)
+                .For("CreditCardCompany")
+                .To(vm => vm.PaymentPreferences.SelectedCreditCard.CreditCardCompany);
+
+            set.Bind(txtCreditCard)
+                .For(v => v.Hidden)
+                .To(vm => vm.PayPalSelected);
+
+            set.Bind(lblCreditCard)
+                .For(v => v.Hidden)
+                .To(vm => vm.PayPalSelected);
 
             set.Bind(imgPayPal)
                 .For(v => v.Hidden)

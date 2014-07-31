@@ -13,16 +13,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 	partial class CmtRideLinqChangePaymentView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UILabel lblCardOnFile { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblTipAmount { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatCreditCardTextField txtCreditCard { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtTip { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblCardOnFile != null) {
+				lblCardOnFile.Dispose ();
+				lblCardOnFile = null;
+			}
+
 			if (lblTipAmount != null) {
 				lblTipAmount.Dispose ();
 				lblTipAmount = null;
+			}
+
+			if (txtCreditCard != null) {
+				txtCreditCard.Dispose ();
+				txtCreditCard = null;
 			}
 
 			if (txtTip != null) {

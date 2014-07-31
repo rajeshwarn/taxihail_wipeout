@@ -12,6 +12,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -273,6 +274,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     _accountService.RemoveCreditCard();
                     this.Services().Cache.Clear("Account.CreditCards");
                     ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
+
+					// remove default card and update default chargetype
+					var account = _accountService.CurrentAccount;
+					account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+					account.DefaultCreditCard = null;
+					_accountService.UpdateSettings(account.Settings, null, account.DefaultTipPercent);
                 },
                 this.Services().Localize["Cancel"], () => { });
         }
@@ -316,8 +323,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 					ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
 
-					// update default card
+					// update default card and default chargetype
 					var account = _accountService.CurrentAccount;
+					account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
 					account.DefaultCreditCard = Data.CreditCardId;
 					_accountService.UpdateSettings(account.Settings, Data.CreditCardId, account.DefaultTipPercent);
 				}

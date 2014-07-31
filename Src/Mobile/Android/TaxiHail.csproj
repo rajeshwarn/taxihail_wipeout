@@ -573,6 +573,8 @@
     <AndroidResource Include="Resources\Layout\View_BookingRating.axml" />
     <AndroidResource Include="Resources\Layout\View_AccountConfirmation.axml" />
     <Compile Include="Activities\Account\AccountConfirmationActivity.cs" />
+    <Compile Include="Controls\Widgets\CreditCardButton.cs" />
+    <AndroidResource Include="Resources\Layout\Control_CreditCardButton.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

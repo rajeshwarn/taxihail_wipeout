@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#00000000">
+    <EditText
+        android:id="@+id/creditCardName"
+        android:editable="false"
+        android:layout_height="@dimen/HeightEditTextFlat"
+        android:layout_width="fill_parent"
+        android:layout_centerVertical="true"
+        android:ellipsize="end"
+        android:paddingLeft="53dip"
+        android:paddingRight="85dip" />
+    <TextView
+        style="@style/custom_TextViewStyle"
+        android:textSize="@dimen/payment_text_size"
+        android:id="@+id/creditCardLast4Digits"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="right|center_vertical" />
+    <ImageView
+        android:id="@+id/creditCardImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp"
+        android:paddingBottom="2dp" />
+</RelativeLayout>

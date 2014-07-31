@@ -43,13 +43,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			RaisePropertyChanged(() => Payments );
 			RaisePropertyChanged(() => ChargeTypeId );
 			RaisePropertyChanged(() => ChargeTypeName );
-
-            // Set default payment method to credit if there is a card on file
-		    if (_paymentPreferences.HasCreditCard)
-		    {
-                ChargeTypeId = _payments.FirstOrDefault(x => x.Id == ChargeTypes.CardOnFile.Id).SelectOrDefault(x => x.Id);
-		    }
-        }
+		}
 
         public bool ShouldDisplayTip
         {
