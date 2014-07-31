@@ -48,10 +48,10 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var address = context.Find<CreditCardDetails>(@event.CreditCardId);
-                if (address != null)
+                var creditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
+                if (creditCard != null)
                 {
-                    context.Set<CreditCardDetails>().Remove(address);
+                    context.Set<CreditCardDetails>().Remove(creditCard);
                     context.SaveChanges();
                 }
             }
