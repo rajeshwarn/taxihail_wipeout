@@ -35,11 +35,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService = accountService;
 			_phoneService = phoneService;
 
-			var payInTaxiEnabled = false;
 			try
 			{
 				var paymentSettings = paymentService.GetPaymentSettings();
-				payInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
+                IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
 			}
 			catch
 			{
@@ -50,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile});
-			if (payInTaxiEnabled)
+            if (IsPayInTaxiEnabled)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation});
 			if (Settings.TutorialEnabled)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial});
@@ -75,6 +74,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_itemMenuList = value;
 			}
 		}
+
+	    private bool _isPayInTaxiEnabled;
+        public bool IsPayInTaxiEnabled
+	    {
+	        get
+	        {
+                return _isPayInTaxiEnabled;
+	        }
+	        set
+	        {
+                if (_isPayInTaxiEnabled != value)
+	            {
+                    _isPayInTaxiEnabled = value;
+	                RaisePropertyChanged();
+	            }
+	        }
+	    }
 
         private bool _menuIsOpen;
         public bool MenuIsOpen {
