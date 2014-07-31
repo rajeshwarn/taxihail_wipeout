@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPushNotificationService _pushNotificationService;
 		private readonly IVehicleService _vehicleService;
 		private readonly IAccountService _accountService;
+		private readonly IBookingService _bookingService;
 		private readonly ITermsAndConditionsService _termsService;
 
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
@@ -28,7 +29,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IVehicleService vehicleService,
 			IAccountService accountService,
 			IPhoneService phoneService,
-			ITermsAndConditionsService termsService) : base()
+			ITermsAndConditionsService termsService, 
+			IBookingService bookingService) : base()
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -37,6 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService = vehicleService;
 			_accountService = accountService;
 			_termsService = termsService;
+			_bookingService = bookingService;
 
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService);
 		}
@@ -72,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_locationService.Start();
 			CheckTermsAsync();
-
+			CheckActiveOrderAsync ();
 			if (firstTime)
 			{
 				this.Services().ApplicationInfo.CheckVersionAsync();
@@ -100,6 +103,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService.Start();
 		}
 
+
+		public async void CheckActiveOrderAsync()
+		{
+			if (_bookingService.HasLastOrder) {
+				var status = await _bookingService.GetLastOrderStatus (); 
+				if (!_bookingService.IsStatusCompleted (status.IBSStatusId)) {
+					var order = await _accountService.GetHistoryOrderAsync (status.OrderId);
+
+
+					ShowViewModelAndRemoveFromHistory<BookingStatusViewModel> (new
+						{
+							order = order.ToJson (),
+							orderStatus = status.ToJson ()
+						});
+				}
+				else
+				{
+					_bookingService.ClearLastOrder();
+				}
+			
+
+			}
+		}
 
 		public async void CheckTermsAsync()
 		{
