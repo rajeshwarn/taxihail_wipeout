@@ -2,14 +2,14 @@
  "Items": [
    {
      "Position": "1",
-     "Title": "Book Now.",
+     "Title": "Book Now",
      "Text": "",
      "ImageUri":"tutorial_screen01"
    }
    ,
    {
      "Position": "2",
-     "Title": "Enter Address.",
+     "Title": "Enter Address",
      "Text": "Type any address or location name to search",
      "ImageUri":"tutorial_screen02"
    }
@@ -17,7 +17,7 @@
    {
      "Position": "3",
      "Title": "Estimate",
-     "Text": "Drag Location and Get an Estimated Fare.",
+     "Text": "Drag Location and Get an Estimated Fare",
      "ImageUri":"tutorial_screen03"
    }                   
    ,
@@ -46,7 +46,7 @@
    {
      "Position": "7",
      "Title": "History",
-     "Text": "This shows all your previous destinations.",
+     "Text": "This shows all your previous destinations",
      "ImageUri":"tutorial_screen07"
    }                   
  ,

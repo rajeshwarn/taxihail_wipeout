@@ -2,21 +2,21 @@
  "Items": [
    {
      "Position": "1",
-     "Title": "إحجز الآن.",
+     "Title": "إحجز الآن",
      "Text": "",
      "ImageUri":"tutorial_screen01"
    }
    ,
    {
      "Position": "2",
-     "Title": "تحديد العنوان.",
+     "Title": "تحديد العنوان",
      "Text": "",
      "ImageUri":"tutorial_screen02"
    }
    ,
    {
      "Position": "3",
-     "Title": "تحديد الموقع و التكلفة المتوقعة.",
+     "Title": "تحديد الموقع و التكلفة المتوقعة",
      "Text": "",
      "ImageUri":"tutorial_screen03"
    }                   
