@@ -153,9 +153,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 var settings = account.Settings ?? new BookingSettings();
                 settings.Name = @event.Name;
 
-                var hasCreditCard = context.Query<CreditCardDetails>().FirstOrDefault(x => x.AccountId == @event.SourceId) != null;
-
-                settings.ChargeTypeId = hasCreditCard ? ChargeTypes.CardOnFile.Id : ChargeTypes.PaymentInCar.Id;
+                settings.ChargeTypeId = @event.ChargeTypeId;
                 settings.ProviderId = @event.ProviderId;
                 settings.VehicleTypeId = @event.VehicleTypeId;
 
