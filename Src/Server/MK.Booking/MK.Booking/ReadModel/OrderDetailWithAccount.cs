@@ -59,6 +59,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string UserAgent { get; set; }
 
+        public string ClientVersion { get; set; }
+
 
         public string VehicleNumber { get; set; }
 
@@ -96,6 +98,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool IsCancelled { get; set; }
         public bool IsCompleted { get; set; }
+
+        public string AccountDefaultCardToken { get; set; }
 
         public Dictionary<string, string> Rating { get; set; }
     }

@@ -104,6 +104,8 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                         excelResult["Transaction Id"] = transactionId;
                         excelResult["Authorization Code"] = x.AuthorizationCode;
                         excelResult["Card Token"] = x.CardToken;
+                        excelResult["Account Card Token"] = x.AccountDefaultCardToken;
+
 
 
                         excelResult["PayPal Payer Id"] = x.PayPalPayerId;
