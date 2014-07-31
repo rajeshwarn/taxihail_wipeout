@@ -112,7 +112,7 @@
                             android:layout_height="1px" />
                         <Button
                             android:id="@+id/settingsProfile"
-                            local:MvxBind="Click Panel.NavigateToPaymentInformation; Visibility Panel.PaymentSettings.IsPayInTaxiEnabled, Converter=Visibility"
+                            local:MvxBind="Click Panel.NavigateToPaymentInformation; Visibility Panel.IsPayInTaxiEnabled, Converter=Visibility"
                             style="@style/SettingItemTitle"
                             android:background="@drawable/setting_cell"
                             android:layout_width="fill_parent"
