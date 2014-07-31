@@ -43,7 +43,6 @@ namespace apcurium.MK.Web
         protected bool ShowPassengerNumber { get; private set; }
         protected string ReferenceData { get; private set; }
         protected string VehicleTypes { get; private set; }
-        protected string AccountChargeTypeId { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -67,8 +66,6 @@ namespace apcurium.MK.Web
             EstimateEnabled = config.GetSetting("Client.ShowEstimate");
             EstimateWarningEnabled = config.GetSetting("Client.ShowEstimateWarning");
             DestinationIsRequired = config.GetSetting("Client.DestinationIsRequired");
-
-            AccountChargeTypeId = config.GetSetting("Client.AccountChargeTypeId");
 
             var accountActivationDisabled = config.GetSetting("AccountActivationDisabled");
             AccountActivationDisabled = string.IsNullOrWhiteSpace(accountActivationDisabled)

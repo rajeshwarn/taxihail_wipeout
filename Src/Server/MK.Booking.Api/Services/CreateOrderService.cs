@@ -18,6 +18,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.Messaging;
@@ -121,7 +122,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             if (request.Settings.ChargeTypeId.HasValue
-                && request.Settings.ChargeTypeId.Value == _configManager.GetSetting("Client.AccountChargeTypeId", 0))
+                && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
             {
                 // TODO (waiting for IBS endpoint to be done): send the info to ibs
             }

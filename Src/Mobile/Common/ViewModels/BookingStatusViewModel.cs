@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 
@@ -346,10 +347,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			IsPayButtonVisible =  (statusId == VehicleStatuses.Common.Done
 								||statusId == VehicleStatuses.Common.Loaded)
-								&& (isPayEnabled && !_paymentService.GetPaymentFromCache(Order.Id).HasValue)
+								&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue
 			                    && !IsUnpairButtonVisible
 								&& (Order.Settings.ChargeTypeId == null 
-									|| Order.Settings.ChargeTypeId != Settings.AccountChargeTypeId);
+									|| Order.Settings.ChargeTypeId != ChargeTypes.Account.Id)
+                                && (setting.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null  
+                                    || setting.PayPalClientSettings.IsEnabled);
 			
             IsCancelButtonVisible = statusId == null 
 			                    || statusId == VehicleStatuses.Common.Assigned 
