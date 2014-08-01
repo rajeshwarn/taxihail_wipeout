@@ -472,4 +472,6 @@
   <string name="View_CreditCard">بطاقة إئتمان</string>
   <string name="DeleteCreditCardTitle">حذف بطاقة الائتمان</string>
   <string name="DeleteCreditCard">حذف بطاقة الائتمان المسجلة في هذا الحساب؟</string>
+  <string name="View">View</string>
+  <string name="ServiceErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
 </resources>

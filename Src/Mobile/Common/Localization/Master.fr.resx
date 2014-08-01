@@ -657,6 +657,9 @@
   <data name="HistoryViewStatusButton" xml:space="preserve">
     <value>Voir le statut</value>
   </data>
+  <data name="View" xml:space="preserve">
+    <value>Voir</value>
+  </data>
   <data name="HistoryViewTitle" xml:space="preserve">
     <value>Historique</value>
   </data>
@@ -1139,6 +1142,9 @@
   </data>
   <data name="ServiceErrorCallTitle" xml:space="preserve">
     <value>Message</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_PendingOrder" xml:space="preserve">
+    <value>La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</value>
   </data>
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>Cette adresse email est déjà utilisée</value>

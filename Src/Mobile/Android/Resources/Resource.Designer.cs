@@ -4045,14 +4045,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050109
 			public const int GooglePlayServicesNotAvailableMessage = 2131034377;
 			
-			// aapt resource value: 0x7f05023b
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034683;
+			// aapt resource value: 0x7f05023d
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034685;
 			
 			// aapt resource value: 0x7f050069
 			public const int GooglePlayServicesNotAvailableTitle = 2131034217;
 			
-			// aapt resource value: 0x7f05023c
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034684;
+			// aapt resource value: 0x7f05023e
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034686;
 			
 			// aapt resource value: 0x7f05005e
 			public const int HistoryDetailAptRingCodeLabel = 2131034206;
@@ -4636,6 +4636,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0501bd
 			public const int ServiceErrorCreateOrder_NoProvider = 2131034557;
 			
+			// aapt resource value: 0x7f05023b
+			public const int ServiceErrorCreateOrder_PendingOrder = 2131034683;
+			
 			// aapt resource value: 0x7f0500fd
 			public const int ServiceErrorCreateOrder_VehiculeType = 2131034365;
 			
@@ -4869,6 +4872,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f050161
 			public const int Version = 2131034465;
+			
+			// aapt resource value: 0x7f05023c
+			public const int View = 2131034684;
 			
 			// aapt resource value: 0x7f050213
 			public const int ViewAll = 2131034643;

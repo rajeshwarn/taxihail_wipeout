@@ -309,8 +309,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				using(this.Services().Message.ShowProgress())
 				{
 	                Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
-	                Data.CreditCardId = Guid.NewGuid();
 
+					if(!IsEditing)
+					{
+						Data.CreditCardId = Guid.NewGuid();
+					}
+	                
 					success = IsEditing 
 						? await _accountService.UpdateCreditCard(Data) 
 						: await _accountService.AddCreditCard(Data);

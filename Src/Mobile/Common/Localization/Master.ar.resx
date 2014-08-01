@@ -633,6 +633,9 @@
   <data name="HistoryViewStatusButton" xml:space="preserve">
     <value>رؤية حالة الطلب</value>
   </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
   <data name="HistoryViewTitle" xml:space="preserve">
     <value>التاريخ</value>
   </data>
@@ -1112,6 +1115,9 @@
   </data>
   <data name="ServiceErrorCallTitle" xml:space="preserve">
     <value>رسالة</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_PendingOrder" xml:space="preserve">
+    <value>You cannot book this ride since an order is already pending. View the order status?</value>
   </data>
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>هذا العنوان الإلكتروني مستخدم من قبل.</value>

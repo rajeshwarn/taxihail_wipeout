@@ -101,30 +101,43 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.DeleteAsync<string>(req);
         }
 
-        public Task AddCreditCard(CreditCardRequest creditCardRequest)
-        {
-            return Client.PostAsync<string>("/account/creditcards", creditCardRequest);
-        }
-
         public Task<IEnumerable<CreditCardDetails>> GetCreditCards()
         {
             return Client.GetAsync<IEnumerable<CreditCardDetails>>("/account/creditcards");
         }
 
+        public Task AddCreditCard(CreditCardRequest creditCardRequest)
+        {
+            return Client.PostAsync<string>("/account/creditcards", creditCardRequest);
+        }
+
+        public async Task UpdateCreditCard(CreditCardRequest creditCardRequest)
+        {
+            // unregister previous card(s) except the current token in case the token did not change
+            await UnregisterTokenizedCards (creditCardRequest.Token);
+
+            await Client.PutAsync<string> ("/account/creditcards", creditCardRequest);
+        }
+
         public async Task RemoveCreditCard()
+        {
+            await UnregisterTokenizedCards ();
+
+            // server-side, this should delete every card of the user
+            await Client.DeleteAsync<string>("/account/creditcards");
+        }
+
+        private async Task UnregisterTokenizedCards(string skipThisToken)
         {
             // previously, it was possible to add multiple cards, this is why we unregister every card here
             var cards = await GetCreditCards ();
             foreach (var card in cards)
             {
-                if (!string.IsNullOrWhiteSpace(card.Token))
+                if (!string.IsNullOrWhiteSpace(card.Token) && card.Token != skipThisToken)
                 {
                     await _paymentService.ForgetTokenizedCard(card.Token);
                 }
             }
-
-            // server-side, this should delete every card of the user
-            await Client.DeleteAsync<string>("/account/creditcards");
         }
 
         public Task<Account> GetTestAccount(int index)

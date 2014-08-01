@@ -178,15 +178,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					            Guid pendingOrderId;
 					            Guid.TryParse(e.MessageNoCall, out pendingOrderId);
 
-								this.Services().Message.ShowMessage(title, "You cannot book this ride since an order is already pending. View the order status?",
-										"View", async () =>
-										{
-											var orderInfos = await GetOrderInfos(pendingOrderId);
+								this.Services().Message.ShowMessage(title, this.Services().Localize["ServiceError" + e.Message],
+									this.Services().Localize["View"], async () =>
+									{
+										var orderInfos = await GetOrderInfos(pendingOrderId);
 
-											PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
-											ShowViewModel<BookingStatusViewModel>(new {order = orderInfos.Item1, status = orderInfos.Item2});
-										},
-                                    "Cancel", delegate { });
+										PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
+										ShowViewModel<BookingStatusViewModel>(new {order = orderInfos.Item1, status = orderInfos.Item2});
+									},
+									this.Services().Localize["Cancel"], delegate { });
 					        }
 					            break;
                             default:
@@ -195,9 +195,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                 {
                                     this.Services().Message.ShowMessage(title,
                                         e.Message,
-                                        "Call",
+										this.Services().Localize["CallButton"],
                                         () => _phone.MakePhoneCall(settings.ApplicationName, settings.DefaultPhoneNumber),
-                                        "Cancel",
+										this.Services().Localize["Cancel"],
                                         delegate { });
                                 }
                                 else
@@ -212,15 +212,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					{
 						Logger.LogError(e);
 					}
- finally {
-
-								
-							_orderWorkflowService.EndCreateOrder ();
-						}
-
-
-					});
-				 
+ 					finally 
+					{
+						_orderWorkflowService.EndCreateOrder ();
+					}
+				});
 			}
 		}
 			
@@ -301,7 +297,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			if (await _orderWorkflowService.ShouldWarnAboutEstimate())
 			{
 				this.Services().Message.ShowMessage(this.Services().Localize["WarningEstimateTitle"], this.Services().Localize["WarningEstimate"],
-					"Ok", delegate{ },
+					this.Services().Localize["OkButtonText"], delegate{ },
 					this.Services().Localize["WarningEstimateDontShow"], () => this.Services().Cache.Set("WarningEstimateDontShow", "yes"));
 			}
 		}

@@ -551,19 +551,25 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return result.FirstOrDefault();
         }
 
+		private async Task TokenizeCard(CreditCardInfos creditCard)
+		{
+			var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
+				creditCard.CardNumber, 
+				new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
+				creditCard.CCV));	
+
+			creditCard.Token = response.CardOnFileToken;       
+		}
+
 		public async Task<bool> AddCreditCard (CreditCardInfos creditCard)
         {
 			try
 			{
-				var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
-                    creditCard.CardNumber,
-                    new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
-                    creditCard.CCV));	
-			    creditCard.Token = response.CardOnFileToken;       
+				await TokenizeCard (creditCard);
 			}
 			catch
 			{
-                return false;
+				return false;
 			}
             
             var request = new CreditCardRequest
@@ -584,8 +590,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<bool> UpdateCreditCard(CreditCardInfos creditCard)
 		{
-			await RemoveCreditCard ();
-			return await AddCreditCard (creditCard);
+			try
+			{
+				await TokenizeCard (creditCard);
+			}
+			catch
+			{
+				return false;
+			}
+
+			var request = new CreditCardRequest
+			{
+				CreditCardCompany = creditCard.CreditCardCompany,
+				CreditCardId = creditCard.CreditCardId,
+				NameOnCard = creditCard.NameOnCard,
+				Last4Digits = creditCard.Last4Digits,
+				Token = creditCard.Token,
+				ExpirationMonth = creditCard.ExpirationMonth,
+				ExpirationYear = creditCard.ExpirationYear
+			};
+
+			await UseServiceClientAsync<IAccountServiceClient> (client => client.UpdateCreditCard (request));  
+
+			return true;
 		}
 
 		public async Task RemoveCreditCard()

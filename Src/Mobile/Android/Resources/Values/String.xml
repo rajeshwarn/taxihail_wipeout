@@ -500,4 +500,6 @@
   <string name="View_CreditCard">Credit Card</string>
   <string name="DeleteCreditCard">Delete the credit card registered to this account?</string>
   <string name="DeleteCreditCardTitle">Delete credit card</string>
+  <string name="ServiceErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
+  <string name="View">View</string>
 </resources>
