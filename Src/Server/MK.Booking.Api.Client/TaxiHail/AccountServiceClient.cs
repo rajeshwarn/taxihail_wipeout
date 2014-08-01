@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Api.Client.Extensions;
 
@@ -16,9 +17,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
     {
         private readonly IPaymentServiceClient _paymentService;
 
-        public AccountServiceClient(string url, string sessionId, string userAgent,
+        public AccountServiceClient(string url, string sessionId, IPackageInfo packageInfo,
             IPaymentServiceClient tokenizationService = null)
-            : base(url, sessionId, userAgent)
+            : base(url, sessionId, packageInfo)
         {
             _paymentService = tokenizationService;
         }
@@ -33,6 +34,15 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Task RegisterAccount(RegisterAccount account)
         {
             return Client.PostAsync<Account>("/account/register", account);
+        }
+
+        public Task ConfirmAccount(ConfirmAccountRequest request)
+        {
+			var uri = string.Format ("/account/confirm/{0}/{1}/{2}", 
+									request.EmailAddress, 
+									request.ConfirmationToken, 
+									request.IsSMSConfirmation);
+			return Client.GetAsync<string>(uri);
         }
 
         public Task UpdateBookingSettings(BookingSettingsRequest settings)
@@ -129,5 +139,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             var result = Client.GetAsync<Account>("/account/test/admin/" + Guid.NewGuid());
             return result;
         }
+
+		public Task LogApplicationStartUp(LogApplicationStartUpRequest request)
+		{
+			return Client.PostAsync<string> ("/account/logstartup", request);
+		}
     }
 }

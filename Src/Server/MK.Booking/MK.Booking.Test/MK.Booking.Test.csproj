@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountFixture\given_an_account_with_a_favorite_address.cs" />
+    <Compile Include="AccountFixture\given_a_phone_number.cs" />
     <Compile Include="AccountFixture\given_booking_settings.cs" />
     <Compile Include="AccountFixture\given_no_account.cs" />
     <Compile Include="AccountFixture\given_one_account.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Integration\AddressListFixture\AddressListGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\CompanyDetailsGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\AccountChargeDetailGenerator.cs" />
+    <Compile Include="Integration\CompanyFixture\VehicleTypeDetailGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\RatingTypeDetailsGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\TariffDetailsGenerator.cs" />
     <Compile Include="Integration\AppSettingsFixture\AppSettingsGenerator.cs" />

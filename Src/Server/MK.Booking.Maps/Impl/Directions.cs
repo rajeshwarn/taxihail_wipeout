@@ -31,24 +31,27 @@ namespace apcurium.MK.Booking.Maps.Impl
 		}
 
 		public Direction GetDirection (double? originLat, double? originLng, double? destinationLat,
-		                                    double? destinationLng, DateTime? date = default(DateTime?))
+		                                    double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?))
 		{
 			var result = new Direction ();
-			var direction = _client.GetDirections (originLat.GetValueOrDefault (), originLng.GetValueOrDefault (),
-				                         destinationLat.GetValueOrDefault (), destinationLng.GetValueOrDefault ());
+			var direction = _client.GetDirections (
+                    originLat.GetValueOrDefault (), originLng.GetValueOrDefault (),
+				    destinationLat.GetValueOrDefault (), destinationLng.GetValueOrDefault (),
+                    date);
 
-
-			if (direction.Distance.HasValue) {
-                  
-
-				result.Duration = direction.Duration;
+			if (direction.Distance.HasValue) 
+            {
+                result.Duration = direction.Duration;
 				result.Distance = direction.Distance;
-				result.Price = _priceCalculator.GetPrice (direction.Distance, date ?? DateTime.Now);
+
+                result.Price = _priceCalculator.GetPrice (
+                    direction.Distance, 
+                    date ?? DateTime.Now, 
+                    direction.Duration, vehicleTypeId);
 
 				result.FormattedPrice = FormatPrice (result.Price);
 				result.FormattedDistance = FormatDistance (result.Distance);
 			}
-            
 
 			return result;
 		}

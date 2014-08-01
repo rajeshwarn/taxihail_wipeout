@@ -1,11 +1,11 @@
 // WARNING
 //
-// This file has been generated automatically by MonoDevelop to store outlets and
-// actions made in the Xcode designer. If it is removed, they will be lost.
+// This file has been generated automatically by Xamarin Studio to store outlets and
+// actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-
 using MonoTouch.Foundation;
+using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
@@ -13,22 +13,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 	partial class BookRatingCell
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIButton btnScoreA { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnScoreB { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnScoreC { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnScoreD { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnScoreE { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel ratingTypeName { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIButton madBtn { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIButton unhappyBtn { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIButton neutralBtn { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIButton happyBtn { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIButton ecstaticBtn { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -37,29 +37,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 				ratingTypeName = null;
 			}
 
-			if (madBtn != null) {
-				madBtn.Dispose ();
-				madBtn = null;
+			if (btnScoreA != null) {
+				btnScoreA.Dispose ();
+				btnScoreA = null;
 			}
 
-			if (unhappyBtn != null) {
-				unhappyBtn.Dispose ();
-				unhappyBtn = null;
+			if (btnScoreB != null) {
+				btnScoreB.Dispose ();
+				btnScoreB = null;
 			}
 
-			if (neutralBtn != null) {
-				neutralBtn.Dispose ();
-				neutralBtn = null;
+			if (btnScoreC != null) {
+				btnScoreC.Dispose ();
+				btnScoreC = null;
 			}
 
-			if (happyBtn != null) {
-				happyBtn.Dispose ();
-				happyBtn = null;
+			if (btnScoreD != null) {
+				btnScoreD.Dispose ();
+				btnScoreD = null;
 			}
 
-			if (ecstaticBtn != null) {
-				ecstaticBtn.Dispose ();
-				ecstaticBtn = null;
+			if (btnScoreE != null) {
+				btnScoreE.Dispose ();
+				btnScoreE = null;
 			}
 		}
 	}

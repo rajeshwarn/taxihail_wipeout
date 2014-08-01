@@ -32,9 +32,9 @@ namespace apcurium.MK.Booking.EventHandlers
                     Name = @event.Name,
                     FlatRate = @event.FlatRate,
                     KilometricRate = @event.KilometricRate,
+                    PerMinuteRate = @event.PerMinuteRate,
                     MarginOfError = @event.MarginOfError,
                     KilometerIncluded = @event.KilometerIncluded,
-                    PassengerRate = @event.PassengerRate,
                     DaysOfTheWeek = (int) @event.DaysOfTheWeek,
                     StartTime =
                         @event.StartTime < (DateTime) SqlDateTime.MinValue
@@ -44,7 +44,8 @@ namespace apcurium.MK.Booking.EventHandlers
                         @event.EndTime < (DateTime) SqlDateTime.MinValue
                             ? (DateTime) SqlDateTime.MinValue
                             : @event.EndTime,
-                    Type = (int) @event.Type
+                    Type = (int) @event.Type,
+                    VehicleTypeId = @event.VehicleTypeId
                 });
             }
         }
@@ -70,9 +71,9 @@ namespace apcurium.MK.Booking.EventHandlers
                 tariff.Name = @event.Name;
                 tariff.FlatRate = @event.FlatRate;
                 tariff.KilometricRate = @event.KilometricRate;
+                tariff.PerMinuteRate = @event.PerMinuteRate;
                 tariff.MarginOfError = @event.MarginOfError;
                 tariff.KilometerIncluded = @event.KilometerIncluded;
-                tariff.PassengerRate = @event.PassengerRate;
                 tariff.DaysOfTheWeek = (int) @event.DaysOfTheWeek;
                 tariff.StartTime = @event.StartTime < (DateTime) SqlDateTime.MinValue
                     ? (DateTime) SqlDateTime.MinValue
@@ -80,6 +81,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 tariff.EndTime = @event.EndTime < (DateTime) SqlDateTime.MinValue
                     ? (DateTime) SqlDateTime.MinValue
                     : @event.EndTime;
+                tariff.VehicleTypeId = @event.VehicleTypeId;
 
                 context.SaveChanges();
             }

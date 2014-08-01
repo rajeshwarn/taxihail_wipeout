@@ -14,7 +14,7 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
             CreateAndAuthenticateTestAdminAccount().Wait();
-            var sut = new TariffsServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new TariffsServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             sut.CreateTariff(new Tariff
                 {
                     Id = (_knownTariffId = Guid.NewGuid()),
@@ -25,8 +25,8 @@ namespace apcurium.MK.Web.Tests
                     Name = "Rate " + Guid.NewGuid(),
                     KilometricRate = 1.1,
                     FlatRate = 1.2m,
-                    PassengerRate = 1.3m,
                     MarginOfError = 1.4,
+                    PerMinuteRate = 0,
                     KilometerIncluded = 0,
                 }).Wait();
         }
@@ -49,7 +49,7 @@ namespace apcurium.MK.Web.Tests
         public async void AddTariff()
         {
             var tariffId = Guid.NewGuid();
-            var sut = new TariffsServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new TariffsServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
             await sut.CreateTariff(new Tariff
                 {
@@ -61,8 +61,8 @@ namespace apcurium.MK.Web.Tests
                     Name = "Rate " + tariffId,
                     KilometricRate = 1.1,
                     FlatRate = 1.2m,
-                    PassengerRate = 1.3m,
                     MarginOfError = 1.4,
+                    PerMinuteRate = 1.5,
                     KilometerIncluded = 1.6
                 });
 
@@ -76,15 +76,49 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(3, rate.EndTime.Hour);
             Assert.AreEqual(1.1, rate.KilometricRate);
             Assert.AreEqual(1.2m, rate.FlatRate);
-            Assert.AreEqual(1.3m, rate.PassengerRate);
             Assert.AreEqual(1.4, rate.MarginOfError);
+            Assert.AreEqual(1.5, rate.PerMinuteRate);
             Assert.AreEqual(1.6, rate.KilometerIncluded);
+            Assert.AreEqual(null, rate.VehicleTypeId);
+        }
+
+        [Test]
+        public async void AddVehiculeTariff()
+        {
+            var tariffId = Guid.NewGuid();
+            var sut = new TariffsServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+
+            await sut.CreateTariff(new Tariff
+            {
+                Id = tariffId,
+                Type = (int)TariffType.VehicleDefault,
+                Name = "Rate " + tariffId,
+                KilometricRate = 1.1,
+                FlatRate = 1.2m,
+                MarginOfError = 1.4,
+                PerMinuteRate = 1.5,
+                KilometerIncluded = 1.6,
+                VehicleTypeId = 10
+            });
+
+            var rates = await sut.GetTariffs();
+
+            Assert.AreEqual(1, rates.Count(x => x.Id == tariffId));
+            var rate = rates.Single(x => x.Id == tariffId);
+            Assert.AreEqual(3, rate.Type);
+            Assert.AreEqual("Rate " + tariffId, rate.Name);
+            Assert.AreEqual(1.1, rate.KilometricRate);
+            Assert.AreEqual(1.2m, rate.FlatRate);
+            Assert.AreEqual(1.4, rate.MarginOfError);
+            Assert.AreEqual(1.5, rate.PerMinuteRate);
+            Assert.AreEqual(1.6, rate.KilometerIncluded);
+            Assert.AreEqual(10, rate.VehicleTypeId);
         }
 
         [Test]
         public async void DeleteTariff()
         {
-            var sut = new TariffsServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new TariffsServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
             await sut.DeleteTariff(_knownTariffId);
 

@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
         public object Get(DirectionsRequest request)
         {
             var result = _client.GetDirection(request.OriginLat, request.OriginLng, request.DestinationLat,
-                request.DestinationLng, request.Date);
+                request.DestinationLng, request.VehicleTypeId, request.Date);
             return new DirectionInfo
             {
                 Distance = result.Distance,

@@ -223,7 +223,7 @@ namespace MK.DeploymentService
             ZipFile.CreateFromDirectory(packageDir, fileName);
 
             Log("Uploading package to server...");
-            new PackagesServiceClient().UploadPackage(fileName);
+            new PackagesServiceClient().UploadPackage(fileName, _job.Id).Wait();
             Log("Done uploading package to server...");
 
 

@@ -21,12 +21,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITwitterService _twitterService;
 		private readonly ILocationService _locationService;
 		private readonly IAccountService _accountService;
+		private readonly IRegisterWorkflowService _registrationService;
 
         public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocationService locationService,
-			IAccountService accountService)
+			IAccountService accountService,
+			IRegisterWorkflowService registrationService)
         {
+			_registrationService = registrationService;
             _facebookService = facebookService;
 			_twitterService = twitterService;
 			_twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
@@ -44,6 +47,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Email = "john@taxihail.com";
 			Password = "password";          
 #endif
+			_registrationService.PrepareNewRegistration ();
+			_registrationService
+				.GetAndObserveRegistration()
+				.Subscribe(x => OnRegistrationFinished(x));
         }
 
         public override void OnViewStarted(bool firstTime)
@@ -238,6 +245,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             this.Services().Message.ShowMessage(title, message);
                         }
                             break;
+						case AuthFailure.AccountNotActivated:
+						{
+							var title = localize["InvalidLoginMessageTitle"];
+							var message = localize ["AccountNotActivated"];
+							this.Services ().Message.ShowMessage (title, message);
+						}
+							break;
                     }
                 }
                 catch (Exception e)
@@ -253,13 +267,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void DoSignUp(object registerDataFromSocial = null)
         {
-			ShowSubViewModel<CreateAccountViewModel, RegisterAccount>(registerDataFromSocial, OnAccountCreated);
+			ShowViewModel<CreateAccountViewModel>(registerDataFromSocial);
         }
 
-        private async void OnAccountCreated(RegisterAccount data)
+        private async void OnRegistrationFinished(RegisterAccount data)
         {
+			if (data == null) 
+			{
+				return;
+			}
 
-            if (data.FacebookId.HasValue() || data.TwitterId.HasValue() || data.AccountActivationDisabled)
+			_registrationService.PrepareNewRegistration ();
+
+			//no confirmation required
+            if (data.FacebookId.HasValue() 
+				|| data.TwitterId.HasValue() 
+				|| data.AccountActivationDisabled
+				|| data.IsConfirmed)
             {
                 var facebookId = data.FacebookId;
                 var twitterId = data.TwitterId;
@@ -335,7 +359,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _loginWasSuccesful = true;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
 
-			Action showNextView = () => {
+			Action showNextView = () => 
+            {
 				if (NeedsToNavigateToAddCreditCard ()) {
 					ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel> (new { showInstructions = true });
 					return;
@@ -346,6 +371,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					LoginSucceeded (this, EventArgs.Empty);
 				}
 			};
+
+            // Log user session start
+            _accountService.LogApplicationStartUp();
 
 			if (_viewIsStarted) 
 			{
@@ -358,7 +386,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool NeedsToNavigateToAddCreditCard()
 		{
-			if (this.Settings.CreditCardIsMandatory)
+            // Resolve via TinyIoC because we cannot pass it via the constructor since it the PaymentService needs
+            // the user to be authenticated and it may not be when the class is initialized
+            var paymentSettings = TinyIoC.TinyIoCContainer.Current.Resolve<IPaymentService>().GetPaymentSettings();
+
+			if (this.Settings.CreditCardIsMandatory && paymentSettings.IsPayInTaxiEnabled)
 			{
 				if (!_accountService.CurrentAccount.DefaultCreditCard.HasValue)
 				{

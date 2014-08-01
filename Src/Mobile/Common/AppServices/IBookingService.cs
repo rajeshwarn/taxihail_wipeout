@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IBookingService
 	{
-		Task<DirectionInfo> GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate = null);
+        Task<DirectionInfo> GetFareEstimate(Address pickup, Address destination, int? vehicleTypeId, DateTime? pickupDate = null);
        
 		Task<string> GetFareEstimateDisplay(DirectionInfo direction, string fareFormat, string noFareText, bool includeDistance, string cannotGetFareText);
 

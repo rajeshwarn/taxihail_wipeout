@@ -78,7 +78,9 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                     LargeBags = 92
                 },
                 CreatedDate = createdDate,
-                ClientLanguageCode = "fr"
+                ClientLanguageCode = "fr",
+                UserAgent = "TestUserAgent",
+                ClientVersion = "1.0.0"
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -97,6 +99,8 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual(-73.554052, dto.DropOffAddress.Longitude);
                 Assert.AreEqual(pickupDate.ToLongDateString(), dto.PickupDate.ToLongDateString());
                 Assert.AreEqual("fr", dto.ClientLanguageCode);
+                Assert.AreEqual("TestUserAgent", dto.UserAgent);
+                Assert.AreEqual("1.0.0", dto.ClientVersion);
 
                 //Settings
                 Assert.AreEqual(99, dto.Settings.ChargeTypeId);

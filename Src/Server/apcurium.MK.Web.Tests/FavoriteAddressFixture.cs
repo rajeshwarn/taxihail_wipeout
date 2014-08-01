@@ -16,7 +16,7 @@ namespace apcurium.MK.Web.Tests
         {
             _knownAddressId = Guid.NewGuid();
             base.Setup();
-            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             sut.AddFavoriteAddress(new SaveAddress
                 {
                     Id = _knownAddressId,
@@ -47,7 +47,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void AddAddress()
         {
-            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
             var addressId = Guid.NewGuid();
             await sut.AddFavoriteAddress(new SaveAddress
@@ -80,7 +80,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void AddInvalidAddress()
         {
-            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
             Assert.Throws<WebServiceException>(async () => await sut.AddFavoriteAddress(new SaveAddress()));
         }
@@ -88,7 +88,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void GetAddressList()
         {
-            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
             var addresses = await sut.GetFavoriteAddresses();
 
@@ -99,7 +99,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void RemoveAddress()
         {
-            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
             await sut.RemoveFavoriteAddress(_knownAddressId);
 
@@ -110,7 +110,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void UpdateAddress()
         {
-            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
             await sut.UpdateFavoriteAddress(new SaveAddress
                 {
@@ -142,7 +142,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void UpdateAddressWithInvalidData()
         {
-            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
             Assert.Throws<WebServiceException>(async () => await sut.UpdateFavoriteAddress(new SaveAddress
                 {

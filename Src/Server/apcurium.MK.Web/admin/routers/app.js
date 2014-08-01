@@ -32,6 +32,7 @@
             "tariffs": "manageTariffs", //#tariffs
             "tariffs/add/recurring": "addRecurringTariff", //#tariffs/add/recurring
             "tariffs/add/day": "addDayTariff", //#tariffs/add/day
+            "tariffs/add/vehicle": "addVehicleTariff", //#tariffs/add/vehicle
             "tariffs/edit/:id": "editTariff", //#tariffs/edit/{GUID}
 
             /* Rules */
@@ -54,7 +55,12 @@
             /* Charge Accounts */
             "accounts": "manageAccounts",
             "accounts/add": "addAccount",
-            "accounts/edit/:number": "editAccount"
+            "accounts/edit/:number": "editAccount",
+
+            /* Vehicle Types */
+            "vehicleTypes": "manageVehicleTypes",
+            "vehicleTypes/add": "addVehicleType",
+            "vehicleTypes/edit/:id": "editVehicleType"
         },
 
         initialize: function (options) {
@@ -128,6 +134,10 @@
             action(TaxiHail.TariffsController, 'addDay');
         },
 
+        addVehicleTariff: function () {
+            action(TaxiHail.TariffsController, 'addVehicle');
+        },
+
         editTariff: function(id) {
             
             action(TaxiHail.TariffsController, 'edit', id);
@@ -189,6 +199,18 @@
 
         editAccount: function (id) {
             action(TaxiHail.AccountChargeController, 'edit', id);
+        },
+
+        manageVehicleTypes: function () {
+            action(TaxiHail.VehicleTypeController, 'index');
+        },
+
+        addVehicleType: function () {
+            action(TaxiHail.VehicleTypeController, 'add');
+        },
+
+        editVehicleType: function (id) {
+            action(TaxiHail.VehicleTypeController, 'edit', id);
         }
 
     });

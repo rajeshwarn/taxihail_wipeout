@@ -10,6 +10,8 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -24,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private bool _isInLocationDetail;
 		private Address _currentAddress;	
 		private bool _ignoreTextChange;
+		private string _currentLanguage;
 		private AddressViewModel[] _defaultHistoryAddresses = new AddressViewModel[0];
 		private AddressViewModel[] _defaultFavoriteAddresses = new AddressViewModel[0];
 		private AddressViewModel[] _defaultNearbyPlaces = new AddressViewModel[0];
@@ -44,6 +47,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		public void Init(string searchCriteria)
 		{
 			AllAddresses = new ObservableCollection<AddressViewModel>();
+			_currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
 
 			if (searchCriteria != null) 
 			{
@@ -68,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			var favoritePlaces = _accountService.GetFavoriteAddresses();
 			var historyPlaces = _accountService.GetHistoryAddresses();
-			var neabyPlaces = Task.Run(() => _placesService.SearchPlaces(null, _currentAddress.Latitude, _currentAddress.Longitude, null));
+			var neabyPlaces = Task.Run(() => _placesService.SearchPlaces(null, _currentAddress.Latitude, _currentAddress.Longitude, null, _currentLanguage));
 			try
 			{
 				using(this.Services().Message.ShowProgressNonModal())
@@ -103,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			if (_currentAddress != null)
 			{
-				var currentPosition = new Position(_currentAddress.Latitude, _currentAddress.Longitude);
+				var currentPosition = new apcurium.MK.Booking.Maps.Geo.Position(_currentAddress.Latitude, _currentAddress.Longitude);
 				addressViewModels = addressViewModels.OrderBy(a => a.ToPosition().DistanceTo(currentPosition)).ToArray();
 			}
 
@@ -252,8 +256,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return new AddressViewModel[0];
 			}
-
-			var fullAddresses = _placesService.SearchPlaces(criteria, position.Latitude, position.Longitude, null);
+				
+			var fullAddresses = _placesService.SearchPlaces(criteria, position.Latitude, position.Longitude, null, _currentLanguage);
 
 			var addresses = fullAddresses.ToList();
 			return addresses.Select(a => new AddressViewModel(a, AddressType.Places) { IsSearchResult = true }).ToArray();

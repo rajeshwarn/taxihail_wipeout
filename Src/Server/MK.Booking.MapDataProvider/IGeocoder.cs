@@ -5,8 +5,8 @@ namespace apcurium.MK.Booking.MapDataProvider
 {
 	public interface IGeocoder
 	{
-		GeoAddress[] GeocodeAddress(string address);
-		GeoAddress[]  GeocodeLocation(double latitude, double longitude);
+		GeoAddress[] GeocodeAddress(string address, string currentLanguage);
+		GeoAddress[]  GeocodeLocation(double latitude, double longitude, string currentLanguage);
 
 	}
 }

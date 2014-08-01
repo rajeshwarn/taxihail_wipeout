@@ -16,6 +16,7 @@
             BaseUrl = "https://payment.cmtapi.com/";
             IsSandbox = true;
             CurrencyCode = CurrencyCodes.Main.UnitedStatesDollar;
+            Market = "PHL";
 #endif
         }
 
@@ -36,5 +37,7 @@
         public string FleetToken { get; set; }
 
         public string CurrencyCode { get; set; }
+
+        public string Market { get; set; }
     }
 }

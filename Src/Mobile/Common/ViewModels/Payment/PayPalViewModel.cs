@@ -12,17 +12,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public string Url { get; private set; }
 
-		public override void OnViewLoaded ()
-		{
-			base.OnViewLoaded ();
-			// Show progress indicator while loading first request
-            this.Services().Message.ShowProgress(true);
-		}
-
 		private bool _webViewLoadFinishedOnce;
 		public void WebViewLoadFinished ()
 		{
-			if (!_webViewLoadFinishedOnce) {
+			if (!_webViewLoadFinishedOnce) 
+			{
                 this.Services().Message.ShowProgress(false);
 				_webViewLoadFinishedOnce = true;
 			}
@@ -30,7 +24,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public ICommand Finish
 		{
-			get{
+			get
+			{
 				return this.GetCommand<bool>(b => this.ReturnResult(b));
 			}
 		}

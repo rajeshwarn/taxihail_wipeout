@@ -53,6 +53,7 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<OrderPaymentDetail>().ToTable("OrderPaymentDetail", SchemaName);
             modelBuilder.Entity<CompanyDetail>().ToTable("CompanyDetail", SchemaName);
             modelBuilder.Entity<OrderUserGpsDetail>().ToTable("OrderUserGpsDetail", SchemaName);
+            modelBuilder.Entity<AppStartUpLogDetail>().ToTable("AppStartUpLogDetail", SchemaName);
 
             modelBuilder.Entity<AccountChargeQuestion>().ToTable("AccountChargeQuestion", SchemaName);
             modelBuilder.Entity<AccountChargeDetail>().ToTable("AccountChargeDetail", SchemaName)
@@ -60,7 +61,8 @@ namespace apcurium.MK.Booking.Database
                 .WithRequired()
                 .HasForeignKey(x => x.AccountId)
                 .WillCascadeOnDelete(true);
-           
+
+            modelBuilder.Entity<VehicleTypeDetail>().ToTable("VehicleTypeDetail", SchemaName);
         }
 
         public T Find<T>(Guid id) where T : class

@@ -26,13 +26,14 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public TariffType Type { get; set; }
         public string Name { get; set; }
         public decimal FlatRate { get; set; }
-        public decimal PassengerRate { get; set; }
         public double KilometricRate { get; set; }
+        public double PerMinuteRate { get; set; }
         public double MarginOfError { get; set; }
         public double KilometerIncluded { get; set; }
         public DayOfTheWeek DaysOfTheWeek { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public int? VehicleTypeId { get; set; }
     }
 
     public class TariffResponse : IHasResponseStatus

@@ -9,6 +9,7 @@
     <div class="errors" style="margin-top: 10px;"></div>
     <form class="form-horizontal clearfix" >
         <input type='hidden' name='type' value='{{type}}' />
+      
         <div class="control-group">
             <label class="control-label">{{localize 'Name'}}</label>
             <div class="controls">
@@ -20,6 +21,27 @@
                 {{/if}}
             </div>
         </div>
+
+        <div class="control-group">
+          <label class="control-label">{{localize 'Vechicule Type'}}</label>
+          <div class="controls">
+            {{#if isDefault}}
+              <label>{{localize "All"}}</label>
+            {{else}}
+              <select name="vehicleTypeId">
+                {{#select vehicleTypeId}}
+                  {{#unless isVehicleDefault}}
+                    <option value="null">All</option>
+                  {{/unless}}
+                  {{#each availableVehicleTypes}}
+                    <option value="{{referenceDataVehicleId}}">{{name}}</option>
+                  {{/each}}
+                {{/select}}
+              </select>
+            {{/if}}
+          </div>
+        </div>
+      
         <div class="control-group">
             <label class="control-label">{{localize 'Flat Rate'}}</label>
             <div class="controls">
@@ -32,16 +54,16 @@
                 <input type="text" name="kilometricRate"  value="{{kilometricRate}}" class='input-mini'>
             </div>
         </div>
-      <div class="control-group">
-        <label class="control-label">{{localize 'Kilometer Included In Flat Rate'}}</label>
-        <div class="controls">
-          <input type="text" name="kilometerIncluded"  value="{{kilometerIncluded}}" class='input-mini'>
-            </div>
-      </div>
         <div class="control-group">
-            <label class="control-label">{{localize 'Passenger Rate'}}</label>
+            <label class="control-label">{{localize 'Per Minute Rate'}}</label>
             <div class="controls">
-                <input type="text" name="passengerRate"  value="{{passengerRate}}" class='input-mini'>
+                <input type="text" name="perMinuteRate" value="{{perMinuteRate}}" class='input-mini'>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">{{localize 'Kilometer Included In Flat Rate'}}</label>
+            <div class="controls">
+                <input type="text" name="kilometerIncluded"  value="{{kilometerIncluded}}" class='input-mini'>
             </div>
         </div>
         <div class="control-group">
@@ -55,6 +77,7 @@
         </div>
       
         {{#unless isDefault}}
+          {{#unless isVehicleDefault}}
             <div class='clearfix'>
                 <div class="control-group">
                     <label class="control-label">{{localize 'Start Time'}}</label>
@@ -115,6 +138,7 @@
                 </div>
             </div>
             {{/if}} <!-- /if recurring -->
+          {{/unless}} <!-- /unless isVehicleDefault -->
         {{/unless}} <!-- /unless isDefault -->
         <button type='submit' class='btn btn-primary'>{{localize "Save Tariff"}}</button>
     </form>

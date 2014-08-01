@@ -4,11 +4,14 @@
     {
 // ReSharper disable InconsistentNaming
         CreateAccount_AccountAlreadyExist,
+        CreateAccount_CannotSendSMS,
+        CreateAccount_InvalidConfirmationToken,
         CreateOrder_CannotCreateInIbs,
         CreateOrder_SettingsRequired,
         CreateOrder_InvalidProvider,
         CreateOrder_RuleDisable,
         CreateOrder_NoFareEstimateAvailable,
+        CreateOrder_PendingOrder,
         NearbyPlaces_LocationRequired,
         Search_Locations_NameRequired,
         UpdatePassword_NotSame,
@@ -18,7 +21,7 @@
         Rule_DuplicateName,
         Rule_InvalidPriority,
         ResetPassword_AccountNotFound,
-        AccountCharge_AccountAlreadyExisting
+        AccountCharge_AccountAlreadyExisting,
  // ReSharper restore InconsistentNaming
     }
 }

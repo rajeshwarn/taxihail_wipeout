@@ -8,7 +8,6 @@ using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 
-
 namespace MK.Booking.MapDataProvider.Foursquare
 {
 	/// <summary>

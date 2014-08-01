@@ -57,9 +57,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             if (cached == null)
             {
                 var refData = UseServiceClientAsync<ReferenceDataServiceClient, ReferenceData>(service => service.GetReferenceData());
-                UserCache.Set(RefDataCacheKey, await refData, DateTime.Now.AddHours(1));
-                return await refData;
-
+				UserCache.Set(RefDataCacheKey, await refData, DateTime.Now.AddHours(1));
+				return await refData;
             }
             return cached;
         }
@@ -296,7 +295,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				var authResponse = await UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service
 					.Authenticate (email, password),
-					error => { /* Avoid trigerring global error handler */ });
+					error => { throw error;/* Avoid trigerring global error handler */ });
                 SaveCredentials (authResponse);                
                 return await GetAccount ();
             }
@@ -309,10 +308,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 switch (e.StatusCode)
                 {
-                    case (int)HttpStatusCode.NotFound:
-                        throw new AuthException("Invalid service url", AuthFailure.InvalidServiceUrl, e);
-                    case (int)HttpStatusCode.Unauthorized:
-                        throw new AuthException("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);
+					case (int)HttpStatusCode.Unauthorized:
+					{
+						if (e.Message == AuthFailure.AccountNotActivated.ToString ())
+						{
+							throw new AuthException ("Account not validated", AuthFailure.AccountNotActivated, e);
+						}
+						else
+						{
+							throw new AuthException ("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);
+						}
+					}
+					case (int)HttpStatusCode.NotFound:
+					{
+						throw new AuthException ("Invalid service url", AuthFailure.InvalidServiceUrl, e);
+					}
                 }
                 throw;
             }
@@ -505,22 +515,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return refData.CompaniesList;         
         }
 
-		public async Task<IList<ListItem>> GetVehiclesList ()
+		public async Task<IList<VehicleType>> GetVehiclesList ()
         {
-			var refData = await GetReferenceData();
-
-			if (!_appSettings.Data.HideNoPreference
-                && refData.VehiclesList != null)
-            {
-                refData.VehiclesList.Insert(0,
-					new ListItem
-                    {
-                        Id = null,
-						Display = _localize["NoPreference"]
-					});
-            }
-
-            return refData.VehiclesList;
+			return await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
         }
 
 		public async Task<IList<ListItem>> GetPaymentsList ()
@@ -580,5 +577,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			return true;
         }
+
+		public void LogApplicationStartUp()
+		{
+			try
+			{
+				var packageInfo = Mvx.Resolve<IPackageInfo> ();
+
+				var request = new LogApplicationStartUpRequest
+				{
+					StartUpDate = DateTime.UtcNow,
+					Platform = packageInfo.Platform,
+					PlatformDetails = packageInfo.PlatformDetails,
+					ApplicationVersion = packageInfo.Version
+				};
+
+				// No need to await since we do not want to slowdown the app
+				UseServiceClientAsync<IAccountServiceClient> (client => client.LogApplicationStartUp(request));
+			}
+			catch (Exception e)
+			{
+				// If logging fails, run app anyway and log exception
+                Logger.LogError(e);
+			}
+		}
     }
 }

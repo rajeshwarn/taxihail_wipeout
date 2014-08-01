@@ -18,6 +18,8 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Booking.SMS;
+using apcurium.MK.Booking.SMS.Impl;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
@@ -35,6 +37,7 @@ namespace apcurium.MK.Booking
         public void Init(IUnityContainer container)
         {
             System.Data.Entity.Database.SetInitializer<BookingDbContext>(null);
+            container.RegisterType<ISmsService, TwilioService>();
             container.RegisterType<BookingDbContext>(new TransientLifetimeManager(),
                 new InjectionConstructor(
                     container.Resolve<ConnectionStringSettings>(Common.Module.MkConnectionString).ConnectionString));
@@ -59,6 +62,8 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IDeviceDao>(new DeviceDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<ICompanyDao>(new CompanyDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountChargeDao>(new AccountChargeDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IVehicleTypeDao>(new VehicleTypeDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IAppStartUpLogDao>(new AppStartUpLogDao(() => container.Resolve<BookingDbContext>()));
 
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterInstance<ITemplateService>(new TemplateService(container.Resolve<IConfigurationManager>()));
@@ -142,6 +147,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, CompanyDetailsGenerator>("CompanyDetailsGenerator");
             container.RegisterType<IEventHandler, OrderUserGpsGenerator>("OrderUserGpsGenerator");
             container.RegisterType<IEventHandler, AccountChargeDetailGenerator>("AccountChargeDetailGenerator");
+            container.RegisterType<IEventHandler, VehicleTypeDetailGenerator>("VehicleTypeDetailGenerator");
 
             // Integration event handlers
             container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");
@@ -158,6 +164,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<ICommandHandler, CompanyCommandHandler>("CompanyCommandHandler");
             container.RegisterType<ICommandHandler, PayPalPaymentCommandHandler>("PayPalPaymentCommandHandler");
             container.RegisterType<ICommandHandler, CreditCardPaymentCommandHandler>("CreditCardPaymentCommandHandler");
+            container.RegisterType<ICommandHandler, SmsCommandHandler>("SmsCommandHandler");
         }
     }
 }

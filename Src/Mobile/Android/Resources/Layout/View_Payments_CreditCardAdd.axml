@@ -93,7 +93,7 @@
                         android:layout_marginBottom="4dp" />
                     <TextView
                         android:layout_width="0dp"
-                        android:layout_marginLeft="10dip"
+                        android:layout_marginStart="10dip"
                         android:layout_weight="0.2"
                         android:layout_height="wrap_content"
                         android:text="@string/CreditCardCCV"
@@ -115,7 +115,7 @@
                         local:MvxBind="CreditCardNumber CreditCardNumber; LeftImage CreditCardImagePath" />
                     <EditText
                         android:layout_width="0dp"
-                        android:layout_marginLeft="10dip"
+                        android:layout_marginStart="10dip"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_weight="0.2"
                         android:inputType="number"
@@ -132,7 +132,7 @@
                     android:orientation="horizontal"
                     android:layout_marginBottom="4dp">
                     <TextView
-                        android:gravity="left"
+                        android:gravity="start"
                         android:layout_width="135dip"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
                         android:text="@string/CreditCardExpMonth"
                         style="@style/BlackTextLabel" />
                     <TextView
-                        android:gravity="left"
+                        android:gravity="start"
                         android:layout_width="135dip"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
@@ -155,7 +155,7 @@
                     <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
                         android:layout_width="0dip"
                         android:layout_weight="1"
-                        android:layout_marginRight="10dip"
+                        android:layout_marginEnd="10dip"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:inputType="number"
                         android:singleLine="true"

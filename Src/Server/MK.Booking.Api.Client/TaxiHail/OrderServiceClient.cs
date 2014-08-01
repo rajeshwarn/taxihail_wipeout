@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
@@ -16,8 +17,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class OrderServiceClient : BaseServiceClient
     {
-        public OrderServiceClient(string url, string sessionId, string userAgent)
-            : base(url, sessionId, userAgent)
+        public OrderServiceClient(string url, string sessionId, IPackageInfo packageInfo)
+            : base(url, sessionId, packageInfo)
         {
         }
 

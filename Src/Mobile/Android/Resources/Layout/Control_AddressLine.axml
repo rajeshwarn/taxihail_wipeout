@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_toRightOf="@+id/ImageView"
+            android:layout_toEndOf="@+id/ImageView"
             android:layout_centerInParent="true">
             <TextView
                 android:text="Name"

@@ -5,7 +5,10 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using System.Web;
+using CustomerPortal.Web.Entities;
+using Microsoft.Build.Tasks;
 using MK.DeploymentService.Properties;
 
 #endregion
@@ -14,33 +17,41 @@ namespace MK.DeploymentService.Service
 {
     public class PackagesServiceClient
     {
-        public void UploadPackage(string filename)
+        public async Task UploadPackage(string filename, string jobId)
         {
-            var url = GetUrl();
-
-
-            using (
-                var client =
-                    new HttpClient(new HttpClientHandler
-                    {
-                        Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
-                    }))
+            try
             {
-                client.BaseAddress = new Uri(url);
-
-                if (File.Exists(filename))
+                using (var client = new HttpClient(new HttpClientHandler
                 {
-                    var stream = new FileStream(filename, FileMode.Open);
+                    Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
+                })
+                {
+                    Timeout = TimeSpan.FromMinutes(10) //as the webserver
+                })
+                {
+                    client.BaseAddress = new Uri(GetUrl());
 
-                    var packageContent = new StreamContent(stream);
-                    packageContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                    packageContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                    if (File.Exists(filename))
                     {
-                        FileName = Path.GetFileName(filename)
-                    };
-// ReSharper disable once UnusedVariable
-                    var r = client.PostAsync("packages", packageContent).Result.IsSuccessStatusCode;
+                        var stream = new FileStream(filename, FileMode.Open);
+
+                        var packageContent = new StreamContent(stream);
+                        packageContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                        packageContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                        {
+                            FileName = Path.GetFileName(filename)
+                        };
+                        var response = await client.PostAsync("packages", packageContent);
+                        var message = string.Format("result of the upload of the package {0} : {1}", filename,
+                            response.StatusCode);
+                        new DeploymentJobServiceClient().UpdateStatus(jobId, message);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                var message = string.Format("error during upload of the package {0} : {1}", filename, e.Message);
+                new DeploymentJobServiceClient().UpdateStatus(jobId, message);
             }
         }
 

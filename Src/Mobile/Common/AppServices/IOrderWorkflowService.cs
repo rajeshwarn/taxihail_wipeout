@@ -10,9 +10,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IOrderWorkflowService
     {
-
-
-		void PrepareForNewOrder();
+		Task PrepareForNewOrder();
 
 		void BeginCreateOrder ();
 
@@ -25,20 +23,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken);
 
-		void SetPickupDate(DateTime? date);
+		Task SetPickupDate(DateTime? date);
 
 		Task ToggleBetweenPickupAndDestinationSelectionMode();
 
 		Task ValidatePickupDestinationAndTime();
 		Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder();
 
-		void SetBookingSettings(BookingSettings bookingSettings);
+		Task SetVehicleType (int? vehicleTypeId);
+		Task SetBookingSettings(BookingSettings bookingSettings);
 		Task SetAccountNumber (string accountNumber);
 		void SetNoteToDriver(string text);
 
 		IObservable<Address> GetAndObservePickupAddress();
 		IObservable<Address> GetAndObserveDestinationAddress();
 		IObservable<AddressSelectionMode> GetAndObserveAddressSelectionMode();
+		IObservable<int?> GetAndObserveVehicleType();
 		IObservable<BookingSettings> GetAndObserveBookingSettings();
 		IObservable<DateTime?> GetAndObservePickupDate();
 		IObservable<string> GetAndObserveEstimatedFare();
@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<Address> GetCurrentAddress();
 
-		void ResetOrderSettings();
+		Task ResetOrderSettings();
     }
 }
 

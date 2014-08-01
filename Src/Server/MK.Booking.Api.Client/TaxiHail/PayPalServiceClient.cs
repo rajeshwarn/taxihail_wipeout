@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 #endregion
 
@@ -11,8 +12,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class PayPalServiceClient : BaseServiceClient
     {
-        public PayPalServiceClient(string url, string sessionId, string userAgent)
-            : base(url, sessionId, userAgent)
+        public PayPalServiceClient(string url, string sessionId, IPackageInfo packageInfo)
+            : base(url, sessionId, packageInfo)
         {
         }
 

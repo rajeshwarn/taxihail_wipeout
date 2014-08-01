@@ -55,8 +55,8 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                 CompanyId = _companyId,
                 TariffId = _tariffId,
                 FlatRate = 12m,
-                PassengerRate = 13,
                 KilometricRate = 14,
+                PerMinuteRate = 17,
                 MarginOfError = 15,
                 KilometerIncluded = 16,
                 StartTime = DateTime.Today.AddHours(16),
@@ -69,10 +69,10 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual(_tariffId, evt.TariffId);
             Assert.AreEqual(12, evt.FlatRate);
-            Assert.AreEqual(13, evt.PassengerRate);
             Assert.AreEqual(14, evt.KilometricRate);
             Assert.AreEqual(15, evt.MarginOfError);
             Assert.AreEqual(16, evt.KilometerIncluded);
+            Assert.AreEqual(17, evt.PerMinuteRate);
             Assert.AreEqual("Updated", evt.Name);
             Assert.AreEqual(DayOfTheWeek.Wednesday, evt.DaysOfTheWeek);
             Assert.AreEqual(DateTime.Today.AddHours(16), evt.StartTime);

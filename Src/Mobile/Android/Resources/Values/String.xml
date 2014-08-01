@@ -432,7 +432,7 @@
   <string name="DriverInfoMake">Make:</string>
   <string name="DontHaveAnAccountLabel">Don\'t have an account?</string>
   <string name="DriverInfoColor">Color:</string>
-  <string name="Submit">Submit</string>
+  <string name="Submit">Submit Rating</string>
   <string name="SaveAddressEmptyFieldTitle">Friendly name required</string>
   <string name="ResetPasswordTitleText">Forgot your password?</string>
   <string name="CreateAccountEmailPlaceHolder">Email</string>
@@ -490,4 +490,11 @@
   <string name="Error_AccountPaymentQuestionRequiredMessage">You must answer every questions marked as required to continue.</string>
   <string name="AccountPaymentQuestionsPlaceHolder">{0} characters maximum</string>
   <string name="AccountPaymentQuestionsRequired">(required)</string>
+  <string name="View_AccountConfirmation_Button">Confirm</string>
+  <string name="View_AccountConfirmationTitle">Account Confirmation</string>
+  <string name="View_AccountConfirmation_Label_Code">Code</string>
+  <string name="View_AccountConfirmation_Label_Instructions">A text message with your code has been sent to your phone.</string>
+  <string name="AccountConfirmation_ErrorTitle">Cannot confirm account</string>
+  <string name="ServiceErrorCreateAccount_CannotSendSMS">The confirmation code is incorrect.</string>
+  <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
 </resources>

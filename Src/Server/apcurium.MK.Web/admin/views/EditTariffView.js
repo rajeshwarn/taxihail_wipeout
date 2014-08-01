@@ -7,15 +7,19 @@
             'change [data-role=timepicker]': 'ontimepickerchange'
         },
 
-        render: function() {
+        render: function () {
 
             var daysOfTheWeek = this.model.get('daysOfTheWeek'),
                 now = new Date(),
-                today = new Date(now.getFullYear(), now.getMonth(), now.getDate()),
-                data = this.model.toJSON();
+                today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+            var data = _.extend(this.model.toJSON(), {
+                availableVehicleTypes: this.options.availableVehicleTypes.toJSON()
+            });
 
             data.recurring = +this.model.get('type') === TaxiHail.Tariff.type.recurring;
             data.isDefault = +this.model.get('type') === TaxiHail.Tariff.type['default'];
+            data.isVehicleDefault = +this.model.get('type') === TaxiHail.Tariff.type.vehicleDefault;
             data.editMode = !this.model.isNew();
 
             // Determine if the checkbox for each days should be checked
@@ -40,6 +44,7 @@
             this.validate({
                 rules: {
                     name: 'required',
+                    vehicleTypeId: 'required',
                     flatRate: {
                         required: true,
                         min: 0
@@ -56,7 +61,7 @@
                         required: true,
                         min: 0
                     },
-                    passengerRate: {
+                    perMinuteRate: {
                         required: true,
                         min: 0
                     },
@@ -111,16 +116,19 @@
                     endTime.setDate(endTime.getDate() + 1);
                 }
 
-                serialized.startTime = TaxiHail.date.toISO8601(startTime);
-                serialized.endTime   = TaxiHail.date.toISO8601(endTime);
+                // Start and End time will be undefined when adding default vehicle tariffs
+                if (startTime !== undefined && endTime !== undefined) {
+                    serialized.startTime = TaxiHail.date.toISO8601(startTime);
+                    serialized.endTime = TaxiHail.date.toISO8601(endTime);
+                }
             }
 
             this.model.save(serialized, {
-                success: _.bind(function(model) {
+                success: _.bind(function (model) {
                     this.collection.add(model);
                     TaxiHail.app.navigate('tariffs', {trigger: true});
                 }, this),
-                error: function(model, xhr, options) {
+                error: function (model, xhr, options) {
                     this.$(':submit').button('reset');
 
                     var alert = new TaxiHail.AlertView({

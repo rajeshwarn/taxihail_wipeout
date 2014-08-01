@@ -4,13 +4,19 @@
     <td>-</td>
     <td>-</td>
 {{else}}
+	{{#if isVehicleDefault}}
     <td>{{name}}</td>
-    {{#if recurring}}
-    <td>{{daysOfTheWeek}}</td>
-    {{else}}
-    <td>{{niceDate startTime}}</td>
-    {{/if}}
-    <td>{{niceTime startTime}}&nbsp;-&nbsp;{{niceTime endTime}}</td>
+    <td>-</td>
+    <td>-</td>
+	{{else}}
+		<td>{{name}}</td>
+		{{#if recurring}}
+		<td>{{daysOfTheWeek}}</td>
+		{{else}}
+		<td>{{niceDate startTime}}</td>
+		{{/if}}
+		<td>{{niceTime startTime}}&nbsp;-&nbsp;{{niceTime endTime}}</td>
+	{{/if}}
 {{/if}}
     <td>
         <a type='button' class='btn btn-mini' href='#tariffs/edit/{{id}}'>

@@ -35,20 +35,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Initialize();
         }
 
-// ReSharper disable once MemberCanBePrivate.Global
-// ReSharper disable once UnusedAutoPropertyAccessor.Global
+		public void Reset()
+		{
+
+		}
+
         public ICommand SelectedChangedCommand { get; set; }
 
         private void Initialize()
         {
             Click += delegate
             {
-                Selected = !Selected;
-                if (Selected
-                    && SelectedChangedCommand != null
-                    && SelectedChangedCommand.CanExecute())
+                if (SelectedChangedCommand != null
+                 && SelectedChangedCommand.CanExecute())
                 {
-                    SelectedChangedCommand.Execute(Tag);
+					SelectedChangedCommand.Execute(Tag);
                 }
             };
 

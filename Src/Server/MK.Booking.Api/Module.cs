@@ -123,16 +123,11 @@ namespace apcurium.MK.Booking.Api
                 .ForMember(p => p.RuleId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                 .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
-            Mapper.CreateMap<Tariff, UpdateTariff>()
-                .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
-                .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
-
             Mapper.CreateMap<RuleActivateRequest, ActivateRule>()
                 .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
             Mapper.CreateMap<RuleDeactivateRequest, DeactivateRule>()
                 .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
-
 
             Mapper.CreateMap<CreditCardRequest, AddCreditCard>()
                 .ForMember(x => x.CreditCardId,
@@ -140,7 +135,6 @@ namespace apcurium.MK.Booking.Api
 
             Mapper.CreateMap<PopularAddress, AddPopularAddress>();
             Mapper.CreateMap<PopularAddress, UpdatePopularAddress>();
-            
         }
     }
 

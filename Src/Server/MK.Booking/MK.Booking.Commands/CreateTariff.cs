@@ -22,13 +22,14 @@ namespace apcurium.MK.Booking.Commands
 
         public decimal FlatRate { get; set; }
         public double KilometricRate { get; set; }
+        public double PerMinuteRate { get; set; }
         public double MarginOfError { get; set; }
         public double KilometerIncluded { get; set; }
-        public decimal PassengerRate { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public DayOfTheWeek DaysOfTheWeek { get; set; }
         public TariffType Type { get; set; }
         public Guid Id { get; set; }
+        public int? VehicleTypeId { get; set; }
     }
 }

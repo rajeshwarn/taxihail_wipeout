@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             };
 
             lblCreditCard.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
-            lblTip.Text = Localize.GetValue("PaymentViewTipText");
+			lblTip.Text = Localize.GetValue("PaymentViewTipText");
             lblTipAmount.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
             lblMeterAmount.Text = Localize.GetValue("PaymentViewMeterAmountText");
             lblTotal.Text = Localize.GetValue("PaymentViewTotalText");
@@ -138,6 +138,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
                 .To(vm => vm.PlaceholderAmount);
 
             // Other bindings in layout
+
+            set.Bind(txtMeterAmount)
+                .For(v => v.Enabled)
+                .To(vm => vm.MeterAmountPopulatedByIBS)
+                .WithConversion("BoolInverter");
 
 			set.Bind(payPalToggle)
 				.For(v => v.PayPalSelected)

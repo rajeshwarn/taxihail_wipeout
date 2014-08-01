@@ -81,10 +81,12 @@
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\AccountChargeRequest.cs" />
+    <Compile Include="Requests\ActivationMethod.cs" />
     <Compile Include="Requests\AddressHistoryRequest.cs" />
     <Compile Include="Requests\AccountOrderListRequest.cs" />
     <Compile Include="BaseDTO.cs" />
     <Compile Include="Requests\IbsFareRequest.cs" />
+    <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
     <Compile Include="Requests\OrderPairingRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\PreAuthorizeAndCommitPaymentBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\CallbackRequest.cs" />
@@ -122,12 +124,12 @@
     <Compile Include="Requests\OrderStatusRequest.cs" />
     <Compile Include="Requests\Payment\CancelPayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\Payment\CompletePayPalExpressCheckoutPaymentRequest.cs" />
-    <Compile Include="Requests\Payment\TestCmtSettingsRequest.cs" />
+    <Compile Include="Requests\Payment\TestBraintreeSettingsRequest.cs" />
     <Compile Include="Requests\Payment\TestMonerisSettingsRequest.cs" />
     <Compile Include="Requests\Payment\TestPayPalProductionSettingsRequest.cs" />
     <Compile Include="Requests\Payment\TestPayPalSandBoxSettingsRequest.cs" />
     <Compile Include="Requests\Payment\TestServerPaymentSettingsResponse.cs" />
-    <Compile Include="Requests\Payment\TestBraintreeSettingsRequest.cs" />
+    <Compile Include="Requests\Payment\TestCmtSettingsRequest.cs" />
     <Compile Include="Requests\Payment\ServerPaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\UpdateServerPaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
@@ -153,8 +155,10 @@
     <Compile Include="Requests\TermsAndConditionsRequest.cs" />
     <Compile Include="Requests\TestOnlyReqGetAdminTestAccount.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
+    <Compile Include="Requests\UnassignedReferenceDataVehiclesRequest.cs" />
     <Compile Include="Requests\UpdatePassword.cs" />
     <Compile Include="Requests\ValidateOrderRequest.cs" />
+    <Compile Include="Requests\VehicleTypeRequest.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AccountCharge.cs" />
     <Compile Include="Resources\AddressList.cs" />
@@ -179,6 +183,7 @@
     <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
     <Compile Include="Resources\TermsAndConditions.cs" />
+    <Compile Include="Resources\VehicleType.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
     <Compile Include="Security\AuthorizationRequiredAttribute.cs" />
   </ItemGroup>

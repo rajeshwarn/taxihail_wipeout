@@ -43,12 +43,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             lblPassengers.Maybe(x => x.Text = Localize.GetValue("PassengerNumberLabel"));
             lblApartment.Maybe(x => x.Text = Localize.GetValue("ApartmentLabel"));
             lblEntryCode.Maybe(x => x.Text = Localize.GetValue("EntryCodeLabel"));
-            lblVehicleType.Maybe(x => x.Text = Localize.GetValue("ConfirmVehiculeTypeLabel"));
             lblChargeType.Maybe(x => x.Text = Localize.GetValue("ChargeTypeLabel"));                     
-
             lblLargeBags.Maybe(x => x.Text = Localize.GetValue ("LargeBagsLabel"));
-
-            txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), () => ViewModel.Vehicles.ToArray(), () => ViewModel.VehicleTypeId, x => ViewModel.VehicleTypeId = x.Id);
+           
             txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), () => ViewModel.ChargeTypes.ToArray(), () => ViewModel.ChargeTypeId, x => ViewModel.ChargeTypeId = x.Id);
         }
 
@@ -91,10 +88,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
             set.BindSafe(txtEntryCode)
                 .To(vm => vm.PickupAddress.RingCode);
-
-            set.BindSafe(txtVehicleType)
-                .For("Text")
-                .To(vm => vm.VehicleTypeName);
 
             set.BindSafe(txtChargeType)
                 .For("Text")
