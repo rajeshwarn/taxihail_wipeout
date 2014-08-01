@@ -34,7 +34,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Service Url", Description="Url of the TaxiHail Server")]
 		public string ServiceUrl { get; set; }
         [Display(Name = "Error Log Enabled", Description="Flag to enable the log of the errors in file")]
-		public bool ErrorLogEnabled{ get; private set; }
+		public bool ErrorLogEnabled{ get { return true; }  private set{ } }
         [Display(Name = "Twitter Enabled", Description="Enable register/log in with Twitter")]
 		public bool TwitterEnabled{ get; private set; }
         [Display(Name = "Twitter Consumer Key", Description="Twitter API settings")]

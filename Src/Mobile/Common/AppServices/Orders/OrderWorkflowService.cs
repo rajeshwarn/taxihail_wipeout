@@ -299,6 +299,26 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_pickupAddressSubject.OnNext(address);
 		}
 
+        public async Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder()
+		{
+			if (_bookingService.HasLastOrder) 
+			{
+				var status = await _bookingService.GetLastOrderStatus (); 
+				if (!_bookingService.IsStatusCompleted (status.IBSStatusId)) 
+				{
+					var order = await _accountService.GetHistoryOrderAsync (status.OrderId);
+
+                    return Tuple.Create(order, status);
+				}
+				else
+				{
+					_bookingService.ClearLastOrder();
+				}
+			}
+
+			return null;
+		}
+
 		public IObservable<Address> GetAndObservePickupAddress()
 		{
 			return _pickupAddressSubject;

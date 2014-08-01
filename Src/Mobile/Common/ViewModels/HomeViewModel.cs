@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITutorialService _tutorialService;
 		private readonly IPushNotificationService _pushNotificationService;
 		private readonly IVehicleService _vehicleService;
+		private readonly IBookingService _bookingService;
 		private readonly ITermsAndConditionsService _termsService;
 
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
@@ -28,7 +29,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IAccountService accountService,
 			IPhoneService phoneService,
 			ITermsAndConditionsService termsService,
-			IPaymentService paymentService) : base()
+			IPaymentService paymentService,
+			IBookingService bookingService) : base()
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -36,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_pushNotificationService = pushNotificationService;
 			_vehicleService = vehicleService;
 			_termsService = termsService;
+			_bookingService = bookingService;
 
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService, paymentService);
 		}
@@ -71,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_locationService.Start();
 			CheckTermsAsync();
-
+			CheckActiveOrderAsync ();
 			if (firstTime)
 			{
 				this.Services().ApplicationInfo.CheckVersionAsync();
@@ -99,6 +102,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService.Start();
 		}
 
+
+		public async void CheckActiveOrderAsync()
+		{
+			var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
+			if(lastOrder != null)
+			{
+				ShowViewModelAndRemoveFromHistory<BookingStatusViewModel> (new
+				{
+					order = lastOrder.Item1.ToJson (),
+					orderStatus = lastOrder.Item2.ToJson ()
+				});
+			}
+		}
 
 		public async void CheckTermsAsync()
 		{
