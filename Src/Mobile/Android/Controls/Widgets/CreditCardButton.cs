@@ -6,6 +6,7 @@ using Android.Text.Method;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Android.Graphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -105,7 +106,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             _cardImage = (ImageView) layout.FindViewById(Resource.Id.creditCardImage);
             SetCreditCardImage();
+
             _editText.SetCursorVisible(false);
+            _editText.Enabled = false;
+            _editText.Clickable = false;
+
+            this.Clickable = false;
+            this.SetBackgroundColor (Color.White);
         }
 
         private void SetCreditCardImage()

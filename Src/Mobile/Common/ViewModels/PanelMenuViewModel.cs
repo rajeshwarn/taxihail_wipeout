@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
 		private readonly IPhoneService _phoneService;
+		private readonly IPaymentService _paymentService;
 
 		public PanelMenuViewModel (BaseViewModel parent, 
 			IMvxWebBrowserTask browserTask, 
@@ -34,11 +35,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_phoneService = phoneService;
+			_paymentService = paymentService;
+        }
 
+		public void Init()
+		{
 			try
 			{
-				var paymentSettings = paymentService.GetPaymentSettings();
-                IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
+				var paymentSettings = _paymentService.GetPaymentSettings();
+				IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
 			}
 			catch
 			{
@@ -49,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile});
-            if (IsPayInTaxiEnabled)
+			if (IsPayInTaxiEnabled)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation});
 			if (Settings.TutorialEnabled)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial});
@@ -59,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (!Settings.HideReportProblem)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewSignOutText"], NavigationCommand = SignOut});
-        }
+		}
 
 		private ObservableCollection<ItemMenuModel> _itemMenuList;
 		public ObservableCollection<ItemMenuModel> ItemMenuList

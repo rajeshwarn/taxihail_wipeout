@@ -523,7 +523,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<IList<ListItem>> GetPaymentsList ()
         {
 			var refData = await GetReferenceData();
-		    var hasCardOnFile = await GetCreditCard() != null;
+			var hasCardOnFile = (await GetCreditCard()) != null;
 		
 			if (!_appSettings.Data.HideNoPreference
                 && refData.PaymentsList != null)
