@@ -46,6 +46,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<bool> GetAndObserveLoadingAddress();
 		IObservable<bool> GetAndObserveOrderCanBeConfirmed ();
 
+		Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder();
+
 		Task<bool> ShouldWarnAboutEstimate();
 
 		Task<bool> ShouldGoToAccountNumberFlow();

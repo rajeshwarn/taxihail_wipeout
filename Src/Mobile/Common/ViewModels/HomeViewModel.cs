@@ -106,24 +106,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async void CheckActiveOrderAsync()
 		{
-			if (_bookingService.HasLastOrder) {
-				var status = await _bookingService.GetLastOrderStatus (); 
-				if (!_bookingService.IsStatusCompleted (status.IBSStatusId)) {
-					var order = await _accountService.GetHistoryOrderAsync (status.OrderId);
-
-
-					ShowViewModelAndRemoveFromHistory<BookingStatusViewModel> (new
-						{
-							order = order.ToJson (),
-							orderStatus = status.ToJson ()
-						});
-				}
-				else
+			var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
+			if(lastOrder != null)
+			{
+				ShowViewModelAndRemoveFromHistory<BookingStatusViewModel> (new
 				{
-					_bookingService.ClearLastOrder();
-				}
-			
-
+					order = lastOrder.Item1.ToJson (),
+					orderStatus = lastOrder.Item2.ToJson ()
+				});
 			}
 		}
 
