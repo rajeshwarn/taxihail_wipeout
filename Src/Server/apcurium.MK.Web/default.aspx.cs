@@ -43,6 +43,7 @@ namespace apcurium.MK.Web
         protected bool ShowPassengerNumber { get; private set; }
         protected string ReferenceData { get; private set; }
         protected string VehicleTypes { get; private set; }
+        protected string DisableFutureBooking { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -57,6 +58,7 @@ namespace apcurium.MK.Web
             FacebookAppId = config.GetSetting("FacebookAppId");
             FacebookEnabled = config.GetSetting("FacebookEnabled");
             HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
+            DisableFutureBooking = config.GetSetting("Client.DisableFutureBooking");
 
             DirectionTarifMode = config.GetSetting("Direction.TarifMode");
             DirectionNeedAValidTarif = config.GetSetting("Direction.NeedAValidTarif", false);
@@ -66,7 +68,7 @@ namespace apcurium.MK.Web
             EstimateEnabled = config.GetSetting("Client.ShowEstimate");
             EstimateWarningEnabled = config.GetSetting("Client.ShowEstimateWarning");
             DestinationIsRequired = config.GetSetting("Client.DestinationIsRequired");
-
+            
             var accountActivationDisabled = config.GetSetting("AccountActivationDisabled");
             AccountActivationDisabled = string.IsNullOrWhiteSpace(accountActivationDisabled)
                 ? bool.FalseString.ToLower()
