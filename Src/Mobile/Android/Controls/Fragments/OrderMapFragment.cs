@@ -126,12 +126,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             set
             {
-                if (value == null)
-                    return;
-
                 if (_availableVehicles != value)
                 {
-                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value.ToArray(), GetMapBoundsFromProjection()));
+                    _availableVehicles = value;
+                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value != null ? value.ToArray () : null, GetMapBoundsFromProjection()));
                 }
             }
         }
@@ -331,31 +329,72 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        private void ShowAvailableVehicles(AvailableVehicle[] vehicles)
+        private void ClearAllMarkers()
         {
             foreach (var vehicleMarker in _availableVehicleMarkers)
-            {                
-                vehicleMarker.Remove();
+            {
+                vehicleMarker.Remove ();
             }
 
-            _availableVehicleMarkers.Clear();
+            _availableVehicleMarkers.Clear ();
+        }
 
+        private void DeleteMarker(Marker markerToRemove)
+        {
+            markerToRemove.Remove ();
+            _availableVehicleMarkers.Remove (markerToRemove);
+        }
+
+        private void CreateMarker(AvailableVehicle vehicle)
+        {
+            var isCluster = (vehicle is AvailableVehicleCluster) 
+                ? true 
+                : false;
+
+            var vehicleMarker = 
+                Map.AddMarker(new MarkerOptions()
+                    .SetTitle(vehicle.VehicleNumber.ToString())
+                  .SetPosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
+                  .Anchor(.5f, 1f)
+                  .InvokeIcon(isCluster ? _nearbyClusterIcon : _nearbyTaxiIcon));
+
+            _availableVehicleMarkers.Add (vehicleMarker);
+        }
+
+        private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
+        {
             if (vehicles == null)
-                return;
-
-            foreach (var v in vehicles)
             {
-                bool isCluster = (v is AvailableVehicleCluster) 
-                    ? true 
-                    : false;
+                ClearAllMarkers ();
+                return;
+            }
 
-                var vehicleMarker = 
-                    Map.AddMarker(new MarkerOptions()
-                      .SetPosition(new LatLng(v.Latitude, v.Longitude))
-                      .Anchor(.5f, 1f)
-                      .InvokeIcon(isCluster ? _nearbyClusterIcon : _nearbyTaxiIcon));
+            var vehicleNumbersToBeShown = vehicles.Select (x => x.VehicleNumber.ToString());
 
-                _availableVehicleMarkers.Add (vehicleMarker);
+            // check for markers that needs to be removed
+            var markersToRemove = _availableVehicleMarkers.Where(x => !vehicleNumbersToBeShown.Contains(x.Title)).ToList();
+            foreach (var marker in markersToRemove)
+            {
+                DeleteMarker(marker);
+            }
+
+            // check for updated or new
+            foreach (var vehicle in vehicles)
+            {
+                var existingMarkerForVehicle = _availableVehicleMarkers.FirstOrDefault (x => x.Title == vehicle.VehicleNumber.ToString());
+                if (existingMarkerForVehicle != null)
+                {
+                    if (existingMarkerForVehicle.Position.Latitude == vehicle.Latitude && existingMarkerForVehicle.Position.Longitude == vehicle.Longitude)
+                    {
+                        // vehicle not updated, nothing to do
+                        continue;
+                    }
+
+                    // coordinates were updated, remove and add later with new position
+                    DeleteMarker (existingMarkerForVehicle);
+                }
+
+                CreateMarker (vehicle);
             }
         }
 

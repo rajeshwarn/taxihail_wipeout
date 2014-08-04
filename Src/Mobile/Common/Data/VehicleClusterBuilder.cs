@@ -27,6 +27,9 @@ namespace apcurium.MK.Booking.Mobile.Data
                 Longitude = IsEmpty
                     ? default(double)
                     : _vehicles.Sum(x => x.Longitude) / _vehicles.Count,
+				VehicleNumber = IsEmpty
+					? default(double)
+					: _vehicles.Select(x => x.VehicleNumber).Aggregate((a,b) => a + b)
             };
         }
 	}
