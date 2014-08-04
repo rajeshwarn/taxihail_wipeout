@@ -119,9 +119,8 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
                 var currentOrders = (from order in context.Set<OrderStatusDetail>()
                     where order.AccountId == accountId
-                    where order.Status != OrderStatus.Canceled
-                        && order.Status != OrderStatus.Completed
-                        && order.Status != OrderStatus.Removed
+                    where (order.Status == OrderStatus.Created
+                        || order.Status == OrderStatus.Pending)
                         && (order.PickupDate >= startDate)
                     select order).ToList();
                 return currentOrders;
