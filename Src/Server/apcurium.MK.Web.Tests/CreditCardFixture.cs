@@ -53,7 +53,55 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(last4Digits, creditcard.Last4Digits);
             Assert.AreEqual(token, creditcard.Token);
         }
-        
+
+        [Test]
+        public async void UpdateCreditCard()
+        {
+            var client = GetFakePaymentClient();
+
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), client);
+
+            const string nameOnCard = "Bob";
+            var creditCardId = Guid.NewGuid();
+            const string last4Digits = "4025";
+
+            var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt);
+            var tokenResponse = await client.Tokenize(cc.Discover.Number, cc.Discover.ExpirationDate, cc.Discover.AvcCvvCvv2 + "");
+
+            await sut.AddCreditCard(new CreditCardRequest
+            {
+                CreditCardCompany = "Discover",
+                NameOnCard = "Bob",
+                CreditCardId = creditCardId,
+                Last4Digits = last4Digits,
+                ExpirationMonth = cc.Discover.ExpirationDate.Month.ToString(),
+                ExpirationYear = cc.Discover.ExpirationDate.Year.ToString(),
+                Token = tokenResponse.CardOnFileToken
+            });
+
+            var tokenResponse2 = await client.Tokenize(cc.AmericanExpress.Number, cc.AmericanExpress.ExpirationDate, cc.AmericanExpress.AvcCvvCvv2 + "");
+
+            await sut.UpdateCreditCard(new CreditCardRequest
+            {
+                CreditCardCompany = "AmericanExpress",
+                NameOnCard = "Bob2",
+                CreditCardId = creditCardId,
+                Last4Digits = "1234",
+                ExpirationMonth = cc.AmericanExpress.ExpirationDate.Month.ToString(),
+                ExpirationYear = cc.AmericanExpress.ExpirationDate.Year.ToString(),
+                Token = tokenResponse2.CardOnFileToken
+            });
+
+            var creditCards = await AccountService.GetCreditCards();
+            var creditcard = creditCards.First(x => x.CreditCardId == creditCardId);
+            Assert.NotNull(creditcard);
+            Assert.AreEqual(TestAccount.Id, creditcard.AccountId);
+            Assert.AreEqual("AmericanExpress", creditcard.CreditCardCompany);
+            Assert.AreEqual(creditCardId, creditcard.CreditCardId);
+            Assert.AreEqual("1234", creditcard.Last4Digits);
+            Assert.AreEqual(tokenResponse2.CardOnFileToken, creditcard.Token);
+        }
+
         [Test]
         public async void RemoveCreditCard()
         {

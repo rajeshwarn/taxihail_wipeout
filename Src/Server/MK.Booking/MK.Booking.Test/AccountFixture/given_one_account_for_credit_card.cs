@@ -76,19 +76,19 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         }
 
         [Test]
-        public void when_add_second_credit_card()
+        public void when_updating_credit_card()
         {
-            const string creditCardCompany = "visa";
-            const string nameOnCard = "Bob";
+            const string creditCardCompany = "mastercard";
+            const string nameOnCard = "Bob 2";
             var creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
             const string expirationMonth = "5";
             const string expirationYear = "2020";
             const string token = "jjwcnSLWm85";
 
-            _sut.Given(new CreditCardAdded {SourceId = _accountId});
+            _sut.Given(new CreditCardAdded {SourceId = _accountId, CreditCardId = creditCardId});
 
-            _sut.When(new AddCreditCard
+            _sut.When(new UpdateCreditCard
             {
                 AccountId = _accountId,
                 CreditCardCompany = creditCardCompany,
@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 Id = Guid.NewGuid()
             });
 
-            var @event = _sut.ThenHasSingle<CreditCardAdded>();
+            var @event = _sut.ThenHasSingle<CreditCardUpdated>();
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual(creditCardCompany, @event.CreditCardCompany);
             Assert.AreEqual(nameOnCard, @event.NameOnCard);
