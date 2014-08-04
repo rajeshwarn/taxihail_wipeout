@@ -191,7 +191,6 @@
 "InvalidAddressTitle"="عنوان غير صحيح";
 "View_AboutUs"="نبذة عنا";
 "VehicleNumberNotice"="يرجى ملاحظة أنه في حالة عدم مطابقة رقم السيارة أعلاه لرقم السيارة الفعلي لمشوارك، فإننا لن نتمكن من إتمام عملية الدفع من خلال التطبيق. يرجي ضغط زر الرجوع للعودة لشاشة حالة الرحلة، وقم بالدفع للسائق مباشرة.";
-"EstimatePrice"="التكلفة المتوقعة";
 "HistoryDetailAuthorizationLabel"="التصريح:";
 "DestinationViewDestinationLabel"="الوجهة:";
 "SaveAddressEmptyFieldMessage"="البيانات غير صحيحة، يجب تعبئة خانات اسم المستخدم والعنوان.";
@@ -309,7 +308,6 @@
 "InvalidChoiceTitle"="اختيار خاطئ";
 "ResetPasswordEmailPlaceHolder"="البريد الإلكتروني";
 "PaymentDetails.CreditCardLabel"="بطاقات";
-"EstimateDistance"="({0})";
 "CreditCardCCV"="CVV";
 "NoOrderId"="الطلب غير جاهز";
 "Continue"="استمرار";
@@ -425,7 +423,6 @@
 "YesButton"="نعم";
 "ConfirmVehiculeTypeLabel"="نوع السيارة:";
 "View_BookingStatus"="الوضع";
-"ApproxPrice"="التكلفة المتوقعة";
 "RideSettingsVehiculeType"="نوع السیارة";
 "ApplicationName"="مشوار";
 "WarningEstimateTitle"="تحذير";

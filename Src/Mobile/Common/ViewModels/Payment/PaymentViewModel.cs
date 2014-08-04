@@ -117,7 +117,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         public bool PayPalSelected 
 		{ 
 			get { return _payPalSelected; }
-			set {
+			set 
+			{
 				_payPalSelected = value;
 				RaisePropertyChanged(() => PayPalSelected);
 			}
@@ -153,11 +154,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             get{ return FormatCurrency(0d); }
         }
-
-       
-
+		       
 		private string _tipAmount;
-
 		public string TipAmount 
 		{ 
 			get
@@ -175,14 +173,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		}
 
 		private string _meterAmount;
-
 		public string MeterAmount 
 		{ 
-			get
-			{
-				return _meterAmount;
-			}
-
+			get { return _meterAmount; }
 			set
 			{
 				_meterAmount = value;
@@ -227,7 +220,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 
 			return doubleNumber;
-			//return CultureProvider.ParseCurrency (amount);
 		}
 
 		public string GetCurrency(string amount)
@@ -239,18 +231,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 
 			return doubleNumber.ToString ("F", CultureInfo.InvariantCulture);
-
-			//return CultureProvider.FormatCurrency((CultureProvider.ParseCurrency(amount)));
 		}
 		public string FormatCurrency(double doubleNumber)
 		{
-
 			return doubleNumber.ToString ("F", CultureInfo.InvariantCulture);
-
-			//return CultureProvider.FormatCurrency((CultureProvider.ParseCurrency(amount)));
 		}
-
-
 
         public bool IsResettingTip = false; // For Droid's tip picker
 
@@ -363,12 +348,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     {
 						var message = string.Format(this.Services().Localize["ConfirmationPaymentAmountOver100"], FormatCurrency(Amount));
 						this.Services().Message.ShowMessage(
-								this.Services().Localize["ConfirmationPaymentAmountOver100Title"], 
-								message, 
-								this.Services().Localize["OkButtonText"], 
-								() => InvokeOnMainThread(executePayment), 
-								this.Services().Localize["Cancel"], 
-								() => {});
+								this.Services().Localize["ConfirmationPaymentAmountOver100Title"], message, 
+								this.Services().Localize["OkButtonText"], () => InvokeOnMainThread(executePayment), 
+								this.Services().Localize["Cancel"], () => {});
                     }
                     else
                     {

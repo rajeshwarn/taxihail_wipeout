@@ -117,17 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EstimatePrice" xml:space="preserve">
-    <value>Cost</value>
-  </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>Cost: {0}</value>
+    <value>Cost: {0:C}</value>
   </data>
   <data name="EstimatePriceOver100" xml:space="preserve">
-    <value>Cost: {0}</value>
-  </data>
-  <data name="EstimateDistance" xml:space="preserve">
-    <value> </value>
+    <value>Cost: {0:C}</value>
   </data>
   <data name="TaxiMapTitle" xml:space="preserve">
     <value>Your car</value>

@@ -165,9 +165,6 @@
   <data name="AppNeedUpdateTitle" xml:space="preserve">
     <value>هناك تحديثات متاحة</value>
   </data>
-  <data name="ApproxPrice" xml:space="preserve">
-    <value>التكلفة المتوقعة</value>
-  </data>
   <data name="April" xml:space="preserve">
     <value>أبريل (04)</value>
   </data>
@@ -558,14 +555,8 @@
   <data name="EstimatedFareNotAvailable" xml:space="preserve">
     <value>التكلفة المتوقعة غير متاحة</value>
   </data>
-  <data name="EstimateDistance" xml:space="preserve">
-    <value>({0})</value>
-  </data>
-  <data name="EstimatePrice" xml:space="preserve">
-    <value>التكلفة المتوقعة</value>
-  </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>التكلفة المتوقعة :{0}</value>
+    <value>التكلفة المتوقعة :{0} ({1})</value>
   </data>
   <data name="EstimatePriceOver100" xml:space="preserve">
     <value>إتصال لمعرفة السعر</value>

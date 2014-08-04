@@ -128,9 +128,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			await SetAddressToCurrentSelection(address);
 		}
 
-		public void ClearDestinationAddress()
+		public async Task ClearDestinationAddress()
 		{
 			_destinationAddressSubject.OnNext(new Address());
+
+			await CalculateEstimatedFare();
 		}
 
 		public async Task SetPickupDate(DateTime? date)
@@ -420,19 +422,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
 
 			var direction = await _bookingService.GetFareEstimate (pickupAddress, destinationAddress, pickupDate);
-
-			var estimatedFareString = await _bookingService.GetFareEstimateDisplay(direction, "EstimatePriceFormat", 
-				_appSettings.Data.DestinationIsRequired 
-					? "NoFareTextIfDestinationIsRequired"
-					: "NoFareText", 
-				true, 
-				"EstimatedFareNotAvailable");
-
-
+			var estimatedFareString = await _bookingService.GetFareEstimateDisplay(direction);
 
 			_estimatedFareDetailSubject.OnNext (direction);
 			_estimatedFareDisplaySubject.OnNext(estimatedFareString);
-
 		}
 
 		public async Task PrepareForNewOrder()

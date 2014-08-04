@@ -94,7 +94,7 @@
 "DeleteBookItButtonImageNamePressed"="Assets/Button/btnBookIt-Pressed_en.png";
 "StreetNumberPlacesBt"="Search for places";
 "CreateAccountTitleMr"="Mr";
-"EstimatePriceFormat"="Estimated Fare : {0}";
+"EstimatePriceFormat"="Estimated Fare : {0:C} ({1})";
 "PanelMenuViewOrderHistoryText"="History";
 "ResetPasswordSucessTitle"="Password reset";
 "TabSearch"="Search";
@@ -185,7 +185,6 @@
 "View_RefineAddress"="Pickup Details";
 "InvalidAddressTitle"="Invalid address";
 "searchHint"="Search";
-"EstimatePrice"="Estimated Fare";
 "HistoryDetailAuthorizationLabel"="Authorization:";
 "RideSettingsView"="Profile";
 "DestinationViewDestinationLabel"="Destination:";
@@ -308,7 +307,6 @@
 "InvalidChoiceTitle"="Invalid Choice";
 "ResetPasswordEmailPlaceHolder"="Email";
 "PaymentDetails.CreditCardLabel"="Cards";
-"EstimateDistance"=" ({0})";
 "PayPalExpressCheckoutCancelTitle"="Payment cancelled";
 "CreditCardCCV"="CVV";
 "NoOrderId"="Order Not ready";
@@ -417,7 +415,6 @@
 "YesButton"="Yes";
 "ConfirmVehiculeTypeLabel"="Vehicle type";
 "ServerInfo"="({0} v{1})";
-"ApproxPrice"="Estimated Fare";
 "RideSettingsVehiculeType"="Vehicle type";
 "ApplicationName"="TaxiHail";
 "WarningEstimateTitle"="Warning";

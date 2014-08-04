@@ -15,7 +15,6 @@
 "ApplicationName"="TaxiHail";
 "AppNeedUpdateMessage"="Une nouvelle version de l'application est disponible, merci de la télécharger pour continuer";
 "AppNeedUpdateTitle"="Nouvelle version disponible";
-"ApproxPrice"="Prix estimé";
 "app_id"="134284363380764";
 "April"="Avril (04)";
 "AptNumber"="Appartement n°";
@@ -151,9 +150,7 @@
 "Error_AccountPaymentQuestionRequiredMessage"="Vous devez saisir tous les champs pour continuer";
 "Error_AccountPaymentTitle"="Erreur";
 "EstimatedFareNotAvailable"="Le prix ne peut être estimé pour le moment";
-"EstimateDistance"="({0})";
-"EstimatePrice"="Prix estimé";
-"EstimatePriceFormat"="Prix estimé: {0}";
+"EstimatePriceFormat"="Prix estimé: {0:C}";
 "EstimatePriceOver100"="Appelez-nous pour connaître le prix!";
 "EstimatingFare"="Calcul du prix en cours…";
 "Facebook"="Connexion Facebook";

@@ -168,9 +168,6 @@
   <data name="AppNeedUpdateTitle" xml:space="preserve">
     <value>Nouvelle version disponible</value>
   </data>
-  <data name="ApproxPrice" xml:space="preserve">
-    <value>Prix estimé</value>
-  </data>
   <data name="app_id" xml:space="preserve">
     <value>134284363380764</value>
   </data>
@@ -576,14 +573,8 @@
   <data name="EstimatedFareNotAvailable" xml:space="preserve">
     <value>Le prix ne peut être estimé pour le moment</value>
   </data>
-  <data name="EstimateDistance" xml:space="preserve">
-    <value>({0})</value>
-  </data>
-  <data name="EstimatePrice" xml:space="preserve">
-    <value>Prix estimé</value>
-  </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>Prix estimé: {0}</value>
+    <value>Prix estimé: {0:C} ({1})</value>
   </data>
   <data name="EstimatePriceOver100" xml:space="preserve">
     <value>Appelez-nous pour connaître le prix!</value>
