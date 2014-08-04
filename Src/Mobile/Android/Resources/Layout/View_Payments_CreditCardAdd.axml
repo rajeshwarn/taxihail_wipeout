@@ -76,10 +76,14 @@
                     <TextView
                         style="@style/BlackTextLabel"
                         android:layout_width="0dp"
-                        android:layout_weight="0.8"
+                        android:layout_weight="0.75"
                         android:layout_height="wrap_content"
                         android:text="@string/CreditCardNumber"
                         android:layout_marginBottom="4dp" />
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="0.05"
+                        android:layout_height="fill_parent" />
                     <TextView
                         android:layout_width="0dp"
                         android:layout_marginStart="10dip"
@@ -102,6 +106,10 @@
                         android:singleLine="true"
                         android:inputType="number"
                         local:MvxBind="CreditCardNumber CreditCardNumber; LeftImage CreditCardImagePath" />
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="0.02"
+                        android:layout_height="fill_parent" />
                     <EditText
                         android:layout_width="0dp"
                         android:layout_marginStart="10dip"
@@ -128,6 +136,10 @@
                         android:layout_marginRight="10dip"
                         android:text="@string/CreditCardExpMonth"
                         style="@style/BlackTextLabel" />
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="0.05"
+                        android:layout_height="fill_parent" />
                     <TextView
                         android:gravity="start"
                         android:layout_width="135dip"
@@ -149,6 +161,10 @@
                         android:inputType="number"
                         android:singleLine="true"
                         local:MvxBind="Text ExpirationMonthDisplay; Data ExpirationMonths; SelectedItem ExpirationMonth" />
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="0.05"
+                        android:layout_height="fill_parent" />
                     <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
                         android:layout_width="0dip"
                         android:layout_weight="1"

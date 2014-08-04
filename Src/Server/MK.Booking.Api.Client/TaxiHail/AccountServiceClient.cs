@@ -127,7 +127,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             await Client.DeleteAsync<string>("/account/creditcards");
         }
 
-        private async Task UnregisterTokenizedCards(string skipThisToken)
+        private async Task UnregisterTokenizedCards(string skipThisToken = null)
         {
             // previously, it was possible to add multiple cards, this is why we unregister every card here
             var cards = await GetCreditCards ();

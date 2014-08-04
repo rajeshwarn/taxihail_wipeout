@@ -42,6 +42,17 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK);
         }
 
+        public object Put(CreditCardRequest request)
+        {
+            var session = this.GetSession();
+            var command = new UpdateCreditCard { AccountId = new Guid(session.UserAuthId) };
+            Mapper.Map(request, command);
+
+            _bus.Send(command);
+
+            return new HttpResult(HttpStatusCode.OK);
+        }
+
         public object Delete(CreditCardRequest request)
         {
             var session = this.GetSession();

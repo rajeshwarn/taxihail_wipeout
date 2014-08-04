@@ -73,6 +73,7 @@
     <Compile Include="SendAccountConfirmationSMS.cs" />
     <Compile Include="SendAssignedConfirmation.cs" />
     <Compile Include="UnpairForRideLinqCmtPayment.cs" />
+    <Compile Include="UpdateCreditCard.cs" />
     <Compile Include="UpdatePaymentSettings.cs" />
     <Compile Include="DisableAccountbyAdmin.cs" />
     <Compile Include="ConfirmAccount.cs" />
