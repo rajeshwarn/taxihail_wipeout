@@ -43,8 +43,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             ClearKeyboardButton.TouchUpInside += (sender, e) => {
                 this.View.ResignFirstResponderOnSubviews();
             };
-
-            lblCreditCard.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
+                
+            lblCreditCard.Text = Localize.GetValue("CreditCard");
 			lblTip.Text = Localize.GetValue("PaymentViewTipText");
             lblTipAmount.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
             lblMeterAmount.Text = Localize.GetValue("PaymentViewMeterAmountText");
@@ -155,19 +155,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             set.Bind(txtCreditCard)
                 .For(v => v.Text)
-				.To(vm => vm.PaymentPreferences.SelectedCreditCard.FriendlyName);
+                .To(vm => vm.PaymentPreferences.SelectedCreditCard.NameOnCard);
 
             set.Bind(txtCreditCard)
-				.For(v => v.Last4Digits)
-				.To(vm => vm.PaymentPreferences.SelectedCreditCard.Last4Digits);
+                .For(v => v.Last4Digits)
+                .To(vm => vm.PaymentPreferences.SelectedCreditCard.Last4Digits);
 
             set.Bind(txtCreditCard)
-				.For("CreditCardCompany")
-				.To(vm => vm.PaymentPreferences.SelectedCreditCard.CreditCardCompany);
-
-            set.Bind(txtCreditCard)
-				.For(v => v.NavigateCommand)
-				.To(vm => vm.PaymentPreferences.NavigateToCreditCardsList);
+                .For("CreditCardCompany")
+                .To(vm => vm.PaymentPreferences.SelectedCreditCard.CreditCardCompany);
 
             set.Bind(txtCreditCard)
                 .For(v => v.Hidden)

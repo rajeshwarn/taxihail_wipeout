@@ -100,6 +100,8 @@ namespace apcurium.MK.Booking
             Mapper.CreateMap<RuleDetail, Rule>();
             Mapper.CreateMap<CreditCardAdded, CreditCardDetails>()
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
+            Mapper.CreateMap<CreditCardUpdated, CreditCardDetails>()
+                .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
 
             Mapper.CreateMap<OrderStatusDetail, OrderStatusDetail>();
 

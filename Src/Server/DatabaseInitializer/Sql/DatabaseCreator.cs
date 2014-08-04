@@ -235,9 +235,10 @@ namespace DatabaseInitializer.Sql
 
             DatabaseHelper.ExecuteNonQuery(connString, queryForEvents);
 
+            // copy cache table except the static data
             var queryForCache = string.Format("INSERT INTO [{0}].[Cache].[Items]([Key],[Value],[ExpiresAt]) " +
                                               "SELECT [Key],[Value],[ExpiresAt] " +
-                                              "FROM [{1}].[Cache].[Items] ", newDatabase, oldDatabase);
+                                              "FROM [{1}].[Cache].[Items] WHERE [Key] <> 'IBS.StaticData'", newDatabase, oldDatabase);
 
             DatabaseHelper.ExecuteNonQuery(connString, queryForCache);
         }

@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<AddressRemovedFromHistory>(NoAction);
             Handles<RoleAddedToUserAccount>(NoAction);
             Handles<CreditCardAdded>(OnCreditCardAdded);
+            Handles<CreditCardUpdated>(OnCreditCardUpdated);
             Handles<CreditCardRemoved>(OnCreditCardRemoved);
             Handles<AllCreditCardsRemoved>(OnAllCreditCardsRemoved);
             Handles<PaymentProfileUpdated>(OnPaymentProfileUpdated);
@@ -204,16 +205,17 @@ namespace apcurium.MK.Booking.Domain
             Update(new AddressRemovedFromHistory {AddressId = addressId});
         }
 
-
-        public void AddCreditCard(string creditCardCompany, Guid creditCardId, string friendlyName, string last4Digits,
-            string token)
+        public void AddCreditCard(string creditCardCompany, Guid creditCardId, string nameOnCard, 
+            string last4Digits, string expirationMonth, string expirationYear, string token)
         {
             Update(new CreditCardAdded
             {
                 CreditCardCompany = creditCardCompany,
                 CreditCardId = creditCardId,
-                FriendlyName = friendlyName,
+                NameOnCard = nameOnCard,
                 Last4Digits = last4Digits,
+                ExpirationMonth = expirationMonth,
+                ExpirationYear = expirationYear,
                 Token = token
             });
 
@@ -226,6 +228,21 @@ namespace apcurium.MK.Booking.Domain
                     DefaultTipPercent = _defaultTipPercent
                 });
             }
+        }
+
+        public void UpdateCreditCard(string creditCardCompany, Guid creditCardId, string nameOnCard,
+            string last4Digits, string expirationMonth, string expirationYear, string token)
+        {
+            Update(new CreditCardUpdated
+            {
+                CreditCardCompany = creditCardCompany,
+                CreditCardId = creditCardId,
+                NameOnCard = nameOnCard,
+                Last4Digits = last4Digits,
+                ExpirationMonth = expirationMonth,
+                ExpirationYear = expirationYear,
+                Token = token
+            });
         }
 
         public void RemoveCreditCard(Guid creditCardId)
@@ -318,6 +335,11 @@ namespace apcurium.MK.Booking.Domain
             _creditCardCount++;
         }
 
+        private void OnCreditCardUpdated(CreditCardUpdated obj)
+        {
+
+        }
+
         private void OnCreditCardRemoved(CreditCardRemoved obj)
         {
             _creditCardCount = Math.Max(0, _creditCardCount - 1);
@@ -327,7 +349,6 @@ namespace apcurium.MK.Booking.Domain
         {
             _defaultTipPercent = @event.DefaultTipPercent;
         }
-
 
         private void NoAction<T>(T @event) where T : VersionedEvent
         {

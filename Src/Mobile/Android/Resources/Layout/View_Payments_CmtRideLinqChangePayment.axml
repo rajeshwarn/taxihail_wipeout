@@ -39,18 +39,6 @@
             android:gravity="center_horizontal">
             <TextView
                 android:layout_width="fill_parent"
-                android:id="@+id/lblCC"
-                android:layout_height="wrap_content"
-                android:text="@string/PaymentDetails.CreditCardLabel"
-                style="@style/BlackTextLabel" />
-            <apcurium.mk.booking.mobile.client.controls.CreditCardButton
-                android:layout_width="fill_parent"
-                android:layout_marginTop="8dp"
-                android:id="@+id/btCC"
-                android:layout_height="wrap_content"
-                local:MvxBind="NavigateCommand PaymentPreferences.NavigateToCreditCardsList; Text PaymentPreferences.SelectedCreditCard.FriendlyName; Last4Digits SelectedCreditCard.Last4Digits; CreditCardCompany PaymentPreferences.SelectedCreditCard.CreditCardCompany" />
-            <TextView
-                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="15dip"
                 android:id="@+id/tipAmountLabel"

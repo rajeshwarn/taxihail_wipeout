@@ -18,18 +18,22 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
         {
             _accountId = Guid.NewGuid();
             const string creditCardComapny = "visa";
-            const string friendlyName = "work credit card";
+            const string nameOnCard = "Bob";
             _creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
+            const string expirationMonth = "5";
+            const string expirationYear = "2020";
             const string token = "jjwcnSLWm85";
 
             Sut.Handle(new CreditCardAdded
             {
                 SourceId = _accountId,
                 CreditCardCompany = creditCardComapny,
-                FriendlyName = friendlyName,
+                NameOnCard = nameOnCard,
                 CreditCardId = _creditCardId,
                 Last4Digits = last4Digits,
+                ExpirationMonth = expirationMonth,
+                ExpirationYear = expirationYear,
                 Token = token
             });
         }

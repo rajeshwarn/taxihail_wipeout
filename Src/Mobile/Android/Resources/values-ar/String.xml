@@ -431,7 +431,6 @@
   <string name="View_BookSettingMenu">إعدادات</string>
   <string name="View_ConfirmCarNumber">موافقة</string>
   <string name="View_CreateAccount">افتح حسابك</string>
-  <string name="View_CreditCardAdd">بطاقة إئتمان جديدة</string>
   <string name="View_CreditCardsList">بطاقات إئتمان</string>
   <string name="View_History">التاريخ</string>
   <string name="View_HistoryDetail">تفاصيل الطلب</string>
@@ -470,4 +469,9 @@
   <string name="dummyaaa">xaaa</string>
   <string name="Error_AccountPaymentQuestionRequiredMessage">يجب الإجابة على جميع الأسئلة للإستمرار</string>
   <string name="View_UpdatedTermsAndConditions">أحكام و شروط جديدة</string>
+  <string name="View_CreditCard">بطاقة إئتمان</string>
+  <string name="DeleteCreditCardTitle">حذف بطاقة الائتمان</string>
+  <string name="DeleteCreditCard">حذف بطاقة الائتمان المسجلة في هذا الحساب؟</string>
+  <string name="View">View</string>
+  <string name="ServiceErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
 </resources>

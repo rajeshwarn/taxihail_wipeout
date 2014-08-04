@@ -36,8 +36,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
 		Task<IList<ListItem>> GetPaymentsList();
         
-        
-        void RemoveCreditCard(Guid creditCardId);
         void ResetPassword( string email );
         
         string UpdatePassword( Guid accountId, string currentPassword, string newPassword );
@@ -63,13 +61,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Order GetHistoryOrder(Guid id);
 		Task<Order> GetHistoryOrderAsync(Guid id);
         
-        IEnumerable<CreditCardDetails> GetCreditCards();
-        
         void RefreshCache(bool reload);
         
         void SignOut();
         
-		Task<bool> AddCreditCard(CreditCardInfos creditCard);
+		Task<CreditCardDetails> GetCreditCard ();
+		Task<bool> AddCreditCard (CreditCardInfos creditCard);
+		Task<bool> UpdateCreditCard (CreditCardInfos creditCard);
+		Task RemoveCreditCard ();
 
 		void LogApplicationStartUp ();
     }

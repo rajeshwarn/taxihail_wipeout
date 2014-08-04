@@ -13,13 +13,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class CreditCardAddView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnDeleteCard { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnScanCard { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblCardNumber { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel lblCategory { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblCvv { get; set; }
@@ -38,9 +38,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtCardNumber { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtCategory { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtCvv { get; set; }
@@ -64,11 +61,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblCardNumber != null) {
 				lblCardNumber.Dispose ();
 				lblCardNumber = null;
-			}
-
-			if (lblCategory != null) {
-				lblCategory.Dispose ();
-				lblCategory = null;
 			}
 
 			if (lblCvv != null) {
@@ -101,11 +93,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtCardNumber = null;
 			}
 
-			if (txtCategory != null) {
-				txtCategory.Dispose ();
-				txtCategory = null;
-			}
-
 			if (txtCvv != null) {
 				txtCvv.Dispose ();
 				txtCvv = null;
@@ -124,6 +111,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtNameOnCard != null) {
 				txtNameOnCard.Dispose ();
 				txtNameOnCard = null;
+			}
+
+			if (btnDeleteCard != null) {
+				btnDeleteCard.Dispose ();
+				btnDeleteCard = null;
 			}
 		}
 	}

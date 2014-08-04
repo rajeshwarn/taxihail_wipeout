@@ -523,6 +523,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<IList<ListItem>> GetPaymentsList ()
         {
 			var refData = await GetReferenceData();
+			var hasCardOnFile = (await GetCreditCard()) != null;
 		
 			if (!_appSettings.Data.HideNoPreference
                 && refData.PaymentsList != null)
@@ -535,48 +536,89 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 	});
             }
 
+		    if (!hasCardOnFile)
+		    {
+		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
+		    }
+
             return refData.PaymentsList;
         }
 
-        public IEnumerable<CreditCardDetails> GetCreditCards ()
+        public async Task<CreditCardDetails> GetCreditCard ()
         {
-            var result = UseServiceClientTask<IAccountServiceClient, IEnumerable<CreditCardDetails>>(service => service.GetCreditCards());
-            return result;
+			// the server can return multiple credit cards if the user added more cards with a previous version, we get the first one only.
+            var result = await UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(service => service.GetCreditCards());
+			return result.FirstOrDefault();
         }
 
-        public void RemoveCreditCard (Guid creditCardId)
-        {
-			UseServiceClientTask<IAccountServiceClient>(client => client.RemoveCreditCard(creditCardId,""));
-        }
+		private async Task TokenizeCard(CreditCardInfos creditCard)
+		{
+			var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
+				creditCard.CardNumber, 
+				new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
+				creditCard.CCV));	
+
+			creditCard.Token = response.CardOnFileToken;       
+		}
 
 		public async Task<bool> AddCreditCard (CreditCardInfos creditCard)
         {
 			try
 			{
-				var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
-                    creditCard.CardNumber,
-                    new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
-                    creditCard.CCV));	
-			    creditCard.Token = response.CardOnFileToken;       
+				await TokenizeCard (creditCard);
 			}
 			catch
 			{
-                return false;
+				return false;
 			}
             
             var request = new CreditCardRequest
             {
                 CreditCardCompany = creditCard.CreditCardCompany,
                 CreditCardId = creditCard.CreditCardId,
-                FriendlyName = creditCard.FriendlyName,
+				NameOnCard = creditCard.NameOnCard,
                 Last4Digits = creditCard.Last4Digits,
-                Token = creditCard.Token
+                Token = creditCard.Token,
+				ExpirationMonth = creditCard.ExpirationMonth,
+				ExpirationYear = creditCard.ExpirationYear
             };
             
 			await UseServiceClientAsync<IAccountServiceClient> (client => client.AddCreditCard (request));  
 
 			return true;
         }
+
+		public async Task<bool> UpdateCreditCard(CreditCardInfos creditCard)
+		{
+			try
+			{
+				await TokenizeCard (creditCard);
+			}
+			catch
+			{
+				return false;
+			}
+
+			var request = new CreditCardRequest
+			{
+				CreditCardCompany = creditCard.CreditCardCompany,
+				CreditCardId = creditCard.CreditCardId,
+				NameOnCard = creditCard.NameOnCard,
+				Last4Digits = creditCard.Last4Digits,
+				Token = creditCard.Token,
+				ExpirationMonth = creditCard.ExpirationMonth,
+				ExpirationYear = creditCard.ExpirationYear
+			};
+
+			await UseServiceClientAsync<IAccountServiceClient> (client => client.UpdateCreditCard (request));  
+
+			return true;
+		}
+
+		public async Task RemoveCreditCard()
+		{
+			await UseServiceClientAsync<IAccountServiceClient>(client => client.RemoveCreditCard());
+		}
 
 		public void LogApplicationStartUp()
 		{

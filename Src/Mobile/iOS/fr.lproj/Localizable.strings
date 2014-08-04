@@ -437,7 +437,6 @@
 "View_BookSettingMenu"="Paramètres";
 "View_ConfirmCarNumber"="Confirmation";
 "View_CreateAccount"="Créer votre compte";
-"View_CreditCardAdd"="Nouvelle carte de paiement";
 "View_CreditCardsList"="Cartes de paiement";
 "View_History"="Historique";
 "View_HistoryDetail"="Détail de la commande";
@@ -466,3 +465,5 @@
 "WarningLocationServiceTitle"="Avertissement";
 "WarningTitle"="Avertissement";
 "YesButton"="Oui";
+"DeleteCreditCardTitle"="Supprimer la carte";
+"DeleteCreditCard"="Supprimer la carte associée à ce compte?";

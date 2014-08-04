@@ -164,7 +164,7 @@
                             android:layout_width="fill_parent"
                             android:gravity="start|center"
                             android:paddingStart="8dp"
-                            android:textColor="#000000"
+                            android:textColor="@color/black"
                             android:text="text"
                             android:textSize="19dip"
                             android:ellipsize="end"

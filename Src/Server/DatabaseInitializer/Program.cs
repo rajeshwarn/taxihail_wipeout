@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Reflection;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -17,6 +18,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using DatabaseInitializer.Services;
 using DatabaseInitializer.Sql;
@@ -405,6 +407,7 @@ namespace DatabaseInitializer
             Console.WriteLine("Calling ibs...");
             //Get default settings from IBS
             var referenceDataService = container.Resolve<IStaticDataWebServiceClient>();
+
             var defaultCompany = referenceDataService.GetCompaniesList()
                 .FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
                                  ?? referenceDataService.GetCompaniesList().FirstOrDefault();
@@ -419,12 +422,7 @@ namespace DatabaseInitializer
                     referenceDataService.GetVehiclesList(defaultCompany).First();
                 appSettings["DefaultBookingSettings.VehicleTypeId"] = defaultvehicule.Id.ToString();
 
-                var defaultchargetype = referenceDataService.GetPaymentsList(defaultCompany)
-                    .FirstOrDefault(x => x.Display.HasValue() && x.Display.Contains("Cash"))
-                                        ?? referenceDataService.GetPaymentsList(defaultCompany).First();
-
-
-                appSettings["DefaultBookingSettings.ChargeTypeId"] = defaultchargetype.Id.ToString();
+                appSettings["DefaultBookingSettings.ChargeTypeId"] = ChargeTypes.PaymentInCar.Id.ToString();
             }
 
             //Save settings so that registerAccountCommand succeed

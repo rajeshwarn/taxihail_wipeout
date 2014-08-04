@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 CardOnFileInfo = new SendReceipt.CardOnFile(22, 12354 + "qweqw", "1234", "Visa")
                 {
                     LastFour = "6578",
-                    FriendlyName = "Home"
+                    NameOnCard = "Bob"
                 },
                 PickupAddress = new Address
                 {

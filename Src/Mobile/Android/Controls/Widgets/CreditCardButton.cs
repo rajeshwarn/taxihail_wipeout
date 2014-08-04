@@ -6,6 +6,7 @@ using Android.Text.Method;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Android.Graphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -39,9 +40,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             Initialize();
         }
-
-// ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public ICommand NavigateCommand { get; set; }
 
         public string Text
         {
@@ -108,16 +106,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             _cardImage = (ImageView) layout.FindViewById(Resource.Id.creditCardImage);
             SetCreditCardImage();
-            _editText.SetCursorVisible(false);
 
-            var button = (Button) layout.FindViewById(Resource.Id.creditCardButton);
-            button.Click += (sender, e) =>
-            {
-                if (NavigateCommand != null)
-                {
-                    NavigateCommand.Execute();
-                }
-            };
+            _editText.SetCursorVisible(false);
+            _editText.Enabled = false;
+            _editText.Clickable = false;
+
+            this.Clickable = false;
+            this.SetBackgroundColor (Color.White);
         }
 
         private void SetCreditCardImage()

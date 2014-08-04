@@ -194,7 +194,6 @@
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\CreateAccountViewModel.cs" />
     <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqChangePaymentViewModel.cs" />
-    <Compile Include="ViewModels\Payment\CreditCardViewModel.cs" />
     <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqConfirmPairViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
     <Compile Include="Data\Coordinate.cs" />
@@ -238,14 +237,12 @@
     <Compile Include="ViewModels\Payment\PaymentDetailsViewModel.cs" />
     <Compile Include="Data\CreditCardInfos.cs" />
     <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
-    <Compile Include="Messages\RemoveCreditCard.cs" />
     <Compile Include="AppServices\IUseServiceClient.cs" />
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="CultureProvider.cs" />
     <Compile Include="ViewModels\Payment\PaymentViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
-    <Compile Include="ViewModels\Payment\CreditCardsListViewModel.cs" />
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\Payment\PayPalViewModel.cs" />
     <Compile Include="BindingConverter\NoValueToTrueConverter.cs" />

@@ -7,6 +7,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using Params = System.Collections.Generic.Dictionary<string, string>;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -18,12 +20,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
 		private readonly IPhoneService _phoneService;
+		private readonly IPaymentService _paymentService;
 
 		public PanelMenuViewModel (BaseViewModel parent, 
 			IMvxWebBrowserTask browserTask, 
 			IOrderWorkflowService orderWorkflowService,
 			IAccountService accountService,
-			IPhoneService phoneService)
+			IPhoneService phoneService,
+			IPaymentService paymentService)
         {
             _parent = parent;
 			_browserTask = browserTask;
@@ -31,11 +35,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_phoneService = phoneService;
+			_paymentService = paymentService;
+        }
+
+		public void Init()
+		{
+			try
+			{
+				var paymentSettings = _paymentService.GetPaymentSettings();
+				IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
+			}
+			catch
+			{
+				// if we get an unauthorized error, don't throw here, something else will tell the user elegantly
+			}
 
 			ItemMenuList = new ObservableCollection<ItemMenuModel>();
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile});
+			if (IsPayInTaxiEnabled)
+				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation});
 			if (Settings.TutorialEnabled)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial});
 			if (!Settings.HideCallDispatchButton)
@@ -44,8 +64,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (!Settings.HideReportProblem)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewSignOutText"], NavigationCommand = SignOut});
-        }
-		
+		}
+
 		private ObservableCollection<ItemMenuModel> _itemMenuList;
 		public ObservableCollection<ItemMenuModel> ItemMenuList
 		{
@@ -59,6 +79,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_itemMenuList = value;
 			}
 		}
+
+	    private bool _isPayInTaxiEnabled;
+        public bool IsPayInTaxiEnabled
+	    {
+	        get
+	        {
+                return _isPayInTaxiEnabled;
+	        }
+	        set
+	        {
+                if (_isPayInTaxiEnabled != value)
+	            {
+                    _isPayInTaxiEnabled = value;
+	                RaisePropertyChanged();
+	            }
+	        }
+	    }
 
         private bool _menuIsOpen;
         public bool MenuIsOpen {
@@ -172,6 +209,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+
+		public ICommand NavigateToPaymentInformation
+		{
+			get 
+			{
+				return this.GetCommand(() =>
+				{
+					MenuIsOpen = false;
+					ShowViewModel<CreditCardAddViewModel>();
+				});
+			}
+		}
 
 		public ICommand NavigateToAboutUs
         {

@@ -3,8 +3,10 @@ using System.Linq;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -41,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			RaisePropertyChanged(() => Payments );
 			RaisePropertyChanged(() => ChargeTypeId );
 			RaisePropertyChanged(() => ChargeTypeName );
-        }
+		}
 
         public bool ShouldDisplayTip
         {
@@ -49,15 +51,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
 				var setting = _paymentService.GetPaymentSettings();
                 return setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-            }
-        }
-
-        public bool ShouldDisplayCreditCards
-        {
-            get
-            {
-				var setting = _paymentService.GetPaymentSettings();
-                return setting.IsPayInTaxiEnabled;
             }
         }
 

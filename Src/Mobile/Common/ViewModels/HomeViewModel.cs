@@ -17,8 +17,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITutorialService _tutorialService;
 		private readonly IPushNotificationService _pushNotificationService;
 		private readonly IVehicleService _vehicleService;
-		private readonly IAccountService _accountService;
-		private readonly IBookingService _bookingService;
 		private readonly ITermsAndConditionsService _termsService;
 
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
@@ -29,19 +27,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IVehicleService vehicleService,
 			IAccountService accountService,
 			IPhoneService phoneService,
-			ITermsAndConditionsService termsService, 
-			IBookingService bookingService) : base()
+			ITermsAndConditionsService termsService,
+			IPaymentService paymentService) : base()
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
 			_tutorialService = tutorialService;
 			_pushNotificationService = pushNotificationService;
 			_vehicleService = vehicleService;
-			_accountService = accountService;
 			_termsService = termsService;
-			_bookingService = bookingService;
 
-			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService);
+			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService, paymentService);
 		}
 
 		private bool _isShowingTermsAndConditions;
@@ -52,6 +48,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			_locateUser = locateUser;
 			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);			
+			Panel.Init ();
 		}
 
 		public override void OnViewLoaded ()

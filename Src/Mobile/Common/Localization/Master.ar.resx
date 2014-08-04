@@ -414,9 +414,6 @@
   <data name="CreditCard" xml:space="preserve">
     <value>بطاقة الائتمان</value>
   </data>
-  <data name="CreditCardCategory" xml:space="preserve">
-    <value>التصنيف</value>
-  </data>
   <data name="CreditCardCCV" xml:space="preserve">
     <value>CVV</value>
   </data>
@@ -636,6 +633,9 @@
   <data name="HistoryViewStatusButton" xml:space="preserve">
     <value>رؤية حالة الطلب</value>
   </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
   <data name="HistoryViewTitle" xml:space="preserve">
     <value>التاريخ</value>
   </data>
@@ -847,7 +847,7 @@
     <value>موافق</value>
   </data>
   <data name="Order" xml:space="preserve">
-    <value>اطلب</value>
+    <value>طلب</value>
   </data>
   <data name="OrderHistoryListTitle" xml:space="preserve">
     <value>طلبية #{0} ({1:ddd, MMM d}, {1:h:mm tt})</value>
@@ -1116,6 +1116,9 @@
   <data name="ServiceErrorCallTitle" xml:space="preserve">
     <value>رسالة</value>
   </data>
+  <data name="ServiceErrorCreateOrder_PendingOrder" xml:space="preserve">
+    <value>You cannot book this ride since an order is already pending. View the order status?</value>
+  </data>
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>هذا العنوان الإلكتروني مستخدم من قبل.</value>
   </data>
@@ -1211,12 +1214,6 @@
   </data>
   <data name="StatusConfirmNewBooking" xml:space="preserve">
     <value>في حالة حجز سيارة أجرة اخرى فإن هذا الطلب سيظل ساري، هل ترغب في الاستمرار ؟</value>
-  </data>
-  <data name="Order" xml:space="preserve">
-    <value>طلب</value>
-  </data>
-  <data name="Order" xml:space="preserve">
-    <value>طلب</value>
   </data>
   <data name="StatusDescription" xml:space="preserve">
     <value>طلب # {0}</value>
@@ -1413,8 +1410,8 @@
   <data name="View_CreateAccount" xml:space="preserve">
     <value>افتح حسابك</value>
   </data>
-  <data name="View_CreditCardAdd" xml:space="preserve">
-    <value>بطاقة إئتمان جديدة</value>
+  <data name="View_CreditCard" xml:space="preserve">
+    <value>بطاقة إئتمان</value>
   </data>
   <data name="View_CreditCardsList" xml:space="preserve">
     <value>بطاقات إئتمان</value>
@@ -1499,5 +1496,11 @@
   </data>
   <data name="YesButton" xml:space="preserve">
     <value>نعم</value>
+  </data>
+  <data name="DeleteCreditCard" xml:space="preserve">
+    <value>حذف بطاقة الائتمان المسجلة في هذا الحساب؟</value>
+  </data>
+  <data name="DeleteCreditCardTitle" xml:space="preserve">
+    <value>حذف بطاقة الائتمان</value>
   </data>
 </root>

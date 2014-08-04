@@ -1,15 +1,11 @@
-﻿#region
-
-using System;
+﻿using System;
 using Infrastructure.Messaging;
-
-#endregion
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class AddCreditCard : ICommand
+    public class UpdateCreditCard : ICommand
     {
-        public AddCreditCard()
+        public UpdateCreditCard()
         {
             Id = Guid.NewGuid();
         }
@@ -21,7 +17,7 @@ namespace apcurium.MK.Booking.Commands
         public string Last4Digits { get; set; }
         public string CreditCardCompany { get; set; }
         public string ExpirationMonth { get; set; }
-        public string ExpirationYear { get; set; } 
+        public string ExpirationYear { get; set; }
         public Guid Id { get; set; }
     }
 }

@@ -76,7 +76,7 @@
             var settings = this.get('settings');
             return settings.chargeTypeId != null
                 && settings.chargeTypeId != ''
-                && settings.chargeTypeId == TaxiHail.parameters.accountChargeTypeId
+                && settings.chargeTypeId == 2
         },
         fetchQuestions: function (accountChargeNumber) {
             return $.get('api/admin/accountscharge/' + accountChargeNumber, function () { }, 'json');

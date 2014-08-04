@@ -456,7 +456,6 @@
   <string name="View_ConfirmCarNumber">Confirmation</string>
   <string name="View_Payment">Payment Info</string>
   <string name="Create">Create</string>
-  <string name="View_CreditCardAdd">New Credit Card</string>
   <string name="View_RideSettings">Profile</string>
   <string name="View_CreditCardsList">Credit Cards</string>
   <string name="CmtRideLinqConfirmPairViewConfirmPairDetailText">Check that you are in the vehicle indicated above. If you confirm this ride will be paid automatically using your default payment settings.</string>
@@ -497,4 +496,10 @@
   <string name="AccountConfirmation_ErrorTitle">Cannot confirm account</string>
   <string name="ServiceErrorCreateAccount_CannotSendSMS">The confirmation code is incorrect.</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
+  <string name="PanelMenuViewPaymentInfoText">Payment Info</string>
+  <string name="View_CreditCard">Credit Card</string>
+  <string name="DeleteCreditCard">Delete the credit card registered to this account?</string>
+  <string name="DeleteCreditCardTitle">Delete credit card</string>
+  <string name="ServiceErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
+  <string name="View">View</string>
 </resources>

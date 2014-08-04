@@ -439,7 +439,6 @@
   <string name="View_BookSettingMenu">Paramètres</string>
   <string name="View_ConfirmCarNumber">Confirmation</string>
   <string name="View_CreateAccount">Créer votre compte</string>
-  <string name="View_CreditCardAdd">Nouvelle carte de paiement</string>
   <string name="View_CreditCardsList">Cartes de paiement</string>
   <string name="View_History">Historique</string>
   <string name="View_HistoryDetail">Détail de la commande</string>
@@ -468,4 +467,6 @@
   <string name="WarningLocationServiceTitle">Avertissement</string>
   <string name="WarningTitle">Avertissement</string>
   <string name="YesButton">Oui</string>
+  <string name="DeleteCreditCard">Supprimer la carte associée à ce compte?</string>
+  <string name="DeleteCreditCardTitle">Supprimer la carte</string>
 </resources>

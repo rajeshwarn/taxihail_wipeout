@@ -24,7 +24,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
 			_paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
 			_paymentPreferences.Start();
-			_paymentPreferences.CreditCards.CollectionChanged += (sender, e) => RefreshCreditCards();
+
+			RefreshCreditCardNumber ();
 		}
 
 		private PaymentDetailsViewModel _paymentPreferences;
@@ -32,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 		Order Order { get; set; }
 		OrderStatusDetail OrderStatus { get; set; }
 
-		public void RefreshCreditCards()
+		public void RefreshCreditCardNumber()
 		{
 			var selectedCard = _paymentPreferences.SelectedCreditCard;
 
@@ -119,12 +120,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 				        }.ToJson()
 				    }.ToStringDictionary(), result =>
 				    {                                                
-// ReSharper disable PossibleInvalidOperationException
-				        _paymentPreferences.SelectedCreditCardId = (Guid)result.CreditCardId;
 				        _paymentPreferences.Tip = (int)result.TipPercent;
-// ReSharper restore PossibleInvalidOperationException
 						RaisePropertyChanged(() => TipAmountInPercent);
-				        RefreshCreditCards();
 				    }));
 			}
 		}

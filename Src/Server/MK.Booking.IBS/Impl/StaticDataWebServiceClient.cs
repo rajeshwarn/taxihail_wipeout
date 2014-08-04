@@ -1,6 +1,7 @@
 #region
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
@@ -69,22 +70,6 @@ namespace apcurium.MK.Booking.IBS.Impl
                     vehicules.Select(
                         x => new ListItem {Display = x.Name, Id = x.ID, Parent = company, IsDefault = x.isDefault})
                         .ToArray();
-            });
-            return items;
-        }
-
-        public ListItem[] GetPaymentsList(ListItem company)
-        {
-            if (company == null) throw new ArgumentNullException("company");
-            if (company.Id == null) throw new ArgumentException("company Id should not be null");
-
-            var items = new ListItem[] {};
-            UseService(service =>
-            {
-                var payments = service.GetChargeTypes(UserNameApp, PasswordApp, company.Id.GetValueOrDefault());
-                items =
-                    payments.Select(
-                        x => new ListItem {Display = x.ChargeTypeName, Id = x.ChargeTypeID, Parent = company}).ToArray();
             });
             return items;
         }

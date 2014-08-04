@@ -8,7 +8,6 @@
             var data = this.model.toJSON();
 
             this._checkItems(data.vehiclesList, this.options.exclusions.get('excludedVehicleTypeId'));
-            this._checkItems(data.paymentsList, this.options.exclusions.get('excludedPaymentTypeId'));
             this._checkItems(data.companiesList, this.options.exclusions.get('excludedProviderId'));
             
             this.$el.html(this.renderTemplate(data));
@@ -17,7 +16,6 @@
                 submitHandler: this.save,
                 rules: {
                     vehiclesList: { checkboxesNotAllChecked: { options: data.vehiclesList } },
-                    paymentsList: { checkboxesNotAllChecked: { options: data.paymentsList } },
                     companiesList: { checkboxesNotAllChecked: { options: data.companiesList } }
                 },
                 errorPlacement: function (error, element) {
@@ -87,7 +85,6 @@
             
             return this.options.exclusions.save({
                 excludedVehicleTypeId: _([data.vehiclesList || '']).flatten().map(function(value){ return value; }),
-                excludedPaymentTypeId: _([data.paymentsList || '']).flatten().map(function(value){ return value; }),
                 excludedProviderId: _([data.companiesList || '']).flatten().map(function(value){ return value; })
             });
         }

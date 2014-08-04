@@ -426,9 +426,6 @@
   <data name="CreditCard" xml:space="preserve">
     <value>Carte de paiement</value>
   </data>
-  <data name="CreditCardCategory" xml:space="preserve">
-    <value>Catégorie</value>
-  </data>
   <data name="CreditCardCCV" xml:space="preserve">
     <value>Code sécurité</value>
   </data>
@@ -659,6 +656,9 @@
   </data>
   <data name="HistoryViewStatusButton" xml:space="preserve">
     <value>Voir le statut</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Voir</value>
   </data>
   <data name="HistoryViewTitle" xml:space="preserve">
     <value>Historique</value>
@@ -1143,6 +1143,9 @@
   <data name="ServiceErrorCallTitle" xml:space="preserve">
     <value>Message</value>
   </data>
+  <data name="ServiceErrorCreateOrder_PendingOrder" xml:space="preserve">
+    <value>La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</value>
+  </data>
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>Cette adresse email est déjà utilisée</value>
   </data>
@@ -1434,8 +1437,8 @@
   <data name="View_CreateAccount" xml:space="preserve">
     <value>Créer votre compte</value>
   </data>
-  <data name="View_CreditCardAdd" xml:space="preserve">
-    <value>Nouvelle carte de paiement</value>
+  <data name="View_CreditCard" xml:space="preserve">
+    <value>Carte de paiement</value>
   </data>
   <data name="View_CreditCardsList" xml:space="preserve">
     <value>Cartes de paiement</value>
@@ -1520,5 +1523,11 @@
   </data>
   <data name="YesButton" xml:space="preserve">
     <value>Oui</value>
+  </data>
+  <data name="DeleteCreditCard" xml:space="preserve">
+    <value>Supprimer la carte associée à ce compte?</value>
+  </data>
+  <data name="DeleteCreditCardTitle" xml:space="preserve">
+    <value>Supprimer la carte</value>
   </data>
 </root>

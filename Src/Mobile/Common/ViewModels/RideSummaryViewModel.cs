@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using ServiceStack.Text;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Models;
@@ -22,14 +23,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IPaymentService _paymentService;
 		private readonly IBookingService _bookingService;
+        private readonly IAccountService _accountService;
 
 		public RideSummaryViewModel(IOrderWorkflowService orderWorkflowService,
 			IPaymentService paymentService,
-			IBookingService bookingService)
+			IBookingService bookingService,
+            IAccountService accountService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_paymentService = paymentService;
 			_bookingService = bookingService;
+		    _accountService = accountService;
 		}
 
 		public async void Init(string order, string orderStatus)
@@ -118,13 +122,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				var setting = _paymentService.GetPaymentSettings();
-				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-				return isPayEnabled 
+				return (setting.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null // if paypal or user has a credit card
+                            || setting.PayPalClientSettings.IsEnabled) 
 						&& !(Settings.RatingEnabled && Settings.RatingRequired && !HasRated)     					 // user must rate before paying
 						&& setting.PaymentMode != PaymentMethod.RideLinqCmt 			 // payment is processed automatically
 						&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue	     // not already paid
 						&& (Order.Settings.ChargeTypeId == null 						 // user is paying with a charge account
-						|| Order.Settings.ChargeTypeId != Settings.AccountChargeTypeId);
+                            || Order.Settings.ChargeTypeId != ChargeTypes.Account.Id);
 			}
 		}
 
@@ -204,12 +208,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void CheckAndSendRatings()
 		{
-			if (HasRated)
+            if (!Settings.RatingEnabled || HasRated)
 			{
 				return;
 			}
 
-			if (_ratingList.Any(c => c.Score == 0))
+            if (_ratingList.Any(c => c.Score == 0))
 			{
 			    if (Settings.RatingRequired)
 			    {

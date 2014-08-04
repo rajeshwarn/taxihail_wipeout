@@ -1,13 +1,9 @@
-﻿#region
-
-using System;
+﻿using System;
 using Infrastructure.EventSourcing;
-
-#endregion
 
 namespace apcurium.MK.Booking.Events
 {
-    public class CreditCardAdded : VersionedEvent
+    public class CreditCardUpdated : VersionedEvent
     {
         public Guid CreditCardId { get; set; }
         public string NameOnCard { get; set; }
