@@ -169,12 +169,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
+        private IEnumerable<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
         public IEnumerable<AvailableVehicle> AvailableVehicles
         {
+            get
+            {
+                return _availableVehicles;
+            }
             set
             {
-                var mapBounds = GetMapBoundsFromProjection();
-                ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value != null ? value.ToArray() : null, mapBounds));
+                if (_availableVehicles != value)
+                {
+                    _availableVehicles = value;
+                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value != null ? value.ToArray () : null, GetMapBoundsFromProjection()));
+                }
             }
         }
 
@@ -298,38 +306,77 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(ep =>
             {
-                    var bounds = GetMapBoundsFromProjection();
-                    if (UserMovedMap != null && UserMovedMap.CanExecute(bounds))
-                    {
-                        UserMovedMap.Execute(bounds);
-
-                    }
+                var bounds = GetMapBoundsFromProjection();
+                if (UserMovedMap != null && UserMovedMap.CanExecute(bounds))
+                {
+                    UserMovedMap.Execute(bounds);
+                }
             });
         }
 
-        private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
+        private void ClearAllAnnotations()
         {
             foreach (var vehicleAnnotation in _availableVehicleAnnotations)
             {
                 RemoveAnnotation(vehicleAnnotation);
             }
+
             _availableVehicleAnnotations.Clear ();
-
-            if (vehicles == null)
-                return;
-
-            foreach (var v in vehicles)
-            {
-                var annotationType = (v is AvailableVehicleCluster) 
-                                     ? AddressAnnotationType.NearbyTaxiCluster 
-                                     : AddressAnnotationType.NearbyTaxi;
-
-                var vehicleAnnotation = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), annotationType, string.Empty, string.Empty, _useThemeColorForPickupAndDestinationMapIcons);
-                AddAnnotation (vehicleAnnotation);
-                _availableVehicleAnnotations.Add (vehicleAnnotation);
-            }
         }
 
+        private void DeleteAnnotation(AddressAnnotation annotationToRemove)
+        {
+            RemoveAnnotation(annotationToRemove);
+            _availableVehicleAnnotations.Remove (annotationToRemove);
+        }
+
+        private void CreateAnnotation(AvailableVehicle vehicle)
+        {
+            var annotationType = (vehicle is AvailableVehicleCluster) 
+                ? AddressAnnotationType.NearbyTaxiCluster 
+                : AddressAnnotationType.NearbyTaxi;
+
+            var vehicleAnnotation = new AddressAnnotation (new CLLocationCoordinate2D(vehicle.Latitude, vehicle.Longitude), annotationType, vehicle.VehicleNumber.ToString(), string.Empty, _useThemeColorForPickupAndDestinationMapIcons);
+            AddAnnotation (vehicleAnnotation);
+            _availableVehicleAnnotations.Add (vehicleAnnotation);
+        }
+
+        private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
+        {
+            if (vehicles == null)
+            {
+                ClearAllAnnotations ();
+                return;
+            }
+
+            var vehicleNumbersToBeShown = vehicles.Select (x => x.VehicleNumber.ToString());
+
+            // check for annotations that needs to be removed
+            var annotationsToRemove = _availableVehicleAnnotations.Where(x => !vehicleNumbersToBeShown.Contains(x.Title)).ToList();
+            foreach (var annotation in annotationsToRemove)
+            {
+                DeleteAnnotation(annotation);
+            }
+
+            // check for updated or new
+            foreach (var vehicle in vehicles)
+            {
+                var existingAnnotationForVehicle = _availableVehicleAnnotations.FirstOrDefault (x => x.Title == vehicle.VehicleNumber.ToString());
+                if (existingAnnotationForVehicle != null)
+                {
+                    if (existingAnnotationForVehicle.Coordinate.Latitude == vehicle.Latitude && existingAnnotationForVehicle.Coordinate.Longitude == vehicle.Longitude)
+                    {
+                        // vehicle not updated, nothing to do
+                        continue;
+                    }
+
+                    // coordinates were updated, remove and add later with new position
+                    DeleteAnnotation (existingAnnotationForVehicle);
+                }
+
+                CreateAnnotation (vehicle);
+            }
+        }
 
         public void SetEnabled(bool enabled)
         {
