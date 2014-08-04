@@ -37,6 +37,7 @@ namespace apcurium.MK.Web
         protected bool ShowPassengerNumber { get; private set; }
         protected string ReferenceData { get; private set; }
         protected string AccountChargeTypeId { get; private set; }
+        protected string DisableFutureBooking { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -51,6 +52,7 @@ namespace apcurium.MK.Web
             FacebookAppId = config.GetSetting("FacebookAppId");
             FacebookEnabled = config.GetSetting("FacebookEnabled");
             HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
+            DisableFutureBooking = config.GetSetting("Client.DisableFutureBooking");
 
             DirectionTarifMode = config.GetSetting("Direction.TarifMode");
             DirectionNeedAValidTarif = config.GetSetting("Direction.NeedAValidTarif", false);
