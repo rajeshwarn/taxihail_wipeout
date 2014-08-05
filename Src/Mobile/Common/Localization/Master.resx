@@ -1569,4 +1569,7 @@
   <data name="DeleteCreditCardTitle" xml:space="preserve">
     <value>Delete credit card</value>
   </data>
+  <data name="CreditCardAdded" xml:space="preserve">
+    <value>Your account is now enabled to pay with your card on file by default. You can still chose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</value>
+  </data>
 </root>

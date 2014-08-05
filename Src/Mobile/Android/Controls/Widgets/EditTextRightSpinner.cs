@@ -122,12 +122,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var button = (Button) layout.FindViewById(Resource.Id.openSpinnerButton);
 
             button.Click += (sender, e) =>
-            {                  
-                _spinner.PerformClick(); 
-
-                if (SpinnerClicked!=null)
+            {
+                if (Enabled)
                 {
-                    SpinnerClicked(this, e);
+                    _spinner.PerformClick();
+
+                    if (SpinnerClicked != null)
+                    {
+                        SpinnerClicked(this, e);
+                    }
                 }
             };
 

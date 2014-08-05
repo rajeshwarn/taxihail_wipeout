@@ -474,4 +474,5 @@
   <string name="DeleteCreditCard">حذف بطاقة الائتمان المسجلة في هذا الحساب؟</string>
   <string name="View">View</string>
   <string name="ServiceErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
+  <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still chose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
 </resources>

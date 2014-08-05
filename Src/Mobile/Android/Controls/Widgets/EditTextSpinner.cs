@@ -23,7 +23,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private string _text;
 
 
-
         [Register(".ctor", "(Landroid/content/Context;)V", "")]
         public EditTextSpinner(Context context)
             : base(context)
@@ -126,7 +125,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
             var button = (Button) layout.FindViewById(Resource.Id.openSpinnerButton);
-            button.Click += (sender, e) => { _spinner.PerformClick(); };
+            button.Click += (sender, e) =>
+            {
+                if (Enabled)
+                {
+                    _spinner.PerformClick();
+                } 
+            };
             _spinner = (Spinner) layout.FindViewById(Resource.Id.spinner);
             _spinner.Adapter = _adapter;
             SelectItem();
