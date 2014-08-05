@@ -103,7 +103,7 @@
 "CreditCard"="Carte de paiement";
 "CreditCardCategory"="Catégorie";
 "CreditCardCCV"="Code sécurité";
-"CreditCardErrorTitle"="Cette carte ne peut être ajoutée";
+"CreditCardErrorTitle"="Cette carte ne peut être sauvegardée";
 "CreditCardExpMonth"="Date d'expiration (mois)";
 "CreditCardExpYear"="Date d'expiration (année)";
 "CreditCardInstructions"="Afin d'utiliser l'application, vous devez ajouter une carte de crédit à votre compte.";
@@ -467,3 +467,7 @@
 "YesButton"="Oui";
 "DeleteCreditCardTitle"="Supprimer la carte";
 "DeleteCreditCard"="Supprimer la carte associée à ce compte?";
+"View"="Voir";
+"View_CreditCard"="Carte de paiement";
+"PanelMenuViewPaymentInfoText"="Carte de paiement";
+"ServiceErrorCreateOrder_PendingOrder"="La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?";

@@ -493,7 +493,7 @@
 "View_AccountConfirmation_Label_Code"="Code";
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
 "AccountConfirmation_ErrorTitle"="Cannot confirm account";
-"PanelMenuViewPaymentInfoText"="Payment Info";
+"PanelMenuViewPaymentInfoText"="Card on File";
 "View_CreditCard"="Credit Card";
 "DeleteCreditCardTitle"="Delete credit card";
 "DeleteCreditCard"="Delete the credit card registered to this account?";

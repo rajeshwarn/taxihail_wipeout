@@ -472,4 +472,5 @@
   <string name="View">Voir</string>
   <string name="View_CreditCard">Carte de paiement</string>
   <string name="ServiceErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
+  <string name="PanelMenuViewPaymentInfoText">Carte de paiement</string>
 </resources>

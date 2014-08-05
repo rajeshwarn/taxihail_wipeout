@@ -979,7 +979,7 @@
     <value>Update Account</value>
   </data>
   <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
-    <value>Payment Info</value>
+    <value>Card on File</value>
   </data>
   <data name="PanelMenuViewTutorialText" xml:space="preserve">
     <value>View Tutorial</value>

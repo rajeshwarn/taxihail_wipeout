@@ -473,3 +473,4 @@
 "DeleteCreditCard"="حذف بطاقة الائتمان المسجلة في هذا الحساب؟";
 "View"="View";
 "ServiceErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
+"PanelMenuViewPaymentInfoText"="Card on File";

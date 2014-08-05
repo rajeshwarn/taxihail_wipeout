@@ -912,6 +912,9 @@
   <data name="PanelMenuViewUpdateProfileText" xml:space="preserve">
     <value>Mise à jour du compte</value>
   </data>
+  <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
+    <value>Carte de paiement</value>
+  </data>
   <data name="ParameterButton" xml:space="preserve">
     <value>Paramètres</value>
   </data>
