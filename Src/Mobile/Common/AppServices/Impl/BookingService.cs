@@ -23,14 +23,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     {
 		readonly IAccountService _accountService;
 		readonly ILocalization _localize;
-		readonly IMessageService _messageService;
 		readonly IAppSettings _appSettings;
 		readonly IMvxPhoneCallTask _phoneCallTask;
 		readonly IGeolocService _geolocService;
 
 		public BookingService(IAccountService accountService,
 			ILocalization localize,
-			IMessageService messageService,
 			IAppSettings appSettings,
 			IMvxPhoneCallTask phoneCallTask,
 			IGeolocService geolocService)
@@ -38,7 +36,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_geolocService = geolocService;
 			_phoneCallTask = phoneCallTask;
 			_appSettings = appSettings;
-			_messageService = messageService;
 			_localize = localize;
 			_accountService = accountService;
 		}
@@ -182,7 +179,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return new DirectionInfo();
         }
 
-		public async Task<string> GetFareEstimateDisplay (DirectionInfo direction)
+		public string GetFareEstimateDisplay (DirectionInfo direction)
         {
 			var fareEstimate = _localize[_appSettings.Data.DestinationIsRequired 
 				? "NoFareTextIfDestinationIsRequired"
@@ -196,7 +193,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					var isOverMaxFare = direction.Price.Value > _appSettings.Data.MaxFareEstimate;
 
 					fareEstimate = String.Format(
-						CultureInfo.GetCultureInfo(_appSettings.Data.PriceFormat), 
+						CultureProvider.CultureInfo, 
 						_localize[isOverMaxFare
                         	? "EstimatePriceOver100"
 							: "EstimatePriceFormat"], 

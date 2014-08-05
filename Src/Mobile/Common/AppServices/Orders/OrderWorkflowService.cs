@@ -422,7 +422,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
 
 			var direction = await _bookingService.GetFareEstimate (pickupAddress, destinationAddress, pickupDate);
-			var estimatedFareString = await _bookingService.GetFareEstimateDisplay(direction);
+			var estimatedFareString = _bookingService.GetFareEstimateDisplay(direction);
 
 			_estimatedFareDetailSubject.OnNext (direction);
 			_estimatedFareDisplaySubject.OnNext(estimatedFareString);

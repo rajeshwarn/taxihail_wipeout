@@ -146,7 +146,7 @@
   <string name="EntryCodeLabel">رمز الدخول</string>
   <string name="ErrorCreatingOrderTitle">لا يمكن إتمام الحجز</string>
   <string name="EstimatedFareNotAvailable">التكلفة المتوقعة غير متاحة</string>
-  <string name="EstimatePriceFormat">التكلفة المتوقعة :{0}</string>
+  <string name="EstimatePriceFormat">التكلفة المتوقعة :{0} ({1})</string>
   <string name="EstimatePriceOver100">إتصال لمعرفة السعر</string>
   <string name="EstimatingFare">جاري تقييم قيمة مشوارك...</string>
   <string name="Facebook">الدخول عبر حساب الفيسبوك</string>
@@ -468,4 +468,5 @@
   <string name="Error_AccountPaymentQuestionRequiredMessage">يجب الإجابة على جميع الأسئلة للإستمرار</string>
   <string name="View_UpdatedTermsAndConditions">أحكام و شروط جديدة</string>
   <string name="LoginSupport">Need support?</string>
+  <string name="CurrencyPriceFormat">{0}</string>
 </resources>

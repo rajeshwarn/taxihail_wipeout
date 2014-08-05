@@ -576,6 +576,9 @@
   <data name="EstimatePriceFormat" xml:space="preserve">
     <value>Prix estimé: {0:C} ({1})</value>
   </data>
+  <data name="CurrencyPriceFormat" xml:space="preserve">
+    <value>{0:C}</value>
+  </data>
   <data name="EstimatePriceOver100" xml:space="preserve">
     <value>Appelez-nous pour connaître le prix!</value>
   </data>

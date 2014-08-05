@@ -488,4 +488,5 @@
   <string name="AccountPaymentQuestionsPlaceHolder">{0} characters maximum</string>
   <string name="AccountPaymentQuestionsRequired">(required)</string>
   <string name="LoginSupport">Need support?</string>
+  <string name="CurrencyPriceFormat">{0:C}</string>
 </resources>

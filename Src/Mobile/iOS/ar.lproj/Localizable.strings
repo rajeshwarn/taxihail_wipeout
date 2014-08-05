@@ -90,7 +90,7 @@
 "DeleteBookItButtonImageNamePressed"="";
 "StreetNumberPlacesBt"="البحث عن أماكن";
 "CreateAccountTitleMr"="السيد";
-"EstimatePriceFormat"="التكلفة المتوقعة :{0}";
+"EstimatePriceFormat"="التكلفة المتوقعة :{0} ({1})";
 "BookRatingErrorMessage"="قم بتقييم مشوارك";
 "ResetPasswordSucessTitle"="إعادة ضبط كلمة المرور";
 "TabSearch"="بحث";
@@ -467,3 +467,4 @@
 "Error_AccountPaymentQuestionRequiredMessage"="يجب الإجابة على جميع الأسئلة للإستمرار";
 "View_UpdatedTermsAndConditions"="أحكام و شروط جديدة";
 "LoginSupport"="Need support?";
+"CurrencyPriceFormat"="{0}";

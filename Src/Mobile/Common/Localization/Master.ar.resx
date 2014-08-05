@@ -558,6 +558,9 @@
   <data name="EstimatePriceFormat" xml:space="preserve">
     <value>التكلفة المتوقعة :{0} ({1})</value>
   </data>
+  <data name="CurrencyPriceFormat" xml:space="preserve">
+    <value>{0}</value>
+  </data>
   <data name="EstimatePriceOver100" xml:space="preserve">
     <value>إتصال لمعرفة السعر</value>
   </data>

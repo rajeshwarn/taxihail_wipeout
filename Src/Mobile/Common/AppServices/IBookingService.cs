@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	{
 		Task<DirectionInfo> GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate = null);
        
-		Task<string> GetFareEstimateDisplay(DirectionInfo direction);
+		string GetFareEstimateDisplay(DirectionInfo direction);
 
         bool IsCompleted(Guid orderId);
 
