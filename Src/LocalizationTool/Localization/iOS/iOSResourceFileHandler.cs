@@ -10,9 +10,15 @@ namespace apcurium.Tools.Localization.iOS
 {
     public class iOSResourceFileHandler : ResourceFileHandlerBase
     {
-        public iOSResourceFileHandler(string filePath)
-            : base(filePath)
+        public iOSResourceFileHandler(string path, string lang)
+            : base(GetPathWithLanguage(path, lang ))
         {
+
+            var filePath = GetPathWithLanguage(path, lang);
+
+
+
+
             var lines = File.ReadAllLines(filePath);
 
             foreach (var line in lines)
@@ -35,8 +41,21 @@ namespace apcurium.Tools.Localization.iOS
             }
         }
 
-        public iOSResourceFileHandler(string filePath, IDictionary<string, string> dictionary)
-            : base(filePath, dictionary)
+
+        private static string GetPathWithLanguage(string path, string lang)
+        {
+            if ((!string.IsNullOrWhiteSpace(lang) && (lang != "en")))
+            {
+                return path.Replace("en.lproj", lang + ".lproj");
+            }
+            else
+            {
+                return path;
+            }
+        }
+
+        public iOSResourceFileHandler(string filePath, IDictionary<string, string> dictionary, string lang)
+            : base(GetPathWithLanguage( filePath , lang ), dictionary)
         {
 
         }
