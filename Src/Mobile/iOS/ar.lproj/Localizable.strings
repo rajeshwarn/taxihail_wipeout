@@ -226,7 +226,7 @@
 "TabFavorites"="المفضلة";
 "PickupMapTitle"="موقع الإلتقاء";
 "ReSendConfirmation"="بلغ السائق بالدفع";
-"CreditCardErrorTitle"="لا يمكن إضافة بطاقة إئتمان";
+"CreditCardErrorTitle"="لا يمكنك حفظ هذه البطاقة الائتمانية";
 "PickupDateTextPlaceholder"="التاريخ: اليوم";
 "BuildingName"="إسم المبنى / ملاحظات";
 "InvalidLocalContactMessage"="لا يمكن تأكيد العنوان الخاص بهذا الشخص.";

@@ -105,7 +105,7 @@
   <string name="CreditCard">Carte de paiement</string>
   <string name="CreditCardCategory">Catégorie</string>
   <string name="CreditCardCCV">Code sécurité</string>
-  <string name="CreditCardErrorTitle">Cette carte ne peut être ajoutée</string>
+  <string name="CreditCardErrorTitle">Cette carte ne peut être sauvegardée</string>
   <string name="CreditCardExpMonth">Date d\'expiration (mois)</string>
   <string name="CreditCardExpYear">Date d\'expiration (année)</string>
   <string name="CreditCardInstructions">Afin d\'utiliser l\'application, vous devez ajouter une carte de crédit à votre compte.</string>
@@ -469,4 +469,7 @@
   <string name="YesButton">Oui</string>
   <string name="DeleteCreditCard">Supprimer la carte associée à ce compte?</string>
   <string name="DeleteCreditCardTitle">Supprimer la carte</string>
+  <string name="View">Voir</string>
+  <string name="View_CreditCard">Carte de paiement</string>
+  <string name="ServiceErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
 </resources>

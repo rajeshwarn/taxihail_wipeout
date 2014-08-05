@@ -141,9 +141,6 @@
   <data name="AccountPaymentNumberRequiredTitle" xml:space="preserve">
     <value>Numéro de compte requis</value>
   </data>
-  <data name="AddCreditCardTitle" xml:space="preserve">
-    <value>Ajouter une carte de paiement</value>
-  </data>
   <data name="AddReminderMessage" xml:space="preserve">
     <value>Souhaitez-vous qu'un rendez-vous soit créé dans votre calendrier pour ce trajet?</value>
   </data>
@@ -430,7 +427,7 @@
     <value>Code sécurité</value>
   </data>
   <data name="CreditCardErrorTitle" xml:space="preserve">
-    <value>Cette carte ne peut être ajoutée</value>
+    <value>Cette carte ne peut être sauvegardée</value>
   </data>
   <data name="CreditCardExpMonth" xml:space="preserve">
     <value>Date d'expiration (mois)</value>

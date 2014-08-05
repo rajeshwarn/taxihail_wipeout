@@ -141,9 +141,6 @@
   <data name="AccountPaymentNumberRequiredTitle" xml:space="preserve">
     <value>مطلوب رقم الحساب</value>
   </data>
-  <data name="AddCreditCardTitle" xml:space="preserve">
-    <value>أضف بطاقة إئتمانية</value>
-  </data>
   <data name="AddReminderMessage" xml:space="preserve">
     <value>هل ترغب في إضافة تنبيه على تقويمك حول هذا الموعد؟</value>
   </data>
@@ -418,7 +415,7 @@
     <value>CVV</value>
   </data>
   <data name="CreditCardErrorTitle" xml:space="preserve">
-    <value>لا يمكن إضافة بطاقة إئتمان</value>
+    <value>لا يمكنك حفظ هذه البطاقة الائتمانية</value>
   </data>
   <data name="CreditCardExpMonth" xml:space="preserve">
     <value>شهر الإنتهاء</value>

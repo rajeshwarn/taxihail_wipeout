@@ -226,7 +226,7 @@
 "TabFavorites"="Favorites";
 "PickupMapTitle"="Pickup location";
 "ReSendConfirmation"="Notify driver of payment";
-"CreditCardErrorTitle"="Cannot add credit card";
+"CreditCardErrorTitle"="Cannot save credit card";
 "PickupDateTextPlaceholder"="Date: Today";
 "BuildingName"="Building Name / Remark";
 "AddressSearchingText"="Searching...";

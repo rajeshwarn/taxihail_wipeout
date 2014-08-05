@@ -1198,16 +1198,13 @@
     <value>Zip code</value>
   </data>
   <data name="CreditCardErrorTitle" xml:space="preserve">
-    <value>Cannot add credit card</value>
+    <value>Cannot save credit card</value>
   </data>
   <data name="CreditCardRequiredFields" xml:space="preserve">
     <value>All the fields are required</value>
   </data>
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
     <value>The Credit Card Number is invalid</value>
-  </data>
-  <data name="AddCreditCardTitle" xml:space="preserve">
-    <value>Add a credit card</value>
   </data>
   <data name="ReminderTitle" xml:space="preserve">
     <value>{0} Booked</value>
