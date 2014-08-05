@@ -58,6 +58,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             RightView = new UIView(new RectangleF(Frame.Right - Padding, 0f, Padding, 1f));
             RightViewMode = UITextFieldViewMode.UnlessEditing;
             ClearButtonMode = UITextFieldViewMode.WhileEditing;
+
+			HasRightArrow = Enabled && HasRightArrow;
 		}
 
 		public override void Draw (RectangleF rect)
@@ -67,6 +69,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			                : UIColor.Clear;
 
 			var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, RadiusCorner);
+
+			HasRightArrow = Enabled && HasRightArrow;
 
 			DrawBackground(UIGraphics.GetCurrentContext(), rect, roundedRectanglePath, fillColor.CGColor);
 			DrawStroke(fillColor.CGColor);
