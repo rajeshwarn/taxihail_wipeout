@@ -361,6 +361,8 @@
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-fr.json" />
+    <None Include="Localization\Aexid.fr.resx" />
+    <None Include="Localization\Aexid.resx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
