@@ -24,17 +24,17 @@ namespace apcurium.Tools.Localization.Tests
         {
             var fullPath = GetFullPath(AndroidRelativePath);
 
-            var androidResourceFileHandler = new AndroidResourceFileHandler(fullPath);
+            var androidResourceFileHandler = new AndroidResourceFileHandler(fullPath, "");
 
             Assert.That(androidResourceFileHandler.Count, Is.GreaterThan(0));
 
             string backupFilePath = androidResourceFileHandler.Save();
-            var backupAndroidResourceFileHandler = new AndroidResourceFileHandler(backupFilePath);
+            var backupAndroidResourceFileHandler = new AndroidResourceFileHandler(backupFilePath, "");
             Assert.That(backupAndroidResourceFileHandler.Count, Is.EqualTo(androidResourceFileHandler.Count));
 
             androidResourceFileHandler.Add("maxime", "allo");
             androidResourceFileHandler.Save(false);
-            androidResourceFileHandler = new AndroidResourceFileHandler(fullPath);
+            androidResourceFileHandler = new AndroidResourceFileHandler(fullPath, "");
             Assert.That(androidResourceFileHandler.Count, Is.EqualTo(backupAndroidResourceFileHandler.Count + 1));
 
             File.Copy(backupFilePath, fullPath, true);
@@ -46,17 +46,17 @@ namespace apcurium.Tools.Localization.Tests
         {
             var fullPath = GetFullPath(iOSRelativePath);
 
-            var iOSResourceFileHandler = new iOSResourceFileHandler(fullPath);
+            var iOSResourceFileHandler = new iOSResourceFileHandler(fullPath, "");
 
             Assert.That(iOSResourceFileHandler.Count, Is.GreaterThan(0));
 
             string backupFilePath = iOSResourceFileHandler.Save();
-            var backupIosResourceFileHandler = new iOSResourceFileHandler(backupFilePath);
+            var backupIosResourceFileHandler = new iOSResourceFileHandler(backupFilePath, "");
             Assert.That(backupIosResourceFileHandler.Count, Is.EqualTo(iOSResourceFileHandler.Count));
 
             iOSResourceFileHandler.Add("maxime", "allo");
             iOSResourceFileHandler.Save(false);
-            iOSResourceFileHandler = new iOSResourceFileHandler(fullPath);
+            iOSResourceFileHandler = new iOSResourceFileHandler(fullPath, "");
             Assert.That(iOSResourceFileHandler.Count, Is.EqualTo(backupIosResourceFileHandler.Count + 1));
 
             File.Copy(backupFilePath, fullPath, true);
@@ -68,8 +68,8 @@ namespace apcurium.Tools.Localization.Tests
         public void CompareMasterResxWithClientResourceFiles()
         {
             var resxResourceFileHandler = new ResxResourceFileHandler(GetFullPath(MasterResxRelativePath));
-            var iOSResourceFileHandler = new iOSResourceFileHandler(GetFullPath(iOSRelativePath));
-            var androidResourceFileHandler = new AndroidResourceFileHandler(GetFullPath(AndroidRelativePath));
+            var iOSResourceFileHandler = new iOSResourceFileHandler(GetFullPath(iOSRelativePath), "");
+            var androidResourceFileHandler = new AndroidResourceFileHandler(GetFullPath(AndroidRelativePath), "");
 
             var androidResourceFileHandlerDiff = CompareResourceFileHandlers(resxResourceFileHandler, androidResourceFileHandler);
             var iOSResourceFileHandlerDiff = CompareResourceFileHandlers(resxResourceFileHandler, iOSResourceFileHandler);
@@ -94,8 +94,8 @@ namespace apcurium.Tools.Localization.Tests
         [Ignore]
         public void BuildMasterResx()
         {
-            var iOSResourceFileHandler = new iOSResourceFileHandler(GetFullPath(iOSRelativePath));
-            var androidResourceFileHandler = new AndroidResourceFileHandler(GetFullPath(AndroidRelativePath));
+            var iOSResourceFileHandler = new iOSResourceFileHandler(GetFullPath(iOSRelativePath),  "");
+            var androidResourceFileHandler = new AndroidResourceFileHandler(GetFullPath(AndroidRelativePath), "");
 
             var resourceFileHandlerDiff = CompareResourceFileHandlers(iOSResourceFileHandler, androidResourceFileHandler);
 
@@ -129,7 +129,7 @@ namespace apcurium.Tools.Localization.Tests
         {
             var resxResourceFileHandler = new ResxResourceFileHandler(GetFullPath(MasterResxRelativePath));
 
-            var androidResourceFileHandler = new AndroidResourceFileHandler(GetFullPath(AndroidRelativePath), resxResourceFileHandler);
+            var androidResourceFileHandler = new AndroidResourceFileHandler(GetFullPath(AndroidRelativePath), resxResourceFileHandler, "");
 
             androidResourceFileHandler.Save();
         }
@@ -139,7 +139,7 @@ namespace apcurium.Tools.Localization.Tests
         public void UpdateIosClientResourceFiles()
         {
             var resxResourceFileHandler = new ResxResourceFileHandler(GetFullPath(MasterResxRelativePath));
-            var iOSResourceFileHandler = new iOSResourceFileHandler(GetFullPath(iOSRelativePath), resxResourceFileHandler);
+            var iOSResourceFileHandler = new iOSResourceFileHandler(GetFullPath(iOSRelativePath), resxResourceFileHandler, "");
 
             iOSResourceFileHandler.Save();
         }

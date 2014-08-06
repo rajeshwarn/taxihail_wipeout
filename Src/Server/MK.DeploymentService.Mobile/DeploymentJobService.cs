@@ -362,11 +362,33 @@ namespace MK.DeploymentService.Mobile
 			using (var exeProcess = Process.Start (localizationToolRun)) {
 				exeProcess.WaitForExit ();
 				if (exeProcess.ExitCode > 0) {
-					throw new Exception ("Error during localization tool");
+					throw new Exception ("Error during localization tool for android");
 				}
 			}
 
 			_logger.DebugFormat ("Run Localization tool for Android Finished");
+
+            _logger.DebugFormat("Run Localization tool for iOS");
+
+            localizationToolRun = new ProcessStartInfo
+            {
+                FileName = "mono",
+                UseShellExecute = false,
+                WorkingDirectory = Path.Combine(sourceDirectory, "Src", "LocalizationTool"),
+                Arguments = "output/LocalizationTool.exe -t=ios -m=\"../Mobile/Common/Localization/Master.resx\" -d=\"../Mobile/iOS/en.lproj/Localizable.strings\" -s=\"../Mobile/Common/Settings/Settings.json\""
+            };
+            
+            using (var exeProcess = Process.Start(localizationToolRun))
+            {
+                exeProcess.WaitForExit();
+                if (exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during localization tool for iOS");
+                }
+            }
+
+            _logger.DebugFormat("Run Localization tool for iOS Finished");
+
 		}
 
 		private void BuildMobile (string sourceDirectory)

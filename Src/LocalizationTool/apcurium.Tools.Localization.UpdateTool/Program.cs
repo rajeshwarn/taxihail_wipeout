@@ -18,6 +18,8 @@ namespace apcurium.Tools.Localization.UpdateTool
     {
         static void Main(string[] args)
         {
+
+            var supportedLanguages = new string[] { "", "fr", "ar" };
             string target = string.Empty;
             string source = string.Empty;
             string settings = string.Empty;
@@ -45,36 +47,49 @@ namespace apcurium.Tools.Localization.UpdateTool
 
             try
             {
-                var resourceManager = new ResourceManager();
-                var handler = default(ResourceFileHandlerBase);
-                resourceManager.AddSource(new ResxResourceFileHandler(source));
 
-                if (settings != null && File.Exists(settings))
+                foreach (var lang in supportedLanguages)
                 {
-                    dynamic appSettings = JsonConvert.DeserializeObject(File.ReadAllText(settings));
-                    // Custom resource file should be in the same folder as Master.resx
-                    // Name of the custom resource file is equal to settings ApplicationName
-                    var customResourcesFilePath = Path.Combine(Path.GetDirectoryName(source), (string)appSettings.ApplicationName + ".resx");
-                    if (File.Exists(customResourcesFilePath))
+
+                    var resourceManager = new ResourceManager();
+                    var handler = default(ResourceFileHandlerBase);                    
+                    
+                    resourceManager.AddSource(new ResxResourceFileHandler(AddLanguageToPathResx(source, lang )));
+
+
+                    if (settings != null && File.Exists(settings))
                     {
-                        resourceManager.AddSource(new ResxResourceFileHandler(customResourcesFilePath));
+                        dynamic appSettings = JsonConvert.DeserializeObject(File.ReadAllText(settings));
+                        // Custom resource file should be in the same folder as Master.resx
+                        // Name of the custom resource file is equal to settings ApplicationName
+                        var customResourcesFilePath = AddLanguageToPathResx(Path.Combine(Path.GetDirectoryName(source), (string)appSettings.ApplicationName + ".resx"), lang);
+
+                        if (File.Exists(customResourcesFilePath))
+                        {
+                            resourceManager.AddSource(new ResxResourceFileHandler(customResourcesFilePath));
+                        }
                     }
-                }
 
-                switch (target)
-                {
-                    case "android":
-                        resourceManager.AddDestination(handler = new AndroidResourceFileHandler(destination));
-                        break;
-                    case "ios":
-                        resourceManager.AddDestination(handler = new iOSResourceFileHandler(destination));
-                        break;
-                    default:
-                        throw new InvalidOperationException("Invalid program arguments");
-                }
+                    switch (target)
+                    {
+                        case "android":
+                            
+                            resourceManager.AddDestination(handler = new AndroidResourceFileHandler(destination, lang ));
+                            break;
+                        case "ios":
+                            resourceManager.AddDestination(handler = new iOSResourceFileHandler(destination, lang ));
+                            break;
+                        default:
+                            throw new InvalidOperationException("Invalid program arguments");
+                    }
 
-                resourceManager.Update();
-                handler.Save(backup);
+                    resourceManager.Update();
+                    handler.Save(backup);
+
+                    var l = string.IsNullOrWhiteSpace(lang) ? "en" : lang;
+                    Console.WriteLine("Localization for :  " + l + " was successful");
+
+                }
 
                 Console.WriteLine("Localization tool ran successfully.");
             }
@@ -83,6 +98,21 @@ namespace apcurium.Tools.Localization.UpdateTool
                 Console.Write("error: ");
                 Console.WriteLine(exception.ToString());
             }
+        }
+
+        private static string AddLanguageToPathResx(string source, string lang)
+        {
+            if (  ( string.IsNullOrWhiteSpace(lang )) || (!source.ToLower().EndsWith(".resx")))
+            {
+                return source;
+            }
+
+
+
+            
+            var firstPart = source.Substring(0, source.Length - 5);
+            
+            return firstPart + "." + lang + ".resx";
         }
 
         public static void ShowHelpAndExit(string message, OptionSet optionSet)
