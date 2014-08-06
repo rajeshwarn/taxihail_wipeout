@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -9,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile
     {
 		public static string FormatTime(DateTime date )
         {
-            var formatTime = new CultureInfo( CultureInfoString ).DateTimeFormat.ShortTimePattern;
+			var formatTime = CultureInfo.DateTimeFormat.ShortTimePattern;
             var format = "{0:"+formatTime+"}";
             return string.Format(format, date);
         }
@@ -21,35 +22,19 @@ namespace apcurium.MK.Booking.Mobile
 
 		public static string FormatCurrency(double amount)
 		{
-			Console.WriteLine ("amount:" + amount);
-			var formattedAmount = amount.ToString ("C", CultureInfo.GetCultureInfo (CultureInfoString));
-			Console.WriteLine ("formatted amount:" + formattedAmount);
-			return formattedAmount;
+            return string.Format (CultureInfo, Mvx.Resolve<ILocalization> ()["CurrencyPriceFormat"], amount);
 		}
-        
-		public static double ParseCurrency(string amount)
-		{
-			if (amount == null) return 0;
 
-			try
-			{
-				return double.Parse(amount, NumberStyles.Currency, CultureInfo.GetCultureInfo(CultureInfoString));
-			}
-			catch
-			{
-				return 0;
-			}
-		}
-        
-        public static string CultureInfoString
+		public static CultureInfo CultureInfo
         {
-            get{
+            get
+			{
 				var culture = Mvx.Resolve<IAppSettings>().Data.PriceFormat;
                 if (string.IsNullOrEmpty(culture))
                 {
-                    return "en-US";
+					culture = "en-US";
                 }
-                return culture;
+				return CultureInfo.GetCultureInfo(culture);
             }
         }
     }

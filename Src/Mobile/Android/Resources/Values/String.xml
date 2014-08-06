@@ -98,7 +98,7 @@
   <string name="DeleteBookItButtonImageNamePressed">Assets/Button/btnBookIt-Pressed_en.png</string>
   <string name="StreetNumberPlacesBt">Search for places</string>
   <string name="CreateAccountTitleMr">Mr</string>
-  <string name="EstimatePriceFormat">Estimated Fare : {0}</string>
+  <string name="EstimatePriceFormat">Estimated Fare : {0:C} ({1})</string>
   <string name="PanelMenuViewOrderHistoryText">History</string>
   <string name="ResetPasswordSucessTitle">Password reset</string>
   <string name="TabSearch">Search</string>
@@ -189,7 +189,6 @@
   <string name="View_RefineAddress">Pickup Details</string>
   <string name="InvalidAddressTitle">Invalid address</string>
   <string name="searchHint">Search</string>
-  <string name="EstimatePrice">Estimated Fare</string>
   <string name="HistoryDetailAuthorizationLabel">Authorization:</string>
   <string name="RideSettingsView">Profile</string>
   <string name="DestinationViewDestinationLabel">Destination:</string>
@@ -312,7 +311,6 @@
   <string name="InvalidChoiceTitle">Invalid Choice</string>
   <string name="ResetPasswordEmailPlaceHolder">Email</string>
   <string name="PaymentDetails.CreditCardLabel">Cards</string>
-  <string name="EstimateDistance"> ({0})</string>
   <string name="PayPalExpressCheckoutCancelTitle">Payment cancelled</string>
   <string name="CreditCardCCV">CVV</string>
   <string name="NoOrderId">Order Not ready</string>
@@ -421,7 +419,6 @@
   <string name="YesButton">Yes</string>
   <string name="ConfirmVehiculeTypeLabel">Vehicle type</string>
   <string name="ServerInfo">({0} v{1})</string>
-  <string name="ApproxPrice">Estimated Fare</string>
   <string name="RideSettingsVehiculeType">Vehicle type</string>
   <string name="ApplicationName">TaxiHail</string>
   <string name="WarningEstimateTitle">Warning</string>
@@ -490,4 +487,6 @@
   <string name="Error_AccountPaymentQuestionRequiredMessage">You must answer every questions marked as required to continue.</string>
   <string name="AccountPaymentQuestionsPlaceHolder">{0} characters maximum</string>
   <string name="AccountPaymentQuestionsRequired">(required)</string>
+  <string name="LoginSupport">Need support?</string>
+  <string name="CurrencyPriceFormat">{0:C}</string>
 </resources>

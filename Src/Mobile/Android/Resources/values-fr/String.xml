@@ -17,7 +17,6 @@
   <string name="ApplicationName">TaxiHail</string>
   <string name="AppNeedUpdateMessage">Une nouvelle version de l\'application est disponible, merci de la télécharger pour continuer</string>
   <string name="AppNeedUpdateTitle">Nouvelle version disponible</string>
-  <string name="ApproxPrice">Prix estimé</string>
   <string name="app_id">134284363380764</string>
   <string name="April">Avril (04)</string>
   <string name="AptNumber">Appartement n°</string>
@@ -153,9 +152,7 @@
   <string name="Error_AccountPaymentQuestionRequiredMessage">Vous devez saisir tous les champs pour continuer</string>
   <string name="Error_AccountPaymentTitle">Erreur</string>
   <string name="EstimatedFareNotAvailable">Le prix ne peut être estimé pour le moment</string>
-  <string name="EstimateDistance">({0})</string>
-  <string name="EstimatePrice">Prix estimé</string>
-  <string name="EstimatePriceFormat">Prix estimé: {0}</string>
+  <string name="EstimatePriceFormat">Prix estimé: {0:C} ({1})</string>
   <string name="EstimatePriceOver100">Appelez-nous pour connaître le prix!</string>
   <string name="EstimatingFare">Calcul du prix en cours…</string>
   <string name="Facebook">Connexion Facebook</string>
@@ -468,4 +465,6 @@
   <string name="WarningLocationServiceTitle">Avertissement</string>
   <string name="WarningTitle">Avertissement</string>
   <string name="YesButton">Oui</string>
+  <string name="CurrencyPriceFormat">{0:C}</string>
+  <string name="LoginSupport">Support Technique?</string>
 </resources>

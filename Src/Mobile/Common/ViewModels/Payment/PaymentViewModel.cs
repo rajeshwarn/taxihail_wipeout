@@ -9,20 +9,21 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
 using System.Globalization;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
 	public class PaymentViewModel : PageViewModel
 	{
-        private readonly IPayPalExpressCheckoutService _palExpressCheckoutService;
+		private readonly IPayPalExpressCheckoutService _paypalExpressCheckoutService;
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
 
-		public PaymentViewModel(IPayPalExpressCheckoutService palExpressCheckoutService,
+		public PaymentViewModel(IPayPalExpressCheckoutService paypalExpressCheckoutService,
 			IAccountService accountService,
 			IPaymentService paymentService)
 		{
-			_palExpressCheckoutService = palExpressCheckoutService;
+			_paypalExpressCheckoutService = paypalExpressCheckoutService;
 			_accountService = accountService;
 			_paymentService = paymentService;
 		}
@@ -36,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			PaymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
 			PaymentPreferences.Start();
-			TipAmount = (ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString();
+			TipAmount = (MeterAmount.ToDouble() * ((double)PaymentPreferences.Tip / 100)).ToString();
 
             PaymentSelectorToggleIsVisible = IsPayPalEnabled && IsCreditCardEnabled;
             PayPalSelected = !IsCreditCardEnabled;
@@ -63,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				var value = order.Fare.Value + (order.Toll.HasValue ? order.Toll.Value : 0);
 				Logger.LogMessage ("Meter Amount not formatted : {0} for Order {1}", value, Order.IBSOrderId); 
-				MeterAmount = FormatCurrency (value);
+				MeterAmount = RoundToTwoDecimals (value);
 				Logger.LogMessage ("Meter Amount : {0} for Order {1}", MeterAmount, Order.IBSOrderId); 
 				MeterAmountPopulatedByIBS = true;
 			}
@@ -76,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				&& order.Tip.Value != 0)
 			{
 				PaymentPreferences.TipListDisabled = true;
-				TipAmount = FormatCurrency(order.Tip.Value);
+				TipAmount = RoundToTwoDecimals(order.Tip.Value);
 			}
 		}
 
@@ -117,7 +118,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         public bool PayPalSelected 
 		{ 
 			get { return _payPalSelected; }
-			set {
+			set 
+			{
 				_payPalSelected = value;
 				RaisePropertyChanged(() => PayPalSelected);
 			}
@@ -151,19 +153,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public string PlaceholderAmount
         {
-            get{ return FormatCurrency(0d); }
+			get{ return RoundToTwoDecimals(0d); }
         }
-
-       
-
+		       
 		private string _tipAmount;
-
 		public string TipAmount 
 		{ 
 			get
-			{				 
-				var roundedAmount =  Math.Round((ParseCurrency (MeterAmount) * ((double)PaymentPreferences.Tip / 100)), 2);
-                return (PaymentPreferences.TipListDisabled ? _tipAmount : roundedAmount.ToString());
+			{				
+				return GetTipAmount(_tipAmount);
 			}
 			set
 			{
@@ -175,14 +173,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		}
 
 		private string _meterAmount;
-
 		public string MeterAmount 
 		{ 
-			get
-			{
-				return _meterAmount;
-			}
-
+			get { return _meterAmount; }
 			set
 			{
 				_meterAmount = value;
@@ -197,7 +190,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{ 
 			get
 			{
-				return  CultureProvider.FormatCurrency(ParseCurrency(MeterAmount) + ParseCurrency(GetTipAmount(TipAmount)));
+				// the ONLY currency formatted amount
+				return CultureProvider.FormatCurrency(Amount);
 			}	
 		}
 
@@ -205,7 +199,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{ 
 			get
 			{ 
-				return ParseCurrency (MeterAmount) + ParseCurrency (GetTipAmount (TipAmount));
+				return MeterAmount.ToDouble() + GetTipAmount(TipAmount).ToDouble();
 			}
 		}
 
@@ -213,44 +207,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public string GetTipAmount(string value)
 		{
-			var roundedTip = Math.Round(ParseCurrency (MeterAmount) * ((double)PaymentPreferences.Tip / 100), 2);
-			var _tip = (PaymentPreferences.TipListDisabled ? value : roundedTip.ToString());
-			return _tip;
+			return PaymentPreferences.TipListDisabled 
+				? value 
+				: RoundToTwoDecimals (MeterAmount.ToDouble() * ((double)PaymentPreferences.Tip / 100));
 		}
-
-		private double ParseCurrency( string amount )
+			
+		private string GetCurrency(string amount)
 		{
-			double doubleNumber;
-
-			if (!double.TryParse (amount, out doubleNumber)) {
-				doubleNumber = 0;
-			}
-
-			return doubleNumber;
-			//return CultureProvider.ParseCurrency (amount);
+			return RoundToTwoDecimals (amount.ToDouble());
 		}
 
-		public string GetCurrency(string amount)
+		private string RoundToTwoDecimals(double doubleNumber)
 		{
-			double doubleNumber;
-
-			if (!double.TryParse (amount, out doubleNumber)) {
-				doubleNumber = 0;
-			}
-
-			return doubleNumber.ToString ("F", CultureInfo.InvariantCulture);
-
-			//return CultureProvider.FormatCurrency((CultureProvider.ParseCurrency(amount)));
+			return doubleNumber.ToString("F", CultureInfo.InvariantCulture);
 		}
-		public string FormatCurrency(double doubleNumber)
-		{
-
-			return doubleNumber.ToString ("F", CultureInfo.InvariantCulture);
-
-			//return CultureProvider.FormatCurrency((CultureProvider.ParseCurrency(amount)));
-		}
-
-
 
         public bool IsResettingTip = false; // For Droid's tip picker
 
@@ -260,7 +230,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				return this.GetCommand(() =>
 				{ 
-                    if (!PaymentPreferences.TipListDisabled)
+					if (!PaymentPreferences.TipListDisabled)
                     {
                         IsResettingTip = true;
                         PaymentPreferences.Tip = 0;
@@ -279,14 +249,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             {
                 return this.GetCommand(() =>
                 { 
-                    if (IsResettingTip && PaymentPreferences.Tip == 0 && ParseCurrency(TipAmount) == 0d)
+					if (IsResettingTip && PaymentPreferences.Tip == 0 && TipAmount.ToDouble() == 0d)
                     {
                         IsResettingTip = false;
                         return;
                     }
                     IsResettingTip = false;
                     PaymentPreferences.TipListDisabled = false;                                            
-                    TipAmount = (ParseCurrency(MeterAmount) * ((double)PaymentPreferences.Tip / 100)).ToString();
+					TipAmount = (MeterAmount.ToDouble() * ((double)PaymentPreferences.Tip / 100)).ToString();
                     RaisePropertyChanged(() => TotalAmount);
                     RaisePropertyChanged(() => TipAmountString);
                     ShowCurrencyCommand.Execute(); 
@@ -332,9 +302,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     }
                     if (TipAmountString != GetCurrency(TipAmountString))
                     {
-                        TipAmountString = GetCurrency(ParseCurrency(TipAmount).ToString());
+						TipAmountString = RoundToTwoDecimals(TipAmount.ToDouble());
                     }
-                    RaisePropertyChanged(() => TipAmountString);							
+                    RaisePropertyChanged(() => TipAmountString);
                 });
             }
         }
@@ -361,14 +331,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                     if (Amount > 100)
                     {
-						var message = string.Format(this.Services().Localize["ConfirmationPaymentAmountOver100"], FormatCurrency(Amount));
+						var message = string.Format(this.Services().Localize["ConfirmationPaymentAmountOver100"], TotalAmount);
 						this.Services().Message.ShowMessage(
-								this.Services().Localize["ConfirmationPaymentAmountOver100Title"], 
-								message, 
-								this.Services().Localize["OkButtonText"], 
-								() => InvokeOnMainThread(executePayment), 
-								this.Services().Localize["Cancel"], 
-								() => {});
+								this.Services().Localize["ConfirmationPaymentAmountOver100Title"], message, 
+								this.Services().Localize["OkButtonText"], () => InvokeOnMainThread(executePayment), 
+								this.Services().Localize["Cancel"], () => {});
                     }
                     else
                     {
@@ -383,7 +350,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             if (CanProceedToPayment(false))
             {
 				this.Services().Message.ShowProgress(true);
-				_palExpressCheckoutService.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount), Convert.ToDecimal(ParseCurrency(MeterAmount)), Convert.ToDecimal(Math.Round(ParseCurrency (TipAmount), 2)))
+				_paypalExpressCheckoutService.SetExpressCheckoutForAmount(
+						Order.Id,
+						Convert.ToDecimal(Amount), 
+						Convert.ToDecimal(MeterAmount.ToDouble()), 
+						Convert.ToDecimal(RoundToTwoDecimals(TipAmount.ToDouble())))
 					.ToObservable()
 					.Subscribe(checkoutUrl => {
                         var @params = new Dictionary<string, string> { { "url", checkoutUrl } };
@@ -410,13 +381,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 	            if (CanProceedToPayment())
 	            {
-					var meterAmount = ParseCurrency (MeterAmount);
-					var tipAmount = Math.Round(ParseCurrency (TipAmount), 2);
+					var meterAmount = MeterAmount.ToDouble();
+					var tipAmount = RoundToTwoDecimals(TipAmount.ToDouble()).ToDouble();
 					var response = await _paymentService.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, meterAmount, tipAmount, Order.Id);
                     if (!response.IsSuccessfull)
                     {
 						this.Services().Message.ShowProgress(false);
-						this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], 
+						this.Services().Message.ShowMessage(
+							this.Services().Localize["PaymentErrorTitle"], 
 							string.Format(this.Services().Localize["PaymentErrorMessage"], response.Message));
 						return;
                     }

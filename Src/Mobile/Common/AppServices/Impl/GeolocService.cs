@@ -72,7 +72,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				Logger.LogError (ex);
                 return new Address[0];
             }
-
         }
 
 		public Task<DirectionInfo> GetDirectionInfo(Address origin, Address dest)
@@ -86,19 +85,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<DirectionInfo> GetDirectionInfo(double originLat, double originLong, double destLat, double destLong, DateTime? date = null)
         {
-
             try
             {
-				var direction = await Task.Run(() => _directions
-					.GetDirection(originLat, originLong, destLat, destLong, date));
+				var direction = await Task.Run(() => _directions.GetDirection(originLat, originLong, destLat, destLong, date));
 
-                return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, FormattedPrice = direction.FormattedPrice, Price = direction.Price };
+                return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, Price = direction.Price };
             }
             catch
             {
                 return new DirectionInfo();
             }
-
         }
     }
 }
