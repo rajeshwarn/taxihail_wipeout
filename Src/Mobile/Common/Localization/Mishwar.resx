@@ -123,4 +123,10 @@
   <data name="RideSettingsChargeType" xml:space="preserve">
     <value>Payment type</value>
   </data>
+ <data name="EstimatePriceFormat" xml:space="preserve">
+    <value>Estimated Fare : SR{0:n2} ({1})</value>
+  </data>
+  <data name="CurrencyPriceFormat" xml:space="preserve">
+    <value>SR{0:n2}</value>
+  </data>
 </root>
