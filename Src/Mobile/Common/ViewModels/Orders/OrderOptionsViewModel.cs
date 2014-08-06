@@ -236,7 +236,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		void OnAddressSelectionModeChanged()
+		private void OnAddressSelectionModeChanged()
 		{
 			ShowDestination = AddressSelectionMode == AddressSelectionMode.DropoffSelection;
             if (!ShowDestination)
