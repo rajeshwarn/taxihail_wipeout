@@ -34,12 +34,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             lblCardNumber.Text = Localize.GetValue("CmtCardNumber");
             lblTip.Text = Localize.GetValue("CmtTipAmount");
             btnConfirm.SetTitle(Localize.GetValue("CmtConfirmPayment"), UIControlState.Normal);
-            btnChangePaymentSettings.SetTitle(Localize.GetValue("CmtChangePaymentInfo"), UIControlState.Normal);
-            btnCancel.SetTitle(Localize.GetValue("CmtCancelPayment"), UIControlState.Normal);
+			btnCancel.SetTitle(Localize.GetValue("PayInCar"), UIControlState.Normal);
 
             FlatButtonStyle.Green.ApplyTo(btnConfirm);
-            FlatButtonStyle.Silver.ApplyTo(btnChangePaymentSettings);
-            FlatButtonStyle.Red.ApplyTo(btnCancel);
+			FlatButtonStyle.Silver.ApplyTo(btnCancel);
 
 			var set = this.CreateBindingSet<CmtRideLinqConfirmPairView, CmtRideLinqConfirmPairViewModel>();
 
