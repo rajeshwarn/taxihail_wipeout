@@ -1530,4 +1530,7 @@
   <data name="DeleteCreditCardTitle" xml:space="preserve">
     <value>Supprimer la carte</value>
   </data>
+  <data name="PayInCar" xml:space="preserve">
+    <value>Payer dans le taxi</value>
+  </data>
 </root>

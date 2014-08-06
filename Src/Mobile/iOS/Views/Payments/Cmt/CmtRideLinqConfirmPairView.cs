@@ -47,10 +47,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				.For("TouchUpInside")
 				.To(vm => vm.ConfirmPayment);
 
-			set.Bind(btnChangePaymentSettings)
-				.For("TouchUpInside")
-				.To(vm => vm.ChangePaymentInfo);
-
 			set.Bind(btnCancel)
 				.For("TouchUpInside")
 				.To(vm => vm.CancelPayment);
