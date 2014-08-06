@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			PaymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
 			PaymentPreferences.Start();
-			TipAmount = (MeterAmount.ToDouble() * ((double)PaymentPreferences.Tip / 100)).ToString();
+			TipAmount = RoundToTwoDecimals((MeterAmount.ToDouble() * ((double)PaymentPreferences.Tip / 100)));
 
             PaymentSelectorToggleIsVisible = IsPayPalEnabled && IsCreditCardEnabled;
             PayPalSelected = !IsCreditCardEnabled;
@@ -219,7 +219,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		private string RoundToTwoDecimals(double doubleNumber)
 		{
-			return doubleNumber.ToString("F", CultureInfo.InvariantCulture);
+			return doubleNumber.ToString("F", CultureInfo.CurrentUICulture);
 		}
 
         public bool IsResettingTip = false; // For Droid's tip picker
@@ -256,7 +256,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     }
                     IsResettingTip = false;
                     PaymentPreferences.TipListDisabled = false;                                            
-					TipAmount = (MeterAmount.ToDouble() * ((double)PaymentPreferences.Tip / 100)).ToString();
+					TipAmount = RoundToTwoDecimals((MeterAmount.ToDouble() * ((double)PaymentPreferences.Tip / 100)));
                     RaisePropertyChanged(() => TotalAmount);
                     RaisePropertyChanged(() => TipAmountString);
                     ShowCurrencyCommand.Execute(); 
