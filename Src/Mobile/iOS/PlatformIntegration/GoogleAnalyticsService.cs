@@ -33,6 +33,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			Tracker.Send(  appView.Build() );
 		}
 
+		public void LogEvent(string @event)
+		{
+			var eventGA = GAIDictionaryBuilder.CreateEvent ("Interaction", "Event", @event, 0);
+			Tracker.Send (eventGA.Build());
+		}
+
 		public void LogCommand(string commandName, string parameter)
 		{
 		}

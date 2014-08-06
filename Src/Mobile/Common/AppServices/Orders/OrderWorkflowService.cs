@@ -300,6 +300,26 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_pickupAddressSubject.OnNext(address);
 		}
 
+        public async Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder()
+		{
+			if (_bookingService.HasLastOrder) 
+			{
+				var status = await _bookingService.GetLastOrderStatus (); 
+				if (!_bookingService.IsStatusCompleted (status.IBSStatusId)) 
+				{
+					var order = await _accountService.GetHistoryOrderAsync (status.OrderId);
+
+                    return Tuple.Create(order, status);
+				}
+				else
+				{
+					_bookingService.ClearLastOrder();
+				}
+			}
+
+			return null;
+		}
+
 		public IObservable<Address> GetAndObservePickupAddress()
 		{
 			return _pickupAddressSubject;
@@ -420,8 +440,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var pickupAddress = await _pickupAddressSubject.Take(1).ToTask();
 			var destinationAddress = await _destinationAddressSubject.Take(1).ToTask();
 			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
+		    var bookingSettings = await _bookingSettingsSubject.Take(1).ToTask();
 
-			var direction = await _bookingService.GetFareEstimate (pickupAddress, destinationAddress, pickupDate);
+            var direction = await _bookingService.GetFareEstimate(pickupAddress, destinationAddress, bookingSettings.VehicleTypeId, pickupDate);
 			var estimatedFareString = _bookingService.GetFareEstimateDisplay(direction);
 
 			_estimatedFareDetailSubject.OnNext (direction);

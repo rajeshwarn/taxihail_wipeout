@@ -30,5 +30,6 @@ namespace apcurium.MK.Booking.Commands
         public DayOfTheWeek DaysOfTheWeek { get; set; }
         public TariffType Type { get; set; }
         public Guid Id { get; set; }
+        public int? VehicleTypeId { get; set; }
     }
 }

@@ -117,6 +117,8 @@
         },
         
         onsubmit: function (form) {
+            ga('send', 'event', 'button', 'click', 'create account web', 0);
+            this.model.set('ActivationMethod', 'Email');
             this.model.save({}, { error: _.bind(this.onServerError, this) });
         }
     });

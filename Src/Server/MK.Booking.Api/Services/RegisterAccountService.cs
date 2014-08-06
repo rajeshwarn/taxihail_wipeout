@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Commands;
@@ -81,19 +82,24 @@ namespace apcurium.MK.Booking.Api.Services
                 var accountActivationDisabled =
                     bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
 
-                var confirmationToken = Guid.NewGuid();
+                setting = _configManager.GetSetting("Client.SMSConfirmationEnabled");
+                var smsConfirmationEnabled =
+                    bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
+
+                var confirmationToken = smsConfirmationEnabled ? GenerateActivationCode() : Guid.NewGuid().ToString();
+
                 var command = new Commands.RegisterAccount();
 
                 Mapper.Map(request, command);
                 command.Id = Guid.NewGuid();
-                command.ConfimationToken = confirmationToken.ToString();
+
                 command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId,
                     command.Email,
                     "",
                     command.Name,
                     command.Phone);
 
-                command.ConfimationToken = confirmationToken.ToString();
+                command.ConfimationToken = confirmationToken;
                 command.AccountActivationDisabled = accountActivationDisabled;
                 _commandBus.Send(command);
 
@@ -102,19 +108,47 @@ namespace apcurium.MK.Booking.Api.Services
 
                 if (!accountActivationDisabled)
                 {
-                    _commandBus.Send(new SendAccountConfirmationEmail
+
+                    if (smsConfirmationEnabled
+                        && (request.ActivationMethod == null  
+                                || request.ActivationMethod == ActivationMethod.Sms))
                     {
-                        ClientLanguageCode = command.Language,
-                        EmailAddress = command.Email,
+                        _commandBus.Send(new SendAccountConfirmationSMS
+                        {
+                            ClientLanguageCode = command.Language,
+                            Code = confirmationToken,
+                            PhoneNumber = command.Phone
+                        });
+                    }
+                    else
+                    {
+                        _commandBus.Send(new SendAccountConfirmationEmail
+                        {
+                            ClientLanguageCode = command.Language,
+                            EmailAddress = command.Email,
                         BaseUrl = new Uri(root),
-                        ConfirmationUrl =
-                            new Uri(root +
-                                    string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken)),
-                    });
+                            ConfirmationUrl =
+                                new Uri(root +
+                                        string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken)),
+                        });
+                    }
+                    
                 }
 
                 return new Account {Id = command.AccountId};
             }
+        }
+
+        private string GenerateActivationCode()
+        {
+            var random = new Random(DateTime.Now.Second);
+            var strPass = "";
+            for (var x = 0; x <= 4; x++)
+            {
+                var p = random.Next(0, 9);
+                strPass += p;
+            }
+            return strPass;
         }
     }
 }

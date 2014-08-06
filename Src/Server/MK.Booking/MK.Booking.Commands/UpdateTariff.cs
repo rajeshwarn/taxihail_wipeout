@@ -27,5 +27,6 @@ namespace apcurium.MK.Booking.Commands
         public DateTime EndTime { get; set; }
         public DayOfTheWeek DaysOfTheWeek { get; set; }
         public Guid Id { get; private set; }
+        public int? VehicleTypeId { get; set; }
     }
 }

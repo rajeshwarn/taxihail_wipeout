@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 		}
 
 		public Direction GetDirection (double? originLat, double? originLng, double? destinationLat,
-		                                    double? destinationLng, DateTime? date = default(DateTime?))
+		                                    double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?))
 		{
 			var result = new Direction ();
 			var direction = _client.GetDirections (
@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                 result.Price = _priceCalculator.GetPrice (
                     direction.Distance, 
                     date ?? DateTime.Now, 
-                    direction.Duration);
+                    direction.Duration, vehicleTypeId);
                     
 				result.FormattedDistance = FormatDistance (result.Distance);
 			}

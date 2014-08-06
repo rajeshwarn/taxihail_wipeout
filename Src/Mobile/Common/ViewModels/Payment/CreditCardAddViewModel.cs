@@ -351,6 +351,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				}
 				if (success)
 				{	
+					this.Services().Analytics.LogEvent("AddCOF");
 					Data.CardNumber = null;
 					Data.CCV = null;
 

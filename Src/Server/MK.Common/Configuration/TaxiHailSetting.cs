@@ -24,6 +24,7 @@ namespace MK.Common.Configuration
             CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink,Client.AccountChargeTypeId";
 			DefaultTipPercentage = 15;
             DirectionDataProvider = MapProvider.Google;
+			SMSConfirmationEnabled = false;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -33,7 +34,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Service Url", Description="Url of the TaxiHail Server")]
 		public string ServiceUrl { get; set; }
         [Display(Name = "Error Log Enabled", Description="Flag to enable the log of the errors in file")]
-		public bool ErrorLogEnabled{ get { return true; } private set{ } }
+		public bool ErrorLogEnabled{ get { return true; }  private set{ } }
         [Display(Name = "Twitter Enabled", Description="Enable register/log in with Twitter")]
 		public bool TwitterEnabled{ get; private set; }
         [Display(Name = "Twitter Consumer Key", Description="Twitter API settings")]
@@ -54,6 +55,14 @@ namespace MK.Common.Configuration
 		public string FacebookAppId{ get; private set; }
         [Display(Name = "Account Activation Disabled", Description="Disable the confirmation requirement")]
         public bool AccountActivationDisabled { get; private set; }
+		[Display(Name = "Account Activation By SMS", Description="Enable the activation by SMS")]
+        public bool SMSConfirmationEnabled { get; private set; }
+        [Display(Name = "SMS source number", Description = "Number from which the sms confirmation number will be sent")]
+        public string SMSFromNumber { get; private set; }
+        [Display(Name = "Twilio SMS account id", Description = "Account id for Twilio")]
+        public string SMSAccountSid { get; private set; }
+        [Display(Name = "Twilio SMS authentication token", Description = "Authentication token for twilio")]
+        public string SMSAuthToken { get; private set; }
         [Display(Name = "Show Terms and Conditions", Description="Display and require T&C screen")]
         public bool ShowTermsAndConditions { get; private set; }
 		[Display(Name = "Hide Mobile Knownledge and Apcurium logos", Description="In the menu")]

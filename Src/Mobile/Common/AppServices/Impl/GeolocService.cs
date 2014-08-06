@@ -74,20 +74,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-		public Task<DirectionInfo> GetDirectionInfo(Address origin, Address dest)
+        public Task<DirectionInfo> GetDirectionInfo(Address origin, Address dest, int? vehicleTypeId = null)
         {
             if (origin.HasValidCoordinate() && dest.HasValidCoordinate())
             {
-                return GetDirectionInfo(origin.Latitude, origin.Longitude, dest.Latitude, dest.Longitude);
+                return GetDirectionInfo(origin.Latitude, origin.Longitude, dest.Latitude, dest.Longitude, vehicleTypeId);
             }
 			return Task.FromResult(new DirectionInfo());
         }
 
-		public async Task<DirectionInfo> GetDirectionInfo(double originLat, double originLong, double destLat, double destLong, DateTime? date = null)
+        public async Task<DirectionInfo> GetDirectionInfo(double originLat, double originLong, double destLat, double destLong, int? vehicleTypeId = null, DateTime? date = null)
         {
             try
             {
-				var direction = await Task.Run(() => _directions.GetDirection(originLat, originLong, destLat, destLong, date));
+			var direction = await Task.Run(() => _directions
+                    .GetDirection(originLat, originLong, destLat, destLong, vehicleTypeId, date));
+
 
                 return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, Price = direction.Price };
             }

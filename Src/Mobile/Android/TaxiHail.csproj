@@ -593,6 +593,8 @@
     <AndroidResource Include="Resources\Drawable\star_state.xml" />
     <Compile Include="Activities\Book\BookingRateActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_BookingRating.axml" />
+    <AndroidResource Include="Resources\Layout\View_AccountConfirmation.axml" />
+    <Compile Include="Activities\Account\AccountConfirmationActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

@@ -156,7 +156,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return statusId.SoftEqual(VehicleStatuses.Common.Done) || statusId.SoftEqual(VehicleStatuses.Common.MeterOffNotPayed);
         }
 
-		public async Task<DirectionInfo> GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate)
+		public async Task<DirectionInfo> GetFareEstimate(Address pickup, Address destination, int? vehicleTypeId, DateTime? pickupDate)
         {
 			var tarifMode = _appSettings.Data.TarifMode;            
             var directionInfo = new DirectionInfo();
@@ -170,7 +170,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 if (tarifMode == TarifMode.AppTarif || (tarifMode == TarifMode.Both && directionInfo.Price == 0d))
                 {
-					directionInfo = await _geolocService.GetDirectionInfo(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude, pickupDate);                    
+					directionInfo = await _geolocService.GetDirectionInfo(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude, vehicleTypeId, pickupDate);                    
                 }            
 
 				return directionInfo ?? new DirectionInfo();

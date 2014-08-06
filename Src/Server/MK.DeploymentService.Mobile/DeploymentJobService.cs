@@ -403,7 +403,8 @@ namespace MK.DeploymentService.Mobile
 			using (var exeProcess = Process.Start (restoreProcess)) {
 				var output = ProcessEx.GetOutput (exeProcess);
 				if (exeProcess.ExitCode > 0) {
-					throw new Exception ("Error during Restore NuGet Packages, " + output);
+                    UpdateJob("Error during restore NuGet Packages");
+					//throw new Exception ("Error during Restore NuGet Packages, " + output);
 				}
 				UpdateJob ("Restore NuGet Packages Successful");
 			}

@@ -114,7 +114,4 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TomTom\" />
-  </ItemGroup>
 </Project>

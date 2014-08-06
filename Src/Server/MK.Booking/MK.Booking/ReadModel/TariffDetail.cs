@@ -23,5 +23,6 @@ namespace apcurium.MK.Booking.ReadModel
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public int Type { get; set; }
+        public int? VehicleTypeId { get; set; }
     }
 }
