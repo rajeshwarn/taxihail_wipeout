@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Api.Helpers
 
         private const double DefaultTaxiLatitude = 45.5134;
         private const double DefaultTaxiLongitude = -73.5530;
+        private const double NearbyTaxiDelta = 0.0009; // Approx. 100 meters
 
         public OrderStatusIbsMock(IOrderDao orderDao, OrderStatusUpdater updater, IConfigurationManager configManager)
             : base(orderDao, configManager)
@@ -55,13 +56,14 @@ namespace apcurium.MK.Booking.Api.Helpers
             {
                 ibsInfo.VehicleLatitude = DefaultTaxiLatitude;
                 ibsInfo.VehicleLongitude = DefaultTaxiLongitude;
+
                 ibsInfo.Status = VehicleStatuses.Common.Assigned;
             }
             else if (orderStatus.IBSStatusId == VehicleStatuses.Common.Assigned &&
                      orderStatus.VehicleLatitude == DefaultTaxiLatitude && orderStatus.VehicleLongitude == DefaultTaxiLongitude)
             {
-                ibsInfo.VehicleLatitude = order.PickupAddress.Latitude - 0.0009;
-                ibsInfo.VehicleLongitude = order.PickupAddress.Longitude - 0.0009;
+                ibsInfo.VehicleLatitude = order.PickupAddress.Latitude - NearbyTaxiDelta;
+                ibsInfo.VehicleLongitude = order.PickupAddress.Longitude - NearbyTaxiDelta;
 
                 ibsInfo.Status = VehicleStatuses.Common.Assigned;
             }
