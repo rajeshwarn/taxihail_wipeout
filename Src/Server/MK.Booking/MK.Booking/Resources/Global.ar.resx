@@ -321,4 +321,7 @@
   <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
     <value>عذرا، لا توجد سيارات متاحة نتيجة للطلب الكبير، رجاء المحاولة لاحقا</value>
   </data>
+  <data name="PushNotification_NearbyTaxi" xml:space="preserve">
+    <value>Your vehicle is almost at pickup location</value>
+  </data>
 </root>
