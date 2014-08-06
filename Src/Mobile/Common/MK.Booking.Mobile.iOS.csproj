@@ -361,6 +361,8 @@
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-fr.json" />
+    <None Include="Localization\CINQ-S.fr.resx" />
+    <None Include="Localization\CINQ-S.resx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
