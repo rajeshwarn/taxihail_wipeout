@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     {
                         _nearbyTaxiNotificationsSent.TryAdd(order.Id, true);
 
-                        var alert = string.Format(_resources.Get("PushNotification_TaxiClose", order.ClientLanguageCode));
+                        var alert = string.Format(_resources.Get("PushNotification_NearbyTaxi", order.ClientLanguageCode));
                         var data = new Dictionary<string, object> { { "orderId", order.Id } };
                         var devices = context.Set<DeviceDetail>().Where(x => x.AccountId == order.AccountId);
 

@@ -16,11 +16,16 @@ namespace apcurium.MK.Booking.Api.Helpers
     internal class OrderStatusIbsMock : OrderStatusHelper
     {
         private readonly OrderStatusUpdater _updater;
+        private readonly IOrderDao _orderDao;
+
+        private const double DefaultTaxiLatitude = 45.5134;
+        private const double DefaultTaxiLongitude = -73.5530;
 
         public OrderStatusIbsMock(IOrderDao orderDao, OrderStatusUpdater updater, IConfigurationManager configManager)
             : base(orderDao, configManager)
         {
             _updater = updater;
+            _orderDao = orderDao;
         }
 
         public override OrderStatusDetail GetOrderStatus(Guid orderId, IAuthSession session)
@@ -41,26 +46,47 @@ namespace apcurium.MK.Booking.Api.Helpers
                 MobilePhone = "5145551234",
                 DriverId = "99123",
                 TerminalId = "98695",
-                ReferenceNumber = "1209",
-                VehicleLatitude = 45.5134,
-                VehicleLongitude = -73.5530
+                ReferenceNumber = "1209"
             };
-            switch (orderStatus.IBSStatusId)
+
+            var order = _orderDao.FindById(orderId);
+
+            if (string.IsNullOrEmpty(orderStatus.IBSStatusId))
             {
-                case null:
-                case "":
-                    ibsInfo.Status = VehicleStatuses.Common.Assigned;
-                    break;
-                case VehicleStatuses.Common.Assigned:
-                    ibsInfo.Status = VehicleStatuses.Common.Arrived;
-                    break;
-                case VehicleStatuses.Common.Arrived:
-                    ibsInfo.Status = VehicleStatuses.Common.Loaded;
-                    break;
-                case VehicleStatuses.Common.Loaded:
-                    ibsInfo.Status = VehicleStatuses.Common.Done;
-                    break;
+                ibsInfo.VehicleLatitude = DefaultTaxiLatitude;
+                ibsInfo.VehicleLongitude = DefaultTaxiLongitude;
+                ibsInfo.Status = VehicleStatuses.Common.Assigned;
             }
+            else if (orderStatus.IBSStatusId == VehicleStatuses.Common.Assigned &&
+                     orderStatus.VehicleLatitude == DefaultTaxiLatitude && orderStatus.VehicleLongitude == DefaultTaxiLongitude)
+            {
+                ibsInfo.VehicleLatitude = order.PickupAddress.Latitude - 0.0009;
+                ibsInfo.VehicleLongitude = order.PickupAddress.Longitude - 0.0009;
+
+                ibsInfo.Status = VehicleStatuses.Common.Assigned;
+            }
+            else if (orderStatus.IBSStatusId == VehicleStatuses.Common.Assigned)
+            {
+                ibsInfo.VehicleLatitude = order.PickupAddress.Latitude;
+                ibsInfo.VehicleLongitude = order.PickupAddress.Longitude;
+
+                ibsInfo.Status = VehicleStatuses.Common.Arrived;
+            }
+            else if (orderStatus.IBSStatusId == VehicleStatuses.Common.Arrived)
+            {
+                ibsInfo.VehicleLatitude = orderStatus.VehicleLatitude;
+                ibsInfo.VehicleLongitude = orderStatus.VehicleLongitude;
+
+                ibsInfo.Status = VehicleStatuses.Common.Loaded;
+            }
+            else if (orderStatus.IBSStatusId == VehicleStatuses.Common.Loaded)
+            {
+                ibsInfo.VehicleLatitude = orderStatus.VehicleLatitude;
+                ibsInfo.VehicleLongitude = orderStatus.VehicleLongitude;
+
+                ibsInfo.Status = VehicleStatuses.Common.Done;
+            }
+
             _updater.Update(ibsInfo, orderStatus);
             return orderStatus;
         }
