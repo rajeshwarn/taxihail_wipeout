@@ -524,17 +524,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			var refData = await GetReferenceData();
 			var hasCardOnFile = (await GetCreditCard()) != null;
-		
-			if (!_appSettings.Data.HideNoPreference
-                && refData.PaymentsList != null)
-            {
-                refData.PaymentsList.Insert(0,
-					new ListItem
-                	{
-                        Id = null,
-					    Display = _localize["NoPreference"]
-                	});
-            }
 
 		    if (!hasCardOnFile)
 		    {
