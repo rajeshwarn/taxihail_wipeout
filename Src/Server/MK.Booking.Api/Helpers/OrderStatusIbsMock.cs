@@ -60,8 +60,10 @@ namespace apcurium.MK.Booking.Api.Helpers
                 ibsInfo.Status = VehicleStatuses.Common.Assigned;
             }
             else if (orderStatus.IBSStatusId == VehicleStatuses.Common.Assigned &&
-                     orderStatus.VehicleLatitude == DefaultTaxiLatitude && orderStatus.VehicleLongitude == DefaultTaxiLongitude)
+                     orderStatus.VehicleLatitude == DefaultTaxiLatitude &&
+                     orderStatus.VehicleLongitude == DefaultTaxiLongitude)
             {
+                // Move taxi close to user
                 ibsInfo.VehicleLatitude = order.PickupAddress.Latitude - NearbyTaxiDelta;
                 ibsInfo.VehicleLongitude = order.PickupAddress.Longitude - NearbyTaxiDelta;
 
@@ -69,6 +71,7 @@ namespace apcurium.MK.Booking.Api.Helpers
             }
             else if (orderStatus.IBSStatusId == VehicleStatuses.Common.Assigned)
             {
+                // Move taxi to user position
                 ibsInfo.VehicleLatitude = order.PickupAddress.Latitude;
                 ibsInfo.VehicleLongitude = order.PickupAddress.Longitude;
 
