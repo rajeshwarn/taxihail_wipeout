@@ -10,6 +10,7 @@ using System.Net.Mail;
 using System.Reflection;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Security;
@@ -568,6 +569,19 @@ namespace DatabaseInitializer
         private static void CreateDefaultVehicleTypes(ICommandBus commandBus)
         {
             // TODO
+            IList<int> ibsVehicleTypes = null;
+
+            foreach (var referenceDataVehicleId in ibsVehicleTypes)
+            {
+                commandBus.Send(new AddUpdateVehicleType
+                {
+                    VehicleTypeId = Guid.NewGuid(),
+                    Name = string.Format("Vehicle {0}", referenceDataVehicleId),
+                    LogoName = "taxi",
+                    ReferenceDataVehicleId = referenceDataVehicleId,
+                    CompanyId = AppConstants.CompanyId
+                });
+            }
         }
     }
 }
