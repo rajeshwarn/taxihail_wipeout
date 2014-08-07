@@ -468,3 +468,6 @@
 "View_UpdatedTermsAndConditions"="أحكام و شروط جديدة";
 "LoginSupport"="Need support?";
 "CurrencyPriceFormat"="{0}";
+"PendingOrderCancel"="Cancel";
+"PendingOrderMessage"="You cannot book this ride since an order is already pending. View the order status?";
+"PendingOrderView"="View";

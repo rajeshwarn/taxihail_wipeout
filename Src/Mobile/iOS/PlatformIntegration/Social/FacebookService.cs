@@ -36,6 +36,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 			}
 		}
 
+		public void PublishInstall()
+		{
+			FBSettings.PublishInstall (_settings.Data.FacebookAppId);
+		}
+
 		public Task Connect()
 		{
 
