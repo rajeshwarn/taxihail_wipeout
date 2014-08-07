@@ -564,5 +564,10 @@ namespace DatabaseInitializer
                 TariffId = Guid.NewGuid(),
             });
         }
+
+        private static void CreateDefaultVehicleTypes(ICommandBus commandBus)
+        {
+            // TODO
+        }
     }
 }
