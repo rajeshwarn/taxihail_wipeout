@@ -645,17 +645,11 @@
   <data name="ParameterButton" xml:space="preserve">
     <value>Parameters</value>
   </data>
-  <data name="EstimateDistance" xml:space="preserve">
-    <value> ({0})</value>
-  </data>
-  <data name="EstimatePrice" xml:space="preserve">
-    <value>Estimated Fare</value>
-  </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>Estimated Fare : {0}</value>
+    <value>Estimated Fare : {0:C} ({1})</value>
   </data>
-  <data name="ApproxPrice" xml:space="preserve">
-    <value>Estimated Fare</value>
+  <data name="CurrencyPriceFormat" xml:space="preserve">
+    <value>{0:C}</value>
   </data>
   <data name="NotAvailable" xml:space="preserve">
     <value>N/A</value>

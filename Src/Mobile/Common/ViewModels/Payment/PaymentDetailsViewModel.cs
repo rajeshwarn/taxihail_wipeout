@@ -102,16 +102,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 }
             }
         }
-    
-        public string CurrencySymbol 
-		{
-            get 
-			{
-				var culture = new CultureInfo(Settings.PriceFormat);
-                return culture.NumberFormat.CurrencySymbol;
-            }
-        }
-    
+
         public CreditCardDetails SelectedCreditCard 
 		{
             get

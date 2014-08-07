@@ -144,9 +144,9 @@ namespace MK.Common.Configuration
 		public string PlacesTypes { get; private set; }
         [Display(Name = "Place Types", Description = "Give a list of Google Maps places types to filter search")]
         public string PlacesApiKey { get; private set; }
-        [Display(Name = "Price Format", Description="Format to display amount")]
+        [Display(Name = "Price Format Culture", Description="Format to display amount (Culture, ex: en-US)")]
 		public string PriceFormat { get; private set; }
-        [Display(Name = "Distance Format", Description="Format to display distance")]
+        [Display(Name = "Distance Format", Description="Format to display distance ('km' or 'mile')")]
 		public string DistanceFormat { get; private set; }
         [Display(Name = "Search Filter", Description="Filter for geolocation search")]
 		public string SearchFilter { get; private set; }
