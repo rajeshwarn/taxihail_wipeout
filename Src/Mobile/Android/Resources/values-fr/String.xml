@@ -295,7 +295,7 @@
   <string name="PickupTimeTextPlaceholder">Heure: maintenant</string>
   <string name="PickupViewDestinationLabel">Destination &gt;&gt;</string>
   <string name="PickupViewPickupLabel">Départ:</string>
-  <string name="RateRide">Calculer le prix du trajet</string>
+  <string name="RateRide">Évaluer la course</string>
   <string name="Rebook">Réinitialiser le trajet</string>
   <string name="ReceiptSent">Facture envoyée</string>
   <string name="RefineAddressTitle">Affiner l\'adresse</string>
