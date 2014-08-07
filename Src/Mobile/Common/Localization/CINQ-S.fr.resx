@@ -122,7 +122,7 @@
     <value>Prix</value>
   </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>Prix: {0}</value>
+    <value>Prix: {0:c}</value>
   </data>
   <data name="EstimatePriceOver100" xml:space="preserve">
     <value>Appelez-nous pour connaître le prix!</value>
