@@ -43,6 +43,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 	, IMvxAndroidActivityLifetimeListener
 	, IMvxAndroidCurrentTopActivity
 	{
+		private IAppSettings _settings;
+		private IFacebookService _facebookService;
+		public TaxiHailAndroidLifetimeMonitor()
+		{
+						
+		}
+
 		private int _createdActivityCount;
 
 		#region IMvxAndroidActivityLifetimeListener Members
@@ -65,8 +72,46 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public override void OnResume(Activity activity)
 		{
+			TryToFBPublish ();
+
 			Activity = activity;
-			IncrementCounter ();
+			IncrementCounter ();		
+		}
+
+		protected IAppSettings AppSettings
+		{
+			get{
+				if (_settings == null) {
+					_settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+				}
+				return _settings;
+			}
+		}
+
+		protected IFacebookService FacebookService
+		{
+			get{
+				if (_facebookService == null) {
+					_facebookService = TinyIoCContainer.Current.Resolve<IFacebookService> ();
+				}
+				return _facebookService;
+			}
+		}
+
+
+		void TryToFBPublish ()
+		{
+			try
+			{
+				if (!string.IsNullOrEmpty (AppSettings.Data.FacebookAppId) && AppSettings.Data.FacebookPublishEnabled) 
+				{
+					FacebookService.PublishInstall();
+				}
+			}
+			catch
+			{
+
+			}
 		}
 
 		public override void OnPause(Activity activity)

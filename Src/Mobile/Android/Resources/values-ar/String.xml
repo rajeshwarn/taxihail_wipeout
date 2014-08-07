@@ -470,4 +470,5 @@
   <string name="dummyaaa">xaaa</string>
   <string name="Error_AccountPaymentQuestionRequiredMessage">يجب الإجابة على جميع الأسئلة للإستمرار</string>
   <string name="View_UpdatedTermsAndConditions">أحكام و شروط جديدة</string>
+  <string name="LoginSupport">Need support?</string>
 </resources>

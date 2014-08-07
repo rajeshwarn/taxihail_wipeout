@@ -109,6 +109,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		protected override Cirrious.MvvmCross.Droid.Views.MvxAndroidLifetimeMonitor CreateLifetimeMonitor ()
 		{
 			return new TaxiHailAndroidLifetimeMonitor ();
+
 		}
 
 		private void InitializeSocialNetwork()
@@ -129,6 +130,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 };
                 return new TwitterServiceMonoDroid( oauthConfig, c.Resolve<IMvxAndroidCurrentTopActivity>());
             });
+
+
 		}
 
 		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider()

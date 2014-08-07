@@ -48,10 +48,17 @@ namespace MK.Common.Configuration
 		public string TwitterAccessTokenUrl{ get; private set; }
         [Display(Name = "Twitter Authorize Url", Description="Twitter API settings")]
 		public string TwitterAuthorizeUrl { get; private set; }
-        [Display(Name = "Facebook Enabled", Description="Enable register/log in with Facebook")]
+        
+		[Display(Name = "Facebook Publish Enabled", Description="Facebook Publish Enabled")]
+		public bool FacebookPublishEnabled { get; private set; }
+
+		[Display(Name = "Facebook Enabled", Description="Enable register/log in with Facebook")]
 		public bool FacebookEnabled { get; private set; }
         [Display(Name = "Facebook App Id", Description="Facebook API settings")]
 		public string FacebookAppId{ get; private set; }
+
+
+
         [Display(Name = "Account Activation Disabled", Description="Disable the confirmation requirement")]
         public bool AccountActivationDisabled { get; private set; }
         [Display(Name = "Show Terms and Conditions", Description="Display and require T&C screen")]
@@ -61,7 +68,8 @@ namespace MK.Common.Configuration
         
         [Display(Name = "Tutorial Enabled", Description="Enable the tutorial")]
         public bool TutorialEnabled { get; private set; }
-        [Display(Name = "Tutorial slides disabled", Description="Index of the slides to hide")]
+        
+		[Display(Name = "Tutorial slides disabled", Description="Index of the slides to hide")]
         public string DisabledTutorialSlides { get; private set; }       
         [Display(Name = "Hide Report Problem", Description="Remove button in the menu")]
         public bool HideReportProblem { get; private set; }

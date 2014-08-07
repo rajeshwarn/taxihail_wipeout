@@ -23,7 +23,6 @@
     </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchProfiling>True</MtouchProfiling>
-    <AssemblyName>TaxiHail</AssemblyName>
     <MtouchArch>ARMv7</MtouchArch>
     <CustomCommands>
       <CustomCommands>
@@ -46,7 +45,6 @@
     <MtouchI18n>
     </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
-    <AssemblyName>TaxiHail</AssemblyName>
     <MtouchUseLlvm>True</MtouchUseLlvm>
     <MtouchArch>ARMv7</MtouchArch>
     <CustomCommands>
@@ -74,7 +72,6 @@
     <CrashReportingApiKey>
     </CrashReportingApiKey>
     <BuildIpa>True</BuildIpa>
-    <AssemblyName>TaxiHail</AssemblyName>
     <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <MtouchArch>ARMv7</MtouchArch>
     <CustomCommands>

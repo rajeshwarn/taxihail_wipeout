@@ -30,6 +30,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 		{
 
 		}
+
+		public void PublishInstall()
+		{
+			Xamarin.FacebookBinding.Settings.PublishInstallAsync(TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity.ApplicationContext , _appId );
+		}
+
 		public Task Connect()
 		{
 
