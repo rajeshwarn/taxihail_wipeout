@@ -149,7 +149,7 @@
   <string name="EstimatedFareNotAvailable">التكلفة المتوقعة غير متاحة</string>
   <string name="EstimateDistance">({0})</string>
   <string name="EstimatePrice">التكلفة المتوقعة</string>
-  <string name="EstimatePriceFormat">التكلفة المتوقعة :{0}</string>
+  <string name="EstimatePriceFormat">التكلفة المتوقعة :{0} ({1})</string>
   <string name="EstimatePriceOver100">إتصال لمعرفة السعر</string>
   <string name="EstimatingFare">جاري تقييم قيمة مشوارك...</string>
   <string name="Facebook">الدخول عبر حساب الفيسبوك</string>
@@ -471,4 +471,8 @@
   <string name="Error_AccountPaymentQuestionRequiredMessage">يجب الإجابة على جميع الأسئلة للإستمرار</string>
   <string name="View_UpdatedTermsAndConditions">أحكام و شروط جديدة</string>
   <string name="LoginSupport">Need support?</string>
+  <string name="CurrencyPriceFormat">{0}</string>
+  <string name="PendingOrderMessage">You cannot book this ride since an order is already pending. View the order status?</string>
+  <string name="PendingOrderView">View</string>
+  <string name="PendingOrderCancel">Cancel</string>
 </resources>

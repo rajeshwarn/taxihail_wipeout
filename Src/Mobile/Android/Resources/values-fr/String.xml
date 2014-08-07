@@ -155,7 +155,7 @@
   <string name="EstimatedFareNotAvailable">Le prix ne peut être estimé pour le moment</string>
   <string name="EstimateDistance">({0})</string>
   <string name="EstimatePrice">Prix estimé</string>
-  <string name="EstimatePriceFormat">Prix estimé: {0}</string>
+  <string name="EstimatePriceFormat">Prix estimé: {0:C} ({1})</string>
   <string name="EstimatePriceOver100">Appelez-nous pour connaître le prix!</string>
   <string name="EstimatingFare">Calcul du prix en cours…</string>
   <string name="Facebook">Connexion Facebook</string>
@@ -208,8 +208,8 @@
   <string name="LocalContactCannotBeResolverMessage">L\'adresse semble ne pas correspondre au contact</string>
   <string name="LocalContactCannotBeResolverTitle">Informations erronées</string>
   <string name="Locating">Recherche de votre position</string>
-  <string name="LocationAddFavoriteSubtitle">Saisissez une nouvelle adresse</string>
-  <string name="LocationAddFavoriteTitle">Ajouter une position</string>
+  <string name="LocationAddFavoriteSubtitle">Ajouter une nouvelle adresse</string>
+  <string name="LocationAddFavoriteTitle">Ajouter une nouvelle adresse</string>
   <string name="LocationDetailAddressLabel">Adresse</string>
   <string name="LocationDetailApartmentLabel">Appartement</string>
   <string name="LocationDetailNameLabel">Surnom</string>
@@ -258,14 +258,14 @@
   <string name="OrderNoteGPS">Utiliser un GPS</string>
   <string name="OrderNoteGPSApproximate">(adresse approximative)</string>
   <string name="OrderNumber">Commande n°</string>
-  <string name="PanelMenuViewAboutUsText">À propos de nous</string>
+  <string name="PanelMenuViewAboutUsText">À Propos</string>
   <string name="PanelMenuViewCallDispatchText">Appeler</string>
-  <string name="PanelMenuViewLocationsText">Positions</string>
+  <string name="PanelMenuViewLocationsText">Adresses Favorites</string>
   <string name="PanelMenuViewOrderHistoryText">Historique</string>
   <string name="PanelMenuViewReportProblemText">Signaler un problème</string>
   <string name="PanelMenuViewSignOutText">Déconnexion</string>
-  <string name="PanelMenuViewTutorialText">Voir l\'aide</string>
-  <string name="PanelMenuViewUpdateProfileText">Mise à jour du compte</string>
+  <string name="PanelMenuViewTutorialText">Aide</string>
+  <string name="PanelMenuViewUpdateProfileText">Compte</string>
   <string name="ParameterButton">Paramètres</string>
   <string name="PassengerNameLabel">Nom</string>
   <string name="PassengerNumberLabel">Passagers</string>
@@ -390,7 +390,7 @@
   <string name="TabContacts">Contacts</string>
   <string name="TabFavorites">Favoris</string>
   <string name="TabHistory">Historique</string>
-  <string name="TabLocations">Positions</string>
+  <string name="TabLocations">Adresses Favorites</string>
   <string name="TabPlaces">Points d\'intérêt</string>
   <string name="TabSearch">Rechercher</string>
   <string name="TaxiMapTitle">Votre véhicule</string>
@@ -430,7 +430,7 @@
   <string name="Version">v{0}</string>
   <string name="ViewAll">Voir</string>
   <string name="ViewRatingBtn">Voir les notes</string>
-  <string name="View_AboutUs">À propos de nous</string>
+  <string name="View_AboutUs">À propos</string>
   <string name="View_BookingDetail">Détails de la réservation</string>
   <string name="View_BookingDetail_TitlePickupDetails">Informations concernant le départ</string>
   <string name="View_BookingDetail_TitleRideSettings">Détails du trajet</string>
@@ -445,7 +445,7 @@
   <string name="View_HistoryDetail">Détail de la commande</string>
   <string name="View_InitializeOrderForAccountPayment">Votre avis nous intéresse</string>
   <string name="View_LocationDetail">Détails sur votre position</string>
-  <string name="View_MyLocations">Positions</string>
+  <string name="View_MyLocations">Adresses Favorites</string>
   <string name="View_Payment">Paiement: informations</string>
   <string name="View_PaymentPreference">Paiement: préférences</string>
   <string name="View_Payments_CmtRideLinqChangePaymentTitle">Modifier les informations relatives au paiement</string>
@@ -469,4 +469,8 @@
   <string name="WarningTitle">Avertissement</string>
   <string name="YesButton">Oui</string>
   <string name="LoginSupport">Support Technique?</string>
+  <string name="CurrencyPriceFormat">{0:C}</string>
+  <string name="PendingOrderMessage">Désolé, cette reservation ne peut être prise en compte. Vous avez déjà une commande en cours. Voir le détail?</string>
+  <string name="PendingOrderView">Détail</string>
+  <string name="PendingOrderCancel">Annuler</string>
 </resources>

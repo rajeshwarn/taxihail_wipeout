@@ -98,7 +98,7 @@
   <string name="DeleteBookItButtonImageNamePressed">Assets/Button/btnBookIt-Pressed_en.png</string>
   <string name="StreetNumberPlacesBt">Search for places</string>
   <string name="CreateAccountTitleMr">Mr</string>
-  <string name="EstimatePriceFormat">Estimated Fare : {0}</string>
+  <string name="EstimatePriceFormat">Estimated Fare : {0:C} ({1})</string>
   <string name="PanelMenuViewOrderHistoryText">History</string>
   <string name="ResetPasswordSucessTitle">Password reset</string>
   <string name="TabSearch">Search</string>
@@ -491,4 +491,8 @@
   <string name="AccountPaymentQuestionsPlaceHolder">{0} characters maximum</string>
   <string name="AccountPaymentQuestionsRequired">(required)</string>
   <string name="LoginSupport">Need support?</string>
+  <string name="CurrencyPriceFormat">{0:C}</string>
+  <string name="PendingOrderMessage">You cannot book this ride since an order is already pending. View the order status?</string>
+  <string name="PendingOrderView">View</string>
+  <string name="PendingOrderCancel">Cancel</string>
 </resources>

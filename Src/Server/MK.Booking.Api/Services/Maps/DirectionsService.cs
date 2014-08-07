@@ -27,7 +27,6 @@ namespace apcurium.MK.Booking.Api.Services.Maps
             {
                 Distance = result.Distance,
                 FormattedDistance = result.FormattedDistance,
-                FormattedPrice = result.FormattedPrice,
                 Price = result.Price
             };
         }

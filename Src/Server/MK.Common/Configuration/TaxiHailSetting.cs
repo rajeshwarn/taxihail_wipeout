@@ -19,6 +19,7 @@ namespace MK.Common.Configuration
             ShowPassengerNumber = true;
             ShowPassengerPhone = true;
             ShowRingCodeField = true;
+		    ShowPassengerApartment = true;
             TutorialEnabled = true;
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
             CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink,Client.AccountChargeTypeId";
@@ -117,7 +118,8 @@ namespace MK.Common.Configuration
         public bool ShowPassengerNumber { get; private set; }
         [Display(Name = "Show Ring Code", Description="Show the ring code field in confirmation")]
         public bool ShowRingCodeField { get; private set; }
-
+        [Display(Name = "Show Passenger Apartment", Description = "Show the passenger apartment field in confirmation")]
+        public bool ShowPassengerApartment { get; private set; }
         [Display(Name = "Send Receipt Available", Description="Can the user send a receipt for the order")]
         public bool SendReceiptAvailable { get; private set; }
         [Display(Name = "Rating Enabled", Description="Can the user rate the order when it's done")]
