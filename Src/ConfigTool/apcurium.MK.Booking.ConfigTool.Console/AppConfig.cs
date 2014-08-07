@@ -213,7 +213,9 @@ namespace apcurium.MK.Booking.ConfigTool
 
 			/***Optional files ****/
 
-			var optionalGraphicToUpdate = new string[] { "chargetype", "hail_icon", "destination_icon", "taxi_progress","vehicle", "taxi_icon", "cluster", "nearby", "taxi_badge_selected" };
+			var optionalGraphicToUpdate = new string[] { "chargetype", "hail_icon", "destination_icon", "taxi_progress","vehicle", "taxi_icon", "cluster", "nearby", "taxi_badge_selected" 
+			
+				,"tutorial-screen01","tutorial-screen02","tutorial-screen03","tutorial-screen04","tutorial-screen05","tutorial-screen06","tutorial-screen07" };
 
 			foreach (var g in optionalGraphicToUpdate) {
 			
