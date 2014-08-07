@@ -203,8 +203,8 @@
 "LocalContactCannotBeResolverMessage"="L'adresse semble ne pas correspondre au contact";
 "LocalContactCannotBeResolverTitle"="Informations erronées";
 "Locating"="Recherche de votre position";
-"LocationAddFavoriteSubtitle"="Saisissez une nouvelle adresse";
-"LocationAddFavoriteTitle"="Ajouter une position";
+"LocationAddFavoriteSubtitle"="Ajouter une nouvelle adresse";
+"LocationAddFavoriteTitle"="Ajouter une nouvelle adresse";
 "LocationDetailAddressLabel"="Adresse";
 "LocationDetailApartmentLabel"="Appartement";
 "LocationDetailNameLabel"="Surnom";
@@ -253,14 +253,14 @@
 "OrderNoteGPS"="Utiliser un GPS";
 "OrderNoteGPSApproximate"="(adresse approximative)";
 "OrderNumber"="Commande n°";
-"PanelMenuViewAboutUsText"="À propos de nous";
+"PanelMenuViewAboutUsText"="À Propos";
 "PanelMenuViewCallDispatchText"="Appeler";
-"PanelMenuViewLocationsText"="Positions";
+"PanelMenuViewLocationsText"="Adresses Favorites";
 "PanelMenuViewOrderHistoryText"="Historique";
 "PanelMenuViewReportProblemText"="Signaler un problème";
 "PanelMenuViewSignOutText"="Déconnexion";
-"PanelMenuViewTutorialText"="Voir l'aide";
-"PanelMenuViewUpdateProfileText"="Mise à jour du compte";
+"PanelMenuViewTutorialText"="Aide";
+"PanelMenuViewUpdateProfileText"="Compte";
 "ParameterButton"="Paramètres";
 "PassengerNameLabel"="Nom";
 "PassengerNumberLabel"="Passagers";
@@ -385,7 +385,7 @@
 "TabContacts"="Contacts";
 "TabFavorites"="Favoris";
 "TabHistory"="Historique";
-"TabLocations"="Positions";
+"TabLocations"="Adresses Favorites";
 "TabPlaces"="Points d'intérêt";
 "TabSearch"="Rechercher";
 "TaxiMapTitle"="Votre véhicule";
@@ -425,7 +425,7 @@
 "Version"="v{0}";
 "ViewAll"="Voir";
 "ViewRatingBtn"="Voir les notes";
-"View_AboutUs"="À propos de nous";
+"View_AboutUs"="À propos";
 "View_BookingDetail"="Détails de la réservation";
 "View_BookingDetail_TitlePickupDetails"="Informations concernant le départ";
 "View_BookingDetail_TitleRideSettings"="Détails du trajet";
@@ -440,7 +440,7 @@
 "View_HistoryDetail"="Détail de la commande";
 "View_InitializeOrderForAccountPayment"="Votre avis nous intéresse";
 "View_LocationDetail"="Détails sur votre position";
-"View_MyLocations"="Positions";
+"View_MyLocations"="Adresses Favorites";
 "View_Payment"="Paiement: informations";
 "View_PaymentPreference"="Paiement: préférences";
 "View_Payments_CmtRideLinqChangePaymentTitle"="Modifier les informations relatives au paiement";
@@ -465,3 +465,6 @@
 "YesButton"="Oui";
 "CurrencyPriceFormat"="{0:C}";
 "LoginSupport"="Support Technique?";
+"PendingOrderCancel"="Annuler";
+"PendingOrderMessage"="Désolé, cette reservation ne peut être prise en compte. Vous avez déjà une commande en cours. Voir le détail?";
+"PendingOrderView"="Détail";

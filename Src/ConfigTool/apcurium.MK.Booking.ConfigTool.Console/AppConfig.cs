@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.ConfigTool
     public class AppConfig
     {
 
-        private Config[] _configs;
+		private List<Config> _configs;
         
 		public AppConfig(string name, Company company, string srcDirectoryPath, string configDirectoryPath)
         {
@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.ConfigTool
 
         private void Init()
         {
-            _configs = new Config[]
+			var c = new Config[]
            {
 					/**CallBox **/
 //                    new ConfigFile(this){ Source=@"CallBox\background_empty.png", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Drawable\background_empty.png" },
@@ -123,6 +123,9 @@ namespace apcurium.MK.Booking.ConfigTool
 	                            }
 						}
 					},
+
+
+
 					/** Version 1.5 */
 				new ConfigXML(this)
 				{  
@@ -201,7 +204,40 @@ namespace apcurium.MK.Booking.ConfigTool
                     SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.MenuColor) 
                 }
 
+
+
            };
+
+			_configs = new List<apcurium.MK.Booking.ConfigTool.Config> ();
+			_configs.AddRange (c);
+
+			/***Optional files ****/
+
+			var optionalGraphicToUpdate = new string[] { "chargetype", "hail_icon", "destination_icon", "taxi_progress","vehicle", "taxi_icon", "cluster", "nearby", "taxi_badge_selected" };
+
+			foreach (var g in optionalGraphicToUpdate) {
+			
+				_configs.Add (new ConfigFile (this) {
+					Source = g+"@2x.png",
+					Destination = @"Mobile\Android\Resources\drawable-xhdpi\"+g+".png"
+				});
+
+				_configs.Add (new ConfigFile (this) {
+					Source = g+".png",
+					Destination = @"Mobile\Android\Resources\Drawable\"+g+".png"
+				});
+				_configs.Add (new ConfigFile (this) {
+					Source = g+"@2x.png",
+					Destination = @"Mobile\iOS\Resources\"+g+"@2x.png"
+				});
+
+				_configs.Add (new ConfigFile (this){ 
+					Source = g+".png", 
+					Destination = @"Mobile\iOS\Resources\"+g+".png" 
+				});
+					
+			}
+
         }
 
         private AppConfigFile _config;
