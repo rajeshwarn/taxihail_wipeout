@@ -1503,4 +1503,13 @@
   <data name="YesButton" xml:space="preserve">
     <value>نعم</value>
   </data>
+<data name="PendingOrderMessage" xml:space="preserve">
+  	You cannot book this ride since an order is already pending. View the order status?
+  </data>
+<data name="PendingOrderView" xml:space="preserve">
+  	View
+  </data>
+<data name="PendingOrderCancel" xml:space="preserve">
+  	Cancel
+  </data>
 </root>

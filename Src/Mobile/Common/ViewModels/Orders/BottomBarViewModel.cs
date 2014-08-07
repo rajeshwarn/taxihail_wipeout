@@ -172,15 +172,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					            Guid pendingOrderId;
 					            Guid.TryParse(e.MessageNoCall, out pendingOrderId);
 
-								this.Services().Message.ShowMessage(title, "You cannot book this ride since an order is already pending. View the order status?",
-										"View", async () =>
+								this.Services().Message.ShowMessage(title, 
+										this.Services().Localize["PendingOrderMessage"],
+										this.Services().Localize["PendingOrderView"], async () =>
 										{
 											var orderInfos = await GetOrderInfos(pendingOrderId);
 
 											PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
 											ShowViewModel<BookingStatusViewModel>(new {order = orderInfos.Item1, status = orderInfos.Item2});
 										},
-                                    "Cancel", delegate { });
+										this.Services().Localize["Cancel"], delegate { });
 					        }
 					            break;
                             default:

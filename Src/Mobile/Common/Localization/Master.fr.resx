@@ -742,10 +742,10 @@
     <value>Recherche de votre position</value>
   </data>
   <data name="LocationAddFavoriteSubtitle" xml:space="preserve">
-    <value>Saisissez une nouvelle adresse</value>
+    <value>Ajouter une nouvelle adresse</value>
   </data>
   <data name="LocationAddFavoriteTitle" xml:space="preserve">
-    <value>Ajouter une position</value>
+    <value>Ajouter une nouvelle adresse</value>
   </data>
   <data name="LocationDetailAddressLabel" xml:space="preserve">
     <value>Adresse</value>
@@ -895,13 +895,13 @@
     <value>Commande n°</value>
   </data>
   <data name="PanelMenuViewAboutUsText" xml:space="preserve">
-    <value>À propos de nous</value>
+    <value>À Propos</value>
   </data>
   <data name="PanelMenuViewCallDispatchText" xml:space="preserve">
     <value>Appeler</value>
   </data>
   <data name="PanelMenuViewLocationsText" xml:space="preserve">
-    <value>Positions</value>
+    <value>Adresses Favorites</value>
   </data>
   <data name="PanelMenuViewOrderHistoryText" xml:space="preserve">
     <value>Historique</value>
@@ -913,10 +913,10 @@
     <value>Déconnexion</value>
   </data>
   <data name="PanelMenuViewTutorialText" xml:space="preserve">
-    <value>Voir l'aide</value>
+    <value>Aide</value>
   </data>
   <data name="PanelMenuViewUpdateProfileText" xml:space="preserve">
-    <value>Mise à jour du compte</value>
+    <value>Compte</value>
   </data>
   <data name="ParameterButton" xml:space="preserve">
     <value>Paramètres</value>
@@ -1291,7 +1291,7 @@
     <value>Historique</value>
   </data>
   <data name="TabLocations" xml:space="preserve">
-    <value>Positions</value>
+    <value>Adresses Favorites</value>
   </data>
   <data name="TabPlaces" xml:space="preserve">
     <value>Points d'intérêt</value>
@@ -1411,7 +1411,7 @@
     <value>Voir les notes</value>
   </data>
   <data name="View_AboutUs" xml:space="preserve">
-    <value>À propos de nous</value>
+    <value>À propos</value>
   </data>
   <data name="View_BookingDetail" xml:space="preserve">
     <value>Détails de la réservation</value>
@@ -1456,7 +1456,7 @@
     <value>Détails sur votre position</value>
   </data>
   <data name="View_MyLocations" xml:space="preserve">
-    <value>Positions</value>
+    <value>Adresses Favorites</value>
   </data>
   <data name="View_Payment" xml:space="preserve">
     <value>Paiement: informations</value>
@@ -1523,5 +1523,14 @@
   </data>
   <data name="YesButton" xml:space="preserve">
     <value>Oui</value>
+  </data>
+<data name="PendingOrderMessage" xml:space="preserve">
+  	Désolé, cette reservation ne peut être prise en compte. Vous avez déjà une commande en cours. Voir le détail?
+  </data>
+<data name="PendingOrderView" xml:space="preserve">
+  	Détail
+  </data>
+<data name="PendingOrderCancel" xml:space="preserve">
+  	Annuler
   </data>
 </root>

@@ -130,6 +130,9 @@
 <data name="EstimatedFareNotAvailable" xml:space="preserve">
     <value>Le prix ne peut être estimé pour le moment</value>
   </data>
+ <data name="EstimateDistance" xml:space="preserve">
+    <value></value>
+  </data>
   <data name="TaxiServerDownMessage" xml:space="preserve">
     <value>Impossible d'envoyer l'information au conducteur.</value>
   </data>
