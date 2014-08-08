@@ -1063,7 +1063,7 @@
     <value>Historique des trajets</value>
   </data>
   <data name="RideSettingsAccountNumber" xml:space="preserve">
-    <value>Numéro de compte</value>
+    <value>Numéro de compte entreprise (optionel)</value>
   </data>
   <data name="RideSettingsCannotLoadListMessage" xml:space="preserve">
     <value>Désolé, échec de la connexion, merci de réessayer ultérieurement</value>

@@ -5,6 +5,7 @@ using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.MapDataProvider.TomTom.Resources;
 using ServiceStack.Text;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.MapDataProvider.TomTom
 {
@@ -39,7 +40,7 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
             var queryString = string.Format (RoutingServiceUrl, 
                            MapToolkitKey, 
                            GetFormattedPoints (originLatitude, originLongitude, destinationLatitude, destinationLongitude),
-                           GetDayAndTimeParameter(date));
+				GetDayAndTimeParameter(date),CultureInfo.InvariantCulture);
 			_logger.LogMessage ("Calling TomTom : " + queryString);
             try
             {
@@ -63,7 +64,7 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 
         private string GetFormattedPoints(double originLatitude, double originLongitude, double destinationLatitude, double destinationLongitude)
         {
-            return string.Format (PointsFormat, originLatitude, originLongitude, destinationLatitude, destinationLongitude);
+			return string.Format (PointsFormat, originLatitude, originLongitude, destinationLatitude, destinationLongitude, CultureInfo.InvariantCulture );
         }
 
         private string GetDayAndTimeParameter(DateTime? date)
