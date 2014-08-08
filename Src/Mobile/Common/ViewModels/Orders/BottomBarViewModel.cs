@@ -303,7 +303,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private async Task PreValidateOrder()
 		{
 			var validationInfo = await _orderWorkflowService.ValidateOrder();
-			if (validationInfo.HasWarning) {
+
+
+			if (validationInfo.HasError) {
+				this.Services ().Message.ShowMessage (this.Services ().Localize ["ErrorCreatingOrderTitle"], 
+					validationInfo.Message, 
+					() => {
+						PresentationStateRequested.Raise (this, new HomeViewModelStateRequestedEventArgs (HomeViewModelState.Initial));
+					});
+			}
+			else if (validationInfo.HasWarning) {
 				this.Services ().Message.ShowMessage (this.Services ().Localize ["WarningTitle"], 
 					validationInfo.Message, 
 					this.Services ().Localize ["Continue"], 

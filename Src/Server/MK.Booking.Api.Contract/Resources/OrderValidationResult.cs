@@ -5,5 +5,7 @@
         public bool HasWarning { get; set; }
 
         public string Message { get; set; }
+
+		public bool HasError { get; set; }
     }
 }
