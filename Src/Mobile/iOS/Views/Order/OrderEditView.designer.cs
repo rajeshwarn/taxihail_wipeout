@@ -71,6 +71,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				lblEntryCode = null;
 			}
 
+			if (lblLargeBags != null) {
+				lblLargeBags.Dispose ();
+				lblLargeBags = null;
+			}
+
 			if (lblName != null) {
 				lblName.Dispose ();
 				lblName = null;
@@ -84,11 +89,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (lblPhone != null) {
 				lblPhone.Dispose ();
 				lblPhone = null;
-			}
-
-			if (lblLargeBags != null) {
-				lblLargeBags.Dispose ();
-				lblLargeBags = null;
 			}
 
 			if (txtApartment != null) {
@@ -106,6 +106,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				txtEntryCode = null;
 			}
 
+			if (txtLargeBags != null) {
+				txtLargeBags.Dispose ();
+				txtLargeBags = null;
+			}
+
 			if (txtName != null) {
 				txtName.Dispose ();
 				txtName = null;
@@ -119,11 +124,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (txtPhone != null) {
 				txtPhone.Dispose ();
 				txtPhone = null;
-			}
-
-			if (txtLargeBags != null) {
-				txtLargeBags.Dispose ();
-				txtLargeBags = null;
 			}
 		}
 	}

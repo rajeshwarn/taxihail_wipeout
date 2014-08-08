@@ -89,12 +89,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             if (!this.Services().Settings.ShowPassengerApartment)
             {
 				lblApt.RemoveFromSuperview();
+				iconApartment.RemoveFromSuperview ();
                 lblRingCode.RemoveFromSuperview();
+				iconRingCode.RemoveFromSuperview ();
             }
 
             if (!this.Services().Settings.ShowRingCodeField)
             {
                 lblRingCode.RemoveFromSuperview();
+				iconRingCode.RemoveFromSuperview();
             }
 
 			if (!this.Services().Settings.ShowPassengerPhone)
