@@ -332,9 +332,7 @@
     <AndroidResource Include="Resources\Drawable\button_action_gray_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_green_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_red_text_selector.xml" />
-    <AndroidResource Include="Resources\Layout\View_Payments_CmtRideLinqChangePayment.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_CmtRideLinqConfirmPair.axml" />
-    <Compile Include="Activities\Book\CmtRideLinqChangePaymentActivity.cs" />
     <Compile Include="Activities\Book\CmtRideLinqConfirmPairActivity.cs" />
     <Compile Include="Activities\Book\ConfirmCarNumberActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_ConfirmCarNumber.axml">

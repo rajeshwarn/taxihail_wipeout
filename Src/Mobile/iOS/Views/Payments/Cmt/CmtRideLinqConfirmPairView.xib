@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CmtRideLinqConfirmPairView">
             <connections>
                 <outlet property="btnCancel" destination="WRr-gc-BHY" id="4gt-UY-1Jn"/>
-                <outlet property="btnChangePaymentSettings" destination="p6e-Yw-JZM" id="MVg-HM-MsV"/>
                 <outlet property="btnConfirm" destination="lyo-XP-Nwl" id="3so-kx-IZS"/>
                 <outlet property="lblCarNumber" destination="tGu-Y7-FMJ" id="CB0-uV-uOF"/>
                 <outlet property="lblCarNumberValue" destination="ZV0-1W-lsT" id="mWP-lV-ndR"/>
@@ -102,20 +101,8 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p6e-Yw-JZM" customClass="FlatButton">
-                    <rect key="frame" x="8" y="235" width="304" height="41"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="41" id="ACK-Hd-jDu"/>
-                        <constraint firstAttribute="width" constant="304" id="Ub1-gN-U3H"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <state key="normal" title="Change Payment Settings">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WRr-gc-BHY" customClass="FlatButton">
-                    <rect key="frame" x="8" y="284" width="304" height="41"/>
+                    <rect key="frame" x="8" y="235" width="304" height="41"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="304" id="Fx1-TW-Yg1"/>
@@ -139,6 +126,7 @@
             <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="cUU-vs-Nrd" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" id="8yy-xA-fKb"/>
+                <constraint firstItem="WRr-gc-BHY" firstAttribute="top" secondItem="lyo-XP-Nwl" secondAttribute="bottom" constant="8" id="9kr-AL-RbZ"/>
                 <constraint firstItem="Nlf-24-pLu" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="ECg-Cb-6W9"/>
                 <constraint firstItem="WRr-gc-BHY" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="IuW-XZ-XA5"/>
                 <constraint firstItem="QSW-Ht-02C" firstAttribute="top" secondItem="tGu-Y7-FMJ" secondAttribute="bottom" constant="8" id="KMe-Ee-BnX"/>
@@ -146,9 +134,7 @@
                 <constraint firstItem="QSW-Ht-02C" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="MPx-FI-oBW"/>
                 <constraint firstItem="mND-QT-d1d" firstAttribute="centerY" secondItem="Nlf-24-pLu" secondAttribute="centerY" id="NJb-Lo-xTh"/>
                 <constraint firstItem="Nlf-24-pLu" firstAttribute="top" secondItem="QSW-Ht-02C" secondAttribute="bottom" constant="8" id="NJn-FY-n7o"/>
-                <constraint firstItem="p6e-Yw-JZM" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="OTC-d8-ZHl"/>
                 <constraint firstItem="tGu-Y7-FMJ" firstAttribute="centerY" secondItem="ZV0-1W-lsT" secondAttribute="centerY" id="Rsb-08-29q"/>
-                <constraint firstItem="p6e-Yw-JZM" firstAttribute="top" secondItem="lyo-XP-Nwl" secondAttribute="bottom" constant="8" id="cDh-Nn-uks"/>
                 <constraint firstItem="J0W-XS-GCV" firstAttribute="centerY" secondItem="QSW-Ht-02C" secondAttribute="centerY" id="nBa-zF-4Iz"/>
                 <constraint firstItem="mND-QT-d1d" firstAttribute="leading" secondItem="Nlf-24-pLu" secondAttribute="trailing" constant="8" id="nhM-a4-VVb"/>
                 <constraint firstItem="tGu-Y7-FMJ" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="q4O-af-5hX"/>
@@ -156,7 +142,6 @@
                 <constraint firstItem="ZV0-1W-lsT" firstAttribute="leading" secondItem="tGu-Y7-FMJ" secondAttribute="trailing" constant="8" id="rhN-Lq-9c9"/>
                 <constraint firstItem="lyo-XP-Nwl" firstAttribute="top" secondItem="Nlf-24-pLu" secondAttribute="bottom" constant="35" id="unm-ZW-xke"/>
                 <constraint firstAttribute="centerX" secondItem="cUU-vs-Nrd" secondAttribute="centerX" id="w3k-fB-pA6"/>
-                <constraint firstItem="WRr-gc-BHY" firstAttribute="top" secondItem="p6e-Yw-JZM" secondAttribute="bottom" constant="8" id="wzS-Ce-f40"/>
                 <constraint firstItem="lyo-XP-Nwl" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="zNo-51-doS"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

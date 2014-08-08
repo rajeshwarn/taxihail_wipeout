@@ -425,8 +425,6 @@
     </Compile>
     <Compile Include="Views\Payments\PaymentView.cs" />
     <Compile Include="Views\Payments\PaymentView.designer.cs" />
-    <Compile Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.cs" />
-    <Compile Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.designer.cs" />
     <Compile Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.cs" />
     <Compile Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.designer.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
@@ -554,7 +552,6 @@
     <InterfaceDefinition Include="Views\BookRatingCell.xib" />
     <InterfaceDefinition Include="Views\BookRatingView.xib" />
     <InterfaceDefinition Include="Views\Payments\PaymentView.xib" />
-    <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.xib" />
     <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.xib" />
     <InterfaceDefinition Include="Views\Payments\ConfirmCarNumberView.xib" />
     <InterfaceDefinition Include="Views\BookingStatusView.xib" />
