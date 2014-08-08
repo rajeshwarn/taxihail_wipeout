@@ -125,16 +125,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 AddGestureRecognizer(_gesture);
 
                 var pinchRecognizer = new UIPinchGestureRecognizer ();
-                pinchRecognizer.ShouldRecognizeSimultaneously = (g1, g2) => true;
+                pinchRecognizer.ShouldRecognizeSimultaneously = (g1, g2) => !(g2 is UITapGestureRecognizer);
                 pinchRecognizer.AddTarget (() => OnPinch (pinchRecognizer));
                 AddGestureRecognizer (pinchRecognizer);
 
                 var doubleTapRecognizer = new UITapGestureRecognizer ();
+                doubleTapRecognizer.ShouldRecognizeSimultaneously = (g1, g2) => false;
                 doubleTapRecognizer.NumberOfTapsRequired = 2;
                 doubleTapRecognizer.AddTarget (() => this.ChangeZoomLevel(true));
                 AddGestureRecognizer (doubleTapRecognizer);
 
                 var doubleTapMultitouchRecognizer = new UITapGestureRecognizer ();
+                doubleTapMultitouchRecognizer.ShouldRecognizeSimultaneously = (g1, g2) => false;
                 doubleTapMultitouchRecognizer.NumberOfTapsRequired = 2;
                 doubleTapMultitouchRecognizer.NumberOfTouchesRequired = 2;
                 doubleTapMultitouchRecognizer.AddTarget (() => this.ChangeZoomLevel(false));
