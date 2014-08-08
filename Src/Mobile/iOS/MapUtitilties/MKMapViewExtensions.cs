@@ -45,22 +45,50 @@ namespace MonoTouch.MapKit
             SetCenterCoordinate (mapView, mapView.CenterCoordinate, currentZoomLevel, true);
         }
 
-        public static double LongitudeToPixelSpaceX(this double longitude)
+        public static void ChangeRegionSpanDependingOnPinchScale(this MKMapView mapView, MKCoordinateSpan originalSpan, float scale)
+        {
+            var centerPixelX = LongitudeToPixelSpaceX (mapView.Region.Center.Longitude);
+            var centerPixelY = LatitudeToPixelSpaceY (mapView.Region.Center.Latitude);
+
+            var topLeftLongitude = mapView.Region.Center.Longitude - (originalSpan.LongitudeDelta / 2);
+            var topLeftLatitude = mapView.Region.Center.Latitude - (originalSpan.LatitudeDelta / 2);
+
+            var topLeftPixelX = LongitudeToPixelSpaceX (topLeftLongitude);
+            var topLeftPixelY = LatitudeToPixelSpaceY (topLeftLatitude);
+
+            var deltaPixelX = Math.Abs(centerPixelX - topLeftPixelX);
+            var deltaPixelY = Math.Abs(centerPixelY - topLeftPixelY);
+
+            var scaledDeltaPixelX = deltaPixelX / scale;
+            var scaledDeltaPixelY = deltaPixelY / scale;
+
+            var newLongitudeForTopLeft = PixelSpaceXToLongitude (centerPixelX - scaledDeltaPixelX);
+            var newLatitudeForTopLeft = PixelSpaceYToLatitude (centerPixelY - scaledDeltaPixelY);
+
+            var newDeltaLongitude = Math.Abs(newLongitudeForTopLeft - mapView.Region.Center.Longitude) * 2;
+            var newDeltaLatitude = Math.Abs(newLatitudeForTopLeft - mapView.Region.Center.Latitude) * 2;
+
+            var region = new MKCoordinateRegion(mapView.Region.Center, new MKCoordinateSpan (newDeltaLatitude, newDeltaLongitude));
+
+            mapView.SetRegion (region, false);
+        }
+
+        private static double LongitudeToPixelSpaceX(double longitude)
         {
             return Math.Round(MERCATOR_OFFSET + MERCATOR_RADIUS * longitude * Math.PI / 180.0);
         }
 
-        public static double LatitudeToPixelSpaceY(this double latitude)
+        private static double LatitudeToPixelSpaceY(double latitude)
         {
             return Math.Round(MERCATOR_OFFSET - MERCATOR_RADIUS * Math.Log((1 + Math.Sin(latitude * Math.PI / 180.0)) / (1 - Math.Sin(latitude * Math.PI / 180.0))) / 2.0);
         }
 
-        public static double PixelSpaceXToLongitude(this double pixelX)
+        private static double PixelSpaceXToLongitude(double pixelX)
         {
             return ((Math.Round(pixelX) - MERCATOR_OFFSET) / MERCATOR_RADIUS) * 180.0 / Math.PI;
         }
 
-        public static double PixelSpaceYToLatitude(this double pixelY)
+        private static double PixelSpaceYToLatitude(double pixelY)
         {
             return (Math.PI / 2.0 - 2.0 * Math.Atan(Math.Exp((Math.Round(pixelY) - MERCATOR_OFFSET) / MERCATOR_RADIUS))) * 180.0 / Math.PI;
         }

@@ -149,46 +149,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 _span = this.Region.Span;
             }
 
-            var centerPixelX = this.Region.Center.Longitude.LongitudeToPixelSpaceX ();
-            var centerPixelY = this.Region.Center.Latitude.LatitudeToPixelSpaceY ();
-
-            var topLeftLongitude = this.Region.Center.Longitude - (_span.LongitudeDelta / 2);
-            var topLeftLatitude = this.Region.Center.Latitude - (_span.LatitudeDelta / 2);
-
-            var topLeftPixelX = topLeftLongitude.LongitudeToPixelSpaceX ();
-            var topLeftPixelY = topLeftLatitude.LatitudeToPixelSpaceY ();
-
-            var deltaPixelX = Math.Abs(centerPixelX - topLeftPixelX);
-            var deltaPixelY = Math.Abs(centerPixelY - topLeftPixelY);
-
-            var scaledDeltaPixelX = deltaPixelX / sender.Scale;
-            var scaledDeltaPixelY = deltaPixelY / sender.Scale;
-
-            var newLongitudeForTopLeft = (centerPixelX - scaledDeltaPixelX).PixelSpaceXToLongitude ();
-            var newLatitudeForTopLeft = (centerPixelY - scaledDeltaPixelY).PixelSpaceYToLatitude ();
-
-            var newDeltaLongitude = Math.Abs(newLongitudeForTopLeft - this.Region.Center.Longitude) * 2;
-            var newDeltaLatitude = Math.Abs(newLatitudeForTopLeft - this.Region.Center.Latitude) * 2;
-
-            var region = new MKCoordinateRegion(this.Region.Center, new MKCoordinateSpan (newDeltaLatitude, newDeltaLongitude));
-
-            this.SetRegion (region, false);
+            this.ChangeRegionSpanDependingOnPinchScale (_span, sender.Scale);
         }
-
-//        private CLLocationCoordinate2D _center;
-//        private void OnPan (UIPanGestureRecognizer sender)
-//        {
-//            if (sender.State == UIGestureRecognizerState.Began)
-//            {
-//                _center = this.Region.Center;
-//            }
-//
-//            var translation = sender.TranslationInView(this);
-//
-//            MKMapView.
-//
-//            Console.WriteLine ("PANNING x:{0} y:{1}", translation.X, translation.Y);
-//        }
 
         public AddressAnnotation GetAnnotation(CLLocationCoordinate2D coordinates, AddressAnnotationType addressType, bool useThemeColorForPickupAndDestinationMapIcons)
         {
