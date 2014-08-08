@@ -50,9 +50,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 BackgroundColor = UIColor.Clear,
                 Lines = 0,
-                Font = UIFont.FromName(FontName.HelveticaNeueRegular, 28 / 2),
+				Font = UIFont.FromName(FontName.HelveticaNeueLight, 38 / 2),
+				TextAlignment = UITextAlignment.Center,
                 TextColor = Theme.LabelTextColor,
-                ShadowColor = UIColor.Clear
+                ShadowColor = UIColor.Clear,
+				AdjustsFontSizeToFitWidth = true
             };
 
             this.SetRoundedCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 3f);
@@ -110,11 +112,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 if (EstimatedFareLabel.Text != value)
                 {
-                    EstimatedFareLabel.Text = value;
+					EstimatedFareLabel.Text = value;
+
                     var sizeThatFits = EstimatedFareLabel.SizeThatFits(new SizeF(Frame.Width - 56f - 5f, Frame.Height - 10f));
                     EstimatedFareLabel.SetWidth(sizeThatFits.Width);
                     EstimatedFareLabel.SetHeight(sizeThatFits.Height);
-                    EstimatedFareLabel.SetX(56f);
+					EstimatedFareLabel.SetHorizontalCenter((Frame.Width / 2) + (56f / 2) - 5f);
                     EstimatedFareLabel.SetVerticalCenter(Frame.Height / 2);
                 }
             }

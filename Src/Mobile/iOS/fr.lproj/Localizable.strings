@@ -311,7 +311,7 @@
 "ResetPasswordSucessTitle"="Mot de passe réinitialisé";
 "ResetPasswordTitleText"="Mot de passe oublié?";
 "RideHistoryButton"="Historique des trajets";
-"RideSettingsAccountNumber"="Numéro de compte";
+"RideSettingsAccountNumber"="Numéro de compte entreprise (optionel)";
 "RideSettingsCannotLoadListMessage"="Désolé, échec de la connexion, merci de réessayer ultérieurement";
 "RideSettingsCannotLoadListTitle"="Echec de la connexion";
 "RideSettingsChargeType"="Type de facturation";
