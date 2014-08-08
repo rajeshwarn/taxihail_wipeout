@@ -265,7 +265,7 @@
     <value>Heure estimée d'arrivée : {0}</value>
   </data>
   <data name="OrderStatus_CabDriverNumberAssigned" xml:space="preserve">
-    <value>Le véhicule {0} vous a été réservée</value>
+    <value>Le véhicule {0} vous a été réservé</value>
   </data>
   <data name="OrderStatus_OrderDoneFareAvailable" xml:space="preserve">
     <value>Complété ({0})</value>
