@@ -26,6 +26,25 @@ namespace MonoTouch.MapKit
             mapView.SetRegion(region, animated);
         }
 
+        public static void ChangeZoomLevel(this MKMapView mapView, bool increase)
+        {
+            var currentZoomLevel = GetZoomLevelFromRegion (mapView, mapView.Region);
+
+            if (increase)
+            {
+                currentZoomLevel += 1;
+            }
+            else
+            {
+                currentZoomLevel -= 1;
+            }
+
+            // zoom level is between 0 and 20
+            currentZoomLevel = (float)Math.Round(Math.Max(0f, Math.Min(20f, currentZoomLevel)), 0);
+
+            SetCenterCoordinate (mapView, mapView.CenterCoordinate, currentZoomLevel, true);
+        }
+
         public static double LongitudeToPixelSpaceX(this double longitude)
         {
             return Math.Round(MERCATOR_OFFSET + MERCATOR_RADIUS * longitude * Math.PI / 180.0);

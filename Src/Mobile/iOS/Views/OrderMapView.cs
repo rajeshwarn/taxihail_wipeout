@@ -114,9 +114,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             // disable on map since we're handling gestures ourselves
             this.PitchEnabled = false;
             this.RotateEnabled = false;
-            this.ScrollEnabled = false;
             this.ZoomEnabled = false;
-            this.ShowsUserLocation = true;
 
             if (_gesture == null)
             {
@@ -129,6 +127,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var pinchRecognizer = new UIPinchGestureRecognizer ();
                 pinchRecognizer.AddTarget (() => OnPinch (pinchRecognizer));
                 AddGestureRecognizer (pinchRecognizer);
+
+                var doubleTapRecognizer = new UITapGestureRecognizer ();
+                doubleTapRecognizer.NumberOfTapsRequired = 2;
+                doubleTapRecognizer.AddTarget (() => this.ChangeZoomLevel(true));
+                AddGestureRecognizer (doubleTapRecognizer);
+
+                var doubleTapMultitouchRecognizer = new UITapGestureRecognizer ();
+                doubleTapMultitouchRecognizer.NumberOfTapsRequired = 2;
+                doubleTapMultitouchRecognizer.NumberOfTouchesRequired = 2;
+                doubleTapMultitouchRecognizer.AddTarget (() => this.ChangeZoomLevel(false));
+                AddGestureRecognizer (doubleTapMultitouchRecognizer);
             }
         }
 
@@ -161,10 +170,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var newDeltaLongitude = Math.Abs(newLongitudeForTopLeft - this.Region.Center.Longitude) * 2;
             var newDeltaLatitude = Math.Abs(newLatitudeForTopLeft - this.Region.Center.Latitude) * 2;
 
-            var region = new MKCoordinateRegion(Region.Center, new MKCoordinateSpan (newDeltaLatitude, newDeltaLongitude));
+            var region = new MKCoordinateRegion(this.Region.Center, new MKCoordinateSpan (newDeltaLatitude, newDeltaLongitude));
 
             this.SetRegion (region, false);
         }
+
+//        private CLLocationCoordinate2D _center;
+//        private void OnPan (UIPanGestureRecognizer sender)
+//        {
+//            if (sender.State == UIGestureRecognizerState.Began)
+//            {
+//                _center = this.Region.Center;
+//            }
+//
+//            var translation = sender.TranslationInView(this);
+//
+//            MKMapView.
+//
+//            Console.WriteLine ("PANNING x:{0} y:{1}", translation.X, translation.Y);
+//        }
 
         public AddressAnnotation GetAnnotation(CLLocationCoordinate2D coordinates, AddressAnnotationType addressType, bool useThemeColorForPickupAndDestinationMapIcons)
         {
@@ -415,13 +439,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         public void SetEnabled(bool enabled)
         {
-            if (this.ZoomEnabled == enabled)
+            if (this.UserInteractionEnabled == enabled)
             {
                 // already in the good state, no need to change
                 return;
             }
 
-            this.ZoomEnabled = enabled;
             this.ScrollEnabled = enabled;
             this.UserInteractionEnabled = enabled;                       
 
