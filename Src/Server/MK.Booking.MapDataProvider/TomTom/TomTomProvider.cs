@@ -4,6 +4,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.MapDataProvider.TomTom.Resources;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.MapDataProvider.TomTom
 {
@@ -39,10 +40,13 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
                            MapToolkitKey, 
                            GetFormattedPoints (originLatitude, originLongitude, destinationLatitude, destinationLongitude),
                            GetDayAndTimeParameter(date));
-
+			_logger.LogMessage ("Calling TomTom : " + queryString);
             try
             {
                 var direction = client.Get<RoutingResponse>(queryString);
+
+				_logger.LogMessage ("TomTom Result : " + direction.ToJson());
+
                 return new GeoDirection
                 { 
                     Distance = direction.Route.Summary.TotalDistanceMeters,
