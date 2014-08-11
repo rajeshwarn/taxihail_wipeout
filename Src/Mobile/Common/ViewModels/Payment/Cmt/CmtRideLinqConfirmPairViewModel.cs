@@ -18,12 +18,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 			_paymentService = paymentService;
 		}
 
-		public void Init(string order, string orderStatus)
+		public async void Init(string order, string orderStatus)
 		{
 			Order = order.FromJson<Order>();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
 			_paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
-			_paymentPreferences.Start();
+			await _paymentPreferences.Start();
 
 			RefreshCreditCardNumber ();
 		}
@@ -103,26 +103,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 							Close(this);
 						}
 					});
-			}
-		}
-
-		public ICommand ChangePaymentInfo
-		{
-			get
-			{
-				return this.GetCommand(() => ShowSubViewModel<CmtRideLinqChangePaymentViewModel, PaymentInformation>(
-				    new
-				    {
-				        currentPaymentInformation = new PaymentInformation
-				        {
-				            CreditCardId = _paymentPreferences.SelectedCreditCardId,
-				            TipPercent = _paymentPreferences.Tip,
-				        }.ToJson()
-				    }.ToStringDictionary(), result =>
-				    {                                                
-				        _paymentPreferences.Tip = (int)result.TipPercent;
-						RaisePropertyChanged(() => TipAmountInPercent);
-				    }));
 			}
 		}
 

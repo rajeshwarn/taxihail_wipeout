@@ -655,6 +655,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your vehicle is almost at pickup location.
+        /// </summary>
+        public static string PushNotification_NearbyTaxi {
+            get {
+                return ResourceManager.GetString("PushNotification_NearbyTaxi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your Taxi (#{0}) has arrived.
         /// </summary>
         public static string PushNotification_wosARRIVED {

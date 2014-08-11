@@ -190,7 +190,6 @@
     <Content Include="admin\controllers\PaymentSettingsController.js" />
     <Content Include="admin\controllers\RulesController.js" />
     <Content Include="admin\controllers\DefaultAddressesController.js" />
-    <Content Include="admin\controllers\ExclusionsController.js" />
     <Content Include="admin\controllers\PopularAddressesController.js" />
     <Content Include="admin\controllers\SecurityController.js" />
     <Content Include="admin\controllers\TariffsController.js" />
@@ -203,7 +202,6 @@
     <Content Include="admin\models\Rule.js" />
     <Content Include="admin\models\Tariff.js" />
     <Content Include="admin\localization\EditTariff.json" />
-    <Content Include="admin\localization\ManageExclusions.json" />
     <Content Include="admin\localization\ManageTariffs.json" />
     <Content Include="admin\localization\TariffItem.json" />
     <Content Include="admin\templates\EditTariff.handlebars">
@@ -232,7 +230,6 @@
     <Content Include="admin\views\EditRuleView.js" />
     <Content Include="admin\views\EditTariffView.js" />
     <Content Include="admin\views\ManageCompanySettingsView.js" />
-    <Content Include="admin\views\ManageExclusionsView.js" />
     <Content Include="admin\views\ManageTariffsView.js" />
     <Content Include="admin\views\SendPushNotificationView.js" />
     <Content Include="admin\views\SettingsItemView.js" />
@@ -394,7 +391,6 @@
     <Content Include="localization\OrderHistoryDetail.json" />
     <Content Include="themes\TaxiHail\less\style.less" />
     <Content Include="localization\OrderItem.json" />
-    <Content Include="admin\templates\ManageExclusions.handlebars" />
     <Content Include="admin\templates\ManageTariffs.handlebars">
       <SubType>Designer</SubType>
     </Content>

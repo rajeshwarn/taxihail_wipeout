@@ -27,6 +27,10 @@
 
             $ul.first().append($('<li>').append($add));
 
+            if (this.collection.length > 4) {
+                this.renderTooManyTypesErrorMessage();
+            }
+
             return this;
         },
 
@@ -34,8 +38,17 @@
             if(!model.isNew()) {
                 TaxiHail.app.navigate('vehicleTypes/edit/' + model.get('id'), { trigger: true });
             }
-        }
+        },
 
+        renderTooManyTypesErrorMessage: function () {
+
+            var alert = new TaxiHail.AlertView({
+                message: this.localize('error.vehicleTypesRemoveTypes'),
+                type: 'error'
+            });
+            alert.on('ok', alert.remove, alert);
+            this.$('.message').html(alert.render().el);
+        },
     });
 
 }());

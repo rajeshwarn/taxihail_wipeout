@@ -221,7 +221,6 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqChangePaymentViewModel.cs" />
     <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqConfirmPairViewModel.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="ViewModels\TutorialViewModel.cs" />

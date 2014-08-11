@@ -135,6 +135,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             if (intent != null)
             {
+                Log.Info(PushHandlerBroadcastReceiver.Tag, "INTENT NOT NULL!");
                 if (intent.Extras != null)
                 {
                     var alert =
@@ -169,6 +170,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		private void CreateNotification(string title, string desc, Guid orderId)
 		{
+            Log.Info(PushHandlerBroadcastReceiver.Tag, "Creating notification!");
 			//Create notification
 			var notificationManager = GetSystemService(NotificationService) as NotificationManager;
 
@@ -202,6 +204,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			//Show the notification
 			if (notificationManager != null) {
 				notificationManager.Notify (1, notification);
+                Log.Info(PushHandlerBroadcastReceiver.Tag, "Notification sent");
 			}
 		}
     }
