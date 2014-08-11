@@ -28,9 +28,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IPushNotificationService _pushNotificationService;
         private readonly Resources.Resources _resources;
 
-        private const int TaxiDistanceThreshold = 200; //in meters
-
-        private readonly ConcurrentDictionary<Guid, bool> _nearbyTaxiNotificationsSent; 
+        private const int TaxiDistanceThreshold = 200; // In meters
 
         public PushNotificationSender(Func<BookingDbContext> contextFactory,
             IPushNotificationService pushNotificationService, IConfigurationManager configurationManager)
@@ -40,8 +38,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
             var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
             _resources = new Resources.Resources(applicationKey);
-
-            _nearbyTaxiNotificationsSent = new ConcurrentDictionary<Guid, bool>();
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -66,9 +62,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         case VehicleStatuses.Common.Arrived:
                             alert = string.Format(_resources.Get("PushNotification_wosARRIVED", order.ClientLanguageCode),
                                 @event.Status.VehicleNumber);
-
-                            bool isNotificationSent;
-                            _nearbyTaxiNotificationsSent.TryRemove(order.Id, out isNotificationSent);
                             break;
                         case VehicleStatuses.Common.Timeout:
                             alert = _resources.Get("PushNotification_wosTIMEOUT", order.ClientLanguageCode);
@@ -100,13 +93,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
                 var order = context.Find<OrderDetail>(@event.SourceId);
-                bool notificationAlreadySent;
-                _nearbyTaxiNotificationsSent.TryGetValue(order.Id, out notificationAlreadySent);
 
                 var shouldSendPushNotification = orderStatus.VehicleLatitude.HasValue &&
                                                  orderStatus.VehicleLongitude.HasValue &&
                                                  orderStatus.IBSStatusId == VehicleStatuses.Common.Assigned &&
-                                                 !notificationAlreadySent;
+                                                 !orderStatus.IsTaxiNearbyNotificationSent;
 
                 if (shouldSendPushNotification)
                 {
@@ -117,7 +108,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                     if (taxiPosition.DistanceTo(pickupPosition) <= TaxiDistanceThreshold)
                     {
-                        _nearbyTaxiNotificationsSent.TryAdd(order.Id, true);
+                        orderStatus.IsTaxiNearbyNotificationSent = true;
+                        context.SaveChanges();
 
                         var alert = string.Format(_resources.Get("PushNotification_NearbyTaxi", order.ClientLanguageCode));
                         var data = new Dictionary<string, object> { { "orderId", order.Id } };

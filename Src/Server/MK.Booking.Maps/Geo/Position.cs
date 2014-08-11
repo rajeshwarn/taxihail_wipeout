@@ -35,11 +35,11 @@ namespace apcurium.MK.Booking.Maps.Geo
 
         public static double CalculateDistance(double latitude1, double longitude1, double latitude2, double longitude2)
         {
-            const int r = 6378137; // Earth radius in meters
+            const int earthRadius = 6378137; // In meters
             var d =
                 Math.Acos(Math.Sin(latitude2.ToRad())*Math.Sin(latitude1.ToRad()) +
-                          Math.Cos(latitude2.ToRad())*Math.Cos(latitude1.ToRad())*
-                          Math.Cos(longitude1.ToRad() - longitude2.ToRad()))*r;
+                          Math.Cos(latitude2.ToRad())*Math.Cos(latitude1.ToRad()) *
+                          Math.Cos(longitude1.ToRad() - longitude2.ToRad())) * earthRadius;
             return d;
         }
     }
