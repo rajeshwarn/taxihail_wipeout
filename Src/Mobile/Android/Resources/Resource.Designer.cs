@@ -2624,7 +2624,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int end = 2131165203;
 			
 			// aapt resource value: 0x7f07007f
-			public const int estimateFareLabel = 2131165311;
+			public const int estimateFareAutoResizeLabel = 2131165311;
 			
 			// aapt resource value: 0x7f07007e
 			public const int estimateSelectedVehicle = 2131165310;
