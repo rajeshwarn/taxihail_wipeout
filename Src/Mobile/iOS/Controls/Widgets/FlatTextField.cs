@@ -38,11 +38,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             BackgroundColor = UIColor.White;
 
-			if (UIHelper.IsOS7orHigher) {
+			if (UIHelper.IsOS7orHigher) 
+            {
 				TintColor = UIColor.FromRGB (44, 44, 44); // cursor color
 				TextAlignment = UITextAlignment.Natural;
-			} else {
-
+			} 
+            else 
+            {
 				if (this.Services ().Localize.IsRightToLeft)
 				{
 					TextAlignment = UITextAlignment.Right;
@@ -65,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		public override void Draw (RectangleF rect)
 		{   
             var fillColor = State.HasFlag (UIControlState.Normal)
-                            ? BackgroundColor
+                            ? (Enabled ? BackgroundColor : UIColor.LightGray)
 			                : UIColor.Clear;
 
 			var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, RadiusCorner);
@@ -123,7 +125,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             
         private UIImageView _rightArrow { get; set; }
         private bool _hasRightArrow { get; set; }
-        public bool HasRightArrow {
+        public bool HasRightArrow 
+        {
             get { return _hasRightArrow; }
             set 
             {
@@ -162,7 +165,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			context.SaveState ();
 			context.BeginTransparencyLayer (null);
 			roundedRectanglePath.AddClip ();
-			context.SetFillColorWithColor(fillColor);
+            context.SetFillColorWithColor(fillColor);
 			context.FillRect(rect);
 			context.EndTransparencyLayer ();
 			context.RestoreState ();
