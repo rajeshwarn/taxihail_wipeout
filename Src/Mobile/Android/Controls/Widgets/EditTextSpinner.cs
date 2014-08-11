@@ -28,14 +28,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public EditTextSpinner(Context context)
             : base(context)
         {
-            Initialize();
+            Initialize(null);
         }
 
         [Register(".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;)V", "")]
         public EditTextSpinner(Context context, IAttributeSet attrs)
             : base(context, attrs)
         {
-            Initialize();
+            Initialize(attrs);
         }
 
         private bool _enabled;
@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             {
                 _enabled = value;
-                this.SetBackgroundColor(value ? Color.White : Color.DarkGray);
+                this.SetBackgroundColor(value ? _initialBackgroundColor : Color.DarkGray);
             }
         }
 
@@ -98,11 +98,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public event EventHandler<AdapterView.ItemSelectedEventArgs> ItemSelected;
 
-        private void Initialize()
+        private Color _initialBackgroundColor;
+        private void Initialize(IAttributeSet attrs)
         {
             _adapter = new ListItemAdapter(Context, Resource.Layout.SpinnerTextWithImage, Resource.Id.labelSpinner,
                 new List<ListItemData>());
             _adapter.SetDropDownViewResource(Resource.Layout.SpinnerTextWithImage);
+
+            if (attrs != null)
+            {
+                var att = Context.ObtainStyledAttributes(attrs, new int[] { Android.Resource.Attribute.Background }, 0, 0);
+                _initialBackgroundColor = att.GetColor(0, -1);
+            }
         }
 
         protected override void OnFinishInflate()
@@ -110,7 +117,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             base.OnFinishInflate();
             var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
 			var layout = inflater.Inflate(Resource.Layout.SpinnerCell, this, true);
-
+           
 			layout.SetBackgroundDrawable (this.Background);
 
             _label = (TextView) layout.FindViewById(Resource.Id.label);
