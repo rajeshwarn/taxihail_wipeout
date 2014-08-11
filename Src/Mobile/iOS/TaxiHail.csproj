@@ -7,7 +7,6 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
-    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -310,7 +309,6 @@
     </Compile>
     <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="MapUtitilties\AddressAnnotation.cs" />
-    <Compile Include="MapUtitilties\AddressMapDelegate.cs" />
     <Compile Include="Controls\TouchGesture.cs" />
     <Compile Include="MapUtitilties\PinAnnotationView.cs" />
     <Compile Include="PlatformIntegration\LocationService.cs" />
@@ -522,6 +520,7 @@
     </Compile>
     <Compile Include="Views\AccountConfirmationView.cs" />
     <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
+    <Compile Include="MapUtitilties\MKMapViewHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

@@ -1003,7 +1003,7 @@
     <value>Départ:</value>
   </data>
   <data name="RateRide" xml:space="preserve">
-    <value>Calculer le prix du trajet</value>
+    <value>Évaluer la course</value>
   </data>
   <data name="Rebook" xml:space="preserve">
     <value>Réinitialiser le trajet</value>
