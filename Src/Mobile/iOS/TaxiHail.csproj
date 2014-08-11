@@ -309,7 +309,6 @@
     </Compile>
     <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="MapUtitilties\AddressAnnotation.cs" />
-    <Compile Include="MapUtitilties\AddressMapDelegate.cs" />
     <Compile Include="Controls\TouchGesture.cs" />
     <Compile Include="MapUtitilties\PinAnnotationView.cs" />
     <Compile Include="PlatformIntegration\LocationService.cs" />
@@ -521,6 +520,7 @@
     </Compile>
     <Compile Include="Views\AccountConfirmationView.cs" />
     <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
+    <Compile Include="MapUtitilties\MKMapViewHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

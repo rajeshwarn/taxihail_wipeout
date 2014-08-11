@@ -1,5 +1,7 @@
 ﻿using System;
 using MonoTouch.CoreLocation;
+using MonoTouch.Foundation;
+using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 
 namespace MonoTouch.MapKit
 {

@@ -109,9 +109,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _view = view;
             }
 
-            public override bool OnScroll (MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
+            public override bool OnScroll (MotionEvent firstDownMotionEvent, MotionEvent moveMotionEvent, float distanceX, float distanceY)
             {
-                if (e1.PointerCount > 1 || e2.PointerCount > 1)
+                if (firstDownMotionEvent.PointerCount > 1 || moveMotionEvent.PointerCount > 1)
                 {
                     // don't scroll if we have more than one finger
                     return false;

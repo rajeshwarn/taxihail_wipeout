@@ -24,6 +24,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -102,18 +103,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _pickupAnnotation = GetAnnotation(new CLLocationCoordinate2D(), AddressAnnotationType.Pickup, _useThemeColorForPickupAndDestinationMapIcons);
             _destinationAnnotation = GetAnnotation(new CLLocationCoordinate2D(), AddressAnnotationType.Destination, _useThemeColorForPickupAndDestinationMapIcons);
 
-            // TODO: When refactoring StatusView, get rid of AddressMapDelegate
-            // and use helper class to get GetViewForAnnotation delegate
-            this.GetViewForAnnotation = new AddressMapDelegate().GetViewForAnnotation;
+            this.GetViewForAnnotation = MKMapViewHelper.GetViewForAnnotation;
 
             InitializeGesture();
         }
-
+            
         private void InitializeGesture()
         {
             // disable on map since we're handling gestures ourselves
-            this.PitchEnabled = false;
-            this.RotateEnabled = false;
+            if (UIHelper.IsOS7orHigher)
+            {
+                this.PitchEnabled = false;
+                this.RotateEnabled = false;
+            }
+
             this.ZoomEnabled = false;
 
             if (_gesture == null)
