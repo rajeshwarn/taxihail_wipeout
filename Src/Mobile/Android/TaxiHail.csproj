@@ -191,7 +191,7 @@
     <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
     <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheService.cs" />
-    <Compile Include="Controls\Widgets\AutoResizetextView.cs" />
+    <Compile Include="Controls\Widgets\AutoResizeTextView.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
