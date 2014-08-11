@@ -44,6 +44,7 @@
 	"error.vehicleTypeLogoNameRequired" : "Logo is required",
 	"error.vehicleTypeNameRequired" : "Vehicle Name is required",
     "error.vehicleTypesLimitReached" :  "You have reached the maximum of 4 vehicle types.",
+	"error.vehicleTypesRemoveTypes" : "You have too many vehicle types! Remove some until you reach the allowed limit",
 	"Rule_InvalidPriority" : "Invalid priority ( maybe already used ? )",
 	"Rule_DuplicateName" : "Name already used",
 	"Loading" : "Loading",

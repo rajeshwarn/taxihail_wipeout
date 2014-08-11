@@ -45,9 +45,6 @@
             "rules/add/warning/day": "addDayWarningRule", //#rules/add/day
             "rules/edit/:id": "editRule", //#rules/edit/{GUID}
 
-            /* IBS exclusions */
-            "exclusions": "manageIBSExclusions",
-
             /*Export*/
             "exportaccounts": "exportAccounts",
             "exportorders": "exportOrders",
@@ -174,11 +171,6 @@
         editRule: function (id) {
 
             action(TaxiHail.RulesController, 'edit', id);
-        },
-
-        manageIBSExclusions: function () {
-            
-            action(TaxiHail.ExclusionsController, 'index');
         },
 
         exportAccounts: function () {

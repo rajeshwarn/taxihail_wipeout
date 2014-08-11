@@ -6,8 +6,10 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net.Mail;
 using System.Reflection;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.IBS;
@@ -29,6 +31,7 @@ using Newtonsoft.Json.Linq;
 using ConfigurationManager = apcurium.MK.Common.Configuration.Impl.ConfigurationManager;
 using DeploymentServiceTools;
 using ServiceStack.Text;
+using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
 
 #endregion
 
@@ -175,6 +178,8 @@ namespace DatabaseInitializer
                     Console.WriteLine("Done playing events...");
 
                     EnsureDefaultAccountsExists(connectionString, commandBus);
+
+                    CreateDefaultVehicleTypes(container, commandBus);
                 }
                 else
                 {                    
@@ -187,6 +192,8 @@ namespace DatabaseInitializer
                     CreateDefaultAccounts(container, commandBus);
 
                     AddDefaultRatings(commandBus);
+
+                    CreateDefaultVehicleTypes(container, commandBus);
                 }
 
                 if (isUpdate && !string.IsNullOrEmpty(param.BackupFolder))
@@ -563,6 +570,24 @@ namespace DatabaseInitializer
                 CompanyId = AppConstants.CompanyId,
                 TariffId = Guid.NewGuid(),
             });
+        }
+
+        private static void CreateDefaultVehicleTypes(UnityContainer container, ICommandBus commandBus)
+        {
+            var referenceDataService = container.Resolve<ReferenceDataService>();
+            var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
+
+            foreach (var vehicle in referenceData.VehiclesList)
+            {
+                commandBus.Send(new AddUpdateVehicleType
+                {
+                    VehicleTypeId = Guid.NewGuid(),
+                    Name = string.Format("{0} vehicle", vehicle.Display),
+                    LogoName = "taxi",
+                    ReferenceDataVehicleId = vehicle.Id ?? -1,
+                    CompanyId = AppConstants.CompanyId
+                });
+            }
         }
     }
 }
