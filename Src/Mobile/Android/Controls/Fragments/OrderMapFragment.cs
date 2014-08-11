@@ -170,6 +170,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }               
             };
 
+            _touchableMap.Surface.MoveBy = (deltaX, deltaY) =>
+            {
+                _touchableMap.Map.MoveCamera(CameraUpdateFactory.ScrollBy(deltaX, deltaY));
+            };
+
+            _touchableMap.Surface.ZoomBy = (animate, zoomByAmount) =>
+            {
+                if(animate)
+                {
+                    _touchableMap.Map.AnimateCamera (CameraUpdateFactory.ZoomBy(zoomByAmount));
+                }
+                else
+                {
+                    _touchableMap.Map.MoveCamera (CameraUpdateFactory.ZoomBy(zoomByAmount));
+                }
+            };
+
             Observable
                 .FromEventPattern<GoogleMap.CameraChangeEventArgs>(Map, "CameraChange")
                 .Throttle(TimeSpan.FromMilliseconds(500))

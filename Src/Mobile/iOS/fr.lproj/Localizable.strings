@@ -293,7 +293,7 @@
 "PickupTimeTextPlaceholder"="Heure: maintenant";
 "PickupViewDestinationLabel"="Destination &gt;&gt;";
 "PickupViewPickupLabel"="Départ:";
-"RateRide"="Calculer le prix du trajet";
+"RateRide"="Évaluer la course";
 "Rebook"="Réinitialiser le trajet";
 "ReceiptSent"="Facture envoyée";
 "RefineAddressTitle"="Affiner l'adresse";
@@ -471,3 +471,4 @@
 "View_CreditCard"="Carte de paiement";
 "PanelMenuViewPaymentInfoText"="Carte de paiement";
 "ServiceErrorCreateOrder_PendingOrder"="La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?";
+"PayInCar"="Payer dans le taxi";

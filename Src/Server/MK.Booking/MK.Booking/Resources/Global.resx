@@ -324,4 +324,7 @@
   <data name="AccountConfirmationSmsBody" xml:space="preserve">
     <value>Your verification code for {0} is {1}</value>
   </data>
+  <data name="PushNotification_NearbyTaxi" xml:space="preserve">
+    <value>Your vehicle is almost at pickup location</value>
+  </data>
 </root>
