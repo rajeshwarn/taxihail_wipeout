@@ -20,9 +20,15 @@ namespace apcurium.MK.Booking.Api.Payment
 
         public ExpressCheckoutServiceClient CreateService(PayPalCredentials payPalCredentials, bool useSandbox)
         {
-            var cultureName = _configurationManager.GetSetting("PriceFormat");
 
-            return new ExpressCheckoutServiceClient(payPalCredentials, new RegionInfo(cultureName), useSandbox);
+            var regionName = _configurationManager.GetSetting("PayPalRegionInfoOverride");
+
+            if (string.IsNullOrWhiteSpace(regionName))
+            {
+               regionName = _configurationManager.GetSetting("PriceFormat");
+            }
+
+            return new ExpressCheckoutServiceClient(payPalCredentials, new RegionInfo(regionName), useSandbox);
         }
     }
 }

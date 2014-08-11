@@ -62,8 +62,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
 
-            var token = service.SetExpressCheckout(request.Amount, successUrl, cancelUrl);
+            var conversionRate = _configurationManager.GetSetting<decimal>("PayPalConversionRate", 1);
+
+            var token = service.SetExpressCheckout(request.Amount * conversionRate, successUrl, cancelUrl);
             var checkoutUrl = service.GetCheckoutUrl(token);
+
+
 
             _commandBus.Send(new InitiatePayPalExpressCheckoutPayment
             {
