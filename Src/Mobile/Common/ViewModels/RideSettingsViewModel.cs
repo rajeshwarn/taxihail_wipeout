@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        get
             {
-                return !_hasCardOnFile || !this.Services().Settings.DisableChargeTypeWhenCardOnFile;
+                return !_hasCardOnFile || Settings.DisableChargeTypeWhenCardOnFile;
             }
 	    }
 
