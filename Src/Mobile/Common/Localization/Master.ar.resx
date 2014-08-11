@@ -141,9 +141,6 @@
   <data name="AccountPaymentNumberRequiredTitle" xml:space="preserve">
     <value>مطلوب رقم الحساب</value>
   </data>
-  <data name="AddCreditCardTitle" xml:space="preserve">
-    <value>أضف بطاقة إئتمانية</value>
-  </data>
   <data name="AddReminderMessage" xml:space="preserve">
     <value>هل ترغب في إضافة تنبيه على تقويمك حول هذا الموعد؟</value>
   </data>
@@ -418,7 +415,7 @@
     <value>CVV</value>
   </data>
   <data name="CreditCardErrorTitle" xml:space="preserve">
-    <value>لا يمكن إضافة بطاقة إئتمان</value>
+    <value>لا يمكنك حفظ هذه البطاقة الائتمانية</value>
   </data>
   <data name="CreditCardExpMonth" xml:space="preserve">
     <value>شهر الإنتهاء</value>
@@ -887,6 +884,9 @@
   </data>
   <data name="PanelMenuViewUpdateProfileText" xml:space="preserve">
     <value>تحديث الحساب</value>
+  </data>
+  <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
+    <value>Card on File</value>
   </data>
   <data name="ParameterButton" xml:space="preserve">
     <value>المعايير</value>
@@ -1502,6 +1502,9 @@
   </data>
   <data name="DeleteCreditCardTitle" xml:space="preserve">
     <value>حذف بطاقة الائتمان</value>
+  </data>
+  <data name="PayInCar" xml:space="preserve">
+    <value>Pay in Car</value>
   </data>
   <data name="CreditCardAdded" xml:space="preserve">
     <value>Your account is now enabled to pay with your card on file by default. You can still chose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</value>

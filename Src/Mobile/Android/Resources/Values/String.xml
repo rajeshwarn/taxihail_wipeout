@@ -230,7 +230,7 @@
   <string name="TabFavorites">Favorites</string>
   <string name="PickupMapTitle">Pickup location</string>
   <string name="ReSendConfirmation">Notify driver of payment</string>
-  <string name="CreditCardErrorTitle">Cannot add credit card</string>
+  <string name="CreditCardErrorTitle">Cannot save credit card</string>
   <string name="PickupDateTextPlaceholder">Date: Today</string>
   <string name="BuildingName">Building Name / Remark</string>
   <string name="AddressSearchingText">Searching...</string>
@@ -496,11 +496,12 @@
   <string name="AccountConfirmation_ErrorTitle">Cannot confirm account</string>
   <string name="ServiceErrorCreateAccount_CannotSendSMS">The confirmation code is incorrect.</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
-  <string name="PanelMenuViewPaymentInfoText">Payment Info</string>
+  <string name="PanelMenuViewPaymentInfoText">Card on File</string>
   <string name="View_CreditCard">Credit Card</string>
   <string name="DeleteCreditCard">Delete the credit card registered to this account?</string>
   <string name="DeleteCreditCardTitle">Delete credit card</string>
   <string name="ServiceErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
   <string name="View">View</string>
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still chose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
+  <string name="PayInCar">Pay in Car</string>
 </resources>

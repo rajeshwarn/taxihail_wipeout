@@ -103,7 +103,7 @@
 "CreditCard"="Carte de paiement";
 "CreditCardCategory"="Catégorie";
 "CreditCardCCV"="Code sécurité";
-"CreditCardErrorTitle"="Cette carte ne peut être ajoutée";
+"CreditCardErrorTitle"="Cette carte ne peut être sauvegardée";
 "CreditCardExpMonth"="Date d'expiration (mois)";
 "CreditCardExpYear"="Date d'expiration (année)";
 "CreditCardInstructions"="Afin d'utiliser l'application, vous devez ajouter une carte de crédit à votre compte.";
@@ -293,7 +293,7 @@
 "PickupTimeTextPlaceholder"="Heure: maintenant";
 "PickupViewDestinationLabel"="Destination &gt;&gt;";
 "PickupViewPickupLabel"="Départ:";
-"RateRide"="Calculer le prix du trajet";
+"RateRide"="Évaluer la course";
 "Rebook"="Réinitialiser le trajet";
 "ReceiptSent"="Facture envoyée";
 "RefineAddressTitle"="Affiner l'adresse";
@@ -468,3 +468,8 @@
 "DeleteCreditCardTitle"="Supprimer la carte";
 "DeleteCreditCard"="Supprimer la carte associée à ce compte?";
 "CreditCardAdded"="Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de paiement.";
+"View"="Voir";
+"View_CreditCard"="Carte de paiement";
+"PanelMenuViewPaymentInfoText"="Carte de paiement";
+"ServiceErrorCreateOrder_PendingOrder"="La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?";
+"PayInCar"="Payer dans le taxi";

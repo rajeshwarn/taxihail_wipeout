@@ -103,7 +103,7 @@
   <string name="CreditCard">بطاقة الائتمان</string>
   <string name="CreditCardCategory">التصنيف</string>
   <string name="CreditCardCCV">CVV</string>
-  <string name="CreditCardErrorTitle">لا يمكن إضافة بطاقة إئتمان</string>
+  <string name="CreditCardErrorTitle">لا يمكنك حفظ هذه البطاقة الائتمانية</string>
   <string name="CreditCardExpMonth">شهر الإنتهاء</string>
   <string name="CreditCardExpYear">سنة الإنتهاء</string>
   <string name="CreditCardInstructions">لكي تستخدم هذا التطبيق، يجب أن تضيف رقم بطاقة إئتمانية لحسابك.</string>
@@ -475,4 +475,6 @@
   <string name="View">View</string>
   <string name="ServiceErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still chose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
+  <string name="PanelMenuViewPaymentInfoText">Card on File</string>
+  <string name="PayInCar">Pay in Car</string>
 </resources>

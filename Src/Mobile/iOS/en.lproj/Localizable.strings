@@ -226,7 +226,7 @@
 "TabFavorites"="Favorites";
 "PickupMapTitle"="Pickup location";
 "ReSendConfirmation"="Notify driver of payment";
-"CreditCardErrorTitle"="Cannot add credit card";
+"CreditCardErrorTitle"="Cannot save credit card";
 "PickupDateTextPlaceholder"="Date: Today";
 "BuildingName"="Building Name / Remark";
 "AddressSearchingText"="Searching...";
@@ -493,10 +493,11 @@
 "View_AccountConfirmation_Label_Code"="Code";
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
 "AccountConfirmation_ErrorTitle"="Cannot confirm account";
-"PanelMenuViewPaymentInfoText"="Payment Info";
+"PanelMenuViewPaymentInfoText"="Card on File";
 "View_CreditCard"="Credit Card";
 "DeleteCreditCardTitle"="Delete credit card";
 "DeleteCreditCard"="Delete the credit card registered to this account?";
 "ServiceErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
 "View"="View";
 "CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still chose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
+"PayInCar"="Pay in Car";

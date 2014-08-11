@@ -23,11 +23,12 @@
     </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchProfiling>True</MtouchProfiling>
-    <MtouchArch>ARMv7</MtouchArch>
+    <MtouchArch>i386</MtouchArch>
     <CustomCommands>
       <CustomCommands>
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.ar.resx&quot; -d=&quot;$(ProjectDir)/ar.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.fr.resx&quot; -d=&quot;$(ProjectDir)/fr.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
       </CustomCommands>
     </CustomCommands>
     <MtouchUseSGen>True</MtouchUseSGen>
@@ -80,6 +81,7 @@
       <CustomCommands>
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.ar.resx&quot; -d=&quot;$(ProjectDir)/ar.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.fr.resx&quot; -d=&quot;$(ProjectDir)/fr.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
       </CustomCommands>
     </CustomCommands>
     <AssemblyName>TaxiHail</AssemblyName>
@@ -308,7 +310,6 @@
     </Compile>
     <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="MapUtitilties\AddressAnnotation.cs" />
-    <Compile Include="MapUtitilties\AddressMapDelegate.cs" />
     <Compile Include="Controls\TouchGesture.cs" />
     <Compile Include="MapUtitilties\PinAnnotationView.cs" />
     <Compile Include="PlatformIntegration\LocationService.cs" />
@@ -424,8 +425,6 @@
     </Compile>
     <Compile Include="Views\Payments\PaymentView.cs" />
     <Compile Include="Views\Payments\PaymentView.designer.cs" />
-    <Compile Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.cs" />
-    <Compile Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.designer.cs" />
     <Compile Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.cs" />
     <Compile Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.designer.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
@@ -522,6 +521,7 @@
     </Compile>
     <Compile Include="Views\AccountConfirmationView.cs" />
     <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
+    <Compile Include="MapUtitilties\MKMapViewHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -553,7 +553,6 @@
     <InterfaceDefinition Include="Views\BookRatingCell.xib" />
     <InterfaceDefinition Include="Views\BookRatingView.xib" />
     <InterfaceDefinition Include="Views\Payments\PaymentView.xib" />
-    <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.xib" />
     <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.xib" />
     <InterfaceDefinition Include="Views\Payments\ConfirmCarNumberView.xib" />
     <InterfaceDefinition Include="Views\BookingStatusView.xib" />

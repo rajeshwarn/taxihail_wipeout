@@ -141,9 +141,6 @@
   <data name="AccountPaymentNumberRequiredTitle" xml:space="preserve">
     <value>Numéro de compte requis</value>
   </data>
-  <data name="AddCreditCardTitle" xml:space="preserve">
-    <value>Ajouter une carte de paiement</value>
-  </data>
   <data name="AddReminderMessage" xml:space="preserve">
     <value>Souhaitez-vous qu'un rendez-vous soit créé dans votre calendrier pour ce trajet?</value>
   </data>
@@ -430,7 +427,7 @@
     <value>Code sécurité</value>
   </data>
   <data name="CreditCardErrorTitle" xml:space="preserve">
-    <value>Cette carte ne peut être ajoutée</value>
+    <value>Cette carte ne peut être sauvegardée</value>
   </data>
   <data name="CreditCardExpMonth" xml:space="preserve">
     <value>Date d'expiration (mois)</value>
@@ -915,6 +912,9 @@
   <data name="PanelMenuViewUpdateProfileText" xml:space="preserve">
     <value>Mise à jour du compte</value>
   </data>
+  <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
+    <value>Carte de paiement</value>
+  </data>
   <data name="ParameterButton" xml:space="preserve">
     <value>Paramètres</value>
   </data>
@@ -1003,7 +1003,7 @@
     <value>Départ:</value>
   </data>
   <data name="RateRide" xml:space="preserve">
-    <value>Calculer le prix du trajet</value>
+    <value>Évaluer la course</value>
   </data>
   <data name="Rebook" xml:space="preserve">
     <value>Réinitialiser le trajet</value>
@@ -1529,6 +1529,9 @@
   </data>
   <data name="DeleteCreditCardTitle" xml:space="preserve">
     <value>Supprimer la carte</value>
+  </data>
+  <data name="PayInCar" xml:space="preserve">
+    <value>Payer dans le taxi</value>
   </data>
   <data name="CreditCardAdded" xml:space="preserve">
     <value>Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de paiement.</value>
