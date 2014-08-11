@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             Initialize();                       
         }
+
         public TouchGesture (IntPtr handle) : base(handle)
         {
             Initialize();
@@ -26,14 +27,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public TouchGesture (NSCoder coder) : base(coder)
         {
             Initialize();
-            
         }
+
         private void Initialize()
         {
             DelaysTouchesBegan = false;
             DelaysTouchesEnded = false;    
             _stopWatch = new Stopwatch ();
-
         }
         
         public override bool CanBePreventedByGestureRecognizer (UIGestureRecognizer preventingGestureRecognizer)
@@ -41,36 +41,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             return false;
         }
         
-        public bool UserIsTouching {
-// ReSharper disable once UnusedAutoPropertyAccessor.Global
-            get;
-            set;
-        }
+        public bool UserIsTouching { get; set; }
         
         public long GetLastTouchDelay()
         {
-            if ( _stopWatch.IsRunning )
+            if (_stopWatch.IsRunning)
             {
-            var r = _stopWatch.ElapsedMilliseconds;         
-            return r;
+                var r = _stopWatch.ElapsedMilliseconds;         
+                return r;
             }
+
             return long.MaxValue;
         }
 
         public override void TouchesBegan (NSSet touches, UIEvent evt)
         {                       
             UserIsTouching = true;
-            if ( TouchBegin != null )
+
+            if (TouchBegin != null)
             {
-                TouchBegin( this, EventArgs.Empty );
+                TouchBegin(this, EventArgs.Empty);
             }
+
             base.TouchesBegan (touches, evt);
         }
 
-
         public override void TouchesMoved(NSSet touches, UIEvent evt)
         {
-            TouchMove( this, EventArgs.Empty );
+            if (TouchMove != null)
+            {
+                TouchMove(this, EventArgs.Empty);
+            }
+
             base.TouchesBegan (touches, evt);
         }
 
@@ -88,8 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
         
         public override void TouchesEnded (NSSet touches, UIEvent evt)
-        {           
-                
+        {             
             UserIsTouching = false;
             _stopWatch.Reset();
             _stopWatch.Start();
@@ -100,9 +101,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             
             base.TouchesEnded (touches, evt);
-        
         }
-        
     }
 }
 

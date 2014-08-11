@@ -499,3 +499,4 @@
 "DeleteCreditCard"="Delete the credit card registered to this account?";
 "ServiceErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
 "View"="View";
+"PayInCar"="Pay in Car";

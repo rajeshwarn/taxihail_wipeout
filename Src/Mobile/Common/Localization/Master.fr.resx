@@ -1003,7 +1003,7 @@
     <value>Départ:</value>
   </data>
   <data name="RateRide" xml:space="preserve">
-    <value>Calculer le prix du trajet</value>
+    <value>Évaluer la course</value>
   </data>
   <data name="Rebook" xml:space="preserve">
     <value>Réinitialiser le trajet</value>
@@ -1529,5 +1529,8 @@
   </data>
   <data name="DeleteCreditCardTitle" xml:space="preserve">
     <value>Supprimer la carte</value>
+  </data>
+  <data name="PayInCar" xml:space="preserve">
+    <value>Payer dans le taxi</value>
   </data>
 </root>
