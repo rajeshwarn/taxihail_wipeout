@@ -324,4 +324,7 @@
   <data name="PushNotification_NearbyTaxi" xml:space="preserve">
     <value>Your vehicle is almost at pickup location</value>
   </data>
+  <data name="PushNotification_PaymentReceived" xml:space="preserve">
+    <value>Your credit card was successfully charged a total of {0}. This amount includes both fare and tip.</value>
+  </data>
 </root>

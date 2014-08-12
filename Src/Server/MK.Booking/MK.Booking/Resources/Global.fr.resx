@@ -324,4 +324,7 @@
   <data name="PushNotification_NearbyTaxi" xml:space="preserve">
     <value>Votre vehicule sera bientôt au lieu de départ</value>
   </data>
+  <data name="PushNotification_PaymentReceived" xml:space="preserve">
+    <value>Votre carte de crédit a été chargé d'un montant de {0}. Ce montant inclut le prix de la course ainsi que le pourboire.</value>
+  </data>
 </root>
