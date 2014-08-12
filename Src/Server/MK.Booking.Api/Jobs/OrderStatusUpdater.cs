@@ -25,8 +25,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IOrderDao _orderDao;
         private readonly Resources.Resources _resources;
 
-        public OrderStatusUpdater(IConfigurationManager configurationManager, ICommandBus commandBus,
-            IOrderPaymentDao orderPayementDao, IOrderDao orderDao)
+        public OrderStatusUpdater(IConfigurationManager configurationManager, ICommandBus commandBus, IOrderPaymentDao orderPayementDao, IOrderDao orderDao)
         {
             _orderDao = orderDao;
             _configurationManager = configurationManager;
@@ -53,7 +52,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             var pairingInfo = _orderDao.FindOrderPairingById(order.OrderId);
             if ((pairingInfo != null) && (pairingInfo.AutoTipPercentage.HasValue))
             {
-                double tip = ((double)pairingInfo.AutoTipPercentage.Value) / 100;
+                var tip = ((double)pairingInfo.AutoTipPercentage.Value) / 100;
                 ibsStatus.Tip = Math.Round(ibsStatus.Fare * (tip), 2);
             }
 
@@ -69,7 +68,6 @@ namespace apcurium.MK.Booking.Api.Jobs
             ibsStatus.Update(order);
 
             string description = null;
-
             if (ibsStatus.IsAssigned)
             {
                 description = string.Format(_resources.Get("OrderStatus_CabDriverNumberAssigned", languageCode), ibsStatus.VehicleNumber);
