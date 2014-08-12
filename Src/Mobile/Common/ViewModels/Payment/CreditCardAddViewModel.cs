@@ -332,6 +332,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
 					account.DefaultCreditCard = Data.CreditCardId;
 					_accountService.UpdateSettings(account.Settings, Data.CreditCardId, account.DefaultTipPercent);
+
+                    this.Services().Message.ShowMessage(string.Empty, this.Services().Localize["CreditCardAdded"]);
 				}
 				else
 				{

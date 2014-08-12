@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
 		private readonly IOrderWorkflowService _orderWorkflowService;
+	    private bool _hasCardOnFile;
 
 		public RideSettingsViewModel(IAccountService accountService, 
 			IPaymentService paymentService,
@@ -43,6 +44,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			RaisePropertyChanged(() => Payments );
 			RaisePropertyChanged(() => ChargeTypeId );
 			RaisePropertyChanged(() => ChargeTypeName );
+
+            _hasCardOnFile = (await _accountService.GetCreditCard()) != null;
+            RaisePropertyChanged(() => IsChargeTypesEnabled);
 		}
 
         public bool ShouldDisplayTip
@@ -53,6 +57,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
             }
         }
+
+	    public bool IsChargeTypesEnabled
+	    {
+	        get
+            {
+                return !_hasCardOnFile || !Settings.DisableChargeTypeWhenCardOnFile;
+            }
+	    }
 
         private PaymentDetailsViewModel _paymentPreferences;
         public PaymentDetailsViewModel PaymentPreferences

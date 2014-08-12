@@ -74,9 +74,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.Text)
 				.To(vm => vm.VehicleTypeName);
 
-            set.Bind(txtChargeType)
-                .For(v => v.Text)
-				.To(vm => vm.ChargeTypeName);
+			set.Bind (txtChargeType)
+                .For (v => v.Text)
+				.To (vm => vm.ChargeTypeName);
+
+			set.Bind (txtChargeType)
+				.For (v => v.Enabled)
+				.To (vm => vm.IsChargeTypesEnabled);
 
 			set.Bind(txtAccountNumber)
 				.For(v => v.Text)
