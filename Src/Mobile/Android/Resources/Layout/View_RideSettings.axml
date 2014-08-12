@@ -116,7 +116,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="10dip"
-                        local:MvxBind="Text ChargeTypeName; Data Payments; SelectedItem ChargeTypeId" />
+                        local:MvxBind="Text ChargeTypeName; Data Payments; SelectedItem ChargeTypeId; Enabled IsChargeTypesEnabled" />
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"

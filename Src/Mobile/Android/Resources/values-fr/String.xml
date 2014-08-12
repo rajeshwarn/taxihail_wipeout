@@ -470,8 +470,9 @@
   <string name="DeleteCreditCard">Supprimer la carte associée à ce compte?</string>
   <string name="DeleteCreditCardTitle">Supprimer la carte</string>
   <string name="View">Voir</string>
-  <string name="View_CreditCard">Carte de paiement</string>
   <string name="ServiceErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
+  <string name="View_CreditCard">Carte de paiement</string>
+  <string name="CreditCardAdded">Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de paiement.</string>
   <string name="PanelMenuViewPaymentInfoText">Carte de paiement</string>
   <string name="PayInCar">Payer dans le taxi</string>
 </resources>
