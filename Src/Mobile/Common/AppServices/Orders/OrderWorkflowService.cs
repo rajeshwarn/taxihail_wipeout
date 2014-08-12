@@ -149,11 +149,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
-		public async Task ValidatePickupDestinationAndTime()
+		public async Task ValidatePickupTime()
+		{
+			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
+			var pickupDateIsValid = !pickupDate.HasValue || (pickupDate.Value.ToUniversalTime() >= DateTime.UtcNow);
+
+			if (!pickupDateIsValid)
+			{
+				throw new OrderValidationException("Invalid pickup date", OrderValidationError.InvalidPickupDate);
+			}
+		}
+
+		public async Task ValidatePickupAndDestination()
 		{
 			var pickupAddress = await _pickupAddressSubject.Take(1).ToTask();
 			var pickupIsValid = pickupAddress.BookAddress.HasValue()
-			                     && pickupAddress.HasValidCoordinate();
+				&& pickupAddress.HasValidCoordinate();
 
 			if (!pickupIsValid)
 			{
@@ -179,14 +190,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				{
 					throw new OrderValidationException("Destination address required", OrderValidationError.DestinationAddressRequired);
 				}
-			}
-
-			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
-			var pickupDateIsValid = !pickupDate.HasValue || (pickupDate.Value.ToUniversalTime() >= DateTime.UtcNow);
-
-			if (!pickupDateIsValid)
-			{
-				throw new OrderValidationException("Invalid pickup date", OrderValidationError.InvalidPickupDate);
 			}
 		}
 
