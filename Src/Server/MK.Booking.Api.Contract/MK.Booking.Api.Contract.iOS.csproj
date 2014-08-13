@@ -74,7 +74,9 @@
   <ItemGroup>
     <Compile Include="AuthenticateAttribute.cs" />
     <Compile Include="Requests\Payment\DeleteTokenizedCreditcardRequest.cs" />
+    <Compile Include="Requests\Payment\PairingForPaymentRequest.cs" />
     <Compile Include="Requests\Payment\PreAuthorizeAndCommitPaymentRequest.cs" />
+    <Compile Include="Requests\Payment\UnpairingForPaymentRequest.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
@@ -127,8 +129,6 @@
     <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
     <Compile Include="Resources\Payments\PairingResponse.cs" />
     <Compile Include="Resources\Payments\Cmt\Trip.cs" />
-    <Compile Include="Requests\Payment\Cmt\PairingRidelinqCmtRequest.cs" />
-    <Compile Include="Requests\Payment\Cmt\UnpairingRidelinqCmtRequest.cs" />
     <Compile Include="Requests\TermsAndConditionsRequest.cs" />
     <Compile Include="Resources\AccountCharge.cs" />
     <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
