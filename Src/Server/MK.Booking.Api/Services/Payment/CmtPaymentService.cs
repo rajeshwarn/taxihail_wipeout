@@ -12,7 +12,6 @@ using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Pair;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Reverse;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Tokenize;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
-using apcurium.MK.Booking.Api.Contract.Requests.Payment.Cmt;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt;
 using apcurium.MK.Booking.Commands;
@@ -65,7 +64,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 new CmtMobileServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null,  null);
         }
 
-        public PairingResponse Post(PairingRidelinqCmtRequest request)
+        public PairingResponse Pair(PairingForPaymentRequest request)
         {
             try
             {
@@ -118,7 +117,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 }
 
                 // send a command to save the pairing state for this order
-                _commandBus.Send(new PairForRideLinqCmtPayment
+                _commandBus.Send(new PairForPayment
                 {
                     OrderId = request.OrderId,
                     Medallion = response.Medallion,
@@ -152,7 +151,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        public BasePaymentResponse Post(UnpairingRidelinqCmtRequest request)
+        public BasePaymentResponse Unpair(UnpairingForPaymentRequest request)
         {
             try
             {
@@ -181,7 +180,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 }
 
                 // send a command to delete the pairing pairing info for this order
-                _commandBus.Send(new UnpairForRideLinqCmtPayment
+                _commandBus.Send(new UnpairForPayment
                 {
                     OrderId = request.OrderId
                 });

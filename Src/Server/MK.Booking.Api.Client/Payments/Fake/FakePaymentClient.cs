@@ -69,12 +69,18 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
 
         public Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new PairingResponse
+            {
+                IsSuccessfull = true
+            });
         }
 
         public Task<BasePaymentResponse> Unpair(Guid orderId)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new BasePaymentResponse
+            {
+                IsSuccessfull = true
+            });
         }
 
         public Task ResendConfirmationToDriver(Guid orderId)

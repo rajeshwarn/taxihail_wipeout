@@ -34,8 +34,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderStatusChanged>(OnOrderStatusChanged);
             Handles<OrderFareUpdated>(OnOrderFareUpdated);
             Handles<OrderVehiclePositionChanged>(OnOrderVehiclePositionChanged);
-            Handles<OrderPairedForRideLinqCmtPayment>(NoAction);
-            Handles<OrderUnpairedForRideLinqCmtPayment>(NoAction);
+            Handles<OrderPairedForPayment>(NoAction);
+            Handles<OrderUnpairedForPayment>(NoAction);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Domain
         public void Pair(string medallion, string driverId, string pairingToken, string pairingCode,
             string tokenOfCardToBeUsedForPayment, double? autoTipAmount, int? autoTipPercentage)
         {
-            Update(new OrderPairedForRideLinqCmtPayment
+            Update(new OrderPairedForPayment
             {
                 Medallion = medallion,
                 DriverId = driverId,
@@ -181,7 +181,7 @@ namespace apcurium.MK.Booking.Domain
 
         public void Unpair()
         {
-            Update(new OrderUnpairedForRideLinqCmtPayment());
+            Update(new OrderUnpairedForPayment());
         }
 
         private void OnOrderStatusChanged(OrderStatusChanged @event)

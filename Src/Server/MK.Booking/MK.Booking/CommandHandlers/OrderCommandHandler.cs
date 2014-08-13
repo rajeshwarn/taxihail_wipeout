@@ -17,8 +17,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<RemoveOrderFromHistory>,
         ICommandHandler<RateOrder>,
         ICommandHandler<ChangeOrderStatus>,
-        ICommandHandler<PairForRideLinqCmtPayment>,
-        ICommandHandler<UnpairForRideLinqCmtPayment>
+        ICommandHandler<PairForPayment>,
+        ICommandHandler<UnpairForPayment>
     {
         private readonly IEventSourcedRepository<Order> _repository;
 
@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(order, command.Id.ToString());
         }
 
-        public void Handle(PairForRideLinqCmtPayment command)
+        public void Handle(PairForPayment command)
         {
             var order = _repository.Find(command.OrderId);
             order.Pair(command.Medallion, command.DriverId, command.PairingToken, command.PairingCode,
@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(order, command.Id.ToString());
         }
 
-        public void Handle(UnpairForRideLinqCmtPayment command)
+        public void Handle(UnpairForPayment command)
         {
             var order = _repository.Find(command.OrderId);
             order.Unpair();

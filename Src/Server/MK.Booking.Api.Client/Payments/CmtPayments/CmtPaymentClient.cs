@@ -8,7 +8,6 @@ using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Tokenize;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
-using apcurium.MK.Booking.Api.Contract.Requests.Payment.Cmt;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
@@ -49,8 +48,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             return result;
         }
 
-        
-
         public Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit(string cardToken, double amount,
             double meterAmount, double tipAmount, Guid orderId)
         {
@@ -73,7 +70,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
         {
             try
             {
-                var response = await Client.PostAsync(new PairingRidelinqCmtRequest
+                var response = await Client.PostAsync(new PairingForPaymentRequest
                 {
                     OrderId = orderId,
                     CardToken = cardToken,
@@ -91,7 +88,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         public Task<BasePaymentResponse> Unpair(Guid orderId)
         {
-            return Client.PostAsync(new UnpairingRidelinqCmtRequest
+            return Client.PostAsync(new UnpairingForPaymentRequest
             {
                 OrderId = orderId
             });

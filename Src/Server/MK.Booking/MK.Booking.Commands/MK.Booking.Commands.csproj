@@ -68,11 +68,11 @@
     <Compile Include="LogApplicationStartUp.cs" />
     <Compile Include="LogCancellationFailurePayPalPayment.cs" />
     <Compile Include="LogCreditCardPaymentCancellationFailed.cs" />
-    <Compile Include="PairForRideLinqCmtPayment.cs" />
+    <Compile Include="PairForPayment.cs" />
     <Compile Include="RetriggerTermsAndConditions.cs" />
     <Compile Include="SendAccountConfirmationSMS.cs" />
     <Compile Include="SendAssignedConfirmation.cs" />
-    <Compile Include="UnpairForRideLinqCmtPayment.cs" />
+    <Compile Include="UnpairForPayment.cs" />
     <Compile Include="UpdateCreditCard.cs" />
     <Compile Include="UpdatePaymentSettings.cs" />
     <Compile Include="DisableAccountbyAdmin.cs" />

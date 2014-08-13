@@ -6,20 +6,16 @@ using System.Runtime.Serialization.Formatters;
 using Infrastructure.Sql.EventSourcing;
 using Newtonsoft.Json;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.Maps;
-using apcurium.MK.Common.Entity;
 using log4net;
-using apcurium.MK.Common.Configuration.Impl;
 
 namespace DatabaseInitializer.Services
 {
     public class EventsMigrator : IEventsMigrator
     {
-        
         private readonly Func<EventStoreDbContext> _contextFactory;
         private readonly JsonSerializer _serializer;
         private readonly JsonSerializer _deserializer;
-        private ILog _loggger;
+        private ILog _logger;
 
         public EventsMigrator(Func<EventStoreDbContext> contextFactory)
         {
@@ -28,28 +24,29 @@ namespace DatabaseInitializer.Services
             _deserializer = new JsonSerializer();
             //sereailize with type as expected in infrastructure
             _serializer = new JsonSerializer(){ TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple, TypeNameHandling = TypeNameHandling.All};
-            _loggger = LogManager.GetLogger("DatabaseInitializer");
+            _logger = LogManager.GetLogger("DatabaseInitializer");
         }
 
         public void Do()
         {
-         
-                using (var context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
+            {
+                var events = context.Set<Event>().Where(x =>x.EventType == typeof(PaymentSettingUpdated).FullName ).ToList();
+                foreach (var message in events)
                 {
-                    var events =
-                        context.Set<Event>().Where(x =>x.EventType == typeof(PaymentSettingUpdated).FullName ).ToList();
-                    foreach (var message in events)
-                    { 
-                        message.Payload = message.Payload.Replace("apcurium.MK.Common.Configuration.BraintreeClientSettings" , "apcurium.MK.Common.Configuration.Impl.BraintreeClientSettings");                         
-                    }
-                    context.SaveChanges();
-                }
+                    // fix BraintreeClientSettings namespace problem
+                    message.Payload = message.Payload.Replace("apcurium.MK.Common.Configuration.BraintreeClientSettings" , "apcurium.MK.Common.Configuration.Impl.BraintreeClientSettings");
 
-              
+                    // rename order pairing events
+                    message.Payload = message.Payload.Replace("OrderPairedForRideLinqCmtPayment", "OrderPairedForPayment");
+                    message.Payload = message.Payload.Replace("OrderUnpairedForRideLinqCmtPayment", "OrderUnpairedForPayment");
+                    message.EventType = message.EventType.Replace("OrderPairedForRideLinqCmtPayment", "OrderPairedForPayment");
+                    message.EventType = message.EventType.Replace("OrderUnpairedForRideLinqCmtPayment", "OrderUnpairedForPayment");
+                }
+                context.SaveChanges();
+            }
         }
 
-
-        
         public string Serialize<T>(T data)
         {
             using (var writer = new StringWriter())

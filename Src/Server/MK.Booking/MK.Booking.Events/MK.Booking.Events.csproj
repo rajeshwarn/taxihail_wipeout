@@ -64,8 +64,8 @@
     <Compile Include="CreditCardPaymentInitiated.cs" />
     <Compile Include="CreditCardUpdated.cs" />
     <Compile Include="OrderFareUpdated.cs" />
-    <Compile Include="OrderPairedForRideLinqCmtPayment.cs" />
-    <Compile Include="OrderUnpairedForRideLinqCmtPayment.cs" />
+    <Compile Include="OrderPairedForPayment.cs" />
+    <Compile Include="OrderUnpairedForPayment.cs" />
     <Compile Include="PaymentModeChanged.cs" />
     <Compile Include="PaymentSettingUpdated.cs" />
     <Compile Include="DeviceUnregisteredForPushNotifications.cs" />

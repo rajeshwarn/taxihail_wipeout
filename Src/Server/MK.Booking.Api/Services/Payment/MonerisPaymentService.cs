@@ -47,6 +47,16 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _paymentDao = paymentDao;
         }
 
+        public PairingResponse Pair(PairingForPaymentRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BasePaymentResponse Unpair(UnpairingForPaymentRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request)
         {
             var monerisSettings = _configurationManager.GetPaymentSettings().MonerisPaymentSettings;

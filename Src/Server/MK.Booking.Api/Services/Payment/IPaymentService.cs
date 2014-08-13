@@ -7,5 +7,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     {
         CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request);
         DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request);
+        PairingResponse Pair(PairingForPaymentRequest request);
+        BasePaymentResponse Unpair(UnpairingForPaymentRequest request);
     }
 }

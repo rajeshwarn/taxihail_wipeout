@@ -25,8 +25,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PaymentInformationSet>,
         IEventHandler<OrderStatusChanged>,
         IEventHandler<OrderVehiclePositionChanged>,
-        IEventHandler<OrderPairedForRideLinqCmtPayment>,
-        IEventHandler<OrderUnpairedForRideLinqCmtPayment>,
+        IEventHandler<OrderPairedForPayment>,
+        IEventHandler<OrderUnpairedForPayment>,
         IEventHandler<OrderFareUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(OrderPairedForRideLinqCmtPayment @event)
+        public void Handle(OrderPairedForPayment @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -245,7 +245,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(OrderUnpairedForRideLinqCmtPayment @event)
+        public void Handle(OrderUnpairedForPayment @event)
         {
             using (var context = _contextFactory.Invoke())
             {

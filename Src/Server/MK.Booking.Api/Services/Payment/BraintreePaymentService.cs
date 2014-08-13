@@ -70,6 +70,16 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             return TokenizedCreditCard(BraintreeGateway, tokenizeRequest);
         }
 
+        public PairingResponse Pair(PairingForPaymentRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BasePaymentResponse Unpair(UnpairingForPaymentRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request)
         {
             BraintreeGateway.CreditCard.Delete(request.CardToken);
