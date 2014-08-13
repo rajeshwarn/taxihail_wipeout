@@ -178,8 +178,6 @@ namespace DatabaseInitializer
                     Console.WriteLine("Done playing events...");
 
                     EnsureDefaultAccountsExists(connectionString, commandBus);
-
-                    CreateDefaultVehicleTypes(container, commandBus);
                 }
                 else
                 {                    
@@ -192,7 +190,14 @@ namespace DatabaseInitializer
                     CreateDefaultAccounts(container, commandBus);
 
                     AddDefaultRatings(commandBus);
+                }
 
+                // Update vehicle types
+                var vehicleTypes = new VehicleTypeDao(() => new BookingDbContext(connectionString.ConnectionString));
+                if (!vehicleTypes.GetAll().Any())
+                {
+                    appSettings["Client.VehicleEstimateEnabled"] = "false";
+                    AddOrUpdateAppSettings(commandBus, appSettings);
                     CreateDefaultVehicleTypes(container, commandBus);
                 }
 

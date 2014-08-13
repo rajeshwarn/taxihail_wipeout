@@ -76,7 +76,7 @@
    "Client.AboutUsUrl" : "http://www.mobile-knowledge.com/index.html",   
    "Client.DisabledTutorialSlides" : "",
    "Client.SMSConfirmationEnabled" :"false",
-   "Client.VehicleEstimateEnabled" : "false",
+   "Client.VehicleEstimateEnabled" : "true",
    "SMSFromNumber" :"",
    "SMSAccountSid" : "",
    "SMSAuthToken" : "",
