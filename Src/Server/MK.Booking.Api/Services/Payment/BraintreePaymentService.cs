@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 if (orderStatusDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
 
-                // TODO send a message to driver or find a way to check if communication works?
+                // send a message to driver, if it fails we abort the pairing
                 _ibs.SendMessageToDriver(
                     new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"))
                     .Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
@@ -108,7 +108,28 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public BasePaymentResponse Unpair(UnpairingForPaymentRequest request)
         {
-            throw new NotImplementedException();
+            var orderPairingDetail = _orderDao.FindOrderPairingById(request.OrderId);
+            if (orderPairingDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
+
+            var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
+            if (orderStatusDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
+
+            // send a message to driver, if it fails we abort the unpairing
+            _ibs.SendMessageToDriver(
+                new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"))
+                    .Get("UnpairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
+
+            // send a command to delete the pairing pairing info for this order
+            _commandBus.Send(new UnpairForPayment
+            {
+                OrderId = request.OrderId
+            });
+
+            return new BasePaymentResponse
+            {
+                IsSuccessfull = true,
+                Message = "Success"
+            };
         }
 
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request)

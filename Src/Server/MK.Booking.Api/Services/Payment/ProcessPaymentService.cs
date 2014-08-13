@@ -22,5 +22,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             return _paymentService.DeleteTokenizedCreditcard(request);
         }
+
+        public PairingResponse Post(PairingForPaymentRequest request)
+        {
+            return _paymentService.Pair(request);
+        }
+
+        public BasePaymentResponse Post(UnpairingForPaymentRequest request)
+        {
+            return _paymentService.Unpair(request);
+        }
     }
 }

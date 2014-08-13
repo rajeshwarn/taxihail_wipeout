@@ -115,6 +115,30 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             return response;
         }
 
+        private void UnpairFromVehicleUsingRideLinq(OrderPairingDetail orderPairingDetail)
+        {
+            // send unpairing request
+            var response = _cmtMobileServiceClient.Delete(new UnpairingRequest
+            {
+                PairingToken = orderPairingDetail.PairingToken
+            });
+
+            // wait for trip to be updated
+            var watch = new Stopwatch();
+            watch.Start();
+            var trip = GetTrip(orderPairingDetail.PairingToken);
+            while (trip != null)
+            {
+                Thread.Sleep(2000);
+                trip = GetTrip(orderPairingDetail.PairingToken);
+
+                if (watch.Elapsed.TotalSeconds >= response.TimeoutSeconds)
+                {
+                    throw new TimeoutException("Could not be unpaired of vehicle");
+                }
+            }
+        }
+
         public PairingResponse Pair(PairingForPaymentRequest request)
         {
             try
@@ -153,7 +177,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     };
                 }
 
-                // TODO send a message to driver or find a way to check if communication works?
+                // send a message to driver, if it fails we abort the pairing
                 _ibs.SendMessageToDriver(
                     new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"))
                         .Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
@@ -191,25 +215,19 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var orderPairingDetail = _orderDao.FindOrderPairingById(request.OrderId);
                 if (orderPairingDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
 
-                // send unpairing request
-                var response = _cmtMobileServiceClient.Delete(new UnpairingRequest
+                if (_configManager.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
                 {
-                    PairingToken = orderPairingDetail.PairingToken
-                });
-
-                // wait for trip to be updated
-                var watch = new Stopwatch();
-                watch.Start();
-                var trip = GetTrip(orderPairingDetail.PairingToken);
-                while (trip != null)
+                    UnpairFromVehicleUsingRideLinq(orderPairingDetail);
+                }
+                else
                 {
-                    Thread.Sleep(2000);
-                    trip = GetTrip(orderPairingDetail.PairingToken);
+                    var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
+                    if (orderStatusDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
 
-                    if (watch.Elapsed.TotalSeconds >= response.TimeoutSeconds)
-                    {
-                        throw new TimeoutException("Could not be unpaired of vehicle");
-                    }
+                    // send a message to driver, if it fails we abort the unpairing
+                    _ibs.SendMessageToDriver(
+                        new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"))
+                            .Get("UnpairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
                 }
 
                 // send a command to delete the pairing pairing info for this order
