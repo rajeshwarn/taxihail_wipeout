@@ -69,11 +69,10 @@
     <Compile Include="Requests\OrderRatingRequest.cs" />
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
-    <Compile Include="Requests\Payment\Braintree\DeleteTokenizedCreditcardBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
-    <Compile Include="Requests\Payment\Cmt\DeleteTokenizedCreditcardCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\PairingRidelinqCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\UnpairingRidelinqCmtRequest.cs" />
+    <Compile Include="Requests\Payment\DeleteTokenizedCreditcardRequest.cs" />
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\CancelPayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\Payment\CompletePayPalExpressCheckoutPaymentRequest.cs" />
@@ -116,7 +115,6 @@
     <Compile Include="Requests\AvailableVehicles.cs" />
     <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
     <Compile Include="Resources\AccountCharge.cs" />
-    <Compile Include="Requests\Payment\Moneris\DeleteTokenizedCreditcardMonerisRequest.cs" />
     <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
     <Compile Include="Resources\VehicleType.cs" />
     <Compile Include="Requests\ActivationMethod.cs" />
