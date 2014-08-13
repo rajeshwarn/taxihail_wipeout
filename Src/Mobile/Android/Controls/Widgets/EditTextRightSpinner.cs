@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Android.Content;
+using Android.Graphics;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
@@ -36,6 +37,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Initialize();
         }
 
+        private bool _enabled;
+        public override bool Enabled
+        {
+            get { return _enabled; }
+            set
+            {
+                _enabled = value;
+                this.SetBackgroundColor(value ? Color.White : Color.DarkGray);
+            }
+        }
 
         public string Text
         {
@@ -122,12 +133,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var button = (Button) layout.FindViewById(Resource.Id.openSpinnerButton);
 
             button.Click += (sender, e) =>
-            {                  
-                _spinner.PerformClick(); 
-
-                if (SpinnerClicked!=null)
+            {
+                if (Enabled)
                 {
-                    SpinnerClicked(this, e);
+                    _spinner.PerformClick();
+
+                    if (SpinnerClicked != null)
+                    {
+                        SpinnerClicked(this, e);
+                    }
                 }
             };
 

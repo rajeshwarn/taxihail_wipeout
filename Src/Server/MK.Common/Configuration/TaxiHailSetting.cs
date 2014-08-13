@@ -25,6 +25,7 @@ namespace MK.Common.Configuration
 			DefaultTipPercentage = 15;
             DirectionDataProvider = MapProvider.Google;
 			SMSConfirmationEnabled = false;
+		    DisableChargeTypeWhenCardOnFile = false;
 		    VehicleEstimateEnabled = false;
 		}
 
@@ -58,8 +59,11 @@ namespace MK.Common.Configuration
         public bool AccountActivationDisabled { get; private set; }
 		[Display(Name = "Account Activation By SMS", Description="Enable the activation by SMS")]
         public bool SMSConfirmationEnabled { get; private set; }
+        [Display(Name = "Disable Charge type when card on file", Description = "When active, locks the user on Card on File payment type if a credit card is registered")]
+        public bool DisableChargeTypeWhenCardOnFile { get; private set; }
         [Display(Name = "Enable vehicle estimate", Description = "Hide the vehicle estimate box")]
         public bool VehicleEstimateEnabled { get; private set; }
+
         [Display(Name = "SMS source number", Description = "Number from which the sms confirmation number will be sent")]
         public string SMSFromNumber { get; private set; }
         [Display(Name = "Twilio SMS account id", Description = "Account id for Twilio")]

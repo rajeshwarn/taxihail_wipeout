@@ -1533,4 +1533,7 @@
   <data name="PayInCar" xml:space="preserve">
     <value>Payer dans le taxi</value>
   </data>
+  <data name="CreditCardAdded" xml:space="preserve">
+    <value>Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de paiement.</value>
+  </data>
 </root>

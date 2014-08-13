@@ -93,6 +93,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .For("Text")
                 .To(vm => vm.ChargeTypeName);
 
+			set.BindSafe(txtChargeType)
+				.For(v => v.Enabled)
+				.To(vm => vm.IsChargeTypesEnabled);
+
             set.Apply();
         }
 
