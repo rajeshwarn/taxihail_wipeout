@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="OrderStatus_wosWAITING" xml:space="preserve">
-    <value>It May Take Up To Five Minutes For A Driver To Be Assigned</value>
+    <value>May Take Up To 5 Min. For A Driver To Be Assigned</value>
   </data>
 </root>
