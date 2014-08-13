@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Moneris;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Commands;
@@ -19,7 +20,7 @@ using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
-    public class MonerisPaymentService : Service
+    public class MonerisPaymentService : Service, IPaymentService
     {
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
@@ -34,10 +35,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         public MonerisPaymentService(ICommandBus commandBus,
             IOrderDao orderDao,
             ILogger logger,
-            IConfigurationManager configurationManager,
             IIbsOrderService ibs,
             IAccountDao accountDao,
-            IOrderPaymentDao paymentDao)
+            IOrderPaymentDao paymentDao,
+            IConfigurationManager configurationManager)
         {
             _commandBus = commandBus;
             _orderDao = orderDao;
@@ -84,7 +85,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        public CommitPreauthorizedPaymentResponse Post(PreAuthorizeAndCommitPaymentMonerisRequest request)
+        public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request)
         {
             try
             {
@@ -92,13 +93,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var message = string.Empty;
                 var authorizationCode = string.Empty;
 
-                var session = this.GetSession();
-                var account = _accountDao.FindById(new Guid(session.UserAuthId));
-
                 var orderDetail = _orderDao.FindById(request.OrderId);
                 if (orderDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
                 if (orderDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
+
+                var account = _accountDao.FindById(orderDetail.AccountId);
 
                 //check if already a payment
                 if (_paymentDao.FindByOrderId(request.OrderId) != null)

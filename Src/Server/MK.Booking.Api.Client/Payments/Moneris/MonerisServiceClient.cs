@@ -38,11 +38,11 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 
 		public Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit (string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
 		{
-			return Client.PostAsync(new PreAuthorizeAndCommitPaymentMonerisRequest
+			return Client.PostAsync(new PreAuthorizeAndCommitPaymentRequest
 			{
-				Amount = amount,
-				MeterAmount = meterAmount,
-				TipAmount = tipAmount,
+				Amount = Convert.ToDecimal(amount),
+				MeterAmount = Convert.ToDecimal(meterAmount),
+				TipAmount = Convert.ToDecimal(tipAmount),
 				CardToken = cardToken,
 				OrderId = orderId
 			});

@@ -1,17 +1,13 @@
-﻿#region
-
-using System;
+﻿using System;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 
-#endregion
-
-namespace apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree
+namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
     [Authenticate]
-    [Route("/payments/braintree/preAuthorizeAndCommitPayment", "POST")]
-    public class PreAuthorizeAndCommitPaymentBraintreeRequest : IReturn<CommitPreauthorizedPaymentResponse>
+    [Route("/payments/preAuthorizeAndCommitPayment", "POST")]
+    public class PreAuthorizeAndCommitPaymentRequest : IReturn<CommitPreauthorizedPaymentResponse>
     {
         public decimal Amount { get; set; }
         public decimal MeterAmount { get; set; }

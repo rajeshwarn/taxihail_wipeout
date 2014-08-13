@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
         public Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit(string cardToken, double amount,
             double meterAmount, double tipAmount, Guid orderId)
         {
-			return Client.PostAsync(new PreAuthorizeAndCommitPaymentBraintreeRequest
+			return Client.PostAsync(new PreAuthorizeAndCommitPaymentRequest
             {
                 Amount = (decimal) amount,
                 MeterAmount = (decimal) meterAmount,

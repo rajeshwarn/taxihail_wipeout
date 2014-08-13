@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Api.Payment;
 using apcurium.MK.Booking.Api.Providers;
+using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
@@ -16,9 +17,12 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
 using AutoMapper;
+using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
 using CreateOrder = apcurium.MK.Booking.Api.Contract.Requests.CreateOrder;
 using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
@@ -66,6 +70,25 @@ namespace apcurium.MK.Booking.Api
                     return mockIbsStatusUpdate 
                         ? new OrderStatusIbsMock(c.Resolve<IOrderDao>(), c.Resolve<OrderStatusUpdater>(), configManager) 
                         : new OrderStatusHelper(c.Resolve<IOrderDao>(), configManager);
+                }));
+
+            container.RegisterType<IPaymentService>(
+                new TransientLifetimeManager(),
+                new InjectionFactory(c =>
+                {
+                    var configManager = c.Resolve<IConfigurationManager>();
+                    switch (configManager.GetPaymentSettings().PaymentMode)
+                    {
+                        case PaymentMethod.Braintree:
+                            return new BraintreePaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), configManager);
+                        case PaymentMethod.RideLinqCmt:
+                        case PaymentMethod.Cmt:
+                            return new CmtPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), configManager);
+                        case PaymentMethod.Moneris:
+                            return new MonerisPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), configManager);
+                        default:
+                            return null;
+                    }
                 }));
         }
 
