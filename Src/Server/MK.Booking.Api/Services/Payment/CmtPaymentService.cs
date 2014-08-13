@@ -426,35 +426,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        public void Post(CallbackRequest request)
-        {
-            try
-            {
-                if (request == null) throw new Exception("Received callback but couldn't cast to CallbackRequest/Trip");
-
-                if (request.Type == "TRIP")
-                {
-                    // this is the end of trip event
-                    var orderPairingDetail = _orderDao.FindOrderPairingById(request.OrderId);
-
-                    // since we're receiving the amount by CMT which are integers, we have to divide by 100 to get
-                    // decimal amounts that will be multiplied by 100 in PreAuthorizeAndCommitPayment()
-                    PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
-                    {
-                        OrderId = request.OrderId,
-                        Amount = (request.Fare + request.Tip) / 100,
-                        MeterAmount = request.Fare / 100,
-                        TipAmount = request.Tip / 100,
-                        CardToken = orderPairingDetail.TokenOfCardToBeUsedForPayment
-                    });
-                }
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e);
-            }
-        }
-
         private Trip GetTrip(string pairingToken)
         {
             try
