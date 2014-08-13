@@ -221,7 +221,8 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqConfirmPairViewModel.cs" />
+    <Compile Include="ViewModels\Payment\ConfirmPairViewModel.cs" />
+    <Compile Include="ViewModels\Payment\PairingState.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="ViewModels\TutorialViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
@@ -264,7 +265,6 @@
     <Compile Include="AppServices\Impl\TermsAndConditionsService.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="Messages\AppActivated.cs" />
-    <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqPairingState.cs" />
     <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
     <Compile Include="AppServices\Impl\VehicleService.cs" />
     <Compile Include="AppServices\IVehicleService.cs" />

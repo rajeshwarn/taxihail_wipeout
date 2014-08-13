@@ -1,6 +1,6 @@
 namespace apcurium.MK.Booking.Mobile
 {
-	public static class CmtRideLinqPairingState
+	public static class PairingState
     {
 		public const string Canceled = "Canceled";
 		public const string Failed = "Failed";

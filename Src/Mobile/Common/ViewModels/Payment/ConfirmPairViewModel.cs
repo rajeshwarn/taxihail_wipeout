@@ -9,11 +9,11 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {
-	public class CmtRideLinqConfirmPairViewModel : PageViewModel
+	public class ConfirmPairViewModel : PageViewModel
 	{
 		private readonly IPaymentService _paymentService;
 
-		public CmtRideLinqConfirmPairViewModel(IPaymentService paymentService)
+		public ConfirmPairViewModel(IPaymentService paymentService)
 		{
 			_paymentService = paymentService;
 		}
@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 
 						var pairingResponse = await _paymentService.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip, null);                    
 
-							this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id, pairingResponse.IsSuccessfull ? CmtRideLinqPairingState.Success : CmtRideLinqPairingState.Failed);
+							this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id, pairingResponse.IsSuccessfull ? PairingState.Success : PairingState.Failed);
 
 							if(!pairingResponse.IsSuccessfull)
 							{
@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 			{
 				return this.GetCommand(() =>
 					{
-						this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id, CmtRideLinqPairingState.Canceled);
+						this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id, PairingState.Canceled);
 						Close(this);                
 					});
 			}

@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile
                 {
                     if (isPairingNotification)
                     {
-                        ShowViewModel<CmtRideLinqConfirmPairViewModel>(new
+                        ShowViewModel<ConfirmPairViewModel>(new
                         {
                             order = order.ToJson(),
                             orderStatus = orderStatus.ToJson()
