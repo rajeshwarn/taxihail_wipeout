@@ -64,7 +64,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					_orderWorkflowService.SetPickupDate(date);
 					try
 					{
-						await _orderWorkflowService.ValidatePickupDestinationAndTime();
+						await _orderWorkflowService.ValidatePickupAndDestination();
+						await _orderWorkflowService.ValidatePickupTime();
 					}
 					catch (OrderValidationException e)
 					{
@@ -101,81 +102,83 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				 
-
-					return this.GetCommand (async () => {
-						try {
-									
-							var canBeConfirmed = await _orderWorkflowService.GetAndObserveOrderCanBeConfirmed ().Take (1).ToTask ();
-							if (!canBeConfirmed) {
-								return;
-							}
-							
-							_orderWorkflowService.BeginCreateOrder ();
-
-
-							if (await _orderWorkflowService.ShouldGoToAccountNumberFlow ()) {
-								var hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions ();
-								if (!hasValidAccountNumber) {
-									var accountNumber = await this.Services ().Message.ShowPromptDialog (
-										                    this.Services ().Localize ["AccountPaymentNumberRequiredTitle"], 
-										                    this.Services ().Localize ["AccountPaymentNumberRequiredMessage"], 
-										                    () => {
-											return;
-										});
-
-									hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions (accountNumber);
-									if (!hasValidAccountNumber) {
-										await this.Services ().Message.ShowMessage (
-											this.Services ().Localize ["Error_AccountPaymentTitle"], 
-											this.Services ().Localize ["Error_AccountPaymentMessage"]);
-										return;
-									}
-
-									await _orderWorkflowService.SetAccountNumber (accountNumber);
-								}
-
-								PresentationStateRequested.Raise (this, new HomeViewModelStateRequestedEventArgs (HomeViewModelState.Initial, true));
-								ShowViewModel<InitializeOrderForAccountPaymentViewModel> ();
-							} else {
-								using (this.Services ().Message.ShowProgress ()) {
-									var result = await _orderWorkflowService.ConfirmOrder ();
-									PresentationStateRequested.Raise (this, new HomeViewModelStateRequestedEventArgs (HomeViewModelState.Initial, true));
-									ShowViewModel<BookingStatusViewModel> (new
-									{
-										order = result.Item1.ToJson (),
-										orderStatus = result.Item2.ToJson ()
-									});
-								}
-							}
-						} catch (OrderCreationException e) {
-							Logger.LogError (e);
-
-							var settings = this.Services ().Settings;
-							var title = this.Services ().Localize ["ErrorCreatingOrderTitle"];
-
-							if (!Settings.HideCallDispatchButton) {
-								this.Services ().Message.ShowMessage (title,
-									e.Message,
-									"Call",
-									() => _phone.MakePhoneCall (settings.ApplicationName, settings.DefaultPhoneNumber),
-									"Cancel",
-									delegate {
-									});
-							} else {
-								this.Services ().Message.ShowMessage (title, e.MessageNoCall);
-							}
-						} catch (Exception e) {
-							Logger.LogError (e);
-						} finally {
-
-								
-							_orderWorkflowService.EndCreateOrder ();
+				return this.GetCommand (async () => 
+				{
+					try 
+					{
+						var canBeConfirmed = await _orderWorkflowService.GetAndObserveOrderCanBeConfirmed ().Take (1).ToTask ();
+						if (!canBeConfirmed) 
+						{
+							return;
 						}
+						
+						_orderWorkflowService.BeginCreateOrder ();
 
+						if (await _orderWorkflowService.ShouldGoToAccountNumberFlow ()) 
+						{
+							var hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions ();
+							if (!hasValidAccountNumber) 
+							{
+								var accountNumber = await this.Services ().Message.ShowPromptDialog (
+									                    this.Services ().Localize ["AccountPaymentNumberRequiredTitle"], 
+									                    this.Services ().Localize ["AccountPaymentNumberRequiredMessage"], 
+									                    () => { return; });
 
-					});
-				 
+								hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions (accountNumber);
+								if (!hasValidAccountNumber) 
+								{
+									await this.Services ().Message.ShowMessage (
+										this.Services ().Localize ["Error_AccountPaymentTitle"], 
+										this.Services ().Localize ["Error_AccountPaymentMessage"]);
+									return;
+								}
+
+								await _orderWorkflowService.SetAccountNumber (accountNumber);
+							}
+
+							PresentationStateRequested.Raise (this, new HomeViewModelStateRequestedEventArgs (HomeViewModelState.Initial, true));
+							ShowViewModel<InitializeOrderForAccountPaymentViewModel> ();
+						} 
+						else 
+						{
+							using (this.Services ().Message.ShowProgress ()) 
+							{
+								var result = await _orderWorkflowService.ConfirmOrder ();
+								PresentationStateRequested.Raise (this, new HomeViewModelStateRequestedEventArgs (HomeViewModelState.Initial, true));
+								ShowViewModel<BookingStatusViewModel> (new
+								{
+									order = result.Item1.ToJson (),
+									orderStatus = result.Item2.ToJson ()
+								});
+							}
+						}
+					} 
+					catch (OrderCreationException e) 
+					{
+						Logger.LogError (e);
+
+						var title = this.Services ().Localize ["ErrorCreatingOrderTitle"];
+
+						if (!Settings.HideCallDispatchButton) 
+						{
+							this.Services ().Message.ShowMessage (title, e.Message,
+								"Call", () => _phone.MakePhoneCall (Settings.ApplicationName, Settings.DefaultPhoneNumber),
+								"Cancel", () => { });
+						} 
+						else 
+						{
+							this.Services ().Message.ShowMessage (title, e.MessageNoCall);
+						}
+					} 
+					catch (Exception e) 
+					{
+						Logger.LogError (e);
+					} 
+					finally 
+					{
+						_orderWorkflowService.EndCreateOrder ();
+					}
+				});
 			}
 		}
 
@@ -183,8 +186,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-				return this.GetCommand(() => {
-                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.PickDate));
+				return this.GetCommand(async () => 
+				{
+					try
+					{
+						await _orderWorkflowService.ValidatePickupAndDestination();
+						PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.PickDate));
+					}
+					catch (OrderValidationException e)
+					{
+						switch (e.Error)
+						{
+							case OrderValidationError.OpenDestinationSelection:
+								// not really an error, but we stop the command from proceeding at this point
+								return;
+							case OrderValidationError.PickupAddressRequired:
+								this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]);
+								return;
+							case OrderValidationError.DestinationAddressRequired:
+								this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);
+								return;
+						}
+					}
                 });
             }
         }
