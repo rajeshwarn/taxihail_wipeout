@@ -17,5 +17,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             return _paymentService.PreAuthorizeAndCommitPayment(request);
         }
+
+        public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardRequest request)
+        {
+            return _paymentService.DeleteTokenizedCreditcard(request);
+        }
     }
 }

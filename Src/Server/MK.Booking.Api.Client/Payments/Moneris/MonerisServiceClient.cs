@@ -4,7 +4,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
-using apcurium.MK.Booking.Api.Contract.Requests.Payment.Moneris;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
@@ -30,7 +29,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 
 		public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard (string cardToken)
 		{
-			return Client.DeleteAsync(new DeleteTokenizedCreditcardMonerisRequest
+			return Client.DeleteAsync(new DeleteTokenizedCreditcardRequest
 			{
 				CardToken = cardToken
 			});

@@ -64,29 +64,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     GetBraintreeGateway(
                         ((ServerPaymentSettings)configManager.GetPaymentSettings()).BraintreeServerSettings);
         }
-
-        public static bool TestClient(BraintreeServerSettings settings, BraintreeClientSettings braintreeClientSettings)
-        {
-            var client = GetBraintreeGateway(settings);
-
-            var dummyCreditCard = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Braintree).Visa;
-
-            var braintreeEncrypter = new BraintreeEncrypter(braintreeClientSettings.ClientKey);
-
-            return TokenizedCreditCard(client, new TokenizeCreditCardBraintreeRequest
-            {
-                EncryptedCreditCardNumber = braintreeEncrypter.Encrypt(dummyCreditCard.Number),
-                EncryptedCvv = braintreeEncrypter.Encrypt(dummyCreditCard.AvcCvvCvv2 + ""),
-                EncryptedExpirationDate = braintreeEncrypter.Encrypt(dummyCreditCard.ExpirationDate.ToString("MM/yyyy", CultureInfo.InvariantCulture)),
-            }).IsSuccessfull;
-        }
-
+        
         public TokenizedCreditCardResponse Post(TokenizeCreditCardBraintreeRequest tokenizeRequest)
         {
             return TokenizedCreditCard(BraintreeGateway, tokenizeRequest);
         }
 
-        public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardBraintreeRequest request)
+        public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request)
         {
             BraintreeGateway.CreditCard.Delete(request.CardToken);
             return new DeleteTokenizedCreditcardResponse
@@ -261,6 +245,22 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     Message = e.Message,
                 };
             }
+        }
+
+        public static bool TestClient(BraintreeServerSettings settings, BraintreeClientSettings braintreeClientSettings)
+        {
+            var client = GetBraintreeGateway(settings);
+
+            var dummyCreditCard = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Braintree).Visa;
+
+            var braintreeEncrypter = new BraintreeEncrypter(braintreeClientSettings.ClientKey);
+
+            return TokenizedCreditCard(client, new TokenizeCreditCardBraintreeRequest
+            {
+                EncryptedCreditCardNumber = braintreeEncrypter.Encrypt(dummyCreditCard.Number),
+                EncryptedCvv = braintreeEncrypter.Encrypt(dummyCreditCard.AvcCvvCvv2 + ""),
+                EncryptedExpirationDate = braintreeEncrypter.Encrypt(dummyCreditCard.ExpirationDate.ToString("MM/yyyy", CultureInfo.InvariantCulture)),
+            }).IsSuccessfull;
         }
 
         private static TokenizedCreditCardResponse TokenizedCreditCard(BraintreeGateway client, TokenizeCreditCardBraintreeRequest tokenizeRequest)

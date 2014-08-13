@@ -65,38 +65,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 new CmtMobileServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null,  null);
         }
 
-        public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardCmtRequest request)
-        {
-            try
-            {
-                var responseTask = _cmtPaymentServiceClient.DeleteAsync(new TokenizeDeleteRequest
-                {
-                    CardToken = request.CardToken
-                });
-                responseTask.Wait();
-                var response = responseTask.Result;
-
-                return new DeleteTokenizedCreditcardResponse
-                {
-                    IsSuccessfull = response.ResponseCode == 1,
-                    Message = response.ResponseMessage
-                };
-            }
-            catch (AggregateException ex)
-            {
-                ex.Handle(x =>
-                {
-                    _logger.LogError(x);
-                    return true;
-                });
-                return new DeleteTokenizedCreditcardResponse
-                {
-                    IsSuccessfull = false,
-                    Message = ex.InnerExceptions.First().Message,
-                };
-            }
-        }
-
         public PairingResponse Post(PairingRidelinqCmtRequest request)
         {
             try
@@ -234,6 +202,38 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
+        public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request)
+        {
+            try
+            {
+                var responseTask = _cmtPaymentServiceClient.DeleteAsync(new TokenizeDeleteRequest
+                {
+                    CardToken = request.CardToken
+                });
+                responseTask.Wait();
+                var response = responseTask.Result;
+
+                return new DeleteTokenizedCreditcardResponse
+                {
+                    IsSuccessfull = response.ResponseCode == 1,
+                    Message = response.ResponseMessage
+                };
+            }
+            catch (AggregateException ex)
+            {
+                ex.Handle(x =>
+                {
+                    _logger.LogError(x);
+                    return true;
+                });
+                return new DeleteTokenizedCreditcardResponse
+                {
+                    IsSuccessfull = false,
+                    Message = ex.InnerExceptions.First().Message,
+                };
+            }
+        }
+        
         public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request)
         {
             try

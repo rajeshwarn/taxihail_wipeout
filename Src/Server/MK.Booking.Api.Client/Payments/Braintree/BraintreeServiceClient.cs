@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 
         public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
-            return Client.DeleteAsync(new DeleteTokenizedCreditcardBraintreeRequest
+            return Client.DeleteAsync(new DeleteTokenizedCreditcardRequest
             {
                 CardToken = cardToken,
             });

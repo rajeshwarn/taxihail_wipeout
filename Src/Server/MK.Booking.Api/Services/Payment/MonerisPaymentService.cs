@@ -1,10 +1,8 @@
 using System;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
-using apcurium.MK.Booking.Api.Contract.Requests.Payment.Moneris;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
@@ -49,15 +47,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _paymentDao = paymentDao;
         }
 
-        public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardMonerisRequest deleteRequest)
+        public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request)
         {
             var monerisSettings = _configurationManager.GetPaymentSettings().MonerisPaymentSettings;
 
             try
             {
-                var deleteCommand = new ResDelete(deleteRequest.CardToken);
-                var request = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, deleteCommand);
-                var receipt = request.GetReceipt();
+                var deleteCommand = new ResDelete(request.CardToken);
+                var deleteRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, deleteCommand);
+                var receipt = deleteRequest.GetReceipt();
 
                 var message = string.Empty;
                 var success = RequestSuccesful(receipt, out message);

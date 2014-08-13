@@ -6,5 +6,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     public interface IPaymentService
     {
         CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request);
+        DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request);
     }
 }
