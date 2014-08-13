@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
-            var result = await Client.DeleteAsync(new DeleteTokenizedCreditcardCmtRequest
+            var result = await Client.DeleteAsync(new DeleteTokenizedCreditcardRequest
             {
                 CardToken = cardToken
             });
@@ -54,11 +54,11 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
         public Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit(string cardToken, double amount,
             double meterAmount, double tipAmount, Guid orderId)
         {
-            return Client.PostAsync(new PreAuthorizeAndCommitPaymentCmtRequest
+            return Client.PostAsync(new PreAuthorizeAndCommitPaymentRequest
             {
-                Amount = amount,
-                MeterAmount = meterAmount,
-                TipAmount = tipAmount,
+                Amount = Convert.ToDecimal(amount),
+                MeterAmount = Convert.ToDecimal(meterAmount),
+                TipAmount = Convert.ToDecimal(tipAmount),
                 CardToken = cardToken,
                 OrderId = orderId
             });

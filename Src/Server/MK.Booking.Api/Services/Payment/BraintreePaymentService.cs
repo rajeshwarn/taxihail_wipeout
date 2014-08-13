@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Commands;
@@ -33,7 +34,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     * P: apcurium5200!
     */
 
-    public class BraintreePaymentService : Service
+    public class BraintreePaymentService : Service, IPaymentService
     {
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
@@ -42,13 +43,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly IAccountDao _accountDao;
         private readonly IOrderPaymentDao _paymentDao;
 
+        private BraintreeGateway BraintreeGateway { get; set; }
+
         public BraintreePaymentService(ICommandBus commandBus,
             IOrderDao orderDao,
             ILogger logger,
-            IConfigurationManager configurationManager,
             IIbsOrderService ibs,
             IAccountDao accountDao,
-            IOrderPaymentDao paymentDao)
+            IOrderPaymentDao paymentDao,
+            IConfigurationManager configManager)
         {
             _commandBus = commandBus;
             _orderDao = orderDao;
@@ -58,34 +61,16 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _paymentDao = paymentDao;
 
             BraintreeGateway =
-                GetBraintreeGateway(
-                    ((ServerPaymentSettings) configurationManager.GetPaymentSettings()).BraintreeServerSettings);
+                    GetBraintreeGateway(
+                        ((ServerPaymentSettings)configManager.GetPaymentSettings()).BraintreeServerSettings);
         }
-
-        private BraintreeGateway BraintreeGateway { get; set; }
-
-        public static bool TestClient(BraintreeServerSettings settings, BraintreeClientSettings braintreeClientSettings)
-        {
-            var client = GetBraintreeGateway(settings);
-
-            var dummyCreditCard = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Braintree).Visa;
-
-            var braintreeEncrypter = new BraintreeEncrypter(braintreeClientSettings.ClientKey);
-
-            return TokenizedCreditCard(client, new TokenizeCreditCardBraintreeRequest
-            {
-                EncryptedCreditCardNumber = braintreeEncrypter.Encrypt(dummyCreditCard.Number),
-                EncryptedCvv = braintreeEncrypter.Encrypt(dummyCreditCard.AvcCvvCvv2 + ""),
-                EncryptedExpirationDate = braintreeEncrypter.Encrypt(dummyCreditCard.ExpirationDate.ToString("MM/yyyy", CultureInfo.InvariantCulture)),
-            }).IsSuccessfull;
-        }
-
+        
         public TokenizedCreditCardResponse Post(TokenizeCreditCardBraintreeRequest tokenizeRequest)
         {
             return TokenizedCreditCard(BraintreeGateway, tokenizeRequest);
         }
 
-        public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardBraintreeRequest request)
+        public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request)
         {
             BraintreeGateway.CreditCard.Delete(request.CardToken);
             return new DeleteTokenizedCreditcardResponse
@@ -95,7 +80,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             };
         }
 
-        public CommitPreauthorizedPaymentResponse Post(PreAuthorizeAndCommitPaymentBraintreeRequest request)
+        public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request)
         {
             try
             {
@@ -103,14 +88,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 string message;
                 var authorizationCode = string.Empty;
 
-                var session = this.GetSession();
-                var account = _accountDao.FindById(new Guid(session.UserAuthId));
-
                 var orderDetail = _orderDao.FindById(request.OrderId);
                 if (orderDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
                 if (orderDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
-                
+
+                var account = _accountDao.FindById(orderDetail.AccountId);
+
                 //check if already a payment
                 if (_paymentDao.FindByOrderId(request.OrderId) != null)
                 {
@@ -170,20 +154,20 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         try
                         {
                             _ibs.ConfirmExternalPayment(orderDetail.Id,
-                                                            orderDetail.IBSOrderId.Value, 
-                                                            request.Amount, 
+                                                            orderDetail.IBSOrderId.Value,
+                                                            request.Amount,
                                                             request.TipAmount,
                                                             request.MeterAmount,
                                                             PaymentType.CreditCard.ToString(),
-                                                            PaymentProvider.Braintree.ToString(), 
-                                                            transactionId, 
-                                                            authorizationCode, 
-                                                            request.CardToken, 
-                                                            account.IBSAccountId, 
-                                                            orderDetail.Settings.Name, 
-                                                            orderDetail.Settings.Phone, 
-                                                            account.Email, 
-                                                            orderDetail.UserAgent.GetOperatingSystem(), 
+                                                            PaymentProvider.Braintree.ToString(),
+                                                            transactionId,
+                                                            authorizationCode,
+                                                            request.CardToken,
+                                                            account.IBSAccountId,
+                                                            orderDetail.Settings.Name,
+                                                            orderDetail.Settings.Phone,
+                                                            account.Email,
+                                                            orderDetail.UserAgent.GetOperatingSystem(),
                                                             orderDetail.UserAgent);
                         }
                         catch (Exception e)
@@ -217,7 +201,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                                             : string.Format("transaction {0} status unkonw, can't cancel it", transactionId));
                                 }
 
-								message = message + " The transaction has been cancelled.";
+                                message = message + " The transaction has been cancelled.";
                             }
                             catch (Exception ex)
                             {
@@ -263,10 +247,23 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        
+        public static bool TestClient(BraintreeServerSettings settings, BraintreeClientSettings braintreeClientSettings)
+        {
+            var client = GetBraintreeGateway(settings);
 
-        private static TokenizedCreditCardResponse TokenizedCreditCard(BraintreeGateway client,
-            TokenizeCreditCardBraintreeRequest tokenizeRequest)
+            var dummyCreditCard = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Braintree).Visa;
+
+            var braintreeEncrypter = new BraintreeEncrypter(braintreeClientSettings.ClientKey);
+
+            return TokenizedCreditCard(client, new TokenizeCreditCardBraintreeRequest
+            {
+                EncryptedCreditCardNumber = braintreeEncrypter.Encrypt(dummyCreditCard.Number),
+                EncryptedCvv = braintreeEncrypter.Encrypt(dummyCreditCard.AvcCvvCvv2 + ""),
+                EncryptedExpirationDate = braintreeEncrypter.Encrypt(dummyCreditCard.ExpirationDate.ToString("MM/yyyy", CultureInfo.InvariantCulture)),
+            }).IsSuccessfull;
+        }
+
+        private static TokenizedCreditCardResponse TokenizedCreditCard(BraintreeGateway client, TokenizeCreditCardBraintreeRequest tokenizeRequest)
         {
             var request = new CustomerRequest
             {
