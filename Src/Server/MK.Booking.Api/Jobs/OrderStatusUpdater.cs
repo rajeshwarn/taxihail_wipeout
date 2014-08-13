@@ -56,15 +56,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                 ibsStatus.Tip = Math.Round(ibsStatus.Fare * (tip), 2);
             }
 
-            var command = new ChangeOrderStatus
-            {
-                Status = order,
-                Fare = ibsStatus.Fare,
-                Toll = ibsStatus.Toll,
-                Tip = ibsStatus.Tip,
-                Tax = ibsStatus.VAT,
-            };
-
             ibsStatus.Update(order);
 
             string description = null;
@@ -118,8 +109,14 @@ namespace apcurium.MK.Booking.Api.Jobs
                                              ? description
                                              : _resources.Get("OrderStatus_" + ibsStatus.Status, languageCode);
 
-
-            _commandBus.Send(command);
+            _commandBus.Send(new ChangeOrderStatus
+            {
+                Status = order,
+                Fare = ibsStatus.Fare,
+                Toll = ibsStatus.Toll,
+                Tip = ibsStatus.Tip,
+                Tax = ibsStatus.VAT,
+            });
         }
 
         private string FormatPrice(double? price)

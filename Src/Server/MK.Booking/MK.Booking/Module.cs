@@ -42,7 +42,6 @@ namespace apcurium.MK.Booking
                 new InjectionConstructor(
                     container.Resolve<ConnectionStringSettings>(Common.Module.MkConnectionString).ConnectionString));
 
-
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
@@ -71,7 +70,6 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
             container.RegisterInstance<IPushNotificationService>(
                 new PushNotificationService(container.Resolve<IConfigurationManager>(), container.Resolve<ILogger>()));
-
 
             RegisterMaps();
             RegisterCommandHandlers(container);

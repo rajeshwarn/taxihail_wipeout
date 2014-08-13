@@ -95,8 +95,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             };
         }
 
-        
-
         public CommitPreauthorizedPaymentResponse Post(PreAuthorizeAndCommitPaymentBraintreeRequest request)
         {
             try
