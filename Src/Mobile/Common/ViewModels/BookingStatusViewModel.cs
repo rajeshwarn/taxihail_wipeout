@@ -304,7 +304,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if (isLoaded && Settings.AutomaticPayment && _accountService.CurrentAccount.DefaultCreditCard != null)
 					{
 						var isPaired = _bookingService.IsPaired(Order.Id);
-                        var pairState = this.Services().Cache.Get<string>("CmtRideLinqPairState" + Order.Id);
+                        var pairState = this.Services().Cache.Get<string>("PairState" + Order.Id);
 						var isPairBypass = (pairState == PairingState.Failed) || (pairState == PairingState.Canceled) || (pairState == PairingState.Unpaired);
 						if (!isPaired && !_isCurrentlyPairing && !isPairBypass)
 						{
@@ -545,7 +545,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 							if(response.IsSuccessfull)
 							{
-								this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id, PairingState.Unpaired);
+								this.Services().Cache.Set("PairState" + Order.Id, PairingState.Unpaired);
 								RefreshStatus();
 							}
 							else

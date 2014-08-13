@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 
 						var pairingResponse = await _paymentService.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip, null);                    
 
-							this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id, pairingResponse.IsSuccessfull ? PairingState.Success : PairingState.Failed);
+							this.Services().Cache.Set("PairState" + Order.Id, pairingResponse.IsSuccessfull ? PairingState.Success : PairingState.Failed);
 
 							if(!pairingResponse.IsSuccessfull)
 							{
@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 			{
 				return this.GetCommand(() =>
 					{
-						this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id, PairingState.Canceled);
+						this.Services().Cache.Set("PairState" + Order.Id, PairingState.Canceled);
 						Close(this);                
 					});
 			}
