@@ -77,7 +77,7 @@
    "Client.DisabledTutorialSlides" : "",
    "Client.SMSConfirmationEnabled" :"false",
    "Client.DisableChargeTypeWhenCardOnFile" : "false",
-   "Client.VehicleEstimateEnabled" : "false",
+   "Client.VehicleEstimateEnabled" : "true",
    "SMSFromNumber" :"",
    "SMSAccountSid" : "",
    "SMSAuthToken" : "",

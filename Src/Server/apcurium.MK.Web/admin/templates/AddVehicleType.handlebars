@@ -33,7 +33,11 @@
             <label class="control-label">{{localize 'Associated Reference Data Type'}}</label>
             <select name="referenceDataVehicleId">
                 {{#each availableVehicles}}
-                <option value="{{id}}">{{display}}</option>
+                {{#ifCond this.id ../referenceDataVehicleId}}
+                  <option value="{{id}}" selected>{{display}}</option>
+                {{else}}
+                  <option value="{{id}}">{{display}}</option>
+                {{/ifCond}}
                 {{/each}}
             </select>
         </div>
