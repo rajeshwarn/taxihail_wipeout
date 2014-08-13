@@ -23,12 +23,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
 			DensityHelper.OutputToConsole();
 
-			if (Intent.Extras != null && Intent.Extras.ContainsKey("orderId"))
-			{
-                this._params = new Dictionary<string, string>
-					{
-						{"orderId", Intent.Extras.GetString("orderId")}
-					};
+            if (Intent.Extras != null)
+            {
+                _params = new Dictionary<string, string>();
+
+                if (Intent.Extras.ContainsKey("orderId"))
+                {
+                    _params.Add("orderId", Intent.Extras.GetString("orderId"));
+                }
+                if (Intent.Extras.ContainsKey("isPairingNotification"))
+                {
+                    _params.Add("isPairingNotification", Intent.Extras.GetString("isPairingNotification"));
+                }
             }
         }
 

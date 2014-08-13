@@ -691,6 +691,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please confirm vehicle to pay with card on file..
+        /// </summary>
+        public static string PushNotification_wosLOADED {
+            get {
+                return ResourceManager.GetString("PushNotification_wosLOADED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry no cars are available due to high demand, please try later..
         /// </summary>
         public static string PushNotification_wosTIMEOUT {
