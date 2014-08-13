@@ -42,19 +42,31 @@ namespace apcurium.MK.Booking.Api
             container.RegisterType<IIbsOrderService, IbsOrderService>();
 
             container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
-            var mockIbsStatusUpdate = bool.Parse(container
-                .Resolve<IConfigurationManager>()
-                .GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
-            if (mockIbsStatusUpdate)
-            {
-                container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJobStub>();
-                container.RegisterType<OrderStatusHelper, OrderStatusIbsMock>();
-            }
-            else
-            {
-                container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJob>();
-                container.RegisterType<OrderStatusHelper, OrderStatusHelper>();
-            }
+
+            container.RegisterType<IUpdateOrderStatusJob>(
+                new TransientLifetimeManager(),
+                new InjectionFactory(c =>
+                {
+                    var configManager = c.Resolve<IConfigurationManager>();
+                    var mockIbsStatusUpdate = bool.Parse(configManager.GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
+                    if (mockIbsStatusUpdate)
+                    {
+                        return new UpdateOrderStatusJobStub();
+                    }
+                    
+                    return new UpdateOrderStatusJob(c.Resolve<IOrderDao>(), c.Resolve<IBookingWebServiceClient>(), c.Resolve<IOrderStatusUpdateDao>(), configManager, c.Resolve<OrderStatusUpdater>());
+                }));
+
+            container.RegisterType<OrderStatusHelper>(
+                new TransientLifetimeManager(),
+                new InjectionFactory(c =>
+                {
+                    var configManager = c.Resolve<IConfigurationManager>();
+                    var mockIbsStatusUpdate = bool.Parse(configManager.GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
+                    return mockIbsStatusUpdate 
+                        ? new OrderStatusIbsMock(c.Resolve<IOrderDao>(), c.Resolve<OrderStatusUpdater>(), configManager) 
+                        : new OrderStatusHelper(c.Resolve<IOrderDao>(), configManager);
+                }));
         }
 
 
