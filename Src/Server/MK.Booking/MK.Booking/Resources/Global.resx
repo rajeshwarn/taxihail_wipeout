@@ -177,6 +177,12 @@
   <data name="PaymentConfirmationToDriver2" xml:space="preserve">
     <value>Auth #{0}</value>
   </data>
+  <data name="PairingConfirmationToDriver" xml:space="preserve">
+    <value>The client will be charged automatically at the end of the ride</value>
+  </data>
+  <data name="UnpairingConfirmationToDriver" xml:space="preserve">
+    <value>WARNING: The client will NOT be charged at the end of the ride</value>
+  </data>
   <data name="Email_Subject_AccountConfirmation" xml:space="preserve">
     <value>Welcome to {{ ApplicationName }}</value>
   </data>

@@ -16,9 +16,12 @@ using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
@@ -35,7 +38,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
         private readonly IAccountDao _accountDao;
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IConfigurationManager _configManager;
         private readonly ILogger _logger;
         private readonly IIbsOrderService _ibs;
         private readonly IOrderPaymentDao _orderPaymentDao;
@@ -48,20 +51,68 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             IIbsOrderService ibs,
             IAccountDao accountDao, 
             IOrderPaymentDao orderPaymentDao,
-            IConfigurationManager configurationManager)
+            IConfigurationManager configManager)
         {
             _commandBus = commandBus;
             _orderDao = orderDao;
-            _accountDao = accountDao;
-            _configurationManager = configurationManager;
             _logger = logger;
             _ibs = ibs;
+            _accountDao = accountDao;
             _orderPaymentDao = orderPaymentDao;
+            _configManager = configManager;
 
             _cmtPaymentServiceClient =
-                new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null, null, logger);
+                new CmtPaymentServiceClient(configManager.GetPaymentSettings().CmtPaymentSettings, null, null, logger);
             _cmtMobileServiceClient =
-                new CmtMobileServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null,  null);
+                new CmtMobileServiceClient(configManager.GetPaymentSettings().CmtPaymentSettings, null,  null);
+        }
+
+        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, PairingForPaymentRequest request)
+        {
+            var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
+
+            // send pairing request                                
+            var cmtPaymentSettings = _configManager.GetPaymentSettings().CmtPaymentSettings;
+            var pairingRequest = new PairingRequest
+            {
+                AutoTipAmount = request.AutoTipAmount,
+                AutoTipPercentage = request.AutoTipPercentage,
+                AutoCompletePayment = true,
+                CallbackUrl = "",
+                CustomerId = orderStatusDetail.IBSOrderId.ToString(),
+                CustomerName = accountDetail.Name,
+                DriverId = orderStatusDetail.DriverInfos.DriverId,
+                Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
+                Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
+                Medallion = orderStatusDetail.VehicleNumber,
+                CardOnFileId = request.CardToken,
+                Market = cmtPaymentSettings.Market
+            };
+
+            _logger.LogMessage("Pairing request : " + pairingRequest.ToJson());
+            _logger.LogMessage("PaymentSettings request : " + cmtPaymentSettings.ToJson());
+
+            var response = _cmtMobileServiceClient.Post(pairingRequest);
+
+            _logger.LogMessage("Pairing response : " + response.ToJson());
+
+            // wait for trip to be updated
+            var watch = new Stopwatch();
+            watch.Start();
+            var trip = GetTrip(response.PairingToken);
+            while (trip == null)
+            {
+                Thread.Sleep(2000);
+                trip = GetTrip(response.PairingToken);
+
+                if (watch.Elapsed.TotalSeconds >= response.TimeoutSeconds)
+                {
+                    _logger.LogMessage("Timeout Exception, Could not be paired with vehicle.");
+                    throw new TimeoutException("Could not be paired with vehicle");
+                }
+            }
+
+            return response;
         }
 
         public PairingResponse Pair(PairingForPaymentRequest request)
@@ -73,57 +124,44 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 if (orderStatusDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
 
-                var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
-
-                // send pairing request                                
-                var cmtPaymentSettings = _configurationManager.GetPaymentSettings().CmtPaymentSettings;
-                var pairingRequest = new PairingRequest
+                if (_configManager.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
                 {
-                    AutoTipAmount = request.AutoTipAmount,
-                    AutoTipPercentage = request.AutoTipPercentage,
-                    AutoCompletePayment = true,
-                    CallbackUrl = "",
-                    CustomerId = orderStatusDetail.IBSOrderId.ToString(),
-                    CustomerName = accountDetail.Name,
-                    DriverId = orderStatusDetail.DriverInfos.DriverId,
-                    Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
-                    Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
-                    Medallion = orderStatusDetail.VehicleNumber,
-                    CardOnFileId = request.CardToken,
-                    Market = cmtPaymentSettings.Market
-                };
+                    var response = PairWithVehicleUsingRideLinq(orderStatusDetail, request);
 
-                _logger.LogMessage("Pairing request : " + pairingRequest.ToJson());
-                _logger.LogMessage("PaymentSettings request : " + cmtPaymentSettings.ToJson());
-
-                var response = _cmtMobileServiceClient.Post(pairingRequest);
-
-                _logger.LogMessage("Pairing response : " + response.ToJson());
-
-                // wait for trip to be updated
-                var watch = new Stopwatch();
-                watch.Start();
-                var trip = GetTrip(response.PairingToken);
-                while (trip == null)
-                {
-                    Thread.Sleep(2000);
-                    trip = GetTrip(response.PairingToken);
-
-                    if (watch.Elapsed.TotalSeconds >= response.TimeoutSeconds)
+                    // send a command to save the pairing state for this order
+                    _commandBus.Send(new PairForPayment
                     {
-                        _logger.LogMessage("Timeout Exception, Could not be paired with vehicle.");
-                        throw new TimeoutException("Could not be paired with vehicle");
-                    }
+                        OrderId = request.OrderId,
+                        Medallion = response.Medallion,
+                        DriverId = response.DriverId.ToString(),
+                        PairingToken = response.PairingToken,
+                        PairingCode = response.PairingCode,
+                        TokenOfCardToBeUsedForPayment = request.CardToken,
+                        AutoTipAmount = request.AutoTipAmount,
+                        AutoTipPercentage = request.AutoTipPercentage
+                    });
+
+                    return new PairingResponse
+                    {
+                        IsSuccessfull = true,
+                        Message = "Success",
+                        PairingToken = response.PairingToken,
+                        PairingCode = response.PairingCode,
+                        Medallion = response.Medallion,
+                        TripId = response.TripId,
+                        DriverId = response.DriverId
+                    };
                 }
+
+                // TODO send a message to driver or find a way to check if communication works?
+                _ibs.SendMessageToDriver(
+                    new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"))
+                        .Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
 
                 // send a command to save the pairing state for this order
                 _commandBus.Send(new PairForPayment
                 {
                     OrderId = request.OrderId,
-                    Medallion = response.Medallion,
-                    DriverId = response.DriverId.ToString(),
-                    PairingToken = response.PairingToken,
-                    PairingCode = response.PairingCode,
                     TokenOfCardToBeUsedForPayment = request.CardToken,
                     AutoTipAmount = request.AutoTipAmount,
                     AutoTipPercentage = request.AutoTipPercentage
@@ -132,12 +170,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 return new PairingResponse
                 {
                     IsSuccessfull = true,
-                    Message = "Success",
-                    PairingToken = response.PairingToken,
-                    PairingCode = response.PairingCode,
-                    Medallion = response.Medallion,
-                    TripId = response.TripId,
-                    DriverId = response.DriverId
+                    Message = "Success"
                 };
             }
             catch (Exception e)
@@ -266,7 +299,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>(); //?
                 var employeeId = orderStatus.DriverInfos == null ? "" : orderStatus.DriverInfos.DriverId; //?
                 var tripId = orderStatus.IBSOrderId.Value; //?
-                var fleetToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.FleetToken;
+                var fleetToken = _configManager.GetPaymentSettings().CmtPaymentSettings.FleetToken;
                 var customerReferenceNumber = orderStatus.ReferenceNumber.HasValue() ?
                                                     orderStatus.ReferenceNumber :
                                                     orderDetail.IBSOrderId.ToString();

@@ -30,10 +30,17 @@ namespace apcurium.MK.Booking.Api.Payment
 
         public void SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId)
         {
-
             if ( !_client.SendPaymentNotification(message, vehicleNumber, ibsOrderId) )
             {
 				throw new Exception("Cannot send the payment notification.");
+            }
+        }
+
+        public void SendMessageToDriver(string message, string vehicleNumber)
+        {
+            if (!_client.SendMessageToDriver(message, vehicleNumber))
+            {
+                throw new Exception("Cannot send message to driver.");
             }
         }
     }

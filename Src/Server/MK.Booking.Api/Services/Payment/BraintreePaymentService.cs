@@ -28,12 +28,6 @@ using Environment = Braintree.Environment;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
-    /*
-    * Braintree Creds:
-    * U: apcurium
-    * P: apcurium5200!
-    */
-
     public class BraintreePaymentService : Service, IPaymentService
     {
         private readonly ICommandBus _commandBus;
@@ -42,6 +36,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly IIbsOrderService _ibs;
         private readonly IAccountDao _accountDao;
         private readonly IOrderPaymentDao _paymentDao;
+        private readonly IConfigurationManager _configManager;
 
         private BraintreeGateway BraintreeGateway { get; set; }
 
@@ -59,6 +54,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _ibs = ibs;
             _accountDao = accountDao;
             _paymentDao = paymentDao;
+            _configManager = configManager;
 
             BraintreeGateway =
                     GetBraintreeGateway(
@@ -72,7 +68,42 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public PairingResponse Pair(PairingForPaymentRequest request)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
+                if (orderStatusDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
+                if (orderStatusDetail.IBSOrderId == null)
+                    throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
+
+                // TODO send a message to driver or find a way to check if communication works?
+                _ibs.SendMessageToDriver(
+                    new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"))
+                    .Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
+
+                // send a command to save the pairing state for this order
+                _commandBus.Send(new PairForPayment
+                {
+                    OrderId = request.OrderId,
+                    TokenOfCardToBeUsedForPayment = request.CardToken,
+                    AutoTipAmount = request.AutoTipAmount,
+                    AutoTipPercentage = request.AutoTipPercentage
+                });
+
+                return new PairingResponse
+                {
+                    IsSuccessfull = true,
+                    Message = "Success"
+                };
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e);
+                return new PairingResponse
+                {
+                    IsSuccessfull = false,
+                    Message = e.Message
+                };
+            }
         }
 
         public BasePaymentResponse Unpair(UnpairingForPaymentRequest request)

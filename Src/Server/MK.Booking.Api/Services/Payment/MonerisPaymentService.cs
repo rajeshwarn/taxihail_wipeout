@@ -1,3 +1,5 @@
+#region
+
 using System;
 using System.Linq;
 using System.Net;
@@ -16,6 +18,8 @@ using Moneris;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 
+#endregion
+
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
     public class MonerisPaymentService : Service, IPaymentService
@@ -23,7 +27,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
         private readonly ILogger _logger;
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IConfigurationManager _configManager;
         private readonly IIbsOrderService _ibs;
         private readonly IAccountDao _accountDao;
         private readonly IOrderPaymentDao _paymentDao;
@@ -36,20 +40,56 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             IIbsOrderService ibs,
             IAccountDao accountDao,
             IOrderPaymentDao paymentDao,
-            IConfigurationManager configurationManager)
+            IConfigurationManager configManager)
         {
             _commandBus = commandBus;
             _orderDao = orderDao;
             _logger = logger;
-            _configurationManager = configurationManager;
+            
             _ibs = ibs;
             _accountDao = accountDao;
             _paymentDao = paymentDao;
+            _configManager = configManager;
         }
 
         public PairingResponse Pair(PairingForPaymentRequest request)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
+                if (orderStatusDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
+                if (orderStatusDetail.IBSOrderId == null)
+                    throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
+
+                // TODO send a message to driver or find a way to check if communication works?
+                _ibs.SendMessageToDriver(
+                    new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"))
+                    .Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
+
+                // send a command to save the pairing state for this order
+                _commandBus.Send(new PairForPayment
+                {
+                    OrderId = request.OrderId,
+                    TokenOfCardToBeUsedForPayment = request.CardToken,
+                    AutoTipAmount = request.AutoTipAmount,
+                    AutoTipPercentage = request.AutoTipPercentage
+                });
+
+                return new PairingResponse
+                {
+                    IsSuccessfull = true,
+                    Message = "Success"
+                };
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e);
+                return new PairingResponse
+                {
+                    IsSuccessfull = false,
+                    Message = e.Message
+                };
+            }
         }
 
         public BasePaymentResponse Unpair(UnpairingForPaymentRequest request)
@@ -59,7 +99,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request)
         {
-            var monerisSettings = _configurationManager.GetPaymentSettings().MonerisPaymentSettings;
+            var monerisSettings = _configManager.GetPaymentSettings().MonerisPaymentSettings;
 
             try
             {
@@ -118,7 +158,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     };
                 }
 
-                var monerisSettings = _configurationManager.GetPaymentSettings().MonerisPaymentSettings;
+                var monerisSettings = _configManager.GetPaymentSettings().MonerisPaymentSettings;
 
                 // PreAuthorize transaction
                 var preAuthorizeCommand = new ResPreauthCC(request.CardToken, request.OrderId.ToString(), request.Amount.ToString("F"), CryptType_SSLEnabledMerchant);
