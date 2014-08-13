@@ -33,7 +33,7 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
-    public class CmtPaymentService : Service, IPaymentService
+    public class CmtPaymentService : IPaymentService
     {
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;

@@ -22,7 +22,7 @@ using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
-    public class MonerisPaymentService : Service, IPaymentService
+    public class MonerisPaymentService : IPaymentService
     {
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
