@@ -587,7 +587,7 @@ namespace DatabaseInitializer
                 commandBus.Send(new AddUpdateVehicleType
                 {
                     VehicleTypeId = Guid.NewGuid(),
-                    Name = string.Format("{0} vehicle", vehicle.Display),
+                    Name = string.Format("{0}", vehicle.Display),
                     LogoName = "taxi",
                     ReferenceDataVehicleId = vehicle.Id ?? -1,
                     CompanyId = AppConstants.CompanyId

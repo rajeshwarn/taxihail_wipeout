@@ -7,6 +7,7 @@ using System.Threading;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using ServiceStack.Text;
@@ -39,11 +40,12 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 var radius = ConfigManager.GetSetting("AvailableVehicles.Radius", 2000);
                 var count = ConfigManager.GetSetting("AvailableVehicles.Count", 10);
+                var vehicle = _staticDataWebServiceClient.GetVehicleTypeItemById(vehicleTypeId);
 
                 UseService(service =>
                 {
                     result = service
-                        .GetAvailableVehicles(UserNameApp, PasswordApp, longitude, latitude, radius, count)
+                        .GetAvailableVehicles_4(UserNameApp, PasswordApp, longitude, latitude, radius, count, false, new []{ vehicle })
                         .Select(Mapper.Map<IbsVehiclePosition>)
                         .ToArray();
                 });
@@ -51,7 +53,6 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             return result;
         }
-
 
         public IbsOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone)
         {

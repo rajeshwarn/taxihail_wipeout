@@ -81,7 +81,6 @@ namespace apcurium.MK.Booking.IBS
             Eta = orderInfoFromIBS.ETATime.ToDateTime();
         }
 
-
         public void Update(OrderStatusDetail orderStatusDetail)
         {
             orderStatusDetail.IBSStatusId = Status;

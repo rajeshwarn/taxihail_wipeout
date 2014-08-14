@@ -4966,7 +4966,9 @@ public partial class TOrderStatus_2 : TOrderStatus {
     private string referenceNumberField;
     
     private string terminalIdField;
-    
+
+    public double VAT { get; set; }
+
     /// <remarks/>
     public string CallNumber {
         get {
@@ -5040,7 +5042,9 @@ public partial class TBookOrderList_7 {
 public partial class TBookOrder_7 : TBookOrder_6 {
     
     private double tipsField;
-    
+
+    public double VAT { get; set; }
+
     /// <remarks/>
     public double Tips {
         get {
