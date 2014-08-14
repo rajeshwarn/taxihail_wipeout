@@ -57,10 +57,10 @@
             TaxiHail.parameters.isEstimateEnabled = <%: EstimateEnabled %>;
             TaxiHail.parameters.isEstimateWarningEnabled = <%: EstimateWarningEnabled %>;
             TaxiHail.parameters.isDestinationRequired = <%: DestinationIsRequired %>;
+            TaxiHail.parameters.disableFutureBooking = <%: DisableFutureBooking %>;
             TaxiHail.parameters.showPassengerNumber = <%: ShowPassengerNumber ? "true" : "false" %>;
             TaxiHail.parameters.directionTarifMode = "<%: DirectionTarifMode %>";
             TaxiHail.parameters.directionNeedAValidTarif = <%: DirectionNeedAValidTarif ? "true" : "false" %>;
-            TaxiHail.parameters.accountChargeTypeId = '<%: AccountChargeTypeId %>';
             TaxiHail.parameters.apiRoot = "api";
 
             TaxiHail.referenceData = <%= ReferenceData %>;
@@ -68,6 +68,17 @@
         </script>
 
         <%: Scripts.Render("~/bundles/app") %>
+        
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-44714416-2', 'auto');
+            ga('send', 'pageview');
+
+        </script>
 
     </body>
 </html>

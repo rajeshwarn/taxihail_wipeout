@@ -105,7 +105,7 @@
   <string name="CreditCard">Carte de paiement</string>
   <string name="CreditCardCategory">Catégorie</string>
   <string name="CreditCardCCV">Code sécurité</string>
-  <string name="CreditCardErrorTitle">Cette carte ne peut être ajoutée</string>
+  <string name="CreditCardErrorTitle">Cette carte ne peut être sauvegardée</string>
   <string name="CreditCardExpMonth">Date d\'expiration (mois)</string>
   <string name="CreditCardExpYear">Date d\'expiration (année)</string>
   <string name="CreditCardInstructions">Afin d\'utiliser l\'application, vous devez ajouter une carte de crédit à votre compte.</string>
@@ -295,7 +295,7 @@
   <string name="PickupTimeTextPlaceholder">Heure: maintenant</string>
   <string name="PickupViewDestinationLabel">Destination &gt;&gt;</string>
   <string name="PickupViewPickupLabel">Départ:</string>
-  <string name="RateRide">Calculer le prix du trajet</string>
+  <string name="RateRide">Évaluer la course</string>
   <string name="Rebook">Réinitialiser le trajet</string>
   <string name="ReceiptSent">Facture envoyée</string>
   <string name="RefineAddressTitle">Affiner l\'adresse</string>
@@ -439,7 +439,6 @@
   <string name="View_BookSettingMenu">Paramètres</string>
   <string name="View_ConfirmCarNumber">Confirmation</string>
   <string name="View_CreateAccount">Créer votre compte</string>
-  <string name="View_CreditCardAdd">Nouvelle carte de paiement</string>
   <string name="View_CreditCardsList">Cartes de paiement</string>
   <string name="View_History">Historique</string>
   <string name="View_HistoryDetail">Détail de la commande</string>
@@ -468,4 +467,12 @@
   <string name="WarningLocationServiceTitle">Avertissement</string>
   <string name="WarningTitle">Avertissement</string>
   <string name="YesButton">Oui</string>
+  <string name="DeleteCreditCard">Supprimer la carte associée à ce compte?</string>
+  <string name="DeleteCreditCardTitle">Supprimer la carte</string>
+  <string name="View">Voir</string>
+  <string name="ServiceErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
+  <string name="View_CreditCard">Carte de paiement</string>
+  <string name="CreditCardAdded">Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de paiement.</string>
+  <string name="PanelMenuViewPaymentInfoText">Carte de paiement</string>
+  <string name="PayInCar">Payer dans le taxi</string>
 </resources>

@@ -197,7 +197,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public bool VehicleAndEstimateBoxIsVisible
 		{
-			get { return VehicleTypes.Count() > 1 || ShowEstimate; }
+            get { return Settings.VehicleEstimateEnabled && (VehicleTypes.Count() > 1 || ShowEstimate); }
 		}
 
 		public bool ShowEstimate

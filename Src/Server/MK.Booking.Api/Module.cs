@@ -133,6 +133,8 @@ namespace apcurium.MK.Booking.Api
                 .ForMember(x => x.CreditCardId,
                     opt => opt.ResolveUsing(x => x.CreditCardId == Guid.Empty ? Guid.NewGuid() : x.CreditCardId));
 
+            Mapper.CreateMap<CreditCardRequest, UpdateCreditCard>();
+
             Mapper.CreateMap<PopularAddress, AddPopularAddress>();
             Mapper.CreateMap<PopularAddress, UpdatePopularAddress>();
         }

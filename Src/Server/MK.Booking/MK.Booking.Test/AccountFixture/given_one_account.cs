@@ -123,6 +123,19 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         }
 
         [Test]
+        public void when_account_ccs_deleted()
+        {
+            _sut.When(new DeleteAccountCreditCards
+            {
+                AccountId = _accountId
+            });
+
+            var @event = _sut.ThenHasSingle<AllCreditCardsRemoved>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+        }
+
+        [Test]
         public void when_all_ccs_deleted()
         {
             var accounts = new[] {_accountId};

@@ -18,6 +18,8 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Booking.SMS;
+using apcurium.MK.Booking.SMS.Impl;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
@@ -35,6 +37,7 @@ namespace apcurium.MK.Booking
         public void Init(IUnityContainer container)
         {
             System.Data.Entity.Database.SetInitializer<BookingDbContext>(null);
+            container.RegisterType<ISmsService, TwilioService>();
             container.RegisterType<BookingDbContext>(new TransientLifetimeManager(),
                 new InjectionConstructor(
                     container.Resolve<ConnectionStringSettings>(Common.Module.MkConnectionString).ConnectionString));
@@ -96,6 +99,8 @@ namespace apcurium.MK.Booking
             Mapper.CreateMap<TariffDetail, Tariff>();
             Mapper.CreateMap<RuleDetail, Rule>();
             Mapper.CreateMap<CreditCardAdded, CreditCardDetails>()
+                .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
+            Mapper.CreateMap<CreditCardUpdated, CreditCardDetails>()
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
 
             Mapper.CreateMap<OrderStatusDetail, OrderStatusDetail>();
@@ -161,6 +166,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<ICommandHandler, CompanyCommandHandler>("CompanyCommandHandler");
             container.RegisterType<ICommandHandler, PayPalPaymentCommandHandler>("PayPalPaymentCommandHandler");
             container.RegisterType<ICommandHandler, CreditCardPaymentCommandHandler>("CreditCardPaymentCommandHandler");
+            container.RegisterType<ICommandHandler, SmsCommandHandler>("SmsCommandHandler");
         }
     }
 }

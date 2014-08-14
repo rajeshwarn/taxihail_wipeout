@@ -30,11 +30,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
-			if (!ViewModel.ShouldDisplayCreditCards) {
-                lblCreditCard.RemoveFromSuperview();
-                txtCreditCard.RemoveFromSuperview();
-            }
-
 			if (!ViewModel.ShouldDisplayTip) {
                 lblTip.RemoveFromSuperview();
                 txtTip.RemoveFromSuperview();
@@ -46,7 +41,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblChargeType.Text = Localize.GetValue("RideSettingsChargeType");
 			lblPassword.Text = Localize.GetValue("RideSettingsPassword");
 			lblAccountNumber.Text = Localize.GetValue("RideSettingsAccountNumber");
-            lblCreditCard.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
             lblTip.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
 
             txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
@@ -80,9 +74,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.Text)
 				.To(vm => vm.VehicleTypeName);
 
-            set.Bind(txtChargeType)
-                .For(v => v.Text)
-				.To(vm => vm.ChargeTypeName);
+			set.Bind (txtChargeType)
+                .For (v => v.Text)
+				.To (vm => vm.ChargeTypeName);
+
+			set.Bind (txtChargeType)
+				.For (v => v.Enabled)
+				.To (vm => vm.IsChargeTypesEnabled);
 
 			set.Bind(txtAccountNumber)
 				.For(v => v.Text)
@@ -91,19 +89,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(txtPassword)
 				.For(v => v.NavigateCommand)
 				.To(vm => vm.NavigateToUpdatePassword);
-
-            set.Bind(txtCreditCard)
-                .For(v => v.Text)
-				.To(vm => vm.PaymentPreferences.SelectedCreditCard.FriendlyName);
-            set.Bind(txtCreditCard)
-				.For(v => v.Last4Digits)
-				.To(vm => vm.PaymentPreferences.SelectedCreditCard.Last4Digits);
-            set.Bind(txtCreditCard)
-                .For("CreditCardCompany")
-				.To(vm => vm.PaymentPreferences.SelectedCreditCard.CreditCardCompany);
-            set.Bind(txtCreditCard)
-				.For(v => v.NavigateCommand)
-				.To(vm => vm.PaymentPreferences.NavigateToCreditCardsList);
 
             set.Bind(txtTip)
                 .For(v => v.Text)

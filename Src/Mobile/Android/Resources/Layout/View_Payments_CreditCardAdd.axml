@@ -20,7 +20,7 @@
             android:background="@color/top_bar_color"
             android:orientation="horizontal">
             <TextView
-                android:text="@string/View_CreditCardAdd"
+                android:text="@string/View_CreditCard"
                 style="@style/TopTitleText"
                 android:layout_gravity="center"
                 android:layout_width="fill_parent"
@@ -58,17 +58,6 @@
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/CreditCardCategory"
-                    style="@style/BlackTextLabel"
-                    android:layout_marginBottom="4dp" />
-                <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/HeightEditTextFlat"
-                    local:MvxBind="Text CreditCardCategoryName; Data CardCategories; SelectedItem CreditCardCategory"
-                    android:layout_marginBottom="8dp" />
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
                     android:text="@string/CreditCardName"
                     style="@style/BlackTextLabel"
                     android:layout_marginBottom="4dp" />
@@ -87,10 +76,14 @@
                     <TextView
                         style="@style/BlackTextLabel"
                         android:layout_width="0dp"
-                        android:layout_weight="0.8"
+                        android:layout_weight="0.75"
                         android:layout_height="wrap_content"
                         android:text="@string/CreditCardNumber"
                         android:layout_marginBottom="4dp" />
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="0.05"
+                        android:layout_height="fill_parent" />
                     <TextView
                         android:layout_width="0dp"
                         android:layout_marginStart="10dip"
@@ -113,6 +106,10 @@
                         android:singleLine="true"
                         android:inputType="number"
                         local:MvxBind="CreditCardNumber CreditCardNumber; LeftImage CreditCardImagePath" />
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="0.02"
+                        android:layout_height="fill_parent" />
                     <EditText
                         android:layout_width="0dp"
                         android:layout_marginStart="10dip"
@@ -139,6 +136,10 @@
                         android:layout_marginRight="10dip"
                         android:text="@string/CreditCardExpMonth"
                         style="@style/BlackTextLabel" />
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="0.05"
+                        android:layout_height="fill_parent" />
                     <TextView
                         android:gravity="start"
                         android:layout_width="135dip"
@@ -160,6 +161,10 @@
                         android:inputType="number"
                         android:singleLine="true"
                         local:MvxBind="Text ExpirationMonthDisplay; Data ExpirationMonths; SelectedItem ExpirationMonth" />
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="0.05"
+                        android:layout_height="fill_parent" />
                     <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
                         android:layout_width="0dip"
                         android:layout_weight="1"
@@ -186,7 +191,18 @@
                     android:singleLine="true"
                     android:lines="1"
                     android:text="@string/Save"
-                    local:MvxBind="Click AddCreditCardCommand"
+                    local:MvxBind="Click SaveCreditCardCommand"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp" />
+                <Button
+                    style="@style/ButtonActionRedStyle"
+                    android:id="@+id/DeleteCreditCardButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/HeightButton"
+                    android:singleLine="true"
+                    android:lines="1"
+                    android:text="@string/DeleteCreditCardTitle"
+                    local:MvxBind="Click DeleteCreditCardCommand; Visibility IsEditing, Converter=Visibility"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp" />
             </LinearLayout>

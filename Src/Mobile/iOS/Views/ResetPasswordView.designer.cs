@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtEmail { get; set; }
-		
+
 		void ReleaseDesignerOutlets ()
 		{
 			if (btnCancel != null) {

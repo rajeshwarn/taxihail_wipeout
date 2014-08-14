@@ -233,13 +233,11 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\closeButton.png" />
     <AndroidResource Include="Resources\Drawable\right_arrow_light.png" />
-    <Compile Include="Activities\Setting\CreditCardsListActivity.cs" />
     <Compile Include="Activities\Setting\CreditCardAddActivity.cs" />
     <AndroidResource Include="Resources\Drawable\amex.png" />
     <AndroidResource Include="Resources\Drawable\mastercard.png" />
     <AndroidResource Include="Resources\Drawable\visa.png" />
     <AndroidResource Include="Resources\Layout\SpinnerTextWithImage.axml" />
-    <AndroidResource Include="Resources\Layout\Control_CreditCardButton.axml" />
     <AndroidResource Include="Resources\Drawable\segmented_button_left.xml" />
     <AndroidResource Include="Resources\Drawable\segmented_button_right.xml" />
     <AndroidResource Include="Resources\Drawable\segmented_button_text_color.xml" />
@@ -254,7 +252,6 @@
     <AndroidResource Include="Resources\Drawable\visa_electron.png" />
     <Compile Include="Activities\Book\BookPaymentActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardAdd.axml" />
-    <AndroidResource Include="Resources\Layout\View_Payments_CreditCardsList.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_BookPayment.axml" />
     <Compile Include="Binding\CustomBindings.cs" />
     <Compile Include="Binding\TextViewBinding.cs" />
@@ -322,7 +319,6 @@
     <AndroidResource Include="Resources\Drawable\completed.png" />
     <AndroidResource Include="Resources\Drawable\scheduled.png" />
     <Compile Include="Resources\Resource.Designer.cs" />
-    <Compile Include="Controls\Widgets\CreditCardButton.cs" />
     <Compile Include="Controls\Widgets\ListViewCell.cs" />
     <Compile Include="Controls\Widgets\EditTextLeftImage.cs" />
     <Compile Include="Controls\Widgets\BindableSelectionButton.cs" />
@@ -336,9 +332,7 @@
     <AndroidResource Include="Resources\Drawable\button_action_gray_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_green_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_red_text_selector.xml" />
-    <AndroidResource Include="Resources\Layout\View_Payments_CmtRideLinqChangePayment.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_CmtRideLinqConfirmPair.axml" />
-    <Compile Include="Activities\Book\CmtRideLinqChangePaymentActivity.cs" />
     <Compile Include="Activities\Book\CmtRideLinqConfirmPairActivity.cs" />
     <Compile Include="Activities\Book\ConfirmCarNumberActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_ConfirmCarNumber.axml">
@@ -575,6 +569,10 @@
     <AndroidResource Include="Resources\Drawable\star_state.xml" />
     <Compile Include="Activities\Book\BookingRateActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_BookingRating.axml" />
+    <AndroidResource Include="Resources\Layout\View_AccountConfirmation.axml" />
+    <Compile Include="Activities\Account\AccountConfirmationActivity.cs" />
+    <Compile Include="Controls\Widgets\CreditCardButton.cs" />
+    <AndroidResource Include="Resources\Layout\Control_CreditCardButton.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -731,11 +729,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\TutorialListItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Layout\CreditCardListItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

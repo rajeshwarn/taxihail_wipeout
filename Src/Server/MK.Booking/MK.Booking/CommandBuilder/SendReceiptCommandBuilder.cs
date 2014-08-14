@@ -46,7 +46,9 @@ namespace apcurium.MK.Booking.CommandBuilder
                 {
                     command.CardOnFileInfo.LastFour = creditCard.Last4Digits;
                     command.CardOnFileInfo.Company = creditCard.CreditCardCompany;
-                    command.CardOnFileInfo.FriendlyName = creditCard.FriendlyName;
+                    command.CardOnFileInfo.NameOnCard = creditCard.NameOnCard;
+                    command.CardOnFileInfo.ExpirationMonth = creditCard.ExpirationMonth;
+                    command.CardOnFileInfo.ExpirationYear = creditCard.ExpirationYear;
                 }
             }
             return command;

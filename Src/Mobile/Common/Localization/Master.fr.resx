@@ -141,9 +141,6 @@
   <data name="AccountPaymentNumberRequiredTitle" xml:space="preserve">
     <value>Numéro de compte requis</value>
   </data>
-  <data name="AddCreditCardTitle" xml:space="preserve">
-    <value>Ajouter une carte de paiement</value>
-  </data>
   <data name="AddReminderMessage" xml:space="preserve">
     <value>Souhaitez-vous qu'un rendez-vous soit créé dans votre calendrier pour ce trajet?</value>
   </data>
@@ -426,14 +423,11 @@
   <data name="CreditCard" xml:space="preserve">
     <value>Carte de paiement</value>
   </data>
-  <data name="CreditCardCategory" xml:space="preserve">
-    <value>Catégorie</value>
-  </data>
   <data name="CreditCardCCV" xml:space="preserve">
     <value>Code sécurité</value>
   </data>
   <data name="CreditCardErrorTitle" xml:space="preserve">
-    <value>Cette carte ne peut être ajoutée</value>
+    <value>Cette carte ne peut être sauvegardée</value>
   </data>
   <data name="CreditCardExpMonth" xml:space="preserve">
     <value>Date d'expiration (mois)</value>
@@ -659,6 +653,9 @@
   </data>
   <data name="HistoryViewStatusButton" xml:space="preserve">
     <value>Voir le statut</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Voir</value>
   </data>
   <data name="HistoryViewTitle" xml:space="preserve">
     <value>Historique</value>
@@ -915,6 +912,9 @@
   <data name="PanelMenuViewUpdateProfileText" xml:space="preserve">
     <value>Mise à jour du compte</value>
   </data>
+  <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
+    <value>Carte de paiement</value>
+  </data>
   <data name="ParameterButton" xml:space="preserve">
     <value>Paramètres</value>
   </data>
@@ -1003,7 +1003,7 @@
     <value>Départ:</value>
   </data>
   <data name="RateRide" xml:space="preserve">
-    <value>Calculer le prix du trajet</value>
+    <value>Évaluer la course</value>
   </data>
   <data name="Rebook" xml:space="preserve">
     <value>Réinitialiser le trajet</value>
@@ -1142,6 +1142,9 @@
   </data>
   <data name="ServiceErrorCallTitle" xml:space="preserve">
     <value>Message</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_PendingOrder" xml:space="preserve">
+    <value>La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</value>
   </data>
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>Cette adresse email est déjà utilisée</value>
@@ -1434,8 +1437,8 @@
   <data name="View_CreateAccount" xml:space="preserve">
     <value>Créer votre compte</value>
   </data>
-  <data name="View_CreditCardAdd" xml:space="preserve">
-    <value>Nouvelle carte de paiement</value>
+  <data name="View_CreditCard" xml:space="preserve">
+    <value>Carte de paiement</value>
   </data>
   <data name="View_CreditCardsList" xml:space="preserve">
     <value>Cartes de paiement</value>
@@ -1520,5 +1523,17 @@
   </data>
   <data name="YesButton" xml:space="preserve">
     <value>Oui</value>
+  </data>
+  <data name="DeleteCreditCard" xml:space="preserve">
+    <value>Supprimer la carte associée à ce compte?</value>
+  </data>
+  <data name="DeleteCreditCardTitle" xml:space="preserve">
+    <value>Supprimer la carte</value>
+  </data>
+  <data name="PayInCar" xml:space="preserve">
+    <value>Payer dans le taxi</value>
+  </data>
+  <data name="CreditCardAdded" xml:space="preserve">
+    <value>Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de paiement.</value>
   </data>
 </root>

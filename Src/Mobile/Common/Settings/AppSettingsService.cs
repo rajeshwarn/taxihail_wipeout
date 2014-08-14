@@ -10,6 +10,7 @@ using apcurium.MK.Common.Diagnostic;
 using MK.Common.Configuration;
 using ServiceStack.Text;
 using TinyIoC;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
@@ -115,14 +116,12 @@ namespace apcurium.MK.Booking.Mobile.Settings
 						if (targetType.IsEnum) {
 							propertyVal = Enum.Parse (targetType, item.Value);
 						} else {
-							propertyVal = Convert.ChangeType (item.Value, targetType);	
+							propertyVal = Convert.ChangeType (item.Value, targetType, CultureInfo.InvariantCulture);	
 						}			 
 						propertyType.SetValue (Data, propertyVal);
 					} catch (Exception e) {
 						_logger.LogError (e);
-#if DEBUG
 						_logger.LogMessage ("Error can't set value for property {0}, value was {1}", item.Key, item.Value);
-#endif
 					}
 				}
 			}

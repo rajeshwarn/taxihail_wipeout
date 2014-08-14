@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		MonoTouch.UIKit.UILabel lblTotalValue { get; set; }
 
 		[Outlet]
-        apcurium.MK.Booking.Mobile.Client.Controls.Widgets.PaymentSelector payPalToggle { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.PaymentSelector payPalToggle { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatCreditCardTextField txtCreditCard { get; set; }

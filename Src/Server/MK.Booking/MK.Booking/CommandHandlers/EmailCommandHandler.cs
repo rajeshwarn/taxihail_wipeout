@@ -186,11 +186,6 @@ namespace apcurium.MK.Booking.CommandHandlers
                     cardNumber += " XXXX " + command.CardOnFileInfo.LastFour;
                 }
 
-                if (!string.IsNullOrWhiteSpace(command.CardOnFileInfo.FriendlyName))
-                {
-                    cardNumber += " (" + command.CardOnFileInfo.FriendlyName + ")";
-                }
-
                 cardOnFileTransactionId = command.CardOnFileInfo.TransactionId;
             }
 

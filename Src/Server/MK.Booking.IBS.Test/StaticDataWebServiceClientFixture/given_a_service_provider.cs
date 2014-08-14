@@ -15,16 +15,6 @@ namespace MK.Booking.IBS.Test.StaticDataWebServiceClientFixture
         private const int TheChauffeurGroupProviderId = 18;
 
         [Test]
-        public void get_payments_test()
-        {
-            var sut = new StaticDataWebServiceClient(new FakeConfigurationManager(), new Logger());
-
-            var payments = sut.GetPaymentsList(new ListItem {Id = TheChauffeurGroupProviderId});
-
-            Assert.Greater(payments.Length, 0);
-        }
-
-        [Test]
         public void get_vehicles_test()
         {
             var sut = new StaticDataWebServiceClient(new FakeConfigurationManager(), new Logger());

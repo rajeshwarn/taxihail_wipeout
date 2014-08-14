@@ -36,6 +36,15 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.PostAsync<Account>("/account/register", account);
         }
 
+        public Task ConfirmAccount(ConfirmAccountRequest request)
+        {
+			var uri = string.Format ("/account/confirm/{0}/{1}/{2}", 
+									request.EmailAddress, 
+									request.ConfirmationToken, 
+									request.IsSMSConfirmation);
+			return Client.GetAsync<string>(uri);
+        }
+
         public Task UpdateBookingSettings(BookingSettingsRequest settings)
         {
             return Client.PutAsync<string>("/account/bookingsettings", settings);
@@ -92,25 +101,43 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.DeleteAsync<string>(req);
         }
 
-        public Task AddCreditCard(CreditCardRequest creditCardRequest)
-        {
-            var req = string.Format("/account/creditcards");
-            return Client.PostAsync<string>(req, creditCardRequest);
-        }
-
         public Task<IEnumerable<CreditCardDetails>> GetCreditCards()
         {
             return Client.GetAsync<IEnumerable<CreditCardDetails>>("/account/creditcards");
         }
 
-        public Task RemoveCreditCard(Guid creditCardId, string cardOnFileToken)
+        public Task AddCreditCard(CreditCardRequest creditCardRequest)
         {
-            if (!string.IsNullOrWhiteSpace(cardOnFileToken))
+            return Client.PostAsync<string>("/account/creditcards", creditCardRequest);
+        }
+
+        public async Task UpdateCreditCard(CreditCardRequest creditCardRequest)
+        {
+            // unregister previous card(s) except the current token in case the token did not change
+            await UnregisterTokenizedCards (creditCardRequest.Token);
+
+            await Client.PutAsync<string> ("/account/creditcards", creditCardRequest);
+        }
+
+        public async Task RemoveCreditCard()
+        {
+            await UnregisterTokenizedCards ();
+
+            // server-side, this should delete every card of the user
+            await Client.DeleteAsync<string>("/account/creditcards");
+        }
+
+        private async Task UnregisterTokenizedCards(string skipThisToken = null)
+        {
+            // previously, it was possible to add multiple cards, this is why we unregister every card here
+            var cards = await GetCreditCards ();
+            foreach (var card in cards)
             {
-                _paymentService.ForgetTokenizedCard(cardOnFileToken);
+                if (!string.IsNullOrWhiteSpace(card.Token) && card.Token != skipThisToken)
+                {
+                    await _paymentService.ForgetTokenizedCard(card.Token);
+                }
             }
-            var req = string.Format("/account/creditcards/" + creditCardId);
-            return Client.DeleteAsync<string>(req);
         }
 
         public Task<Account> GetTestAccount(int index)

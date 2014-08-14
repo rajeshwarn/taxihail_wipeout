@@ -56,7 +56,9 @@ namespace apcurium.MK.Booking.Commands
             public string AuthorizationCode { get; set; }
             public string Company { get; set; }
             public string LastFour { get; set; }
-            public string FriendlyName { get; set; }
+            public string NameOnCard { get; set; }
+            public string ExpirationMonth { get; set; }
+            public string ExpirationYear { get; set; }
         }
     }
 }

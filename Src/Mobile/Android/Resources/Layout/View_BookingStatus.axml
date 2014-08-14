@@ -113,119 +113,144 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dip"
                 android:layout_marginTop="6dip">
-                <TextView
-                    android:id="@+id/driverLabel"
-                    style="@style/BlackTextLabel"
-                    android:text="@string/DriverInfoDriver"
-                    android:gravity="center_vertical|end"
-                    android:layout_width="100dip"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/driverValue"
-                    style="@style/BlackTextLabel"
-                    local:MvxBind="Text OrderStatusDetail.DriverInfos.FullName"
-                    android:gravity="center_vertical|start"
-                    android:layout_width="150dip"
+                <LinearLayout
+                    android:id="@+id/driverLayout"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/driverLabel"
+                        style="@style/BlackTextLabel"
+                        android:text="@string/DriverInfoDriver"
+                        android:gravity="center_vertical|end"
+                        android:layout_width="100dip"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/driverValue"
+                        style="@style/BlackTextLabel"
+                        local:MvxBind="Text OrderStatusDetail.DriverInfos.FullName"
+                        android:gravity="center_vertical|start"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dip"
+                        android:lines="1"
+                        android:ellipsize="end"
+                        android:singleLine="true" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/licenceLayout"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="5dip"
-                    android:lines="1"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:layout_toEndOf="@id/driverLabel" />
-                <TextView
-                    android:id="@+id/licenceLabel"
-                    style="@style/BlackTextLabel"
-                    android:text="@string/DriverInfoLicence"
-                    android:gravity="center_vertical|end"
-                    android:layout_width="100dip"
+                    android:layout_below="@id/driverLayout">
+                    <TextView
+                        android:id="@+id/licenceLabel"
+                        style="@style/BlackTextLabel"
+                        android:text="@string/DriverInfoLicence"
+                        android:gravity="center_vertical|end"
+                        android:layout_width="100dip"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/licenceValue"
+                        style="@style/BlackTextLabel"
+                        local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleRegistration"
+                        android:gravity="center_vertical|start"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dip" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/taxiTypeLayout"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/driverLabel" />
-                <TextView
-                    android:id="@+id/licenceValue"
-                    style="@style/BlackTextLabel"
-                    local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleRegistration"
-                    android:gravity="center_vertical|start"
-                    android:layout_width="150dip"
+                    android:layout_below="@id/licenceLayout"
+                    local:MvxBind="Visibility VehicleTypeHidden, Converter=InvertedVisibility">
+                    <TextView
+                        android:id="@+id/taxiTypeLabel"
+                        style="@style/BlackTextLabel"
+                        android:text="@string/DriverInfoTaxiType"
+                        android:gravity="center_vertical|end"
+                        android:layout_width="100dip"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/taxiTypeValue"
+                        style="@style/BlackTextLabel"
+                        local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleType"
+                        android:gravity="center_vertical|start"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dip" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/makeLayout"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/licenceLabel"
-                    android:paddingStart="5dip"
-                    android:layout_below="@id/driverLabel" />
-                <TextView
-                    android:id="@+id/taxiTypeLabel"
-                    style="@style/BlackTextLabel"
-                    android:text="@string/DriverInfoTaxiType"
-                    android:gravity="center_vertical|end"
-                    android:layout_width="100dip"
+                    android:layout_below="@id/taxiTypeLayout"
+                    local:MvxBind="Visibility VehicleMakeHidden, Converter=InvertedVisibility">
+                    <TextView
+                        android:id="@+id/makeLabel"
+                        style="@style/BlackTextLabel"
+                        android:text="@string/DriverInfoMake"
+                        android:gravity="center_vertical|end"
+                        android:layout_width="100dip"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/makeValue"
+                        style="@style/BlackTextLabel"
+                        local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleMake"
+                        android:gravity="center_vertical|start"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dip" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/modelLayout"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/licenceLabel"
-                    local:MvxBind="Visibility VehicleTypeHidden, Converter=InvertedVisibility" />
-                <TextView
-                    android:id="@+id/taxiTypeValue"
-                    style="@style/BlackTextLabel"
-                    local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleType; Visibility VehicleTypeHidden, Converter=InvertedVisibility"
-                    android:gravity="center_vertical|start"
-                    android:layout_width="150dip"
+                    android:layout_below="@id/makeLayout"
+                    local:MvxBind="Visibility VehicleModelHidden, Converter=InvertedVisibility">
+                    <TextView
+                        android:id="@+id/modelLabel"
+                        style="@style/BlackTextLabel"
+                        android:text="@string/DriverInfoModel"
+                        android:gravity="center_vertical|end"
+                        android:layout_width="100dip"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/modelValue"
+                        style="@style/BlackTextLabel"
+                        local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleModel"
+                        android:gravity="center_vertical|start"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dip" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/colorLayout"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/taxiTypeLabel"
-                    android:paddingStart="5dip"
-                    android:layout_below="@id/licenceLabel" />
-                <TextView
-                    android:id="@+id/makeLabel"
-                    style="@style/BlackTextLabel"
-                    android:text="@string/DriverInfoMake"
-                    android:gravity="center_vertical|end"
-                    android:layout_width="100dip"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/taxiTypeLabel"
-                    local:MvxBind="Visibility VehicleMakeHidden, Converter=InvertedVisibility" />
-                <TextView
-                    android:id="@+id/makeValue"
-                    style="@style/BlackTextLabel"
-                    local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleMake; Visibility VehicleMakeHidden, Converter=InvertedVisibility"
-                    android:gravity="center_vertical|start"
-                    android:layout_width="150dip"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/makeLabel"
-                    android:paddingStart="5dip"
-                    android:layout_below="@id/taxiTypeLabel" />
-                <TextView
-                    android:id="@+id/modelLabel"
-                    style="@style/BlackTextLabel"
-                    android:text="@string/DriverInfoModel"
-                    android:gravity="center_vertical|end"
-                    android:layout_width="100dip"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/makeLabel"
-                    local:MvxBind="Visibility VehicleModelHidden, Converter=InvertedVisibility" />
-                <TextView
-                    android:id="@+id/modelValue"
-                    style="@style/BlackTextLabel"
-                    local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleModel; Visibility VehicleModelHidden, Converter=InvertedVisibility"
-                    android:gravity="center_vertical|start"
-                    android:layout_width="150dip"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/modelLabel"
-                    android:paddingStart="5dip"
-                    android:layout_below="@id/makeLabel" />
-                <TextView
-                    android:id="@+id/ColorLabel"
-                    style="@style/BlackTextLabel"
-                    android:text="@string/DriverInfoColor"
-                    android:gravity="center_vertical|end"
-                    android:layout_width="100dip"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/modelLabel"
-                    local:MvxBind="Visibility VehicleColorHidden, Converter=InvertedVisibility" />
-                <TextView
-                    android:id="@+id/ColorValue"
-                    style="@style/BlackTextLabel"
-                    local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleColor; Visibility VehicleColorHidden, Converter=InvertedVisibility"
-                    android:gravity="center_vertical|start"
-                    android:layout_width="150dip"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/ColorLabel"
-                    android:paddingStart="5dip"
-                    android:layout_below="@id/modelLabel" />
+                    android:layout_below="@id/modelLayout"
+                    local:MvxBind="Visibility VehicleColorHidden, Converter=InvertedVisibility">
+                    <TextView
+                        android:id="@+id/ColorLabel"
+                        style="@style/BlackTextLabel"
+                        android:text="@string/DriverInfoColor"
+                        android:gravity="center_vertical|end"
+                        android:layout_width="100dip"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/ColorValue"
+                        style="@style/BlackTextLabel"
+                        local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleColor"
+                        android:gravity="center_vertical|start"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dip" />
+                </LinearLayout>
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

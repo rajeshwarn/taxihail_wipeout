@@ -14,6 +14,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface.ServiceModel;
@@ -298,6 +299,26 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_pickupAddressSubject.OnNext(address);
 		}
 
+        public async Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder()
+		{
+			if (_bookingService.HasLastOrder) 
+			{
+				var status = await _bookingService.GetLastOrderStatus (); 
+				if (!_bookingService.IsStatusCompleted (status.IBSStatusId)) 
+				{
+					var order = await _accountService.GetHistoryOrderAsync (status.OrderId);
+
+                    return Tuple.Create(order, status);
+				}
+				else
+				{
+					_bookingService.ClearLastOrder();
+				}
+			}
+
+			return null;
+		}
+
 		public IObservable<Address> GetAndObservePickupAddress()
 		{
 			return _pickupAddressSubject;
@@ -479,13 +500,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<bool> ShouldGoToAccountNumberFlow()
 		{
-			if (!_appSettings.Data.AccountChargeTypeId.HasValue)
-			{
-				return false;
-			}
-
 			var settings = await _bookingSettingsSubject.Take(1).ToTask();
-			return _appSettings.Data.AccountChargeTypeId == settings.ChargeTypeId;
+            return settings.ChargeTypeId == ChargeTypes.Account.Id;
 		}
 
 		public async Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null)

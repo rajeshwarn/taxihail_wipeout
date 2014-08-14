@@ -226,7 +226,7 @@
 "TabFavorites"="Favorites";
 "PickupMapTitle"="Pickup location";
 "ReSendConfirmation"="Notify driver of payment";
-"CreditCardErrorTitle"="Cannot add credit card";
+"CreditCardErrorTitle"="Cannot save credit card";
 "PickupDateTextPlaceholder"="Date: Today";
 "BuildingName"="Building Name / Remark";
 "AddressSearchingText"="Searching...";
@@ -450,7 +450,6 @@
 "apcuriumUrl"="http://www.apcurium.com/";
 "mobileKnowledgeUrl"="http://www.mobile-knowledge.com/";
 "View_ConfirmCarNumber"="Confirmation";
-"View_CreditCardAdd"="New Credit Card";
 "View_RideSettings"="Profile";
 "View_Payment"="Payment Info";
 "Create"="Create";
@@ -488,3 +487,17 @@
 "WarningPushServiceTitle"="Push Notifications";
 "TAXI"="TAXI";
 "WarningPushServiceMessage"="We noticed you do not have push notifications turned on. Just to let you know if you have them enabled then you get updates about the status of your booking without having to look at the app! We promise we will not spam you with useless information!";
+"View_AccountConfirmation_Label_Instructions"="A text message with your code has been sent to your phone.";
+"View_AccountConfirmationTitle"="Account Confirmation";
+"View_AccountConfirmation_Button"="Confirm";
+"View_AccountConfirmation_Label_Code"="Code";
+"ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
+"AccountConfirmation_ErrorTitle"="Cannot confirm account";
+"PanelMenuViewPaymentInfoText"="Card on File";
+"View_CreditCard"="Credit Card";
+"DeleteCreditCardTitle"="Delete credit card";
+"DeleteCreditCard"="Delete the credit card registered to this account?";
+"ServiceErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
+"View"="View";
+"CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still chose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
+"PayInCar"="Pay in Car";

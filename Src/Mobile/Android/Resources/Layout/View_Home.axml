@@ -118,10 +118,6 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent" />
                 </FrameLayout>
-                <View
-                    android:background="#767676"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1px" />
                 <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBar
                     android:layout_width="fill_parent"
                     android:id="@+id/appBar"

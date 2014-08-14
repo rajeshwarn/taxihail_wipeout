@@ -60,6 +60,7 @@
     <Compile Include="ChangeOrderStatus.cs" />
     <Compile Include="CompletePayPalExpressCheckoutPayment.cs" />
     <Compile Include="DeleteAccountCharge.cs" />
+    <Compile Include="DeleteAccountCreditCards.cs" />
     <Compile Include="DeleteAllCreditCards.cs" />
     <Compile Include="DeleteVehicleType.cs" />
     <Compile Include="InitiateCreditCardPayment.cs" />
@@ -69,8 +70,10 @@
     <Compile Include="LogCreditCardPaymentCancellationFailed.cs" />
     <Compile Include="PairForRideLinqCmtPayment.cs" />
     <Compile Include="RetriggerTermsAndConditions.cs" />
+    <Compile Include="SendAccountConfirmationSMS.cs" />
     <Compile Include="SendAssignedConfirmation.cs" />
     <Compile Include="UnpairForRideLinqCmtPayment.cs" />
+    <Compile Include="UpdateCreditCard.cs" />
     <Compile Include="UpdatePaymentSettings.cs" />
     <Compile Include="DisableAccountbyAdmin.cs" />
     <Compile Include="ConfirmAccount.cs" />
@@ -85,7 +88,6 @@
     <Compile Include="HideRatingType.cs" />
     <Compile Include="RateOrder.cs" />
     <Compile Include="RegisterDeviceForPushNotifications.cs" />
-    <Compile Include="RemoveCreditCard.cs" />
     <Compile Include="RemovePopularAddress.cs" />
     <Compile Include="SendBookingConfirmationEmail.cs" />
     <Compile Include="CreateCompany.cs" />

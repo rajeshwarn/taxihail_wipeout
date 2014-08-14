@@ -5,11 +5,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Web.UI.WebControls;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 using Microsoft.Practices.ServiceLocation;
 using ServiceStack.Text;
 
@@ -41,7 +43,7 @@ namespace apcurium.MK.Web
         protected bool ShowPassengerNumber { get; private set; }
         protected string ReferenceData { get; private set; }
         protected string VehicleTypes { get; private set; }
-        protected string AccountChargeTypeId { get; private set; }
+        protected string DisableFutureBooking { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -56,6 +58,7 @@ namespace apcurium.MK.Web
             FacebookAppId = config.GetSetting("FacebookAppId");
             FacebookEnabled = config.GetSetting("FacebookEnabled");
             HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
+            DisableFutureBooking = config.GetSetting("Client.DisableFutureBooking");
 
             DirectionTarifMode = config.GetSetting("Direction.TarifMode");
             DirectionNeedAValidTarif = config.GetSetting("Direction.NeedAValidTarif", false);
@@ -65,9 +68,7 @@ namespace apcurium.MK.Web
             EstimateEnabled = config.GetSetting("Client.ShowEstimate");
             EstimateWarningEnabled = config.GetSetting("Client.ShowEstimateWarning");
             DestinationIsRequired = config.GetSetting("Client.DestinationIsRequired");
-
-            AccountChargeTypeId = config.GetSetting("Client.AccountChargeTypeId");
-
+            
             var accountActivationDisabled = config.GetSetting("AccountActivationDisabled");
             AccountActivationDisabled = string.IsNullOrWhiteSpace(accountActivationDisabled)
                 ? bool.FalseString.ToLower()
@@ -84,6 +85,10 @@ namespace apcurium.MK.Web
 
             var referenceDataService = ServiceLocator.Current.GetInstance<ReferenceDataService>();
             var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
+
+            // remove the card on file charge type since it's not possible to use card on file with the web app
+            referenceData.PaymentsList = HidePaymentType(referenceData.PaymentsList, ChargeTypes.CardOnFile.Id);
+
             ReferenceData = referenceData.ToString();
 
             var vehicleService = ServiceLocator.Current.GetInstance<VehicleService>();
@@ -97,6 +102,11 @@ namespace apcurium.MK.Web
             return pair == null
                 ? string.Empty
                 : Uri.UnescapeDataString(pair.Split('=')[1]);
+        }
+
+        private List<Common.Entity.ListItem> HidePaymentType(IEnumerable<Common.Entity.ListItem> paymentList, int? paymentTypeToHide)
+        {
+            return paymentList.Where(i => i.Id != paymentTypeToHide).ToList();
         }
     }
 }

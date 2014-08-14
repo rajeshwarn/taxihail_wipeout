@@ -18,13 +18,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 			_paymentService = paymentService;
 		}
 
-		public void Init(string order, string orderStatus)
+		public async void Init(string order, string orderStatus)
 		{
 			Order = order.FromJson<Order>();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
 			_paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
-			_paymentPreferences.Start();
-			_paymentPreferences.CreditCards.CollectionChanged += (sender, e) => RefreshCreditCards();
+			await _paymentPreferences.Start();
+
+			RefreshCreditCardNumber ();
 		}
 
 		private PaymentDetailsViewModel _paymentPreferences;
@@ -32,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 		Order Order { get; set; }
 		OrderStatusDetail OrderStatus { get; set; }
 
-		public void RefreshCreditCards()
+		public void RefreshCreditCardNumber()
 		{
 			var selectedCard = _paymentPreferences.SelectedCreditCard;
 
@@ -102,30 +103,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 							Close(this);
 						}
 					});
-			}
-		}
-
-		public ICommand ChangePaymentInfo
-		{
-			get
-			{
-				return this.GetCommand(() => ShowSubViewModel<CmtRideLinqChangePaymentViewModel, PaymentInformation>(
-				    new
-				    {
-				        currentPaymentInformation = new PaymentInformation
-				        {
-				            CreditCardId = _paymentPreferences.SelectedCreditCardId,
-				            TipPercent = _paymentPreferences.Tip,
-				        }.ToJson()
-				    }.ToStringDictionary(), result =>
-				    {                                                
-// ReSharper disable PossibleInvalidOperationException
-				        _paymentPreferences.SelectedCreditCardId = (Guid)result.CreditCardId;
-				        _paymentPreferences.Tip = (int)result.TipPercent;
-// ReSharper restore PossibleInvalidOperationException
-						RaisePropertyChanged(() => TipAmountInPercent);
-				        RefreshCreditCards();
-				    }));
 			}
 		}
 

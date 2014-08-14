@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
 using System.IO;
+using System.Text.RegularExpressions;
 using apcurium.MK.Booking.ConfigTool.ServiceClient;
 using CustomerPortal.Web.Entities;
 using Newtonsoft.Json;
@@ -14,6 +15,7 @@ namespace apcurium.MK.Booking.ConfigTool
     {
 
         private Config[] _configs;
+        private Regex pattern;
         
 		public AppConfig(string name, Company company, string srcDirectoryPath, string configDirectoryPath)
         {
@@ -113,14 +115,16 @@ namespace apcurium.MK.Booking.ConfigTool
                     new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleIdentifier",  SetterEle = ( ele )=> ele.InnerText = Config.Package },
                     new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleURLSchemes",  SetterEle = ( ele )=> 
 	                    {
-	                            if ( string.IsNullOrEmpty( Config.FacebookAppId ) )
-	                            {
-								ele.InnerXml = string.Format( "<string>mk{1}</string>", Config.FacebookAppId, Config.ApplicationName.Replace( " " , string.Empty ));
-	                            }
-	                            else
-	                            {
-								ele.InnerXml = string.Format( "<string>fb{0}{1}</string><string>mk{1}</string>", Config.FacebookAppId, Config.ApplicationName.Replace( " " , string.Empty ) );
-	                            }
+                            //Sets space and the comma as pattern to ignore
+                            pattern = new Regex("[ ']");
+	                        if ( string.IsNullOrEmpty( Config.FacebookAppId ) )
+	                        {
+                                ele.InnerXml = string.Format("<string>mk{1}</string>", Config.FacebookAppId, pattern.Replace(Config.ApplicationName, string.Empty));
+	                        }
+	                        else
+	                        {
+                                ele.InnerXml = string.Format("<string>fb{0}{1}</string><string>mk{1}</string>", Config.FacebookAppId, pattern.Replace(Config.ApplicationName, string.Empty));
+	                        }
 						}
 					},
 					/** Version 1.5 */

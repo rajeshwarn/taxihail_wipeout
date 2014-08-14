@@ -7,6 +7,9 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.IBS;
@@ -17,6 +20,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using DatabaseInitializer.Services;
 using DatabaseInitializer.Sql;
@@ -27,6 +31,7 @@ using Newtonsoft.Json.Linq;
 using ConfigurationManager = apcurium.MK.Common.Configuration.Impl.ConfigurationManager;
 using DeploymentServiceTools;
 using ServiceStack.Text;
+using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
 
 #endregion
 
@@ -185,6 +190,15 @@ namespace DatabaseInitializer
                     CreateDefaultAccounts(container, commandBus);
 
                     AddDefaultRatings(commandBus);
+                }
+
+                // Update vehicle types
+                var vehicleTypes = new VehicleTypeDao(() => new BookingDbContext(connectionString.ConnectionString));
+                if (!vehicleTypes.GetAll().Any())
+                {
+                    appSettings["Client.VehicleEstimateEnabled"] = "false";
+                    AddOrUpdateAppSettings(commandBus, appSettings);
+                    CreateDefaultVehicleTypes(container, commandBus);
                 }
 
                 if (isUpdate && !string.IsNullOrEmpty(param.BackupFolder))
@@ -405,6 +419,7 @@ namespace DatabaseInitializer
             Console.WriteLine("Calling ibs...");
             //Get default settings from IBS
             var referenceDataService = container.Resolve<IStaticDataWebServiceClient>();
+
             var defaultCompany = referenceDataService.GetCompaniesList()
                 .FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
                                  ?? referenceDataService.GetCompaniesList().FirstOrDefault();
@@ -419,12 +434,7 @@ namespace DatabaseInitializer
                     referenceDataService.GetVehiclesList(defaultCompany).First();
                 appSettings["DefaultBookingSettings.VehicleTypeId"] = defaultvehicule.Id.ToString();
 
-                var defaultchargetype = referenceDataService.GetPaymentsList(defaultCompany)
-                    .FirstOrDefault(x => x.Display.HasValue() && x.Display.Contains("Cash"))
-                                        ?? referenceDataService.GetPaymentsList(defaultCompany).First();
-
-
-                appSettings["DefaultBookingSettings.ChargeTypeId"] = defaultchargetype.Id.ToString();
+                appSettings["DefaultBookingSettings.ChargeTypeId"] = ChargeTypes.PaymentInCar.Id.ToString();
             }
 
             //Save settings so that registerAccountCommand succeed
@@ -565,6 +575,24 @@ namespace DatabaseInitializer
                 CompanyId = AppConstants.CompanyId,
                 TariffId = Guid.NewGuid(),
             });
+        }
+
+        private static void CreateDefaultVehicleTypes(UnityContainer container, ICommandBus commandBus)
+        {
+            var referenceDataService = container.Resolve<ReferenceDataService>();
+            var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
+
+            foreach (var vehicle in referenceData.VehiclesList)
+            {
+                commandBus.Send(new AddUpdateVehicleType
+                {
+                    VehicleTypeId = Guid.NewGuid(),
+                    Name = string.Format("{0} vehicle", vehicle.Display),
+                    LogoName = "taxi",
+                    ReferenceDataVehicleId = vehicle.Id ?? -1,
+                    CompanyId = AppConstants.CompanyId
+                });
+            }
         }
     }
 }

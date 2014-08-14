@@ -14,6 +14,7 @@ using apcurium.MK.Booking.Mobile.Client.Style;
 
 
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using MonoTouch.MapKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -278,7 +279,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 				set.Apply();
 
-                mapStatus.Delegate = new AddressMapDelegate ();
+                mapStatus.GetViewForAnnotation = MKMapViewHelper.GetViewForAnnotation;
                 mapStatus.AddressSelectionMode = AddressSelectionMode.None;
 
 				UpdateTopSlidingStatus("OrderStatusDetail"); //initial loading
