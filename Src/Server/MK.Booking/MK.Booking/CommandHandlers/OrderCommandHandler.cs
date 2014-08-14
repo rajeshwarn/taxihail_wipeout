@@ -33,8 +33,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             order.Cancel();
             _repository.Save(order, command.Id.ToString());
         }
-
-
+        
         public void Handle(ChangeOrderStatus command)
         {
             var order = _repository.Find(command.Status.OrderId);

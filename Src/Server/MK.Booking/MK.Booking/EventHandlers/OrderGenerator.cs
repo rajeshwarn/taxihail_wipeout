@@ -24,7 +24,6 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderRated>,
         IEventHandler<PaymentInformationSet>,
         IEventHandler<OrderStatusChanged>,
-        IEventHandler<OrderVehiclePositionChanged>,
         IEventHandler<OrderPairedForPayment>,
         IEventHandler<OrderUnpairedForPayment>,
         IEventHandler<OrderFareUpdated>
@@ -255,18 +254,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Set<OrderPairingDetail>().Remove(orderPairingDetail);
                     context.SaveChanges();
                 }
-            }
-        }
-
-        public void Handle(OrderVehiclePositionChanged @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var order = context.Find<OrderStatusDetail>(@event.SourceId);
-                order.VehicleLatitude = @event.Latitude;
-                order.VehicleLongitude = @event.Longitude;
-
-                context.Save(order);
             }
         }
 

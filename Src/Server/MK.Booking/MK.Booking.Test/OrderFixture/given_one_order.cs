@@ -129,27 +129,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         }
 
         [Test]
-        public void when_ibs_vehicle_position_changed()
-        {
-            var status = new OrderStatusDetail
-            {
-                OrderId = _orderId,
-                VehicleLatitude = 1.234,
-                VehicleLongitude = 4.321,
-            };
-
-            _sut.When(new ChangeOrderStatus
-            {
-                Status = status,
-            });
-
-            var @event = _sut.ThenHasSingle<OrderVehiclePositionChanged>();
-
-            Assert.AreEqual(1.234, @event.Latitude);
-            Assert.AreEqual(4.321, @event.Longitude);
-        }
-
-        [Test]
         public void when_ibs_fare_changed()
         {
             var status = new OrderStatusDetail
