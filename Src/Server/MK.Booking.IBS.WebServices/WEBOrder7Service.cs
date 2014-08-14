@@ -90,6 +90,8 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     
     private System.Threading.SendOrPostCallback GetBookOrderByConfirmationNo_5OperationCompleted;
     
+    private System.Threading.SendOrPostCallback CancelBookOrder_2OperationCompleted;
+    
     private System.Threading.SendOrPostCallback SaveBookOrder_6OperationCompleted;
     
     private System.Threading.SendOrPostCallback GetBookOrder_6OperationCompleted;
@@ -136,9 +138,10 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     
     private System.Threading.SendOrPostCallback GetAvailableVehicles_3OperationCompleted;
     
+    private System.Threading.SendOrPostCallback GetAvailableVehicles_4OperationCompleted;
+    
     /// <remarks/>
-    public WebOrder7Service()
-    {
+    public WebOrder7Service() {
         this.Url = "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/IWebOrder_7";
     }
     
@@ -233,6 +236,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     public event GetBookOrderByConfirmationNo_5CompletedEventHandler GetBookOrderByConfirmationNo_5Completed;
     
     /// <remarks/>
+    public event CancelBookOrder_2CompletedEventHandler CancelBookOrder_2Completed;
+    
+    /// <remarks/>
     public event SaveBookOrder_6CompletedEventHandler SaveBookOrder_6Completed;
     
     /// <remarks/>
@@ -300,6 +306,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     
     /// <remarks/>
     public event GetAvailableVehicles_3CompletedEventHandler GetAvailableVehicles_3Completed;
+    
+    /// <remarks/>
+    public event GetAvailableVehicles_4CompletedEventHandler GetAvailableVehicles_4Completed;
     
     /// <remarks/>
     [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderStatus", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
@@ -2421,6 +2430,66 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     }
     
     /// <remarks/>
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#CancelBookOrder_2", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [return: System.Xml.Serialization.SoapElementAttribute("return")]
+    public int CancelBookOrder_2(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, string Reason) {
+        object[] results = this.Invoke("CancelBookOrder_2", new object[] {
+                    Login,
+                    Password,
+                    OrderID,
+                    ContactPhone,
+                    CCNumber,
+                    AccountID,
+                    Reason});
+        return ((int)(results[0]));
+    }
+    
+    /// <remarks/>
+    public System.IAsyncResult BeginCancelBookOrder_2(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, string Reason, System.AsyncCallback callback, object asyncState) {
+        return this.BeginInvoke("CancelBookOrder_2", new object[] {
+                    Login,
+                    Password,
+                    OrderID,
+                    ContactPhone,
+                    CCNumber,
+                    AccountID,
+                    Reason}, callback, asyncState);
+    }
+    
+    /// <remarks/>
+    public int EndCancelBookOrder_2(System.IAsyncResult asyncResult) {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((int)(results[0]));
+    }
+    
+    /// <remarks/>
+    public void CancelBookOrder_2Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, string Reason) {
+        this.CancelBookOrder_2Async(Login, Password, OrderID, ContactPhone, CCNumber, AccountID, Reason, null);
+    }
+    
+    /// <remarks/>
+    public void CancelBookOrder_2Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, string Reason, object userState) {
+        if ((this.CancelBookOrder_2OperationCompleted == null)) {
+            this.CancelBookOrder_2OperationCompleted = new System.Threading.SendOrPostCallback(this.OnCancelBookOrder_2OperationCompleted);
+        }
+        this.InvokeAsync("CancelBookOrder_2", new object[] {
+                    Login,
+                    Password,
+                    OrderID,
+                    ContactPhone,
+                    CCNumber,
+                    AccountID,
+                    Reason}, this.CancelBookOrder_2OperationCompleted, userState);
+    }
+    
+    private void OnCancelBookOrder_2OperationCompleted(object arg) {
+        if ((this.CancelBookOrder_2Completed != null)) {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.CancelBookOrder_2Completed(this, new CancelBookOrder_2CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+    
+    /// <remarks/>
     [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_6", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
     public int SaveBookOrder_6(string Login, string Password, TBookOrder_6 BookOrder) {
@@ -3652,6 +3721,69 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     }
     
     /// <remarks/>
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetAvailableVehicles_4", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [return: System.Xml.Serialization.SoapElementAttribute("return")]
+    public TVehiclePosition_4[] GetAvailableVehicles_4(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly, TVehicleTypeItem[] VehicleTypes) {
+        object[] results = this.Invoke("GetAvailableVehicles_4", new object[] {
+                    Login,
+                    Password,
+                    Lon,
+                    Lat,
+                    maxRadius,
+                    count,
+                    BookedOnly,
+                    VehicleTypes});
+        return ((TVehiclePosition_4[])(results[0]));
+    }
+    
+    /// <remarks/>
+    public System.IAsyncResult BeginGetAvailableVehicles_4(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly, TVehicleTypeItem[] VehicleTypes, System.AsyncCallback callback, object asyncState) {
+        return this.BeginInvoke("GetAvailableVehicles_4", new object[] {
+                    Login,
+                    Password,
+                    Lon,
+                    Lat,
+                    maxRadius,
+                    count,
+                    BookedOnly,
+                    VehicleTypes}, callback, asyncState);
+    }
+    
+    /// <remarks/>
+    public TVehiclePosition_4[] EndGetAvailableVehicles_4(System.IAsyncResult asyncResult) {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((TVehiclePosition_4[])(results[0]));
+    }
+    
+    /// <remarks/>
+    public void GetAvailableVehicles_4Async(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly, TVehicleTypeItem[] VehicleTypes) {
+        this.GetAvailableVehicles_4Async(Login, Password, Lon, Lat, maxRadius, count, BookedOnly, VehicleTypes, null);
+    }
+    
+    /// <remarks/>
+    public void GetAvailableVehicles_4Async(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly, TVehicleTypeItem[] VehicleTypes, object userState) {
+        if ((this.GetAvailableVehicles_4OperationCompleted == null)) {
+            this.GetAvailableVehicles_4OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetAvailableVehicles_4OperationCompleted);
+        }
+        this.InvokeAsync("GetAvailableVehicles_4", new object[] {
+                    Login,
+                    Password,
+                    Lon,
+                    Lat,
+                    maxRadius,
+                    count,
+                    BookedOnly,
+                    VehicleTypes}, this.GetAvailableVehicles_4OperationCompleted, userState);
+    }
+    
+    private void OnGetAvailableVehicles_4OperationCompleted(object arg) {
+        if ((this.GetAvailableVehicles_4Completed != null)) {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.GetAvailableVehicles_4Completed(this, new GetAvailableVehicles_4CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+    
+    /// <remarks/>
     public new void CancelAsync(object userState) {
         base.CancelAsync(userState);
     }
@@ -4302,6 +4434,8 @@ public partial class TPaymentAuthorization3dParty {
     
     private string taxAmountField;
     
+    private string tipAmountField;
+    
     private string tollsAmountField;
     
     private string surchargeAmountField;
@@ -4445,6 +4579,16 @@ public partial class TPaymentAuthorization3dParty {
     }
     
     /// <remarks/>
+    public string TipAmount {
+        get {
+            return this.tipAmountField;
+        }
+        set {
+            this.tipAmountField = value;
+        }
+    }
+    
+    /// <remarks/>
     public string TollsAmount {
         get {
             return this.tollsAmountField;
@@ -4507,6 +4651,7 @@ public partial class TPaymentAuthorization3dParty {
 
 /// <remarks/>
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition_2))]
+[System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition_4))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -4564,6 +4709,7 @@ public partial class TVehiclePosition {
 }
 
 /// <remarks/>
+[System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition_4))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -4580,6 +4726,27 @@ public partial class TVehiclePosition_2 : TVehiclePosition {
         }
         set {
             this.driverIDField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TVehiclePosition_4 : TVehiclePosition_2 {
+    
+    private TVehicleTypeItem vehicleTypeField;
+    
+    /// <remarks/>
+    public TVehicleTypeItem VehicleType {
+        get {
+            return this.vehicleTypeField;
+        }
+        set {
+            this.vehicleTypeField = value;
         }
     }
 }
@@ -4799,9 +4966,7 @@ public partial class TOrderStatus_2 : TOrderStatus {
     private string referenceNumberField;
     
     private string terminalIdField;
-
-    public double VAT { get; set; }
-
+    
     /// <remarks/>
     public string CallNumber {
         get {
@@ -4875,8 +5040,7 @@ public partial class TBookOrderList_7 {
 public partial class TBookOrder_7 : TBookOrder_6 {
     
     private double tipsField;
-
-    public double VAT { get; set; }
+    
     /// <remarks/>
     public double Tips {
         get {
@@ -6834,6 +6998,32 @@ public partial class GetBookOrderByConfirmationNo_5CompletedEventArgs : System.C
 
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+public delegate void CancelBookOrder_2CompletedEventHandler(object sender, CancelBookOrder_2CompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class CancelBookOrder_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
+    private object[] results;
+    
+    internal CancelBookOrder_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
+        this.results = results;
+    }
+    
+    /// <remarks/>
+    public int Result {
+        get {
+            this.RaiseExceptionIfNecessary();
+            return ((int)(this.results[0]));
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 public delegate void SaveBookOrder_6CompletedEventHandler(object sender, SaveBookOrder_6CompletedEventArgs e);
 
 /// <remarks/>
@@ -7490,6 +7680,32 @@ public partial class GetAvailableVehicles_3CompletedEventArgs : System.Component
         get {
             this.RaiseExceptionIfNecessary();
             return ((TVehiclePosition_2[])(this.results[0]));
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+public delegate void GetAvailableVehicles_4CompletedEventHandler(object sender, GetAvailableVehicles_4CompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class GetAvailableVehicles_4CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
+    private object[] results;
+    
+    internal GetAvailableVehicles_4CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
+        this.results = results;
+    }
+    
+    /// <remarks/>
+    public TVehiclePosition_4[] Result {
+        get {
+            this.RaiseExceptionIfNecessary();
+            return ((TVehiclePosition_4[])(this.results[0]));
         }
     }
 }
