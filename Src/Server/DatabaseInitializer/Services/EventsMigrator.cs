@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Sql.EventSourcing;
 using Newtonsoft.Json;
 using apcurium.MK.Booking.Events;
@@ -43,6 +44,10 @@ namespace DatabaseInitializer.Services
                     message.EventType = message.EventType.Replace("OrderPairedForRideLinqCmtPayment", "OrderPairedForPayment");
                     message.EventType = message.EventType.Replace("OrderUnpairedForRideLinqCmtPayment", "OrderUnpairedForPayment");
                 }
+
+                // delete OrderVehiclePositionChanged events
+                events.Remove(x => x.EventType.Contains("OrderVehiclePositionChanged"));
+
                 context.SaveChanges();
             }
         }
