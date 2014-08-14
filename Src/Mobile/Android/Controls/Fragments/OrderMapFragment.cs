@@ -377,17 +377,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void CreateMarker(AvailableVehicle vehicle)
         {
-                bool isCluster = v is AvailableVehicleCluster;
+                bool isCluster = vehicle is AvailableVehicleCluster;
                 const string defaultLogoName = "taxi";
                 string logoKey = isCluster
-                                 ? string.Format("cluster_{0}", v.LogoName ?? defaultLogoName)
-                                 : string.Format("nearby_{0}", v.LogoName ?? defaultLogoName);
+                                 ? string.Format("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
+                                 : string.Format("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
 
                 var vehicleMarker =
                 Map.AddMarker(new MarkerOptions()
                   .SetPosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
                         .Anchor(.5f, 1f)
-                  .InvokeIcon(isCluster ? _nearbyClusterIcon : _nearbyTaxiIcon));
+                  .InvokeIcon(_vehicleIcons[logoKey]));
 
             _availableVehicleMarkers.Add (vehicleMarker);
         }
