@@ -22,14 +22,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IPaymentService _paymentService;
 		private readonly IBookingService _bookingService;
+		private readonly IAccountService _accountService;
 
 		public RideSummaryViewModel(IOrderWorkflowService orderWorkflowService,
 			IPaymentService paymentService,
-			IBookingService bookingService)
+			IBookingService bookingService,
+			IAccountService accountService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_paymentService = paymentService;
 			_bookingService = bookingService;
+			_accountService = accountService;
 		}
 
 		public async void Init(string order, string orderStatus)
@@ -129,9 +132,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
+				var defaultCardRequirement = !(Settings.DefaultCardRequiredToPayNow && !_accountService.CurrentAccount.DefaultCreditCard.HasValue);
 				var setting = _paymentService.GetPaymentSettings();
 				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-				return isPayEnabled 
+				return 	defaultCardRequirement &&
+						isPayEnabled 
 						&& !(Settings.RatingEnabled && Settings.RatingRequired && !HasRated)     					 // user must rate before paying
 						&& setting.PaymentMode != PaymentMethod.RideLinqCmt 			 // payment is processed automatically
 						&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue	     // not already paid

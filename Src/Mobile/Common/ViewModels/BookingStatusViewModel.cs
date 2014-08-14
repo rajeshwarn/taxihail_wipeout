@@ -344,7 +344,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                        
 			IsUnpairButtonVisible = IsCmtRideLinq && _bookingService.IsPaired(Order.Id);
 
-			IsPayButtonVisible =  (statusId == VehicleStatuses.Common.Done
+
+			var defaultCardRequirement = !(Settings.DefaultCardRequiredToPayNow && !_accountService.CurrentAccount.DefaultCreditCard.HasValue);
+
+			IsPayButtonVisible = (!Settings.HidePayNowButtonDuringRide) &&
+								defaultCardRequirement &&
+								(statusId == VehicleStatuses.Common.Done
 								||statusId == VehicleStatuses.Common.Loaded)
 								&& (isPayEnabled && !_paymentService.GetPaymentFromCache(Order.Id).HasValue)
 			                    && !IsUnpairButtonVisible
