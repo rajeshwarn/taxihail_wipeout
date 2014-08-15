@@ -312,6 +312,12 @@
   <data name="PaymentConfirmationToDriver2" xml:space="preserve">
     <value>Numéro d'authorisation {0}</value>
   </data>
+  <data name="PairingConfirmationToDriver" xml:space="preserve">
+    <value>Le passager sera chargé automatiquement à la fin de la course</value>
+  </data>
+  <data name="UnpairingConfirmationToDriver" xml:space="preserve">
+    <value>ATTENTION: Le passager ne sera PAS chargé à la fin de la course</value>
+  </data>
   <data name="PushNotification_wosARRIVED" xml:space="preserve">
     <value>Votre véhicule (#{0}) est arrivé</value>
   </data>
