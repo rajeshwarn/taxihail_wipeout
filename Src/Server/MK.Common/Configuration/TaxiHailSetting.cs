@@ -144,6 +144,9 @@ namespace MK.Common.Configuration
 		public int DefaultTipPercentage { get; private set; }
 		[Display(Name = "Account ChargeTypeId", Description = "ChargeTypeId of the Account Charge Type")]
 		public int? AccountChargeTypeId { get; private set; }
+		[Display(Name = "Credit Card ChargeTypeId", Description = "ChargeTypeId of the Credit Card Charge Type")]
+		public int? CreditCardChargeTypeId { get; private set; }
+
 
 		[Display(Name = "Hide Pay Now Button During Ride", Description = "This will hide the pay now button, on the status screen, if the ride is not completed")]
 		public bool HidePayNowButtonDuringRide { get; private set; }

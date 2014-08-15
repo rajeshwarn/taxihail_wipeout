@@ -1527,4 +1527,10 @@
 <data name="PendingOrderCancel" xml:space="preserve">
   	Annuler
   </data>
+<data name="NoCardOnFileMessage" xml:space="preserve">
+  	Vous avez choisi de payer avec votre carteYou have choose to pay with a card on file, put you have no default card.  Add a card to your account or change your payment method to continue.
+  </data>
+  <data name="AddACardButton" xml:space="preserve">
+	Ajouter
+  </data>
 </root>
