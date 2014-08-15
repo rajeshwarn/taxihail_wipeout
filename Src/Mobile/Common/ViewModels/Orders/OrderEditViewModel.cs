@@ -75,15 +75,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					await _orderWorkflowService.SetBookingSettings(BookingSettings);
 					await _orderWorkflowService.SetPickupAptAndRingCode(PickupAddress.Apartment, PickupAddress.RingCode);
 
-						if (this._appSettings.Data.CreditCardChargeTypeId.HasValue) 
-						{
-							var orderToValidate = await GetOrder ();	
-							if ( (orderToValidate.Settings.ChargeTypeId == _appSettings.Data.CreditCardChargeTypeId.Value)  &&
-								(!_accountService.CurrentAccount.DefaultCreditCard.HasValue ))
-							{
-								return false;
-							}
-						}
+//						if (this.Settings.CreditCardChargeTypeId.HasValue) 
+//						{
+//
+//
+//							if ( (orderToValidte.Settings.ChargeTypeId == _appSettings.Data.CreditCardChargeTypeId.Value)  &&
+//								(!_accountService.CurrentAccount.DefaultCreditCard.HasValue ))
+//							{
+//								return false;
+//							}
+//						}
                     PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
 				});
 			}
