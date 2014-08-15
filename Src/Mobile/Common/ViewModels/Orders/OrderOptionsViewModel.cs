@@ -11,6 +11,9 @@ using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Maps;
+using Cirrious.CrossCore;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -18,13 +21,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
+		private readonly IVehicleService _vehicleService;
 
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
-		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService)
+		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
+			_vehicleService = vehicleService;
 
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
 			this.Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
@@ -32,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			this.Observe(_orderWorkflowService.GetAndObserveEstimatedFare(), fare => EstimatedFare = fare);
 			this.Observe(_orderWorkflowService.GetAndObserveLoadingAddress(), loading => IsLoadingAddress = loading);
 			this.Observe(_orderWorkflowService.GetAndObserveVehicleType(), vehicleType => VehicleTypeId = vehicleType);
+			this.Observe(_vehicleService.GetAndObserveEta(), eta => Eta = eta);
 		}
 
 		public async Task Init()
@@ -192,6 +198,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					_estimatedFare = value;
 					RaisePropertyChanged();
 				}
+			}
+		}
+
+		private Direction _eta;
+		public Direction Eta
+		{
+			get{ return _eta; }
+			set
+			{ 
+				_eta = value;
+				RaisePropertyChanged ();
+				RaisePropertyChanged(() => FormattedEta);
+			}
+		}
+
+		public string FormattedEta
+		{
+			get
+			{
+				bool singleMinute = (Eta.Duration < 61);
+				string time = singleMinute ? "1" : Math.Round ((float)Eta.Duration / 60f, MidpointRounding.ToEven).ToString ();
+				string durationUnit = singleMinute ? Mvx.Resolve<ILocalization> () ["EtaDurationUnit"] : Mvx.Resolve<ILocalization> () ["EtaDurationUnitPlural"];
+				return string.Format(Mvx.Resolve<ILocalization>()["Eta"], Eta.FormattedDistance, time, durationUnit);
 			}
 		}
 

@@ -7,7 +7,6 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
-    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -757,6 +756,18 @@
     <BundleResource Include="Resources\star_selected%402x.png" />
     <BundleResource Include="Resources\star_unselected.png" />
     <BundleResource Include="Resources\star_unselected%402x.png" />
+    <BundleResource Include="Resources\suv_no_badge.png" />
+    <BundleResource Include="Resources\suv_no_badge%402x.png" />
+    <BundleResource Include="Resources\suv_no_badge_selected.png" />
+    <BundleResource Include="Resources\suv_no_badge_selected%402x.png" />
+    <BundleResource Include="Resources\taxi_no_badge.png" />
+    <BundleResource Include="Resources\taxi_no_badge%402x.png" />
+    <BundleResource Include="Resources\taxi_no_badge_selected.png" />
+    <BundleResource Include="Resources\taxi_no_badge_selected%402x.png" />
+    <BundleResource Include="Resources\blackcar_no_badge.png" />
+    <BundleResource Include="Resources\blackcar_no_badge%402x.png" />
+    <BundleResource Include="Resources\blackcar_no_badge_selected.png" />
+    <BundleResource Include="Resources\blackcar_no_badge_selected%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">

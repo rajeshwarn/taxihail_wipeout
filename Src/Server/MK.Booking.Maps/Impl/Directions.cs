@@ -31,7 +31,8 @@ namespace apcurium.MK.Booking.Maps.Impl
 		}
 
 		public Direction GetDirection (double? originLat, double? originLng, double? destinationLat,
-		                                    double? destinationLng, DateTime? date = default(DateTime?))
+		                                    double? destinationLng, DateTime? date = default(DateTime?), 
+												bool forEta = false)
 		{
 			var result = new Direction ();
 			var direction = _client.GetDirections (
@@ -39,16 +40,25 @@ namespace apcurium.MK.Booking.Maps.Impl
 				    destinationLat.GetValueOrDefault (), destinationLng.GetValueOrDefault (),
                     date);
 
+			direction = new GeoDirection ();
+
+			direction.Distance = 4500;
+			direction.Duration = 140;
+			direction.TrafficDelay = 0;
+
 			if (direction.Distance.HasValue) 
             {
                 result.Duration = direction.Duration;
 				result.Distance = direction.Distance;
 
-                result.Price = _priceCalculator.GetPrice (
-                    direction.Distance, 
-                    date ?? DateTime.Now, 
-                    direction.Duration);
-                    
+				if (!forEta) 
+				{
+					result.Price = _priceCalculator.GetPrice (
+						direction.Distance, 
+						date ?? DateTime.Now, 
+						direction.Duration);
+				}
+
 				result.FormattedDistance = FormatDistance (result.Distance);
 			}
 
@@ -57,18 +67,26 @@ namespace apcurium.MK.Booking.Maps.Impl
 
 		private string FormatDistance (int? distance)
 		{
-			if (distance.HasValue) 
-            {
-				var format = _appSettings.Data.DistanceFormat.ToEnum (true, DistanceFormat.Km);
-				if (format == DistanceFormat.Km) 
-                {
-					var distanceInKm = Math.Round ((double)distance.Value / 1000, 1);
-					return string.Format ("{0:n1} km", distanceInKm);
+			string result = "";
+
+			if (distance.HasValue) {
+				double meters = (double)distance.Value / 1000;
+
+				switch (_appSettings.Data.DistanceFormat.ToEnum (true, DistanceFormat.Km)) {
+
+				case DistanceFormat.Mile:
+					double miles = Math.Round (meters / 1.609344, 1);
+					result = string.Format ("{0:n1} mile" + ((miles == 1 || miles == 0) ? "" : "s"), miles);
+					break;
+
+				case DistanceFormat.Km:
+				default:
+					result = string.Format ("{0:n1} km", Math.Round (meters, 1));
+					break;
 				}
-				var distanceInMiles = Math.Round ((double)distance.Value / 1000 / 1.609344, 1);
-				return string.Format ("{0:n1} miles", distanceInMiles);
 			}
-			return "";
+
+			return result;
 		}
 	}
 }

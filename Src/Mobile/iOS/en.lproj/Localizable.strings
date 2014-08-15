@@ -490,3 +490,6 @@
 "PendingOrderCancel"="Cancel";
 "PendingOrderMessage"="You cannot book this ride since an order is already pending. View the order status?";
 "PendingOrderView"="View";
+"Eta"="The nearest taxi is {0} and {1} {2} away";
+"EtaDurationUnitPlural"="mins";
+"EtaDurationUnit"="min";

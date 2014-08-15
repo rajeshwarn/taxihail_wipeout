@@ -22,9 +22,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         private UIView HorizontalDividerTop { get; set; }
         private VehicleTypeView EstimateSelectedVehicleType { get; set; }
+		private VehicleTypeView EtaBadge { get; set; }
         private UILabel EstimatedFareLabel { get; set; }
+		private UILabel EtaLabel { get; set; }
         private UIView VehicleSelection { get; set; }
+		private UIView EtaContainer { get; set; }
+
         public Action<VehicleType> VehicleSelected { get; set; }
+
+		private NSLayoutConstraint _heightConstraint;
 
         public VehicleTypeAndEstimateView(IntPtr h) : base(h)
         {
@@ -37,7 +43,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-            HorizontalDividerTop = new UIView(new RectangleF(0, 0, Frame.Width, UIHelper.OnePixel)) 
+			_heightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, 
+				NSLayoutRelation.Equal, 
+				null, 
+				NSLayoutAttribute.NoAttribute, 
+				1.0f, 52.0f);
+
+			this.AddConstraint(_heightConstraint);
+
+			HorizontalDividerTop = new UIView(new RectangleF(0, 0, Frame.Width, UIHelper.OnePixel)) 
             { 
                 BackgroundColor = Theme.LabelTextColor 
             };
@@ -51,20 +65,42 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				AdjustsFontSizeToFitWidth = true,
                 BackgroundColor = UIColor.Clear,
                 Lines = 1,
-				Font = UIFont.FromName(FontName.HelveticaNeueLight, 38 / 2),
-				TextAlignment = UITextAlignment.Center,
+				Font = UIFont.FromName(FontName.HelveticaNeueLight, 32 / 2),
+				TextAlignment = UITextAlignment.Left,
                 TextColor = Theme.LabelTextColor,
                 ShadowColor = UIColor.Clear
             };
 
 			EstimatedFareLabel.SetWidth(Frame.Width - 56f - 5f);
-			EstimatedFareLabel.SetHeight(Frame.Height - 10f);
+			EstimatedFareLabel.SetHeight(Frame.Height / 2);
 			EstimatedFareLabel.SetHorizontalCenter((Frame.Width / 2) + (56f / 2) - 5f);
-			EstimatedFareLabel.SetVerticalCenter(Frame.Height / 2);
+			EstimatedFareLabel.SetVerticalCenter(16f);
 
-            this.SetRoundedCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 3f);
+			EtaLabel = new UILabel
+			{
+				AdjustsFontSizeToFitWidth = true,
+				BackgroundColor = UIColor.Clear,
+				Lines = 1,
+				Font = UIFont.FromName(FontName.HelveticaNeueLight, 22 / 2),
+				TextAlignment = UITextAlignment.Left,
+				TextColor = Theme.LabelTextColor,
+				ShadowColor = UIColor.Clear
+			};
 
-            AddSubviews(HorizontalDividerTop, EstimateSelectedVehicleType, EstimatedFareLabel, VehicleSelection);
+			EtaLabel.SetWidth(Frame.Width - 56f - 5f);
+			EtaLabel.SetHeight(Frame.Height / 2);
+			EtaLabel.SetHorizontalCenter((Frame.Width / 2) + (56f / 2) - 5f);
+
+			EtaContainer = new UIView (
+				new RectangleF (0f, this.Frame.Height - 20f, 
+					this.Frame.Width, 20f));
+
+
+			EtaContainer.BackgroundColor = Theme.CompanyColor;
+			VehicleSelection.Add (EtaContainer);
+			EtaContainer.Add (EtaBadge = new VehicleTypeView (new RectangleF (0, 0, 0, 0)));
+			AddSubviews(HorizontalDividerTop, EstimateSelectedVehicleType, EstimatedFareLabel, VehicleSelection);
+
         }
 
         public bool IsReadOnly { get; set; }
@@ -122,23 +158,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
+		public string Eta
+		{
+			get { return EtaLabel.Text; }
+			set
+			{
+				if (EtaLabel.Text != value)
+				{
+					EtaLabel.Text = value;
+					Redraw ();
+				}
+			}
+		}
+
         private void Redraw()
         {
-            if (ShowEstimate)
+			bool showEta = !Eta.IsNullOrEmpty ();
+			showEtaView (showEta, ShowEstimate);
+
+			if (ShowEstimate)
             {
-                BackgroundColor = Theme.CompanyColor;
+				BackgroundColor = Theme.CompanyColor;
                 HorizontalDividerTop.BackgroundColor = Theme.LabelTextColor;
                 EstimateSelectedVehicleType.Hidden = false;
                 EstimatedFareLabel.Hidden = false;
-                VehicleSelection.Hidden = true;
+				VehicleSelection.Hidden = true;
             }
             else
             {
-                BackgroundColor = UIColor.Clear;
+				BackgroundColor = UIColor.Clear;
                 HorizontalDividerTop.BackgroundColor = UIColor.FromRGB(177, 177, 177);
                 EstimateSelectedVehicleType.Hidden = true;
                 EstimatedFareLabel.Hidden = true;
-
                 VehicleSelection.Hidden = false;
                 VehicleSelection.Subviews.ForEach (x => x.RemoveFromSuperview ());
 
@@ -148,12 +199,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 var leftPadding = 16f;
                 var width = (this.Frame.Width - leftPadding * 2) / Vehicles.Count ();
                 var i = 0;
+
+				VehicleType etaBadge = null;
+
                 foreach (var vehicle in Vehicles) 
                 {
                     var vehicleView = new VehicleTypeView (
                         new RectangleF (leftPadding + i * width, 0f, width, this.Frame.Height), 
                         vehicle, 
                         SelectedVehicle != null ? vehicle.Id == SelectedVehicle.Id : false);
+
+					if (etaBadge == null) 
+					{
+						if (SelectedVehicle != null) 
+						{
+							etaBadge = SelectedVehicle;
+						} else
+						{
+							etaBadge = vehicle;
+						}
+					}
 
                     vehicleView.TouchUpInside += (sender, e) => 
                     { 
@@ -164,11 +229,61 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     };
 
                     VehicleSelection.Add (vehicleView);
-
                     i++;
+
                 }
+
+				VehicleSelection.Add (EtaContainer);
+
+				EtaBadge.RemoveFromSuperview ();
+				EtaBadge = new VehicleTypeView (
+					new RectangleF (4f, -12f, 40f, 40f), 
+					etaBadge, 
+					true,
+					true);
+				EtaContainer.Add (EtaBadge);
+
+
+
             }
         }
+
+		private void showEtaView(bool showEta, bool showEstimate)
+		{
+			EtaLabel.RemoveFromSuperview ();
+			VehicleSelection.Hidden = showEstimate;
+
+			float etaHeight = 52f + ((showEta && !showEstimate) ? 20f : 0f);
+			this.SetHeight (etaHeight);
+			_heightConstraint.Constant = etaHeight;
+
+			if (Superview != null) {
+				((OrderOptionsControl)Superview.Superview).Resize();
+			}
+
+			this.SetRoundedCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 3f);
+			EtaContainer.SetRoundedCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 3f);
+
+			if (!showEstimate && showEta) 
+			{
+				EtaContainer.Add (EtaLabel);
+				EtaLabel.SetVerticalCenter(8f);
+			}
+
+			if (showEstimate) {
+				if (showEta) {
+					this.AddSubview (EtaLabel);
+					EstimatedFareLabel.SetHeight(Frame.Height / 2);
+					EstimatedFareLabel.SetVerticalCenter(16f);
+					EstimatedFareLabel.Font = UIFont.FromName (FontName.HelveticaNeueLight, 32 / 2);
+					EtaLabel.SetVerticalCenter(Frame.Height - 16f);
+				} else {
+					EstimatedFareLabel.SetHeight(Frame.Height - 10f);
+					EstimatedFareLabel.SetVerticalCenter(Frame.Height / 2);
+					EstimatedFareLabel.Font = UIFont.FromName (FontName.HelveticaNeueLight, 38 / 2);
+				}
+			}
+		}
 
         private NSLayoutConstraint[] _hiddenContraints { get; set; }
         public override bool Hidden

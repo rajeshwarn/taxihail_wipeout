@@ -1527,4 +1527,13 @@
 <data name="PendingOrderCancel" xml:space="preserve">
   	Annuler
   </data>
+  <data name="Eta" xml:space="preserve">
+  	Le taxi le plus près est à {0} et {1} {2}
+  </data>
+  <data name="EtaDurationUnit" xml:space="preserve">
+  	min
+  </data>
+  <data name="EtaDurationUnitPlural" xml:space="preserve">
+  	min
+  </data>
 </root>
