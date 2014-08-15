@@ -180,13 +180,10 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         [Test]
         public void when_order_completed_then_order_dto_populated()
         {
-            var orderCompleted = new OrderCompleted
+            var orderCompleted = new OrderStatusChanged
             {
                 SourceId = _orderId,
-                Fare = 23,
-                Toll = 2,
-                Tip = 5,
-                Tax = 12
+                Status = new OrderStatusDetail { Status = OrderStatus.Completed }
             };
             Sut.Handle(orderCompleted);
 
@@ -195,10 +192,6 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 var dto = context.Find<OrderDetail>(_orderId);
                 Assert.NotNull(dto);
                 Assert.NotNull(dto.Status == (int) OrderStatus.Completed);
-                Assert.AreEqual(orderCompleted.Fare, dto.Fare);
-                Assert.AreEqual(orderCompleted.Toll, dto.Toll);
-                Assert.AreEqual(orderCompleted.Tip, dto.Tip);
-                Assert.AreEqual(orderCompleted.Tax, dto.Tax);
             }
         }
 

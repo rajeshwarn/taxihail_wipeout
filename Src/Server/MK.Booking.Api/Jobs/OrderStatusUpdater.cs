@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
         }
 
-        private void CheckForPairing(Guid orderId, IBSOrderInformation ibsOrderInfo)
+        private void CheckForPairingAndHandleIfNecessary(Guid orderId, IBSOrderInformation ibsOrderInfo)
         {
             var pairingInfo = _orderDao.FindOrderPairingById(orderId);
 
@@ -81,12 +81,29 @@ namespace apcurium.MK.Booking.Api.Jobs
             
             // populate orderStatusDetail with ibsOrderInfo data
             ibsOrderInfo.Update(orderStatusDetail);
-
-            var orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
-            var languageCode = orderDetail != null ? orderDetail.ClientLanguageCode : "en";
-
-            CheckForPairing(orderStatusDetail.OrderId, ibsOrderInfo);
             
+            CheckForPairingAndHandleIfNecessary(orderStatusDetail.OrderId, ibsOrderInfo);
+
+            UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
+            
+            orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo);
+            orderStatusDetail.FareAvailable = GetFareAvailable(orderStatusDetail.OrderId, ibsOrderInfo);
+
+            // be careful, the orderStatusDetail will be directly automapped to the database entry
+            // so if you send another command or modify orderStatusDetail directly, make sure you also set
+            // the value in orderStatusDetail before sending this command
+            _commandBus.Send(new ChangeOrderStatus
+            {
+                Status = orderStatusDetail,
+                Fare = ibsOrderInfo.Fare,
+                Toll = ibsOrderInfo.Toll,
+                Tip = ibsOrderInfo.Tip,
+                Tax = ibsOrderInfo.VAT,
+            });
+        }
+
+        private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
+        {
             if (ibsOrderInfo.IsCanceled)
             {
                 orderStatusDetail.Status = OrderStatus.Canceled;
@@ -98,30 +115,18 @@ namespace apcurium.MK.Booking.Api.Jobs
             else if (ibsOrderInfo.IsComplete)
             {
                 orderStatusDetail.Status = OrderStatus.Completed;
-
-                var total = Params.Get(ibsOrderInfo.Toll, ibsOrderInfo.Fare, ibsOrderInfo.Tip, ibsOrderInfo.VAT)
-                            .Select(amount => amount)
-                            .Sum();
-
-                orderStatusDetail.FareAvailable = total > 0;
-
-                var payment = _orderPaymentDao.FindByOrderId(orderStatusDetail.OrderId);
-                if (payment != null)
-                {
-                    orderStatusDetail.FareAvailable = true;
-                }
             }
+        }
 
-            orderStatusDetail.IBSStatusDescription = GetDescription(ibsOrderInfo, languageCode);
-
-            _commandBus.Send(new ChangeOrderStatus
+        private bool GetFareAvailable(Guid orderId, IBSOrderInformation ibsOrderInfo)
+        {
+            var fareAvailable = ibsOrderInfo.Fare > 0;
+            var payment = _orderPaymentDao.FindByOrderId(orderId);
+            if (payment != null)
             {
-                Status = orderStatusDetail,
-                Fare = ibsOrderInfo.Fare,
-                Toll = ibsOrderInfo.Toll,
-                Tip = ibsOrderInfo.Tip,
-                Tax = ibsOrderInfo.VAT,
-            });
+                fareAvailable = true;
+            }
+            return fareAvailable;
         }
 
         private bool OrderWasUpdated(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
@@ -130,8 +135,11 @@ namespace apcurium.MK.Booking.Api.Jobs
                     || (!orderStatusDetail.FareAvailable && ibsOrderInfo.Fare > 0);                          // fare was not available and ibs now has the information
         }
 
-        private string GetDescription(IBSOrderInformation ibsOrderInfo, string languageCode)
+        private string GetDescription(Guid orderId, IBSOrderInformation ibsOrderInfo)
         {
+            var orderDetail = _orderDao.FindById(orderId);
+            var languageCode = orderDetail != null ? orderDetail.ClientLanguageCode : "en";
+
             string description = null;
             if (ibsOrderInfo.IsAssigned)
             {

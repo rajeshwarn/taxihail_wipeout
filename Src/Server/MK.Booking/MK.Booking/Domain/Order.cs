@@ -25,7 +25,6 @@ namespace apcurium.MK.Booking.Domain
         {
             Handles<OrderCreated>(OnOrderCreated);
             Handles<OrderCancelled>(OnOrderCancelled);
-            Handles<OrderCompleted>(OnOrderCompleted);
             Handles<OrderRemovedFromHistory>(OnOrderRemoved);
             Handles<OrderRated>(OnOrderRated);
             Handles<PaymentInformationSet>(NoAction);
@@ -99,20 +98,6 @@ namespace apcurium.MK.Booking.Domain
             Update(new OrderCancelled());
         }
 
-        public void Complete(double? fare, double? tip, double? toll, double? tax)
-        {
-            if (_status != OrderStatus.Completed)
-            {
-                Update(new OrderCompleted
-                {
-                    Fare = fare,
-                    Toll = toll,
-                    Tip = tip,
-                    Tax = tax
-                });
-            }
-        }
-
         public void RemoveFromHistory()
         {
             Update(new OrderRemovedFromHistory());
@@ -175,6 +160,11 @@ namespace apcurium.MK.Booking.Domain
         private void OnOrderStatusChanged(OrderStatusChanged @event)
         {
             _ibsStatus = @event.Status.IBSStatusId;
+
+            if (@event.Status.Status == OrderStatus.Completed)
+            {
+                _status = OrderStatus.Completed;
+            }
         }
 
         private void OnOrderCreated(OrderCreated obj)
@@ -185,11 +175,6 @@ namespace apcurium.MK.Booking.Domain
         private void OnOrderCancelled(OrderCancelled obj)
         {
             _status = OrderStatus.Canceled;
-        }
-
-        private void OnOrderCompleted(OrderCompleted obj)
-        {
-            _status = OrderStatus.Completed;
         }
 
         private void OnOrderRemoved(OrderRemovedFromHistory obj)

@@ -39,11 +39,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             var order = _repository.Find(command.Status.OrderId);
             order.ChangeStatus(command.Status);
 
-            if (command.Status.Status == OrderStatus.Completed)
-            {
-                order.Complete(command.Fare, command.Tip, command.Toll, command.Tax);
-            }
-            else if (command.Fare > 0)
+            if (command.Fare > 0)
             {
                 order.AddFareInformation(command.Fare, command.Tip, command.Toll, command.Tax);
             }

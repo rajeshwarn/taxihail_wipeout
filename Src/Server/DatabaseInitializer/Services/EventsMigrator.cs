@@ -8,6 +8,7 @@ using Infrastructure.Sql.EventSourcing;
 using Newtonsoft.Json;
 using apcurium.MK.Booking.Events;
 using log4net;
+using OrderCompleted = DatabaseInitializer.OldEvents.OrderCompleted;
 
 namespace DatabaseInitializer.Services
 {
@@ -32,22 +33,43 @@ namespace DatabaseInitializer.Services
         {
             using (var context = _contextFactory.Invoke())
             {
-                var events = context.Set<Event>().Where(x =>x.EventType == typeof(PaymentSettingUpdated).FullName ).ToList();
+                var events = context.Set<Event>().Where(x => x.EventType == typeof(PaymentSettingUpdated).FullName ).ToList();
                 foreach (var message in events)
                 {
                     // fix BraintreeClientSettings namespace problem
-                    message.Payload = message.Payload.Replace("apcurium.MK.Common.Configuration.BraintreeClientSettings" , "apcurium.MK.Common.Configuration.Impl.BraintreeClientSettings");
+                    message.Payload = message.Payload.Replace("apcurium.MK.Common.Configuration.BraintreeClientSettings", "apcurium.MK.Common.Configuration.Impl.BraintreeClientSettings");
+                }
+                context.SaveChanges();
 
-                    // rename order pairing events
+                // rename Order Pairing events
+                events = context.Set<Event>().Where(x => x.EventType.Contains("OrderPairedForRideLinqCmtPayment") || x.EventType.Contains("OrderUnpairedForRideLinqCmtPayment")).ToList();
+                foreach (var message in events)
+                {
                     message.Payload = message.Payload.Replace("OrderPairedForRideLinqCmtPayment", "OrderPairedForPayment");
                     message.Payload = message.Payload.Replace("OrderUnpairedForRideLinqCmtPayment", "OrderUnpairedForPayment");
                     message.EventType = message.EventType.Replace("OrderPairedForRideLinqCmtPayment", "OrderPairedForPayment");
                     message.EventType = message.EventType.Replace("OrderUnpairedForRideLinqCmtPayment", "OrderUnpairedForPayment");
                 }
+                context.SaveChanges();
 
-                // delete OrderVehiclePositionChanged events
-                events.Remove(x => x.EventType.Contains("OrderVehiclePositionChanged"));
-
+                // convert OrderCompleted to OrderFareUpdated
+                events = context.Set<Event>().Where(x => x.EventType.Contains("OrderCompleted")).ToList();
+                foreach (var message in events)
+                {
+                    var @event = Deserialize<OrderCompleted>(message.Payload);
+                    var newEvent = new OrderFareUpdated
+                    {
+                        EventDate = @event.EventDate,
+                        SourceId = @event.SourceId,
+                        Version = @event.Version,
+                        Fare = @event.Fare.GetValueOrDefault(0),
+                        Tax = @event.Tax.GetValueOrDefault(0),
+                        Tip = @event.Tip.GetValueOrDefault(0),
+                        Toll = @event.Toll.GetValueOrDefault(0)
+                    };
+                    message.Payload = Serialize(newEvent);
+                    message.EventType = message.EventType.Replace("OrderCompleted", "OrderFareUpdated");
+                }
                 context.SaveChanges();
             }
         }

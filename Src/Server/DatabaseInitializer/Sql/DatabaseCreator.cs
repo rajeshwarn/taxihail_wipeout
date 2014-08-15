@@ -217,13 +217,7 @@ namespace DatabaseInitializer.Sql
             {
                 Console.WriteLine("No event in invalid order");
             }
-
-
-
-
         }
-
-
 
         public void CopyEventsAndCacheTables(string connString, string oldDatabase, string newDatabase)
         {
@@ -231,7 +225,8 @@ namespace DatabaseInitializer.Sql
                 string.Format(
                     "INSERT INTO [{0}].[Events].[Events]([AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId], [EventType], [EventDate]) " +
                     "SELECT [AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId], [EventType], [EventDate] " +
-                    "FROM [{1}].[Events].[Events] ", newDatabase, oldDatabase);
+                    "FROM [{1}].[Events].[Events] " +
+                    "WHERE [EventType] NOT LIKE '%OrderVehiclePositionChanged%'", newDatabase, oldDatabase); // delete OrderVehiclePositionChanged events
 
             DatabaseHelper.ExecuteNonQuery(connString, queryForEvents);
 

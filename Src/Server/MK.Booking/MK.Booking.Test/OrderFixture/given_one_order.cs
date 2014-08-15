@@ -60,37 +60,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         }
 
         [Test]
-        public void when_complete_order_successfully()
-        {
-            var completeOrder = new ChangeOrderStatus
-            {
-                Status = new OrderStatusDetail {OrderId = _orderId, Status = OrderStatus.Completed},
-                Fare = 23,
-                Toll = 2,
-                Tip = 5,
-                Tax = 3
-            };
-            _sut.When(completeOrder);
-
-            var @event = _sut.ThenHasOne<OrderCompleted>();
-            Assert.AreEqual(_orderId, @event.SourceId);
-            Assert.AreEqual(completeOrder.Fare, @event.Fare);
-            Assert.AreEqual(completeOrder.Toll, @event.Toll);
-            Assert.AreEqual(completeOrder.Tip, @event.Tip);
-            Assert.AreEqual(completeOrder.Tax, @event.Tax);
-        }
-
-        [Test]
-        public void when_complete_twice_order_one_event_only()
-        {
-            _sut.Given(new OrderCompleted {SourceId = _orderId});
-            _sut.When(new ChangeOrderStatus {Status = new OrderStatusDetail {OrderId = _orderId, Status = OrderStatus.Completed}, Fare = 12});
-
-            Assert.AreEqual(false, _sut.ThenContains<OrderCompleted>());
-            Assert.AreEqual(0, _sut.Events.Count);
-        }
-
-        [Test]
         public void when_ibs_status_changed()
         {
             _sut.When(new ChangeOrderStatus

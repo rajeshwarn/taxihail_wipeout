@@ -19,7 +19,6 @@ namespace apcurium.MK.Booking.EventHandlers
 {
     public class OrderGenerator : IEventHandler<OrderCreated>,
         IEventHandler<OrderCancelled>,
-        IEventHandler<OrderCompleted>,
         IEventHandler<OrderRemovedFromHistory>,
         IEventHandler<OrderRated>,
         IEventHandler<PaymentInformationSet>,
@@ -59,21 +58,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
             }
         }
-
-        public void Handle(OrderCompleted @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var order = context.Find<OrderDetail>(@event.SourceId);
-                order.Status = (int) OrderStatus.Completed;
-                order.Fare = @event.Fare;
-                order.Tip = @event.Tip;
-                order.Toll = @event.Toll;
-                order.Tax = @event.Tax;
-                context.Save(order);
-            }
-        }
-
+        
         public void Handle(OrderCreated @event)
         {
             using (var context = _contextFactory.Invoke())
@@ -223,7 +208,7 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
-                details.FareAvailable = true;
+                details.FareAvailable = @event.Fare > 0; // not always the case when replaying old events
                 context.Save(details);
 
                 var order = context.Find<OrderDetail>(@event.SourceId);

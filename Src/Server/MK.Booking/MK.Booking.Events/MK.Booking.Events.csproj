@@ -89,7 +89,6 @@
     <Compile Include="FavoriteAddressAdded.cs" />
     <Compile Include="FavoriteAddressUpdated.cs" />
     <Compile Include="OrderCancelled.cs" />
-    <Compile Include="OrderCompleted.cs" />
     <Compile Include="OrderCreated.cs" />
     <Compile Include="OrderRated.cs" />
     <Compile Include="OrderRemovedFromHistory.cs" />

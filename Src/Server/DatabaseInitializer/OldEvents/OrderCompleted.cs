@@ -1,10 +1,6 @@
-﻿#region
+﻿using Infrastructure.EventSourcing;
 
-using Infrastructure.EventSourcing;
-
-#endregion
-
-namespace apcurium.MK.Booking.Events
+namespace DatabaseInitializer.OldEvents
 {
     public class OrderCompleted : VersionedEvent
     {
