@@ -1553,8 +1553,10 @@
 <data name="PendingOrderCancel" xml:space="preserve">
   	Cancel
   </data>
-<data name="NoCardOnFileMessage" xml:space="preserve">
+  <data name="NoCardOnFileMessage" xml:space="preserve">
   	You have choose to pay with a card on file, put you have no default card.  Add a card to your account or change your payment method to continue.
   </data>
-
+  <data name="AddACardButton" xml:space="preserve">
+  	Add Card
+  </data>
 </root>

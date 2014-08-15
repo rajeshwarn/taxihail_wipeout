@@ -331,7 +331,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					this.Services ().Localize ["NoCardOnFileMessage"],
 					this.Services ().Localize ["Continue"], 
 					delegate {
-						PresentationStateRequested.Raise (this, new HomeViewModelStateRequestedEventArgs (HomeViewModelState.));
+						PresentationStateRequested.Raise (this, new HomeViewModelStateRequestedEventArgs (HomeViewModelState.Initial));
 						ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true });
 					}, 
 					this.Services ().Localize ["Cancel"], 
