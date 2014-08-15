@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters;
 using apcurium.MK.Common.Extensions;
+using DatabaseInitializer.OldEvents;
 using Infrastructure.Sql.EventSourcing;
 using Newtonsoft.Json;
 using apcurium.MK.Booking.Events;
@@ -52,23 +53,45 @@ namespace DatabaseInitializer.Services
                 }
                 context.SaveChanges();
 
-                // convert OrderCompleted to OrderFareUpdated
+                // convert OrderCompleted to OrderStatusChanged
                 events = context.Set<Event>().Where(x => x.EventType.Contains("OrderCompleted")).ToList();
                 foreach (var message in events)
                 {
                     var @event = Deserialize<OrderCompleted>(message.Payload);
-                    var newEvent = new OrderFareUpdated
+                    var newEvent = new OrderStatusChanged
                     {
                         EventDate = @event.EventDate,
                         SourceId = @event.SourceId,
                         Version = @event.Version,
-                        Fare = @event.Fare.GetValueOrDefault(0),
-                        Tax = @event.Tax.GetValueOrDefault(0),
-                        Tip = @event.Tip.GetValueOrDefault(0),
-                        Toll = @event.Toll.GetValueOrDefault(0)
+                        Fare = @event.Fare,
+                        Tax = @event.Tax,
+                        Tip = @event.Tip,
+                        Toll = @event.Toll,
+                        IsCompleted = true
                     };
                     message.Payload = Serialize(newEvent);
-                    message.EventType = message.EventType.Replace("OrderCompleted", "OrderFareUpdated");
+                    message.EventType = message.EventType.Replace("OrderCompleted", "OrderStatusChanged");
+                }
+                context.SaveChanges();
+
+                // convert OrderFareUpdated to OrderStatusChanged
+                events = context.Set<Event>().Where(x => x.EventType.Contains("OrderFareUpdated")).ToList();
+                foreach (var message in events)
+                {
+                    var @event = Deserialize<OrderFareUpdated>(message.Payload);
+                    var newEvent = new OrderStatusChanged
+                    {
+                        EventDate = @event.EventDate,
+                        SourceId = @event.SourceId,
+                        Version = @event.Version,
+                        Fare = @event.Fare,
+                        Tax = @event.Tax,
+                        Tip = @event.Tip,
+                        Toll = @event.Toll,
+                        IsCompleted = false
+                    };
+                    message.Payload = Serialize(newEvent);
+                    message.EventType = message.EventType.Replace("OrderFareUpdated", "OrderStatusChanged");
                 }
                 context.SaveChanges();
             }

@@ -183,7 +183,11 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
             var orderCompleted = new OrderStatusChanged
             {
                 SourceId = _orderId,
-                Status = new OrderStatusDetail { Status = OrderStatus.Completed }
+                Fare = 23,
+                Toll = 2,
+                Tip = 5,
+                Tax = 12,
+                IsCompleted = true
             };
             Sut.Handle(orderCompleted);
 
@@ -192,6 +196,10 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 var dto = context.Find<OrderDetail>(_orderId);
                 Assert.NotNull(dto);
                 Assert.NotNull(dto.Status == (int) OrderStatus.Completed);
+                Assert.AreEqual(orderCompleted.Fare, dto.Fare);
+                Assert.AreEqual(orderCompleted.Toll, dto.Toll);
+                Assert.AreEqual(orderCompleted.Tip, dto.Tip);
+                Assert.AreEqual(orderCompleted.Tax, dto.Tax);
             }
         }
 
@@ -257,13 +265,13 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         }
 
         [Test]
-        public void when_faret_information_set()
+        public void when_fare_information_set()
         {
             double fare = 12;
             double tip = 2;
             double toll = 5;
             double tax = 3;
-            Sut.Handle(new OrderFareUpdated
+            Sut.Handle(new OrderStatusChanged
             {
                 SourceId = _orderId,
                 Fare = fare,

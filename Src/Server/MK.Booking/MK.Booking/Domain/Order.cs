@@ -29,7 +29,6 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderRated>(OnOrderRated);
             Handles<PaymentInformationSet>(NoAction);
             Handles<OrderStatusChanged>(OnOrderStatusChanged);
-            Handles<OrderFareUpdated>(OnOrderFareUpdated);
             Handles<OrderPairedForPayment>(NoAction);
             Handles<OrderUnpairedForPayment>(NoAction);
         }
@@ -116,24 +115,21 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        public void ChangeStatus(OrderStatusDetail status)
+        public void ChangeStatus(OrderStatusDetail status, double? fare, double? tip, double? toll, double? tax)
         {
             if (status == null) throw new InvalidOperationException();
 
-            if (status.IBSStatusId != _ibsStatus)
+            if (status.IBSStatusId != _ibsStatus || _fare != fare)
             {
                 Update(new OrderStatusChanged
                 {
-                    Status = status
+                    Status = status,
+                    Fare = fare,
+                    Tip = tip,
+                    Toll = toll,
+                    Tax = tax,
+                    IsCompleted = status.Status == OrderStatus.Completed
                 });
-            }
-        }
-
-        public void AddFareInformation(double fare, double tip, double toll, double tax)
-        {
-            if (_fare != fare)
-            {
-                Update(new OrderFareUpdated{ Fare = fare, Tip = tip, Toll = toll, Tax = tax});
             }
         }
 
@@ -159,9 +155,17 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnOrderStatusChanged(OrderStatusChanged @event)
         {
-            _ibsStatus = @event.Status.IBSStatusId;
+            if (@event.Status != null) //possible with migration
+            {
+                _ibsStatus = @event.Status.IBSStatusId;
+            }
 
-            if (@event.Status.Status == OrderStatus.Completed)
+            if (@event.Fare.HasValue && @event.Fare.Value > 0)
+            {
+                _fare = @event.Fare;
+            }
+
+            if (@event.IsCompleted || @event.Status.Status == OrderStatus.Completed)
             {
                 _status = OrderStatus.Completed;
             }
@@ -185,11 +189,6 @@ namespace apcurium.MK.Booking.Domain
         private void OnOrderRated(OrderRated obj)
         {
             _isRated = true;
-        }
-
-        private void OnOrderFareUpdated(OrderFareUpdated @event)
-        {
-            _fare = @event.Fare;
         }
     }
 }

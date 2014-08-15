@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
 
@@ -57,6 +58,49 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
             var @event = _sut.ThenHasSingle<OrderCancelled>();
             Assert.AreEqual(_orderId, @event.SourceId);
+        }
+
+        [Test]
+        public void when_complete_order_successfully()
+        {
+            var completeOrder = new ChangeOrderStatus
+            {
+                Status = new OrderStatusDetail {OrderId = _orderId, Status = OrderStatus.Completed},
+                Fare = 23,
+                Toll = 2,
+                Tip = 5,
+                Tax = 3
+            };
+            _sut.When(completeOrder);
+
+            var @event = _sut.ThenHasOne<OrderStatusChanged>();
+            Assert.AreEqual(_orderId, @event.SourceId);
+            Assert.AreEqual(completeOrder.Fare, @event.Fare);
+            Assert.AreEqual(completeOrder.Toll, @event.Toll);
+            Assert.AreEqual(completeOrder.Tip, @event.Tip);
+            Assert.AreEqual(completeOrder.Tax, @event.Tax);
+            Assert.AreEqual(true, @event.IsCompleted);
+        }
+
+        [Test]
+        public void when_change_status_with_same_status_twice_no_event_published()
+        {
+            _sut.Given(new OrderStatusChanged() { SourceId = _orderId, IsCompleted = true, Status = new OrderStatusDetail { OrderId = _orderId, Status = OrderStatus.Completed, IBSStatusId = VehicleStatuses.Common.Done } });
+            _sut.When(new ChangeOrderStatus { Status = new OrderStatusDetail { OrderId = _orderId, Status = OrderStatus.Completed, IBSStatusId = VehicleStatuses.Common.Done } });
+
+            Assert.AreEqual(false, _sut.ThenContains<OrderStatusChanged>());
+            Assert.AreEqual(0, _sut.Events.Count);
+        }
+
+        [Test]
+        public void when_change_status_with_same_status_twice_but_different_fare_then_event_published()
+        {
+            _sut.Given(new OrderStatusChanged() { SourceId = _orderId, IsCompleted = true, Status = new OrderStatusDetail { OrderId = _orderId, Status = OrderStatus.Completed, IBSStatusId = VehicleStatuses.Common.Done } });
+            _sut.When(new ChangeOrderStatus { Status = new OrderStatusDetail { OrderId = _orderId, Status = OrderStatus.Completed, IBSStatusId = VehicleStatuses.Common.Done }, Fare = 12 });
+
+            var @event = _sut.ThenHasOne<OrderStatusChanged>();
+            Assert.AreEqual(12, @event.Fare);
+            Assert.AreEqual(1, _sut.Events.Count);
         }
 
         [Test]
@@ -111,7 +155,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Fare = 12
             });
 
-            var @event = _sut.ThenHasSingle<OrderFareUpdated>();
+            var @event = _sut.ThenHasSingle<OrderStatusChanged>();
 
             Assert.AreEqual(12, @event.Fare);
         }

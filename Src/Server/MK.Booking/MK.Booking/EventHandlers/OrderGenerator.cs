@@ -24,8 +24,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PaymentInformationSet>,
         IEventHandler<OrderStatusChanged>,
         IEventHandler<OrderPairedForPayment>,
-        IEventHandler<OrderUnpairedForPayment>,
-        IEventHandler<OrderFareUpdated>
+        IEventHandler<OrderUnpairedForPayment>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -170,54 +169,63 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
+        private bool GetFareAvailable(double? fare)
+        {
+            return fare.HasValue && fare > 0;
+        }
+
         public void Handle(OrderStatusChanged @event)
         {
             using (var context = _contextFactory.Invoke())
             {
-                @event.Status.PickupDate = @event.Status.PickupDate < (DateTime) SqlDateTime.MinValue
-                    ? (DateTime) SqlDateTime.MinValue
-                    : @event.Status.PickupDate;
-                var details = context.Find<OrderStatusDetail>(@event.Status.OrderId);
+                // keep in mind that for migration purpose, @event.status could be null
+                if (@event.Status != null)
+                {
+                    @event.Status.PickupDate = @event.Status.PickupDate < (DateTime)SqlDateTime.MinValue
+                        ? (DateTime)SqlDateTime.MinValue
+                        : @event.Status.PickupDate;
+                }
+
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 if (details == null)
                 {
+                    @event.Status.FareAvailable = GetFareAvailable(@event.Fare);
                     context.Set<OrderStatusDetail>().Add(@event.Status);
                 }
                 else
                 {
-                    Mapper.Map(@event.Status, details);
-                    context.Save(details);
+                    if (@event.Status == null) // possible with migration from OrderCompleted or OrderFareUpdated
+                    {
+                        details.FareAvailable = GetFareAvailable(@event.Fare);
+                    }
+                    else
+                    {
+                        Mapper.Map(@event.Status, details);
+                        details.FareAvailable = GetFareAvailable(@event.Fare);
+                        context.Save(details);
+                    }
                 }
 
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 if (order != null)
                 {
-                    order.Status = (int) @event.Status.Status;
-                    context.Save(order);
-                }
-                else
-                {
-                    _logger.LogMessage("Order Status without existing Order : " + @event.SourceId);
-                }
+                    if (@event.Status == null) // possible with migration from OrderCompleted or OrderFareUpdated
+                    {
+                        if (@event.IsCompleted)
+                        {
+                            order.Status = (int) OrderStatus.Completed;
+                        }
+                    }
+                    else
+                    {
+                        order.Status = (int)@event.Status.Status;
+                    }
 
-                context.SaveChanges();
-            }
-        }
-
-        public void Handle(OrderFareUpdated @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var details = context.Find<OrderStatusDetail>(@event.SourceId);
-                details.FareAvailable = @event.Fare > 0; // not always the case when replaying old events
-                context.Save(details);
-
-                var order = context.Find<OrderDetail>(@event.SourceId);
-                if (order != null)
-                {
                     order.Fare = @event.Fare;
                     order.Tip = @event.Tip;
                     order.Toll = @event.Toll;
                     order.Tax = @event.Tax;
+
                     context.Save(order);
                 }
                 else
