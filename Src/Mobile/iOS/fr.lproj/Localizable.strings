@@ -299,7 +299,7 @@
 "ReminderTitle"="{0} Enregistré";
 "RemoveCreditCardMessage"="Etes-vous sur de vouloir supprimer cette carte de paiement?";
 "RemoveCreditCardTitle"="Supprimer cette carte de paiement";
-"ReSendConfirmation"="Signaler au chauffeur le mode de paiement";
+"ReSendConfirmation"="Signaler le paiement";
 "Reset"="Réinitialiser";
 "ResetPasswordConfirmationMessage"="Un nouveau mot de passe vous a été envoyé par email";
 "ResetPasswordConfirmationTitle"="Mot de passe envoyé";
@@ -468,3 +468,5 @@
 "PendingOrderCancel"="Annuler";
 "PendingOrderMessage"="Désolé, cette reservation ne peut être prise en compte. Vous avez déjà une commande en cours. Voir le détail?";
 "PendingOrderView"="Détail";
+"NoCardOnFileMessage"="Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.";
+"AddACardButton"="Enregistrez";
