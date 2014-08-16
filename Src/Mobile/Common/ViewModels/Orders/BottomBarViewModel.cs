@@ -118,7 +118,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						{
 							return;
 						}
+
+							var cardValidated = await  _orderWorkflowService.ValidateCardOnFile();
+							if (!cardValidated )
+							{
+								this.Services ().Message.ShowMessage (this.Services ().Localize ["ErrorCreatingOrderTitle"], 
+									this.Services ().Localize ["NoCardOnFileMessage"]);
+
+								return;
+							}
 						_orderWorkflowService.BeginCreateOrder ();
+
 
 						if(await _orderWorkflowService.ShouldGoToAccountNumberFlow())
 						{
@@ -329,10 +339,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			if (!await _orderWorkflowService.ValidateCardOnFile ()) {
 				this.Services ().Message.ShowMessage (this.Services ().Localize ["ErrorCreatingOrderTitle"], 
 					this.Services ().Localize ["NoCardOnFileMessage"],
-					this.Services ().Localize ["Continue"], 
+					this.Services ().Localize ["AddACardButton"], 
 					delegate {
-						PresentationStateRequested.Raise (this, new HomeViewModelStateRequestedEventArgs (HomeViewModelState.Initial));
-						ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true });
+						PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
+						ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true, navigateHome = false });
+
 					}, 
 					this.Services ().Localize ["Cancel"], 
 					() => {

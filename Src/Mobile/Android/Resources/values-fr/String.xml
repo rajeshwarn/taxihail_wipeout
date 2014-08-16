@@ -304,7 +304,7 @@
   <string name="ReminderTitle">{0} Enregistré</string>
   <string name="RemoveCreditCardMessage">Etes-vous sur de vouloir supprimer cette carte de paiement?</string>
   <string name="RemoveCreditCardTitle">Supprimer cette carte de paiement</string>
-  <string name="ReSendConfirmation">Signaler au chauffeur le mode de paiement</string>
+  <string name="ReSendConfirmation">Signaler le paiement</string>
   <string name="Reset">Réinitialiser</string>
   <string name="ResetPasswordConfirmationMessage">Un nouveau mot de passe vous a été envoyé par email</string>
   <string name="ResetPasswordConfirmationTitle">Mot de passe envoyé</string>
@@ -473,4 +473,6 @@
   <string name="PendingOrderMessage">Désolé, cette reservation ne peut être prise en compte. Vous avez déjà une commande en cours. Voir le détail?</string>
   <string name="PendingOrderView">Détail</string>
   <string name="PendingOrderCancel">Annuler</string>
+  <string name="NoCardOnFileMessage">Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.</string>
+  <string name="AddACardButton">Enregistrez</string>
 </resources>
