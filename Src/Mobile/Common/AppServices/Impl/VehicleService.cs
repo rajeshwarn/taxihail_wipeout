@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 	public class VehicleService : BaseService, IVehicleService
     {
 		readonly IObservable<AvailableVehicle[]> _availableVehiclesObservable;
-		readonly IObservable<Direction> _eta;
+		readonly IObservable<Direction> _etaObservable;
 		readonly ISubject<IObservable<long>> _timerSubject = new BehaviorSubject<IObservable<long>>(Observable.Never<long>());
 		readonly IDirections _directions;
 
@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			IDirections directions)
 		{
 			_directions = directions;
+
 			_availableVehiclesObservable = _timerSubject
 				.Switch()
 				.CombineLatest(
@@ -35,14 +36,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.Where(x => x.address.HasValidCoordinate() && x.vehicleTypeId.HasValue)
 				.SelectMany(x => CheckForAvailableVehicles(x.address, x.vehicleTypeId.Value));
 
-			_eta = _timerSubject
-				.Switch ()
-				.CombineLatest (
-				orderWorkflowService.GetAndObservePickupAddress (), 
-				_availableVehiclesObservable, 
-				(_, address, availableVehicles) => new { address, availableVehicles })
-				.Where (x => x.address.HasValidCoordinate () )
-				.Select (x => CheckForEta (x.address, x.availableVehicles));
+			 _etaObservable = _availableVehiclesObservable
+				.Where (x => x.Any ())
+				.CombineLatest(orderWorkflowService.GetAndObservePickupAddress (), (vehicles, address) => new { address, vehicles } )
+				.Select (x => new { x.address, vehicle = GetNearestVehicle(x.address, x.vehicles) })
+				.DistinctUntilChanged(x => Position.CalculateDistance (x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude))
+				.Select(x => CheckForEta(x.address, x.vehicle));
+
 		}
 
 		public void Start()
@@ -72,12 +72,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 		}
 
-		public Direction CheckForEta(Address pickup, AvailableVehicle[] availableVehicles) // Using pickupDate here to be consistant with date I18n
+		public AvailableVehicle GetNearestVehicle(Address pickup, AvailableVehicle[] cars)
 		{
-			var cars = availableVehicles.ToList();	
-			var vehicleLocation = cars.OrderByDescending (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude))
+			return cars.OrderByDescending (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude))
 				.First();
-			
+		}
+
+		public Direction CheckForEta(Address pickup, AvailableVehicle vehicleLocation) // Using pickupDate here to be consistant with date I18n
+		{
 			return  _directions.GetDirection(vehicleLocation.Latitude, vehicleLocation.Longitude, pickup.Latitude, pickup.Longitude, null, true);                    	
 		}
 
@@ -97,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public IObservable<Direction> GetAndObserveEta()
 		{
-			return _eta;
+			return _etaObservable;
 		}
     }
 }

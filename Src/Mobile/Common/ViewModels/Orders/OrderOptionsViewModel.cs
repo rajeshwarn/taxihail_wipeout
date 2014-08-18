@@ -91,6 +91,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				_vehicleTypes = value ?? new List<VehicleType>();
 
 				RaisePropertyChanged ();
+				RaisePropertyChanged (() => ShowVehicleSelection);
 				RaisePropertyChanged (() => SelectedVehicleType);
 				RaisePropertyChanged (() => VehicleAndEstimateBoxIsVisible);
 			}
@@ -226,7 +227,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public bool VehicleAndEstimateBoxIsVisible
 		{
-			get { return VehicleTypes.Count() > 1 || ShowEstimate; }
+			get { return ShowVehicleSelection || ShowEstimate || ShowEta; }
 		}
 
 		public bool ShowEstimate
@@ -234,6 +235,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get { return ShowDestination && Settings.ShowEstimate; }
 		}
 
+		public bool ShowEta
+		{
+			get { return true; }  //TODO: Wire to Settings.xxxxxxxxxxx
+		}
+
+		public bool ShowVehicleSelection
+		{
+			get { return VehicleTypes.Count() > 1; } // TODO: Wire to Settings.xxxxxxxxxxxxxx
+		}
+			
         public ICommand SetAddress
         {
             get

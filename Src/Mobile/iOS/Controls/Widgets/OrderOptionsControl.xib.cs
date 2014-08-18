@@ -88,6 +88,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(viewVehicleType)
                 .For(v => v.ShowEstimate)
 				.To(vm => vm.ShowEstimate);
+			set.Bind(viewVehicleType)
+				.For(v => v.ShowEta)
+				.To(vm => vm.ShowEta);
+			set.Bind(viewVehicleType)
+				.For(v => v.ShowVehicleSelection)
+				.To(vm => vm.ShowVehicleSelection);
             set.Bind (viewVehicleType)
                 .For (v => v.Vehicles)
                 .To (vm => vm.VehicleTypes);

@@ -39,13 +39,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                     originLat.GetValueOrDefault (), originLng.GetValueOrDefault (),
 				    destinationLat.GetValueOrDefault (), destinationLng.GetValueOrDefault (),
                     date);
-
-			direction = new GeoDirection ();
-
-			direction.Distance = 4500;
-			direction.Duration = 140;
-			direction.TrafficDelay = 0;
-
+				
 			if (direction.Distance.HasValue) 
             {
                 result.Duration = direction.Duration;
