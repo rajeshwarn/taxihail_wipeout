@@ -79,6 +79,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     var orders = _orderDao.GetOrdersInProgress().ToArray();
 
+                    BatchUpdateStatus(orders.Where(o => o.Status == OrderStatus.WaitingForPayment));
                     BatchUpdateStatus(orders.Where(o => o.Status == OrderStatus.Pending));
                     BatchUpdateStatus(orders.Where(o => o.Status == OrderStatus.Created));
                 }

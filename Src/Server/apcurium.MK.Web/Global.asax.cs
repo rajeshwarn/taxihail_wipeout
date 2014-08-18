@@ -42,6 +42,7 @@ namespace apcurium.MK.Web
         {
             Log.Info("Queue OrderStatusJob " + DateTime.Now.ToString("HH:MM:ss"));
             
+            // todo Change polling value depending on if we detected WaitingForPayment on last run
             Observable.Timer(TimeSpan.FromSeconds(pollingValue))
                 .Subscribe(_ =>
                 {

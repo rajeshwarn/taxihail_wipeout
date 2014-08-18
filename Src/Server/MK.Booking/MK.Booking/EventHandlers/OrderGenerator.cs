@@ -194,7 +194,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
                 else
                 {
-                    if (@event.Status != null) // possible with migration from OrderCompleted or OrderFareUpdated
+                    // possible only with migration from OrderCompleted or OrderFareUpdated
+                    if (@event.Status != null) 
                     {
                         Mapper.Map(@event.Status, details);
                     }
@@ -206,7 +207,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 if (order != null)
                 {
-                    if (@event.Status == null) // possible with migration from OrderCompleted or OrderFareUpdated
+                    // possible only with migration from OrderCompleted or OrderFareUpdated
+                    if (@event.Status == null) 
                     {
                         if (@event.IsCompleted)
                         {

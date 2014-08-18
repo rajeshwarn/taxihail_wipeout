@@ -187,7 +187,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 {
                     OrderId = request.OrderId,
                     TokenOfCardToBeUsedForPayment = request.CardToken,
-                    AutoTipAmount = request.AutoTipAmount,
                     AutoTipPercentage = request.AutoTipPercentage
                 });
 

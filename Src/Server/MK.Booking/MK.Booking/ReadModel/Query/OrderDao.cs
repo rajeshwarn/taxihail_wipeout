@@ -111,12 +111,12 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                
                 var startDate = DateTime.Now.AddHours(-36);
 
                 var currentOrders = (from order in context.Set<OrderStatusDetail>()
                                      where (order.Status == OrderStatus.Created
-                                        || order.Status == OrderStatus.Pending) && (order.PickupDate >= startDate)
+                                        || order.Status == OrderStatus.Pending
+                                        || order.Status == OrderStatus.WaitingForPayment) && (order.PickupDate >= startDate)
                                      select order).ToList();
                 return currentOrders;
             }
