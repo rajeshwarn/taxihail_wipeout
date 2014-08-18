@@ -12,5 +12,8 @@
 	"Export" : "Export",
 	"ExportAccounts" : "Accounts",
 	"ExportOrders" : "Orders",
-	"Version" : "Version"
+	"Version" : "Version",
+	"Signup" : "Signup",
+	
+
 }

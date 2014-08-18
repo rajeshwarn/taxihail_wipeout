@@ -51,6 +51,10 @@
             "exportaccounts": "exportAccounts",
             "exportorders": "exportOrders",
 
+            /*Signup*/
+            "signup": "signup",
+            
+
             /* Charge Accounts */
             "accounts": "manageAccounts",
             "accounts/add": "addAccount",
@@ -69,6 +73,10 @@
             TaxiHail.geocoder.initialize(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude);
         },
         
+        signup: function () {
+            document.location.href = '../#signup';
+        },
+
         manageCompanySettings: function () {
             action(TaxiHail.CompanySettingsController, 'index');
         },
