@@ -28,10 +28,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private UIView VehicleSelection { get; set; }
 		private UIView EtaContainer { get; set; }
 
-		private const double VEHICLE_SELECTION_HEIGHT = 52.0f;
-		private const double ETA_CONTAINER_HEIGHT = 20.0f;
-		private const double LABEL_WIDTH = 56.0f;
-		private const double LABEL_RIGHT_PADDING = 5f;
+		private const float VEHICLE_SELECTION_HEIGHT = 52.0f;
+		private const float ETA_CONTAINER_HEIGHT = 20.0f;
+		private const float LABEL_WIDTH = 56.0f;
+		private const float LABEL_RIGHT_PADDING = 5f;
 
         public Action<VehicleType> VehicleSelected { get; set; }
 
