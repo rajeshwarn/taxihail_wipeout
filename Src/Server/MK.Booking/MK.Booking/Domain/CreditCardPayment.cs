@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Domain
         {
             Handles<CreditCardPaymentInitiated>(OnCreditCardPaymentInitiated);
             Handles<CreditCardPaymentCaptured>(OnCreditCardPaymentCaptured);
-            Handles<CreditCardPaymentCancellationFailed>(OnCreditCardPaymentCancellationFailed);
+            Handles<CreditCardErrorThrown>(OnCreditCardPaymentCancellationFailed);
         }
 
         public CreditCardPayment(Guid id, IEnumerable<IVersionedEvent> history)
@@ -70,9 +70,9 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void CancellationFailed(string reason)
+        public void ErrorThrown(string reason)
         {
-            Update(new CreditCardPaymentCancellationFailed
+            Update(new CreditCardErrorThrown
             {
                 Reason = reason
             });
@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Domain
             _isCaptured = true;
         }
 
-        private void OnCreditCardPaymentCancellationFailed(CreditCardPaymentCancellationFailed obj)
+        private void OnCreditCardPaymentCancellationFailed(CreditCardErrorThrown obj)
         {
            //flag as not cancelled?
         }

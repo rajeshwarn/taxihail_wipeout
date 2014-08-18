@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     throw new InvalidOperationException("Payment not found");
                 }
-                detail.CancellationError = @event.Reason;
+                detail.Error = @event.Reason;
                 context.SaveChanges();
             }
         }

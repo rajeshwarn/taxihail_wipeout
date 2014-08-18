@@ -271,11 +271,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                                 _logger.LogError(ex);
                                 message = message + ex.Message;
                                 //can't cancel transaction, send a command to log
-                                _commandBus.Send(new LogCreditCardPaymentCancellationFailed
-                                {
-                                    PaymentId = paymentId,
-                                    Reason = message
-                                });
+                                
                             }
                         }
                     }
@@ -288,6 +284,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             PaymentId = paymentId,
                             AuthorizationCode = authorizationCode,
                             Provider = PaymentProvider.Braintree,
+                        });
+                    }
+                    else
+                    {
+                        //payment error
+                        _commandBus.Send(new LogCreditCardError
+                        {
+                            PaymentId = paymentId,
+                            Reason = message
                         });
                     }
                 }
