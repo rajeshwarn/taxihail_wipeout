@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             var conversionRate = _configurationManager.GetSetting<decimal>("PayPalConversionRate", 1);
 
-            var token = service.SetExpressCheckout(request.Amount * conversionRate, successUrl, cancelUrl);
+            var token = service.SetExpressCheckout( Math.Round( request.Amount * conversionRate,2), successUrl, cancelUrl);
             var checkoutUrl = service.GetCheckoutUrl(token);
 
 
