@@ -218,10 +218,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				bool singleMinute = (Eta.Duration < 61);
-				string time = singleMinute ? "1" : Math.Round ((float)Eta.Duration / 60f, MidpointRounding.ToEven).ToString ();
+				double time = Math.Ceiling ((float)Eta.Duration / 60f);
+				bool singleMinute = ((int)time == 1);
+				string timeString = singleMinute ? "1" : time.ToString ();
 				string durationUnit = singleMinute ? Mvx.Resolve<ILocalization> () ["EtaDurationUnit"] : Mvx.Resolve<ILocalization> () ["EtaDurationUnitPlural"];
-				return string.Format(Mvx.Resolve<ILocalization>()["Eta"], Eta.FormattedDistance, time, durationUnit);
+				return string.Format(Mvx.Resolve<ILocalization>()["Eta"], Eta.FormattedDistance, timeString, durationUnit);
 			}
 		}
 
