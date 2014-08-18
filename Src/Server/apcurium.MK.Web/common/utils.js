@@ -4,11 +4,27 @@
 
         localize: function (resourceName, resourceSet) {
             var resource = '';
-            if (resourceSet && !_.isUndefined(TaxiHail.resources[resourceSet])) {
-                resource = TaxiHail.resources[resourceSet][resourceName];
+            var lang = (navigator.language) ? navigator.language.split('-')[0] : navigator.userLanguage;
+
+            if (resourceSet) {
+                var localizedResourceSet = resourceSet + "-" + lang;
+
+                if (!_.isUndefined(TaxiHail.resources[localizedResourceSet])) {
+                    resource = TaxiHail.resources[localizedResourceSet][resourceName];
+                } else if (!_.isUndefined(TaxiHail.resources[resourceSet])) {
+                    resource = TaxiHail.resources[resourceSet][resourceName];
+                }
             }
+
+            // Check for localized Global resource
+            var localizedGlobalResourceSet = "Global-" + lang;
+            if (!resource && !_.isUndefined(TaxiHail.resources[localizedGlobalResourceSet])) {
+                resource = TaxiHail.resources[localizedGlobalResourceSet][resourceName];
+            }
+
             return resource || TaxiHail.resources.Global[resourceName] || resourceName;
         },
+
 
         addResourceSet: function (name, resourceSet) {
             TaxiHail.resources[name] = resourceSet;
