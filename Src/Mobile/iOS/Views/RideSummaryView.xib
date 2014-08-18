@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -85,7 +85,6 @@
                 <constraint firstItem="YN8-Kh-ERJ" firstAttribute="top" secondItem="lxr-AS-1xd" secondAttribute="bottom" constant="13" id="Fws-oL-TZN"/>
                 <constraint firstItem="lxr-AS-1xd" firstAttribute="top" secondItem="4" secondAttribute="bottom" constant="20" id="Gwa-Tm-0X3"/>
                 <constraint firstItem="YN8-Kh-ERJ" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="Hq8-4E-9ye"/>
-                <constraint firstItem="18" firstAttribute="top" secondItem="4" secondAttribute="bottom" priority="500" constant="30" id="LbX-6V-6kF"/>
                 <constraint firstItem="lxr-AS-1xd" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="UOm-Mb-Tcj"/>
                 <constraint firstItem="13" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="XOw-aA-ptU"/>
                 <constraint firstAttribute="centerX" secondItem="4" secondAttribute="centerX" id="aCe-DA-9xw"/>
