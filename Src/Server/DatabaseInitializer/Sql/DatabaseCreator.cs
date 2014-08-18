@@ -191,13 +191,13 @@ namespace DatabaseInitializer.Sql
 
             string unorderedEvents = ";WITH cte AS ";
             unorderedEvents += "( ";
-            unorderedEvents += "SELECT *, ROW_NUMBER() OVER (PARTITION BY AggregateId ORDER BY [EventDate] ASC) AS rn ";
+            unorderedEvents += "SELECT *, ROW_NUMBER() OVER (PARTITION BY AggregateId ORDER BY [EventDate], [VERSION] ASC) AS rn ";
             unorderedEvents += "FROM [Events].[Events]  ";
             unorderedEvents += ") ";
-            unorderedEvents += "SELECT * ";
+            unorderedEvents += "SELECT [AggregateId] ";
             unorderedEvents += "FROM cte ";
-            unorderedEvents += "WHERE rn = 1 and Version > 0 ";
-            unorderedEvents += "order by [EventDate] ";
+            unorderedEvents += "WHERE (rn - [Version])  > 1 ";
+            unorderedEvents += "group by [AggregateId] ";
 
 
             var invalidAggregateId = DatabaseHelper.ExecuteListQuery<Guid>(connString, unorderedEvents);

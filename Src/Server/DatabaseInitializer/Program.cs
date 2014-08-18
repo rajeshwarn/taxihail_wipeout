@@ -60,7 +60,7 @@ namespace DatabaseInitializer
 
         public static int Main(string[] args)
         {
-            var loggger = LogManager.GetLogger("DatabaseInitializer");
+            var logger = LogManager.GetLogger("DatabaseInitializer");
             try
             {
                 Console.WriteLine("Creating/updating database for version {0}", CurrentVersion);
@@ -241,7 +241,7 @@ namespace DatabaseInitializer
             catch (Exception e)
             {
                 Console.WriteLine(e.Message + " " + e.StackTrace);
-                loggger.Fatal(e.Message, e);
+                logger.Fatal(e.Message, e);
                 return 1;
             }
             return 0;

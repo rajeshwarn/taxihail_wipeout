@@ -178,7 +178,6 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                // keep in mind that for migration purpose, @event.status could be null
                 if (@event.Status != null)
                 {
                     @event.Status.PickupDate = @event.Status.PickupDate < (DateTime)SqlDateTime.MinValue
@@ -186,6 +185,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         : @event.Status.PickupDate;
                 }
 
+                // set FareAvailable
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 if (details == null)
                 {
@@ -194,16 +194,13 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
                 else
                 {
-                    if (@event.Status == null) // possible with migration from OrderCompleted or OrderFareUpdated
-                    {
-                        details.FareAvailable = GetFareAvailable(@event.Fare);
-                    }
-                    else
+                    if (@event.Status != null) // possible with migration from OrderCompleted or OrderFareUpdated
                     {
                         Mapper.Map(@event.Status, details);
-                        details.FareAvailable = GetFareAvailable(@event.Fare);
-                        context.Save(details);
                     }
+
+                    details.FareAvailable = GetFareAvailable(@event.Fare);
+                    context.Save(details);
                 }
 
                 var order = context.Find<OrderDetail>(@event.SourceId);
