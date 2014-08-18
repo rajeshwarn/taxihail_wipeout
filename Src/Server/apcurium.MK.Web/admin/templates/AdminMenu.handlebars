@@ -7,8 +7,10 @@
     <li data-route="settings"><a href="#">{{localize "Company Settings"}}</a></li>
     {{#if isSuperAdmin }}
         <li data-route="paymentSettings"><a href="#">{{localize "Payment Settings"}}</a></li>
-        <li data-route="accounts"><a href="#">{{localize "Charge Accounts"}}</a></li>
     {{/if}}
+    <li data-route="accounts">
+      <a href="#">{{localize "Charge Accounts"}}</a>
+    </li>
     <li data-route="vehicleTypes"><a href="#">{{localize "Vehicle Types"}}</a></li>
     <li data-route="tariffs"><a href="#">Ride Estimates</a></li>
     <li data-route="rules"><a href="#">Booking Rules</a></li>
@@ -17,7 +19,7 @@
     
     <li class="nav-header">{{localize "User Management"}}</li>
     <li data-route="security"><a href="#">{{localize "Grant access admin"}}</a></li>
-    <li data-route="confirmemail"><a href="#">{{localize "Enable Disable Account"}}</a></li>
+    <li data-route="confirmemail"><a href="#">{{localize "Enable Disable Account"}}</a></li>    
     <li data-route="sendpushnotification"><a href="#">{{localize "Send Push Notifications"}}</a></li>
     <li class="nav-header">{{localize "Export"}}</li>
     <li data-route="exportaccounts"><a href="#" >{{localize "ExportAccounts"}}</a></li>
