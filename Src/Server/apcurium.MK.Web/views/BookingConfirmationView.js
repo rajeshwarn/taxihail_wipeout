@@ -142,7 +142,7 @@
         },
         
         book: function (form) {
-            var lang = (navigator.language) ? navigator.language.split('-')[0] : navigator.userLanguage;
+            var lang = TaxiHail.getClientLanguage();
             this.model.set('ClientLanguageCode', lang);
             this.model.saveLocal();
 

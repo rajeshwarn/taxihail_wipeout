@@ -2,9 +2,13 @@
 
     _.extend(TaxiHail, {
 
+        getClientLanguage: function () {
+            return (navigator.language) ? navigator.language.split('-')[0] : navigator.userLanguage;
+        },
+
         localize: function (resourceName, resourceSet) {
             var resource = '';
-            var lang = (navigator.language) ? navigator.language.split('-')[0] : navigator.userLanguage;
+            var lang = TaxiHail.getClientLanguage();
 
             if (resourceSet) {
                 var localizedResourceSet = resourceSet + "-" + lang;
@@ -24,7 +28,6 @@
 
             return resource || TaxiHail.resources.Global[resourceName] || resourceName;
         },
-
 
         addResourceSet: function (name, resourceSet) {
             TaxiHail.resources[name] = resourceSet;

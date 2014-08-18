@@ -117,7 +117,7 @@
         },
         
         onsubmit: function (form) {
-            var lang = (navigator.language) ? navigator.language.split('-')[0] : navigator.userLanguage;
+            var lang = TaxiHail.getClientLanguage();
             this.model.set('Language', lang);
             this.model.save({}, { error: _.bind(this.onServerError, this) });
         }
