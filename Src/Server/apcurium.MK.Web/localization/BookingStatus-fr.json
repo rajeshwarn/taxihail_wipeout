@@ -1,0 +1,15 @@
+﻿{
+    "Your Order": "Votre Commande",
+    "ConfirmationNumber" : "Commande n°",
+    "Status": "Statut",
+    "Cancel": "Annuler",
+    "Call": "Appeller",
+    "New Ride": "Nouvelle commande",
+    "Processing": "Chargement...",
+    "Call us at": "Appeller au",
+    "ThankYouNoteFormat": "Merci d'utiliser {{ApplicationName}}",
+    "Ride Complete": "Trajet completé",
+    "Send Receipt": "Envoyer un facture",
+    "Sending...": "En traitement...",
+    "Cannot Send Receipt": "Impossible d'envoyer la facture"
+}
