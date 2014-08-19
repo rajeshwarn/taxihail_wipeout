@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_refreshPeriod = Settings.ClientPollingInterval;
             
-            Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds (_refreshPeriod))
+			Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds (_refreshPeriod))
 				.ObserveOn(SynchronizationContext.Current)
 				.Subscribe (_ => RefreshStatus())
 				.DisposeWith (Subscriptions);
@@ -342,11 +342,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var setting = _paymentService.GetPaymentSettings();
             var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
                        
-			IsUnpairButtonVisible = Settings.AutomaticPayment && _bookingService.IsPaired(Order.Id);
+			IsUnpairButtonVisible = !Settings.AutomaticPayment  			// we don't want to unpair if client accepted the auto payment, only for RideLinqCMT
+								&& _bookingService.IsPaired(Order.Id);      
 
 			IsPayButtonVisible =  (statusId == VehicleStatuses.Common.Done
 								||statusId == VehicleStatuses.Common.Loaded)
 								&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue
+								&& !Settings.AutomaticPayment
 			                    && !IsUnpairButtonVisible
 								&& (Order.Settings.ChargeTypeId == null 
 									|| Order.Settings.ChargeTypeId != ChargeTypes.Account.Id)
