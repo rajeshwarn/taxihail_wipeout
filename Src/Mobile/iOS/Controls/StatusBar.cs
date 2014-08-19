@@ -31,14 +31,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             
             Layer.ShadowPath = path.CGPath;
         }
-        
-        
     }
     
     [Register ("StatusBar")]
     public class StatusBar : UIView
     {
-        
         private ShadowView _shadowView;
         private UIView _visibleView;
         private UIView _slideoutView;
@@ -53,54 +50,51 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public StatusBar(IntPtr handle) : base(handle)
         {
-            
         }
         
-		public void SetShadow (float padding = 0f)
+		public void SetShadow ()
         {
-            if (_shadowView == null) {
+            if (_shadowView == null) 
+            {
                 _shadowView = new ShadowView (); 
-				_shadowView.Frame = new RectangleF (0, Bounds.Height + padding, Bounds.Width, 200);
+				_shadowView.Frame = new RectangleF (0, Bounds.Height, Bounds.Width, 200);
                 _shadowView.BackgroundColor = UIColor.Clear;
                 AddSubview (_shadowView);
             }
-			_shadowView.Frame = new RectangleF (0, Bounds.Height + padding, Bounds.Width, 10);
+			_shadowView.Frame = new RectangleF (0, Bounds.Height, Bounds.Width, 10);
             _shadowView.Resize ();
         }
         
         void SetVisibleView ()
         {
-            if (_visibleView == null) {
+            if (_visibleView == null) 
+            {
                 _visibleView = new UIView ();
                 _visibleView.BackgroundColor = UIColor.DarkGray;
-
-
                 AddSubview (_visibleView);
 
                 _assignedVisibleView.RemoveFromSuperview ();
                 _visibleView.AddSubview ( _assignedVisibleView );
                 _assignedVisibleView.Frame = new RectangleF(0,0, _visibleView.Bounds.Width , _visibleView.Bounds.Height ); 
-
             }
            
             _visibleView.Frame = new RectangleF (0, Bounds.Height - _minHeight, Bounds.Width, _minHeight);
         }
 
         private bool _isEnabled;
-
         public bool IsEnabled
         {
-            get {return _isEnabled;}
+            get { return _isEnabled; }
             set 
             { 
                 if ( _isEnabled != value )
                 {
                     _isEnabled = value;
-                    if ( IsEnabled && !_wasTouched )
+                    if (IsEnabled && !_wasTouched)
                     {
                         SlideOut();
                     }
-                    else if ( !IsEnabled )
+                    else if (!IsEnabled)
                     {
                         SlideIn();
                     }
@@ -108,12 +102,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-
-
-
         void SetSlideoutView ()
         {
-            if (_slideoutView == null) {
+            if (_slideoutView == null) 
+            {
                 _slideoutView = new UIView ();
                 _slideoutView.BackgroundColor = UIColor.LightGray;
                 AddSubview (_slideoutView);
@@ -121,17 +113,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _assignedSlideoutView.RemoveFromSuperview ();
                 _slideoutView.AddSubview ( _assignedSlideoutView );
                 _assignedSlideoutView.Frame = new RectangleF(0,0, _slideoutView.Bounds.Width , _slideoutView.Bounds.Height ); 
-
             }
+
             var topVisibleView = Bounds.Height - _minHeight;
             var heightSlideOut = _maxHeight - _minHeight;
             
             _slideoutView.Frame = new RectangleF (0, topVisibleView - heightSlideOut, Bounds.Width, heightSlideOut);
         }
 
-		public void Initialize (UIView visibleView, UIView slidingView, float padding = 0f)
+		public void Initialize (UIView visibleView, UIView slidingView)
         {
-
             _assignedVisibleView = visibleView;
             _assignedSlideoutView = slidingView;
 
@@ -147,7 +138,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             SetSlideoutView ();
 
             SetHeight (_minHeight, false);
-
         }
         
         public void SlideOut ()
@@ -160,15 +150,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             SetHeight (_minHeight, true);
         }
 
-
-
         PointF _startPt;
         private float _initialHeight;
         
         public override void TouchesBegan (NSSet touches, UIEvent evt)
         {
             var t = touches.AnyObject as UITouch;
-            if (t != null && IsEnabled) {
+            if (t != null && IsEnabled) 
+            {
                 _initialHeight = Bounds.Height;
                 _startPt = t.LocationInView (this);
                 _lastPoint = _startPt;
@@ -183,12 +172,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public override void TouchesMoved (NSSet touches, UIEvent evt)
         {
             var t = touches.AnyObject as UITouch;
-            if (t != null && IsEnabled) {
+            if (t != null && IsEnabled) 
+            {
                 var p = t.LocationInView (this);
                 var newHeight = _initialHeight + p.Y - _startPt.Y;
                 
-                if ((newHeight >= _minHeight) && (newHeight <= _maxHeight)) {
-                    
+                if ((newHeight >= _minHeight) && (newHeight <= _maxHeight)) 
+                {
                     _goingDown = p.Y > _lastPoint.Y;
                     _lastPoint = p;
                     SetHeight (newHeight, false);
@@ -201,7 +191,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		{
 			_maxHeight = height;
 
-            if ( !_wasTouched )
+            if (!_wasTouched)
             {
 			    SetHeight (_maxHeight, false);
             }
@@ -217,48 +207,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 SetNeedsDisplay ();
                 SetSlideoutView ();
             };
-            if (animate) {
+
+            if (animate) 
+            {
                 BeginAnimations ("setheight");
                 SetAnimationDuration (0.5);
                 changeSize ();
                 CommitAnimations ();
-                
-            } else {
+            } 
+            else 
+            {
                 changeSize ();
             }
         }
         
         public override void TouchesEnded (NSSet touches, UIEvent evt)
         {
-            
             base.TouchesEnded (touches, evt);
             _wasTouched = true;
             
-            if (_goingDown) {
-                
+            if (_goingDown) 
+            {    
                 SetHeight (_maxHeight, true);
-                
-            } else {
+            }
+            else 
+            {
                 SetHeight (_minHeight, true);               
             }
-            
-        }
-        
-		public float orderStatusPadding = 0f;
-
-        public override void Draw (RectangleF rect)
-        {
-            
-            base.Draw (rect);
-            
-            var rectpath = new UIBezierPath ();
-			rectpath.MoveTo (new PointF (0, rect.Bottom + orderStatusPadding));
-			rectpath.AddLineTo (new PointF (rect.Right, rect.Bottom + orderStatusPadding));
-            
-            UIColor.Black.SetStroke ();
-			rectpath.LineWidth = 1f;
-            rectpath.Stroke ();
-            
         }
     }
 }
