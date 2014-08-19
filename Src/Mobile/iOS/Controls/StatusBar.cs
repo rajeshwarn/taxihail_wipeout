@@ -102,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        void SetSlideoutView ()
+        private void SetSlideoutView ()
         {
             if (_slideoutView == null) 
             {
@@ -194,6 +194,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (!_wasTouched)
             {
 			    SetHeight (_maxHeight, false);
+            }
+        }
+
+        public void SetMinHeight(float height)
+        {
+            _minHeight = height;
+
+            if (!_wasTouched)
+            {
+                SetHeight (_maxHeight, false);
             }
         }
 

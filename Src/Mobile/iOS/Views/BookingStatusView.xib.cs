@@ -19,8 +19,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class BookingStatusView : BaseViewController<BookingStatusViewModel>
     {
-		private const float STATUS_LABEL_HEIGHT = 21f;
-		private const float TOP_VISIBLE_STATUS_HEIGHT = 45f;
+		private const float DEFAULT_STATUS_LABEL_HEIGHT = 21f;
+		private const float DEFAULT_TOP_VISIBLE_STATUS_HEIGHT = 45f;
+        private float VisibleStatusHeight = 45f;
 
 		public BookingStatusView () : base("BookingStatusView", null)
         {
@@ -327,10 +328,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				{
 					lblStatus.Text = value;
 					var nbLines = 1 + (int)(lblStatus.StringSize(value, lblStatus.Font).Width / lblStatus.Frame.Width);
-					var togglePadding = 21f * (nbLines - 1);
-					lblStatus.SetHeight (STATUS_LABEL_HEIGHT + togglePadding);
-					topVisibleStatus.SetHeight (TOP_VISIBLE_STATUS_HEIGHT + togglePadding);
-//					statusBar.SetShadow (togglePadding);
+                    var togglePadding = DEFAULT_STATUS_LABEL_HEIGHT * (nbLines - 1);
+                    lblStatus.SetHeight (DEFAULT_STATUS_LABEL_HEIGHT + togglePadding);              // increase label height
+                    VisibleStatusHeight = DEFAULT_TOP_VISIBLE_STATUS_HEIGHT + togglePadding;
+                    statusBar.SetMinHeight (VisibleStatusHeight);
+                    statusBar.SetMaxHeight (VisibleStatusHeight);
 				}
 			}
 		}
@@ -376,11 +378,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				}
 	
 				if (numberOfItemsHidden == 6) {
-					statusBar.SetMaxHeight (TOP_VISIBLE_STATUS_HEIGHT);
+                    statusBar.SetMaxHeight (VisibleStatusHeight);
 					return;
 				}
 
-				statusBar.SetMaxHeight (defaultHeightOfSlidingView - (20 * numberOfItemsHidden) + TOP_VISIBLE_STATUS_HEIGHT);
+                statusBar.SetMaxHeight (defaultHeightOfSlidingView - (20 * numberOfItemsHidden) + VisibleStatusHeight);
 
 				var i = 0;
 				foreach (var item in tupleList) {
