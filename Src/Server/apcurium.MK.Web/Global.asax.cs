@@ -26,8 +26,6 @@ namespace apcurium.MK.Web
 
         private const int WaitingForPaymentPollingValue = 2;
 
-        protected IUpdateOrderStatusJob StatusJobService { get; set; }
-
         protected void Application_Start(object sender, EventArgs e)
         {
             XmlConfigurator.Configure();
@@ -35,8 +33,6 @@ namespace apcurium.MK.Web
 
             var config = UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
             BundleConfig.RegisterBundles(BundleTable.Bundles, config.GetSetting("TaxiHail.ApplicationKey"));
-
-            StatusJobService = UnityContainerExtensions.Resolve<IUpdateOrderStatusJob>(UnityServiceLocator.Instance);
 
             _defaultPollingValue = config.GetSetting("OrderStatus.ServerPollingInterval", 10);
             PollIbs(_defaultPollingValue);
@@ -55,7 +51,8 @@ namespace apcurium.MK.Web
                     {
                         var serverProcessId = GetServerProcessId();
                         Trace.WriteLine("serverProcessId : " + serverProcessId);
-                        hasOrdersWaitingForPayment = StatusJobService.CheckStatus(serverProcessId, pollingValue);
+                        var statusJobService = UnityContainerExtensions.Resolve<IUpdateOrderStatusJob>(UnityServiceLocator.Instance);
+                        hasOrdersWaitingForPayment = statusJobService.CheckStatus(serverProcessId, pollingValue);
                     }
                     finally
                     {
