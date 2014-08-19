@@ -96,6 +96,14 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     // no fare received but order is completed, change status to increase polling speed
                     orderStatusDetail.Status = OrderStatus.WaitingForPayment;
+                    orderStatusDetail.PairingTimeOut = DateTime.UtcNow.AddMinutes(30);
+                }
+
+                if (orderStatusDetail.Status == OrderStatus.WaitingForPayment
+                    && DateTime.UtcNow > orderStatusDetail.PairingTimeOut)
+                {
+                    orderStatusDetail.Status = OrderStatus.Completed;
+                    orderStatusDetail.PairingError = "Timed out period reached while waiting for payment informations from IBS";
                 }
 
                 return;

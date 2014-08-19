@@ -7,9 +7,10 @@ namespace apcurium.MK.Booking.Api.Jobs
     /// </summary>
     internal class UpdateOrderStatusJobStub : IUpdateOrderStatusJob
     {
-        public void CheckStatus(string uniqueId)
+        public bool CheckStatus(string uniqueId, int pollingValue)
         {
             // No op
+            return false;
         }
 
         public void CheckStatus(Guid orderId)

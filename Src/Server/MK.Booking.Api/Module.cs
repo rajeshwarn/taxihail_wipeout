@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Api
                         return new UpdateOrderStatusJobStub();
                     }
                     
-                    return new UpdateOrderStatusJob(c.Resolve<IOrderDao>(), c.Resolve<IBookingWebServiceClient>(), c.Resolve<IOrderStatusUpdateDao>(), configManager, c.Resolve<OrderStatusUpdater>());
+                    return new UpdateOrderStatusJob(c.Resolve<IOrderDao>(), c.Resolve<IBookingWebServiceClient>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>());
                 }));
 
             container.RegisterType<OrderStatusHelper>(
