@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 			await _paymentPreferences.Start();
 
 			RefreshCreditCardNumber ();
+            RaisePropertyChanged(() => TipAmountInPercent);
 		}
 
 		private PaymentDetailsViewModel _paymentPreferences;
