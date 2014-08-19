@@ -74,18 +74,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public AvailableVehicle GetNearestVehicle(Address pickup, AvailableVehicle[] cars)
 		{
-			return cars.OrderByDescending (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude))
-				.First();
+			return cars.OrderBy (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude)).First();
 		}
 
 		public Direction CheckForEta(Address pickup, AvailableVehicle vehicleLocation) // Using pickupDate here to be consistant with date I18n
 		{
-			return  GetEtaBetweenCoordinates(vehicleLocation.Latitude, vehicleLocation.Longitude, pickup.Latitude, pickup.Longitude);                    	
+			return GetEtaBetweenCoordinates(vehicleLocation.Latitude, vehicleLocation.Longitude, pickup.Latitude, pickup.Longitude);                    	
 		}
 
 		public Direction GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)
 		{
-			return  _directions.GetDirection(fromLat, fromLng, toLat, toLng, null, true);  
+			return _directions.GetDirection(fromLat, fromLng, toLat, toLng, null, true);  
 		}
 
 		public void Stop ()
