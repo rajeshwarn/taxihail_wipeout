@@ -94,7 +94,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                 // check if status is completed
                 if (orderStatusDetail.Status == OrderStatus.Completed)
                 {
-                    // todo something fishy here since event might not be published if ibs status id doesn't change..
                     // no fare received but order is completed, change status to increase polling speed
                     orderStatusDetail.Status = OrderStatus.WaitingForPayment;
                 }
@@ -104,7 +103,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             
             // todo find a way to reset to completed if it was waiting for payment and payment is completed otherwise it will always appear in the job status updater
 
-            // we received a fare
+            // We received a fare from IBS
             // Send payment for capture, once it's captured, we will set the status to Completed
             var meterAmount = ibsOrderInfo.Fare + ibsOrderInfo.Toll + ibsOrderInfo.VAT;
             var tipAmount = GetTipAmount(meterAmount, pairingInfo.AutoTipPercentage.Value);

@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.Domain
         {
             if (status == null) throw new InvalidOperationException();
 
-            if (status.IBSStatusId != _ibsStatus || _fare != fare)
+            if (status.Status != _status || status.IBSStatusId != _ibsStatus || _fare != fare)
             {
                 Update(new OrderStatusChanged
                 {
@@ -155,19 +155,21 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnOrderStatusChanged(OrderStatusChanged @event)
         {
+            // special case for migration
+            if (@event.IsCompleted)
+            {
+                _status = OrderStatus.Completed;
+            }
+
             if (@event.Status != null) //possible with migration
             {
                 _ibsStatus = @event.Status.IBSStatusId;
+                _status = @event.Status.Status;
             }
 
             if (@event.Fare.HasValue && @event.Fare.Value > 0)
             {
                 _fare = @event.Fare;
-            }
-
-            if (@event.IsCompleted || @event.Status.Status == OrderStatus.Completed)
-            {
-                _status = OrderStatus.Completed;
             }
         }
 
