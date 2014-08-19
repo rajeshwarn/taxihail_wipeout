@@ -23,6 +23,11 @@
                 this.$('[data-action=fblogin]').addClass('hidden');
             }
 
+            if (TaxiHail.parameters.isSignupVisible == false) {
+                this.$('[data-action=signup]').addClass('hidden');
+            }
+            
+
             this.validate({
                 rules: {
                     email: {

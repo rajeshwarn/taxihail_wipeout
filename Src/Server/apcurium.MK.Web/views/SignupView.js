@@ -117,6 +117,8 @@
         },
         
         onsubmit: function (form) {
+            var lang = TaxiHail.getClientLanguage();
+            this.model.set('Language', lang);
             this.model.save({}, { error: _.bind(this.onServerError, this) });
         }
     });

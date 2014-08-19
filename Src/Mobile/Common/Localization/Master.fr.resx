@@ -1027,7 +1027,7 @@
     <value>Supprimer cette carte de paiement</value>
   </data>
   <data name="ReSendConfirmation" xml:space="preserve">
-    <value>Signaler au chauffeur le mode de paiement</value>
+    <value>Signaler le paiement</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Réinitialiser</value>
@@ -1524,8 +1524,14 @@
 <data name="PendingOrderView" xml:space="preserve">
   	Détail
   </data>
-<data name="PendingOrderCancel" xml:space="preserve">
+  <data name="PendingOrderCancel" xml:space="preserve">
   	Annuler
+  </data>
+  <data name="NoCardOnFileMessage" xml:space="preserve">
+  	Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.
+  </data>
+  <data name="AddACardButton" xml:space="preserve">
+	Enregistrez
   </data>
   <data name="Eta" xml:space="preserve">
   	Le taxi le plus près est à {0} et {1} {2}

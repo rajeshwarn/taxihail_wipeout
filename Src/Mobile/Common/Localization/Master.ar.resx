@@ -1518,4 +1518,11 @@
   <data name="StatusEta" xml:space="preserve">
   	{0} and {1} {2} away
   </data>
+  <data name="NoCardOnFileMessage" xml:space="preserve">
+  	You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.
+  </data>
+  <data name="AddACardButton" xml:space="preserve">
+  	Add Card
+  </data>
+
 </root>

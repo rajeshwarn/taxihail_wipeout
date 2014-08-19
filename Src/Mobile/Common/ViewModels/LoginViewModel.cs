@@ -361,7 +361,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Action showNextView = () => 
             {
 				if (NeedsToNavigateToAddCreditCard ()) {
-					ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel> (new { showInstructions = true });
+					ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel> (new { showInstructions = true, navigateHome = true });
 					return;
 				}
 

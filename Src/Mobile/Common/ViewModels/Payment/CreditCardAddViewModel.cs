@@ -50,9 +50,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
         }
 
-		public void Init(bool showInstructions)
+		public void Init(bool showInstructions, bool navigateHome = false  )
 		{
 			ShowInstructions = showInstructions;
+			NavigateHome = navigateHome;
 		}
 
 		public override void OnViewStarted(bool firstTime)
@@ -318,6 +319,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		public ICommand AddCreditCardCommand { get { return this.GetCommand(() => AddCrediCard()); } }
 
 		public bool ShowInstructions { get; set; }
+		public bool NavigateHome { get; set; }
 
 		private async void AddCrediCard ()
         {
@@ -356,7 +358,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 					if(ShowInstructions)
 					{
-						ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser =  true });
+						if ( NavigateHome )
+						{
+							ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser =  true });
+						}
+						else
+						{
+							Close(this);
+						}
+
 						if(!_accountService.CurrentAccount.DefaultCreditCard.HasValue)
 						{
 							var account = _accountService.CurrentAccount;

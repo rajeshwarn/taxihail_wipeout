@@ -1,0 +1,7 @@
+{
+    "error.PickupDateMustBeInFuture": "La date de départ ne peut pas être antérieure à la date de commande",
+    "Pickup date and time": "Date et heure de départ",
+    "Date": "Date",
+    "Time": "Heure",
+    "Set Time": "Changer Heure"
+}

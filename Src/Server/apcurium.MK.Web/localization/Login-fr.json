@@ -1,0 +1,10 @@
+﻿{
+	"Login" : "Connexion",
+	"Email Address" : "Email",
+	"Password" : "Mot de passe",
+	"Signup" : "S'enregistrer",
+	"Forgot password" : "Mot de passe oublié?",
+	"InvalidLoginMessage" : "L'email et/ou le mot de passe semblent invalides.",
+	"AccountDisabled" : "Votre compte a été désactivé, merci de contacter {{ApplicationName}} au {{PhoneNumber}} pour le réactiver.",
+	"AccountNotActivated" : "Votre compte n'a pas pu être activé. Merci d'activer le compte à l'aide de l'email qui vient de vous être envoyé"
+}
