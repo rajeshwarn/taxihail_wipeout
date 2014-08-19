@@ -100,9 +100,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                 return;
             }
-            
-            // todo find a way to reset to completed if it was waiting for payment and payment is completed otherwise it will always appear in the job status updater
-
+  
             // We received a fare from IBS
             // Send payment for capture, once it's captured, we will set the status to Completed
             var meterAmount = ibsOrderInfo.Fare + ibsOrderInfo.Toll + ibsOrderInfo.VAT;
@@ -115,6 +113,9 @@ namespace apcurium.MK.Booking.Api.Jobs
                 TipAmount = Convert.ToDecimal(tipAmount),
                 Amount = Convert.ToDecimal(meterAmount + tipAmount)
             });
+
+            // whether there's a success or not, we change the status back to Completed since we can't process the payment again
+            orderStatusDetail.Status = OrderStatus.Completed;
         }
 
         private double GetTipAmount(double amount, double percentage)
@@ -184,6 +185,12 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
         {
+            if (orderStatusDetail.Status == OrderStatus.WaitingForPayment)
+            {
+                // We don't want to update since it's a special case outside of ibs
+                return;
+            }
+
             if (ibsOrderInfo.IsCanceled)
             {
                 orderStatusDetail.Status = OrderStatus.Canceled;
