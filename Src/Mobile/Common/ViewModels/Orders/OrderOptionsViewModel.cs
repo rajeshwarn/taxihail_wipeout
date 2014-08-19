@@ -238,12 +238,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public bool ShowEta
 		{
-			get { return true; }  //TODO: Wire to Settings.xxxxxxxxxxx
+			get { return false; }  //TODO: Wire to Settings.xxxxxxxxxxx
 		}
 
 		public bool ShowVehicleSelection
 		{
-			get { return VehicleTypes.Count() > 1; } // TODO: Wire to Settings.xxxxxxxxxxxxxx
+			get { return false; }// VehicleTypes.Count() > 1; } // TODO: Wire to Settings.xxxxxxxxxxxxxx
 		}
 			
         public ICommand SetAddress

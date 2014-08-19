@@ -12,14 +12,25 @@
         android:layout_height="1px"
         android:background="@color/label_text_color" />
     <LinearLayout
-        android:id="@+id/VehicleSelection"
-        android:visibility="gone"
-        android:orientation="horizontal"
+        android:id="@+id/VehicleSelectionContainer"
+        android:orientation="vertical"
         android:layout_margin="0px"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:layout_width="fill_parent"
-        android:layout_height="52dp" />
+        android:layout_height="match_content">
+        <LinearLayout
+            android:id="@+id/VehicleSelection"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="52dp" />
+        <TextView
+            android:id="@+id/etaLabel"
+            android:visibility="gone"
+            android:layout_width="fill_parent"
+            android:layout_height="21dp" />
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/RideEstimate"
         android:orientation="horizontal"
@@ -38,15 +49,26 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent">
-        <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
-          android:id="@+id/estimateFareAutoResizeLabel"
-          android:textSize="19dp"
-          android:gravity="center"
-          android:textColor="@color/label_text_color"
-          android:textStyle="normal"
-          android:layout_margin="0px"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"/>
+            <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
+                android:layout_weight="1"
+                android:id="@+id/estimateFareAutoResizeLabel"
+                android:textSize="19dp"
+                android:gravity="center"
+                android:textColor="@color/label_text_color"
+                android:textStyle="normal"
+                android:layout_margin="0px"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+            <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
+                android:layout_weight="1"
+                android:id="@+id/etaAutoResizeLabel"
+                android:textSize="19dp"
+                android:gravity="center"
+                android:textColor="@color/label_text_color"
+                android:textStyle="normal"
+                android:layout_margin="0px"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
