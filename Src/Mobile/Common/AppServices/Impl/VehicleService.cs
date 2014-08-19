@@ -80,7 +80,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public Direction CheckForEta(Address pickup, AvailableVehicle vehicleLocation) // Using pickupDate here to be consistant with date I18n
 		{
-			return  _directions.GetDirection(vehicleLocation.Latitude, vehicleLocation.Longitude, pickup.Latitude, pickup.Longitude, null, true);                    	
+			return  GetEtaBetweenCoordinates(vehicleLocation.Latitude, vehicleLocation.Longitude, pickup.Latitude, pickup.Longitude);                    	
+		}
+
+		public Direction GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)
+		{
+			return  _directions.GetDirection(fromLat, fromLng, toLat, toLng, null, true);  
 		}
 
 		public void Stop ()

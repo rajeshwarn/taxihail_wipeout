@@ -10,6 +10,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		void Stop();
 		IObservable<AvailableVehicle[]> GetAndObserveAvailableVehicles();
 		IObservable<Direction> GetAndObserveEta();
+		Direction GetEtaBetweenCoordinates (double fromLat, double fromLng, double toLat, double toLng);
 	}
 }
 

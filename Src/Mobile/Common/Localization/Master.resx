@@ -1562,4 +1562,7 @@
   <data name="EtaDurationUnitPlural" xml:space="preserve">
   	mins
   </data>
+  <data name="StatusEta" xml:space="preserve">
+    {0} and {1} {2} away
+  </data>
 </root>

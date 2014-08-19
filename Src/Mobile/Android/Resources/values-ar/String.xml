@@ -478,4 +478,5 @@
   <string name="Eta">The nearest taxi is {0} and {1} {2} away</string>
   <string name="EtaDurationUnitPlural">mins</string>
   <string name="EtaDurationUnit">min</string>
+  <string name="StatusEta">{0} and {1} {2} away</string>
 </resources>

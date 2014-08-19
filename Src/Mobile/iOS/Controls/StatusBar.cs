@@ -56,15 +56,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             
         }
         
-        void SetShadow ()
+		public void SetShadow (float padding = 0f)
         {
             if (_shadowView == null) {
                 _shadowView = new ShadowView (); 
-                _shadowView.Frame = new RectangleF (0, Bounds.Height, Bounds.Width, 200);
+				_shadowView.Frame = new RectangleF (0, Bounds.Height + padding, Bounds.Width, 200);
                 _shadowView.BackgroundColor = UIColor.Clear;
                 AddSubview (_shadowView);
             }
-            _shadowView.Frame = new RectangleF (0, Bounds.Height, Bounds.Width, 10);
+			_shadowView.Frame = new RectangleF (0, Bounds.Height + padding, Bounds.Width, 10);
             _shadowView.Resize ();
         }
         
@@ -129,7 +129,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _slideoutView.Frame = new RectangleF (0, topVisibleView - heightSlideOut, Bounds.Width, heightSlideOut);
         }
 
-        public void Initialize (UIView visibleView, UIView slidingView)
+		public void Initialize (UIView visibleView, UIView slidingView, float padding = 0f)
         {
 
             _assignedVisibleView = visibleView;
@@ -172,7 +172,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _initialHeight = Bounds.Height;
                 _startPt = t.LocationInView (this);
                 _lastPoint = _startPt;
-                Console.WriteLine (_startPt.Y);
             }
             
             base.TouchesBegan (touches, evt);
@@ -186,7 +185,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var t = touches.AnyObject as UITouch;
             if (t != null && IsEnabled) {
                 var p = t.LocationInView (this);
-                Console.WriteLine (p.Y);
                 var newHeight = _initialHeight + p.Y - _startPt.Y;
                 
                 if ((newHeight >= _minHeight) && (newHeight <= _maxHeight)) {
@@ -209,7 +207,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        void SetHeight (float height, bool animate)
+        public void SetHeight (float height, bool animate)
         {
             Action changeSize = () => 
             {
@@ -246,17 +244,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             
         }
         
+		public float orderStatusPadding = 0f;
+
         public override void Draw (RectangleF rect)
         {
             
             base.Draw (rect);
             
             var rectpath = new UIBezierPath ();
-            rectpath.MoveTo (new PointF (0, rect.Bottom));
-            rectpath.AddLineTo (new PointF (rect.Right, rect.Bottom));
+			rectpath.MoveTo (new PointF (0, rect.Bottom + orderStatusPadding));
+			rectpath.AddLineTo (new PointF (rect.Right, rect.Bottom + orderStatusPadding));
             
             UIColor.Black.SetStroke ();
-            rectpath.LineWidth = 1f;
+			rectpath.LineWidth = 1f;
             rectpath.Stroke ();
             
         }

@@ -19,7 +19,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class BookingStatusView : BaseViewController<BookingStatusViewModel>
     {
-        public BookingStatusView () : base("BookingStatusView", null)
+		private const float STATUS_LABEL_HEIGHT = 21f;
+		private const float TOP_VISIBLE_STATUS_HEIGHT = 45f;
+
+		public BookingStatusView () : base("BookingStatusView", null)
         {
         }
 
@@ -62,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 topSlidingStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("background.png"));
                 topVisibleStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("backPickupDestination.png"));
 
-                viewLine.Frame = new RectangleF( 0,topSlidingStatus.Bounds.Height -1, topSlidingStatus.Bounds.Width, 1 );
+                //viewLine.Frame = new RectangleF( 0,topSlidingStatus.Bounds.Height -1, topSlidingStatus.Bounds.Width, 1 );
 
                 btnCallDriver.SetImage(UIImage.FromFile("phone.png"), UIControlState.Normal);
                 btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
@@ -122,8 +125,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 var set = this.CreateBindingSet<BookingStatusView, BookingStatusViewModel>();
 
-                set.Bind(lblStatus)
-                    .For(v => v.Text)
+                set.Bind(this)
+                    .For("StatusInfoText")
                     .To(vm => vm.StatusInfoText);
 
                 set.Bind(lblConfirmation)
@@ -282,7 +285,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 mapStatus.AddressSelectionMode = AddressSelectionMode.None;
 
 				UpdateTopSlidingStatus("OrderStatusDetail"); //initial loading
-                var statusLineDivider = Line.CreateHorizontal(320.0f, UIColor.Black.ColorWithAlpha(0.35f));
+                var statusLineDivider = Line.CreateHorizontal(320.0f, UIColor.Red.ColorWithAlpha(0.35f));
                 bottomBar.AddSubview(statusLineDivider);
             
             } 
@@ -315,6 +318,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 btnCall.SetFrame (callFrame);
             }
         }
+
+		public string StatusInfoText
+		{
+			set
+			{
+				if(lblStatus.Text != value)
+				{
+					lblStatus.Text = value;
+					var nbLines = 1 + (int)(lblStatus.StringSize(value, lblStatus.Font).Width / lblStatus.Frame.Width);
+					var togglePadding = 21f * (nbLines - 1);
+					statusBar.orderStatusPadding = togglePadding;
+					lblStatus.SetHeight (STATUS_LABEL_HEIGHT + togglePadding);
+					topVisibleStatus.SetHeight (TOP_VISIBLE_STATUS_HEIGHT + togglePadding);
+					statusBar.SetShadow (togglePadding);
+				}
+			}
+		}
 
 		void UpdateTopSlidingStatus(string propertyName)
 		{
@@ -357,11 +377,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				}
 	
 				if (numberOfItemsHidden == 6) {
-					statusBar.SetMaxHeight (topVisibleStatus.Frame.Height);
+					statusBar.SetMaxHeight (TOP_VISIBLE_STATUS_HEIGHT);
 					return;
 				}
 
-				statusBar.SetMaxHeight (defaultHeightOfSlidingView - (20 * numberOfItemsHidden) + topVisibleStatus.Frame.Height);
+				statusBar.SetMaxHeight (defaultHeightOfSlidingView - (20 * numberOfItemsHidden) + TOP_VISIBLE_STATUS_HEIGHT);
 
 				var i = 0;
 				foreach (var item in tupleList) {

@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             }
 
             var anv = mapView.DequeueReusableAnnotation ("thislocation") as PinAnnotationView;
+
             if (anv == null) 
             {
                 anv = new PinAnnotationView (ann, "thislocation");  

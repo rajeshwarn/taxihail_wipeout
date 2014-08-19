@@ -1536,4 +1536,7 @@
   <data name="EtaDurationUnitPlural" xml:space="preserve">
   	min
   </data>
+  <data name="StatusEta" xml:space="preserve">
+  	À {0} et {1} {2}
+  </data>
 </root>

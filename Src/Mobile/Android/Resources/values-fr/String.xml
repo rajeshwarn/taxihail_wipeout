@@ -476,4 +476,5 @@
   <string name="Eta">Le taxi le plus près est à {0} et {1} {2}</string>
   <string name="EtaDurationUnitPlural">min</string>
   <string name="EtaDurationUnit">min</string>
+  <string name="StatusEta">À {0} et {1} {2}</string>
 </resources>
