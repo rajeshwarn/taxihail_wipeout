@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public AvailableVehicle GetNearestVehicle(Address pickup, AvailableVehicle[] cars)
 		{
-			return cars.OrderByDescending (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude))
+			return cars.OrderBy (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude))
 				.First();
 		}
 
