@@ -24,11 +24,11 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly IOrderStatusUpdateDao _orderStatusUpdateDao;
         private readonly OrderStatusUpdater _orderStatusUpdater;
-        private readonly IConfigurationManager _configManager;
 
-        public UpdateOrderStatusJob(IOrderDao orderDao, IBookingWebServiceClient bookingWebServiceClient, IOrderStatusUpdateDao orderStatusUpdateDao, IConfigurationManager configManager, OrderStatusUpdater orderStatusUpdater)
+        private const int NumberOfConcurrentServers = 2;
+
+        public UpdateOrderStatusJob(IOrderDao orderDao, IBookingWebServiceClient bookingWebServiceClient, IOrderStatusUpdateDao orderStatusUpdateDao, OrderStatusUpdater orderStatusUpdater)
         {
-            _configManager = configManager;
             _orderStatusUpdateDao = orderStatusUpdateDao;
             _orderDao = orderDao;
             _bookingWebServiceClient = bookingWebServiceClient;
@@ -62,19 +62,20 @@ namespace apcurium.MK.Booking.Api.Jobs
             {}
         }
 
-        public void CheckStatus(string updaterUniqueId)
+        public bool CheckStatus(string updaterUniqueId, int pollingValue)
         {
             var lastUpdate = _orderStatusUpdateDao.GetLastUpdate();
-            var pollingValue = _configManager.GetSetting("OrderStatus.ServerPollingInterval", 10);
+            bool hasOrdersWaitingForPayment = false;
             
             if ((lastUpdate == null) ||
                 (lastUpdate.UpdaterUniqueId == updaterUniqueId) ||
-                (DateTime.UtcNow.Subtract(lastUpdate.LastUpdateDate).TotalSeconds > 20))
+                (DateTime.UtcNow.Subtract(lastUpdate.LastUpdateDate).TotalSeconds > NumberOfConcurrentServers * pollingValue))
             {
                 // Update LastUpdateDate while processing to block the other instance from starting while we're executing the try block
                 var timer = Observable.Timer(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(pollingValue))
-                                .Subscribe(_ =>_orderStatusUpdateDao.UpdateLastUpdate(updaterUniqueId, DateTime.UtcNow));                                    
+                                .Subscribe(_ =>_orderStatusUpdateDao.UpdateLastUpdate(updaterUniqueId, DateTime.UtcNow));
 
+                
                 try
                 {
                     var orders = _orderDao.GetOrdersInProgress().ToArray();
@@ -82,12 +83,15 @@ namespace apcurium.MK.Booking.Api.Jobs
                     BatchUpdateStatus(orders.Where(o => o.Status == OrderStatus.WaitingForPayment));
                     BatchUpdateStatus(orders.Where(o => o.Status == OrderStatus.Pending));
                     BatchUpdateStatus(orders.Where(o => o.Status == OrderStatus.Created));
+
+                    hasOrdersWaitingForPayment = orders.Any(o => o.Status == OrderStatus.WaitingForPayment);
                 }
                 finally
                 {
                     timer.Dispose();
                 }
             }
+            return hasOrdersWaitingForPayment;
         }
 
         private void BatchUpdateStatus(IEnumerable<OrderStatusDetail> orders)

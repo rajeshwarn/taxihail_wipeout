@@ -22,6 +22,10 @@ namespace apcurium.MK.Web
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(Global));
 
+        private int _defaultPollingValue;
+
+        private const int WaitingForPaymentPollingValue = 2;
+
         protected IUpdateOrderStatusJob StatusJobService { get; set; }
 
         protected void Application_Start(object sender, EventArgs e)
@@ -34,15 +38,16 @@ namespace apcurium.MK.Web
 
             StatusJobService = UnityContainerExtensions.Resolve<IUpdateOrderStatusJob>(UnityServiceLocator.Instance);
 
-            var pollingValue = config.GetSetting("OrderStatus.ServerPollingInterval", 10);
-            PollIbs(pollingValue);
+            _defaultPollingValue = config.GetSetting("OrderStatus.ServerPollingInterval", 10);
+            PollIbs(_defaultPollingValue);
         }
 
         private void PollIbs(int pollingValue)
         {
             Log.Info("Queue OrderStatusJob " + DateTime.Now.ToString("HH:MM:ss"));
-            
-            // todo Change polling value depending on if we detected WaitingForPayment on last run
+
+            bool hasOrdersWaitingForPayment = false;
+
             Observable.Timer(TimeSpan.FromSeconds(pollingValue))
                 .Subscribe(_ =>
                 {
@@ -50,11 +55,11 @@ namespace apcurium.MK.Web
                     {
                         var serverProcessId = GetServerProcessId();
                         Trace.WriteLine("serverProcessId : " + serverProcessId);
-                        StatusJobService.CheckStatus(serverProcessId);
+                        hasOrdersWaitingForPayment = StatusJobService.CheckStatus(serverProcessId, pollingValue);
                     }
                     finally
                     {
-                        PollIbs(pollingValue);
+                        PollIbs(hasOrdersWaitingForPayment ? WaitingForPaymentPollingValue : _defaultPollingValue);
                     }
                 });
         }

@@ -4,7 +4,7 @@ namespace apcurium.MK.Booking.Api.Jobs
     public interface IUpdateOrderStatusJob
     {
         
-        void CheckStatus(string uniqueId);
+        bool CheckStatus(string uniqueId, int pollingValue);
 
         void CheckStatus(Guid orderId);
     }
