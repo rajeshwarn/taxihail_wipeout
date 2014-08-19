@@ -499,5 +499,5 @@
 "DeleteCreditCard"="Delete the credit card registered to this account?";
 "ServiceErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
 "View"="View";
-"CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still chose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
+"CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
 "PayInCar"="Pay in Car";
