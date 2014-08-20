@@ -192,7 +192,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged ();
 			}
 		}
- 
+
 		private Order _order;
 		public Order Order {
 			get { return _order; }

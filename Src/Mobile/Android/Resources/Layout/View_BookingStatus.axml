@@ -248,7 +248,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_height="60dip">
+            android:layout_height="wrap_content">
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1px"
@@ -257,14 +257,15 @@
                 android:layout_below="@id/ColorLabel" />
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dip"
+                android:layout_height="wrap_content"
                 android:paddingRight="10dip"
+                android:paddingBottom="4dip"
                 android:background="@color/main_background_color">
             <!---android:background="@drawable/driverInfosBackGreyRepeat">-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="vertical"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center_horizontal|center_vertical">
                     <TextView
                         style="@style/BlackTextLabel"
@@ -273,9 +274,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                     <TextView
-                        style="@style/BlackTextLabel"
+                        android:id="@+id/statusWithEtaLabel"
+                        style="@style/BlackTextLabelOneOrTwoLines"
                         android:gravity="center_horizontal|top"
-                        android:inputType="textMultiLine"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         local:MvxBind="Text StatusInfoText" />
