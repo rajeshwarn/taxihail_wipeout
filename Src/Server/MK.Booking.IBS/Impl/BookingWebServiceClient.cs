@@ -213,6 +213,29 @@ namespace apcurium.MK.Booking.IBS.Impl
             return success;
         }
 
+        public int? SendAccountInformation(Guid orderId, int ibsOrderId, string type, string cardToken, int accountID, string name, string phone, string email)
+        {
+            int? result = null;
+            UseService(service =>
+            {
+                
+                result = service.SaveExtrPayment_2(UserNameApp, PasswordApp, ibsOrderId, "", "", cardToken, type,null , 0, 0, 0, 0,
+                 0, 0, 0, accountID, name, CleanPhone(phone), email, "", "", orderId.ToString());
+                
+                if ( result < -9000 ) //Hack unitl we support more code and we get the list of code.
+                {
+                    service.CancelBookOrder( UserNameApp, PasswordApp, ibsOrderId, CleanPhone(phone ), null , accountID );
+                    result = -10000;
+                }
+
+
+            });
+
+            return result;
+        }
+
+        
+
         private int ToCents(decimal dollarAmout)
         {
             return Convert.ToInt32(dollarAmout * 100);

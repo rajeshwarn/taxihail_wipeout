@@ -915,6 +915,12 @@
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall" xml:space="preserve">
     <value>The order cannot be created because your account is currently inactive.</value>
   </data>
+<data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
+    <value>The charge account information is invalid. Please try again.</value>
+  </data>
+<data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall" xml:space="preserve">
+    <value>The charge account information is invalid. Please try again.</value>
+  </data>
   <data name="LocalContactCannotBeResolverTitle" xml:space="preserve">
     <value>Invalid Contact</value>
   </data>

@@ -475,4 +475,6 @@
   <string name="PendingOrderCancel">Annuler</string>
   <string name="NoCardOnFileMessage">Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.</string>
   <string name="AddACardButton">Enregistrez</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000">La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall">La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</string>
 </resources>
