@@ -124,10 +124,10 @@
     <value>Payment type</value>
   </data>
  <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>Estimated Fare : SR{0:n2} ({1})</value>
+    <value>Estimated Fare : SR{0:0.00} ({1})</value>
   </data>
   <data name="CurrencyPriceFormat" xml:space="preserve">
-    <value>SR{0:n2}</value>
+    <value>SR{0:0.00}</value>
   </data>
 <data name="PanelMenuViewUpdateProfileText" xml:space="preserve">
     <value>My Profile</value>
