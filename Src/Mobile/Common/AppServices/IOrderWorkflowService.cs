@@ -63,6 +63,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<Address> GetCurrentAddress();
 
 		Task ResetOrderSettings();
+
+	    bool IsOrderRebooked();
+
+        void CancelRebookOrder();
     }
 }
 

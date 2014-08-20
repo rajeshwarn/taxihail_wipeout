@@ -33,6 +33,11 @@ namespace apcurium.MK.Booking.Api.Helpers
         {
             var orderStatus = base.GetOrderStatus(orderId, session);
 
+            if (orderStatus.Status == OrderStatus.Completed)
+            {
+                return orderStatus;
+            }
+
             var ibsInfo = new IBSOrderInformation
             {
                 IBSOrderId = 9999,

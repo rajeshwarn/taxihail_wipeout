@@ -97,15 +97,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								return;
 						}
 					}
-					await _orderWorkflowService.ResetOrderSettings();
-                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
-					await ShowFareEstimateAlertDialogIfNecessary();
-					await PreValidateOrder();
+
+                    ReviewOrderDetails();
 				});
 			}
 		}
 
-		 
+        public async void ReviewOrderDetails()
+	    {
+            await _orderWorkflowService.ResetOrderSettings();
+            PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
+            await ShowFareEstimateAlertDialogIfNecessary();
+            await PreValidateOrder();
+	    }
+
 		public ICommand ConfirmOrder
 		{
 			get
@@ -263,6 +268,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					// set pickup date to null to reset the estimate for now and not the possible date set by book later
 					_orderWorkflowService.SetPickupDate(null);
+                    _orderWorkflowService.CancelRebookOrder();
                     PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
 				});
 			}

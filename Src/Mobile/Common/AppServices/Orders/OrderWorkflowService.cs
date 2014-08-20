@@ -12,6 +12,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
@@ -47,6 +48,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
+
+        private bool _isOrderRebooked;
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -197,6 +200,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder()
 		{
+		    _isOrderRebooked = false;
+
 			var order = await GetOrder();
 
 			try
@@ -607,11 +612,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public void Rebook(Order previous)
 		{
+            _isOrderRebooked = true;
 			_pickupAddressSubject.OnNext(previous.PickupAddress);
 			_destinationAddressSubject.OnNext(previous.DropOffAddress);
 			_bookingSettingsSubject.OnNext(previous.Settings);
 			_noteToDriverSubject.OnNext(previous.Note);
 		}
+
+        public bool IsOrderRebooked()
+        {
+            return _isOrderRebooked;
+        }
+
+	    public void CancelRebookOrder()
+	    {
+	        _isOrderRebooked = false;
+	    }
     }
 }
 
