@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 using Moq;
@@ -30,7 +31,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            Sut = new DeviceDetailsGenerator(() => new BookingDbContext(DbName));
+            Sut = new DeviceDetailsGenerator(() => new BookingDbContext(DbName), new DeviceDao((() => new BookingDbContext(DbName))));
         }
     }
 
@@ -91,8 +92,31 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             using (var context = new BookingDbContext(DbName))
             {
                 var dto = context.Set<DeviceDetail>().Find(_accountId, _deviceToken);
-
                 Assert.Null(dto);
+            }
+        }
+
+        [Test]
+        public void when_device_registered_with_another_account_then_old_device_dto_deleted()
+        {
+            var newAccountId = Guid.NewGuid();
+
+            Sut.Handle(new DeviceRegisteredForPushNotifications
+            {
+                SourceId = newAccountId,
+                DeviceToken = _deviceToken
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Set<DeviceDetail>().Find(_accountId, _deviceToken);
+                Assert.Null(dto);
+
+                var otherDto = context.Set<DeviceDetail>().Find(newAccountId, _deviceToken);
+
+                Assert.NotNull(otherDto);
+                Assert.AreEqual(newAccountId, otherDto.AccountId);
+                Assert.AreEqual(_deviceToken, otherDto.DeviceToken);
             }
         }
     }
