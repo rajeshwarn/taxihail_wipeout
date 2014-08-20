@@ -550,6 +550,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return validationResult;
 		}
 
+		public async Task<bool> ValidateCardOnFile()
+		{
+			if (this._appSettings.Data.CreditCardChargeTypeId.HasValue) 
+			{
+				var orderToValidate = await GetOrder ();	
+				if ( (orderToValidate.Settings.ChargeTypeId == _appSettings.Data.CreditCardChargeTypeId.Value)  &&
+					(!_accountService.CurrentAccount.DefaultCreditCard.HasValue ))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+
+
+
 		public void ConfirmValidationOrder()
 		{
 			_orderCanBeConfirmed.OnNext (true);

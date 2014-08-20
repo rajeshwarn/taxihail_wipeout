@@ -11,6 +11,7 @@ using System.Reactive.Threading.Tasks;
 using System.Reactive.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -95,6 +96,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					await _orderWorkflowService.ResetOrderSettings();
                     PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
 					await ShowFareEstimateAlertDialogIfNecessary();
+					await ValidateCardOnFile();
 					await PreValidateOrder();
 				});
 			}
@@ -116,7 +118,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						{
 							return;
 						}
+
+							var cardValidated = await  _orderWorkflowService.ValidateCardOnFile();
+							if (!cardValidated )
+							{
+								this.Services ().Message.ShowMessage (this.Services ().Localize ["ErrorCreatingOrderTitle"], 
+									this.Services ().Localize ["NoCardOnFileMessage"]);
+
+								return;
+							}
 						_orderWorkflowService.BeginCreateOrder ();
+
 
 						if(await _orderWorkflowService.ShouldGoToAccountNumberFlow())
 						{
@@ -140,22 +152,41 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								await _orderWorkflowService.SetAccountNumber(accountNumber);
 							}
 
-							PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
-							ShowViewModel<InitializeOrderForAccountPaymentViewModel>();
+
+							var questions = await _orderWorkflowService.GetAccountPaymentQuestions();
+							if( ( questions != null ) && (questions.Length > 0 ) )
+							{
+								PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
+								ShowViewModel<InitializeOrderForAccountPaymentViewModel>();
+							}
+							else
+							{
+									using(this.Services().Message.ShowProgress())
+									{
+										var result = await _orderWorkflowService.ConfirmOrder();
+
+										PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
+										ShowViewModel<BookingStatusViewModel>(new
+											{
+												order = result.Item1.ToJson(),
+												orderStatus = result.Item2.ToJson()
+											});
+									}
+							}
 						}
 						else
 						{
-							using(this.Services().Message.ShowProgress())
-							{
-								var result = await _orderWorkflowService.ConfirmOrder();
-								
-								PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
-								ShowViewModel<BookingStatusViewModel>(new
+								using(this.Services().Message.ShowProgress())
 								{
-									order = result.Item1.ToJson(),
-									orderStatus = result.Item2.ToJson()
-								});
-							}
+									var result = await _orderWorkflowService.ConfirmOrder();
+
+									PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
+									ShowViewModel<BookingStatusViewModel>(new
+										{
+											order = result.Item1.ToJson(),
+											orderStatus = result.Item2.ToJson()
+										});
+								}
 						}
 					}
 					catch(OrderCreationException e)
@@ -218,6 +249,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				 
 			}
 		}
+
+
 			
         public ICommand BookLater
         {
@@ -297,6 +330,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				this.Services().Message.ShowMessage(this.Services().Localize["WarningEstimateTitle"], this.Services().Localize["WarningEstimate"],
 					"Ok", delegate{ },
 					this.Services().Localize["WarningEstimateDontShow"], () => this.Services().Cache.Set("WarningEstimateDontShow", "yes"));
+			}
+		}
+
+
+		private async Task ValidateCardOnFile()
+		{
+			if (!await _orderWorkflowService.ValidateCardOnFile ()) {
+				this.Services ().Message.ShowMessage (this.Services ().Localize ["ErrorCreatingOrderTitle"], 
+					this.Services ().Localize ["NoCardOnFileMessage"],
+					this.Services ().Localize ["AddACardButton"], 
+					delegate {
+						PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
+						ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true, navigateHome = false });
+
+					}, 
+					this.Services ().Localize ["Cancel"], 
+					() => {
+						PresentationStateRequested.Raise (this, new HomeViewModelStateRequestedEventArgs (HomeViewModelState.Initial));
+					});
+
+
 			}
 		}
 

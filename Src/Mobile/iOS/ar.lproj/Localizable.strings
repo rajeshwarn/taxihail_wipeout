@@ -473,5 +473,7 @@
 "PendingOrderView"="View";
 "Eta"="The nearest taxi is {0} and {1} {2} away";
 "EtaDurationUnitPlural"="mins";
+"NoCardOnFileMessage"="You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.";
+"AddACardButton"="Add Card";
 "EtaDurationUnit"="min";
 "StatusEta"="{0} and {1} {2} away";

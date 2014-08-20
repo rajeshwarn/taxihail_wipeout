@@ -304,7 +304,7 @@
   <string name="ReminderTitle">{0} Enregistré</string>
   <string name="RemoveCreditCardMessage">Etes-vous sur de vouloir supprimer cette carte de paiement?</string>
   <string name="RemoveCreditCardTitle">Supprimer cette carte de paiement</string>
-  <string name="ReSendConfirmation">Signaler au chauffeur le mode de paiement</string>
+  <string name="ReSendConfirmation">Signaler le paiement</string>
   <string name="Reset">Réinitialiser</string>
   <string name="ResetPasswordConfirmationMessage">Un nouveau mot de passe vous a été envoyé par email</string>
   <string name="ResetPasswordConfirmationTitle">Mot de passe envoyé</string>
@@ -475,6 +475,8 @@
   <string name="PendingOrderCancel">Annuler</string>
   <string name="Eta">Le taxi le plus près est à {0} et {1} {2}</string>
   <string name="EtaDurationUnitPlural">min</string>
+  <string name="NoCardOnFileMessage">Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.</string>
+  <string name="AddACardButton">Enregistrez</string>
   <string name="EtaDurationUnit">min</string>
   <string name="StatusEta">À {0} et {1} {2}</string>
 </resources>

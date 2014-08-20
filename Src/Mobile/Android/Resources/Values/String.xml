@@ -497,6 +497,8 @@
   <string name="PendingOrderCancel">Cancel</string>
   <string name="Eta">The nearest taxi is {0} and {1} {2} away</string>
   <string name="EtaDurationUnitPlural">mins</string>
+  <string name="NoCardOnFileMessage">You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</string>
+  <string name="AddACardButton">Add Card</string>
   <string name="EtaDurationUnit">min</string>
   <string name="StatusEta">{0} and {1} {2} away</string>
 </resources>
