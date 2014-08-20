@@ -38,22 +38,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             SetContentView(Resource.Layout.View_BookingStatus);
             _touchMap = FindViewById<TouchMap>(Resource.Id.mapStatus);
 			_statusWithEta = FindViewById<TextView>(Resource.Id.statusWithEtaLabel);
-
-			// LP: iOS-style dirty workaround as xml layout isn't acting as expected. A xml approach would be preferable.
-//			_statusWithEta.TextChanged += (object sender, Android.Text.TextChangedEventArgs e) => {
-//				_statusWithEta.RequestLayout();
-//				((Android.Views.View)_statusWithEta).Parent.RequestLayout();
-//				if (_statusWithEta.Text.Contains("\n"))
-//				{
-//					//_statusWithEta.SetLineSpacing(4, 1);
-//					_statusWithEta.SetHeight(44);
-//
-//				} else
-//				{
-//					//_statusWithEta.SetLineSpacing(0, 1);
-//					_statusWithEta.SetHeight(22);
-//				}
-//			};
         }
 
         protected override void OnResume()
