@@ -210,6 +210,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{ 
 				_eta = value;
 				RaisePropertyChanged ();
+				RaisePropertyChanged(() => ShowEta);
 				RaisePropertyChanged(() => FormattedEta);
 			}
 		}
@@ -218,11 +219,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				double time = Math.Ceiling ((float)Eta.Duration / 60f);
-				bool singleMinute = ((int)time == 1);
-				string timeString = singleMinute ? "1" : time.ToString ();
-				string durationUnit = singleMinute ? Mvx.Resolve<ILocalization> () ["EtaDurationUnit"] : Mvx.Resolve<ILocalization> () ["EtaDurationUnitPlural"];
-				return string.Format(Mvx.Resolve<ILocalization>()["Eta"], Eta.FormattedDistance, timeString, durationUnit);
+				if (Eta != null) {
+					if (Eta.Distance != null && Eta.Duration != null) {
+						double time = Math.Ceiling ((float)Eta.Duration / 60f);
+						bool singleMinute = ((int)time <= 1);
+						string timeString = singleMinute ? "1" : time.ToString ();
+						string durationUnit = singleMinute ? Mvx.Resolve<ILocalization> () ["EtaDurationUnit"] : Mvx.Resolve<ILocalization> () ["EtaDurationUnitPlural"];
+						return string.Format (Mvx.Resolve<ILocalization> () ["Eta"], Eta.FormattedDistance, timeString, durationUnit);
+					}
+				}
+
+				return "";
 			}
 		}
 
@@ -235,15 +242,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get { return ShowDestination && Settings.ShowEstimate; }
 		}
-
+			
 		public bool ShowEta
 		{
-			get { return false; }  //TODO: Wire to Settings.xxxxxxxxxxx
+			get 
+			{ 
+				return (Eta != null && Eta.Duration != null) && true;  // TODO: Wire to Settings
+			}
 		}
 
 		public bool ShowVehicleSelection
 		{
-			get { return false; }// VehicleTypes.Count() > 1; } // TODO: Wire to Settings.xxxxxxxxxxxxxx
+			get { return (VehicleTypes.Count() > 1) && true; } // TODO: Wire to Settings
 		}
 			
         public ICommand SetAddress

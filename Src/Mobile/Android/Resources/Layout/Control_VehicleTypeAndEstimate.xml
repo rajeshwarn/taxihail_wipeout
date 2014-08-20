@@ -12,31 +12,49 @@
         android:layout_height="1px"
         android:background="@color/label_text_color" />
     <LinearLayout
-        android:id="@+id/VehicleSelectionContainer"
+        android:id="@+id/VehicleSelectionAndEta"
         android:orientation="vertical"
         android:layout_margin="0px"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
         android:layout_width="fill_parent"
-        android:layout_height="match_content">
+        android:layout_height="wrap_content">
         <LinearLayout
             android:id="@+id/VehicleSelection"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:visibility="gone"
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="52dp" />
-        <TextView
-            android:id="@+id/etaLabel"
+        <LinearLayout
+            android:id="@+id/EtaContainer"
             android:visibility="gone"
+            android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="21dp" />
+            android:layout_height="21dp">
+            <LinearLayout
+                android:id="@+id/EtaBadge"
+                android:orientation="horizontal"
+                android:gravity="clip_vertical"
+                android:layout_width="45dp"
+                android:layout_height="21dp" />
+            <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
+                android:paddingLeft="8dp"
+                android:paddingRight="4dp"
+                android:paddingTop="2dp"
+                android:id="@+id/EtaLabelInVehicleSelection"
+                android:textColor="@color/label_text_color"
+                android:textSize="19dp"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/RideEstimate"
         android:orientation="horizontal"
         android:layout_margin="0px"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:paddingTop="2dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="8dp"
         android:layout_width="fill_parent"
         android:layout_height="52dp">
         <apcurium.mk.booking.mobile.client.controls.widgets.VehicleTypeControl
@@ -46,29 +64,32 @@
             android:layout_height="match_parent" />
         <LinearLayout
             android:orientation="vertical"
+            android:gravity="center"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent">
             <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
-                android:layout_weight="1"
                 android:id="@+id/estimateFareAutoResizeLabel"
                 android:textSize="19dp"
-                android:gravity="center"
+                android:paddingLeft="4dp"
+                android:gravity="bottom|left"
+                android:layout_gravity="top"
                 android:textColor="@color/label_text_color"
                 android:textStyle="normal"
                 android:layout_margin="0px"
                 android:layout_width="match_parent"
-                android:layout_height="0dp" />
+                android:layout_height="21dp" />
             <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
-                android:layout_weight="1"
-                android:id="@+id/etaAutoResizeLabel"
+                android:id="@+id/EtaLabel"
                 android:textSize="19dp"
-                android:gravity="center"
+                android:paddingLeft="4dp"
+                android:gravity="top|left"
+                android:layout_gravity="bottom"
                 android:textColor="@color/label_text_color"
                 android:textStyle="normal"
                 android:layout_margin="0px"
                 android:layout_width="match_parent"
-                android:layout_height="0dp" />
+                android:layout_height="21dp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

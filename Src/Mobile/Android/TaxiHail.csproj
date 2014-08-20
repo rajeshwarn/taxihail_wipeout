@@ -576,6 +576,18 @@
     <AndroidResource Include="Resources\Drawable\star_state.xml" />
     <Compile Include="Activities\Book\BookingRateActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_BookingRating.axml" />
+    <AndroidResource Include="Resources\Drawable\blackcar_no_badge_selected.png" />
+    <AndroidResource Include="Resources\Drawable\blackcar_no_badge.png" />
+    <AndroidResource Include="Resources\Drawable\suv_no_badge_selected.png" />
+    <AndroidResource Include="Resources\Drawable\suv_no_badge.png" />
+    <AndroidResource Include="Resources\Drawable\taxi_no_badge_selected.png" />
+    <AndroidResource Include="Resources\Drawable\taxi_no_badge.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\taxi_no_badge.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\taxi_no_badge_selected.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\suv_no_badge.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\suv_no_badge_selected.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\blackcar_no_badge.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\blackcar_no_badge_selected.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
