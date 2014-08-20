@@ -206,7 +206,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Redraw()
         {
-			bool showEta = !Eta.IsNullOrEmpty ();
+			bool showEta = !Eta.IsNullOrEmpty () && ShowEta;
 			showEtaView (showEta);
 
 			if (ShowEstimate)

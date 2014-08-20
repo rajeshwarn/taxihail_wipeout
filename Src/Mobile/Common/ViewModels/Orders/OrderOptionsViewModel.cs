@@ -219,14 +219,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				if (Eta != null) {
-					if (Eta.Distance != null && Eta.Duration != null) {
-						double time = Math.Ceiling ((float)Eta.Duration / 60f);
-						bool singleMinute = ((int)time <= 1);
-						string timeString = singleMinute ? "1" : time.ToString ();
-						string durationUnit = singleMinute ? Mvx.Resolve<ILocalization> () ["EtaDurationUnit"] : Mvx.Resolve<ILocalization> () ["EtaDurationUnitPlural"];
-						return string.Format (Mvx.Resolve<ILocalization> () ["Eta"], Eta.FormattedDistance, timeString, durationUnit);
-					}
+				if (Eta != null && Eta.IsValidEta()) {
+					double time = Math.Ceiling ((float)(Eta.Duration * Settings.EtaPaddingRatio) / 60f);
+					bool singleMinute = ((int)time <= 1);
+					string timeString = singleMinute ? "1" : time.ToString ();
+					string durationUnit = singleMinute ? Mvx.Resolve<ILocalization> () ["EtaDurationUnit"] : Mvx.Resolve<ILocalization> () ["EtaDurationUnitPlural"];
+					return string.Format (Mvx.Resolve<ILocalization> () ["Eta"], Eta.FormattedDistance, timeString, durationUnit);
 				}
 
 				return "";
@@ -247,7 +245,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get 
 			{ 
-				return (Eta != null && Eta.Duration != null) && true;  // TODO: Wire to Settings
+				return (Eta != null && Eta.IsValidEta()) && Settings.ShowEta;
 			}
 		}
 

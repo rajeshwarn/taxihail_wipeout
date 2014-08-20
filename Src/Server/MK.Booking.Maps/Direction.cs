@@ -8,5 +8,9 @@
 		public string Eta { get; set; }
         public string FormattedPrice { get; set; }
         public string FormattedDistance { get; set; }
+		public bool IsValidEta()
+		{
+			return Distance.HasValue && Duration.HasValue;
+		}
     }
 }

@@ -40,7 +40,6 @@
             <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
                 android:paddingLeft="8dp"
                 android:paddingRight="4dp"
-                android:paddingTop="2dp"
                 android:paddingBottom="2dp"
                 android:id="@+id/EtaLabelInVehicleSelection"
                 android:textColor="@color/label_text_color"

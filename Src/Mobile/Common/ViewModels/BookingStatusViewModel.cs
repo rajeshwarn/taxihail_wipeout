@@ -304,14 +304,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				var statusInfoText = status.IBSStatusDescription;
 
-//				// TODO: Use Eta from Settings
-				if(true && status.IBSStatusId.Equals(VehicleStatuses.Common.Assigned))
+				if(Settings.ShowEta && status.IBSStatusId.Equals(VehicleStatuses.Common.Assigned) && OrderStatusDetail.VehicleNumber != null)
 				{
-					if (OrderStatusDetail.VehicleNumber!=null)
-					{
-						Direction d =  _vehicleService.GetEtaBetweenCoordinates(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
-						statusInfoText += "\n" + FormatEta(d);						
-					}
+					Direction d =  _vehicleService.GetEtaBetweenCoordinates(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
+					statusInfoText += "\n" + FormatEta(d);						
 				}
 
 				StatusInfoText = statusInfoText;
@@ -357,7 +353,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		string FormatEta(Direction direction)
 		{
-			double time = Math.Ceiling ((float)direction.Duration / 60f);
+			if (!direction.IsValidEta())
+			{
+				return "";
+			}
+
+			double time = Math.Ceiling ((float)(direction.Duration * Settings.EtaPaddingRatio) / 60f);
 			bool singleMinute = ((int)time == 1);
 			string timeString = singleMinute ? "1" : time.ToString ();
 			string durationUnit = singleMinute ? Mvx.Resolve<ILocalization> () ["EtaDurationUnit"] : Mvx.Resolve<ILocalization> () ["EtaDurationUnitPlural"];

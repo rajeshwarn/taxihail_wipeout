@@ -111,6 +111,10 @@ namespace MK.Common.Configuration
         public bool ShowEstimateWarning { get; private set; }
         [Display(Name = "Show Estimate", Description="Show an estimate")]
         public bool ShowEstimate { get; private set; }
+		[Display(Name = "Show Eta", Description="Show eta")]
+		public bool ShowEta { get; private set; }
+		[Display(Name = "Eta Padding Ratio", Description="Eta duration padding ratio (multiply duration in seconds by...)")]
+		public double EtaPaddingRatio { get; private set; }
         [Display(Name = "Use Theme Color On Map Icons", Description="Use company color for pickup and destination map icons")]
         public bool UseThemeColorForMapIcons { get; private set; }
 
