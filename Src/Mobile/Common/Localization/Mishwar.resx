@@ -129,4 +129,19 @@
   <data name="CurrencyPriceFormat" xml:space="preserve">
     <value>SR{0:n2}</value>
   </data>
+<data name="PanelMenuViewUpdateProfileText" xml:space="preserve">
+    <value>My Profile</value>
+  </data>
+<data name="ConfirmVehiculeTypeLabel" xml:space="preserve">
+    <value>Vehicle Type</value>
+  </data>
+<data name="RideSettingsVehiculeType" xml:space="preserve">
+    <value>Vehicle Type</value>
+  </data>
+<data name="RideSettingsChargeType" xml:space="preserve">
+    <value>Charge Type</value>
+  </data>
+ <data name="ChargeTypeLabel" xml:space="preserve">
+    <value>Charge Type</value>
+  </data>
 </root>

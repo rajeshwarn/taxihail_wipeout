@@ -1009,7 +1009,7 @@
     <value>New Password</value>
   </data>
   <data name="UpdatePasswordConfirmationLabel" xml:space="preserve">
-    <value>Confirmation</value>
+    <value>Confirm New Password</value>
   </data>
   <data name="ConfirmPassengerSettingsTitle" xml:space="preserve">
     <value>Passenger Settings</value>
