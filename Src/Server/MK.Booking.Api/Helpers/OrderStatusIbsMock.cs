@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Api.Helpers
 
             var order = _orderDao.FindById(orderId);
 
-            if (string.IsNullOrEmpty(orderStatus.IBSStatusId))
+            if (string.IsNullOrEmpty(orderStatus.IBSStatusId) || orderStatus.IBSStatusId == VehicleStatuses.Common.Waiting)
             {
                 ibsInfo.VehicleLatitude = DefaultTaxiLatitude;
                 ibsInfo.VehicleLongitude = DefaultTaxiLongitude;

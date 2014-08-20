@@ -6,7 +6,7 @@ using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Events
 {
-    public class OrderPairedForRideLinqCmtPayment : VersionedEvent
+    public class OrderPairedForPayment : VersionedEvent
     {
         public string Medallion { get; set; }
         public string DriverId { get; set; }

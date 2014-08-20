@@ -15,7 +15,7 @@ using NUnit.Framework;
 namespace apcurium.MK.Booking.Test.Integration
 {
     [TestFixture]
-    public class given_payment : given_a_config_read_model_database
+    public class given_payment : given_a_read_model_database
     {
         [SetUp]
         public void Setup()

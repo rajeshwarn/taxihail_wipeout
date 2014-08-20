@@ -19,15 +19,12 @@ namespace apcurium.MK.Booking.EventHandlers
 {
     public class OrderGenerator : IEventHandler<OrderCreated>,
         IEventHandler<OrderCancelled>,
-        IEventHandler<OrderCompleted>,
         IEventHandler<OrderRemovedFromHistory>,
         IEventHandler<OrderRated>,
         IEventHandler<PaymentInformationSet>,
         IEventHandler<OrderStatusChanged>,
-        IEventHandler<OrderVehiclePositionChanged>,
-        IEventHandler<OrderPairedForRideLinqCmtPayment>,
-        IEventHandler<OrderUnpairedForRideLinqCmtPayment>,
-        IEventHandler<OrderFareUpdated>
+        IEventHandler<OrderPairedForPayment>,
+        IEventHandler<OrderUnpairedForPayment>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -60,21 +57,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
             }
         }
-
-        public void Handle(OrderCompleted @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var order = context.Find<OrderDetail>(@event.SourceId);
-                order.Status = (int) OrderStatus.Completed;
-                order.Fare = @event.Fare;
-                order.Tip = @event.Tip;
-                order.Toll = @event.Toll;
-                order.Tax = @event.Tax;
-                context.Save(order);
-            }
-        }
-
+        
         public void Handle(OrderCreated @event)
         {
             using (var context = _contextFactory.Invoke())
@@ -119,7 +102,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(OrderPairedForRideLinqCmtPayment @event)
+        public void Handle(OrderPairedForPayment @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -186,54 +169,62 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
+        private bool GetFareAvailable(double? fare)
+        {
+            return fare.HasValue && fare > 0;
+        }
+
         public void Handle(OrderStatusChanged @event)
         {
             using (var context = _contextFactory.Invoke())
             {
-                @event.Status.PickupDate = @event.Status.PickupDate < (DateTime) SqlDateTime.MinValue
-                    ? (DateTime) SqlDateTime.MinValue
-                    : @event.Status.PickupDate;
-                var details = context.Find<OrderStatusDetail>(@event.Status.OrderId);
+                if (@event.Status != null)
+                {
+                    @event.Status.PickupDate = @event.Status.PickupDate < (DateTime)SqlDateTime.MinValue
+                        ? (DateTime)SqlDateTime.MinValue
+                        : @event.Status.PickupDate;
+                }
+
+                // set FareAvailable
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 if (details == null)
                 {
+                    @event.Status.FareAvailable = GetFareAvailable(@event.Fare);
                     context.Set<OrderStatusDetail>().Add(@event.Status);
                 }
                 else
                 {
-                    Mapper.Map(@event.Status, details);
+                    // possible only with migration from OrderCompleted or OrderFareUpdated
+                    if (@event.Status != null) 
+                    {
+                        Mapper.Map(@event.Status, details);
+                    }
+
+                    details.FareAvailable = GetFareAvailable(@event.Fare);
                     context.Save(details);
                 }
 
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 if (order != null)
                 {
-                    order.Status = (int) @event.Status.Status;
-                    context.Save(order);
-                }
-                else
-                {
-                    _logger.LogMessage("Order Status without existing Order : " + @event.SourceId);
-                }
+                    // possible only with migration from OrderCompleted or OrderFareUpdated
+                    if (@event.Status == null) 
+                    {
+                        if (@event.IsCompleted)
+                        {
+                            order.Status = (int) OrderStatus.Completed;
+                        }
+                    }
+                    else
+                    {
+                        order.Status = (int)@event.Status.Status;
+                    }
 
-                context.SaveChanges();
-            }
-        }
-
-        public void Handle(OrderFareUpdated @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var details = context.Find<OrderStatusDetail>(@event.SourceId);
-                details.FareAvailable = true;
-                context.Save(details);
-
-                var order = context.Find<OrderDetail>(@event.SourceId);
-                if (order != null)
-                {
                     order.Fare = @event.Fare;
                     order.Tip = @event.Tip;
                     order.Toll = @event.Toll;
                     order.Tax = @event.Tax;
+
                     context.Save(order);
                 }
                 else
@@ -245,7 +236,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(OrderUnpairedForRideLinqCmtPayment @event)
+        public void Handle(OrderUnpairedForPayment @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -255,18 +246,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Set<OrderPairingDetail>().Remove(orderPairingDetail);
                     context.SaveChanges();
                 }
-            }
-        }
-
-        public void Handle(OrderVehiclePositionChanged @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var order = context.Find<OrderStatusDetail>(@event.SourceId);
-                order.VehicleLatitude = @event.Latitude;
-                order.VehicleLongitude = @event.Longitude;
-
-                context.Save(order);
             }
         }
 

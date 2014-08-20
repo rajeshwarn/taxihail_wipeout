@@ -425,8 +425,6 @@
     </Compile>
     <Compile Include="Views\Payments\PaymentView.cs" />
     <Compile Include="Views\Payments\PaymentView.designer.cs" />
-    <Compile Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.cs" />
-    <Compile Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.designer.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
     <Compile Include="Views\Payments\ConfirmCarNumberView.cs" />
     <Compile Include="Views\Payments\ConfirmCarNumberView.designer.cs">
@@ -522,6 +520,8 @@
     <Compile Include="Views\AccountConfirmationView.cs" />
     <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
     <Compile Include="MapUtitilties\MKMapViewHelper.cs" />
+    <Compile Include="Views\Payments\ConfirmPairView.cs" />
+    <Compile Include="Views\Payments\ConfirmPairView.designer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -553,7 +553,6 @@
     <InterfaceDefinition Include="Views\BookRatingCell.xib" />
     <InterfaceDefinition Include="Views\BookRatingView.xib" />
     <InterfaceDefinition Include="Views\Payments\PaymentView.xib" />
-    <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.xib" />
     <InterfaceDefinition Include="Views\Payments\ConfirmCarNumberView.xib" />
     <InterfaceDefinition Include="Views\BookingStatusView.xib" />
     <InterfaceDefinition Include="Views\HistoryListView.xib" />
@@ -568,6 +567,7 @@
     <InterfaceDefinition Include="Views\AddressPickerContainerView.xib" />
     <InterfaceDefinition Include="Views\Order\InitializeOrderForAccountPaymentView.xib" />
     <InterfaceDefinition Include="Views\AccountConfirmationView.xib" />
+    <InterfaceDefinition Include="Views\Payments\ConfirmPairView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

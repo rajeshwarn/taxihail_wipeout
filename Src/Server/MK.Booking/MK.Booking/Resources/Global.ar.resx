@@ -312,6 +312,12 @@
   <data name="PaymentConfirmationToDriver2" xml:space="preserve">
     <value>رقم التصريح {0}</value>
   </data>
+  <data name="PairingConfirmationToDriver" xml:space="preserve">
+    <value>The client will be charged automatically at the end of the ride</value>
+  </data>
+  <data name="UnpairingConfirmationToDriver" xml:space="preserve">
+    <value>WARNING: The client will NOT be charged at the end of the ride</value>
+  </data>
   <data name="PushNotification_wosARRIVED" xml:space="preserve">
     <value>السيارة وصلت</value>
   </data>
@@ -323,5 +329,11 @@
   </data>
   <data name="PushNotification_NearbyTaxi" xml:space="preserve">
     <value>Your vehicle is almost at pickup location</value>
+  </data>
+  <data name="PushNotification_PaymentReceived" xml:space="preserve">
+    <value>Your credit card was successfully charged a total of {0}. This amount includes both fare and tip.</value>
+  </data>
+  <data name="PushNotification_wosLOADED" xml:space="preserve">
+    <value>Please confirm vehicle to pay with card on file.</value>
   </data>
 </root>

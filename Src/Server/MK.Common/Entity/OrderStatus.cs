@@ -8,6 +8,7 @@ namespace apcurium.MK.Common.Entity
         Canceled = 3,
         Completed = 4,
         Removed = 5,
-        TimedOut = 6
+        TimedOut = 6,
+        WaitingForPayment = 7
     }
 }

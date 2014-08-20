@@ -21,15 +21,18 @@ namespace apcurium.MK.Booking.MapDataProvider
             container.RegisterInstance<IGeocoder>(new GoogleApiClient(settings, container.Resolve<ILogger>(), null));
             container.RegisterInstance<IPlaceDataProvider>(new GoogleApiClient(settings, container.Resolve<ILogger>(), null));
 
-            switch (settings.Data.DirectionDataProvider)
-            {
-                case MapProvider.TomTom:
-                    container.RegisterInstance<IDirectionDataProvider>(new TomTomProvider(settings, container.Resolve<ILogger>()));
-                    break;
-                default:
-                    container.RegisterInstance<IDirectionDataProvider>(new GoogleApiClient(settings, container.Resolve<ILogger>(), null));
-                    break;
-            }
+            container.RegisterType<IDirectionDataProvider>(
+                new TransientLifetimeManager(),
+                new InjectionFactory(c =>
+                {
+                    switch (settings.Data.DirectionDataProvider)
+                    {
+                        case MapProvider.TomTom:
+                            return new TomTomProvider(settings, container.Resolve<ILogger>());
+                        default:
+                            return new GoogleApiClient(settings, container.Resolve<ILogger>());
+                    }
+                }));
         }
     }
 }

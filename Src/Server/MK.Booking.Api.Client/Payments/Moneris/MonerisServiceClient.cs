@@ -4,7 +4,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
-using apcurium.MK.Booking.Api.Contract.Requests.Payment.Moneris;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
@@ -30,7 +29,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 
 		public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard (string cardToken)
 		{
-			return Client.DeleteAsync(new DeleteTokenizedCreditcardMonerisRequest
+			return Client.DeleteAsync(new DeleteTokenizedCreditcardRequest
 			{
 				CardToken = cardToken
 			});
@@ -38,24 +37,42 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 
 		public Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit (string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
 		{
-			return Client.PostAsync(new PreAuthorizeAndCommitPaymentMonerisRequest
+			return Client.PostAsync(new PreAuthorizeAndCommitPaymentRequest
 			{
-				Amount = amount,
-				MeterAmount = meterAmount,
-				TipAmount = tipAmount,
+				Amount = Convert.ToDecimal(amount),
+				MeterAmount = Convert.ToDecimal(meterAmount),
+				TipAmount = Convert.ToDecimal(tipAmount),
 				CardToken = cardToken,
 				OrderId = orderId
 			});
 		}
 
-		public Task<PairingResponse> Pair (Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+		public async Task<PairingResponse> Pair (Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
 		{
-			throw new NotImplementedException ();
+            try
+            {
+                var response = await Client.PostAsync(new PairingForPaymentRequest
+                {
+                    OrderId = orderId,
+                    CardToken = cardToken,
+                    AutoTipAmount = autoTipAmount,
+                    AutoTipPercentage = autoTipPercentage
+
+                });
+                return response;
+            }
+            catch (ServiceStack.ServiceClient.Web.WebServiceException)
+            {
+                return new PairingResponse { IsSuccessfull = false };
+            }       
 		}
 
 		public Task<BasePaymentResponse> Unpair (Guid orderId)
 		{
-			throw new NotImplementedException ();
+            return Client.PostAsync(new UnpairingForPaymentRequest
+            {
+                OrderId = orderId
+            });
 		}
 
 		public Task ResendConfirmationToDriver (Guid orderId)

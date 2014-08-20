@@ -637,6 +637,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The client will be charged automatically at the end of the ride.
+        /// </summary>
+        public static string PairingConfirmationToDriver {
+            get {
+                return ResourceManager.GetString("PairingConfirmationToDriver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The passenger has paid {0:c}.
         /// </summary>
         public static string PaymentConfirmationToDriver1 {
@@ -664,6 +673,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your credit card was successfully charged a total of {0}. This amount includes both fare and tip..
+        /// </summary>
+        public static string PushNotification_PaymentReceived {
+            get {
+                return ResourceManager.GetString("PushNotification_PaymentReceived", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your Taxi (#{0}) has arrived.
         /// </summary>
         public static string PushNotification_wosARRIVED {
@@ -682,11 +700,29 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please confirm vehicle to pay with card on file..
+        /// </summary>
+        public static string PushNotification_wosLOADED {
+            get {
+                return ResourceManager.GetString("PushNotification_wosLOADED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry no cars are available due to high demand, please try later..
         /// </summary>
         public static string PushNotification_wosTIMEOUT {
             get {
                 return ResourceManager.GetString("PushNotification_wosTIMEOUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WARNING: The client will NOT be charged at the end of the ride.
+        /// </summary>
+        public static string UnpairingConfirmationToDriver {
+            get {
+                return ResourceManager.GetString("UnpairingConfirmationToDriver", resourceCulture);
             }
         }
     }

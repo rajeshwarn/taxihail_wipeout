@@ -142,7 +142,8 @@
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/driverLayout">
+                    android:layout_below="@id/driverLayout"
+                    local:MvxBind="Visibility OrderStatusDetail.DriverInfos.VehicleRegistration, Converter=Visibility">
                     <TextView
                         android:id="@+id/licenceLabel"
                         style="@style/BlackTextLabel"

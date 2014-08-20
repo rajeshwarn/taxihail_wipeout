@@ -3,9 +3,9 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class LogCreditCardPaymentCancellationFailed : ICommand
+    public class LogCreditCardError : ICommand
     {
-        public LogCreditCardPaymentCancellationFailed()
+        public LogCreditCardError()
         {
             Id = Guid.NewGuid();
         }

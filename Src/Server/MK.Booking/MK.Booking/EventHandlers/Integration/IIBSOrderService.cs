@@ -7,5 +7,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
            string authorizationCode, string cardToken, int accountID, string name, string phone, string email, string os, string userAgent);
 
         void SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId);
+        void SendMessageToDriver(string message, string vehicleNumber);
     }
 }
