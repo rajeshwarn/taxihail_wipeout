@@ -227,6 +227,11 @@ namespace apcurium.MK.Booking.IBS.Impl
                     service.CancelBookOrder( UserNameApp, PasswordApp, ibsOrderId, CleanPhone(phone ), null , accountID );
                     result = -10000;
                 }
+                else
+                {
+                    result = null;
+                }
+
 
 
             });
