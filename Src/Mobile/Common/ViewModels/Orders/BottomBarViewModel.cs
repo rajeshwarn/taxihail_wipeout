@@ -105,6 +105,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+	    public void NavigateToConfirmOrderView()
+	    {
+            PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
+	    }
 		 
 		public ICommand ConfirmOrder
 		{
@@ -263,6 +267,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					// set pickup date to null to reset the estimate for now and not the possible date set by book later
 					_orderWorkflowService.SetPickupDate(null);
+                    _orderWorkflowService.CancelRebookOrder();
                     PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
 				});
 			}
