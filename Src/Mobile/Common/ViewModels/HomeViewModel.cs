@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             if (_orderWorkflowService.IsOrderRebooked())
             {
-                _bottomBar.NavigateToConfirmOrderView();
+                _bottomBar.ReviewOrderDetails();
             }
 
 			if (firstTime)

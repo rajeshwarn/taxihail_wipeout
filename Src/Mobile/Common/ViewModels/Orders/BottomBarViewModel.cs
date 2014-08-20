@@ -97,19 +97,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								return;
 						}
 					}
-					await _orderWorkflowService.ResetOrderSettings();
-                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
-					await ShowFareEstimateAlertDialogIfNecessary();
-					await PreValidateOrder();
+
+                    ReviewOrderDetails();
 				});
 			}
 		}
 
-	    public void NavigateToConfirmOrderView()
+        public async void ReviewOrderDetails()
 	    {
+            await _orderWorkflowService.ResetOrderSettings();
             PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
+            await ShowFareEstimateAlertDialogIfNecessary();
+            await PreValidateOrder();
 	    }
-		 
+
 		public ICommand ConfirmOrder
 		{
 			get

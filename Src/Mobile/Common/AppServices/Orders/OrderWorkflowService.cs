@@ -617,9 +617,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_destinationAddressSubject.OnNext(previous.DropOffAddress);
 			_bookingSettingsSubject.OnNext(previous.Settings);
 			_noteToDriverSubject.OnNext(previous.Note);
-
-            // It is safe to assume that the order is valid since it was already booked previously
-            ConfirmValidationOrder();
 		}
 
         public bool IsOrderRebooked()
