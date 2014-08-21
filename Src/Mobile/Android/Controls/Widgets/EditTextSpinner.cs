@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     {
         private ListItemAdapter _adapter;
         private ImageView _imageLeftView;
+        private ImageView _imageRightArrow;
         private TextView _label;
         private string _leftImage;
         private int _selectedKey = int.MinValue;
@@ -44,7 +45,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             {
                 _enabled = value;
-                this.SetBackgroundColor(value ? _initialBackgroundColor : Color.DarkGray);
+                this.SetBackgroundColor(value ? _initialBackgroundColor : Color.Transparent);
+                _imageRightArrow.Visibility = value ? ViewStates.Visible : ViewStates.Invisible;
             }
         }
 
@@ -127,6 +129,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             _label.Focusable = false;
             _imageLeftView = layout.FindViewById<ImageView>(Resource.Id.leftImage);
+            _imageRightArrow = layout.FindViewById<ImageView>(Resource.Id.rightArrow);
             if (_text != null) _label.Text = _text;
             if (_leftImage != null)
             {
