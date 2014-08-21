@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     {
         private ListItemAdapter _adapter;
         private ImageView _imageLeftView;
+        private ImageView _imageRightArrow;
         private TextView _label;
         private string _leftImage;
         private int _selectedKey = int.MinValue;
@@ -27,14 +28,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public EditTextRightSpinner(Context context)
             : base(context)
         {
-            Initialize();
+            Initialize(null);
         }
 
         [Register(".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;)V", "")]
         public EditTextRightSpinner(Context context, IAttributeSet attrs)
             : base(context, attrs)
         {
-            Initialize();
+            Initialize(attrs);
         }
 
         private bool _enabled = true;
@@ -44,7 +45,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             {
                 _enabled = value;
-                this.SetBackgroundColor(value ? Color.White : Color.DarkGray);
+                this.SetBackgroundColor(value ? _initialBackgroundColor : Color.Transparent);
+                _imageRightArrow.Visibility = value ? ViewStates.Visible : ViewStates.Invisible;
             }
         }
 
@@ -99,12 +101,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public event EventHandler SpinnerClicked;
 
+        private Color _initialBackgroundColor;
 
-        private void Initialize()
+        private void Initialize(IAttributeSet attrs)
         {
             _adapter = new ListItemAdapter(Context, Resource.Layout.SpinnerTextWithImage, Resource.Id.labelSpinner,
                 new List<ListItemData>());
             _adapter.SetDropDownViewResource(Resource.Layout.SpinnerTextWithImage);
+
+            if (attrs != null)
+            {
+                var att = Context.ObtainStyledAttributes(attrs, new int[] { Android.Resource.Attribute.Background }, 0, 0);
+                _initialBackgroundColor = att.GetColor(0, -1);
+            }
         }
 
         protected override void OnFinishInflate()
@@ -116,6 +125,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _label = (TextView) layout.FindViewById(Resource.Id.label);
             _label.Focusable = false;
             _imageLeftView = layout.FindViewById<ImageView>(Resource.Id.leftImage);
+            _imageRightArrow = layout.FindViewById<ImageView>(Resource.Id.rightArrow);
             if (_text != null) _label.Text = _text;
             if (_leftImage != null)
             {
