@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 									this.Services ().Localize ["NoCardOnFileMessage"],
 									this.Services ().Localize ["AddACardButton"], 
 									delegate {
-										ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true, navigateHome = false });
+										ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true });
 									}, 
 									this.Services ().Localize ["Cancel"], 
 									() => {

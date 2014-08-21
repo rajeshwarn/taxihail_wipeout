@@ -505,3 +505,4 @@
 "View"="View";
 "CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
 "PayInCar"="Pay in Car";
+"CreditCardErrorInvalid"="Cannot validate the credit card";

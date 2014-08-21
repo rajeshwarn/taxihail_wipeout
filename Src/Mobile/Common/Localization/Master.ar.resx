@@ -426,6 +426,9 @@
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
     <value>رقم البطاقة الائتمانية خاطئة</value>
   </data>
+  <data name="CreditCardErrorInvalid" xml:space="preserve">
+    <value>Cannot validate the credit card</value>
+  </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>الإسم كما يظهر على البطاقة</value>
   </data>
