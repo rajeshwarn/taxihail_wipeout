@@ -66,9 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		public override void Draw (RectangleF rect)
 		{   
-            var fillColor = State.HasFlag (UIControlState.Normal)
-				? (Enabled ? BackgroundColor : UIColor.Clear) : UIColor.Clear;
-
+            var fillColor = BackgroundColor;
 			var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, RadiusCorner);
 
 			HasRightArrow = Enabled && HasRightArrow;
