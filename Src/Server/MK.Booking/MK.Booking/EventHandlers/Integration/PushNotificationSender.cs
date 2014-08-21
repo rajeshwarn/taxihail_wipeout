@@ -108,7 +108,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             using (var context = _contextFactory.Invoke())
             {
-                var order = context.Find<OrderDetail>(@event.SourceId);
+                var order = context.Find<OrderDetail>(@event.OrderId);
 
                 var alert =
                     string.Format(string.Format(_resources.Get("PushNotification_PaymentReceived"), @event.Amount),
