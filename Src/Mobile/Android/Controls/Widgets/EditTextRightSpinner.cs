@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Initialize();
         }
 
-        private bool _enabled;
+        private bool _enabled = true;
         public override bool Enabled
         {
             get { return _enabled; }
