@@ -447,7 +447,6 @@
     <AndroidResource Include="Resources\Drawable\cluster_taxi.png" />
     <AndroidResource Include="Resources\Drawable\nearby_taxi.png" />
     <AndroidResource Include="Resources\Drawable\taxi_icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\cluster.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\hail_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\taxi_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_taxi.png" />
@@ -692,6 +691,11 @@
     <AndroidResource Include="Resources\Drawable\cluster_suv.png" />
     <AndroidResource Include="Resources\Drawable\nearby_blackcar.png" />
     <AndroidResource Include="Resources\Drawable\nearby_suv.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\nearby_blackcar.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\nearby_suv.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\cluster_blackcar.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\cluster_suv.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\cluster_taxi.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
