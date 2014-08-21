@@ -94,7 +94,7 @@
 "DeleteBookItButtonImageNamePressed"="Assets/Button/btnBookIt-Pressed_en.png";
 "StreetNumberPlacesBt"="Search for places";
 "CreateAccountTitleMr"="Mr";
-"EstimatePriceFormat"="Estimated Fare : {0}";
+"EstimatePriceFormat"="Estimated Fare : {0:C} ({1})";
 "PanelMenuViewOrderHistoryText"="History";
 "ResetPasswordSucessTitle"="Password reset";
 "TabSearch"="Search";
@@ -185,7 +185,6 @@
 "View_RefineAddress"="Pickup Details";
 "InvalidAddressTitle"="Invalid address";
 "searchHint"="Search";
-"EstimatePrice"="Estimated Fare";
 "HistoryDetailAuthorizationLabel"="Authorization:";
 "RideSettingsView"="Profile";
 "DestinationViewDestinationLabel"="Destination:";
@@ -308,7 +307,6 @@
 "InvalidChoiceTitle"="Invalid Choice";
 "ResetPasswordEmailPlaceHolder"="Email";
 "PaymentDetails.CreditCardLabel"="Cards";
-"EstimateDistance"=" ({0})";
 "PayPalExpressCheckoutCancelTitle"="Payment cancelled";
 "CreditCardCCV"="CVV";
 "NoOrderId"="Order Not ready";
@@ -417,7 +415,6 @@
 "YesButton"="Yes";
 "ConfirmVehiculeTypeLabel"="Vehicle type";
 "ServerInfo"="({0} v{1})";
-"ApproxPrice"="Estimated Fare";
 "RideSettingsVehiculeType"="Vehicle type";
 "ApplicationName"="TaxiHail";
 "WarningEstimateTitle"="Warning";
@@ -494,6 +491,13 @@
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
 "AccountConfirmation_ErrorTitle"="Cannot confirm account";
 "PanelMenuViewPaymentInfoText"="Card on File";
+"LoginSupport"="Need support?";
+"CurrencyPriceFormat"="{0:C}";
+"PendingOrderCancel"="Cancel";
+"PendingOrderMessage"="You cannot book this ride since an order is already pending. View the order status?";
+"PendingOrderView"="View";
+"NoCardOnFileMessage"="You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.";
+"AddACardButton"="Add Card";
 "View_CreditCard"="Credit Card";
 "DeleteCreditCardTitle"="Delete credit card";
 "DeleteCreditCard"="Delete the credit card registered to this account?";

@@ -48,28 +48,20 @@ namespace apcurium.MK.Booking.Maps.Impl
                     direction.Distance, 
                     date ?? DateTime.Now, 
                     direction.Duration, vehicleTypeId);
-
-				result.FormattedPrice = FormatPrice (result.Price);
+                    
 				result.FormattedDistance = FormatDistance (result.Distance);
 			}
 
 			return result;
 		}
 
-		private string FormatPrice (double? price)
-		{
-			if (price.HasValue) {
-				var culture = _appSettings.Data.PriceFormat;
-				return string.Format (new CultureInfo (culture), "{0:C}", price);
-			}
-			return "";
-		}
-
 		private string FormatDistance (int? distance)
 		{
-			if (distance.HasValue) {
+			if (distance.HasValue) 
+            {
 				var format = _appSettings.Data.DistanceFormat.ToEnum (true, DistanceFormat.Km);
-				if (format == DistanceFormat.Km) {
+				if (format == DistanceFormat.Km) 
+                {
 					var distanceInKm = Math.Round ((double)distance.Value / 1000, 1);
 					return string.Format ("{0:n1} km", distanceInKm);
 				}

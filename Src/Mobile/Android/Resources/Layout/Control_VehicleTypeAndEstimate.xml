@@ -38,16 +38,15 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/estimateFareLabel"
-                android:textSize="14dp"
-                android:gravity="center"
-                android:textColor="@color/label_text_color"
-                android:textStyle="normal"
-                android:layout_margin="0px"
-                android:singleLine="false"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+        <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
+          android:id="@+id/estimateFareAutoResizeLabel"
+          android:textSize="19dp"
+          android:gravity="center"
+          android:textColor="@color/label_text_color"
+          android:textStyle="normal"
+          android:layout_margin="0px"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

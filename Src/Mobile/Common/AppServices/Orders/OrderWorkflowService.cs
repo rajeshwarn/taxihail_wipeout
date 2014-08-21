@@ -132,9 +132,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			await SetAddressToCurrentSelection(address);
 		}
 
-		public void ClearDestinationAddress()
+		public async Task ClearDestinationAddress()
 		{
 			_destinationAddressSubject.OnNext(new Address());
+
+			await CalculateEstimatedFare();
 		}
 
 		public async Task SetPickupDate(DateTime? date)
@@ -447,19 +449,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		    var bookingSettings = await _bookingSettingsSubject.Take(1).ToTask();
 
             var direction = await _bookingService.GetFareEstimate(pickupAddress, destinationAddress, bookingSettings.VehicleTypeId, pickupDate);
-
-			var estimatedFareString = await _bookingService.GetFareEstimateDisplay(direction, "EstimatePriceFormat", 
-				_appSettings.Data.DestinationIsRequired 
-					? "NoFareTextIfDestinationIsRequired"
-					: "NoFareText", 
-				true, 
-				"EstimatedFareNotAvailable");
-
-
+			var estimatedFareString = _bookingService.GetFareEstimateDisplay(direction);
 
 			_estimatedFareDetailSubject.OnNext (direction);
 			_estimatedFareDisplaySubject.OnNext(estimatedFareString);
-
 		}
 
 		public async Task PrepareForNewOrder()
@@ -578,6 +571,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var validationResult = await _bookingService.ValidateOrder(orderToValidate);
 			return validationResult;
 		}
+
+		public async Task<bool> ValidateCardOnFile()
+		{
+			if (this._appSettings.Data.CreditCardChargeTypeId.HasValue) 
+			{
+				var orderToValidate = await GetOrder ();	
+				if ( (orderToValidate.Settings.ChargeTypeId == _appSettings.Data.CreditCardChargeTypeId.Value)  &&
+					(!_accountService.CurrentAccount.DefaultCreditCard.HasValue ))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+
+
 
 		public void ConfirmValidationOrder()
 		{

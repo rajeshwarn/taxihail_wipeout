@@ -7,6 +7,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Social
 		void Init();
 		Task Connect();
 		void Disconnect();
+		void PublishInstall();
 		Task<FacebookUserInfo> GetUserInfo();
     }
 }

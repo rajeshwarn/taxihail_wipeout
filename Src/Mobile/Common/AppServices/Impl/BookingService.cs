@@ -15,6 +15,7 @@ using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
 using Direction = apcurium.MK.Common.Entity.DirectionSetting;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -22,14 +23,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     {
 		readonly IAccountService _accountService;
 		readonly ILocalization _localize;
-		readonly IMessageService _messageService;
 		readonly IAppSettings _appSettings;
 		readonly IMvxPhoneCallTask _phoneCallTask;
 		readonly IGeolocService _geolocService;
 
 		public BookingService(IAccountService accountService,
 			ILocalization localize,
-			IMessageService messageService,
 			IAppSettings appSettings,
 			IMvxPhoneCallTask phoneCallTask,
 			IGeolocService geolocService)
@@ -37,7 +36,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_geolocService = geolocService;
 			_phoneCallTask = phoneCallTask;
 			_appSettings = appSettings;
-			_messageService = messageService;
 			_localize = localize;
 			_accountService = accountService;
 		}
@@ -181,41 +179,30 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return new DirectionInfo();
         }
 
-		public async Task<string> GetFareEstimateDisplay (DirectionInfo direction, string fareFormat, string noFareText, bool includeDistance, string cannotGetFareText)
+		public string GetFareEstimateDisplay (DirectionInfo direction)
         {
-			var fareEstimate = _localize[noFareText];
+			var fareEstimate = _localize[_appSettings.Data.DestinationIsRequired 
+				? "NoFareTextIfDestinationIsRequired"
+				: "NoFareText"];
 
 			if (direction.Distance.HasValue)
             {
 				var willShowFare = direction.Price.HasValue && direction.Price.Value > 0;                                
-
-				if (direction.Price.HasValue && willShowFare)
+				if (willShowFare)
                 {                    
-					var maxEstimate = _appSettings.Data.MaxFareEstimate;
-					if (fareFormat.HasValue() || (direction.Price.Value > maxEstimate && _localize["EstimatePriceOver100"].HasValue()))
-                    {
-						fareEstimate = String.Format(_localize[direction.Price.Value > maxEstimate 
-                                                                           ? "EstimatePriceOver100"
-																		   : fareFormat], 
-							direction.FormattedPrice);
-                    }
-                    else
-                    {
-						fareEstimate = direction.FormattedPrice;
-                    }
+					var isOverMaxFare = direction.Price.Value > _appSettings.Data.MaxFareEstimate;
 
-					if (includeDistance && direction.Distance.HasValue)
-                    {
-						var destinationString = " " + String.Format(_localize["EstimateDistance"], direction.FormattedDistance);
-                        if (!string.IsNullOrWhiteSpace(destinationString))
-                        {
-                            fareEstimate += destinationString;
-                        }
-                    }
+					fareEstimate = String.Format(
+						CultureProvider.CultureInfo, 
+						_localize[isOverMaxFare
+                        	? "EstimatePriceOver100"
+							: "EstimatePriceFormat"], 
+						direction.Price, 
+						direction.FormattedDistance);
                 }
                 else
                 {
-					fareEstimate = String.Format(_localize[cannotGetFareText]);
+					fareEstimate = _localize["EstimatedFareNotAvailable"];
                 }
             }
 
@@ -269,7 +256,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var request = new OrderRatingsRequest{ Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
 			UseServiceClientTask<OrderServiceClient> (service => service.RateOrder (request));
         }
-
     }
 }
 

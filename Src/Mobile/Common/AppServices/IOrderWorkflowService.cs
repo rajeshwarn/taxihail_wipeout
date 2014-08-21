@@ -16,10 +16,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		void EndCreateOrder ();
 
+		Task<bool> ValidateCardOnFile ();
+
 		Task SetAddress(Address address);
 		Task SetPickupAptAndRingCode(string apt, string ringCode);
 		Task<Address> SetAddressToUserLocation();
-		void ClearDestinationAddress();
+		Task ClearDestinationAddress();
 
         Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken);
 

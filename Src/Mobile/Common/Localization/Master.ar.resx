@@ -162,9 +162,6 @@
   <data name="AppNeedUpdateTitle" xml:space="preserve">
     <value>هناك تحديثات متاحة</value>
   </data>
-  <data name="ApproxPrice" xml:space="preserve">
-    <value>التكلفة المتوقعة</value>
-  </data>
   <data name="April" xml:space="preserve">
     <value>أبريل (04)</value>
   </data>
@@ -552,14 +549,11 @@
   <data name="EstimatedFareNotAvailable" xml:space="preserve">
     <value>التكلفة المتوقعة غير متاحة</value>
   </data>
-  <data name="EstimateDistance" xml:space="preserve">
-    <value>({0})</value>
-  </data>
-  <data name="EstimatePrice" xml:space="preserve">
-    <value>التكلفة المتوقعة</value>
-  </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>التكلفة المتوقعة :{0}</value>
+    <value>التكلفة المتوقعة :{0} ({1})</value>
+  </data>
+  <data name="CurrencyPriceFormat" xml:space="preserve">
+    <value>{0}</value>
   </data>
   <data name="EstimatePriceOver100" xml:space="preserve">
     <value>إتصال لمعرفة السعر</value>
@@ -749,6 +743,9 @@
   </data>
   <data name="LoginForgotPassword" xml:space="preserve">
     <value>ه نسيت كلمة السر ؟</value>
+  </data>
+  <data name="LoginSupport" xml:space="preserve">
+   	<value>Need support?</value>
   </data>
   <data name="LoginForgotPasswordDetail" xml:space="preserve">
     <value>أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.</value>
@@ -1508,5 +1505,20 @@
   </data>
   <data name="CreditCardAdded" xml:space="preserve">
     <value>Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</value>
+  </data>
+  <data name="AddACardButton" xml:space="preserve">
+    <value>Add Card</value>
+  </data>
+  <data name="PendingOrderMessage" xml:space="preserve">
+    <value>You cannot book this ride since an order is already pending. View the order status?</value>
+  </data>
+  <data name="PendingOrderView" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="PendingOrderCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="NoCardOnFileMessage" xml:space="preserve">
+    <value>You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</value>
   </data>
 </root>

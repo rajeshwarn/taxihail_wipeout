@@ -44,7 +44,8 @@ namespace apcurium.MK.Web
         protected string ReferenceData { get; private set; }
         protected string VehicleTypes { get; private set; }
         protected string DisableFutureBooking { get; private set; }
-
+        protected bool IsWebSignupVisible { get; private set; }
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             var config = ServiceLocator.Current.GetInstance<IConfigurationManager>();
@@ -59,6 +60,7 @@ namespace apcurium.MK.Web
             FacebookEnabled = config.GetSetting("FacebookEnabled");
             HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
             DisableFutureBooking = config.GetSetting("Client.DisableFutureBooking");
+            IsWebSignupVisible = !config.GetSetting<bool>("IsWebSignupHidden", false);
 
             DirectionTarifMode = config.GetSetting("Direction.TarifMode");
             DirectionNeedAValidTarif = config.GetSetting("Direction.NeedAValidTarif", false);

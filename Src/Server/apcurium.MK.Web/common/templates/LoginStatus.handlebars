@@ -1,17 +1,28 @@
 ﻿<a href='#' class='brand pull-left'>
-    
+
 </a>
 <div class="login-status pull-right">
-    <ul>
-        {{#if isLoggedIn}}
-            <li><a href="#useraccount">{{name}}</a>
-            {{#if isAdmin}}
-              <li><a href="#admin">{{localize "Admin"}}</a>
-            {{/if}}
-            <li><a href="#" data-action="logout">{{localize "Log Out"}}</a>
-        {{else}}
-            <li><a href="#login" >{{localize "Log In"}}</a>
-            <li><a href="#signup" >{{localize "Sign Up"}}</a>
-        {{/if}}
-    </ul>
+  <ul>
+    {{#if isLoggedIn}}
+        <li>
+          <a href="#useraccount">{{name}}</a>
+        </li>
+        {{#if isAdmin}}
+        <li>
+          <a href="#admin">{{localize "Admin"}}</a>
+        </li>
+    {{/if}}    
+        <li>
+          <a href="#" data-action="logout">{{localize "Log Out"}}</a>
+        </li>
+    
+    {{else}}
+    <li>
+          <a href="#login" >{{localize "Log In"}}</a>
+        </li>
+        <li>
+          <a href="#signup" >{{localize "Sign Up"}}</a>
+        </li>
+    {{/if}}    
+  </ul>
 </div>

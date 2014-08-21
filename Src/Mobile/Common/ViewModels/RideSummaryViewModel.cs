@@ -117,6 +117,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private Order Order { get; set; }
 		private OrderStatusDetail OrderStatus { get; set;}
 
+		
+
 		public bool IsPayButtonShown
 		{
 			get
@@ -138,13 +140,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        get
 	        {
 				var setting = _paymentService.GetPaymentSettings();
-                var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
+                		var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 				return isPayEnabled 
 					&& setting.PaymentMode != PaymentMethod.RideLinqCmt 
 					&& !Settings.AutomaticPayment
 					&& _paymentService.GetPaymentFromCache(Order.Id).HasValue;
 	        }
 	    }
+
+		
 			
 		bool _hasRated;		
 		public bool HasRated 

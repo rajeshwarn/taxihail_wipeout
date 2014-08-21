@@ -9,6 +9,8 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using TinyMessenger;
+using Cirrious.CrossCore;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -39,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private string FormatDateTime(DateTime date )
         {
-            var formatTime = new CultureInfo(CultureProvider.CultureInfoString).DateTimeFormat.ShortTimePattern;
+			var formatTime = CultureProvider.CultureInfo.DateTimeFormat.ShortTimePattern;
             var format = "{0:dddd, MMMM d}, {0:"+formatTime+"}";
             var result = string.Format(format, date) ;
             return result;

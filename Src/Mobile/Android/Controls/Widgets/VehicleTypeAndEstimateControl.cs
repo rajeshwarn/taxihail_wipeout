@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public class VehicleTypeAndEstimateControl : LinearLayout
     {
-        private TextView EstimatedFareLabel { get; set; }
+        private AutoResizeTextView EstimatedFareLabel { get; set; }
         private View HorizontalDivider { get; set; }
 		private LinearLayout VehicleSelection { get; set; }
 		private LinearLayout RideEstimate { get; set; }
@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			RideEstimate = (LinearLayout)layout.FindViewById (Resource.Id.RideEstimate);
 			VehicleSelection = (LinearLayout)layout.FindViewById (Resource.Id.VehicleSelection);
 
-			EstimatedFareLabel = (TextView)layout.FindViewById(Resource.Id.estimateFareLabel);
+            EstimatedFareLabel = (AutoResizeTextView)layout.FindViewById(Resource.Id.estimateFareAutoResizeLabel);
 			EstimateSelectedVehicleType = (VehicleTypeControl)layout.FindViewById (Resource.Id.estimateSelectedVehicle);
             EstimateSelectedVehicleType.Selected = true;
 
@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public string EstimatedFare
         {
-            get { return EstimatedFareLabel.Text; }
+            get{ return EstimatedFareLabel.Text; }
             set
             {
                 if (EstimatedFareLabel.Text != value)

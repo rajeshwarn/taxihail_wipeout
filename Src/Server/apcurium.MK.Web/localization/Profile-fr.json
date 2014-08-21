@@ -1,0 +1,15 @@
+﻿{
+	"Settings": "Paramètres",
+	"Name": "Nom",
+	"Phone": "Ligne mobile",
+	"Passengers": "Passagers",
+	"Vehicle Type": "Type de véhicule",
+	"Charge Type": "Type de paiement",
+	"Cancel": "Annuler",
+	"Saves changes":"Enregistrer",
+	"Loading" : "Chargement",
+	"Changes were saved" : "Changements sauvgardés",
+	"Edit Profile" : "Édition du compte",
+	"Email" : "Email",
+	"Account Rider #": "Numéro de compte"
+}

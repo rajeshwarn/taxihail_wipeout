@@ -116,6 +116,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 FindViewById<LinearLayout>(Resource.Id.passengerPhoneLayout).Visibility = ViewStates.Gone;
             }
 
+            if (!this.Services().Settings.ShowPassengerApartment)
+            {
+                FindViewById<LinearLayout>(Resource.Id.passengerApartmentLayout).Visibility = ViewStates.Gone;
+                FindViewById<LinearLayout>(Resource.Id.ringCodeLayout).Visibility = ViewStates.Gone;
+                FindViewById<LinearLayout>(Resource.Id.ApartmentInfosLayout).Visibility = ViewStates.Gone;
+            }
+
+            if (!this.Services().Settings.ShowRingCodeField)
+            {
+                FindViewById<LinearLayout>(Resource.Id.ringCodeLayout).Visibility = ViewStates.Gone;
+            }
+
+            if (!this.Services().Settings.ShowPassengerApartment && !this.Services().Settings.ShowRingCodeField)
+            {
+                FindViewById<LinearLayout>(Resource.Id.ApartmentInfosLayout).Visibility = ViewStates.Gone;
+            }
+
             set.Apply();
         }
     }

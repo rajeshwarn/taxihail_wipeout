@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -12,6 +12,7 @@
                 <outlet property="btnServer" destination="UK1-rl-h3E" id="be9-Qz-hmr"/>
                 <outlet property="btnSignIn" destination="4Fj-tf-DCU" id="kHq-0X-PtP"/>
                 <outlet property="btnSignUp" destination="kn0-uG-mWR" id="S9A-tb-uPt"/>
+                <outlet property="btnSupport" destination="Jkc-Gs-pkq" id="AWA-cm-0Yd"/>
                 <outlet property="btnTwLogin" destination="gc1-ON-5gQ" id="5O6-sv-Qgq"/>
                 <outlet property="txtEmail" destination="p8r-Qe-uM1" id="UKx-th-Yi2"/>
                 <outlet property="txtPassword" destination="uHJ-ag-0kH" id="1Gd-kp-QbF"/>
@@ -165,13 +166,25 @@
                                 <constraint firstAttribute="right" secondItem="TOa-Mf-PFs" secondAttribute="right" constant="8" id="yVC-c3-1Bo"/>
                             </constraints>
                         </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jkc-Gs-pkq" customClass="FlatButton">
+                            <rect key="frame" x="204" y="452" width="106" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <state key="normal" title="Need support?">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
                     </subviews>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="Oqo-Pz-5ux" secondAttribute="trailing" id="7p4-k9-9es"/>
                         <constraint firstItem="Oqo-Pz-5ux" firstAttribute="leading" secondItem="65l-5V-CQA" secondAttribute="leading" id="HNT-Dh-QoW"/>
                         <constraint firstItem="Oqo-Pz-5ux" firstAttribute="top" secondItem="65l-5V-CQA" secondAttribute="top" id="d3J-Xu-GA1"/>
+                        <constraint firstItem="Jkc-Gs-pkq" firstAttribute="bottom" secondItem="Oqo-Pz-5ux" secondAttribute="bottom" constant="8" id="i7T-3s-ywy"/>
                         <constraint firstItem="Oqo-Pz-5ux" firstAttribute="width" secondItem="65l-5V-CQA" secondAttribute="width" id="pDg-4g-XWz"/>
+                        <constraint firstItem="Oqo-Pz-5ux" firstAttribute="trailing" secondItem="Jkc-Gs-pkq" secondAttribute="trailing" constant="10" id="rFM-ZM-Wfb"/>
                         <constraint firstAttribute="bottom" secondItem="Oqo-Pz-5ux" secondAttribute="bottom" id="yjC-xU-Wt2"/>
                     </constraints>
                 </scrollView>

@@ -109,6 +109,10 @@ namespace apcurium.MK.Booking
                 .ForMember(d => d.Name, opt => opt.MapFrom(m => m.Settings.Name))
                 .ForMember(d => d.Phone, opt => opt.MapFrom(m => m.Settings.Phone));
 
+            Mapper.CreateMap<CreditCardDetails, OrderDetailWithAccount>()
+                .ForMember(d => d.AccountDefaultCardToken, opt => opt.MapFrom(m => m.Token));
+
+
             Mapper.CreateMap<OrderPaymentDetail, OrderDetailWithAccount>()
                 .ForMember(d => d.PaymentMeterAmount, opt => opt.MapFrom(m => m.Meter))
                 .ForMember(d => d.PaymentTotalAmount, opt => opt.MapFrom(m => m.Amount))

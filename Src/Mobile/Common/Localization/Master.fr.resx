@@ -165,9 +165,6 @@
   <data name="AppNeedUpdateTitle" xml:space="preserve">
     <value>Nouvelle version disponible</value>
   </data>
-  <data name="ApproxPrice" xml:space="preserve">
-    <value>Prix estimé</value>
-  </data>
   <data name="app_id" xml:space="preserve">
     <value>134284363380764</value>
   </data>
@@ -570,14 +567,11 @@
   <data name="EstimatedFareNotAvailable" xml:space="preserve">
     <value>Le prix ne peut être estimé pour le moment</value>
   </data>
-  <data name="EstimateDistance" xml:space="preserve">
-    <value>({0})</value>
-  </data>
-  <data name="EstimatePrice" xml:space="preserve">
-    <value>Prix estimé</value>
-  </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>Prix estimé: {0}</value>
+    <value>Prix estimé: {0:C} ({1})</value>
+  </data>
+  <data name="CurrencyPriceFormat" xml:space="preserve">
+    <value>{0:C}</value>
   </data>
   <data name="EstimatePriceOver100" xml:space="preserve">
     <value>Appelez-nous pour connaître le prix!</value>
@@ -739,10 +733,10 @@
     <value>Recherche de votre position</value>
   </data>
   <data name="LocationAddFavoriteSubtitle" xml:space="preserve">
-    <value>Saisissez une nouvelle adresse</value>
+    <value>Ajouter une nouvelle adresse</value>
   </data>
   <data name="LocationAddFavoriteTitle" xml:space="preserve">
-    <value>Ajouter une position</value>
+    <value>Ajouter une nouvelle adresse</value>
   </data>
   <data name="LocationDetailAddressLabel" xml:space="preserve">
     <value>Adresse</value>
@@ -773,6 +767,9 @@
   </data>
   <data name="LoginForgotPassword" xml:space="preserve">
     <value>Mot de passe oublié?</value>
+  </data>
+<data name="LoginSupport" xml:space="preserve">
+   	<value>Support Technique?</value>
   </data>
   <data name="LoginForgotPasswordDetail" xml:space="preserve">
     <value>Saisissez votre email pour recevoir votre nouveau mot de passe</value>
@@ -889,13 +886,13 @@
     <value>Commande n°</value>
   </data>
   <data name="PanelMenuViewAboutUsText" xml:space="preserve">
-    <value>À propos de nous</value>
+    <value>À Propos</value>
   </data>
   <data name="PanelMenuViewCallDispatchText" xml:space="preserve">
     <value>Appeler</value>
   </data>
   <data name="PanelMenuViewLocationsText" xml:space="preserve">
-    <value>Positions</value>
+    <value>Adresses Favorites</value>
   </data>
   <data name="PanelMenuViewOrderHistoryText" xml:space="preserve">
     <value>Historique</value>
@@ -907,10 +904,10 @@
     <value>Déconnexion</value>
   </data>
   <data name="PanelMenuViewTutorialText" xml:space="preserve">
-    <value>Voir l'aide</value>
+    <value>Aide</value>
   </data>
   <data name="PanelMenuViewUpdateProfileText" xml:space="preserve">
-    <value>Mise à jour du compte</value>
+    <value>Compte</value>
   </data>
   <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
     <value>Carte de paiement</value>
@@ -1030,7 +1027,7 @@
     <value>Supprimer cette carte de paiement</value>
   </data>
   <data name="ReSendConfirmation" xml:space="preserve">
-    <value>Signaler au chauffeur le mode de paiement</value>
+    <value>Signaler le paiement</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Réinitialiser</value>
@@ -1066,7 +1063,7 @@
     <value>Historique des trajets</value>
   </data>
   <data name="RideSettingsAccountNumber" xml:space="preserve">
-    <value>Numéro de compte</value>
+    <value>Numéro de compte entreprise (optionel)</value>
   </data>
   <data name="RideSettingsCannotLoadListMessage" xml:space="preserve">
     <value>Désolé, échec de la connexion, merci de réessayer ultérieurement</value>
@@ -1291,7 +1288,7 @@
     <value>Historique</value>
   </data>
   <data name="TabLocations" xml:space="preserve">
-    <value>Positions</value>
+    <value>Adresses Favorites</value>
   </data>
   <data name="TabPlaces" xml:space="preserve">
     <value>Points d'intérêt</value>
@@ -1411,7 +1408,7 @@
     <value>Voir les notes</value>
   </data>
   <data name="View_AboutUs" xml:space="preserve">
-    <value>À propos de nous</value>
+    <value>À propos</value>
   </data>
   <data name="View_BookingDetail" xml:space="preserve">
     <value>Détails de la réservation</value>
@@ -1456,7 +1453,7 @@
     <value>Détails sur votre position</value>
   </data>
   <data name="View_MyLocations" xml:space="preserve">
-    <value>Positions</value>
+    <value>Adresses Favorites</value>
   </data>
   <data name="View_Payment" xml:space="preserve">
     <value>Paiement: informations</value>
@@ -1535,5 +1532,20 @@
   </data>
   <data name="CreditCardAdded" xml:space="preserve">
     <value>Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de paiement.</value>
+  </data>
+  <data name="AddACardButton" xml:space="preserve">
+    <value>Enregistrez</value>
+  </data>
+  <data name="PendingOrderMessage" xml:space="preserve">
+    <value>Désolé, cette reservation ne peut être prise en compte. Vous avez déjà une commande en cours. Voir le détail?</value>
+  </data>
+  <data name="PendingOrderView" xml:space="preserve">
+    <value>Détail</value>
+  </data>
+  <data name="PendingOrderCancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="NoCardOnFileMessage" xml:space="preserve">
+    <value>Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.</value>
   </data>
 </root>

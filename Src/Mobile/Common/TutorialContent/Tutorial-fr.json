@@ -3,14 +3,14 @@
     {
       "Position": "1",
       "Title": "Bienvenue!",
-      "Text": "Voici comment réserver une voiture en juste quelques touchers.",
+      "Text": "Voici comment réserver une voiture en quelques clics.",
       "ImageUri":"tutorial_screen01"
     }
     ,
     {
       "Position": "2",
       "Title": "Affiner l'Adresse",
-      "Text": "Touchez le symbole dièse pour affiner l\'adresse à entrer.",
+      "Text": "Touchez le symbole dièse pour affiner le numéro de rue.",
       "ImageUri":"tutorial_screen02"
     }
     ,
@@ -23,7 +23,7 @@
     ,
     {
       "Position": "4",
-      "Title": "Réservations ultérieures",
+      "Title": "Réserver pour plus tard",
       "Text": "Réservez un véhicule pour une date ultérieure.",
       "ImageUri":"tutorial_screen04"
     }                   
@@ -38,7 +38,7 @@
     {
       "Position": "6",
       "Title": "Historique",
-      "Text": "Souvenez-vous de trajets passés, actuels et ultérieurs grace à l\'historique.",
+      "Text": "Souvenez-vous de vos adresses grâce à l\'historique",
       "ImageUri":"tutorial_screen06"
     }                   
     ,
