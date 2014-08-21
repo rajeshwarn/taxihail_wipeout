@@ -10,5 +10,7 @@ namespace apcurium.MK.Booking.Maps
     {
         Direction GetDirection(double? originLat, double? originLng, double? destinationLat, double? destinationLng,
 			DateTime? date = default(DateTime?), bool forEta = false);
+
+        Direction GetEta(double originLat, double originLng, double destinationLat, double destinationLng);
     }
 }

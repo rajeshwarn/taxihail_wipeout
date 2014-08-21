@@ -11,76 +11,83 @@ using apcurium.MK.Booking.MapDataProvider.Resources;
 #endregion
 namespace apcurium.MK.Booking.Maps.Impl
 {
-	public class Directions : IDirections
-	{
-		public enum DistanceFormat
-		{
-			Km,
-			Mile,
-		}
+    public class Directions : IDirections
+    {
+        public enum DistanceFormat
+        {
+            Km,
+            Mile,
+        }
 
-		private readonly IDirectionDataProvider _client;
-		private readonly IAppSettings _appSettings;
-		private readonly IPriceCalculator _priceCalculator;
+        private readonly IDirectionDataProvider _client;
+        private readonly IAppSettings _appSettings;
+        private readonly IPriceCalculator _priceCalculator;
 
-		public Directions (IDirectionDataProvider client, IAppSettings appSettings, IPriceCalculator priceCalculator)
-		{
-			_client = client;
-			_appSettings = appSettings;
-			_priceCalculator = priceCalculator;
-		}
+        public Directions(IDirectionDataProvider client, IAppSettings appSettings, IPriceCalculator priceCalculator)
+        {
+            _client = client;
+            _appSettings = appSettings;
+            _priceCalculator = priceCalculator;
+        }
 
-		public Direction GetDirection (double? originLat, double? originLng, double? destinationLat,
-		                                    double? destinationLng, DateTime? date = default(DateTime?), 
-												bool forEta = false)
-		{
-			var result = new Direction ();
-			var direction = _client.GetDirections (
-                    originLat.GetValueOrDefault (), originLng.GetValueOrDefault (),
-				    destinationLat.GetValueOrDefault (), destinationLng.GetValueOrDefault (),
+        public Direction GetDirection(double? originLat, double? originLng, double? destinationLat,
+                                            double? destinationLng, DateTime? date = default(DateTime?),
+                                                bool forEta = false)
+        {
+            var result = new Direction();
+            var direction = _client.GetDirections(
+                    originLat.GetValueOrDefault(), originLng.GetValueOrDefault(),
+                    destinationLat.GetValueOrDefault(), destinationLng.GetValueOrDefault(),
                     date);
-				
-			if (direction.Distance.HasValue) 
+
+            if (direction.Distance.HasValue)
             {
                 result.Duration = direction.Duration;
-				result.Distance = direction.Distance;
+                result.Distance = direction.Distance;
 
-				if (!forEta) 
-				{
-					result.Price = _priceCalculator.GetPrice (
-						direction.Distance, 
-						date ?? DateTime.Now, 
-						direction.Duration);
-				}
+                if (!forEta)
+                {
+                    result.Price = _priceCalculator.GetPrice(
+                        direction.Distance,
+                        date ?? DateTime.Now,
+                        direction.Duration);
+                }
 
-				result.FormattedDistance = FormatDistance (result.Distance);
-			}
+                result.FormattedDistance = FormatDistance(result.Distance);
+            }
 
-			return result;
-		}
+            return result;
+        }
 
-		private string FormatDistance (int? distance)
-		{
-			string result = "";
+        public Direction GetEta(double fromLat, double fromLng, double toLat, double toLng)
+        {
+            return GetDirection(fromLat, fromLng, toLat, toLng, null, true);
+        }
 
-			if (distance.HasValue) {
-				double meters = (double)distance.Value / 1000;
+        private string FormatDistance(int? distance)
+        {
+            string result = "";
 
-				switch (_appSettings.Data.DistanceFormat.ToEnum (true, DistanceFormat.Km)) {
+            if (distance.HasValue)
+            {
+                double meters = (double)distance.Value / 1000;
 
-				case DistanceFormat.Mile:
-					double miles = Math.Round (meters / 1.609344, 1);
-					result = string.Format ("{0:n1} mile" + ((miles == 1 || miles == 0) ? "" : "s"), miles);
-					break;
+                switch (_appSettings.Data.DistanceFormat.ToEnum(true, DistanceFormat.Km))
+                {
 
-				case DistanceFormat.Km:
-				default:
-					result = string.Format ("{0:n1} km", Math.Round (meters, 1));
-					break;
-				}
-			}
+                    case DistanceFormat.Mile:
+                        double miles = Math.Round(meters / 1.609344, 1);
+                        result = string.Format("{0:n1} mile" + ((miles == 1 || miles == 0) ? "" : "s"), miles);
+                        break;
 
-			return result;
-		}
-	}
+                    case DistanceFormat.Km:
+                    default:
+                        result = string.Format("{0:n1} km", Math.Round(meters, 1));
+                        break;
+                }
+            }
+
+            return result;
+        }
+    }
 }

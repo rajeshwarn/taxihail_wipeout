@@ -12,6 +12,8 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using System;
+using apcurium.MK.Booking.Maps;
+using apcurium.MK.Booking.EventHandlers.Integration;
 
 #endregion
 
@@ -24,14 +26,20 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IOrderPaymentDao _orderPayementDao;
         private readonly IOrderDao _orderDao;
         private readonly Resources.Resources _resources;
+        private readonly IDirections _directions;
+        private readonly IIbsOrderService _ibs;
+
+        private ReadModel.OrderDetail _orderDetails;
 
         public OrderStatusUpdater(IConfigurationManager configurationManager, ICommandBus commandBus,
-            IOrderPaymentDao orderPayementDao, IOrderDao orderDao)
+            IOrderPaymentDao orderPayementDao, IOrderDao orderDao, IDirections directions, IIbsOrderService ibs)
         {
             _orderDao = orderDao;
             _configurationManager = configurationManager;
             _commandBus = commandBus;
             _orderPayementDao = orderPayementDao;
+            _directions = directions;
+            _ibs = ibs;
             var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
             _resources = new Resources.Resources(applicationKey);
         }
@@ -48,8 +56,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
-            var orderDetail = _orderDao.FindById(order.OrderId);
-            var languageCode = orderDetail != null ? orderDetail.ClientLanguageCode : "en";
+            _orderDetails = _orderDao.FindById(order.OrderId);
+            var languageCode = _orderDetails != null ? _orderDetails.ClientLanguageCode : "en";
             var pairingInfo = _orderDao.FindOrderPairingById(order.OrderId);
             if ((pairingInfo != null) && (pairingInfo.AutoTipPercentage.HasValue))
             {
@@ -74,10 +82,16 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 description = string.Format(_resources.Get("OrderStatus_CabDriverNumberAssigned", languageCode), ibsStatus.VehicleNumber);
 
-                if (ibsStatus.Eta.HasValue)
+                if (_orderDetails != null &&  _configurationManager.GetSetting("Client.ShowEta", false))
                 {
-                    description += " - " + string.Format(_resources.Get("OrderStatus_CabDriverETA", languageCode), ibsStatus.Eta.Value.ToString("t"));
+                    SendEtaMessageToDriver((double)order.VehicleLatitude, (double)order.VehicleLongitude, ibsStatus.VehicleNumber);
                 }
+
+                //TODO: Obsolete? Remove.
+                //if (ibsStatus.Eta.HasValue)
+                //{
+                //    description += " - " + string.Format(_resources.Get("OrderStatus_CabDriverETA", languageCode), ibsStatus.Eta.Value.ToString("t"));
+                //}
             }
             else if (ibsStatus.IsCanceled)
             {
@@ -122,6 +136,21 @@ namespace apcurium.MK.Booking.Api.Jobs
 
 
             _commandBus.Send(command);
+        }
+
+        public void SendEtaMessageToDriver(double vehicleLatitude, double vehicleLongitude, string vehicleNumber)
+        {
+            // TODO: How should we localize driver messages?
+            
+            Direction Eta = _directions.GetEta(_orderDetails.PickupAddress.Latitude, _orderDetails.PickupAddress.Longitude, vehicleLatitude, vehicleLongitude);
+
+            if (Eta != null && Eta.IsValidEta())
+            {
+                double time = Math.Ceiling((float)(Eta.Duration * _configurationManager.GetSetting<double>("Client.EtaPaddingRatio", 1d) / 60f));
+                bool singleMinute = ((int)time <= 1);
+                string timeString = singleMinute ? "1" : time.ToString();
+                _ibs.SendMessageToDriver("ETA displayed to client is " + Eta.FormattedDistance + " and " + timeString + " min", vehicleNumber);
+            }
         }
 
         private string FormatPrice(double? price)
