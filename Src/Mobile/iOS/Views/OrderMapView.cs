@@ -363,7 +363,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 ? AddressAnnotationType.NearbyTaxiCluster 
                 : AddressAnnotationType.NearbyTaxi;
 
-            var vehicleAnnotation = new AddressAnnotation (new CLLocationCoordinate2D(vehicle.Latitude, vehicle.Longitude), annotationType, vehicle.VehicleNumber.ToString(), string.Empty, _useThemeColorForPickupAndDestinationMapIcons);
+                var vehicleAnnotation = new AddressAnnotation (
+                                new CLLocationCoordinate2D(vehicle.Latitude, vehicle.Longitude),
+                                annotationType, 
+                                string.Empty, 
+                                string.Empty, 
+                                _useThemeColorForPickupAndDestinationMapIcons,
+                                vehicle.LogoName);
+
             AddAnnotation (vehicleAnnotation);
             _availableVehicleAnnotations.Add (vehicleAnnotation);
         }

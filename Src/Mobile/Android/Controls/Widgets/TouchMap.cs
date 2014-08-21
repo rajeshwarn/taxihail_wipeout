@@ -20,6 +20,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using ServiceStack.Common.Utils;
 using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
@@ -407,15 +408,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (vehicles == null)
                 return;
 
+            const string defaultLogoName = "taxi";
+
             foreach (var v in vehicles)
             {
-                var resId = (v is AvailableVehicleCluster)
-                            ? Resource.Drawable.cluster
-                            : Resource.Drawable.nearby_taxi;
+                bool isCluster = v is AvailableVehicleCluster;
+                string logoKey = isCluster
+                                 ? string.Format("cluster_{0}", v.LogoName ?? defaultLogoName)
+                                 : string.Format("nearby_{0}", v.LogoName ?? defaultLogoName);
+
+                var resId = DrawableHelper.GetIdFromString(Resources, logoKey);
+                if (!resId.HasValue)
+                {
+                    // Resource not found, skip to next
+                    continue;
+                }
+
                 var pushPin = Map.AddMarker(new MarkerOptions()
                     .Anchor(.5f, 1f)
                     .SetPosition(new LatLng(v.Latitude, v.Longitude))
-                    .InvokeIcon(BitmapDescriptorFactory.FromResource(resId))
+                    .InvokeIcon(BitmapDescriptorFactory.FromResource(resId.Value))
                     .Visible(true));
 
                 _availableVehiclePushPins.Add(pushPin);

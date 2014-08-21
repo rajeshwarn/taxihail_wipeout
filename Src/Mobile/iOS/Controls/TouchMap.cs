@@ -430,8 +430,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             foreach (var v in vehicles)
             {
-                var annotationType = (v is AvailableVehicleCluster) ? AddressAnnotationType.NearbyTaxiCluster : AddressAnnotationType.NearbyTaxi;
-                var pushPin = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), annotationType, string.Empty, string.Empty, UseThemeColorForPickupAndDestinationMapIcons);
+                var annotationType = (v is AvailableVehicleCluster)
+                                     ? AddressAnnotationType.NearbyTaxiCluster
+                                     : AddressAnnotationType.NearbyTaxi;
+
+                var pushPin = new AddressAnnotation (
+                                new CLLocationCoordinate2D(v.Latitude, v.Longitude),
+                                annotationType,
+                                string.Empty,
+                                string.Empty, 
+                                UseThemeColorForPickupAndDestinationMapIcons,
+                                v.LogoName);
+
                 AddAnnotation (pushPin);
                 _availableVehiclePushPins.Add (pushPin);
             }

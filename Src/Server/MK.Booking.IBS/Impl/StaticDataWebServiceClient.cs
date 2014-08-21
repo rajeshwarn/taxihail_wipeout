@@ -74,6 +74,22 @@ namespace apcurium.MK.Booking.IBS.Impl
             return items;
         }
 
+        public TVehicleTypeItem GetVehicleTypeItemById(int vehicleId)
+        {
+            var vehicleTypeItems = new List<TVehicleTypeItem>();
+            UseService(service =>
+            {
+                var companies = service.GetProviders(UserNameApp, PasswordApp);
+
+                foreach (var company in companies)
+                {
+                    vehicleTypeItems.AddRange(service.GetVehicleTypes(UserNameApp, PasswordApp, company.ProviderNum));
+                }
+            });
+
+            return vehicleTypeItems.FirstOrDefault(x => x.ID == vehicleId);
+        }
+
         protected override string GetUrl()
         {
             return base.GetUrl() + "IStaticData";

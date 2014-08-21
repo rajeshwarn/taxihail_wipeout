@@ -514,12 +514,20 @@
     </Compile>
     <Compile Include="Extensions\UILabelExtensions.cs" />
     <Compile Include="Controls\Widgets\VehicleTypeView.cs" />
+    <BundleResource Include="Resources\cluster_blackcar.png" />
+    <BundleResource Include="Resources\cluster_blackcar%402x.png" />
+    <BundleResource Include="Resources\cluster_suv.png" />
+    <BundleResource Include="Resources\cluster_suv%402x.png" />
+    <BundleResource Include="Resources\nearby_blackcar.png" />
+    <BundleResource Include="Resources\nearby_blackcar%402x.png" />
     <Compile Include="Views\AccountConfirmationView.designer.cs">
       <DependentUpon>AccountConfirmationView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\AccountConfirmationView.cs" />
     <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
     <Compile Include="MapUtitilties\MKMapViewHelper.cs" />
+    <BundleResource Include="Resources\nearby_suv.png" />
+    <BundleResource Include="Resources\nearby_suv%402x.png" />
     <Compile Include="Views\Payments\ConfirmPairView.cs" />
     <Compile Include="Views\Payments\ConfirmPairView.designer.cs" />
   </ItemGroup>
@@ -631,8 +639,8 @@
     <BundleResource Include="Resources\blackcar_badge_selected%402x.png" />
     <BundleResource Include="Resources\blackcar_badge.png" />
     <BundleResource Include="Resources\blackcar_badge%402x.png" />
-    <BundleResource Include="Resources\cluster.png" />
-    <BundleResource Include="Resources\cluster%402x.png" />
+    <BundleResource Include="Resources\cluster_taxi.png" />
+    <BundleResource Include="Resources\cluster_taxi%402x.png" />
     <BundleResource Include="Resources\destination_icon.png" />
     <BundleResource Include="Resources\destination_icon%402x.png" />
     <BundleResource Include="Resources\hail_icon.png" />
