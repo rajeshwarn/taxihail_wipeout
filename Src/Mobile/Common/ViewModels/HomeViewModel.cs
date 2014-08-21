@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITutorialService _tutorialService;
 		private readonly IPushNotificationService _pushNotificationService;
 		private readonly IVehicleService _vehicleService;
+		private readonly IBookingService _bookingService;
 		private readonly ITermsAndConditionsService _termsService;
 
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
@@ -29,7 +30,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IAccountService accountService,
 			IPhoneService phoneService,
 			ITermsAndConditionsService termsService,
-			IPaymentService paymentService) : base()
+			IPaymentService paymentService, 
+			IBookingService bookingService) : base()
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -37,6 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_pushNotificationService = pushNotificationService;
 			_vehicleService = vehicleService;
 			_termsService = termsService;
+			_bookingService = bookingService;
 
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService, paymentService);
 		}
@@ -79,7 +82,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _bottomBar.ReviewOrderDetails();
             }
-
 			if (firstTime)
 			{
 				this.Services().ApplicationInfo.CheckVersionAsync();

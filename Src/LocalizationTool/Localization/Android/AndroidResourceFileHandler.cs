@@ -13,9 +13,12 @@ namespace apcurium.Tools.Localization.Android
     //\mk-taxi\Src\Mobile\Android\Resources\Values\String.xml
     public class AndroidResourceFileHandler : ResourceFileHandlerBase
     {
-        public AndroidResourceFileHandler(string filePath)
-            : base(filePath)
+        public AndroidResourceFileHandler(string path, string lang)
+            : base(GetPathWithLanguage(path, lang))
         {
+
+            var filePath = GetPathWithLanguage(path, lang);
+
             var document = XElement.Load(filePath);
 
             foreach (var localization in document.Elements().Where(e => e.Name.ToString().Equals("string", StringComparison.OrdinalIgnoreCase)))
@@ -26,8 +29,18 @@ namespace apcurium.Tools.Localization.Android
             }
         }
 
-        public AndroidResourceFileHandler(string filePath, IDictionary<string, string> dictionary)
-            : base(filePath, dictionary)
+        private static string GetPathWithLanguage(string path, string lang)
+        {
+            var d = path.ToLower().IndexOf("values");
+            var firstPart = path.Substring(0, d + 6);
+            var secondPart = path.Substring(d + 6, path.Length - (d + 6));
+            var la = string.IsNullOrEmpty(lang) ? "" : "-" + lang;
+            var filePath = firstPart + la + secondPart;
+            return filePath;
+        }
+
+        public AndroidResourceFileHandler(string filePath, IDictionary<string, string> dictionary, string lang)
+            : base(GetPathWithLanguage(filePath, lang), dictionary)
         {
 
         }

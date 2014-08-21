@@ -116,6 +116,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal">
                         <TextView
+                            android:id="@+id/lblApartment"
                             style="@style/BlackTextLabel"
                             android:paddingBottom="5dp"
                             android:singleLine="true"
@@ -143,6 +144,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal">
                         <TextView
+                            android:id="@+id/lblEntryCode"
                             style="@style/BlackTextLabel"
                             android:paddingBottom="5dp"
                             android:singleLine="true"

@@ -89,7 +89,7 @@
 "DeleteBookItButtonImageNamePressed"="";
 "StreetNumberPlacesBt"="البحث عن أماكن";
 "CreateAccountTitleMr"="السيد";
-"EstimatePriceFormat"="التكلفة المتوقعة :{0}";
+"EstimatePriceFormat"="التكلفة المتوقعة :{0} ({1})";
 "BookRatingErrorMessage"="قم بتقييم مشوارك";
 "ResetPasswordSucessTitle"="إعادة ضبط كلمة المرور";
 "TabSearch"="بحث";
@@ -190,7 +190,6 @@
 "InvalidAddressTitle"="عنوان غير صحيح";
 "View_AboutUs"="نبذة عنا";
 "VehicleNumberNotice"="يرجى ملاحظة أنه في حالة عدم مطابقة رقم السيارة أعلاه لرقم السيارة الفعلي لمشوارك، فإننا لن نتمكن من إتمام عملية الدفع من خلال التطبيق. يرجي ضغط زر الرجوع للعودة لشاشة حالة الرحلة، وقم بالدفع للسائق مباشرة.";
-"EstimatePrice"="التكلفة المتوقعة";
 "HistoryDetailAuthorizationLabel"="التصريح:";
 "DestinationViewDestinationLabel"="الوجهة:";
 "SaveAddressEmptyFieldMessage"="البيانات غير صحيحة، يجب تعبئة خانات اسم المستخدم والعنوان.";
@@ -308,7 +307,6 @@
 "InvalidChoiceTitle"="اختيار خاطئ";
 "ResetPasswordEmailPlaceHolder"="البريد الإلكتروني";
 "PaymentDetails.CreditCardLabel"="بطاقات";
-"EstimateDistance"="({0})";
 "CreditCardCCV"="CVV";
 "NoOrderId"="الطلب غير جاهز";
 "Continue"="استمرار";
@@ -424,7 +422,6 @@
 "YesButton"="نعم";
 "ConfirmVehiculeTypeLabel"="نوع السيارة:";
 "View_BookingStatus"="الوضع";
-"ApproxPrice"="التكلفة المتوقعة";
 "RideSettingsVehiculeType"="نوع السیارة";
 "ApplicationName"="مشوار";
 "WarningEstimateTitle"="تحذير";
@@ -475,4 +472,11 @@
 "ServiceErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
 "CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
 "PanelMenuViewPaymentInfoText"="Card on File";
+"LoginSupport"="Need support?";
+"CurrencyPriceFormat"="{0}";
+"PendingOrderCancel"="Cancel";
+"PendingOrderMessage"="You cannot book this ride since an order is already pending. View the order status?";
+"PendingOrderView"="View";
+"NoCardOnFileMessage"="You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.";
+"AddACardButton"="Add Card";
 "PayInCar"="Pay in Car";

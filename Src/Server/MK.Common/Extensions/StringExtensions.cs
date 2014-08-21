@@ -15,7 +15,7 @@ namespace apcurium.MK.Common.Extensions
         public static double ToDouble(this string instance)
         {
             double amount;
-            if (double.TryParse(instance, out amount))
+            if (double.TryParse(instance, NumberStyles.Any, CultureInfo.CurrentUICulture, out amount))
             {
                 return amount;
             }

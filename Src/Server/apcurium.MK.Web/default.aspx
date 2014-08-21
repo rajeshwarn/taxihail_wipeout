@@ -62,6 +62,8 @@
             TaxiHail.parameters.directionTarifMode = "<%: DirectionTarifMode %>";
             TaxiHail.parameters.directionNeedAValidTarif = <%: DirectionNeedAValidTarif ? "true" : "false" %>;
             TaxiHail.parameters.apiRoot = "api";
+            
+            TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
 
             TaxiHail.referenceData = <%= ReferenceData %>;
             TaxiHail.vehicleTypes = <%= VehicleTypes %>;

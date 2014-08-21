@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.ConfigTool
     public class AppConfig
     {
 
-        private Config[] _configs;
+		private List<Config> _configs;
         private Regex pattern;
         
 		public AppConfig(string name, Company company, string srcDirectoryPath, string configDirectoryPath)
@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.ConfigTool
 
         private void Init()
         {
-            _configs = new Config[]
+			var c = new Config[]
            {
 					/**CallBox **/
 //                    new ConfigFile(this){ Source=@"CallBox\background_empty.png", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Drawable\background_empty.png" },
@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.ConfigTool
 
                     new ConfigFile(this){ Source="public.keystore", Destination=@"Mobile\Android\public.keystore" },
 				    new ConfigSplash(this,"splash.png",@"Mobile\Android\Resources\","splash.png"),
-                    new ConfigFile(this){ Source="Icon.png", Destination=@"Mobile\Android\Resources\Drawable\Icon.png" },
+                    new ConfigFile(this){ Source="app@2x.png", Destination=@"Mobile\Android\Resources\Drawable\Icon.png" },
 
 	                new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest", Attribute="package" , SetterAtt = ( app, att )=> att.Value = Config.Package  },
 				    new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application", Attribute="android:label" , SetterAtt = ( app, att )=> att.Value = Config.ApplicationName  },
@@ -90,8 +90,10 @@ namespace apcurium.MK.Booking.ConfigTool
                         att.Value = Config.Package + ".permission.MAPS_RECEIVE";
 					}},
 
-				new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },               
-                    
+				    new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },               
+                    new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.ar.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },   
+                    new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.fr.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },   
+
 					new ConfigXML(this){  Destination=@"Mobile\Android\TaxiHail.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
 					new ConfigXML(this){  Destination=@"Mobile\Android\TaxiHail.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
 
@@ -127,6 +129,9 @@ namespace apcurium.MK.Booking.ConfigTool
 	                        }
 						}
 					},
+
+
+
 					/** Version 1.5 */
 				new ConfigXML(this)
 				{  
@@ -205,7 +210,42 @@ namespace apcurium.MK.Booking.ConfigTool
                     SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.MenuColor) 
                 }
 
+
+
            };
+
+			_configs = new List<apcurium.MK.Booking.ConfigTool.Config> ();
+			_configs.AddRange (c);
+
+			/***Optional files ****/
+
+			var optionalGraphicToUpdate = new string[] { "chargetype", "hail_icon", "destination_icon", "taxi_progress","vehicle", "taxi_icon", "cluster", "nearby", "taxi_badge_selected" 
+			
+				,"tutorial_screen01","tutorial_screen02","tutorial_screen03","tutorial_screen04","tutorial_screen05","tutorial_screen06","tutorial_screen07" };
+
+			foreach (var g in optionalGraphicToUpdate) {
+			
+				_configs.Add (new ConfigFile (this) {
+					Source = g+"@2x.png",
+					Destination = @"Mobile\Android\Resources\drawable-xhdpi\"+g+".png"
+				});
+
+				_configs.Add (new ConfigFile (this) {
+					Source = g+".png",
+					Destination = @"Mobile\Android\Resources\Drawable\"+g+".png"
+				});
+				_configs.Add (new ConfigFile (this) {
+					Source = g+"@2x.png",
+					Destination = @"Mobile\iOS\Resources\"+g+"@2x.png"
+				});
+
+				_configs.Add (new ConfigFile (this){ 
+					Source = g+".png", 
+					Destination = @"Mobile\iOS\Resources\"+g+".png" 
+				});
+					
+			}
+
         }
 
         private AppConfigFile _config;

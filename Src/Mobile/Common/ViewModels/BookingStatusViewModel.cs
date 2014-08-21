@@ -345,7 +345,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IsUnpairButtonVisible = !Settings.AutomaticPayment  			// we don't want to unpair if client accepted the auto payment, only for RideLinqCMT
 								&& _bookingService.IsPaired(Order.Id);      
 
-			IsPayButtonVisible =  (statusId == VehicleStatuses.Common.Done
+
+			var defaultCardRequirement = !(Settings.DefaultCardRequiredToPayNow && !_accountService.CurrentAccount.DefaultCreditCard.HasValue);
+
+			IsPayButtonVisible = (!Settings.HidePayNowButtonDuringRide) &&
+								defaultCardRequirement &&
+								(statusId == VehicleStatuses.Common.Done
 								||statusId == VehicleStatuses.Common.Loaded)
 								&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue
 								&& !Settings.AutomaticPayment

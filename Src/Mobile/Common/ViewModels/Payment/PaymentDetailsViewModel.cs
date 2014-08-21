@@ -77,9 +77,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				RaisePropertyChanged (() => HasCreditCard);
 			}
 		}
-    
+
 		public Guid SelectedCreditCardId 
-		{
 			get 
 			{ 
 				return SelectedCreditCard != null 

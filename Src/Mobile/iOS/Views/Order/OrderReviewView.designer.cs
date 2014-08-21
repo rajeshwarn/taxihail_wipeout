@@ -13,16 +13,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 	partial class OrderReviewView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIImageView iconNbPasserngers { get; set; }
+		MonoTouch.UIKit.UIImageView iconApartment { get; set; }
 
-        [Outlet]
-        MonoTouch.UIKit.UIImageView iconNbLargeBags { get; set; }
+		[Outlet]
+		MonoTouch.UIKit.UIImageView iconNbLargeBags { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIImageView iconNbPasserngers { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIImageView iconPassengerName { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIImageView iconPhone { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIImageView iconRingCode { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblApt { get; set; }
@@ -37,10 +43,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 		MonoTouch.UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblNbPassengers { get; set; }
+		MonoTouch.UIKit.UILabel lblNbLargeBags { get; set; }
 
-        [Outlet]
-        MonoTouch.UIKit.UILabel lblNbLargeBags { get; set; }
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblNbPassengers { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblPhone { get; set; }
@@ -61,6 +67,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				iconNbPasserngers = null;
 			}
 
+			if (iconNbLargeBags != null) {
+				iconNbLargeBags.Dispose ();
+				iconNbLargeBags = null;
+			}
+
 			if (iconPassengerName != null) {
 				iconPassengerName.Dispose ();
 				iconPassengerName = null;
@@ -69,6 +80,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (iconPhone != null) {
 				iconPhone.Dispose ();
 				iconPhone = null;
+			}
+
+			if (iconApartment != null) {
+				iconApartment.Dispose ();
+				iconApartment = null;
+			}
+
+			if (iconRingCode != null) {
+				iconRingCode.Dispose ();
+				iconRingCode = null;
 			}
 
 			if (lblApt != null) {
@@ -96,6 +117,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				lblNbPassengers = null;
 			}
 
+			if (lblNbLargeBags != null) {
+				lblNbLargeBags.Dispose ();
+				lblNbLargeBags = null;
+			}
+
 			if (lblPhone != null) {
 				lblPhone.Dispose ();
 				lblPhone = null;
@@ -115,16 +141,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				txtNote.Dispose ();
 				txtNote = null;
 			}
-
-            if (iconNbLargeBags != null) {
-                iconNbLargeBags.Dispose ();
-                iconNbLargeBags = null;
-            }
-
-            if (lblNbLargeBags != null) {
-                lblNbLargeBags.Dispose ();
-                lblNbLargeBags = null;
-            }
 		}
 	}
 }

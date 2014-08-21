@@ -8,6 +8,7 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -85,6 +86,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					await _orderWorkflowService.SetBookingSettings(BookingSettings);
 					await _orderWorkflowService.SetPickupAptAndRingCode(PickupAddress.Apartment, PickupAddress.RingCode);
+
+						if (this.Settings.CreditCardChargeTypeId.HasValue) 
+						{
+
+							if ( (BookingSettings.ChargeTypeId  ==this.Settings.CreditCardChargeTypeId.Value)  &&
+								(!_accountService.CurrentAccount.DefaultCreditCard.HasValue ))
+							{
+								this.Services ().Message.ShowMessage (this.Services ().Localize ["ErrorCreatingOrderTitle"], 
+									this.Services ().Localize ["NoCardOnFileMessage"],
+									this.Services ().Localize ["AddACardButton"], 
+									delegate {
+										ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true, navigateHome = false });
+									}, 
+									this.Services ().Localize ["Cancel"], 
+									() => {
+
+									});
+
+								return;
+							}
+
+						}
                     PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
 				});
 			}

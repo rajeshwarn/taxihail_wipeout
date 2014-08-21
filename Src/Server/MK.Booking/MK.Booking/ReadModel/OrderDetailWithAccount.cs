@@ -99,6 +99,8 @@ namespace apcurium.MK.Booking.ReadModel
         public bool IsCancelled { get; set; }
         public bool IsCompleted { get; set; }
 
+        public string AccountDefaultCardToken { get; set; }
+
         public Dictionary<string, string> Rating { get; set; }
     }
 }

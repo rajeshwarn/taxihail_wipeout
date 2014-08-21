@@ -16,24 +16,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private EditTextRightSpinner _tipPicker;
         private TextView _totalAmountTextView;
 
-        public double TipAmount
-        {
-            get { return CultureProvider.ParseCurrency( _tipAmountTextView.Text); }
-            set { _tipAmountTextView.Text = CultureProvider.FormatCurrency(value); }
-        }
-
-        public double MeterAmount
-        {
-            get { return CultureProvider.ParseCurrency(_meterAmountTextView.Text); }
-            set { _meterAmountTextView.Text = CultureProvider.FormatCurrency(value); }
-        }
-
-        public double TotalAmount
-        {
-            get { return CultureProvider.ParseCurrency(_totalAmountTextView.Text); }
-            set { _totalAmountTextView.Text = CultureProvider.FormatCurrency(value); }
-        }
-
         protected override void OnStart()
         {
             base.OnStart();

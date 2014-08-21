@@ -26,6 +26,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
+using apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -142,6 +143,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             JsConfig.RegisterTypeForAot<GeoObj>();
             JsConfig.RegisterTypeForAot<GeoResult>();
 
+			var facebookService = TinyIoCContainer.Current.Resolve<IFacebookService>();
+			if ( facebookService != null )
+			{
+				facebookService.PublishInstall();
+			}
 
             if (_callbackFromFb)
             {    

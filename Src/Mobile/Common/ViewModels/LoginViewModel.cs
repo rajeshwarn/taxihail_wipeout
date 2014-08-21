@@ -22,12 +22,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ILocationService _locationService;
 		private readonly IAccountService _accountService;
 		private readonly IRegisterWorkflowService _registrationService;
+		private readonly IPhoneService _phoneService;
 
         public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocationService locationService,
 			IAccountService accountService,
-			IRegisterWorkflowService registrationService)
+			IRegisterWorkflowService registrationService,
+			IPhoneService phoneService)
         {
 			_registrationService = registrationService;
             _facebookService = facebookService;
@@ -35,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
 			_locationService = locationService;
 			_accountService = accountService;
+			_phoneService = phoneService;
         }
 
 		public event EventHandler LoginSucceeded; 
@@ -156,6 +159,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }));
             }
         }
+
+		public ICommand Support
+		{
+			get
+			{
+				return this.GetCommand(() =>
+					{
+
+						InvokeOnMainThread(() => _phoneService.SendFeedbackErrorLog(Settings.SupportEmail, this.Services().Localize["TechSupportEmailTitle"]));
+					});
+			}
+		}
+
 
         public ICommand LoginTwitter
         {
@@ -362,7 +378,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Action showNextView = () => 
             {
 				if (NeedsToNavigateToAddCreditCard ()) {
-					ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel> (new { showInstructions = true });
+					ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel> (new { showInstructions = true, navigateHome = true });
 					return;
 				}
 

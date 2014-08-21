@@ -51,9 +51,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
         }
 
-		public void Init(bool showInstructions)
+		public void Init(bool showInstructions, bool navigateHome = false  )
 		{
 			ShowInstructions = showInstructions;
+			NavigateHome = navigateHome;
 		}
 
 		public override void OnViewStarted(bool firstTime)
@@ -328,6 +329,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
 
 					// update default card and default chargetype
+
 					var account = _accountService.CurrentAccount;
 					account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
 					account.DefaultCreditCard = Data.CreditCardId;

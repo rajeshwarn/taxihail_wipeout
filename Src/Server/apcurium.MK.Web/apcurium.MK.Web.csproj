@@ -438,6 +438,28 @@
     <Content Include="admin\templates\AddVehicleType.handlebars" />
     <Content Include="admin\localization\ManageVehicleTypes.json" />
     <Content Include="admin\assets\css\admin.css" />
+    <Content Include="localization\AddFavorite-fr.json" />
+    <Content Include="localization\AddressSelection-fr.json" />
+    <Content Include="localization\Book-fr.json" />
+    <Content Include="localization\BookingConfirmation-fr.json" />
+    <Content Include="localization\BookingStatus-fr.json" />
+    <Content Include="localization\BookLater-fr.json" />
+    <Content Include="localization\BootstrapConfirmation-fr.json" />
+    <Content Include="localization\Global-fr.json" />
+    <Content Include="localization\Home-fr.json" />
+    <Content Include="localization\Login-fr.json" />
+    <Content Include="localization\LoginStatus-fr.json" />
+    <Content Include="localization\Map-fr.json" />
+    <Content Include="localization\OrderHistory-fr.json" />
+    <Content Include="localization\OrderHistoryDetail-fr.json" />
+    <Content Include="localization\OrderItem-fr.json" />
+    <Content Include="localization\Profile-fr.json" />
+    <Content Include="localization\ResetPassword-fr.json" />
+    <Content Include="localization\SettingsEdit-fr.json" />
+    <Content Include="localization\Signup-fr.json" />
+    <Content Include="localization\UpdatePassword-fr.json" />
+    <Content Include="localization\UserAccount.json" />
+    <Content Include="localization\UserAccount-fr.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

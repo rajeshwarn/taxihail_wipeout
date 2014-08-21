@@ -19,7 +19,11 @@ namespace MK.Common.Configuration
             ShowPassengerNumber = true;
             ShowPassengerPhone = true;
             ShowRingCodeField = true;
+		    ShowPassengerApartment = true;
             TutorialEnabled = true;
+			HidePayNowButtonDuringRide = false;
+			DefaultCardRequiredToPayNow = false;
+
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
             CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink";
 			DefaultTipPercentage = 15;
@@ -37,7 +41,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Service Url", Description="Url of the TaxiHail Server")]
 		public string ServiceUrl { get; set; }
         [Display(Name = "Error Log Enabled", Description="Flag to enable the log of the errors in file")]
-		public bool ErrorLogEnabled{ get { return true; }  private set{ } }
+		public bool ErrorLogEnabled{ get { return true; } private set{ } }
         [Display(Name = "Twitter Enabled", Description="Enable register/log in with Twitter")]
 		public bool TwitterEnabled{ get; private set; }
         [Display(Name = "Twitter Consumer Key", Description="Twitter API settings")]
@@ -52,10 +56,17 @@ namespace MK.Common.Configuration
 		public string TwitterAccessTokenUrl{ get; private set; }
         [Display(Name = "Twitter Authorize Url", Description="Twitter API settings")]
 		public string TwitterAuthorizeUrl { get; private set; }
-        [Display(Name = "Facebook Enabled", Description="Enable register/log in with Facebook")]
+        
+		[Display(Name = "Facebook Publish Enabled", Description="Facebook Publish Enabled")]
+		public bool FacebookPublishEnabled { get; private set; }
+
+		[Display(Name = "Facebook Enabled", Description="Enable register/log in with Facebook")]
 		public bool FacebookEnabled { get; private set; }
         [Display(Name = "Facebook App Id", Description="Facebook API settings")]
 		public string FacebookAppId{ get; private set; }
+
+
+
         [Display(Name = "Account Activation Disabled", Description="Disable the confirmation requirement")]
         public bool AccountActivationDisabled { get; private set; }
 		[Display(Name = "Account Activation By SMS", Description="Enable the activation by SMS")]
@@ -79,7 +90,8 @@ namespace MK.Common.Configuration
         
         [Display(Name = "Tutorial Enabled", Description="Enable the tutorial")]
         public bool TutorialEnabled { get; private set; }
-        [Display(Name = "Tutorial slides disabled", Description="Index of the slides to hide")]
+        
+		[Display(Name = "Tutorial slides disabled", Description="Index of the slides to hide")]
         public string DisabledTutorialSlides { get; private set; }       
         [Display(Name = "Hide Report Problem", Description="Remove button in the menu")]
         public bool HideReportProblem { get; private set; }
@@ -127,7 +139,8 @@ namespace MK.Common.Configuration
         public bool ShowPassengerNumber { get; private set; }
         [Display(Name = "Show Ring Code", Description="Show the ring code field in confirmation")]
         public bool ShowRingCodeField { get; private set; }
-
+        [Display(Name = "Show Passenger Apartment", Description = "Show the passenger apartment field in confirmation")]
+        public bool ShowPassengerApartment { get; private set; }
         [Display(Name = "Send Receipt Available", Description="Can the user send a receipt for the order")]
         public bool SendReceiptAvailable { get; private set; }
         [Display(Name = "Rating Enabled", Description="Can the user rate the order when it's done")]
@@ -146,14 +159,24 @@ namespace MK.Common.Configuration
         public bool CreditCardIsMandatory { get; private set; }
 		[Display(Name = "Default Percentage Tip", Description="default value for the tip percentage ex: 15")]
 		public int DefaultTipPercentage { get; private set; }
+		[Display(Name = "Credit Card ChargeTypeId", Description = "ChargeTypeId of the Credit Card Charge Type")]
+		public int? CreditCardChargeTypeId { get; private set; }
+
+
+		[Display(Name = "Hide Pay Now Button During Ride", Description = "This will hide the pay now button, on the status screen, if the ride is not completed")]
+		public bool HidePayNowButtonDuringRide { get; private set; }
+
+		[Display(Name = "Default Card Required To Pay Now", Description = "This will hide the pay now button if the user doesn't have a default card setup.")]
+		public bool DefaultCardRequiredToPayNow { get; private set; }
+
 
 		[Display(Name = "Place Types", Description="Give a list of Google Maps places types to filter search")]
 		public string PlacesTypes { get; private set; }
         [Display(Name = "Place Types", Description = "Give a list of Google Maps places types to filter search")]
         public string PlacesApiKey { get; private set; }
-        [Display(Name = "Price Format", Description="Format to display amount")]
+        [Display(Name = "Price Format Culture", Description="Format to display amount (Culture, ex: en-US)")]
 		public string PriceFormat { get; private set; }
-        [Display(Name = "Distance Format", Description="Format to display distance")]
+        [Display(Name = "Distance Format", Description="Format to display distance ('km' or 'mile')")]
 		public string DistanceFormat { get; private set; }
         [Display(Name = "Search Filter", Description="Filter for geolocation search")]
 		public string SearchFilter { get; private set; }
