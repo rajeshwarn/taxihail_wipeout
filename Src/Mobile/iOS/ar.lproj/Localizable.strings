@@ -480,3 +480,4 @@
 "NoCardOnFileMessage"="You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.";
 "AddACardButton"="Add Card";
 "PayInCar"="Pay in Car";
+"CreditCardErrorInvalid"="Cannot validate the credit card";

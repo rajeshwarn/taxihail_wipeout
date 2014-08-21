@@ -350,15 +350,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					this.Services ().Localize ["AddACardButton"], 
 					delegate {
 						PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
-						ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true, navigateHome = false });
+						ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true });
 
 					}, 
 					this.Services ().Localize ["Cancel"], 
 					() => {
 						PresentationStateRequested.Raise (this, new HomeViewModelStateRequestedEventArgs (HomeViewModelState.Initial));
 					});
-
-
 			}
 		}
 

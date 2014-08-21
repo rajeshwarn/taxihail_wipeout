@@ -482,4 +482,5 @@
   <string name="NoCardOnFileMessage">Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.</string>
   <string name="AddACardButton">Enregistrez</string>
   <string name="PayInCar">Payer dans le taxi</string>
+  <string name="CreditCardErrorInvalid">La carte ne semble pas être valide</string>
 </resources>

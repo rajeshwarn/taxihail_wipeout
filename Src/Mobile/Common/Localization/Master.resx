@@ -1203,6 +1203,9 @@
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
     <value>The Credit Card Number is invalid</value>
   </data>
+  <data name="CreditCardErrorInvalid" xml:space="preserve">
+    <value>Cannot validate the credit card</value>
+  </data>
   <data name="ReminderTitle" xml:space="preserve">
     <value>{0} Booked</value>
   </data>

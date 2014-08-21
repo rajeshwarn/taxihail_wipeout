@@ -79,6 +79,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		}
 
 		public Guid SelectedCreditCardId 
+		{
 			get 
 			{ 
 				return SelectedCreditCard != null 

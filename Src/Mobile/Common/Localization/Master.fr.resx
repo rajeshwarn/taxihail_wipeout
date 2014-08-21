@@ -438,6 +438,9 @@
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
     <value>Le numéro de la carte ne semble pas être valide</value>
   </data>
+  <data name="CreditCardErrorInvalid" xml:space="preserve">
+    <value>La carte ne semble pas être valide</value>
+  </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>Nom du titualire (tel qu'il apparaît sur la carte)</value>
   </data>

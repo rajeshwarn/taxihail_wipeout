@@ -477,3 +477,4 @@
 "NoCardOnFileMessage"="Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.";
 "AddACardButton"="Enregistrez";
 "PayInCar"="Payer dans le taxi";
+"CreditCardErrorInvalid"="La carte ne semble pas être valide";
