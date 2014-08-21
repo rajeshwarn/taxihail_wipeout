@@ -70,8 +70,10 @@ namespace MonoTouch.MapKit
             var newDeltaLongitude = Math.Abs(newLongitudeForTopLeft - mapView.Region.Center.Longitude) * 2;
             var newDeltaLatitude = Math.Abs(newLatitudeForTopLeft - mapView.Region.Center.Latitude) * 2;
 
-            var region = new MKCoordinateRegion(mapView.Region.Center, new MKCoordinateSpan (newDeltaLatitude, newDeltaLongitude));
+            newDeltaLatitude = Math.Max(0.0f, Math.Min (newDeltaLatitude, 90.0f));
+            newDeltaLongitude = Math.Max(0.0f, Math.Min (newDeltaLongitude, 90.0f));
 
+            var region = new MKCoordinateRegion(mapView.Region.Center, new MKCoordinateSpan (newDeltaLatitude, newDeltaLongitude));
             mapView.SetRegion (region, false);
         }
 
