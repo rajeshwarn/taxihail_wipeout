@@ -136,7 +136,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 statusId.SoftEqual (VehicleStatuses.Common.Cancelled) ||
                 statusId.SoftEqual (VehicleStatuses.Common.Done) ||
                 statusId.SoftEqual (VehicleStatuses.Common.NoShow) ||
-                statusId.SoftEqual (VehicleStatuses.Common.CancelledDone);
+				statusId.SoftEqual (VehicleStatuses.Common.CancelledDone) || 
+				statusId.SoftEqual (VehicleStatuses.Common.MeterOffNotPayed);
         }
 
         public bool IsCallboxStatusActive(string statusId)
