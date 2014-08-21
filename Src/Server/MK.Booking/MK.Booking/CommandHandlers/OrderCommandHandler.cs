@@ -17,8 +17,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<RemoveOrderFromHistory>,
         ICommandHandler<RateOrder>,
         ICommandHandler<ChangeOrderStatus>,
-        ICommandHandler<PairForRideLinqCmtPayment>,
-        ICommandHandler<UnpairForRideLinqCmtPayment>
+        ICommandHandler<PairForPayment>,
+        ICommandHandler<UnpairForPayment>
     {
         private readonly IEventSourcedRepository<Order> _repository;
 
@@ -33,21 +33,11 @@ namespace apcurium.MK.Booking.CommandHandlers
             order.Cancel();
             _repository.Save(order, command.Id.ToString());
         }
-
-
+        
         public void Handle(ChangeOrderStatus command)
         {
             var order = _repository.Find(command.Status.OrderId);
-            order.ChangeStatus(command.Status);
-
-            if (command.Status.Status == OrderStatus.Completed)
-            {
-                order.Complete(command.Fare, command.Tip, command.Toll, command.Tax);
-            }
-            else if (command.Fare > 0)
-            {
-                order.AddFareInformation(command.Fare, command.Tip, command.Toll, command.Tax);
-            }
+            order.ChangeStatus(command.Status, command.Fare, command.Tip, command.Toll, command.Tax);
 
             _repository.Save(order, command.Id.ToString());
         }
@@ -66,7 +56,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(order, command.Id.ToString());
         }
 
-        public void Handle(PairForRideLinqCmtPayment command)
+        public void Handle(PairForPayment command)
         {
             var order = _repository.Find(command.OrderId);
             order.Pair(command.Medallion, command.DriverId, command.PairingToken, command.PairingCode,
@@ -88,7 +78,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(order, command.Id.ToString());
         }
 
-        public void Handle(UnpairForRideLinqCmtPayment command)
+        public void Handle(UnpairForPayment command)
         {
             var order = _repository.Find(command.OrderId);
             order.Unpair();

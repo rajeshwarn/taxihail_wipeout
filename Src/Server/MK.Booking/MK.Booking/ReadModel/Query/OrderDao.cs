@@ -5,7 +5,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.Maps.Geo;
+using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
 
@@ -16,10 +20,17 @@ namespace apcurium.MK.Booking.ReadModel.Query
     public class OrderDao : IOrderDao
     {
         private readonly Func<BookingDbContext> _contextFactory;
+        private readonly IPushNotificationService _pushNotificationService;
+        private readonly Resources.Resources _resources;
 
-        public OrderDao(Func<BookingDbContext> contextFactory)
+        private const int TaxiDistanceThresholdForPushNotification = 200; // In meters
+
+        public OrderDao(Func<BookingDbContext> contextFactory, IPushNotificationService pushNotificationService, IConfigurationManager configManager)
         {
             _contextFactory = contextFactory;
+            _pushNotificationService = pushNotificationService;
+
+            _resources = new Resources.Resources(configManager.GetSetting("TaxiHail.ApplicationKey"));
         }
 
         public IList<OrderDetail> GetAll()
@@ -100,12 +111,12 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                
                 var startDate = DateTime.Now.AddHours(-36);
 
                 var currentOrders = (from order in context.Set<OrderStatusDetail>()
                                      where (order.Status == OrderStatus.Created
-                                        || order.Status == OrderStatus.Pending) && (order.PickupDate >= startDate)
+                                        || order.Status == OrderStatus.Pending
+                                        || order.Status == OrderStatus.WaitingForPayment) && (order.PickupDate >= startDate)
                                      select order).ToList();
                 return currentOrders;
             }
@@ -140,6 +151,49 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 return context.Query<OrderPairingDetail>().SingleOrDefault(x => x.OrderId == orderId);
+            }
+        }
+
+        public void UpdateVehiclePosition(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude, out bool taxiNearbyPushSent)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Query<OrderDetail>().Single(x => x.Id == orderId);
+                var orderStatus = context.Query<OrderStatusDetail>().Single(x => x.OrderId == orderId);
+
+                taxiNearbyPushSent = orderStatus.IsTaxiNearbyNotificationSent;
+                var shouldSendPushNotification = newLatitude.HasValue &&
+                                                 newLongitude.HasValue &&
+                                                 ibsStatus == VehicleStatuses.Common.Assigned &&
+                                                 !taxiNearbyPushSent;
+
+                // update vehicle position in orderStatus
+                orderStatus.VehicleLatitude = newLatitude;
+                orderStatus.VehicleLongitude = newLongitude;
+                context.Save(orderStatus);
+
+                if (shouldSendPushNotification)
+                {
+                    var taxiPosition = new Position(newLatitude.Value, newLongitude.Value);
+                    var pickupPosition = new Position(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
+
+                    if (taxiPosition.DistanceTo(pickupPosition) <= TaxiDistanceThresholdForPushNotification)
+                    {
+                        orderStatus.IsTaxiNearbyNotificationSent = true;
+                        taxiNearbyPushSent = true;
+                        context.Save(orderStatus);
+
+                        var alert = string.Format(_resources.Get("PushNotification_NearbyTaxi", order.ClientLanguageCode));
+                        var data = new Dictionary<string, object> { { "orderId", order.Id } };
+                        var devices = context.Set<DeviceDetail>().Where(x => x.AccountId == order.AccountId);
+
+                        // Send push notifications
+                        foreach (var device in devices)
+                        {
+                            _pushNotificationService.Send(alert, data, device.DeviceToken, device.Platform);
+                        }
+                    }
+                }
             }
         }
     }

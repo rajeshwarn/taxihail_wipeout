@@ -20,14 +20,14 @@ using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
-    public class PaymentService : Service
+    public class PaymentSettingsService : Service
     {
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationDao _configurationDao;
         private readonly IConfigurationManager _configurationManager;
         private readonly ILogger _logger;
 
-        public PaymentService(ICommandBus commandBus, IConfigurationDao configurationDao,
+        public PaymentSettingsService(ICommandBus commandBus, IConfigurationDao configurationDao,
             IConfigurationManager configurationManager,ILogger logger)
         {
             _logger = logger;

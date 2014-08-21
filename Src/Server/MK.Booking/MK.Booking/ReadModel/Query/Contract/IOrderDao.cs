@@ -18,5 +18,6 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
         IList<OrderStatusDetail> GetOrdersInProgressByAccountId(Guid accountId);
         OrderStatusDetail FindOrderStatusById(Guid orderId);
         OrderPairingDetail FindOrderPairingById(Guid orderId);
+        void UpdateVehiclePosition(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude, out bool taxiNearbyPushSent);
     }
 }

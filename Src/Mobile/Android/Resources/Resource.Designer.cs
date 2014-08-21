@@ -2059,8 +2059,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0700ee
 			public const int CancelBtn = 2131165422;
 			
-			// aapt resource value: 0x7f070153
-			public const int CancelPaymentBtn = 2131165523;
+			// aapt resource value: 0x7f070154
+			public const int CancelPaymentBtn = 2131165524;
 			
 			// aapt resource value: 0x7f07011c
 			public const int CancelTripBtn = 2131165468;
@@ -2080,11 +2080,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070137
 			public const int ConfirmButton = 2131165495;
 			
-			// aapt resource value: 0x7f070154
-			public const int ConfirmCarBtn = 2131165524;
-			
 			// aapt resource value: 0x7f070152
-			public const int ConfirmPaymentBtn = 2131165522;
+			public const int ConfirmCarBtn = 2131165522;
+			
+			// aapt resource value: 0x7f070153
+			public const int ConfirmPaymentBtn = 2131165523;
 			
 			// aapt resource value: 0x7f0700e6
 			public const int ConfirmationCode = 2131165414;
@@ -3487,10 +3487,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int View_Payments_BookPayment = 2130903152;
 			
 			// aapt resource value: 0x7f030071
-			public const int View_Payments_CmtRideLinqConfirmPair = 2130903153;
+			public const int View_Payments_ConfirmCarNumber = 2130903153;
 			
 			// aapt resource value: 0x7f030072
-			public const int View_Payments_ConfirmCarNumber = 2130903154;
+			public const int View_Payments_ConfirmPair = 2130903154;
 			
 			// aapt resource value: 0x7f030073
 			public const int View_Payments_CreditCardAdd = 2130903155;

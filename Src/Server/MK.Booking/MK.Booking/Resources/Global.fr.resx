@@ -312,6 +312,12 @@
   <data name="PaymentConfirmationToDriver2" xml:space="preserve">
     <value>Numéro d'authorisation {0}</value>
   </data>
+  <data name="PairingConfirmationToDriver" xml:space="preserve">
+    <value>Le passager sera chargé automatiquement à la fin de la course</value>
+  </data>
+  <data name="UnpairingConfirmationToDriver" xml:space="preserve">
+    <value>ATTENTION: Le passager ne sera PAS chargé à la fin de la course</value>
+  </data>
   <data name="PushNotification_wosARRIVED" xml:space="preserve">
     <value>Votre véhicule (#{0}) est arrivé</value>
   </data>
@@ -323,5 +329,11 @@
   </data>
   <data name="PushNotification_NearbyTaxi" xml:space="preserve">
     <value>Votre vehicule sera bientôt au lieu de départ</value>
+  </data>
+  <data name="PushNotification_PaymentReceived" xml:space="preserve">
+    <value>Votre carte de crédit a été chargé d'un montant de {0}. Ce montant inclut le prix de la course ainsi que le pourboire.</value>
+  </data>
+  <data name="PushNotification_wosLOADED" xml:space="preserve">
+    <value>Veuillez confirmer le véhicule avec lequel le payment de carte de crédit sera effectué.</value>
   </data>
 </root>

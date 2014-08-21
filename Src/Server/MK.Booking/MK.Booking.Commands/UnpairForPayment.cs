@@ -7,9 +7,9 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class UnpairForRideLinqCmtPayment : ICommand
+    public class UnpairForPayment : ICommand
     {
-        public UnpairForRideLinqCmtPayment()
+        public UnpairForPayment()
         {
             Id = Guid.NewGuid();
         }

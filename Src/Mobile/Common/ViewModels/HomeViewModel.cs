@@ -1,3 +1,4 @@
+using System;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -44,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool _locateUser;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
 
-		public void Init(bool locateUser, string defaultHintZoomLevel)
+        public void Init(bool locateUser, string defaultHintZoomLevel)
 		{
 			_locateUser = locateUser;
 			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);			
@@ -73,6 +74,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_locationService.Start();
 			CheckTermsAsync();
 			CheckActiveOrderAsync ();
+
+            if (_orderWorkflowService.IsOrderRebooked())
+            {
+                _bottomBar.ReviewOrderDetails();
+            }
+
 			if (firstTime)
 			{
 				this.Services().ApplicationInfo.CheckVersionAsync();

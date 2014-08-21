@@ -154,9 +154,17 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
+        public bool SendMessageToDriver(string message, string vehicleNumber)
+        {
+            var success = false;
+            UseService(service =>
+            {
+                var result = service.SendDriverMsg(UserNameApp, PasswordApp, vehicleNumber, message);
+                success = result == 0;
 
-
-
+            });
+            return success;
+        }
 
         public bool SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId)
         {

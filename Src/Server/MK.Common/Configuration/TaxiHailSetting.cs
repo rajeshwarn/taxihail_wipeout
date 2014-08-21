@@ -27,6 +27,7 @@ namespace MK.Common.Configuration
 			SMSConfirmationEnabled = false;
 		    DisableChargeTypeWhenCardOnFile = false;
 		    VehicleEstimateEnabled = false;
+		    AutomaticPayment = false;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -63,7 +64,8 @@ namespace MK.Common.Configuration
         public bool DisableChargeTypeWhenCardOnFile { get; private set; }
         [Display(Name = "Enable vehicle estimate", Description = "Hide the vehicle estimate box")]
         public bool VehicleEstimateEnabled { get; private set; }
-
+        [Display(Name = "Automatic payment", Description = "Activate automatic payment with any providers")]
+        public bool AutomaticPayment { get; private set; }
         [Display(Name = "SMS source number", Description = "Number from which the sms confirmation number will be sent")]
         public string SMSFromNumber { get; private set; }
         [Display(Name = "Twilio SMS account id", Description = "Account id for Twilio")]

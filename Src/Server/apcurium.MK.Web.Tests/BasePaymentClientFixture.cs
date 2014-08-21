@@ -5,6 +5,7 @@ using System.Linq;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel;
@@ -43,7 +44,6 @@ namespace apcurium.MK.Web.Tests
             _ibsImplementation = container.Registrations
                                             .FirstOrDefault(x => x.RegisteredType == typeof(IIbsOrderService))
                                             .MappedToType;
-            
         }
 
         [TestFixtureTearDown]
@@ -310,6 +310,11 @@ namespace apcurium.MK.Web.Tests
         }
 
         public void SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId)
+        {
+            
+        }
+
+        public void SendMessageToDriver(string message, string vehicleNumber)
         {
             
         }

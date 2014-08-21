@@ -1,17 +1,13 @@
-﻿#region
-
-using System;
+﻿using System;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 
-#endregion
-
-namespace apcurium.MK.Booking.Api.Contract.Requests.Payment.Cmt
+namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
     [Authenticate]
-    [Route("/payments/cmt/pair", "POST")]
-    public class PairingRidelinqCmtRequest : IReturn<PairingResponse>
+    [Route("/payments/pair", "POST")]
+    public class PairingForPaymentRequest : IReturn<PairingResponse>
     {
         public Guid OrderId { get; set; }
         public string CardToken { get; set; }

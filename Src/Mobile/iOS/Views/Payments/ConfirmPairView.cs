@@ -6,9 +6,9 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
-	public partial class CmtRideLinqConfirmPairView : BaseViewController<CmtRideLinqConfirmPairViewModel>
+	public partial class ConfirmPairView : BaseViewController<ConfirmPairViewModel>
 	{
-		public CmtRideLinqConfirmPairView() : base()
+		public ConfirmPairView() : base()
 		{
 		}
 
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             FlatButtonStyle.Green.ApplyTo(btnConfirm);
 			FlatButtonStyle.Silver.ApplyTo(btnCancel);
 
-			var set = this.CreateBindingSet<CmtRideLinqConfirmPairView, CmtRideLinqConfirmPairViewModel>();
+			var set = this.CreateBindingSet<ConfirmPairView, ConfirmPairViewModel>();
 
 			set.Bind(btnConfirm)
 				.For("TouchUpInside")

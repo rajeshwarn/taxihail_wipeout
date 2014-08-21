@@ -9,8 +9,8 @@ using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
-	[Register ("CmtRideLinqConfirmPairView")]
-	partial class CmtRideLinqConfirmPairView
+	[Register ("ConfirmPairView")]
+	partial class ConfirmPairView
 	{
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCancel { get; set; }

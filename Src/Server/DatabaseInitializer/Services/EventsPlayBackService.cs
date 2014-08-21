@@ -40,7 +40,8 @@ namespace DatabaseInitializer.Services
             IEnumerable<Event> allEvents;
             using (var context = _contextFactory.Invoke())
             {
-                allEvents = context.Set<Event>().OrderBy(x => x.EventDate).ToList();
+                // order by date then by version in case two events happened at the same time
+                allEvents = context.Set<Event>().OrderBy(x => x.EventDate).ThenBy(x => x.Version).ToList();
             }
 
             Console.WriteLine( "Total number of events: " + allEvents.Count().ToString() );
