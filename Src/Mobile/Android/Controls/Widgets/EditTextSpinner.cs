@@ -23,7 +23,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private Spinner _spinner;
         private string _text;
 
-
         [Register(".ctor", "(Landroid/content/Context;)V", "")]
         public EditTextSpinner(Context context)
             : base(context)
@@ -38,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Initialize(attrs);
         }
 
-        private bool _enabled;
+        private bool _enabled = true;
         public override bool Enabled
         {
             get { return _enabled; }
