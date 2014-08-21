@@ -51,11 +51,16 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void UpdateVehiclePositionIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatus)
         {
+            //todo dao => change only position
+            //todo call push notification from here trough a service
+            //todo remove param out
             if (orderStatus.VehicleLatitude != ibsOrderInfo.VehicleLatitude
                 || orderStatus.VehicleLongitude != ibsOrderInfo.VehicleLongitude)
             {
                 bool taxiNearbyPushSent;
-                _orderDao.UpdateVehiclePosition(orderStatus.OrderId, ibsOrderInfo.Status, ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude, out taxiNearbyPushSent);
+                _orderDao.UpdateVehiclePosition(orderStatus.OrderId, 
+                                                    ibsOrderInfo.Status, 
+                                                    ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude, out taxiNearbyPushSent);
                 
                 // modify orderStatus object here to make sure that if the status is changed and a command is sent
                 // using this object, the values set in the dao will not be erased by automapping in the eventhandler
@@ -79,6 +84,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (!_configurationManager.GetSetting("AutomaticPayment", false))
             {
                 // Automatic payment is disabled, nothing to do here
+                return;
             }
 
             var orderPayment = _orderPaymentDao.FindByOrderId(orderStatusDetail.OrderId);
@@ -163,24 +169,29 @@ namespace apcurium.MK.Booking.Api.Jobs
         {
             UpdateVehiclePositionIfNecessary(ibsOrderInfo, orderStatusDetail);
 
+
+            //todo rename order needs update
             if (!OrderWasUpdated(ibsOrderInfo, orderStatusDetail))
             {
                 return;
             }
             
             // populate orderStatusDetail with ibsOrderInfo data
+            //todo find a better term
             ibsOrderInfo.Update(orderStatusDetail);
-
             UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
 
             CheckForPairingAndHandleIfNecessary(orderStatusDetail, ibsOrderInfo);
             
+            //todo: merge and rename
             orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo);
             orderStatusDetail.FareAvailable = GetFareAvailable(orderStatusDetail.OrderId, ibsOrderInfo);
 
             // be careful, orderStatusDetail will be directly automapped to the database entry
             // so if you send another command or modify orderStatusDetail directly, make sure you also set
             // the value in orderStatusDetail before sending this command
+
+            //todo : remove orderstatus detail from command
             _commandBus.Send(new ChangeOrderStatus
             {
                 Status = orderStatusDetail,
