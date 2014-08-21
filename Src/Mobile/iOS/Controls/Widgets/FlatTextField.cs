@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			this.ShouldChangeCharacters = CheckMaxLength;
 
-            BackgroundColor = UIColor.White;
+			BackgroundColor = Enabled ? UIColor.White : UIColor.Clear;
 
 			if (UIHelper.IsOS7orHigher) 
             {
@@ -67,8 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		public override void Draw (RectangleF rect)
 		{   
             var fillColor = State.HasFlag (UIControlState.Normal)
-                            ? (Enabled ? BackgroundColor : UIColor.LightGray)
-			                : UIColor.Clear;
+				? (Enabled ? BackgroundColor : UIColor.Clear) : UIColor.Clear;
 
 			var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, RadiusCorner);
 
@@ -85,6 +84,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			set 
             {
 				base.Enabled = value;
+				BackgroundColor = value ? UIColor.White : UIColor.Clear;
 				SetNeedsDisplay();
 			}
 		}
