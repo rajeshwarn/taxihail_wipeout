@@ -28,7 +28,7 @@ namespace MK.Common.Configuration
             CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink,Client.AccountChargeTypeId";
 			DefaultTipPercentage = 15;
             DirectionDataProvider = MapProvider.Google;
-
+		    EtaPaddingRatio = 1;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
