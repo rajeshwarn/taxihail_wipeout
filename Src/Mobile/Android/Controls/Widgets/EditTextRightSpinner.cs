@@ -38,15 +38,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Initialize(attrs);
         }
 
-        private bool _enabled = true;
         public override bool Enabled
         {
-            get { return _enabled; }
+            get { return base.Enabled; }
             set
             {
-                _enabled = value;
+                base.Enabled = value;
                 this.SetBackgroundColor(value ? _initialBackgroundColor : Color.Transparent);
-                _imageRightArrow.Visibility = value ? ViewStates.Visible : ViewStates.Invisible;
+                if (_imageRightArrow != null)
+                {
+                    _imageRightArrow.Visibility = value 
+                        ? ViewStates.Visible 
+                        : ViewStates.Invisible;
+                }
             }
         }
 
