@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using Android.App;
+
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -58,11 +58,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			_locateUser = locateUser;
 			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);
-            RegisterEventHandlers();
+			InitializeEventHandlers();
 			Panel.Init ();
 		}
 
-	    private void RegisterEventHandlers()
+	    private void InitializeEventHandlers()
 	    {
 	        _mvxLifetime.LifetimeChanged += (sender, args) =>
                 {
@@ -96,7 +96,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_locationService.Start();
 			CheckTermsAsync();
 			CheckActiveOrderAsync ();
-            //CheckNotRatedRideAsync();
 
             if (_orderWorkflowService.IsOrderRebooked())
             {
@@ -105,6 +104,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (firstTime)
 			{
                 CheckNotRatedRideAsync();
+
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
 				_tutorialService.DisplayTutorialToNewUser();
@@ -153,9 +153,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 this.Services().Message.ShowMessage("Rate last ride?",
                                                     "We would appreciate your feedback on your last ride, would you like to rate it?",
                                                     "Rate",
-                                                        () => ShowViewModel<BookRatingViewModel>(new Dictionary<string, string> {
-						                                            {"orderId", unratedRideId.ToJson()},
-                                                                    {"canRate", true.ToJson()}}),
+                                                        () => ShowViewModel<BookRatingViewModel>(new  {
+																	orderId = unratedRideId.ToString(),
+																	canRate = true}),
                                                     "Stfu forever",
                                                         () => this.Services().Cache.Set("RateLastRideDontPrompt", "yes"),
                                                     "Not Now",
