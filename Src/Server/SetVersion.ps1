@@ -124,7 +124,9 @@ function UpdateIosVersion ( $versionVal )
         #//key[ CFBundleVersion( following-sibling::*[1] ) != 'key' ]
     #$a = $version.Node."#text";
     $version.Node."#text" = $versionVal 
-    
+
+    $versionShort = Select-Xml -xml $xam  -Xpath "//key[text() = 'CFBundleShortVersionString']/following-sibling::string[1]" 
+    $versionShort.Node."#text" = $versionVal
     
     # Save the file
     $xam.Save( $plistPath )
