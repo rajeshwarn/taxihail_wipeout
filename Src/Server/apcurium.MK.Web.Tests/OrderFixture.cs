@@ -293,23 +293,23 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
-            var orders = await sut.GetOrder(_orderId);
-            Assert.NotNull(orders);
+            var order = await sut.GetOrder(_orderId);
+            Assert.NotNull(order);
 
             //TODO: Fix test
 
-            Assert.AreEqual(TestAddresses.GetAddress1().Apartment, orders.PickupAddress.Apartment);
-            Assert.AreEqual(TestAddresses.GetAddress1().FullAddress, orders.PickupAddress.FullAddress);
-            Assert.AreEqual(TestAddresses.GetAddress1().RingCode, orders.PickupAddress.RingCode);
-            Assert.AreEqual(TestAddresses.GetAddress1().Latitude, orders.PickupAddress.Latitude);
-            Assert.AreEqual(TestAddresses.GetAddress1().Longitude, orders.PickupAddress.Longitude);
-            Assert.AreEqual(TestAddresses.GetAddress2().FullAddress, orders.DropOffAddress.FullAddress);
-            Assert.AreEqual(TestAddresses.GetAddress2().Latitude, orders.DropOffAddress.Latitude);
-            Assert.AreEqual(TestAddresses.GetAddress2().Longitude, orders.DropOffAddress.Longitude);
-            Assert.AreNotEqual(OrderStatus.Completed, orders.Status);
-            Assert.That(orders.Fare, Is.EqualTo(10));
-            Assert.That(orders.Tip, Is.EqualTo(0));
-            Assert.That(orders.Toll, Is.EqualTo(0));
+            Assert.AreEqual(TestAddresses.GetAddress1().Apartment, order.PickupAddress.Apartment);
+            Assert.AreEqual(TestAddresses.GetAddress1().FullAddress, order.PickupAddress.FullAddress);
+            Assert.AreEqual(TestAddresses.GetAddress1().RingCode, order.PickupAddress.RingCode);
+            Assert.AreEqual(TestAddresses.GetAddress1().Latitude, order.PickupAddress.Latitude);
+            Assert.AreEqual(TestAddresses.GetAddress1().Longitude, order.PickupAddress.Longitude);
+            Assert.AreEqual(TestAddresses.GetAddress2().FullAddress, order.DropOffAddress.FullAddress);
+            Assert.AreEqual(TestAddresses.GetAddress2().Latitude, order.DropOffAddress.Latitude);
+            Assert.AreEqual(TestAddresses.GetAddress2().Longitude, order.DropOffAddress.Longitude);
+            Assert.AreNotEqual(OrderStatus.Completed, order.Status);
+            Assert.That(order.Fare, Is.EqualTo(10));
+            Assert.That(order.Tip, Is.EqualTo(0));
+            Assert.That(order.Toll, Is.EqualTo(0));
         }
     }
 }

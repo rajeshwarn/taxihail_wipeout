@@ -22,9 +22,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IPushNotificationService _pushNotificationService;
         private readonly Resources.Resources _resources;
-
-        private const int TaxiDistanceThresholdForPushNotification = 200; // In meters
-
+        
         public OrderDao(Func<BookingDbContext> contextFactory, IPushNotificationService pushNotificationService, IConfigurationManager configManager)
         {
             _contextFactory = contextFactory;
@@ -166,46 +164,16 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-        public void UpdateVehiclePosition(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude, out bool taxiNearbyPushSent)
+        public void UpdateVehiclePosition(Guid orderId, double? newLatitude, double? newLongitude)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var order = context.Query<OrderDetail>().Single(x => x.Id == orderId);
                 var orderStatus = context.Query<OrderStatusDetail>().Single(x => x.OrderId == orderId);
 
-                taxiNearbyPushSent = orderStatus.IsTaxiNearbyNotificationSent;
-                var shouldSendPushNotification = newLatitude.HasValue &&
-                                                 newLongitude.HasValue &&
-                                                 ibsStatus == VehicleStatuses.Common.Assigned &&
-                                                 !taxiNearbyPushSent;
-
-                // update vehicle position in orderStatus
                 orderStatus.VehicleLatitude = newLatitude;
                 orderStatus.VehicleLongitude = newLongitude;
+
                 context.Save(orderStatus);
-
-                if (shouldSendPushNotification)
-                {
-                    var taxiPosition = new Position(newLatitude.Value, newLongitude.Value);
-                    var pickupPosition = new Position(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
-
-                    if (taxiPosition.DistanceTo(pickupPosition) <= TaxiDistanceThresholdForPushNotification)
-                    {
-                        orderStatus.IsTaxiNearbyNotificationSent = true;
-                        taxiNearbyPushSent = true;
-                        context.Save(orderStatus);
-
-                        var alert = string.Format(_resources.Get("PushNotification_NearbyTaxi", order.ClientLanguageCode));
-                        var data = new Dictionary<string, object> { { "orderId", order.Id } };
-                        var devices = context.Set<DeviceDetail>().Where(x => x.AccountId == order.AccountId);
-
-                        // Send push notifications
-                        foreach (var device in devices)
-                        {
-                            _pushNotificationService.Send(alert, data, device.DeviceToken, device.Platform);
-                        }
-                    }
-                }
             }
         }
     }

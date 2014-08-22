@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -92,6 +93,20 @@ namespace DatabaseInitializer.Services
                     };
                     message.Payload = Serialize(newEvent);
                     message.EventType = message.EventType.Replace("OrderFareUpdated", "OrderStatusChanged");
+                }
+                context.SaveChanges();
+
+                // update OrderStatusChanged containing a Status with an invalid pickup date
+                events = context.Set<Event>().Where(x => x.EventType.Contains("OrderStatusChanged") && !x.Payload.Contains("\"Status\":null")).ToList();
+                foreach (var message in events)
+                {
+                    var @event = Deserialize<OrderStatusChanged>(message.Payload);
+
+                    @event.Status.PickupDate = @event.Status.PickupDate < ((DateTime)SqlDateTime.MinValue)
+                            ? (DateTime)SqlDateTime.MinValue
+                            : @event.Status.PickupDate;
+
+                    message.Payload = Serialize(@event);
                 }
                 context.SaveChanges();
             }

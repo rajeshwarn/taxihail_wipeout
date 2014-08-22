@@ -81,30 +81,6 @@ namespace apcurium.MK.Booking.IBS
             Eta = orderInfoFromIBS.ETATime.ToDateTime();
         }
 
-        public void Update(OrderStatusDetail orderStatusDetail)
-        {
-            orderStatusDetail.IBSStatusId = Status;
-
-            orderStatusDetail.DriverInfos.FirstName = FirstName.GetValue(orderStatusDetail.DriverInfos.FirstName);
-            orderStatusDetail.DriverInfos.LastName = LastName.GetValue(orderStatusDetail.DriverInfos.LastName);
-            orderStatusDetail.DriverInfos.MobilePhone = MobilePhone.GetValue(orderStatusDetail.DriverInfos.MobilePhone);
-            orderStatusDetail.DriverInfos.VehicleColor = VehicleColor.GetValue(orderStatusDetail.DriverInfos.VehicleColor);
-            orderStatusDetail.DriverInfos.VehicleMake = VehicleMake.GetValue(orderStatusDetail.DriverInfos.VehicleMake);
-            orderStatusDetail.DriverInfos.VehicleModel = VehicleModel.GetValue(orderStatusDetail.DriverInfos.VehicleModel);
-            orderStatusDetail.DriverInfos.VehicleRegistration = VehicleRegistration.GetValue(orderStatusDetail.DriverInfos.VehicleRegistration);
-            orderStatusDetail.DriverInfos.VehicleType = VehicleType.GetValue(orderStatusDetail.DriverInfos.VehicleType);
-            orderStatusDetail.VehicleNumber = VehicleNumber.GetValue(orderStatusDetail.VehicleNumber);
-
-            orderStatusDetail.DriverInfos.DriverId = DriverId.GetValue(orderStatusDetail.DriverInfos.DriverId);
-
-            orderStatusDetail.TerminalId = TerminalId.GetValue(orderStatusDetail.TerminalId);
-            orderStatusDetail.ReferenceNumber = ReferenceNumber.GetValue(orderStatusDetail.ReferenceNumber);
-
-            orderStatusDetail.VehicleLatitude = VehicleLatitude ?? orderStatusDetail.VehicleLatitude;
-            orderStatusDetail.VehicleLongitude = VehicleLongitude ?? orderStatusDetail.VehicleLongitude;
-            orderStatusDetail.Eta = Eta ?? orderStatusDetail.Eta;
-        }
-
         public bool IsAssigned
         {
             get { return Status.SoftEqual(VehicleStatuses.Common.Assigned); }

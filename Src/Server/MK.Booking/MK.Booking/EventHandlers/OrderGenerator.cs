@@ -178,18 +178,12 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                if (@event.Status != null)
-                {
-                    @event.Status.PickupDate = @event.Status.PickupDate < (DateTime)SqlDateTime.MinValue
-                        ? (DateTime)SqlDateTime.MinValue
-                        : @event.Status.PickupDate;
-                }
+                var fareAvailable = GetFareAvailable(@event.Fare);
 
-                // set FareAvailable
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 if (details == null)
                 {
-                    @event.Status.FareAvailable = GetFareAvailable(@event.Fare);
+                    @event.Status.FareAvailable = fareAvailable;
                     context.Set<OrderStatusDetail>().Add(@event.Status);
                 }
                 else
@@ -197,10 +191,26 @@ namespace apcurium.MK.Booking.EventHandlers
                     // possible only with migration from OrderCompleted or OrderFareUpdated
                     if (@event.Status != null) 
                     {
-                        Mapper.Map(@event.Status, details);
+                        details.IBSStatusId = @event.Status.IBSStatusId;
+                        details.DriverInfos = @event.Status.DriverInfos;
+                        details.VehicleNumber = @event.Status.VehicleNumber;
+                        details.TerminalId = @event.Status.TerminalId;
+                        details.ReferenceNumber = @event.Status.ReferenceNumber;
+                        details.Eta = @event.Status.Eta;
+                        details.Status = @event.Status.Status;
+                        details.IBSStatusDescription = @event.Status.IBSStatusDescription;
+                        details.PairingTimeOut = @event.Status.PairingTimeOut;
+                        details.PairingError = @event.Status.PairingError;
+                    }
+                    else
+                    {
+                        if (@event.IsCompleted)
+                        {
+                            details.Status = OrderStatus.Completed;
+                        }
                     }
 
-                    details.FareAvailable = GetFareAvailable(@event.Fare);
+                    details.FareAvailable = fareAvailable;
                     context.Save(details);
                 }
 
