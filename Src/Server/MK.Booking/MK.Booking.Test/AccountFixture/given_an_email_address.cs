@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Email;
+using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Entity;
 using Moq;
 using NUnit.Framework;
@@ -31,7 +32,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             _configurationManager = new TestConfigurationManager();
             _configurationManager.SetSetting("TaxiHail.ApplicationName", ApplicationName);
 
-            _sut.Setup(new EmailCommandHandler(_configurationManager, new TemplateService(_configurationManager), _emailSenderMock.Object));
+            _sut.Setup(new EmailCommandHandler(new NotificationService(() => null, null, new TemplateService(_configurationManager), _emailSenderMock.Object, _configurationManager, _configurationManager)));
         }
 
         [Test]
