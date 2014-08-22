@@ -30,13 +30,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
 		private readonly IVehicleService _vehicleService;
+		private readonly IDirections _directions;
 
 		public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService,
 			IPhoneService phoneService,
 			IBookingService bookingService,
 			IPaymentService paymentService,
 			IAccountService accountService,
-			IVehicleService vehicleService)
+			IVehicleService vehicleService,
+			IDirections directions
+		)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_phoneService = phoneService;
@@ -44,6 +47,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_paymentService = paymentService;
 			_accountService = accountService;
 			_vehicleService = vehicleService;
+			_directions = directions;
 		}
 
 		private int _refreshPeriod = 5; //in seconds
@@ -358,11 +362,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return "";
 			}
 
-			double time = Math.Ceiling ((float)(direction.Duration * Settings.EtaPaddingRatio) / 60f);
-			bool singleMinute = ((int)time == 1);
-			string timeString = singleMinute ? "1" : time.ToString ();
-			string durationUnit = singleMinute ? Mvx.Resolve<ILocalization> () ["EtaDurationUnit"] : Mvx.Resolve<ILocalization> () ["EtaDurationUnitPlural"];
-			return string.Format(Mvx.Resolve<ILocalization>()["StatusEta"], direction.FormattedDistance, timeString, durationUnit);
+			string time = _directions.FormatDurationForEta (direction);
+			string durationUnit = (time == "1") || (time == "0") ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
+			return string.Format (this.Services ().Localize ["StatusEta"], direction.FormattedDistance, time, durationUnit);
 		}
 
 		void UpdatePayCancelButtons (string statusId)

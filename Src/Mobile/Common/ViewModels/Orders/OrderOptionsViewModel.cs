@@ -22,14 +22,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
 		private readonly IVehicleService _vehicleService;
+		private readonly IDirections _directions;
 
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
-		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService)
+		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService, IDirections directions)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_vehicleService = vehicleService;
+			_directions = directions;
 
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
 			this.Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
@@ -220,11 +222,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get
 			{
 				if (Eta != null && Eta.IsValidEta()) {
-					double time = Math.Ceiling ((float)(Eta.Duration * Settings.EtaPaddingRatio) / 60f);
-					bool singleMinute = ((int)time <= 1);
-					string timeString = singleMinute ? "1" : time.ToString ();
-					string durationUnit = singleMinute ? Mvx.Resolve<ILocalization> () ["EtaDurationUnit"] : Mvx.Resolve<ILocalization> () ["EtaDurationUnitPlural"];
-					return string.Format (Mvx.Resolve<ILocalization> () ["Eta"], Eta.FormattedDistance, timeString, durationUnit);
+					string time = _directions.FormatDurationForEta (Eta);
+					string durationUnit = (time == "1") || (time == "0") ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
+					return string.Format (this.Services ().Localize ["StatusEta"], Eta.FormattedDistance, time, durationUnit);
 				}
 
 				return "";

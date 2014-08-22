@@ -89,5 +89,12 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             return result;
         }
+			
+		public string FormatDurationForEta(Direction d)
+		{
+			double paddedDuration = (double)(d.Duration * _appSettings.Data.EtaPaddingRatio) / 60d;
+			int time = (int)Math.Ceiling (paddedDuration);
+			return (time <= 1) ? "1" : time.ToString ();
+		}
     }
 }

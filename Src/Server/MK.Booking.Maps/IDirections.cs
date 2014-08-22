@@ -12,5 +12,7 @@ namespace apcurium.MK.Booking.Maps
 			DateTime? date = default(DateTime?), bool forEta = false);
 
         Direction GetEta(double originLat, double originLng, double destinationLat, double destinationLng);
+
+		string FormatDurationForEta(Direction direction);
     }
 }
