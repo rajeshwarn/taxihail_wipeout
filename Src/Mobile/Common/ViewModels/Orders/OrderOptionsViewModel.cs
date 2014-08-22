@@ -213,6 +213,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				_eta = value;
 				RaisePropertyChanged ();
 				RaisePropertyChanged(() => ShowEta);
+				RaisePropertyChanged(() => VehicleAndEstimateBoxIsVisible);
 				RaisePropertyChanged(() => FormattedEta);
 			}
 		}
