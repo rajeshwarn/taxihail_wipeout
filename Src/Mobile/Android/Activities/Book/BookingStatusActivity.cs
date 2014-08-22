@@ -14,7 +14,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     public class BookingStatusActivity : BaseBindingActivity<BookingStatusViewModel>
     {
         private TouchMap _touchMap;
-		private TextView _statusWithEta;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -37,7 +36,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			base.OnViewModelSet ();
             SetContentView(Resource.Layout.View_BookingStatus);
             _touchMap = FindViewById<TouchMap>(Resource.Id.mapStatus);
-			_statusWithEta = FindViewById<TextView>(Resource.Id.statusWithEtaLabel);
         }
 
         protected override void OnResume()
