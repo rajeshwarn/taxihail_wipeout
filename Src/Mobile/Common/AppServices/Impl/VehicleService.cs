@@ -10,6 +10,7 @@ using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Maps;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -19,13 +20,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IObservable<Direction> _etaObservable;
 		readonly ISubject<IObservable<long>> _timerSubject = new BehaviorSubject<IObservable<long>>(Observable.Never<long>());
 		readonly IDirections _directions;
+		readonly IAppSettings _appSettings;
 
 		private bool _isStarted { get; set; }
 
 		public VehicleService(IOrderWorkflowService orderWorkflowService,
-			IDirections directions)
+			IDirections directions,
+			IAppSettings settings)
 		{
 			_directions = directions;
+			_appSettings = settings;
+
+			var showEta = _appSettings.Data.ShowEta;
 
 			_availableVehiclesObservable = _timerSubject
 				.Switch()
@@ -37,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.SelectMany(x => CheckForAvailableVehicles(x.address, x.vehicleTypeId.Value));
 
 			 _etaObservable = _availableVehiclesObservable
-				.Where (x => x.Any ())
+				.Where (x => x.Any () && showEta)
 				.CombineLatest(orderWorkflowService.GetAndObservePickupAddress (), (vehicles, address) => new { address, vehicles } )
 				.Select (x => new { x.address, vehicle = GetNearestVehicle(x.address, x.vehicles) })
 				.DistinctUntilChanged(x => Position.CalculateDistance (x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude))
