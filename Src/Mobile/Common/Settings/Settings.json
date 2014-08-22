@@ -9,6 +9,6 @@
    "TwitterConsumerSecret" : "Th6nCDTgPiI3JPwHxgm8fQheMaLczUeHHG5liHGZRqs",
    "TwitterEnabled" : "true",
    "TwitterRequestTokenUrl" : "https://api.twitter.com/oauth/request_token",
-   "ServiceUrl" : "http://test.taxihail.biz:8181/Apcurium/api/",
+   "ServiceUrl" : "http://192.168.12.120/apcurium.mk.web/api/",
    "CanChangeServiceUrl": "true"
 }

@@ -42,7 +42,12 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             if (direction.Distance.HasValue)
             {
-                result.Duration = direction.Duration;
+				if(direction.Duration.HasValue)
+				{
+					var paddedDuration = (int)Math.Ceiling((direction.Duration.Value * _appSettings.Data.EtaPaddingRatio) / 60);
+					result.Duration = Math.Max (1, paddedDuration);
+				}
+                
                 result.Distance = direction.Distance;
 
                 if (!forEta)
@@ -88,13 +93,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             }
 
             return result;
-        }
-			
-		public string FormatDurationForEta(Direction d)
-		{
-			double paddedDuration = (double)(d.Duration * _appSettings.Data.EtaPaddingRatio) / 60d;
-			int time = (int)Math.Ceiling (paddedDuration);
-			return (time <= 1) ? "1" : time.ToString ();
-		}
+        }		
+
     }
 }

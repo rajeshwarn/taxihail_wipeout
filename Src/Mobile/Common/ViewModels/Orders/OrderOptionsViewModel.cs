@@ -221,13 +221,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				if (Eta != null && Eta.IsValidEta()) {
-					string time = _directions.FormatDurationForEta (Eta);
-					string durationUnit = (time == "1") || (time == "0") ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
-					return string.Format (this.Services ().Localize ["StatusEta"], Eta.FormattedDistance, time, durationUnit);
+				if (Eta != null && Eta.IsValidEta()) 
+				{
+					var durationUnit = Eta.Duration <= 1 ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
+					return string.Format (this.Services ().Localize ["Eta"], Eta.FormattedDistance, Eta.Duration, durationUnit);
 				}
 
-				return "";
+				return string.Empty;
 			}
 		}
 

@@ -2,18 +2,21 @@
 
 using System.Globalization;
 using System.Linq;
+using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Resources;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using System;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.EventHandlers.Integration;
+using log4net;
 
 #endregion
 
@@ -30,6 +33,8 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IIbsOrderService _ibs;
 
         private ReadModel.OrderDetail _orderDetails;
+
+        private static readonly ILog Log = LogManager.GetLogger(typeof(CreateOrderService));
 
         public OrderStatusUpdater(IConfigurationManager configurationManager, ICommandBus commandBus,
             IOrderPaymentDao orderPayementDao, IOrderDao orderDao, IDirections directions, IIbsOrderService ibs)
@@ -84,14 +89,16 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                 if (_orderDetails != null &&  _configurationManager.GetSetting("Client.ShowEta", false))
                 {
-                    SendEtaMessageToDriver((double)order.VehicleLatitude, (double)order.VehicleLongitude, ibsStatus.VehicleNumber);
+                    try
+                    {
+                        SendEtaMessageToDriver((double) order.VehicleLatitude, (double) order.VehicleLongitude,
+                            ibsStatus.VehicleNumber);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error("Cannot Send Eta to Vehicle Number " + ibsStatus.VehicleNumber);
+                    }
                 }
-
-                //TODO: Obsolete? Remove.
-                //if (ibsStatus.Eta.HasValue)
-                //{
-                //    description += " - " + string.Format(_resources.Get("OrderStatus_CabDriverETA", languageCode), ibsStatus.Eta.Value.ToString("t"));
-                //}
             }
             else if (ibsStatus.IsCanceled)
             {
@@ -138,18 +145,13 @@ namespace apcurium.MK.Booking.Api.Jobs
             _commandBus.Send(command);
         }
 
-        public void SendEtaMessageToDriver(double vehicleLatitude, double vehicleLongitude, string vehicleNumber)
+        private void SendEtaMessageToDriver(double vehicleLatitude, double vehicleLongitude, string vehicleNumber)
         {
-            // TODO: How should we localize driver messages?
-            
-            Direction Eta = _directions.GetEta(_orderDetails.PickupAddress.Latitude, _orderDetails.PickupAddress.Longitude, vehicleLatitude, vehicleLongitude);
+            var eta = _directions.GetEta(_orderDetails.PickupAddress.Latitude, _orderDetails.PickupAddress.Longitude, vehicleLatitude, vehicleLongitude);
 
-            if (Eta != null && Eta.IsValidEta())
+            if (eta != null && eta.IsValidEta())
             {
-                double time = Math.Ceiling((float)(Eta.Duration * _configurationManager.GetSetting<double>("Client.EtaPaddingRatio", 1d) / 60f));
-                bool singleMinute = ((int)time <= 1);
-                string timeString = singleMinute ? "1" : time.ToString();
-                _ibs.SendMessageToDriver("ETA displayed to client is " + Eta.FormattedDistance + " and " + timeString + " min", vehicleNumber);
+                _ibs.SendMessageToDriver("ETA displayed to client is " + eta.FormattedDistance + " and " + eta.Duration + " min", vehicleNumber);
             }
         }
 

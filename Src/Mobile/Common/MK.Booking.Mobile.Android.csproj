@@ -207,7 +207,6 @@
     <Compile Include="Style\StyleManager.cs" />
     <Compile Include="TaxiHailApp.cs" />
     <Compile Include="ViewModels\AboutUsViewModel.cs" />
-    <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\BookRatingViewModel.cs" />
     <Compile Include="ViewModels\Callbox\BaseCallboxViewModel.cs" />
     <Compile Include="ViewModels\Callbox\CallboxCallTaxiViewModel.cs" />
@@ -335,6 +334,7 @@
     <Compile Include="AppServices\Impl\AccountPaymentService.cs" />
     <Compile Include="ViewModels\Orders\InitializeOrderForAccountPaymentViewModel.cs" />
     <Compile Include="ViewModels\Orders\AccountChargeQuestionViewModel.cs" />
+    <Compile Include="ViewModels\BookingStatusViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

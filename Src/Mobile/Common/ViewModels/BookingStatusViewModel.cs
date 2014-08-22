@@ -308,7 +308,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				var statusInfoText = status.IBSStatusDescription;
 
-				if(Settings.ShowEta && status.IBSStatusId.Equals(VehicleStatuses.Common.Assigned) && !status.VehicleNumber.IsNullOrEmpty() != null)
+				if(Settings.ShowEta && status.IBSStatusId.Equals(VehicleStatuses.Common.Assigned) && status.VehicleNumber.HasValue())
 				{
 					Direction d =  _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
 					statusInfoText += "\n" + FormatEta(d);						
@@ -359,12 +359,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			if (!direction.IsValidEta())
 			{
-				return "";
+				return string.Empty;
 			}
 
-			string time = _directions.FormatDurationForEta (direction);
-			string durationUnit = (time == "1") || (time == "0") ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
-			return string.Format (this.Services ().Localize ["StatusEta"], direction.FormattedDistance, time, durationUnit);
+			var durationUnit = direction.Duration <= 1 ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
+			return string.Format (this.Services ().Localize ["StatusEta"], direction.FormattedDistance, direction.Duration, durationUnit);
 		}
 
 		void UpdatePayCancelButtons (string statusId)
