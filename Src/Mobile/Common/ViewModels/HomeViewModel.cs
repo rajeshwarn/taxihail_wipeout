@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Windows.Input;
+using Android.App;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Messages;
@@ -20,6 +23,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IVehicleService _vehicleService;
 		private readonly IBookingService _bookingService;
 		private readonly ITermsAndConditionsService _termsService;
+	    private readonly IMvxLifetime _mvxLifetime;
 
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
 			IMvxWebBrowserTask browserTask,
@@ -31,7 +35,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPhoneService phoneService,
 			ITermsAndConditionsService termsService,
 			IPaymentService paymentService, 
-			IBookingService bookingService) : base()
+			IBookingService bookingService,
+            IMvxLifetime mvxLifetime) : base()
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -40,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService = vehicleService;
 			_termsService = termsService;
 			_bookingService = bookingService;
+		    _mvxLifetime = mvxLifetime;
 
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService, paymentService);
 		}
@@ -51,9 +57,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public void Init(bool locateUser, string defaultHintZoomLevel)
 		{
 			_locateUser = locateUser;
-			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);			
+			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);
+            RegisterEventHandlers();
 			Panel.Init ();
 		}
+
+	    private void RegisterEventHandlers()
+	    {
+	        _mvxLifetime.LifetimeChanged += (sender, args) =>
+                {
+                    if (args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk
+                        || args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)
+                    {
+                        CheckNotRatedRideAsync();
+                    }
+                };
+	    }
 
 		public override void OnViewLoaded ()
 		{
@@ -77,6 +96,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_locationService.Start();
 			CheckTermsAsync();
 			CheckActiveOrderAsync ();
+            //CheckNotRatedRideAsync();
 
             if (_orderWorkflowService.IsOrderRebooked())
             {
@@ -84,6 +104,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 			if (firstTime)
 			{
+                CheckNotRatedRideAsync();
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
 				_tutorialService.DisplayTutorialToNewUser();
@@ -122,6 +143,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				});
 			}
 		}
+
+	    private void CheckNotRatedRideAsync()
+	    {
+            var unratedRideId = _orderWorkflowService.GetLastUnratedRide();
+            if (unratedRideId != null
+                && _orderWorkflowService.ShouldPromptUserToRateLastRide())
+	        {
+                this.Services().Message.ShowMessage("Rate last ride?",
+                                                    "We would appreciate your feedback on your last ride, would you like to rate it?",
+                                                    "Rate",
+                                                        () => ShowViewModel<BookRatingViewModel>(new Dictionary<string, string> {
+						                                            {"orderId", unratedRideId.ToJson()},
+                                                                    {"canRate", true.ToJson()}}),
+                                                    "Stfu forever",
+                                                        () => this.Services().Cache.Set("RateLastRideDontPrompt", "yes"),
+                                                    "Not Now",
+                                                        () => { /* Do nothing */ });
+
+	        }
+	    }
 
 		public async void CheckTermsAsync()
 		{
