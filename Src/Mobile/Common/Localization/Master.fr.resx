@@ -771,8 +771,8 @@
   <data name="LoginForgotPassword" xml:space="preserve">
     <value>Mot de passe oublié?</value>
   </data>
-<data name="LoginSupport" xml:space="preserve">
-   	<value>Support Technique?</value>
+  <data name="LoginSupport" xml:space="preserve">
+    <value>Support Technique?</value>
   </data>
   <data name="LoginForgotPasswordDetail" xml:space="preserve">
     <value>Saisissez votre email pour recevoir votre nouveau mot de passe</value>
@@ -1550,5 +1550,11 @@
   </data>
   <data name="NoCardOnFileMessage" xml:space="preserve">
     <value>Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.</value>
+  </data>
+  <data name="View_NotificationsSettings" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="PanelMenuViewNotificationsText" xml:space="preserve">
+    <value>Notifications</value>
   </data>
 </root>

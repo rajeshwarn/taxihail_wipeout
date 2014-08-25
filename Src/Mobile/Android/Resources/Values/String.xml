@@ -512,4 +512,6 @@
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
   <string name="PayInCar">Pay in Car</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
+  <string name="View_NotificationsSettings">Notifications</string>
+  <string name="PanelMenuViewNotificationsText">Notifications</string>
 </resources>

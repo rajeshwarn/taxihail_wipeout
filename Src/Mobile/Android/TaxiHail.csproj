@@ -184,6 +184,7 @@
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
+    <Compile Include="Activities\Setting\NotificationsSettingsActivity.cs" />
     <Compile Include="Activities\TutorialActivity.cs" />
     <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
     <Compile Include="Adapters\LocationListAdapter.cs" />
@@ -768,5 +769,8 @@
     <None Include="Calabash\features\support\hooks.rb" />
     <None Include="Calabash\features\step_definitions\my_first_steps.rb" />
     <None Include="Properties\AndroidManifest.xml" />
+    <AndroidResource Include="Resources\Layout\View_NotificationsSettings.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
 </Project>

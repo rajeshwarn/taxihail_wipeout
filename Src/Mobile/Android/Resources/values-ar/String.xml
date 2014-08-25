@@ -485,4 +485,6 @@
   <string name="AddACardButton">Add Card</string>
   <string name="PayInCar">Pay in Car</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
+  <string name="View_NotificationsSettings">Notifications</string>
+  <string name="PanelMenuViewNotificationsText">Notifications</string>
 </resources>

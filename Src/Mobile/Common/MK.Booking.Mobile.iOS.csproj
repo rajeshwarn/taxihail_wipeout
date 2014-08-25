@@ -193,6 +193,7 @@
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\CreateAccountViewModel.cs" />
+    <Compile Include="ViewModels\NotificationsSettingsViewModel.cs" />
     <Compile Include="ViewModels\Payment\ConfirmPairViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
     <Compile Include="Data\Coordinate.cs" />
