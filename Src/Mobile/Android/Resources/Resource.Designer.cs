@@ -3991,6 +3991,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050193
 			public const int Done = 2131034515;
 			
+			// aapt resource value: 0x7f05024e
+			public const int DontAsk = 2131034702;
+			
+			// aapt resource value: 0x7f050247
+			public const int DontAsl = 2131034695;
+			
 			// aapt resource value: 0x7f0501f5
 			public const int DontHaveAnAccountLabel = 2131034613;
 			
@@ -4078,14 +4084,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050109
 			public const int GooglePlayServicesNotAvailableMessage = 2131034377;
 			
-			// aapt resource value: 0x7f050247
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034695;
+			// aapt resource value: 0x7f05024c
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034700;
 			
 			// aapt resource value: 0x7f050069
 			public const int GooglePlayServicesNotAvailableTitle = 2131034217;
 			
-			// aapt resource value: 0x7f050248
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034696;
+			// aapt resource value: 0x7f05024d
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034701;
 			
 			// aapt resource value: 0x7f05005e
 			public const int HistoryDetailAptRingCodeLabel = 2131034206;
@@ -4333,6 +4339,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050189
 			public const int NotAvailable = 2131034505;
 			
+			// aapt resource value: 0x7f050248
+			public const int NotNow = 2131034696;
+			
 			// aapt resource value: 0x7f0500c7
 			public const int Notes = 2131034311;
 			
@@ -4506,6 +4515,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0501cc
 			public const int PickupViewPickupLabel = 2131034572;
+			
+			// aapt resource value: 0x7f050249
+			public const int RateLastRide = 2131034697;
+			
+			// aapt resource value: 0x7f05024a
+			public const int RateLastRideMessage = 2131034698;
+			
+			// aapt resource value: 0x7f05024b
+			public const int RateLastRideTitle = 2131034699;
 			
 			// aapt resource value: 0x7f05006c
 			public const int RateRide = 2131034220;

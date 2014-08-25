@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Windows.Input;
-
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -21,7 +18,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITutorialService _tutorialService;
 		private readonly IPushNotificationService _pushNotificationService;
 		private readonly IVehicleService _vehicleService;
-		private readonly IBookingService _bookingService;
 		private readonly ITermsAndConditionsService _termsService;
 	    private readonly IMvxLifetime _mvxLifetime;
 
@@ -35,7 +31,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPhoneService phoneService,
 			ITermsAndConditionsService termsService,
 			IPaymentService paymentService, 
-			IBookingService bookingService,
             IMvxLifetime mvxLifetime) : base()
 		{
 			_locationService = locationService;
@@ -44,7 +39,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_pushNotificationService = pushNotificationService;
 			_vehicleService = vehicleService;
 			_termsService = termsService;
-			_bookingService = bookingService;
 		    _mvxLifetime = mvxLifetime;
 
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService, paymentService);
@@ -64,14 +58,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 	    private void InitializeEventHandlers()
 	    {
-	        _mvxLifetime.LifetimeChanged += (sender, args) =>
+            _mvxLifetime.LifetimeChanged += (sender, args) =>
+            {
+                if (args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk
+                    || args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)
                 {
-                    if (args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk
-                        || args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)
-                    {
-                        CheckNotRatedRideAsync();
-                    }
-                };
+                    CheckNotRatedRide();
+                }
+            };
 	    }
 
 		public override void OnViewLoaded ()
@@ -103,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 			if (firstTime)
 			{
-                CheckNotRatedRideAsync();
+                CheckNotRatedRide();
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
@@ -144,23 +138,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-	    private void CheckNotRatedRideAsync()
+	    private void CheckNotRatedRide()
 	    {
             var unratedRideId = _orderWorkflowService.GetLastUnratedRide();
             if (unratedRideId != null
                 && _orderWorkflowService.ShouldPromptUserToRateLastRide())
 	        {
-                this.Services().Message.ShowMessage("Rate last ride?",
-                                                    "We would appreciate your feedback on your last ride, would you like to rate it?",
-                                                    "Rate",
-                                                        () => ShowViewModel<BookRatingViewModel>(new  {
-																	orderId = unratedRideId.ToString(),
-																	canRate = true}),
-                                                    "Stfu forever",
+                this.Services().Message.ShowMessage(this.Services().Localize["RateLastRideTitle"],
+                                                    this.Services().Localize["RateLastRideMessage"],
+                                                    this.Services().Localize["Rate"],
+                                                        () => ShowViewModel<BookRatingViewModel>(new  
+                                                                {
+						                                            orderId = unratedRideId.ToString(),
+						                                            canRate = true
+                                                                }),
+                                                    this.Services().Localize["Don't ask"],
                                                         () => this.Services().Cache.Set("RateLastRideDontPrompt", "yes"),
-                                                    "Not Now",
+                                                    this.Services().Localize["NotNow"],
                                                         () => { /* Do nothing */ });
-
 	        }
 	    }
 

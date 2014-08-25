@@ -483,4 +483,9 @@
   <string name="AddACardButton">Enregistrez</string>
   <string name="PayInCar">Payer dans le taxi</string>
   <string name="CreditCardErrorInvalid">La carte ne semble pas être valide</string>
+  <string name="DontAsk">Don\'t ask</string>
+  <string name="NotNow">Not now</string>
+  <string name="RateLastRide">Rate</string>
+  <string name="RateLastRideMessage">We would appreciate your feedback on your last ride, would you like to rate it?</string>
+  <string name="RateLastRideTitle">Rate last ride?</string>
 </resources>
