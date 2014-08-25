@@ -78,6 +78,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="ICacheService.cs" />
     <Compile Include="IPackageInfo.cs" />
+    <Compile Include="NotificationSettings.cs" />
     <Compile Include="Params.cs">
       <SubType>Code</SubType>
     </Compile>

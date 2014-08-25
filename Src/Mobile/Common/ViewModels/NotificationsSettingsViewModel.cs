@@ -9,7 +9,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class NotificationsSettingsViewModel : PageViewModel
     {
-        //private ObservableCollection<ListItem> _notificationsSettings; 
+        private ObservableCollection<ListItem> _notificationsSettings;
+
+        public ObservableCollection<ListItem> NotificationsSettings
+        {
+            get { return _notificationsSettings; }
+            set { _notificationsSettings = value; RaisePropertyChanged(); }
+        }
 
         public NotificationsSettingsViewModel()
         {
@@ -29,11 +35,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void LoadNotificationSettings()
         {
-            //_notificationsSettings = new ObservableCollection<ListItem>();
-            //_notificationsSettings.Add(new ListItem
-            //    {
-            //        Display = "Allow Notifications"
-            //    });
+            _notificationsSettings = new ObservableCollection<ListItem>();
+            _notificationsSettings.Add(new ListItem
+                {
+                    Display = "Allow Notifications"
+                });
+            _notificationsSettings.Add(new ListItem
+                {
+                    Display = "Booking confirmation (email)"
+                });
         }
     }
 }

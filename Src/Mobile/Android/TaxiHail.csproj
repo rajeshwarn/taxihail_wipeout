@@ -772,5 +772,8 @@
     <AndroidResource Include="Resources\Layout\View_NotificationsSettings.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Layout\NotificationSettingListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
 </Project>
