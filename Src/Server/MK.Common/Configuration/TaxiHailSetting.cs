@@ -28,7 +28,7 @@ namespace MK.Common.Configuration
             CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink,Client.AccountChargeTypeId";
 			DefaultTipPercentage = 15;
             DirectionDataProvider = MapProvider.Google;
-
+		    EtaPaddingRatio = 1;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -111,6 +111,12 @@ namespace MK.Common.Configuration
         public bool ShowEstimateWarning { get; private set; }
         [Display(Name = "Show Estimate", Description="Show an estimate")]
         public bool ShowEstimate { get; private set; }
+		[Display(Name = "Show Eta", Description="Show eta")]
+		public bool ShowEta { get; private set; }
+		[Display(Name = "Google Map Key", Description="Google API Key for business, required for directions aka eta feature")]
+        public string GoogleMapKey { get; private set; }
+        [Display(Name = "Eta Padding Ratio", Description = "Eta duration padding ratio (multiply duration in seconds by...)")]
+		public double EtaPaddingRatio { get; private set; }
         [Display(Name = "Use Theme Color On Map Icons", Description="Use company color for pickup and destination map icons")]
         public bool UseThemeColorForMapIcons { get; private set; }
 
@@ -220,7 +226,6 @@ namespace MK.Common.Configuration
 		public double? UpperRightLatitude { get; private set; }
 		[Display(Name = "Upper Right Longitude", Description="Upper Right Longitude limit to be used when searching for an address")]
 		public double? UpperRightLongitude { get; private set; }
-
     }
 }
 

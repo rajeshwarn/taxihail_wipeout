@@ -1559,10 +1559,23 @@
 <data name="PendingOrderCancel" xml:space="preserve">
   	Cancel
   </data>
+  <data name="Eta" xml:space="preserve">
+  	The nearest taxi is {0} and {1} {2} away
+  </data>
+  <data name="EtaDurationUnit" xml:space="preserve">
+  	min
+  </data>
+  <data name="EtaDurationUnitPlural" xml:space="preserve">
+  	mins
+  </data>
+  <data name="StatusEta" xml:space="preserve">
+    {0} and {1} {2} away
+  </data>
   <data name="NoCardOnFileMessage" xml:space="preserve">
-  	You have choose to pay with a card on file, put you have no default card.  Add a card to your account or change your payment method to continue.
+  	You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.
   </data>
   <data name="AddACardButton" xml:space="preserve">
   	Add Card
   </data>
+
 </root>

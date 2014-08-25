@@ -6,6 +6,7 @@ using Android.OS;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -33,7 +34,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		protected override void OnViewModelSet()
 		{
 			base.OnViewModelSet ();
-
             SetContentView(Resource.Layout.View_BookingStatus);
             _touchMap = FindViewById<TouchMap>(Resource.Id.mapStatus);
         }
