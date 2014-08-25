@@ -1,9 +1,14 @@
+using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace MK.Common.Configuration
 {
     public class NotificationSettings
     {
+        [Key]
+        public Guid Id { get; set; }
+
         [DisplayName("AllowNotifications")]
         public bool Enabled { get; set; }
 
