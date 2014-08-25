@@ -85,12 +85,10 @@ namespace apcurium.MK.Booking.Services.Impl
                     switch (orderStatusDetail.IBSStatusId)
                     {
                         case VehicleStatuses.Common.Assigned:
-                            alert = string.Format(_resources.Get("PushNotification_wosASSIGNED", order.ClientLanguageCode),
-                                orderStatusDetail.VehicleNumber);
+                            alert = string.Format(_resources.Get("PushNotification_wosASSIGNED", order.ClientLanguageCode), orderStatusDetail.VehicleNumber);
                             break;
                         case VehicleStatuses.Common.Arrived:
-                            alert = string.Format(_resources.Get("PushNotification_wosARRIVED", order.ClientLanguageCode),
-                                orderStatusDetail.VehicleNumber);
+                            alert = string.Format(_resources.Get("PushNotification_wosARRIVED", order.ClientLanguageCode), orderStatusDetail.VehicleNumber);
                             break;
                         case VehicleStatuses.Common.Loaded:
                             if (order.Settings.ChargeTypeId != ChargeTypes.CardOnFile.Id)
@@ -107,10 +105,7 @@ namespace apcurium.MK.Booking.Services.Impl
                             throw new InvalidOperationException("No push notification for this order status");
                     }
 
-                    var devices =
-                        context.Set<DeviceDetail>().Where(x => x.AccountId == order.AccountId);
                     var data = new Dictionary<string, object>();
-
                     if (orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned ||
                         orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived)
                     {
@@ -123,6 +118,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         data.Add("isPairingNotification", true);
                     }
 
+                    var devices = context.Set<DeviceDetail>().Where(x => x.AccountId == order.AccountId);
                     foreach (var device in devices)
                     {
                         _pushNotificationService.Send(alert, data, device.DeviceToken, device.Platform);
@@ -141,7 +137,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 var data = new Dictionary<string, object> { { "orderId", order.Id } };
                 var devices = context.Set<DeviceDetail>().Where(x => x.AccountId == order.AccountId);
 
-                // Send push notifications
                 foreach (var device in devices)
                 {
                     _pushNotificationService.Send(alert, data, device.DeviceToken, device.Platform);
@@ -154,7 +149,7 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             using (var context = _contextFactory.Invoke())
             {
-                var order = context.Find<OrderDetail>(orderId);
+                
                 var orderStatus = context.Query<OrderStatusDetail>().Single(x => x.OrderId == orderId);
 
                 var shouldSendPushNotification = newLatitude.HasValue &&
@@ -164,6 +159,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 if (shouldSendPushNotification)
                 {
+                    var order = context.Find<OrderDetail>(orderId);
+
                     var taxiPosition = new Position(newLatitude.Value, newLongitude.Value);
                     var pickupPosition = new Position(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
 
@@ -176,7 +173,6 @@ namespace apcurium.MK.Booking.Services.Impl
                         var data = new Dictionary<string, object> { { "orderId", order.Id } };
                         var devices = context.Set<DeviceDetail>().Where(x => x.AccountId == order.AccountId);
 
-                        // Send push notifications
                         foreach (var device in devices)
                         {
                             _pushNotificationService.Send(alert, data, device.DeviceToken, device.Platform);
@@ -202,6 +198,11 @@ namespace apcurium.MK.Booking.Services.Impl
             Address pickupAddress, Address dropOffAddress, DateTime pickupDate, DateTime transactionDate, 
             SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode)
         {
+            if (!_configurationManager.GetSetting("Booking.DriverAssignedConfirmationEmail", false))
+            {
+                return;
+            }
+
             var vatEnabled = _configurationManager.GetSetting(VATEnabledSetting, false);
             var templateName = vatEnabled
                 ? DriverAssignedWithVATTemplateName
@@ -249,6 +250,11 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress, DateTime pickupDate,
             SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode)
         {
+            if (!_configurationManager.GetSetting("Booking.ConfirmationEmail", false))
+            {
+                return;
+            }
+
             var hasDropOffAddress = dropOffAddress != null && !string.IsNullOrWhiteSpace(dropOffAddress.FullAddress);
 
             var templateData = new

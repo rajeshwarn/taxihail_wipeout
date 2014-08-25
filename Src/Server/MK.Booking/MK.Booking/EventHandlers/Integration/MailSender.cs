@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -50,9 +51,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             using (var context = _contextFactory.Invoke())
             {
-                var sendDriverAssignedMail = _configurationManager.GetSetting(
-                    "Booking.DriverAssignedConfirmationEmail", false);
-                if (sendDriverAssignedMail && @event.Status.IBSStatusId == "wosASSIGNED")
+                if (@event.Status.IBSStatusId == VehicleStatuses.Common.Assigned)
                 {
                     var order = context.Find<OrderDetail>(@event.SourceId);
                     var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
