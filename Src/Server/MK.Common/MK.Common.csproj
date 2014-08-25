@@ -106,6 +106,7 @@
     <Compile Include="Configuration\Impl\PayPalSandboxCredentials.cs" />
     <Compile Include="Configuration\Impl\PayPalServerSettings.cs" />
     <Compile Include="Configuration\Impl\ServerPaymentSetting.cs" />
+    <Compile Include="Configuration\NotificationSettings.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="CreditCard.cs" />
     <Compile Include="CurencyCodes.cs" />
