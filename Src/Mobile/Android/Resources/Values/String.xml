@@ -497,4 +497,6 @@
   <string name="PendingOrderCancel">Cancel</string>
   <string name="NoCardOnFileMessage">You have choose to pay with a card on file, put you have no default card.  Add a card to your account or change your payment method to continue.</string>
   <string name="AddACardButton">Add Card</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000">The charge account information is invalid. Please try again.</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall">The charge account information is invalid. Please try again.</string>
 </resources>

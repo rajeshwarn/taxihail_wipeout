@@ -1512,4 +1512,10 @@
   <data name="AddACardButton" xml:space="preserve">
   	Add Card
   </data>
+<data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
+    <value>The charge account information is invalid. Please try again.</value>
+  </data>
+<data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall" xml:space="preserve">
+    <value>The charge account information is invalid. Please try again.</value>
+  </data>
 </root>

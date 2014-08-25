@@ -4048,14 +4048,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050109
 			public const int GooglePlayServicesNotAvailableMessage = 2131034377;
 			
-			// aapt resource value: 0x7f050238
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034680;
+			// aapt resource value: 0x7f05023a
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034682;
 			
 			// aapt resource value: 0x7f050069
 			public const int GooglePlayServicesNotAvailableTitle = 2131034217;
 			
-			// aapt resource value: 0x7f050239
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034681;
+			// aapt resource value: 0x7f05023b
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034683;
 			
 			// aapt resource value: 0x7f05005e
 			public const int HistoryDetailAptRingCodeLabel = 2131034206;
@@ -4617,6 +4617,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0501b0
 			public const int ServiceErrorCreateOrder_CannotCreateInIbs = 2131034544;
+			
+			// aapt resource value: 0x7f050238
+			public const int ServiceErrorCreateOrder_CannotCreateInIbs_10000 = 2131034680;
+			
+			// aapt resource value: 0x7f050239
+			public const int ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall = 2131034681;
 			
 			// aapt resource value: 0x7f05006d
 			public const int ServiceErrorCreateOrder_CannotCreateInIbs_1002 = 2131034221;
