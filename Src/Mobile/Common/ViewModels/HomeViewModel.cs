@@ -52,25 +52,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			_locateUser = locateUser;
 			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);
-			InitializeEventHandlers();
 			Panel.Init ();
 		}
-
-	    private void InitializeEventHandlers()
-	    {
-            _mvxLifetime.LifetimeChanged += (sender, args) =>
-            {
-                if (args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk
-                    || args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)
-                {
-                    CheckNotRatedRide();
-                }
-            };
-	    }
 
 		public override void OnViewLoaded ()
 		{
 			base.OnViewLoaded ();
+            _mvxLifetime.LifetimeChanged += OnApplicationLifetimeChanged;
 
 			Map = AddChild<MapViewModel>();
 			OrderOptions = AddChild<OrderOptionsViewModel>();
@@ -97,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 			if (firstTime)
 			{
-                CheckNotRatedRide();
+                CheckUnratedRide();
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
@@ -138,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-	    private void CheckNotRatedRide()
+	    private void CheckUnratedRide()
 	    {
             var unratedRideId = _orderWorkflowService.GetLastUnratedRide();
             if (unratedRideId != null
@@ -190,8 +178,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_locationService.Stop();
 			_vehicleService.Stop();
 		}
-		
-		public PanelMenuViewModel Panel { get; set; }
+
+	    public override void OnViewUnloaded()
+	    {
+	        base.OnViewUnloaded();
+            _mvxLifetime.LifetimeChanged -= OnApplicationLifetimeChanged;
+	    }
+
+	    public PanelMenuViewModel Panel { get; set; }
 
 		private MapViewModel _map;
 		public MapViewModel Map
@@ -300,5 +294,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 
 		}
+
+        private void OnApplicationLifetimeChanged(object sender, MvxLifetimeEventArgs args)
+        {
+            if (args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk
+                || args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)
+            {
+                CheckUnratedRide();
+            }
+        }
     }
 }
