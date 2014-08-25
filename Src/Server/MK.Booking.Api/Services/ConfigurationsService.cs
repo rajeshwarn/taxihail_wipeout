@@ -1,6 +1,7 @@
 ﻿#region
 
 using System.Linq;
+using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Security;
@@ -8,6 +9,9 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
+using MK.Common.Configuration;
+using ServiceStack.Common.Web;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 
@@ -74,6 +78,31 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             return "";
+        }
+
+        public object Get(NotificationSettingsRequest request)
+        {
+            if (!request.AccountId.HasValue)
+            {
+                return new NotificationSettings();
+            }
+
+            return new NotificationSettings();
+        }
+
+        public object Post(NotificationSettingsRequest request)
+        {
+            if (!request.AccountId.HasValue)
+            {
+                if (!SessionAs<AuthUserSession>().HasPermission(RoleName.Admin))
+                {
+                    return new HttpError(HttpStatusCode.Unauthorized, "");
+                }
+
+                return new HttpResult(HttpStatusCode.OK, "OK");
+            }
+
+            return new HttpResult(HttpStatusCode.OK, "OK");
         }
     }
 }

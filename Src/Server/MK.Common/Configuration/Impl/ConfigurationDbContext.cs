@@ -4,6 +4,7 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 using apcurium.MK.Common.Database;
+using MK.Common.Configuration;
 
 #endregion
 
@@ -27,6 +28,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             modelBuilder.Entity<AppSetting>().ToTable("AppSettings", SchemaName);
             modelBuilder.ComplexType<PayPalServerSettings>();
             modelBuilder.Entity<ServerPaymentSettings>().ToTable("PaymentSettings", SchemaName);
+            modelBuilder.Entity<NotificationSettings>().ToTable("NotificationSettings", SchemaName);
 
             base.OnModelCreating(modelBuilder);
         }
