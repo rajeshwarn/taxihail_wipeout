@@ -4,6 +4,7 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Configuration;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using Params = System.Collections.Generic.Dictionary<string, string>;
@@ -44,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				var paymentSettings = _paymentService.GetPaymentSettings();
 				IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
+			    IsNotificationsEnabled = Settings.PushNotificationsEnabled; // TODO
 			}
 			catch
 			{
@@ -56,6 +58,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile});
 			if (IsPayInTaxiEnabled)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation});
+            if (IsNotificationsEnabled)
+                ItemMenuList.Add(new ItemMenuModel() {Text = this.Services().Localize["PanelMenuViewNotificationsText"], NavigationCommand = NavigateToNotificationsSettings });
 			if (Settings.TutorialEnabled)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial});
 			if (!Settings.HideCallDispatchButton)
@@ -96,6 +100,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	            }
 	        }
 	    }
+
+        private bool _isNotificationsEnabled;
+        public bool IsNotificationsEnabled
+        {
+            get
+            {
+                return _isNotificationsEnabled;
+            }
+            set
+            {
+                if (_isNotificationsEnabled != value)
+                {
+                    _isNotificationsEnabled = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
 
         private bool _menuIsOpen;
         public bool MenuIsOpen {
@@ -221,6 +242,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				});
 			}
 		}
+
+        public ICommand NavigateToNotificationsSettings
+        {
+            get
+            {
+                return this.GetCommand(() =>
+                {
+                    MenuIsOpen = false;
+                    ShowViewModel<NotificationsSettingsViewModel>();
+                });
+            }
+        }
 
 		public ICommand NavigateToAboutUs
         {

@@ -483,4 +483,6 @@
   <string name="AddACardButton">Enregistrez</string>
   <string name="PayInCar">Payer dans le taxi</string>
   <string name="CreditCardErrorInvalid">La carte ne semble pas être valide</string>
+  <string name="View_NotificationsSettings">Notifications</string>
+  <string name="PanelMenuViewNotificationsText">Notifications</string>
 </resources>
