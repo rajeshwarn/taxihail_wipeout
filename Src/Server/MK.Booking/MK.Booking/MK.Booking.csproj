@@ -137,6 +137,7 @@
     <Compile Include="EventHandlers\Integration\IIBSOrderService.cs" />
     <Compile Include="EventHandlers\Integration\PaymentSettingsUpdater.cs" />
     <Compile Include="EventHandlers\Integration\OrderPaymentManager.cs" />
+    <Compile Include="EventHandlers\NotificationSettingsGenerator.cs" />
     <Compile Include="EventHandlers\OrderUserGpsGenerator.cs" />
     <Compile Include="EventHandlers\PayPalExpressCheckoutPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\PaymentSettingGenerator.cs" />

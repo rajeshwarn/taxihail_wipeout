@@ -21,6 +21,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         }
 
         public DbSet<ServerPaymentSettings> ServerPaymentSettings { get; set; }
+        public DbSet<NotificationSettings> NotificationSettings { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

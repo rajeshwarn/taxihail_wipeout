@@ -201,6 +201,13 @@ namespace DatabaseInitializer
                     CreateDefaultVehicleTypes(container, commandBus);
                 }
 
+                // Migration of notification settings
+                var configDao = new ConfigurationDao(() => new ConfigurationDbContext(connectionString.ConnectionString));
+                if (configDao.GetNotificationSettings() == null)
+                {
+                    
+                }
+
                 if (isUpdate && !string.IsNullOrEmpty(param.BackupFolder))
                 {
                     Console.WriteLine("Backup of old database...");

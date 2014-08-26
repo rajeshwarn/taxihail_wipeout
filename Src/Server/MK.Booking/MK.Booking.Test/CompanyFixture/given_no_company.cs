@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         public void given_no_company_setup()
         {
             _sut = new EventSourcingTestHelper<Company>();
-            _sut.Setup(new CompanyCommandHandler(_sut.Repository));
+            _sut.Setup(new CompanyCommandHandler(_sut.Repository, null));
         }
 
         private EventSourcingTestHelper<Company> _sut;

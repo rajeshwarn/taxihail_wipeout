@@ -151,6 +151,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, OrderUserGpsGenerator>("OrderUserGpsGenerator");
             container.RegisterType<IEventHandler, AccountChargeDetailGenerator>("AccountChargeDetailGenerator");
             container.RegisterType<IEventHandler, VehicleTypeDetailGenerator>("VehicleTypeDetailGenerator");
+            container.RegisterType<IEventHandler, NotificationSettingsGenerator>("NotificationSettingsGenerator");
 
             // Integration event handlers
             container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");
