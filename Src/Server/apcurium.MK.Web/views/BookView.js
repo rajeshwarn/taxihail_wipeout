@@ -98,7 +98,9 @@
                     locatepopular : true
             });
             
-            
+            if (TaxiHail.parameters.disableFutureBooking) {
+                this.$('#bookLaterButton').addClass('hidden');
+            }
 
             this.$('.pickup-address-container').html(this._pickupAddressView.render().el);
             this.$('.drop-off-address-container').html(this._dropOffAddressView.render().el);

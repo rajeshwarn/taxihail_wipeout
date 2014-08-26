@@ -43,6 +43,7 @@ namespace apcurium.MK.Web
         protected string VehicleTypes { get; private set; }
         protected string AccountChargeTypeId { get; private set; }
         protected bool IsWebSignupVisible { get; private set; }
+        protected string DisableFutureBooking { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -57,6 +58,7 @@ namespace apcurium.MK.Web
             FacebookAppId = config.GetSetting("FacebookAppId");
             FacebookEnabled = config.GetSetting("FacebookEnabled");
             HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
+            DisableFutureBooking = config.GetSetting("Client.DisableFutureBooking");
 
             IsWebSignupVisible = !config.GetSetting<bool>("IsWebSignupHidden", false);
 

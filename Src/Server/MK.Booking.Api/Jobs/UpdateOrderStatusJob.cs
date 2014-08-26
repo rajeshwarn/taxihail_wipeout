@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                     BatchUpdateStatus(orders.Where(o => (o.Status != OrderStatus.Pending) && (o.Status != OrderStatus.Created)));
 
-                    Thread.Sleep(new Random().Next(1, 15) * 1000);
+               
                 }
                 finally
                 {

@@ -495,8 +495,12 @@
   <string name="PendingOrderMessage">You cannot book this ride since an order is already pending. View the order status?</string>
   <string name="PendingOrderView">View</string>
   <string name="PendingOrderCancel">Cancel</string>
-  <string name="NoCardOnFileMessage">You have choose to pay with a card on file, put you have no default card.  Add a card to your account or change your payment method to continue.</string>
+  <string name="NoCardOnFileMessage">You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</string>
   <string name="AddACardButton">Add Card</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000">The charge account information is invalid. Please try again.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall">The charge account information is invalid. Please try again.</string>
+  <string name="Eta">The nearest taxi is {0} and {1} {2} away</string>
+  <string name="EtaDurationUnit">min</string>
+  <string name="EtaDurationUnitPlural">mins</string>
+  <string name="StatusEta">{0} and {1} {2} away</string>
 </resources>
