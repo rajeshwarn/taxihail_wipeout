@@ -1526,30 +1526,30 @@
     <value>Oui</value>
   </data>
 <data name="PendingOrderMessage" xml:space="preserve">
-  	Désolé, cette reservation ne peut être prise en compte. Vous avez déjà une commande en cours. Voir le détail?
+  	<value>Désolé, cette reservation ne peut être prise en compte. Vous avez déjà une commande en cours. Voir le détail?</value>
   </data>
 <data name="PendingOrderView" xml:space="preserve">
-  	Détail
+  	<value>Détail</value>
   </data>
   <data name="PendingOrderCancel" xml:space="preserve">
-  	Annuler
+  	<value>Annuler</value>
   </data>
   <data name="NoCardOnFileMessage" xml:space="preserve">
-  	Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.
+  	<value>Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.</value>
   </data>
   <data name="AddACardButton" xml:space="preserve">
-	Enregistrez
+	  <value>Enregistrez</value>
   </data>
   <data name="Eta" xml:space="preserve">
-  	Le taxi le plus près est à {0} et {1} {2}
+  	<value>Le taxi le plus près est à {0} et {1} {2}</value>
   </data>
   <data name="EtaDurationUnit" xml:space="preserve">
-  	min
+  	<value>min</value>
   </data>
   <data name="EtaDurationUnitPlural" xml:space="preserve">
-  	min
+  	<value>min</value>
   </data>
   <data name="StatusEta" xml:space="preserve">
-  	À {0} et {1} {2}
+  	<value>À {0} et {1} {2}</value>
   </data>
 </root>

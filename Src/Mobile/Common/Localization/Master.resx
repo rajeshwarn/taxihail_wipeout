@@ -1551,31 +1551,30 @@
     <value>Thanks for letting me know</value>
   </data>
   <data name="PendingOrderMessage" xml:space="preserve">
-  	You cannot book this ride since an order is already pending. View the order status?
+  	<value>You cannot book this ride since an order is already pending. View the order status?</value>
   </data>
 <data name="PendingOrderView" xml:space="preserve">
-  	View
+  	<value>View</value>
   </data>
 <data name="PendingOrderCancel" xml:space="preserve">
-  	Cancel
+  	<value>Cancel</value>
   </data>
   <data name="Eta" xml:space="preserve">
-  	The nearest taxi is {0} and {1} {2} away
+  	<value>The nearest taxi is {0} and {1} {2} away</value>
   </data>
   <data name="EtaDurationUnit" xml:space="preserve">
-  	min
+  	<value>min</value>
   </data>
   <data name="EtaDurationUnitPlural" xml:space="preserve">
-  	mins
+  	<value>mins</value>
   </data>
   <data name="StatusEta" xml:space="preserve">
-    {0} and {1} {2} away
+    <value>{0} and {1} {2} away</value>
   </data>
   <data name="NoCardOnFileMessage" xml:space="preserve">
-  	You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.
+  	<value>You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</value>
   </data>
   <data name="AddACardButton" xml:space="preserve">
-  	Add Card
+  	<value>Add Card</value>
   </data>
-
 </root>

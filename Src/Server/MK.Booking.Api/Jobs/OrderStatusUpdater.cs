@@ -147,7 +147,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void SendEtaMessageToDriver(double vehicleLatitude, double vehicleLongitude, string vehicleNumber)
         {
-            var eta = _directions.GetEta(_orderDetails.PickupAddress.Latitude, _orderDetails.PickupAddress.Longitude, vehicleLatitude, vehicleLongitude);
+            var eta = _directions.GetEta(vehicleLatitude, vehicleLongitude, _orderDetails.PickupAddress.Latitude, _orderDetails.PickupAddress.Longitude);
 
             if (eta != null && eta.IsValidEta())
             {
