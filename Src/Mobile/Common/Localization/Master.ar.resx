@@ -1557,4 +1557,10 @@
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
     <value>Vehicle at Pickup (Push)</value>
   </data>
+  <data name="Notification_Off" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="Notification_On" xml:space="preserve">
+    <value>On</value>
+  </data>
 </root>

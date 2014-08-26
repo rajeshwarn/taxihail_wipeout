@@ -4099,14 +4099,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050109
 			public const int GooglePlayServicesNotAvailableMessage = 2131034377;
 			
-			// aapt resource value: 0x7f05024a
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034698;
+			// aapt resource value: 0x7f050255
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034709;
 			
 			// aapt resource value: 0x7f050069
 			public const int GooglePlayServicesNotAvailableTitle = 2131034217;
 			
-			// aapt resource value: 0x7f05024b
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034699;
+			// aapt resource value: 0x7f050256
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034710;
 			
 			// aapt resource value: 0x7f05005e
 			public const int HistoryDetailAptRingCodeLabel = 2131034206;
@@ -4362,6 +4362,39 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f050178
 			public const int NotesToDriverHint = 2131034488;
+			
+			// aapt resource value: 0x7f05024a
+			public const int Notification_BookingConfirmationEmail = 2131034698;
+			
+			// aapt resource value: 0x7f05024b
+			public const int Notification_ConfirmPairingPush = 2131034699;
+			
+			// aapt resource value: 0x7f05024c
+			public const int Notification_DriverAssignedEmail = 2131034700;
+			
+			// aapt resource value: 0x7f05024d
+			public const int Notification_DriverAssignedPush = 2131034701;
+			
+			// aapt resource value: 0x7f05024e
+			public const int Notification_Enabled = 2131034702;
+			
+			// aapt resource value: 0x7f05024f
+			public const int Notification_NearbyTaxiPush = 2131034703;
+			
+			// aapt resource value: 0x7f050253
+			public const int Notification_Off = 2131034707;
+			
+			// aapt resource value: 0x7f050254
+			public const int Notification_On = 2131034708;
+			
+			// aapt resource value: 0x7f050250
+			public const int Notification_PaymentConfirmationPush = 2131034704;
+			
+			// aapt resource value: 0x7f050251
+			public const int Notification_ReceiptEmail = 2131034705;
+			
+			// aapt resource value: 0x7f050252
+			public const int Notification_VehicleAtPickupPush = 2131034706;
 			
 			// aapt resource value: 0x7f050093
 			public const int November = 2131034259;

@@ -1570,7 +1570,7 @@
     <value>Chauffeur  assigné (Push)</value>
   </data>
   <data name="Notification_Enabled" xml:space="preserve">
-    <value>Autorier Notifications</value>
+    <value>Notifications</value>
   </data>
   <data name="Notification_NearbyTaxiPush" xml:space="preserve">
     <value>Taxi à proximité (Push)</value>
@@ -1583,5 +1583,11 @@
   </data>
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
     <value>Taxi au point de ramassage (Push)</value>
+  </data>
+  <data name="Notification_Off" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="Notification_On" xml:space="preserve">
+    <value>Oui</value>
   </data>
 </root>

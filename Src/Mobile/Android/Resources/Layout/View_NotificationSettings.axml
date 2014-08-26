@@ -26,6 +26,33 @@
                 android:layout_height="@dimen/top_bar_title_height"
                 android:gravity="center" />
         </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/listnotifcell1"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:layout_weight="1"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
+            android:paddingLeft="15dip">
+            <TextView
+                android:id="@+id/NotificationSettingNameTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/black"
+                android:text="@string/Notification_Enabled" />
+            <ToggleButton
+                android:id="@+id/notificationSettingSwitchValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn="@string/Notification_On"
+                android:textOff="@string/Notification_Off"
+                android:layout_alignParentRight="true"
+                local:MvxBind="Checked IsNotificationEnabled" />
+        </RelativeLayout>
         <LinearLayout
             android:layout_margin="0dip"
             android:layout_width="fill_parent"
@@ -43,6 +70,6 @@
             android:layout_height="fill_parent"
             android:layout_marginBottom="5dip"
             local:MvxItemTemplate="@layout/notificationsettinglistitem"
-            local:MvxBind="ItemsSource NotificationSettings" />
+            local:MvxBind="ItemsSource NotificationSettings; Visibility IsNotificationEnabled, Converter=Visibility" />
     </LinearLayout>
 </RelativeLayout>

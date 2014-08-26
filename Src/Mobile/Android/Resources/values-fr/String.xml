@@ -490,9 +490,11 @@
   <string name="Notification_ConfirmPairingPush">Confirmation de pairing (Push)</string>
   <string name="Notification_DriverAssignedEmail">Chauffeur assigné (Email)</string>
   <string name="Notification_DriverAssignedPush">Chauffeur  assigné (Push)</string>
-  <string name="Notification_Enabled">Autorier Notifications</string>
+  <string name="Notification_Enabled">Notifications</string>
   <string name="Notification_NearbyTaxiPush">Taxi à proximité (Push)</string>
   <string name="Notification_PaymentConfirmationPush">Confirmation de paiement (Push)</string>
   <string name="Notification_ReceiptEmail">Reçu (Email)</string>
   <string name="Notification_VehicleAtPickupPush">Taxi au point de ramassage (Push)</string>
+  <string name="Notification_Off">Non</string>
+  <string name="Notification_On">Oui</string>
 </resources>

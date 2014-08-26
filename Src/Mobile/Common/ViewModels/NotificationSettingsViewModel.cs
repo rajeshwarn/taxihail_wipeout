@@ -12,13 +12,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private readonly IAccountService _accountService;
 
         private ObservableCollection<ToggleItem> _notificationSettings;
-
         public ObservableCollection<ToggleItem> NotificationSettings
         {
             get { return _notificationSettings; }
             set { _notificationSettings = value; RaisePropertyChanged(); }
         }
 
+        private bool _isNotificationEnabled;
+        public bool IsNotificationEnabled
+        {
+            get { return _isNotificationEnabled; }
+            set
+            {
+                if (_isNotificationEnabled != value)
+                {
+                    _isNotificationEnabled = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        
         public NotificationSettingsViewModel(IAccountService accountService)
         {
             _accountService = accountService;
@@ -51,10 +64,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             foreach (var setting in type.GetProperties())
             {
-                if (setting.PropertyType == typeof(bool)
-                    || setting.PropertyType == typeof(bool?))
+                if (setting.PropertyType == typeof(bool) || setting.PropertyType == typeof(bool?))
                 {
                     var value = (bool)setting.GetValue(notificationSettings, null);
+
+                    // Special case for this property since it resides outside the MvxListView
+                    if (setting.Name == "Enabled")
+                    {
+                        IsNotificationEnabled = value;
+                        continue;
+                    }
 
                     _notificationSettings.Add(new ToggleItem
                     {
@@ -68,7 +87,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void UpdateNotificationSettings()
         {
-            var updatedNotificationSettings = new NotificationSettings();
+            var updatedNotificationSettings = new NotificationSettings
+            {
+                Enabled = IsNotificationEnabled
+            };
+
             var type = updatedNotificationSettings.GetType();
             var updatedNotificationProperties = type.GetProperties();
 

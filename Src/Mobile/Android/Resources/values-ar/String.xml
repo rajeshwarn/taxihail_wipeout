@@ -497,4 +497,6 @@
   <string name="Notification_PaymentConfirmationPush">Payment Confirmation (Push)</string>
   <string name="Notification_ReceiptEmail">Receipt (Email)</string>
   <string name="Notification_VehicleAtPickupPush">Vehicle at Pickup (Push)</string>
+  <string name="Notification_Off">Off</string>
+  <string name="Notification_On">On</string>
 </resources>

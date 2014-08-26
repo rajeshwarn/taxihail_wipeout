@@ -8,8 +8,6 @@ namespace MK.Common.Configuration
     {
         [Key]
         public Guid Id { get; set; }
-
-        [DisplayName("AllowNotifications")]
         public bool Enabled { get; set; }
 
         public bool? BookingConfirmationEmail { get; set; }

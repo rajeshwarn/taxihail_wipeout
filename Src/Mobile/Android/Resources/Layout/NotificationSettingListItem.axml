@@ -11,8 +11,9 @@
     android:paddingLeft="15dip">
     <TextView
         android:id="@+id/NotificationSettingNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
         android:ellipsize="end"
         android:lines="1"
         android:textColor="@color/black"
@@ -21,8 +22,8 @@
         android:id="@+id/notificationSettingSwitchValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textOn="ON"
-        android:textOff="OFF"
-        android:gravity="right"
+        android:textOn="@string/Notification_On"
+        android:textOff="@string/Notification_Off"
+        android:layout_alignParentRight="true"
         local:MvxBind="Checked Value" />
 </RelativeLayout>

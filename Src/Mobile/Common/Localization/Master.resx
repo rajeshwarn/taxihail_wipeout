@@ -1606,7 +1606,7 @@
     <value>Driver Assigned (Push)</value>
   </data>
   <data name="Notification_Enabled" xml:space="preserve">
-    <value>Allow Notifications</value>
+    <value>Notifications</value>
   </data>
   <data name="Notification_NearbyTaxiPush" xml:space="preserve">
     <value>Nearby Taxi (Push)</value>
@@ -1619,5 +1619,11 @@
   </data>
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
     <value>Vehicle at Pickup (Push)</value>
+  </data>
+  <data name="Notification_Off" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="Notification_On" xml:space="preserve">
+    <value>On</value>
   </data>
 </root>
