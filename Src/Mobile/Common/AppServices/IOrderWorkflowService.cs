@@ -51,7 +51,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder();
 
+        Guid? GetLastUnratedRide();
+
 		Task<bool> ShouldWarnAboutEstimate();
+
+	    bool ShouldPromptUserToRateLastRide();
 
 		Task<bool> ShouldGoToAccountNumberFlow();
 		Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null);

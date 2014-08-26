@@ -211,7 +211,6 @@
     <Compile Include="Setup.cs" />
     <Compile Include="Activities\Setting\RideSettingsActivity.cs" />
     <Compile Include="Models\Activities.cs" />
-    <Compile Include="Activities\AlertDialogActivity.cs" />
     <AndroidResource Include="Resources\Drawable\StatusBottomBarBackground.xml" />
     <AndroidResource Include="Resources\Drawable\WindowDisplay.xml" />
     <Compile Include="Activities\SelectItemDialogActivity.cs" />

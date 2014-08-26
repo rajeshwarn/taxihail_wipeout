@@ -771,8 +771,8 @@
   <data name="LoginForgotPassword" xml:space="preserve">
     <value>Mot de passe oublié?</value>
   </data>
-<data name="LoginSupport" xml:space="preserve">
-   	<value>Support Technique?</value>
+  <data name="LoginSupport" xml:space="preserve">
+    <value>Support Technique?</value>
   </data>
   <data name="LoginForgotPasswordDetail" xml:space="preserve">
     <value>Saisissez votre email pour recevoir votre nouveau mot de passe</value>
@@ -1559,15 +1559,30 @@
     <value>Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.</value>
   </data>
   <data name="Eta" xml:space="preserve">
-  	<value>Le taxi le plus près est à {0} et {1} {2}</value>
+    <value>Le taxi le plus près est à {0} et {1} {2}</value>
+  </data>
+  <data name="DontAsk" xml:space="preserve">
+    <value>Don't ask</value>
   </data>
   <data name="EtaDurationUnit" xml:space="preserve">
-  	<value>min</value>
+    <value>min</value>
+  </data>
+  <data name="NotNow" xml:space="preserve">
+    <value>Not now</value>
   </data>
   <data name="EtaDurationUnitPlural" xml:space="preserve">
-  	<value>min</value>
+    <value>min</value>
+  </data>
+  <data name="RateLastRide" xml:space="preserve">
+    <value>Rate</value>
   </data>
   <data name="StatusEta" xml:space="preserve">
-  	<value>À {0} et {1} {2}</value>
+    <value>À {0} et {1} {2}</value>
+  </data>
+  <data name="RateLastRideMessage" xml:space="preserve">
+    <value>We would appreciate your feedback on your last ride, would you like to rate it?</value>
+  </data>
+  <data name="RateLastRideTitle" xml:space="preserve">
+    <value>Rate last ride?</value>
   </data>
 </root>

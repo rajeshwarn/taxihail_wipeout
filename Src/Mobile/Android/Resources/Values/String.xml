@@ -518,4 +518,9 @@
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
   <string name="PayInCar">Pay in Car</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
+  <string name="DontAsl">Don\'t ask</string>
+  <string name="NotNow">Not now</string>
+  <string name="RateLastRide">Rate</string>
+  <string name="RateLastRideMessage">We would appreciate your feedback on your last ride, would you like to rate it?</string>
+  <string name="RateLastRideTitle">Rate last ride?</string>
 </resources>

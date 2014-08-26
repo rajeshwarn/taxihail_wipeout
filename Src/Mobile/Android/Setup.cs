@@ -26,11 +26,6 @@ using TinyIoC;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Google;
 using Cirrious.CrossCore.Droid;
-using Cirrious.MvvmCross.Platform;
-using TinyMessenger;
-using apcurium.MK.Booking.Mobile.Messages;
-using Cirrious.MvvmCross.Droid.Platform;
-using Cirrious.MvvmCross.Droid.Views;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
 
@@ -64,10 +59,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             _container.Register<IPackageInfo>(new PackageInfo(ApplicationContext));
             _container.Register<ILogger, LoggerImpl>();
-            _container.Register<IMessageService>(new MessageService(ApplicationContext));
+            _container.Register<IMessageService, MessageService>();
             _container.Register<IAnalyticsService>((c, x) => new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>()));
 
-            _container.Register<ILocationService>(new LocationService());
+            _container.Register<ILocationService, LocationService>();
 
 			_container.Register<ILocalization>(new Localize(ApplicationContext,_container.Resolve<ILogger>()));
             _container.Register<ICacheService>(new CacheService());

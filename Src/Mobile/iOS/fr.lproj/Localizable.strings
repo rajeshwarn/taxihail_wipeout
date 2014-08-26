@@ -482,3 +482,8 @@
 "CreditCardErrorInvalid"="La carte ne semble pas être valide";
 "EtaDurationUnit"="min";
 "StatusEta"="À {0} et {1} {2}";
+"RateLastRideTitle"="Rate last ride?";
+"RateLastRide"="Rate";
+"NotNow"="Not now";
+"RateLastRideMessage"="We would appreciate your feedback on your last ride, would you like to rate it?";
+"DontAsk"="Don't ask";

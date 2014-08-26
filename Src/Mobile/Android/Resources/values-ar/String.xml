@@ -490,5 +490,10 @@
   <string name="Eta">The nearest taxi is {0} and {1} {2} away</string>
   <string name="EtaDurationUnit">min</string>
   <string name="EtaDurationUnitPlural">mins</string>
+  <string name="DontAsk">Don\'t ask</string>
+  <string name="NotNow">Not now</string>
+  <string name="RateLastRide">Rate</string>
+  <string name="RateLastRideMessage">We would appreciate your feedback on your last ride, would you like to rate it?</string>
+  <string name="RateLastRideTitle">Rate last ride?</string>
   <string name="StatusEta">{0} and {1} {2} away</string>
 </resources>

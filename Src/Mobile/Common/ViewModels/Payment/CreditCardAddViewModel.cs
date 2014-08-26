@@ -325,19 +325,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.CardNumber = null;
 					Data.CCV = null;
 
-					ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
-
 					// update default card and default chargetype
 					var account = _accountService.CurrentAccount;
 					account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
 					account.DefaultCreditCard = Data.CreditCardId;
 					_accountService.UpdateSettings(account.Settings, Data.CreditCardId, account.DefaultTipPercent);
 
-                    this.Services().Message.ShowMessage(string.Empty, this.Services().Localize["CreditCardAdded"]);
+                    this.Services().Message.ShowMessage(
+                        string.Empty,
+                        this.Services().Localize["CreditCardAdded"],
+                        () => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
 				}
 				else
 				{
-					this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
+                    this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
 				}
             }
 			finally 

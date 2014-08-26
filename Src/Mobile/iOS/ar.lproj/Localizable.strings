@@ -486,3 +486,8 @@
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "EtaDurationUnit"="min";
 "StatusEta"="{0} and {1} {2} away";
+"RateLastRideTitle"="Rate last ride?";
+"RateLastRide"="Rate";
+"NotNow"="Not now";
+"RateLastRideMessage"="We would appreciate your feedback on your last ride, would you like to rate it?";
+"DontAsk"="Don't ask";

@@ -321,14 +321,25 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
                     return Tuple.Create(order, status);
 				}
-				else
+                else if (_bookingService.IsStatusCompleted(status.IBSStatusId))
 				{
-					_bookingService.ClearLastOrder();
+                    var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
+                    if (order.IsRated)
+					    _bookingService.ClearLastOrder();
 				}
 			}
 
 			return null;
 		}
+
+        public Guid? GetLastUnratedRide()
+	    {
+            if (_bookingService.HasUnratedLastOrder)
+            {
+                return _bookingService.GetUnratedLastOrder();
+            }
+            return null;
+	    }
 
 		public IObservable<Address> GetAndObservePickupAddress()
 		{
@@ -499,6 +510,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					&& !_cacheService.Get<string>("WarningEstimateDontShow").HasValue()
 					&& destination.HasValidCoordinate();
 		}
+
+	    public bool ShouldPromptUserToRateLastRide()
+	    {
+            return !_cacheService.Get<string>("RateLastRideDontPrompt").HasValue();
+	    }
 
 		public async Task<bool> ShouldGoToAccountNumberFlow()
 		{
