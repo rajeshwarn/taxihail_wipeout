@@ -46,8 +46,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var paymentSettings = _paymentService.GetPaymentSettings();
 				IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
 
-			    var notificationSettings = await _accountService.GetNotificationSettings();
-			    IsNotificationsEnabled = /*notificationSettings.Enabled*/true;
+			    var notificationSettings = await _accountService.GetNotificationSettings(true);
+			    IsNotificationsEnabled = notificationSettings.Enabled;
 			}
 			catch
 			{

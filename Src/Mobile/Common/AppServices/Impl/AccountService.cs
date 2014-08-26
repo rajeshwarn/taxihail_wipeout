@@ -610,9 +610,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			await UseServiceClientAsync<IAccountServiceClient>(client => client.RemoveCreditCard());
 		}
 
-        public async Task<NotificationSettings> GetNotificationSettings()
+        public async Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false)
         {
             var companySettings = await UseServiceClientAsync<CompanyServiceClient, NotificationSettings>(client => client.GetNotificationSettings());
+            if (companyDefaultOnly)
+            {
+                return companySettings;
+            }
+
             var userSettings = await UseServiceClientAsync<IAccountServiceClient, NotificationSettings>(client => client.GetNotificationSettings(CurrentAccount.Id));
 
             // Merge company and user settings together
