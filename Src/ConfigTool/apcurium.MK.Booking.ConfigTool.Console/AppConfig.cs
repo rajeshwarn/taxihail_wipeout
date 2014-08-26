@@ -27,6 +27,9 @@ namespace apcurium.MK.Booking.ConfigTool
 
         private void Init()
         {
+
+            var androidPackage = string.IsNullOrWhiteSpace(Config.PackageAndroid) ? Config.Package : Config.PackageAndroid;
+
 			var c = new Config[]
            {
 					/**CallBox **/
@@ -41,10 +44,10 @@ namespace apcurium.MK.Booking.ConfigTool
 //                    new ConfigFile(this){ Source=@"navBar.png", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Drawable\navBar.png" },
 //                    new ConfigFile(this){ Source=@"navBar@2x.png", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Drawable-xhdpi\navBar.png" },
 //					
-//                    new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest", Attribute="package" , SetterAtt = ( app, att )=> att.Value = Config.Package + "CallBox" },
+//                    new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest", Attribute="package" , SetterAtt = ( app, att )=> att.Value = androidPackage + "CallBox" },
 //				    new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application", Attribute="android:label" , SetterAtt = ( app, att )=> att.Value = Config.ApplicationName + " CallBox" },
 //					
-//                    new ConfigXmlNamespace(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Layout\", Namespace = "xmlns:local", Value= Config.Package + "CallBox"},
+//                    new ConfigXmlNamespace(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Layout\", Namespace = "xmlns:local", Value= androidPackage + "CallBox"},
 //					
 //                    new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\MK.Callbox.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
 //                    new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\MK.Callbox.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
@@ -68,7 +71,7 @@ namespace apcurium.MK.Booking.ConfigTool
 				    new ConfigSplash(this,"splash.png",@"Mobile\Android\Resources\","splash.png"),
                     new ConfigFile(this){ Source="app@2x.png", Destination=@"Mobile\Android\Resources\Drawable\Icon.png" },
 
-	                new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest", Attribute="package" , SetterAtt = ( app, att )=> att.Value = Config.Package  },
+	                new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest", Attribute="package" , SetterAtt = ( app, att )=> att.Value = androidPackage  },
 				    new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application", Attribute="android:label" , SetterAtt = ( app, att )=> att.Value = Config.ApplicationName  },
 	                	
 					/* open app from browser settings */
@@ -78,16 +81,16 @@ namespace apcurium.MK.Booking.ConfigTool
 	                new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/permission[contains(@android:name,""permission.C2D_MESSAGE"")]", Attribute="android:name" , SetterAtt = ( app, att )=> att.Value = Config.Package + ".permission.C2D_MESSAGE" },
 				    new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/uses-permission[contains(@android:name,""permission.C2D_MESSAGE"")]", Attribute="android:name", SetterAtt = ( app, att )=> 
 					{
-                        att.Value = Config.Package + ".permission.C2D_MESSAGE";
+                        att.Value = androidPackage + ".permission.C2D_MESSAGE";
 					}},
-					new ConfigMultiXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application/receiver/intent-filter/category", Attribute="android:name" , SetterAtt = ( app, att )=> att.Value = Config.Package  },
+					new ConfigMultiXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application/receiver/intent-filter/category", Attribute="android:name" , SetterAtt = ( app, att )=> att.Value = androidPackage  },
 	                
 
                     /** Google Maps */
                      new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/permission[contains(@android:name,""permission.MAPS_RECEIVE"")]", Attribute="android:name" , SetterAtt = ( app, att )=> att.Value = Config.Package + ".permission.MAPS_RECEIVE" },
 	                new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/uses-permission[contains(@android:name,""permission.MAPS_RECEIVE"")]", Attribute="android:name", SetterAtt = ( app, att )=> 
 					{
-                        att.Value = Config.Package + ".permission.MAPS_RECEIVE";
+                        att.Value = androidPackage + ".permission.MAPS_RECEIVE";
 					}},
 
 				    new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },               

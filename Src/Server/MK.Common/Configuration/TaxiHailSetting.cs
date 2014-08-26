@@ -29,6 +29,7 @@ namespace MK.Common.Configuration
 			DefaultTipPercentage = 15;
             DirectionDataProvider = MapProvider.Google;
 			SMSConfirmationEnabled = false;
+		    EtaPaddingRatio = 1;
 		    DisableChargeTypeWhenCardOnFile = false;
 		    VehicleEstimateEnabled = false;
 		    AutomaticPayment = false;
@@ -128,6 +129,12 @@ namespace MK.Common.Configuration
         public bool ShowEstimateWarning { get; private set; }
         [Display(Name = "Show Estimate", Description="Show an estimate")]
         public bool ShowEstimate { get; private set; }
+		[Display(Name = "Show Eta", Description="Show eta")]
+		public bool ShowEta { get; private set; }
+		[Display(Name = "Google Map Key", Description="Google API Key for business, required for directions aka eta feature")]
+        public string GoogleMapKey { get; private set; }
+        [Display(Name = "Eta Padding Ratio", Description = "Eta duration padding ratio (multiply duration in seconds by...)")]
+		public double EtaPaddingRatio { get; private set; }
         [Display(Name = "Use Theme Color On Map Icons", Description="Use company color for pickup and destination map icons")]
         public bool UseThemeColorForMapIcons { get; private set; }
 
@@ -234,7 +241,6 @@ namespace MK.Common.Configuration
 		public double? UpperRightLatitude { get; private set; }
 		[Display(Name = "Upper Right Longitude", Description="Upper Right Longitude limit to be used when searching for an address")]
 		public double? UpperRightLongitude { get; private set; }
-
     }
 }
 

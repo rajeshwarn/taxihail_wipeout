@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
+using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.ReadModel;
@@ -18,10 +22,12 @@ using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using System;
+using log4net;
 
 #endregion
 
@@ -35,25 +41,32 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IOrderDao _orderDao;
         private readonly IPaymentService _paymentService;
         private readonly INotificationService _notificationService;
+        private readonly IDirections _directions;
+        private readonly IIbsOrderService _ibsOrderService;
         private readonly Resources.Resources _resources;
+
+        private static readonly ILog Log = LogManager.GetLogger(typeof(CreateOrderService));
 
         public OrderStatusUpdater(IConfigurationManager configurationManager, 
             ICommandBus commandBus, 
             IOrderPaymentDao orderPaymentDao, 
             IOrderDao orderDao,
             IPaymentService paymentService,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IDirections directions,
+            IIbsOrderService ibsOrderService)
         {
             _orderDao = orderDao;
             _paymentService = paymentService;
             _notificationService = notificationService;
+            _directions = directions;
+            _ibsOrderService = ibsOrderService;
             _configurationManager = configurationManager;
             _commandBus = commandBus;
             _orderPaymentDao = orderPaymentDao;
+
             _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"));
         }
-
-        
 
         public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
         {
@@ -243,9 +256,17 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 description = string.Format(_resources.Get("OrderStatus_CabDriverNumberAssigned", languageCode), ibsOrderInfo.VehicleNumber);
 
-                if (ibsOrderInfo.Eta.HasValue)
+                if (_configurationManager.GetSetting("Client.ShowEta", false))
                 {
-                    description += " - " + string.Format(_resources.Get("OrderStatus_CabDriverETA", languageCode), ibsOrderInfo.Eta.Value.ToString("t"));
+                    try
+                    {
+                        SendEtaMessageToDriver((double) ibsOrderInfo.VehicleLatitude, (double) ibsOrderInfo.VehicleLongitude, 
+                            orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleNumber);
+                    }
+                    catch
+                    {
+                        Log.Error("Cannot Send Eta to Vehicle Number " + ibsOrderInfo.VehicleNumber);
+                    }
                 }
             }
             else if (ibsOrderInfo.IsCanceled)
@@ -268,6 +289,15 @@ namespace apcurium.MK.Booking.Api.Jobs
             return description.HasValue()
                         ? description
                         : _resources.Get("OrderStatus_" + ibsOrderInfo.Status, languageCode);
+        }
+
+        private void SendEtaMessageToDriver(double vehicleLatitude, double vehicleLongitude, double pickupLatitude, double pickupLongitude, string vehicleNumber)
+        {
+            var eta = _directions.GetEta(vehicleLatitude, vehicleLongitude, pickupLatitude, pickupLongitude);
+            if (eta != null && eta.IsValidEta())
+            {
+                _ibsOrderService.SendMessageToDriver("ETA displayed to client is " + eta.FormattedDistance + " and " + eta.Duration + " min", vehicleNumber);
+            }
         }
 
         private string FormatPrice(double? price)

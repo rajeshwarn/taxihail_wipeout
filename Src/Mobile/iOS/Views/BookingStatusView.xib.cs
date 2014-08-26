@@ -20,7 +20,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class BookingStatusView : BaseViewController<BookingStatusViewModel>
     {
-        public BookingStatusView () : base("BookingStatusView", null)
+		private const float DEFAULT_STATUS_LABEL_HEIGHT = 21f;
+		private const float DEFAULT_TOP_VISIBLE_STATUS_HEIGHT = 45f;
+        private float VisibleStatusHeight = 45f;
+
+		public BookingStatusView () : base("BookingStatusView", null)
         {
         }
 
@@ -63,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 topSlidingStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("background.png"));
                 topVisibleStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("backPickupDestination.png"));
 
-                viewLine.Frame = new RectangleF( 0,topSlidingStatus.Bounds.Height -1, topSlidingStatus.Bounds.Width, 1 );
+                viewLine.Frame = new RectangleF(0, topSlidingStatus.Bounds.Height -1, topSlidingStatus.Bounds.Width, 1);
 
                 btnCallDriver.SetImage(UIImage.FromFile("phone.png"), UIControlState.Normal);
                 btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
@@ -123,8 +127,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 var set = this.CreateBindingSet<BookingStatusView, BookingStatusViewModel>();
 
-                set.Bind(lblStatus)
-                    .For(v => v.Text)
+                set.Bind(this)
+                    .For("StatusInfoText")
                     .To(vm => vm.StatusInfoText);
 
                 set.Bind(lblConfirmation)
@@ -317,6 +321,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
+		public string StatusInfoText
+		{
+			set
+			{
+				if(lblStatus.Text != value)
+				{
+					lblStatus.Text = value;
+					var nbLines = 1 + (int)(lblStatus.StringSize(value, lblStatus.Font).Width / lblStatus.Frame.Width);
+                    var togglePadding = DEFAULT_STATUS_LABEL_HEIGHT * (nbLines - 1);
+                    lblStatus.SetHeight (DEFAULT_STATUS_LABEL_HEIGHT + togglePadding);              // increase label height
+                    VisibleStatusHeight = DEFAULT_TOP_VISIBLE_STATUS_HEIGHT + togglePadding;
+                    statusBar.SetMinHeight (VisibleStatusHeight);
+                    statusBar.SetMaxHeight (VisibleStatusHeight);
+				}
+			}
+		}
+
 		void UpdateTopSlidingStatus(string propertyName)
 		{
 			if (propertyName == "OrderStatusDetail") 
@@ -358,11 +379,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				}
 	
 				if (numberOfItemsHidden == 6) {
-					statusBar.SetMaxHeight (topVisibleStatus.Frame.Height);
+                    statusBar.SetMaxHeight (VisibleStatusHeight);
 					return;
 				}
 
-				statusBar.SetMaxHeight (defaultHeightOfSlidingView - (20 * numberOfItemsHidden) + topVisibleStatus.Frame.Height);
+                statusBar.SetMaxHeight (defaultHeightOfSlidingView - (20 * numberOfItemsHidden) + VisibleStatusHeight);
 
 				var i = 0;
 				foreach (var item in tupleList) {

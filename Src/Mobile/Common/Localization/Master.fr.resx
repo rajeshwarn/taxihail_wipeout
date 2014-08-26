@@ -1164,6 +1164,13 @@
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall" xml:space="preserve">
     <value>La commande ne peut être créée car votre compte est actuellement désactivé</value>
   </data>
+<data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
+    <value>La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</value>
+  </data>
+<data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall" xml:space="preserve">
+    <value>La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</value>
+  </data>
+
   <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
     <value>La commande ne peut être créé car le fournisseur est invalide. Merci de contacter {0} à {1} pour plus d'assistance.</value>
   </data>
@@ -1550,5 +1557,17 @@
   </data>
   <data name="NoCardOnFileMessage" xml:space="preserve">
     <value>Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.</value>
+  </data>
+  <data name="Eta" xml:space="preserve">
+  	<value>Le taxi le plus près est à {0} et {1} {2}</value>
+  </data>
+  <data name="EtaDurationUnit" xml:space="preserve">
+  	<value>min</value>
+  </data>
+  <data name="EtaDurationUnitPlural" xml:space="preserve">
+  	<value>min</value>
+  </data>
+  <data name="StatusEta" xml:space="preserve">
+  	<value>À {0} et {1} {2}</value>
   </data>
 </root>

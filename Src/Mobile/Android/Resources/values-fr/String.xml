@@ -483,4 +483,10 @@
   <string name="AddACardButton">Enregistrez</string>
   <string name="PayInCar">Payer dans le taxi</string>
   <string name="CreditCardErrorInvalid">La carte ne semble pas être valide</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000">La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall">La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</string>
+  <string name="Eta">Le taxi le plus près est à {0} et {1} {2}</string>
+  <string name="EtaDurationUnit">min</string>
+  <string name="EtaDurationUnitPlural">min</string>
+  <string name="StatusEta">À {0} et {1} {2}</string>
 </resources>

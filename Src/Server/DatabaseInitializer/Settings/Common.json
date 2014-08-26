@@ -105,5 +105,7 @@
    "Client.AllowAddressRange" : "false",
    "Store.AppleLink" : "http://www.mobile-knowledge.com/",
    "Store.PlayLink" : "http://www.mobile-knowledge.com/"
+   "Client.ShowEta" : "false",
+   "Client.EtaPaddingRatio" : "1"
 }
 

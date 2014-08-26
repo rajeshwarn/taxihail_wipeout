@@ -159,11 +159,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
-		public async Task ValidatePickupDestinationAndTime()
+		public async Task ValidatePickupTime()
+		{
+			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
+			var pickupDateIsValid = !pickupDate.HasValue || (pickupDate.Value.ToUniversalTime() >= DateTime.UtcNow);
+
+			if (!pickupDateIsValid)
+			{
+				throw new OrderValidationException("Invalid pickup date", OrderValidationError.InvalidPickupDate);
+			}
+		}
+
+		public async Task ValidatePickupAndDestination()
 		{
 			var pickupAddress = await _pickupAddressSubject.Take(1).ToTask();
 			var pickupIsValid = pickupAddress.BookAddress.HasValue()
-			                     && pickupAddress.HasValidCoordinate();
+				&& pickupAddress.HasValidCoordinate();
 
 			if (!pickupIsValid)
 			{
@@ -189,14 +200,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				{
 					throw new OrderValidationException("Destination address required", OrderValidationError.DestinationAddressRequired);
 				}
-			}
-
-			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
-			var pickupDateIsValid = !pickupDate.HasValue || (pickupDate.Value.ToUniversalTime() >= DateTime.UtcNow);
-
-			if (!pickupDateIsValid)
-			{
-				throw new OrderValidationException("Invalid pickup date", OrderValidationError.InvalidPickupDate);
 			}
 		}
 
@@ -260,6 +263,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					case "CreateOrder_NoFareEstimateAvailable": /* Fare estimate is required and was not submitted */
 					case "CreateOrder_CannotCreateInIbs_1002": /* Pickup address outside of service area */
 					case "CreateOrder_CannotCreateInIbs_7000": /* Inactive account */
+					case "CreateOrder_CannotCreateInIbs_10000": /* Inactive charge account */
 						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["ServiceError" + e.ErrorCode + "_NoCall"];
 						throw new OrderCreationException(message, messageNoCall);

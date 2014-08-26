@@ -478,6 +478,11 @@
 "PendingOrderMessage"="You cannot book this ride since an order is already pending. View the order status?";
 "PendingOrderView"="View";
 "NoCardOnFileMessage"="You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.";
+"Eta"="The nearest taxi is {0} and {1} {2} away";
+"EtaDurationUnitPlural"="mins";
+"NoCardOnFileMessage"="You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.";
 "AddACardButton"="Add Card";
 "PayInCar"="Pay in Car";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
+"EtaDurationUnit"="min";
+"StatusEta"="{0} and {1} {2} away";

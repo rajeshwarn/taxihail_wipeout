@@ -25,6 +25,11 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 			RefreshPinImage();
 		}
 
+		public override void PrepareForReuse ()
+		{			
+			base.PrepareForReuse ();
+		}
+
 		public override sealed NSObject Annotation
 		{
 			get 

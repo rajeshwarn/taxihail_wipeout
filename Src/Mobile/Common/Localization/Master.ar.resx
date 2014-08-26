@@ -1521,7 +1521,25 @@
   <data name="PendingOrderCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Eta" xml:space="preserve">
+    <value>The nearest taxi is {0} and {1} {2} away</value>
+  </data>
+  <data name="EtaDurationUnit" xml:space="preserve">
+    <value>min</value>
+  </data>
+  <data name="EtaDurationUnitPlural" xml:space="preserve">
+    <value>mins</value>
+  </data>
+  <data name="StatusEta" xml:space="preserve">
+    <value>{0} and {1} {2} away</value>
+  </data>
   <data name="NoCardOnFileMessage" xml:space="preserve">
     <value>You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
+    <value>The charge account information is invalid. Please try again.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall" xml:space="preserve">
+    <value>The charge account information is invalid. Please try again.</value>
   </data>
 </root>

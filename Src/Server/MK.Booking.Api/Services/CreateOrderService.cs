@@ -46,6 +46,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
         private readonly Resources.Resources _resources;
+        private readonly CancelOrderService _cancelService;
 
         public CreateOrderService(ICommandBus commandBus,
             IBookingWebServiceClient bookingWebServiceClient,
@@ -56,8 +57,10 @@ namespace apcurium.MK.Booking.Api.Services
             IRuleCalculator ruleCalculator,
             IUpdateOrderStatusJob updateOrderStatusJob, 
             IConfigurationManager configurationManager,
-            IOrderDao orderDao)
+            IOrderDao orderDao,
+            CancelOrderService cancelService)
         {
+            _cancelService = cancelService;
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
             _accountDao = accountDao;
@@ -136,6 +139,15 @@ namespace apcurium.MK.Booking.Api.Services
                 return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + code);
             }
 
+            //Temporary solution for Aexid, we call the save extr payment to send the account info.  if not successful, we cancel the order.
+            var result = TryToSendAccountInformation(  request.Id,   ibsOrderId.Value , request, account);
+            if ( result.HasValue  )
+            {
+                
+                return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + "_" + Math.Abs(result.Value));
+            }
+            
+
             var command = Mapper.Map<Commands.CreateOrder>(request);
             var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(request);
 
@@ -178,6 +190,21 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
+        private int? TryToSendAccountInformation(Guid orderId, int ibsOrderId, CreateOrder request, AccountDetail account)
+        {
+            var accountChargeTypeId = _configManager.GetSetting<int>("AccountChargeTypeId", -1);
+            if (accountChargeTypeId == -1)
+            {
+                accountChargeTypeId = _configManager.GetSetting<int>("Client.AccountChargeTypeId", -1);
+            }
+
+            if (accountChargeTypeId == request.Settings.ChargeTypeId)
+            {
+                return  _bookingWebServiceClient.SendAccountInformation(orderId, ibsOrderId, "Account", request.Settings.AccountNumber, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, account.Email);                
+            }
+
+            return null;
+        }
         private void UpdateStatusAsync(Guid orderId)
         {
             new TaskFactory().StartNew(() =>

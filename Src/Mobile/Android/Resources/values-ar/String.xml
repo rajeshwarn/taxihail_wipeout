@@ -485,4 +485,10 @@
   <string name="AddACardButton">Add Card</string>
   <string name="PayInCar">Pay in Car</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000">The charge account information is invalid. Please try again.</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall">The charge account information is invalid. Please try again.</string>
+  <string name="Eta">The nearest taxi is {0} and {1} {2} away</string>
+  <string name="EtaDurationUnit">min</string>
+  <string name="EtaDurationUnitPlural">mins</string>
+  <string name="StatusEta">{0} and {1} {2} away</string>
 </resources>
