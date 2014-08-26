@@ -1557,4 +1557,31 @@
   <data name="PanelMenuViewNotificationsText" xml:space="preserve">
     <value>Notifications</value>
   </data>
+  <data name="Notification_BookingConfirmationEmail" xml:space="preserve">
+    <value>Confirmation Commande (Email)</value>
+  </data>
+  <data name="Notification_ConfirmPairingPush" xml:space="preserve">
+    <value>Confirmation de pairing (Push)</value>
+  </data>
+  <data name="Notification_DriverAssignedEmail" xml:space="preserve">
+    <value>Chauffeur assigné (Email)</value>
+  </data>
+  <data name="Notification_DriverAssignedPush" xml:space="preserve">
+    <value>Chauffeur  assigné (Push)</value>
+  </data>
+  <data name="Notification_Enabled" xml:space="preserve">
+    <value>Autorier Notifications</value>
+  </data>
+  <data name="Notification_NearbyTaxiPush" xml:space="preserve">
+    <value>Taxi à proximité (Push)</value>
+  </data>
+  <data name="Notification_PaymentConfirmationPush" xml:space="preserve">
+    <value>Confirmation de paiement (Push)</value>
+  </data>
+  <data name="Notification_ReceiptEmail" xml:space="preserve">
+    <value>Reçu (Email)</value>
+  </data>
+  <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
+    <value>Taxi au point de ramassage (Push)</value>
+  </data>
 </root>

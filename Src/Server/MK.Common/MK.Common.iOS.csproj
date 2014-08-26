@@ -71,6 +71,7 @@
     <Compile Include="Configuration\NotificationSettings.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\ListItem.cs" />
+    <Compile Include="Entity\ToggleItem.cs" />
     <Compile Include="Extensions\ActionExtension.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />

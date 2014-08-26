@@ -43,6 +43,6 @@
             android:layout_height="fill_parent"
             android:layout_marginBottom="5dip"
             local:MvxItemTemplate="@layout/notificationsettinglistitem"
-            local:MvxBind="ItemsSource NotificationsSettings" />
+            local:MvxBind="ItemsSource NotificationSettings" />
     </LinearLayout>
 </RelativeLayout>

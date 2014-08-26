@@ -515,4 +515,13 @@
   <string name="View_NotificationsSettings">Notifications</string>
   <string name="PanelMenuViewNotificationsText">Notifications</string>
   <string name="View_NotificationSettings">Notifications</string>
+  <string name="Notification_BookingConfirmationEmail">Booking Confirmation (Email)</string>
+  <string name="Notification_ConfirmPairingPush">Confirm Pairing (Push)</string>
+  <string name="Notification_DriverAssignedEmail">Driver Assigned (Email)</string>
+  <string name="Notification_DriverAssignedPush">Driver Assigned (Push)</string>
+  <string name="Notification_Enabled">Allow Notifications</string>
+  <string name="Notification_NearbyTaxiPush">Nearby Taxi (Push)</string>
+  <string name="Notification_PaymentConfirmationPush">Payment Confirmation (Push)</string>
+  <string name="Notification_ReceiptEmail">Receipt (Email)</string>
+  <string name="Notification_VehicleAtPickupPush">Vehicle at Pickup (Push)</string>
 </resources>

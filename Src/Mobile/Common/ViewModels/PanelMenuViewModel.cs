@@ -39,13 +39,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_paymentService = paymentService;
         }
 
-		public void Init()
+		public async void Init()
 		{
 			try
 			{
 				var paymentSettings = _paymentService.GetPaymentSettings();
 				IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
-			    IsNotificationsEnabled = true; /*Settings.PushNotificationsEnabled;*/ // TODO
+
+			    var notificationSettings = await _accountService.GetNotificationSettings();
+			    IsNotificationsEnabled = /*notificationSettings.Enabled*/true;
 			}
 			catch
 			{
@@ -59,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (IsPayInTaxiEnabled)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation});
             if (IsNotificationsEnabled)
-                ItemMenuList.Add(new ItemMenuModel() {Text = this.Services().Localize["PanelMenuViewNotificationsText"], NavigationCommand = NavigateToNotificationsSettings });
+                ItemMenuList.Add(new ItemMenuModel() {Text = this.Services().Localize["PanelMenuViewNotificationsText"], NavigationCommand = NavigateToNotificationsSettings});
 			if (Settings.TutorialEnabled)
 				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial});
 			if (!Settings.HideCallDispatchButton)

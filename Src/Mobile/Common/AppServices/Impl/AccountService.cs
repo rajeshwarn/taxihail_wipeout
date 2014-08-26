@@ -610,10 +610,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			await UseServiceClientAsync<IAccountServiceClient>(client => client.RemoveCreditCard());
 		}
 
-        public async Task<NotificationSettings> GetNotificationSettings(Guid accountId)
+        public async Task<NotificationSettings> GetNotificationSettings()
         {
             var companySettings = await UseServiceClientAsync<CompanyServiceClient, NotificationSettings>(client => client.GetNotificationSettings());
-            var userSettings = await UseServiceClientAsync<IAccountServiceClient, NotificationSettings>(client => client.GetNotificationSettings(accountId));
+            var userSettings = await UseServiceClientAsync<IAccountServiceClient, NotificationSettings>(client => client.GetNotificationSettings(CurrentAccount.Id));
 
             // Merge company and user settings together
             return new NotificationSettings
@@ -651,16 +651,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             var request = new NotificationSettingsRequest
             {
-                AccountId = notificationSettings.Id,
-                Enabled = notificationSettings.Enabled,
-                BookingConfirmationEmail = notificationSettings.BookingConfirmationEmail,
-                ConfirmPairingPush = notificationSettings.ConfirmPairingPush,
-                DriverAssignedEmail = notificationSettings.DriverAssignedEmail,
-                DriverAssignedPush = notificationSettings.DriverAssignedPush,
-                NearbyTaxiPush = notificationSettings.NearbyTaxiPush,
-                PaymentConfirmationPush = notificationSettings.PaymentConfirmationPush,
-                ReceiptEmail = notificationSettings.ReceiptEmail,
-                VehicleAtPickupPush = notificationSettings.VehicleAtPickupPush
+                AccountId = CurrentAccount.Id,
+                NotificationSettings = notificationSettings
             };
 
             await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateNotificationSettings(request));

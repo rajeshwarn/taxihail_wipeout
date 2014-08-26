@@ -33,6 +33,7 @@
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -62,6 +63,7 @@
     <Compile Include="Entity\Tariff.cs" />
     <Compile Include="Entity\TariffType.cs" />
     <Compile Include="Entity\RatingType.cs" />
+    <Compile Include="Entity\ToggleItem.cs" />
     <Compile Include="Enumeration\ChargeTypes.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
