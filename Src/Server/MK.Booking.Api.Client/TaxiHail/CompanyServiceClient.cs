@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using MK.Common.Configuration;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
@@ -85,6 +86,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 (result, error) => tcs.SetException(ServiceClientBaseExtensions.FixWebServiceException(error)));
 
             return tcs.Task;
+        }
+
+        public async Task<NotificationSettings> GetNotificationSettings()
+        {
+            return await Client.GetAsync<NotificationSettings>("/settings/notifications");
         }
     }
 }
