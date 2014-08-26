@@ -207,7 +207,6 @@
     <Compile Include="Style\StyleManager.cs" />
     <Compile Include="TaxiHailApp.cs" />
     <Compile Include="ViewModels\AboutUsViewModel.cs" />
-    <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\BookRatingViewModel.cs" />
     <Compile Include="ViewModels\Callbox\BaseCallboxViewModel.cs" />
     <Compile Include="ViewModels\Callbox\CallboxCallTaxiViewModel.cs" />
@@ -333,6 +332,7 @@
     <Compile Include="ViewModels\Orders\InitializeOrderForAccountPaymentViewModel.cs" />
     <Compile Include="ViewModels\Orders\AccountChargeQuestionViewModel.cs" />
     <Compile Include="ViewModels\AccountConfirmationViewModel.cs" />
+    <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="AppServices\IRegisterWorkflowService.cs" />
     <Compile Include="AppServices\Impl\RegisterWorkflowService.cs" />
   </ItemGroup>

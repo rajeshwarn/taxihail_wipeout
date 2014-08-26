@@ -296,7 +296,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				var authResponse = await UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service
 					.Authenticate (email, password),
-					error => { throw error;/* Avoid trigerring global error handler */ });
+					error => { throw error; /* Avoid trigerring global error handler */ });
                 SaveCredentials (authResponse);                
                 return await GetAccount ();
             }

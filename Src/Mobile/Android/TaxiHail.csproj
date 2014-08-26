@@ -212,7 +212,6 @@
     <Compile Include="Setup.cs" />
     <Compile Include="Activities\Setting\RideSettingsActivity.cs" />
     <Compile Include="Models\Activities.cs" />
-    <Compile Include="Activities\AlertDialogActivity.cs" />
     <AndroidResource Include="Resources\Drawable\StatusBottomBarBackground.xml" />
     <AndroidResource Include="Resources\Drawable\WindowDisplay.xml" />
     <Compile Include="Activities\SelectItemDialogActivity.cs" />
@@ -574,6 +573,18 @@
     <Compile Include="Activities\Account\AccountConfirmationActivity.cs" />
     <Compile Include="Controls\Widgets\CreditCardButton.cs" />
     <AndroidResource Include="Resources\Layout\Control_CreditCardButton.axml" />
+    <AndroidResource Include="Resources\Drawable\blackcar_no_badge_selected.png" />
+    <AndroidResource Include="Resources\Drawable\blackcar_no_badge.png" />
+    <AndroidResource Include="Resources\Drawable\suv_no_badge_selected.png" />
+    <AndroidResource Include="Resources\Drawable\suv_no_badge.png" />
+    <AndroidResource Include="Resources\Drawable\taxi_no_badge_selected.png" />
+    <AndroidResource Include="Resources\Drawable\taxi_no_badge.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\taxi_no_badge.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\taxi_no_badge_selected.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\suv_no_badge.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\suv_no_badge_selected.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\blackcar_no_badge.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\blackcar_no_badge_selected.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

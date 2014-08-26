@@ -18,6 +18,8 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Maps;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -28,18 +30,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IBookingService _bookingService;
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
+		private readonly IVehicleService _vehicleService;
+		private readonly IDirections _directions;
 
 		public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService,
 			IPhoneService phoneService,
 			IBookingService bookingService,
 			IPaymentService paymentService,
-			IAccountService accountService)
+			IAccountService accountService,
+			IVehicleService vehicleService,
+			IDirections directions
+		)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_phoneService = phoneService;
 			_bookingService = bookingService;
 			_paymentService = paymentService;
 			_accountService = accountService;
+			_vehicleService = vehicleService;
+			_directions = directions;
 		}
 
 		private int _refreshPeriod = 5; //in seconds
@@ -51,6 +60,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
 			IsCancelButtonVisible = true;			
 			_waitingToNavigateAfterTimeOut = false;
+			
 		}
 	
 		public override void OnViewLoaded ()
@@ -187,7 +197,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged ();
 			}
 		}
-            
+
 		private Order _order;
 		public Order Order {
 			get { return _order; }
@@ -295,24 +305,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 //status.IBSStatusId = VehicleStatuses.Common.Arrived;
 #endif
                 IsPayButtonVisible = false;
-				StatusInfoText = status.IBSStatusDescription;                        
+
+				var statusInfoText = status.IBSStatusDescription;
+
+				if(Settings.ShowEta && status.IBSStatusId.Equals(VehicleStatuses.Common.Assigned) && status.VehicleNumber.HasValue())
+				{
+					Direction d =  _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
+					statusInfoText += "\n" + FormatEta(d);						
+				}
+
+				StatusInfoText = statusInfoText;
                 OrderStatusDetail = status;
 
                 CenterMap ();
 
 				var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
 				if (isLoaded && Settings.AutomaticPayment && _accountService.CurrentAccount.DefaultCreditCard != null)
+				{
+					var isPaired = _bookingService.IsPaired(Order.Id);
+                    var pairState = this.Services().Cache.Get<string>("PairState" + Order.Id);
+					var isPairBypass = (pairState == PairingState.Failed) || (pairState == PairingState.Canceled) || (pairState == PairingState.Unpaired);
+					if (!isPaired && !_isCurrentlyPairing && !isPairBypass)
 					{
-						var isPaired = _bookingService.IsPaired(Order.Id);
-                        var pairState = this.Services().Cache.Get<string>("PairState" + Order.Id);
-						var isPairBypass = (pairState == PairingState.Failed) || (pairState == PairingState.Canceled) || (pairState == PairingState.Unpaired);
-						if (!isPaired && !_isCurrentlyPairing && !isPairBypass)
-						{
-							_isCurrentlyPairing = true;
-                            GoToPairScreen();
-							return;
-						}
+						_isCurrentlyPairing = true;
+                        GoToPairScreen();
+						return;
 					}
+				}
 
                 UpdatePayCancelButtons(status.IBSStatusId);
 
@@ -336,6 +355,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		string FormatEta(Direction direction)
+		{
+			if (!direction.IsValidEta())
+			{
+				return string.Empty;
+			}
+
+			var durationUnit = direction.Duration <= 1 ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
+			return string.Format (this.Services ().Localize ["StatusEta"], direction.FormattedDistance, direction.Duration, durationUnit);
+		}
 
 		void UpdatePayCancelButtons (string statusId)
 		{

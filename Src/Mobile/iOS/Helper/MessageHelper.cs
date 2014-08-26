@@ -35,22 +35,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
                 if ( neutralAction != null )
                 {
-                    av = new UIAlertView(title, message, null, Localize.GetValue("Close"), positiveActionTitle, negativeActionTitle, neutralActionTitle);
+                    av = new UIAlertView(title, message, null, null, positiveActionTitle, negativeActionTitle, neutralActionTitle);
                 }   
                 else
                 {
                     av = new UIAlertView(title, message, null, Localize.GetValue("Close"), positiveActionTitle, negativeActionTitle);
                 }
                 av.Clicked += delegate(object sender, UIButtonEventArgs e) {
-                    if (e.ButtonIndex == 1) {
+                    if (e.ButtonIndex == 0) {
                         
                         positiveAction(); 
                     }
-                    if (e.ButtonIndex == 2) {
+                    if (e.ButtonIndex == 1) {
                         
                         negativeAction(); 
                     }
-                    if (e.ButtonIndex == 3) {
+                    if (e.ButtonIndex == 2) {
                         if (neutralAction != null) neutralAction();
                     }
                     };

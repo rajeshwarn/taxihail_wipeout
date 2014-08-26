@@ -763,6 +763,18 @@
     <BundleResource Include="Resources\star_selected%402x.png" />
     <BundleResource Include="Resources\star_unselected.png" />
     <BundleResource Include="Resources\star_unselected%402x.png" />
+    <BundleResource Include="Resources\suv_no_badge.png" />
+    <BundleResource Include="Resources\suv_no_badge%402x.png" />
+    <BundleResource Include="Resources\suv_no_badge_selected.png" />
+    <BundleResource Include="Resources\suv_no_badge_selected%402x.png" />
+    <BundleResource Include="Resources\taxi_no_badge.png" />
+    <BundleResource Include="Resources\taxi_no_badge%402x.png" />
+    <BundleResource Include="Resources\taxi_no_badge_selected.png" />
+    <BundleResource Include="Resources\taxi_no_badge_selected%402x.png" />
+    <BundleResource Include="Resources\blackcar_no_badge.png" />
+    <BundleResource Include="Resources\blackcar_no_badge%402x.png" />
+    <BundleResource Include="Resources\blackcar_no_badge_selected.png" />
+    <BundleResource Include="Resources\blackcar_no_badge_selected%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">

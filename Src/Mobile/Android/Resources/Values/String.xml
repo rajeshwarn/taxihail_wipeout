@@ -509,6 +509,12 @@
   <string name="DeleteCreditCardTitle">Delete credit card</string>
   <string name="ServiceErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
   <string name="View">View</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000">The charge account information is invalid. Please try again.</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall">The charge account information is invalid. Please try again.</string>
+  <string name="Eta">The nearest taxi is {0} and {1} {2} away</string>
+  <string name="EtaDurationUnit">min</string>
+  <string name="EtaDurationUnitPlural">mins</string>
+  <string name="StatusEta">{0} and {1} {2} away</string>
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
   <string name="PayInCar">Pay in Car</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
@@ -517,6 +523,11 @@
   <string name="View_NotificationSettings">Notifications</string>
   <string name="Notification_BookingConfirmationEmail">Booking Confirmation (Email)</string>
   <string name="Notification_ConfirmPairingPush">Confirm Pairing (Push)</string>
+  <string name="DontAsl">Don\'t ask</string>
+  <string name="NotNow">Not now</string>
+  <string name="RateLastRide">Rate</string>
+  <string name="RateLastRideMessage">We would appreciate your feedback on your last ride, would you like to rate it?</string>
+  <string name="RateLastRideTitle">Rate last ride?</string>
   <string name="Notification_DriverAssignedEmail">Driver Assigned (Email)</string>
   <string name="Notification_DriverAssignedPush">Driver Assigned (Push)</string>
   <string name="Notification_Enabled">Notifications</string>

@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 		private const string PlaceDetailsServiceUrl = "https://maps.googleapis.com/maps/api/place/details/";
 		private const string PlacesServiceUrl = "https://maps.googleapis.com/maps/api/place/search/";
 		private const string PlacesAutoCompleteServiceUrl = "https://maps.googleapis.com/maps/api/place/autocomplete/";
-		private const string MapsServiceUrl = "http://maps.googleapis.com/maps/api/";
+		private const string MapsServiceUrl = "https://maps.googleapis.com/maps/api/";
 		private readonly IAppSettings _settings;
 		private readonly ILogger _logger;
 		private readonly IGeocoder _fallbackGeocoder;
@@ -139,6 +139,13 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var client = new JsonServiceClient(MapsServiceUrl);
             var resource = string.Format(CultureInfo.InvariantCulture,
 				"directions/json?origin={0},{1}&destination={2},{3}&sensor=true", originLat, originLng, destLat, destLng);
+
+		    if (_settings.Data.ShowEta
+                && _settings.Data.GoogleMapKey.HasValue())
+		    {
+		        //eta requires a Googel Map Key for Business server-side when sending the vlaue to the driver
+		        resource += "&key=" + _settings.Data.GoogleMapKey;
+		    }
 
 			var direction = client.Get<DirectionResult>(resource);
 			if (direction.Status == ResultStatus.OK)

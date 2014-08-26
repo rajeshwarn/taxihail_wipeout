@@ -1,10 +1,10 @@
-using System;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Messages;
@@ -18,8 +18,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITutorialService _tutorialService;
 		private readonly IPushNotificationService _pushNotificationService;
 		private readonly IVehicleService _vehicleService;
-		private readonly IBookingService _bookingService;
 		private readonly ITermsAndConditionsService _termsService;
+	    private readonly IMvxLifetime _mvxLifetime;
 
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
 			IMvxWebBrowserTask browserTask,
@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPhoneService phoneService,
 			ITermsAndConditionsService termsService,
 			IPaymentService paymentService, 
-			IBookingService bookingService) : base()
+            IMvxLifetime mvxLifetime) : base()
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_pushNotificationService = pushNotificationService;
 			_vehicleService = vehicleService;
 			_termsService = termsService;
-			_bookingService = bookingService;
+		    _mvxLifetime = mvxLifetime;
 
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService, paymentService);
 		}
@@ -51,13 +51,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public void Init(bool locateUser, string defaultHintZoomLevel)
 		{
 			_locateUser = locateUser;
-			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);			
+			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);
 			Panel.Init ();
 		}
 
 		public override void OnViewLoaded ()
 		{
 			base.OnViewLoaded ();
+            _mvxLifetime.LifetimeChanged += OnApplicationLifetimeChanged;
 
 			Map = AddChild<MapViewModel>();
 			OrderOptions = AddChild<OrderOptionsViewModel>();
@@ -84,6 +85,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 			if (firstTime)
 			{
+                CheckUnratedRide();
+
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
 				_tutorialService.DisplayTutorialToNewUser();
@@ -123,6 +126,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+	    private void CheckUnratedRide()
+	    {
+            var unratedRideId = _orderWorkflowService.GetLastUnratedRide();
+            if (unratedRideId != null
+                && _orderWorkflowService.ShouldPromptUserToRateLastRide())
+	        {
+                this.Services().Message.ShowMessage(this.Services().Localize["RateLastRideTitle"],
+                                                    this.Services().Localize["RateLastRideMessage"],
+                                                    this.Services().Localize["Rate"],
+                                                        () => ShowViewModel<BookRatingViewModel>(new  
+                                                                {
+						                                            orderId = unratedRideId.ToString(),
+						                                            canRate = true
+                                                                }),
+                                                    this.Services().Localize["Don't ask"],
+                                                        () => this.Services().Cache.Set("RateLastRideDontPrompt", "yes"),
+                                                    this.Services().Localize["NotNow"],
+                                                        () => { /* Do nothing */ });
+	        }
+	    }
+
 		public async void CheckTermsAsync()
 		{
 			// if we're already showing the terms and conditions, do nothing
@@ -154,8 +178,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_locationService.Stop();
 			_vehicleService.Stop();
 		}
-		
-		public PanelMenuViewModel Panel { get; set; }
+
+	    public override void OnViewUnloaded()
+	    {
+	        base.OnViewUnloaded();
+            _mvxLifetime.LifetimeChanged -= OnApplicationLifetimeChanged;
+	    }
+
+	    public PanelMenuViewModel Panel { get; set; }
 
 		private MapViewModel _map;
 		public MapViewModel Map
@@ -264,5 +294,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 
 		}
+
+        private void OnApplicationLifetimeChanged(object sender, MvxLifetimeEventArgs args)
+        {
+            if (args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk
+                || args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)
+            {
+                CheckUnratedRide();
+            }
+        }
     }
 }

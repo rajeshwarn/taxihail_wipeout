@@ -1164,6 +1164,13 @@
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall" xml:space="preserve">
     <value>La commande ne peut être créée car votre compte est actuellement désactivé</value>
   </data>
+<data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
+    <value>La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</value>
+  </data>
+<data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall" xml:space="preserve">
+    <value>La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</value>
+  </data>
+
   <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
     <value>La commande ne peut être créé car le fournisseur est invalide. Merci de contacter {0} à {1} pour plus d'assistance.</value>
   </data>
@@ -1554,29 +1561,56 @@
   <data name="View_NotificationSettings" xml:space="preserve">
     <value>Notifications</value>
   </data>
+  <data name="Eta" xml:space="preserve">
+    <value>Le taxi le plus près est à {0} et {1} {2}</value>
+  </data>
   <data name="PanelMenuViewNotificationsText" xml:space="preserve">
     <value>Notifications</value>
+  </data>
+  <data name="DontAsk" xml:space="preserve">
+    <value>Don't ask</value>
   </data>
   <data name="Notification_BookingConfirmationEmail" xml:space="preserve">
     <value>Confirmation Commande (Email)</value>
   </data>
+  <data name="EtaDurationUnit" xml:space="preserve">
+    <value>min</value>
+  </data>
   <data name="Notification_ConfirmPairingPush" xml:space="preserve">
     <value>Confirmation de pairing (Push)</value>
+  </data>
+  <data name="NotNow" xml:space="preserve">
+    <value>Not now</value>
   </data>
   <data name="Notification_DriverAssignedEmail" xml:space="preserve">
     <value>Chauffeur assigné (Email)</value>
   </data>
+  <data name="EtaDurationUnitPlural" xml:space="preserve">
+    <value>min</value>
+  </data>
   <data name="Notification_DriverAssignedPush" xml:space="preserve">
     <value>Chauffeur  assigné (Push)</value>
+  </data>
+  <data name="RateLastRide" xml:space="preserve">
+    <value>Rate</value>
   </data>
   <data name="Notification_Enabled" xml:space="preserve">
     <value>Notifications</value>
   </data>
+  <data name="StatusEta" xml:space="preserve">
+    <value>À {0} et {1} {2}</value>
+  </data>
   <data name="Notification_NearbyTaxiPush" xml:space="preserve">
     <value>Taxi à proximité (Push)</value>
   </data>
+  <data name="RateLastRideMessage" xml:space="preserve">
+    <value>We would appreciate your feedback on your last ride, would you like to rate it?</value>
+  </data>
   <data name="Notification_PaymentConfirmationPush" xml:space="preserve">
     <value>Confirmation de paiement (Push)</value>
+  </data>
+  <data name="RateLastRideTitle" xml:space="preserve">
+    <value>Rate last ride?</value>
   </data>
   <data name="Notification_ReceiptEmail" xml:space="preserve">
     <value>Reçu (Email)</value>
