@@ -250,7 +250,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return this.GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    ShowViewModel<NotificationsSettingsViewModel>();
+                    ShowViewModel<NotificationSettingsViewModel>();
                 });
             }
         }

@@ -7,7 +7,7 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class NotificationsSettingsViewModel : PageViewModel
+    public class NotificationSettingsViewModel : PageViewModel
     {
         private ObservableCollection<ListItem> _notificationsSettings;
 
@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set { _notificationsSettings = value; RaisePropertyChanged(); }
         }
 
-        public NotificationsSettingsViewModel()
+        public NotificationSettingsViewModel()
         {
             
         }

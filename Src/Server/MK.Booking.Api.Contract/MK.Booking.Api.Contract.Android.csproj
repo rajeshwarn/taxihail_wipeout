@@ -66,6 +66,7 @@
     <Compile Include="Requests\DirectionsRequest.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />
     <Compile Include="Requests\NearbyPlacesRequest.cs" />
+    <Compile Include="Requests\NotificationSettingsRequest.cs" />
     <Compile Include="Requests\OrderRatingRequest.cs" />
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />

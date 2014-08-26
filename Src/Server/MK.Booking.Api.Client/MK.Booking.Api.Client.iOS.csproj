@@ -87,7 +87,6 @@
     <Compile Include="TaxiHail\DirectionsServiceClient.cs" />
     <Compile Include="TaxiHail\GeocodingServiceClient.cs" />
     <Compile Include="TaxiHail\NearbyPlacesClient.cs" />
-    <Compile Include="TaxiHail\NotificationsSettingsServiceClient.cs" />
     <Compile Include="TaxiHail\OrderServiceClient.cs" />
     <Compile Include="TaxiHail\PlaceDetailServiceClient.cs" />
     <Compile Include="TaxiHail\PopularAddressesServiceClient.cs" />

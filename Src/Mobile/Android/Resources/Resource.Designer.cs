@@ -3517,7 +3517,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int View_Login = 2130903151;
 			
 			// aapt resource value: 0x7f030070
-			public const int View_NotificationsSettings = 2130903152;
+			public const int View_NotificationSettings = 2130903152;
 			
 			// aapt resource value: 0x7f030071
 			public const int View_PasswordRecovery = 2130903153;
@@ -4099,14 +4099,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050109
 			public const int GooglePlayServicesNotAvailableMessage = 2131034377;
 			
-			// aapt resource value: 0x7f050249
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034697;
+			// aapt resource value: 0x7f05024a
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034698;
 			
 			// aapt resource value: 0x7f050069
 			public const int GooglePlayServicesNotAvailableTitle = 2131034217;
 			
-			// aapt resource value: 0x7f05024a
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034698;
+			// aapt resource value: 0x7f05024b
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034699;
 			
 			// aapt resource value: 0x7f05005e
 			public const int HistoryDetailAptRingCodeLabel = 2131034206;
@@ -5016,6 +5016,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f050097
 			public const int View_MyLocations = 2131034263;
+			
+			// aapt resource value: 0x7f050249
+			public const int View_NotificationSettings = 2131034697;
 			
 			// aapt resource value: 0x7f050247
 			public const int View_NotificationsSettings = 2131034695;
