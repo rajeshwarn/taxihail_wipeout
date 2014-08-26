@@ -4,6 +4,5 @@
     "Error Saving Settings": "An error occured when saving settings",
 	"Client.ShowEstimate" : "Show estimate",
 	"Client.ShowEstimateWarning" : "Show estimate warning",
-	"Client.DestinationIsRequired" : "Destination is required",
-	"Booking.ConfirmationEmail" : "Confirmation Email"	
+	"Client.DestinationIsRequired" : "Destination is required"
 }

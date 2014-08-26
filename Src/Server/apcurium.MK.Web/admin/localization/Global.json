@@ -69,7 +69,6 @@
 	"Client.ShowEstimate" : "Show estimate",
 	"Client.DestinationIsRequired" : "Destination is required",
 	"Client.ShowEstimateWarning" : "Show estimate warning",
-	"Booking.ConfirmationEmail" : "Send confirmation email",
 	"Client.HideCallDispatchButton" : "Hide call dispatch button",
 	"Client.HideReportProblem": "Hide report problem button",
 	"Client.HideSendReceipt": "Hide send receipt option",	
