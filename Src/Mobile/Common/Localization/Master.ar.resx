@@ -1524,7 +1524,7 @@
   <data name="NoCardOnFileMessage" xml:space="preserve">
     <value>You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</value>
   </data>
-  <data name="View_NotificationsSettings" xml:space="preserve">
+  <data name="View_NotificationSettings" xml:space="preserve">
     <value>Notifications</value>
   </data>
   <data name="PanelMenuViewNotificationsText" xml:space="preserve">

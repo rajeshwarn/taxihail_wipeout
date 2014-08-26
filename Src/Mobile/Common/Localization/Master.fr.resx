@@ -1551,7 +1551,7 @@
   <data name="NoCardOnFileMessage" xml:space="preserve">
     <value>Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.</value>
   </data>
-  <data name="View_NotificationsSettings" xml:space="preserve">
+  <data name="View_NotificationSettings" xml:space="preserve">
     <value>Notifications</value>
   </data>
   <data name="PanelMenuViewNotificationsText" xml:space="preserve">

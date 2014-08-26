@@ -17,13 +17,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
     [Activity(Label = "PushSettingsActivity",
         Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
-    public class NotificationsSettingsActivity : BaseBindingActivity<NotificationsSettingsViewModel>
+    public class NotificationSettingsActivity : BaseBindingActivity<NotificationSettingsViewModel>
     {
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
-            SetContentView(Resource.Layout.View_NotificationsSettings);
+            SetContentView(Resource.Layout.View_NotificationSettings);
         }
     }
 }

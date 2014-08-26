@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Api.Client.Extensions;
+using MK.Common.Configuration;
 
 #endregion
 
@@ -117,6 +118,18 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             await UnregisterTokenizedCards (creditCardRequest.Token);
 
             await Client.PutAsync<string> ("/account/creditcards", creditCardRequest);
+        }
+
+        public async Task<NotificationSettings> GetNotificationSettings(Guid accountId)
+        {
+            var req = string.Format("/settings/notifications/{0}", accountId);
+            return await Client.GetAsync<NotificationSettings>(req);
+        }
+
+        public async Task UpdateNotificationSettings(NotificationSettingsRequest notificationSettingsRequest)
+        {
+            string req = string.Format("/settings/notifications/{0}", notificationSettingsRequest.AccountId);
+            await Client.PostAsync<string>(req, notificationSettingsRequest);
         }
 
         public async Task RemoveCreditCard()

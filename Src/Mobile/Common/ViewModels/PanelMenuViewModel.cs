@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				var paymentSettings = _paymentService.GetPaymentSettings();
 				IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
-			    IsNotificationsEnabled = Settings.PushNotificationsEnabled; // TODO
+			    IsNotificationsEnabled = true; /*Settings.PushNotificationsEnabled;*/ // TODO
 			}
 			catch
 			{
@@ -250,7 +250,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return this.GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    ShowViewModel<NotificationsSettingsViewModel>();
+                    ShowViewModel<NotificationSettingsViewModel>();
                 });
             }
         }
