@@ -104,7 +104,20 @@ namespace apcurium.MK.Booking.Api.Services
                     return new HttpError(HttpStatusCode.Unauthorized, "");
                 }
 
-                return new HttpResult(HttpStatusCode.OK, "OK");
+                _commandBus.Send(new AddOrUpdateNotificationSettings
+                {
+                    CompanyId = AppConstants.CompanyId,
+                    NotificationSettings = request.NotificationSettings
+                });
+            }
+            else
+            {
+                _commandBus.Send(new AddOrUpdateNotificationSettings
+                {
+                    AccountId = request.AccountId.Value,
+                    CompanyId = AppConstants.CompanyId,
+                    NotificationSettings = request.NotificationSettings
+                });
             }
 
             return new HttpResult(HttpStatusCode.OK, "OK");
