@@ -1608,7 +1608,7 @@
   <data name="View_NotificationSettings" xml:space="preserve">
     <value>Notifications</value>
   </data>
-  <data name="DontAsl" xml:space="preserve">
+  <data name="DontAsk" xml:space="preserve">
     <value>Don't ask</value>
   </data>
   <data name="PanelMenuViewNotificationsText" xml:space="preserve">

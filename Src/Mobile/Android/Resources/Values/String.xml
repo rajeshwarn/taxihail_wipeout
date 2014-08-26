@@ -523,7 +523,7 @@
   <string name="View_NotificationSettings">Notifications</string>
   <string name="Notification_BookingConfirmationEmail">Booking Confirmation (Email)</string>
   <string name="Notification_ConfirmPairingPush">Confirm Pairing (Push)</string>
-  <string name="DontAsl">Don\'t ask</string>
+  <string name="DontAsk">Don\'t ask</string>
   <string name="NotNow">Not now</string>
   <string name="RateLastRide">Rate</string>
   <string name="RateLastRideMessage">We would appreciate your feedback on your last ride, would you like to rate it?</string>
