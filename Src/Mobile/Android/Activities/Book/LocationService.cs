@@ -18,11 +18,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private readonly IMessageService _messageService;
         private bool _isStarted;
 
-        public LocationService()
+        public LocationService(IMessageService messageService)
         {
             _locationManager = (LocationManager) Application.Context.GetSystemService(Context.LocationService);
             _locationListeners = new LocationListenerManager();
-            _messageService = new MessageService(Application.Context);
+            _messageService = messageService;
             Positions = _locationListeners;
         }
 

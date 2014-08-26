@@ -748,7 +748,7 @@
     <value>ه نسيت كلمة السر ؟</value>
   </data>
   <data name="LoginSupport" xml:space="preserve">
-   	<value>Need support?</value>
+    <value>Need support?</value>
   </data>
   <data name="LoginForgotPasswordDetail" xml:space="preserve">
     <value>أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.</value>
@@ -1523,5 +1523,20 @@
   </data>
   <data name="NoCardOnFileMessage" xml:space="preserve">
     <value>You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</value>
+  </data>
+  <data name="DontAsk" xml:space="preserve">
+    <value>Don't ask</value>
+  </data>
+  <data name="NotNow" xml:space="preserve">
+    <value>Not now</value>
+  </data>
+  <data name="RateLastRide" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="RateLastRideMessage" xml:space="preserve">
+    <value>We would appreciate your feedback on your last ride, would you like to rate it?</value>
+  </data>
+  <data name="RateLastRideTitle" xml:space="preserve">
+    <value>Rate last ride?</value>
   </data>
 </root>

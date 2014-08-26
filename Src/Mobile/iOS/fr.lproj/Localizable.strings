@@ -478,3 +478,8 @@
 "AddACardButton"="Enregistrez";
 "PayInCar"="Payer dans le taxi";
 "CreditCardErrorInvalid"="La carte ne semble pas être valide";
+"RateLastRideTitle"="Rate last ride?";
+"RateLastRide"="Rate";
+"NotNow"="Not now";
+"RateLastRideMessage"="We would appreciate your feedback on your last ride, would you like to rate it?";
+"DontAsk"="Don't ask";

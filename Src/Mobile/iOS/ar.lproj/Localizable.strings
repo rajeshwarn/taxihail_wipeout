@@ -481,3 +481,8 @@
 "AddACardButton"="Add Card";
 "PayInCar"="Pay in Car";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
+"RateLastRideTitle"="Rate last ride?";
+"RateLastRide"="Rate";
+"NotNow"="Not now";
+"RateLastRideMessage"="We would appreciate your feedback on your last ride, would you like to rate it?";
+"DontAsk"="Don't ask";

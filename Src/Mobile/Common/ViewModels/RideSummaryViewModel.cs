@@ -232,9 +232,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 // We don't send the review since it's not complete. The user will have the
                 // possibility to go back to the order history to rate it later if he so desires
+                _bookingService.SetLastUnratedOrderId(OrderId);
 			    return;
 			} 
-				
+
 			var orderRating = new apcurium.MK.Common.Entity.OrderRatings
 			{
 				Note = Note,

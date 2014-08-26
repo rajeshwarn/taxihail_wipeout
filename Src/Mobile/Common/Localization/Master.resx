@@ -618,8 +618,8 @@
   <data name="LoginForgotPassword" xml:space="preserve">
     <value>Forgot your password?</value>
   </data>
-<data name="LoginSupport" xml:space="preserve">
-   	<value>Need support?</value>
+  <data name="LoginSupport" xml:space="preserve">
+    <value>Need support?</value>
   </data>
   <data name="LoginForgotPasswordDetail" xml:space="preserve">
     <value>Enter your email and we'll send you a new one.</value>
@@ -1586,5 +1586,20 @@
   </data>
   <data name="AddACardButton" xml:space="preserve">
     <value>Add Card</value>
+  </data>
+  <data name="DontAsl" xml:space="preserve">
+    <value>Don't ask</value>
+  </data>
+  <data name="NotNow" xml:space="preserve">
+    <value>Not now</value>
+  </data>
+  <data name="RateLastRide" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="RateLastRideMessage" xml:space="preserve">
+    <value>We would appreciate your feedback on your last ride, would you like to rate it?</value>
+  </data>
+  <data name="RateLastRideTitle" xml:space="preserve">
+    <value>Rate last ride?</value>
   </data>
 </root>

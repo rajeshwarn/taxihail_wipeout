@@ -121,13 +121,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								if(Settings.SMSConfirmationEnabled)
 								{
 									ShowViewModelAndRemoveFromHistory<AccountConfirmationViewModel>(null);								
-								}else
-								{
-									this.Services().Message.ShowMessage(this.Services().Localize["AccountActivationTitle"], 
-										this.Services().Localize["AccountActivationMessage"]);
-									Close(this);
 								}
-							}else
+                                else
+								{
+									this.Services().Message.ShowMessage(
+                                        this.Services().Localize["AccountActivationTitle"], 
+										this.Services().Localize["AccountActivationMessage"],
+                                        () => Close(this));
+								}
+							}
+                            else
 							{
 								Close(this);
 								_registerService.RegistrationFinished();

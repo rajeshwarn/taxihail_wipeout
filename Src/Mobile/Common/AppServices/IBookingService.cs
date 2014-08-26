@@ -32,6 +32,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         bool HasLastOrder{get;}
 
+        bool HasUnratedLastOrder { get; }
+
 	    bool IsPaired(Guid orderId);
 
 		Task<OrderStatusDetail> CreateOrder(CreateOrder info);
@@ -43,6 +45,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<OrderStatusDetail> GetOrderStatusAsync(Guid orderId);
         
 		Task<OrderStatusDetail> GetLastOrderStatus();
+
+	    Guid GetUnratedLastOrder();
+
+	    void SetLastUnratedOrderId(Guid orderId);
         
 		void ClearLastOrder();
 
