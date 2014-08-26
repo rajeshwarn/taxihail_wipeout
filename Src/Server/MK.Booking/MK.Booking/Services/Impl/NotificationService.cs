@@ -390,7 +390,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private bool GetAccountNotificationSetting(Guid accountId, Expression<Func<NotificationSettings, bool?>> selector)
+        private bool GetAccountNotificationSetting(Guid accountId, Expression<Func<NotificationSettings, bool?>> propertySelector)
         {
             NotificationSettings computedSettings;
 
@@ -432,7 +432,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 };
             }
 
-            var mexp = selector.Body as MemberExpression;
+            var mexp = propertySelector.Body as MemberExpression;
             var propertyName = mexp.Member.Name;
 
             return (bool)computedSettings.GetType().GetProperty(propertyName).GetValue(computedSettings, null);
