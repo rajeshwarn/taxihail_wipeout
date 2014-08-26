@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 if (!SessionAs<AuthUserSession>().HasPermission(RoleName.Admin))
                 {
-                    return new HttpError(HttpStatusCode.Unauthorized, "");
+                    return new HttpError(HttpStatusCode.Unauthorized, "You do not have permission to modify company settings");
                 }
 
                 _commandBus.Send(new AddOrUpdateNotificationSettings
