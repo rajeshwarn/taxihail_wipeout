@@ -1605,7 +1605,10 @@
   <data name="AddACardButton" xml:space="preserve">
     <value>Add Card</value>
   </data>
-  <data name="DontAsl" xml:space="preserve">
+<data name="EtaNotAvailable" xml:space="preserve">
+  	<value>No vehicle available</value>
+  </data>
+  <data name="DontAsk" xml:space="preserve">
     <value>Don't ask</value>
   </data>
   <data name="NotNow" xml:space="preserve">

@@ -480,7 +480,6 @@
 "NoCardOnFileMessage"="You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.";
 "Eta"="The nearest taxi is {0} and {1} {2} away";
 "EtaDurationUnitPlural"="mins";
-"NoCardOnFileMessage"="You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.";
 "AddACardButton"="Add Card";
 "PayInCar"="Pay in Car";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
@@ -490,4 +489,8 @@
 "RateLastRide"="Rate";
 "NotNow"="Not now";
 "RateLastRideMessage"="We would appreciate your feedback on your last ride, would you like to rate it?";
+"ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall"="The charge account information is invalid. Please try again.";
+"ServiceErrorCreateOrder_CannotCreateInIbs_10000"="The charge account information is invalid. Please try again.";
+"EstimateDistance"="";
+"EstimatePrice"="Cost";
 "DontAsk"="Don't ask";

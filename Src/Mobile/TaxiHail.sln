@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "iOS", "iOS", "{746228AE-71D1-4807-B52B-B5563266CA53}"
 EndProject
@@ -177,6 +177,7 @@ Global
 		{698DA5A6-BEE2-4FD6-A2F7-8269289B1DA4}.Debug|iPhone.Deploy.0 = Debug|iPhone
 		{698DA5A6-BEE2-4FD6-A2F7-8269289B1DA4}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
 		{698DA5A6-BEE2-4FD6-A2F7-8269289B1DA4}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{698DA5A6-BEE2-4FD6-A2F7-8269289B1DA4}.Debug|iPhoneSimulator.Deploy.0 = Debug|iPhoneSimulator
 		{698DA5A6-BEE2-4FD6-A2F7-8269289B1DA4}.Release|Any CPU.ActiveCfg = Release|iPhone
 		{698DA5A6-BEE2-4FD6-A2F7-8269289B1DA4}.Release|iPhone.ActiveCfg = Release|iPhone
 		{698DA5A6-BEE2-4FD6-A2F7-8269289B1DA4}.Release|iPhone.Build.0 = Release|iPhone
@@ -402,6 +403,8 @@ Global
 		$2.TabsToSpaces = False
 		$2.inheritsSet = VisualStudio
 		$2.inheritsScope = text/plain
+		$0.VersionControlPolicy = $3
+		$3.inheritsSet = Mono
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
