@@ -223,9 +223,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				if (Eta != null && Eta.IsValidEta()) 
 				{
-					if (Eta.Duration > 30) {
+					if (Eta.Duration > 30) 
+					{
 						return this.Services ().Localize ["EtaNotAvailable"];
-					} else {
+					} 
+					else 
+					{
 						var durationUnit = Eta.Duration <= 1 ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
 						return string.Format (this.Services ().Localize ["Eta"], Eta.FormattedDistance, Eta.Duration, durationUnit);
 					}

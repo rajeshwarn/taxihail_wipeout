@@ -26,10 +26,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 Longitude = longitude,
                 VehicleTypeId = vehicleTypeId
             });
-
-			if (longitude <= 2.31185506434708) {
-				response.Add (new AvailableVehicle { Latitude = 48.8692532505924, Longitude = 2.30916386470199 });
-			}
+                    
 			_logger.LogMessage (string.Format("Available vehicle found for lat {0}, long {1} count = {2}",latitude,longitude, response.Count ));
             return response.ToArray();
         }
