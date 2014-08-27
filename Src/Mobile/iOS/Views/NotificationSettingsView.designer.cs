@@ -13,6 +13,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class NotificationSettingsView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UILabel labelNotificationEnabled { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UISwitch switchNotificationEnabled { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UITableView tableNotifications { get; set; }
 		
 		void ReleaseDesignerOutlets ()
@@ -20,6 +26,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (tableNotifications != null) {
 				tableNotifications.Dispose ();
 				tableNotifications = null;
+			}
+
+			if (labelNotificationEnabled != null) {
+				labelNotificationEnabled.Dispose ();
+				labelNotificationEnabled = null;
+			}
+
+			if (switchNotificationEnabled != null) {
+				switchNotificationEnabled.Dispose ();
+				switchNotificationEnabled = null;
 			}
 		}
 	}

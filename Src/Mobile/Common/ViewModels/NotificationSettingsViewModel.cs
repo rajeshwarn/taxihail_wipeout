@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
-using MK.Common.Android.Entity;
+using MK.Common.Entity;
 using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -54,6 +54,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             // TODO: don't send request if settings didn't change
             UpdateNotificationSettings();
         }
+
+		public override void OnViewStopped()
+		{
+			UpdateNotificationSettings ();
+		}
 
         private async void LoadNotificationSettings()
         {

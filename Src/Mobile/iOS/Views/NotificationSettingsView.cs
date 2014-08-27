@@ -6,15 +6,14 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class NotificationSettingsView : BaseViewController<NotificationSettingsViewModel>
 	{
-		const string CellId = "LocationCell";
-		const string CellBindingText = @"
-                   DisplayName Name;
-				";
+		const string CellId = "NotificationCell";
+		const string CellBindingText = @"";
 
 		public NotificationSettingsView () : base ("NotificationSettingsView", null)
 		{
@@ -42,24 +41,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			tableNotifications.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 			tableNotifications.DelaysContentTouches = false;
 
+
 			var source = new BindableTableViewSource (
 				tableNotifications, 
-				UITableViewCellStyle.Subtitle, 
-				new NSString (CellId), 
+				UITableViewCellStyle.Subtitle,
+				new NSString (CellId),  
 				CellBindingText, 
 				UITableViewCellAccessory.None
 			);
 			source.CellCreator = CellCreator;
 			tableNotifications.Source = source;
 
+			labelNotificationEnabled.Text = this.Services().Localize["Notification_Enabled"];
+			labelNotificationEnabled.Font = UIFont.FromName(FontName.HelveticaNeueLight, 32 / 2);
+
 			var set = this.CreateBindingSet<NotificationSettingsView, NotificationSettingsViewModel> ();
 
 			set.Bind(source)
 				.For(v => v.ItemsSource)
 				.To(vm => vm.NotificationSettings);
-			/*set.Bind(source)
-				.For(v => v.V)
-				.To(vm => vm.NavigateToLocationDetailPage);*/
+			set.Bind(switchNotificationEnabled)
+				.For (v => v.On)
+				.To (vm => vm.IsNotificationEnabled);
+			set.Bind (tableNotifications)
+				.For (v => v.Hidden)
+				.To (vm => vm.IsNotificationEnabled)
+				.WithConversion("BoolInverter");
 
 			set.Apply ();
 		}

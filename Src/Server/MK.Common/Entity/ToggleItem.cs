@@ -1,5 +1,7 @@
+using System.ComponentModel;
 
-namespace MK.Common.Android.Entity
+
+namespace MK.Common.Entity
 {
     public class ToggleItem
     {
@@ -7,6 +9,6 @@ namespace MK.Common.Android.Entity
 
         public string Display { get; set; }
 
-        public bool Value { get; set; }
+		public bool Value { get; set; }
     }
 }
