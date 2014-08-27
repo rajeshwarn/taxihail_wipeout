@@ -1525,10 +1525,10 @@
   <data name="YesButton" xml:space="preserve">
     <value>Oui</value>
   </data>
-<data name="PendingOrderMessage" xml:space="preserve">
+  <data name="PendingOrderMessage" xml:space="preserve">
   	<value>Désolé, cette reservation ne peut être prise en compte. Vous avez déjà une commande en cours. Voir le détail?</value>
   </data>
-<data name="PendingOrderView" xml:space="preserve">
+  <data name="PendingOrderView" xml:space="preserve">
   	<value>Détail</value>
   </data>
   <data name="PendingOrderCancel" xml:space="preserve">
@@ -1552,9 +1552,7 @@
   <data name="StatusEta" xml:space="preserve">
   	<value>Votre véhicule arrive dans {1} {2}</value>
   </data>
-<data name="EtaNotAvailable" xml:space="preserve">
+  <data name="EtaNotAvailable" xml:space="preserve">
   	<value>Il n'y a pas de véhicule disponible</value>
   </data>
-
-
 </root>

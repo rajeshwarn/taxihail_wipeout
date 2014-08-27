@@ -85,7 +85,7 @@
   <string name="Tuto06Bottom">Tap Confirm when you are ready to go.</string>
   <string name="October">Oct (10)</string>
   <string name="LoginForgotPasswordDetail">Enter your email and we\'ll send you a new one.</string>
-  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall">No fare estimate available for the ride.</string>
+  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall">No fare is available for the ride. Please specify a valid pickup and destination.</string>
   <string name="HistoryInfo">Displaying trips from the last month</string>
   <string name="ConfirmPassengerSettingsTitle">Passenger Settings</string>
   <string name="ChangeBookingSettingsButton">Change booking settings</string>
@@ -98,7 +98,7 @@
   <string name="DeleteBookItButtonImageNamePressed">Assets/Button/btnBookIt-Pressed_en.png</string>
   <string name="StreetNumberPlacesBt">Search for places</string>
   <string name="CreateAccountTitleMr">Mr</string>
-  <string name="EstimatePriceFormat">Estimated Fare : {0:C} ({1})</string>
+  <string name="EstimatePriceFormat">Cost: {0:c}</string>
   <string name="PanelMenuViewOrderHistoryText">History</string>
   <string name="ResetPasswordSucessTitle">Password reset</string>
   <string name="TabSearch">Search</string>
@@ -144,7 +144,7 @@
   <string name="Tuto05Top">Tap Book Now and a vehicle will be assigned as soon as possible.</string>
   <string name="OrderNoteGPSApproximate"> (approx. address)</string>
   <string name="CreateAccountTitleArray">MrMrs</string>
-  <string name="EstimatePriceOver100">Call for price</string>
+  <string name="EstimatePriceOver100">Cost: {0:c}</string>
   <string name="PanelMenuViewTutorialText">View Tutorial</string>
   <string name="CreditCard">Credit Card</string>
   <string name="InvalidAddressTextEdit">Cannot validate adddress</string>
@@ -176,7 +176,7 @@
   <string name="LocationServiceErrorMessage">The location service is not enabled.</string>
   <string name="LocationDetailAddressLabel">Address</string>
   <string name="NoAptText">No apt.</string>
-  <string name="TaxiServerDownMessage">Can\'t send message to Taxi</string>
+  <string name="TaxiServerDownMessage">Can\'t send message to driver</string>
   <string name="PasswordLabel">Password</string>
   <string name="RingCodeTextPlaceholder">Entry code</string>
   <string name="View_SignIn"></string>
@@ -189,7 +189,7 @@
   <string name="View_RefineAddress">Pickup Details</string>
   <string name="InvalidAddressTitle">Invalid address</string>
   <string name="searchHint">Search</string>
-  <string name="EstimatePrice">Estimated Fare</string>
+  <string name="EstimatePrice">Cost</string>
   <string name="HistoryDetailAuthorizationLabel">Authorization:</string>
   <string name="RideSettingsView">Profile</string>
   <string name="DestinationViewDestinationLabel">Destination:</string>
@@ -312,14 +312,14 @@
   <string name="InvalidChoiceTitle">Invalid Choice</string>
   <string name="ResetPasswordEmailPlaceHolder">Email</string>
   <string name="PaymentDetails.CreditCardLabel">Cards</string>
-  <string name="EstimateDistance"> ({0})</string>
+  <string name="EstimateDistance"></string>
   <string name="PayPalExpressCheckoutCancelTitle">Payment cancelled</string>
   <string name="CreditCardCCV">CVV</string>
   <string name="NoOrderId">Order Not ready</string>
   <string name="TermsAndConditionsLabel">Terms and Conditions</string>
   <string name="StatusInvalid">Status not available</string>
   <string name="View_CreateAccount">Create Your Account</string>
-  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable">No fare estimate available for the ride. Please contact {0} at {1} for further assistance.</string>
+  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable">No fare is available for the ride. Please specify a valid pickup and destination.</string>
   <string name="HistoryDetailDestinationLabel">Destination:</string>
   <string name="ViewRatingBtn">View ratings</string>
   <string name="NotAvailable">N/A</string>
