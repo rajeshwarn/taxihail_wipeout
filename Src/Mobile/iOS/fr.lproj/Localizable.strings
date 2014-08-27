@@ -480,6 +480,19 @@
 "AddACardButton"="Enregistrez";
 "PayInCar"="Payer dans le taxi";
 "CreditCardErrorInvalid"="La carte ne semble pas être valide";
+"PanelMenuViewNotificationsText"="Notifications";
+"Notification_ReceiptEmail"="Reçu (Email)";
+"Notification_ConfirmPairingPush"="Confirmation de pairing (Push)";
+"Notification_NearbyTaxiPush"="Taxi à proximité (Push)";
+"Notification_DriverAssignedEmail"="Chauffeur assigné (Email)";
+"Notification_Enabled"="Notifications";
+"Notification_Off"="Non";
+"Notification_PaymentConfirmationPush"="Confirmation de paiement (Push)";
+"Notification_DriverAssignedPush"="Chauffeur  assigné (Push)";
+"Notification_VehicleAtPickupPush"="Taxi au point de ramassage (Push)";
+"Notification_On"="Oui";
+"Notification_BookingConfirmationEmail"="Confirmation Commande (Email)";
+"View_NotificationSettings"="Notifications";
 "EtaDurationUnit"="min";
 "StatusEta"="À {0} et {1} {2}";
 "RateLastRideTitle"="Rate last ride?";
@@ -487,3 +500,5 @@
 "NotNow"="Not now";
 "RateLastRideMessage"="We would appreciate your feedback on your last ride, would you like to rate it?";
 "DontAsk"="Don't ask";
+"ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall"="La commande ne peut être créée car le numéro de votre compte entreprise est invalide.";
+"ServiceErrorCreateOrder_CannotCreateInIbs_10000"="La commande ne peut être créée car le numéro de votre compte entreprise est invalide.";

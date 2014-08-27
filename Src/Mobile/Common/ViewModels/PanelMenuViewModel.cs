@@ -10,6 +10,7 @@ using ServiceStack.Text;
 using Params = System.Collections.Generic.Dictionary<string, string>;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration.Impl;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -37,24 +38,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService = accountService;
 			_phoneService = phoneService;
 			_paymentService = paymentService;
+			ItemMenuList = new ObservableCollection<ItemMenuModel>();
         }
 
-		public async void Init()
+		public async Task Start()
 		{
-			try
-			{
-				var paymentSettings = _paymentService.GetPaymentSettings();
-				IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
+			var paymentSettings = _paymentService.GetPaymentSettings();
+			IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
 
-			    var notificationSettings = await _accountService.GetNotificationSettings(true);
-			    IsNotificationsEnabled = notificationSettings.Enabled;
-			}
-			catch
-			{
-				// if we get an unauthorized error, don't throw here, something else will tell the user elegantly
-			}
+		    var notificationSettings = await _accountService.GetNotificationSettings(true);
+		    IsNotificationsEnabled = notificationSettings.Enabled;
 
-			ItemMenuList = new ObservableCollection<ItemMenuModel>();
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory});
 			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile});
