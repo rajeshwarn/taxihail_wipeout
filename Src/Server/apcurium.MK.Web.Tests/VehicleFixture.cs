@@ -11,7 +11,7 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
 
-            _sut = new VehicleServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            _sut = new VehicleServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
         }
 
         private VehicleServiceClient _sut;
