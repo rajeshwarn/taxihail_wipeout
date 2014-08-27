@@ -271,6 +271,14 @@
         }
     });
 
+    Handlebars.registerHelper('ifNotCond', function (v1, v2, options) {
+        if (v1 != v2) {
+            return options.fn(this);
+        } else {
+            return options.inverse(this);
+        }
+    });
+
     Handlebars.registerHelper('niceShortDateAndTime', function (date) {
         // Format: Monday, August 17 at 2:35 PM
         return new Handlebars.SafeString(TaxiHail.date.niceShortDate(date) + ',\u00a0' + TaxiHail.date.niceTime(date));

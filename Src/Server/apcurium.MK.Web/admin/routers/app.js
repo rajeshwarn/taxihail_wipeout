@@ -25,6 +25,9 @@
             /* settings */
             "settings": "manageCompanySettings",
 
+            /* notification settings */
+            "notificationSettings": "manageNotificationSettings",
+
             /* paymentSettings */
             "paymentSettings": "managePaymentSettings",
             
@@ -77,6 +80,10 @@
 
         manageCompanySettings: function () {
             action(TaxiHail.CompanySettingsController, 'index');
+        },
+
+        manageNotificationSettings: function () {
+            action(TaxiHail.NotificationSettingsController, 'index');
         },
 
         managePaymentSettings: function () {
