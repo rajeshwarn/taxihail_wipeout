@@ -90,7 +90,7 @@
 "DeleteBookItButtonImageNamePressed"="";
 "StreetNumberPlacesBt"="البحث عن أماكن";
 "CreateAccountTitleMr"="السيد";
-"EstimatePriceFormat"="التكلفة المتوقعة :{0} ({1})";
+"EstimatePriceFormat"="Cost: {0:c}";
 "BookRatingErrorMessage"="قم بتقييم مشوارك";
 "ResetPasswordSucessTitle"="إعادة ضبط كلمة المرور";
 "TabSearch"="بحث";
@@ -134,7 +134,7 @@
 "CreateAccountPhonePlaceHolder"="الجوال";
 "View_LocationDetail"="تفاصيل الموقع";
 "SettingsViewTitle"="إعدادات";
-"EstimatePriceOver100"="إتصال لمعرفة السعر";
+"EstimatePriceOver100"="Cost: {0:c}";
 "PaymentDetails.InvalidTipAmount"="قيمة الإكرامية غير صالحة";
 "BookPickupLabel"="اكد موقع الإلتقاء المختار";
 "Tuto03Top"="يمكنك أيضا إختيار نقطة الإلتقاء بالضغط على عنوان الإلتقاء.";
@@ -177,7 +177,7 @@
 "DriverInfoColor"="اللون:";
 "ResetPasswordTitleText"="نسيت كلمة المرور؟";
 "StatusNewRideButton"="رحلة جديدة";
-"TaxiServerDownMessage"="لا يمكن إرسال رسالة لسيارة الأجرة";
+"TaxiServerDownMessage"="Can't send message to driver";
 "View_RideSummary"="ملخص الرحلة";
 "PasswordLabel"="كلمة المرور";
 "PayPalExpressCheckoutCancelTitle"="تم إلغاء عملية الدفع";
@@ -278,7 +278,7 @@
 "ResetPasswordInvalidDataTitle"="عنوان البريد الإلكتروني غير صحيح";
 "Version"="v{0}";
 "CreditCardZipCode"="الرمز البريدي";
-"ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall"="لا يمكن تقدير الأجرة لهذه الرحلة.";
+"ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall"="No fare is available for the ride. Please specify a valid pickup and destination.";
 "View_Payments_CmtRideLinqConfirmPairTitle"="تأكيد بيانات الدفع:";
 "AddressSearchingText"="جار البحث";
 "GooglePlayServicesNotAvailableMessage1"="يجب أن تقوم بتحديث خدمات غوغل بلاي لتتمكن من استخدام هذا التطبيق.";
@@ -313,7 +313,7 @@
 "Continue"="استمرار";
 "StatusInvalid"="الحالة غير متاحة";
 "View_CreateAccount"="افتح حسابك";
-"ServiceErrorCreateOrder_NoFareEstimateAvailable"="لا يمكن تقدير الأجرة لهذه الرحلة. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.";
+"ServiceErrorCreateOrder_NoFareEstimateAvailable"="No fare is available for the ride. Please specify a valid pickup and destination.";
 "HistoryDetailDestinationLabel"="الوجهة:";
 "ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall"="لا يمكن إدخال الطلب لأن حسابك غير فعال حاليا.";
 "ViewRatingBtn"="رؤية التقييمات";
@@ -477,3 +477,7 @@
 "AddACardButton"="Add Card";
 "EtaDurationUnit"="min";
 "StatusEta"="{0} and {1} {2} away";
+"ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall"="The charge account information is invalid. Please try again.";
+"ServiceErrorCreateOrder_CannotCreateInIbs_10000"="The charge account information is invalid. Please try again.";
+"EstimateDistance"="";
+"EstimatePrice"="Cost";

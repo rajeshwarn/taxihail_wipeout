@@ -1541,7 +1541,7 @@
 	  <value>Enregistrez</value>
   </data>
   <data name="Eta" xml:space="preserve">
-  	<value>Le taxi le plus près est à {0} et {1} {2}</value>
+  	<value>Le véhicule le proche est à {1} minutes</value>
   </data>
   <data name="EtaDurationUnit" xml:space="preserve">
   	<value>min</value>
@@ -1550,6 +1550,11 @@
   	<value>min</value>
   </data>
   <data name="StatusEta" xml:space="preserve">
-  	<value>À {0} et {1} {2}</value>
+  	<value>Votre véhicule arrive dans {1} minutes</value>
   </data>
+<data name="EtaNotAvailable" xml:space="preserve">
+  	<value>Il n'y a pas de véhicule disponible</value>
+  </data>
+
+
 </root>

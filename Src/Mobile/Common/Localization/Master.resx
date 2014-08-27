@@ -1577,4 +1577,8 @@
   <data name="AddACardButton" xml:space="preserve">
   	<value>Add Card</value>
   </data>
+<data name="EtaNotAvailable" xml:space="preserve">
+  	<value>No vehicle available</value>
+  </data>
+
 </root>
