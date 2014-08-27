@@ -4,13 +4,17 @@ using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using System.ComponentModel;
+using Cirrious.MvvmCross.Binding.BindingContext;
+using MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
 	public class ToggleCell : MvxStandardTableViewCell
 	{
 		private bool _hideBottomBar;
-		private UISwitch _notificationToggle;
+		public UISwitch NotificationToggle { get; set; }
 
 		public ToggleCell(IntPtr handle, string bindingText) : base(bindingText, handle)
 		{
@@ -34,22 +38,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				_hideBottomBar = value;
 			}
 		}
-
-		public string DisplayName 
-		{ 
-			get { return TextLabel.Text; }
-			set { TextLabel.Text = Localize.GetValue(string.Format("Notification_{0}", value)); }
-		}
 			
-		public bool Value
-		{
-			get { return _notificationToggle.On; }
-			set { _notificationToggle.On = value; }
-		}
-
 		private void Initialize()
 		{
-			BackgroundView = new CustomCellBackgroundView(this.ContentView.Frame, 10, UIColor.White, UIColor.FromRGB(190, 190, 190)) 
+			this.DelayBind (() => 
+			{
+				var set = this.CreateBindingSet<ToggleCell, ToggleItem> ();
+
+				set.Bind (NotificationToggle)
+					.For (v => v.On)
+					.To (vm => vm.Value);
+
+				set.Bind (TextLabel)
+					.To (vm => vm.Display);
+
+				set.Apply ();
+			});
+
+			BackgroundView = new CustomCellBackgroundView(this.ContentView.Frame, 0, UIColor.White, UIColor.FromRGB(190, 190, 190)) 
 			{
 				HideBottomBar = HideBottomBar,              
 			};
@@ -59,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			TextLabel.TextColor = UIColor.FromRGB(44, 44, 44);
 			TextLabel.BackgroundColor = UIColor.Clear;
-			TextLabel.Font = UIFont.FromName(FontName.HelveticaNeueBold, 28/2);
+			TextLabel.Font = UIFont.FromName(FontName.HelveticaNeueLight, 32 / 2);
 			this.TextLabel.TextAlignment ();
 
 			ContentView.BackgroundColor = UIColor.Clear;
@@ -67,13 +73,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			if (this.Accessory != UITableViewCellAccessory.None)
 			{
-				_notificationToggle = new UISwitch ();
+				NotificationToggle = new UISwitch ();
 
-				//_notificationToggle.
-
-				// TODO: binding??
-
-				AccessoryView = _notificationToggle;
+				AccessoryView = NotificationToggle;
 			}
 		}
 	}
