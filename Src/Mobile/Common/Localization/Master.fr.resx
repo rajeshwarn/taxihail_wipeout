@@ -1541,16 +1541,16 @@
 	  <value>Enregistrez</value>
   </data>
   <data name="Eta" xml:space="preserve">
-  	<value>Le véhicule le proche est à {1} minutes</value>
+  	<value>Le véhicule le plus proche est à {1} {2}</value>
   </data>
   <data name="EtaDurationUnit" xml:space="preserve">
-  	<value>min</value>
+  	<value>minute</value>
   </data>
   <data name="EtaDurationUnitPlural" xml:space="preserve">
-  	<value>min</value>
+  	<value>minutes</value>
   </data>
   <data name="StatusEta" xml:space="preserve">
-  	<value>Votre véhicule arrive dans {1} minutes</value>
+  	<value>Votre véhicule arrive dans {1} {2}</value>
   </data>
 <data name="EtaNotAvailable" xml:space="preserve">
   	<value>Il n'y a pas de véhicule disponible</value>

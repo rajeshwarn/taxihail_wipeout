@@ -468,12 +468,12 @@
 "PendingOrderCancel"="Annuler";
 "PendingOrderMessage"="Désolé, cette reservation ne peut être prise en compte. Vous avez déjà une commande en cours. Voir le détail?";
 "PendingOrderView"="Détail";
-"Eta"="Le véhicule le proche est à {1} minutes";
-"EtaDurationUnitPlural"="min";
+"Eta"="Le véhicule le plus proche est à {1} {2}";
+"EtaDurationUnitPlural"="minutes";
 "NoCardOnFileMessage"="Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.";
 "AddACardButton"="Enregistrez";
-"EtaDurationUnit"="min";
-"StatusEta"="Votre véhicule arrive dans {1} minutes";
+"EtaDurationUnit"="minute";
+"StatusEta"="Votre véhicule arrive dans {1} {2}";
 "ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall"="La commande ne peut être créée car le numéro de votre compte entreprise est invalide.";
 "ServiceErrorCreateOrder_CannotCreateInIbs_10000"="La commande ne peut être créée car le numéro de votre compte entreprise est invalide.";
 "EstimateDistance"="";
