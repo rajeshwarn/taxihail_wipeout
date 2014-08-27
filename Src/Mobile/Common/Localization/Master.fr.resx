@@ -1562,55 +1562,58 @@
     <value>Notifications</value>
   </data>
   <data name="Eta" xml:space="preserve">
-    <value>Le taxi le plus près est à {0} et {1} {2}</value>
+  	<value>Le véhicule le plus proche est à {1} {2}</value>
   </data>
   <data name="PanelMenuViewNotificationsText" xml:space="preserve">
     <value>Notifications</value>
   </data>
   <data name="DontAsk" xml:space="preserve">
-    <value>Don't ask</value>
+    <value>Ne plus demander</value>
   </data>
   <data name="Notification_BookingConfirmationEmail" xml:space="preserve">
     <value>Confirmation Commande (Email)</value>
   </data>
   <data name="EtaDurationUnit" xml:space="preserve">
-    <value>min</value>
+  	<value>minute</value>
   </data>
   <data name="Notification_ConfirmPairingPush" xml:space="preserve">
     <value>Confirmation de pairing (Push)</value>
   </data>
   <data name="NotNow" xml:space="preserve">
-    <value>Not now</value>
+    <value>Plus tard</value>
   </data>
   <data name="Notification_DriverAssignedEmail" xml:space="preserve">
     <value>Chauffeur assigné (Email)</value>
   </data>
   <data name="EtaDurationUnitPlural" xml:space="preserve">
-    <value>min</value>
+  	<value>minutes</value>
   </data>
   <data name="Notification_DriverAssignedPush" xml:space="preserve">
     <value>Chauffeur  assigné (Push)</value>
   </data>
   <data name="RateLastRide" xml:space="preserve">
-    <value>Rate</value>
+    <value>Évaluer</value>
   </data>
   <data name="Notification_Enabled" xml:space="preserve">
     <value>Notifications</value>
   </data>
   <data name="StatusEta" xml:space="preserve">
-    <value>À {0} et {1} {2}</value>
+  	<value>Votre véhicule arrive dans {1} {2}</value>
+  </data>
+  <data name="EtaNotAvailable" xml:space="preserve">
+  	<value>Il n'y a pas de véhicule disponible</value>
   </data>
   <data name="Notification_NearbyTaxiPush" xml:space="preserve">
     <value>Taxi à proximité (Push)</value>
   </data>
   <data name="RateLastRideMessage" xml:space="preserve">
-    <value>We would appreciate your feedback on your last ride, would you like to rate it?</value>
+    <value>Nous aimerions recevoir vos commentaires sur votre dernière course, voulez-vous l'évaluer?</value>
   </data>
   <data name="Notification_PaymentConfirmationPush" xml:space="preserve">
     <value>Confirmation de paiement (Push)</value>
   </data>
   <data name="RateLastRideTitle" xml:space="preserve">
-    <value>Rate last ride?</value>
+    <value>Évaluer la dernière course?</value>
   </data>
   <data name="Notification_ReceiptEmail" xml:space="preserve">
     <value>Reçu (Email)</value>

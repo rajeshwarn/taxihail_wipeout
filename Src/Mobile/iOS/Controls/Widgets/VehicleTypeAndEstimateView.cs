@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private UIView EtaContainer { get; set; }
 
 		private const float VEHICLE_SELECTION_HEIGHT = 52.0f;
-		private const float ETA_CONTAINER_HEIGHT = 20.0f;
+		private const float ETA_CONTAINER_HEIGHT = 23.0f;
 		private const float LABEL_WIDTH = 56.0f;
 		private const float LABEL_RIGHT_PADDING = 5f;
 
@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 BackgroundColor = UIColor.Clear,
                 Lines = 1,
 				Font = UIFont.FromName(FontName.HelveticaNeueLight, 32 / 2),
-				TextAlignment = UITextAlignment.Left,
+                TextAlignment = UITextAlignment.Natural,
                 TextColor = Theme.LabelTextColor,
                 ShadowColor = UIColor.Clear
             };
@@ -83,17 +83,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			EtaLabel = new UILabel
 			{
-				AdjustsFontSizeToFitWidth = true,
+                AdjustsFontSizeToFitWidth = true,
 				BackgroundColor = UIColor.Clear,
 				Lines = 1,
-				Font = UIFont.FromName(FontName.HelveticaNeueLight, 22 / 2),
-				TextAlignment = UITextAlignment.Left,
+                Font = UIFont.FromName(FontName.HelveticaNeueLight, 24 / 2),
+                TextAlignment = UITextAlignment.Natural,
 				TextColor = Theme.LabelTextColor,
-				ShadowColor = UIColor.Clear
+				ShadowColor = UIColor.Clear,
 			};
 
 			EtaLabel.SetWidth(Frame.Width - LABEL_WIDTH - LABEL_RIGHT_PADDING);
-			EtaLabel.SetHeight(Frame.Height / 2);
+            EtaLabel.SetHeight(ETA_CONTAINER_HEIGHT);
 			EtaLabel.SetHorizontalCenter((Frame.Width / 2) + (LABEL_WIDTH / 2) - LABEL_RIGHT_PADDING);
 
 			EtaContainer = new UIView (
@@ -265,8 +265,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 				EtaBadge.RemoveFromSuperview ();
 				EtaBadge = new VehicleTypeView (
-					new RectangleF (4f, -12f, 40f, 40f), 
-					etaBadge, 
+                    new RectangleF (4f, (ETA_CONTAINER_HEIGHT - 40f) / 2, 40f, 40f), // use real size of image
+					etaBadge,
 					true,
 					true);
 				EtaContainer.Add (EtaBadge);
@@ -297,7 +297,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			if (!ShowEstimate && showEta) 
 			{
 				EtaContainer.Add (EtaLabel);
-				EtaLabel.SetVerticalCenter(8f);
+                EtaLabel.SetVerticalCenter(ETA_CONTAINER_HEIGHT / 2);
 			}
 				
 			if (ShowEstimate) {

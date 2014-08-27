@@ -127,10 +127,10 @@
   <data name="EstimatePriceOver100" xml:space="preserve">
     <value>Appelez-nous pour connaître le prix!</value>
   </data>
-<data name="EstimatedFareNotAvailable" xml:space="preserve">
+  <data name="EstimatedFareNotAvailable" xml:space="preserve">
     <value>Le prix ne peut être estimé pour le moment</value>
   </data>
- <data name="EstimateDistance" xml:space="preserve">
+  <data name="EstimateDistance" xml:space="preserve">
     <value></value>
   </data>
   <data name="TaxiServerDownMessage" xml:space="preserve">
@@ -142,5 +142,4 @@
   <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
     <value>Aucun tarif n'est disponible pour la course. Merci de spécifier une adresse de départ et une destination.</value>
   </data>
-
 </root>
