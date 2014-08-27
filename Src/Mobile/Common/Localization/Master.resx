@@ -1608,6 +1608,9 @@
   <data name="View_NotificationSettings" xml:space="preserve">
     <value>Notifications</value>
   </data>
+  <data name="EtaNotAvailable" xml:space="preserve">
+    <value>No vehicle available</value>
+  </data>
   <data name="DontAsk" xml:space="preserve">
     <value>Don't ask</value>
   </data>

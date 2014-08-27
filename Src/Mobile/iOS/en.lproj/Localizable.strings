@@ -509,6 +509,11 @@
 "View"="View";
 "CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
 "PayInCar"="Pay in Car";
+"ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall"="The charge account information is invalid. Please try again.";
+"ServiceErrorCreateOrder_CannotCreateInIbs_10000"="The charge account information is invalid. Please try again.";
+"EstimateDistance"="";
+"EstimatePrice"="Cost";
+"EtaNotAvailable"="No vehicle available";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "PanelMenuViewNotificationsText"="Notifications";
 "Notification_ReceiptEmail"="Receipt (Email)";

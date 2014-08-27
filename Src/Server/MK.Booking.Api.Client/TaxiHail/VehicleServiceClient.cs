@@ -5,14 +5,17 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
 	public class VehicleServiceClient: BaseServiceClient, IVehicleClient
     {
-        public VehicleServiceClient(string url, string sessionId, IPackageInfo packageInfo)
+		private readonly ILogger _logger;
+        public VehicleServiceClient(string url, string sessionId, IPackageInfo packageInfo, ILogger logger)
             : base(url, sessionId, packageInfo)
         {
+			_logger = logger;
         }
 
         public async Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int vehicleTypeId)
@@ -23,6 +26,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 Longitude = longitude,
                 VehicleTypeId = vehicleTypeId
             });
+                    
+			_logger.LogMessage (string.Format("Available vehicle found for lat {0}, long {1} count = {2}",latitude,longitude, response.Count ));
             return response.ToArray();
         }
 

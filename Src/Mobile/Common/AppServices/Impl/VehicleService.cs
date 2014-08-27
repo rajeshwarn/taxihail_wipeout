@@ -20,7 +20,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IObservable<Direction> _etaObservable;
 		readonly ISubject<IObservable<long>> _timerSubject = new BehaviorSubject<IObservable<long>>(Observable.Never<long>());
 		readonly IDirections _directions;
-		readonly IAppSettings _appSettings;
 
 		private bool _isStarted { get; set; }
 
@@ -29,9 +28,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			IAppSettings settings)
 		{
 			_directions = directions;
-			_appSettings = settings;
-
-			var showEta = _appSettings.Data.ShowEta;
 
 			_availableVehiclesObservable = _timerSubject
 				.Switch()
@@ -42,13 +38,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.Where(x => x.address.HasValidCoordinate() && x.vehicleTypeId.HasValue)
 				.SelectMany(x => CheckForAvailableVehicles(x.address, x.vehicleTypeId.Value));
 
-			 _etaObservable = _availableVehiclesObservable
-				.Where (x => x.Any () && showEta)
+			_etaObservable = _availableVehiclesObservable
+				.Where (_ => settings.Data.ShowEta)
 				.CombineLatest(orderWorkflowService.GetAndObservePickupAddress (), (vehicles, address) => new { address, vehicles } )
-				.Select (x => new { x.address, vehicle = GetNearestVehicle(x.address, x.vehicles) })
-				.DistinctUntilChanged(x => Position.CalculateDistance (x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude))
+				.Select (x => new { x.address, vehicle =  GetNearestVehicle(x.address, x.vehicles) })
+				.DistinctUntilChanged(x => x.vehicle == null ? double.MaxValue : Position.CalculateDistance (x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude))
 				.Select(x => CheckForEta(x.address, x.vehicle));
-
 		}
 
 		public void Start()
@@ -80,12 +75,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public AvailableVehicle GetNearestVehicle(Address pickup, AvailableVehicle[] cars)
 		{
+			if ((cars == null) || (!cars.Any ())) {
+				return null;
+			}
+
 			return cars.OrderBy (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude))
 				.First();
 		}
 
 		public Direction CheckForEta(Address pickup, AvailableVehicle vehicleLocation)
 		{
+			if(vehicleLocation == null)
+			{
+				return null;
+			}
+
 			return  GetEtaBetweenCoordinates(vehicleLocation.Latitude, vehicleLocation.Longitude, pickup.Latitude, pickup.Longitude);                    	
 		}
 

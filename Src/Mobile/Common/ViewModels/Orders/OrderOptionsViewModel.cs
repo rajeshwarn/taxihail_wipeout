@@ -212,7 +212,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{ 
 				_eta = value;
 				RaisePropertyChanged ();
-				RaisePropertyChanged(() => ShowEta);
 				RaisePropertyChanged(() => VehicleAndEstimateBoxIsVisible);
 				RaisePropertyChanged(() => FormattedEta);
 			}
@@ -224,30 +223,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				if (Eta != null && Eta.IsValidEta()) 
 				{
-					var durationUnit = Eta.Duration <= 1 ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
-					return string.Format (this.Services ().Localize ["Eta"], Eta.FormattedDistance, Eta.Duration, durationUnit);
+					if (Eta.Duration > 30) 
+					{
+						return this.Services ().Localize ["EtaNotAvailable"];
+					} 
+					else 
+					{
+						var durationUnit = Eta.Duration <= 1 ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
+						return string.Format (this.Services ().Localize ["Eta"], Eta.FormattedDistance, Eta.Duration, durationUnit);
+					}
 				}
 
-				return string.Empty;
+				return this.Services ().Localize ["EtaNotAvailable"];
 			}
 		}
 
 		public bool VehicleAndEstimateBoxIsVisible
 		{
-            		get { return ShowVehicleSelection || ShowEstimate || ShowEta; }
+			get { return ShowVehicleSelection || ShowEstimate || Settings.ShowEta; }
 		}
 
 		public bool ShowEstimate
 		{
 			get { return ShowDestination && Settings.ShowEstimate; }
-		}
-			
-		public bool ShowEta
-		{
-			get 
-			{ 
-				return (Eta != null && Eta.IsValidEta()) && Settings.ShowEta;
-			}
 		}
 
 		public bool ShowVehicleSelection

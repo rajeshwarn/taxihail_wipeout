@@ -153,8 +153,8 @@
   <string name="Error_AccountPaymentQuestionRequiredMessage">Vous devez saisir tous les champs pour continuer</string>
   <string name="Error_AccountPaymentTitle">Erreur</string>
   <string name="EstimatedFareNotAvailable">Le prix ne peut être estimé pour le moment</string>
-  <string name="EstimateDistance">({0})</string>
-  <string name="EstimatePrice">Prix estimé</string>
+  <string name="EstimateDistance"></string>
+  <string name="EstimatePrice">Prix</string>
   <string name="EstimatePriceFormat">Prix estimé: {0:C} ({1})</string>
   <string name="EstimatePriceOver100">Appelez-nous pour connaître le prix!</string>
   <string name="EstimatingFare">Calcul du prix en cours…</string>
@@ -496,16 +496,17 @@
   <string name="Notification_ReceiptEmail">Reçu (Email)</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000">La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall">La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</string>
-  <string name="Eta">Le taxi le plus près est à {0} et {1} {2}</string>
-  <string name="EtaDurationUnit">min</string>
-  <string name="EtaDurationUnitPlural">min</string>
-  <string name="DontAsk">Don\'t ask</string>
-  <string name="NotNow">Not now</string>
-  <string name="RateLastRide">Rate</string>
-  <string name="RateLastRideMessage">We would appreciate your feedback on your last ride, would you like to rate it?</string>
-  <string name="RateLastRideTitle">Rate last ride?</string>
-  <string name="StatusEta">À {0} et {1} {2}</string>
+  <string name="Eta">Le véhicule le plus proche est à {1} {2}</string>
+  <string name="EtaDurationUnit">minute</string>
+  <string name="EtaDurationUnitPlural">minutes</string>
+  <string name="DontAsk">Ne plus demander</string>
+  <string name="NotNow">Plus tard</string>
+  <string name="StatusEta">Votre véhicule arrive dans {1} {2}</string>
+  <string name="EtaNotAvailable">Il n\'y a pas de véhicule disponible</string>
+  <string name="RateLastRide">Évaluer</string>
+  <string name="RateLastRideMessage">Nous aimerions recevoir vos commentaires sur votre dernière course, voulez-vous l\'évaluer?</string>
   <string name="Notification_VehicleAtPickupPush">Taxi au point de ramassage (Push)</string>
+  <string name="RateLastRideTitle">Évaluer la dernière course?</string>
   <string name="Notification_Off">Non</string>
   <string name="Notification_On">Oui</string>
 </resources>
