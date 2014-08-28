@@ -10,35 +10,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class NotificationSettingsViewModel : PageViewModel
     {
         private readonly IAccountService _accountService;
-
-        private ObservableCollection<ToggleItem> _notificationSettings;
-        public ObservableCollection<ToggleItem> NotificationSettings
-        {
-            get { return _notificationSettings; }
-            set { _notificationSettings = value; }
-        }
-
-        private bool _isNotificationEnabled;
-        public bool IsNotificationEnabled
-        {
-            get { return _isNotificationEnabled; }
-            set
-            {
-                if (_isNotificationEnabled != value)
-                {
-                    _isNotificationEnabled = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
         
         public NotificationSettingsViewModel(IAccountService accountService)
         {
             _accountService = accountService;
-        }
-
-        public void Init()
-        {
         }
 
         public override void OnViewLoaded()
@@ -53,9 +28,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			UpdateNotificationSettings ();
 		}
 
+        public ObservableCollection<ToggleItem> NotificationSettings { get; set; }
+
+        private bool _isNotificationEnabled;
+        public bool IsNotificationEnabled
+        {
+            get { return _isNotificationEnabled; }
+            set
+            {
+                _isNotificationEnabled = value;
+                RaisePropertyChanged();
+            }
+        }
+
         private async void LoadNotificationSettings()
         {
-            _notificationSettings = new ObservableCollection<ToggleItem>();
+            NotificationSettings = new ObservableCollection<ToggleItem>();
 
             var notificationSettings = await _accountService.GetNotificationSettings();
             var type = notificationSettings.GetType();
@@ -64,21 +52,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (setting.PropertyType == typeof(bool) || setting.PropertyType == typeof(bool?))
                 {
-                    var value = (bool)setting.GetValue(notificationSettings, null);
+                    var value = (bool?)setting.GetValue(notificationSettings);
 
                     // Special case for this property since it resides outside the MvxListView
                     if (setting.Name == "Enabled")
                     {
-                        IsNotificationEnabled = value;
+                        IsNotificationEnabled = value.Value;
                         continue;
                     }
 
-                    _notificationSettings.Add(new ToggleItem
+                    // if the value is null, this means the company set the setting as "Not available"
+                    // don't show it to the client
+                    if (value.HasValue)
                     {
-                        Name = setting.Name,
-                        Display = this.Services().Localize["Notification_" + setting.Name],
-                        Value = value
-                    });
+                        NotificationSettings.Add(new ToggleItem
+                        {
+                            Name = setting.Name,
+                            Display = this.Services().Localize["Notification_" + setting.Name],
+                            Value = value.Value
+                        });
+                    }
                 }
             }
         }
@@ -93,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var type = updatedNotificationSettings.GetType();
             var updatedNotificationProperties = type.GetProperties();
 
-            foreach (var notificationSetting in _notificationSettings)
+            foreach (var notificationSetting in NotificationSettings)
             {
                 var updatedNotificationSetting = updatedNotificationProperties.FirstOrDefault(n => n.Name == notificationSetting.Name);
                 if (updatedNotificationSetting != null)

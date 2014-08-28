@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Services.Impl
             switch (orderStatusDetail.IBSStatusId)
             {
                 case VehicleStatuses.Common.Assigned:
-                    if (GetAccountNotificationSetting(order.AccountId, x => x.DriverAssignedPush))
+                    if (ShouldSendNotification(order.AccountId, x => x.DriverAssignedPush))
                     {
                         SendPush(order.AccountId,
                             string.Format(_resources.Get("PushNotification_wosASSIGNED", order.ClientLanguageCode), orderStatusDetail.VehicleNumber),
@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     }
                     break;
                 case VehicleStatuses.Common.Arrived:
-                    if (GetAccountNotificationSetting(order.AccountId, x => x.VehicleAtPickupPush))
+                    if (ShouldSendNotification(order.AccountId, x => x.VehicleAtPickupPush))
                     {
                         SendPush(order.AccountId,
                             string.Format(_resources.Get("PushNotification_wosARRIVED", order.ClientLanguageCode), orderStatusDetail.VehicleNumber),
@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 case VehicleStatuses.Common.Loaded:
                     if(_appSettings.Data.AutomaticPayment
                         && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id // Only send notification if using card on file
-                        && GetAccountNotificationSetting(order.AccountId, x => x.ConfirmPairingPush))
+                        && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
                     {
                         SendPush(order.AccountId,
                             _resources.Get("PushNotification_wosLOADED", order.ClientLanguageCode),
@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 var order = context.Find<OrderDetail>(orderId);
 
-                if (!GetAccountNotificationSetting(order.AccountId, x => x.PaymentConfirmationPush))
+                if (!ShouldSendNotification(order.AccountId, x => x.PaymentConfirmationPush))
                 {
                     return;
                 }
@@ -129,7 +129,7 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 var orderStatus = context.Query<OrderStatusDetail>().Single(x => x.OrderId == orderId);
 
-                if (!GetAccountNotificationSetting(orderStatus.AccountId, x => x.NearbyTaxiPush))
+                if (!ShouldSendNotification(orderStatus.AccountId, x => x.NearbyTaxiPush))
                 {
                     return;
                 }
@@ -172,70 +172,13 @@ namespace apcurium.MK.Booking.Services.Impl
             SendEmail(clientEmailAddress, EmailConstant.Template.AccountConfirmation, EmailConstant.Subject.AccountConfirmation, templateData, clientLanguageCode);
         }
 
-        public void SendAssignedConfirmationEmail(int ibsOrderId, double fare, string vehicleNumber, 
-            Address pickupAddress, Address dropOffAddress, DateTime pickupDate, DateTime transactionDate, 
-            SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                if (account == null || !GetAccountNotificationSetting(account.Id, x => x.DriverAssignedEmail))
-                {
-                    return;
-                }
-            }
-
-            var vatEnabled = _configurationManager.GetSetting(VATEnabledSetting, false);
-            var templateName = vatEnabled
-                ? EmailConstant.Template.DriverAssignedWithVAT
-                : EmailConstant.Template.DriverAssigned;
-
-            var priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
-
-            var vatAmount = 0d;
-            var fareAmountWithoutVAT = fare;
-            if (vatEnabled)
-            {
-                fareAmountWithoutVAT = fare / (1 + _configurationManager.GetSetting<double>(VATPercentageSetting, 0) / 100);
-                vatAmount = fare - fareAmountWithoutVAT;
-            }
-
-            var hasDropOffAddress = dropOffAddress != null && !string.IsNullOrWhiteSpace(dropOffAddress.FullAddress);
-
-            var templateData = new
-            {
-                ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
-                AccentColor = _configurationManager.GetSetting(AccentColorSetting),
-                ibsOrderId,
-                PickupDate = pickupDate.ToString("dddd, MMMM d"),
-                PickupTime = pickupDate.ToString("t" /* Short time pattern */),
-                PickupAddress = pickupAddress.DisplayAddress,
-                DropOffAddress = hasDropOffAddress ? dropOffAddress.DisplayAddress : "-",
-                settings.Name,
-                settings.Phone,
-                settings.Passengers,
-                settings.VehicleType,
-                settings.ChargeType,
-                Apartment = string.IsNullOrWhiteSpace(pickupAddress.Apartment) ? "-" : pickupAddress.Apartment,
-                RingCode = string.IsNullOrWhiteSpace(pickupAddress.RingCode) ? "-" : pickupAddress.RingCode,
-                vehicleNumber,
-                TransactionDate = transactionDate.ToString("dddd, MMMM d, yyyy"),
-                TransactionTime = transactionDate.ToString("t" /* Short time pattern */),
-                Fare = fareAmountWithoutVAT.ToString("C", priceFormat),
-                VATAmount = vatAmount.ToString("C", priceFormat),
-                TotalFare = fare.ToString("C", priceFormat)
-            };
-
-            SendEmail(clientEmailAddress, templateName, EmailConstant.Subject.DriverAssigned, templateData, clientLanguageCode);
-        }
-
         public void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress, DateTime pickupDate,
             SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode)
         {
             using (var context = _contextFactory.Invoke())
             {
                 var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                if (account == null || !GetAccountNotificationSetting(account.Id, x => x.BookingConfirmationEmail))
+                if (account == null || !ShouldSendNotification(account.Id, x => x.BookingConfirmationEmail))
                 {
                     return;
                 }
@@ -288,7 +231,7 @@ namespace apcurium.MK.Booking.Services.Impl
             using (var context = _contextFactory.Invoke())
             {
                 var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                if (account == null || !GetAccountNotificationSetting(account.Id, x => x.ReceiptEmail))
+                if (account == null || !ShouldSendNotification(account.Id, x => x.ReceiptEmail))
                 {
                     return;
                 }
@@ -390,7 +333,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private bool GetAccountNotificationSetting(Guid accountId, Expression<Func<NotificationSettings, bool?>> propertySelector)
+        private bool ShouldSendNotification(Guid accountId, Expression<Func<NotificationSettings, bool?>> propertySelector)
         {
             NotificationSettings computedSettings;
 
@@ -398,44 +341,24 @@ namespace apcurium.MK.Booking.Services.Impl
             var accountSettings = _configurationDao.GetNotificationSettings(accountId);
             if (accountSettings == null)
             {
-                computedSettings = new NotificationSettings
-                {
-                    Enabled = companySettings.Enabled,
-                    BookingConfirmationEmail = companySettings.BookingConfirmationEmail.GetValueOrDefault(),
-                    ConfirmPairingPush = companySettings.ConfirmPairingPush.GetValueOrDefault(),
-                    DriverAssignedEmail = companySettings.DriverAssignedEmail.GetValueOrDefault(),
-                    DriverAssignedPush = companySettings.DriverAssignedPush.GetValueOrDefault(),
-                    NearbyTaxiPush = companySettings.NearbyTaxiPush.GetValueOrDefault(),
-                    PaymentConfirmationPush = companySettings.PaymentConfirmationPush.GetValueOrDefault(),
-                    ReceiptEmail = companySettings.ReceiptEmail.GetValueOrDefault(),
-                    VehicleAtPickupPush = companySettings.VehicleAtPickupPush.GetValueOrDefault()
-                };
-            }
-            else
-            {
-                // if the account or the company disabled all notifications, then everything will be false
-                var enabled = companySettings.Enabled && accountSettings.Enabled;
-
-                // we have to check if the company setting has a value
-                // if it doesn't, then the company has disabled the setting and must be false for everyone
-                computedSettings = new NotificationSettings
-                {
-                    Enabled = enabled,
-                    BookingConfirmationEmail = enabled && companySettings.BookingConfirmationEmail.HasValue && accountSettings.BookingConfirmationEmail.GetValueOrDefault(),
-                    ConfirmPairingPush = enabled && companySettings.ConfirmPairingPush.HasValue && accountSettings.ConfirmPairingPush.GetValueOrDefault(),
-                    DriverAssignedEmail = enabled && companySettings.DriverAssignedEmail.HasValue && accountSettings.DriverAssignedEmail.GetValueOrDefault(),
-                    DriverAssignedPush = enabled && companySettings.DriverAssignedPush.HasValue && accountSettings.DriverAssignedPush.GetValueOrDefault(),
-                    NearbyTaxiPush = enabled && companySettings.NearbyTaxiPush.HasValue && accountSettings.NearbyTaxiPush.GetValueOrDefault(),
-                    PaymentConfirmationPush = enabled && companySettings.PaymentConfirmationPush.HasValue && accountSettings.PaymentConfirmationPush.GetValueOrDefault(),
-                    ReceiptEmail = enabled && companySettings.ReceiptEmail.HasValue && accountSettings.ReceiptEmail.GetValueOrDefault(),
-                    VehicleAtPickupPush = enabled && companySettings.VehicleAtPickupPush.HasValue && accountSettings.VehicleAtPickupPush.GetValueOrDefault()
-                };
+                // take company settings
+                return companySettings.Enabled && GetValue(companySettings, propertySelector);
             }
 
+            // if the account or the company disabled all notifications, then everything will be false
+            var enabled = companySettings.Enabled && accountSettings.Enabled;
+
+            // we have to check if the company setting has a value
+            // if it doesn't, then the company has disabled the setting and must be false for everyone
+            return enabled && GetValue(companySettings, propertySelector) && GetValue(accountSettings, propertySelector);
+        }
+
+        private bool GetValue(NotificationSettings settings, Expression<Func<NotificationSettings, bool?>> propertySelector)
+        {
             var mexp = propertySelector.Body as MemberExpression;
             var propertyName = mexp.Member.Name;
 
-            return (bool)computedSettings.GetType().GetProperty(propertyName).GetValue(computedSettings, null);
+            return (bool)settings.GetType().GetProperty(propertyName).GetValue(settings, null);
         }
 
         private static class EmailConstant
@@ -446,7 +369,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string Receipt = "Email_Subject_Receipt";
                 public const string AccountConfirmation = "Email_Subject_AccountConfirmation";
                 public const string BookingConfirmation = "Email_Subject_BookingConfirmation";
-                public const string DriverAssigned = "Email_Subject_DriverAssigned";
             }
 
             public static class Template
@@ -455,8 +377,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string Receipt = "Receipt";
                 public const string AccountConfirmation = "AccountConfirmation";
                 public const string BookingConfirmation = "BookingConfirmation";
-                public const string DriverAssigned = "DriverAssigned";
-                public const string DriverAssignedWithVAT = "DriverAssignedWithVAT";
             }
         }
     }

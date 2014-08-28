@@ -248,6 +248,7 @@
     <Compile Include="SMS\ISmsService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Email\Css\StyleReceipt.css" />
     <Content Include="Email\Images\header-gradient.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -260,18 +261,13 @@
     <Content Include="Email\Templates\BookingConfirmation.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Email\Templates\DriverAssigned.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Email\Templates\DriverAssignedWithVAT.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Email\Templates\PasswordReset.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Email\Templates\Receipt.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Email\Templates\ReceiptTemplate.html" />
     <None Include="App.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
