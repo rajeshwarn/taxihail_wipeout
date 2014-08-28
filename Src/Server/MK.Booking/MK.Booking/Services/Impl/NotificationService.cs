@@ -345,8 +345,6 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private bool ShouldSendNotification(Guid accountId, Expression<Func<NotificationSettings, bool?>> propertySelector)
         {
-            NotificationSettings computedSettings;
-
             var companySettings = _configurationDao.GetNotificationSettings();
             var accountSettings = _configurationDao.GetNotificationSettings(accountId);
             if (accountSettings == null)
