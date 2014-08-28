@@ -1,106 +1,192 @@
-﻿<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>{{ localize "Email_Subject_Receipt" }}</title>
-    </head>
-    <body style="font-family:Calibri,Helvetica, sans-serif; color:#686868">
-        <table width="300" cellpadding="0" cellspacing="0" style="width:300px;border-right:1px solid {{ AccentColor }};border-left:1px solid {{ AccentColor }};" id="backgroundTable">       
-		    <tr style="background-color:{{ AccentColor }}">
-			    <td colspan="2">&nbsp;</td>
-		    </tr>
-            <tr>
-                <td colspan="2">
-                    <h1 style="width:300px;color:{{ AccentColor }};padding-left:45px;padding-right:20px;">{{ ApplicationName }}<br/>{{ localize "Email_Body_Receipt" }}</h1>
-                </td>
-            </tr>
-		    <tr>
-			    <td colspan='2'>
-				    <table cellpadding="1" cellspacing="0" border="0" style="border:none;margin-left:45px;margin-right:20px;width:300px;">
-				        <tr>
-				            <td width=1><strong>{{ localize "Email_Body_Date" }}</strong></td>
-                            <td>{{Date}}</td>
-				        </tr>
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Receipt Title</title>
+    <link href="..\Css\StyleReceipt.css" media="all" rel="stylesheet" type="text/css" />
+    <style type="text/css" id="ignore">
+    /* -------------------------------------
+    RESPONSIVE AND MOBILE FRIENDLY STYLES
+    ------------------------------------- */
+        @media only screen and (max-width: 640px) {
+            h1, h2, h3, h4 {
+                font-weight: 600 !important;
+                margin: 20px 0 5px !important;
+            }
+
+            h1 {
+                font-size: 22px !important;
+            }
+
+            h2 {
+                font-size: 18px !important;
+            }
+
+            h3 {
+                font-size: 16px !important;
+            }
+
+            .container {
+                width: 100% !important;
+            }
+
+            .content, .content-wrapper {
+                padding: 10px !important;
+            }
+
+            .receipt_left_info, .receipt_right_info {
+                width: 100% !important;
+            }
+        }
+        .title_block:before, .title_block:after {
+            position: absolute;
+            top: 51%;
+            overflow: hidden;
+            width: 50%;
+            height: 1px;
+            content: '\a0';
+            background-color: gray;
+        }
+
+        .title_block:before {
+            margin-left: -50%;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <table class="body-wrap">
+        <tr>
+            <td></td>
+            <td class="container" width="600">
+                <div class="content">
+                    <table class="main" cellpadding="0" cellspacing="0">
                         <tr>
-						    <td valign=top><strong>{{ localize "Email_Body_PickupLocation" }}</strong></td>
-						    <td valign=top>{{PickupAddress}}</td>
-					    </tr>
-					    <tr>
-						    <td valign=top><strong>{{ localize "Email_Body_Destination" }}</strong></td>
-						    <td valign=top>{{DropOffAddress}}</td>
-					    </tr>
-					    <tr>
-					        <td><strong>{{ localize "Email_Body_OrderNo" }}&nbsp;&nbsp;</strong></td>
-                            <td>{{IBSOrderId}}</td>
-					    </tr>
-					    <tr>
-					        <td><strong>{{ localize "Email_Body_VehicleNumber" }}</strong></td>
-                            <td>{{VehicleNumber}}</td>
-					    </tr>
-					    <tr>
-					    	<td><strong>{{ localize "Email_Body_Driver" }}</strong></td>
-                        	<td>{{DriverName}}</td>
-					   	</tr>
-				        <tr>
-				            <td><strong>{{ localize "Email_Body_Fare"}}</strong></td>
-                            <td>{{Fare}}</td>
-				        </tr>
-                    
-      {{#VatEnabled}}
-				        <tr id="vatRow" >
-				            <td><strong>{{ localize "Email_Body_VAT"}}</strong></td>
-                            <td>{{VATAmount}} (#: {{VATRegistrationNumber}})</td>
-				        </tr>
-      {{/VatEnabled}}
-					    <tr>
-					        <td><strong>{{ localize "Email_Body_Toll"}}</strong></td>
-                            <td>{{Toll}}</td>
-					    </tr>
-					    <tr>
-					        <td><strong>{{ localize "Email_Body_Tip"}}</strong></td>
-                            <td>{{Tip}}</td>
-					    </tr>
-				        <tr>
-				            <td><strong>{{ localize "Email_Body_TotalFare"}}</strong></td>
-                            <td>{{TotalFare}}</td>
-				        </tr>
-	  {{#IsCardOnFile}}
+                            <td class="content-wrap aligncenter">
+                                <table cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td class="receipt_logo">
+                                            <img src="http://biz.prlog.org/Apcurium/logo.png" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td class="receipt_date">AUGUST 27, 2014 - 18h29 <!--{{ Date }}--></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="receipt_price">€16.33 <!--{{ TotalFare }}--></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="">
+                                                <div class="receipt_left_info">
+                                                    <table cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <td class="title_block">ROUTE <!--{{ localize "" }}--></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <div class="route_departure">
+                                                                    <div class="route_list_img">
+                                                                        <img src="http://www.short-wave.info/png/tiny-green-dot.png" />
+                                                                    </div>
+                                                                    <div class="route_list">
+                                                                        <div class="route_list_title">AUGUST 27, 2014 - 18h29</div>
+                                                                        <div class="route_list_adddress">39 Rue de Bretagne, 75003 Paris <!--{{ PickupAddress }}--></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="route_arrival">
+                                                                    <div class="route_list_img">
+                                                                        <img src="http://www.short-wave.info/png/tiny-red-dot.png" />
+                                                                    </div>
+                                                                    <div class="route_list">
+                                                                        <div class="route_list_title">AUGUST 27, 2014 - 18h34</div>
+                                                                        <div class="route_list_adddress">139 Rue Saint-Dominique, 75007 Paris <!--{{ DropOffAddress }}--></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <img src="http://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=300x300&maptype=roadmap" />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="receipt_right_info">
+                                                    <table cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <td class="title_block">FARE BREAKDOWN <!--{{ localize "" }}--></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <table cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td class="fare_list_title">Meter Fare <!--{{ localize "" }}--></td>
+                                                                        <td class="fare_list_price">12.45 <!--{{ Fare }}--></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="fare_list_title">Gratuity <!--{{ localize "" }}--></td>
+                                                                        <td class="fare_list_price">1.54 <!--{{ Gratuity }}--></td>
+                                                                    </tr>
+                                                                    <tr class="fare_list_subtotal">
+                                                                        <td class="fare_list_title">Subtotal <!--{{ localize "" }}--></td>
+                                                                        <td class="fare_list_price">€13.99 <!--{{ SubTotal }}--></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="fare_list_title">Tax <!--{{ localize "" }}--></td>
+                                                                        <td class="fare_list_price">2.34 <!--{{ Tax }}--></td>
+                                                                    </tr>
+                                                                    <tr class="fare_list_charged">
+                                                                        <td class="fare_list_title">CHARGED <!--{{ localize "" }}--></td>
+                                                                        <td class="fare_list_price">€16.33 <!--{{ TotalFare }}--></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <table cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <td class="title_block">YOUR DRIVER <!--{{ localize "" }}--></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <table cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td class="driver_name">{{ DriverName }}</td>
+                                                                        <td class="vehicle_type"><img height="30" width="60" src="http://i.huffpost.com/gen/991040/thumbs/o-BMWELI-570.jpg?6 " /></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="footer">
+                        <table>
+                            <tr>
+                                <td class=" content-block">Footer Information placeholder</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </td>
+            <td></td>
+        </tr>
+    </table>
 
-				        <tr>
-				            <td colspan="2">&nbsp;</td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"><strong>{{ localize "Email_Body_PaymentInformation" }}</strong></td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"></td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"><strong>{{ localize "Email_Body_PaidWith" }}</strong> {{ CardNumber }}</td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"><strong>{{ localize "Email_Body_TotalAmount" }}</strong> {{ CardOnFileAmount }}</td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"><strong>{{ localize "Email_Body_TransactionId" }}</strong>{{ CardOnFileTransactionId }}</td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"><strong>{{ localize "Email_Body_AuthorizationNumber" }}</strong>{{ CardOnFileAuthorizationCode }}</td>
-				        </tr>
-    {{/IsCardOnFile}}                    
-
-				    </table>
-			    </td>
-		    </tr>
-            <tr>
-                <td colspan="2">
-                    <p style="padding-left:45px;padding-right:20px;width:300px;">{{{Note}}}</p>
-                </td>
-            </tr>
-            <tr style="background-color:{{ AccentColor }}">
-                <td colspan="2">&nbsp;</td>
-            </tr>
-        </table>
-    </body>
+</body>
 </html>

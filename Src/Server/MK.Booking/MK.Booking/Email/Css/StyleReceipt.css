@@ -210,67 +210,6 @@ a {
 }
 
 /* -------------------------------------
-    INVOICE
-    Styles for the billing table
-------------------------------------- */
-/*.invoice {
-  margin: 40px auto;
-  text-align: left;
-  width: 80%;
-}
-.invoice td {
-  padding: 5px 0;
-}
-.invoice .invoice-items {
-  width: 100%;
-}
-.invoice .invoice-items td {
-  border-top: #eee 1px solid;
-}
-.invoice .invoice-items .total td {
-  border-top: 2px solid #333;
-  border-bottom: 2px solid #333;
-  font-weight: 700;
-}*/
-
-/* -------------------------------------
-    RESPONSIVE AND MOBILE FRIENDLY STYLES
-------------------------------------- */
-@media only screen and (max-width: 640px) {
-  h1, h2, h3, h4 {
-    font-weight: 600 !important;
-    margin: 20px 0 5px !important;
-  }
-
-  h1 {
-    font-size: 22px !important;
-  }
-
-  h2 {
-    font-size: 18px !important;
-  }
-
-  h3 {
-    font-size: 16px !important;
-  }
-
-  .container {
-    width: 100% !important;
-  }
-
-  .content, .content-wrapper {
-    padding: 10px !important;
-  }
-
-  /*.invoice {
-    width: 100% !important;
-  }*/
-  .receipt_left_info,.receipt_right_info {
-    width: 100% !important;
-}
-}
-
-/* -------------------------------------
     ADDED STYLE FOR OUR TEMPLATE
 ------------------------------------- */
 .receipt_price {
@@ -289,19 +228,6 @@ a {
     overflow: hidden;
     text-align: center;
     padding: 10px 0 10px 0;
-}
-.title_block:before, .title_block:after {
-    position: absolute;
-    top: 51%;
-    overflow: hidden;
-    width: 50%;
-    height: 1px;
-    content: '\a0';
-    background-color: gray;
-}
-.title_block:before {
-    margin-left: -50%;
-    text-align: right;
 }
 /* Ending Style for line between titles */
 
