@@ -73,7 +73,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public async override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
-			Panel.Start ();
 
 			_locationService.Start();
 			CheckTermsAsync();
@@ -85,6 +84,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 			if (firstTime)
 			{
+				await Panel.Start ();
                 CheckUnratedRide();
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
