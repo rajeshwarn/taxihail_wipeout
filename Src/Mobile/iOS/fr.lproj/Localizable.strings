@@ -480,6 +480,18 @@
 "AddACardButton"="Enregistrez";
 "PayInCar"="Payer dans le taxi";
 "CreditCardErrorInvalid"="La carte ne semble pas être valide";
+"PanelMenuViewNotificationsText"="Notifications";
+"Notification_ReceiptEmail"="Reçu (Email)";
+"Notification_ConfirmPairingPush"="Confirmation de pairing (Push)";
+"Notification_NearbyTaxiPush"="Taxi à proximité (Push)";
+"Notification_DriverAssignedEmail"="Chauffeur assigné (Email)";
+"Notification_Enabled"="Notifications";
+"Notification_Off"="Non";
+"Notification_PaymentConfirmationPush"="Confirmation de paiement (Push)";
+"Notification_DriverAssignedPush"="Chauffeur  assigné (Push)";
+"Notification_VehicleAtPickupPush"="Taxi au point de ramassage (Push)";
+"Notification_On"="Oui";
+"Notification_BookingConfirmationEmail"="Confirmation Commande (Email)";
 "EtaDurationUnit"="minute";
 "StatusEta"="Votre véhicule arrive dans {1} {2}";
 "ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall"="La commande ne peut être créée car le numéro de votre compte entreprise est invalide.";
@@ -492,3 +504,4 @@
 "EtaNotAvailable"="Il n'y a pas de véhicule disponible";
 "RateLastRideMessage"="Nous aimerions recevoir vos commentaires sur votre dernière course, voulez-vous l'évaluer?";
 "DontAsk"="Ne plus demander";
+"View_NotificationSettings"="Notifications";

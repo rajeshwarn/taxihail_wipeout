@@ -40,6 +40,8 @@ namespace apcurium.MK.Booking
         {
             System.Data.Entity.Database.SetInitializer<BookingDbContext>(null);
             container.RegisterType<ISmsService, TwilioService>();
+
+            container.RegisterInstance<IConfigurationDao>(new ConfigurationDao(() => container.Resolve<ConfigurationDbContext>()));
             container.RegisterType<BookingDbContext>(new TransientLifetimeManager(),
                 new InjectionConstructor(
                     container.Resolve<ConnectionStringSettings>(Common.Module.MkConnectionString).ConnectionString));
@@ -47,11 +49,11 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
             container.RegisterInstance<ITemplateService>(new TemplateService(container.Resolve<IConfigurationManager>()));
             container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IConfigurationManager>(), container.Resolve<ILogger>()));
-            container.RegisterInstance<INotificationService>(new NotificationService(() => container.Resolve<BookingDbContext>(), container.Resolve<IPushNotificationService>(), container.Resolve<ITemplateService>(), container.Resolve<IEmailSender>(), container.Resolve<IConfigurationManager>(), container.Resolve<IAppSettings>()));
+            container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IPushNotificationService>(), container.Resolve<IConfigurationManager>()));
+            container.RegisterInstance<INotificationService>(new NotificationService(() => container.Resolve<BookingDbContext>(), container.Resolve<IPushNotificationService>(), container.Resolve<ITemplateService>(), container.Resolve<IEmailSender>(), container.Resolve<IConfigurationManager>(), container.Resolve<IAppSettings>(), container.Resolve<IConfigurationDao>(), container.Resolve<IOrderDao>()));
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IPushNotificationService>(), container.Resolve<IConfigurationManager>()));
             container.RegisterInstance<IOrderStatusUpdateDao>(new OrderStatusUpdateDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IDefaultAddressDao>(new DefaultAddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<ITariffDao>(new TariffDao(() => container.Resolve<BookingDbContext>()));
@@ -61,7 +63,6 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IPopularAddressDao>(new PopularAddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<ICreditCardDao>(new CreditCardDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderPaymentDao>(new OrderPaymentDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IConfigurationDao>(new ConfigurationDao(() => container.Resolve<ConfigurationDbContext>()));
             container.RegisterInstance<IDeviceDao>(new DeviceDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<ICompanyDao>(new CompanyDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountChargeDao>(new AccountChargeDao(() => container.Resolve<BookingDbContext>()));
@@ -151,6 +152,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, OrderUserGpsGenerator>("OrderUserGpsGenerator");
             container.RegisterType<IEventHandler, AccountChargeDetailGenerator>("AccountChargeDetailGenerator");
             container.RegisterType<IEventHandler, VehicleTypeDetailGenerator>("VehicleTypeDetailGenerator");
+            container.RegisterType<IEventHandler, NotificationSettingsGenerator>("NotificationSettingsGenerator");
 
             // Integration event handlers
             container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");

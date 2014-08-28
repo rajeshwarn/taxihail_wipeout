@@ -1605,22 +1605,61 @@
   <data name="AddACardButton" xml:space="preserve">
     <value>Add Card</value>
   </data>
-<data name="EtaNotAvailable" xml:space="preserve">
-  	<value>No vehicle available</value>
+  <data name="View_NotificationSettings" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="EtaNotAvailable" xml:space="preserve">
+    <value>No vehicle available</value>
   </data>
   <data name="DontAsk" xml:space="preserve">
     <value>Don't ask</value>
   </data>
+  <data name="PanelMenuViewNotificationsText" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
   <data name="NotNow" xml:space="preserve">
     <value>Not now</value>
+  </data>
+  <data name="Notification_BookingConfirmationEmail" xml:space="preserve">
+    <value>Booking Confirmation (Email)</value>
   </data>
   <data name="RateLastRide" xml:space="preserve">
     <value>Rate</value>
   </data>
+  <data name="Notification_ConfirmPairingPush" xml:space="preserve">
+    <value>Confirm Pairing (Push)</value>
+  </data>
   <data name="RateLastRideMessage" xml:space="preserve">
     <value>We would appreciate your feedback on your last ride, would you like to rate it?</value>
   </data>
+  <data name="Notification_DriverAssignedEmail" xml:space="preserve">
+    <value>Driver Assigned (Email)</value>
+  </data>
   <data name="RateLastRideTitle" xml:space="preserve">
     <value>Rate last ride?</value>
+  </data>
+  <data name="Notification_DriverAssignedPush" xml:space="preserve">
+    <value>Driver Assigned (Push)</value>
+  </data>
+  <data name="Notification_Enabled" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="Notification_NearbyTaxiPush" xml:space="preserve">
+    <value>Nearby Taxi (Push)</value>
+  </data>
+  <data name="Notification_PaymentConfirmationPush" xml:space="preserve">
+    <value>Payment Confirmation (Push)</value>
+  </data>
+  <data name="Notification_ReceiptEmail" xml:space="preserve">
+    <value>Receipt (Email)</value>
+  </data>
+  <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
+    <value>Vehicle at Pickup (Push)</value>
+  </data>
+  <data name="Notification_Off" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="Notification_On" xml:space="preserve">
+    <value>On</value>
   </data>
 </root>

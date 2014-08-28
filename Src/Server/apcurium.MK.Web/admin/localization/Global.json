@@ -69,7 +69,6 @@
 	"Client.ShowEstimate" : "Show estimate",
 	"Client.DestinationIsRequired" : "Destination is required",
 	"Client.ShowEstimateWarning" : "Show estimate warning",
-	"Booking.ConfirmationEmail" : "Send confirmation email",
 	"Client.HideCallDispatchButton" : "Hide call dispatch button",
 	"Client.HideReportProblem": "Hide report problem button",
 	"Client.HideSendReceipt": "Hide send receipt option",	
@@ -99,11 +98,24 @@
 	"AvailableVehicles.Enabled" : "Show available vehicles nearby",
 	"AvailableVehicles.Radius" : "Radius for available vehicles",
 	"AvailableVehicles.Count" : "Number of avail. vehicles displayed",
-	
 	"IBS.ValidatePickupZone" : "IBS validate pickup zone",
 	"Receipt.Note" : "Receipt note",
 	"Client.OrderStatus.ClientPollingInterval" : "Client Ride Status Polling (seconds)",
 	"OrderStatus.ServerPollingInterval" : "Server Ride Status Polling (seconds)",
 
-	"/******* End settings Aliases *******/": ""
+	"/******* End settings Aliases *******/": "",
+
+    "/******* Begin notification settings Aliases ******/": "",
+
+    "enabled":  "Enable Notifications",
+    "bookingConfirmationEmail":  "Booking Confirmation (Email)",
+    "receiptEmail":  "Receipt (Email)",
+    "driverAssignedEmail":  "Driver Assigned (Email)",
+    "driverAssignedPush":  "Driver Assigned (Push)",
+    "confirmPairingPush":  "Confirm Pairing (Push)",
+    "nearbyTaxiPush":  "Nearby Taxi (Push)",
+    "vehicleAtPickupPush":  "Vehicle at Pickup (Push)",
+    "paymentConfirmationPush":  "Payment Confirmation (Push)",
+
+    "/******* End notification settings Aliases ******/": ""
 }

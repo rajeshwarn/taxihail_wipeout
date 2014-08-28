@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             _configurationManager = new TestConfigurationManager();
             _configurationManager.SetSetting("TaxiHail.ApplicationName", ApplicationName);
 
-            _sut.Setup(new EmailCommandHandler(new NotificationService(() => null, null, new TemplateService(_configurationManager), _emailSenderMock.Object, _configurationManager, _configurationManager)));
+            _sut.Setup(new EmailCommandHandler(new NotificationService(() => null, null, new TemplateService(_configurationManager), _emailSenderMock.Object, _configurationManager, _configurationManager, null, null)));
         }
 
         [Test]
@@ -78,31 +78,6 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 Note = "Tomato Sandwich",
                 PickupDate = DateTime.Now,
                 Settings = new SendBookingConfirmationEmail.BookingSettings(),
-                ClientLanguageCode = "fr"
-            });
-
-            _emailSenderMock.Verify(s => s
-                .Send(It.Is<MailMessage>(message =>
-                    message.AlternateViews[0] != null &&
-                    message.Subject.Contains(ApplicationName))));
-        }
-
-
-        [Test]
-        public void when_sending_driver_assigned_confirmation_email()
-        {
-            _sut.When(new SendAssignedConfirmation
-            {
-                EmailAddress = "test@example.net",
-                DropOffAddress = new Address(),
-                PickupAddress = new Address(),
-                IBSOrderId = 12345,
-                Id = Guid.NewGuid(),
-                PickupDate = DateTime.Now,
-                Settings = new SendBookingConfirmationEmail.BookingSettings(),
-                Fare = 12,
-                TransactionDate = DateTime.Now,
-                VehicleNumber = 12345.ToString(),
                 ClientLanguageCode = "fr"
             });
 

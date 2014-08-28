@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Common.Entity;
+using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -69,6 +70,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<bool> AddCreditCard (CreditCardInfos creditCard);
 		Task<bool> UpdateCreditCard (CreditCardInfos creditCard);
 		Task RemoveCreditCard ();
+
+	    Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false);
+	    Task UpdateNotificationSettings(NotificationSettings notificationSettings);
 
 		void LogApplicationStartUp ();
     }

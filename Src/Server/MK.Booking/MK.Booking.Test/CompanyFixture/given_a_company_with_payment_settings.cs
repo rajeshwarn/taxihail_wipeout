@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         public void Setup()
         {
             _sut = new EventSourcingTestHelper<Company>();
-            _sut.Setup(new CompanyCommandHandler(_sut.Repository));
+            _sut.Setup(new CompanyCommandHandler(_sut.Repository, null));
             _sut.Given(new CompanyCreated {SourceId = _companyId});
             _sut.Given(new PaymentSettingUpdated
             {

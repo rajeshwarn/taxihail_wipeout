@@ -9,6 +9,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.EventSourcing;
+using MK.Common.Configuration;
 
 #endregion
 
@@ -42,8 +43,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<PaymentProfileUpdated>(OnPaymentProfileUpdated);
             Handles<DeviceRegisteredForPushNotifications>(NoAction);
             Handles<DeviceUnregisteredForPushNotifications>(NoAction);
+            Handles<NotificationSettingsAddedOrUpdated>(NoAction);
         }
-
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
@@ -383,6 +384,16 @@ namespace apcurium.MK.Booking.Domain
         public void DisableAccountByAdmin()
         {
             Update(new AccountDisabled());
+        }
+
+        public void AddOrUpdateNotificationSettings(NotificationSettings notificationSettings)
+        {
+            notificationSettings.Id = Id;
+
+            Update(new NotificationSettingsAddedOrUpdated
+            {
+                NotificationSettings = notificationSettings
+            });
         }
     }
 }

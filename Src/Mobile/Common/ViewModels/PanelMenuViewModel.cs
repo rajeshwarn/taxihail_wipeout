@@ -8,7 +8,7 @@ using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using Params = System.Collections.Generic.Dictionary<string, string>;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using apcurium.MK.Common.Configuration.Impl;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -36,49 +36,45 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService = accountService;
 			_phoneService = phoneService;
 			_paymentService = paymentService;
+			ItemMenuList = new ObservableCollection<ItemMenuModel>();
         }
 
-		public void Init()
+		public async Task Start()
 		{
-			try
-			{
-				var paymentSettings = _paymentService.GetPaymentSettings();
-				IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
-			}
-			catch
-			{
-				// if we get an unauthorized error, don't throw here, something else will tell the user elegantly
-			}
+			var paymentSettings = _paymentService.GetPaymentSettings();
+			IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
 
-			ItemMenuList = new ObservableCollection<ItemMenuModel>();
-			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations});
-			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory});
-			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile});
-			if (IsPayInTaxiEnabled)
-				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation});
-			if (Settings.TutorialEnabled)
-				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial});
-			if (!Settings.HideCallDispatchButton)
-				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewCallDispatchText"], NavigationCommand = Call});
-			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewAboutUsText"], NavigationCommand = NavigateToAboutUs});
-			if (!Settings.HideReportProblem)
-				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem});
-			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewSignOutText"], NavigationCommand = SignOut});
+		    var notificationSettings = await _accountService.GetNotificationSettings(true);
+		    IsNotificationsEnabled = notificationSettings.Enabled;
+
+			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
+			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory });
+			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile });
+		    if (IsPayInTaxiEnabled)
+		    {
+                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation });
+		    }
+		    if (IsNotificationsEnabled)
+		    {
+                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewNotificationsText"], NavigationCommand = NavigateToNotificationsSettings });
+		    }
+		    if (Settings.TutorialEnabled)
+		    {
+                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial });
+		    }
+		    if (!Settings.HideCallDispatchButton)
+		    {
+                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewCallDispatchText"], NavigationCommand = Call });
+		    }
+			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewAboutUsText"], NavigationCommand = NavigateToAboutUs });
+		    if (!Settings.HideReportProblem)
+		    {
+                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem });
+		    }
+			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewSignOutText"], NavigationCommand = SignOut });
 		}
 
-		private ObservableCollection<ItemMenuModel> _itemMenuList;
-		public ObservableCollection<ItemMenuModel> ItemMenuList
-		{
-			get
-			{
-				return _itemMenuList;
-			}
-
-			set
-			{
-				_itemMenuList = value;
-			}
-		}
+	    public ObservableCollection<ItemMenuModel> ItemMenuList { get; set; }
 
 	    private bool _isPayInTaxiEnabled;
         public bool IsPayInTaxiEnabled
@@ -96,6 +92,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	            }
 	        }
 	    }
+
+        private bool _isNotificationsEnabled;
+        public bool IsNotificationsEnabled
+        {
+            get
+            {
+                return _isNotificationsEnabled;
+            }
+            set
+            {
+                if (_isNotificationsEnabled != value)
+                {
+                    _isNotificationsEnabled = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
 
         private bool _menuIsOpen;
         public bool MenuIsOpen {
@@ -221,6 +234,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				});
 			}
 		}
+
+        public ICommand NavigateToNotificationsSettings
+        {
+            get
+            {
+                return this.GetCommand(() =>
+                {
+                    MenuIsOpen = false;
+                    ShowViewModel<NotificationSettingsViewModel>();
+                });
+            }
+        }
 
 		public ICommand NavigateToAboutUs
         {

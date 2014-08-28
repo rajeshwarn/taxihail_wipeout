@@ -222,6 +222,7 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\Payment\ConfirmPairViewModel.cs" />
     <Compile Include="ViewModels\Payment\PairingState.cs" />
+    <Compile Include="ViewModels\NotificationSettingsViewModel.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="ViewModels\TutorialViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />

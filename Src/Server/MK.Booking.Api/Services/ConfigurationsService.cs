@@ -1,13 +1,18 @@
 ﻿#region
 
 using System.Linq;
+using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
+using MK.Common.Configuration;
+using ServiceStack.Common.Web;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 
@@ -18,12 +23,14 @@ namespace apcurium.MK.Booking.Api.Services
     public class ConfigurationsService : Service
     {
         private readonly ICommandBus _commandBus;
+        private readonly IConfigurationDao _configDao;
         private readonly IConfigurationManager _configManager;
 
-        public ConfigurationsService(IConfigurationManager configManager, ICommandBus commandBus)
+        public ConfigurationsService(IConfigurationManager configManager, ICommandBus commandBus, IConfigurationDao configDao)
         {
             _configManager = configManager;
             _commandBus = commandBus;
+            _configDao = configDao;
         }
 
         public object Get(ConfigurationsRequest request)
@@ -74,6 +81,46 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             return "";
+        }
+
+        public object Get(NotificationSettingsRequest request)
+        {
+            if (request.AccountId.HasValue)
+            {
+                // if account notification settings have not been created yet, send back the default company values
+                var accountSettings = _configDao.GetNotificationSettings(request.AccountId.Value);
+                return accountSettings ?? _configDao.GetNotificationSettings();
+            }
+
+            return _configDao.GetNotificationSettings();
+        }
+
+        public object Post(NotificationSettingsRequest request)
+        {
+            if (!request.AccountId.HasValue)
+            {
+                if (!SessionAs<AuthUserSession>().HasPermission(RoleName.Admin))
+                {
+                    return new HttpError(HttpStatusCode.Unauthorized, "You do not have permission to modify company settings");
+                }
+
+                _commandBus.Send(new AddOrUpdateNotificationSettings
+                {
+                    CompanyId = AppConstants.CompanyId,
+                    NotificationSettings = request.NotificationSettings
+                });
+            }
+            else
+            {
+                _commandBus.Send(new AddOrUpdateNotificationSettings
+                {
+                    AccountId = request.AccountId.Value,
+                    CompanyId = AppConstants.CompanyId,
+                    NotificationSettings = request.NotificationSettings
+                });
+            }
+
+            return new HttpResult(HttpStatusCode.OK, "OK");
         }
     }
 }

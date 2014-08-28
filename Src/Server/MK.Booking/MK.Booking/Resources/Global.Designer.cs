@@ -160,15 +160,6 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Driver assigned confirmation.
-        /// </summary>
-        public static string Email_Body_DriverAssignedConfirmation {
-            get {
-                return ResourceManager.GetString("Email_Body_DriverAssignedConfirmation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Email confirmation required.
         /// </summary>
         public static string Email_Body_EmailConfirmationRequired {
@@ -471,15 +462,6 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Subject_BookingConfirmation {
             get {
                 return ResourceManager.GetString("Email_Subject_BookingConfirmation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {{ ApplicationName }} - Driver assigned confirmation.
-        /// </summary>
-        public static string Email_Subject_DriverAssigned {
-            get {
-                return ResourceManager.GetString("Email_Subject_DriverAssigned", resourceCulture);
             }
         }
         
