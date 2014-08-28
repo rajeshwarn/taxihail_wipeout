@@ -505,5 +505,3 @@
 "RateLastRideMessage"="Nous aimerions recevoir vos commentaires sur votre dernière course, voulez-vous l'évaluer?";
 "DontAsk"="Ne plus demander";
 "View_NotificationSettings"="Notifications";
-"ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall"="La commande ne peut être créée car le numéro de votre compte entreprise est invalide.";
-"ServiceErrorCreateOrder_CannotCreateInIbs_10000"="La commande ne peut être créée car le numéro de votre compte entreprise est invalide.";

@@ -46,17 +46,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             base.OnViewLoaded();
             LoadNotificationSettings();
         }
-
-        public override void OnViewUnloaded()
-        {
-            base.OnViewUnloaded();
-
-            // TODO: don't send request if settings didn't change
-            UpdateNotificationSettings();
-        }
-
+			
 		public override void OnViewStopped()
 		{
+			base.OnViewStopped();
 			UpdateNotificationSettings ();
 		}
 

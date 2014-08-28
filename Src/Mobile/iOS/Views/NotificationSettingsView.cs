@@ -13,7 +13,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	public partial class NotificationSettingsView : BaseViewController<NotificationSettingsViewModel>
 	{
 		const string CellId = "NotificationCell";
-		const string CellBindingText = @"";
 
 		public NotificationSettingsView () : base ("NotificationSettingsView", null)
 		{
@@ -41,19 +40,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			tableNotifications.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 			tableNotifications.DelaysContentTouches = false;
 
-
 			var source = new BindableTableViewSource (
 				tableNotifications, 
 				UITableViewCellStyle.Subtitle,
 				new NSString (CellId),  
-				CellBindingText, 
+				string.Empty, 
 				UITableViewCellAccessory.None
 			);
 			source.CellCreator = CellCreator;
 			tableNotifications.Source = source;
 
 			labelNotificationEnabled.Text = this.Services().Localize["Notification_Enabled"];
+			labelNotificationEnabled.TextColor = UIColor.FromRGB(44, 44, 44);
+			labelNotificationEnabled.BackgroundColor = UIColor.Clear;
 			labelNotificationEnabled.Font = UIFont.FromName(FontName.HelveticaNeueLight, 32 / 2);
+
+			// Horizontal line bellow master notification toggle
+			var enabledToggleSeparator = Line.CreateHorizontal(0, labelNotificationEnabled.Superview.Frame.Height, this.View.Frame.Width, UIColor.LightGray, 1f);
+			enabledToggleSeparator.AutoresizingMask = UIViewAutoresizing.FlexibleWidth;
+			this.View.AddSubview(enabledToggleSeparator);
 
 			var set = this.CreateBindingSet<NotificationSettingsView, NotificationSettingsViewModel> ();
 
@@ -73,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		private MvxStandardTableViewCell CellCreator(UITableView tableView, NSIndexPath indexPath, object state)
 		{
-			var cell = new ToggleCell(new NSString(CellId), CellBindingText, UITableViewCellAccessory.Checkmark);
+			var cell = new ToggleCell(new NSString(CellId), string.Empty, UITableViewCellAccessory.Checkmark);
 			cell.HideBottomBar = tableView.IsLastCell(indexPath);
 			cell.RemoveDelay();
 			return cell;
