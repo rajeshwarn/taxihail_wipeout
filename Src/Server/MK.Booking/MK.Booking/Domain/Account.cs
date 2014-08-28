@@ -388,12 +388,11 @@ namespace apcurium.MK.Booking.Domain
 
         public void AddOrUpdateNotificationSettings(NotificationSettings notificationSettings)
         {
-            var settings = notificationSettings;
             notificationSettings.Id = Id;
 
             Update(new NotificationSettingsAddedOrUpdated
             {
-                NotificationSettings = settings
+                NotificationSettings = notificationSettings
             });
         }
     }

@@ -82,6 +82,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _bottomBar.ReviewOrderDetails();
             }
+
 			if (firstTime)
 			{
 				await Panel.Start ();
