@@ -17,7 +17,10 @@
             "security": "manageSecurity",
             "confirmemail": "confirmEmail",
             "disableemail": "disableEmail",
+
+            /* test notifications */
             "sendpushnotification": "sendPushNotification",
+            "sendtestemail": "sendTestEmail",
             
             /* terms and conditions */
             "termsandconditions": "termsAndConditions",
@@ -127,7 +130,11 @@
         },
 
         sendPushNotification: function () {
-            action(TaxiHail.SecurityController, 'sendpushnotification');
+            action(TaxiHail.NotificationController, 'sendpushnotification');
+        },
+
+        sendTestEmail: function () {
+            action(TaxiHail.NotificationController, 'sendtestemail');
         },
         
         termsAndConditions: function() {

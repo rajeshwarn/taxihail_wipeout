@@ -182,6 +182,7 @@
     <Content Include="admin\collections\RuleCollection.js" />
     <Content Include="admin\collections\TariffCollection.js" />
     <Content Include="admin\controllers\NotificationSettingsController.js" />
+    <Content Include="admin\controllers\NotificationController.js" />
     <Content Include="admin\controllers\VehicleTypesController.js" />
     <Content Include="admin\controllers\Controller.js" />
     <Content Include="admin\controllers\CompanySettingsController.js" />
@@ -195,6 +196,7 @@
     <Content Include="admin\controllers\SecurityController.js" />
     <Content Include="admin\controllers\TariffsController.js" />
     <Content Include="admin\jquery.min.js" />
+    <Content Include="admin\models\EmailTemplates.js" />
     <Content Include="admin\models\NotificationSettings.js" />
     <Content Include="admin\models\UnassignedReferenceDataVehicles.js" />
     <Content Include="admin\models\VehicleType.js" />
@@ -217,6 +219,7 @@
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\AddVehicleTypeView.js" />
     <Content Include="admin\views\ManageNotificationSettingsView.js" />
+    <Content Include="admin\views\SendTestEmailView.js" />
     <Content Include="admin\views\VehicleTypeItemView.js" />
     <Content Include="admin\views\AddAccountChargeView.js" />
     <Content Include="admin\views\AddFavoriteView.js" />
@@ -467,6 +470,10 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="admin\localization\ManageNotificationSettings.json" />
+    <Content Include="admin\templates\SendTestEmail.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="admin\localization\SendTestEmail.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

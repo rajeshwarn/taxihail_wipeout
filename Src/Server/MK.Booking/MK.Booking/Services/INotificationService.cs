@@ -15,10 +15,10 @@ namespace apcurium.MK.Booking.Services
             Address pickupAddress, Address dropOffAddress, DateTime pickupDate, DateTime transactionDate,
             SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode);
         void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress,
-            DateTime pickupDate, SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode);
+            DateTime pickupDate, SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
         void SendPasswordResetEmail(string password, string clientEmailAddress, string clientLanguageCode);
         void SendReceiptEmail(int ibsOrderId, string vehicleNumber, string driverName, double fare, double toll, double tip,
-            double tax, double totalFare, SendReceipt.CardOnFile cardOnFileInfo, Address pickupAddress, Address dropOffAddress, 
-            DateTime transactionDate, string clientEmailAddress, string clientLanguageCode);
+            double tax, double totalFare, SendReceipt.CardOnFile cardOnFileInfo, Address pickupAddress, Address dropOffAddress,
+            DateTime transactionDate, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
     }
 }

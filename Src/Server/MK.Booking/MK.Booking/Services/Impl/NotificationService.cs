@@ -230,18 +230,23 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress, DateTime pickupDate,
-            SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode)
+            SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
         {
-            using (var context = _contextFactory.Invoke())
+            if (!bypassNotificationSetting)
             {
-                var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                if (account == null || !GetAccountNotificationSetting(account.Id, x => x.BookingConfirmationEmail))
+                using (var context = _contextFactory.Invoke())
                 {
-                    return;
+                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
+                    if (account == null || !GetAccountNotificationSetting(account.Id, x => x.BookingConfirmationEmail))
+                    {
+                        return;
+                    }
                 }
             }
 
-            var hasDropOffAddress = dropOffAddress != null && !string.IsNullOrWhiteSpace(dropOffAddress.FullAddress);
+            var hasDropOffAddress = dropOffAddress != null
+                && (!string.IsNullOrWhiteSpace(dropOffAddress.FullAddress)
+                    || !string.IsNullOrWhiteSpace(dropOffAddress.DisplayAddress));
 
             var templateData = new
             {
@@ -283,14 +288,17 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendReceiptEmail(int ibsOrderId, string vehicleNumber, string driverName, double fare, double toll, double tip,
             double tax, double totalFare, SendReceipt.CardOnFile cardOnFileInfo, Address pickupAddress, Address dropOffAddress, 
-            DateTime transactionDate, string clientEmailAddress, string clientLanguageCode)
+            DateTime transactionDate, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
         {
-            using (var context = _contextFactory.Invoke())
+            if (!bypassNotificationSetting)
             {
-                var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                if (account == null || !GetAccountNotificationSetting(account.Id, x => x.ReceiptEmail))
+                using (var context = _contextFactory.Invoke())
                 {
-                    return;
+                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
+                    if (account == null || !GetAccountNotificationSetting(account.Id, x => x.ReceiptEmail))
+                    {
+                        return;
+                    }
                 }
             }
 
@@ -316,7 +324,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 cardOnFileTransactionId = cardOnFileInfo.TransactionId;
             }
 
-            var hasDropOffAddress = dropOffAddress != null && !string.IsNullOrWhiteSpace(dropOffAddress.FullAddress);
+            var hasDropOffAddress = dropOffAddress != null 
+                && (!string.IsNullOrWhiteSpace(dropOffAddress.FullAddress) 
+                    || !string.IsNullOrWhiteSpace(dropOffAddress.DisplayAddress));
 
             var templateData = new
             {
@@ -438,7 +448,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return (bool)computedSettings.GetType().GetProperty(propertyName).GetValue(computedSettings, null);
         }
 
-        private static class EmailConstant
+        public static class EmailConstant
         {
             public static class Subject
             {
