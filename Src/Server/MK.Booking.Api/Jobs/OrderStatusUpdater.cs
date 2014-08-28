@@ -36,14 +36,17 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IPaymentService _paymentService;
         private readonly INotificationService _notificationService;
         private readonly Resources.Resources _resources;
+        private IAppSettings _appSettings;
 
         public OrderStatusUpdater(IConfigurationManager configurationManager, 
             ICommandBus commandBus, 
             IOrderPaymentDao orderPaymentDao, 
             IOrderDao orderDao,
             IPaymentService paymentService,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IAppSettings appSettings)
         {
+            _appSettings = appSettings;
             _orderDao = orderDao;
             _paymentService = paymentService;
             _notificationService = notificationService;
@@ -142,16 +145,16 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void HandlePairingForStandardPairing(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo)
         {
-            if (!_configurationManager.GetSetting("AutomaticPayment", false))
+            if (!_appSettings.Data.AutomaticPayment)
             {
                 // Automatic payment is disabled, nothing to do here
                 return;
             }
 
             var orderPayment = _orderPaymentDao.FindByOrderId(orderStatusDetail.OrderId);
-            if (orderPayment != null && orderPayment.IsCompleted)
+            if (orderPayment != null)
             {
-                // Payment was completed
+                // Payment was already processed
                 return;
             }
 
@@ -272,7 +275,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private string FormatPrice(double? price)
         {
-            var culture = _configurationManager.GetSetting("PriceFormat");
+            var culture = _appSettings.Data.PriceFormat;
             return string.Format(new CultureInfo(culture), "{0:C}", price.HasValue ? price.Value : 0);
         }
     }
