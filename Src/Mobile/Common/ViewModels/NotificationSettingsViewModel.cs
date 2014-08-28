@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public ObservableCollection<ToggleItem> NotificationSettings
         {
             get { return _notificationSettings; }
-            set { _notificationSettings = value; RaisePropertyChanged(); }
+            set { _notificationSettings = value; }
         }
 
         private bool _isNotificationEnabled;
