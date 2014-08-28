@@ -39,7 +39,6 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                     BookingConfirmationEmail = true,
                     ConfirmPairingPush = true,
                     NearbyTaxiPush = true,
-                    DriverAssignedEmail = true,
                     DriverAssignedPush = true,
                     PaymentConfirmationPush = true,
                     ReceiptEmail = true,
@@ -55,7 +54,6 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(true, evt.NotificationSettings.BookingConfirmationEmail);
             Assert.AreEqual(true, evt.NotificationSettings.ConfirmPairingPush);
             Assert.AreEqual(true, evt.NotificationSettings.NearbyTaxiPush);
-            Assert.AreEqual(true, evt.NotificationSettings.DriverAssignedEmail);
             Assert.AreEqual(true, evt.NotificationSettings.DriverAssignedPush);
             Assert.AreEqual(true, evt.NotificationSettings.PaymentConfirmationPush);
             Assert.AreEqual(true, evt.NotificationSettings.ReceiptEmail);
@@ -75,7 +73,6 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                     BookingConfirmationEmail = true,
                     ConfirmPairingPush = true,
                     NearbyTaxiPush = true,
-                    DriverAssignedEmail = true,
                     DriverAssignedPush = true,
                     PaymentConfirmationPush = true,
                     ReceiptEmail = true,
@@ -91,7 +88,6 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(true, evt.NotificationSettings.BookingConfirmationEmail);
             Assert.AreEqual(true, evt.NotificationSettings.ConfirmPairingPush);
             Assert.AreEqual(true, evt.NotificationSettings.NearbyTaxiPush);
-            Assert.AreEqual(true, evt.NotificationSettings.DriverAssignedEmail);
             Assert.AreEqual(true, evt.NotificationSettings.DriverAssignedPush);
             Assert.AreEqual(true, evt.NotificationSettings.PaymentConfirmationPush);
             Assert.AreEqual(true, evt.NotificationSettings.ReceiptEmail);

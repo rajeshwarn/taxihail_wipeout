@@ -19,7 +19,6 @@ namespace apcurium.MK.Booking.CommandHandlers
     public class EmailCommandHandler : ICommandHandler<SendPasswordResetEmail>,
         ICommandHandler<SendAccountConfirmationEmail>,
         ICommandHandler<SendBookingConfirmationEmail>,
-        ICommandHandler<SendAssignedConfirmation>,
         ICommandHandler<SendReceipt>
     {
         private readonly INotificationService _notificationService;
@@ -32,12 +31,6 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(SendAccountConfirmationEmail command)
         {
             _notificationService.SendAccountConfirmationEmail(command.ConfirmationUrl, command.EmailAddress, command.ClientLanguageCode);
-        }
-
-        public void Handle(SendAssignedConfirmation command)
-        {
-            _notificationService.SendAssignedConfirmationEmail(command.IBSOrderId, command.Fare, command.VehicleNumber, command.PickupAddress, 
-                command.DropOffAddress, command.PickupDate, command.TransactionDate, command.Settings, command.EmailAddress, command.ClientLanguageCode);
         }
 
         public void Handle(SendBookingConfirmationEmail command)
