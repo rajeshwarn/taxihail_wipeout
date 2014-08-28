@@ -52,7 +52,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			_locateUser = locateUser;
 			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);
-			Panel.Init ();
 		}
 
 		public override void OnViewLoaded ()
@@ -71,9 +70,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			BottomBar.CancelEdit = OrderEdit.Cancel;
 		}
 
-		public override void OnViewStarted(bool firstTime)
+		public async override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
+			Panel.Start ();
 
 			_locationService.Start();
 			CheckTermsAsync();

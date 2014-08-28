@@ -10,8 +10,7 @@ using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class AppSettingsGenerator :
-        IEventHandler<AppSettingsAddedOrUpdated>
+    public class AppSettingsGenerator : IEventHandler<AppSettingsAddedOrUpdated>
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
 

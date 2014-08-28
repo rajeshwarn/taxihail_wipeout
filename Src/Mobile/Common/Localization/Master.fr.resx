@@ -1558,23 +1558,44 @@
   <data name="NoCardOnFileMessage" xml:space="preserve">
     <value>Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.</value>
   </data>
+  <data name="View_NotificationSettings" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
   <data name="Eta" xml:space="preserve">
   	<value>Le véhicule le plus proche est à {1} {2}</value>
+  </data>
+  <data name="PanelMenuViewNotificationsText" xml:space="preserve">
+    <value>Notifications</value>
   </data>
   <data name="DontAsk" xml:space="preserve">
     <value>Ne plus demander</value>
   </data>
+  <data name="Notification_BookingConfirmationEmail" xml:space="preserve">
+    <value>Confirmation Commande (Email)</value>
+  </data>
   <data name="EtaDurationUnit" xml:space="preserve">
   	<value>minute</value>
+  </data>
+  <data name="Notification_ConfirmPairingPush" xml:space="preserve">
+    <value>Confirmation de pairing (Push)</value>
   </data>
   <data name="NotNow" xml:space="preserve">
     <value>Plus tard</value>
   </data>
+  <data name="Notification_DriverAssignedEmail" xml:space="preserve">
+    <value>Chauffeur assigné (Email)</value>
+  </data>
   <data name="EtaDurationUnitPlural" xml:space="preserve">
   	<value>minutes</value>
   </data>
+  <data name="Notification_DriverAssignedPush" xml:space="preserve">
+    <value>Chauffeur  assigné (Push)</value>
+  </data>
   <data name="RateLastRide" xml:space="preserve">
     <value>Évaluer</value>
+  </data>
+  <data name="Notification_Enabled" xml:space="preserve">
+    <value>Notifications</value>
   </data>
   <data name="StatusEta" xml:space="preserve">
   	<value>Votre véhicule arrive dans {1} {2}</value>
@@ -1582,10 +1603,28 @@
   <data name="EtaNotAvailable" xml:space="preserve">
   	<value>Il n'y a pas de véhicule disponible</value>
   </data>
+  <data name="Notification_NearbyTaxiPush" xml:space="preserve">
+    <value>Taxi à proximité (Push)</value>
+  </data>
   <data name="RateLastRideMessage" xml:space="preserve">
     <value>Nous aimerions recevoir vos commentaires sur votre dernière course, voulez-vous l'évaluer?</value>
   </data>
+  <data name="Notification_PaymentConfirmationPush" xml:space="preserve">
+    <value>Confirmation de paiement (Push)</value>
+  </data>
   <data name="RateLastRideTitle" xml:space="preserve">
     <value>Évaluer la dernière course?</value>
+  </data>
+  <data name="Notification_ReceiptEmail" xml:space="preserve">
+    <value>Reçu (Email)</value>
+  </data>
+  <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
+    <value>Taxi au point de ramassage (Push)</value>
+  </data>
+  <data name="Notification_Off" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="Notification_On" xml:space="preserve">
+    <value>Oui</value>
   </data>
 </root>

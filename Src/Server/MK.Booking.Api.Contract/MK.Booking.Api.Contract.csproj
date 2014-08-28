@@ -87,6 +87,7 @@
     <Compile Include="BaseDTO.cs" />
     <Compile Include="Requests\IbsFareRequest.cs" />
     <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
+    <Compile Include="Requests\NotificationSettingsRequest.cs" />
     <Compile Include="Requests\OrderPairingRequest.cs" />
     <Compile Include="Requests\Payment\DeleteTokenizedCreditcardRequest.cs" />
     <Compile Include="Requests\Payment\PairingForPaymentRequest.cs" />

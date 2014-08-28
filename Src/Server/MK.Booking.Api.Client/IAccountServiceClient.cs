@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
+using MK.Common.Configuration;
 
 #endregion
 
@@ -30,6 +31,9 @@ namespace apcurium.MK.Booking.Api.Client
         Task AddCreditCard(CreditCardRequest creditCardRequest);
         Task RemoveCreditCard();
         Task UpdateCreditCard(CreditCardRequest creditCardRequest);
+
+        Task<NotificationSettings> GetNotificationSettings(Guid accountId);
+        Task UpdateNotificationSettings(NotificationSettingsRequest notificationSettingsRequest);
 
 		Task LogApplicationStartUp(LogApplicationStartUpRequest request);
     }

@@ -128,6 +128,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			base.TouchesBegan ( touches, evt ); 
 		}
 
+
+
 		public override void TouchesEnded (NSSet touches, UIEvent evt)
 		{
 			((CustomCellBackgroundView) BackgroundView).Highlighted = false;

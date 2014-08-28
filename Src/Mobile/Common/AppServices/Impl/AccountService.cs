@@ -22,6 +22,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Cirrious.CrossCore;
+using MK.Common.Configuration;
 using ServiceStack.Common;
 using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
@@ -608,6 +609,59 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			await UseServiceClientAsync<IAccountServiceClient>(client => client.RemoveCreditCard());
 		}
+
+        public async Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false)
+        {
+            var companySettings = await UseServiceClientAsync<CompanyServiceClient, NotificationSettings>(client => client.GetNotificationSettings());
+            if (companyDefaultOnly)
+            {
+                return companySettings;
+            }
+
+            var userSettings = await UseServiceClientAsync<IAccountServiceClient, NotificationSettings>(client => client.GetNotificationSettings(CurrentAccount.Id));
+
+            // Merge company and user settings together
+            return new NotificationSettings
+            {
+                Id = userSettings.Id,
+                Enabled = companySettings.Enabled && userSettings.Enabled,
+                BookingConfirmationEmail = companySettings.BookingConfirmationEmail.HasValue
+                    && userSettings.BookingConfirmationEmail.HasValue
+                    ? userSettings.BookingConfirmationEmail : companySettings.BookingConfirmationEmail,
+                ConfirmPairingPush = companySettings.ConfirmPairingPush.HasValue
+                    && userSettings.ConfirmPairingPush.HasValue
+                    ? userSettings.ConfirmPairingPush : companySettings.ConfirmPairingPush,
+                DriverAssignedEmail = companySettings.DriverAssignedEmail.HasValue
+                    && userSettings.DriverAssignedEmail.HasValue
+                    ? userSettings.DriverAssignedEmail : companySettings.DriverAssignedEmail,
+                DriverAssignedPush = companySettings.DriverAssignedPush.HasValue
+                    && userSettings.DriverAssignedPush.HasValue
+                    ? userSettings.DriverAssignedPush : companySettings.DriverAssignedPush,
+                NearbyTaxiPush = companySettings.NearbyTaxiPush.HasValue
+                    && userSettings.NearbyTaxiPush.HasValue
+                    ? userSettings.NearbyTaxiPush : companySettings.NearbyTaxiPush,
+                PaymentConfirmationPush = companySettings.PaymentConfirmationPush.HasValue
+                    && userSettings.PaymentConfirmationPush.HasValue
+                    ? userSettings.PaymentConfirmationPush : companySettings.PaymentConfirmationPush,
+                ReceiptEmail = companySettings.ReceiptEmail.HasValue
+                    && userSettings.ReceiptEmail.HasValue
+                    ? userSettings.ReceiptEmail : companySettings.ReceiptEmail,
+                VehicleAtPickupPush = companySettings.VehicleAtPickupPush.HasValue
+                    && userSettings.VehicleAtPickupPush.HasValue
+                    ? userSettings.VehicleAtPickupPush : companySettings.VehicleAtPickupPush
+            };
+        }
+
+        public async Task UpdateNotificationSettings(NotificationSettings notificationSettings)
+        {
+            var request = new NotificationSettingsRequest
+            {
+                AccountId = CurrentAccount.Id,
+                NotificationSettings = notificationSettings
+            };
+
+            await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateNotificationSettings(request));
+        }
 
 		public void LogApplicationStartUp()
 		{

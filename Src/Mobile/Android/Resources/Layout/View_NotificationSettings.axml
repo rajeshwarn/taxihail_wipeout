@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <LinearLayout
+        android:layout_margin="0dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/top_bar_color"
+            android:orientation="horizontal">
+            <TextView
+                android:text="@string/View_NotificationSettings"
+                style="@style/TopTitleText"
+                android:layout_gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/top_bar_title_height"
+                android:gravity="center" />
+        </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/listnotifcell1"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:layout_weight="1"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
+            android:paddingLeft="15dip">
+            <TextView
+                android:id="@+id/NotificationSettingNameTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/black"
+                android:text="@string/Notification_Enabled" />
+            <ToggleButton
+                android:id="@+id/notificationSettingSwitchValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn="@string/Notification_On"
+                android:textOff="@string/Notification_Off"
+                android:layout_alignParentRight="true"
+                local:MvxBind="Checked IsNotificationEnabled" />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_margin="0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/top_bar_separator_color"
+            android:orientation="horizontal" />
+        <cirrious.mvvmcross.binding.droid.views.MvxListView
+            android:id="@+id/NotificationsList"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_marginLeft="0dip"
+            android:layout_marginRight="0dip"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="15dip"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="5dip"
+            local:MvxItemTemplate="@layout/notificationsettinglistitem"
+            local:MvxBind="ItemsSource NotificationSettings; Visibility IsNotificationEnabled, Converter=Visibility" />
+    </LinearLayout>
+</RelativeLayout>

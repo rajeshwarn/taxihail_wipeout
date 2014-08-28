@@ -27,6 +27,7 @@ using DatabaseInitializer.Sql;
 using Infrastructure.Messaging;
 using log4net;
 using Microsoft.Practices.Unity;
+using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
 using ConfigurationManager = apcurium.MK.Common.Configuration.Impl.ConfigurationManager;
 using DeploymentServiceTools;
@@ -199,6 +200,28 @@ namespace DatabaseInitializer
                     appSettings["Client.VehicleEstimateEnabled"] = "false";
                     AddOrUpdateAppSettings(commandBus, appSettings);
                     CreateDefaultVehicleTypes(container, commandBus);
+                }
+
+                // Migration of notification settings
+                var configDao = new ConfigurationDao(() => new ConfigurationDbContext(connectionString.ConnectionString));
+                if (configDao.GetNotificationSettings() == null)
+                {
+                    commandBus.Send(new AddOrUpdateNotificationSettings
+                    {
+                        CompanyId = AppConstants.CompanyId,
+                        NotificationSettings = new NotificationSettings
+                        {
+                            Enabled = true,
+                            BookingConfirmationEmail = configurationManager.GetSetting("Booking.ConfirmationEmail", true),
+                            ConfirmPairingPush = true,
+                            DriverAssignedEmail = configurationManager.GetSetting("Booking.DriverAssignedConfirmationEmail", false),
+                            DriverAssignedPush = true,
+                            NearbyTaxiPush = true,
+                            PaymentConfirmationPush = true,
+                            ReceiptEmail = true,
+                            VehicleAtPickupPush = true
+                        }
+                    });
                 }
 
                 if (isUpdate && !string.IsNullOrEmpty(param.BackupFolder))

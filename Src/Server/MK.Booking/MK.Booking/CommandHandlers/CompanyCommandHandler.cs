@@ -37,13 +37,16 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<AddUpdateAccountCharge>,
         ICommandHandler<DeleteAccountCharge>,
         ICommandHandler<AddUpdateVehicleType>,
-        ICommandHandler<DeleteVehicleType>
+        ICommandHandler<DeleteVehicleType>,
+        ICommandHandler<AddOrUpdateNotificationSettings>
     {
         private readonly IEventSourcedRepository<Company> _repository;
+        private readonly IEventSourcedRepository<Account> _accountRepository;
 
-        public CompanyCommandHandler(IEventSourcedRepository<Company> repository)
+        public CompanyCommandHandler(IEventSourcedRepository<Company> repository, IEventSourcedRepository<Account> accountRepository)
         {
             _repository = repository;
+            _accountRepository = accountRepository;
         }
 
         public void Handle(ActivateRule command)
@@ -72,7 +75,6 @@ namespace apcurium.MK.Booking.CommandHandlers
             var company = new Company(command.CompanyId);
             _repository.Save(company, command.Id.ToString());
         }
-
 
         public void Handle(CreateRule command)
         {
@@ -312,6 +314,22 @@ namespace apcurium.MK.Booking.CommandHandlers
             company.DeleteVehicleType(command.VehicleTypeId);
 
             _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(AddOrUpdateNotificationSettings command)
+        {
+            if (command.AccountId.HasValue)
+            {
+                var account = _accountRepository.Get(command.AccountId.Value);
+                account.AddOrUpdateNotificationSettings(command.NotificationSettings);
+                _accountRepository.Save(account, command.Id.ToString());
+            }
+            else
+            {
+                var company = _repository.Get(command.CompanyId);
+                company.AddOrUpdateNotificationSettings(command.NotificationSettings);
+                _repository.Save(company, command.Id.ToString());
+            }
         }
     }
 }

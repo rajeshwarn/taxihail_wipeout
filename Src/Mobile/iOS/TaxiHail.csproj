@@ -7,6 +7,7 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
+    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -530,6 +531,11 @@
     <BundleResource Include="Resources\nearby_suv%402x.png" />
     <Compile Include="Views\Payments\ConfirmPairView.cs" />
     <Compile Include="Views\Payments\ConfirmPairView.designer.cs" />
+    <Compile Include="Views\NotificationSettingsView.cs" />
+    <Compile Include="Views\NotificationSettingsView.designer.cs">
+      <DependentUpon>NotificationSettingsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Widgets\ToggleCell.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -576,6 +582,7 @@
     <InterfaceDefinition Include="Views\Order\InitializeOrderForAccountPaymentView.xib" />
     <InterfaceDefinition Include="Views\AccountConfirmationView.xib" />
     <InterfaceDefinition Include="Views\Payments\ConfirmPairView.xib" />
+    <InterfaceDefinition Include="Views\NotificationSettingsView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

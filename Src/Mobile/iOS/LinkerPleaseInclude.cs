@@ -8,6 +8,12 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             button.Clicked += (sender, e) => {};
         }
+
+		public void Include(UISwitch sw)
+		{
+			sw.On = !sw.On;
+			sw.ValueChanged += (sender, args) => { sw.On = false; };
+		}
     }
 }
 

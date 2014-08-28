@@ -96,6 +96,7 @@
     <Compile Include="CompanyFixture\given_a_company_with_a_tariff.cs" />
     <Compile Include="CompanyFixture\given_a_company_with_a_rating_type.cs" />
     <Compile Include="CompanyFixture\given_a_company_with_payment_settings.cs" />
+    <Compile Include="CompanyFixture\given_notification_settings.cs" />
     <Compile Include="CompanyFixture\given_no_company.cs" />
     <Compile Include="CreditCardPaymentFixture\given_a_capured_payment.cs" />
     <Compile Include="CreditCardPaymentFixture\given_a_payment.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="CompanyFixture\given_a_company.cs" />
     <Compile Include="Integration\AccountFixture\AccountDetailsGenerator.cs" />
     <Compile Include="Integration\AccountFixture\DeviceDetailsGenerator.cs" />
+    <Compile Include="Integration\AccountFixture\NotificationSettingsGenerator.cs" />
     <Compile Include="Integration\AddressListFixture\AddressListGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\CompanyDetailsGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\AccountChargeDetailGenerator.cs" />
