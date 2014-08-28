@@ -189,9 +189,6 @@
   <data name="Email_Subject_BookingConfirmation" xml:space="preserve">
     <value>{{ ApplicationName }} - Booking confirmation</value>
   </data>
-  <data name="Email_Subject_DriverAssigned" xml:space="preserve">
-    <value>{{ ApplicationName }} - Driver assigned confirmation</value>
-  </data>
   <data name="Email_Subject_PasswordReset" xml:space="preserve">
     <value>{{ ApplicationName }} - Your password has been reset</value>
   </data>
@@ -224,9 +221,6 @@
   </data>
   <data name="Email_Body_Destination" xml:space="preserve">
     <value>Destination</value>
-  </data>
-  <data name="Email_Body_DriverAssignedConfirmation" xml:space="preserve">
-    <value>Driver assigned confirmation</value>
   </data>
   <data name="Email_Body_EmailConfirmationRequired" xml:space="preserve">
     <value>Email confirmation required</value>

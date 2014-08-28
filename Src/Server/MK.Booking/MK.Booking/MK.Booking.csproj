@@ -47,6 +47,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
+    <Reference Include="CsQuery">
+      <HintPath>..\..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
@@ -72,6 +75,9 @@
     </Reference>
     <Reference Include="Nustache.i18n">
       <HintPath>..\..\packages\Nustache.i18n.1.0.0\lib\net40\Nustache.i18n.dll</HintPath>
+    </Reference>
+    <Reference Include="PreMailer.Net">
+      <HintPath>..\..\packages\PreMailer.Net.1.2.7\lib\net40\PreMailer.Net.dll</HintPath>
     </Reference>
     <Reference Include="PushSharp.Android, Version=2.0.4.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -259,12 +265,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Email\Templates\BookingConfirmation.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Email\Templates\DriverAssigned.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Email\Templates\DriverAssignedWithVAT.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Email\Templates\PasswordReset.html">
