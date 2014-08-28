@@ -47,8 +47,12 @@ namespace apcurium.MK.Booking.Email
             {
                 
                 var templateBody = File.ReadAllText(path);
-                if(templateName=="Receipt")
-                    var result = PreMailer.MoveCssInline(templateBody, false, ignoreElements: "#ignore");
+                if (templateName == "Receipt")
+                {
+                    var result = PreMailer.Net.PreMailer.MoveCssInline(templateBody, false, ignoreElements: "#ignore");
+                    templateBody = result.Html;
+                }
+                    
                 var translatedTemplateBody = Localizer.Translate(templateBody, _resources.GetLocalizedDictionary(languageCode), "!!MISSING!!");
                 return translatedTemplateBody;
             }
