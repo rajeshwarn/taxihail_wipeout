@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using apcurium.MK.Booking.Resources;
+using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration;
 using Nustache.i18n;
 
@@ -47,7 +48,7 @@ namespace apcurium.MK.Booking.Email
             {
                 
                 var templateBody = File.ReadAllText(path);
-                if (templateName == "Receipt")
+                if (templateName == NotificationService.EmailConstant.Template.Receipt)
                 {
                     var result = PreMailer.Net.PreMailer.MoveCssInline(templateBody, false, ignoreElements: "#ignore");
                     templateBody = result.Html;

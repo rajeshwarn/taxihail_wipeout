@@ -267,12 +267,6 @@
     <Content Include="Email\Templates\BookingConfirmation.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Email\Templates\DriverAssigned.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Email\Templates\DriverAssignedWithVAT.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Email\Templates\PasswordReset.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

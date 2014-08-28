@@ -8,10 +8,12 @@ using System.Reflection;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.PushNotifications;
+using apcurium.MK.Booking.PushNotifications.Impl;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Booking.Services.Impl;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Common.Web;
@@ -27,21 +29,21 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IAccountDao _dao;
         private readonly IDeviceDao _daoDevice;
         private readonly ILogger _logger;
-        private readonly IPushNotificationService _pushNotificationService;
         private readonly INotificationService _notificationService;
+        private readonly IConfigurationManager _configurationManager;
 
         public NotificationAdministrationService(
             IAccountDao dao, 
             IDeviceDao device,
-            IPushNotificationService pushNotificationService, 
             INotificationService notificationService,
+            IConfigurationManager configurationManager,
             ILogger logger)
         {
             _dao = dao;
             _daoDevice = device;
             _logger = logger;
-            _pushNotificationService = pushNotificationService;
             _notificationService = notificationService;
+            _configurationManager = configurationManager;
         }
 
         public object Post(PushNotificationAdministrationRequest request)
@@ -61,11 +63,14 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.InternalServerError, "sendPushNotificationErrorNoDevice");
             }
 
+            // We create a new instance each time as we need to start from a clean state to get meaningful error messages
+            var pushNotificationService = new PushNotificationService(_configurationManager, _logger);
+
             foreach (var device in deviceDetails)
             {
                 try
                 {
-                    _pushNotificationService.Send(request.Message, new Dictionary<string, object>(), device.DeviceToken,
+                    pushNotificationService.Send(request.Message, new Dictionary<string, object>(), device.DeviceToken,
                         device.Platform);
                 }
                 catch (Exception e)

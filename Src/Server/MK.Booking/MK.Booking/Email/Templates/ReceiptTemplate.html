@@ -1,0 +1,144 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Receipt Title</title>
+        <link href="..\Css\StyleReceipt.css" media="all" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+
+        <table class="body-wrap">
+            <tr>
+                <td></td>
+                <td class="container" width="600">
+                    <div class="content">
+                        <table class="main"  cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td class="content-wrap aligncenter">
+                                    <table  cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td class="receipt_logo">
+                                                <img src="http://biz.prlog.org/Apcurium/logo.png" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td >
+                                                <table  cellpadding="0" cellspacing="0">
+                                                    <tr>
+                                                        <td class="receipt_date">AUGUST 27, 2014 - 18h29 <!--{{ Date }}--></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="receipt_price">€16.33 <!--{{ TotalFare }}--></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="" >
+                                                    <div class="receipt_left_info">
+                                                        <table  cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td class="title_block">ROUTE <!--{{ localize "" }}--></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="route_departure">
+                                                                        <div class="route_list_img">
+                                                                            <img src="http://www.short-wave.info/png/tiny-green-dot.png" />
+                                                                        </div>
+                                                                        <div class="route_list">
+                                                                            <div class="route_list_title">AUGUST 27, 2014 - 18h29</div>
+                                                                            <div class="route_list_adddress">39 Rue de Bretagne, 75003 Paris <!--{{ PickupAddress }}--></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="route_arrival">
+                                                                        <div class="route_list_img">
+                                                                            <img src="http://www.short-wave.info/png/tiny-red-dot.png" />
+                                                                        </div>
+                                                                        <div class="route_list">
+                                                                            <div class="route_list_title">AUGUST 27, 2014 - 18h34</div>
+                                                                            <div class="route_list_adddress">139 Rue Saint-Dominique, 75007 Paris <!--{{ DropOffAddress }}--></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Display Map
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="receipt_right_info">
+                                                        <table  cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td class="title_block">FARE BREAKDOWN <!--{{ localize "" }}--></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <table cellpadding="0" cellspacing="0">
+                                                                        <tr>
+                                                                            <td class="fare_list_title">Meter Fare <!--{{ localize "" }}--></td>
+                                                                            <td class="fare_list_price">12.45 <!--{{ Fare }}--></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="fare_list_title">Gratuity <!--{{ localize "" }}--></td>
+                                                                            <td class="fare_list_price">1.54 <!--{{ Gratuity }}--></td>
+                                                                        </tr>
+                                                                        <tr class="fare_list_subtotal">
+                                                                            <td class="fare_list_title">Subtotal <!--{{ localize "" }}--></td>
+                                                                            <td class="fare_list_price">€13.99 <!--{{ SubTotal }}--></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="fare_list_title">Tax <!--{{ localize "" }}--></td>
+                                                                            <td class="fare_list_price">2.34 <!--{{ Tax }}--></td>
+                                                                        </tr>
+                                                                        <tr class="fare_list_charged">
+                                                                            <td class="fare_list_title">CHARGED <!--{{ localize "" }}--></td>
+                                                                            <td class="fare_list_price">€16.33 <!--{{ TotalFare }}--></td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        <table cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td class="title_block">YOUR DRIVER <!--{{ localize "" }}--></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <table cellpadding="0" cellspacing="0">
+                                                                        <tr>
+                                                                            <td class="driver_name">JOHN SMITH <!--{{ DriverName }}--></td>
+                                                                            <td class="vehicle_type"><img height="30" width="60" src="http://i.huffpost.com/gen/991040/thumbs/o-BMWELI-570.jpg?6 " /></td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="footer">
+                            <table >
+                                <tr>
+                                    <td class=" content-block">Footer Information placeholder</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+
+    </body>
+</html>

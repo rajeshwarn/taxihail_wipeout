@@ -621,34 +621,33 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var userSettings = await UseServiceClientAsync<IAccountServiceClient, NotificationSettings>(client => client.GetNotificationSettings(CurrentAccount.Id));
 
             // Merge company and user settings together
+            // If the value is not null in the company settings, this means the setting is active and visible to the user
+            // we check if the user has a value otherwise we put the company default value (or null if set as "not available" by the company)
             return new NotificationSettings
             {
                 Id = userSettings.Id,
                 Enabled = companySettings.Enabled && userSettings.Enabled,
-                BookingConfirmationEmail = companySettings.BookingConfirmationEmail.HasValue
-                    && userSettings.BookingConfirmationEmail.HasValue
-                    ? userSettings.BookingConfirmationEmail : companySettings.BookingConfirmationEmail,
-                ConfirmPairingPush = companySettings.ConfirmPairingPush.HasValue
-                    && userSettings.ConfirmPairingPush.HasValue
-                    ? userSettings.ConfirmPairingPush : companySettings.ConfirmPairingPush,
-                DriverAssignedEmail = companySettings.DriverAssignedEmail.HasValue
-                    && userSettings.DriverAssignedEmail.HasValue
-                    ? userSettings.DriverAssignedEmail : companySettings.DriverAssignedEmail,
-                DriverAssignedPush = companySettings.DriverAssignedPush.HasValue
-                    && userSettings.DriverAssignedPush.HasValue
-                    ? userSettings.DriverAssignedPush : companySettings.DriverAssignedPush,
-                NearbyTaxiPush = companySettings.NearbyTaxiPush.HasValue
-                    && userSettings.NearbyTaxiPush.HasValue
-                    ? userSettings.NearbyTaxiPush : companySettings.NearbyTaxiPush,
-                PaymentConfirmationPush = companySettings.PaymentConfirmationPush.HasValue
-                    && userSettings.PaymentConfirmationPush.HasValue
-                    ? userSettings.PaymentConfirmationPush : companySettings.PaymentConfirmationPush,
-                ReceiptEmail = companySettings.ReceiptEmail.HasValue
-                    && userSettings.ReceiptEmail.HasValue
-                    ? userSettings.ReceiptEmail : companySettings.ReceiptEmail,
-                VehicleAtPickupPush = companySettings.VehicleAtPickupPush.HasValue
-                    && userSettings.VehicleAtPickupPush.HasValue
-                    ? userSettings.VehicleAtPickupPush : companySettings.VehicleAtPickupPush
+                BookingConfirmationEmail = companySettings.BookingConfirmationEmail.HasValue && userSettings.BookingConfirmationEmail.HasValue
+                    ? userSettings.BookingConfirmationEmail 
+                    : companySettings.BookingConfirmationEmail,
+                ConfirmPairingPush = companySettings.ConfirmPairingPush.HasValue && userSettings.ConfirmPairingPush.HasValue
+                    ? userSettings.ConfirmPairingPush 
+                    : companySettings.ConfirmPairingPush,
+                DriverAssignedPush = companySettings.DriverAssignedPush.HasValue && userSettings.DriverAssignedPush.HasValue
+                    ? userSettings.DriverAssignedPush 
+                    : companySettings.DriverAssignedPush,
+                NearbyTaxiPush = companySettings.NearbyTaxiPush.HasValue && userSettings.NearbyTaxiPush.HasValue
+                    ? userSettings.NearbyTaxiPush 
+                    : companySettings.NearbyTaxiPush,
+                PaymentConfirmationPush = companySettings.PaymentConfirmationPush.HasValue && userSettings.PaymentConfirmationPush.HasValue
+                    ? userSettings.PaymentConfirmationPush 
+                    : companySettings.PaymentConfirmationPush,
+                ReceiptEmail = companySettings.ReceiptEmail.HasValue && userSettings.ReceiptEmail.HasValue
+                    ? userSettings.ReceiptEmail 
+                    : companySettings.ReceiptEmail,
+                VehicleAtPickupPush = companySettings.VehicleAtPickupPush.HasValue && userSettings.VehicleAtPickupPush.HasValue
+                    ? userSettings.VehicleAtPickupPush 
+                    : companySettings.VehicleAtPickupPush
             };
         }
 
