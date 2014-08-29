@@ -48,20 +48,19 @@
         }
 
         .body-wrap {
-            background-color: #04182A;
             width: 100%;
         }
 
         .container {
             /*display: block !important;*/
-            max-width: 600px !important;
+            max-width: 800px !important;
             margin: 0 auto !important;
             /* makes it centered */
             clear: both !important;
         }
 
         .content {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
             display: block;
             padding: 20px;
@@ -295,7 +294,16 @@
             text-align: right;
             width: 20%;
         }
+        .card_list_title {
+            text-align: left;
+            width: 60%;
+            font-weight: bold;
+        }
 
+        .card_list_val {
+            text-align: right;
+            width: 40%;
+        }
         .fare_list_subtotal {
             font-weight: bold;
         }
@@ -364,7 +372,7 @@
 </head>
 
 <body>
-    <table class="body-wrap">
+    <table class="body-wrap" style=" background-color:{{AccentColor }}">
         <tr>
             <td></td>
             <td class="container" width="600">
@@ -382,10 +390,10 @@
                                         <td>
                                             <table  cellpadding="0" cellspacing="0">
                                                 <tr>
-                                                    <td class="receipt_date">AUGUST 27, 2014 - 18h29 <!--{{ Date }}--></td>
+                                                    <td class="receipt_date">{{Date}} - {{PickupTime}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="receipt_price">€16.33 <!--{{ TotalFare }}--></td>
+                                                    <td class="receipt_price">{{ TotalFare }}</td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -408,10 +416,10 @@
                                                                         <td>
                                                                             <table>
                                                                                 <tr>
-                                                                                    <td class="route_list_title">AUGUST 27, 2014 - 18h29</td>
+                                                                                    <td class="route_list_title">{{Date}} - {{PickupTime}}</td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td class="route_list_adddress">39 Rue de Bretagne, 75003 Paris <!--{{ PickupAddress }}--></td>
+                                                                                    <td class="route_list_adddress">{{ PickupAddress }}</td>
                                                                                 </tr>
                                                                             </table>
                                                                         </td>
@@ -423,10 +431,10 @@
                                                                         <td>
                                                                             <table>
                                                                                 <tr>
-                                                                                    <td class="route_list_title">AUGUST 27, 2014 - 18h34</td>
+                                                                                    <td class="route_list_title">{{Date}} - 18h34</td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td class="route_list_adddress">139 Rue Saint-Dominique, 75007 Paris <!--{{ DropOffAddress }}--></td>
+                                                                                    <td class="route_list_adddress">{{ DropOffAddress }}</td>
                                                                                 </tr>
                                                                             </table>
                                                                         </td>
@@ -434,7 +442,7 @@
                                                                 </table>
                                                                 <!--<table class="route_arrival">
                                                                    
-                                                                </table>-->
+                                                                    </table>-->
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -453,24 +461,28 @@
                                                             <td>
                                                                 <table width="100%" cellpadding="0" cellspacing="0">
                                                                     <tr>
-                                                                        <td class="fare_list_title">Meter Fare <!--{{ localize "" }}--></td>
-                                                                        <td class="fare_list_price">12.45 <!--{{ Fare }}--></td>
+                                                                        <td class="fare_list_title">{{ localize "Email_Body_Fare"}}</td>
+                                                                        <td class="fare_list_price">{{ Fare }}</td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="fare_list_title">Gratuity <!--{{ localize "" }}--></td>
-                                                                        <td class="fare_list_price">1.54 <!--{{ Gratuity }}--></td>
+                                                                        <td class="fare_list_title">{{ localize "Email_Body_Toll"}}</td>
+                                                                        <td class="fare_list_price">{{ Toll }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="fare_list_title">{{ localize "Email_Body_Tip"}}</td>
+                                                                        <td class="fare_list_price">{{ Tip }}</td>
                                                                     </tr>
                                                                     <tr class="fare_list_subtotal">
                                                                         <td class="fare_list_title">Subtotal <!--{{ localize "" }}--></td>
-                                                                        <td class="fare_list_price">€13.99 <!--{{ SubTotal }}--></td>
+                                                                        <td class="fare_list_price">{{ SubTotal }}</td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="fare_list_title">Tax <!--{{ localize "" }}--></td>
-                                                                        <td class="fare_list_price">2.34 <!--{{ Tax }}--></td>
+                                                                        <td class="fare_list_title">{{ localize "Email_Body_VAT"}}</td>
+                                                                        <td class="fare_list_price">{{ Tax }}</td>
                                                                     </tr>
                                                                     <tr class="fare_list_charged">
-                                                                        <td class="fare_list_title">CHARGED <!--{{ localize "" }}--></td>
-                                                                        <td class="fare_list_price">€16.33 <!--{{ TotalFare }}--></td>
+                                                                        <td class="fare_list_title">{{ localize "Email_Body_TotalFare"}}</td>
+                                                                        <td class="fare_list_price">{{ TotalFare }}</td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -491,21 +503,58 @@
                                                             </td>
                                                         </tr>
                                                     </table>
+                                                    {{#IsCardOnFile}}
+                                                    
+                                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <td class="title_block">{{ localize "Email_Body_PaymentInformation" }} </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td class="card_list_title">{{ localize "Email_Body_PaidWith" }}</td>
+                                                                        <td class="card_list_val">{{ CardNumber }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="card_list_title">{{ localize "Email_Body_TotalAmount" }}</td>
+                                                                        <td class="card_list_val">{{ CardOnFileAmount }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="card_list_title">{{ localize "Email_Body_TransactionId" }}</td>
+                                                                        <td class="card_list_val">{{ CardOnFileTransactionId }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="card_list_title">{{ localize "Email_Body_AuthorizationNumber" }}</td>
+                                                                        <td class="card_list_val">{{ CardOnFileAuthorizationCode }}</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    {{/IsCardOnFile}}
+
+
                                                 </div>
                                             </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <p style="padding-left:45px;padding-right:20px;width:300px;">{{{Note}}}</p>
                                         </td>
                                     </tr>
                                 </table>
                             </td>
                         </tr>
                     </table>
-                    <div class="footer">
+                    <!--<div class="footer">
                         <table>
                             <tr>
                                 <td class=" content-block">Footer Information placeholder</td>
                             </tr>
                         </table>
-                    </div>
+                    </div>-->
                 </div>
             </td>
             <td></td>

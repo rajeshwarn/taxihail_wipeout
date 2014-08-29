@@ -48,13 +48,15 @@ namespace apcurium.MK.Booking.Email
             {
                 
                 var templateBody = File.ReadAllText(path);
-                if (templateName == NotificationService.EmailConstant.Template.Receipt)
-                {
-                    var result = PreMailer.Net.PreMailer.MoveCssInline(templateBody, false, ignoreElements: "#ignore");
-                    templateBody = result.Html;
-                }
+               
                     
                 var translatedTemplateBody = Localizer.Translate(templateBody, _resources.GetLocalizedDictionary(languageCode), "!!MISSING!!");
+
+                if (templateName == NotificationService.EmailConstant.Template.Receipt)
+                {
+                    var result = PreMailer.Net.PreMailer.MoveCssInline(translatedTemplateBody, true,ignoreElements:"#ignore");
+                    translatedTemplateBody = result.Html;
+                }
                 return translatedTemplateBody;
             }
 

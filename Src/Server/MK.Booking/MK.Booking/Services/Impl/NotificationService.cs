@@ -279,14 +279,13 @@ namespace apcurium.MK.Booking.Services.Impl
                 vehicleNumber,
                 driverName,
                 Date = transactionDate.ToString("dddd, MMMM d, yyyy"),
+                PickupTime = transactionDate.ToString("t" /* Short time pattern */),
                 Fare = fare.ToString("C", priceFormat),
                 Toll = toll.ToString("C", priceFormat),
                 Tip = tip.ToString("C", priceFormat),
                 TotalFare = totalFare.ToString("C", priceFormat),
                 Note = _configurationManager.GetSetting("Receipt.Note"),
-                VATAmount = tax.ToString("C", priceFormat),
-                VatEnabled = vatEnabled,
-                VATRegistrationNumber = _configurationManager.GetSetting(VATRegistrationNumberSetting),
+                Tax = tax.ToString("C", priceFormat),
                 IsCardOnFile = isCardOnFile,
                 CardOnFileAmount = cardOnFileAmount,
                 CardNumber = cardNumber,
@@ -294,6 +293,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
                 PickupAddress = pickupAddress.DisplayAddress,
                 DropOffAddress = hasDropOffAddress ? dropOffAddress.DisplayAddress : "-",
+                SubTotal=(fare+toll+tip).ToString("C", priceFormat),
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
