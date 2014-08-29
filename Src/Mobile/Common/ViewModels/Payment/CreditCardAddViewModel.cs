@@ -51,9 +51,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
         }
 
-		public void Init(bool showInstructions)
+		public void Init(bool showInstructions, bool isMandatory = false)
 		{
 			ShowInstructions = showInstructions;
+			IsMandatory = isMandatory;
 		}
 
 		public override void OnViewStarted(bool firstTime)
@@ -234,6 +235,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         public List<ListItem> ExpirationYears { get; set; }
         public List<ListItem> ExpirationMonths { get; set; }
 		public bool ShowInstructions { get; set; }
+		public bool IsMandatory { get; set; }
 
 		private CreditCardInfos _data;
 		public CreditCardInfos Data 
