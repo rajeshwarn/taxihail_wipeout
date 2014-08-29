@@ -3,7 +3,7 @@
     A very basic CSS reset
 ------------------------------------- */
 * {
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
   box-sizing: border-box;
@@ -44,7 +44,7 @@ body {
 }
 
 .container {
-  display: block !important;
+  /*display: block !important;*/
   max-width: 600px !important;
   margin: 0 auto !important;
   /* makes it centered */
@@ -217,8 +217,7 @@ a {
     font-size: 20px;
 }
 .receipt_left_info,.receipt_right_info {
-    width: 50%;
-    float: left;
+    width: 100%;
     padding: 0 5px 0 5px;
 }
 /* Style for line between titles */
@@ -280,3 +279,51 @@ a {
     text-align: right;
     width: 20%;
 }
+    /* -------------------------------------
+    RESPONSIVE AND MOBILE FRIENDLY STYLES
+    ------------------------------------- */
+        @media only screen and (min-width: 640px) {
+            h1, h2, h3, h4 {
+                font-weight: 600 !important;
+                margin: 20px 0 5px !important;
+            }
+
+            h1 {
+                font-size: 22px !important;
+            }
+
+            h2 {
+                font-size: 18px !important;
+            }
+
+            h3 {
+                font-size: 16px !important;
+            }
+
+            .container {
+                width: 100% !important;
+            }
+
+            .content, .content-wrapper {
+                padding: 10px !important;
+            }
+
+            .receipt_left_info, .receipt_right_info {
+                width: 50% !important;
+                float: left;
+            }
+        }
+        .title_block:before, .title_block:after {
+            position: absolute;
+            top: 51%;
+            overflow: hidden;
+            width: 50%;
+            height: 1px;
+            content: '\a0';
+            background-color: gray;
+        }
+
+        .title_block:before {
+            margin-left: -50%;
+            text-align: right;
+        }

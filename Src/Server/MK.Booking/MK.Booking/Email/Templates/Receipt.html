@@ -11,7 +11,7 @@
     A very basic CSS reset
 ------------------------------------- */
         * {
-            margin: 0;
+            margin: 0 auto;
             padding: 0;
             font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
             box-sizing: border-box;
@@ -36,9 +36,9 @@
             width: 100%;
         }
 
-            table td {
-                vertical-align: top;
-            }
+        table td {
+            vertical-align: top;
+        }
 
         /* -------------------------------------
     BODY & CONTAINER
@@ -53,7 +53,7 @@
         }
 
         .container {
-            display: block !important;
+            /*display: block !important;*/
             max-width: 600px !important;
             margin: 0 auto !important;
             /* makes it centered */
@@ -96,13 +96,13 @@
             padding: 20px 0 20px 0;
         }
 
-            .footer a {
-                color: #999;
-            }
+        .footer a {
+            color: #999;
+        }
 
-            .footer p, .footer a, .footer unsubscribe, .footer td {
-                font-size: 8px;
-            }
+        .footer p, .footer a, .footer unsubscribe, .footer td {
+            font-size: 8px;
+        }
 
         /* -------------------------------------
     TYPOGRAPHY
@@ -138,10 +138,10 @@
             font-weight: normal;
         }
 
-            p li, ul li, ol li {
-                margin-left: 5px;
-                list-style-position: inside;
-            }
+        p li, ul li, ol li {
+            margin-left: 5px;
+            list-style-position: inside;
+        }
 
         /* -------------------------------------
     LINKS & BUTTONS
@@ -206,24 +206,24 @@
             border-radius: 7px 7px 0 0;
         }
 
-            .alert a {
-                color: #fff;
-                text-decoration: none;
-                font-weight: 500;
-                font-size: 16px;
-            }
+        .alert a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+        }
 
-            .alert.alert-warning {
-                background: #ff9f00;
-            }
+        .alert.alert-warning {
+            background: #ff9f00;
+        }
 
-            .alert.alert-bad {
-                background: #d0021b;
-            }
+        .alert.alert-bad {
+            background: #d0021b;
+        }
 
-            .alert.alert-good {
-                background: #68b90f;
-            }
+        .alert.alert-good {
+            background: #68b90f;
+        }
 
         /* -------------------------------------
     ADDED STYLE FOR OUR TEMPLATE
@@ -234,8 +234,7 @@
         }
 
         .receipt_left_info, .receipt_right_info {
-            width: 50%;
-            float: left;
+            width: 100%;
             padding: 0 5px 0 5px;
         }
         /* Style for line between titles */
@@ -245,6 +244,20 @@
             overflow: hidden;
             text-align: center;
             padding: 10px 0 10px 0;
+        }
+        .title_block:before, .title_block:after {
+            position: absolute;
+            top: 51%;
+            overflow: hidden;
+            width: 50%;
+            height: 1px;
+            content: '\a0';
+            background-color: gray;
+        }
+
+        .title_block:before {
+            margin-left: -50%;
+            text-align: right;
         }
         /* Ending Style for line between titles */
 
@@ -291,13 +304,13 @@
             font-weight: bolder;
         }
 
-            .fare_list_subtotal .fare_list_title, .fare_list_charged .fare_list_title {
-                color: #000000 !important;
-            }
+        .fare_list_subtotal .fare_list_title, .fare_list_charged .fare_list_title {
+            color: #000000 !important;
+        }
 
-            .fare_list_charged .fare_list_price, .fare_list_charged .fare_list_title {
-                padding: 15px 0 15px 0;
-            }
+        .fare_list_charged .fare_list_price, .fare_list_charged .fare_list_title {
+            padding: 15px 0 15px 0;
+        }
 
         .driver_name {
             text-align: left;
@@ -311,10 +324,10 @@
         }
     </style>
     <style type="text/css" id="ignore">
-    /* -------------------------------------
+        /* -------------------------------------
     RESPONSIVE AND MOBILE FRIENDLY STYLES
     ------------------------------------- */
-        @media only screen and (max-width: 640px) {
+        @media only screen and (min-width: 640px){
             h1, h2, h3, h4 {
                 font-weight: 600 !important;
                 margin: 20px 0 5px !important;
@@ -341,23 +354,12 @@
             }
 
             .receipt_left_info, .receipt_right_info {
-                width: 100% !important;
+                width: 50% !important;
+                float: left !important;
             }
         }
-        .title_block:before, .title_block:after {
-            position: absolute;
-            top: 51%;
-            overflow: hidden;
-            width: 50%;
-            height: 1px;
-            content: '\a0';
-            background-color: gray;
-        }
 
-        .title_block:before {
-            margin-left: -50%;
-            text-align: right;
-        }
+       
     </style>
 </head>
 
@@ -370,7 +372,7 @@
                     <table class="main" cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="content-wrap aligncenter">
-                                <table cellpadding="0" cellspacing="0">
+                                <table width="100%" cellpadding="0" cellspacing="0">
                                     <tr>
                                         <td class="receipt_logo">
                                             <img src="http://biz.prlog.org/Apcurium/logo.png" />
@@ -378,7 +380,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <table cellpadding="0" cellspacing="0">
+                                            <table  cellpadding="0" cellspacing="0">
                                                 <tr>
                                                     <td class="receipt_date">AUGUST 27, 2014 - 18h29 <!--{{ Date }}--></td>
                                                 </tr>
@@ -392,30 +394,47 @@
                                         <td>
                                             <div class="">
                                                 <div class="receipt_left_info">
-                                                    <table cellpadding="0" cellspacing="0">
+                                                    <table width="100%" cellpadding="0" cellspacing="0">
                                                         <tr>
                                                             <td class="title_block">ROUTE <!--{{ localize "" }}--></td>
                                                         </tr>
-                                                        <tr>
+                                                        <tr >
                                                             <td>
-                                                                <div class="route_departure">
-                                                                    <div class="route_list_img">
-                                                                        <img src="http://www.short-wave.info/png/tiny-green-dot.png" />
-                                                                    </div>
-                                                                    <div class="route_list">
-                                                                        <div class="route_list_title">AUGUST 27, 2014 - 18h29</div>
-                                                                        <div class="route_list_adddress">39 Rue de Bretagne, 75003 Paris <!--{{ PickupAddress }}--></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="route_arrival">
-                                                                    <div class="route_list_img">
-                                                                        <img src="http://www.short-wave.info/png/tiny-red-dot.png" />
-                                                                    </div>
-                                                                    <div class="route_list">
-                                                                        <div class="route_list_title">AUGUST 27, 2014 - 18h34</div>
-                                                                        <div class="route_list_adddress">139 Rue Saint-Dominique, 75007 Paris <!--{{ DropOffAddress }}--></div>
-                                                                    </div>
-                                                                </div>
+                                                                <table width="100%" class="route_departure">
+                                                                    <tr class="route_list_img">
+                                                                        <td>
+                                                                            <img src="http://www.short-wave.info/png/tiny-green-dot.png" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <table>
+                                                                                <tr>
+                                                                                    <td class="route_list_title">AUGUST 27, 2014 - 18h29</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="route_list_adddress">39 Rue de Bretagne, 75003 Paris <!--{{ PickupAddress }}--></td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr class="route_list_img">
+                                                                        <td>
+                                                                            <img src="http://www.short-wave.info/png/tiny-red-dot.png" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <table>
+                                                                                <tr>
+                                                                                    <td class="route_list_title">AUGUST 27, 2014 - 18h34</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="route_list_adddress">139 Rue Saint-Dominique, 75007 Paris <!--{{ DropOffAddress }}--></td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                                <!--<table class="route_arrival">
+                                                                   
+                                                                </table>-->
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -426,13 +445,13 @@
                                                     </table>
                                                 </div>
                                                 <div class="receipt_right_info">
-                                                    <table cellpadding="0" cellspacing="0">
+                                                    <table width="100%" cellpadding="0" cellspacing="0">
                                                         <tr>
                                                             <td class="title_block">FARE BREAKDOWN <!--{{ localize "" }}--></td>
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                <table cellpadding="0" cellspacing="0">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
                                                                     <tr>
                                                                         <td class="fare_list_title">Meter Fare <!--{{ localize "" }}--></td>
                                                                         <td class="fare_list_price">12.45 <!--{{ Fare }}--></td>
@@ -457,13 +476,13 @@
                                                             </td>
                                                         </tr>
                                                     </table>
-                                                    <table cellpadding="0" cellspacing="0">
+                                                    <table width="100%" cellpadding="0" cellspacing="0">
                                                         <tr>
                                                             <td class="title_block">YOUR DRIVER <!--{{ localize "" }}--></td>
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                <table cellpadding="0" cellspacing="0">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
                                                                     <tr>
                                                                         <td class="driver_name">{{ DriverName }}</td>
                                                                         <td class="vehicle_type"><img height="30" width="60" src="http://i.huffpost.com/gen/991040/thumbs/o-BMWELI-570.jpg?6 " /></td>
