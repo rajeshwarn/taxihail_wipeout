@@ -9,6 +9,7 @@ using System.Text;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Email;
+using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.ReadModel;
@@ -17,6 +18,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Services.Impl
@@ -26,7 +28,6 @@ namespace apcurium.MK.Booking.Services.Impl
         private const string ApplicationNameSetting = "TaxiHail.ApplicationName";
         private const string AccentColorSetting = "TaxiHail.AccentColor";
         private const string VATEnabledSetting = "VATIsEnabled";
-        private const string VATPercentageSetting = "VATPercentage";
         private const string VATRegistrationNumberSetting = "VATRegistrationNumber";
 
         private readonly Func<BookingDbContext> _contextFactory;
@@ -35,6 +36,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IAppSettings _appSettings;
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
+        private readonly IStaticMap _staticMap;
         private readonly ITemplateService _templateService;
         private readonly IEmailSender _emailSender;
         private readonly Resources.Resources _resources;
@@ -47,7 +49,8 @@ namespace apcurium.MK.Booking.Services.Impl
             IConfigurationManager configurationManager, 
             IAppSettings appSettings,
             IConfigurationDao configurationDao,
-            IOrderDao orderDao)
+            IOrderDao orderDao,
+            IStaticMap staticMap)
         {
             _contextFactory = contextFactory;
             _pushNotificationService = pushNotificationService;
@@ -57,6 +60,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _appSettings = appSettings;
             _configurationDao = configurationDao;
             _orderDao = orderDao;
+            _staticMap = staticMap;
 
             var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
             _resources = new Resources.Resources(applicationKey);
@@ -270,7 +274,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var hasDropOffAddress = dropOffAddress != null 
                 && (!string.IsNullOrWhiteSpace(dropOffAddress.FullAddress) 
                     || !string.IsNullOrWhiteSpace(dropOffAddress.DisplayAddress));
-
+            
             var templateData = new
             {
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
@@ -295,6 +299,18 @@ namespace apcurium.MK.Booking.Services.Impl
                 PickupAddress = pickupAddress.DisplayAddress,
                 DropOffAddress = hasDropOffAddress ? dropOffAddress.DisplayAddress : "-",
             };
+
+            var staticMapUri = dropOffAddress != null
+                ? _staticMap.GetStaticMapUri(
+                    new Position(pickupAddress.Latitude, pickupAddress.Longitude),
+                    new Position(dropOffAddress.Latitude, dropOffAddress.Longitude),
+                    300, 300, 1)
+                : "";
+
+            if (!string.IsNullOrEmpty(staticMapUri))
+            {
+                templateData.AddProperty("StaticMapUri", staticMapUri);
+            }
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
         }
