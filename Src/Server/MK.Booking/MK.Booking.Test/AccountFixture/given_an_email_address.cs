@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Email;
+using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Services.Impl;
@@ -69,7 +70,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             _configurationManager = new TestConfigurationManager();
             _configurationManager.SetSetting("TaxiHail.ApplicationName", ApplicationName);
 
-            _sut.Setup(new EmailCommandHandler(new NotificationService(() => new BookingDbContext(DbName), null, new TemplateService(_configurationManager), _emailSenderMock.Object, _configurationManager, _configurationManager, new ConfigurationDao(() => new ConfigurationDbContext(DbName)), null)));
+            _sut.Setup(new EmailCommandHandler(new NotificationService(() => new BookingDbContext(DbName), null, new TemplateService(_configurationManager), _emailSenderMock.Object, _configurationManager, _configurationManager, new ConfigurationDao(() => new ConfigurationDbContext(DbName)), null, new StaticMap())));
         }
 
         [Test]

@@ -4,7 +4,6 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Receipt Title</title>
-    <!--<link href="..\Css\StyleReceipt.css" media="all" rel="stylesheet" type="text/css" />-->
     <style type="text/css">
         /* -------------------------------------
     GLOBAL
@@ -445,11 +444,13 @@
                                                                     </table>-->
                                                             </td>
                                                         </tr>
+                                                        {{#StaticMapUri}}
                                                         <tr>
                                                             <td>
-                                                                <img src="http://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=300x300&maptype=roadmap" />
+                                                                <img src="{{ StaticMapUri }}" />
                                                             </td>
                                                         </tr>
+                                                        {{/StaticMapUri}}
                                                     </table>
                                                 </div>
                                                 <div class="receipt_right_info">
