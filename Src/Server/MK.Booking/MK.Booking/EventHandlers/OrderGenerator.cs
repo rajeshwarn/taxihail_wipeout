@@ -230,6 +230,11 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.Status = (int)@event.Status.Status;
                     }
 
+                    if (@event.IsCompleted)
+                    {
+                        order.DropOffDate = @event.EventDate;
+                    }
+
                     order.Fare = @event.Fare;
                     order.Tip = @event.Tip;
                     order.Toll = @event.Toll;

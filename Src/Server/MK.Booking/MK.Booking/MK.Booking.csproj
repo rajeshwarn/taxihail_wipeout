@@ -254,7 +254,6 @@
     <Compile Include="SMS\ISmsService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Email\Css\StyleReceipt.css" />
     <Content Include="Email\Images\header-gradient.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -184,7 +184,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 using (var context = _contextFactory.Invoke())
                 {
                     var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                if (account == null || !ShouldSendNotification(account.Id, x => x.BookingConfirmationEmail))
+                    if (account == null || !ShouldSendNotification(account.Id, x => x.BookingConfirmationEmail))
                     {
                         return;
                     }
@@ -234,15 +234,15 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public void SendReceiptEmail(int ibsOrderId, string vehicleNumber, string driverName, double fare, double toll, double tip,
-            double tax, double totalFare, SendReceipt.CardOnFile cardOnFileInfo, Address pickupAddress, Address dropOffAddress, 
-            DateTime transactionDate, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
+            double tax, double totalFare, SendReceipt.CardOnFile cardOnFileInfo, Address pickupAddress, Address dropOffAddress,
+            DateTime pickupDate, DateTime? dropOffDate, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
         {
             if (!bypassNotificationSetting)
             {
                 using (var context = _contextFactory.Invoke())
                 {
                     var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                if (account == null || !ShouldSendNotification(account.Id, x => x.ReceiptEmail))
+                    if (account == null || !ShouldSendNotification(account.Id, x => x.ReceiptEmail))
                     {
                         return;
                     }
@@ -274,7 +274,14 @@ namespace apcurium.MK.Booking.Services.Impl
             var hasDropOffAddress = dropOffAddress != null 
                 && (!string.IsNullOrWhiteSpace(dropOffAddress.FullAddress) 
                     || !string.IsNullOrWhiteSpace(dropOffAddress.DisplayAddress));
-            
+
+            var staticMapUri = dropOffAddress != null
+                ? _staticMap.GetStaticMapUri(
+                    new Position(pickupAddress.Latitude, pickupAddress.Longitude),
+                    new Position(dropOffAddress.Latitude, dropOffAddress.Longitude),
+                    300, 300, 1)
+                : "";
+
             var templateData = new
             {
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
@@ -282,7 +289,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 ibsOrderId,
                 vehicleNumber,
                 driverName,
-                Date = transactionDate.ToString("dddd, MMMM d, yyyy"),
+                PickupDate = pickupDate.ToString("dddd, MMMM d, yyyy"),
+                DropOffDate = dropOffDate.Value.ToString("dddd, MMMM d, yyyy"),
                 Fare = fare.ToString("C", priceFormat),
                 Toll = toll.ToString("C", priceFormat),
                 Tip = tip.ToString("C", priceFormat),
@@ -298,19 +306,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
                 PickupAddress = pickupAddress.DisplayAddress,
                 DropOffAddress = hasDropOffAddress ? dropOffAddress.DisplayAddress : "-",
+                StaticMapUri = staticMapUri,
+                ShowStaticMap = !string.IsNullOrEmpty(staticMapUri)
             };
-
-            var staticMapUri = dropOffAddress != null
-                ? _staticMap.GetStaticMapUri(
-                    new Position(pickupAddress.Latitude, pickupAddress.Longitude),
-                    new Position(dropOffAddress.Latitude, dropOffAddress.Longitude),
-                    300, 300, 1)
-                : "";
-
-            if (!string.IsNullOrEmpty(staticMapUri))
-            {
-                templateData.AddProperty("StaticMapUri", staticMapUri);
-            }
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
         }

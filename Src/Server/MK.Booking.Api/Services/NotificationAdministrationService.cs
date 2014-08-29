@@ -102,8 +102,8 @@ namespace apcurium.MK.Booking.Api.Services
                         _notificationService.SendPasswordResetEmail("N3wp@s5w0rd", request.EmailAddress, "en");
                         break;
                     case NotificationService.EmailConstant.Template.Receipt:
-                        _notificationService.SendReceiptEmail(12345, "9007", "Alex Proteau", 45, 0, 6.75, 0, 51.75,
-                            _cardOnFile, _pickupAddress, _dropOffAddress, DateTime.Now, request.EmailAddress, "en", true);
+                        _notificationService.SendReceiptEmail(12345, "9007", "Alex Proteau", 45, 2, 6.75, 4.5, 58.25,
+                            _cardOnFile, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.Now, request.EmailAddress, "en", true);
                         break;
                     default:
                         throw new Exception("sendTestEmailErrorNoMatchingTemplate");
