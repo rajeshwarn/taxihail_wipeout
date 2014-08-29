@@ -235,33 +235,11 @@
             width: 100%;
             padding: 0 5px 0 5px;
         }
-        /* Style for line between titles */
-        .title_block {
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-            text-align: center;
-            padding: 10px 0 10px 0;
-        }
-        .title_block:before, .title_block:after {
-            position: absolute;
-            top: 51%;
-            overflow: hidden;
-            width: 50%;
-            height: 1px;
-            content: '\a0';
-            background-color: gray;
-        }
-
-        .title_block:before {
-            margin-left: -50%;
-            text-align: right;
-        }
-        /* Ending Style for line between titles */
+       
 
         .route_list {
             text-align: left;
-            float: left;
+           /* float: left;*/
         }
 
         .route_list_title {
@@ -277,7 +255,12 @@
             padding: 7px 7px 0 0;
         }
 
-        .route_departure, .route_arrival {
+        .route_list_item {
+            text-align: left;
+            padding-left: 5px;
+        }
+        
+         .route_departure, .route_arrival {
             width: 100%;
             position: relative;
             display: flex;
@@ -295,13 +278,11 @@
         }
         .card_list_title {
             text-align: left;
-            width: 60%;
             font-weight: bold;
         }
 
         .card_list_val {
             text-align: right;
-            width: 40%;
         }
         .fare_list_subtotal {
             font-weight: bold;
@@ -366,7 +347,30 @@
             }
         }
 
-       
+        /* Style for line between titles */
+        .title_block {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            text-align: center;
+            padding: 10px 0 10px 0;
+        }
+
+            .title_block:before, .title_block:after {
+                position: absolute;
+                top: 51%;
+                overflow: hidden;
+                width: 50%;
+                height: 1px;
+                content: '\a0';
+                background-color: gray;
+            }
+
+            .title_block:before {
+                margin-left: -50%;
+                text-align: right;
+            }
+        /* Ending Style for line between titles */
     </style>
 </head>
 
@@ -387,9 +391,9 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <table  cellpadding="0" cellspacing="0">
+                                            <table width="100%" cellpadding="0" cellspacing="0">
                                                 <tr>
-                                                    <td class="receipt_date">{{Date}} - {{PickupTime}}</td>
+                                                    <td class="receipt_date">{{PickupDate}} - {{PickupTime}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="receipt_price">{{ TotalFare }}</td>
@@ -399,21 +403,21 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <div class="">
+                                            <div>
                                                 <div class="receipt_left_info">
                                                     <table width="100%" cellpadding="0" cellspacing="0">
                                                         <tr>
-                                                            <td class="title_block">ROUTE <!--{{ localize "" }}--></td>
+                                                            <td class="title_block">{{ localize "Email_Body_Route" }}</td>
                                                         </tr>
                                                         <tr >
                                                             <td>
                                                                 <table width="100%" class="route_departure">
-                                                                    <tr class="route_list_img">
+                                                                    <tr class="route_list_item">
                                                                         <td>
                                                                             <img src="http://www.short-wave.info/png/tiny-green-dot.png" />
                                                                         </td>
                                                                         <td>
-                                                                            <table>
+                                                                            <table class="route_list_item">
                                                                                 <tr>
                                                                                     <td class="route_list_title">{{PickupDate}} - {{PickupTime}}</td>
                                                                                 </tr>
@@ -423,12 +427,12 @@
                                                                             </table>
                                                                         </td>
                                                                     </tr>
-                                                                    <tr class="route_list_img">
+                                                                    <tr class="route_list_item">
                                                                         <td>
                                                                             <img src="http://www.short-wave.info/png/tiny-red-dot.png" />
                                                                         </td>
                                                                         <td>
-                                                                            <table>
+                                                                            <table class="route_list_item">
                                                                                 <tr>
                                                                                     <td class="route_list_title">{{DropOffDate}}{{#HasDropOffTime}} - {{DropOffTime}}{{/HasDropOffTime}}</td>
                                                                                 </tr>
@@ -456,7 +460,7 @@
                                                 <div class="receipt_right_info">
                                                     <table width="100%" cellpadding="0" cellspacing="0">
                                                         <tr>
-                                                            <td class="title_block">FARE BREAKDOWN <!--{{ localize "" }}--></td>
+                                                            <td class="title_block">{{ localize "Email_Body_FareBreakDown" }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>
@@ -491,7 +495,7 @@
                                                     </table>
                                                     <table width="100%" cellpadding="0" cellspacing="0">
                                                         <tr>
-                                                            <td class="title_block">YOUR DRIVER <!--{{ localize "" }}--></td>
+                                                            <td class="title_block">{{ localize "Email_Body_Driver" }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>

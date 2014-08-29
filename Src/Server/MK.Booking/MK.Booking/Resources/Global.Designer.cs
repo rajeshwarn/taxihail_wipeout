@@ -196,6 +196,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fare breakdown.
+        /// </summary>
+        public static string Email_Body_FareBreakDown {
+            get {
+                return ResourceManager.GetString("Email_Body_FareBreakDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Large&amp;nbsp;bags.
         /// </summary>
         public static string Email_Body_LargeBags {
@@ -336,6 +345,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Body_RingCode {
             get {
                 return ResourceManager.GetString("Email_Body_RingCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Route.
+        /// </summary>
+        public static string Email_Body_Route {
+            get {
+                return ResourceManager.GetString("Email_Body_Route", resourceCulture);
             }
         }
         

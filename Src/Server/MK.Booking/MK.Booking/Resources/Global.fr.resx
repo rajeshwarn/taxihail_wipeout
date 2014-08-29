@@ -336,4 +336,10 @@
   <data name="PushNotification_wosLOADED" xml:space="preserve">
     <value>Veuillez confirmer le véhicule avec lequel le payment de carte de crédit sera effectué.</value>
   </data>
+  <data name="Email_Body_FareBreakDown" xml:space="preserve">
+    <value>Prix de la course</value>
+  </data>
+  <data name="Email_Body_Route" xml:space="preserve">
+    <value>Itinéraire</value>
+  </data>
 </root>

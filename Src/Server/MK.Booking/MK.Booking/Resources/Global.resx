@@ -333,4 +333,10 @@
   <data name="PushNotification_wosLOADED" xml:space="preserve">
     <value>Please confirm vehicle to pay with card on file.</value>
   </data>
+  <data name="Email_Body_FareBreakDown" xml:space="preserve">
+    <value>Fare breakdown</value>
+  </data>
+  <data name="Email_Body_Route" xml:space="preserve">
+    <value>Route</value>
+  </data>
 </root>
