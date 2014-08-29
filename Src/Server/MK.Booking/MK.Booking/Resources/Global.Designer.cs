@@ -655,6 +655,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The ride #{0} will be paid automatically at the end of the trip using your credit card ending with {1} and using your default tip of {2}%..
+        /// </summary>
+        public static string PushNotification_OrderPaired {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderPaired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your credit card was successfully charged a total of {0}. This amount includes both fare and tip..
         /// </summary>
         public static string PushNotification_PaymentReceived {

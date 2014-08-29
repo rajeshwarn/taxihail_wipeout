@@ -9,6 +9,7 @@ namespace apcurium.MK.Booking.Services
         void SendStatusChangedNotification(OrderStatusDetail orderStatusDetail);
         void SendPaymentCaptureNotification(Guid orderId, decimal amount);
         void SendTaxiNearbyNotification(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude);
+        void SendOrderPairedForPaymentNotification(Guid orderId, int? autoTipPercentage);
 
         void SendAccountConfirmationEmail(Uri confirmationUrl, string clientEmailAddress, string clientLanguageCode);
         void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress,

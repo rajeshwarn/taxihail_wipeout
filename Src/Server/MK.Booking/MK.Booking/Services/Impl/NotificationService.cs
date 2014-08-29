@@ -9,6 +9,7 @@ using System.Text;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Email;
+using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.ReadModel;
@@ -23,6 +24,8 @@ namespace apcurium.MK.Booking.Services.Impl
 {
     public class NotificationService : INotificationService
     {
+        private const int TaxiDistanceThresholdForPushNotification = 200; // In meters
+
         private const string ApplicationNameSetting = "TaxiHail.ApplicationName";
         private const string AccentColorSetting = "TaxiHail.AccentColor";
         private const string VATEnabledSetting = "VATIsEnabled";
@@ -119,7 +122,6 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private const int TaxiDistanceThresholdForPushNotification = 200; // In meters
         public void SendTaxiNearbyNotification(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude)
         {
             using (var context = _contextFactory.Invoke())
@@ -154,6 +156,35 @@ namespace apcurium.MK.Booking.Services.Impl
                         SendPush(order.AccountId, alert, data);
                     }
                 }
+            }
+        }
+
+        public void SendOrderPairedForPaymentNotification(Guid orderId, int? autoTipPercentage)
+        {
+            if (!_configurationManager.GetPaymentSettings().AutomaticPaymentPairing)
+            {
+                return;
+            }
+
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(orderId);
+                var accountDetail = context.Find<AccountDetail>(order.AccountId);
+                if (!accountDetail.DefaultCreditCard.HasValue)
+                {
+                    return;
+                }
+
+                var creditCardDetails = context.Find<CreditCardDetails>(accountDetail.DefaultCreditCard.Value);
+
+                var alert = string.Format(_resources.Get("PushNotification_OrderPaired"),
+                                order,
+                                creditCardDetails.Last4Digits,
+                                autoTipPercentage);
+
+                var data = new Dictionary<string, object> { { "orderId", orderId } };
+
+                SendPush(order.AccountId, alert, data);
             }
         }
 

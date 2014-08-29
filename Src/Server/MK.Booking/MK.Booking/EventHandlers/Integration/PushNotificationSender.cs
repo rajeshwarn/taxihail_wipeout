@@ -23,7 +23,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class PushNotificationSender : IIntegrationEventHandler,
             IEventHandler<OrderStatusChanged>,
-            IEventHandler<CreditCardPaymentCaptured>
+            IEventHandler<CreditCardPaymentCaptured>,
+            IEventHandler<OrderPairedForPayment>
     {
         private readonly INotificationService _notificationService;
 
@@ -40,6 +41,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         public void Handle(CreditCardPaymentCaptured @event)
         {
             _notificationService.SendPaymentCaptureNotification(@event.OrderId, @event.Amount);
+        }
+
+        public void Handle(OrderPairedForPayment @event)
+        {
+            _notificationService.SendOrderPairedForPaymentNotification(@event.SourceId, @event.AutoTipPercentage);
         }
     }
 }

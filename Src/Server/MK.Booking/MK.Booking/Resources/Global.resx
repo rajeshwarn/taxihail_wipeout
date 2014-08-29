@@ -333,4 +333,7 @@
   <data name="PushNotification_wosLOADED" xml:space="preserve">
     <value>Please confirm vehicle to pay with card on file.</value>
   </data>
+  <data name="PushNotification_OrderPaired" xml:space="preserve">
+    <value>The ride #{0} will be paid automatically at the end of the trip using your credit card ending with {1} and using your default tip of {2}%.</value>
+  </data>
 </root>
