@@ -51,17 +51,17 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<ITemplateService>(new TemplateService(container.Resolve<IConfigurationManager>()));
             container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IConfigurationManager>(), container.Resolve<ILogger>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IPushNotificationService>(), container.Resolve<IConfigurationManager>()));
-            container.RegisterInstance<INotificationService>(
-                new NotificationService(() => 
-                    container.Resolve<BookingDbContext>(), 
-                    container.Resolve<IPushNotificationService>(), 
-                    container.Resolve<ITemplateService>(), 
-                    container.Resolve<IEmailSender>(), 
-                    container.Resolve<IConfigurationManager>(), 
-                    container.Resolve<IAppSettings>(), 
-                    container.Resolve<IConfigurationDao>(), 
-                    container.Resolve<IOrderDao>(), 
-                    container.Resolve<IStaticMap>()));
+            container.RegisterType<INotificationService>(new ContainerControlledLifetimeManager(),
+                new InjectionFactory(c => new NotificationService(
+                    () => c.Resolve<BookingDbContext>(),
+                    c.Resolve<IPushNotificationService>(),
+                    c.Resolve<ITemplateService>(),
+                    c.Resolve<IEmailSender>(),
+                    c.Resolve<IConfigurationManager>(),
+                    c.Resolve<IAppSettings>(),
+                    c.Resolve<IConfigurationDao>(),
+                    c.Resolve<IOrderDao>(),
+                    c.Resolve<IStaticMap>())));
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
