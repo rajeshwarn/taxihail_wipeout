@@ -60,7 +60,6 @@
     <option value="{{invertedBool isPayInTaxiEnabled}}">{{localizeBool isPayInTaxiEnabled true="No" false="Yes"}}</option>
   </select>
 
-
   <label class="control-label settingsLabel" >{{{localize "Payment Method"}}}</label>
   <select name="paymentMode"  class="settingsBox">
     <option value="None">{{localize "None"}}</option>
@@ -70,6 +69,22 @@
     <option value="Moneris">{{localize "Moneris Payments"}}</option>
     <option value="Fake">{{localize "Demo Payment Service"}}</option>
   </select>
+
+  <div class="control-group" id="automaticPaymentDiv">
+    <label class="control-label settingsLabel">{{{localize "Automatic Payment"}}}</label>
+    <select  name="automaticPayment" class="settingsBox">
+      <option value="{{automaticPayment}}" selected="">{{localizeBool automaticPayment true="Yes" false="No"}}</option>
+      <option value="{{invertedBool automaticPayment}}">{{localizeBool automaticPayment true="No" false="Yes"}}</option>
+    </select>
+  </div>
+
+  <div class="control-group" id="automaticPairingDiv">
+    <label class="control-label settingsLabel">{{{localize "Automatic Payment Pairing"}}}</label>
+    <select  name="automaticPaymentPairing" class="settingsBox">
+      <option value="{{automaticPaymentPairing}}" selected="" >{{localizeBool automaticPaymentPairing true="Yes" false="No"}}</option>
+      <option value="{{invertedBool automaticPaymentPairing}}">{{localizeBool automaticPaymentPairing true="No" false="Yes"}}</option>
+    </select>
+  </div>
   <br />
   <br />
 

@@ -158,7 +158,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void HandlePairingForStandardPairing(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo)
         {
-            if (!_appSettings.Data.AutomaticPayment)
+            if (!_configurationManager.GetPaymentSettings().AutomaticPayment)
             {
                 // Automatic payment is disabled, nothing to do here
                 return;

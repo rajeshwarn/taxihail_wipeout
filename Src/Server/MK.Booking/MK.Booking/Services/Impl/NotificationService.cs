@@ -32,7 +32,6 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IPushNotificationService _pushNotificationService;
         private readonly IConfigurationManager _configurationManager;
-        private readonly IAppSettings _appSettings;
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
         private readonly ITemplateService _templateService;
@@ -44,8 +43,7 @@ namespace apcurium.MK.Booking.Services.Impl
             IPushNotificationService pushNotificationService,
             ITemplateService templateService,
             IEmailSender emailSender,
-            IConfigurationManager configurationManager, 
-            IAppSettings appSettings,
+            IConfigurationManager configurationManager,
             IConfigurationDao configurationDao,
             IOrderDao orderDao)
         {
@@ -54,7 +52,6 @@ namespace apcurium.MK.Booking.Services.Impl
             _templateService = templateService;
             _emailSender = emailSender;
             _configurationManager = configurationManager;
-            _appSettings = appSettings;
             _configurationDao = configurationDao;
             _orderDao = orderDao;
 
@@ -84,7 +81,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     }
                     break;
                 case VehicleStatuses.Common.Loaded:
-                    if(_appSettings.Data.AutomaticPayment
+                    if(_configurationManager.GetPaymentSettings().AutomaticPayment
                         && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id // Only send notification if using card on file
                         && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
                     {

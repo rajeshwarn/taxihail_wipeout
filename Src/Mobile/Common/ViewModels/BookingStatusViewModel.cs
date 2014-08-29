@@ -320,7 +320,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 CenterMap ();
 
 				var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
-				if (isLoaded && Settings.AutomaticPayment && _accountService.CurrentAccount.DefaultCreditCard != null)
+                if (isLoaded && _paymentService.GetPaymentSettings().AutomaticPayment && _accountService.CurrentAccount.DefaultCreditCard != null)
 				{
 					var isPaired = _bookingService.IsPaired(Order.Id);
                     var pairState = this.Services().Cache.Get<string>("PairState" + Order.Id);
@@ -370,8 +370,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			var setting = _paymentService.GetPaymentSettings();
             var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-                       
-			IsUnpairButtonVisible = !Settings.AutomaticPayment  			// we don't want to unpair if client accepted the auto payment, only for RideLinqCMT
+
+            IsUnpairButtonVisible = !_paymentService.GetPaymentSettings().AutomaticPayment  			// we don't want to unpair if client accepted the auto payment, only for RideLinqCMT
 								&& _bookingService.IsPaired(Order.Id);      
 
 
@@ -382,7 +382,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								(statusId == VehicleStatuses.Common.Done
 								||statusId == VehicleStatuses.Common.Loaded)
 								&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue
-								&& !Settings.AutomaticPayment
+                                && !_paymentService.GetPaymentSettings().AutomaticPayment
 			                    && !IsUnpairButtonVisible
 								&& (Order.Settings.ChargeTypeId == null 
 									|| Order.Settings.ChargeTypeId != ChargeTypes.Account.Id)
@@ -395,7 +395,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 || statusId == VehicleStatuses.Common.Arrived
                                 || statusId == VehicleStatuses.Common.Scheduled;
 
-            IsResendButtonVisible = isPayEnabled && !Settings.AutomaticPayment && _paymentService.GetPaymentFromCache(Order.Id).HasValue;
+            IsResendButtonVisible = isPayEnabled && !_paymentService.GetPaymentSettings().AutomaticPayment && _paymentService.GetPaymentFromCache(Order.Id).HasValue;
 		}
 
 		public void GoToSummary(){
@@ -523,7 +523,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #endif
 					IsPayButtonVisible = false;
 					this.Services().Analytics.LogEvent("PayButtonTapped");
-                    if (Settings.AutomaticPayment)
+                    if (_paymentService.GetPaymentSettings().AutomaticPayment)
                     {
                         GoToPairScreen();
                     }
