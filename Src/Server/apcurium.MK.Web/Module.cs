@@ -23,9 +23,9 @@ namespace apcurium.MK.Web
             RegisterInfrastructure(container);
 
             new Common.Module().Init(container);
-            new Booking.Maps.Module().Init(container);
             new Booking.Module().Init(container);
             new Booking.MapDataProvider.Module().Init(container);
+			new Booking.Maps.Module().Init(container);
             new Booking.IBS.Module().Init(container);
             new Booking.Api.Module().Init(container);
 
