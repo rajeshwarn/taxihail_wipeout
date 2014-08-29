@@ -282,6 +282,10 @@ namespace apcurium.MK.Booking.Services.Impl
                     300, 300, 1)
                 : "";
 
+            var dropOffTime = dropOffDate.HasValue
+                ? dropOffDate.Value.ToString("t" /* Short time pattern */)
+                : "";
+
             var templateData = new
             {
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
@@ -290,15 +294,18 @@ namespace apcurium.MK.Booking.Services.Impl
                 vehicleNumber,
                 driverName,
                 PickupDate = pickupDate.ToString("dddd, MMMM d, yyyy"),
-                DropOffDate = dropOffDate.Value.ToString("dddd, MMMM d, yyyy"),
+                PickupTime = pickupDate.ToString("t" /* Short time pattern */),
+                DropOffDate = dropOffDate.HasValue 
+                    ? dropOffDate.Value.ToString("dddd, MMMM d, yyyy")
+                    : pickupDate.ToString("dddd, MMMM d, yyyy"), // assume it ends on the same day...
+                DropOffTime = dropOffTime,
+                ShowDropOffTime = !string.IsNullOrEmpty(dropOffTime),
                 Fare = fare.ToString("C", priceFormat),
                 Toll = toll.ToString("C", priceFormat),
                 Tip = tip.ToString("C", priceFormat),
                 TotalFare = totalFare.ToString("C", priceFormat),
                 Note = _configurationManager.GetSetting("Receipt.Note"),
-                VATAmount = tax.ToString("C", priceFormat),
-                VatEnabled = vatEnabled,
-                VATRegistrationNumber = _configurationManager.GetSetting(VATRegistrationNumberSetting),
+                Tax = tax.ToString("C", priceFormat),
                 IsCardOnFile = isCardOnFile,
                 CardOnFileAmount = cardOnFileAmount,
                 CardNumber = cardNumber,
@@ -306,6 +313,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
                 PickupAddress = pickupAddress.DisplayAddress,
                 DropOffAddress = hasDropOffAddress ? dropOffAddress.DisplayAddress : "-",
+                SubTotal=(fare+toll+tip).ToString("C", priceFormat),
                 StaticMapUri = staticMapUri,
                 ShowStaticMap = !string.IsNullOrEmpty(staticMapUri)
             };
