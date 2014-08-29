@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Mail;
-using System.Reflection;
 using System.Text;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -18,7 +17,6 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Services.Impl
@@ -27,8 +25,7 @@ namespace apcurium.MK.Booking.Services.Impl
     {
         private const string ApplicationNameSetting = "TaxiHail.ApplicationName";
         private const string AccentColorSetting = "TaxiHail.AccentColor";
-        private const string VATEnabledSetting = "VATIsEnabled";
-        private const string VATRegistrationNumberSetting = "VATRegistrationNumber";
+        private const string EmailFontColorSetting = "TaxiHail.AccentColor";
 
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IPushNotificationService _pushNotificationService;
@@ -171,6 +168,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 confirmationUrl,
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
                 AccentColor = _configurationManager.GetSetting(AccentColorSetting)
+
+
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.AccountConfirmation, EmailConstant.Subject.AccountConfirmation, templateData, clientLanguageCode);
@@ -249,7 +248,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
             }
 
-            var vatEnabled = _configurationManager.GetSetting(VATEnabledSetting, false);
             var priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
 
             var isCardOnFile = cardOnFileInfo != null;
@@ -290,6 +288,7 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
                 AccentColor = _configurationManager.GetSetting(AccentColorSetting),
+                EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
                 ibsOrderId,
                 vehicleNumber,
                 driverName,
@@ -315,7 +314,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 DropOffAddress = hasDropOffAddress ? dropOffAddress.DisplayAddress : "-",
                 SubTotal=(fare+toll+tip).ToString("C", priceFormat),
                 StaticMapUri = staticMapUri,
-                ShowStaticMap = !string.IsNullOrEmpty(staticMapUri)
+                ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
+                VehicleType = "taxi"
+
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);

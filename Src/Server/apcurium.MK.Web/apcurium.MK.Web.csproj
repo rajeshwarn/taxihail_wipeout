@@ -253,8 +253,13 @@
     <Content Include="assets\img\app-stores-itunes.png" />
     <Content Include="assets\img\appstores-bg.png" />
     <Content Include="assets\img\appstores-play.png" />
+    <Content Include="assets\img\blackcar_badge.png" />
+    <Content Include="assets\img\email_green_dot.png" />
+    <Content Include="assets\img\email_red_dot.png" />
     <Content Include="assets\img\nearby_cab.png" />
     <Content Include="assets\img\pin_cluster.png" />
+    <Content Include="assets\img\suv_badge.png" />
+    <Content Include="assets\img\taxi_badge.png" />
     <Content Include="assets\js\storage-polyfill.js" />
     <Content Include="common\collections\AvailableVehicleCollection.js" />
     <Content Include="common\models\AvailableVehicle.js" />
@@ -364,6 +369,7 @@
     <Content Include="services\OrderService.js" />
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
+    <Content Include="themes\TaxiHail\img\email_logo.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
     <Content Include="views\AddFavoriteView.js" />
