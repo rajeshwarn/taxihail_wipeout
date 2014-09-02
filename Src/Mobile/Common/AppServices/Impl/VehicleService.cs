@@ -79,8 +79,34 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				return null;
 			}
 
-			return cars.OrderBy (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude))
-				.First();
+			return GetNearestVehicles (pickup, cars).First ();
+		}
+
+		public MapBounds GetBoundsForNearestVehicles(Address pickup, IEnumerable<AvailableVehicle> cars)
+		{
+			if ((cars == null) || (!cars.Any ())) {
+				return null;
+			}
+
+			var radius = 1600f;
+			var vehicleCount = 5;
+
+			var vehicles = GetNearestVehicles (pickup, cars)
+				.Where (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude) <= radius)
+				.Take (vehicleCount);
+
+			var south = vehicles.OrderBy (x => x.Latitude).First ().Latitude;
+			var north = vehicles.OrderBy (x => x.Latitude).Last ().Latitude;
+			var west = vehicles.OrderBy (x => x.Longitude).First ().Longitude;
+			var east = vehicles.OrderBy (x => x.Longitude).Last ().Longitude;
+
+			return new MapBounds () { NorthBound = north, SouthBound = south, EastBound = east, WestBound = west };
+		}
+
+		IEnumerable<AvailableVehicle> GetNearestVehicles(Address pickup, IEnumerable<AvailableVehicle> cars)
+		{
+			return cars
+				.OrderBy (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude));
 		}
 
 		public Direction CheckForEta(Address pickup, AvailableVehicle vehicleLocation)

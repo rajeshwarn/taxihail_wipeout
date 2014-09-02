@@ -267,7 +267,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						var address = await _orderWorkflowService.SetAddressToUserLocation();
 						if(address.HasValidCoordinate())
 						{
-		                    this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
+							this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, Map.AvailableVehicles)));
 						}
 					}
 				});

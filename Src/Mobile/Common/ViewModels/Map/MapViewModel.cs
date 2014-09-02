@@ -10,6 +10,8 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common.Entity;
+using System.Linq;
+using MapBounds = apcurium.MK.Booking.Maps.Geo.MapBounds;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -97,7 +99,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-
+		public MapBounds AvailableVehiclesBounds
+		{
+			get {
+				return _vehicleService.GetBoundsForNearestVehicles (PickupAddress, AvailableVehicles);
+			}
+		}
+			
 		public class CancellableCommand<TParam>: ICommand
         {
             private Func<TParam,bool> _canExecute;

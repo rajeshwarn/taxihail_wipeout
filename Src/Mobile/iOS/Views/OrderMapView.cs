@@ -18,6 +18,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using MapBounds = apcurium.MK.Booking.Maps.Geo.MapBounds;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Controls;
@@ -474,7 +475,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var zoomHint = hint as ZoomToStreetLevelPresentationHint;
             if (zoomHint != null)
             {
-				this.SetCenterCoordinate(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), 14, true); 
+				if (zoomHint.AvailableVehiclesZoom != null) {
+					var zoom = zoomHint.AvailableVehiclesZoom;
+					this.SetRegion(new MKCoordinateRegion (
+						new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude),
+						new MKCoordinateSpan (zoom.LatitudeDelta, zoom.LongitudeDelta)), false);
+				} else {
+					this.SetCenterCoordinate(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), 14, true);
+				}
             }
 
             var centerHint = hint as CenterMapPresentationHint;

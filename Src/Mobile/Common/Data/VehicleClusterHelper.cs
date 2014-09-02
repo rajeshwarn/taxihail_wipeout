@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using System.Drawing;
 using System;
+using apcurium.MK.Booking.Maps.Geo;
 
 namespace apcurium.MK.Booking.Mobile.Data
 {
