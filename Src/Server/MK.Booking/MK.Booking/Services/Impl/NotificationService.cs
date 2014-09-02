@@ -293,8 +293,6 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var baseUrlImg = String.Concat(baseUrl, "/Assets/Img/");
 
-            var emailFont = _configurationManager.GetSetting(EmailFontColorSetting);
-
             var templateData = new
             {
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
@@ -329,7 +327,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 BaseUrlImg = baseUrlImg,
                 RedDotImg = Path.Combine(baseUrlImg, "email_red_dot.png"),
                 GreenDotImg = Path.Combine(baseUrlImg, "email_green_dot.png"),
-                LogoImg = Path.Combine(baseUrl, "themes/img/email_logo.png"),
+                LogoImg = String.Concat(baseUrl, "/themes/img/email_logo.png"),
                 VehicleType = "taxi"
 
             };
