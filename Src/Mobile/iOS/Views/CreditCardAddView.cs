@@ -109,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             set.Bind(txtExpYear)
                 .For(v => v.Text)
-				.To(vm => vm.ExpirationYear);
+				.To(vm => vm.ExpirationYearDisplay);
 
             set.Bind(txtCvv)
 				.For(v => v.Text)

@@ -171,7 +171,7 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:inputType="number"
                         android:singleLine="true"
-                        local:MvxBind="Text ExpirationYear; Data ExpirationYears; SelectedItem ExpirationYear" />
+                        local:MvxBind="Text ExpirationYearDisplay; Data ExpirationYears; SelectedItem ExpirationYear" />
                 </LinearLayout>
                 <Button
                     style="@style/ButtonActionGrayStyle"
