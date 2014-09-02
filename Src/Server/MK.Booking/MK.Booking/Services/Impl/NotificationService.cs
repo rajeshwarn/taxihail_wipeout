@@ -329,7 +329,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 BaseUrlImg = baseUrlImg,
                 RedDotImg = Path.Combine(baseUrlImg, "email_red_dot.png"),
                 GreenDotImg = Path.Combine(baseUrlImg, "email_green_dot.png"),
-                LogoImg = String.Concat(baseUrlThemesImg, "/themes/TaxiHail/img/email_logo.png"),
+                LogoImg = String.Concat(baseUrlThemesImg, "email_logo.png"),
                 VehicleType = "taxi"
 
             };
