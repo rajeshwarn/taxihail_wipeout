@@ -442,7 +442,7 @@
     <value>La carte ne semble pas être valide</value>
   </data>
   <data name="CreditCardName" xml:space="preserve">
-    <value>Nom du titualire (tel qu'il apparaît sur la carte)</value>
+    <value>Nom du titulaire (tel qu'il apparaît sur la carte)</value>
   </data>
   <data name="CreditCardNumber" xml:space="preserve">
     <value>Numéro de la carte</value>

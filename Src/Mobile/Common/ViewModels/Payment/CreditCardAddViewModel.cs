@@ -51,9 +51,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
         }
 
-		public void Init(bool showInstructions)
+		public void Init(bool showInstructions, bool isMandatory = false)
 		{
 			ShowInstructions = showInstructions;
+			IsMandatory = isMandatory;
 		}
 
 		public override void OnViewStarted(bool firstTime)
@@ -194,13 +195,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             get 
 			{
                 return string.IsNullOrEmpty(Data.ExpirationYear) 
-                    ? default(int?) 
+					? (int?)null
                     : int.Parse(Data.ExpirationYear);
             }
             set 
 			{
 				Data.ExpirationYear = value.ToSafeString();
 				RaisePropertyChanged();
+				RaisePropertyChanged(() => ExpirationYearDisplay);
             }
         }
 
@@ -209,7 +211,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             get 
 			{
                 return string.IsNullOrEmpty(Data.ExpirationMonth) 
-                    ? default(int?) 
+					? (int?)null
                     : int.Parse(Data.ExpirationMonth);
             }
             set 
@@ -226,14 +228,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             get 
 			{
                 var type = ExpirationMonths.FirstOrDefault(x => x.Id == ExpirationMonth);
-                return type == null ? null : type.Display;
+                return type == null ? "" : type.Display;
             }
         }
+
+		public string ExpirationYearDisplay 
+		{
+			get 
+			{
+				var type = ExpirationYears.FirstOrDefault(x => x.Id == ExpirationYear);
+				return type == null ? "" : type.Display;
+			}
+		}
 
         public List<ListItem> CreditCardCompanies { get; set; }
         public List<ListItem> ExpirationYears { get; set; }
         public List<ListItem> ExpirationMonths { get; set; }
 		public bool ShowInstructions { get; set; }
+		public bool IsMandatory { get; set; }
 
 		private CreditCardInfos _data;
 		public CreditCardInfos Data 

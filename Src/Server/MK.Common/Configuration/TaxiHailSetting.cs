@@ -31,7 +31,7 @@ namespace MK.Common.Configuration
 			SMSConfirmationEnabled = false;
 		    EtaPaddingRatio = 1;
 		    DisableChargeTypeWhenCardOnFile = false;
-		    VehicleEstimateEnabled = false;
+		    VehicleTypeSelectionEnabled = false;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -73,8 +73,8 @@ namespace MK.Common.Configuration
         public bool SMSConfirmationEnabled { get; private set; }
         [Display(Name = "Disable Charge type when card on file", Description = "When active, locks the user on Card on File payment type if a credit card is registered")]
         public bool DisableChargeTypeWhenCardOnFile { get; private set; }
-        [Display(Name = "Enable vehicle estimate", Description = "Hide the vehicle estimate box")]
-        public bool VehicleEstimateEnabled { get; private set; }
+        [Display(Name = "Enable vehicle type selection", Description = "Hide the vehicle type selection box")]
+        public bool VehicleTypeSelectionEnabled { get; private set; }
 
         [Display(Name = "SMS source number", Description = "Number from which the sms confirmation number will be sent")]
         public string SMSFromNumber { get; private set; }
