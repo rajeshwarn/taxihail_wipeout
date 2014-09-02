@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         {
             if (orderStatusDetail.Status == OrderStatus.WaitingForPayment)
             {
-                Log.DebugFormat("Order Status is: {0}. Don't update since it's a special case outside of ib.", orderStatusDetail.Status);
+                Log.DebugFormat("Order Status is: {0}. Don't update since it's a special case outside of IBS.", orderStatusDetail.Status);
                 return;
             }
             if (ibsOrderInfo.IsCanceled)
