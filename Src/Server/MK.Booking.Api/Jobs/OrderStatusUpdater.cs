@@ -210,7 +210,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             // We received a fare from IBS
             // Send payment for capture, once it's captured, we will set the status to Completed
             var meterAmount = ibsOrderInfo.Fare + ibsOrderInfo.Toll + ibsOrderInfo.VAT;
-            double tipAmount = 0.0;
+            double tipAmount = _appSettings.Data.DefaultTipPercentage;
             if (pairingInfo.AutoTipPercentage.HasValue)
             {
                 tipAmount = GetTipAmount(meterAmount, pairingInfo.AutoTipPercentage.Value);
