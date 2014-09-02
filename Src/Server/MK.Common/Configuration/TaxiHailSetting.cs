@@ -32,6 +32,7 @@ namespace MK.Common.Configuration
 		    EtaPaddingRatio = 1;
 		    DisableChargeTypeWhenCardOnFile = false;
 		    VehicleEstimateEnabled = false;
+		    SendPushAsSMS = false;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -82,6 +83,8 @@ namespace MK.Common.Configuration
         public string SMSAccountSid { get; private set; }
         [Display(Name = "Twilio SMS authentication token", Description = "Authentication token for twilio")]
         public string SMSAuthToken { get; private set; }
+        [Display(Name = "Send push notifications as SMS", Description = "Send push notifications as SMS")]
+        public bool SendPushAsSMS { get; private set; }
         [Display(Name = "Show Terms and Conditions", Description="Display and require T&C screen")]
         public bool ShowTermsAndConditions { get; private set; }
 		[Display(Name = "Hide Mobile Knownledge and Apcurium logos", Description="In the menu")]
