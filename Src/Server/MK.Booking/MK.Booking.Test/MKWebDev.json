@@ -40,6 +40,7 @@
    "TaxiHail.ApplicationName" : "Taxi Hail",
    "TaxiHail.ApplicationKey" : "TaxiHail",
    "TaxiHail.AccentColor" : "#0057a3",
+   "TaxiHail.EmailFontColor" : "#fff",
    "TaxiHail.SiteName" : "Dev",
    "Receipt.Note": "Thank You!<br>The Taxi Hail Team",
    "GeoLoc.PlacesTypes":"airport,amusement_park,art_gallery,bank,bar,bus_station,cafe,casino,clothing_store,convenience_store,courthouse,department_store,doctor,embassy,food,gas_station,hospital,lawyer,grocery_or_supermarket,library,liquor_store,lodging,local_government_office,movie_theater,moving_company,musem,night_club,park,parking,pharmacy,police,physiotherapist",

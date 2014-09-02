@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Mail;
@@ -26,7 +27,7 @@ namespace apcurium.MK.Booking.Services.Impl
     {
         private const string ApplicationNameSetting = "TaxiHail.ApplicationName";
         private const string AccentColorSetting = "TaxiHail.AccentColor";
-        private const string EmailFontColorSetting = "TaxiHail.AccentColor";
+        private const string EmailFontColorSetting = "TaxiHail.EmailFontColor";
 
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IPushNotificationService _pushNotificationService;
@@ -292,6 +293,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var baseUrlImg = String.Concat(baseUrl, "/Assets/Img/");
 
+            var emailFont = _configurationManager.GetSetting(EmailFontColorSetting);
+
             var templateData = new
             {
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
@@ -324,9 +327,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 StaticMapUri = staticMapUri,
                 ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
                 BaseUrlImg = baseUrlImg,
-                RedDotImg = String.Concat(baseUrlImg, "email_red_dot.png"),
-                GreenDotImg = String.Concat(baseUrlImg, "email_green_dot.png"),
-                LogoImg = String.Concat(baseUrlImg, "email_logo.png"),
+                RedDotImg = Path.Combine(baseUrlImg, "email_red_dot.png"),
+                GreenDotImg = Path.Combine(baseUrlImg, "email_green_dot.png"),
+                LogoImg = Path.Combine(baseUrl, "themes/img/email_logo.png"),
                 VehicleType = "taxi"
 
             };
