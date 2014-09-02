@@ -101,6 +101,9 @@ namespace apcurium.MK.Booking.IBS
             get { return Status.SoftEqual(VehicleStatuses.Common.Timeout); }
         }
 
-
+        public bool IsLoaded
+        {
+            get { return Status.SoftEqual(VehicleStatuses.Common.Loaded); }
+        }
     }
 }

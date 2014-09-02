@@ -24,6 +24,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using System;
@@ -143,7 +144,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 || orderStatus.VehicleLongitude != ibsOrderInfo.VehicleLongitude)
             {
                 _orderDao.UpdateVehiclePosition(orderStatus.OrderId, ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
-                _notificationService.SendTaxiNearbyNotification(orderStatus.OrderId, ibsOrderInfo.Status, ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
+                _notificationService.SendTaxiNearbyPush(orderStatus.OrderId, ibsOrderInfo.Status, ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
             }
         }
 
@@ -287,6 +288,15 @@ namespace apcurium.MK.Booking.Api.Jobs
                 description = total > 0
                     ? string.Format(_resources.Get("OrderStatus_OrderDoneFareAvailable", languageCode), FormatPrice(total))
                     : _resources.Get("OrderStatus_wosDONE", languageCode);
+            }
+            else if (ibsOrderInfo.IsLoaded)
+            {
+                if (orderDetail != null && (_configurationManager.GetPaymentSettings().AutomaticPayment
+                                            && _configurationManager.GetPaymentSettings().AutomaticPaymentPairing
+                                            && orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id))
+                {
+                    description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", languageCode);
+                }
             }
 
             return description.HasValue()

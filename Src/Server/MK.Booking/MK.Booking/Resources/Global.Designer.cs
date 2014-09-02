@@ -574,6 +574,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fare will be paid using your default CC payment.
+        /// </summary>
+        public static string OrderStatus_wosLOADEDAutoPairing {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosLOADEDAutoPairing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid order, please call dispatch center.
         /// </summary>
         public static string OrderStatus_wosNone {
@@ -655,11 +664,20 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The ride #{0} will be paid automatically at the end of the trip using your credit card ending with {1} and using your default tip of {2}%..
+        ///   Looks up a localized string similar to The ride #{0} could not be automatically paired.
         /// </summary>
-        public static string PushNotification_OrderPaired {
+        public static string PushNotification_OrderPairingFailed {
             get {
-                return ResourceManager.GetString("PushNotification_OrderPaired", resourceCulture);
+                return ResourceManager.GetString("PushNotification_OrderPairingFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ride #{0} will be paid automatically at the end of the trip using your credit card ending with {1} and using your default tip of {2}%.
+        /// </summary>
+        public static string PushNotification_OrderPairingSuccessful {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderPairingSuccessful", resourceCulture);
             }
         }
         

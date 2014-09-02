@@ -30,15 +30,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
 		private readonly IVehicleService _vehicleService;
-		private readonly IDirections _directions;
 
 		public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService,
 			IPhoneService phoneService,
 			IBookingService bookingService,
 			IPaymentService paymentService,
 			IAccountService accountService,
-			IVehicleService vehicleService,
-			IDirections directions
+			IVehicleService vehicleService
 		)
 		{
 			_orderWorkflowService = orderWorkflowService;
@@ -47,7 +45,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_paymentService = paymentService;
 			_accountService = accountService;
 			_vehicleService = vehicleService;
-			_directions = directions;
 		}
 
 		private int _refreshPeriod = 5; //in seconds
@@ -423,11 +420,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void GoToPairScreen()
         {
-            ShowViewModel<ConfirmPairViewModel>(new
+            if (!_paymentService.GetPaymentSettings().AutomaticPaymentPairing)
             {
-                order = Order.ToJson(),
-                orderStatus = OrderStatusDetail.ToJson()
-            }.ToStringDictionary());
+                ShowViewModel<ConfirmPairViewModel>(new
+                {
+                    order = Order.ToJson(),
+                    orderStatus = OrderStatusDetail.ToJson()
+                }.ToStringDictionary());
+            }
         }
 
         private void CenterMap ()

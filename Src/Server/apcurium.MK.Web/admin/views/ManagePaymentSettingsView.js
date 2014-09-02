@@ -21,8 +21,6 @@
         render: function () {
 
             var data = this.model.toJSON();
-            //automaticPayment = data.automaticPayment;
-            //automaticPaymentPairing = data.automaticPaymentPairing;
 
             this.$el.html(this.renderTemplate(data.serverPaymentSettings));
             
@@ -115,13 +113,9 @@
                 return;
             }
             
-            if (data.paymentMode == "None") {
+            if (data.paymentMode == "None" || data.paymentMode == "RideLinqCmt") {
                 data.automaticPayment = false;
                 data.automaticPaymentPairing = false;
-            }
-            else if (data.paymentMode == "RideLinqCmt") {
-                data.automaticPayment = true;
-                data.automaticPaymentPairing = true;
             }
 
             this.model.save(data)
