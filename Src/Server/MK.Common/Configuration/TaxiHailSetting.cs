@@ -241,6 +241,15 @@ namespace MK.Common.Configuration
 		public double? UpperRightLatitude { get; private set; }
 		[Display(Name = "Upper Right Longitude", Description="Upper Right Longitude limit to be used when searching for an address")]
 		public double? UpperRightLongitude { get; private set; }
+
+		[Display(Name = "Zoom on nearby vehicles", Description="Enable zooming on nearby vehicles")]
+		public bool ZoomOnNearbyVehicles { get; private set; }
+
+		[Display(Name = "Zoom on nearby vehicles radius", Description="Inclusion radius in meters when zooming on nearby vehicles")]
+		public double? ZoomOnNearbyVehiclesRadius { get; private set; }
+
+		[Display(Name = "Zoom on nearby vehicles count", Description="Maximum of included vehicles when zooming on nearby vehicles")]
+		public int? ZoomOnNearbyVehiclesCount { get; private set; }
     }
 }
 

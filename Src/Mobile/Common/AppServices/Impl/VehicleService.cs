@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IObservable<Direction> _etaObservable;
 		readonly ISubject<IObservable<long>> _timerSubject = new BehaviorSubject<IObservable<long>>(Observable.Never<long>());
 		readonly IDirections _directions;
+		readonly IAppSettings _settings;
 
 		private bool _isStarted { get; set; }
 
@@ -28,6 +29,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			IAppSettings settings)
 		{
 			_directions = directions;
+			_settings = settings;
 
 			_availableVehiclesObservable = _timerSubject
 				.Switch()
@@ -39,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.SelectMany(x => CheckForAvailableVehicles(x.address, x.vehicleTypeId.Value));
 
 			_etaObservable = _availableVehiclesObservable
-				.Where (_ => settings.Data.ShowEta)
+				.Where (_ => _settings.Data.ShowEta)
 				.CombineLatest(orderWorkflowService.GetAndObservePickupAddress (), (vehicles, address) => new { address, vehicles } )
 				.Select (x => new { x.address, vehicle =  GetNearestVehicle(x.address, x.vehicles) })
 				.DistinctUntilChanged(x => x.vehicle == null ? double.MaxValue : Position.CalculateDistance (x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude))
@@ -84,16 +86,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public MapBounds GetBoundsForNearestVehicles(Address pickup, IEnumerable<AvailableVehicle> cars)
 		{
-			if ((cars == null) || (!cars.Any ())) {
+			if ((cars == null) || (!cars.Any ()) || !_settings.Data.ZoomOnNearbyVehicles) {
 				return null;
 			}
 
-			var radius = 1600f;
-			var vehicleCount = 5;
+			var radius = _settings.Data.ZoomOnNearbyVehiclesRadius;
+			var vehicleCount = _settings.Data.ZoomOnNearbyVehiclesCount;
 
 			var vehicles = GetNearestVehicles (pickup, cars)
 				.Where (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude) <= radius)
-				.Take (vehicleCount);
+				.Take ((int)vehicleCount);
 
 			var south = vehicles.OrderBy (x => x.Latitude).First ().Latitude;
 			var north = vehicles.OrderBy (x => x.Latitude).Last ().Latitude;
