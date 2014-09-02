@@ -110,7 +110,7 @@
   <string name="CreditCardExpYear">Date d\'expiration (année)</string>
   <string name="CreditCardInstructions">Afin d\'utiliser l\'application, vous devez ajouter une carte de crédit à votre compte.</string>
   <string name="CreditCardInvalidCrediCardNUmber">Le numéro de la carte ne semble pas être valide</string>
-  <string name="CreditCardName">Nom du titualire (tel qu\'il apparaît sur la carte)</string>
+  <string name="CreditCardName">Nom du titulaire (tel qu\'il apparaît sur la carte)</string>
   <string name="CreditCardNumber">Numéro de la carte</string>
   <string name="CreditCardRemoveErrorMessage">Vous devez avoir au moins une carte de crédit relier à votre compte. Vous devez ajouter une autre carte avant d\'en supprimer une.</string>
   <string name="CreditCardRemoveErrorTitle">La carte ne peut être supprimée</string>
