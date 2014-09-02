@@ -255,6 +255,7 @@
     <Content Include="assets\img\appstores-play.png" />
     <Content Include="assets\img\blackcar_badge.png" />
     <Content Include="assets\img\email_green_dot.png" />
+    <Content Include="assets\img\email_logo.png" />
     <Content Include="assets\img\email_red_dot.png" />
     <Content Include="assets\img\nearby_cab.png" />
     <Content Include="assets\img\pin_cluster.png" />

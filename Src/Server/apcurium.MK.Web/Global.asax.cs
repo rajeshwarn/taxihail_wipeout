@@ -33,8 +33,9 @@ namespace apcurium.MK.Web
 
             var config = UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
             BundleConfig.RegisterBundles(BundleTable.Bundles, config.GetSetting("TaxiHail.ApplicationKey"));
-
-            _defaultPollingValue = config.GetSetting("OrderStatus.ServerPollingInterval", 10);
+            var configurationManager =
+                UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
+            _defaultPollingValue = configurationManager.GetSetting<int>("OrderStatus.ServerPollingInterval", 10);
             PollIbs(_defaultPollingValue);
         }
 
