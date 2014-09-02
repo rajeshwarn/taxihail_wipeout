@@ -290,8 +290,10 @@ namespace apcurium.MK.Booking.Services.Impl
                 : "";
 
             var baseUrl = _container.Resolve<string>("BaseUrl");
-            var applicationName=_configurationManager.GetSetting(ApplicationNameSetting);
-            var baseUrlImg = String.Concat(baseUrl, "/themes/"+applicationName+"/Img/");
+
+            var baseUrlImg = String.Concat(baseUrl, "/Assets/Img/");
+            var applicationName = _configurationManager.GetSetting(ApplicationNameSetting);
+            var baseUrlThemesImg = String.Concat(baseUrl, "/themes/" + applicationName + "/Img/");
 
             var templateData = new
             {
@@ -327,7 +329,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 BaseUrlImg = baseUrlImg,
                 RedDotImg = Path.Combine(baseUrlImg, "email_red_dot.png"),
                 GreenDotImg = Path.Combine(baseUrlImg, "email_green_dot.png"),
-                LogoImg = String.Concat(baseUrlImg, "email_logo.png"),
+                LogoImg = String.Concat(baseUrlThemesImg, "/themes/TaxiHail/img/email_logo.png"),
                 VehicleType = "taxi"
 
             };
