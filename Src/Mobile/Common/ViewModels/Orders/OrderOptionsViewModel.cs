@@ -250,7 +250,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public bool ShowVehicleSelection
 		{
-			get { return (VehicleTypes.Count() > 1) && Settings.VehicleEstimateEnabled; }
+			get { return (VehicleTypes.Count() > 1) && Settings.VehicleTypeSelectionEnabled; }
 		}
 			
         public ICommand SetAddress
