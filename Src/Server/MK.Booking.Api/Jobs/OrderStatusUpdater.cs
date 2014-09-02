@@ -1,6 +1,7 @@
 ﻿#region
 
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
@@ -120,20 +121,23 @@ namespace apcurium.MK.Booking.Api.Jobs
         {
             if (orderStatusDetail.Status == OrderStatus.WaitingForPayment)
             {
-                // We don't want to update since it's a special case outside of ibs
+                Log.DebugFormat("Order Status is: {0}. Don't update since it's a special case outside of ib.", orderStatusDetail.Status);
                 return;
             }
             if (ibsOrderInfo.IsCanceled)
             {
                 orderStatusDetail.Status = OrderStatus.Canceled;
+                Log.DebugFormat("Order Status updated to: {0}", orderStatusDetail.Status);
             }
             else if (ibsOrderInfo.IsTimedOut)
             {
                 orderStatusDetail.Status = OrderStatus.TimedOut;
+                Log.DebugFormat("Order Status updated to: {0}", orderStatusDetail.Status);
             }
             else if (ibsOrderInfo.IsComplete)
             {
                 orderStatusDetail.Status = OrderStatus.Completed;
+                Log.DebugFormat("Order Status updated to: {0}", orderStatusDetail.Status);
             }
         }
 
@@ -144,6 +148,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 _orderDao.UpdateVehiclePosition(orderStatus.OrderId, ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
                 _notificationService.SendTaxiNearbyNotification(orderStatus.OrderId, ibsOrderInfo.Status, ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
+
+                Log.DebugFormat("Vehicle position updated. New position: ({0}, {1}).", ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
             }
         }
 
@@ -153,6 +159,12 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (pairingInfo.AutoTipPercentage.HasValue)
             {
                 ibsOrderInfo.Tip = GetTipAmount(ibsOrderInfo.Fare, pairingInfo.AutoTipPercentage.Value);
+                Log.DebugFormat("RideLinqCmt Pairing: Calculated a tip amount of {0}, based on an auto AutoTipPercentage percentage of {1}",
+                    ibsOrderInfo.Tip, pairingInfo.AutoTipPercentage.Value);
+            }
+            else
+            {
+                Log.Debug("RideLinqCmt Pairing: AutoTipPercentage is null, no tip amount was assigned.");
             }
         }
 
@@ -160,7 +172,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         {
             if (!_appSettings.Data.AutomaticPayment)
             {
-                // Automatic payment is disabled, nothing to do here
+                Log.Debug("Standard Pairing: Automatic payment is disabled, nothing else to do.");
                 return;
             }
 
@@ -168,6 +180,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (orderPayment != null)
             {
                 // Payment was already processed
+                Log.DebugFormat("Payment for order {0} was already processed, nothing else to do.", orderStatusDetail.OrderId);
                 return;
             }
 
@@ -186,7 +199,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                     && DateTime.UtcNow > orderStatusDetail.PairingTimeOut)
                 {
                     orderStatusDetail.Status = OrderStatus.Completed;
-                    orderStatusDetail.PairingError = "Timed out period reached while waiting for payment informations from IBS";
+                    orderStatusDetail.PairingError = "Timed out period reached while waiting for payment informations from IBS.";
+                    Log.ErrorFormat("Pairing error: {0}", orderStatusDetail.PairingError);
                 }
 
                 return;
@@ -195,7 +209,12 @@ namespace apcurium.MK.Booking.Api.Jobs
             // We received a fare from IBS
             // Send payment for capture, once it's captured, we will set the status to Completed
             var meterAmount = ibsOrderInfo.Fare + ibsOrderInfo.Toll + ibsOrderInfo.VAT;
-            var tipAmount = GetTipAmount(meterAmount, pairingInfo.AutoTipPercentage.Value);
+            double tipAmount = 0.0;
+            if (pairingInfo.AutoTipPercentage.HasValue)
+            {
+                tipAmount = GetTipAmount(meterAmount, pairingInfo.AutoTipPercentage.Value);
+            }
+
             _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
             {
                 OrderId = orderStatusDetail.OrderId,
@@ -207,6 +226,8 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             // whether there's a success or not, we change the status back to Completed since we can't process the payment again
             orderStatusDetail.Status = OrderStatus.Completed;
+
+            Log.DebugFormat("Fare of amount {0} with auto tip of {1} was received from IBS.", meterAmount, tipAmount);
         }
 
         private double GetTipAmount(double amount, double percentage)
@@ -220,6 +241,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             var pairingInfo = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
             if (pairingInfo == null)
             {
+                Log.DebugFormat("No pairing to process for order {0} as no pairing information was found.", orderStatusDetail.OrderId);
                 return;
             }
 
@@ -258,6 +280,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (ibsOrderInfo.IsAssigned)
             {
                 description = string.Format(_resources.Get("OrderStatus_CabDriverNumberAssigned", languageCode), ibsOrderInfo.VehicleNumber);
+                Log.DebugFormat("Setting Assigned status description: {0}", description);
 
                 if (_configurationManager.GetSetting("Client.ShowEta", false))
                 {
@@ -275,6 +298,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             else if (ibsOrderInfo.IsCanceled)
             {
                 description = _resources.Get("OrderStatus_" + ibsOrderInfo.Status, languageCode);
+                Log.DebugFormat("Setting Canceled status description: {0}", description);
             }
             else if (ibsOrderInfo.IsComplete)
             {
@@ -287,6 +311,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                 description = total > 0
                     ? string.Format(_resources.Get("OrderStatus_OrderDoneFareAvailable", languageCode), FormatPrice(total))
                     : _resources.Get("OrderStatus_wosDONE", languageCode);
+
+                Log.DebugFormat("Setting Complete status description: {0}", description);
             }
 
             return description.HasValue()
@@ -299,7 +325,9 @@ namespace apcurium.MK.Booking.Api.Jobs
             var eta = _directions.GetEta(vehicleLatitude, vehicleLongitude, pickupLatitude, pickupLongitude);
             if (eta != null && eta.IsValidEta())
             {
-                _ibsOrderService.SendMessageToDriver("ETA displayed to client is " + eta.FormattedDistance + " and " + eta.Duration + " min", vehicleNumber);
+                string etaMessage = string.Format("ETA displayed to client is {0} and {1} min", eta.FormattedDistance, eta.Duration);
+                _ibsOrderService.SendMessageToDriver(etaMessage, vehicleNumber);
+                Log.Debug(etaMessage);
             }
         }
 
