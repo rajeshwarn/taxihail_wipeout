@@ -196,7 +196,12 @@ namespace apcurium.MK.Booking.Api.Jobs
             // We received a fare from IBS
             // Send payment for capture, once it's captured, we will set the status to Completed
             var meterAmount = ibsOrderInfo.Fare + ibsOrderInfo.Toll + ibsOrderInfo.VAT;
-            var tipAmount = GetTipAmount(meterAmount, pairingInfo.AutoTipPercentage.Value);
+            double tipAmount = 0.0;
+            if (pairingInfo.AutoTipPercentage.HasValue)
+            {
+                tipAmount = GetTipAmount(meterAmount, pairingInfo.AutoTipPercentage.Value);
+            }
+
             _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
             {
                 OrderId = orderStatusDetail.OrderId,
