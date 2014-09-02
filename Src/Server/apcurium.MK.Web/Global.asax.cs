@@ -33,8 +33,10 @@ namespace apcurium.MK.Web
 
             var config = UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
             BundleConfig.RegisterBundles(BundleTable.Bundles, config.GetSetting("TaxiHail.ApplicationKey"));
+
             var configurationManager =
                 UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
+
             _defaultPollingValue = configurationManager.GetSetting<int>("OrderStatus.ServerPollingInterval", 10);
             PollIbs(_defaultPollingValue);
         }
@@ -73,6 +75,10 @@ namespace apcurium.MK.Web
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
+            if (!UnityContainerExtensions.IsRegistered<string>(UnityServiceLocator.Instance, "BaseUrl"))
+            {
+                UnityContainerExtensions.RegisterInstance<string>(UnityServiceLocator.Instance, "BaseUrl", new Uri(Request.Url, VirtualPathUtility.ToAbsolute("~")).ToString());
+            }
             if (Request.Path.Contains(@"/api/"))
             {
                 var watch = new Stopwatch();

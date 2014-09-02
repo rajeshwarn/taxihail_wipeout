@@ -17,6 +17,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using Microsoft.Practices.Unity;
 using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Services.Impl
@@ -36,6 +37,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IStaticMap _staticMap;
         private readonly ITemplateService _templateService;
         private readonly IEmailSender _emailSender;
+        private readonly IUnityContainer _container;
         private readonly Resources.Resources _resources;
 
         public NotificationService(
@@ -47,7 +49,8 @@ namespace apcurium.MK.Booking.Services.Impl
             IAppSettings appSettings,
             IConfigurationDao configurationDao,
             IOrderDao orderDao,
-            IStaticMap staticMap)
+            IStaticMap staticMap,
+            IUnityContainer container)
         {
             _contextFactory = contextFactory;
             _pushNotificationService = pushNotificationService;
@@ -58,6 +61,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _configurationDao = configurationDao;
             _orderDao = orderDao;
             _staticMap = staticMap;
+            _container = container;
 
             var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
             _resources = new Resources.Resources(applicationKey);
@@ -284,6 +288,10 @@ namespace apcurium.MK.Booking.Services.Impl
                 ? dropOffDate.Value.ToString("t" /* Short time pattern */)
                 : "";
 
+            var baseUrl = _container.Resolve<string>("BaseUrl");
+
+            var baseUrlImg = String.Concat(baseUrl, "/Assets/Img/");
+
             var templateData = new
             {
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
@@ -315,6 +323,10 @@ namespace apcurium.MK.Booking.Services.Impl
                 SubTotal=(fare+toll+tip).ToString("C", priceFormat),
                 StaticMapUri = staticMapUri,
                 ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
+                BaseUrlImg = baseUrlImg,
+                RedDotImg = String.Concat(baseUrlImg, "email_red_dot.png"),
+                GreenDotImg = String.Concat(baseUrlImg, "email_green_dot.png"),
+                LogoImg = String.Concat(baseUrlImg, "email_logo.png"),
                 VehicleType = "taxi"
 
             };

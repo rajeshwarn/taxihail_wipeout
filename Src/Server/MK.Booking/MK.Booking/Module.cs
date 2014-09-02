@@ -61,7 +61,8 @@ namespace apcurium.MK.Booking
                     c.Resolve<IAppSettings>(),
                     c.Resolve<IConfigurationDao>(),
                     c.Resolve<IOrderDao>(),
-                    c.Resolve<IStaticMap>())));
+                    c.Resolve<IStaticMap>(),
+                    container)));
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));

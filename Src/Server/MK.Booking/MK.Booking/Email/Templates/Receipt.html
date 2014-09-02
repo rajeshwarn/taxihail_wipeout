@@ -4,6 +4,11 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Receipt Title</title>
+    <!--Function to remove proxy google
+        <script>
+        (function () { while (img = document.evaluate('//img[contains(@src, \'googleusercontent.com\')]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) { var src = img.attributes.src.value; src = src.substr(src.indexOf('#') + 1); img.attributes.src.value = src; } })();
+    </script>-->
+
     <style type="text/css">
         /* -------------------------------------
     GLOBAL
@@ -231,15 +236,19 @@
             font-size: 20px;
         }
 
-        .receipt_left_info, .receipt_right_info {
+        .receipt_left_info {
             width: 100%;
             padding: 0 5px 0 5px;
         }
-       
+
+        .receipt_right_info {
+            width: 100%;
+            padding: 0 5px 0 5px;
+        }
 
         .route_list {
             text-align: left;
-           /* float: left;*/
+            /* float: left;*/
         }
 
         .route_list_title {
@@ -260,7 +269,7 @@
             padding-left: 5px;
         }
         
-         .route_departure, .route_arrival {
+        .route_departure, .route_arrival {
             width: 100%;
             position: relative;
             display: flex;
@@ -310,7 +319,49 @@
             text-align: right;
             width: 20%;
         }
+        .receipt_date {
+            text-align: center;
+        }
+        .receipt_price {
+            text-align: center;
+        }
+        /* Style for line between titles */
+        .title_block {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            text-align: center;
+            padding: 10px 0 10px 0;
+        }
+
+        .title_block:before {
+            position: absolute;
+            top: 51%;
+            overflow: hidden;
+            width: 50%;
+            height: 1px;
+            content: '\a0';
+            background-color: gray;
+        }
+
+        .title_block:after {
+            position: absolute;
+            top: 51%;
+            overflow: hidden;
+            width: 50%;
+            height: 1px;
+            content: '\a0';
+            background-color: gray;
+        }
+
+        .title_block:before {
+            margin-left: -50%;
+            text-align: right;
+        }
+    /* Ending Style for line between titles */
     </style>
+    
+
     <style type="text/css" id="ignore">
         /* -------------------------------------
     RESPONSIVE AND MOBILE FRIENDLY STYLES
@@ -333,44 +384,25 @@
                 font-size: 16px !important;
             }
 
-            .container {
+           /* .container {
                 width: 100% !important;
             }
 
             .content, .content-wrapper {
                 padding: 10px !important;
-            }
+            }*/
 
-            .receipt_left_info, .receipt_right_info {
-                width: 50% !important;
+            .receipt_left_info {
                 float: left !important;
+                width: 50% !important;
+            }
+            .receipt_right_info {
+                float: left !important;
+                width: 50% !important;
             }
         }
 
-        /* Style for line between titles */
-        .title_block {
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-            text-align: center;
-            padding: 10px 0 10px 0;
-        }
-
-            .title_block:before, .title_block:after {
-                position: absolute;
-                top: 51%;
-                overflow: hidden;
-                width: 50%;
-                height: 1px;
-                content: '\a0';
-                background-color: gray;
-            }
-
-            .title_block:before {
-                margin-left: -50%;
-                text-align: right;
-            }
-        /* Ending Style for line between titles */
+     
     </style>
 </head>
 
@@ -386,7 +418,7 @@
                                 <table width="100%" cellpadding="0" cellspacing="0">
                                     <tr>
                                         <td class="receipt_logo">
-                                            <img src="http://biz.prlog.org/Apcurium/logo.png" />
+                                            <img src="{{LogoImg}}" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -404,20 +436,20 @@
                                     <tr>
                                         <td>
                                             <div>
-                                                <div class="receipt_left_info">
+                                                <div class="receipt_left_info" style="float:left !important;">
                                                     <table width="100%" cellpadding="0" cellspacing="0">
                                                         <tr>
                                                             <td class="title_block">{{ localize "Email_Body_Route" }}</td>
                                                         </tr>
-                                                        <tr >
+                                                        <tr>
                                                             <td>
                                                                 <table width="100%" class="route_departure">
                                                                     <tr class="route_list_item">
                                                                         <td>
-                                                                            <img src="http://localhost/apcurium.MK.Web/assets/img/email_green_dot.png" />
+                                                                            <img src="{{GreenDotImg}}" />
                                                                         </td>
                                                                         <td>
-                                                                            <table >
+                                                                            <table>
                                                                                 <tr>
                                                                                     <td class="route_list_title">{{PickupDate}} - {{PickupTime}}</td>
                                                                                 </tr>
@@ -429,10 +461,10 @@
                                                                     </tr>
                                                                     <tr class="route_list_item">
                                                                         <td>
-                                                                            <img src="http://localhost/apcurium.MK.Web/assets/img/email_red_dot.png" />
+                                                                            <img src="{{RedDotImg}}" />
                                                                         </td>
                                                                         <td>
-                                                                            <table >
+                                                                            <table>
                                                                                 <tr>
                                                                                     <td class="route_list_title">{{DropOffDate}}{{#HasDropOffTime}} - {{DropOffTime}}{{/HasDropOffTime}}</td>
                                                                                 </tr>
@@ -444,8 +476,8 @@
                                                                     </tr>
                                                                 </table>
                                                                 <!--<table class="route_arrival">
-                                                                   
-                                                                    </table>-->
+
+                        </table>-->
                                                             </td>
                                                         </tr>
                                                         {{#ShowStaticMap}}
@@ -457,7 +489,7 @@
                                                         {{/ShowStaticMap}}
                                                     </table>
                                                 </div>
-                                                <div class="receipt_right_info">
+                                                <div class="receipt_right_info" style="float:left !important;">
                                                     <table width="100%" cellpadding="0" cellspacing="0">
                                                         <tr>
                                                             <td class="title_block">{{ localize "Email_Body_FareBreakDown" }}</td>
@@ -502,7 +534,7 @@
                                                                 <table width="100%" cellpadding="0" cellspacing="0">
                                                                     <tr>
                                                                         <td class="driver_name">{{ DriverName }}</td>
-                                                                        <td class="vehicle_type"><img height="30" width="60" src="http://localhost/apcurium.MK.Web/assets/img/{{VehicleType}}_badge.png" /></td>
+                                                                        <td class="vehicle_type"><img height="30" width="60" src="{{BaseUrlImg}}{{VehicleType}}_badge.png" /></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -546,7 +578,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2">
-                                            <p style="padding-left:45px;padding-right:20px;width:300px;">{{{Note}}}</p>
+                                            <p style="padding-left:45px;padding-right:20px;">{{{Note}}}</p>
                                         </td>
                                     </tr>
                                 </table>
@@ -565,6 +597,6 @@
             <td></td>
         </tr>
     </table>
-
+  
 </body>
 </html>
