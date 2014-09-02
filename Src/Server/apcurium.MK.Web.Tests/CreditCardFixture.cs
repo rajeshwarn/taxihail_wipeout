@@ -133,7 +133,7 @@ namespace apcurium.MK.Web.Tests
             await sut.RemoveCreditCard();
 
             var creditCards = await sut.GetCreditCards();
-            Assert.IsEmpty(creditCards.Where(x => x.CreditCardId == creditCardId));
+            Assert.IsEmpty(creditCards);
         }
     }
 }
