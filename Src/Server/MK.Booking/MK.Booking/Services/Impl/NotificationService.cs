@@ -291,9 +291,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var baseUrl = _container.Resolve<string>("BaseUrl");
 
-            var baseUrlImg = String.Concat(baseUrl, "/Assets/Img/");
-            var applicationName = _configurationManager.GetSetting(ApplicationNameSetting);
-            var baseUrlThemesImg = String.Concat(baseUrl, "/themes/" + applicationName + "/Img/");
+            var baseUrlAssetsImg = String.Concat(baseUrl, "/Assets/Img/");
+            var baseUrlThemesImg = String.Concat(baseUrl, "/themes/" + _configurationManager.GetSetting(ApplicationNameSetting) + "/Img/");
 
             var templateData = new
             {
@@ -326,10 +325,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 SubTotal=(fare+toll+tip).ToString("C", priceFormat),
                 StaticMapUri = staticMapUri,
                 ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
-                BaseUrlImg = baseUrlImg,
-                RedDotImg = Path.Combine(baseUrlImg, "email_red_dot.png"),
-                GreenDotImg = Path.Combine(baseUrlImg, "email_green_dot.png"),
-                LogoImg = String.Concat(baseUrlThemesImg, "email_logo.png"),
+                RedDotImg = Path.Combine(baseUrlAssetsImg, "email_red_dot.png"),
+                GreenDotImg = Path.Combine(baseUrlAssetsImg, "email_green_dot.png"),
+                LogoImg = Path.Combine(baseUrlThemesImg, "email_logo.png"),
                 VehicleType = "taxi"
 
             };

@@ -4,10 +4,6 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Receipt Title</title>
-    <!--Function to remove proxy google
-        <script>
-        (function () { while (img = document.evaluate('//img[contains(@src, \'googleusercontent.com\')]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) { var src = img.attributes.src.value; src = src.substr(src.indexOf('#') + 1); img.attributes.src.value = src; } })();
-    </script>-->
 
     <style type="text/css">
         /* -------------------------------------
@@ -401,13 +397,12 @@
                 width: 50% !important;
             }*/
         }
-
-     
     </style>
 </head>
 
-<body>
-    <table class="body-wrap" style=" background-color:{{AccentColor }}">
+           
+<body >
+    <table class="body-wrap" style=" background-color:{{AccentColor }};color: {{ EmailFontColor }};">
         <tr>
             <td></td>
             <td class="container" width="600">
@@ -477,7 +472,7 @@
                                                                 </table>
                                                                 <!--<table class="route_arrival">
 
-                        </table>-->
+                                                    </table>-->
                                                             </td>
                                                         </tr>
                                                         {{#ShowStaticMap}}
@@ -541,7 +536,7 @@
                                                         </tr>
                                                     </table>
                                                     {{#IsCardOnFile}}
-                                                    
+
                                                     <table width="100%" cellpadding="0" cellspacing="0">
                                                         <tr>
                                                             <td class="title_block">{{ localize "Email_Body_PaymentInformation" }} </td>
@@ -586,12 +581,12 @@
                         </tr>
                     </table>
                     <!--<div class="footer">
-                        <table>
-                            <tr>
-                                <td class=" content-block">Footer Information placeholder</td>
-                            </tr>
-                        </table>
-                    </div>-->
+            <table>
+                <tr>
+                    <td class=" content-block">Footer Information placeholder</td>
+                </tr>
+            </table>
+        </div>-->
                 </div>
             </td>
             <td></td>
