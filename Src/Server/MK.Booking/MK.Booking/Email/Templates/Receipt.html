@@ -326,30 +326,7 @@
             padding: 10px 0 10px 0;
         }
 
-        .title_block:before {
-            position: absolute;
-            top: 51%;
-            overflow: hidden;
-            width: 50%;
-            height: 1px;
-            content: '\a0';
-            background-color: gray;
-        }
-
-        .title_block:after {
-            position: absolute;
-            top: 51%;
-            overflow: hidden;
-            width: 50%;
-            height: 1px;
-            content: '\a0';
-            background-color: gray;
-        }
-
-        .title_block:before {
-            margin-left: -50%;
-            text-align: right;
-        }
+       
     /* Ending Style for line between titles */
     </style>
     
@@ -393,15 +370,39 @@
                 width: 50% !important;
             }*/
         }
+        .title_block:before {
+            position: absolute;
+            top: 51%;
+            overflow: hidden;
+            width: 50%;
+            height: 1px;
+            content: '\a0';
+            background-color: gray;
+        }
+
+        .title_block:after {
+            position: absolute;
+            top: 51%;
+            overflow: hidden;
+            width: 50%;
+            height: 1px;
+            content: '\a0';
+            background-color: gray;
+        }
+
+        .title_block:before {
+            margin-left: -50%;
+            text-align: right;
+        }
     </style>
 </head>
 
            
-<body style=" background-color:{{AccentColor }} !important;color: {{ EmailFontColor }} !important;width:100%;">
-    <table>
+<body >
+    <table  >
         <tr>
             <td></td>
-            <td class="container" width="600">
+            <td class="container" style=" background-color:{{AccentColor }};color: {{ EmailFontColor }};width:600px;">
                 <div class="content">
                     <table class="main" cellpadding="0" cellspacing="0">
                         <tr>
@@ -468,7 +469,7 @@
                                                                 </table>
                                                                 <!--<table class="route_arrival">
 
-                                                                </table>-->
+                                                        </table>-->
                                                             </td>
                                                         </tr>
                                                         {{#ShowStaticMap}}
@@ -525,7 +526,7 @@
                                                                 <table width="100%" cellpadding="0" cellspacing="0">
                                                                     <tr>
                                                                         <td class="driver_name">{{ DriverName }}</td>
-                                                                        <td class="vehicle_type"><img  width="60" src="{{BaseUrlImg}}{{VehicleType}}_badge.png" /></td>
+                                                                        <td class="vehicle_type"><img height="30" width="60" src="{{BaseUrlImg}}{{VehicleType}}_badge.png" /></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -577,17 +578,17 @@
                         </tr>
                     </table>
                     <!--<div class="footer">
-                        <table>
-                            <tr>
-                                <td class=" content-block">Footer Information placeholder</td>
-                            </tr>
-                        </table>
-                    </div>-->
+                <table>
+                    <tr>
+                        <td class=" content-block">Footer Information placeholder</td>
+                    </tr>
+                </table>
+            </div>-->
                 </div>
             </td>
             <td></td>
         </tr>
     </table>
-
+  
 </body>
 </html>
