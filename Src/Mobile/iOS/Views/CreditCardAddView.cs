@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             base.ViewWillAppear(animated);
 
             NavigationController.NavigationBar.Hidden = false;
-            NavigationItem.HidesBackButton = false;
+			NavigationItem.HidesBackButton = ViewModel.IsMandatory;
             NavigationItem.Title = Localize.GetValue ("View_CreditCard");
 
             ChangeThemeOfBarStyle();
@@ -109,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             set.Bind(txtExpYear)
                 .For(v => v.Text)
-				.To(vm => vm.ExpirationYear);
+				.To(vm => vm.ExpirationYearDisplay);
 
             set.Bind(txtCvv)
 				.For(v => v.Text)

@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Authorization
         public AuthorizationRequest()
         {
             TransactionType = TransactionTypes.Sale;
-            CardReaderMethod = CardReaderMethods.Manual;
+            CardReaderMethod = CardReaderMethods.CardOnFile;
         }
 
         public string TransactionType { get; private set; }
@@ -57,6 +57,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Authorization
             public const int Swipe = 0;
             public const int RfidTap = 1;
             public const int Manual = 2;
+            public const int CardOnFile = 6;
         }
 
         public class TransactionTypes
