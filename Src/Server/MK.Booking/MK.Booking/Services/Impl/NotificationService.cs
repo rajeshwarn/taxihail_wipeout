@@ -328,7 +328,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
                 RedDotImg = Path.Combine(baseUrlAssetsImg, "email_red_dot.png"),
                 GreenDotImg = Path.Combine(baseUrlAssetsImg, "email_green_dot.png"),
-                LogoImg = Path.Combine(baseUrlThemesImg, "email_logo.png"),
+                LogoImg = String.Concat(baseUrlThemesImg, "email_logo.png"),
                 VehicleType = "taxi"
 
             };
