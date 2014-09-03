@@ -8,6 +8,8 @@ using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Messages;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -73,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public async override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
-
+			 
 			_locationService.Start();
 			CheckTermsAsync();
 			CheckActiveOrderAsync ();
@@ -260,11 +262,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(async () =>
 				{
+
+
 					var address = await _orderWorkflowService.SetAddressToUserLocation();
-					if(address.HasValidCoordinate())
+					var mode = await _orderWorkflowService.GetAndObserveAddressSelectionMode().Take(1).ToTask();
+					
+					if(address.HasValidCoordinate() && mode == apcurium.MK.Booking.Mobile.Data.AddressSelectionMode.PickupSelection)
 					{
-                        this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
+						this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
 					}
+								
 				});
 			}
 		}
