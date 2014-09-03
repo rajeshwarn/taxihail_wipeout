@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _staticMap = staticMap;
             _container = container;
 
-            var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
+            var applicationKey = configurationManager.GetSetting(ApplicationKeySetting);
             _resources = new Resources.Resources(applicationKey);
         }
 
