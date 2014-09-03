@@ -292,8 +292,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var baseUrl = _container.Resolve<string>("BaseUrl");
 
-            var baseUrlAssetsImg = String.Concat(baseUrl, "/Assets/Img/");
-            var baseUrlThemesImg = String.Concat(baseUrl, "/themes/" + _configurationManager.GetSetting(ApplicationKeySetting) + "/Img/");
+            var baseUrlAssetsImg = String.Concat(baseUrl, "/issets/img/");
+            var baseUrlThemesImg = String.Concat(baseUrl, "/themes/" + _configurationManager.GetSetting(ApplicationKeySetting) + "/img/");
 
             var templateData = new
             {
