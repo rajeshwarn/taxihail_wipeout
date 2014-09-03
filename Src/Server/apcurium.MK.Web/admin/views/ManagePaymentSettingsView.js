@@ -13,18 +13,18 @@
             'click #cmtSettingsButton': 'cmtSettingsButtonClick',
             'click #monerisSettingsButton': 'monerisSettingsButtonClick'
         },
-        
-        
+
+
         saveButton: {},
-        warningDiv:{},
-        
+        warningDiv: {},
+
         render: function () {
 
             var data = this.model.toJSON();
-            
+
             this.$el.html(this.renderTemplate(data.serverPaymentSettings));
             
-            this.$("[name=paymentMode] option[value=" + data.serverPaymentSettings.paymentMode +"]").attr("selected","selected") ;
+            this.$("[name=paymentMode] option[value=" + data.serverPaymentSettings.paymentMode + "]").attr("selected", "selected");
 
             this.warningDiv = this.$("#warning");
             this.saveButton = this.$("#saveButton");
@@ -103,6 +103,7 @@
         save: function(form) {
 
             var data = $(form).serializeObject();
+
             this.$("#warning").hide();
             
             if (data.paymentMode == "None" && data.isPayInTaxiEnabled) {
@@ -112,6 +113,11 @@
                 return;
             }
             
+            if (data.paymentMode == "None" || data.paymentMode == "RideLinqCmt") {
+                data.automaticPayment = false;
+                data.automaticPaymentPairing = false;
+            }
+
             this.model.save(data)
                  .always(_.bind(function() {
                      this.$(':submit').button('reset');
@@ -143,11 +149,15 @@
 
             var newPaymentMode = this.$("[name=paymentMode]").val();
 
+            var autPaymentDiv = this.$("#automaticPaymentDiv");
+            var autPairingDiv = this.$("#automaticPairingDiv");
+
             var btDiv = this.$("#braintreeSettingsDiv");
             var cmtDiv = this.$("#cmtSettingsDiv");
             var monerisDiv = this.$("#monerisSettingsDiv");
 
             var method = this.model.toJSON().serverPaymentSettings.paymentMode;
+
             if (newPaymentMode != method) {
                 if ((newPaymentMode == "Cmt" && method == "RideLinqCmt") || (newPaymentMode == "RideLinqCmt" && method == "Cmt")) {
                     this.warningDiv.hide();
@@ -161,29 +171,45 @@
                 this.saveButton.removeAttr('disabled');
             }
 
-            if (newPaymentMode == "Cmt" || newPaymentMode == "RideLinqCmt")
+            if (newPaymentMode == "RideLinqCmt")
             {
                 btDiv.hide();
                 cmtDiv.show();
                 monerisDiv.hide();
+                autPaymentDiv.hide();
+                autPairingDiv.hide();
+            }
+            else if (newPaymentMode == "Cmt")
+            {
+                btDiv.hide();
+                cmtDiv.show();
+                monerisDiv.hide();
+                autPaymentDiv.show();
+                autPairingDiv.show();
             }
             else if (newPaymentMode == "Braintree")
             {
                 btDiv.show();
                 cmtDiv.hide();
                 monerisDiv.hide();
+                autPaymentDiv.show();
+                autPairingDiv.show();
             }
             else if (newPaymentMode == "Moneris")
             {
                 btDiv.hide();
                 cmtDiv.hide();
                 monerisDiv.show();
+                autPaymentDiv.show();
+                autPairingDiv.show();
             }
             else
             {
                 btDiv.hide();
                 cmtDiv.hide();
                 monerisDiv.hide();
+                autPaymentDiv.hide();
+                autPairingDiv.hide();
             }
         }
     });

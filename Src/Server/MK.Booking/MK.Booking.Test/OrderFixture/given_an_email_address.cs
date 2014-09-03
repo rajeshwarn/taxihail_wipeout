@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             _configurationManager = new TestConfigurationManager();
             _configurationManager.SetSetting("TaxiHail.ApplicationName", ApplicationName);
 
-            sut.Setup(new EmailCommandHandler(new NotificationService(() => new BookingDbContext(DbName), null, new TemplateService(_configurationManager), _emailSenderMock.Object, _configurationManager, _configurationManager, new ConfigurationDao(() => new ConfigurationDbContext(DbName)), null)));
+            sut.Setup(new EmailCommandHandler(new NotificationService(() => new BookingDbContext(DbName), null, new TemplateService(_configurationManager), _emailSenderMock.Object, _configurationManager, new ConfigurationDao(() => new ConfigurationDbContext(DbName)), null)));
         }
 
         [Test]

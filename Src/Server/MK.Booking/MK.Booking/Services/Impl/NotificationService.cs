@@ -9,6 +9,7 @@ using System.Text;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Email;
+using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.ReadModel;
@@ -23,6 +24,8 @@ namespace apcurium.MK.Booking.Services.Impl
 {
     public class NotificationService : INotificationService
     {
+        private const int TaxiDistanceThresholdForPushNotification = 200; // In meters
+
         private const string ApplicationNameSetting = "TaxiHail.ApplicationName";
         private const string AccentColorSetting = "TaxiHail.AccentColor";
         private const string VATEnabledSetting = "VATIsEnabled";
@@ -32,7 +35,6 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IPushNotificationService _pushNotificationService;
         private readonly IConfigurationManager _configurationManager;
-        private readonly IAppSettings _appSettings;
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
         private readonly ITemplateService _templateService;
@@ -44,8 +46,7 @@ namespace apcurium.MK.Booking.Services.Impl
             IPushNotificationService pushNotificationService,
             ITemplateService templateService,
             IEmailSender emailSender,
-            IConfigurationManager configurationManager, 
-            IAppSettings appSettings,
+            IConfigurationManager configurationManager,
             IConfigurationDao configurationDao,
             IOrderDao orderDao)
         {
@@ -54,7 +55,6 @@ namespace apcurium.MK.Booking.Services.Impl
             _templateService = templateService;
             _emailSender = emailSender;
             _configurationManager = configurationManager;
-            _appSettings = appSettings;
             _configurationDao = configurationDao;
             _orderDao = orderDao;
 
@@ -62,49 +62,51 @@ namespace apcurium.MK.Booking.Services.Impl
             _resources = new Resources.Resources(applicationKey);
         }
 
-        public void SendStatusChangedNotification(OrderStatusDetail orderStatusDetail)
+        public void SendAssignedPush(OrderStatusDetail orderStatusDetail)
         {
             var order = _orderDao.FindById(orderStatusDetail.OrderId);
-            switch (orderStatusDetail.IBSStatusId)
+            if (ShouldSendNotification(order.AccountId, x => x.DriverAssignedPush))
             {
-                case VehicleStatuses.Common.Assigned:
-                    if (ShouldSendNotification(order.AccountId, x => x.DriverAssignedPush))
-                    {
-                        SendPush(order.AccountId,
-                            string.Format(_resources.Get("PushNotification_wosASSIGNED", order.ClientLanguageCode), orderStatusDetail.VehicleNumber),
-                            new Dictionary<string, object> { { "orderId", order.Id }, { "isPairingNotification", false } });
-                    }
-                    break;
-                case VehicleStatuses.Common.Arrived:
-                    if (ShouldSendNotification(order.AccountId, x => x.VehicleAtPickupPush))
-                    {
-                        SendPush(order.AccountId,
-                            string.Format(_resources.Get("PushNotification_wosARRIVED", order.ClientLanguageCode), orderStatusDetail.VehicleNumber),
-                            new Dictionary<string, object> { { "orderId", order.Id }, { "isPairingNotification", false } });
-                    }
-                    break;
-                case VehicleStatuses.Common.Loaded:
-                    if(_appSettings.Data.AutomaticPayment
-                        && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id // Only send notification if using card on file
-                        && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
-                    {
-                        SendPush(order.AccountId,
-                            _resources.Get("PushNotification_wosLOADED", order.ClientLanguageCode),
-                            new Dictionary<string, object> { { "orderId", order.Id }, { "isPairingNotification", true } });
-                    }
-                    break;
-                case VehicleStatuses.Common.Timeout:
-                    SendPush(order.AccountId, 
-                        _resources.Get("PushNotification_wosTIMEOUT", order.ClientLanguageCode), 
-                        new Dictionary<string, object>());
-                    break;
-                default:
-                    // No push notification for this order status
-                    return;
+                SendPush(order.AccountId,
+                    string.Format(_resources.Get("PushNotification_wosASSIGNED", order.ClientLanguageCode), orderStatusDetail.VehicleNumber),
+                    new Dictionary<string, object> { { "orderId", order.Id }, { "isPairingNotification", false } });
             }
         }
 
-        public void SendPaymentCaptureNotification(Guid orderId, decimal amount)
+        public void SendArrivedPush(OrderStatusDetail orderStatusDetail)
+        {
+            var order = _orderDao.FindById(orderStatusDetail.OrderId);
+            if (ShouldSendNotification(order.AccountId, x => x.VehicleAtPickupPush))
+            {
+                SendPush(order.AccountId,
+                    string.Format(_resources.Get("PushNotification_wosARRIVED", order.ClientLanguageCode), orderStatusDetail.VehicleNumber),
+                    new Dictionary<string, object> { { "orderId", order.Id }, { "isPairingNotification", false } });
+            }
+        }
+
+        public void SendPairingInquiryPush(OrderStatusDetail orderStatusDetail)
+        {
+            var order = _orderDao.FindById(orderStatusDetail.OrderId);
+            if (_configurationManager.GetPaymentSettings().AutomaticPayment
+                    && !_configurationManager.GetPaymentSettings().AutomaticPaymentPairing
+                    && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id // Only send notification if using card on file
+                    && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
+            {
+                SendPush(order.AccountId,
+                    _resources.Get("PushNotification_wosLOADED", order.ClientLanguageCode),
+                    new Dictionary<string, object> { { "orderId", order.Id }, { "isPairingNotification", true } });
+            }
+        }
+
+        public void SendTimeoutPush(OrderStatusDetail orderStatusDetail)
+        {
+            var order = _orderDao.FindById(orderStatusDetail.OrderId);
+            SendPush(order.AccountId,
+                        _resources.Get("PushNotification_wosTIMEOUT", order.ClientLanguageCode),
+                        new Dictionary<string, object>());
+        }
+
+        public void SendPaymentCapturePush(Guid orderId, decimal amount)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -122,8 +124,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private const int TaxiDistanceThresholdForPushNotification = 200; // In meters
-        public void SendTaxiNearbyNotification(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude)
+        public void SendTaxiNearbyPush(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -157,6 +158,22 @@ namespace apcurium.MK.Booking.Services.Impl
                         SendPush(order.AccountId, alert, data);
                     }
                 }
+            }
+        }
+
+        public void SendAutomaticPairingPush(Guid orderId, int? autoTipPercentage, string last4Digits, bool success)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(orderId);
+
+                var alert = success 
+                    ? string.Format(_resources.Get("PushNotification_OrderPairingSuccessful"), order.IBSOrderId, last4Digits, autoTipPercentage)
+                    : string.Format(_resources.Get("PushNotification_OrderPairingFailed"), order.IBSOrderId);
+
+                var data = new Dictionary<string, object> { { "orderId", orderId } };
+
+                SendPush(order.AccountId, alert, data);
             }
         }
 

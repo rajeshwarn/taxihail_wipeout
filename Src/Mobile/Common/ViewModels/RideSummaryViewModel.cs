@@ -127,7 +127,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return (setting.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null // if paypal or user has a credit card
                             || setting.PayPalClientSettings.IsEnabled) 
 						&& !(Settings.RatingEnabled && Settings.RatingRequired && !HasRated)     					 // user must rate before paying
-						&& !Settings.AutomaticPayment									 // payment is processed automatically
+                        && !_paymentService.GetPaymentSettings().AutomaticPayment									 // payment is processed automatically
 						&& setting.PaymentMode != PaymentMethod.RideLinqCmt 			 // payment is processed automatically
 						&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue	     // not already paid
 						&& (Order.Settings.ChargeTypeId == null 						 // user is paying with a charge account
@@ -142,8 +142,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var setting = _paymentService.GetPaymentSettings();
                 		var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 				return isPayEnabled 
-					&& setting.PaymentMode != PaymentMethod.RideLinqCmt 
-					&& !Settings.AutomaticPayment
+					&& setting.PaymentMode != PaymentMethod.RideLinqCmt
+                    && !_paymentService.GetPaymentSettings().AutomaticPayment
 					&& _paymentService.GetPaymentFromCache(Order.Id).HasValue;
 	        }
 	    }

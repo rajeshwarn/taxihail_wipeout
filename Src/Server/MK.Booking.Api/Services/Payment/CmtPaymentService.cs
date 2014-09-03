@@ -18,6 +18,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
@@ -39,6 +40,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly IOrderDao _orderDao;
         private readonly IAccountDao _accountDao;
         private readonly IConfigurationManager _configManager;
+        private readonly IPairingService _pairingService;
         private readonly ILogger _logger;
         private readonly IIbsOrderService _ibs;
         private readonly IOrderPaymentDao _orderPaymentDao;
@@ -51,7 +53,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             IIbsOrderService ibs,
             IAccountDao accountDao, 
             IOrderPaymentDao orderPaymentDao,
-            IConfigurationManager configManager)
+            IConfigurationManager configManager,
+            IPairingService pairingService)
         {
             _commandBus = commandBus;
             _orderDao = orderDao;
@@ -60,6 +63,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _accountDao = accountDao;
             _orderPaymentDao = orderPaymentDao;
             _configManager = configManager;
+            _pairingService = pairingService;
 
             _cmtPaymentServiceClient =
                 new CmtPaymentServiceClient(configManager.GetPaymentSettings().CmtPaymentSettings, null, null, logger);
@@ -143,13 +147,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             try
             {
-                var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
-                if (orderStatusDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
-                if (orderStatusDetail.IBSOrderId == null)
-                    throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
-
                 if (_configManager.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
                 {
+                    var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
+                    if (orderStatusDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
+                    if (orderStatusDetail.IBSOrderId == null)
+                        throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
+
                     var response = PairWithVehicleUsingRideLinq(orderStatusDetail, request);
 
                     // send a command to save the pairing state for this order
@@ -177,18 +181,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     };
                 }
 
-                // send a message to driver, if it fails we abort the pairing
-                _ibs.SendMessageToDriver(
-                    new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"))
-                        .Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
-
-                // send a command to save the pairing state for this order
-                _commandBus.Send(new PairForPayment
-                {
-                    OrderId = request.OrderId,
-                    TokenOfCardToBeUsedForPayment = request.CardToken,
-                    AutoTipPercentage = request.AutoTipPercentage
-                });
+                _pairingService.Pair(request.OrderId, request.CardToken, request.AutoTipPercentage);
 
                 return new PairingResponse
                 {
@@ -211,29 +204,20 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             try
             {
-                var orderPairingDetail = _orderDao.FindOrderPairingById(request.OrderId);
-                if (orderPairingDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
-
                 if (_configManager.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
                 {
+                    var orderPairingDetail = _orderDao.FindOrderPairingById(request.OrderId);
+                    if (orderPairingDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
                     UnpairFromVehicleUsingRideLinq(orderPairingDetail);
-                }
-                else
-                {
-                    var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
-                    if (orderStatusDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
 
-                    // send a message to driver, if it fails we abort the unpairing
-                    _ibs.SendMessageToDriver(
-                        new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"))
-                            .Get("UnpairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
+                    // send a command to delete the pairing pairing info for this order
+                    _commandBus.Send(new UnpairForPayment
+                    {
+                        OrderId = request.OrderId
+                    });
                 }
 
-                // send a command to delete the pairing pairing info for this order
-                _commandBus.Send(new UnpairForPayment
-                {
-                    OrderId = request.OrderId
-                });
+                _pairingService.Unpair(request.OrderId);
 
                 return new BasePaymentResponse
                 {

@@ -1,6 +1,7 @@
 ﻿using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.IoC;
@@ -48,7 +49,8 @@ namespace apcurium.MK.Web.Tests
             var accountDao = UnityServiceLocator.Instance.Resolve<IAccountDao>();
             var orderPaymentDao = UnityServiceLocator.Instance.Resolve<IOrderPaymentDao>();
             var configManager = UnityServiceLocator.Instance.Resolve<IConfigurationManager>();
-            return new BraintreePaymentService(commandBus, orderDao, logger, ibsOrderService, accountDao, orderPaymentDao, configManager);
+            var pairingService = UnityServiceLocator.Instance.Resolve<IPairingService>();
+            return new BraintreePaymentService(commandBus, orderDao, logger, ibsOrderService, accountDao, orderPaymentDao, configManager, pairingService);
         }
     }
 }

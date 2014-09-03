@@ -25,6 +25,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using System;
@@ -147,7 +148,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 || orderStatus.VehicleLongitude != ibsOrderInfo.VehicleLongitude)
             {
                 _orderDao.UpdateVehiclePosition(orderStatus.OrderId, ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
-                _notificationService.SendTaxiNearbyNotification(orderStatus.OrderId, ibsOrderInfo.Status, ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
+                _notificationService.SendTaxiNearbyPush(orderStatus.OrderId, ibsOrderInfo.Status, ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
 
                 Log.DebugFormat("Vehicle position updated. New position: ({0}, {1}).", ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
             }
@@ -170,7 +171,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void HandlePairingForStandardPairing(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo)
         {
-            if (!_appSettings.Data.AutomaticPayment)
+            if (!_configurationManager.GetPaymentSettings().AutomaticPayment)
             {
                 Log.Debug("Standard Pairing: Automatic payment is disabled, nothing else to do.");
                 return;
@@ -209,7 +210,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             // We received a fare from IBS
             // Send payment for capture, once it's captured, we will set the status to Completed
             var meterAmount = ibsOrderInfo.Fare + ibsOrderInfo.Toll + ibsOrderInfo.VAT;
-            double tipAmount = 0.0;
+            double tipAmount = _appSettings.Data.DefaultTipPercentage;
             if (pairingInfo.AutoTipPercentage.HasValue)
             {
                 tipAmount = GetTipAmount(meterAmount, pairingInfo.AutoTipPercentage.Value);
@@ -311,8 +312,17 @@ namespace apcurium.MK.Booking.Api.Jobs
                 description = total > 0
                     ? string.Format(_resources.Get("OrderStatus_OrderDoneFareAvailable", languageCode), FormatPrice(total))
                     : _resources.Get("OrderStatus_wosDONE", languageCode);
-
-                Log.DebugFormat("Setting Complete status description: {0}", description);
+               
+               Log.DebugFormat("Setting Complete status description: {0}", description);
+            }
+		    else if (ibsOrderInfo.IsLoaded)
+            {
+                if (orderDetail != null && (_configurationManager.GetPaymentSettings().AutomaticPayment
+                                            && _configurationManager.GetPaymentSettings().AutomaticPaymentPairing
+                                            && orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id))
+                {
+                    description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", languageCode);
+                }
             }
 
             return description.HasValue()
