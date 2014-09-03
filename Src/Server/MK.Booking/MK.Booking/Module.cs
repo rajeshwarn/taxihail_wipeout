@@ -63,6 +63,7 @@ namespace apcurium.MK.Booking
                     container.Resolve<IOrderDao>(),
                     container.Resolve<ISmsService>(), 
                     container.Resolve<ILogger>()));
+                    
             container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(), 
                 new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IConfigurationManager>())));
 
