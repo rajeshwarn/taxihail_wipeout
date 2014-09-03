@@ -38,6 +38,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IPushNotificationService _pushNotificationService;
         private readonly IConfigurationManager _configurationManager;
+        private readonly IAppSettings _appSettings;
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
         private readonly ISmsService _smsService;
@@ -52,6 +53,7 @@ namespace apcurium.MK.Booking.Services.Impl
             ITemplateService templateService,
             IEmailSender emailSender,
             IConfigurationManager configurationManager,
+            IAppSettings appSettings,
             IConfigurationDao configurationDao,
             IOrderDao orderDao,
             ISmsService smsService,
@@ -62,6 +64,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _templateService = templateService;
             _emailSender = emailSender;
             _configurationManager = configurationManager;
+            _appSettings = appSettings;
             _configurationDao = configurationDao;
             _orderDao = orderDao;
             _smsService = smsService;
@@ -168,22 +171,6 @@ namespace apcurium.MK.Booking.Services.Impl
                     }
                 }
             }
-            }
-        }
-
-        public void SendAutomaticPairingPush(Guid orderId, int? autoTipPercentage, string last4Digits, bool success)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var order = context.Find<OrderDetail>(orderId);
-
-                var alert = success 
-                    ? string.Format(_resources.Get("PushNotification_OrderPairingSuccessful"), order.IBSOrderId, last4Digits, autoTipPercentage)
-                    : string.Format(_resources.Get("PushNotification_OrderPairingFailed"), order.IBSOrderId);
-
-                var data = new Dictionary<string, object> { { "orderId", orderId } };
-
-                SendPush(order.AccountId, alert, data);
         }
 
         public void SendAutomaticPairingPush(Guid orderId, int? autoTipPercentage, string last4Digits, bool success)
