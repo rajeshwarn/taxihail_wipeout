@@ -15,6 +15,8 @@ namespace apcurium.MK.Booking.Services
         void SendTaxiNearbyPush(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude);
         void SendAutomaticPairingPush(Guid orderId, int? autoTipPercentage, string last4Digits, bool success);
 
+        void SendAccountConfirmationSMS(string phoneNumber, string code, string clientLanguageCode);
+
         void SendAccountConfirmationEmail(Uri confirmationUrl, string clientEmailAddress, string clientLanguageCode);
         void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode);

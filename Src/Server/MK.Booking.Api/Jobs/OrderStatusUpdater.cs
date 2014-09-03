@@ -312,10 +312,10 @@ namespace apcurium.MK.Booking.Api.Jobs
                 description = total > 0
                     ? string.Format(_resources.Get("OrderStatus_OrderDoneFareAvailable", languageCode), FormatPrice(total))
                     : _resources.Get("OrderStatus_wosDONE", languageCode);
-               
+                    
                Log.DebugFormat("Setting Complete status description: {0}", description);
             }
-		    else if (ibsOrderInfo.IsLoaded)
+            else if (ibsOrderInfo.IsLoaded)
             {
                 if (orderDetail != null && (_configurationManager.GetPaymentSettings().AutomaticPayment
                                             && _configurationManager.GetPaymentSettings().AutomaticPaymentPairing
