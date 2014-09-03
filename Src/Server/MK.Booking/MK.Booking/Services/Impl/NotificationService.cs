@@ -326,7 +326,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 SubTotal=(fare+toll+tip).ToString("C", priceFormat),
                 StaticMapUri = staticMapUri,
                 ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
-                BaseUrlImg=baseUrl,
+                BaseUrlImg = baseUrlAssetsImg,
                 RedDotImg = String.Concat(baseUrlAssetsImg, "email_red_dot.png"),
                 GreenDotImg = String.Concat(baseUrlAssetsImg, "email_green_dot.png"),
                 LogoImg = String.Concat(baseUrlThemesImg, "email_logo.png"),
