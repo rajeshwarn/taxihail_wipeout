@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private const string ApplicationNameSetting = "TaxiHail.ApplicationName";
         private const string AccentColorSetting = "TaxiHail.AccentColor";
         private const string EmailFontColorSetting = "TaxiHail.EmailFontColor";
+        private const string ApplicationKeySetting = "TaxiHail.ApplicationKey";
 
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IPushNotificationService _pushNotificationService;
@@ -292,7 +293,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var baseUrl = _container.Resolve<string>("BaseUrl");
 
             var baseUrlAssetsImg = String.Concat(baseUrl, "/Assets/Img/");
-            var baseUrlThemesImg = String.Concat(baseUrl, "/themes/" + _configurationManager.GetSetting(ApplicationNameSetting) + "/Img/");
+            var baseUrlThemesImg = String.Concat(baseUrl, "/themes/" + _configurationManager.GetSetting(ApplicationKeySetting) + "/Img/");
 
             var templateData = new
             {
