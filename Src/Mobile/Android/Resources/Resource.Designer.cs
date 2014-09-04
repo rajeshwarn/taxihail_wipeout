@@ -2020,28 +2020,31 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int tutorial_screen07 = 2130837839;
 			
 			// aapt resource value: 0x7f020150
-			public const int twitter_icon = 2130837840;
+			public const int tutorial_screen08 = 2130837840;
 			
 			// aapt resource value: 0x7f020151
-			public const int twitter_icon_state = 2130837841;
+			public const int twitter_icon = 2130837841;
 			
 			// aapt resource value: 0x7f020152
-			public const int unchecked_custom = 2130837842;
+			public const int twitter_icon_state = 2130837842;
 			
 			// aapt resource value: 0x7f020153
-			public const int vehicle = 2130837843;
+			public const int unchecked_custom = 2130837843;
 			
 			// aapt resource value: 0x7f020154
-			public const int visa = 2130837844;
+			public const int vehicle = 2130837844;
 			
 			// aapt resource value: 0x7f020155
-			public const int visa_electron = 2130837845;
+			public const int visa = 2130837845;
 			
 			// aapt resource value: 0x7f020156
-			public const int white_button = 2130837846;
+			public const int visa_electron = 2130837846;
 			
 			// aapt resource value: 0x7f020157
-			public const int WindowDisplay = 2130837847;
+			public const int white_button = 2130837847;
+			
+			// aapt resource value: 0x7f020158
+			public const int WindowDisplay = 2130837848;
 			
 			static Drawable()
 			{
