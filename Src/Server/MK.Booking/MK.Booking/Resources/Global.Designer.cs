@@ -160,15 +160,6 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Driver assigned confirmation.
-        /// </summary>
-        public static string Email_Body_DriverAssignedConfirmation {
-            get {
-                return ResourceManager.GetString("Email_Body_DriverAssignedConfirmation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Email confirmation required.
         /// </summary>
         public static string Email_Body_EmailConfirmationRequired {
@@ -475,15 +466,6 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {{ ApplicationName }} - Driver assigned confirmation.
-        /// </summary>
-        public static string Email_Subject_DriverAssigned {
-            get {
-                return ResourceManager.GetString("Email_Subject_DriverAssigned", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to {{ ApplicationName }} - Your password has been reset.
         /// </summary>
         public static string Email_Subject_PasswordReset {
@@ -592,6 +574,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fare will be paid using your default CC payment.
+        /// </summary>
+        public static string OrderStatus_wosLOADEDAutoPairing {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosLOADEDAutoPairing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid order, please call dispatch center.
         /// </summary>
         public static string OrderStatus_wosNone {
@@ -637,6 +628,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The client will be charged automatically at the end of the ride.
+        /// </summary>
+        public static string PairingConfirmationToDriver {
+            get {
+                return ResourceManager.GetString("PairingConfirmationToDriver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The passenger has paid {0:c}.
         /// </summary>
         public static string PaymentConfirmationToDriver1 {
@@ -651,6 +651,42 @@ namespace apcurium.MK.Booking.Resources {
         public static string PaymentConfirmationToDriver2 {
             get {
                 return ResourceManager.GetString("PaymentConfirmationToDriver2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your vehicle is almost at pickup location.
+        /// </summary>
+        public static string PushNotification_NearbyTaxi {
+            get {
+                return ResourceManager.GetString("PushNotification_NearbyTaxi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ride #{0} could not be automatically paired.
+        /// </summary>
+        public static string PushNotification_OrderPairingFailed {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderPairingFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ride #{0} will be paid automatically at the end of the trip using your credit card ending with {1} and using your default tip of {2}%.
+        /// </summary>
+        public static string PushNotification_OrderPairingSuccessful {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderPairingSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your credit card was successfully charged a total of {0}. This amount includes both fare and tip..
+        /// </summary>
+        public static string PushNotification_PaymentReceived {
+            get {
+                return ResourceManager.GetString("PushNotification_PaymentReceived", resourceCulture);
             }
         }
         
@@ -673,11 +709,29 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please confirm vehicle to pay with card on file..
+        /// </summary>
+        public static string PushNotification_wosLOADED {
+            get {
+                return ResourceManager.GetString("PushNotification_wosLOADED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry no cars are available due to high demand, please try later..
         /// </summary>
         public static string PushNotification_wosTIMEOUT {
             get {
                 return ResourceManager.GetString("PushNotification_wosTIMEOUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WARNING: The client will NOT be charged at the end of the ride.
+        /// </summary>
+        public static string UnpairingConfirmationToDriver {
+            get {
+                return ResourceManager.GetString("UnpairingConfirmationToDriver", resourceCulture);
             }
         }
     }

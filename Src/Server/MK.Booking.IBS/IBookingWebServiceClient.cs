@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.IBS
 
         IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds);
 
-
+        bool SendMessageToDriver(string message, string vehicleNumber);
         bool SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId);
 
 
@@ -32,5 +32,7 @@ namespace apcurium.MK.Booking.IBS
 
         bool ConfirmExternalPayment(Guid orderId, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
             string authorizationCode, string cardToken, int accountID, string name, string phone, string email, string os, string userAgent);
+ 
+        int? SendAccountInformation(Guid orderId, int ibsOrderId, string type, string cardToken, int accountID, string name, string phone, string email);
     }
 }

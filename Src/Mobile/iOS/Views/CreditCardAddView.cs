@@ -22,8 +22,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             base.ViewWillAppear(animated);
 
             NavigationController.NavigationBar.Hidden = false;
-            NavigationItem.HidesBackButton = false;
-            NavigationItem.Title = Localize.GetValue ("View_CreditCardAdd");
+			NavigationItem.HidesBackButton = ViewModel.IsMandatory;
+            NavigationItem.Title = Localize.GetValue ("View_CreditCard");
 
             ChangeThemeOfBarStyle();
             ChangeRightBarButtonFontToBold();
@@ -35,14 +35,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.BackgroundColor = UIColor.FromRGB (242, 242, 242);
 
+			btnDeleteCard.SetTitle(Localize.GetValue("DeleteCreditCardTitle"), UIControlState.Normal);
+
             lblInstructions.Text = Localize.GetValue("CreditCardInstructions");
             lblNameOnCard.Text = Localize.GetValue("CreditCardName");
             lblCardNumber.Text = Localize.GetValue("CreditCardNumber");
-            lblCategory.Text = Localize.GetValue("CreditCardCategory");
             lblExpMonth.Text = Localize.GetValue("CreditCardExpMonth");
             lblExpYear.Text = Localize.GetValue("CreditCardExpYear");
             lblCvv.Text = Localize.GetValue("CreditCardCCV");
 
+            txtCardNumber.ClearsOnBeginEditing = true;
             txtCardNumber.ShowCloseButtonOnKeyboard();
             txtCvv.ShowCloseButtonOnKeyboard();
 
@@ -52,7 +54,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.CreditCardCompanies[3].Image = "visa_electron.png";
 			ViewModel.CreditCardCompanies[4].Image = "credit_card_generic.png";
 
-            txtCategory.Configure(Localize.GetValue("CreditCardCategory"), () => ViewModel.CardCategories.ToArray(), () => (int?)ViewModel.CreditCardCategory, x => ViewModel.CreditCardCategory =  x.Id.GetValueOrDefault());
             txtExpMonth.Configure(Localize.GetValue("CreditCardExpMonth"), () => ViewModel.ExpirationMonths.ToArray(), () => ViewModel.ExpirationMonth, x => ViewModel.ExpirationMonth = x.Id);
             txtExpYear.Configure(Localize.GetValue("CreditCardExpYear"), () => ViewModel.ExpirationYears.ToArray(), () => ViewModel.ExpirationYear, x => ViewModel.ExpirationYear = x.Id);
 
@@ -68,17 +69,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 btnScanCard.RemoveFromSuperview();
             }
-
+				
             if (!ViewModel.ShowInstructions)
             {
                 lblInstructions.RemoveFromSuperview();
             }
+				
+			FlatButtonStyle.Red.ApplyTo (btnDeleteCard);
 
 			var set = this.CreateBindingSet<CreditCardAddView, CreditCardAddViewModel>();
 
             set.Bind(NavigationItem.RightBarButtonItem)
                 .For("Clicked")
-                .To(vm => vm.AddCreditCardCommand);
+				.To(vm => vm.SaveCreditCardCommand);
+
+			set.Bind(btnDeleteCard)
+				.For("TouchUpInside")
+				.To(vm => vm.DeleteCreditCardCommand);
+
+			set.Bind(btnDeleteCard)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsEditing)
+				.WithConversion("BoolInverter");
 
             set.Bind(txtNameOnCard)
 				.For(v => v.Text)
@@ -91,17 +103,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.ImageLeftSource)
 				.To(vm => vm.CreditCardImagePath);
 
-            set.Bind(txtCategory)
-                .For(v => v.Text)
-				.To(vm => vm.CreditCardCategoryName);
-
             set.Bind(txtExpMonth)
                 .For(v => v.Text)
 				.To(vm => vm.ExpirationMonthDisplay);
 
             set.Bind(txtExpYear)
                 .For(v => v.Text)
-				.To(vm => vm.ExpirationYear);
+				.To(vm => vm.ExpirationYearDisplay);
 
             set.Bind(txtCvv)
 				.For(v => v.Text)

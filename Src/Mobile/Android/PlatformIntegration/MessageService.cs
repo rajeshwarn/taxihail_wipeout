@@ -24,12 +24,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class MessageService : IMessageService
     {
-        public MessageService(Context context)
+        public MessageService(IMvxAndroidCurrentTopActivity context)
         {
             Context = context;
         }
 
-        public Context Context { get; set; }
+        public IMvxAndroidCurrentTopActivity Context { get; set; }
 
         /// <summary>
         /// put the content of on activity on a modal dialog ( type = viewmodel Type )
@@ -42,28 +42,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public Task ShowMessage(string title, string message)
         {
-            var ownerId = Guid.NewGuid().ToString();
             var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
-            var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
 
-            dispatcher.RequestMainThreadAction(() =>
-            {
-                var i = new Intent(Context, typeof (AlertDialogActivity));
-                i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-                i.PutExtra("Title", title);
-                i.PutExtra("Message", message);
-                i.PutExtra("OwnerId", ownerId);
-                Context.StartActivity(i);
-            });
+            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(Context.Activity, title, message));
 
             var tcs = new TaskCompletionSource<object>();
-            TinyMessageSubscriptionToken token = null;
-            token = messengerHub.Subscribe<ActivityCompleted>(a =>
-            {
-                tcs.TrySetResult(null);
-                messengerHub.Unsubscribe<ActivityCompleted>(token);
-                if (token != null) token.Dispose();
-            }, a => a.OwnerId == ownerId);
+            tcs.TrySetResult(null);
 
             return tcs.Task;
         }
@@ -71,76 +55,24 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction,
             string negativeButtonTitle, Action negativeAction)
         {
-            var ownerId = Guid.NewGuid().ToString();
-            var i = new Intent(Context, typeof (AlertDialogActivity));
-            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-            i.PutExtra("Title", title);
-            i.PutExtra("Message", message);
-
-            i.PutExtra("PositiveButtonTitle", positiveButtonTitle);
-            i.PutExtra("NegativeButtonTitle", negativeButtonTitle);
-            i.PutExtra("OwnerId", ownerId);
-
-            var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
-            TinyMessageSubscriptionToken token = null;
-// ReSharper disable once RedundantAssignment
-            token = messengerHub.Subscribe<ActivityCompleted>(a =>
-            {
-                if (a.Content == positiveButtonTitle && positiveAction != null)
-                {
-					positiveAction();
-                }
-                else if (a.Content == negativeButtonTitle && negativeAction != null)
-                {
-                    negativeAction();
-                }
-                // ReSharper disable AccessToModifiedClosure
-                messengerHub.Unsubscribe<ActivityCompleted>(token);
-                if (token != null) token.Dispose();
-                // ReSharper restore AccessToModifiedClosure
-            }, a => a.OwnerId == ownerId);
-
-            Context.StartActivity(i);
+            AlertDialogHelper.Show(
+                Context.Activity,
+                title,
+                message,
+                positiveButtonTitle, (s,e) => positiveAction(),
+                negativeButtonTitle, (s,e) => negativeAction());
         }
 
         public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction,
             string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
         {
-            var ownerId = Guid.NewGuid().ToString();
-            var i = new Intent(Context, typeof (AlertDialogActivity));
-            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-            i.PutExtra("Title", title);
-            i.PutExtra("Message", message);
-
-            i.PutExtra("PositiveButtonTitle", positiveButtonTitle);
-            i.PutExtra("NegativeButtonTitle", negativeButtonTitle);
-            i.PutExtra("NeutralButtonTitle", neutralButtonTitle);
-            i.PutExtra("OwnerId", ownerId);
-
-            var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
-            TinyMessageSubscriptionToken token = null;
-// ReSharper disable once RedundantAssignment
-            token = messengerHub.Subscribe<ActivityCompleted>(a =>
-            {
-                if (a.Content == positiveButtonTitle)
-                {
-                    positiveAction();
-                }
-                else if (a.Content == negativeButtonTitle)
-                {
-                    negativeAction();
-                }
-                else if (a.Content == neutralButtonTitle)
-                {
-                    neutralAction();
-                }
-                // ReSharper disable AccessToModifiedClosure
-                messengerHub.Unsubscribe<ActivityCompleted>(token);
-                if (token != null) token.Dispose();
-                // ReSharper restore AccessToModifiedClosure
-            }, a => a.OwnerId == ownerId);
-
-            Context.StartActivity(i);
+            AlertDialogHelper.Show(
+                Context.Activity,
+                title,
+                message,
+                positiveButtonTitle, (s,e) => positiveAction(),
+                negativeButtonTitle, (s,e) => negativeAction(),
+                neutralButtonTitle, (s,e) => neutralAction());
         }
 
         public void ShowMessage(string title, string message, List<KeyValuePair<string, Action>> additionalButton)
@@ -150,28 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void ShowMessage(string title, string message, Action additionalAction)
         {
-            var ownerId = Guid.NewGuid().ToString();
-            var i = new Intent(Context, typeof (AlertDialogActivity));
-            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-            i.PutExtra("Title", title);
-            i.PutExtra("Message", message);
-
-            i.PutExtra("NeutralButtonTitle", "OK");
-            i.PutExtra("OwnerId", ownerId);
-
-            TinyMessageSubscriptionToken token = null;
-            var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
-// ReSharper disable once RedundantAssignment
-            token = messengerHub.Subscribe<ActivityCompleted>(a =>
-            {
-                additionalAction();
-                // ReSharper disable AccessToModifiedClosure
-                messengerHub.Unsubscribe<ActivityCompleted>(token);
-                if (token != null) token.Dispose();
-                // ReSharper restore AccessToModifiedClosure
-            }, a => a.OwnerId == ownerId);
-
-            Context.StartActivity(i);
+            AlertDialogHelper.Show(Context.Activity, title, message, additionalAction);
         }
 
         public void ShowProgress(bool show)
@@ -243,7 +154,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>().RequestMainThreadAction(() =>
             {
-                Toast toast = Toast.MakeText(Context, message,
+                Toast toast = Toast.MakeText(Context.Activity, message,
                     duration == ToastDuration.Short ? ToastLength.Short : ToastLength.Long);
                 toast.Show();
             });
@@ -267,7 +178,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 
             var ownerId = Guid.NewGuid().ToString();
-            var i = new Intent(Context, typeof (SelectItemDialogActivity));
+            var i = new Intent(Context.Activity, typeof (SelectItemDialogActivity));
             i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
             i.PutExtra("Title", title);
             i.PutExtra("Items", displayList);
@@ -284,7 +195,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 onResult(list[msg.Result]);
             },
                 msg => msg.MessageId == ownerId);
-            Context.StartActivity(i);
+            Context.Activity.StartActivity(i);
         }
 
 		public Task<string> ShowPromptDialog(string title, string message, Action cancelAction)
@@ -292,12 +203,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			var tcs = new TaskCompletionSource<string> ();
 
 			var ownerId = Guid.NewGuid().ToString();
-			var i = new Intent(Context, typeof(EditTextDialogActivity));
+			var i = new Intent(Context.Activity, typeof(EditTextDialogActivity));
 			i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
 			i.PutExtra("Title", title);
 			i.PutExtra("Message", message);
-			i.PutExtra("PositiveButtonTitle", Context.GetString(Resource.String.OkButtonText));
-			i.PutExtra("NegativeButtonTitle", Context.GetString(Resource.String.Cancel));
+			i.PutExtra("PositiveButtonTitle", Context.Activity.GetString(Resource.String.OkButtonText));
+			i.PutExtra("NegativeButtonTitle", Context.Activity.GetString(Resource.String.Cancel));
 			i.PutExtra("OwnerId", ownerId);
 
 			var messenger = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
@@ -319,7 +230,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 				token.Dispose();
 			}, a => a.OwnerId == ownerId);
 
-			Context.StartActivity(i);
+			Context.Activity.StartActivity(i);
 
 			return tcs.Task;
         }

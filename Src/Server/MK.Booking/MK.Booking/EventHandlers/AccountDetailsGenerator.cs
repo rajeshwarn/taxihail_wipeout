@@ -8,6 +8,7 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
 
 #endregion
@@ -23,7 +24,10 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AccountPasswordReset>,
         IEventHandler<AccountPasswordUpdated>,
         IEventHandler<RoleAddedToUserAccount>,
-        IEventHandler<PaymentProfileUpdated>
+        IEventHandler<PaymentProfileUpdated>,
+        IEventHandler<CreditCardAdded>,
+        IEventHandler<CreditCardRemoved>,
+        IEventHandler<AllCreditCardsRemoved>
     {
         private readonly IConfigurationManager _configurationManager;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -208,6 +212,40 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             int result;
             return int.TryParse(val, out result) ? result : default(int?);
+        }
+
+        public void Handle(CreditCardAdded @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
+                context.Save(account);
+            }
+        }
+
+        public void Handle(CreditCardRemoved @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                // used for migration, if user removed one card but had another one, we set this one as the default card
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                var otherCreditCardForAccount = context.Query<CreditCardDetails>().FirstOrDefault(x => x.AccountId == @event.SourceId && x.CreditCardId != @event.CreditCardId);
+                account.DefaultCreditCard = otherCreditCardForAccount != null ? otherCreditCardForAccount.CreditCardId : (Guid?) null;
+                account.Settings.ChargeTypeId = otherCreditCardForAccount != null ? ChargeTypes.CardOnFile.Id : ChargeTypes.PaymentInCar.Id;
+                context.Save(account);
+            }
+        }
+
+        public void Handle(AllCreditCardsRemoved @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.DefaultCreditCard = null;
+                account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+                context.Save(account);
+            }
         }
     }
 }

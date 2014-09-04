@@ -1,84 +1,62 @@
 ﻿#region
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Resources;
+using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
 
 #endregion
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
-    public class PushNotificationSender
-        : IIntegrationEventHandler,
-            IEventHandler<OrderStatusChanged>
+    public class PushNotificationSender : IIntegrationEventHandler,
+            IEventHandler<OrderStatusChanged>,
+            IEventHandler<CreditCardPaymentCaptured>
     {
-        private readonly Func<BookingDbContext> _contextFactory;
-        private readonly IPushNotificationService _pushNotificationService;
-        private readonly Resources.Resources _resources;
+        private readonly INotificationService _notificationService;
 
-        public PushNotificationSender(Func<BookingDbContext> contextFactory,
-            IPushNotificationService pushNotificationService, IConfigurationManager configurationManager)
+        public PushNotificationSender(INotificationService notificationService)
         {
-            _contextFactory = contextFactory;
-            _pushNotificationService = pushNotificationService;
-
-            var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
-            _resources = new Resources.Resources(applicationKey);
+            _notificationService = notificationService;
         }
 
         public void Handle(OrderStatusChanged @event)
         {
-            var shouldSendPushNotification = @event.Status.IBSStatusId == VehicleStatuses.Common.Assigned ||
-                                             @event.Status.IBSStatusId == VehicleStatuses.Common.Arrived ||
-                                             @event.Status.IBSStatusId == VehicleStatuses.Common.Timeout;
-
-            if (shouldSendPushNotification)
+            switch (@event.Status.IBSStatusId)
             {
-                using (var context = _contextFactory.Invoke())
-                {
-                    var order = context.Find<OrderDetail>(@event.SourceId);
-
-                    string alert;
-                    switch (@event.Status.IBSStatusId)
-                    {
-                        case VehicleStatuses.Common.Assigned:
-                            alert = string.Format(_resources.Get("PushNotification_wosASSIGNED", order.ClientLanguageCode),
-                                @event.Status.VehicleNumber);
-                            break;
-                        case VehicleStatuses.Common.Arrived:
-                            alert = string.Format(_resources.Get("PushNotification_wosARRIVED", order.ClientLanguageCode),
-                                @event.Status.VehicleNumber);
-                            break;
-                        case VehicleStatuses.Common.Timeout:
-                            alert = _resources.Get("PushNotification_wosTIMEOUT", order.ClientLanguageCode);
-                            break;
-                        default:
-                            throw new InvalidOperationException("No push notification for this order status");
-                    }
-
-                    var devices =
-                        context.Set<DeviceDetail>().Where(x => x.AccountId == order.AccountId);
-                    var data = new Dictionary<string, object>();
-                    if (@event.Status.IBSStatusId == VehicleStatuses.Common.Assigned ||
-                        @event.Status.IBSStatusId == VehicleStatuses.Common.Arrived)
-                    {
-                        data.Add("orderId", order.Id);
-                    }
-
-                    foreach (var device in devices)
-                    {
-                        _pushNotificationService.Send(alert, data, device.DeviceToken, device.Platform);
-                    }
-                }
+                case VehicleStatuses.Common.Assigned:
+                    _notificationService.SendAssignedPush(@event.Status);
+                    break;
+                case VehicleStatuses.Common.Arrived:
+                    _notificationService.SendArrivedPush(@event.Status);
+                    break;
+                case VehicleStatuses.Common.Loaded:
+                    _notificationService.SendPairingInquiryPush(@event.Status);
+                    break;
+                case VehicleStatuses.Common.Timeout:
+                    _notificationService.SendTimeoutPush(@event.Status);
+                    break;
+                default:
+                    // No push notification for this order status
+                    return;
             }
+        }
+
+        public void Handle(CreditCardPaymentCaptured @event)
+        {
+            _notificationService.SendPaymentCapturePush(@event.OrderId, @event.Amount);
         }
     }
 }

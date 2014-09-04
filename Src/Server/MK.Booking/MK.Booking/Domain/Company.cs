@@ -10,6 +10,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.EventSourcing;
+using MK.Common.Configuration;
 
 #endregion
 
@@ -77,6 +78,8 @@ namespace apcurium.MK.Booking.Domain
 
             Handles<VehicleTypeAddedUpdated>(NoAction);
             Handles<VehicleTypeDeleted>(NoAction);
+
+            Handles<NotificationSettingsAddedOrUpdated>(NoAction);
         }
 
         private void OnPaymentSettingUpdated(PaymentSettingUpdated obj)
@@ -495,6 +498,16 @@ namespace apcurium.MK.Booking.Domain
             Update(new VehicleTypeDeleted
             {
                 VehicleTypeId = vehicleTypeId
+            });
+        }
+
+        public void AddOrUpdateNotificationSettings(NotificationSettings notificationSettings)
+        {
+            notificationSettings.Id = Id;
+
+            Update(new NotificationSettingsAddedOrUpdated
+            {
+                NotificationSettings = notificationSettings
             });
         }
     }

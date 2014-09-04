@@ -25,6 +25,9 @@
             /* settings */
             "settings": "manageCompanySettings",
 
+            /* notification settings */
+            "notificationSettings": "manageNotificationSettings",
+
             /* paymentSettings */
             "paymentSettings": "managePaymentSettings",
             
@@ -45,12 +48,13 @@
             "rules/add/warning/day": "addDayWarningRule", //#rules/add/day
             "rules/edit/:id": "editRule", //#rules/edit/{GUID}
 
-            /* IBS exclusions */
-            "exclusions": "manageIBSExclusions",
-
             /*Export*/
             "exportaccounts": "exportAccounts",
             "exportorders": "exportOrders",
+
+            /*Signup*/
+            "signup": "signup",
+            
 
             /* Charge Accounts */
             "accounts": "manageAccounts",
@@ -70,8 +74,16 @@
             TaxiHail.geocoder.initialize(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude);
         },
         
+        signup: function () {
+            document.location.href = '../#signup';
+        },
+
         manageCompanySettings: function () {
             action(TaxiHail.CompanySettingsController, 'index');
+        },
+
+        manageNotificationSettings: function () {
+            action(TaxiHail.NotificationSettingsController, 'index');
         },
 
         managePaymentSettings: function () {
@@ -174,11 +186,6 @@
         editRule: function (id) {
 
             action(TaxiHail.RulesController, 'edit', id);
-        },
-
-        manageIBSExclusions: function () {
-            
-            action(TaxiHail.ExclusionsController, 'index');
         },
 
         exportAccounts: function () {

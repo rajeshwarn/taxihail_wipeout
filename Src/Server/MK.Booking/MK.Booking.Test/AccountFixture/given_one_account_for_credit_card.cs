@@ -40,18 +40,22 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         public void when_add_first_credit_card()
         {
             const string creditCardCompany = "visa";
-            const string friendlyName = "work credit card";
+            const string nameOnCard = "Bob";
             var creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
+            const string expirationMonth = "5";
+            const string expirationYear = "2020";
             const string token = "jjwcnSLWm85";
 
             _sut.When(new AddCreditCard
             {
                 AccountId = _accountId,
                 CreditCardCompany = creditCardCompany,
-                FriendlyName = friendlyName,
+                NameOnCard = nameOnCard,
                 CreditCardId = creditCardId,
                 Last4Digits = last4Digits,
+                ExpirationMonth = expirationMonth,
+                ExpirationYear = expirationYear,
                 Token = token,
                 Id = Guid.NewGuid()
             });
@@ -59,9 +63,11 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             var @event = _sut.ThenHasOne<CreditCardAdded>();
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual(creditCardCompany, @event.CreditCardCompany);
-            Assert.AreEqual(friendlyName, @event.FriendlyName);
+            Assert.AreEqual(nameOnCard, @event.NameOnCard);
             Assert.AreEqual(creditCardId, @event.CreditCardId);
             Assert.AreEqual(last4Digits, @event.Last4Digits);
+            Assert.AreEqual(expirationMonth, @event.ExpirationMonth);
+            Assert.AreEqual(expirationYear, @event.ExpirationYear);
             Assert.AreEqual(token, @event.Token);
 
             var secondEvent = _sut.ThenHasOne<PaymentProfileUpdated>();
@@ -70,46 +76,49 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         }
 
         [Test]
-        public void when_add_second_credit_card()
+        public void when_updating_credit_card()
         {
-            const string creditCardCompany = "visa";
-            const string friendlyName = "work credit card";
+            const string creditCardCompany = "mastercard";
+            const string nameOnCard = "Bob 2";
             var creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
+            const string expirationMonth = "5";
+            const string expirationYear = "2020";
             const string token = "jjwcnSLWm85";
 
-            _sut.Given(new CreditCardAdded {SourceId = _accountId});
+            _sut.Given(new CreditCardAdded {SourceId = _accountId, CreditCardId = creditCardId});
 
-            _sut.When(new AddCreditCard
+            _sut.When(new UpdateCreditCard
             {
                 AccountId = _accountId,
                 CreditCardCompany = creditCardCompany,
-                FriendlyName = friendlyName,
                 CreditCardId = creditCardId,
+                NameOnCard = nameOnCard,
                 Last4Digits = last4Digits,
+                ExpirationMonth = expirationMonth,
+                ExpirationYear = expirationYear,
                 Token = token,
                 Id = Guid.NewGuid()
             });
 
-            var @event = _sut.ThenHasSingle<CreditCardAdded>();
+            var @event = _sut.ThenHasSingle<CreditCardUpdated>();
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual(creditCardCompany, @event.CreditCardCompany);
-            Assert.AreEqual(friendlyName, @event.FriendlyName);
+            Assert.AreEqual(nameOnCard, @event.NameOnCard);
             Assert.AreEqual(creditCardId, @event.CreditCardId);
             Assert.AreEqual(last4Digits, @event.Last4Digits);
+            Assert.AreEqual(expirationMonth, @event.ExpirationMonth);
+            Assert.AreEqual(expirationYear, @event.ExpirationYear);
             Assert.AreEqual(token, @event.Token);
         }
 
         [Test]
-        public void when_remove_credit_card()
+        public void when_remove_all_credit_cards()
         {
-            var creditCardId = Guid.NewGuid();
+            _sut.When(new DeleteAccountCreditCards {AccountId = _accountId});
 
-            _sut.When(new RemoveCreditCard {AccountId = _accountId, CreditCardId = creditCardId});
-
-            var @event = _sut.ThenHasSingle<CreditCardRemoved>();
+            var @event = _sut.ThenHasSingle<AllCreditCardsRemoved>();
             Assert.AreEqual(_accountId, @event.SourceId);
-            Assert.AreEqual(creditCardId, @event.CreditCardId);
         }
     }
 }

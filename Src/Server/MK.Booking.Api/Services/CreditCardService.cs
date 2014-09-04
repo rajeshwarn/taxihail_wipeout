@@ -42,13 +42,24 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK);
         }
 
+        public object Put(CreditCardRequest request)
+        {
+            var session = this.GetSession();
+            var command = new UpdateCreditCard { AccountId = new Guid(session.UserAuthId) };
+            Mapper.Map(request, command);
+
+            _bus.Send(command);
+
+            return new HttpResult(HttpStatusCode.OK);
+        }
+
         public object Delete(CreditCardRequest request)
         {
             var session = this.GetSession();
-            var command = new RemoveCreditCard
+
+            var command = new DeleteAccountCreditCards
             {
-                AccountId = new Guid(session.UserAuthId),
-                CreditCardId = request.CreditCardId
+                AccountId = new Guid(session.UserAuthId)
             };
 
             _bus.Send(command);

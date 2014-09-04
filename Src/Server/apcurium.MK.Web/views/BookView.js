@@ -11,10 +11,10 @@
         
         initialize: function () {
             this.model.on('change', function(model, value) {
-                
+
                 // Enable the buttons if model is valid
                 if (this.model.isValidAddress('pickupAddress') && (!TaxiHail.parameters.isDestinationRequired || (  TaxiHail.parameters.isDestinationRequired && this.model.isValidAddress('dropOffAddress'))))
-                {                
+                {
                     this.$('.buttons .btn').prop('disabled', false).removeClass('disabled');
                 } else this.$('.buttons .btn').prop('disabled', true).addClass('disabled');
 
@@ -27,7 +27,7 @@
             this.model.on('change:dropOffAddress', function(model, value) {
                 this._dropOffAddressView.model.set(value);
             }, this);
-            
+
             // ===== Ride Estimate =====
 
             // Only show ride estimate if enabled
@@ -80,6 +80,7 @@
         
 
         render: function () {
+            
             this.$el.html(this.renderTemplate(this.model.toJSON()));
 
             var pickupAddress = new Backbone.Model(),
@@ -98,7 +99,9 @@
                     locatepopular : true
             });
             
-            
+            if (TaxiHail.parameters.disableFutureBooking) {
+                this.$('#bookLaterButton').addClass('hidden');
+            }
 
             this.$('.pickup-address-container').html(this._pickupAddressView.render().el);
             this.$('.drop-off-address-container').html(this._dropOffAddressView.render().el);
@@ -145,8 +148,6 @@
                 });
             }, this);
 
-            
-            
             if (!this.model.isValidAddress('pickupAddress') || (TaxiHail.parameters.isDestinationRequired && !this.model.isValidAddress('dropOffAddress'))) {
                 this.$('.buttons .btn').addClass('disabled');
             }

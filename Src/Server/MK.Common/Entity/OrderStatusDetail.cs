@@ -28,7 +28,11 @@ namespace apcurium.MK.Common.Entity
         public DateTime? Eta { get; set; }
         public string Name { get; set; }
         public string ReferenceNumber { get; set; }
-        public string TerminalId { get; set; }        
+        public string TerminalId { get; set; }
+        public bool IsTaxiNearbyNotificationSent { get; set; }
+        public DateTime? PairingTimeOut { get; set; }
+        public string PairingError { get; set; }
+
         public override string ToString()
         {
             return Status + " " + Name;

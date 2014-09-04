@@ -18,6 +18,8 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Booking.Services;
+using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Booking.SMS;
 using apcurium.MK.Booking.SMS.Impl;
 using apcurium.MK.Common.Configuration;
@@ -25,6 +27,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
+using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 using Microsoft.Practices.Unity;
 
@@ -38,40 +41,50 @@ namespace apcurium.MK.Booking
         {
             System.Data.Entity.Database.SetInitializer<BookingDbContext>(null);
             container.RegisterType<ISmsService, TwilioService>();
+
+            container.RegisterInstance<IConfigurationDao>(new ConfigurationDao(() => container.Resolve<ConfigurationDbContext>()));
             container.RegisterType<BookingDbContext>(new TransientLifetimeManager(),
                 new InjectionConstructor(
                     container.Resolve<ConnectionStringSettings>(Common.Module.MkConnectionString).ConnectionString));
 
+            container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
+            container.RegisterInstance<ITemplateService>(new TemplateService(container.Resolve<IConfigurationManager>()));
+            container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IConfigurationManager>(), container.Resolve<ILogger>()));
+            container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IPushNotificationService>(), container.Resolve<IConfigurationManager>()));
+            container.RegisterInstance<INotificationService>(
+                new NotificationService(
+                    () => container.Resolve<BookingDbContext>(), 
+                    container.Resolve<IPushNotificationService>(),
+                    container.Resolve<ITemplateService>(), 
+                    container.Resolve<IEmailSender>(),
+                    container.Resolve<IConfigurationManager>(), 
+                    container.Resolve<IAppSettings>(),
+                    container.Resolve<IConfigurationDao>(),
+                    container.Resolve<IOrderDao>(),
+                    container.Resolve<ISmsService>(), 
+                    container.Resolve<ILogger>()));
+                    
+            container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(), 
+                new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IConfigurationManager>())));
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderStatusUpdateDao>(new OrderStatusUpdateDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IDefaultAddressDao>(
-                new DefaultAddressDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IDefaultAddressDao>(new DefaultAddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<ITariffDao>(new TariffDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IRuleDao>(new RuleDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderRatingsDao>(new OrderRatingsDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IRatingTypeDao>(new RatingTypeDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IPopularAddressDao>(
-                new PopularAddressDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IPopularAddressDao>(new PopularAddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<ICreditCardDao>(new CreditCardDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderPaymentDao>(new OrderPaymentDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IConfigurationDao>(
-                new ConfigurationDao(() => container.Resolve<ConfigurationDbContext>()));
             container.RegisterInstance<IDeviceDao>(new DeviceDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<ICompanyDao>(new CompanyDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountChargeDao>(new AccountChargeDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IVehicleTypeDao>(new VehicleTypeDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAppStartUpLogDao>(new AppStartUpLogDao(() => container.Resolve<BookingDbContext>()));
-
             container.RegisterInstance<IPasswordService>(new PasswordService());
-            container.RegisterInstance<ITemplateService>(new TemplateService(container.Resolve<IConfigurationManager>()));
             container.RegisterInstance<IRuleCalculator>(new RuleCalculator(container.Resolve<IRuleDao>()));
-            container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
-            container.RegisterInstance<IPushNotificationService>(
-                new PushNotificationService(container.Resolve<IConfigurationManager>(), container.Resolve<ILogger>()));
-
 
             RegisterMaps();
             RegisterCommandHandlers(container);
@@ -99,6 +112,8 @@ namespace apcurium.MK.Booking
             Mapper.CreateMap<TariffDetail, Tariff>();
             Mapper.CreateMap<RuleDetail, Rule>();
             Mapper.CreateMap<CreditCardAdded, CreditCardDetails>()
+                .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
+            Mapper.CreateMap<CreditCardUpdated, CreditCardDetails>()
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
 
             Mapper.CreateMap<OrderStatusDetail, OrderStatusDetail>();
@@ -152,12 +167,14 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, OrderUserGpsGenerator>("OrderUserGpsGenerator");
             container.RegisterType<IEventHandler, AccountChargeDetailGenerator>("AccountChargeDetailGenerator");
             container.RegisterType<IEventHandler, VehicleTypeDetailGenerator>("VehicleTypeDetailGenerator");
+            container.RegisterType<IEventHandler, NotificationSettingsGenerator>("NotificationSettingsGenerator");
 
             // Integration event handlers
             container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");
             container.RegisterType<IEventHandler, PaymentSettingsUpdater>(typeof (PaymentSettingsUpdater).Name);
             container.RegisterType<IEventHandler, MailSender>("MailSender");
             container.RegisterType<IEventHandler, OrderPaymentManager>("OrderPaymentManager");
+            container.RegisterType<IEventHandler, OrderPairingManager>("OrderPairingManager");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
@@ -34,10 +35,13 @@ namespace apcurium.MK.Booking.Mobile
 				}
 
 				ShowViewModel<LoginViewModel>();
-            } 
+            }
 			else if (@params.ContainsKey ("orderId"))
             {
 				var orderId = Guid.Parse(@params["orderId"]);
+                bool isPairingNotification;
+                bool.TryParse(@params["isPairingNotification"], out isPairingNotification);
+
 				var accountService = Mvx.Resolve<IAccountService> ();
 				var bookingService = Mvx.Resolve<IBookingService> ();
                 
@@ -46,10 +50,21 @@ namespace apcurium.MK.Booking.Mobile
                 
 				if (order != null && orderStatus != null) 
                 {
-					ShowViewModel<BookingStatusViewModel>(new Dictionary<string, string> {
-						{"order", order.ToJson()},
-                        {"orderStatus", orderStatus.ToJson()},
-                    });
+                    if (isPairingNotification)
+                    {
+                        ShowViewModel<ConfirmPairViewModel>(new
+                        {
+                            order = order.ToJson(),
+                            orderStatus = orderStatus.ToJson()
+                        }.ToStringDictionary());
+                    }
+                    else
+                    {
+                        ShowViewModel<BookingStatusViewModel>(new Dictionary<string, string> {
+						    {"order", order.ToJson()},
+                            {"orderStatus", orderStatus.ToJson()},
+                        });
+                    }
                 }
             }
             else

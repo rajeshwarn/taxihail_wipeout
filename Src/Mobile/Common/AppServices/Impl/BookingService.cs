@@ -89,6 +89,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             get{ return UserCache.Get<string> ("LastOrderId").HasValue ();}
         }
 
+        public bool HasUnratedLastOrder
+        {
+            get { return UserCache.Get<string>("LastUnratedOrderId").HasValue(); }
+        }
+
         public Task<OrderStatusDetail> GetLastOrderStatus ()
         {
 			try
@@ -107,9 +112,37 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
         }
 
+        public Guid GetUnratedLastOrder()
+        {
+            try
+            {
+                if (!HasUnratedLastOrder)
+                {
+                    throw new InvalidOperationException();
+                }
+                var unratedLastOrderId = UserCache.Get<string>("LastUnratedOrderId");
+                return Guid.Parse(unratedLastOrderId);
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e);
+                throw;
+            }
+        }
+
+        public void SetLastUnratedOrderId(Guid orderId)
+        {
+            UserCache.Set("LastUnratedOrderId", orderId.ToString()); // Need to be cached as a string because of a jit error on device
+        }
+
         public void ClearLastOrder ()
         {
             UserCache.Set ("LastOrderId", (string)null); // Need to be cached as a string because of a jit error on device
+        }
+
+        public void ClearLastUnratedOrder()
+        {
+            UserCache.Set("LastUnratedOrderId", (string)null); // Need to be cached as a string because of a jit error on device
         }
 
         public void RemoveFromHistory (Guid orderId)
@@ -134,7 +167,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 statusId.SoftEqual (VehicleStatuses.Common.Cancelled) ||
                 statusId.SoftEqual (VehicleStatuses.Common.Done) ||
                 statusId.SoftEqual (VehicleStatuses.Common.NoShow) ||
-                statusId.SoftEqual (VehicleStatuses.Common.CancelledDone);
+				statusId.SoftEqual (VehicleStatuses.Common.CancelledDone) || 
+				statusId.SoftEqual (VehicleStatuses.Common.MeterOffNotPayed);
         }
 
         public bool IsCallboxStatusActive(string statusId)
@@ -253,6 +287,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void SendRatingReview (OrderRatings orderRatings)
         {
+            ClearLastUnratedOrder();
             var request = new OrderRatingsRequest{ Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
 			UseServiceClientTask<OrderServiceClient> (service => service.RateOrder (request));
         }

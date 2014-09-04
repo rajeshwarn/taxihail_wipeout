@@ -3,8 +3,10 @@ using System.Linq;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -14,6 +16,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
 		private readonly IOrderWorkflowService _orderWorkflowService;
+	    private bool _hasCardOnFile;
 
 		public RideSettingsViewModel(IAccountService accountService, 
 			IPaymentService paymentService,
@@ -41,7 +44,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			RaisePropertyChanged(() => Payments );
 			RaisePropertyChanged(() => ChargeTypeId );
 			RaisePropertyChanged(() => ChargeTypeName );
-        }
+
+            _hasCardOnFile = (await _accountService.GetCreditCard()) != null;
+            RaisePropertyChanged(() => IsChargeTypesEnabled);
+		}
 
         public bool ShouldDisplayTip
         {
@@ -52,14 +58,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public bool ShouldDisplayCreditCards
-        {
-            get
+	    public bool IsChargeTypesEnabled
+	    {
+	        get
             {
-				var setting = _paymentService.GetPaymentSettings();
-                return setting.IsPayInTaxiEnabled;
+                return !_hasCardOnFile || !Settings.DisableChargeTypeWhenCardOnFile;
             }
-        }
+	    }
 
         private PaymentDetailsViewModel _paymentPreferences;
         public PaymentDetailsViewModel PaymentPreferences

@@ -16,11 +16,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public class VehicleTypeAndEstimateControl : LinearLayout
     {
-        private TextView EstimatedFareLabel { get; set; }
+        private AutoResizeTextView EstimatedFareLabel { get; set; }
+		private AutoResizeTextView EtaLabel { get; set; }
+		private AutoResizeTextView EtaLabelInVehicleSelection { get; set; }
         private View HorizontalDivider { get; set; }
+
+		private LinearLayout VehicleSelectionAndEta { get; set; }
+		private LinearLayout EtaContainer { get; set; }
+		private LinearLayout EtaBadge { get; set; }
 		private LinearLayout VehicleSelection { get; set; }
 		private LinearLayout RideEstimate { get; set; }
+
 		private VehicleTypeControl EstimateSelectedVehicleType { get; set; }
+		private VehicleTypeControl EtaBadgeImage { get; set; }
 		public Action<VehicleType> VehicleSelected { get; set; }
 
         public VehicleTypeAndEstimateControl(Context c, IAttributeSet attr) : base(c, attr)
@@ -36,9 +44,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			HorizontalDivider = (View)layout.FindViewById(Resource.Id.HorizontalDivider);
 			RideEstimate = (LinearLayout)layout.FindViewById (Resource.Id.RideEstimate);
+			VehicleSelectionAndEta = (LinearLayout)layout.FindViewById (Resource.Id.VehicleSelectionAndEta);
 			VehicleSelection = (LinearLayout)layout.FindViewById (Resource.Id.VehicleSelection);
+			EtaContainer = (LinearLayout)layout.FindViewById (Resource.Id.EtaContainer);
+			EtaBadge = (LinearLayout)layout.FindViewById (Resource.Id.EtaBadge);
 
-			EstimatedFareLabel = (TextView)layout.FindViewById(Resource.Id.estimateFareLabel);
+            EstimatedFareLabel = (AutoResizeTextView)layout.FindViewById(Resource.Id.estimateFareAutoResizeLabel);
+			EtaLabel = (AutoResizeTextView)layout.FindViewById(Resource.Id.EtaLabel);
+			EtaLabelInVehicleSelection = (AutoResizeTextView)layout.FindViewById(Resource.Id.EtaLabelInVehicleSelection);
 			EstimateSelectedVehicleType = (VehicleTypeControl)layout.FindViewById (Resource.Id.estimateSelectedVehicle);
             EstimateSelectedVehicleType.Selected = true;
 
@@ -90,7 +103,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public string EstimatedFare
         {
-            get { return EstimatedFareLabel.Text; }
+            get{ return EstimatedFareLabel.Text; }
             set
             {
                 if (EstimatedFareLabel.Text != value)
@@ -100,42 +113,113 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
+		private bool _showEta;
+		public bool ShowEta
+		{
+			get { return _showEta; }
+			set
+			{
+				if (_showEta != value)
+				{
+					_showEta = value;
+					Redraw();
+				}
+			}
+		}
+
+		bool _showVehicleSelectionContainer
+		{
+			get {
+				return ShowEta || ShowVehicleSelection;
+			}
+		}
+
+		private bool _showVehicleSelection;
+		public bool ShowVehicleSelection
+		{
+			get { return _showVehicleSelection; }
+			set
+			{
+				if (_showVehicleSelection != value)
+				{
+					_showVehicleSelection = value;
+					Redraw();
+				}
+			}
+		}
+
+		private string _eta;
+		public string Eta
+		{
+			get { return _eta; }
+			set
+			{
+				if (_eta != value)
+				{
+					_eta = value;
+					EtaLabel.Text = _eta;
+					EtaLabelInVehicleSelection.Text = _eta;
+					Redraw ();
+				}
+			}
+		}
+
         private void Redraw()
         {
-            if (ShowEstimate)
+			if (ShowEstimate)
             {
 				this.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
                 HorizontalDivider.Background.SetColorFilter(Resources.GetColor(Resource.Color.company_color), PorterDuff.Mode.SrcAtop);
 				RideEstimate.Visibility = ViewStates.Visible;
 				VehicleSelection.Visibility = ViewStates.Gone;
+				EtaContainer.Visibility = ViewStates.Gone;
+				EtaLabel.Visibility = ShowEta ? ViewStates.Visible : ViewStates.Gone;
             }
             else
             {
                 this.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Color.Transparent);
-				HorizontalDivider.SetBackgroundColor(Resources.GetColor(Resource.Color.orderoptions_horizontal_divider));
 				RideEstimate.Visibility = ViewStates.Gone;
-				VehicleSelection.Visibility = ViewStates.Visible;
+				EtaContainer.Visibility = ShowEta ? ViewStates.Visible : ViewStates.Gone;
+				EtaContainer.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
+				VehicleSelection.Visibility = ShowVehicleSelection ? ViewStates.Visible : ViewStates.Gone;
+
+				VehicleSelectionAndEta.Visibility = _showVehicleSelectionContainer ? ViewStates.Visible : ViewStates.Gone;
 
 				VehicleSelection.RemoveAllViews ();
- 				foreach (var vehicle in Vehicles) 
+
+				if (_showVehicleSelectionContainer) 
 				{
-					var vehicleView = new VehicleTypeControl (base.Context, vehicle, SelectedVehicle == null ? false  : vehicle.Id == SelectedVehicle.Id);
+					HorizontalDivider.SetBackgroundColor(Resources.GetColor(Resource.Color.orderoptions_horizontal_divider));
+				}
 
-					var layoutParameters = new LinearLayout.LayoutParams(0, LayoutParams.FillParent);
-					layoutParameters.Weight = 1.0f;
-					vehicleView.LayoutParameters = layoutParameters;
+				if (ShowVehicleSelection) {
 
-					vehicleView.Click += (sender, e) => 
-					{ 
-						if(!IsReadOnly && VehicleSelected != null)
-						{
-							VehicleSelected(vehicle);
-						}
-					};
+					foreach (var vehicle in Vehicles) {
+						var vehicleView = new VehicleTypeControl (base.Context, vehicle, SelectedVehicle == null ? false : vehicle.Id == SelectedVehicle.Id);
 
-					VehicleSelection.AddView (vehicleView);
+						var layoutParameters = new LinearLayout.LayoutParams (0, LayoutParams.FillParent);
+						layoutParameters.Weight = 1.0f;
+						vehicleView.LayoutParameters = layoutParameters;
+
+						vehicleView.Click += (sender, e) => { 
+							if (!IsReadOnly && VehicleSelected != null) {
+								VehicleSelected (vehicle);
+							}
+						};
+
+						VehicleSelection.AddView (vehicleView);
+					}
+				}
+
+				if (ShowEta) {
+					if (EtaBadgeImage == null || EtaBadgeImage.Vehicle != SelectedVehicle) {
+						EtaBadge.RemoveAllViews ();
+						EtaBadgeImage = new VehicleTypeControl (base.Context, SelectedVehicle);
+						EtaBadge.AddView (EtaBadgeImage);
+					}
 				}
             }
+			this.Visibility = ViewStates.Visible;
         }
     }
 }

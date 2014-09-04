@@ -111,6 +111,44 @@
                             android:layout_width="fill_parent"
                             android:layout_height="1px" />
                         <Button
+                            android:id="@+id/settingsProfile"
+                            local:MvxBind="Click Panel.NavigateToPaymentInformation; Visibility Panel.IsPayInTaxiEnabled, Converter=Visibility"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewPaymentInfoText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart" />
+                        <View
+                            local:MvxBind="Visibility Panel.IsPayInTaxiEnabled, Converter=Visibility"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px" />
+                        <Button
+                            android:id="@+id/notificationsSettings"
+                            local:MvxBind="Click Panel.NavigateToNotificationsSettings; Visibility Panel.IsNotificationsEnabled, Converter=Visibility"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewNotificationsText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart" />
+                        <View
+                            local:MvxBind="Visibility Panel.IsNotificationsEnabled, Converter=Visibility"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px" />
+                        <Button
                             android:id="@+id/settingsTutorial"
                             local:MvxBind="Click Panel.NavigateToTutorial; Visibility Panel.Settings.TutorialEnabled, Converter=Visibility"
                             style="@style/SettingItemTitle"

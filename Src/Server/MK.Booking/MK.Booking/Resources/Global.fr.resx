@@ -265,7 +265,7 @@
     <value>Heure estimée d'arrivée : {0}</value>
   </data>
   <data name="OrderStatus_CabDriverNumberAssigned" xml:space="preserve">
-    <value>Le véhicule {0} vous a été réservée</value>
+    <value>Le véhicule {0} vous a été réservé</value>
   </data>
   <data name="OrderStatus_OrderDoneFareAvailable" xml:space="preserve">
     <value>Complété ({0})</value>
@@ -298,7 +298,7 @@
     <value>Client ne s'est pas présenté</value>
   </data>
   <data name="OrderStatus_wosSCHED" xml:space="preserve">
-    <value>Plannifié(e) ?</value>
+    <value>Plannifié</value>
   </data>
   <data name="OrderStatus_wosTIMEOUT" xml:space="preserve">
     <value>Veuillez nous excuser, en raison d'un grand nombre de demandes nous n'avons pas de véhicule disponible, merci d'essayer ultérieurement.</value>
@@ -312,6 +312,12 @@
   <data name="PaymentConfirmationToDriver2" xml:space="preserve">
     <value>Numéro d'authorisation {0}</value>
   </data>
+  <data name="PairingConfirmationToDriver" xml:space="preserve">
+    <value>Le passager sera chargé automatiquement à la fin de la course</value>
+  </data>
+  <data name="UnpairingConfirmationToDriver" xml:space="preserve">
+    <value>ATTENTION: Le passager ne sera PAS chargé à la fin de la course</value>
+  </data>
   <data name="PushNotification_wosARRIVED" xml:space="preserve">
     <value>Votre véhicule (#{0}) est arrivé</value>
   </data>
@@ -320,5 +326,23 @@
   </data>
   <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
     <value>Veuillez nous excuser, en raison d'un grand nombre de demandes nous n'avons pas de véhicule disponible, merci d'essayer ultérieurement.</value>
+  </data>
+  <data name="PushNotification_NearbyTaxi" xml:space="preserve">
+    <value>Votre vehicule sera bientôt au lieu de départ</value>
+  </data>
+  <data name="PushNotification_PaymentReceived" xml:space="preserve">
+    <value>Votre carte de crédit a été chargé d'un montant de {0}. Ce montant inclut le prix de la course ainsi que le pourboire.</value>
+  </data>
+  <data name="PushNotification_wosLOADED" xml:space="preserve">
+    <value>Veuillez confirmer le véhicule avec lequel le payment de carte de crédit sera effectué.</value>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
+    <value>La course #{0} sera payée automatiquement à la fin du voyage en utilisant votre carte de crédit se terminant par {1} et en utilisant votre pouroire par défaut de {2}%</value>
+  </data>
+  <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
+    <value>La course #{0} n'a pas pu être associée automatiquement pour le paiement</value>
+  </data>
+  <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
+    <value>La course sera payée en utilisant for carte de crédit par défaut</value>
   </data>
 </root>

@@ -191,13 +191,13 @@ namespace DatabaseInitializer.Sql
 
             string unorderedEvents = ";WITH cte AS ";
             unorderedEvents += "( ";
-            unorderedEvents += "SELECT *, ROW_NUMBER() OVER (PARTITION BY AggregateId ORDER BY [EventDate] ASC) AS rn ";
+            unorderedEvents += "SELECT *, ROW_NUMBER() OVER (PARTITION BY AggregateId ORDER BY [EventDate], [VERSION] ASC) AS rn ";
             unorderedEvents += "FROM [Events].[Events]  ";
             unorderedEvents += ") ";
-            unorderedEvents += "SELECT * ";
+            unorderedEvents += "SELECT [AggregateId] ";
             unorderedEvents += "FROM cte ";
-            unorderedEvents += "WHERE rn = 1 and Version > 0 ";
-            unorderedEvents += "order by [EventDate] ";
+            unorderedEvents += "WHERE (rn - [Version])  > 1 ";
+            unorderedEvents += "group by [AggregateId] ";
 
 
             var invalidAggregateId = DatabaseHelper.ExecuteListQuery<Guid>(connString, unorderedEvents);
@@ -217,13 +217,7 @@ namespace DatabaseInitializer.Sql
             {
                 Console.WriteLine("No event in invalid order");
             }
-
-
-
-
         }
-
-
 
         public void CopyEventsAndCacheTables(string connString, string oldDatabase, string newDatabase)
         {
@@ -231,13 +225,15 @@ namespace DatabaseInitializer.Sql
                 string.Format(
                     "INSERT INTO [{0}].[Events].[Events]([AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId], [EventType], [EventDate]) " +
                     "SELECT [AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId], [EventType], [EventDate] " +
-                    "FROM [{1}].[Events].[Events] ", newDatabase, oldDatabase);
+                    "FROM [{1}].[Events].[Events] " +
+                    "WHERE [EventType] NOT LIKE '%OrderVehiclePositionChanged%'", newDatabase, oldDatabase); // delete OrderVehiclePositionChanged events
 
             DatabaseHelper.ExecuteNonQuery(connString, queryForEvents);
 
+            // copy cache table except the static data
             var queryForCache = string.Format("INSERT INTO [{0}].[Cache].[Items]([Key],[Value],[ExpiresAt]) " +
                                               "SELECT [Key],[Value],[ExpiresAt] " +
-                                              "FROM [{1}].[Cache].[Items] ", newDatabase, oldDatabase);
+                                              "FROM [{1}].[Cache].[Items] WHERE [Key] <> 'IBS.StaticData'", newDatabase, oldDatabase);
 
             DatabaseHelper.ExecuteNonQuery(connString, queryForCache);
         }

@@ -2,11 +2,30 @@
 
     _.extend(TaxiHail, {
 
+        getClientLanguage: function () {
+            return (navigator.language) ? navigator.language.split('-')[0] : navigator.userLanguage;
+        },
+
         localize: function (resourceName, resourceSet) {
             var resource = '';
-            if (resourceSet && !_.isUndefined(TaxiHail.resources[resourceSet])) {
-                resource = TaxiHail.resources[resourceSet][resourceName];
+            var lang = TaxiHail.getClientLanguage();
+
+            if (resourceSet) {
+                var localizedResourceSet = resourceSet + "-" + lang;
+
+                if (!_.isUndefined(TaxiHail.resources[localizedResourceSet])) {
+                    resource = TaxiHail.resources[localizedResourceSet][resourceName];
+                } else if (!_.isUndefined(TaxiHail.resources[resourceSet])) {
+                    resource = TaxiHail.resources[resourceSet][resourceName];
+                }
             }
+
+            // Check for localized Global resource
+            var localizedGlobalResourceSet = "Global-" + lang;
+            if (!resource && !_.isUndefined(TaxiHail.resources[localizedGlobalResourceSet])) {
+                resource = TaxiHail.resources[localizedGlobalResourceSet][resourceName];
+            }
+
             return resource || TaxiHail.resources.Global[resourceName] || resourceName;
         },
 
@@ -246,6 +265,14 @@
 
     Handlebars.registerHelper('ifCond', function (v1, v2, options) {
         if (v1 == v2) {
+            return options.fn(this);
+        } else {
+            return options.inverse(this);
+        }
+    });
+
+    Handlebars.registerHelper('ifNotCond', function (v1, v2, options) {
+        if (v1 != v2) {
             return options.fn(this);
         } else {
             return options.inverse(this);

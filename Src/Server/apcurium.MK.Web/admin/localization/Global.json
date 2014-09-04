@@ -44,6 +44,7 @@
 	"error.vehicleTypeLogoNameRequired" : "Logo is required",
 	"error.vehicleTypeNameRequired" : "Vehicle Name is required",
     "error.vehicleTypesLimitReached" :  "You have reached the maximum of 4 vehicle types.",
+	"error.vehicleTypesRemoveTypes" : "You have too many vehicle types! Remove some until you reach the allowed limit",
 	"Rule_InvalidPriority" : "Invalid priority ( maybe already used ? )",
 	"Rule_DuplicateName" : "Name already used",
 	"Loading" : "Loading",
@@ -68,7 +69,6 @@
 	"Client.ShowEstimate" : "Show estimate",
 	"Client.DestinationIsRequired" : "Destination is required",
 	"Client.ShowEstimateWarning" : "Show estimate warning",
-	"Booking.ConfirmationEmail" : "Send confirmation email",
 	"Client.HideCallDispatchButton" : "Hide call dispatch button",
 	"Client.HideReportProblem": "Hide report problem button",
 	"Client.HideSendReceipt": "Hide send receipt option",	
@@ -76,7 +76,8 @@
 	"Client.ShowRingCodeField": "Show ring code field",
 	"Client.ShowPassengerName": "Show passenger name",
 	"Client.ShowPassengerNumber": "Show passenger number",
-	"Client.ShowPassengerPhone": "Show passenger phone",	
+	"Client.ShowPassengerPhone": "Show passenger phone",
+	"Client.ShowPassengerApartment": "Show passenger apartment",	
 	"Client.DisabledTutorialSlides": "Disabled tutorial slides (ex: 1,2)",
 	"DefaultBookingSettings.ChargeTypeId": "Charge type id",
 	"DefaultBookingSettings.NbPassenger": "Passengers number",
@@ -97,11 +98,25 @@
 	"AvailableVehicles.Enabled" : "Show available vehicles nearby",
 	"AvailableVehicles.Radius" : "Radius for available vehicles",
 	"AvailableVehicles.Count" : "Number of avail. vehicles displayed",
-	
 	"IBS.ValidatePickupZone" : "IBS validate pickup zone",
 	"Receipt.Note" : "Receipt note",
 	"Client.OrderStatus.ClientPollingInterval" : "Client Ride Status Polling (seconds)",
 	"OrderStatus.ServerPollingInterval" : "Server Ride Status Polling (seconds)",
 
-	"/******* End settings Aliases *******/": ""
+	"/******* End settings Aliases *******/": "",
+
+    "/******* Begin notification settings Aliases ******/": "",
+
+    "NotificationSettingsWarning": "Notifications other than Email will be sent by Push or SMS depending on the setting \"Client.SendPushAsSMS\"",
+    "enabled":  "Enable Notifications",
+    "bookingConfirmationEmail":  "Booking Confirmation (Email)",
+    "receiptEmail":  "Receipt (Email)",
+    "driverAssignedEmail":  "Driver Assigned (Email)",
+    "driverAssignedPush":  "Driver Assigned",
+    "confirmPairingPush":  "Confirm Pairing",
+    "nearbyTaxiPush":  "Nearby Taxi",
+    "vehicleAtPickupPush":  "Vehicle at Pickup",
+    "paymentConfirmationPush":  "Payment Confirmation",
+
+    "/******* End notification settings Aliases ******/": ""
 }

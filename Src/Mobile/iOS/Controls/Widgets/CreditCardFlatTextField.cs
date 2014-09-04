@@ -10,14 +10,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         public FlatCreditCardTextField (IntPtr handle) : base (handle)
         {
+            HasRightArrow = false;
         }
 
         public FlatCreditCardTextField () : base()
         {
+            HasRightArrow = false;
         }
 
         public FlatCreditCardTextField (RectangleF frame) : base (frame)
         {
+            HasRightArrow = false;
         }
 
         [UsedImplicitly]

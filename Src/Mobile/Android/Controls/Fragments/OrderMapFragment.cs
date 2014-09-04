@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Input;
 using Android.Content.Res;
@@ -23,6 +24,7 @@ using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Binding.Attributes;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
+using ServiceStack.Common.Utils;
 using TinyIoC;
 using MK.Common.Configuration;
 
@@ -42,12 +44,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private List<Marker> _availableVehicleMarkers = new List<Marker> ();
 
         private BitmapDescriptor _destinationIcon;
-        private BitmapDescriptor _nearbyTaxiIcon;
-        private BitmapDescriptor _nearbyClusterIcon;
         private BitmapDescriptor _hailIcon;
 
         private Resources _resources;
 		private TaxiHailSetting _settings;
+
+        private IDictionary<string, BitmapDescriptor> _vehicleIcons; 
 
 		public OrderMapFragment(TouchableMap mapFragment, Resources resources, TaxiHailSetting settings)
         {
@@ -126,12 +128,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             set
             {
-                if (value == null)
-                    return;
-
                 if (_availableVehicles != value)
                 {
-                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value.ToArray(), GetMapBoundsFromProjection()));
+                    _availableVehicles = value;
+                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value != null ? value.ToArray () : null, GetMapBoundsFromProjection()));
                 }
             }
         }
@@ -172,6 +172,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }               
             };
 
+            _touchableMap.Surface.MoveBy = (deltaX, deltaY) =>
+            {
+                _touchableMap.Map.MoveCamera(CameraUpdateFactory.ScrollBy(deltaX, deltaY));
+            };
+
+            _touchableMap.Surface.ZoomBy = (animate, zoomByAmount) =>
+            {
+                if(animate)
+                {
+                    _touchableMap.Map.AnimateCamera (CameraUpdateFactory.ZoomBy(zoomByAmount));
+                }
+                else
+                {
+                    _touchableMap.Map.MoveCamera (CameraUpdateFactory.ZoomBy(zoomByAmount));
+                }
+            };
+
             Observable
                 .FromEventPattern<GoogleMap.CameraChangeEventArgs>(Map, "CameraChange")
                 .Throttle(TimeSpan.FromMilliseconds(500))
@@ -205,19 +222,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         private void InitDrawables()
-        {            
+        {     
+            _vehicleIcons = new Dictionary<string, BitmapDescriptor>();
+
 			var useColor = _settings.UseThemeColorForMapIcons;
             var colorBgTheme = useColor ? (Color?)_resources.GetColor(Resource.Color.company_color) : (Color?)null;
 
             var destinationIcon =  _resources.GetDrawable(Resource.Drawable.@destination_icon);
-            var nearbyTaxiIcon = _resources.GetDrawable(Resource.Drawable.@nearby_taxi);                                
-            var nearbyClusterIcon = _resources.GetDrawable(Resource.Drawable.@cluster); 
-            var hailIcon = _resources.GetDrawable(Resource.Drawable.@hail_icon);                                
+            var hailIcon = _resources.GetDrawable(Resource.Drawable.@hail_icon);
+            var nearbyTaxiIcon = _resources.GetDrawable(Resource.Drawable.@nearby_taxi);
+            var nearbySuvIcon = _resources.GetDrawable(Resource.Drawable.@nearby_suv);
+            var nearbyBlackcarIcon = _resources.GetDrawable(Resource.Drawable.@nearby_blackcar);      
+            var nearbyClusterTaxiIcon = _resources.GetDrawable(Resource.Drawable.@cluster_taxi);
+            var nearbySuvClusterIcon = _resources.GetDrawable(Resource.Drawable.@cluster_suv);
+            var nearbyBlackcarClusterIcon = _resources.GetDrawable(Resource.Drawable.@cluster_blackcar);
 
             _destinationIcon = DrawHelper.DrawableToBitmapDescriptor(destinationIcon, colorBgTheme);
-            _nearbyTaxiIcon = DrawHelper.DrawableToBitmapDescriptor(nearbyTaxiIcon, colorBgTheme);
-            _nearbyClusterIcon = DrawHelper.DrawableToBitmapDescriptor(nearbyClusterIcon, colorBgTheme);
             _hailIcon = DrawHelper.DrawableToBitmapDescriptor(hailIcon, colorBgTheme);
+
+            _vehicleIcons.Add("nearby_taxi", DrawHelper.DrawableToBitmapDescriptor(nearbyTaxiIcon, colorBgTheme));
+            _vehicleIcons.Add("nearby_suv", DrawHelper.DrawableToBitmapDescriptor(nearbySuvIcon, colorBgTheme));
+            _vehicleIcons.Add("nearby_blackcar", DrawHelper.DrawableToBitmapDescriptor(nearbyBlackcarIcon, colorBgTheme));
+            _vehicleIcons.Add("cluster_taxi", DrawHelper.DrawableToBitmapDescriptor(nearbyClusterTaxiIcon, colorBgTheme));
+            _vehicleIcons.Add("cluster_suv", DrawHelper.DrawableToBitmapDescriptor(nearbySuvClusterIcon, colorBgTheme));
+            _vehicleIcons.Add("cluster_blackcar", DrawHelper.DrawableToBitmapDescriptor(nearbyBlackcarClusterIcon, colorBgTheme));
         }
 
         private MapBounds GetMapBoundsFromProjection()
@@ -331,31 +359,73 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        private void ShowAvailableVehicles(AvailableVehicle[] vehicles)
+        private void ClearAllMarkers()
         {
             foreach (var vehicleMarker in _availableVehicleMarkers)
-            {                
-                vehicleMarker.Remove();
+            {
+                vehicleMarker.Remove ();
             }
 
-            _availableVehicleMarkers.Clear();
+            _availableVehicleMarkers.Clear ();
+        }
 
+        private void DeleteMarker(Marker markerToRemove)
+        {
+            markerToRemove.Remove ();
+            _availableVehicleMarkers.Remove (markerToRemove);
+        }
+
+        private void CreateMarker(AvailableVehicle vehicle)
+        {
+                bool isCluster = vehicle is AvailableVehicleCluster;
+                const string defaultLogoName = "taxi";
+                string logoKey = isCluster
+                                 ? string.Format("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
+                                 : string.Format("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
+
+                var vehicleMarker =
+                Map.AddMarker(new MarkerOptions()
+                  .SetPosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
+                        .Anchor(.5f, 1f)
+                  .InvokeIcon(_vehicleIcons[logoKey]));
+
+            _availableVehicleMarkers.Add (vehicleMarker);
+        }
+
+        private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
+        {
             if (vehicles == null)
-                return;
-
-            foreach (var v in vehicles)
             {
-                bool isCluster = (v is AvailableVehicleCluster) 
-                    ? true 
-                    : false;
+                ClearAllMarkers ();
+                return;
+            }
 
-                var vehicleMarker = 
-                    Map.AddMarker(new MarkerOptions()
-                      .SetPosition(new LatLng(v.Latitude, v.Longitude))
-                      .Anchor(.5f, 1f)
-                      .InvokeIcon(isCluster ? _nearbyClusterIcon : _nearbyTaxiIcon));
+            var vehicleNumbersToBeShown = vehicles.Select (x => x.VehicleNumber.ToString());
 
-                _availableVehicleMarkers.Add (vehicleMarker);
+            // check for markers that needs to be removed
+            var markersToRemove = _availableVehicleMarkers.Where(x => !vehicleNumbersToBeShown.Contains(x.Title)).ToList();
+            foreach (var marker in markersToRemove)
+            {
+                DeleteMarker(marker);
+            }
+
+            // check for updated or new
+            foreach (var vehicle in vehicles)
+            {
+                var existingMarkerForVehicle = _availableVehicleMarkers.FirstOrDefault (x => x.Title == vehicle.VehicleNumber.ToString());
+                if (existingMarkerForVehicle != null)
+                {
+                    if (existingMarkerForVehicle.Position.Latitude == vehicle.Latitude && existingMarkerForVehicle.Position.Longitude == vehicle.Longitude)
+                    {
+                        // vehicle not updated, nothing to do
+                        continue;
+                    }
+
+                    // coordinates were updated, remove and add later with new position
+                    DeleteMarker (existingMarkerForVehicle);
+                }
+
+                CreateMarker (vehicle);
             }
         }
 

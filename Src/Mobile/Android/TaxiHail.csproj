@@ -184,6 +184,7 @@
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
+    <Compile Include="Activities\Setting\NotificationSettingsActivity.cs" />
     <Compile Include="Activities\TutorialActivity.cs" />
     <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
     <Compile Include="Adapters\LocationListAdapter.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
     <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheService.cs" />
+    <Compile Include="Controls\Widgets\AutoResizeTextView.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
@@ -210,7 +212,6 @@
     <Compile Include="Setup.cs" />
     <Compile Include="Activities\Setting\RideSettingsActivity.cs" />
     <Compile Include="Models\Activities.cs" />
-    <Compile Include="Activities\AlertDialogActivity.cs" />
     <AndroidResource Include="Resources\Drawable\StatusBottomBarBackground.xml" />
     <AndroidResource Include="Resources\Drawable\WindowDisplay.xml" />
     <Compile Include="Activities\SelectItemDialogActivity.cs" />
@@ -233,13 +234,11 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\closeButton.png" />
     <AndroidResource Include="Resources\Drawable\right_arrow_light.png" />
-    <Compile Include="Activities\Setting\CreditCardsListActivity.cs" />
     <Compile Include="Activities\Setting\CreditCardAddActivity.cs" />
     <AndroidResource Include="Resources\Drawable\amex.png" />
     <AndroidResource Include="Resources\Drawable\mastercard.png" />
     <AndroidResource Include="Resources\Drawable\visa.png" />
     <AndroidResource Include="Resources\Layout\SpinnerTextWithImage.axml" />
-    <AndroidResource Include="Resources\Layout\Control_CreditCardButton.axml" />
     <AndroidResource Include="Resources\Drawable\segmented_button_left.xml" />
     <AndroidResource Include="Resources\Drawable\segmented_button_right.xml" />
     <AndroidResource Include="Resources\Drawable\segmented_button_text_color.xml" />
@@ -254,7 +253,6 @@
     <AndroidResource Include="Resources\Drawable\visa_electron.png" />
     <Compile Include="Activities\Book\BookPaymentActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardAdd.axml" />
-    <AndroidResource Include="Resources\Layout\View_Payments_CreditCardsList.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_BookPayment.axml" />
     <Compile Include="Binding\CustomBindings.cs" />
     <Compile Include="Binding\TextViewBinding.cs" />
@@ -322,7 +320,6 @@
     <AndroidResource Include="Resources\Drawable\completed.png" />
     <AndroidResource Include="Resources\Drawable\scheduled.png" />
     <Compile Include="Resources\Resource.Designer.cs" />
-    <Compile Include="Controls\Widgets\CreditCardButton.cs" />
     <Compile Include="Controls\Widgets\ListViewCell.cs" />
     <Compile Include="Controls\Widgets\EditTextLeftImage.cs" />
     <Compile Include="Controls\Widgets\BindableSelectionButton.cs" />
@@ -336,10 +333,8 @@
     <AndroidResource Include="Resources\Drawable\button_action_gray_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_green_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_red_text_selector.xml" />
-    <AndroidResource Include="Resources\Layout\View_Payments_CmtRideLinqChangePayment.axml" />
-    <AndroidResource Include="Resources\Layout\View_Payments_CmtRideLinqConfirmPair.axml" />
-    <Compile Include="Activities\Book\CmtRideLinqChangePaymentActivity.cs" />
-    <Compile Include="Activities\Book\CmtRideLinqConfirmPairActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_Payments_ConfirmPair.axml" />
+    <Compile Include="Activities\Book\ConfirmPairActivity.cs" />
     <Compile Include="Activities\Book\ConfirmCarNumberActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_ConfirmCarNumber.axml">
       <SubType>Designer</SubType>
@@ -450,10 +445,9 @@
     <Compile Include="Controls\Widgets\OrderReview.cs" />
     <AndroidResource Include="Resources\Layout\SubView_OrderOptions.axml" />
     <AndroidResource Include="Resources\Layout\SubView_MainMenu.axml" />
-    <AndroidResource Include="Resources\Drawable\cluster.png" />
+    <AndroidResource Include="Resources\Drawable\cluster_taxi.png" />
     <AndroidResource Include="Resources\Drawable\nearby_taxi.png" />
     <AndroidResource Include="Resources\Drawable\taxi_icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\cluster.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\hail_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\taxi_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_taxi.png" />
@@ -595,6 +589,20 @@
     <AndroidResource Include="Resources\Layout\View_BookingRating.axml" />
     <AndroidResource Include="Resources\Layout\View_AccountConfirmation.axml" />
     <Compile Include="Activities\Account\AccountConfirmationActivity.cs" />
+    <Compile Include="Controls\Widgets\CreditCardButton.cs" />
+    <AndroidResource Include="Resources\Layout\Control_CreditCardButton.axml" />
+    <AndroidResource Include="Resources\Drawable\blackcar_no_badge_selected.png" />
+    <AndroidResource Include="Resources\Drawable\blackcar_no_badge.png" />
+    <AndroidResource Include="Resources\Drawable\suv_no_badge_selected.png" />
+    <AndroidResource Include="Resources\Drawable\suv_no_badge.png" />
+    <AndroidResource Include="Resources\Drawable\taxi_no_badge_selected.png" />
+    <AndroidResource Include="Resources\Drawable\taxi_no_badge.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\taxi_no_badge.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\taxi_no_badge_selected.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\suv_no_badge.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\suv_no_badge_selected.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\blackcar_no_badge.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\blackcar_no_badge_selected.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -710,6 +718,15 @@
     <AndroidResource Include="Resources\values-fr\String.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\cluster_blackcar.png" />
+    <AndroidResource Include="Resources\Drawable\cluster_suv.png" />
+    <AndroidResource Include="Resources\Drawable\nearby_blackcar.png" />
+    <AndroidResource Include="Resources\Drawable\nearby_suv.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\nearby_blackcar.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\nearby_suv.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\cluster_blackcar.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\cluster_suv.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\cluster_taxi.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
@@ -757,11 +774,6 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Layout\CreditCardListItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-  </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
@@ -793,5 +805,11 @@
     <None Include="Calabash\features\support\hooks.rb" />
     <None Include="Calabash\features\step_definitions\my_first_steps.rb" />
     <None Include="Properties\AndroidManifest.xml" />
+    <AndroidResource Include="Resources\Layout\View_NotificationSettings.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\NotificationSettingListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
 </Project>

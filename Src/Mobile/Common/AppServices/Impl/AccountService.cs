@@ -22,6 +22,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Cirrious.CrossCore;
+using MK.Common.Configuration;
 using ServiceStack.Common;
 using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
@@ -295,7 +296,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				var authResponse = await UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service
 					.Authenticate (email, password),
-					error => { throw error;/* Avoid trigerring global error handler */ });
+					error => { throw error; /* Avoid trigerring global error handler */ });
                 SaveCredentials (authResponse);                
                 return await GetAccount ();
             }
@@ -523,59 +524,142 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<IList<ListItem>> GetPaymentsList ()
         {
 			var refData = await GetReferenceData();
-		
-			if (!_appSettings.Data.HideNoPreference
-                && refData.PaymentsList != null)
-            {
-                refData.PaymentsList.Insert(0,
-					new ListItem
-                	{
-                        Id = null,
-					    Display = _localize["NoPreference"]
-                	});
-            }
+			var hasCardOnFile = (await GetCreditCard()) != null;
+
+		    if (!hasCardOnFile)
+		    {
+		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
+		    }
 
             return refData.PaymentsList;
         }
 
-        public IEnumerable<CreditCardDetails> GetCreditCards ()
+        public async Task<CreditCardDetails> GetCreditCard ()
         {
-            var result = UseServiceClientTask<IAccountServiceClient, IEnumerable<CreditCardDetails>>(service => service.GetCreditCards());
-            return result;
+			// the server can return multiple credit cards if the user added more cards with a previous version, we get the first one only.
+            var result = await UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(service => service.GetCreditCards());
+			return result.FirstOrDefault();
         }
 
-        public void RemoveCreditCard (Guid creditCardId)
-        {
-			UseServiceClientTask<IAccountServiceClient>(client => client.RemoveCreditCard(creditCardId,""));
-        }
+		private async Task TokenizeCard(CreditCardInfos creditCard)
+		{
+			var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
+				creditCard.CardNumber, 
+				new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
+				creditCard.CCV));	
+
+			creditCard.Token = response.CardOnFileToken;       
+		}
 
 		public async Task<bool> AddCreditCard (CreditCardInfos creditCard)
         {
 			try
 			{
-				var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
-                    creditCard.CardNumber,
-                    new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
-                    creditCard.CCV));	
-			    creditCard.Token = response.CardOnFileToken;       
+				await TokenizeCard (creditCard);
 			}
 			catch
 			{
-                return false;
+				return false;
 			}
             
             var request = new CreditCardRequest
             {
                 CreditCardCompany = creditCard.CreditCardCompany,
                 CreditCardId = creditCard.CreditCardId,
-                FriendlyName = creditCard.FriendlyName,
+				NameOnCard = creditCard.NameOnCard,
                 Last4Digits = creditCard.Last4Digits,
-                Token = creditCard.Token
+                Token = creditCard.Token,
+				ExpirationMonth = creditCard.ExpirationMonth,
+				ExpirationYear = creditCard.ExpirationYear
             };
             
 			await UseServiceClientAsync<IAccountServiceClient> (client => client.AddCreditCard (request));  
 
 			return true;
+        }
+
+		public async Task<bool> UpdateCreditCard(CreditCardInfos creditCard)
+		{
+			try
+			{
+				await TokenizeCard (creditCard);
+			}
+			catch
+			{
+				return false;
+			}
+
+			var request = new CreditCardRequest
+			{
+				CreditCardCompany = creditCard.CreditCardCompany,
+				CreditCardId = creditCard.CreditCardId,
+				NameOnCard = creditCard.NameOnCard,
+				Last4Digits = creditCard.Last4Digits,
+				Token = creditCard.Token,
+				ExpirationMonth = creditCard.ExpirationMonth,
+				ExpirationYear = creditCard.ExpirationYear
+			};
+
+			await UseServiceClientAsync<IAccountServiceClient> (client => client.UpdateCreditCard (request));  
+
+			return true;
+		}
+
+		public async Task RemoveCreditCard()
+		{
+			await UseServiceClientAsync<IAccountServiceClient>(client => client.RemoveCreditCard());
+		}
+
+        public async Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false)
+        {
+            var companySettings = await UseServiceClientAsync<CompanyServiceClient, NotificationSettings>(client => client.GetNotificationSettings());
+            if (companyDefaultOnly)
+            {
+                return companySettings;
+            }
+
+            var userSettings = await UseServiceClientAsync<IAccountServiceClient, NotificationSettings>(client => client.GetNotificationSettings(CurrentAccount.Id));
+
+            // Merge company and user settings together
+            // If the value is not null in the company settings, this means the setting is active and visible to the user
+            // we check if the user has a value otherwise we put the company default value (or null if set as "not available" by the company)
+            return new NotificationSettings
+            {
+                Id = userSettings.Id,
+                Enabled = companySettings.Enabled && userSettings.Enabled,
+                BookingConfirmationEmail = companySettings.BookingConfirmationEmail.HasValue && userSettings.BookingConfirmationEmail.HasValue
+                    ? userSettings.BookingConfirmationEmail 
+                    : companySettings.BookingConfirmationEmail,
+                ConfirmPairingPush = companySettings.ConfirmPairingPush.HasValue && userSettings.ConfirmPairingPush.HasValue
+                    ? userSettings.ConfirmPairingPush 
+                    : companySettings.ConfirmPairingPush,
+                DriverAssignedPush = companySettings.DriverAssignedPush.HasValue && userSettings.DriverAssignedPush.HasValue
+                    ? userSettings.DriverAssignedPush 
+                    : companySettings.DriverAssignedPush,
+                NearbyTaxiPush = companySettings.NearbyTaxiPush.HasValue && userSettings.NearbyTaxiPush.HasValue
+                    ? userSettings.NearbyTaxiPush 
+                    : companySettings.NearbyTaxiPush,
+                PaymentConfirmationPush = companySettings.PaymentConfirmationPush.HasValue && userSettings.PaymentConfirmationPush.HasValue
+                    ? userSettings.PaymentConfirmationPush 
+                    : companySettings.PaymentConfirmationPush,
+                ReceiptEmail = companySettings.ReceiptEmail.HasValue && userSettings.ReceiptEmail.HasValue
+                    ? userSettings.ReceiptEmail 
+                    : companySettings.ReceiptEmail,
+                VehicleAtPickupPush = companySettings.VehicleAtPickupPush.HasValue && userSettings.VehicleAtPickupPush.HasValue
+                    ? userSettings.VehicleAtPickupPush 
+                    : companySettings.VehicleAtPickupPush
+            };
+        }
+
+        public async Task UpdateNotificationSettings(NotificationSettings notificationSettings)
+        {
+            var request = new NotificationSettingsRequest
+            {
+                AccountId = CurrentAccount.Id,
+                NotificationSettings = notificationSettings
+            };
+
+            await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateNotificationSettings(request));
         }
 
 		public void LogApplicationStartUp()

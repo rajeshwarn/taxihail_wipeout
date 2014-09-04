@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task CheckIfNeedsToShowTerms(Action<object, Action<bool>> actionToDoIfTrue, Action<bool, ZoomToStreetLevelPresentationHint> actionToDoOnReturn, bool initialLocateUserValue, ZoomToStreetLevelPresentationHint initialHintValue)
 		{
-			if (!_appSettings.Data.ShowTermsAndConditions)
+			if (!_appSettings.Data.ShowTermsAndConditions || _accountService.CurrentAccount == null)
 			{
 				return;
 			}

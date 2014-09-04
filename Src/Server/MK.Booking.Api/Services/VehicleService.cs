@@ -37,7 +37,15 @@ namespace apcurium.MK.Booking.Api.Services
         public AvailableVehiclesResponse Get(AvailableVehicles request)
         {
             var vehicles = _bookingWebServiceClient.GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
-            return new AvailableVehiclesResponse(vehicles.Select(Mapper.Map<AvailableVehicle>));
+            var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId);
+            string logoName = vehicleType != null ? vehicleType.LogoName : null;
+
+            var availableVehicles = vehicles.Select(Mapper.Map<AvailableVehicle>).ToArray();
+            foreach (var vehicle in availableVehicles)
+            {
+                vehicle.LogoName = logoName;
+            }
+            return new AvailableVehiclesResponse(availableVehicles);
         }
 
         public object Get(VehicleTypeRequest request)

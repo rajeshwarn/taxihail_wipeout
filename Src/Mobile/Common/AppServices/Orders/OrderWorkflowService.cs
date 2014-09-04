@@ -12,8 +12,10 @@ using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface.ServiceModel;
@@ -46,6 +48,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
+
+        private bool _isOrderRebooked;
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -155,11 +159,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
-		public async Task ValidatePickupDestinationAndTime()
+		public async Task ValidatePickupTime()
+		{
+			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
+			var pickupDateIsValid = !pickupDate.HasValue || (pickupDate.Value.ToUniversalTime() >= DateTime.UtcNow);
+
+			if (!pickupDateIsValid)
+			{
+				throw new OrderValidationException("Invalid pickup date", OrderValidationError.InvalidPickupDate);
+			}
+		}
+
+		public async Task ValidatePickupAndDestination()
 		{
 			var pickupAddress = await _pickupAddressSubject.Take(1).ToTask();
 			var pickupIsValid = pickupAddress.BookAddress.HasValue()
-			                     && pickupAddress.HasValidCoordinate();
+				&& pickupAddress.HasValidCoordinate();
 
 			if (!pickupIsValid)
 			{
@@ -186,18 +201,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					throw new OrderValidationException("Destination address required", OrderValidationError.DestinationAddressRequired);
 				}
 			}
-
-			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
-			var pickupDateIsValid = !pickupDate.HasValue || (pickupDate.Value.ToUniversalTime() >= DateTime.UtcNow);
-
-			if (!pickupDateIsValid)
-			{
-				throw new OrderValidationException("Invalid pickup date", OrderValidationError.InvalidPickupDate);
-			}
 		}
 
 		public async Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder()
 		{
+		    _isOrderRebooked = false;
+
 			var order = await GetOrder();
 
 			try
@@ -254,6 +263,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					case "CreateOrder_NoFareEstimateAvailable": /* Fare estimate is required and was not submitted */
 					case "CreateOrder_CannotCreateInIbs_1002": /* Pickup address outside of service area */
 					case "CreateOrder_CannotCreateInIbs_7000": /* Inactive account */
+					case "CreateOrder_CannotCreateInIbs_10000": /* Inactive charge account */
 						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["ServiceError" + e.ErrorCode + "_NoCall"];
 						throw new OrderCreationException(message, messageNoCall);
@@ -311,14 +321,25 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
                     return Tuple.Create(order, status);
 				}
-				else
+                else if (_bookingService.IsStatusCompleted(status.IBSStatusId))
 				{
-					_bookingService.ClearLastOrder();
+                    var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
+                    if (order.IsRated)
+					    _bookingService.ClearLastOrder();
 				}
 			}
 
 			return null;
 		}
+
+        public Guid? GetLastUnratedRide()
+	    {
+            if (_bookingService.HasUnratedLastOrder)
+            {
+                return _bookingService.GetUnratedLastOrder();
+            }
+            return null;
+	    }
 
 		public IObservable<Address> GetAndObservePickupAddress()
 		{
@@ -490,15 +511,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					&& destination.HasValidCoordinate();
 		}
 
+	    public bool ShouldPromptUserToRateLastRide()
+	    {
+            return !_cacheService.Get<string>("RateLastRideDontPrompt").HasValue();
+	    }
+
 		public async Task<bool> ShouldGoToAccountNumberFlow()
 		{
-			if (!_appSettings.Data.AccountChargeTypeId.HasValue)
-			{
-				return false;
-			}
-
 			var settings = await _bookingSettingsSubject.Take(1).ToTask();
-			return _appSettings.Data.AccountChargeTypeId == settings.ChargeTypeId;
+            return settings.ChargeTypeId == ChargeTypes.Account.Id;
 		}
 
 		public async Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null)
@@ -571,6 +592,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return validationResult;
 		}
 
+		public async Task<bool> ValidateCardOnFile()
+		{
+			if (this._appSettings.Data.CreditCardChargeTypeId.HasValue) 
+			{
+				var orderToValidate = await GetOrder ();	
+				if ( (orderToValidate.Settings.ChargeTypeId == _appSettings.Data.CreditCardChargeTypeId.Value)  &&
+					(!_accountService.CurrentAccount.DefaultCreditCard.HasValue ))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+
+
+
 		public void ConfirmValidationOrder()
 		{
 			_orderCanBeConfirmed.OnNext (true);
@@ -604,11 +643,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public void Rebook(Order previous)
 		{
+            _isOrderRebooked = true;
 			_pickupAddressSubject.OnNext(previous.PickupAddress);
 			_destinationAddressSubject.OnNext(previous.DropOffAddress);
 			_bookingSettingsSubject.OnNext(previous.Settings);
 			_noteToDriverSubject.OnNext(previous.Note);
 		}
+
+        public bool IsOrderRebooked()
+        {
+            return _isOrderRebooked;
+        }
+
+	    public void CancelRebookOrder()
+	    {
+	        _isOrderRebooked = false;
+	    }
     }
 }
 

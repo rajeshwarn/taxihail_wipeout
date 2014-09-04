@@ -1,0 +1,9 @@
+﻿{
+	"Email" : "Email",
+	"FullName" : "Nom complet",
+	"Phone" : "Ligne mobile",
+	"Password" : "Mot de passe",
+	"ConfirmPassword" : "Confirmation du mot de passee",
+	"CreateBt" : "Créer",
+	"SignupTitle" : "S'enregistrer"
+}

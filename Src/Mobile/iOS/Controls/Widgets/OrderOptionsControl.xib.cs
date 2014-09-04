@@ -88,16 +88,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(viewVehicleType)
                 .For(v => v.ShowEstimate)
 				.To(vm => vm.ShowEstimate);
+			set.Bind(viewVehicleType)
+				.For(v => v.ShowEta)
+                .To(vm => vm.Settings.ShowEta);
+			set.Bind(viewVehicleType)
+				.For(v => v.ShowVehicleSelection)
+				.To(vm => vm.ShowVehicleSelection);
             set.Bind (viewVehicleType)
                 .For (v => v.Vehicles)
                 .To (vm => vm.VehicleTypes);
             set.Bind (viewVehicleType)
                 .For (v => v.SelectedVehicle)
                 .To (vm => vm.SelectedVehicleType);
+			set.Bind (viewVehicleType)
+				.For (v => v.Eta)
+				.To (vm => vm.FormattedEta);
 
-            set.Bind(viewPickup)
-                .For("AddressClicked")
-                .To(vm => vm.ShowSearchAddress);
+			set.Bind (viewPickup)
+                .For ("AddressClicked")
+				.To (vm => vm.ShowSearchAddress);
 
             set.Bind(viewDestination)
                 .For("AddressClicked")

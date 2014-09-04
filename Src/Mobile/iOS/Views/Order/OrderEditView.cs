@@ -69,6 +69,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 txtPassengers.Maybe(x => x.RemoveFromSuperview());
             }
 
+            if (!this.Services().Settings.ShowPassengerApartment)
+            {
+                lblApartment.Maybe(x => x.RemoveFromSuperview());
+                txtApartment.Maybe(x => x.RemoveFromSuperview());
+                lblEntryCode.Maybe(x => x.RemoveFromSuperview());
+                txtEntryCode.Maybe(x => x.RemoveFromSuperview());
+            }
+
+            if (!this.Services().Settings.ShowRingCodeField)
+            {
+                lblEntryCode.Maybe(x => x.RemoveFromSuperview());
+                txtEntryCode.Maybe(x => x.RemoveFromSuperview());
+            }
+
             var set = this.CreateBindingSet<OrderEditView, OrderEditViewModel> ();
 
             set.BindSafe(txtName)
@@ -92,6 +106,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             set.BindSafe(txtChargeType)
                 .For("Text")
                 .To(vm => vm.ChargeTypeName);
+
+			set.BindSafe(txtChargeType)
+				.For(v => v.Enabled)
+				.To(vm => vm.IsChargeTypesEnabled);
 
             set.Apply();
         }

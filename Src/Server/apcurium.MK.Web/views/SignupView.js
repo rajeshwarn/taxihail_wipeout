@@ -118,6 +118,8 @@
         
         onsubmit: function (form) {
             ga('send', 'event', 'button', 'click', 'create account web', 0);
+            var lang = TaxiHail.getClientLanguage();
+            this.model.set('Language', lang);
             this.model.set('ActivationMethod', 'Email');
             this.model.save({}, { error: _.bind(this.onServerError, this) });
         }

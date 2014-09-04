@@ -164,7 +164,7 @@
                             android:layout_width="fill_parent"
                             android:gravity="start|center"
                             android:paddingStart="8dp"
-                            android:textColor="#000000"
+                            android:textColor="@color/black"
                             android:text="text"
                             android:textSize="19dip"
                             android:ellipsize="end"
@@ -173,10 +173,12 @@
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/ApartmentInfosLayout"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="35dip">
                     <LinearLayout
+                        android:id="@+id/passengerApartmentLayout"
                         android:orientation="horizontal"
                         android:layout_width="fill_parent"
                         android:layout_weight="0.5"
@@ -199,6 +201,7 @@
                             android:id="@+id/lblApt" />
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/ringCodeLayout"
                         android:orientation="horizontal"
                         android:layout_width="fill_parent"
                         android:layout_weight="0.5"

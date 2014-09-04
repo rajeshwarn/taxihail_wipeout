@@ -147,7 +147,9 @@
     <Compile Include="Services\BookingSettingsService.cs" />
     <Compile Include="Services\LogApplicationStartUpService.cs" />
     <Compile Include="Services\OrderPairingService.cs" />
+    <Compile Include="Services\Payment\IPaymentService.cs" />
     <Compile Include="Services\Payment\MonerisPaymentService.cs" />
+    <Compile Include="Services\Payment\ProcessPaymentService.cs" />
     <Compile Include="Services\Payment\ResendPaymentConfirmationSevice.cs" />
     <Compile Include="Services\Payment\BraintreePaymentService.cs" />
     <Compile Include="Services\CancelOrderService.cs" />
@@ -156,7 +158,7 @@
     <Compile Include="Services\ConfigurationsService.cs" />
     <Compile Include="Services\ConfirmAccountService.cs" />
     <Compile Include="Services\Payment\CmtPaymentService.cs" />
-    <Compile Include="Services\Payment\PaymentService.cs" />
+    <Compile Include="Services\Payment\PaymentSettingsService.cs" />
     <Compile Include="Services\Payment\PayPalService.cs" />
     <Compile Include="Services\PushNotificationAdministrationService.cs" />
     <Compile Include="Services\TermsAndConditionsService.cs" />

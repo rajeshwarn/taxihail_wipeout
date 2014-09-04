@@ -14,9 +14,9 @@ namespace apcurium.MK.Booking.EventHandlers
 {
     public class CreditCardDetailsGenerator :
         IEventHandler<CreditCardAdded>,
+        IEventHandler<CreditCardUpdated>,
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>
-
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -44,14 +44,31 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
+        public void Handle(CreditCardUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                // remove any other credit cards that might have been added previously
+                context.RemoveWhere<CreditCardDetails>(cc => cc.AccountId == @event.SourceId && cc.CreditCardId != @event.CreditCardId);
+                context.SaveChanges();
+
+                var creditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
+                if (creditCard != null)
+                {
+                    Mapper.Map(@event, creditCard);
+                    context.Save(creditCard);
+                }
+            }
+        }
+
         public void Handle(CreditCardRemoved @event)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var address = context.Find<CreditCardDetails>(@event.CreditCardId);
-                if (address != null)
+                var creditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
+                if (creditCard != null)
                 {
-                    context.Set<CreditCardDetails>().Remove(address);
+                    context.Set<CreditCardDetails>().Remove(creditCard);
                     context.SaveChanges();
                 }
             }

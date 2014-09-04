@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Messages;
@@ -17,9 +18,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITutorialService _tutorialService;
 		private readonly IPushNotificationService _pushNotificationService;
 		private readonly IVehicleService _vehicleService;
-		private readonly IAccountService _accountService;
-		private readonly IBookingService _bookingService;
 		private readonly ITermsAndConditionsService _termsService;
+	    private readonly IMvxLifetime _mvxLifetime;
+		private readonly IAccountService _accountService;
 
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
 			IMvxWebBrowserTask browserTask,
@@ -29,34 +30,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IVehicleService vehicleService,
 			IAccountService accountService,
 			IPhoneService phoneService,
-			ITermsAndConditionsService termsService, 
-			IBookingService bookingService) : base()
+			ITermsAndConditionsService termsService,
+			IPaymentService paymentService, 
+            IMvxLifetime mvxLifetime) : base()
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
 			_tutorialService = tutorialService;
 			_pushNotificationService = pushNotificationService;
 			_vehicleService = vehicleService;
-			_accountService = accountService;
 			_termsService = termsService;
-			_bookingService = bookingService;
+		    _mvxLifetime = mvxLifetime;
+			_accountService = accountService;
 
-			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService);
+			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService, paymentService);
 		}
 
 		private bool _isShowingTermsAndConditions;
 		private bool _locateUser;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
 
-		public void Init(bool locateUser, string defaultHintZoomLevel)
+        public void Init(bool locateUser, string defaultHintZoomLevel)
 		{
 			_locateUser = locateUser;
-			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);			
+			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);
 		}
 
 		public override void OnViewLoaded ()
 		{
 			base.OnViewLoaded ();
+            _mvxLifetime.LifetimeChanged += OnApplicationLifetimeChanged;
 
 			Map = AddChild<MapViewModel>();
 			OrderOptions = AddChild<OrderOptionsViewModel>();
@@ -69,15 +72,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			BottomBar.CancelEdit = OrderEdit.Cancel;
 		}
 
-		public override void OnViewStarted(bool firstTime)
+		public async override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
 
 			_locationService.Start();
 			CheckTermsAsync();
 			CheckActiveOrderAsync ();
+
+            if (_orderWorkflowService.IsOrderRebooked())
+            {
+                _bottomBar.ReviewOrderDetails();
+            }
+
 			if (firstTime)
 			{
+				await Panel.Start ();
+                CheckUnratedRide();
+
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
 				_tutorialService.DisplayTutorialToNewUser();
@@ -119,6 +131,27 @@ var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
 
 		}
 
+	    private void CheckUnratedRide()
+	    {
+            var unratedRideId = _orderWorkflowService.GetLastUnratedRide();
+            if (unratedRideId != null
+                && _orderWorkflowService.ShouldPromptUserToRateLastRide())
+	        {
+                this.Services().Message.ShowMessage(this.Services().Localize["RateLastRideTitle"],
+                                                    this.Services().Localize["RateLastRideMessage"],
+                                                    this.Services().Localize["Rate"],
+                                                        () => ShowViewModel<BookRatingViewModel>(new  
+                                                                {
+						                                            orderId = unratedRideId.ToString(),
+						                                            canRate = true
+                                                                }),
+                                                    this.Services().Localize["Don't ask"],
+                                                        () => this.Services().Cache.Set("RateLastRideDontPrompt", "yes"),
+                                                    this.Services().Localize["NotNow"],
+                                                        () => { /* Do nothing */ });
+	        }
+	    }
+
 		public async void CheckTermsAsync()
 		{
 			// if we're already showing the terms and conditions, do nothing
@@ -150,8 +183,14 @@ var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
 			_locationService.Stop();
 			_vehicleService.Stop();
 		}
-		
-		public PanelMenuViewModel Panel { get; set; }
+
+	    public override void OnViewUnloaded()
+	    {
+	        base.OnViewUnloaded();
+            _mvxLifetime.LifetimeChanged -= OnApplicationLifetimeChanged;
+	    }
+
+	    public PanelMenuViewModel Panel { get; set; }
 
 		private MapViewModel _map;
 		public MapViewModel Map
@@ -225,10 +264,13 @@ var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
 			{
 				return this.GetCommand(async () =>
 				{
-					var address = await _orderWorkflowService.SetAddressToUserLocation();
-					if(address.HasValidCoordinate())
+					if (_accountService.CurrentAccount != null)
 					{
-                        this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
+						var address = await _orderWorkflowService.SetAddressToUserLocation();
+						if(address.HasValidCoordinate())
+						{
+		                    this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
+						}
 					}
 				});
 			}
@@ -260,5 +302,14 @@ var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
             }
 
 		}
+
+        private void OnApplicationLifetimeChanged(object sender, MvxLifetimeEventArgs args)
+        {
+            if (args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk
+                || args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)
+            {
+                CheckUnratedRide();
+            }
+        }
     }
 }

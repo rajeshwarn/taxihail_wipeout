@@ -207,7 +207,6 @@
     <Compile Include="Style\StyleManager.cs" />
     <Compile Include="TaxiHailApp.cs" />
     <Compile Include="ViewModels\AboutUsViewModel.cs" />
-    <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\BookRatingViewModel.cs" />
     <Compile Include="ViewModels\Callbox\BaseCallboxViewModel.cs" />
     <Compile Include="ViewModels\Callbox\CallboxCallTaxiViewModel.cs" />
@@ -221,8 +220,9 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqChangePaymentViewModel.cs" />
-    <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqConfirmPairViewModel.cs" />
+    <Compile Include="ViewModels\Payment\ConfirmPairViewModel.cs" />
+    <Compile Include="ViewModels\Payment\PairingState.cs" />
+    <Compile Include="ViewModels\NotificationSettingsViewModel.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="ViewModels\TutorialViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
@@ -242,14 +242,12 @@
     <Compile Include="Data\CreditCardInfos.cs" />
     <Compile Include="ViewModels\Payment\PaymentDetailsViewModel.cs" />
     <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
-    <Compile Include="Messages\RemoveCreditCard.cs" />
     <Compile Include="AppServices\IUseServiceClient.cs" />
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
-    <Compile Include="ViewModels\Payment\CreditCardsListViewModel.cs" />
     <Compile Include="ViewModels\Payment\PaymentViewModel.cs" />
     <Compile Include="CultureProvider.cs" />
     <Compile Include="ViewModels\Payment\PayPalViewModel.cs" />
@@ -267,8 +265,6 @@
     <Compile Include="AppServices\Impl\TermsAndConditionsService.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="Messages\AppActivated.cs" />
-    <Compile Include="ViewModels\Payment\CreditCardViewModel.cs" />
-    <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqPairingState.cs" />
     <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
     <Compile Include="AppServices\Impl\VehicleService.cs" />
     <Compile Include="AppServices\IVehicleService.cs" />
@@ -336,6 +332,7 @@
     <Compile Include="ViewModels\Orders\InitializeOrderForAccountPaymentViewModel.cs" />
     <Compile Include="ViewModels\Orders\AccountChargeQuestionViewModel.cs" />
     <Compile Include="ViewModels\AccountConfirmationViewModel.cs" />
+    <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="AppServices\IRegisterWorkflowService.cs" />
     <Compile Include="AppServices\Impl\RegisterWorkflowService.cs" />
   </ItemGroup>

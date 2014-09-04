@@ -19,8 +19,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 		{
 			base.ViewWillAppear (animated);
 
+			NavigationController.NavigationBar.Hidden = false;
 			NavigationItem.HidesBackButton = false;
 			NavigationItem.Title = Localize.GetValue("View_BookRating");
+
+			ChangeThemeOfBarStyle();
 		}
 
 		public override void ViewDidLoad ()

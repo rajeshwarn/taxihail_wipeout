@@ -8,17 +8,22 @@ using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Api.Payment;
 using apcurium.MK.Booking.Api.Providers;
+using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
 using AutoMapper;
+using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
 using CreateOrder = apcurium.MK.Booking.Api.Contract.Requests.CreateOrder;
 using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
@@ -42,19 +47,50 @@ namespace apcurium.MK.Booking.Api
             container.RegisterType<IIbsOrderService, IbsOrderService>();
 
             container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
-            var mockIbsStatusUpdate = bool.Parse(container
-                .Resolve<IConfigurationManager>()
-                .GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
-            if (mockIbsStatusUpdate)
-            {
-                container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJobStub>();
-                container.RegisterType<OrderStatusHelper, OrderStatusIbsMock>();
-            }
-            else
-            {
-                container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJob>();
-                container.RegisterType<OrderStatusHelper, OrderStatusHelper>();
-            }
+
+            container.RegisterType<IUpdateOrderStatusJob>(
+                new TransientLifetimeManager(),
+                new InjectionFactory(c =>
+                {
+                    var configManager = c.Resolve<IConfigurationManager>();
+                    var mockIbsStatusUpdate = bool.Parse(configManager.GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
+                    if (mockIbsStatusUpdate)
+                    {
+                        return new UpdateOrderStatusJobStub();
+                    }
+                    
+                    return new UpdateOrderStatusJob(c.Resolve<IOrderDao>(), c.Resolve<IBookingWebServiceClient>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>());
+                }));
+
+            container.RegisterType<OrderStatusHelper>(
+                new TransientLifetimeManager(),
+                new InjectionFactory(c =>
+                {
+                    var configManager = c.Resolve<IConfigurationManager>();
+                    var mockIbsStatusUpdate = bool.Parse(configManager.GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
+                    return mockIbsStatusUpdate 
+                        ? new OrderStatusIbsMock(c.Resolve<IOrderDao>(), c.Resolve<OrderStatusUpdater>(), configManager) 
+                        : new OrderStatusHelper(c.Resolve<IOrderDao>(), configManager);
+                }));
+
+            container.RegisterType<IPaymentService>(
+                new TransientLifetimeManager(),
+                new InjectionFactory(c =>
+                {
+                    var configManager = c.Resolve<IConfigurationManager>();
+                    switch (configManager.GetPaymentSettings().PaymentMode)
+                    {
+                        case PaymentMethod.Braintree:
+                            return new BraintreePaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), configManager, c.Resolve<IPairingService>());
+                        case PaymentMethod.RideLinqCmt:
+                        case PaymentMethod.Cmt:
+                            return new CmtPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), configManager, c.Resolve<IPairingService>());
+                        case PaymentMethod.Moneris:
+                            return new MonerisPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), configManager, c.Resolve<IPairingService>());
+                        default:
+                            return null;
+                    }
+                }));
         }
 
 
@@ -133,6 +169,8 @@ namespace apcurium.MK.Booking.Api
                 .ForMember(x => x.CreditCardId,
                     opt => opt.ResolveUsing(x => x.CreditCardId == Guid.Empty ? Guid.NewGuid() : x.CreditCardId));
 
+            Mapper.CreateMap<CreditCardRequest, UpdateCreditCard>();
+
             Mapper.CreateMap<PopularAddress, AddPopularAddress>();
             Mapper.CreateMap<PopularAddress, UpdatePopularAddress>();
         }
@@ -143,7 +181,8 @@ namespace apcurium.MK.Booking.Api
         protected override void Configure()
         {
             CreateMap<IbsVehiclePosition, AvailableVehicle>()
-                .ForMember(p => p.VehicleNumber, opt => opt.ResolveUsing(x => x.VehicleNumber));
+                .ForMember(p => p.VehicleNumber, opt => opt.ResolveUsing(x => x.VehicleNumber))
+                .ForMember(p => p.LogoName, opt => opt.Ignore());
         }
     }
 }

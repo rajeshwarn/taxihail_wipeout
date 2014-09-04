@@ -1,6 +1,7 @@
 { 
    "FacebookAppId" : "134284363380764",
    "FacebookEnabled": "true",
+	"FacebookPublishEnabled": "true",
    "TwitterAccessTokenUrl" : "https://api.twitter.com/oauth/access_token",
    "TwitterAuthorizeUrl" : "https://api.twitter.com/oauth/authorize",
    "TwitterCallback" : "http://www.taxihail.com/oauth",

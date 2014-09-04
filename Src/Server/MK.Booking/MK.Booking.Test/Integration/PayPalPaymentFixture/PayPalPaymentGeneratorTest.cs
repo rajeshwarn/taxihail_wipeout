@@ -137,7 +137,7 @@ namespace apcurium.MK.Booking.Test.Integration.PayPalPaymentFixture
             {
                 var dto = context.Find<OrderPaymentDetail>(_paymentId);
                 Assert.NotNull(dto);
-                Assert.AreEqual("message", dto.CancellationError);
+                Assert.AreEqual("message", dto.Error);
             }
         }
     }

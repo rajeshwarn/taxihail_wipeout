@@ -36,13 +36,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			this.ShouldChangeCharacters = CheckMaxLength;
 
-            BackgroundColor = UIColor.White;
+			BackgroundColor = Enabled ? UIColor.White : UIColor.Clear;
 
-			if (UIHelper.IsOS7orHigher) {
+			if (UIHelper.IsOS7orHigher) 
+            {
 				TintColor = UIColor.FromRGB (44, 44, 44); // cursor color
 				TextAlignment = UITextAlignment.Natural;
-			} else {
-
+			} 
+            else 
+            {
 				if (this.Services ().Localize.IsRightToLeft)
 				{
 					TextAlignment = UITextAlignment.Right;
@@ -58,15 +60,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             RightView = new UIView(new RectangleF(Frame.Right - Padding, 0f, Padding, 1f));
             RightViewMode = UITextFieldViewMode.UnlessEditing;
             ClearButtonMode = UITextFieldViewMode.WhileEditing;
+
+			HasRightArrow = Enabled && HasRightArrow;
 		}
 
 		public override void Draw (RectangleF rect)
 		{   
-            var fillColor = State.HasFlag (UIControlState.Normal)
-                            ? BackgroundColor
-			                : UIColor.Clear;
-
+            var fillColor = BackgroundColor;
 			var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, RadiusCorner);
+
+			HasRightArrow = Enabled && HasRightArrow;
 
 			DrawBackground(UIGraphics.GetCurrentContext(), rect, roundedRectanglePath, fillColor.CGColor);
 			DrawStroke(fillColor.CGColor);
@@ -79,6 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			set 
             {
 				base.Enabled = value;
+				BackgroundColor = value ? UIColor.White : UIColor.Clear;
 				SetNeedsDisplay();
 			}
 		}
@@ -116,24 +120,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 }
             }
         }
-
+            
+        private UIImageView _rightArrow { get; set; }
         private bool _hasRightArrow { get; set; }
-        public bool HasRightArrow {
+        public bool HasRightArrow 
+        {
             get { return _hasRightArrow; }
             set 
             {
-                _hasRightArrow = value;
-
-                if(value)
+                if (_hasRightArrow != value)
                 {
-                    var image = UIImage.FromFile("right_arrow.png");
-                    var rightArrow = new UIImageView(new RectangleF(Frame.Width - image.Size.Width - Padding, (Frame.Height - image.Size.Height)/2, image.Size.Width, image.Size.Height));
-                    rightArrow.Image = image;
+                    _hasRightArrow = value;
 
-                    RightView.Frame = RightView.Frame.IncrementWidth(image.Size.Width + Padding); // this is to keep the same padding between the end of the text and the right arrow
-                    AddSubview(rightArrow);
+                    if (value)
+                    {
+                        var image = UIImage.FromFile ("right_arrow.png");
+                        _rightArrow = new UIImageView (new RectangleF (Frame.Width - image.Size.Width - Padding, (Frame.Height - image.Size.Height) / 2, image.Size.Width, image.Size.Height));
+                        _rightArrow.Image = image;
 
-                    SetNeedsDisplay();
+                        RightView.Frame = RightView.Frame.IncrementWidth (image.Size.Width + Padding); // this is to keep the same padding between the end of the text and the right arrow
+                        AddSubview (_rightArrow);
+
+                        SetNeedsDisplay ();
+                    }
+                    else
+                    {
+                        if (_rightArrow != null)
+                        {
+                            var imageWidth = _rightArrow.Image != null ? _rightArrow.Image.Size.Width : 0;
+                            RightView.Frame = RightView.Frame.IncrementWidth (-(imageWidth + Padding));
+                            _rightArrow.RemoveFromSuperview ();
+
+                            SetNeedsDisplay ();
+                        }
+                    }
                 }
             }
         }
@@ -143,7 +163,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			context.SaveState ();
 			context.BeginTransparencyLayer (null);
 			roundedRectanglePath.AddClip ();
-			context.SetFillColorWithColor(fillColor);
+            context.SetFillColorWithColor(fillColor);
 			context.FillRect(rect);
 			context.EndTransparencyLayer ();
 			context.RestoreState ();

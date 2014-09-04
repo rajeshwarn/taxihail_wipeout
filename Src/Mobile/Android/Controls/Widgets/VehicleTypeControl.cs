@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private ImageView VehicleTypeImage { get; set; }
 		private TextView VehicleTypeLabel { get; set; }
 		private bool IsForSelection { get; set; }
+		private bool EtaBadge { get; set; }
 
 		public VehicleTypeControl(Context c, IAttributeSet attr) : base(c, attr)
 		{
@@ -24,13 +25,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		public VehicleTypeControl(Context c, VehicleType vehicle, bool isSelected) : base(c)
 		{
+			EtaBadge = false;
 			Initialize ();
-
 			IsForSelection = true;
 			Vehicle = vehicle;
 			Selected = isSelected;
 			Clickable = true;
 		}
+
+		public VehicleTypeControl(Context c, VehicleType vehicle) : base(c)
+		{
+			EtaBadge = true;
+			Selected = true;
+			Initialize ();
+			IsForSelection = false;
+			Vehicle = vehicle;
+			Clickable = false;
+		}
+
 
 		protected override void OnFinishInflate()
 		{
@@ -46,6 +58,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			VehicleTypeImage = (ImageView)layout.FindViewById(Resource.Id.vehicleTypeImage);
 			VehicleTypeLabel = (TextView)layout.FindViewById(Resource.Id.vehicleTypeLabel);
+
+			if (EtaBadge) {
+				VehicleTypeLabel.Visibility = ViewStates.Gone;
+				VehicleTypeImage.SetPadding (0, 0, 0, 0);
+			}
 		}
 
 		private VehicleType _vehicle;
@@ -58,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				{
 					_vehicle = value;
 
-					VehicleTypeImage.SetImageDrawable(GetImage(value.LogoName));
+					VehicleTypeImage.SetImageDrawable(GetImage(value.LogoName, EtaBadge));
 					VehicleTypeImage.SetColorFilter(GetColorFilter(DefaultColorForTextAndImage));
 					VehicleTypeLabel.Text = TinyIoCContainer.Current.Resolve<ILocalization>()[value.Name].ToUpper();
 					VehicleTypeLabel.SetTextColor (DefaultColorForTextAndImage);
@@ -80,9 +97,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         return;
                     }
 
-                    VehicleTypeImage.SetImageDrawable(GetImage(Vehicle.LogoName));
+					VehicleTypeImage.SetImageDrawable(GetImage(Vehicle.LogoName, EtaBadge));
 			    
-                    if (value) 
+					if (value && !EtaBadge) 
                     {
                         VehicleTypeImage.SetColorFilter(GetColorFilter(Resources.GetColor(Resource.Color.company_color)));
                         VehicleTypeLabel.SetTextColor (Resources.GetColor(Resource.Color.company_color));
@@ -124,12 +141,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			return colorFilter;
 		}
 
-        private Drawable GetImage(string vehicleTypeLogoName)
+		private Drawable GetImage(string vehicleTypeLogoName, bool etaBadge = false)
 	    {
 	        return DrawableHelper.GetDrawableFromString(Resources,
 	            string.Format(Selected 
-                    ? "{0}_badge_selected" 
-                    : "{0}_badge", 
+					? "{0}_" + (etaBadge ? "no_" : "") + "badge_selected" 
+					: "{0}_" + (etaBadge ? "no_" : "") + "badge", 
                 vehicleTypeLogoName.ToLower()));
 	    }
 	}

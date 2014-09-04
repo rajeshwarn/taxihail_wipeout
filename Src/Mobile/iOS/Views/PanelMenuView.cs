@@ -90,8 +90,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			{
 				imgLogoApcurium.Hidden = true;
 				imgLogoMobileKnowledge.Hidden = true;
-			}else{
-
+			}
+            else
+            {
 				imgLogoApcurium.AddGestureRecognizer (new UITapGestureRecognizer (() => {
 					if (ToApcuriumWebsite != null && ToApcuriumWebsite.CanExecute ()) {
 						ToApcuriumWebsite.Execute ();
@@ -104,6 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					}
 				}));
 			}
+
 			menuListView.AlwaysBounceVertical = false;
         }
 

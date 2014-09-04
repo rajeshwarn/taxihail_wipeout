@@ -20,6 +20,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private TextView _lblName;
         private TextView _lblPhone;
         private TextView _lblPassengers;
+        private TextView _lblApartment;
+        private TextView _lblEntryCode;
         private EditText _txtName;
         private EditText _txtPhone;
         private EditText _txtPassengers;
@@ -36,6 +38,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _lblName = Content.FindViewById<TextView>(Resource.Id.lblName);
                 _lblPhone = Content.FindViewById<TextView>(Resource.Id.lblPhone);
                 _lblPassengers = Content.FindViewById<TextView>(Resource.Id.lblPassengers);
+                _lblApartment = Content.FindViewById<TextView>(Resource.Id.lblApartment);
+                _lblEntryCode = Content.FindViewById<TextView>(Resource.Id.lblEntryCode);
                 _txtName = Content.FindViewById<EditText>(Resource.Id.txtName);
                 _txtPhone = Content.FindViewById<EditText>(Resource.Id.txtPhone);
                 _txtPassengers = Content.FindViewById<EditText>(Resource.Id.txtPassengers);
@@ -76,6 +80,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 _lblPassengers.Maybe(x => x.Visibility = ViewStates.Gone);
                 _txtPassengers.Maybe(x => x.Visibility = ViewStates.Gone);
+            }
+
+            if (!this.Services().Settings.ShowPassengerApartment)
+            {
+                _lblApartment.Maybe(x => x.Visibility = ViewStates.Gone);
+                _txtApartment.Maybe(x => x.Visibility = ViewStates.Gone);
+
+                // Also hide ring code field if apartment is hidden because 
+                // it doesn't make sens to keep it displayed in that case
+                _lblEntryCode.Maybe(x => x.Visibility = ViewStates.Gone);
+                _txtEntryCode.Maybe(x => x.Visibility = ViewStates.Gone);
+            }
+
+            if (!this.Services().Settings.ShowRingCodeField)
+            {
+                _lblEntryCode.Maybe(x => x.Visibility = ViewStates.Gone);
+                _txtEntryCode.Maybe(x => x.Visibility = ViewStates.Gone);
             }
 
             var set = this.CreateBindingSet<OrderEdit, OrderEditViewModel> ();

@@ -141,9 +141,6 @@
   <data name="AccountPaymentNumberRequiredTitle" xml:space="preserve">
     <value>مطلوب رقم الحساب</value>
   </data>
-  <data name="AddCreditCardTitle" xml:space="preserve">
-    <value>أضف بطاقة إئتمانية</value>
-  </data>
   <data name="AddReminderMessage" xml:space="preserve">
     <value>هل ترغب في إضافة تنبيه على تقويمك حول هذا الموعد؟</value>
   </data>
@@ -164,7 +161,6 @@
   </data>
   <data name="AppNeedUpdateTitle" xml:space="preserve">
     <value>هناك تحديثات متاحة</value>
-  </data>
   <data name="April" xml:space="preserve">
     <value>أبريل (04)</value>
   </data>
@@ -411,14 +407,11 @@
   <data name="CreditCard" xml:space="preserve">
     <value>بطاقة الائتمان</value>
   </data>
-  <data name="CreditCardCategory" xml:space="preserve">
-    <value>التصنيف</value>
-  </data>
   <data name="CreditCardCCV" xml:space="preserve">
     <value>CVV</value>
   </data>
   <data name="CreditCardErrorTitle" xml:space="preserve">
-    <value>لا يمكن إضافة بطاقة إئتمان</value>
+    <value>لا يمكنك حفظ هذه البطاقة الائتمانية</value>
   </data>
   <data name="CreditCardExpMonth" xml:space="preserve">
     <value>شهر الإنتهاء</value>
@@ -431,6 +424,9 @@
   </data>
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
     <value>رقم البطاقة الائتمانية خاطئة</value>
+  </data>
+  <data name="CreditCardErrorInvalid" xml:space="preserve">
+    <value>Cannot validate the credit card</value>
   </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>الإسم كما يظهر على البطاقة</value>
@@ -630,6 +626,9 @@
   <data name="HistoryViewStatusButton" xml:space="preserve">
     <value>رؤية حالة الطلب</value>
   </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
   <data name="HistoryViewTitle" xml:space="preserve">
     <value>التاريخ</value>
   </data>
@@ -748,7 +747,7 @@
     <value>ه نسيت كلمة السر ؟</value>
   </data>
   <data name="LoginSupport" xml:space="preserve">
-   	<value>Need support?</value>
+    <value>Need support?</value>
   </data>
   <data name="LoginForgotPasswordDetail" xml:space="preserve">
     <value>أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.</value>
@@ -844,7 +843,7 @@
     <value>موافق</value>
   </data>
   <data name="Order" xml:space="preserve">
-    <value>اطلب</value>
+    <value>طلب</value>
   </data>
   <data name="OrderHistoryListTitle" xml:space="preserve">
     <value>طلبية #{0} ({1:ddd, MMM d}, {1:h:mm tt})</value>
@@ -884,6 +883,9 @@
   </data>
   <data name="PanelMenuViewUpdateProfileText" xml:space="preserve">
     <value>تحديث الحساب</value>
+  </data>
+  <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
+    <value>Card on File</value>
   </data>
   <data name="ParameterButton" xml:space="preserve">
     <value>المعايير</value>
@@ -1113,6 +1115,9 @@
   <data name="ServiceErrorCallTitle" xml:space="preserve">
     <value>رسالة</value>
   </data>
+  <data name="ServiceErrorCreateOrder_PendingOrder" xml:space="preserve">
+    <value>You cannot book this ride since an order is already pending. View the order status?</value>
+  </data>
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>هذا العنوان الإلكتروني مستخدم من قبل.</value>
   </data>
@@ -1208,12 +1213,6 @@
   </data>
   <data name="StatusConfirmNewBooking" xml:space="preserve">
     <value>في حالة حجز سيارة أجرة اخرى فإن هذا الطلب سيظل ساري، هل ترغب في الاستمرار ؟</value>
-  </data>
-  <data name="Order" xml:space="preserve">
-    <value>طلب</value>
-  </data>
-  <data name="Order" xml:space="preserve">
-    <value>طلب</value>
   </data>
   <data name="StatusDescription" xml:space="preserve">
     <value>طلب # {0}</value>
@@ -1410,8 +1409,8 @@
   <data name="View_CreateAccount" xml:space="preserve">
     <value>افتح حسابك</value>
   </data>
-  <data name="View_CreditCardAdd" xml:space="preserve">
-    <value>بطاقة إئتمان جديدة</value>
+  <data name="View_CreditCard" xml:space="preserve">
+    <value>بطاقة إئتمان</value>
   </data>
   <data name="View_CreditCardsList" xml:space="preserve">
     <value>بطاقات إئتمان</value>
@@ -1496,5 +1495,104 @@
   </data>
   <data name="YesButton" xml:space="preserve">
     <value>نعم</value>
+  </data>
+  <data name="DeleteCreditCard" xml:space="preserve">
+    <value>حذف بطاقة الائتمان المسجلة في هذا الحساب؟</value>
+  </data>
+  <data name="DeleteCreditCardTitle" xml:space="preserve">
+    <value>حذف بطاقة الائتمان</value>
+  </data>
+  <data name="PayInCar" xml:space="preserve">
+    <value>Pay in Car</value>
+  </data>
+  <data name="CreditCardAdded" xml:space="preserve">
+    <value>Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</value>
+  </data>
+  <data name="AddACardButton" xml:space="preserve">
+    <value>Add Card</value>
+  </data>
+  <data name="PendingOrderMessage" xml:space="preserve">
+    <value>You cannot book this ride since an order is already pending. View the order status?</value>
+  </data>
+  <data name="PendingOrderView" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="PendingOrderCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Eta" xml:space="preserve">
+    <value>The nearest taxi is {0} and {1} {2} away</value>
+  </data>
+  <data name="EtaDurationUnit" xml:space="preserve">
+    <value>min</value>
+  </data>
+  <data name="EtaDurationUnitPlural" xml:space="preserve">
+    <value>mins</value>
+  </data>
+  <data name="StatusEta" xml:space="preserve">
+    <value>{0} and {1} {2} away</value>
+  </data>
+  <data name="NoCardOnFileMessage" xml:space="preserve">
+    <value>You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</value>
+  </data>
+  <data name="View_NotificationSettings" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
+    <value>The charge account information is invalid. Please try again.</value>
+  </data>
+  <data name="PanelMenuViewNotificationsText" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="DontAsk" xml:space="preserve">
+    <value>Don't ask</value>
+  </data>
+  <data name="Notification_BookingConfirmationEmail" xml:space="preserve">
+    <value>Booking Confirmation (Email)</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall" xml:space="preserve">
+    <value>The charge account information is invalid. Please try again.</value>
+  </data>
+  <data name="Notification_ConfirmPairingPush" xml:space="preserve">
+    <value>Confirm Pairing (Push)</value>
+  </data>
+  <data name="NotNow" xml:space="preserve">
+    <value>Not now</value>
+  </data>
+  <data name="Notification_DriverAssignedEmail" xml:space="preserve">
+    <value>Driver Assigned (Email)</value>
+  </data>
+  <data name="RateLastRide" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="Notification_DriverAssignedPush" xml:space="preserve">
+    <value>Driver Assigned (Push)</value>
+  </data>
+  <data name="RateLastRideMessage" xml:space="preserve">
+    <value>We would appreciate your feedback on your last ride, would you like to rate it?</value>
+  </data>
+  <data name="Notification_Enabled" xml:space="preserve">
+    <value>Allow Notifications</value>
+  </data>
+  <data name="RateLastRideTitle" xml:space="preserve">
+    <value>Rate last ride?</value>
+  </data>
+  <data name="Notification_NearbyTaxiPush" xml:space="preserve">
+    <value>Nearby Taxi (Push)</value>
+  </data>
+  <data name="Notification_PaymentConfirmationPush" xml:space="preserve">
+    <value>Payment Confirmation (Push)</value>
+  </data>
+  <data name="Notification_ReceiptEmail" xml:space="preserve">
+    <value>Receipt (Email)</value>
+  </data>
+  <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
+    <value>Vehicle at Pickup (Push)</value>
+  </data>
+  <data name="Notification_Off" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="Notification_On" xml:space="preserve">
+    <value>On</value>
   </data>
 </root>

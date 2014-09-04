@@ -41,6 +41,7 @@ namespace apcurium.MK.Web
             JsConfig.EmitCamelCaseNames = true;
             JsConfig.DateHandler = JsonDateHandler.ISO8601;
             JsConfig<DateTime?>.RawDeserializeFn = NullableDateTimeRawDesirializtion;
+            JsConfig.IncludeNullValues = true;
         }
 
 

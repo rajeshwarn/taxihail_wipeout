@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
                 var identifier = _context.Resources.GetIdentifier(key, "string", _context.PackageName);
 				if (identifier == 0)
 				{
-					_logger.LogMessage("Resource Key Not Found {0}", identifier);
+					_logger.LogMessage("Resource Key Not Found {0}", key);
 					return key;
 				}
                 return _context.Resources.GetString(identifier);

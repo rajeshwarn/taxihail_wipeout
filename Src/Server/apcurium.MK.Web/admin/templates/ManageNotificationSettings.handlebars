@@ -1,0 +1,29 @@
+﻿
+<h4 class="table-title">{{localize "Manage Settings"}}</h4>
+<div id="warning" class="alert" style="display: block;">{{localize "NotificationSettingsWarning"}}</div>
+<div class="message"></div>
+{{#each settings}}
+{{#ifNotCond key 'id'}}
+    <div class="control-group">
+        <label  class="control-label" style="margin-right:150px; white-space:nowrap;" >{{{localize key}}}</label>
+        <div class="controls">
+            {{#ifCond key 'enabled'}}
+                <select id="{{key}}" name="{{key}}" style="width:250px; margin-right:15px">
+                    <option value="true" {{#ifCond value true}} selected {{/ifCond}}>{{localize "Enabled"}}</option>
+                    <option value="false" {{#ifCond value false}} selected {{/ifCond}}>{{localize "Disabled"}}</option>
+                </select>
+            {{/ifCond}}
+            {{#ifNotCond key 'enabled'}}
+                <select id="{{key}}" name="{{key}}" style="width:250px; margin-right:15px">
+                    <option value="true" {{#ifCond value true}} selected {{/ifCond}}>{{localize "Enabled"}}</option>
+                    <option value="false" {{#ifCond value false}} selected {{/ifCond}}>{{localize "Disabled"}}</option>
+                    <option value="" {{#ifCond value null}} selected {{/ifCond}}>{{localize "Not available"}}</option>
+                </select>
+            {{/ifNotCond}}
+        </div>
+    </div>
+{{/ifNotCond}}
+{{/each}} 
+<div>
+  <button type='submit' class='btn btn-primary' >{{localize "Save"}}</button>
+</div>

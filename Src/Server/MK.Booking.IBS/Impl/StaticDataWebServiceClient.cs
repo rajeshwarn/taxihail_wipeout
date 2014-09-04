@@ -1,6 +1,7 @@
 #region
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
@@ -73,20 +74,20 @@ namespace apcurium.MK.Booking.IBS.Impl
             return items;
         }
 
-        public ListItem[] GetPaymentsList(ListItem company)
+        public TVehicleTypeItem GetVehicleTypeItemById(int vehicleId)
         {
-            if (company == null) throw new ArgumentNullException("company");
-            if (company.Id == null) throw new ArgumentException("company Id should not be null");
-
-            var items = new ListItem[] {};
+            var vehicleTypeItems = new List<TVehicleTypeItem>();
             UseService(service =>
             {
-                var payments = service.GetChargeTypes(UserNameApp, PasswordApp, company.Id.GetValueOrDefault());
-                items =
-                    payments.Select(
-                        x => new ListItem {Display = x.ChargeTypeName, Id = x.ChargeTypeID, Parent = company}).ToArray();
+                var companies = service.GetProviders(UserNameApp, PasswordApp);
+
+                foreach (var company in companies)
+                {
+                    vehicleTypeItems.AddRange(service.GetVehicleTypes(UserNameApp, PasswordApp, company.ProviderNum));
+                }
             });
-            return items;
+
+            return vehicleTypeItems.FirstOrDefault(x => x.ID == vehicleId);
         }
 
         protected override string GetUrl()

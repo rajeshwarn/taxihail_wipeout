@@ -18,6 +18,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.Messaging;
@@ -45,6 +46,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
         private readonly Resources.Resources _resources;
+        private readonly CancelOrderService _cancelService;
 
         public CreateOrderService(ICommandBus commandBus,
             IBookingWebServiceClient bookingWebServiceClient,
@@ -55,8 +57,10 @@ namespace apcurium.MK.Booking.Api.Services
             IRuleCalculator ruleCalculator,
             IUpdateOrderStatusJob updateOrderStatusJob, 
             IConfigurationManager configurationManager,
-            IOrderDao orderDao)
+            IOrderDao orderDao,
+            CancelOrderService cancelService)
         {
+            _cancelService = cancelService;
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
             _accountDao = accountDao;
@@ -121,9 +125,9 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             if (request.Settings.ChargeTypeId.HasValue
-                && request.Settings.ChargeTypeId.Value == _configManager.GetSetting("Client.AccountChargeTypeId", 0))
+                && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
             {
-                // send the info to ibs
+                // TODO (waiting for IBS endpoint to be done): send the info to ibs
             }
 
             var ibsOrderId = CreateIbsOrder(account, request, referenceData);
@@ -134,6 +138,15 @@ namespace apcurium.MK.Booking.Api.Services
                 var code = !ibsOrderId.HasValue || (ibsOrderId.Value >= -1) ? "" : "_" + Math.Abs(ibsOrderId.Value);
                 return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + code);
             }
+
+            //Temporary solution for Aexid, we call the save extr payment to send the account info.  if not successful, we cancel the order.
+            var result = TryToSendAccountInformation(  request.Id,   ibsOrderId.Value , request, account);
+            if ( result.HasValue  )
+            {
+                
+                return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + "_" + Math.Abs(result.Value));
+            }
+            
 
             var command = Mapper.Map<Commands.CreateOrder>(request);
             var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(request);
@@ -160,10 +173,7 @@ namespace apcurium.MK.Booking.Api.Services
             emailCommand.Settings.VehicleType = vehicleType;
 
             _commandBus.Send(command);
-            if (bool.Parse(_configManager.GetSetting("Booking.ConfirmationEmail")))
-            {
-                _commandBus.Send(emailCommand);
-            }
+            _commandBus.Send(emailCommand);
 
             UpdateStatusAsync(command.OrderId);
             
@@ -177,6 +187,21 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
+        private int? TryToSendAccountInformation(Guid orderId, int ibsOrderId, CreateOrder request, AccountDetail account)
+        {
+            var accountChargeTypeId = _configManager.GetSetting<int>("AccountChargeTypeId", -1);
+            if (accountChargeTypeId == -1)
+            {
+                accountChargeTypeId = _configManager.GetSetting<int>("Client.AccountChargeTypeId", -1);
+            }
+
+            if (accountChargeTypeId == request.Settings.ChargeTypeId)
+            {
+                return  _bookingWebServiceClient.SendAccountInformation(orderId, ibsOrderId, "Account", request.Settings.AccountNumber, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, account.Email);                
+            }
+
+            return null;
+        }
         private void UpdateStatusAsync(Guid orderId)
         {
             new TaskFactory().StartNew(() =>
@@ -223,7 +248,7 @@ namespace apcurium.MK.Booking.Api.Services
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
             var result = _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId,
                 request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
-                request.Settings.VehicleTypeId, request.Settings.ChargeTypeId, note, request.PickupDate.Value,
+                request.Settings.VehicleTypeId, null, note, request.PickupDate.Value,
                 ibsPickupAddress, ibsDropOffAddress, fare);
 
             return result;

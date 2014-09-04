@@ -122,13 +122,15 @@
     <value>Prix</value>
   </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>Prix: {0}</value>
   </data>
   <data name="EstimatePriceOver100" xml:space="preserve">
     <value>Appelez-nous pour connaître le prix!</value>
   </data>
-<data name="EstimatedFareNotAvailable" xml:space="preserve">
+  <data name="EstimatedFareNotAvailable" xml:space="preserve">
     <value>Le prix ne peut être estimé pour le moment</value>
+  </data>
+  <data name="EstimateDistance" xml:space="preserve">
+    <value></value>
   </data>
   <data name="TaxiServerDownMessage" xml:space="preserve">
     <value>Impossible d'envoyer l'information au conducteur.</value>

@@ -26,6 +26,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
+using apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -61,9 +62,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             var @params = new Dictionary<string, string> ();
             if (options != null && options.ContainsKey (new NSString ("UIApplicationLaunchOptionsRemoteNotificationKey"))) {
                 var remoteNotificationParams = options.ObjectForKey(new NSString("UIApplicationLaunchOptionsRemoteNotificationKey")) as NSDictionary;
-                if(remoteNotificationParams != null && remoteNotificationParams.ContainsKey(new NSString("orderId")))
+                if(remoteNotificationParams != null)
                 {
-                    @params["orderId"] = remoteNotificationParams.ObjectForKey(new NSString ("orderId")).ToString();
+                    if (remoteNotificationParams.ContainsKey(new NSString("orderId")))
+                    {
+                        @params["orderId"] = remoteNotificationParams.ObjectForKey(new NSString("orderId")).ToString();
+                    }
+                    if (remoteNotificationParams.ContainsKey(new NSString("isPairingNotification")))
+                    {
+                        @params["isPairingNotification"] = remoteNotificationParams.ObjectForKey(new NSString("isPairingNotification")).ToString();
+                    }
                 }
             }
 
@@ -135,6 +143,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             JsConfig.RegisterTypeForAot<GeoObj>();
             JsConfig.RegisterTypeForAot<GeoResult>();
 
+			var facebookService = TinyIoCContainer.Current.Resolve<IFacebookService>();
+			if ( facebookService != null )
+			{
+				facebookService.PublishInstall();
+			}
 
             if (_callbackFromFb)
             {    

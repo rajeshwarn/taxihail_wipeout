@@ -142,8 +142,10 @@
         },
         
         book: function (form) {
-
+            var lang = TaxiHail.getClientLanguage();
+            this.model.set('ClientLanguageCode', lang);
             this.model.saveLocal();
+
             if (this.model.isPayingWithAccountCharge()) {
                 //account charge type payment                
                 TaxiHail.app.navigate('bookaccountcharge', { trigger: true});

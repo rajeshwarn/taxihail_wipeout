@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Threading;
+using System.Windows.Input;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using MonoTouch.CoreLocation;
 using MonoTouch.Foundation;
@@ -11,19 +15,16 @@ using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.Client.Controls;
-using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.PresentationHints;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helper;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Threading;
+using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -39,8 +40,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private TouchGesture _gesture;
         private readonly SerialDisposable _userMovedMapSubsciption = new SerialDisposable();
 
-        public OrderMapView(IntPtr handle)
-            :base(handle)
+        private bool _useThemeColorForPickupAndDestinationMapIcons;
+
+        public OrderMapView(IntPtr handle) :base(handle)
         {
             Initialize();
 
@@ -50,6 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 ContentMode = UIViewContentMode.Center,
                 Hidden = true,
             };
+
             _pickupCenterPin = new UIImageView(AddressAnnotation.GetImage(AddressAnnotationType.Pickup))
             {
                 BackgroundColor = UIColor.Clear,
@@ -66,14 +69,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             InitOverlays();
         }
 
-        private bool _useThemeColorForPickupAndDestinationMapIcons;
-
         private void Initialize()
         {
 			_useThemeColorForPickupAndDestinationMapIcons = this.Services().Settings.UseThemeColorForMapIcons;
 
-            this.DelayBind(() => {
-
+            this.DelayBind(() => 
+            {
                 var set = this.CreateBindingSet<OrderMapView, MapViewModel>();
 
                 set.Bind()
@@ -97,31 +98,64 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     .To(vm => vm.AvailableVehicles);
 
                 set.Apply();
-
             });
 
             _pickupAnnotation = GetAnnotation(new CLLocationCoordinate2D(), AddressAnnotationType.Pickup, _useThemeColorForPickupAndDestinationMapIcons);
             _destinationAnnotation = GetAnnotation(new CLLocationCoordinate2D(), AddressAnnotationType.Destination, _useThemeColorForPickupAndDestinationMapIcons);
 
-            // TODO: When refactoring StatusView, get rid of AddressMapDelegate
-            // and use helper class to get GetViewForAnnotation delegate
-            this.GetViewForAnnotation = new AddressMapDelegate().GetViewForAnnotation;
+            this.GetViewForAnnotation = MKMapViewHelper.GetViewForAnnotation;
 
             InitializeGesture();
         }
-                  
-
+            
         private void InitializeGesture()
         {
+            // disable on map since we're handling gestures ourselves
+            if (UIHelper.IsOS7orHigher)
+            {
+                this.PitchEnabled = false;
+                this.RotateEnabled = false;
+            }
+
+            this.ZoomEnabled = false;
+
             if (_gesture == null)
             {
-                _gesture = new TouchGesture();              
+                _gesture = new TouchGesture();
                 _gesture.TouchBegin += HandleTouchBegin;
                 _gesture.TouchMove += HandleTouchMove;
                 _gesture.TouchEndOrCancel += HandleTouchEnded;
-
                 AddGestureRecognizer(_gesture);
+
+                var pinchRecognizer = new UIPinchGestureRecognizer ();
+                pinchRecognizer.ShouldRecognizeSimultaneously = (g1, g2) => !(g2 is UITapGestureRecognizer);
+                pinchRecognizer.AddTarget (() => OnPinch (pinchRecognizer));
+                AddGestureRecognizer (pinchRecognizer);
+
+                var doubleTapRecognizer = new UITapGestureRecognizer ();
+                doubleTapRecognizer.ShouldRecognizeSimultaneously = (g1, g2) => false;
+                doubleTapRecognizer.NumberOfTapsRequired = 2;
+                doubleTapRecognizer.AddTarget (() => this.ChangeZoomLevel(true));
+                AddGestureRecognizer (doubleTapRecognizer);
+
+                var doubleTapMultitouchRecognizer = new UITapGestureRecognizer ();
+                doubleTapMultitouchRecognizer.ShouldRecognizeSimultaneously = (g1, g2) => false;
+                doubleTapMultitouchRecognizer.NumberOfTapsRequired = 2;
+                doubleTapMultitouchRecognizer.NumberOfTouchesRequired = 2;
+                doubleTapMultitouchRecognizer.AddTarget (() => this.ChangeZoomLevel(false));
+                AddGestureRecognizer (doubleTapMultitouchRecognizer);
             }
+        }
+
+        private MKCoordinateSpan _span;
+        private void OnPinch (UIPinchGestureRecognizer sender)
+        {
+            if (sender.State == UIGestureRecognizerState.Began)
+            {
+                _span = this.Region.Span;
+            }
+
+            this.ChangeRegionSpanDependingOnPinchScale (_span, sender.Scale);
         }
 
         public AddressAnnotation GetAnnotation(CLLocationCoordinate2D coordinates, AddressAnnotationType addressType, bool useThemeColorForPickupAndDestinationMapIcons)
@@ -158,10 +192,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private AddressSelectionMode _addressSelectionMode; 
         public AddressSelectionMode AddressSelectionMode
         { 
-            get
-            {
-                return _addressSelectionMode;
-            }
+            get { return _addressSelectionMode; }
             set
             {
                 _addressSelectionMode = value;
@@ -169,12 +200,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
+        private IEnumerable<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
         public IEnumerable<AvailableVehicle> AvailableVehicles
         {
+            get { return _availableVehicles; }
             set
             {
-                var mapBounds = GetMapBoundsFromProjection();
-                ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value != null ? value.ToArray() : null, mapBounds));
+                if (_availableVehicles != value)
+                {
+                    _availableVehicles = value;
+                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value != null ? value.ToArray () : null, GetMapBoundsFromProjection()));
+                }
             }
         }
 
@@ -188,7 +224,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ShowMarkers();
         }
 
-        void SetAnnotation(Address address, AddressAnnotation addressAnnotation, bool visible)
+        private void SetAnnotation(Address address, AddressAnnotation addressAnnotation, bool visible)
         {
             if (address.HasValidCoordinate() && visible)
             {
@@ -202,18 +238,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-        void SetOverlay(UIImageView overlay, bool visible)
+        private void SetOverlay(UIImageView overlay, bool visible)
         {
             overlay.Hidden = !visible;
         }
 
-        void InitOverlays()
+        private void InitOverlays()
         {
             var pinSize = _pickupCenterPin.IntrinsicContentSize;
 
             _pickupCenterPin.Frame = 
                 _dropoffCenterPin.Frame = 
-                    new RectangleF((this.Bounds.Width - pinSize.Width) / 2, (this.Bounds.Height - pinSize.Height) / 2, pinSize.Width, pinSize.Height);
+                    new RectangleF((this.Bounds.Width - pinSize.Width) / 2, (this.Bounds.Height / 2) - pinSize.Height, pinSize.Width, pinSize.Height);
 
             // change position of Legal link on map
             var legalView = Subviews.FirstOrDefault(x => x is UILabel);
@@ -226,7 +262,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-        void ShowMarkers()
+        private void ShowMarkers()
         {
             if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
             {
@@ -265,9 +301,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         }
 
         public ICommand UserMovedMap { get; set; }
-                      
-
-        void HandleTouchBegin (object sender, EventArgs e)
+                     
+        private void HandleTouchBegin (object sender, EventArgs e)
         {
             CancelAddressSearch();
         }
@@ -285,12 +320,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             return bounds;
         }
 
-        void HandleTouchMove (object sender, EventArgs e)
+        private void HandleTouchMove (object sender, EventArgs e)
         {
             CancelAddressSearch();
         }
 
-        void HandleTouchEnded(object sender, EventArgs e)
+        private void HandleTouchEnded(object sender, EventArgs e)
         {
             _userMovedMapSubsciption.Disposable = Observable.FromEventPattern<MKMapViewChangeEventArgs>(eh =>  this.RegionChanged += eh, eh => this.RegionChanged -= eh)
                 .Throttle(TimeSpan.FromMilliseconds(1000))
@@ -298,48 +333,93 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(ep =>
             {
-                    var bounds = GetMapBoundsFromProjection();
-                    if (UserMovedMap != null && UserMovedMap.CanExecute(bounds))
-                    {
-                        UserMovedMap.Execute(bounds);
-
-                    }
+                var bounds = GetMapBoundsFromProjection();
+                if (UserMovedMap != null && UserMovedMap.CanExecute(bounds))
+                {
+                    UserMovedMap.Execute(bounds);
+                }
             });
         }
 
-        private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
+        private void ClearAllAnnotations()
         {
             foreach (var vehicleAnnotation in _availableVehicleAnnotations)
             {
                 RemoveAnnotation(vehicleAnnotation);
             }
+
             _availableVehicleAnnotations.Clear ();
+        }
 
+        private void DeleteAnnotation(AddressAnnotation annotationToRemove)
+        {
+            RemoveAnnotation(annotationToRemove);
+            _availableVehicleAnnotations.Remove (annotationToRemove);
+        }
+
+        private void CreateAnnotation(AvailableVehicle vehicle)
+        {
+            var annotationType = (vehicle is AvailableVehicleCluster) 
+                ? AddressAnnotationType.NearbyTaxiCluster 
+                : AddressAnnotationType.NearbyTaxi;
+
+                var vehicleAnnotation = new AddressAnnotation (
+                                new CLLocationCoordinate2D(vehicle.Latitude, vehicle.Longitude),
+                                annotationType, 
+                                string.Empty, 
+                                string.Empty, 
+                                _useThemeColorForPickupAndDestinationMapIcons,
+                                vehicle.LogoName);
+
+            AddAnnotation (vehicleAnnotation);
+            _availableVehicleAnnotations.Add (vehicleAnnotation);
+        }
+
+        private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
+        {
             if (vehicles == null)
-                return;
-
-            foreach (var v in vehicles)
             {
-                var annotationType = (v is AvailableVehicleCluster) 
-                                     ? AddressAnnotationType.NearbyTaxiCluster 
-                                     : AddressAnnotationType.NearbyTaxi;
+                ClearAllAnnotations ();
+                return;
+            }
 
-                var vehicleAnnotation = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), annotationType, string.Empty, string.Empty, _useThemeColorForPickupAndDestinationMapIcons);
-                AddAnnotation (vehicleAnnotation);
-                _availableVehicleAnnotations.Add (vehicleAnnotation);
+            var vehicleNumbersToBeShown = vehicles.Select (x => x.VehicleNumber.ToString());
+
+            // check for annotations that needs to be removed
+            var annotationsToRemove = _availableVehicleAnnotations.Where(x => !vehicleNumbersToBeShown.Contains(x.Title)).ToList();
+            foreach (var annotation in annotationsToRemove)
+            {
+                DeleteAnnotation(annotation);
+            }
+
+            // check for updated or new
+            foreach (var vehicle in vehicles)
+            {
+                var existingAnnotationForVehicle = _availableVehicleAnnotations.FirstOrDefault (x => x.Title == vehicle.VehicleNumber.ToString());
+                if (existingAnnotationForVehicle != null)
+                {
+                    if (existingAnnotationForVehicle.Coordinate.Latitude == vehicle.Latitude && existingAnnotationForVehicle.Coordinate.Longitude == vehicle.Longitude)
+                    {
+                        // vehicle not updated, nothing to do
+                        continue;
+                    }
+
+                    // coordinates were updated, remove and add later with new position
+                    DeleteAnnotation (existingAnnotationForVehicle);
+                }
+
+                CreateAnnotation (vehicle);
             }
         }
 
-
         public void SetEnabled(bool enabled)
         {
-            if (this.ZoomEnabled == enabled)
+            if (this.UserInteractionEnabled == enabled)
             {
                 // already in the good state, no need to change
                 return;
             }
 
-            this.ZoomEnabled = enabled;
             this.ScrollEnabled = enabled;
             this.UserInteractionEnabled = enabled;                       
 
@@ -372,7 +452,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _userMovedMapSubsciption.Disposable = null;
         }
 
-        void ChangeState(HomeViewModelPresentationHint hint)
+        private void ChangeState(HomeViewModelPresentationHint hint)
         {
             switch (hint.State)
             {
@@ -401,7 +481,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (centerHint != null)
             {
                 // Set the new region center, but keep current span                
-                SetRegion(new MKCoordinateRegion(new CLLocationCoordinate2D(centerHint.Latitude, centerHint.Longitude), Region.Span), true);
+                this.SetRegion(new MKCoordinateRegion(new CLLocationCoordinate2D(centerHint.Latitude, centerHint.Longitude), Region.Span), true);
             }
         }
     }

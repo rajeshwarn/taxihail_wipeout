@@ -54,13 +54,13 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
         public void when_cancellation_failed()
         {
             string message = "bouh";
-            _sut.When(new LogCreditCardPaymentCancellationFailed
+            _sut.When(new LogCreditCardError
             {
                 Reason = message,
                 PaymentId = _paymentId
             });
 
-            var @event = _sut.ThenHasSingle<CreditCardPaymentCancellationFailed>();
+            var @event = _sut.ThenHasSingle<CreditCardErrorThrown>();
             Assert.AreEqual(message, @event.Reason);
             Assert.AreEqual(_paymentId, @event.SourceId);
         }

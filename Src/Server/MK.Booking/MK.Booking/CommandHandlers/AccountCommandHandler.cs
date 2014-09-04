@@ -30,8 +30,9 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateAccountPassword>,
         ICommandHandler<AddRoleToUserAccount>,
         ICommandHandler<AddCreditCard>,
-        ICommandHandler<RemoveCreditCard>,
+        ICommandHandler<UpdateCreditCard>,
         ICommandHandler<DeleteAllCreditCards>,
+        ICommandHandler<DeleteAccountCreditCards>,
         ICommandHandler<RegisterDeviceForPushNotifications>,
         ICommandHandler<UnregisterDeviceForPushNotifications>,
         ICommandHandler<AddFavoriteAddress>,
@@ -54,8 +55,28 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(AddCreditCard command)
         {
             var account = _repository.Find(command.AccountId);
-            account.AddCreditCard(command.CreditCardCompany, command.CreditCardId, command.FriendlyName,
-                command.Last4Digits, command.Token);
+            account.AddCreditCard(
+                command.CreditCardCompany,
+                command.CreditCardId,
+                command.NameOnCard,
+                command.Last4Digits,
+                command.ExpirationMonth,
+                command.ExpirationYear,
+                command.Token);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UpdateCreditCard command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.UpdateCreditCard(
+                command.CreditCardCompany,
+                command.CreditCardId,
+                command.NameOnCard,
+                command.Last4Digits,
+                command.ExpirationMonth,
+                command.ExpirationYear,
+                command.Token);
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -71,16 +92,6 @@ namespace apcurium.MK.Booking.CommandHandlers
             var account = _repository.Find(command.AccountId);
             account.ConfirmAccount(command.ConfimationToken);
             _repository.Save(account, command.Id.ToString());
-        }
-
-        public void Handle(DeleteAllCreditCards command)
-        {
-            foreach (var accountId in command.AccountIds)
-            {
-                var account = _repository.Find(accountId);
-                account.RemoveAllCreditCards();
-                _repository.Save(account, command.Id.ToString());
-            }
         }
 
         public void Handle(DisableAccountByAdmin command)
@@ -133,11 +144,21 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(account, command.Id.ToString());
         }
 
-        public void Handle(RemoveCreditCard command)
+        public void Handle(DeleteAccountCreditCards command)
         {
             var account = _repository.Find(command.AccountId);
-            account.RemoveCreditCard(command.CreditCardId);
+            account.RemoveAllCreditCards();
             _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(DeleteAllCreditCards command)
+        {
+            foreach (var accountId in command.AccountIds)
+            {
+                var account = _repository.Find(accountId);
+                account.RemoveAllCreditCards();
+                _repository.Save(account, command.Id.ToString());
+            }
         }
 
         public void Handle(ResetAccountPassword command)

@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 
             SetContentView(Resource.Layout.View_About);
             FindViewById<WebView>(Resource.Id.aboutWebView).LoadUrl(ViewModel.Uri);
-            FindViewById<WebView>(Resource.Id.aboutWebView).SetInitialScale(40);
+            //FindViewById<WebView>(Resource.Id.aboutWebView).SetInitialScale(40);
         }
     }
 }

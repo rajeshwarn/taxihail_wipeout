@@ -68,8 +68,10 @@
     <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\MonerisPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
+    <Compile Include="Configuration\NotificationSettings.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\ListItem.cs" />
+    <Compile Include="Entity\ToggleItem.cs" />
     <Compile Include="Extensions\ActionExtension.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
@@ -116,6 +118,7 @@
     <Compile Include="Configuration\IAppSettings.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Entity\AccountChargeQuestion.cs" />
+    <Compile Include="Enumeration\ChargeTypes.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

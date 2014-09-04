@@ -37,78 +37,90 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private OrderOptionsViewModel ViewModel { get { return (OrderOptionsViewModel)DataContext; } }
 
         void InitializeBinding()
-        {
-            ViewPickup.AddressUpdated = (streetNumber, fullAddress) =>
-            {
-                ViewModel.PickupAddress.StreetNumber = streetNumber;
-                ViewModel.PickupAddress.FullAddress = fullAddress;
+		{
+			ViewPickup.AddressUpdated = (streetNumber, fullAddress) => {
+				ViewModel.PickupAddress.StreetNumber = streetNumber;
+				ViewModel.PickupAddress.FullAddress = fullAddress;
 
-                ViewModel.SetAddress.Execute(ViewModel.PickupAddress);
-            };
-
-            ViewDestination.AddressUpdated = (streetNumber, fullAddress) =>
-            {
-                ViewModel.DestinationAddress.StreetNumber = streetNumber;
-                ViewModel.DestinationAddress.FullAddress = fullAddress;
-
-                ViewModel.SetAddress.Execute(ViewModel.DestinationAddress);
-            };
-
-			ViewVehicleType.VehicleSelected = (vehicleType) => 
-			{
-				ViewModel.SetVehicleType.Execute(vehicleType);
+				ViewModel.SetAddress.Execute (ViewModel.PickupAddress);
 			};
 
-            var set = this.CreateBindingSet<OrderOptions, OrderOptionsViewModel>();
+			ViewDestination.AddressUpdated = (streetNumber, fullAddress) => {
+				ViewModel.DestinationAddress.StreetNumber = streetNumber;
+				ViewModel.DestinationAddress.FullAddress = fullAddress;
 
-            set.Bind(ViewPickup)
-                .For(v => v.IsReadOnly)
-                .To(vm => vm.ShowDestination);
-            set.Bind(ViewPickup)
-                .For(v => v.IsLoadingAddress)
-                .To(vm => vm.IsLoadingAddress);
+				ViewModel.SetAddress.Execute (ViewModel.DestinationAddress);
+			};
 
-            set.Bind(ViewPickup.AddressTextView)
-                .To(vm => vm.PickupAddress.DisplayAddress);
+			ViewVehicleType.VehicleSelected = (vehicleType) => {
+				ViewModel.SetVehicleType.Execute (vehicleType);
+			};
 
-            set.Bind(ViewDestination)
-                .For(v => v.Visibility)
-                .To(vm => vm.ShowDestination)
-                .WithConversion("Visibility");
-            set.Bind(ViewDestination)
-                .For(v => v.IsLoadingAddress)
-                .To(vm => vm.IsLoadingAddress);
+			var set = this.CreateBindingSet<OrderOptions, OrderOptionsViewModel> ();
 
-            set.Bind(ViewDestination.AddressTextView)
-                .To(vm => vm.DestinationAddress.DisplayAddress);
+			set.Bind (ViewPickup)
+                .For (v => v.IsReadOnly)
+                .To (vm => vm.ShowDestination);
+			set.Bind (ViewPickup)
+                .For (v => v.IsLoadingAddress)
+                .To (vm => vm.IsLoadingAddress);
 
-            set.Bind(ViewVehicleType)
-                .For(v => v.EstimatedFare)
-                .To(vm => vm.EstimatedFare);
-            set.Bind(ViewVehicleType)
-                .For(v => v.Visibility)
-				.To(vm => vm.VehicleAndEstimateBoxIsVisible)
-                .WithConversion("Visibility");
-			set.Bind(ViewVehicleType)
-				.For(v => v.ShowEstimate)
-				.To(vm => vm.ShowEstimate);
+			set.Bind (ViewPickup.AddressTextView)
+                .To (vm => vm.PickupAddress.DisplayAddress);
+
+			set.Bind (ViewDestination)
+                .For (v => v.Visibility)
+                .To (vm => vm.ShowDestination)
+                .WithConversion ("Visibility");
+			set.Bind (ViewDestination)
+                .For (v => v.IsLoadingAddress)
+                .To (vm => vm.IsLoadingAddress);
+
+			set.Bind (ViewDestination.AddressTextView)
+                .To (vm => vm.DestinationAddress.DisplayAddress);
+
+			set.Bind (ViewVehicleType)
+                .For (v => v.EstimatedFare)
+                .To (vm => vm.EstimatedFare);
+			set.Bind (ViewVehicleType)
+                .For (v => v.Visibility)
+				.To (vm => vm.VehicleAndEstimateBoxIsVisible)
+                .WithConversion ("Visibility");
+
+			set.Bind (ViewVehicleType)
+				.For (v => v.ShowEstimate)
+				.To (vm => vm.ShowEstimate);
+
 			set.Bind (ViewVehicleType)
 				.For (v => v.Vehicles)
 				.To (vm => vm.VehicleTypes);
+
 			set.Bind (ViewVehicleType)
 				.For (v => v.SelectedVehicle)
 				.To (vm => vm.SelectedVehicleType);
 
-            set.Bind(ViewPickup)
-                .For("AddressClicked")
-                .To(vm => vm.ShowSearchAddress);
+			set.Bind (ViewPickup)
+                .For ("AddressClicked")
+                .To (vm => vm.ShowSearchAddress);
 
-            set.Bind(ViewDestination)
-                .For("AddressClicked")
-                .To(vm => vm.ShowSearchAddress);
+			set.Bind (ViewDestination)
+                .For ("AddressClicked")
+                .To (vm => vm.ShowSearchAddress);
 
-            set.Apply();
-        }
+			set.Bind (ViewVehicleType)
+				.For (v => v.ShowEta)
+                .To (vm => vm.Settings.ShowEta);
+
+			set.Bind (ViewVehicleType)
+				.For (v => v.ShowVehicleSelection)
+				.To (vm => vm.ShowVehicleSelection);
+
+			set.Bind (ViewVehicleType)
+				.For (v => v.Eta)
+				.To (vm => vm.FormattedEta);
+
+			set.Apply ();
+		}
 
         private void ChangeState(HomeViewModelPresentationHint hint)
         {

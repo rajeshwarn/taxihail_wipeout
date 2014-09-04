@@ -7,6 +7,7 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
+    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -22,11 +23,13 @@
     </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchProfiling>True</MtouchProfiling>
+    <AssemblyName>TaxiHail</AssemblyName>
     <MtouchArch>ARMv7</MtouchArch>
     <CustomCommands>
       <CustomCommands>
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.ar.resx&quot; -d=&quot;$(ProjectDir)/ar.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.fr.resx&quot; -d=&quot;$(ProjectDir)/fr.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
       </CustomCommands>
     </CustomCommands>
     <MtouchUseSGen>True</MtouchUseSGen>
@@ -79,6 +82,7 @@
       <CustomCommands>
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.ar.resx&quot; -d=&quot;$(ProjectDir)/ar.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.fr.resx&quot; -d=&quot;$(ProjectDir)/fr.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
       </CustomCommands>
     </CustomCommands>
     <AssemblyName>TaxiHail</AssemblyName>
@@ -307,7 +311,6 @@
     </Compile>
     <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="MapUtitilties\AddressAnnotation.cs" />
-    <Compile Include="MapUtitilties\AddressMapDelegate.cs" />
     <Compile Include="Controls\TouchGesture.cs" />
     <Compile Include="MapUtitilties\PinAnnotationView.cs" />
     <Compile Include="PlatformIntegration\LocationService.cs" />
@@ -360,10 +363,6 @@
     <Compile Include="Views\CreditCardAddView.designer.cs">
       <DependentUpon>CreditCardAddView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\CreditCardsListView.cs" />
-    <Compile Include="Views\CreditCardsListView.designer.cs">
-      <DependentUpon>CreditCardsListView.cs</DependentUpon>
-    </Compile>
     <Compile Include="PlatformIntegration\PushNotificationService.cs" />
     <Compile Include="Binding\MvxUITextViewTargetBinding.cs" />
     <Compile Include="Extensions\UIScrollViewerExtensions.cs" />
@@ -404,7 +403,6 @@
     </Compile>
     <Compile Include="Controls\Widgets\ModalFlatTextField.cs" />
     <Compile Include="Controls\Widgets\NavigateFlatTextField.cs" />
-    <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
     <Compile Include="Controls\Widgets\RadioElementWithId.cs" />
     <Compile Include="Style\Theme.cs" />
     <Compile Include="Views\RideSummaryView.cs" />
@@ -412,7 +410,6 @@
       <DependentUpon>RideSummaryView.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Widgets\BindableTableViewSource.cs" />
-    <Compile Include="Controls\Widgets\SingleLinePictureCell.cs" />
     <Compile Include="Views\AboutUsView.xib.cs">
       <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
@@ -429,10 +426,6 @@
     </Compile>
     <Compile Include="Views\Payments\PaymentView.cs" />
     <Compile Include="Views\Payments\PaymentView.designer.cs" />
-    <Compile Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.cs" />
-    <Compile Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.designer.cs" />
-    <Compile Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.cs" />
-    <Compile Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.designer.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
     <Compile Include="Views\Payments\ConfirmCarNumberView.cs" />
     <Compile Include="Views\Payments\ConfirmCarNumberView.designer.cs">
@@ -522,10 +515,27 @@
     </Compile>
     <Compile Include="Extensions\UILabelExtensions.cs" />
     <Compile Include="Controls\Widgets\VehicleTypeView.cs" />
+    <BundleResource Include="Resources\cluster_blackcar.png" />
+    <BundleResource Include="Resources\cluster_blackcar%402x.png" />
+    <BundleResource Include="Resources\cluster_suv.png" />
+    <BundleResource Include="Resources\cluster_suv%402x.png" />
+    <BundleResource Include="Resources\nearby_blackcar.png" />
+    <BundleResource Include="Resources\nearby_blackcar%402x.png" />
     <Compile Include="Views\AccountConfirmationView.designer.cs">
       <DependentUpon>AccountConfirmationView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\AccountConfirmationView.cs" />
+    <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
+    <Compile Include="MapUtitilties\MKMapViewHelper.cs" />
+    <BundleResource Include="Resources\nearby_suv.png" />
+    <BundleResource Include="Resources\nearby_suv%402x.png" />
+    <Compile Include="Views\Payments\ConfirmPairView.cs" />
+    <Compile Include="Views\Payments\ConfirmPairView.designer.cs" />
+    <Compile Include="Views\NotificationSettingsView.cs" />
+    <Compile Include="Views\NotificationSettingsView.designer.cs">
+      <DependentUpon>NotificationSettingsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Widgets\ToggleCell.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -550,7 +560,6 @@
     <InterfaceDefinition Include="Views\CreateAccountView.xib" />
     <InterfaceDefinition Include="Views\ResetPasswordView.xib" />
     <InterfaceDefinition Include="Views\CreditCardAddView.xib" />
-    <InterfaceDefinition Include="Views\CreditCardsListView.xib" />
     <InterfaceDefinition Include="Views\Payments\PayPalView.xib" />
     <InterfaceDefinition Include="Views\TermsAndConditionsView.xib" />
     <InterfaceDefinition Include="Views\RideSummaryView.xib" />
@@ -558,8 +567,6 @@
     <InterfaceDefinition Include="Views\BookRatingCell.xib" />
     <InterfaceDefinition Include="Views\BookRatingView.xib" />
     <InterfaceDefinition Include="Views\Payments\PaymentView.xib" />
-    <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.xib" />
-    <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.xib" />
     <InterfaceDefinition Include="Views\Payments\ConfirmCarNumberView.xib" />
     <InterfaceDefinition Include="Views\BookingStatusView.xib" />
     <InterfaceDefinition Include="Views\HistoryListView.xib" />
@@ -574,6 +581,8 @@
     <InterfaceDefinition Include="Views\AddressPickerContainerView.xib" />
     <InterfaceDefinition Include="Views\Order\InitializeOrderForAccountPaymentView.xib" />
     <InterfaceDefinition Include="Views\AccountConfirmationView.xib" />
+    <InterfaceDefinition Include="Views\Payments\ConfirmPairView.xib" />
+    <InterfaceDefinition Include="Views\NotificationSettingsView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
@@ -637,8 +646,8 @@
     <BundleResource Include="Resources\blackcar_badge_selected%402x.png" />
     <BundleResource Include="Resources\blackcar_badge.png" />
     <BundleResource Include="Resources\blackcar_badge%402x.png" />
-    <BundleResource Include="Resources\cluster.png" />
-    <BundleResource Include="Resources\cluster%402x.png" />
+    <BundleResource Include="Resources\cluster_taxi.png" />
+    <BundleResource Include="Resources\cluster_taxi%402x.png" />
     <BundleResource Include="Resources\destination_icon.png" />
     <BundleResource Include="Resources\destination_icon%402x.png" />
     <BundleResource Include="Resources\hail_icon.png" />
@@ -778,6 +787,18 @@
     <BundleResource Include="Resources\star_selected%402x.png" />
     <BundleResource Include="Resources\star_unselected.png" />
     <BundleResource Include="Resources\star_unselected%402x.png" />
+    <BundleResource Include="Resources\suv_no_badge.png" />
+    <BundleResource Include="Resources\suv_no_badge%402x.png" />
+    <BundleResource Include="Resources\suv_no_badge_selected.png" />
+    <BundleResource Include="Resources\suv_no_badge_selected%402x.png" />
+    <BundleResource Include="Resources\taxi_no_badge.png" />
+    <BundleResource Include="Resources\taxi_no_badge%402x.png" />
+    <BundleResource Include="Resources\taxi_no_badge_selected.png" />
+    <BundleResource Include="Resources\taxi_no_badge_selected%402x.png" />
+    <BundleResource Include="Resources\blackcar_no_badge.png" />
+    <BundleResource Include="Resources\blackcar_no_badge%402x.png" />
+    <BundleResource Include="Resources\blackcar_no_badge_selected.png" />
+    <BundleResource Include="Resources\blackcar_no_badge_selected%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">

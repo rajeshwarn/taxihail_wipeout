@@ -158,6 +158,10 @@
       <Project>{26c054f2-4984-4fe5-811c-4d94ef7eae15}</Project>
       <Name>apcurium.MK.Web.SelfHost</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Infrastructure\Infrastructure.csproj">
+      <Project>{b5786d07-5888-4df5-b295-3fea593f3bfe}</Project>
+      <Name>Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api.Client\MK.Booking.Api.Client.csproj">
       <Project>{304F8E9E-0E9C-40F4-81FB-E7558286C5C1}</Project>
       <Name>MK.Booking.Api.Client</Name>
@@ -165,6 +169,10 @@
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.csproj">
       <Project>{1DD86EC1-75F9-4A57-A8D6-18248048F571}</Project>
       <Name>MK.Booking.Api.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MK.Booking.Api\MK.Booking.Api.csproj">
+      <Project>{1a931a36-d855-4a7a-ad0f-1b35d76582f3}</Project>
+      <Name>MK.Booking.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking\MK.Booking.csproj">
       <Project>{BAF90740-9220-4BB0-B857-1E5927E464E9}</Project>

@@ -73,6 +73,11 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
     <Compile Include="AuthenticateAttribute.cs" />
+    <Compile Include="Requests\NotificationSettingsRequest.cs" />
+    <Compile Include="Requests\Payment\DeleteTokenizedCreditcardRequest.cs" />
+    <Compile Include="Requests\Payment\PairingForPaymentRequest.cs" />
+    <Compile Include="Requests\Payment\PreAuthorizeAndCommitPaymentRequest.cs" />
+    <Compile Include="Requests\Payment\UnpairingForPaymentRequest.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
@@ -113,9 +118,7 @@
     <Compile Include="Requests\AvailableVehicles.cs" />
     <Compile Include="Resources\AvailableVehicle.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
-    <Compile Include="Requests\Payment\Braintree\DeleteTokenizedCreditcardBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
-    <Compile Include="Requests\Payment\Cmt\DeleteTokenizedCreditcardCmtRequest.cs" />
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
     <Compile Include="Resources\Payments\BasePaymentResponse.cs" />
     <Compile Include="Resources\Payments\CommitPreauthoriedPaymentResponse.cs" />
@@ -125,16 +128,10 @@
     <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />
     <Compile Include="Requests\Payment\InitiatePayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
-    <Compile Include="Requests\Payment\Braintree\PreAuthorizeAndCommitPaymentBraintreeRequest.cs" />
-    <Compile Include="Requests\Payment\Cmt\PreAuthorizeAndCommitPaymentCmtRequest.cs" />
     <Compile Include="Resources\Payments\PairingResponse.cs" />
     <Compile Include="Resources\Payments\Cmt\Trip.cs" />
-    <Compile Include="Requests\Payment\Cmt\PairingRidelinqCmtRequest.cs" />
-    <Compile Include="Requests\Payment\Cmt\UnpairingRidelinqCmtRequest.cs" />
     <Compile Include="Requests\TermsAndConditionsRequest.cs" />
     <Compile Include="Resources\AccountCharge.cs" />
-    <Compile Include="Requests\Payment\Moneris\DeleteTokenizedCreditcardMonerisRequest.cs" />
-    <Compile Include="Requests\Payment\Moneris\PreAuthorizeAndCommitPaymentMonerisRequest.cs" />
     <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
     <Compile Include="Resources\VehicleType.cs" />
     <Compile Include="Requests\ActivationMethod.cs" />

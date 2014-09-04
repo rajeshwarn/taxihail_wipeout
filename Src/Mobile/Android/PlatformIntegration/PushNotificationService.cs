@@ -135,6 +135,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             if (intent != null)
             {
+                Log.Info(PushHandlerBroadcastReceiver.Tag, "INTENT NOT NULL!");
                 if (intent.Extras != null)
                 {
                     var alert =
@@ -148,7 +149,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                             .Select(key => Guid.Parse(intent.Extras.Get(key).ToString()))
                             .FirstOrDefault();
 
-                    CreateNotification(alert, "Tap to view...", orderId);
+                    var isParingNotification =
+                        intent.Extras.KeySet()
+                            .Where(key => key == "isPairingNotification")
+                            .Select(key => bool.Parse(intent.Extras.Get(key).ToString()))
+                            .FirstOrDefault();
+
+                    CreateNotification(alert, "Tap to view...", orderId, isParingNotification);
                 }
             }
         }
@@ -167,8 +174,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		static int notificationIntentcounter = 26; //to prevent exiting app to resend 0, we start at an arbitrary number
 
-		private void CreateNotification(string title, string desc, Guid orderId)
+		private void CreateNotification(string title, string desc, Guid orderId, bool isPairingNotification)
 		{
+            Log.Info(PushHandlerBroadcastReceiver.Tag, "Creating notification!");
+
 			//Create notification
 			var notificationManager = GetSystemService(NotificationService) as NotificationManager;
 
@@ -183,6 +192,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 			uiIntent.PutExtra("MvxLaunchData", launchData);
 			uiIntent.PutExtra("orderId", orderId.ToString());
+		    uiIntent.PutExtra("isPairingNotification", isPairingNotification.ToString());
 
 			var contentIntent = PendingIntent.GetActivity(this, notificationIntentcounter++,
 				uiIntent, 0);
@@ -202,6 +212,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			//Show the notification
 			if (notificationManager != null) {
 				notificationManager.Notify (1, notification);
+                Log.Info(PushHandlerBroadcastReceiver.Tag, "Notification sent");
 			}
 		}
     }

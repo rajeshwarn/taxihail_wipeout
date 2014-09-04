@@ -23,13 +23,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		private int _defaultTipPercentage;
 
-		public void Start(PaymentInformation paymentDetails = null)
+		public async Task Start(PaymentInformation paymentDetails = null)
 		{
-			CreditCards.CollectionChanged += (sender, e) => RaisePropertyChanged(() => HasCreditCards);
-
 			_defaultTipPercentage = Settings.DefaultTipPercentage;
-
-			LoadCreditCards();
 
 			Tips = new[]
 			{ 
@@ -47,26 +43,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				paymentDetails = new PaymentInformation();
 			}
 
-			var currentAccount = _accountService.CurrentAccount;
-
-			// check null and set to default values in case of null            
-			if (!paymentDetails.CreditCardId.HasValue)
+			SelectedCreditCard = await _accountService.GetCreditCard();
+			if (SelectedCreditCard != null)
 			{
-				var creditCards = _accountService.GetCreditCards();
-				if (currentAccount.DefaultCreditCard.HasValue 
-					&& creditCards.Any(x => x.CreditCardId == currentAccount.DefaultCreditCard.Value))
-				{
-					paymentDetails.CreditCardId = currentAccount.DefaultCreditCard;
-				}
-				else
-				{
-					if (creditCards.Any())
-					{
-                        paymentDetails.CreditCardId = creditCards.First().CreditCardId;
-					}
-				}
+				paymentDetails.CreditCardId = SelectedCreditCard.CreditCardId;
 			}
 
+			var currentAccount = _accountService.CurrentAccount;
 			if (!paymentDetails.TipPercent.HasValue)
 			{
 				if (currentAccount.DefaultTipPercent.HasValue)
@@ -79,43 +62,48 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				}
 			}
 
-			SelectedCreditCardId = paymentDetails.CreditCardId.GetValueOrDefault();
 			Tip = paymentDetails.TipPercent.Value;
 		}
     
-        private readonly ObservableCollection<CreditCardDetails> _creditCards = new ObservableCollection<CreditCardDetails>();
-		public ObservableCollection<CreditCardDetails> CreditCards  { get { return _creditCards; } }
-    
+		private CreditCardDetails _selectedCreditCard;
+		public CreditCardDetails SelectedCreditCard 
+		{
+			get { return _selectedCreditCard; }
+			set
+			{
+				_selectedCreditCard = value;
+				RaisePropertyChanged ();
+				RaisePropertyChanged (() => SelectedCreditCardId);
+				RaisePropertyChanged (() => HasCreditCard);
+			}
+		}
+
+		public Guid SelectedCreditCardId 
+		{
+			get 
+			{ 
+				return SelectedCreditCard != null 
+					? SelectedCreditCard.CreditCardId 
+					: Guid.Empty; 
+			}
+		}
+
 		public ListItem[] Tips { get; set; }
 
-		private Guid _selectedCreditCardId;
-        public Guid SelectedCreditCardId 
-		{
-			get { return _selectedCreditCardId; }
-			set 
-			{
-                if(value != _selectedCreditCardId)
-                {
-                    _selectedCreditCardId = value;
-					RaisePropertyChanged(()=>SelectedCreditCardId);
-					RaisePropertyChanged(()=>SelectedCreditCard);
-                }
-            }
-        }
-
-        public CreditCardDetails SelectedCreditCard 
-		{
-            get
-			{ 
-				return CreditCards.FirstOrDefault(x => x.CreditCardId == SelectedCreditCardId);
-            }
-        }
-    
-        public bool HasCreditCards 
+        public string CurrencySymbol 
 		{
             get 
 			{
-                return CreditCards.Any();
+				var culture = new CultureInfo(Settings.PriceFormat);
+                return culture.NumberFormat.CurrencySymbol;
+            }
+        }
+
+        public bool HasCreditCard
+		{
+            get 
+			{
+				return SelectedCreditCard != null;
             }
         }
 
@@ -150,73 +138,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             {
                 return TipListDisabled ? "" : Tips.First(x => x.Id == Tip).Display;
             }
-        }
-
-        public ListItem<Guid>[] GetCreditCardListItems ()
-        {
-            return CreditCards.Select(x=> new ListItem<Guid> { Id = x.CreditCardId, Display = x.FriendlyName }).ToArray();
-        }
-
-		public ICommand NavigateToCreditCardsList
-        {
-			get 
-			{
-			    return this.GetCommand (()=>
-				{
-					if(CreditCards.Count == 0)
-					{
-							ShowSubViewModel<CreditCardAddViewModel,CreditCardInfos>(new { showInstructions = false }, newCreditCard => InvokeOnMainThread(()=>
-						{
-							CreditCards.Add (new CreditCardDetails
-								{
-								   CreditCardCompany = newCreditCard.CreditCardCompany,
-								   CreditCardId = newCreditCard.CreditCardId,
-								   FriendlyName = newCreditCard.FriendlyName,
-								   Last4Digits = newCreditCard.Last4Digits
-								});
-							SelectedCreditCardId = newCreditCard.CreditCardId;
-							//save as default if none
-							if(!_accountService.CurrentAccount.DefaultCreditCard.HasValue)
-							{
-								var account = _accountService.CurrentAccount;
-								account.DefaultCreditCard = newCreditCard.CreditCardId;
-								_accountService.UpdateSettings(account.Settings, newCreditCard.CreditCardId, account.DefaultTipPercent);
-							}
-						}));
-					}
-					else
-					{
-						ShowSubViewModel<CreditCardsListViewModel, Guid>(null, result => 
-						{
-							if(result != default(Guid))
-							{
-								SelectedCreditCardId = result;
-
-								//Reload credit cards in case the credit card list has changed (add/remove)
-								LoadCreditCards();
-							}
-               			});
-					}
-				});
-			}
-		}
-    
-        public Task LoadCreditCards ()
-        {
-            var task = Task.Factory.StartNew(() => 
-				{
-					var cards = _accountService.GetCreditCards();
-                    InvokeOnMainThread(delegate {
-						CreditCards.Clear();
-                        foreach (var card in cards) {
-                            CreditCards.Add(card);
-                        }
-                        // refresh selected credit card
-						RaisePropertyChanged(()=>SelectedCreditCard);
-                    });
-            }).HandleErrors();
-        
-            return task;
         }
     }
 }

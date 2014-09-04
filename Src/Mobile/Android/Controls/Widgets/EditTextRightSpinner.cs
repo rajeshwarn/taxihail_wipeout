@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Android.Content;
+using Android.Graphics;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
@@ -16,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     {
         private ListItemAdapter _adapter;
         private ImageView _imageLeftView;
+        private ImageView _imageRightArrow;
         private TextView _label;
         private string _leftImage;
         private int _selectedKey = int.MinValue;
@@ -26,16 +28,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public EditTextRightSpinner(Context context)
             : base(context)
         {
-            Initialize();
+            Initialize(null);
         }
 
         [Register(".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;)V", "")]
         public EditTextRightSpinner(Context context, IAttributeSet attrs)
             : base(context, attrs)
         {
-            Initialize();
+            Initialize(attrs);
         }
 
+        public override bool Enabled
+        {
+            get { return base.Enabled; }
+            set
+            {
+                base.Enabled = value;
+                this.SetBackgroundColor(value ? _initialBackgroundColor : Color.Transparent);
+                if (_imageRightArrow != null)
+                {
+                    _imageRightArrow.Visibility = value 
+                        ? ViewStates.Visible 
+                        : ViewStates.Invisible;
+                }
+            }
+        }
 
         public string Text
         {
@@ -88,12 +105,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public event EventHandler SpinnerClicked;
 
+        private Color _initialBackgroundColor;
 
-        private void Initialize()
+        private void Initialize(IAttributeSet attrs)
         {
             _adapter = new ListItemAdapter(Context, Resource.Layout.SpinnerTextWithImage, Resource.Id.labelSpinner,
                 new List<ListItemData>());
             _adapter.SetDropDownViewResource(Resource.Layout.SpinnerTextWithImage);
+
+            if (attrs != null)
+            {
+                var att = Context.ObtainStyledAttributes(attrs, new int[] { Android.Resource.Attribute.Background }, 0, 0);
+                _initialBackgroundColor = att.GetColor(0, -1);
+            }
         }
 
         protected override void OnFinishInflate()
@@ -105,6 +129,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _label = (TextView) layout.FindViewById(Resource.Id.label);
             _label.Focusable = false;
             _imageLeftView = layout.FindViewById<ImageView>(Resource.Id.leftImage);
+            _imageRightArrow = layout.FindViewById<ImageView>(Resource.Id.rightArrow);
             if (_text != null) _label.Text = _text;
             if (_leftImage != null)
             {
@@ -122,12 +147,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var button = (Button) layout.FindViewById(Resource.Id.openSpinnerButton);
 
             button.Click += (sender, e) =>
-            {                  
-                _spinner.PerformClick(); 
-
-                if (SpinnerClicked!=null)
+            {
+                if (Enabled)
                 {
-                    SpinnerClicked(this, e);
+                    _spinner.PerformClick();
+
+                    if (SpinnerClicked != null)
+                    {
+                        SpinnerClicked(this, e);
+                    }
                 }
             };
 

@@ -7,6 +7,7 @@ using System.Threading;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using ServiceStack.Text;
@@ -39,11 +40,12 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 var radius = ConfigManager.GetSetting("AvailableVehicles.Radius", 2000);
                 var count = ConfigManager.GetSetting("AvailableVehicles.Count", 10);
+                var vehicle = _staticDataWebServiceClient.GetVehicleTypeItemById(vehicleTypeId);
 
                 UseService(service =>
                 {
                     result = service
-                        .GetAvailableVehicles(UserNameApp, PasswordApp, longitude, latitude, radius, count)
+                        .GetAvailableVehicles_4(UserNameApp, PasswordApp, longitude, latitude, radius, count, false, new []{ vehicle })
                         .Select(Mapper.Map<IbsVehiclePosition>)
                         .ToArray();
                 });
@@ -51,7 +53,6 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             return result;
         }
-
 
         public IbsOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone)
         {
@@ -153,9 +154,17 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
+        public bool SendMessageToDriver(string message, string vehicleNumber)
+        {
+            var success = false;
+            UseService(service =>
+            {
+                var result = service.SendDriverMsg(UserNameApp, PasswordApp, vehicleNumber, message);
+                success = result == 0;
 
-
-
+            });
+            return success;
+        }
 
         public bool SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId)
         {
@@ -212,6 +221,34 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             return success;
         }
+
+        public int? SendAccountInformation(Guid orderId, int ibsOrderId, string type, string cardToken, int accountID, string name, string phone, string email)
+        {
+            int? result = null;
+            UseService(service =>
+            {
+                
+                result = service.SaveExtrPayment_2(UserNameApp, PasswordApp, ibsOrderId, "", "", cardToken, type,null , 0, 0, 0, 0,
+                 0, 0, 0, accountID, name, CleanPhone(phone), email, "", "", orderId.ToString());
+                
+                if ( result < -9000 ) //Hack unitl we support more code and we get the list of code.
+                {
+                    service.CancelBookOrder( UserNameApp, PasswordApp, ibsOrderId, CleanPhone(phone ), null , accountID );
+                    result = -10000;
+                }
+                else
+                {
+                    result = null;
+                }
+
+
+
+            });
+
+            return result;
+        }
+
+        
 
         private int ToCents(decimal dollarAmout)
         {

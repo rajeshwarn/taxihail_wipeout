@@ -180,13 +180,14 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         [Test]
         public void when_order_completed_then_order_dto_populated()
         {
-            var orderCompleted = new OrderCompleted
+            var orderCompleted = new OrderStatusChanged
             {
                 SourceId = _orderId,
                 Fare = 23,
                 Toll = 2,
                 Tip = 5,
-                Tax = 12
+                Tax = 12,
+                IsCompleted = true
             };
             Sut.Handle(orderCompleted);
 
@@ -264,13 +265,13 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         }
 
         [Test]
-        public void when_faret_information_set()
+        public void when_fare_information_set()
         {
             double fare = 12;
             double tip = 2;
             double toll = 5;
             double tax = 3;
-            Sut.Handle(new OrderFareUpdated
+            Sut.Handle(new OrderStatusChanged
             {
                 SourceId = _orderId,
                 Fare = fare,
@@ -305,25 +306,6 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 var dto = context.Find<OrderDetail>(_orderId);
                 Assert.NotNull(dto);
                 Assert.IsTrue(dto.IsRemovedFromHistory);
-            }
-        }
-
-        [Test]
-        public void when_vehicle_position_changed()
-        {
-            Sut.Handle(new OrderVehiclePositionChanged
-            {
-                SourceId = _orderId,
-                Latitude = 1.234,
-                Longitude = 4.321
-            });
-
-            using (var context = new BookingDbContext(DbName))
-            {
-                var dto = context.Find<OrderStatusDetail>(_orderId);
-                Assert.NotNull(dto);
-                Assert.AreEqual(1.234, dto.VehicleLatitude);
-                Assert.AreEqual(4.321, dto.VehicleLongitude);
             }
         }
     }

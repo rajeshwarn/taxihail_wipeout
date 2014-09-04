@@ -22,8 +22,9 @@ namespace apcurium.MK.Web
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(Global));
 
+        private int _defaultPollingValue;
 
-        protected IUpdateOrderStatusJob StatusJobService { get; set; }
+        private const int WaitingForPaymentPollingValue = 2;
 
         protected void Application_Start(object sender, EventArgs e)
         {
@@ -33,38 +34,36 @@ namespace apcurium.MK.Web
             var config = UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
             BundleConfig.RegisterBundles(BundleTable.Bundles, config.GetSetting("TaxiHail.ApplicationKey"));
 
-            StatusJobService = UnityContainerExtensions.Resolve<IUpdateOrderStatusJob>(UnityServiceLocator.Instance);
-
-            var configurationManager =
-                UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
-            int pollingValue = configurationManager.GetSetting<int>("OrderStatus.ServerPollingInterval", 10);
-            PollIbs(pollingValue);
+            _defaultPollingValue = config.GetSetting("OrderStatus.ServerPollingInterval", 10);
+            PollIbs(_defaultPollingValue);
         }
 
         private void PollIbs(int pollingValue)
         {
             Log.Info("Queue OrderStatusJob " + DateTime.Now.ToString("HH:MM:ss"));
-            
+
+            bool hasOrdersWaitingForPayment = false;
+
             Observable.Timer(TimeSpan.FromSeconds(pollingValue))
                 .Subscribe(_ =>
                 {
                     try
                     {
-                        string serverProcessId = GetServerProcessId();
+                        var serverProcessId = GetServerProcessId();
                         Trace.WriteLine("serverProcessId : " + serverProcessId);
-                        StatusJobService.CheckStatus(serverProcessId);
-
+                        var statusJobService = UnityContainerExtensions.Resolve<IUpdateOrderStatusJob>(UnityServiceLocator.Instance);
+                        hasOrdersWaitingForPayment = statusJobService.CheckStatus(serverProcessId, pollingValue);
                     }
                     finally
                     {
-                        PollIbs(pollingValue);
+                        PollIbs(hasOrdersWaitingForPayment ? WaitingForPaymentPollingValue : _defaultPollingValue);
                     }
                 });
         }
 
         private string GetServerProcessId()
         {
-            return string.Format("{0}_{1}", System.Environment.MachineName, Process.GetCurrentProcess().Id);
+            return string.Format("{0}_{1}", Environment.MachineName, Process.GetCurrentProcess().Id);
         }
 
         protected void Session_Start(object sender, EventArgs e)
@@ -84,7 +83,6 @@ namespace apcurium.MK.Web
                 HttpContext.Current.Items.Add("RequestLoggingWatch", watch);
             }
         }
-
 
         protected void Application_EndRequest(object sender, EventArgs e)
         {

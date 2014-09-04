@@ -5,7 +5,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.Maps.Geo;
+using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
 
@@ -16,10 +20,15 @@ namespace apcurium.MK.Booking.ReadModel.Query
     public class OrderDao : IOrderDao
     {
         private readonly Func<BookingDbContext> _contextFactory;
-
-        public OrderDao(Func<BookingDbContext> contextFactory)
+        private readonly IPushNotificationService _pushNotificationService;
+        private readonly Resources.Resources _resources;
+        
+        public OrderDao(Func<BookingDbContext> contextFactory, IPushNotificationService pushNotificationService, IConfigurationManager configManager)
         {
             _contextFactory = contextFactory;
+            _pushNotificationService = pushNotificationService;
+
+            _resources = new Resources.Resources(configManager.GetSetting("TaxiHail.ApplicationKey"));
         }
 
         public IList<OrderDetail> GetAll()
@@ -112,12 +121,12 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                
                 var startDate = DateTime.Now.AddHours(-36);
-                
+
                 var currentOrders = (from order in context.Set<OrderStatusDetail>()
                                      where (order.Status == OrderStatus.Created
-                                        || order.Status == OrderStatus.Pending) && (order.PickupDate >= startDate)
+                                        || order.Status == OrderStatus.Pending
+                                        || order.Status == OrderStatus.WaitingForPayment) && (order.PickupDate >= startDate)
                                      select order).ToList();
                 return currentOrders;
             }
@@ -127,9 +136,13 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
+                var startDate = DateTime.Now.AddHours(-36);
+
                 var currentOrders = (from order in context.Set<OrderStatusDetail>()
                     where order.AccountId == accountId
-                    where order.Status != OrderStatus.Canceled && order.Status != OrderStatus.Completed && order.Status != OrderStatus.Removed
+                    where (order.Status == OrderStatus.Created
+                        || order.Status == OrderStatus.Pending)
+                        && (order.PickupDate >= startDate)
                     select order).ToList();
                 return currentOrders;
             }
@@ -148,6 +161,19 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 return context.Query<OrderPairingDetail>().SingleOrDefault(x => x.OrderId == orderId);
+            }
+        }
+
+        public void UpdateVehiclePosition(Guid orderId, double? newLatitude, double? newLongitude)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderStatus = context.Query<OrderStatusDetail>().Single(x => x.OrderId == orderId);
+
+                orderStatus.VehicleLatitude = newLatitude;
+                orderStatus.VehicleLongitude = newLongitude;
+
+                context.Save(orderStatus);
             }
         }
     }

@@ -16,6 +16,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		void EndCreateOrder ();
 
+		Task<bool> ValidateCardOnFile ();
+
 		Task SetAddress(Address address);
 		Task SetPickupAptAndRingCode(string apt, string ringCode);
 		Task<Address> SetAddressToUserLocation();
@@ -27,7 +29,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task ToggleBetweenPickupAndDestinationSelectionMode();
 
-		Task ValidatePickupDestinationAndTime();
+		Task ValidatePickupTime();
+		Task ValidatePickupAndDestination();
 		Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder();
 
 		Task SetVehicleType (int? vehicleTypeId);
@@ -48,7 +51,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder();
 
+        Guid? GetLastUnratedRide();
+
 		Task<bool> ShouldWarnAboutEstimate();
+
+	    bool ShouldPromptUserToRateLastRide();
 
 		Task<bool> ShouldGoToAccountNumberFlow();
 		Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null);
@@ -63,6 +70,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<Address> GetCurrentAddress();
 
 		Task ResetOrderSettings();
+
+	    bool IsOrderRebooked();
+
+        void CancelRebookOrder();
     }
 }
 

@@ -18,8 +18,6 @@ namespace apcurium.MK.Booking.Domain
         private string _ibsStatus;
         private bool _isRated;
         private OrderStatus _status;
-        private double? _vehicleLatitude;
-        private double? _vehicleLongitude;
         private double? _fare;
 
         protected Order(Guid id)
@@ -27,15 +25,12 @@ namespace apcurium.MK.Booking.Domain
         {
             Handles<OrderCreated>(OnOrderCreated);
             Handles<OrderCancelled>(OnOrderCancelled);
-            Handles<OrderCompleted>(OnOrderCompleted);
             Handles<OrderRemovedFromHistory>(OnOrderRemoved);
             Handles<OrderRated>(OnOrderRated);
             Handles<PaymentInformationSet>(NoAction);
             Handles<OrderStatusChanged>(OnOrderStatusChanged);
-            Handles<OrderFareUpdated>(OnOrderFareUpdated);
-            Handles<OrderVehiclePositionChanged>(OnOrderVehiclePositionChanged);
-            Handles<OrderPairedForRideLinqCmtPayment>(NoAction);
-            Handles<OrderUnpairedForRideLinqCmtPayment>(NoAction);
+            Handles<OrderPairedForPayment>(NoAction);
+            Handles<OrderUnpairedForPayment>(NoAction);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -102,20 +97,6 @@ namespace apcurium.MK.Booking.Domain
             Update(new OrderCancelled());
         }
 
-        public void Complete(double? fare, double? tip, double? toll, double? tax)
-        {
-            if (_status != OrderStatus.Completed)
-            {
-                Update(new OrderCompleted
-                {
-                    Fare = fare,
-                    Toll = toll,
-                    Tip = tip,
-                    Tax = tax
-                });
-            }
-        }
-
         public void RemoveFromHistory()
         {
             Update(new OrderRemovedFromHistory());
@@ -134,40 +115,28 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        public void ChangeStatus(OrderStatusDetail status)
+        public void ChangeStatus(OrderStatusDetail status, double? fare, double? tip, double? toll, double? tax)
         {
             if (status == null) throw new InvalidOperationException();
 
-            if (status.IBSStatusId != _ibsStatus)
+            if (status.Status != _status || status.IBSStatusId != _ibsStatus || _fare != fare)
             {
                 Update(new OrderStatusChanged
                 {
-                    Status = status
+                    Status = status,
+                    Fare = fare,
+                    Tip = tip,
+                    Toll = toll,
+                    Tax = tax,
+                    IsCompleted = status.Status == OrderStatus.Completed
                 });
-            }
-
-            if (status.VehicleLatitude != _vehicleLatitude || status.VehicleLongitude != _vehicleLongitude)
-            {
-                Update(new OrderVehiclePositionChanged
-                {
-                    Latitude = status.VehicleLatitude,
-                    Longitude = status.VehicleLongitude,
-                });
-            }
-        }
-
-        public void AddFareInformation(double fare, double tip, double toll, double tax)
-        {
-            if (_fare != fare)
-            {
-                Update(new OrderFareUpdated{ Fare = fare, Tip = tip, Toll = toll, Tax = tax});
             }
         }
 
         public void Pair(string medallion, string driverId, string pairingToken, string pairingCode,
             string tokenOfCardToBeUsedForPayment, double? autoTipAmount, int? autoTipPercentage)
         {
-            Update(new OrderPairedForRideLinqCmtPayment
+            Update(new OrderPairedForPayment
             {
                 Medallion = medallion,
                 DriverId = driverId,
@@ -181,12 +150,27 @@ namespace apcurium.MK.Booking.Domain
 
         public void Unpair()
         {
-            Update(new OrderUnpairedForRideLinqCmtPayment());
+            Update(new OrderUnpairedForPayment());
         }
 
         private void OnOrderStatusChanged(OrderStatusChanged @event)
         {
-            _ibsStatus = @event.Status.IBSStatusId;
+            // special case for migration
+            if (@event.IsCompleted)
+            {
+                _status = OrderStatus.Completed;
+            }
+
+            if (@event.Status != null) //possible with migration
+            {
+                _ibsStatus = @event.Status.IBSStatusId;
+                _status = @event.Status.Status;
+            }
+
+            if (@event.Fare.HasValue && @event.Fare.Value > 0)
+            {
+                _fare = @event.Fare;
+            }
         }
 
         private void OnOrderCreated(OrderCreated obj)
@@ -199,11 +183,6 @@ namespace apcurium.MK.Booking.Domain
             _status = OrderStatus.Canceled;
         }
 
-        private void OnOrderCompleted(OrderCompleted obj)
-        {
-            _status = OrderStatus.Completed;
-        }
-
         private void OnOrderRemoved(OrderRemovedFromHistory obj)
         {
             _status = OrderStatus.Removed;
@@ -213,18 +192,5 @@ namespace apcurium.MK.Booking.Domain
         {
             _isRated = true;
         }
-
-        private void OnOrderVehiclePositionChanged(OrderVehiclePositionChanged @event)
-        {
-            _vehicleLatitude = @event.Latitude;
-            _vehicleLongitude = @event.Longitude;
-        }
-
-        private void OnOrderFareUpdated(OrderFareUpdated @event)
-        {
-            _fare = @event.Fare;
-        }
-
-        
     }
 }

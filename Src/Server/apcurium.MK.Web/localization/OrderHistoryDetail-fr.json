@@ -1,0 +1,16 @@
+﻿{
+	"Pickup Time" : "Heure de départ",
+	"Pickup" : "Départ",
+	"Destination" : "Destination",
+	"Estimate" : "Prix",
+	"Rebook" : "Commander",
+	"Delete" : "Effacer",
+	"Cancel" : "Annuler",
+	"Order details" : "Détail de la commande",
+	"OrderStatus" : "Status de la commande",
+	"ibsOrderIdLabel" : "Commande n°", 
+	"Send Receipt": "Send Receipt",
+	"Sending...": "Envoi...",
+	"Receipt Sent": "Envoyer facture",
+	"Cannot Send Receipt": "Impossible d'envoyer la facture"
+}
