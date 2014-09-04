@@ -153,9 +153,7 @@
   <data name="ApartmentLabel" xml:space="preserve">
     <value>شقة</value>
   </data>
-  <data name="ApplicationName" xml:space="preserve">
-    <value>مشوار</value>
-  </data>
+  <data name="ApplicationName" xml:space="preserve">CINQ-S</data>
   <data name="AppNeedUpdateMessage" xml:space="preserve">
     <value>هناك تحديث جديد متاح للتطبيق ، يرجى تحديث التطبيق للإستمرار.</value>
   </data>

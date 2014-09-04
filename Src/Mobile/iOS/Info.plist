@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"[]>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
     <key>CFBundleDisplayName</key>
-    <string>TaxiHail</string>
+    <string>CINQ-S</string>
     <key>CFBundleExecutable</key>
     <string>
     </string>
@@ -14,7 +14,7 @@
       <string>Icon-60@2x</string>
     </array>
     <key>CFBundleIdentifier</key>
-    <string>com.apcurium.mk.taxihail.dev</string>
+    <string>com.apcurium.MK.Aexid</string>
     <key>CFBundleURLTypes</key>
     <array>
       <dict>
@@ -22,9 +22,8 @@
         <string>facebook</string>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>fb134284363380764taxihail</string>
-          <string>taxihail</string>
-          <string>fb134284363380764</string>
+          <string>fb1487947728116788CINQ-S</string>
+          <string>mkCINQ-S</string>
         </array>
         <key>CFBundleURLTypes</key>
         <string>Viewer</string>

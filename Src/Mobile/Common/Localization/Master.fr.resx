@@ -156,9 +156,7 @@
   <data name="apcuriumUrl" xml:space="preserve">
     <value>http://www.apcurium.com/</value>
   </data>
-  <data name="ApplicationName" xml:space="preserve">
-    <value>TaxiHail</value>
-  </data>
+  <data name="ApplicationName" xml:space="preserve">CINQ-S</data>
   <data name="AppNeedUpdateMessage" xml:space="preserve">
     <value>Une nouvelle version de l'application est disponible, merci de la télécharger pour continuer</value>
   </data>
@@ -1164,13 +1162,12 @@
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall" xml:space="preserve">
     <value>La commande ne peut être créée car votre compte est actuellement désactivé</value>
   </data>
-<data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
     <value>La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</value>
   </data>
-<data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall" xml:space="preserve">
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall" xml:space="preserve">
     <value>La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</value>
   </data>
-
   <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
     <value>La commande ne peut être créé car le fournisseur est invalide. Merci de contacter {0} à {1} pour plus d'assistance.</value>
   </data>
