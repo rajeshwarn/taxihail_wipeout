@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<bool> UpdateCreditCard (CreditCardInfos creditCard);
 		Task RemoveCreditCard ();
 
-	    Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false);
+        Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false, bool cleanCache = false);
 	    Task UpdateNotificationSettings(NotificationSettings notificationSettings);
 
 		void LogApplicationStartUp ();
