@@ -62,6 +62,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             };
 
             AddSubviews(_pickupCenterPin, _dropoffCenterPin);
+
+			this.RegionChanged += (s, e) => 
+			{
+				ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles != null ? AvailableVehicles.ToArray () : null, GetMapBoundsFromProjection()));
+			};
         }
 
         public override void Draw(RectangleF rect)
@@ -367,7 +372,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var vehicleAnnotation = new AddressAnnotation (
                                 new CLLocationCoordinate2D(vehicle.Latitude, vehicle.Longitude),
                                 annotationType, 
-                                string.Empty, 
+								vehicle.VehicleNumber.ToString(),             
                                 string.Empty, 
                                 _useThemeColorForPickupAndDestinationMapIcons,
                                 vehicle.LogoName);
@@ -479,7 +484,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					var zoom = zoomHint.AvailableVehiclesZoom;
 					this.SetRegion(new MKCoordinateRegion (
 						new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude),
-						new MKCoordinateSpan (zoom.LatitudeDelta, zoom.LongitudeDelta)), false);
+						new MKCoordinateSpan (zoom.LatitudeDelta, zoom.LongitudeDelta)), true);
 				} else {
 					this.SetCenterCoordinate(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), 14, true);
 				}

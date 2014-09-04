@@ -8,6 +8,11 @@ using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Messages;
+using System.Linq;
+using System.Reactive.Linq;
+using System;
+using System.Threading;
+using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -103,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (_locateUser)
 			{
-				LocateMe.Execute();
+				LocateMe.Execute(true);
 				_locateUser = false;
 			}
 
@@ -260,14 +265,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return this.GetCommand(async () =>
+				return this.GetCommand(async (bool started) =>
 				{
 					if (_accountService.CurrentAccount != null)
 					{
 						var address = await _orderWorkflowService.SetAddressToUserLocation();
 						if(address.HasValidCoordinate())
 						{
-							this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, Map.AvailableVehicles)));
+							if (started)
+							{ 
+								try 
+								{
+									var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
+									var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, availableVehicles);	
+									this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
+								} catch (TimeoutException)
+								{
+									this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
+								}
+							} else
+							{
+								this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
+							}
 						}
 					}
 				});

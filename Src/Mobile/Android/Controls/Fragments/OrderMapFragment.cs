@@ -80,6 +80,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             this.DelayBind(() => InitializeBinding());
 
             CreatePins();
+
+			this.OnCameraChanged += (s, e) => 
+			{
+				ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles != null ? AvailableVehicles.ToArray () : null, GetMapBoundsFromProjection()));
+			};
         }
 
         private Address _pickupAddress;
@@ -449,7 +454,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 					builder.Include (new LatLng (availableVehiclesBounds.NorthBound, availableVehiclesBounds.WestBound));
 					builder.Include (new LatLng (availableVehiclesBounds.SouthBound, availableVehiclesBounds.EastBound));
 					LatLngBounds bounds = builder.Build();
-					var cameraUpdate = CameraUpdateFactory.NewLatLngBounds (bounds);
+					var cameraUpdate = CameraUpdateFactory.NewLatLngBounds (bounds, 0);
 					Map.AnimateCamera(cameraUpdate);
 
 				} else {

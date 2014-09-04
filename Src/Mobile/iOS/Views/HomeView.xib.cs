@@ -81,6 +81,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.Command)
                 .To(vm => vm.LocateMe);
 
+			btnLocateMe.CommandParameter = false;
+
             set.Bind(mapView)
                 .For(v => v.DataContext)
                 .To(vm => vm.Map);
