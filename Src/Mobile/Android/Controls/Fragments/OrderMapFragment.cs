@@ -440,9 +440,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             var zoomHint = hint as ZoomToStreetLevelPresentationHint;
 
-
-
-
             if (zoomHint != null)
             {
 				if (zoomHint.AvailableVehiclesZoom != null) {
@@ -458,8 +455,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				} else {
 					Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(zoomHint.Latitude, zoomHint.Longitude), 15));
 				}
-
-
             }
 
             var centerHint = hint as CenterMapPresentationHint;
