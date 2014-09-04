@@ -12,7 +12,7 @@
 "AddressSearchingText"="Recherche…";
 "ApartmentLabel"="Appartement";
 "apcuriumUrl"="http://www.apcurium.com/";
-"ApplicationName"="TaxiHail";
+"ApplicationName"="CINQ-S";
 "AppNeedUpdateMessage"="Une nouvelle version de l'application est disponible, merci de la télécharger pour continuer";
 "AppNeedUpdateTitle"="Nouvelle version disponible";
 "app_id"="134284363380764";
@@ -150,8 +150,8 @@
 "Error_AccountPaymentQuestionRequiredMessage"="Vous devez saisir tous les champs pour continuer";
 "Error_AccountPaymentTitle"="Erreur";
 "EstimatedFareNotAvailable"="Le prix ne peut être estimé pour le moment";
-"EstimatePriceFormat"="Prix estimé: {0:C} ({1})";
-"EstimatePriceOver100"="Appelez-nous pour connaître le prix!";
+"EstimatePriceFormat"="Cost: {0:c}";
+"EstimatePriceOver100"="Cost: {0:c}";
 "EstimatingFare"="Calcul du prix en cours…";
 "Facebook"="Connexion Facebook";
 "FavoriteLocationsTitle"="Lieu de départ / destination favoris";
@@ -345,8 +345,8 @@
 "ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall"="La commande ne peut être créée car votre compte est actuellement désactivé";
 "ServiceErrorCreateOrder_InvalidProvider"="La commande ne peut être créé car le fournisseur est invalide. Merci de contacter {0} à {1} pour plus d'assistance.";
 "ServiceErrorCreateOrder_InvalidProvider_NoCall"="Désolé, la demande ne peut être prise en compte. Le fournisseur n'est pas valide.";
-"ServiceErrorCreateOrder_NoFareEstimateAvailable"="Désolé, nous n'avons pas pu estimer le montant de votre trajet. Merci de contacter {0} au {1} pour toute demande d'assistance";
-"ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall"="Désolé, nous n'avons pas pu estimer le montant de votre trajet";
+"ServiceErrorCreateOrder_NoFareEstimateAvailable"="No fare is available for the ride. Please specify a valid pickup and destination.";
+"ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall"="No fare is available for the ride. Please specify a valid pickup and destination.";
 "ServiceErrorCreateOrder_NoProvider"="Désolé, la demande ne peut être prise en compte car vous n'avez pas choisi de fournisseur. Merci de réessayer ultérieurement ou de nous joindre au {0}.";
 "ServiceErrorCreateOrder_VehiculeType"="Désolé, la demande ne peut être prise en compte car le type de véhicule choisi n'est pas valide. Merci de réessayer ultérieurement ou de nous joindre au {0}";
 "ServiceErrorDefaultMessage"="Désolé, nous avons rencontré un problème. Merci de réessayer ultérieurement";
@@ -389,7 +389,7 @@
 "TabPlaces"="Points d'intérêt";
 "TabSearch"="Rechercher";
 "TaxiMapTitle"="Votre véhicule";
-"TaxiServerDownMessage"="Désolé, impossible de contacter le chauffeur";
+"TaxiServerDownMessage"="Can't send message to driver";
 "TechSupportEmailTitle"="Support application mobile";
 "TermsAndConditionsAcknowledgment"="Je reconnais avoir pris connaissance des conditions générales d'utilisation";
 "Time"="Heure";

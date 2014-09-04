@@ -81,7 +81,7 @@
 "Tuto06Bottom"="Tap Confirm when you are ready to go.";
 "October"="Oct (10)";
 "LoginForgotPasswordDetail"="Enter your email and we'll send you a new one.";
-"ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall"="No fare estimate available for the ride.";
+"ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall"="No fare is available for the ride. Please specify a valid pickup and destination.";
 "HistoryInfo"="Displaying trips from the last month";
 "ConfirmPassengerSettingsTitle"="Passenger Settings";
 "ChangeBookingSettingsButton"="Change booking settings";
@@ -94,7 +94,7 @@
 "DeleteBookItButtonImageNamePressed"="Assets/Button/btnBookIt-Pressed_en.png";
 "StreetNumberPlacesBt"="Search for places";
 "CreateAccountTitleMr"="Mr";
-"EstimatePriceFormat"="Estimated Fare : {0:C} ({1})";
+"EstimatePriceFormat"="Cost: {0:c}";
 "PanelMenuViewOrderHistoryText"="History";
 "ResetPasswordSucessTitle"="Password reset";
 "TabSearch"="Search";
@@ -140,7 +140,7 @@
 "Tuto05Top"="Tap Book Now and a vehicle will be assigned as soon as possible.";
 "OrderNoteGPSApproximate"=" (approx. address)";
 "CreateAccountTitleArray"="MrMrs";
-"EstimatePriceOver100"="Call for price";
+"EstimatePriceOver100"="Cost: {0:c}";
 "PanelMenuViewTutorialText"="View Tutorial";
 "CreditCard"="Credit Card";
 "InvalidAddressTextEdit"="Cannot validate adddress";
@@ -172,7 +172,7 @@
 "LocationServiceErrorMessage"="The location service is not enabled.";
 "LocationDetailAddressLabel"="Address";
 "NoAptText"="No apt.";
-"TaxiServerDownMessage"="Can't send message to Taxi";
+"TaxiServerDownMessage"="Can't send message to driver";
 "PasswordLabel"="Password";
 "RingCodeTextPlaceholder"="Entry code";
 "View_SignIn"="";
@@ -313,7 +313,7 @@
 "TermsAndConditionsLabel"="Terms and Conditions";
 "StatusInvalid"="Status not available";
 "View_CreateAccount"="Create Your Account";
-"ServiceErrorCreateOrder_NoFareEstimateAvailable"="No fare estimate available for the ride. Please contact {0} at {1} for further assistance.";
+"ServiceErrorCreateOrder_NoFareEstimateAvailable"="No fare is available for the ride. Please specify a valid pickup and destination.";
 "HistoryDetailDestinationLabel"="Destination:";
 "ViewRatingBtn"="View ratings";
 "NotAvailable"="N/A";
@@ -416,7 +416,7 @@
 "ConfirmVehiculeTypeLabel"="Vehicle type";
 "ServerInfo"="({0} v{1})";
 "RideSettingsVehiculeType"="Vehicle type";
-"ApplicationName"="TaxiHail";
+"ApplicationName"="CINQ-S";
 "WarningEstimateTitle"="Warning";
 "InvalidBookinInfoTitle"="Invalid booking info";
 "March"="Mar (03)";
