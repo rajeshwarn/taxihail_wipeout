@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlatButtonStyles>
+  <Red>
+	<Background>
+		<Normal>#E3202C</Normal>
+  		<Selected>#E3202C</Selected>
+	</Background>
+  	
+  </Red>
+</FlatButtonStyles>
