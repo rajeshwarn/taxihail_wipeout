@@ -36,7 +36,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			this.ShouldChangeCharacters = CheckMaxLength;
 
-			BackgroundColor = Enabled ? UIColor.White : UIColor.Clear;
+            BackgroundColor = Enabled 
+                ? UIColor.White 
+                : UIColor.Clear;
 
 			if (UIHelper.IsOS7orHigher) 
             {
@@ -82,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			set 
             {
 				base.Enabled = value;
-				BackgroundColor = value ? UIColor.White : UIColor.Clear;
+                BackgroundColor = value ? BackgroundColor : UIColor.Clear;
 				SetNeedsDisplay();
 			}
 		}
