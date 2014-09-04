@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			var vehicleCount = _settings.Data.ZoomOnNearbyVehiclesCount;
 
 			var vehicles = GetNearestVehicles (pickup, cars)
-				.Where (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude) <= radius)
+				.Where (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude) <= (int)radius)
 				.Take ((int)vehicleCount);
 
 			var south = vehicles.OrderBy (x => x.Latitude).First ().Latitude;

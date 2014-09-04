@@ -98,14 +98,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }, _ => true);
             }
         }
-
-		public MapBounds AvailableVehiclesBounds
-		{
-			get {
-				return _vehicleService.GetBoundsForNearestVehicles (PickupAddress, AvailableVehicles);
-			}
-		}
-			
+	
 		public class CancellableCommand<TParam>: ICommand
         {
             private Func<TParam,bool> _canExecute;

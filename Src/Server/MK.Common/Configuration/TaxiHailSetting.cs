@@ -246,7 +246,7 @@ namespace MK.Common.Configuration
 		public bool ZoomOnNearbyVehicles { get; private set; }
 
 		[Display(Name = "Zoom on nearby vehicles radius", Description="Inclusion radius in meters when zooming on nearby vehicles")]
-		public double? ZoomOnNearbyVehiclesRadius { get; private set; }
+		public int? ZoomOnNearbyVehiclesRadius { get; private set; }
 
 		[Display(Name = "Zoom on nearby vehicles count", Description="Maximum of included vehicles when zooming on nearby vehicles")]
 		public int? ZoomOnNearbyVehiclesCount { get; private set; }
