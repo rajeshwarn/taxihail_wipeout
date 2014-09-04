@@ -3,7 +3,7 @@
   <!--- Colors -->
   <!--- 	LoginTheme Color -->
   <color name="company_color">#E3202C</color>
-  <color name="login_color">#333333</color>
+  <color name="login_color">#212121</color>
   <color name="dialog_background_color">#9b9b9b</color>
   <color name="edit_text_background_color">#ffffff</color>
   <color name="edit_text_foreground_color">#000000</color>
@@ -28,7 +28,7 @@
   <color name="button_bottom_selected_border_color">#007aff</color>
   <color name="button_bottom_selected_background_color">#bb007aff</color>
   <!--		Settings Item Colors -->
-  <color name="setting_menu_color">#333333</color>
+  <color name="setting_menu_color">#212121</color>
   <color name="setting_menu_text_color">#4f4c47</color>
   <color name="setting_menu_separator_color">#a09f9c</color>
   <color name="setting_item_pressed_background_color">#ffffff</color>

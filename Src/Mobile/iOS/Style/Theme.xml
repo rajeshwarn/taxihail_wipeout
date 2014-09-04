@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ThemeValues>
   <CompanyColor>#E3202C</CompanyColor>
-  <LoginColor>#333333</LoginColor>
+  <LoginColor>#212121</LoginColor>
   <ButtonTextColor>#FFFFFF</ButtonTextColor>
   <LabelTextColor>#FFFFFF</LabelTextColor>
-  <MenuColor>#333333</MenuColor>
+  <MenuColor>#212121</MenuColor>
 </ThemeValues>
