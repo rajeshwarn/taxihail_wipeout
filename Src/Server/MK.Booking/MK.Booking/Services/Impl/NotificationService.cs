@@ -169,12 +169,16 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendAccountConfirmationEmail(Uri confirmationUrl, string clientEmailAddress, string clientLanguageCode)
         {
+            var baseUrl = _container.Resolve<string>("BaseUrl");
+
+            var baseUrlThemesImg = String.Concat(baseUrl, "/themes/" + _configurationManager.GetSetting(ApplicationKeySetting) + "/img/");
             var templateData = new
             {
                 confirmationUrl,
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
                 EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
-                AccentColor = _configurationManager.GetSetting(AccentColorSetting)
+                AccentColor = _configurationManager.GetSetting(AccentColorSetting),
+                LogoImg = String.Concat(baseUrlThemesImg, "email_logo.png")
 
 
             };
@@ -236,11 +240,17 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendPasswordResetEmail(string password, string clientEmailAddress, string clientLanguageCode)
         {
+            var baseUrl = _container.Resolve<string>("BaseUrl");
+
+            var baseUrlThemesImg = String.Concat(baseUrl, "/themes/" + _configurationManager.GetSetting(ApplicationKeySetting) + "/img/");
+
             var templateData = new
             {
                 password,
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
+                AccentColor = _configurationManager.GetSetting(AccentColorSetting),
                 EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
+                LogoImg = String.Concat(baseUrlThemesImg, "email_logo.png")
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.PasswordReset, EmailConstant.Subject.PasswordReset, templateData, clientLanguageCode);
