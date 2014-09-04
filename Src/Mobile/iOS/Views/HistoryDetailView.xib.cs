@@ -65,11 +65,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			btnSendReceipt.SetTitle(Localize.GetValue("HistoryViewSendReceiptButton"), UIControlState.Normal);
 
-			if (ViewModel.Settings.HideDestination)
-			{
-				lblDestination.RemoveFromSuperview();
-				txtDestination.RemoveFromSuperview();
-			}
+//			if (ViewModel.Settings.HideDestination)
+//			{
+//				lblDestination.RemoveFromSuperview();
+//				txtDestination.RemoveFromSuperview();
+//			}
 
 			var set = this.CreateBindingSet<HistoryDetailView, HistoryDetailViewModel>();
 
@@ -134,9 +134,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.BindSafe(txtDestination)
 				    .For(v => v.Text)
 				    .To(vm => vm.DestinationTxt);
-			set.BindSafe(txtDestination)
-				    .For(v => v.Hidden)
-					.To(vm => vm.Settings.HideDestination);
+//			set.BindSafe(txtDestination)
+//				    .For(v => v.Hidden)
+//					.To(vm => vm.Settings.HideDestination);
 
 			set.Bind(txtPickup)
 				.For(v => v.Text)
