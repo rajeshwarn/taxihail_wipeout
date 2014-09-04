@@ -8,7 +8,10 @@ using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Messages;
+using System.Linq;
 using System.Reactive.Linq;
+using System;
+using System.Threading;
 using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
