@@ -246,10 +246,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void InitOverlays()
         {
             var pinSize = _pickupCenterPin.IntrinsicContentSize;
+			var mkMapPadding = 12f;
 
             _pickupCenterPin.Frame = 
                 _dropoffCenterPin.Frame = 
-                    new RectangleF((this.Bounds.Width - pinSize.Width) / 2, (this.Bounds.Height / 2) - pinSize.Height, pinSize.Width, pinSize.Height);
+					new RectangleF((this.Bounds.Width - pinSize.Width) / 2, (this.Bounds.Height / 2) - pinSize.Height + mkMapPadding, pinSize.Width, pinSize.Height);
 
             // change position of Legal link on map
             var legalView = Subviews.FirstOrDefault(x => x is UILabel);
