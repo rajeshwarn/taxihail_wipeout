@@ -9,20 +9,26 @@ using System.Text;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Email;
+using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.SMS;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
     public class NotificationService : INotificationService
     {
+        private const int TaxiDistanceThresholdForPushNotification = 200; // In meters
+
         private const string ApplicationNameSetting = "TaxiHail.ApplicationName";
         private const string AccentColorSetting = "TaxiHail.AccentColor";
         private const string VATEnabledSetting = "VATIsEnabled";
@@ -35,6 +41,8 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IAppSettings _appSettings;
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
+        private readonly ISmsService _smsService;
+        private readonly ILogger _logger;
         private readonly ITemplateService _templateService;
         private readonly IEmailSender _emailSender;
         private readonly Resources.Resources _resources;
@@ -44,10 +52,12 @@ namespace apcurium.MK.Booking.Services.Impl
             IPushNotificationService pushNotificationService,
             ITemplateService templateService,
             IEmailSender emailSender,
-            IConfigurationManager configurationManager, 
+            IConfigurationManager configurationManager,
             IAppSettings appSettings,
             IConfigurationDao configurationDao,
-            IOrderDao orderDao)
+            IOrderDao orderDao,
+            ISmsService smsService,
+            ILogger logger)
         {
             _contextFactory = contextFactory;
             _pushNotificationService = pushNotificationService;
@@ -57,54 +67,58 @@ namespace apcurium.MK.Booking.Services.Impl
             _appSettings = appSettings;
             _configurationDao = configurationDao;
             _orderDao = orderDao;
+            _smsService = smsService;
+            _logger = logger;
 
             var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
             _resources = new Resources.Resources(applicationKey);
         }
 
-        public void SendStatusChangedNotification(OrderStatusDetail orderStatusDetail)
+        public void SendAssignedPush(OrderStatusDetail orderStatusDetail)
         {
             var order = _orderDao.FindById(orderStatusDetail.OrderId);
-            switch (orderStatusDetail.IBSStatusId)
+            if (ShouldSendNotification(order.AccountId, x => x.DriverAssignedPush))
             {
-                case VehicleStatuses.Common.Assigned:
-                    if (ShouldSendNotification(order.AccountId, x => x.DriverAssignedPush))
-                    {
-                        SendPush(order.AccountId,
-                            string.Format(_resources.Get("PushNotification_wosASSIGNED", order.ClientLanguageCode), orderStatusDetail.VehicleNumber),
-                            new Dictionary<string, object> { { "orderId", order.Id }, { "isPairingNotification", false } });
-                    }
-                    break;
-                case VehicleStatuses.Common.Arrived:
-                    if (ShouldSendNotification(order.AccountId, x => x.VehicleAtPickupPush))
-                    {
-                        SendPush(order.AccountId,
-                            string.Format(_resources.Get("PushNotification_wosARRIVED", order.ClientLanguageCode), orderStatusDetail.VehicleNumber),
-                            new Dictionary<string, object> { { "orderId", order.Id }, { "isPairingNotification", false } });
-                    }
-                    break;
-                case VehicleStatuses.Common.Loaded:
-                    if(_appSettings.Data.AutomaticPayment
-                        && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id // Only send notification if using card on file
-                        && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
-                    {
-                        SendPush(order.AccountId,
-                            _resources.Get("PushNotification_wosLOADED", order.ClientLanguageCode),
-                            new Dictionary<string, object> { { "orderId", order.Id }, { "isPairingNotification", true } });
-                    }
-                    break;
-                case VehicleStatuses.Common.Timeout:
-                    SendPush(order.AccountId, 
-                        _resources.Get("PushNotification_wosTIMEOUT", order.ClientLanguageCode), 
-                        new Dictionary<string, object>());
-                    break;
-                default:
-                    // No push notification for this order status
-                    return;
+                SendPushOrSms(order.AccountId,
+                    string.Format(_resources.Get("PushNotification_wosASSIGNED", order.ClientLanguageCode), orderStatusDetail.VehicleNumber),
+                    new Dictionary<string, object> { { "orderId", order.Id }, { "isPairingNotification", false } });
             }
         }
 
-        public void SendPaymentCaptureNotification(Guid orderId, decimal amount)
+        public void SendArrivedPush(OrderStatusDetail orderStatusDetail)
+        {
+            var order = _orderDao.FindById(orderStatusDetail.OrderId);
+            if (ShouldSendNotification(order.AccountId, x => x.VehicleAtPickupPush))
+            {
+                SendPushOrSms(order.AccountId,
+                    string.Format(_resources.Get("PushNotification_wosARRIVED", order.ClientLanguageCode), orderStatusDetail.VehicleNumber),
+                    new Dictionary<string, object> { { "orderId", order.Id }, { "isPairingNotification", false } });
+            }
+        }
+
+        public void SendPairingInquiryPush(OrderStatusDetail orderStatusDetail)
+        {
+            var order = _orderDao.FindById(orderStatusDetail.OrderId);
+            if (_configurationManager.GetPaymentSettings().AutomaticPayment
+                    && !_configurationManager.GetPaymentSettings().AutomaticPaymentPairing
+                    && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id // Only send notification if using card on file
+                    && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
+            {
+                SendPushOrSms(order.AccountId,
+                    _resources.Get("PushNotification_wosLOADED", order.ClientLanguageCode),
+                    new Dictionary<string, object> { { "orderId", order.Id }, { "isPairingNotification", true } });
+            }
+        }
+
+        public void SendTimeoutPush(OrderStatusDetail orderStatusDetail)
+        {
+            var order = _orderDao.FindById(orderStatusDetail.OrderId);
+            SendPushOrSms(order.AccountId,
+                        _resources.Get("PushNotification_wosTIMEOUT", order.ClientLanguageCode),
+                        new Dictionary<string, object>());
+        }
+
+        public void SendPaymentCapturePush(Guid orderId, decimal amount)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -117,13 +131,12 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 var alert = string.Format(string.Format(_resources.Get("PushNotification_PaymentReceived"), amount), order.ClientLanguageCode);
                 var data = new Dictionary<string, object> { { "orderId", orderId } };
-                
-                SendPush(order.AccountId, alert, data);
+
+                SendPushOrSms(order.AccountId, alert, data);
             }
         }
 
-        private const int TaxiDistanceThresholdForPushNotification = 200; // In meters
-        public void SendTaxiNearbyNotification(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude)
+        public void SendTaxiNearbyPush(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -153,10 +166,26 @@ namespace apcurium.MK.Booking.Services.Impl
 
                         var alert = string.Format(_resources.Get("PushNotification_NearbyTaxi", order.ClientLanguageCode));
                         var data = new Dictionary<string, object> { { "orderId", order.Id } };
-                        
-                        SendPush(order.AccountId, alert, data);
+
+                        SendPushOrSms(order.AccountId, alert, data);
                     }
                 }
+            }
+        }
+
+        public void SendAutomaticPairingPush(Guid orderId, int? autoTipPercentage, string last4Digits, bool success)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(orderId);
+
+                var alert = success 
+                    ? string.Format(_resources.Get("PushNotification_OrderPairingSuccessful"), order.IBSOrderId, last4Digits, autoTipPercentage)
+                    : string.Format(_resources.Get("PushNotification_OrderPairingFailed"), order.IBSOrderId);
+
+                var data = new Dictionary<string, object> { { "orderId", orderId } };
+
+                SendPushOrSms(order.AccountId, alert, data);
             }
         }
 
@@ -170,6 +199,14 @@ namespace apcurium.MK.Booking.Services.Impl
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.AccountConfirmation, EmailConstant.Subject.AccountConfirmation, templateData, clientLanguageCode);
+        }
+
+        public void SendAccountConfirmationSMS(string phoneNumber, string code, string clientLanguageCode)
+        {
+            var template = _resources.Get(SMSConstant.Template.AccountConfirmation, clientLanguageCode);
+            var message = string.Format(template, _configurationManager.GetSetting(ApplicationNameSetting), code);
+
+            SendSms(phoneNumber, message);
         }
 
         public void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress, DateTime pickupDate,
@@ -321,6 +358,18 @@ namespace apcurium.MK.Booking.Services.Impl
             _emailSender.Send(mailMessage);
         }
 
+        private void SendPushOrSms(Guid accountId, string alert, Dictionary<string, object> data)
+        {
+            if (_appSettings.Data.SendPushAsSMS)
+            {
+                SendSms(accountId, alert);
+            }
+            else
+            {
+                SendPush(accountId, alert, data);
+            }
+        }
+
         private void SendPush(Guid accountId, string alert, Dictionary<string, object> data)
         {
             using (var context = _contextFactory.Invoke())
@@ -331,6 +380,33 @@ namespace apcurium.MK.Booking.Services.Impl
                     _pushNotificationService.Send(alert, data, device.DeviceToken, device.Platform);
                 }
             }
+        }
+
+        private void SendSms(Guid accountId, string alert)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Set<AccountDetail>().Find(accountId);
+                var phoneNumber = account.Settings.Phone;
+
+                if (string.IsNullOrWhiteSpace(phoneNumber))
+                {
+                    _logger.Maybe(() => _logger.LogMessage("Cannot send SMS, phone number in account is empty (account: {0})", accountId));
+                    return;
+                }
+
+                _smsService.Send(phoneNumber, alert);
+            }
+        }
+
+        private void SendSms(string phoneNumber, string alert)
+        {
+            // TODO MKTAXI-1836 Support International number
+            phoneNumber = phoneNumber.Length == 11
+                              ? phoneNumber
+                              : string.Concat("1", phoneNumber);
+
+            _smsService.Send(phoneNumber, alert);
         }
 
         private bool ShouldSendNotification(Guid accountId, Expression<Func<NotificationSettings, bool?>> propertySelector)
@@ -375,6 +451,14 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string Receipt = "Receipt";
                 public const string AccountConfirmation = "AccountConfirmation";
                 public const string BookingConfirmation = "BookingConfirmation";
+            }
+        }
+
+        private static class SMSConstant
+        {
+            public static class Template
+            {
+                public const string AccountConfirmation = "AccountConfirmationSmsBody";
             }
         }
     }

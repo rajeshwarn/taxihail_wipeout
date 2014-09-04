@@ -135,6 +135,7 @@
     <Compile Include="EventHandlers\CompanyDetailsGenerator.cs" />
     <Compile Include="EventHandlers\CreditCardPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\Integration\IIBSOrderService.cs" />
+    <Compile Include="EventHandlers\Integration\OrderPairingManager.cs" />
     <Compile Include="EventHandlers\Integration\PaymentSettingsUpdater.cs" />
     <Compile Include="EventHandlers\Integration\OrderPaymentManager.cs" />
     <Compile Include="EventHandlers\NotificationSettingsGenerator.cs" />
@@ -242,8 +243,10 @@
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
     <Compile Include="Security\RolesPermissions.cs" />
+    <Compile Include="Services\Impl\PairingService.cs" />
     <Compile Include="Services\INotificationService.cs" />
     <Compile Include="Services\Impl\NotificationService.cs" />
+    <Compile Include="Services\IPairingService.cs" />
     <Compile Include="SMS\Impl\TwilioService.cs" />
     <Compile Include="SMS\ISmsService.cs" />
   </ItemGroup>

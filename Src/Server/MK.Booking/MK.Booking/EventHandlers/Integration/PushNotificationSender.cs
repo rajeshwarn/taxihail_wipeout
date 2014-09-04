@@ -34,12 +34,29 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderStatusChanged @event)
         {
-            _notificationService.SendStatusChangedNotification(@event.Status);
+            switch (@event.Status.IBSStatusId)
+            {
+                case VehicleStatuses.Common.Assigned:
+                    _notificationService.SendAssignedPush(@event.Status);
+                    break;
+                case VehicleStatuses.Common.Arrived:
+                    _notificationService.SendArrivedPush(@event.Status);
+                    break;
+                case VehicleStatuses.Common.Loaded:
+                    _notificationService.SendPairingInquiryPush(@event.Status);
+                    break;
+                case VehicleStatuses.Common.Timeout:
+                    _notificationService.SendTimeoutPush(@event.Status);
+                    break;
+                default:
+                    // No push notification for this order status
+                    return;
+            }
         }
 
         public void Handle(CreditCardPaymentCaptured @event)
         {
-            _notificationService.SendPaymentCaptureNotification(@event.OrderId, @event.Amount);
+            _notificationService.SendPaymentCapturePush(@event.OrderId, @event.Amount);
         }
     }
 }

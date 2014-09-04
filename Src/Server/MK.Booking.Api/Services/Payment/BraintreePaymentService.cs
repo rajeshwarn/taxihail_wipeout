@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
@@ -37,6 +38,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly IAccountDao _accountDao;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly IConfigurationManager _configManager;
+        private readonly IPairingService _pairingService;
 
         private BraintreeGateway BraintreeGateway { get; set; }
 
@@ -46,7 +48,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             IIbsOrderService ibs,
             IAccountDao accountDao,
             IOrderPaymentDao paymentDao,
-            IConfigurationManager configManager)
+            IConfigurationManager configManager,
+            IPairingService pairingService)
         {
             _commandBus = commandBus;
             _orderDao = orderDao;
@@ -55,6 +58,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _accountDao = accountDao;
             _paymentDao = paymentDao;
             _configManager = configManager;
+            _pairingService = pairingService;
 
             BraintreeGateway =
                     GetBraintreeGateway(
@@ -70,24 +74,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             try
             {
-                var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
-                if (orderStatusDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
-                if (orderStatusDetail.IBSOrderId == null)
-                    throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
-
-                // send a message to driver, if it fails we abort the pairing
-                _ibs.SendMessageToDriver(
-                    new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"))
-                    .Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
-
-                // send a command to save the pairing state for this order
-                _commandBus.Send(new PairForPayment
-                {
-                    OrderId = request.OrderId,
-                    TokenOfCardToBeUsedForPayment = request.CardToken,
-                    AutoTipPercentage = request.AutoTipPercentage
-                });
-
+                _pairingService.Pair(request.OrderId, request.CardToken, request.AutoTipPercentage);
+                
                 return new PairingResponse
                 {
                     IsSuccessfull = true,
@@ -107,22 +95,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public BasePaymentResponse Unpair(UnpairingForPaymentRequest request)
         {
-            var orderPairingDetail = _orderDao.FindOrderPairingById(request.OrderId);
-            if (orderPairingDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
-
-            var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
-            if (orderStatusDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
-
-            // send a message to driver, if it fails we abort the unpairing
-            _ibs.SendMessageToDriver(
-                new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"))
-                    .Get("UnpairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
-
-            // send a command to delete the pairing pairing info for this order
-            _commandBus.Send(new UnpairForPayment
-            {
-                OrderId = request.OrderId
-            });
+           _pairingService.Unpair(request.OrderId);
 
             return new BasePaymentResponse
             {

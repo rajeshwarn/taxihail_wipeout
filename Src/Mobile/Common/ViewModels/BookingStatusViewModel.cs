@@ -11,7 +11,6 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
@@ -31,15 +30,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
 		private readonly IVehicleService _vehicleService;
-		private readonly IDirections _directions;
 
 		public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService,
 			IPhoneService phoneService,
 			IBookingService bookingService,
 			IPaymentService paymentService,
 			IAccountService accountService,
-			IVehicleService vehicleService,
-			IDirections directions
+			IVehicleService vehicleService
 		)
 		{
 			_orderWorkflowService = orderWorkflowService;
@@ -48,7 +45,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_paymentService = paymentService;
 			_accountService = accountService;
 			_vehicleService = vehicleService;
-			_directions = directions;
 		}
 
 		private int _refreshPeriod = 5; //in seconds
@@ -320,7 +316,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 CenterMap ();
 
 				var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
-				if (isLoaded && Settings.AutomaticPayment && _accountService.CurrentAccount.DefaultCreditCard != null)
+                if (isLoaded && _paymentService.GetPaymentSettings().AutomaticPayment && _accountService.CurrentAccount.DefaultCreditCard != null)
 				{
 					var isPaired = _bookingService.IsPaired(Order.Id);
                     var pairState = this.Services().Cache.Get<string>("PairState" + Order.Id);
@@ -370,8 +366,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			var setting = _paymentService.GetPaymentSettings();
             var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-                       
-			IsUnpairButtonVisible = !Settings.AutomaticPayment  			// we don't want to unpair if client accepted the auto payment, only for RideLinqCMT
+
+            IsUnpairButtonVisible = !_paymentService.GetPaymentSettings().AutomaticPayment  			// we don't want to unpair if client accepted the auto payment, only for RideLinqCMT
 								&& _bookingService.IsPaired(Order.Id);      
 
 
@@ -382,7 +378,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								(statusId == VehicleStatuses.Common.Done
 								||statusId == VehicleStatuses.Common.Loaded)
 								&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue
-								&& !Settings.AutomaticPayment
+                                && !_paymentService.GetPaymentSettings().AutomaticPayment
 			                    && !IsUnpairButtonVisible
 								&& (Order.Settings.ChargeTypeId == null 
 									|| Order.Settings.ChargeTypeId != ChargeTypes.Account.Id)
@@ -395,7 +391,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 || statusId == VehicleStatuses.Common.Arrived
                                 || statusId == VehicleStatuses.Common.Scheduled;
 
-            IsResendButtonVisible = isPayEnabled && !Settings.AutomaticPayment && _paymentService.GetPaymentFromCache(Order.Id).HasValue;
+            IsResendButtonVisible = isPayEnabled && !_paymentService.GetPaymentSettings().AutomaticPayment && _paymentService.GetPaymentFromCache(Order.Id).HasValue;
 		}
 
 		public void GoToSummary(){
@@ -424,11 +420,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void GoToPairScreen()
         {
-            ShowViewModel<ConfirmPairViewModel>(new
+            if (!_paymentService.GetPaymentSettings().AutomaticPaymentPairing)
             {
-                order = Order.ToJson(),
-                orderStatus = OrderStatusDetail.ToJson()
-            }.ToStringDictionary());
+                ShowViewModel<ConfirmPairViewModel>(new
+                {
+                    order = Order.ToJson(),
+                    orderStatus = OrderStatusDetail.ToJson()
+                }.ToStringDictionary());
+            }
         }
 
         private void CenterMap ()
@@ -523,7 +522,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #endif
 					IsPayButtonVisible = false;
 					this.Services().Analytics.LogEvent("PayButtonTapped");
-                    if (Settings.AutomaticPayment)
+                    if (_paymentService.GetPaymentSettings().AutomaticPayment)
                     {
                         GoToPairScreen();
                     }
