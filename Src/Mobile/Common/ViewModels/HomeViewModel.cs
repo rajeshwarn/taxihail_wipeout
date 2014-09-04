@@ -22,6 +22,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IVehicleService _vehicleService;
 		private readonly ITermsAndConditionsService _termsService;
 	    private readonly IMvxLifetime _mvxLifetime;
+		private readonly IAccountService _accountService;
 
 		private HomeViewModelState _currentState = HomeViewModelState.Initial;
 
@@ -44,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService = vehicleService;
 			_termsService = termsService;
 		    _mvxLifetime = mvxLifetime;
+			_accountService = accountService;
 
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService, paymentService);
 		}
@@ -269,10 +271,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(async () =>
 				{					
-					var address = await _orderWorkflowService.SetAddressToUserLocation();
-					if(address.HasValidCoordinate())
+					if (_accountService.CurrentAccount != null)
 					{
+						var address = await _orderWorkflowService.SetAddressToUserLocation();
+						if(address.HasValidCoordinate())
+						{
 						this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
+						}
 					}									
 				});
 			}

@@ -78,7 +78,6 @@
    "Client.SMSConfirmationEnabled" :"false",
    "Client.DisableChargeTypeWhenCardOnFile" : "false",
    "Client.VehicleEstimateEnabled" : "true",
-   "Client.AutomaticPayment" : "false",
    "SMSFromNumber" :"",
    "SMSAccountSid" : "",
    "SMSAuthToken" : "",

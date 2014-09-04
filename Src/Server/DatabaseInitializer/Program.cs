@@ -197,7 +197,7 @@ namespace DatabaseInitializer
                 var vehicleTypes = new VehicleTypeDao(() => new BookingDbContext(connectionString.ConnectionString));
                 if (!vehicleTypes.GetAll().Any())
                 {
-                    appSettings["Client.VehicleEstimateEnabled"] = "false";
+                    appSettings["Client.VehicleTypeSelectionEnabled"] = "false";
                     AddOrUpdateAppSettings(commandBus, appSettings);
                     CreateDefaultVehicleTypes(container, commandBus);
                 }

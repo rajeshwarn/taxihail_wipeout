@@ -1,6 +1,6 @@
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 
