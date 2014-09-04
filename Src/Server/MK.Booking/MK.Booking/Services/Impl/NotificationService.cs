@@ -173,6 +173,7 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 confirmationUrl,
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
+                EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
                 AccentColor = _configurationManager.GetSetting(AccentColorSetting)
 
 
@@ -200,10 +201,15 @@ namespace apcurium.MK.Booking.Services.Impl
                 && (!string.IsNullOrWhiteSpace(dropOffAddress.FullAddress)
                     || !string.IsNullOrWhiteSpace(dropOffAddress.DisplayAddress));
 
+            var baseUrl = _container.Resolve<string>("BaseUrl");
+
+            var baseUrlThemesImg = String.Concat(baseUrl, "/themes/" + _configurationManager.GetSetting(ApplicationKeySetting) + "/img/");
+
             var templateData = new
             {
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
                 AccentColor = _configurationManager.GetSetting(AccentColorSetting),
+                EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
                 ibsOrderId,
                 PickupDate = pickupDate.ToString("dddd, MMMM d"),
                 PickupTime = pickupDate.ToString("t" /* Short time pattern */),
@@ -221,7 +227,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 Apartment = string.IsNullOrWhiteSpace(pickupAddress.Apartment) ? "-" : pickupAddress.Apartment,
                 RingCode = string.IsNullOrWhiteSpace(pickupAddress.RingCode) ? "-" : pickupAddress.RingCode,
                 /* Mandatory visibility settings */
-                VisibilityLargeBags = _configurationManager.GetSetting("Client.ShowLargeBagsIndicator", false) || settings.LargeBags > 0
+                VisibilityLargeBags = _configurationManager.GetSetting("Client.ShowLargeBagsIndicator", false) || settings.LargeBags > 0,
+                LogoImg = String.Concat(baseUrlThemesImg, "email_logo.png")
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.BookingConfirmation, EmailConstant.Subject.BookingConfirmation, templateData, clientLanguageCode);
@@ -233,6 +240,7 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 password,
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
+                EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.PasswordReset, EmailConstant.Subject.PasswordReset, templateData, clientLanguageCode);

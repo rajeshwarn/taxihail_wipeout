@@ -51,12 +51,13 @@ namespace apcurium.MK.Booking.Email
                
                     
                 var translatedTemplateBody = Localizer.Translate(templateBody, _resources.GetLocalizedDictionary(languageCode), "!!MISSING!!");
-
-                if (templateName == NotificationService.EmailConstant.Template.Receipt)
+                var result = PreMailer.Net.PreMailer.MoveCssInline(translatedTemplateBody, true, ignoreElements: "#ignore");
+                translatedTemplateBody = result.Html;
+              /*  if (templateName == NotificationService.EmailConstant.Template.Receipt)
                 {
                     var result = PreMailer.Net.PreMailer.MoveCssInline(translatedTemplateBody, true,ignoreElements:"#ignore");
                     translatedTemplateBody = result.Html;
-                }
+                }*/
                 return translatedTemplateBody;
             }
 
