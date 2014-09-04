@@ -3,6 +3,7 @@ using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -22,7 +23,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			Accessory = UITableViewCellAccessory.None;
 
 			TextLabel.Font = UIFont.FromName (FontName.HelveticaNeueLight, 36 / 2);
-			TextLabel.TextColor = UIColor.FromRGB (79, 76, 71);
+            TextLabel.TextColor = Theme.IsLightContent 
+                ? UIColor.White
+                : UIColor.FromRGB (79, 76, 71);
 		}
 
 		public override void LayoutSubviews ()

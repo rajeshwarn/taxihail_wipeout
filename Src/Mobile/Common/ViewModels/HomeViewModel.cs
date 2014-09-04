@@ -74,6 +74,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async override void OnViewStarted(bool firstTime)
 		{
+			// this is the first call because with a bad connection (ie anywhere in France)
+			// we get an error saying MonoTouch: Received unhandled ObjectiveC exception: NSInternalInconsistencyException UITableView dataSource is not set
+			if (firstTime)
+			{
+				await Panel.Start ();
+			}
+
 			base.OnViewStarted(firstTime);
 
 			_locationService.Start();
@@ -87,7 +94,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (firstTime)
 			{
-				await Panel.Start ();
                 CheckUnratedRide();
 
 				this.Services().ApplicationInfo.CheckVersionAsync();

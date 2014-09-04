@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				button.SetTitleColor(Theme.ButtonTextColor.ColorWithAlpha(0.5f), UIControlState.Selected);
 				button.SetTitleColor(Theme.ButtonTextColor.ColorWithAlpha(0.5f), UIControlState.Highlighted);
 
-				button.SetStrokeColor(UIColor.FromRGB(3, 27, 49));
+                button.SetStrokeColor(Theme.ButtonTextColor);
 			}
 		}
 
