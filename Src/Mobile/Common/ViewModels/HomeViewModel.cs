@@ -23,6 +23,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITermsAndConditionsService _termsService;
 	    private readonly IMvxLifetime _mvxLifetime;
 
+		private HomeViewModelState _currentState = HomeViewModelState.Initial;
+
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
 			IMvxWebBrowserTask browserTask,
 			ILocationService locationService,
@@ -103,7 +105,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (_locateUser)
 			{
-				LocateMe.Execute();
+
+				var mode = await _orderWorkflowService.GetAndObserveAddressSelectionMode ().Take (1).ToTask ();
+				if (_currentState == HomeViewModelState.Initial && mode == apcurium.MK.Booking.Mobile.Data.AddressSelectionMode.PickupSelection)
+				{
+					LocateMe.Execute();
+				}					
 				_locateUser = false;
 			}
 
@@ -261,17 +268,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				return this.GetCommand(async () =>
-				{
-
-
+				{					
 					var address = await _orderWorkflowService.SetAddressToUserLocation();
-					var mode = await _orderWorkflowService.GetAndObserveAddressSelectionMode().Take(1).ToTask();
-					
-					if(address.HasValidCoordinate() && mode == apcurium.MK.Booking.Mobile.Data.AddressSelectionMode.PickupSelection)
+					if(address.HasValidCoordinate())
 					{
 						this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
-					}
-								
+					}									
 				});
 			}
 		}
@@ -290,6 +292,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void OnPresentationStateRequested(object sender, HomeViewModelStateRequestedEventArgs e)
 		{
+			_currentState = e.State;
+
 			this.ChangePresentation(new HomeViewModelPresentationHint(e.State, e.IsNewOrder));
 
             if (e.State == HomeViewModelState.Initial)
