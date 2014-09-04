@@ -31,9 +31,9 @@
       </dict>
     </array>
     <key>CFBundleVersion</key>
-    <string>1.6.0</string>
+    <string>1.6.2</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.6.0</string>
+    <string>1.6.2</string>
     <key>MinimumOSVersion</key>
     <string>4.3</string>
     <key>NSMainNibFile</key>
