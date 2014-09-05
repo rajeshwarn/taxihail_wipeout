@@ -387,7 +387,6 @@
     <Compile Include="PlatformIntegration\Social\WebViewController.cs" />
     <Compile Include="Controls\Widgets\FlatButton.cs" />
     <Compile Include="Extensions\MvvmCrossExtensions.cs" />
-    <Compile Include="Controls\Widgets\FlatButtonStyle.cs" />
     <Compile Include="Controls\Widgets\FlatTextField.cs" />
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Extensions\UITableViewExtensions.cs" />
@@ -535,6 +534,8 @@
       <DependentUpon>NotificationSettingsView.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Widgets\ToggleCell.cs" />
+    <Compile Include="Style\FlatButtonStyle.cs" />
+    <Compile Include="Helper\ColorHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

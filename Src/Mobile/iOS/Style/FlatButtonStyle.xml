@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FlatButtonStyles>
-  <Color name="Red">
-	<Background>
-		<Normal>#E3202C</Normal>
-  		<Selected>#E3202C</Selected>
-	</Background>
-  	<Text>
-  		<Normal>#E3202C</Normal>
-  		<Selected>#E3202C</Selected>
-  	</Text>
-  </Color>
+  <Colors>
+    <Color name="Red">
+	  <BackgroundNormal>#212121</BackgroundNormal>
+  	  <BackgroundSelected>#FFFFFF</BackgroundSelected>
+  	  <TextNormal>#FFFFFF</TextNormal>
+  	  <TextSelected>#212121</TextSelected>
+    </Color>
+    <Color name="Green">
+	  <BackgroundNormal>#E4212D</BackgroundNormal>
+  	  <BackgroundSelected>#E44750</BackgroundSelected>
+  	  <TextNormal>#FFFFFF</TextNormal>
+  	  <TextSelected>#FFFFFF</TextSelected>
+    </Color>
+    <Color name="TestValue">
+	  <BackgroundNormal></BackgroundNormal>
+  	  <BackgroundSelected></BackgroundSelected>
+  	  <TextNormal></TextNormal>
+  	  <TextSelected></TextSelected>
+    </Color>
+  </Colors>
 </FlatButtonStyles>
