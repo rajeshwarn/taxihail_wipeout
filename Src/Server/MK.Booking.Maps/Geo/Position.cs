@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Globalization;
 using apcurium.MK.Common.Extensions;
 
 #endregion
@@ -41,6 +42,11 @@ namespace apcurium.MK.Booking.Maps.Geo
                           Math.Cos(latitude2.ToRad())*Math.Cos(latitude1.ToRad()) *
                           Math.Cos(longitude1.ToRad() - longitude2.ToRad())) * earthRadius;
             return d;
+        }
+
+        public string ToString()
+        {
+            return string.Format(CultureInfo.InvariantCulture, "{0},{1}", Latitude, Longitude);
         }
     }
 }

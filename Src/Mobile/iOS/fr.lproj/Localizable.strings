@@ -311,7 +311,7 @@
 "ResetPasswordSucessTitle"="Mot de passe réinitialisé";
 "ResetPasswordTitleText"="Mot de passe oublié?";
 "RideHistoryButton"="Historique des trajets";
-"RideSettingsAccountNumber"="Numéro de compte entreprise (optionel)";
+"RideSettingsAccountNumber"="Numéro de compte entreprise (optionnel)";
 "RideSettingsCannotLoadListMessage"="Désolé, échec de la connexion, merci de réessayer ultérieurement";
 "RideSettingsCannotLoadListTitle"="Echec de la connexion";
 "RideSettingsChargeType"="Type de facturation";
@@ -437,7 +437,7 @@
 "View_CreditCardsList"="Cartes de paiement";
 "View_History"="Historique";
 "View_HistoryDetail"="Détail de la commande";
-"View_InitializeOrderForAccountPayment"="Votre avis nous intéresse";
+"View_InitializeOrderForAccountPayment"="Veuillez répondre à ces questions";
 "View_LocationDetail"="Détails sur votre position";
 "View_MyLocations"="Adresses Favorites";
 "View_Payment"="Paiement: informations";
@@ -505,3 +505,6 @@
 "RateLastRideMessage"="Nous aimerions recevoir vos commentaires sur votre dernière course, voulez-vous l'évaluer?";
 "DontAsk"="Ne plus demander";
 "View_NotificationSettings"="Notifications";
+"PaymentInCar"="Carte bancaire - À bord ";
+"CardOnFile"="Paiement In App";
+"ChargeAccount"="Compte";

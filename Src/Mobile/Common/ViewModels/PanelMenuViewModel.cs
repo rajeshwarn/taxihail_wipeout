@@ -126,14 +126,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public bool IsClosePanelFromMenuItem { get; set; }
+
 		public ICommand OpenOrCloseMenu
 		{
 			get 
 			{
 				return this.GetCommand(() =>
-					{
-						MenuIsOpen = !MenuIsOpen;
-					});
+				{
+					MenuIsOpen = !MenuIsOpen;
+				});
 			}
 		}
 
@@ -165,7 +167,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(() =>
                 {
-                    MenuIsOpen = false;
+					CloseMenu();
 					_orderWorkflowService.PrepareForNewOrder();
 					_accountService.SignOut();         
 					ShowViewModel<LoginViewModel> ();
@@ -181,8 +183,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>
                 {
-                    MenuIsOpen = false;
-						ShowViewModel<HistoryListViewModel> ();
+					CloseMenu();
+					ShowViewModel<HistoryListViewModel> ();
                 });
             }
         }
@@ -193,8 +195,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>
                 {
-                    MenuIsOpen = false;
-						ShowViewModel<LocationListViewModel> ();
+					CloseMenu();
+					ShowViewModel<LocationListViewModel> ();
                 });
             }
         }
@@ -217,7 +219,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>
                 {
-                    MenuIsOpen = false;
+					CloseMenu();
 					ShowViewModel<RideSettingsViewModel>(new { bookingSettings = _accountService.CurrentAccount.Settings.ToJson() });
                 });
             }
@@ -229,7 +231,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(() =>
 				{
-					MenuIsOpen = false;
+					CloseMenu();
 					ShowViewModel<CreditCardAddViewModel>();
 				});
 			}
@@ -241,7 +243,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>
                 {
-                    MenuIsOpen = false;
+					CloseMenu();
                     ShowViewModel<NotificationSettingsViewModel>();
                 });
             }
@@ -253,7 +255,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() => 
                 {
-                    MenuIsOpen = false;
+					CloseMenu();
                     ShowViewModel<AboutUsViewModel>();
                 });
             }
@@ -265,7 +267,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
 				return this.GetCommand(() =>
 				{
-					MenuIsOpen = false;
+					CloseMenu();
 					InvokeOnMainThread(() => _phoneService.SendFeedbackErrorLog(Settings.SupportEmail, this.Services().Localize["TechSupportEmailTitle"]));
 				});
 			}
@@ -279,7 +281,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					if (Settings.TutorialEnabled)
                     {
-                        MenuIsOpen = false;
+						CloseMenu();
                         this.Services().Message.ShowDialog(typeof(TutorialViewModel));
                     }
                 });
@@ -292,7 +294,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>
                 {
-                    MenuIsOpen = false;
+					CloseMenu();
 					Action call = () => { _phoneService.Call(Settings.DefaultPhoneNumber); };
                     this.Services().Message.ShowMessage(string.Empty,
 												Settings.DefaultPhoneNumberDisplay,
@@ -310,6 +312,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			public ICommand NavigationCommand{ get; set;}
 
 			public bool Visibility { get; set;}
+		}
+
+		private void CloseMenu()
+		{
+			IsClosePanelFromMenuItem = true;
+			MenuIsOpen = false;
 		}
     }
 }

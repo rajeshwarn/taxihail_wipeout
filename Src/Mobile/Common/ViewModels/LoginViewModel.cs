@@ -11,7 +11,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
-using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -40,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_phoneService = phoneService;
         }
 
-		public event EventHandler LoginSucceeded; 
+	    public event EventHandler LoginSucceeded; 
 		private bool _loginWasSuccesful = false;
 		private bool _viewIsStarted;
 		private Action _executeOnStart;
@@ -51,15 +50,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Password = "password";          
 #endif
 			_registrationService.PrepareNewRegistration ();
-			_registrationService
-				.GetAndObserveRegistration()
-				.Subscribe(x => OnRegistrationFinished(x));
         }
 
         public override void OnViewStarted(bool firstTime)
         {
-
             base.OnViewStarted(firstTime);
+
+            if (firstTime)
+            {
+                _registrationService
+                    .GetAndObserveRegistration()
+                    .Subscribe(x =>
+                    {
+                        // Wait for the LoginViewModel to be started before doing
+                        // the processing so we can display the progress bar
+                        _executeOnStart = () =>
+                        {
+                            OnRegistrationFinished(x);
+                        };
+                    });
+            }
 
 			_viewIsStarted = true;
 
@@ -308,7 +318,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     try
                     {
-
                         if (facebookId.HasValue())
                         {						
 							Func<Task> loginAction = () =>
@@ -328,17 +337,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                         }
                         else
-                        {						
-							Email = data.Email;
-							Password = data.Password;
-							Func<Task> loginAction = () =>
-							{
-								return _accountService.SignIn(data.Email, data.Password);
-							};
-							await loginAction.Retry(TimeSpan.FromSeconds(1), 5); //retry because the account is maybe not yet created server-side
+                        {
+                            Email = data.Email;
+                            Password = data.Password;
+                            Func<Task> loginAction = () =>
+                            {
+                                return _accountService.SignIn(data.Email, data.Password);
+                            };
+                            await loginAction.Retry(TimeSpan.FromSeconds(1), 5); //retry because the account is maybe not yet created server-side
                         }
-							
-						OnLoginSuccess();
+
+                        OnLoginSuccess();
                     }
                     catch (Exception ex)
                     {

@@ -65,6 +65,7 @@
 	"Now" : "Maintenant",
 	"Send Receipt" : "Envoyer la facture",
 	"Sending..." : "Envoi...",
-	"Cannot Send Receipt" : "Impossible d'envoyer la facture"
-
+	"Cannot Send Receipt" : "Impossible d'envoyer la facture",
+    "PaymentInCar": "Carte bancaire - À bord ",
+    "ChargeAccount":  "Compte"
 }

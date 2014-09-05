@@ -1066,7 +1066,7 @@
     <value>Historique des trajets</value>
   </data>
   <data name="RideSettingsAccountNumber" xml:space="preserve">
-    <value>Numéro de compte entreprise (optionel)</value>
+    <value>Numéro de compte entreprise (optionnel)</value>
   </data>
   <data name="RideSettingsCannotLoadListMessage" xml:space="preserve">
     <value>Désolé, échec de la connexion, merci de réessayer ultérieurement</value>
@@ -1457,7 +1457,7 @@
     <value>Détail de la commande</value>
   </data>
   <data name="View_InitializeOrderForAccountPayment" xml:space="preserve">
-    <value>Votre avis nous intéresse</value>
+    <value>Veuillez répondre à ces questions</value>
   </data>
   <data name="View_LocationDetail" xml:space="preserve">
     <value>Détails sur votre position</value>
@@ -1626,5 +1626,14 @@
   </data>
   <data name="Notification_On" xml:space="preserve">
     <value>Oui</value>
+  </data>
+  <data name="PaymentInCar" xml:space="preserve">
+    <value>Carte bancaire - À bord </value>
+  </data>
+  <data name="ChargeAccount" xml:space="preserve">
+    <value>Compte</value>
+  </data>
+  <data name="CardOnFile" xml:space="preserve">
+    <value>Paiement In App</value>
   </data>
 </root>

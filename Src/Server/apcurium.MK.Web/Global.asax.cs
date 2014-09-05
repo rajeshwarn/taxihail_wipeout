@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 using System.Web;
 using System.Web.Optimization;
 using apcurium.MK.Booking.Api.Jobs;
+using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.IoC;
 using apcurium.MK.Web.App_Start;
@@ -34,7 +35,10 @@ namespace apcurium.MK.Web
             var config = UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
             BundleConfig.RegisterBundles(BundleTable.Bundles, config.GetSetting("TaxiHail.ApplicationKey"));
 
-            _defaultPollingValue = config.GetSetting("OrderStatus.ServerPollingInterval", 10);
+            var configurationManager =
+                UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
+
+            _defaultPollingValue = configurationManager.GetSetting<int>("OrderStatus.ServerPollingInterval", 10);
             PollIbs(_defaultPollingValue);
         }
 
@@ -70,8 +74,15 @@ namespace apcurium.MK.Web
         {
         }
 
+        private bool _firstRequest = true;
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
+            if (_firstRequest)
+            {
+                var notificationService = UnityContainerExtensions.Resolve<INotificationService>(UnityServiceLocator.Instance);
+                notificationService.SetBaseUrl(new Uri(Request.Url, VirtualPathUtility.ToAbsolute("~")));
+                _firstRequest = false;
+            }
             if (Request.Path.Contains(@"/api/"))
             {
                 var watch = new Stopwatch();
