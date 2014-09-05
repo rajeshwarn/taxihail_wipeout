@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Validation;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.IoC;
 using Funq;
@@ -47,10 +48,8 @@ namespace apcurium.MK.Web.SelfHost
 
         public override void Configure(Container containerFunq)
         {
-            if (!UnityContainerExtensions.IsRegistered<string>(UnityServiceLocator.Instance, "BaseUrl"))
-            {
-                UnityContainerExtensions.RegisterInstance<string>(UnityServiceLocator.Instance, "BaseUrl", new Uri("http://www.url.com").ToString());
-            }
+            var notificationService = UnityContainerExtensions.Resolve<INotificationService>(UnityServiceLocator.Instance);
+            notificationService.SetBaseUrl(new Uri("http://www.example.com"));
             
             new Module().Init(UnityServiceLocator.Instance, ConfigurationManager.ConnectionStrings["MKWebDev"]);
 
