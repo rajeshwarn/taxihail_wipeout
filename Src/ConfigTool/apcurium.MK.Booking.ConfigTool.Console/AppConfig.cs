@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO.Compression;
 using System.Linq;
 using System.IO;
@@ -178,6 +179,24 @@ namespace apcurium.MK.Booking.ConfigTool
                     NodeSelector=@"//resources/color[@name=""setting_menu_color""]", 
                     SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.MenuColor) 
                 },
+                new ConfigXML(this)
+                {  
+                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
+                    NodeSelector=@"//resources/color[@name=""setting_menu_text_color""]", 
+                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.MenuColor, "#ffffff", "#4f4c47") 
+                },
+                new ConfigXML(this)
+                {  
+                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
+                    NodeSelector=@"//resources/color[@name=""setting_menu_separator_color""]", 
+                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.MenuColor, "#454545", "#a09f9c") 
+                },
+                new ConfigXML(this)
+                {  
+                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
+                    NodeSelector=@"//resources/color[@name=""setting_item_pressed_background_color""]", 
+                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.MenuColor, "#282828", "#ffffff") 
+                },
                 new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\Android\Resources\Drawable\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5@2x.png", Destination=@"Mobile\Android\Resources\drawable-xhdpi\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\iOS\Resources\th_logo.png" },
@@ -274,6 +293,22 @@ namespace apcurium.MK.Booking.ConfigTool
         {
            
         }
+
+        string GetColorFromBackground(string color, string lightColor, string darkColor)
+        {
+            return ShouldHaveLightContent(color) ? lightColor : darkColor;
+        }
+
+        bool ShouldHaveLightContent(string colorCode)
+        {
+            var color = ColorTranslator.FromHtml(GetHexaColorCode(colorCode));
+
+            // Counting the perceptive luminance - human eye favors green color... 
+            var a = 1 - (0.299 * color.R + 0.587 * color.G + 0.114 * color.B) / 255;
+
+            return !(a < 0.5);
+        }
+
 
 		string GetHexaColorCode (string color)
 		{
