@@ -16,10 +16,10 @@ namespace MonoTouch.MapKit
                 return null;
             }
 
-            var anv = mapView.DequeueReusableAnnotation ("thislocation") as PinAnnotationView;
+			var anv = mapView.DequeueReusableAnnotation (ann.AddressType.ToString()) as PinAnnotationView;
             if (anv == null) 
             {
-                anv = new PinAnnotationView (ann, "thislocation");
+				anv = new PinAnnotationView (ann, ann.AddressType.ToString());
             } 
             else 
             {
