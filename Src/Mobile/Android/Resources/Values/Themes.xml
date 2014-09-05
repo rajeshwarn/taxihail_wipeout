@@ -2,7 +2,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
   <!--- Colors -->
   <!--- 	LoginTheme Color -->
-  <color name="company_color">#E3202C</color>
+  <color name="company_color">#E4212D</color>
   <color name="login_color">#212121</color>
   <color name="dialog_background_color">#9b9b9b</color>
   <color name="edit_text_background_color">#ffffff</color>
@@ -29,9 +29,9 @@
   <color name="button_bottom_selected_background_color">#bb007aff</color>
   <!--		Settings Item Colors -->
   <color name="setting_menu_color">#212121</color>
-  <color name="setting_menu_text_color">#4f4c47</color>
-  <color name="setting_menu_separator_color">#a09f9c</color>
-  <color name="setting_item_pressed_background_color">#ffffff</color>
+  <color name="setting_menu_text_color">#ffffff</color>
+  <color name="setting_menu_separator_color">#454545</color>
+  <color name="setting_item_pressed_background_color">#282828</color>
   <!--		List Item [Orders, Locations] Colors -->
   <color name="listitem_text_line1_color">#000000</color>
   <color name="listitem_text_line2_color">#000000</color>
@@ -39,7 +39,7 @@
   <color name="listitem_cell_border_color">#727272</color>
   <color name="listitem_cell_selected_background_color">#eeeeee</color>
   <!--		Top Bar Colors -->
-  <color name="top_bar_color">#E3202C</color>
+  <color name="top_bar_color">#E4212D</color>
   <color name="top_bar_separator_color">#666666</color>
   <color name="top_bar_title_color">#FFFFFF</color>
   <!--- Dimensions -->
