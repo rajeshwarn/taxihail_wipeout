@@ -6,6 +6,7 @@ namespace apcurium.MK.Booking.Services
 {
     public interface INotificationService
     {
+        void SetBaseUrl(Uri baseUrl);
         void SendAssignedPush(OrderStatusDetail orderStatusDetail);
         void SendArrivedPush(OrderStatusDetail orderStatusDetail);
         void SendPairingInquiryPush(OrderStatusDetail orderStatusDetail);

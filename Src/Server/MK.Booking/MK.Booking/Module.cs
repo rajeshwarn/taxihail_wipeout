@@ -52,20 +52,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<ITemplateService>(new TemplateService(container.Resolve<IConfigurationManager>()));
             container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IConfigurationManager>(), container.Resolve<ILogger>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IPushNotificationService>(), container.Resolve<IConfigurationManager>()));
-            container.RegisterType<INotificationService>(new ContainerControlledLifetimeManager(),
-                new InjectionFactory(c => new NotificationService(
-                    () => c.Resolve<BookingDbContext>(),
-                    c.Resolve<IPushNotificationService>(),
-                    c.Resolve<ITemplateService>(),
-                    c.Resolve<IEmailSender>(),
-                    c.Resolve<IConfigurationManager>(),
-                    c.Resolve<IAppSettings>(),
-                    c.Resolve<IConfigurationDao>(),
-                    c.Resolve<IOrderDao>(),
-                    c.Resolve<IStaticMap>(),
-                    c.Resolve<ISmsService>(),
-                    c.Resolve<string>("BaseUrl"),
-                    c.Resolve<ILogger>())));
+            container.RegisterType<INotificationService, NotificationService>(new ContainerControlledLifetimeManager());
                     
             container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(), 
                 new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IConfigurationManager>())));
