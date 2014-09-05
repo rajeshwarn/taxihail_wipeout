@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Email
     {
         private readonly Resources.Resources _resources;
         private const string DefaultLanguageCode = "en";
+        private readonly Dictionary<string, string> _templatesDictionary=new Dictionary<string, string>();
 
         public TemplateService(IConfigurationManager configurationManager)
         {
@@ -48,17 +49,22 @@ namespace apcurium.MK.Booking.Email
             {
                 
                 var templateBody = File.ReadAllText(path);
-               
-                    
                 var translatedTemplateBody = Localizer.Translate(templateBody, _resources.GetLocalizedDictionary(languageCode), "!!MISSING!!");
-                var result = PreMailer.Net.PreMailer.MoveCssInline(translatedTemplateBody, true, ignoreElements: "#ignore");
-                translatedTemplateBody = result.Html;
-              /*  if (templateName == NotificationService.EmailConstant.Template.Receipt)
+
+                if (!_templatesDictionary.ContainsKey(templateName))
                 {
-                    var result = PreMailer.Net.PreMailer.MoveCssInline(translatedTemplateBody, true,ignoreElements:"#ignore");
-                    translatedTemplateBody = result.Html;
-                }*/
-                return translatedTemplateBody;
+                    var result =
+                        PreMailer.Net.PreMailer.MoveCssInline(translatedTemplateBody, true, ignoreElements: "#ignore")
+                            .Html;
+                    _templatesDictionary.Add(templateName, result);
+                    return result;
+                }
+                else
+                {
+                    return _templatesDictionary[templateName];
+                }
+
+
             }
 
             return null;
