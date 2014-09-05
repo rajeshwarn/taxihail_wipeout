@@ -8,6 +8,11 @@ using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Messages;
+using System.Linq;
+using System.Reactive.Linq;
+using System;
+using System.Threading;
+using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -21,6 +26,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITermsAndConditionsService _termsService;
 	    private readonly IMvxLifetime _mvxLifetime;
 		private readonly IAccountService _accountService;
+
+		private HomeViewModelState _currentState = HomeViewModelState.Initial;
 
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
 			IMvxWebBrowserTask browserTask,
@@ -75,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public async override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
-
+			 
 			_locationService.Start();
 			CheckTermsAsync();
 			CheckActiveOrderAsync ();
@@ -103,7 +110,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (_locateUser)
 			{
-				LocateMe.Execute();
+
+				var mode = await _orderWorkflowService.GetAndObserveAddressSelectionMode ().Take (1).ToTask ();
+				if (_currentState == HomeViewModelState.Initial && mode == apcurium.MK.Booking.Mobile.Data.AddressSelectionMode.PickupSelection)
+				{
+					LocateMe.Execute();
+				}					
 				_locateUser = false;
 			}
 
@@ -261,15 +273,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				return this.GetCommand(async () =>
-				{
+				{					
 					if (_accountService.CurrentAccount != null)
 					{
 						var address = await _orderWorkflowService.SetAddressToUserLocation();
 						if(address.HasValidCoordinate())
 						{
-		                    this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
+						this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
 						}
-					}
+					}									
 				});
 			}
 		}
@@ -288,6 +300,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void OnPresentationStateRequested(object sender, HomeViewModelStateRequestedEventArgs e)
 		{
+			_currentState = e.State;
+
 			this.ChangePresentation(new HomeViewModelPresentationHint(e.State, e.IsNewOrder));
 
             if (e.State == HomeViewModelState.Initial)
