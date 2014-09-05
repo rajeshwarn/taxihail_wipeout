@@ -1594,4 +1594,13 @@
   <data name="Notification_On" xml:space="preserve">
     <value>On</value>
   </data>
+  <data name="Payment In Car" xml:space="preserve">
+    <value>Payment In Car</value>
+  </data>
+  <data name="Charge Account" xml:space="preserve">
+    <value>Charge Account</value>
+  </data>
+  <data name="Card on File" xml:space="preserve">
+    <value>Card on File</value>
+  </data>
 </root>

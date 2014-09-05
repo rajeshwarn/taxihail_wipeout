@@ -65,6 +65,7 @@
 	"Now" : "Now",
 	"Send Receipt" : "Send Receipt",
 	"Sending..." : "Sending...",
-	"Cannot Send Receipt" : "Cannot Send Receipt"
-
+	"Cannot Send Receipt" : "Cannot Send Receipt",
+    "Payment In Car": "Payment In Car",
+    "Charge Account":  "Charge Account"
 }

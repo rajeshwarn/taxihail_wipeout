@@ -5,5 +5,7 @@
         public int? Distance { get; set; }
         public double? Price { get; set; }
         public string FormattedDistance { get; set; }
+        //use by the webapp
+        public string FormattedPrice { get; set; }
     }
 }
