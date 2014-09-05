@@ -509,9 +509,6 @@
   <string name="RateLastRideTitle">Évaluer la dernière course?</string>
   <string name="Notification_Off">Non</string>
   <string name="Notification_On">Oui</string>
-  <string name="Payment In Car">Carte bancaire - À bord </string>
-  <string name="Card on File">Paiement In App</string>
-  <string name="Charge Account">Compte</string>
   <string name="PaymentInCar">Carte bancaire - À bord </string>
   <string name="CardOnFile">Paiement In App</string>
   <string name="ChargeAccount">Compte</string>
