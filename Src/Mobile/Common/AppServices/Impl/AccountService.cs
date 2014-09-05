@@ -626,9 +626,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
             var companySettings = await UseServiceClientAsync<CompanyServiceClient, NotificationSettings>(client => client.GetNotificationSettings());
-            if (companyDefaultOnly)
+			UserCache.Set(CompanyNotificationSettingsCacheKey, companySettings);
+
+			if (companyDefaultOnly)
             {
-                UserCache.Set(CompanyNotificationSettingsCacheKey, companySettings);
                 return companySettings;
             }
 
