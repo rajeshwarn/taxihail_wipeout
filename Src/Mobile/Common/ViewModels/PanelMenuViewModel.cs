@@ -44,7 +44,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var paymentSettings = _paymentService.GetPaymentSettings();
 			IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
 
+			// Load and cache notification settings
 		    var notificationSettings = await _accountService.GetNotificationSettings(true);
+			_accountService.GetNotificationSettings ();
+
 		    IsNotificationsEnabled = notificationSettings.Enabled;
 
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
