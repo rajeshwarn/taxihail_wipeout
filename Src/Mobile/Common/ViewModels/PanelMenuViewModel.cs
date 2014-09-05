@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			// Load and cache notification settings
 		    var notificationSettings = await _accountService.GetNotificationSettings(true);
-			await _accountService.GetNotificationSettings ();
+			_accountService.GetNotificationSettings ();
 
 		    IsNotificationsEnabled = notificationSettings.Enabled;
 
