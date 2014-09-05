@@ -48,10 +48,10 @@ namespace apcurium.MK.Web.SelfHost
 
         public override void Configure(Container containerFunq)
         {
-            var notificationService = UnityContainerExtensions.Resolve<INotificationService>(UnityServiceLocator.Instance);
-            notificationService.SetBaseUrl(new Uri("http://www.example.com"));
-            
             new Module().Init(UnityServiceLocator.Instance, ConfigurationManager.ConnectionStrings["MKWebDev"]);
+
+            var notificationService = UnityServiceLocator.Instance.Resolve<INotificationService>();
+            notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
             var container = UnityServiceLocator.Instance;
             containerFunq.Adapter = new UnityContainerAdapter(container, new Logger());
