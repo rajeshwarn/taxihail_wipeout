@@ -121,6 +121,7 @@ namespace apcurium.MK.Booking
             Mapper.CreateMap<OrderDetail, OrderDetailWithAccount>()
                 .ForMember(d => d.MdtFare, opt => opt.MapFrom(m => m.Fare))
                 .ForMember(d => d.MdtTip, opt => opt.MapFrom(m => m.Tip))
+                .ForMember(d => d.ChargeType, opt => opt.MapFrom(m => m.Settings.ChargeType))
                 .ForMember(d => d.MdtToll, opt => opt.MapFrom(m => m.Toll));
 
             Mapper.CreateMap<AccountDetail, OrderDetailWithAccount>()
