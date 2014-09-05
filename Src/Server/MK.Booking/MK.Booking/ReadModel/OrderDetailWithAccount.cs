@@ -78,6 +78,7 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string DriverLastName { get; set; }
 
+        public string ChargeType { get; set; }
 
         public decimal? PaymentMeterAmount { get; set; }
 
