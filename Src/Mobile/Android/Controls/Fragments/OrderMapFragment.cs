@@ -80,11 +80,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             this.DelayBind(() => InitializeBinding());
 
             CreatePins();
-
-			this.OnCameraChanged += (s, e) => 
-			{
-				ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles != null ? AvailableVehicles.ToArray () : null, GetMapBoundsFromProjection()));
-			};
         }
 
         private Address _pickupAddress;
@@ -125,8 +120,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public ICommand UserMovedMap { get; set; }
 
-        private IEnumerable<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
-        public IEnumerable<AvailableVehicle> AvailableVehicles
+        private IList<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
+        public IList<AvailableVehicle> AvailableVehicles
         {
             get
             {
@@ -137,7 +132,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (_availableVehicles != value)
                 {
                     _availableVehicles = value;
-                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value != null ? value.ToArray () : null, GetMapBoundsFromProjection()));
+                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value, GetMapBoundsFromProjection()));
                 }
             }
         }
@@ -363,6 +358,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 UserMovedMap.Execute(bounds);
             }
+            ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles, bounds));
+
         }
 
         private void ClearAllMarkers()

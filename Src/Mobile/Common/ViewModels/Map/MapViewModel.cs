@@ -70,8 +70,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		private IEnumerable<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
-		public IEnumerable<AvailableVehicle> AvailableVehicles
+        private IList<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
+		public IList<AvailableVehicle> AvailableVehicles
 		{
 			get{ return _availableVehicles; }
 			set
