@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		    }
 
 			var list = await _accountService.GetPaymentsList();
-			ChargeType = list.First(x => x.Id == settings.ChargeTypeId).Display;
+			ChargeType = this.Services().Localize[list.First(x => x.Id == settings.ChargeTypeId).Display];
 		}
 
 		private BookingSettings _settings;

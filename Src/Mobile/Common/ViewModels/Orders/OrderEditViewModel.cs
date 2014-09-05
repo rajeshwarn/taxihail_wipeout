@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		public async Task Init()
 		{
 			Vehicles = (await _accountService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
-			ChargeTypes = await _accountService.GetPaymentsList();
+			ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
             _hasCardOnFile = (await _accountService.GetCreditCard()) != null;
             RaisePropertyChanged(() => IsChargeTypesEnabled);
 
@@ -234,7 +234,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				var chargeType = ChargeTypes.FirstOrDefault(x => x.Id == ChargeTypeId);
 				if (chargeType == null)
 					return null;
-				return chargeType.Display; 
+				return this.Services().Localize[chargeType.Display]; 
 			}
 		}
 	}
