@@ -510,4 +510,7 @@
   <string name="Notification_VehicleAtPickupPush">Vehicle at Pickup (Push)</string>
   <string name="Notification_Off">Off</string>
   <string name="Notification_On">On</string>
+  <string name="PaymentInCar">Payment In Car</string>
+  <string name="CardOnFile">Card on File</string>
+  <string name="ChargeAccount">Charge Account</string>
 </resources>

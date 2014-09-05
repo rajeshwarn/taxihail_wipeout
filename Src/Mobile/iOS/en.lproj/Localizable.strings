@@ -533,3 +533,6 @@
 "NotNow"="Not now";
 "RateLastRideMessage"="We would appreciate your feedback on your last ride, would you like to rate it?";
 "DontAsk"="Don't ask";
+"PaymentInCar"="Payment In Car";
+"CardOnFile"="Card on File";
+"ChargeAccount"="Charge Account";
