@@ -66,6 +66,6 @@
 	"Send Receipt" : "Envoyer la facture",
 	"Sending..." : "Envoi...",
 	"Cannot Send Receipt" : "Impossible d'envoyer la facture",
-    "Payment In Car": "Carte bancaire - À bord ",
-    "Charge Account":  "Compte"
+    "PaymentInCar": "Carte bancaire - À bord ",
+    "ChargeAccount":  "Compte"
 }
