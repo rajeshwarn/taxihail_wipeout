@@ -178,6 +178,7 @@ namespace apcurium.MK.Booking.ConfigTool
                     NodeSelector=@"//resources/color[@name=""setting_menu_color""]", 
                     SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.MenuColor) 
                 },
+                new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\Android\Resources\Drawable\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5@2x.png", Destination=@"Mobile\Android\Resources\drawable-xhdpi\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\iOS\Resources\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5@2x.png", Destination=@"Mobile\iOS\Resources\th_logo@2x.png" },
