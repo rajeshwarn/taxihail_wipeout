@@ -11,11 +11,13 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.IoC;
 using Funq;
 using Infrastructure.Messaging;
+using Microsoft.Practices.Unity;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
 using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensions;
+using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 #endregion
 
@@ -45,6 +47,11 @@ namespace apcurium.MK.Web.SelfHost
 
         public override void Configure(Container containerFunq)
         {
+            if (!UnityContainerExtensions.IsRegistered<string>(UnityServiceLocator.Instance, "BaseUrl"))
+            {
+                UnityContainerExtensions.RegisterInstance<string>(UnityServiceLocator.Instance, "BaseUrl", new Uri("http://www.url.com").ToString());
+            }
+            
             new Module().Init(UnityServiceLocator.Instance, ConfigurationManager.ConnectionStrings["MKWebDev"]);
 
             var container = UnityServiceLocator.Instance;
@@ -61,6 +68,8 @@ namespace apcurium.MK.Web.SelfHost
                 }));
             Plugins.Add(new ValidationFeature());
             containerFunq.RegisterValidators(typeof (SaveFavoriteAddressValidator).Assembly);
+
+            
 
             SetConfig(new EndpointHostConfig
             {
