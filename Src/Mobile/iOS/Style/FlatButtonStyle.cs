@@ -40,14 +40,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        protected UIColor GetColor(Func<FlatButtonStyles.Color, UIColor> selector, UIColor defaultColor)
+        protected UIColor GetColor(Func<FlatButtonStyles.Style, UIColor> selector, UIColor defaultColor)
         {
             if (_flatButtonStyles == null)
             {
                 return null;
             }
 
-            return _flatButtonStyles.Colors
+            return _flatButtonStyles.Styles
                 .FirstOrDefault (x => x.Name == GetStyleName())
                 .SelectOrDefault(selector, defaultColor);
         }
@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 button.SetTitleColor(GetColor(x => x.ColorTextSelected, Theme.ButtonTextColor.ColorWithAlpha(0.5f)), UIControlState.Selected);
                 button.SetTitleColor(GetColor(x => x.ColorTextSelected, Theme.ButtonTextColor.ColorWithAlpha(0.5f)), UIControlState.Highlighted);
 
-                button.SetStrokeColor(GetColor(x => x.ColorTextNormal, Theme.ButtonTextColor));
+                button.SetStrokeColor(GetColor(x => x.ColorBorder, Theme.ButtonTextColor));
 			}
 
             protected override string GetStyleName ()
@@ -102,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 button.SetTitleColor(GetColor(x => x.ColorTextSelected, Theme.ButtonTextColor.ColorWithAlpha(0.5f)), UIControlState.Selected);
                 button.SetTitleColor(GetColor(x => x.ColorTextSelected, Theme.ButtonTextColor.ColorWithAlpha(0.5f)), UIControlState.Highlighted);
 
-				button.SetStrokeColor(DarkBlue);
+                button.SetStrokeColor(GetColor(x => x.ColorBorder, DarkBlue));
             }
 
             protected override string GetStyleName ()
@@ -127,7 +127,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 button.SetTitleColor(GetColor(x => x.ColorTextSelected, UIColor.White), UIControlState.Selected);
                 button.SetTitleColor(GetColor(x => x.ColorTextSelected, UIColor.White), UIControlState.Highlighted);
 
-				button.SetStrokeColor(GreenColor);
+                button.SetStrokeColor(GetColor(x => x.ColorBorder, GreenColor));
             }
 
             protected override string GetStyleName ()
@@ -152,7 +152,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 button.SetTitleColor(GetColor(x => x.ColorTextSelected, UIColor.White), UIControlState.Selected);
                 button.SetTitleColor(GetColor(x => x.ColorTextSelected, UIColor.White), UIControlState.Highlighted);
 
-                button.SetStrokeColor(UIColor.Red);
+                button.SetStrokeColor(GetColor(x => x.ColorBorder, UIColor.Red));
             }
 
             protected override string GetStyleName ()
@@ -177,7 +177,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 button.SetTitleColor(GetColor(x => x.ColorTextSelected, UIColor.White), UIControlState.Selected);
                 button.SetTitleColor(GetColor(x => x.ColorTextSelected, UIColor.White), UIControlState.Highlighted);
 
-                button.SetStrokeColor(SilverColor);
+                button.SetStrokeColor(GetColor(x => x.ColorBorder, SilverColor));
             }
 
             protected override string GetStyleName ()
@@ -204,7 +204,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 button.SetTitleColor(GetColor(x => x.ColorTextSelected, Theme.ButtonTextColor.ColorWithAlpha(0.5f)), UIControlState.Selected);
                 button.SetTitleColor(GetColor(x => x.ColorTextSelected, Theme.ButtonTextColor.ColorWithAlpha(0.5f)), UIControlState.Highlighted);
 
-                button.SetStrokeColor(UIColor.Clear);
+                button.SetStrokeColor(GetColor(x => x.ColorBorder, UIColor.Clear));
             }
 
             protected override string GetStyleName ()
@@ -215,9 +215,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public class FlatButtonStyles
         {
-            public Color[] Colors { get; set; }
+            public Style[] Styles { get; set; }
 
-            public class Color
+            public class Style
             {
                 [XmlAttribute("name")]
                 public string Name { get; set; }
@@ -226,6 +226,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 public string BackgroundSelected { get; set; }
                 public string TextNormal { get; set; }
                 public string TextSelected { get; set; }
+                public string Border { get; set; }
 
                 private UIColor _backgroundNormal;
                 public UIColor ColorBackgroundNormal { get { return ColorHelper.ToUIColor (BackgroundNormal, ref _backgroundNormal); } }
@@ -238,6 +239,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 private UIColor _textSelected;
                 public UIColor ColorTextSelected { get { return ColorHelper.ToUIColor (TextSelected, ref _textSelected); } }
+
+                private UIColor _border;
+                public UIColor ColorBorder { get { return ColorHelper.ToUIColor (Border, ref _border); } }
             }
         }
     }

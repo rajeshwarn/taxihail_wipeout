@@ -269,6 +269,12 @@ namespace apcurium.MK.Booking.ConfigTool
 					
 			}
 
+            /*** Custom themes for Buttons ****/
+
+            _configs.Add (new ConfigFile (this) {
+                Source = "FlatButtonStyle.xml",
+                Destination = @"Mobile\iOS\Style\FlatButtonStyle.xml"
+            });
         }
 
         private AppConfigFile _config;
