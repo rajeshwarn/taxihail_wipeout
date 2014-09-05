@@ -19,10 +19,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             BackgroundColor = UIColor.Clear;
 
             // this color is added on top of the menu color
-            // 0.05 value for alpha was obtained by a picky client wanting a specific selected color
+            // 0.04 value for alpha was obtained by a picky client wanting a specific selected color
             var selectedColorDelta = Theme.IsLightContent
                 ? UIColor.White.ColorWithAlpha (0.04f)
-                : UIColor.Black.ColorWithAlpha (0.05f);
+                : UIColor.Black.ColorWithAlpha (0.04f);
             BackgroundView = new CustomCellBackgroundView(Frame, LeftPadding, UIColor.Clear, selectedColorDelta);
 
             SelectionStyle = UITableViewCellSelectionStyle.None;
