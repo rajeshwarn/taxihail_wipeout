@@ -1,5 +1,5 @@
 using Android.App;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {

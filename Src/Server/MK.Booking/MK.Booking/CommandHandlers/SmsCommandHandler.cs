@@ -1,34 +1,21 @@
 ﻿using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.SMS;
-using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Services;
 using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
     public class SmsCommandHandler : ICommandHandler<SendAccountConfirmationSMS>
     {
-        private readonly ISmsService _smsService;
-        private readonly IConfigurationManager _configurationManager;
-        private readonly Resources.Resources _resources;
+        private readonly INotificationService _notificationService;
 
-        public SmsCommandHandler(ISmsService smsService, IConfigurationManager configurationManager)
+        public SmsCommandHandler(INotificationService notificationService)
         {
-            _smsService = smsService;
-            _configurationManager = configurationManager;
-            var applicationKey = _configurationManager.GetSetting("TaxiHail.ApplicationKey");
-            _resources = new Resources.Resources(applicationKey);
+            _notificationService = notificationService;
         }
 
         public void Handle(SendAccountConfirmationSMS command)
         {
-            var template = _resources.Get("AccountConfirmationSmsBody", command.ClientLanguageCode);
-            var message = string.Format(template, _configurationManager.GetSetting("TaxiHail.ApplicationName"), command.Code);
-
-            var phoneNumber = command.PhoneNumber.Length == 11
-                                  ? command.PhoneNumber
-                                  : string.Concat("1", command.PhoneNumber);
-
-            _smsService.Send(phoneNumber, message);
+            _notificationService.SendAccountConfirmationSMS(command.PhoneNumber, command.Code, command.ClientLanguageCode);
         }
     }
 }

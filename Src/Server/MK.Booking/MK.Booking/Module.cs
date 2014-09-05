@@ -28,6 +28,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
+using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 using Microsoft.Practices.Unity;
 
@@ -62,7 +63,11 @@ namespace apcurium.MK.Booking
                     c.Resolve<IConfigurationDao>(),
                     c.Resolve<IOrderDao>(),
                     c.Resolve<IStaticMap>(),
-                    container)));
+                    c.Resolve<ISmsService>(),
+                    c.Resolve<ILogger>()));
+                    
+            container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(), 
+                new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IConfigurationManager>())));
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
@@ -171,6 +176,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, PaymentSettingsUpdater>(typeof (PaymentSettingsUpdater).Name);
             container.RegisterType<IEventHandler, MailSender>("MailSender");
             container.RegisterType<IEventHandler, OrderPaymentManager>("OrderPaymentManager");
+            container.RegisterType<IEventHandler, OrderPairingManager>("OrderPairingManager");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)

@@ -336,10 +336,19 @@
   <data name="PushNotification_wosLOADED" xml:space="preserve">
     <value>Veuillez confirmer le véhicule avec lequel le payment de carte de crédit sera effectué.</value>
   </data>
+  <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
+    <value>La course #{0} sera payée automatiquement à la fin du voyage en utilisant votre carte de crédit se terminant par {1} et en utilisant votre pouroire par défaut de {2}%</value>
+  </data>
+  <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
+    <value>La course #{0} n'a pas pu être associée automatiquement pour le paiement</value>
+  </data>
   <data name="Email_Body_FareBreakDown" xml:space="preserve">
     <value>Prix de la course</value>
   </data>
   <data name="Email_Body_Route" xml:space="preserve">
     <value>Itinéraire</value>
+  </data>
+  <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
+    <value>La course sera payée en utilisant for carte de crédit par défaut</value>
   </data>
 </root>

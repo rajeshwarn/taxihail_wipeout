@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;

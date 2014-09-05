@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
-using apcurium.MK.Booking.CommandHandlers;
+﻿using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
-using apcurium.MK.Booking.Email;
+using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Booking.SMS;
 using Moq;
 using NUnit.Framework;
@@ -36,7 +30,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             _configurationManager.SetSetting("SMSAuthToken", "9b142e2d163a5688ada040d8c71e3fb1");
             _configurationManager.SetSetting("SMSFromNumber", "15147002781");
 
-            _sut.Setup(new SmsCommandHandler(_smsSenderMock.Object, _configurationManager));
+            _sut.Setup(new SmsCommandHandler(new NotificationService(null, null, null, null, _configurationManager, _configurationManager, null, null, _smsSenderMock.Object, null)));
         }
 
         [Test]

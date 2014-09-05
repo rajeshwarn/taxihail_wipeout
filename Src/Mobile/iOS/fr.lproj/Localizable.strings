@@ -107,7 +107,7 @@
 "CreditCardExpYear"="Date d'expiration (année)";
 "CreditCardInstructions"="Afin d'utiliser l'application, vous devez ajouter une carte de crédit à votre compte.";
 "CreditCardInvalidCrediCardNUmber"="Le numéro de la carte ne semble pas être valide";
-"CreditCardName"="Nom du titualire (tel qu'il apparaît sur la carte)";
+"CreditCardName"="Nom du titulaire (tel qu'il apparaît sur la carte)";
 "CreditCardNumber"="Numéro de la carte";
 "CreditCardRemoveErrorMessage"="Vous devez avoir au moins une carte de crédit relier à votre compte. Vous devez ajouter une autre carte avant d'en supprimer une.";
 "CreditCardRemoveErrorTitle"="La carte ne peut être supprimée";
