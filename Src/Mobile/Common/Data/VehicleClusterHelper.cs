@@ -4,12 +4,13 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using System.Drawing;
 using System;
+using apcurium.MK.Booking.Maps.Geo;
 
 namespace apcurium.MK.Booking.Mobile.Data
 {
 	public static class VehicleClusterHelper
 	{
-		public static AvailableVehicle[] Clusterize(AvailableVehicle[] vehicles, MapBounds mapBounds) 
+		public static AvailableVehicle[] Clusterize(IList<AvailableVehicle> vehicles, MapBounds mapBounds) 
 		{
 			var result = new List<AvailableVehicle>();
 
