@@ -316,7 +316,7 @@
   <string name="ResetPasswordSucessTitle">Mot de passe réinitialisé</string>
   <string name="ResetPasswordTitleText">Mot de passe oublié?</string>
   <string name="RideHistoryButton">Historique des trajets</string>
-  <string name="RideSettingsAccountNumber">Numéro de compte entreprise (optionel)</string>
+  <string name="RideSettingsAccountNumber">Numéro de compte entreprise (optionnel)</string>
   <string name="RideSettingsCannotLoadListMessage">Désolé, échec de la connexion, merci de réessayer ultérieurement</string>
   <string name="RideSettingsCannotLoadListTitle">Echec de la connexion</string>
   <string name="RideSettingsChargeType">Type de facturation</string>
@@ -442,7 +442,7 @@
   <string name="View_CreditCardsList">Cartes de paiement</string>
   <string name="View_History">Historique</string>
   <string name="View_HistoryDetail">Détail de la commande</string>
-  <string name="View_InitializeOrderForAccountPayment">Votre avis nous intéresse</string>
+  <string name="View_InitializeOrderForAccountPayment">Veuillez répondre à ces questions</string>
   <string name="View_LocationDetail">Détails sur votre position</string>
   <string name="View_MyLocations">Adresses Favorites</string>
   <string name="View_Payment">Paiement: informations</string>
@@ -509,4 +509,7 @@
   <string name="RateLastRideTitle">Évaluer la dernière course?</string>
   <string name="Notification_Off">Non</string>
   <string name="Notification_On">Oui</string>
+  <string name="PaymentInCar">Carte bancaire - À bord </string>
+  <string name="CardOnFile">Paiement In App</string>
+  <string name="ChargeAccount">Compte</string>
 </resources>

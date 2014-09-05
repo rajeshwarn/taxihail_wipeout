@@ -100,5 +100,12 @@ Config/._default device taxihail no 3gs apcurium.txt
 Config/._default device taxihail.txt
 *_log.csv
 *Resource.Designer.cs
+Src\Server\apcurium.MK.Web\themes\cinq-s\img\cancel-icon.png
+Src\Server\apcurium.MK.Web\themes\cinq-s\img\location.png
+Src\Server\apcurium.MK.Web\themes\cinq-s\img\logo.png
+Src\Server\apcurium.MK.Web\themes\cinq-s\less\combined-responsive.less
+Src\Server\apcurium.MK.Web\themes\cinq-s\less\combined.less
+Src\Server\apcurium.MK.Web\themes\cinq-s\less\style.less
+Src\Server\apcurium.MK.Web\themes\cinq-s\less\variables.less
 syntax: regexp
 Deployment/Database/*
