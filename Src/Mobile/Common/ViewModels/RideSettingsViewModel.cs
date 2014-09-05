@@ -281,8 +281,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if (ValidateRideSettings())
                     {
 						var creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty ? default(Guid?) : PaymentPreferences.SelectedCreditCardId;
-						var tip = (PaymentPreferences.Tip == Settings.DefaultTipPercentage) ? (int?)null : PaymentPreferences.Tip;
-						_accountService.UpdateSettings(_bookingSettings, creditCard, tip);
+						_accountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
 						Close(this);
                     }
                 });
