@@ -445,6 +445,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 UIView.Animate(0.3f, () => _mapBlurOverlay.Alpha = 0, () => _mapBlurOverlay.Hidden = true);
             }
+
+			InitOverlays ();
         }
 
         private void CancelAddressSearch()
