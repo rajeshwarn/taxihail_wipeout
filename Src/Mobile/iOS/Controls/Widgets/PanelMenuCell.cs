@@ -17,7 +17,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			: base (bindingText, UITableViewCellStyle.Default, new NSString (cellIdentifier), UITableViewCellAccessory.None)
 		{
             BackgroundColor = UIColor.Clear;
-            BackgroundView = new CustomCellBackgroundView(Frame, LeftPadding, UIColor.Clear, UIColor.White);
+
+            // this color is added on top of the menu color
+            // 0.05 value for alpha was obtained by a picky client wanting a specific selected color
+            var selectedColorDelta = Theme.IsLightContent
+                ? UIColor.White.ColorWithAlpha (0.04f)
+                : UIColor.Black.ColorWithAlpha (0.05f);
+            BackgroundView = new CustomCellBackgroundView(Frame, LeftPadding, UIColor.Clear, selectedColorDelta);
 
             SelectionStyle = UITableViewCellSelectionStyle.None;
 			Accessory = UITableViewCellAccessory.None;
