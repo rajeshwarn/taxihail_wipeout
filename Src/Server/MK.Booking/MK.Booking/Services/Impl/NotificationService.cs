@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Mail;
-using System.Reflection;
 using System.Text;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Email;
-using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.ReadModel;
@@ -31,21 +31,24 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private const string ApplicationNameSetting = "TaxiHail.ApplicationName";
         private const string AccentColorSetting = "TaxiHail.AccentColor";
-        private const string VATEnabledSetting = "VATIsEnabled";
-        private const string VATPercentageSetting = "VATPercentage";
-        private const string VATRegistrationNumberSetting = "VATRegistrationNumber";
+        private const string EmailFontColorSetting = "TaxiHail.EmailFontColor";
+        private const string ApplicationKeySetting = "TaxiHail.ApplicationKey";
 
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IPushNotificationService _pushNotificationService;
+        private readonly ITemplateService _templateService;
+        private readonly IEmailSender _emailSender;
         private readonly IConfigurationManager _configurationManager;
         private readonly IAppSettings _appSettings;
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
+        private readonly IStaticMap _staticMap;
         private readonly ISmsService _smsService;
         private readonly ILogger _logger;
-        private readonly ITemplateService _templateService;
-        private readonly IEmailSender _emailSender;
         private readonly Resources.Resources _resources;
+
+        private BaseUrls _baseUrls;
+
 
         public NotificationService(
             Func<BookingDbContext> contextFactory, 
@@ -56,6 +59,7 @@ namespace apcurium.MK.Booking.Services.Impl
             IAppSettings appSettings,
             IConfigurationDao configurationDao,
             IOrderDao orderDao,
+            IStaticMap staticMap,
             ISmsService smsService,
             ILogger logger)
         {
@@ -67,12 +71,21 @@ namespace apcurium.MK.Booking.Services.Impl
             _appSettings = appSettings;
             _configurationDao = configurationDao;
             _orderDao = orderDao;
+            _staticMap = staticMap;
             _smsService = smsService;
             _logger = logger;
 
-            var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
+            
+
+            var applicationKey = configurationManager.GetSetting(ApplicationKeySetting);
             _resources = new Resources.Resources(applicationKey);
         }
+
+        public void SetBaseUrl(Uri baseUrl)
+        {
+            this._baseUrls = new BaseUrls(baseUrl, _configurationManager);
+        }
+
 
         public void SendAssignedPush(OrderStatusDetail orderStatusDetail)
         {
@@ -195,7 +208,9 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 confirmationUrl,
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
-                AccentColor = _configurationManager.GetSetting(AccentColorSetting)
+                EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
+                AccentColor = _configurationManager.GetSetting(AccentColorSetting),
+                LogoImg = String.Concat(GetBaseUrls().BaseUrlThemesImg, "email_logo.png")
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.AccountConfirmation, EmailConstant.Subject.AccountConfirmation, templateData, clientLanguageCode);
@@ -210,23 +225,29 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress, DateTime pickupDate,
-            SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode)
+            SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
         {
-            using (var context = _contextFactory.Invoke())
+            if (!bypassNotificationSetting)
             {
-                var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                if (account == null || !ShouldSendNotification(account.Id, x => x.BookingConfirmationEmail))
+                using (var context = _contextFactory.Invoke())
                 {
-                    return;
+                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
+                    if (account == null || !ShouldSendNotification(account.Id, x => x.BookingConfirmationEmail))
+                    {
+                        return;
+                    }
                 }
             }
 
-            var hasDropOffAddress = dropOffAddress != null && !string.IsNullOrWhiteSpace(dropOffAddress.FullAddress);
+            var hasDropOffAddress = dropOffAddress != null
+                && (!string.IsNullOrWhiteSpace(dropOffAddress.FullAddress)
+                    || !string.IsNullOrWhiteSpace(dropOffAddress.DisplayAddress));
 
             var templateData = new
             {
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
                 AccentColor = _configurationManager.GetSetting(AccentColorSetting),
+                EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
                 ibsOrderId,
                 PickupDate = pickupDate.ToString("dddd, MMMM d"),
                 PickupTime = pickupDate.ToString("t" /* Short time pattern */),
@@ -244,7 +265,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 Apartment = string.IsNullOrWhiteSpace(pickupAddress.Apartment) ? "-" : pickupAddress.Apartment,
                 RingCode = string.IsNullOrWhiteSpace(pickupAddress.RingCode) ? "-" : pickupAddress.RingCode,
                 /* Mandatory visibility settings */
-                VisibilityLargeBags = _configurationManager.GetSetting("Client.ShowLargeBagsIndicator", false) || settings.LargeBags > 0
+                VisibilityLargeBags = _configurationManager.GetSetting("Client.ShowLargeBagsIndicator", false) || settings.LargeBags > 0,
+                LogoImg = String.Concat(GetBaseUrls().BaseUrlThemesImg, "email_logo.png")
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.BookingConfirmation, EmailConstant.Subject.BookingConfirmation, templateData, clientLanguageCode);
@@ -256,25 +278,30 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 password,
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
+                AccentColor = _configurationManager.GetSetting(AccentColorSetting),
+                EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
+                LogoImg = String.Concat(GetBaseUrls().BaseUrlThemesImg, "email_logo.png")
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.PasswordReset, EmailConstant.Subject.PasswordReset, templateData, clientLanguageCode);
         }
 
         public void SendReceiptEmail(int ibsOrderId, string vehicleNumber, string driverName, double fare, double toll, double tip,
-            double tax, double totalFare, SendReceipt.CardOnFile cardOnFileInfo, Address pickupAddress, Address dropOffAddress, 
-            DateTime transactionDate, string clientEmailAddress, string clientLanguageCode)
+            double tax, double totalFare, SendReceipt.CardOnFile cardOnFileInfo, Address pickupAddress, Address dropOffAddress,
+            DateTime pickupDate, DateTime? dropOffDate, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
         {
-            using (var context = _contextFactory.Invoke())
+            if (!bypassNotificationSetting)
             {
-                var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                if (account == null || !ShouldSendNotification(account.Id, x => x.ReceiptEmail))
+                using (var context = _contextFactory.Invoke())
                 {
-                    return;
+                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
+                    if (account == null || !ShouldSendNotification(account.Id, x => x.ReceiptEmail))
+                    {
+                        return;
+                    }
                 }
             }
 
-            var vatEnabled = _configurationManager.GetSetting(VATEnabledSetting, false);
             var priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
 
             var isCardOnFile = cardOnFileInfo != null;
@@ -296,24 +323,42 @@ namespace apcurium.MK.Booking.Services.Impl
                 cardOnFileTransactionId = cardOnFileInfo.TransactionId;
             }
 
-            var hasDropOffAddress = dropOffAddress != null && !string.IsNullOrWhiteSpace(dropOffAddress.FullAddress);
+            var hasDropOffAddress = dropOffAddress != null 
+                && (!string.IsNullOrWhiteSpace(dropOffAddress.FullAddress) 
+                    || !string.IsNullOrWhiteSpace(dropOffAddress.DisplayAddress));
 
+            var staticMapUri = dropOffAddress != null
+                ? _staticMap.GetStaticMapUri(
+                    new Position(pickupAddress.Latitude, pickupAddress.Longitude),
+                    new Position(dropOffAddress.Latitude, dropOffAddress.Longitude),
+                    300, 300, 1)
+                : "";
+
+            var dropOffTime = dropOffDate.HasValue
+                ? dropOffDate.Value.ToString("t" /* Short time pattern */)
+                : "";
+            var baseUrls = GetBaseUrls();
             var templateData = new
             {
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
                 AccentColor = _configurationManager.GetSetting(AccentColorSetting),
+                EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
                 ibsOrderId,
                 vehicleNumber,
                 driverName,
-                Date = transactionDate.ToString("dddd, MMMM d, yyyy"),
+                PickupDate = pickupDate.ToString("dddd, MMMM d, yyyy"),
+                PickupTime = pickupDate.ToString("t" /* Short time pattern */),
+                DropOffDate = dropOffDate.HasValue 
+                    ? dropOffDate.Value.ToString("dddd, MMMM d, yyyy")
+                    : pickupDate.ToString("dddd, MMMM d, yyyy"), // assume it ends on the same day...
+                DropOffTime = dropOffTime,
+                ShowDropOffTime = !string.IsNullOrEmpty(dropOffTime),
                 Fare = fare.ToString("C", priceFormat),
                 Toll = toll.ToString("C", priceFormat),
                 Tip = tip.ToString("C", priceFormat),
                 TotalFare = totalFare.ToString("C", priceFormat),
                 Note = _configurationManager.GetSetting("Receipt.Note"),
-                VATAmount = tax.ToString("C", priceFormat),
-                VatEnabled = vatEnabled,
-                VATRegistrationNumber = _configurationManager.GetSetting(VATRegistrationNumberSetting),
+                Tax = tax.ToString("C", priceFormat),
                 IsCardOnFile = isCardOnFile,
                 CardOnFileAmount = cardOnFileAmount,
                 CardNumber = cardNumber,
@@ -321,6 +366,15 @@ namespace apcurium.MK.Booking.Services.Impl
                 CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
                 PickupAddress = pickupAddress.DisplayAddress,
                 DropOffAddress = hasDropOffAddress ? dropOffAddress.DisplayAddress : "-",
+                SubTotal=(fare+toll+tip).ToString("C", priceFormat),
+                StaticMapUri = staticMapUri,
+                ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
+                BaseUrlImg = baseUrls.BaseUrlAssetsImg,
+                RedDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_red_dot.png"),
+                GreenDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_green_dot.png"),
+                LogoImg = String.Concat(baseUrls.BaseUrlThemesImg, "email_logo.png"),
+                VehicleType = "taxi"
+
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
@@ -435,7 +489,29 @@ namespace apcurium.MK.Booking.Services.Impl
             return (bool)settings.GetType().GetProperty(propertyName).GetValue(settings, null);
         }
 
-        private static class EmailConstant
+        private BaseUrls GetBaseUrls()
+        {
+            if (_baseUrls == null)
+            {
+                throw new InvalidOperationException("BaseUrl not yet set");
+            }
+            return _baseUrls;
+        }
+
+        private class BaseUrls
+        {
+            public BaseUrls(Uri baseUrl, IConfigurationManager configurationManager)
+            {
+                BaseUrlThemesImg = String.Concat(baseUrl, "/themes/" + configurationManager.GetSetting(ApplicationKeySetting) + "/img/");
+                BaseUrlAssetsImg = String.Concat(baseUrl, "/assets/img/");
+            }
+
+            public string BaseUrlThemesImg { get; private set; }
+
+            public string BaseUrlAssetsImg { get; private set; }
+        }
+
+        public static class EmailConstant
         {
             public static class Subject
             {

@@ -7,6 +7,7 @@
    "TaxiHail.ApplicationName" : "Taxi Hail",
    "TaxiHail.ApplicationKey" : "TaxiHail",
    "TaxiHail.AccentColor" : "#0057a3",
+   "TaxiHail.EmailFontColor" : "#000",
    "TaxiHail.SiteName" : "Dev",
 
    "IBS.WebServicesUrl.1" : "http://mk.drivelinq.com:6928/XDS_IASPI.DLL/soap/",     

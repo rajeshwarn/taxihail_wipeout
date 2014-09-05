@@ -73,7 +73,7 @@
    "Client.SendReceiptAvailable" : "true",   
    "Client.DisableFutureBooking" : "false",      
    "Client.HideDestination" : "false",      
-   "Client.AboutUsUrl" : "http://www.mobile-knowledge.com/index.html",   
+   "Client.AboutUsUrl" : "http://www.mobile-knowledge.com",   
    "Client.DisabledTutorialSlides" : "",
    "Client.SMSConfirmationEnabled" :"false",
    "Client.DisableChargeTypeWhenCardOnFile" : "false",

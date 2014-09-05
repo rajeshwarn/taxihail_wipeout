@@ -148,7 +148,9 @@
     <Compile Include="Requests\RegisterAccount.cs" />
     <Compile Include="Requests\SearchLocationsRequest.cs" />
     <Compile Include="Requests\SendReceipt.cs" />
+    <Compile Include="Requests\EmailTemplateNamesRequest.cs" />
     <Compile Include="Requests\TermsAndConditionsRequest.cs" />
+    <Compile Include="Requests\TestEmailAdministrationRequest.cs" />
     <Compile Include="Requests\TestOnlyReqGetAdminTestAccount.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
     <Compile Include="Requests\UnassignedReferenceDataVehiclesRequest.cs" />
