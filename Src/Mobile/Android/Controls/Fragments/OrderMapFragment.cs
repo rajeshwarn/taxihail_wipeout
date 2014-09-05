@@ -444,9 +444,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if (zoomHint != null)
             {
-				if (zoomHint.AvailableVehiclesZoom != null) {
+				if (zoomHint.Bounds != null) {
 
-					var availableVehiclesBounds = zoomHint.AvailableVehiclesZoom;
+					var availableVehiclesBounds = zoomHint.Bounds;
 					LatLngBounds.Builder builder = new LatLngBounds.Builder();
 					builder.Include (new LatLng (availableVehiclesBounds.NorthBound, availableVehiclesBounds.WestBound));
 					builder.Include (new LatLng (availableVehiclesBounds.SouthBound, availableVehiclesBounds.EastBound));

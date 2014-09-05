@@ -271,14 +271,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return this.GetCommand(async (bool started) =>
+				return this.GetCommand(async (bool showNearestVehicles) =>
 				{					
 					if (_accountService.CurrentAccount != null)
 					{
 						var address = await _orderWorkflowService.SetAddressToUserLocation();
 						if(address.HasValidCoordinate())
 						{
-							if (started)
+							if (showNearestVehicles)
 							{ 
 								try 
 								{

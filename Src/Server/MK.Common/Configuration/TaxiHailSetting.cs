@@ -33,6 +33,10 @@ namespace MK.Common.Configuration
 		    DisableChargeTypeWhenCardOnFile = false;
 		    VehicleTypeSelectionEnabled = false;
 		    SendPushAsSMS = false;
+
+			ZoomOnNearbyVehicles = false;
+			ZoomOnNearbyVehiclesCount = 6;
+			ZoomOnNearbyVehiclesRadius = 2400;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -247,10 +251,10 @@ namespace MK.Common.Configuration
 		public bool ZoomOnNearbyVehicles { get; private set; }
 
 		[Display(Name = "Zoom on nearby vehicles radius", Description="Inclusion radius in meters when zooming on nearby vehicles")]
-		public int? ZoomOnNearbyVehiclesRadius { get; private set; }
+		public int ZoomOnNearbyVehiclesRadius { get; private set; }
 
 		[Display(Name = "Zoom on nearby vehicles count", Description="Maximum of included vehicles when zooming on nearby vehicles")]
-		public int? ZoomOnNearbyVehiclesCount { get; private set; }
+		public int ZoomOnNearbyVehiclesCount { get; private set; }
     }
 }
 

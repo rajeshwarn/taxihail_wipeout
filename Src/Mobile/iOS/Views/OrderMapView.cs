@@ -483,8 +483,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var zoomHint = hint as ZoomToStreetLevelPresentationHint;
             if (zoomHint != null)
             {
-				if (zoomHint.AvailableVehiclesZoom != null) {
-					var zoom = zoomHint.AvailableVehiclesZoom;
+				if (zoomHint.Bounds != null) {
+					var zoom = zoomHint.Bounds;
 					this.SetRegion(new MKCoordinateRegion (
 						new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude),
 						new MKCoordinateSpan (zoom.LatitudeDelta, zoom.LongitudeDelta)), true);
