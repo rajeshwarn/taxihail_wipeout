@@ -507,6 +507,6 @@
 "EstimateDistance"="";
 "EstimatePrice"="Cost";
 "DontAsk"="Don't ask";
-"Payment In Car"="Payment In Car";
-"Card on File"="Card on File";
-"Charge Account"="Charge Account";
+"PaymentInCar"="Payment In Car";
+"CardOnFile"="Card on File";
+"ChargeAccount"="Charge Account";

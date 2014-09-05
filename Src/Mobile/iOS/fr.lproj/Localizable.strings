@@ -505,6 +505,6 @@
 "RateLastRideMessage"="Nous aimerions recevoir vos commentaires sur votre dernière course, voulez-vous l'évaluer?";
 "DontAsk"="Ne plus demander";
 "View_NotificationSettings"="Notifications";
-"Payment In Car"="Carte bancaire - À bord ";
-"Card on File"="Paiement In App";
-"Charge Account"="Compte";
+"PaymentInCar"="Carte bancaire - À bord ";
+"CardOnFile"="Paiement In App";
+"ChargeAccount"="Compte";
