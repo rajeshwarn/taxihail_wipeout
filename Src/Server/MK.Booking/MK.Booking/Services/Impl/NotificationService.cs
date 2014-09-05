@@ -36,17 +36,20 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IPushNotificationService _pushNotificationService;
+        private readonly ITemplateService _templateService;
+        private readonly IEmailSender _emailSender;
         private readonly IConfigurationManager _configurationManager;
         private readonly IAppSettings _appSettings;
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
-        private readonly ISmsService _smsService;
         private readonly IStaticMap _staticMap;
+        private readonly ISmsService _smsService;
         private readonly ILogger _logger;
-        private readonly ITemplateService _templateService;        
-        private readonly IEmailSender _emailSender;
         private readonly Resources.Resources _resources;
 
+        private readonly string _baseUrlThemesImg;
+        private readonly string _baseUrlAssetsImg;
+        
         public NotificationService(
             Func<BookingDbContext> contextFactory, 
             IPushNotificationService pushNotificationService,
@@ -58,7 +61,8 @@ namespace apcurium.MK.Booking.Services.Impl
             IOrderDao orderDao,
             IStaticMap staticMap,
             ISmsService smsService,
-            ILogger _logger)
+            string baseUrl,
+            ILogger logger)
         {
             _contextFactory = contextFactory;
             _pushNotificationService = pushNotificationService;
@@ -71,6 +75,9 @@ namespace apcurium.MK.Booking.Services.Impl
             _staticMap = staticMap;
             _smsService = smsService;
             _logger = logger;
+
+            _baseUrlThemesImg = String.Concat(baseUrl, "/themes/" + _configurationManager.GetSetting(ApplicationKeySetting) + "/img/");
+            _baseUrlAssetsImg = String.Concat(baseUrl, "/assets/img/");
 
             var applicationKey = configurationManager.GetSetting(ApplicationKeySetting);
             _resources = new Resources.Resources(applicationKey);
@@ -193,18 +200,13 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendAccountConfirmationEmail(Uri confirmationUrl, string clientEmailAddress, string clientLanguageCode)
         {
-            var baseUrl = _container.Resolve<string>("BaseUrl");
-
-            var baseUrlThemesImg = String.Concat(baseUrl, "/themes/" + _configurationManager.GetSetting(ApplicationKeySetting) + "/img/");
             var templateData = new
             {
                 confirmationUrl,
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
                 EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
                 AccentColor = _configurationManager.GetSetting(AccentColorSetting),
-                LogoImg = String.Concat(baseUrlThemesImg, "email_logo.png")
-
-
+                LogoImg = String.Concat(_baseUrlThemesImg, "email_logo.png")
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.AccountConfirmation, EmailConstant.Subject.AccountConfirmation, templateData, clientLanguageCode);
@@ -237,10 +239,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 && (!string.IsNullOrWhiteSpace(dropOffAddress.FullAddress)
                     || !string.IsNullOrWhiteSpace(dropOffAddress.DisplayAddress));
 
-            var baseUrl = _container.Resolve<string>("BaseUrl");
-
-            var baseUrlThemesImg = String.Concat(baseUrl, "/themes/" + _configurationManager.GetSetting(ApplicationKeySetting) + "/img/");
-
             var templateData = new
             {
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
@@ -264,7 +262,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 RingCode = string.IsNullOrWhiteSpace(pickupAddress.RingCode) ? "-" : pickupAddress.RingCode,
                 /* Mandatory visibility settings */
                 VisibilityLargeBags = _configurationManager.GetSetting("Client.ShowLargeBagsIndicator", false) || settings.LargeBags > 0,
-                LogoImg = String.Concat(baseUrlThemesImg, "email_logo.png")
+                LogoImg = String.Concat(_baseUrlThemesImg, "email_logo.png")
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.BookingConfirmation, EmailConstant.Subject.BookingConfirmation, templateData, clientLanguageCode);
@@ -272,17 +270,13 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendPasswordResetEmail(string password, string clientEmailAddress, string clientLanguageCode)
         {
-            var baseUrl = _container.Resolve<string>("BaseUrl");
-
-            var baseUrlThemesImg = String.Concat(baseUrl, "/themes/" + _configurationManager.GetSetting(ApplicationKeySetting) + "/img/");
-
             var templateData = new
             {
                 password,
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
                 AccentColor = _configurationManager.GetSetting(AccentColorSetting),
                 EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
-                LogoImg = String.Concat(baseUrlThemesImg, "email_logo.png")
+                LogoImg = String.Concat(_baseUrlThemesImg, "email_logo.png")
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.PasswordReset, EmailConstant.Subject.PasswordReset, templateData, clientLanguageCode);
@@ -340,11 +334,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 ? dropOffDate.Value.ToString("t" /* Short time pattern */)
                 : "";
 
-            var baseUrl = _container.Resolve<string>("BaseUrl");
-
-            var baseUrlAssetsImg = String.Concat(baseUrl, "/assets/img/");
-            var baseUrlThemesImg = String.Concat(baseUrl, "/themes/" + _configurationManager.GetSetting(ApplicationKeySetting) + "/img/");
-
             var templateData = new
             {
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
@@ -376,10 +365,10 @@ namespace apcurium.MK.Booking.Services.Impl
                 SubTotal=(fare+toll+tip).ToString("C", priceFormat),
                 StaticMapUri = staticMapUri,
                 ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
-                BaseUrlImg = baseUrlAssetsImg,
-                RedDotImg = String.Concat(baseUrlAssetsImg, "email_red_dot.png"),
-                GreenDotImg = String.Concat(baseUrlAssetsImg, "email_green_dot.png"),
-                LogoImg = String.Concat(baseUrlThemesImg, "email_logo.png"),
+                BaseUrlImg = _baseUrlAssetsImg,
+                RedDotImg = String.Concat(_baseUrlAssetsImg, "email_red_dot.png"),
+                GreenDotImg = String.Concat(_baseUrlAssetsImg, "email_green_dot.png"),
+                LogoImg = String.Concat(_baseUrlThemesImg, "email_logo.png"),
                 VehicleType = "taxi"
 
             };

@@ -120,7 +120,6 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-
         public void Handle(OrderRated @event)
         {
             using (var context = _contextFactory.Invoke())

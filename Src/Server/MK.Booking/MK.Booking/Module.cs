@@ -64,7 +64,8 @@ namespace apcurium.MK.Booking
                     c.Resolve<IOrderDao>(),
                     c.Resolve<IStaticMap>(),
                     c.Resolve<ISmsService>(),
-                    c.Resolve<ILogger>()));
+                    c.Resolve<string>("BaseUrl"),
+                    c.Resolve<ILogger>())));
                     
             container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(), 
                 new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IConfigurationManager>())));
