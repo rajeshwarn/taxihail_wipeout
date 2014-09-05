@@ -14,7 +14,7 @@
   <string name="AddressSearchingText">Recherche…</string>
   <string name="ApartmentLabel">Appartement</string>
   <string name="apcuriumUrl">http://www.apcurium.com/</string>
-  <string name="ApplicationName">TaxiHail</string>
+  <string name="ApplicationName">CINQ-S</string>
   <string name="AppNeedUpdateMessage">Une nouvelle version de l\'application est disponible, merci de la télécharger pour continuer</string>
   <string name="AppNeedUpdateTitle">Nouvelle version disponible</string>
   <string name="ApproxPrice">Prix estimé</string>
@@ -155,7 +155,7 @@
   <string name="EstimatedFareNotAvailable">Le prix ne peut être estimé pour le moment</string>
   <string name="EstimateDistance"></string>
   <string name="EstimatePrice">Prix</string>
-  <string name="EstimatePriceFormat">Prix estimé: {0:C} ({1})</string>
+  <string name="EstimatePriceFormat">Prix: {0:c}</string>
   <string name="EstimatePriceOver100">Appelez-nous pour connaître le prix!</string>
   <string name="EstimatingFare">Calcul du prix en cours…</string>
   <string name="Facebook">Connexion Facebook</string>
@@ -350,8 +350,8 @@
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall">La commande ne peut être créée car votre compte est actuellement désactivé</string>
   <string name="ServiceErrorCreateOrder_InvalidProvider">La commande ne peut être créé car le fournisseur est invalide. Merci de contacter {0} à {1} pour plus d\'assistance.</string>
   <string name="ServiceErrorCreateOrder_InvalidProvider_NoCall">Désolé, la demande ne peut être prise en compte. Le fournisseur n\'est pas valide.</string>
-  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable">Désolé, nous n\'avons pas pu estimer le montant de votre trajet. Merci de contacter {0} au {1} pour toute demande d\'assistance</string>
-  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall">Désolé, nous n\'avons pas pu estimer le montant de votre trajet</string>
+  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable">Aucun tarif n\'est disponible pour la course. Merci de spécifier une adresse de départ et une destination.</string>
+  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall">Aucun tarif n\'est disponible pour la course. Merci de spécifier une adresse de départ et une destination.</string>
   <string name="ServiceErrorCreateOrder_NoProvider">Désolé, la demande ne peut être prise en compte car vous n\'avez pas choisi de fournisseur. Merci de réessayer ultérieurement ou de nous joindre au {0}.</string>
   <string name="ServiceErrorCreateOrder_VehiculeType">Désolé, la demande ne peut être prise en compte car le type de véhicule choisi n\'est pas valide. Merci de réessayer ultérieurement ou de nous joindre au {0}</string>
   <string name="ServiceErrorDefaultMessage">Désolé, nous avons rencontré un problème. Merci de réessayer ultérieurement</string>
@@ -394,7 +394,7 @@
   <string name="TabPlaces">Points d\'intérêt</string>
   <string name="TabSearch">Rechercher</string>
   <string name="TaxiMapTitle">Votre véhicule</string>
-  <string name="TaxiServerDownMessage">Désolé, impossible de contacter le chauffeur</string>
+  <string name="TaxiServerDownMessage">Impossible d\'envoyer l\'information au conducteur.</string>
   <string name="TechSupportEmailTitle">Support application mobile</string>
   <string name="TermsAndConditionsAcknowledgment">Je reconnais avoir pris connaissance des conditions générales d\'utilisation</string>
   <string name="Time">Heure</string>
