@@ -389,7 +389,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			};
 
 			// Cache company notification settings
-			_accountService.GetNotificationSettings (true);
+			_accountService.GetNotificationSettings (true, true);
 
             // Log user session start
             _accountService.LogApplicationStartUp();
