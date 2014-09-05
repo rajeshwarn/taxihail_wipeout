@@ -18,6 +18,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using MapBounds = apcurium.MK.Booking.Maps.Geo.MapBounds;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Controls;
@@ -61,6 +62,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             };
 
             AddSubviews(_pickupCenterPin, _dropoffCenterPin);
+
+			this.RegionChanged += (s, e) => 
+			{
+				ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles != null ? AvailableVehicles.ToArray () : null, GetMapBoundsFromProjection()));
+			};
         }
 
         public override void Draw(RectangleF rect)
@@ -367,7 +373,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var vehicleAnnotation = new AddressAnnotation (
                                 new CLLocationCoordinate2D(vehicle.Latitude, vehicle.Longitude),
                                 annotationType, 
-                                string.Empty, 
+								vehicle.VehicleNumber.ToString(),             
                                 string.Empty, 
                                 _useThemeColorForPickupAndDestinationMapIcons,
                                 vehicle.LogoName);
@@ -477,7 +483,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var zoomHint = hint as ZoomToStreetLevelPresentationHint;
             if (zoomHint != null)
             {
-				this.SetCenterCoordinate(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), 14, true); 
+				if (zoomHint.Bounds != null) {
+					var zoom = zoomHint.Bounds;
+					this.SetRegion(new MKCoordinateRegion (
+						new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude),
+						new MKCoordinateSpan (zoom.LatitudeDelta, zoom.LongitudeDelta)), true);
+				} else {
+					this.SetCenterCoordinate(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), 14, true);
+				}
             }
 
             var centerHint = hint as CenterMapPresentationHint;
