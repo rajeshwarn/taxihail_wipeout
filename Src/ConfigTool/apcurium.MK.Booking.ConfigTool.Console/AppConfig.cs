@@ -178,6 +178,7 @@ namespace apcurium.MK.Booking.ConfigTool
                     NodeSelector=@"//resources/color[@name=""setting_menu_color""]", 
                     SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.MenuColor) 
                 },
+                new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\Android\Resources\Drawable\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5@2x.png", Destination=@"Mobile\Android\Resources\drawable-xhdpi\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\iOS\Resources\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5@2x.png", Destination=@"Mobile\iOS\Resources\th_logo@2x.png" },
@@ -224,7 +225,7 @@ namespace apcurium.MK.Booking.ConfigTool
 
 			var optionalGraphicToUpdate = new string[] { "chargetype", "hail_icon", "destination_icon", "taxi_progress","vehicle", "taxi_icon", "cluster", "nearby", "taxi_badge_selected" 
 			
-				,"tutorial_screen01","tutorial_screen02","tutorial_screen03","tutorial_screen04","tutorial_screen05","tutorial_screen06","tutorial_screen07" };
+				,"tutorial_screen01","tutorial_screen02","tutorial_screen03","tutorial_screen04","tutorial_screen05","tutorial_screen06","tutorial_screen07", "phone" };
 
 			foreach (var g in optionalGraphicToUpdate) {
 			

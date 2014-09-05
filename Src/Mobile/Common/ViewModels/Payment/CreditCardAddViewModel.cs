@@ -227,8 +227,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
             get 
 			{
-                var type = ExpirationMonths.FirstOrDefault(x => x.Id == ExpirationMonth);
-                return type == null ? "" : type.Display;
+                var month = ExpirationMonths.FirstOrDefault(x => x.Id == ExpirationMonth);
+				return month == null ? "" : month.Display;
             }
         }
 
@@ -236,8 +236,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get 
 			{
-				var type = ExpirationYears.FirstOrDefault(x => x.Id == ExpirationYear);
-				return type == null ? "" : type.Display;
+				var year = ExpirationYears.FirstOrDefault(x => x.Id == ExpirationYear);
+				return year == null ? "" : year.Display;
 			}
 		}
 
