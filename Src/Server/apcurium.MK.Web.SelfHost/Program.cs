@@ -7,15 +7,18 @@ using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Validation;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.IoC;
 using Funq;
 using Infrastructure.Messaging;
+using Microsoft.Practices.Unity;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
 using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensions;
+using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 #endregion
 
@@ -45,6 +48,9 @@ namespace apcurium.MK.Web.SelfHost
 
         public override void Configure(Container containerFunq)
         {
+            var notificationService = UnityContainerExtensions.Resolve<INotificationService>(UnityServiceLocator.Instance);
+            notificationService.SetBaseUrl(new Uri("http://www.example.com"));
+            
             new Module().Init(UnityServiceLocator.Instance, ConfigurationManager.ConnectionStrings["MKWebDev"]);
 
             var container = UnityServiceLocator.Instance;
@@ -61,6 +67,8 @@ namespace apcurium.MK.Web.SelfHost
                 }));
             Plugins.Add(new ValidationFeature());
             containerFunq.RegisterValidators(typeof (SaveFavoriteAddressValidator).Assembly);
+
+            
 
             SetConfig(new EndpointHostConfig
             {

@@ -342,6 +342,12 @@
   <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
     <value>The ride #{0} could not be automatically paired</value>
   </data>
+  <data name="Email_Body_FareBreakDown" xml:space="preserve">
+    <value>Fare breakdown</value>
+  </data>
+  <data name="Email_Body_Route" xml:space="preserve">
+    <value>Route</value>
+  </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
     <value>Fare will be paid using your default CC payment</value>
   </data>

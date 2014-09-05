@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using apcurium.MK.Booking.Resources;
+using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration;
 using Nustache.i18n;
 
@@ -45,8 +46,18 @@ namespace apcurium.MK.Booking.Email
             var path = GetTemplatePath(templateName, languageCode);
             if (File.Exists(path))
             {
+                
                 var templateBody = File.ReadAllText(path);
+               
+                    
                 var translatedTemplateBody = Localizer.Translate(templateBody, _resources.GetLocalizedDictionary(languageCode), "!!MISSING!!");
+                var result = PreMailer.Net.PreMailer.MoveCssInline(translatedTemplateBody, true, ignoreElements: "#ignore");
+                translatedTemplateBody = result.Html;
+              /*  if (templateName == NotificationService.EmailConstant.Template.Receipt)
+                {
+                    var result = PreMailer.Net.PreMailer.MoveCssInline(translatedTemplateBody, true,ignoreElements:"#ignore");
+                    translatedTemplateBody = result.Html;
+                }*/
                 return translatedTemplateBody;
             }
 

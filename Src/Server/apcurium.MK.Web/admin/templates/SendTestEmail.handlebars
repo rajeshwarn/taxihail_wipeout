@@ -1,0 +1,26 @@
+﻿<div class='row'>
+    <div class='span6'>
+        <div class='well clearfix'>
+            <div class='errors'></div>
+            <div class="control-group">
+                <label class="control-label" for="email">{{localize "Email Address"}}</label>
+                <div class="controls">
+                    <input type="text" name="email" class='input-block-level'/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="message">{{localize "Template Name"}}</label>
+                <div class="controls">
+                    <select id="templateName" name="templateName" style="width:302px">
+                        {{#each templates}}
+                        <option value="{{value}}">{{localize value}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="control-group btn-right-alignment">
+                <button type="submit" class='btn btn-primary span' data-action='sendtestemail' data-loading-text="{{localize 'Loading'}}">{{localize "Send Test Email"}}</button>
+            </div>
+        </div>
+    </div>
+</div>
