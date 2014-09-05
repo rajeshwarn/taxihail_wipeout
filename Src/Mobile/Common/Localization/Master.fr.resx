@@ -1627,13 +1627,13 @@
   <data name="Notification_On" xml:space="preserve">
     <value>Oui</value>
   </data>
-  <data name="Payment In Car" xml:space="preserve">
+  <data name="PaymentInCar" xml:space="preserve">
     <value>Carte bancaire - À bord </value>
   </data>
-  <data name="Charge Account" xml:space="preserve">
+  <data name="ChargeAccount" xml:space="preserve">
     <value>Compte</value>
   </data>
-  <data name="Card on File" xml:space="preserve">
+  <data name="CardOnFile" xml:space="preserve">
     <value>Paiement In App</value>
   </data>
 </root>

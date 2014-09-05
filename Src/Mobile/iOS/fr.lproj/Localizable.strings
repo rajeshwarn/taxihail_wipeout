@@ -508,3 +508,6 @@
 "Payment In Car"="Carte bancaire - À bord ";
 "Card on File"="Paiement In App";
 "Charge Account"="Compte";
+"PaymentInCar"="Carte bancaire - À bord ";
+"CardOnFile"="Paiement In App";
+"ChargeAccount"="Compte";
