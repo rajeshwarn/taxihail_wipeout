@@ -69,6 +69,8 @@ namespace apcurium.MK.Booking.Maps.Impl
                     }
                     price = q*5;
                     price = price.Value/100;
+
+                    price = Math.Max(_appSettings.Data.MinimumFare, price.Value);
                 }
             }
             catch(Exception e)
