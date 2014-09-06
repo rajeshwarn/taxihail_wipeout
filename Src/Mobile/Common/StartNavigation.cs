@@ -48,6 +48,9 @@ namespace apcurium.MK.Booking.Mobile
                 var orderStatus = bookingService.GetOrderStatus (orderId);
 				var order = accountService.GetHistoryOrder(orderId);
                 
+				// Make sure to reload notification settings even if the user has killed the app
+				accountService.GetNotificationSettings(true, true);
+
 				if (order != null && orderStatus != null) 
                 {
                     if (isPairingNotification)
@@ -71,6 +74,9 @@ namespace apcurium.MK.Booking.Mobile
             {
                 // Log user session start
                 TinyIoCContainer.Current.Resolve<IAccountService>().LogApplicationStartUp();
+
+				// Make sure to reload notification settings even if the user has killed the app
+				TinyIoCContainer.Current.Resolve<IAccountService>().GetNotificationSettings (true, true);
 
 				ShowViewModel<HomeViewModel>(new { locateUser =  true });
             }

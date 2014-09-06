@@ -110,11 +110,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (_locateUser)
 			{
-
 				var mode = await _orderWorkflowService.GetAndObserveAddressSelectionMode ().Take (1).ToTask ();
 				if (_currentState == HomeViewModelState.Initial && mode == apcurium.MK.Booking.Mobile.Data.AddressSelectionMode.PickupSelection)
 				{
-					LocateMe.Execute();
+					LocateMe.Execute(true);
 				}					
 				_locateUser = false;
 			}
@@ -272,14 +271,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return this.GetCommand(async () =>
+				return this.GetCommand(async (bool showNearestVehicles) =>
 				{					
 					if (_accountService.CurrentAccount != null)
 					{
 						var address = await _orderWorkflowService.SetAddressToUserLocation();
 						if(address.HasValidCoordinate())
 						{
-						this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
+							if (showNearestVehicles)
+							{ 
+								try 
+								{
+									var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
+									var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, availableVehicles);	
+									this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
+								} catch (TimeoutException)
+								{
+									this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
+								}
+							} else
+							{
+								this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
+							}
 						}
 					}									
 				});

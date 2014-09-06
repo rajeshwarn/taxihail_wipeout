@@ -34,6 +34,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string FavoriteAddressesCacheKey = "Account.FavoriteAddresses";
         private const string HistoryAddressesCacheKey = "Account.HistoryAddresses";
         private const string RefDataCacheKey = "Account.ReferenceData";
+        private const string CompanyNotificationSettingsCacheKey = "Account.CompanyNotificationSettings";
+        private const string UserNotificationSettingsCacheKey = "Account.UserNotificationSettings";
+        private const string AuthenticationDataCacheKey = "AuthenticationData";
 
 		readonly IAppSettings _appSettings;
 		readonly IFacebookService _facebookService;
@@ -73,7 +76,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             UserCache.Clear (HistoryAddressesCacheKey);
             UserCache.Clear (FavoriteAddressesCacheKey);
-            UserCache.Clear ("AuthenticationData");
+            UserCache.Clear(CompanyNotificationSettingsCacheKey);
+            UserCache.Clear(UserNotificationSettingsCacheKey);
+            UserCache.Clear (AuthenticationDataCacheKey);
             UserCache.ClearAll ();
         }
 
@@ -339,7 +344,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         private static void SaveCredentials (AuthenticationData authResponse)
         {         
-			Mvx.Resolve<ICacheService>().Set ("AuthenticationData", authResponse);
+			Mvx.Resolve<ICacheService>().Set (AuthenticationDataCacheKey, authResponse);
         }
 
 		public async Task<Account> GetFacebookAccount (string facebookId)
@@ -610,10 +615,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			await UseServiceClientAsync<IAccountServiceClient>(client => client.RemoveCreditCard());
 		}
 
-        public async Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false)
+        public async Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false, bool cleanCache = false)
         {
+            var cachedSetting = companyDefaultOnly ? UserCache.Get<NotificationSettings>(CompanyNotificationSettingsCacheKey)
+                                                   : UserCache.Get<NotificationSettings>(UserNotificationSettingsCacheKey);
+
+            if (cachedSetting != null && !cleanCache)
+            {
+                return cachedSetting;
+            }
+
             var companySettings = await UseServiceClientAsync<CompanyServiceClient, NotificationSettings>(client => client.GetNotificationSettings());
-            if (companyDefaultOnly)
+			UserCache.Set(CompanyNotificationSettingsCacheKey, companySettings);
+
+			if (companyDefaultOnly)
             {
                 return companySettings;
             }
@@ -623,36 +638,42 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             // Merge company and user settings together
             // If the value is not null in the company settings, this means the setting is active and visible to the user
             // we check if the user has a value otherwise we put the company default value (or null if set as "not available" by the company)
-            return new NotificationSettings
-            {
-                Id = userSettings.Id,
-                Enabled = companySettings.Enabled && userSettings.Enabled,
-                BookingConfirmationEmail = companySettings.BookingConfirmationEmail.HasValue && userSettings.BookingConfirmationEmail.HasValue
-                    ? userSettings.BookingConfirmationEmail 
-                    : companySettings.BookingConfirmationEmail,
-                ConfirmPairingPush = companySettings.ConfirmPairingPush.HasValue && userSettings.ConfirmPairingPush.HasValue
-                    ? userSettings.ConfirmPairingPush 
-                    : companySettings.ConfirmPairingPush,
-                DriverAssignedPush = companySettings.DriverAssignedPush.HasValue && userSettings.DriverAssignedPush.HasValue
-                    ? userSettings.DriverAssignedPush 
-                    : companySettings.DriverAssignedPush,
-                NearbyTaxiPush = companySettings.NearbyTaxiPush.HasValue && userSettings.NearbyTaxiPush.HasValue
-                    ? userSettings.NearbyTaxiPush 
-                    : companySettings.NearbyTaxiPush,
-                PaymentConfirmationPush = companySettings.PaymentConfirmationPush.HasValue && userSettings.PaymentConfirmationPush.HasValue
-                    ? userSettings.PaymentConfirmationPush 
-                    : companySettings.PaymentConfirmationPush,
-                ReceiptEmail = companySettings.ReceiptEmail.HasValue && userSettings.ReceiptEmail.HasValue
-                    ? userSettings.ReceiptEmail 
-                    : companySettings.ReceiptEmail,
-                VehicleAtPickupPush = companySettings.VehicleAtPickupPush.HasValue && userSettings.VehicleAtPickupPush.HasValue
-                    ? userSettings.VehicleAtPickupPush 
-                    : companySettings.VehicleAtPickupPush
-            };
+            var mergedSettings =  new NotificationSettings
+                {
+                    Id = userSettings.Id,
+                    Enabled = companySettings.Enabled && userSettings.Enabled,
+                    BookingConfirmationEmail = companySettings.BookingConfirmationEmail.HasValue && userSettings.BookingConfirmationEmail.HasValue
+                        ? userSettings.BookingConfirmationEmail 
+                        : companySettings.BookingConfirmationEmail,
+                    ConfirmPairingPush = companySettings.ConfirmPairingPush.HasValue && userSettings.ConfirmPairingPush.HasValue
+                        ? userSettings.ConfirmPairingPush 
+                        : companySettings.ConfirmPairingPush,
+                    DriverAssignedPush = companySettings.DriverAssignedPush.HasValue && userSettings.DriverAssignedPush.HasValue
+                        ? userSettings.DriverAssignedPush 
+                        : companySettings.DriverAssignedPush,
+                    NearbyTaxiPush = companySettings.NearbyTaxiPush.HasValue && userSettings.NearbyTaxiPush.HasValue
+                        ? userSettings.NearbyTaxiPush 
+                        : companySettings.NearbyTaxiPush,
+                    PaymentConfirmationPush = companySettings.PaymentConfirmationPush.HasValue && userSettings.PaymentConfirmationPush.HasValue
+                        ? userSettings.PaymentConfirmationPush 
+                        : companySettings.PaymentConfirmationPush,
+                    ReceiptEmail = companySettings.ReceiptEmail.HasValue && userSettings.ReceiptEmail.HasValue
+                        ? userSettings.ReceiptEmail 
+                        : companySettings.ReceiptEmail,
+                    VehicleAtPickupPush = companySettings.VehicleAtPickupPush.HasValue && userSettings.VehicleAtPickupPush.HasValue
+                        ? userSettings.VehicleAtPickupPush 
+                        : companySettings.VehicleAtPickupPush
+                };
+
+            UserCache.Set(UserNotificationSettingsCacheKey, mergedSettings);
+            return mergedSettings;
         }
 
         public async Task UpdateNotificationSettings(NotificationSettings notificationSettings)
         {
+            // Update cached user settings
+            UserCache.Set(UserNotificationSettingsCacheKey, notificationSettings);
+
             var request = new NotificationSettingsRequest
             {
                 AccountId = CurrentAccount.Id,

@@ -149,7 +149,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var animation = new SlideAnimation(mainLayout, 
                 ViewModel.Panel.MenuIsOpen ? 0 : (_menuWidth),
                 ViewModel.Panel.MenuIsOpen ? (_menuWidth) : 0);
-            animation.Duration = 400;
+
+            animation.Duration = GetSlidingAnimationTime();
+
             animation.AnimationStart += (sender, e) =>
             {
                 if (ViewModel.Panel.MenuIsOpen)
@@ -172,7 +174,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             mainLayout.StartAnimation(animation);
         }
 
-		protected override void OnViewModelSet()
+        private long GetSlidingAnimationTime()
+        {
+            // Ugly fix warning: disable closing sliding annimation for Ice Cream Sandwich (API 15)
+            // since that, due to a known problem with SupportMapFragment and sliding pannel,
+            // it will sometimes render the map black
+            if (Build.VERSION.Sdk == "15"
+                && !ViewModel.Panel.MenuIsOpen
+                && ViewModel.Panel.IsClosePanelFromMenuItem)
+            {
+                ViewModel.Panel.IsClosePanelFromMenuItem = false;
+                return 0;
+            }
+            return 400;
+        }
+
+        protected override void OnViewModelSet()
 		{
 			base.OnViewModelSet ();
 			if (ViewModel != null)
