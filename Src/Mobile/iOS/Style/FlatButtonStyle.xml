@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FlatButtonStyles>
   <Styles>
-	<!--This value is important because it acts as a placeholder-->
-    <Style name="TestValue">
-	  <BackgroundNormal></BackgroundNormal>
-  	  <BackgroundSelected></BackgroundSelected>
-  	  <TextNormal></TextNormal>
-  	  <TextSelected></TextSelected>
-  	  <Border></Border>
+    <Style name="Red">
+	  <BackgroundNormal>#00000000</BackgroundNormal>
+  	  <BackgroundSelected>#212121</BackgroundSelected>
+  	  <TextNormal>#212121</TextNormal>
+  	  <TextSelected>#FFFFFF</TextSelected>
+  	  <Border>#212121</Border>
+    </Style>
+    <Style name="Green">
+	  <BackgroundNormal>#E4212D</BackgroundNormal>
+  	  <BackgroundSelected>#00000000</BackgroundSelected>
+  	  <TextNormal>#FFFFFF</TextNormal>
+  	  <TextSelected>#E4212D</TextSelected>
+  	  <Border>#E4212D</Border>
     </Style>
   </Styles>
 </FlatButtonStyles>

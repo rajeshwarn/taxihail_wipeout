@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_pressed="true"
-        android:color="@color/button_action_pressed_text_color" />    
+        android:color="#FFFFFF" />    
     <item
         android:state_pressed="false"
-        android:color="@color/button_red_border_color" />
+        android:color="#212121" />
 </selector>
