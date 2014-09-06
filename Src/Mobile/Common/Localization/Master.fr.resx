@@ -1574,7 +1574,7 @@
   	<value>minute</value>
   </data>
   <data name="Notification_ConfirmPairingPush" xml:space="preserve">
-    <value>Confirmation de pairing (Push)</value>
+    <value>Confirmation de pairing</value>
   </data>
   <data name="NotNow" xml:space="preserve">
     <value>Plus tard</value>
@@ -1586,7 +1586,7 @@
   	<value>minutes</value>
   </data>
   <data name="Notification_DriverAssignedPush" xml:space="preserve">
-    <value>Chauffeur  assigné (Push)</value>
+    <value>Chauffeur  assigné</value>
   </data>
   <data name="RateLastRide" xml:space="preserve">
     <value>Évaluer</value>
@@ -1601,13 +1601,13 @@
   	<value>Il n'y a pas de véhicule disponible</value>
   </data>
   <data name="Notification_NearbyTaxiPush" xml:space="preserve">
-    <value>Taxi à proximité (Push)</value>
+    <value>Taxi à proximité</value>
   </data>
   <data name="RateLastRideMessage" xml:space="preserve">
     <value>Nous aimerions recevoir vos commentaires sur votre dernière course, voulez-vous l'évaluer?</value>
   </data>
   <data name="Notification_PaymentConfirmationPush" xml:space="preserve">
-    <value>Confirmation de paiement (Push)</value>
+    <value>Confirmation de paiement</value>
   </data>
   <data name="RateLastRideTitle" xml:space="preserve">
     <value>Évaluer la dernière course?</value>
@@ -1616,7 +1616,7 @@
     <value>Reçu (Email)</value>
   </data>
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
-    <value>Taxi au point de ramassage (Push)</value>
+    <value>Taxi au point de ramassage</value>
   </data>
   <data name="Notification_Off" xml:space="preserve">
     <value>Non</value>
