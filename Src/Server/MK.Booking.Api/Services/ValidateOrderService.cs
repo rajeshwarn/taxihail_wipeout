@@ -79,6 +79,8 @@ namespace apcurium.MK.Booking.Api.Services
                     }
                 }
 
+                Log.Debug(string.Format("Has Error : {0}, Message: {1}", hasError, message));
+
                 return new OrderValidationResult
                 {
                     HasError = hasError,

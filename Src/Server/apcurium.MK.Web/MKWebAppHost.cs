@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Validation;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.IoC;
 using Funq;
 using Infrastructure.Messaging;
@@ -42,6 +43,11 @@ namespace apcurium.MK.Web
 
         private DateTime? NullableDateTimeRawDesirializtion(string s)
         {
+            if (s == null)
+            {
+                return null;
+            }
+
             try
             {
                 if (s.IndexOf('.') > 0)
