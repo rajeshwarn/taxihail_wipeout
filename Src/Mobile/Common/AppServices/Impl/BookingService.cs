@@ -40,9 +40,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_accountService = accountService;
 		}
 
-		public Task<OrderValidationResult> ValidateOrder (CreateOrder order, bool forError = false)
+		public Task<OrderValidationResult> ValidateOrder (CreateOrder order)
         {
-			return Mvx.Resolve<OrderServiceClient>().ValidateOrder(order, forError);
+			return Mvx.Resolve<OrderServiceClient>().ValidateOrder(order);
         }
 
         public bool IsPaired(Guid orderId)
@@ -193,8 +193,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<DirectionInfo> GetFareEstimate(CreateOrder order)
         {
 			var tarifMode = _appSettings.Data.TarifMode;
-			var validationResult = await ValidateOrder (order, true);
-
+			var validationResult = await Mvx.Resolve<OrderServiceClient>().ValidateOrder (order,null,  true);
             
 			if (order.PickupAddress.HasValidCoordinate() 
 				&& order.DropOffAddress.HasValidCoordinate())

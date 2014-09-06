@@ -403,6 +403,25 @@ namespace apcurium.MK.Booking.IBS.Impl
             return true;
         }
 
+        public bool ValidateZone(string zone, string enableValidationKey, string excludedZoneKey)
+        {
+            var isValidationEnabled = bool.Parse(ConfigManager.GetSetting(enableValidationKey));
+            if (isValidationEnabled)
+            {
+                if (zone.ToSafeString().Trim().IsNullOrEmpty())
+                {
+                    return false;
+                }
+
+                var excludedZones = ConfigManager.GetSetting(excludedZoneKey).Split(',');
+                if (excludedZones.Any() && excludedZones.Any(z => z.SoftEqual(zone)))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private bool ValidateZone(TWEBAddress twebAddress, int? providerId, string enableValidationKey,
             string excludedZoneKey)
         {

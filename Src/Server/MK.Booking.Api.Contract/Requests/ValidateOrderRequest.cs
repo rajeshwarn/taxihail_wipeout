@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
     [Route("/account/orders/validate", "POST")]
-    [Route("/account/orders/validate/{TestZone}", "POST")]
+    [Route("/account/orders/validate/{TestZone}/{ForError}", "POST")]
     public class ValidateOrderRequest : BaseDto
     {
         public ValidateOrderRequest()
@@ -25,6 +25,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         //For testing purpose, when the TestZone is set, it will be used instead of calling IBS
         public string TestZone { get; set; }
+
+        public bool ForError { get; set; }
 
         public Guid Id { get; set; }
 
