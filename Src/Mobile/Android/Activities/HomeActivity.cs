@@ -195,6 +195,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			if (ViewModel != null)
 			{
 				ViewModel.OnViewLoaded();
+                ViewModel.SubscribeLifetimeChangedIfNecessary ();
 			}
 
             SetContentView(Resource.Layout.View_Home);
@@ -268,18 +269,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (ViewModel != null)
             {
                 ViewModel.Start();
-            }
-            if (_locateUserOnStart)
-            {
-                ViewModel.AutomaticLocateMeAtPickup.Execute(null);
-                _locateUserOnStart = false;
+                if (_locateUserOnStart)
+                {
+                    ViewModel.AutomaticLocateMeAtPickup.Execute(null);
+                    _locateUserOnStart = false;
+                }
             }
         }
 
         protected override void OnStop()
         {
             base.OnStop();
-			if (ViewModel != null) {
+			if (ViewModel != null) 
+            {
 				ViewModel.OnViewStopped ();
 			}
         }
@@ -291,6 +293,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (ViewModel != null)
             {
                 ViewModel.OnViewUnloaded();
+                ViewModel.UnsubscribeLifetimeChangedIfNecessary ();
             }
             _mapFragment.Dispose();
             //_touchMap.OnDestroy();

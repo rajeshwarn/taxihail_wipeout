@@ -45,11 +45,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
             NavigationController.NavigationBar.BarStyle = UIBarStyle.Default;
             NavigationController.NavigationBar.Hidden = true;
+
+            ViewModel.SubscribeLifetimeChangedIfNecessary ();
         }
 
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
+
+            ViewModel.UnsubscribeLifetimeChangedIfNecessary ();
         }
 
         public override void ViewDidLoad()
@@ -120,12 +124,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-	
         void ChangeState(HomeViewModelPresentationHint hint)
         {
-
-
-
             if (hint.State == HomeViewModelState.PickDate)
             {
                 // Order Options: Visible

@@ -67,8 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public override void OnViewLoaded ()
 		{
 			base.OnViewLoaded ();
-            _mvxLifetime.LifetimeChanged += OnApplicationLifetimeChanged;
-
+					            
 			Map = AddChild<MapViewModel>();
 			OrderOptions = AddChild<OrderOptionsViewModel>();
 			OrderReview = AddChild<OrderReviewViewModel>();
@@ -83,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public async override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
-			 
+
 			_locationService.Start();
 			CheckTermsAsync();
 			CheckActiveOrderAsync ();
@@ -120,9 +119,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				this.ChangePresentation(_defaultHintZoomLevel);
 				_defaultHintZoomLevel = null;
 			}
-			_vehicleService.Start();
-		}
 
+			_vehicleService.Start();
+
+
+		}
 
 		public async void CheckActiveOrderAsync()
 		{
@@ -189,12 +190,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_locationService.Stop();
 			_vehicleService.Stop();
 		}
-
-	    public override void OnViewUnloaded()
-	    {
-	        base.OnViewUnloaded();
-            _mvxLifetime.LifetimeChanged -= OnApplicationLifetimeChanged;
-	    }
 
 	    public PanelMenuViewModel Panel { get; set; }
 
@@ -360,6 +355,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 _vehicleService.Stop ();
             }
 
+		}
+
+		private bool _subscribedToLifetimeChanged;
+
+		public void SubscribeLifetimeChangedIfNecessary()
+		{
+			if (!_subscribedToLifetimeChanged)
+			{
+				_mvxLifetime.LifetimeChanged += OnApplicationLifetimeChanged;
+				_subscribedToLifetimeChanged = true;
+			}
+		}
+
+		public void UnsubscribeLifetimeChangedIfNecessary()
+		{
+			if (_subscribedToLifetimeChanged)
+			{
+				_mvxLifetime.LifetimeChanged -= OnApplicationLifetimeChanged;
+				_subscribedToLifetimeChanged = false;
+			}
 		}
 
         private void OnApplicationLifetimeChanged(object sender, MvxLifetimeEventArgs args)
