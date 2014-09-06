@@ -13,6 +13,7 @@ using System.Reactive.Linq;
 using System;
 using System.Threading;
 using System.Reactive.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -110,11 +111,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (_locateUser)
 			{
-				var mode = await _orderWorkflowService.GetAndObserveAddressSelectionMode ().Take (1).ToTask ();
-				if (_currentState == HomeViewModelState.Initial && mode == apcurium.MK.Booking.Mobile.Data.AddressSelectionMode.PickupSelection)
-				{
-					LocateMe.Execute(true);
-				}					
+				AutomaticLocateMeAtPickup.Execute(null);				
 				_locateUser = false;
 			}
 
@@ -267,32 +264,66 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		public ICommand AutomaticLocateMeAtPickup
+		{
+			get
+			{
+				return this.GetCommand(async () =>
+				{					
+					if (_accountService.CurrentAccount != null)
+					{
+						var addressSelectionMode = await _orderWorkflowService.GetAndObserveAddressSelectionMode ().Take (1).ToTask ();
+						if (_currentState == HomeViewModelState.Initial 
+							&& addressSelectionMode == AddressSelectionMode.PickupSelection)
+						{
+							var address = await _orderWorkflowService.SetAddressToUserLocation();
+							if(address.HasValidCoordinate())
+							{
+								try 
+								{
+									// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
+									// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
+									this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
+
+									var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
+									var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, availableVehicles);	
+									this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
+								} 
+								catch (TimeoutException)
+								{ 
+									Console.WriteLine("LocateMe: Timeout occured while waiting for available vehicles");
+								}
+								finally
+								{
+									if (Settings.DestinationIsRequired                     // only with this setting that we want to automatically toggle after having positionned the user
+										&& _currentState == HomeViewModelState.Initial)    // we are on the initial mode
+									{
+										_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode ();
+									}
+								}
+							}
+						}
+					}									
+				});
+			}
+		}
+
+		/**
+		 * Should ONLY be called by the "Locate me" button
+		 * Use AutomaticLocateMeAtPickup if it's an automatic trigger after app event (appactivated, etc.)
+		 **/
 		public ICommand LocateMe
 		{
 			get
 			{
-				return this.GetCommand(async (bool showNearestVehicles) =>
+				return this.GetCommand(async () =>
 				{					
 					if (_accountService.CurrentAccount != null)
 					{
 						var address = await _orderWorkflowService.SetAddressToUserLocation();
 						if(address.HasValidCoordinate())
 						{
-							if (showNearestVehicles)
-							{ 
-								try 
-								{
-									var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
-									var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, availableVehicles);	
-									this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
-								} catch (TimeoutException)
-								{
-									this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
-								}
-							} else
-							{
-								this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
-							}
+							this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
 						}
 					}									
 				});

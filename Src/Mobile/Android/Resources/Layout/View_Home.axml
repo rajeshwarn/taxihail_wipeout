@@ -85,7 +85,7 @@
                 <!-- Locate Me button -->
                     <LinearLayout
                         android:clickable="true"
-                        local:MvxBind="Click LocateMe, CommandParameter=false"
+                        local:MvxBind="Click LocateMe"
                         android:background="@drawable/drop_shadow_selector"
                         android:layout_width="50dp"
                         android:layout_height="50dp"

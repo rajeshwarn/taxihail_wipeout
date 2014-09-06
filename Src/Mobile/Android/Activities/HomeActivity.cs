@@ -271,7 +271,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             if (_locateUserOnStart)
             {
-                ViewModel.LocateMe.Execute(null);
+                ViewModel.AutomaticLocateMeAtPickup.Execute(null);
                 _locateUserOnStart = false;
             }
         }

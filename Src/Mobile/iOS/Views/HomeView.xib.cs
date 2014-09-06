@@ -21,9 +21,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public HomeView() : base("HomeView", null)
         {
 			this.Services().MessengerHub.Subscribe<AppActivated>(m => 
-				{
-					ViewModel.LocateMe.Execute(null);
-				});
+			{
+                ViewModel.AutomaticLocateMeAtPickup.Execute(null);
+			});
         }
 
 		protected override void OnActivated (NSNotification notification)
@@ -80,8 +80,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnLocateMe)
                 .For(v => v.Command)
                 .To(vm => vm.LocateMe);
-
-			btnLocateMe.CommandParameter = false;
 
             set.Bind(mapView)
                 .For(v => v.DataContext)
