@@ -458,17 +458,26 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		private async Task CalculateEstimatedFare()
 		{
-			var pickupAddress = await _pickupAddressSubject.Take(1).ToTask();
-			var destinationAddress = await _destinationAddressSubject.Take(1).ToTask();
-			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
-		    var bookingSettings = await _bookingSettingsSubject.Take(1).ToTask();
+			var order = await GetOrderForEstimate ();
 
-            var direction = await _bookingService.GetFareEstimate(pickupAddress, destinationAddress, bookingSettings.VehicleTypeId, pickupDate);
+			var direction = await _bookingService.GetFareEstimate(order);
 			var estimatedFareString = _bookingService.GetFareEstimateDisplay(direction);
 
 			_estimatedFareDetailSubject.OnNext (direction);
 			_estimatedFareDisplaySubject.OnNext(estimatedFareString);
 		}
+
+		private async Task<CreateOrder> GetOrderForEstimate()
+		{
+			var order = new CreateOrder();
+			order.Id = Guid.NewGuid();
+			order.PickupDate = await _pickupDateSubject.Take(1).ToTask();
+			order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
+			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
+			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
+			return order;
+		}
+
 
 		public async Task PrepareForNewOrder()
 		{
