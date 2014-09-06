@@ -56,7 +56,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
 			IsCancelButtonVisible = true;			
 			_waitingToNavigateAfterTimeOut = false;
-			
 		}
 	
 		public override void OnViewLoaded ()
@@ -78,7 +77,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.ObserveOn(SynchronizationContext.Current)
 				.Subscribe (_ => RefreshStatus())
 				.DisposeWith (Subscriptions);
-
 		}
 		
 		protected readonly CompositeDisposable Subscriptions = new CompositeDisposable ();
@@ -140,9 +138,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
         public bool IsCallTaxiVisible
         {
-            get {
-				var showCallDriver = Settings.ShowCallDriver;
-                return showCallDriver && IsDriverInfoAvailable && OrderStatusDetail.DriverInfos.MobilePhone.HasValue (); }
+            get 
+			{
+				return Settings.ShowCallDriver 
+					&& IsDriverInfoAvailable 
+					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue (); 
+			}
         }
 
         public bool IsDriverInfoAvailable
@@ -222,17 +223,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public ICommand CallTaxi
         {
-            get { 
+            get 
+			{ 
 				return this.GetCommand(() =>
                 {
                     if (!string.IsNullOrEmpty(OrderStatusDetail.DriverInfos.MobilePhone))
                     {
-                        this.Services().Message.ShowMessage(string.Empty, 
-						                            OrderStatusDetail.DriverInfos.MobilePhone,
-                                                    this.Services().Localize["CallButton"],
-													() => _phoneService.Call(OrderStatusDetail.DriverInfos.MobilePhone),
-                                                    this.Services().Localize["Cancel"], 
-						                            () => {});   
+						_phoneService.Call(OrderStatusDetail.DriverInfos.MobilePhone);
                     }
                     else
                     {
@@ -243,7 +240,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 		#endregion
-
 
         private bool HasSeenReminderPrompt( Guid orderId )
         {
