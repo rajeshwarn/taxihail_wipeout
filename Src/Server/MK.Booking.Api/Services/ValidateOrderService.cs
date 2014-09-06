@@ -67,9 +67,9 @@ namespace apcurium.MK.Booking.Api.Services
 
                 if(!hasError)
                 {
-                    var invalidPickUpZone = _bookingWebServiceClient.ValidateZone(pickupZone, "IBS.ValidatePickupZone",
+                    var invalidPickUpZone = !_bookingWebServiceClient.ValidateZone(pickupZone, "IBS.ValidatePickupZone",
                         "IBS.PickupZoneToExclude");
-                    var invalidDropoffZone = _bookingWebServiceClient.ValidateZone(dropoffZone, "IBS.ValidateDestinationZone",
+                    var invalidDropoffZone = !_bookingWebServiceClient.ValidateZone(dropoffZone, "IBS.ValidateDestinationZone",
                         "IBS.DestinationZoneToExclude");
 
                     hasError = invalidPickUpZone || invalidDropoffZone;
