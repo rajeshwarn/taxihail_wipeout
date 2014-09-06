@@ -285,6 +285,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 									// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
 									this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
 
+									// this is part of a bigger change coming for DestinationIsRequired handling (see branch TestDestination)
+									if (Settings.DestinationIsRequired                     // only with this setting that we want to automatically toggle after having positionned the user
+										&& _currentState == HomeViewModelState.Initial)    // we are on the initial mode
+									{
+										_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode ();
+									}
+
 									var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
 									var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, availableVehicles);	
 									this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
@@ -292,14 +299,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								catch (TimeoutException)
 								{ 
 									Console.WriteLine("LocateMe: Timeout occured while waiting for available vehicles");
-								}
-								finally
-								{
-									if (Settings.DestinationIsRequired                     // only with this setting that we want to automatically toggle after having positionned the user
-										&& _currentState == HomeViewModelState.Initial)    // we are on the initial mode
-									{
-										_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode ();
-									}
 								}
 							}
 						}
