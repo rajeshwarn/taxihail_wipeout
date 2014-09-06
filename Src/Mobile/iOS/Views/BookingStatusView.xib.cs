@@ -34,7 +34,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             NavigationController.NavigationBar.Hidden = false;
             NavigationItem.Title = Localize.GetValue("View_BookingStatus");
-            NavigationItem.HidesBackButton = false;
+            NavigationItem.HidesBackButton = true;
+			NavigationItem.SetHidesBackButton (true, true);
 
             ChangeThemeOfBarStyle();
         }
