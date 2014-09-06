@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             }
             else
             {
-				var req = string.Format("/account/orders/validate/" + forError + "/");
+				var req = string.Format("/account/orders/validate/" + forError);
                 return Client.PostAsync<OrderValidationResult>(req, order);
             }
         }

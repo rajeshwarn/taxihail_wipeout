@@ -193,7 +193,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<DirectionInfo> GetFareEstimate(CreateOrder order)
         {
 			var tarifMode = _appSettings.Data.TarifMode;
-			var validationResult = await Mvx.Resolve<OrderServiceClient>().ValidateOrder (order,null,  true);
+			var validationResult = await UseServiceClientAsync<OrderServiceClient, OrderValidationResult>(service => service.ValidateOrder(order, null, true));
             
 			if (order.PickupAddress.HasValidCoordinate() 
 				&& order.DropOffAddress.HasValidCoordinate())
