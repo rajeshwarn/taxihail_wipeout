@@ -207,6 +207,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					directionInfo = await _geolocService.GetDirectionInfo(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude, vehicleTypeId, pickupDate);                    
                 }            
 
+				if (directionInfo != null 
+					&& directionInfo.Price < _appSettings.Data.MinimumFare)
+				{
+					directionInfo.Price = _appSettings.Data.MinimumFare;
+				}
+
 				return directionInfo ?? new DirectionInfo();
             }
 
