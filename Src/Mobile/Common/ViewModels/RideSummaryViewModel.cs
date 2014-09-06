@@ -260,8 +260,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				&& Settings.RatingEnabled 
 				&& Settings.RatingRequired)
 			{
-				this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"],
-													this.Services().Localize["BookRatingErrorMessage"]);
 				return false;
 			}
 			return true;
