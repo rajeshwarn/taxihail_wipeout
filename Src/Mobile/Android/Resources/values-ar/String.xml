@@ -489,12 +489,12 @@
   <string name="PanelMenuViewNotificationsText">Notifications</string>
   <string name="View_NotificationSettings">Notifications</string>
   <string name="Notification_BookingConfirmationEmail">Booking Confirmation (Email)</string>
-  <string name="Notification_ConfirmPairingPush">Confirm Pairing (Push)</string>
+  <string name="Notification_ConfirmPairingPush">Confirm Pairing</string>
   <string name="Notification_DriverAssignedEmail">Driver Assigned (Email)</string>
-  <string name="Notification_DriverAssignedPush">Driver Assigned (Push)</string>
+  <string name="Notification_DriverAssignedPush">Driver Assigned</string>
   <string name="Notification_Enabled">Allow Notifications</string>
-  <string name="Notification_NearbyTaxiPush">Nearby Taxi (Push)</string>
-  <string name="Notification_PaymentConfirmationPush">Payment Confirmation (Push)</string>
+  <string name="Notification_NearbyTaxiPush">Nearby Taxi</string>
+  <string name="Notification_PaymentConfirmationPush">Payment Confirmation</string>
   <string name="Notification_ReceiptEmail">Receipt (Email)</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000">The charge account information is invalid. Please try again.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall">The charge account information is invalid. Please try again.</string>
@@ -507,7 +507,7 @@
   <string name="RateLastRideMessage">We would appreciate your feedback on your last ride, would you like to rate it?</string>
   <string name="RateLastRideTitle">Rate last ride?</string>
   <string name="StatusEta">{0} and {1} {2} away</string>
-  <string name="Notification_VehicleAtPickupPush">Vehicle at Pickup (Push)</string>
+  <string name="Notification_VehicleAtPickupPush">Vehicle at Pickup</string>
   <string name="Notification_Off">Off</string>
   <string name="Notification_On">On</string>
   <string name="PaymentInCar">Payment In Car</string>

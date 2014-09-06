@@ -1625,7 +1625,7 @@
     <value>Rate</value>
   </data>
   <data name="Notification_ConfirmPairingPush" xml:space="preserve">
-    <value>Confirm Pairing (Push)</value>
+    <value>Confirm Pairing</value>
   </data>
   <data name="RateLastRideMessage" xml:space="preserve">
     <value>We would appreciate your feedback on your last ride, would you like to rate it?</value>
@@ -1637,22 +1637,22 @@
     <value>Rate last ride?</value>
   </data>
   <data name="Notification_DriverAssignedPush" xml:space="preserve">
-    <value>Driver Assigned (Push)</value>
+    <value>Driver Assigned</value>
   </data>
   <data name="Notification_Enabled" xml:space="preserve">
     <value>Notifications</value>
   </data>
   <data name="Notification_NearbyTaxiPush" xml:space="preserve">
-    <value>Nearby Taxi (Push)</value>
+    <value>Nearby Taxi</value>
   </data>
   <data name="Notification_PaymentConfirmationPush" xml:space="preserve">
-    <value>Payment Confirmation (Push)</value>
+    <value>Payment Confirmation</value>
   </data>
   <data name="Notification_ReceiptEmail" xml:space="preserve">
     <value>Receipt (Email)</value>
   </data>
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
-    <value>Vehicle at Pickup (Push)</value>
+    <value>Vehicle at Pickup</value>
   </data>
   <data name="Notification_Off" xml:space="preserve">
     <value>Off</value>

@@ -37,6 +37,8 @@ namespace MK.Common.Configuration
 			ZoomOnNearbyVehicles = false;
 			ZoomOnNearbyVehiclesCount = 6;
 			ZoomOnNearbyVehiclesRadius = 2400;
+
+            MinimumFare = 0;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -236,7 +238,6 @@ namespace MK.Common.Configuration
         [Display(Name = "Company Settings", Description = "List of settings that can be modified by the taxi company")]
         public string CompanySettings { get; private set; }
 					
-
 		[Display(Name = "Lower Left Latitude", Description="Lower Left Latitude limit to be used when searching for an address")]
 		public double? LowerLeftLatitude { get; private set; }
 		[Display(Name = "Lower Left Longitude", Description="Lower Left Longitude limit to be used when searching for an address")]
@@ -249,12 +250,13 @@ namespace MK.Common.Configuration
 
 		[Display(Name = "Zoom on nearby vehicles", Description="Enable zooming on nearby vehicles")]
 		public bool ZoomOnNearbyVehicles { get; private set; }
-
 		[Display(Name = "Zoom on nearby vehicles radius", Description="Inclusion radius in meters when zooming on nearby vehicles")]
 		public int ZoomOnNearbyVehiclesRadius { get; private set; }
-
 		[Display(Name = "Zoom on nearby vehicles count", Description="Maximum of included vehicles when zooming on nearby vehicles")]
 		public int ZoomOnNearbyVehiclesCount { get; private set; }
+
+        [Display(Name = "Minimum fare", Description="Determines the minimum price estimate")]
+        public int MinimumFare { get; private set; }
     }
 }
 
