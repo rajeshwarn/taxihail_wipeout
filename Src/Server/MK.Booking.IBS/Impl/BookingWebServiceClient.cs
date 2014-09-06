@@ -48,6 +48,15 @@ namespace apcurium.MK.Booking.IBS.Impl
                         .GetAvailableVehicles_4(UserNameApp, PasswordApp, longitude, latitude, radius, count, false, new []{ vehicle })
                         .Select(Mapper.Map<IbsVehiclePosition>)
                         .ToArray();
+
+                    if (result == null
+                        || result.Length == 0)
+                    {
+                        //call old method, patch aexid dployment problem
+                        result = service.GetAvailableVehicles(UserNameApp, PasswordApp, longitude, latitude, radius, count)
+                                    .Select(Mapper.Map<IbsVehiclePosition>)
+                                    .ToArray();
+                    }
                 });
             }
 
