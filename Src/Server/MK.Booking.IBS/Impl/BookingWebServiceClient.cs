@@ -392,19 +392,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 return false;
             }
-
-            // ReSharper disable CompareOfFloatsByEqualityOperator
-            if ((order.DropoffAddress != null) && (order.DropoffAddress.Latitude != 0) &&
-                (order.DropoffAddress.Latitude != 0))
-            {
-                // ReSharper restore CompareOfFloatsByEqualityOperator
-                if (
-                    !ValidateZone(order.DropoffAddress, order.ServiceProviderID, "IBS.ValidateDestinationZone",
-                        "IBS.DestinationZoneToExclude"))
-                {
-                    return false;
-                }
-            }
+            
 
             return true;
         }
