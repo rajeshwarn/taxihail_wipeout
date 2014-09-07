@@ -277,22 +277,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
         }
 
-        protected override void OnStop()
-        {
-            base.OnStop();
-			if (ViewModel != null) 
-            {
-				ViewModel.OnViewStopped ();
-			}
-        }
-
         protected override void OnDestroy()
         {
             base.OnDestroy();
 
             if (ViewModel != null)
             {
-                ViewModel.OnViewUnloaded();
                 ViewModel.UnsubscribeLifetimeChangedIfNecessary ();
             }
             _mapFragment.Dispose();
