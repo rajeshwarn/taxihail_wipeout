@@ -302,7 +302,7 @@ namespace apcurium.MK.Booking.ConfigTool
                 _configs.Add(new ConfigFile(this)
                 {
                     Source = file + ".json",
-                    Destination = @"Mobile\Common\TutorialContent\"+ file + ".png" 
+                    Destination = @"Mobile\Common\TutorialContent\"+ file + ".json" 
                 });
             }
         }
