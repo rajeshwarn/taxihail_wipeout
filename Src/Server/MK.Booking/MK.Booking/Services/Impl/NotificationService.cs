@@ -192,9 +192,9 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 var order = context.Find<OrderDetail>(orderId);
 
-                var alert = success 
-                    ? string.Format(_resources.Get("PushNotification_OrderPairingSuccessful"), order.IBSOrderId, last4Digits, autoTipPercentage)
-                    : string.Format(_resources.Get("PushNotification_OrderPairingFailed"), order.IBSOrderId);
+                var alert = success
+                    ? string.Format(_resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode), order.IBSOrderId, last4Digits, autoTipPercentage)
+                    : string.Format(_resources.Get("PushNotification_OrderPairingFailed", order.ClientLanguageCode), order.IBSOrderId);
 
                 var data = new Dictionary<string, object> { { "orderId", orderId } };
 

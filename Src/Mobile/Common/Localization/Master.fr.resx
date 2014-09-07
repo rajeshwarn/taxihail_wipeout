@@ -156,7 +156,9 @@
   <data name="apcuriumUrl" xml:space="preserve">
     <value>http://www.apcurium.com/</value>
   </data>
-  <data name="ApplicationName" xml:space="preserve">CINQ-S</data>
+  <data name="ApplicationName" xml:space="preserve">
+    <value>CINQ-S</value>
+  </data>
   <data name="AppNeedUpdateMessage" xml:space="preserve">
     <value>Une nouvelle version de l'application est disponible, merci de la télécharger pour continuer</value>
   </data>
@@ -605,7 +607,7 @@
     <value>Mise à jour requise</value>
   </data>
   <data name="HistoryDetailAptRingCodeLabel" xml:space="preserve">
-    <value>Appartement / digicode:</value>
+    <value>Apt / digicode:</value>
   </data>
   <data name="HistoryDetailAuthorizationLabel" xml:space="preserve">
     <value>Autorisation:</value>
@@ -629,7 +631,7 @@
     <value>Départ:</value>
   </data>
   <data name="HistoryDetailRequestedLabel" xml:space="preserve">
-    <value>Requis:</value>
+    <value>Commandé le:</value>
   </data>
   <data name="HistoryDetailStatusLabel" xml:space="preserve">
     <value>Statut:</value>
@@ -809,7 +811,7 @@
     <value>Merci de saisir un montant</value>
   </data>
   <data name="NoAptText" xml:space="preserve">
-    <value>Numéro d'appartement</value>
+    <value>--</value>
   </data>
   <data name="NoButton" xml:space="preserve">
     <value>Non</value>
@@ -836,7 +838,7 @@
     <value>La commande n'est pas encore finalisée</value>
   </data>
   <data name="NoPhoneNumberMessage" xml:space="preserve">
-    <value>Le numéro de téléphone ne semble pas correcpondre au chauffeur</value>
+    <value>Le numéro de téléphone est indisponible</value>
   </data>
   <data name="NoPhoneNumberTitle" xml:space="preserve">
     <value>Le numéro de téléphone ne semble pas valide</value>
@@ -845,7 +847,7 @@
     <value>Pas de préférence</value>
   </data>
   <data name="NoRingCodeText" xml:space="preserve">
-    <value>Pas de code</value>
+    <value>--</value>
   </data>
   <data name="NotAvailable" xml:space="preserve">
     <value>Information non disponible</value>
@@ -1016,7 +1018,7 @@
     <value>S'enregistrer</value>
   </data>
   <data name="ReminderDetails" xml:space="preserve">
-    <value>Rappel: votre Audi arrivera au {0} à {1} le {2}</value>
+    <value>Rappel: votre taxi arrivera au {0} à {1} le {2}</value>
   </data>
   <data name="ReminderTitle" xml:space="preserve">
     <value>{0} Enregistré</value>
@@ -1559,7 +1561,7 @@
     <value>Notifications</value>
   </data>
   <data name="Eta" xml:space="preserve">
-  	<value>Le véhicule le plus proche est à {1} {2}</value>
+    <value>Le véhicule le plus proche est à {1} {2} et {0}</value>
   </data>
   <data name="PanelMenuViewNotificationsText" xml:space="preserve">
     <value>Notifications</value>
@@ -1571,7 +1573,7 @@
     <value>Confirmation Commande (Email)</value>
   </data>
   <data name="EtaDurationUnit" xml:space="preserve">
-  	<value>minute</value>
+    <value>minute</value>
   </data>
   <data name="Notification_ConfirmPairingPush" xml:space="preserve">
     <value>Confirmation de pairing</value>
@@ -1583,7 +1585,7 @@
     <value>Chauffeur assigné (Email)</value>
   </data>
   <data name="EtaDurationUnitPlural" xml:space="preserve">
-  	<value>minutes</value>
+    <value>minutes</value>
   </data>
   <data name="Notification_DriverAssignedPush" xml:space="preserve">
     <value>Chauffeur  assigné</value>
@@ -1595,10 +1597,10 @@
     <value>Notifications</value>
   </data>
   <data name="StatusEta" xml:space="preserve">
-  	<value>Votre véhicule arrive dans {1} {2}</value>
+    <value>Votre véhicule arrive dans {1} {2}</value>
   </data>
   <data name="EtaNotAvailable" xml:space="preserve">
-  	<value>Il n'y a pas de véhicule disponible</value>
+    <value>Il n'y a pas de véhicule disponible</value>
   </data>
   <data name="Notification_NearbyTaxiPush" xml:space="preserve">
     <value>Taxi à proximité</value>
@@ -1635,5 +1637,41 @@
   </data>
   <data name="EstimateFareCalculating" xml:space="preserve">
     <value>Calcul du prix de votre course ...</value>
+  </data>
+  <data name="WarningPushServiceAction" xml:space="preserve">
+    <value>Merci</value>
+  </data>
+  <data name="WarningPushServiceMessage" xml:space="preserve">
+    <value>Nous avons remarqué que vous n'avez pas les notifications activées. En les activant, vous obtiendrez alors des mises à jour sur l'état de votre réservation, sans avoir à regarder l'application !</value>
+  </data>
+  <data name="WarningPushServiceTitle" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="AccountConfirmation_ErrorTitle" xml:space="preserve">
+    <value>Impossible de confirmer votre compte.</value>
+  </data>
+  <data name="View_AccountConfirmationTitle" xml:space="preserve">
+    <value>Confirmation de compte</value>
+  </data>
+  <data name="View_AccountConfirmation_Button" xml:space="preserve">
+    <value>Confimer</value>
+  </data>
+  <data name="View_AccountConfirmation_Label_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="View_AccountConfirmation_Label_Instructions" xml:space="preserve">
+    <value>Un SMS contenant votre code a été envoyé à votre téléphone.</value>
+  </data>
+  <data name="AccountPaymentQuestionsPlaceHolder" xml:space="preserve">
+    <value>{0} caractères maximum</value>
+  </data>
+  <data name="AccountPaymentQuestionsRequired" xml:space="preserve">
+    <value>(requis)</value>
+  </data>
+  <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
+    <value>Le code de confirmation est incorrect.</value>
+  </data>
+  <data name="TAXI" xml:space="preserve">
+    <value>TAXI</value>
   </data>
 </root>

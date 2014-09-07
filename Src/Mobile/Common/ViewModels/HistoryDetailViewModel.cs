@@ -94,6 +94,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
 				return (Status != null) 
+						&& Status.Status == OrderStatus.Completed
 						&& Status.FareAvailable 
 						&& Settings.SendReceiptAvailable;
             }
@@ -117,16 +118,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return _isCompleted; }
 			set 
 			{ 
-				if (value != _isCompleted) 
+				if (value != _isCompleted)
 				{
 					_isCompleted = value;
 					RaisePropertyChanged ();
-					RaisePropertyChanged (()=>RebookIsAvailable);
+					RaisePropertyChanged (() => SendReceiptAvailable);
+					RaisePropertyChanged (() => RebookIsAvailable);
 				}
 			}
 		}
 
-		public bool RebookIsAvailable 
+		public bool RebookIsAvailable
 		{
 			get 
 			{
@@ -275,23 +277,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IsCompleted = _bookingService.IsStatusCompleted(Status.IBSStatusId);
 			IsDone = _bookingService.IsStatusDone(Status.IBSStatusId);
             
-			CanCancel = !IsCompleted;
+			CanCancel = _bookingService.IsOrderCancellable (Status.IBSStatusId);
 		}
 
 		public ICommand NavigateToRatingPage
         {
             get
             {
-                return this.GetCommand(() =>
-	                           {
-	                                var canRate = IsDone && !HasRated;
-									ShowSubViewModel<BookRatingViewModel,OrderRated>(new 
-	            	                    {														
-											orderId = OrderId, 
-											canRate
-										}.ToStringDictionary(),
-									RefreshOrderStatus);
-	                           });
+            	return this.GetCommand(() =>
+               	{
+                    var canRate = IsDone && !HasRated;
+					ShowSubViewModel<BookRatingViewModel,OrderRated>(new 
+                    {														
+						orderId = OrderId, 
+						canRate
+					}.ToStringDictionary(),
+					RefreshOrderStatus);
+               	});
             }
         }
 

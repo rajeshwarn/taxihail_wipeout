@@ -307,7 +307,7 @@
     <value>En attente d'affectation</value>
   </data>
   <data name="PaymentConfirmationToDriver1" xml:space="preserve">
-    <value>Le passager à payé un montant de  {0:c}</value>
+    <value>Le passager a payé un montant de {0:c}</value>
   </data>
   <data name="PaymentConfirmationToDriver2" xml:space="preserve">
     <value>Numéro d'authorisation {0}</value>
@@ -331,7 +331,7 @@
     <value>Votre vehicule sera bientôt au lieu de départ</value>
   </data>
   <data name="PushNotification_PaymentReceived" xml:space="preserve">
-    <value>Votre carte de crédit a été chargé d'un montant de {0}. Ce montant inclut le prix de la course ainsi que le pourboire.</value>
+    <value>Votre carte de crédit a été chargé d'un montant de {0:c}. Ce montant inclut le prix de la course ainsi que le pourboire.</value>
   </data>
   <data name="PushNotification_wosLOADED" xml:space="preserve">
     <value>Veuillez confirmer le véhicule avec lequel le payment de carte de crédit sera effectué.</value>
@@ -349,6 +349,9 @@
     <value>Itinéraire</value>
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
-    <value>La course sera payée en utilisant for carte de crédit par défaut</value>
+    <value>La course sera payée en utilisant votre carte de crédit</value>
+  </data>
+  <data name="AccountConfirmationSmsBody" xml:space="preserve">
+    <value>Votre code de confirmation pour {0} est {1} </value>
   </data>
 </root>

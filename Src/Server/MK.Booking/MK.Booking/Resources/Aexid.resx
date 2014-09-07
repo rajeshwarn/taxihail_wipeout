@@ -117,49 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EstimatePrice" xml:space="preserve">
-    <value>Cost</value>
+  <data name="OrderStatus_CabDriverNumberAssigned" xml:space="preserve">
+    <value>Driver #{0} has been assigned to you</value>
   </data>
-  <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>Cost: {0:c}</value>
+  <data name="OrderStatus_wosARRIVED" xml:space="preserve">
+    <value>Vehicle is at pickup location</value>
   </data>
-  <data name="EstimatePriceOver100" xml:space="preserve">
-    <value>Cost: {0:c}</value>
+  <data name="OrderStatus_wosLOADED" xml:space="preserve">
+    <value>Passengers are in the vehicle</value>
   </data>
-  <data name="EstimateDistance" xml:space="preserve">
-    <value />
+  <data name="PushNotification_wosARRIVED" xml:space="preserve">
+    <value>Your vehicle (#{0}) has arrived</value>
   </data>
-  <data name="TaxiServerDownMessage" xml:space="preserve">
-    <value>Can't send message to driver</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
-    <value>No fare is available for the ride. Please specify a valid pickup and destination.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
-    <value>No fare is available for the ride. Please specify a valid pickup and destination.</value>
-  </data>
-  <data name="PaymentViewMeterAmountText" xml:space="preserve">
-    <value>Price</value>
-  </data>
-  <data name="CarAssigned" xml:space="preserve">
-    <value>Your vehicle {0}</value>
-  </data>
-  <data name="DriverInfoTaxiType" xml:space="preserve">
-    <value>Vehicle Type:</value>
-  </data>
-  <data name="Eta" xml:space="preserve">
-    <value>The nearest vehicle is {1} {2} away</value>
-  </data>
-  <data name="ReminderDetails" xml:space="preserve">
-    <value>Reminder: your vehicle will pick you up from {0} at {1} on {2}.</value>
-  </data>
-  <data name="StatusActionBookButton" xml:space="preserve">
-    <value>Book another vehicle</value>
-  </data>
-  <data name="TAXI" xml:space="preserve">
-    <value>Vehicle</value>
-  </data>
-  <data name="TaxiMapTitle" xml:space="preserve">
-    <value>Your vehicle</value>
+  <data name="PushNotification_wosASSIGNED" xml:space="preserve">
+    <value>Vehicle #{0} has been assigned to you</value>
   </data>
 </root>

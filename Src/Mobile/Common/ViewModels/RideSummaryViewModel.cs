@@ -117,15 +117,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private Order Order { get; set; }
 		private OrderStatusDetail OrderStatus { get; set;}
 
-		
-
 		public bool IsPayButtonShown
 		{
 			get
 			{
 				var setting = _paymentService.GetPaymentSettings();
-				return (setting.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null // if paypal or user has a credit card
-                            || setting.PayPalClientSettings.IsEnabled) 
+				return ((setting.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null) // if paypal or user has a credit card
+                        	|| setting.PayPalClientSettings.IsEnabled) 
 						&& !(Settings.RatingEnabled && Settings.RatingRequired && !HasRated)     					 // user must rate before paying
                         && !_paymentService.GetPaymentSettings().AutomaticPayment									 // payment is processed automatically
 						&& setting.PaymentMode != PaymentMethod.RideLinqCmt 			 // payment is processed automatically
@@ -140,7 +138,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        get
 	        {
 				var setting = _paymentService.GetPaymentSettings();
-                		var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
+                var isPayEnabled = setting.IsPayInTaxiEnabled 
+					|| setting.PayPalClientSettings.IsEnabled;
 				return isPayEnabled 
 					&& setting.PaymentMode != PaymentMethod.RideLinqCmt
                     && !_paymentService.GetPaymentSettings().AutomaticPayment
@@ -148,8 +147,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
-		
-			
 		bool _hasRated;		
 		public bool HasRated 
 		{
@@ -187,16 +184,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
-		public ICommand PayCommand {
-			get {
+		public ICommand PayCommand 
+		{
+			get 
+			{
 				return this.GetCommand (() => 
+				{ 
+					this.Services().Analytics.LogEvent("PayButtonTapped");
+					ShowViewModel<ConfirmCarNumberViewModel> (new 
 					{ 
-						this.Services().Analytics.LogEvent("PayButtonTapped");
-						ShowViewModel<ConfirmCarNumberViewModel> (new 
-							{ 
-								order = Order.ToJson (), orderStatus = OrderStatus.ToJson () 
-							});
+						order = Order.ToJson (), orderStatus = OrderStatus.ToJson () 
 					});
+				});
 			}
 		}
 
@@ -204,7 +203,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return this.GetCommand(async () =>{
+				return this.GetCommand(async () => 
+				{
 					var address = await _orderWorkflowService.SetAddressToUserLocation();
 					if(address.HasValidCoordinate())
 					{

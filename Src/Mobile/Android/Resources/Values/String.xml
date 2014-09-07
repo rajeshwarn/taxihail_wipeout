@@ -30,7 +30,7 @@
   <string name="NearbyPlacesTitle">Nearby places</string>
   <string name="PickupViewDestinationLabel">Destination &gt;&gt;</string>
   <string name="CreditCardsListView">Credit Cards</string>
-  <string name="StatusActionBookButton">Book another taxi</string>
+  <string name="StatusActionBookButton">Book another vehicle</string>
   <string name="StatusDescription">Order #{0}</string>
   <string name="TabContacts">Contacts</string>
   <string name="LoginForgotPassword">Forgot your password?</string>
@@ -121,7 +121,7 @@
   <string name="RideSettingsCompany">Company</string>
   <string name="NoPhoneNumberMessage">The phone number is invalid for this driver.</string>
   <string name="ServiceErrorCallTitle">Message</string>
-  <string name="CarAssigned">Your taxi {0}</string>
+  <string name="CarAssigned">Your vehicle {0}</string>
   <string name="AccountActivationMessage">An email has been sent. Please follow the link in the email to confirm your address.</string>
   <string name="Save">Save</string>
   <string name="PaymentDetails.Optional">(Optional)</string>
@@ -133,7 +133,7 @@
   <string name="DriverInfoModel">Model:</string>
   <string name="NoButton">No</string>
   <string name="HistoryDetailRequestedLabel">Requested:</string>
-  <string name="TaxiMapTitle">Your Taxi</string>
+  <string name="TaxiMapTitle">Your vehicle</string>
   <string name="CreateAccountPhonePlaceHolder">Mobile</string>
   <string name="View_LocationDetail">Location Detail</string>
   <string name="SettingsViewTitle">Settings</string>
@@ -364,7 +364,7 @@
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs">Order cannot be created. Please try again or call us.</string>
   <string name="Tuto04Bottom">Doing so will provide an estimate for the cost for the trip.</string>
   <string name="ResetPasswordConfirmationMessage">A new password was send by email.</string>
-  <string name="ReminderDetails">Reminder: A taxi will pick you up from {0} at {1} on {2}.</string>
+  <string name="ReminderDetails">Reminder: your vehicle will pick you up from {0} at {1} on {2}.</string>
   <string name="InvalidBookinInfo">To book a ride, you need to enter a valid pickup address.</string>
   <string name="PassengerNameLabel">Name</string>
   <string name="DefaultRideSettingsViewTitle">Settings</string>
@@ -417,7 +417,7 @@
   <string name="LanguageCode">en</string>
   <string name="TabHistory">History</string>
   <string name="View_BookRating">Rate Your Trip</string>
-  <string name="PaymentViewMeterAmountText">Meter Amount</string>
+  <string name="PaymentViewMeterAmountText">Price</string>
   <string name="YesButton">Yes</string>
   <string name="ConfirmVehiculeTypeLabel">Vehicle type</string>
   <string name="ServerInfo">({0} v{1})</string>
@@ -445,7 +445,7 @@
   <string name="PaymentViewTotalText">Total</string>
   <string name="app_id">134284363380764</string>
   <string name="DateTimePickerPickInvalidDateTitle">Invalid date / time</string>
-  <string name="DriverInfoTaxiType">Taxi Type:</string>
+  <string name="DriverInfoTaxiType">Vehicle Type:</string>
   <string name="PaymentDetails.InvalidDataTitle">Invalid payment information</string>
   <string name="PaymentDetails.TipAmountLabel">Tip Amount</string>
   <string name="DriverInfoLicence">Licence #:</string>
@@ -479,7 +479,7 @@
   <string name="Order">Order</string>
   <string name="View_InitializeOrderForAccountPayment">Please answer these questions</string>
   <string name="AccountPaymentNumberRequiredTitle">Account Rider Number required</string>
-  <string name="TAXI">TAXI</string>
+  <string name="TAXI">Vehicle</string>
   <string name="WarningPushServiceAction">Thanks for letting me know</string>
   <string name="WarningPushServiceTitle">Push Notifications</string>
   <string name="WarningPushServiceMessage">We noticed you do not have push notifications turned on. Just to let you know if you have them enabled then you get updates about the status of your booking without having to look at the app! We promise we will not spam you with useless information!</string>
@@ -511,7 +511,7 @@
   <string name="View">View</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000">The charge account information is invalid. Please try again.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall">The charge account information is invalid. Please try again.</string>
-  <string name="Eta">The nearest taxi is {0} and {1} {2} away</string>
+  <string name="Eta">The nearest vehicle is {1} {2} away</string>
   <string name="EtaDurationUnit">min</string>
   <string name="EtaDurationUnitPlural">mins</string>
   <string name="StatusEta">{0} and {1} {2} away</string>

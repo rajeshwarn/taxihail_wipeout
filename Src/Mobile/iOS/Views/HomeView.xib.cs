@@ -46,14 +46,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationController.NavigationBar.BarStyle = UIBarStyle.Default;
             NavigationController.NavigationBar.Hidden = true;
 
-            ViewModel.SubscribeLifetimeChangedIfNecessary ();
+            if (ViewModel != null)
+            {
+                ViewModel.SubscribeLifetimeChangedIfNecessary ();
+            }
         }
 
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
 
-            ViewModel.UnsubscribeLifetimeChangedIfNecessary ();
+            if (ViewModel != null)
+            {
+                ViewModel.UnsubscribeLifetimeChangedIfNecessary ();
+            }
         }
 
         public override void ViewDidLoad()
