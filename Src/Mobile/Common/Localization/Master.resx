@@ -913,6 +913,12 @@
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall" xml:space="preserve">
     <value>The specified Pickup address lies outside the regular service area.</value>
   </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
+    <value>The specified Destination address lies outside the regular service area. Please contact {0} at {1} for further assistance.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall" xml:space="preserve">
+    <value>The specified Destination address lies outside the regular service area.</value>
+  </data>
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
     <value>The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.</value>
   </data>
@@ -1668,5 +1674,17 @@
   </data>
   <data name="CardOnFile" xml:space="preserve">
     <value>Card on File</value>
+  </data>
+  <data name="EstimateFareCalculating" xml:space="preserve">
+    <value>Calculating...</value>
+  </data>
+  <data name="Knowledgabledriver" xml:space="preserve">
+    <value>Knowledgable driver</value>
+  </data>
+  <data name="Safety" xml:space="preserve">
+    <value>Safety</value>
+  </data>
+  <data name="Politeness" xml:space="preserve">
+    <value>Politeness</value>
   </data>
 </root>

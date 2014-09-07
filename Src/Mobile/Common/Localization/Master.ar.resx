@@ -1129,6 +1129,12 @@
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall" xml:space="preserve">
     <value>عنوان الإلتقاء يقع خارج نطاق الخدمة المعتادة.</value>
   </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
+    <value>The specified Destination address lies outside the regular service area. Please contact {0} at {1} for further assistance.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall" xml:space="preserve">
+    <value>The specified Destination address lies outside the regular service area.</value>
+  </data>
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
     <value>لا يمكن إدخال الطلب لأن حسابك غير فعال حاليا. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</value>
   </data>
@@ -1602,5 +1608,14 @@
   </data>
   <data name="CardOnFile" xml:space="preserve">
     <value>Card on File</value>
+  </data>
+  <data name="Knowledgabledriver" xml:space="preserve">
+    <value>Knowledgable driver</value>
+  </data>
+  <data name="Safety" xml:space="preserve">
+    <value>Safety</value>
+  </data>
+  <data name="Politeness" xml:space="preserve">
+    <value>Politeness</value>
   </data>
 </root>

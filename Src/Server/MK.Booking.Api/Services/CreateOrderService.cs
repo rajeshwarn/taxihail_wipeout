@@ -130,6 +130,14 @@ namespace apcurium.MK.Booking.Api.Services
                 // TODO (waiting for IBS endpoint to be done): send the info to ibs
             }
 
+            //check if the account has a credit card
+            if (request.Settings.ChargeTypeId.HasValue
+                && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id
+                && !account.DefaultCreditCard.HasValue)
+            {
+                throw new HttpError(ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString());
+            }
+
             var ibsOrderId = CreateIbsOrder(account, request, referenceData);
 
             if (!ibsOrderId.HasValue

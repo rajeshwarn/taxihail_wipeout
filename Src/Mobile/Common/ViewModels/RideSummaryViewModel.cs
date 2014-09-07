@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if (canRate) {
 					RatingList = ratingTypes.Select (c => new RatingModel (canRate) {
 						RatingTypeId = c.Id, 
-						RatingTypeName = c.Name 
+						RatingTypeName = this.Services().Localize[c.Name.Replace(" ", "")]
 					}).OrderBy (c => c.RatingTypeId).ToList ();
 				}
 				else
@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 							RatingTypeId = c.RatingTypeId,
 							Score = c.Score,
-							RatingTypeName = c.Name
+							RatingTypeName = this.Services().Localize[c.Name.Replace(" ", "")]
 						}).OrderBy(c=>c.RatingTypeId).ToList();
 				}
 			}

@@ -286,7 +286,7 @@
     <value>Confirmer les informations relatives au paiement</value>
   </data>
   <data name="CmtRideLinqConfirmPairViewConfirmPairDetailText" xml:space="preserve">
-    <value>Merci de vérifier que vous être dans le véhicule indiquée ci-dessus. Après confirmation, le paiement sera effectué automatiquement en utilisant les paramètres de paiement par défaut.</value>
+    <value>Merci de vérifier que vous êtes dans le véhicule indiquée ci-dessus. Après confirmation, le paiement sera effectué automatiquement en utilisant les paramètres de paiement par défaut.</value>
   </data>
   <data name="CmtRideLinqErrorTitle" xml:space="preserve">
     <value>Erreur</value>
@@ -1156,7 +1156,13 @@
     <value>L'adresse de départ est en dehors de la zone de service. Merci de contacter {0} à {1} pour plus d'assistance.</value>
   </data>
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall" xml:space="preserve">
-    <value>L'adresse de départ est en dehors de la zone de service normale. </value>
+    <value>L'adresse de départ est en dehors de la zone de service normale.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
+    <value>L'adresse de destination est en dehors de la zone de service. Merci de contacter {0} à {1} pour plus d'assistance.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall" xml:space="preserve">
+    <value>L'adresse de destination est en dehors de la zone de service normale.</value>
   </data>
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
     <value>La commande ne peut être créée car votre compte est actuellement désactivé. Merci de contacter {0} à {1} pour plus d'assistance.</value>
@@ -1635,6 +1641,9 @@
   <data name="CardOnFile" xml:space="preserve">
     <value>Paiement In App</value>
   </data>
+  <data name="EstimateFareCalculating" xml:space="preserve">
+    <value>Calcul du prix de votre course ...</value>
+  </data>
   <data name="WarningPushServiceAction" xml:space="preserve">
     <value>Merci</value>
   </data>
@@ -1670,5 +1679,14 @@
   </data>
   <data name="TAXI" xml:space="preserve">
     <value>TAXI</value>
+  </data>
+  <data name="Knowledgabledriver" xml:space="preserve">
+    <value>Trajet respecté</value>
+  </data>
+  <data name="Safety" xml:space="preserve">
+    <value>Conduite sécuritaire</value>
+  </data>
+  <data name="Politeness" xml:space="preserve">
+    <value>Politesse</value>
   </data>
 </root>

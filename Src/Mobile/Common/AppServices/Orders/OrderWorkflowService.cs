@@ -261,8 +261,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 						}
 					case "CreateOrder_InvalidProvider":
 					case "CreateOrder_NoFareEstimateAvailable": /* Fare estimate is required and was not submitted */
-					case "CreateOrder_CannotCreateInIbs_1002": /* Pickup address outside of service area */
-					case "CreateOrder_CannotCreateInIbs_7000": /* Inactive account */
+					case "CreateOrder_CannotCreateInIbs_1002":  /* Pickup address outside of service area */
+					case "CreateOrder_CannotCreateInIbs_1452":  /* Dropoff address outside of service area */
+					case "CreateOrder_CannotCreateInIbs_7000":  /* Inactive account */
 					case "CreateOrder_CannotCreateInIbs_10000": /* Inactive charge account */
 						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["ServiceError" + e.ErrorCode + "_NoCall"];
@@ -458,17 +459,28 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		private async Task CalculateEstimatedFare()
 		{
-			var pickupAddress = await _pickupAddressSubject.Take(1).ToTask();
-			var destinationAddress = await _destinationAddressSubject.Take(1).ToTask();
-			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
-		    var bookingSettings = await _bookingSettingsSubject.Take(1).ToTask();
+			_estimatedFareDisplaySubject.OnNext(_localize["EstimateFareCalculating"]);
 
-            var direction = await _bookingService.GetFareEstimate(pickupAddress, destinationAddress, bookingSettings.VehicleTypeId, pickupDate);
+			var order = await GetOrderForEstimate ();
+
+			var direction = await _bookingService.GetFareEstimate(order);
 			var estimatedFareString = _bookingService.GetFareEstimateDisplay(direction);
 
 			_estimatedFareDetailSubject.OnNext (direction);
 			_estimatedFareDisplaySubject.OnNext(estimatedFareString);
 		}
+
+		private async Task<CreateOrder> GetOrderForEstimate()
+		{
+			var order = new CreateOrder();
+			order.Id = Guid.NewGuid();
+			order.PickupDate = await _pickupDateSubject.Take(1).ToTask();
+			order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
+			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
+			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
+			return order;
+		}
+
 
 		public async Task PrepareForNewOrder()
 		{

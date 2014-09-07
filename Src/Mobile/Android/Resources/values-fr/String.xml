@@ -512,6 +512,7 @@
   <string name="PaymentInCar">Carte bancaire - À bord </string>
   <string name="CardOnFile">Paiement In App</string>
   <string name="ChargeAccount">Compte</string>
+  <string name="EstimateFareCalculating">Calcul du prix de votre course ...</string>
   <string name="WarningPushServiceAction">Merci</string>
   <string name="WarningPushServiceMessage">Nous avons remarqué que vous n\'avez pas les notifications activées. En les activant, vous obtiendrez alors des mises à jour sur l\'état de votre réservation, sans avoir à regarder l\'application !</string>
   <string name="WarningPushServiceTitle">Notifications</string>
