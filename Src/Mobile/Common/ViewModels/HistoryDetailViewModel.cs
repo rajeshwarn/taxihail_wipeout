@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
 				return (Status != null) 
-						&& IsCompleted
+						&& Status.Status == OrderStatus.Completed
 						&& Status.FareAvailable 
 						&& Settings.SendReceiptAvailable;
             }
