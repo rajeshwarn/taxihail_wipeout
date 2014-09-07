@@ -274,18 +274,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							var address = await _orderWorkflowService.SetAddressToUserLocation();
 							if(address.HasValidCoordinate())
 							{
-
 								// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
 								// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
 								this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
 
-								// this is part of a bigger change coming for DestinationIsRequired handling (see branch TestDestination)
-								if (Settings.DestinationIsRequired                     // only with this setting that we want to automatically toggle after having positionned the user
-									&& _currentState == HomeViewModelState.Initial)    // we are on the initial mode
-								{
-									_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode ();
-								}
-								
 								if(Settings.ZoomOnNearbyVehicles)
 								{
 									try 
