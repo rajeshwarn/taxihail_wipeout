@@ -138,7 +138,12 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString());
             }
 
-            var ibsOrderId = CreateIbsOrder(account, request, referenceData);
+            var chargeType =
+               referenceData.PaymentsList.Where(x => x.Id == request.Settings.ChargeTypeId)
+                   .Select(x => x.Display)
+                   .FirstOrDefault();
+
+            var ibsOrderId = CreateIbsOrder(account, request, referenceData, chargeType);
 
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
@@ -165,11 +170,7 @@ namespace apcurium.MK.Booking.Api.Services
             command.ClientVersion = base.Request.Headers.Get("ClientVersion");
             emailCommand.EmailAddress = account.Email;
 
-            // Get Charge Type and Vehicle Type from reference data
-            var chargeType =
-                referenceData.PaymentsList.Where(x => x.Id == request.Settings.ChargeTypeId)
-                    .Select(x => x.Display)
-                    .FirstOrDefault();
+            // Get Vehicle Type from reference data
             var vehicleType =
                 referenceData.VehiclesList.Where(x => x.Id == request.Settings.VehicleTypeId)
                     .Select(x => x.Display)
@@ -236,7 +237,7 @@ namespace apcurium.MK.Booking.Api.Services
             return offsetedTime;
         }
 
-        private int? CreateIbsOrder(AccountDetail account, CreateOrder request, ReferenceData referenceData)
+        private int? CreateIbsOrder(AccountDetail account, CreateOrder request, ReferenceData referenceData, string chargeType)
         {
             // Provider is optional
             // But if a provider is specified, it must match with one of the ReferenceData values
@@ -251,7 +252,7 @@ namespace apcurium.MK.Booking.Api.Services
                 ? Mapper.Map<IbsAddress>(request.DropOffAddress)
                 : null;
 
-            var note = BuildNote(request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags);
+            var note = BuildNote(chargeType, request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags);
             var fare = GetFare(request.Estimate);
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
             var result = _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId,
@@ -271,7 +272,7 @@ namespace apcurium.MK.Booking.Api.Services
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
 
-        private string BuildNote(string note, string buildingName, int largeBags)
+        private string BuildNote(string chargeType, string note, string buildingName, int largeBags)
         {
             // Building Name is not handled by IBS
             // Put Building Name in note, if specified
@@ -317,7 +318,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             // In versions prior to 1.4, there was no note template
             // So if the IBS.NoteTemplate setting does not exist, use the old way 
-            var formattedNote = string.Format("{0}{1}", Environment.NewLine, note);
+            var formattedNote = string.Format("{0}{1}{2}{3}", 
+                                                Environment.NewLine, chargeType, 
+                                                Environment.NewLine, note);
             if (!string.IsNullOrWhiteSpace(buildingName))
             {
                 formattedNote += (Environment.NewLine + buildingName).Trim();
