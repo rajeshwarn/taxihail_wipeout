@@ -1680,4 +1680,13 @@
   <data name="TAXI" xml:space="preserve">
     <value>TAXI</value>
   </data>
+  <data name="Knowledgabledriver" xml:space="preserve">
+    <value>Trajet respecté</value>
+  </data>
+  <data name="Safety" xml:space="preserve">
+    <value>Conduite sécuritaire</value>
+  </data>
+  <data name="Politeness" xml:space="preserve">
+    <value>Politesse</value>
+  </data>
 </root>

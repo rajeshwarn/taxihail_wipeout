@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			RatingList = _bookingService.GetRatingType().Select(c => new RatingModel
 				{
 					RatingTypeId = c.Id, 
-					RatingTypeName = c.Name 
+					RatingTypeName = this.Services().Localize[c.Name.Replace(" ", "")]
 				})
 				.OrderBy(c=>c.RatingTypeId).ToList();
 
@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RatingList = ratingTypes.Select(c => new RatingModel(canRate) 
 					{
 						RatingTypeId = c.Id, 
-						RatingTypeName = c.Name 
+						RatingTypeName = this.Services().Localize[c.Name.Replace(" ", "")]
 					}).OrderBy(c=>c.RatingTypeId).ToList();
 
 				Guid id;
@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 							RatingTypeId = c.RatingTypeId,
 							Score = c.Score,
-							RatingTypeName = c.Name
+							RatingTypeName = this.Services().Localize[c.Name.Replace(" ", "")]
 						}).OrderBy(c=>c.RatingTypeId).ToList();
 				}
 			}

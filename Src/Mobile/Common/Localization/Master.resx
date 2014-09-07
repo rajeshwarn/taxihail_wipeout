@@ -1678,4 +1678,13 @@
   <data name="EstimateFareCalculating" xml:space="preserve">
     <value>Calculating...</value>
   </data>
+  <data name="Knowledgabledriver" xml:space="preserve">
+    <value>Knowledgable driver</value>
+  </data>
+  <data name="Safety" xml:space="preserve">
+    <value>Safety</value>
+  </data>
+  <data name="Politeness" xml:space="preserve">
+    <value>Politeness</value>
+  </data>
 </root>
