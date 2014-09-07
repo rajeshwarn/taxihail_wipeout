@@ -458,6 +458,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		private async Task CalculateEstimatedFare()
 		{
+			_estimatedFareDisplaySubject.OnNext(_localize["EstimateFareCalculating"]);
+
 			var order = await GetOrderForEstimate ();
 
 			var direction = await _bookingService.GetFareEstimate(order);

@@ -1669,4 +1669,7 @@
   <data name="CardOnFile" xml:space="preserve">
     <value>Card on File</value>
   </data>
+  <data name="EstimateFareCalculating" xml:space="preserve">
+    <value>Calculating...</value>
+  </data>
 </root>

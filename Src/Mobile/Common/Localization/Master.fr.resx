@@ -1633,4 +1633,7 @@
   <data name="CardOnFile" xml:space="preserve">
     <value>Paiement In App</value>
   </data>
+  <data name="EstimateFareCalculating" xml:space="preserve">
+    <value>Calcul du prix de votre course ...</value>
+  </data>
 </root>
