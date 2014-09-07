@@ -219,6 +219,11 @@
     <Compile Include="ReadModel\OrderRatingDetails.cs" />
     <Compile Include="ReadModel\RatingScoreDetails.cs" />
     <Compile Include="ReadModel\VehicleTypeDetail.cs" />
+    <Compile Include="Resources\Aexid.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Aexid.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Global.ar.Designer.cs">
       <DependentUpon>Global.ar.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -307,6 +312,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Aexid.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Aexid.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Global.ar.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Global.ar.Designer.cs</LastGenOutput>
