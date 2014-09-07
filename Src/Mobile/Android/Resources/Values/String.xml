@@ -22,7 +22,6 @@
   <string name="FavoritesButton">Favorites</string>
   <string name="CmtTransactionSuccessTitle">Payment Received</string>
   <string name="Register">Register</string>
-  <string name="StatusStatusLabel">Status: {0}</string>
   <string name="HistoryDetailAptRingCodeLabel">Apt / Entry code:</string>
   <string name="HistoryViewSendReceiptButton">Send Receipt</string>
   <string name="InvalidPickupAddress">Please enter a valid pickup address.</string>

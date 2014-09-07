@@ -377,7 +377,6 @@
   <string name="StatusDescription">Commande n°{0}</string>
   <string name="StatusInvalid">Indisponible</string>
   <string name="StatusNewRideButton">Nouveau trajet</string>
-  <string name="StatusStatusLabel">Statut: {0}</string>
   <string name="StatusViewTitle">Confirmé</string>
   <string name="StreetNumberDoneBt">Utiliser cette adresse</string>
   <string name="StreetNumberLabel">Affiner l\'adresse</string>

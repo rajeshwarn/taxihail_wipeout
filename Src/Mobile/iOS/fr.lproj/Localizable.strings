@@ -372,7 +372,6 @@
 "StatusDescription"="Commande n°{0}";
 "StatusInvalid"="Indisponible";
 "StatusNewRideButton"="Nouveau trajet";
-"StatusStatusLabel"="Statut: {0}";
 "StatusViewTitle"="Confirmé";
 "StreetNumberDoneBt"="Utiliser cette adresse";
 "StreetNumberLabel"="Affiner l'adresse";

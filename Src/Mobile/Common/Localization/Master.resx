@@ -529,9 +529,6 @@
   <data name="HistoryDetailOrderLabel" xml:space="preserve">
     <value>Order:</value>
   </data>
-  <data name="StatusStatusLabel" xml:space="preserve">
-    <value>Status: {0}</value>
-  </data>
   <data name="HistoryDetailPickupDateLabel" xml:space="preserve">
     <value>Pickup Date:</value>
   </data>

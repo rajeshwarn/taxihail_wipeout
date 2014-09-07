@@ -370,7 +370,6 @@
   <string name="StatusDescription">طلب # {0}</string>
   <string name="StatusInvalid">الحالة غير متاحة</string>
   <string name="StatusNewRideButton">رحلة جديدة</string>
-  <string name="StatusStatusLabel">الحالة:  {0}</string>
   <string name="StatusViewTitle">تم التأكيد</string>
   <string name="StreetNumberDoneBt">استخدم هذا العنوان</string>
   <string name="StreetNumberLabel">قم بتدقيق العنوان</string>

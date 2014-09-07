@@ -20,7 +20,6 @@
 "FavoritesButton"="Favorites";
 "CmtTransactionSuccessTitle"="Payment Received";
 "Register"="Register";
-"StatusStatusLabel"="Status: {0}";
 "HistoryDetailAptRingCodeLabel"="Apt / Entry code:";
 "HistoryViewSendReceiptButton"="Send Receipt";
 "InvalidPickupAddress"="Please enter a valid pickup address.";

@@ -1263,9 +1263,6 @@
   <data name="StatusNewRideButton" xml:space="preserve">
     <value>Nouveau trajet</value>
   </data>
-  <data name="StatusStatusLabel" xml:space="preserve">
-    <value>Statut: {0}</value>
-  </data>
   <data name="StatusViewTitle" xml:space="preserve">
     <value>Confirmé</value>
   </data>

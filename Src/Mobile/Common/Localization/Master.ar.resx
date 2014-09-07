@@ -1228,9 +1228,6 @@
   <data name="StatusNewRideButton" xml:space="preserve">
     <value>رحلة جديدة</value>
   </data>
-  <data name="StatusStatusLabel" xml:space="preserve">
-    <value>الحالة:  {0}</value>
-  </data>
   <data name="StatusViewTitle" xml:space="preserve">
     <value>تم التأكيد</value>
   </data>

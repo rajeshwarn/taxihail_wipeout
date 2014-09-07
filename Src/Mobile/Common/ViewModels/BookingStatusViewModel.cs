@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			base.OnViewLoaded ();
 
-			StatusInfoText = string.Format(this.Services().Localize["StatusStatusLabel"], this.Services().Localize["LoadingMessage"]);
+			StatusInfoText = string.Format(this.Services().Localize["LoadingMessage"]);
 
             CenterMap ();			
         }
