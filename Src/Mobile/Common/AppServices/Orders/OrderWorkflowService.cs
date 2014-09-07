@@ -261,8 +261,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 						}
 					case "CreateOrder_InvalidProvider":
 					case "CreateOrder_NoFareEstimateAvailable": /* Fare estimate is required and was not submitted */
-					case "CreateOrder_CannotCreateInIbs_1002": /* Pickup address outside of service area */
-					case "CreateOrder_CannotCreateInIbs_7000": /* Inactive account */
+					case "CreateOrder_CannotCreateInIbs_1002":  /* Pickup address outside of service area */
+					case "CreateOrder_CannotCreateInIbs_1452":  /* Dropoff address outside of service area */
+					case "CreateOrder_CannotCreateInIbs_7000":  /* Inactive account */
 					case "CreateOrder_CannotCreateInIbs_10000": /* Inactive charge account */
 						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["ServiceError" + e.ErrorCode + "_NoCall"];
