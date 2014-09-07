@@ -249,11 +249,9 @@ namespace apcurium.MK.Booking.ConfigTool
 
 			/***Optional files ****/
 
-			var optionalGraphicToUpdate = new string[] { "chargetype", "hail_icon", "destination_icon", "taxi_progress","vehicle", "taxi_icon",
-													     "cluster", "nearby", "taxi_badge_selected","tutorial_screen01","tutorial_screen02",
-														 "tutorial_screen03","tutorial_screen04","tutorial_screen05","tutorial_screen06",
-														 "tutorial_screen07", "phone", "cluster_blackcar", "nearby_blackcar", "cluster_taxi" };
-			foreach (var g in optionalGraphicToUpdate) 
+            var allResources = GetFilesFromAssetsDirectory("png");
+
+            foreach (var g in allResources) 
             {
 				_configs.Add (new ConfigFile (this) {
 					Source = g+"@2x.png",
@@ -296,6 +294,24 @@ namespace apcurium.MK.Booking.ConfigTool
                     Destination = @"Mobile\Android\Resources\Drawable\" + string.Format("button_action_{0}_text_selector.xml", styleName)
                 });
             }
+
+            /*** Tutorial ****/
+            var tutorialContent = GetFilesFromAssetsDirectory("json");
+            foreach (var file in tutorialContent)
+            {
+                _configs.Add(new ConfigFile(this)
+                {
+                    Source = file + ".json",
+                    Destination = @"Mobile\Common\TutorialContent\"+ file + ".json" 
+                });
+            }
+        }
+
+        private string[] GetFilesFromAssetsDirectory(string extension)
+        {
+           var assetsDirectory = new DirectoryInfo(ConfigDirectoryPath);
+           var listofFiles = assetsDirectory.EnumerateFiles("*." + extension, SearchOption.TopDirectoryOnly);
+           return listofFiles.Select(x => x.Name.Replace(x.Extension, string.Empty)).ToArray();
         }
 
         private AppConfigFile _config;
