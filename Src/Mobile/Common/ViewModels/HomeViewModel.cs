@@ -144,18 +144,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             if (unratedRideId != null
                 && _orderWorkflowService.ShouldPromptUserToRateLastRide())
 	        {
-                this.Services().Message.ShowMessage(this.Services().Localize["RateLastRideTitle"],
-                                                    this.Services().Localize["RateLastRideMessage"],
-                                                    this.Services().Localize["Rate"],
-                                                        () => ShowViewModel<BookRatingViewModel>(new  
-                                                                {
-						                                            orderId = unratedRideId.ToString(),
-						                                            canRate = true
-                                                                }),
-                                                    this.Services().Localize["Don't ask"],
-                                                        () => this.Services().Cache.Set("RateLastRideDontPrompt", "yes"),
-                                                    this.Services().Localize["NotNow"],
-                                                        () => { /* Do nothing */ });
+				if (Settings.RatingRequired)
+				{
+					this.Services().Message.ShowMessage(
+						this.Services().Localize["RateLastRideTitle"],
+						this.Services().Localize["RateLastRideMessage"],
+						this.Services().Localize["RateLastRide"],
+							() => ShowViewModel<BookRatingViewModel>(new  
+							{
+								orderId = unratedRideId.ToString(),
+								canRate = true
+							}),
+						this.Services().Localize["NotNow"],
+							() => { /* Do nothing */ });
+				}
+				else
+				{
+					this.Services().Message.ShowMessage(
+						this.Services().Localize["RateLastRideTitle"],
+						this.Services().Localize["RateLastRideMessage"],
+						this.Services().Localize["RateLastRide"],
+							() => ShowViewModel<BookRatingViewModel>(new  
+							{
+								orderId = unratedRideId.ToString(),
+								canRate = true
+							}),
+						this.Services().Localize["DontAsk"],
+							() => this.Services().Cache.Set("RateLastRideDontPrompt", "yes"),
+						this.Services().Localize["NotNow"],
+							() => { /* Do nothing */ });
+				}
 	        }
 	    }
 

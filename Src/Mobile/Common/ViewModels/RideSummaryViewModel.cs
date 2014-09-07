@@ -83,12 +83,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			if (OrderId.HasValue())
 			{
+				// Set the last unrated order here 
+				// if the user doesn't do anything and kills the app, we want to set the value
+				_bookingService.SetLastUnratedOrderId(OrderId);
+
 				var orderRatings = await _bookingService.GetOrderRatingAsync(OrderId);
 				HasRated = orderRatings.RatingScores.Any();
 				bool canRate = !HasRated;
 				var ratingTypes = _bookingService.GetRatingType();
 
-				if (canRate) {
+				if (canRate) 
+				{
 					RatingList = ratingTypes.Select (c => new RatingModel (canRate) {
 						RatingTypeId = c.Id, 
 						RatingTypeName = this.Services().Localize[c.Name.Replace(" ", "")]
@@ -232,7 +237,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 // We don't send the review since it's not complete. The user will have the
                 // possibility to go back to the order history to rate it later if he so desires
-                _bookingService.SetLastUnratedOrderId(OrderId);
 			    return;
 			} 
 

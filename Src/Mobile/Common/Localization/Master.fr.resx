@@ -1591,7 +1591,7 @@
     <value>minutes</value>
   </data>
   <data name="Notification_DriverAssignedPush" xml:space="preserve">
-    <value>Chauffeur  assigné</value>
+    <value>Chauffeur assigné</value>
   </data>
   <data name="RateLastRide" xml:space="preserve">
     <value>Évaluer</value>

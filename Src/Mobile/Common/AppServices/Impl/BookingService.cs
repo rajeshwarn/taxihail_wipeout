@@ -85,7 +85,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.GetOrderStatus(orderId));
 		}
 
-        public bool HasLastOrder {
+        public bool HasLastOrder 
+		{
             get{ return UserCache.Get<string> ("LastOrderId").HasValue ();}
         }
 
