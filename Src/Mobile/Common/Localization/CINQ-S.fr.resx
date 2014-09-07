@@ -145,7 +145,7 @@
     <value>Mise à jour disponible</value>
   </data>
   <data name="BookRatingErrorMessage" xml:space="preserve">
-    <value>Merci de noter la qualité de votre trajet</value>
+    <value>Merci d'évaluer la qualité de votre trajet</value>
   </data>
   <data name="CmtRideLinqConfirmPairViewConfirmPairDetailText" xml:space="preserve">
     <value>Merci de vérifier que vous être dans le véhicule indiqué ci-dessus. Après confirmation, le paiement sera effectué automatiquement en utilisant vos informations de paiement</value>
@@ -212,5 +212,14 @@
   </data>
   <data name="TaxiMapTitle" xml:space="preserve">
     <value>Votre véhicule</value>
+  </data>
+  <data name="ViewRatingBtn" xml:space="preserve">
+    <value>Évaluations</value>
+  </data>
+  <data name="RateRide" xml:space="preserve">
+    <value>Évaluer</value>
+  </data>
+  <data name="View_BookRating" xml:space="preserve">
+    <value>Évaluer votre trajet</value>
   </data>
 </root>

@@ -4159,14 +4159,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050109
 			public const int GooglePlayServicesNotAvailableMessage = 2131034377;
 			
-			// aapt resource value: 0x7f050265
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034725;
+			// aapt resource value: 0x7f05026b
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034731;
 			
 			// aapt resource value: 0x7f050069
 			public const int GooglePlayServicesNotAvailableTitle = 2131034217;
 			
-			// aapt resource value: 0x7f050266
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034726;
+			// aapt resource value: 0x7f05026c
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034732;
 			
 			// aapt resource value: 0x7f05005e
 			public const int HistoryDetailAptRingCodeLabel = 2131034206;
@@ -4272,6 +4272,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0501d9
 			public const int June = 2131034585;
+			
+			// aapt resource value: 0x7f050267
+			public const int Knowledgabledriver = 2131034727;
 			
 			// aapt resource value: 0x7f05016d
 			public const int Language = 2131034477;
@@ -4630,6 +4633,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0501cc
 			public const int PickupViewPickupLabel = 2131034572;
 			
+			// aapt resource value: 0x7f050269
+			public const int Politeness = 2131034729;
+			
 			// aapt resource value: 0x7f050255
 			public const int RateLastRide = 2131034709;
 			
@@ -4747,6 +4753,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0500f9
 			public const int RingCodeTextPlaceholder = 2131034361;
 			
+			// aapt resource value: 0x7f050268
+			public const int Safety = 2131034728;
+			
 			// aapt resource value: 0x7f0500c2
 			public const int Save = 2131034306;
 			
@@ -4804,11 +4813,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05011d
 			public const int ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall = 2131034397;
 			
+			// aapt resource value: 0x7f050265
+			public const int ServiceErrorCreateOrder_CannotCreateInIbs_1452 = 2131034725;
+			
+			// aapt resource value: 0x7f050266
+			public const int ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall = 2131034726;
+			
 			// aapt resource value: 0x7f050148
 			public const int ServiceErrorCreateOrder_CannotCreateInIbs_7000 = 2131034440;
 			
 			// aapt resource value: 0x7f050059
 			public const int ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall = 2131034201;
+			
+			// aapt resource value: 0x7f05026a
+			public const int ServiceErrorCreateOrder_CardOnFileButNoCreditCard = 2131034730;
 			
 			// aapt resource value: 0x7f05011e
 			public const int ServiceErrorCreateOrder_InvalidProvider = 2131034398;
