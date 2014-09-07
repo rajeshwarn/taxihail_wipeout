@@ -20,7 +20,8 @@ namespace apcurium.MK.Booking.IBS.Impl
 {
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
-        private const int InvalidZoneErrorCode = -1002;
+        private const int InvalidPickupZoneErrorCode = -1002;
+        private const int InvalidDropoffZoneErrorCode = -1452; //cutom code because we never know which one ibs is going to use
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
 
         public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger,
@@ -338,9 +339,14 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             int? orderId = null;
 
-            if (!ValidateZoneAddresses(order))
+            if (!ValidatePickAddress(order))
             {
-                return InvalidZoneErrorCode;
+                return InvalidPickupZoneErrorCode;
+            }
+
+            if (!ValidateDropOffAddress(order))
+            {
+                return InvalidDropoffZoneErrorCode;
             }
 
             UseService(service =>
@@ -378,7 +384,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
-        private bool ValidateZoneAddresses(TBookOrder_7 order)
+        private bool ValidatePickAddress(TBookOrder_7 order)
         {
             if (
                 !ValidateZone(order.PickupAddress, order.ServiceProviderID, "IBS.ValidatePickupZone",
@@ -394,6 +400,23 @@ namespace apcurium.MK.Booking.IBS.Impl
                 // ReSharper restore CompareOfFloatsByEqualityOperator
                 if (
                     !ValidateZone(order.DropoffAddress, order.ServiceProviderID, "IBS.ValidateDestinationZone",
+                        "IBS.DestinationZoneToExclude"))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool ValidateDropOffAddress(TBookOrder_7 order)
+        {
+            // ReSharper disable CompareOfFloatsByEqualityOperator
+            if ((order.DropoffAddress != null) && (order.DropoffAddress.Latitude != 0) &&
+                (order.DropoffAddress.Latitude != 0))
+            {
+                // ReSharper restore CompareOfFloatsByEqualityOperator
+                if (!ValidateZone(order.DropoffAddress, order.ServiceProviderID, "IBS.ValidateDestinationZone",
                         "IBS.DestinationZoneToExclude"))
                 {
                     return false;
