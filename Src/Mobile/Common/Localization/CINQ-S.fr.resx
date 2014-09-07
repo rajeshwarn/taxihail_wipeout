@@ -145,7 +145,7 @@
     <value>Mise à jour disponible</value>
   </data>
   <data name="BookRatingErrorMessage" xml:space="preserve">
-    <value>Merci de noter la qualité de votre  trajet</value>
+    <value>Merci de noter la qualité de votre trajet</value>
   </data>
   <data name="CmtRideLinqConfirmPairViewConfirmPairDetailText" xml:space="preserve">
     <value>Merci de vérifier que vous être dans le véhicule indiqué ci-dessus. Après confirmation, le paiement sera effectué automatiquement en utilisant vos informations de paiement</value>
@@ -157,7 +157,7 @@
     <value>Le serveur ne précise pas pourquoi le compte ne peut pas se créer, si l'erreur persiste merci de nous contacter à support@cinq-s.com</value>
   </data>
   <data name="CreditCardAdded" xml:space="preserve">
-    <value>Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant cette option dans "éditer".</value>
+    <value>Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant cette option dans \"éditer\".</value>
   </data>
   <data name="CreditCardInstructions" xml:space="preserve">
     <value>Afin d'utiliser l'application, vous devez renseigner une carte de crédit</value>
@@ -178,7 +178,7 @@
     <value>Adresses favorites</value>
   </data>
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
-    <value>Votre véhicule est arrivé (Push)</value>
+    <value>Votre véhicule est arrivé</value>
   </data>
   <data name="PaymentViewMeterAmountText" xml:space="preserve">
     <value>Prix</value>
