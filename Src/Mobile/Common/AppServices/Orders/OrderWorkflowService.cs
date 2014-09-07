@@ -454,7 +454,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				_destinationAddressSubject.OnNext(address);
 			}
 
-            await CalculateEstimatedFare();
+			// do NOT await this
+            CalculateEstimatedFare();
 		}
 
 		private async Task CalculateEstimatedFare()
