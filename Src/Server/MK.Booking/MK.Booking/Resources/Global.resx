@@ -328,7 +328,7 @@
     <value>Your vehicle is almost at pickup location</value>
   </data>
   <data name="PushNotification_PaymentReceived" xml:space="preserve">
-    <value>Your credit card was successfully charged a total of {0:c}. This amount includes both fare and tip.</value>
+    <value>Your credit card was successfully charged a total of {0}. This amount includes both fare and tip.</value>
   </data>
   <data name="PushNotification_wosLOADED" xml:space="preserve">
     <value>Please confirm vehicle to pay with card on file.</value>
