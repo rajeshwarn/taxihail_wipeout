@@ -1686,4 +1686,7 @@
   <data name="Politeness" xml:space="preserve">
     <value>Politesse</value>
   </data>
+  <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
+    <value>Aucune carte de crédit enregistrée dans votre compte.</value>
+  </data>
 </root>

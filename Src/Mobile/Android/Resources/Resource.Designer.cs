@@ -4108,6 +4108,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05017f
 			public const int EstimateDistance = 2131034495;
 			
+			// aapt resource value: 0x7f050264
+			public const int EstimateFareCalculating = 2131034724;
+			
 			// aapt resource value: 0x7f050104
 			public const int EstimatePrice = 2131034372;
 			
@@ -4156,14 +4159,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050109
 			public const int GooglePlayServicesNotAvailableMessage = 2131034377;
 			
-			// aapt resource value: 0x7f050264
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034724;
+			// aapt resource value: 0x7f050265
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034725;
 			
 			// aapt resource value: 0x7f050069
 			public const int GooglePlayServicesNotAvailableTitle = 2131034217;
 			
-			// aapt resource value: 0x7f050265
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034725;
+			// aapt resource value: 0x7f050266
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034726;
 			
 			// aapt resource value: 0x7f05005e
 			public const int HistoryDetailAptRingCodeLabel = 2131034206;

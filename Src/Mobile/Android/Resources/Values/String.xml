@@ -541,4 +541,10 @@
   <string name="CardOnFile">Card on File</string>
   <string name="ChargeAccount">Charge Account</string>
   <string name="EstimateFareCalculating">Calculating...</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1452">The specified Destination address lies outside the regular service area. Please contact {0} at {1} for further assistance.</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall">The specified Destination address lies outside the regular service area.</string>
+  <string name="Knowledgabledriver">Knowledgable driver</string>
+  <string name="Safety">Safety</string>
+  <string name="Politeness">Politeness</string>
+  <string name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard">No Credit Card On File.</string>
 </resources>
