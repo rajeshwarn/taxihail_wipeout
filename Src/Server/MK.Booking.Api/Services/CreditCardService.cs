@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
@@ -17,11 +18,13 @@ namespace apcurium.MK.Booking.Api.Services
     public class CreditCardService : Service
     {
         private readonly ICommandBus _bus;
+        private readonly IOrderDao _orderDao;
         private readonly ICreditCardDao _dao;
 
-        public CreditCardService(ICreditCardDao dao, ICommandBus bus)
+        public CreditCardService(ICreditCardDao dao, ICommandBus bus, IOrderDao orderDao)
         {
             _bus = bus;
+            _orderDao = orderDao;
             _dao = dao;
         }
 
@@ -56,10 +59,17 @@ namespace apcurium.MK.Booking.Api.Services
         public object Delete(CreditCardRequest request)
         {
             var session = this.GetSession();
+            var accountId = new Guid(session.UserAuthId);
+
+            var activeOrder = _orderDao.GetOrdersInProgressByAccountId(accountId);
+            if (activeOrder.Any())
+            {
+                throw new HttpError("Can't delete credit card when an order is in progress");
+            }
 
             var command = new DeleteAccountCreditCards
             {
-                AccountId = new Guid(session.UserAuthId)
+                AccountId = accountId
             };
 
             _bus.Send(command);

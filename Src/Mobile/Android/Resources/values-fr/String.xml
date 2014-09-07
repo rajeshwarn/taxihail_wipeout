@@ -35,7 +35,7 @@
   <string name="BookPickupLabel">Confirmer votre adresse de départ</string>
   <string name="BookPickupLocationButtonTitle">Départ</string>
   <string name="BookPickupLocationEmptyPlaceholder">Choisissez votre lieu de départ sur la carte</string>
-  <string name="BookRatingErrorMessage">Merci de noter la qualité de votre  trajet</string>
+  <string name="BookRatingErrorMessage">Merci de noter la qualité de votre trajet</string>
   <string name="BookRatingErrorTitle">Erreur</string>
   <string name="BookViewInvalidDate">La date et l\'heure de départ sont invalides</string>
   <string name="BuildingName">Nom du bâtiment / commentaires</string>
@@ -345,7 +345,7 @@
   <string name="ServiceErrorCreateAccount_AccountAlreadyExist">Cette adresse email est déjà utilisée</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs">La commande ne peut être créée. Merci d\'essayer une nouvelle fois ou de nous appeler.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1002">L\'adresse de départ est en dehors de la zone de service. Merci de contacter {0} à {1} pour plus d\'assistance.</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall">L\'adresse de départ est en dehors de la zone de service normale. </string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall">L\'adresse de départ est en dehors de la zone de service normale.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_7000">La commande ne peut être créée car votre compte est actuellement désactivé. Merci de contacter {0} à {1} pour plus d\'assistance.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall">La commande ne peut être créée car votre compte est actuellement désactivé</string>
   <string name="ServiceErrorCreateOrder_InvalidProvider">La commande ne peut être créé car le fournisseur est invalide. Merci de contacter {0} à {1} pour plus d\'assistance.</string>
@@ -472,7 +472,7 @@
   <string name="View">Voir</string>
   <string name="ServiceErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
   <string name="View_CreditCard">Carte de paiement</string>
-  <string name="CreditCardAdded">Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant cette option dans "éditer".</string>
+  <string name="CreditCardAdded">Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant cette option dans \"éditer\".</string>
   <string name="PanelMenuViewPaymentInfoText">Carte de paiement</string>
   <string name="LoginSupport">Support Technique?</string>
   <string name="CurrencyPriceFormat">{0:C}</string>
@@ -505,7 +505,7 @@
   <string name="EtaNotAvailable">Il n\'y a pas de véhicule disponible</string>
   <string name="RateLastRide">Évaluer</string>
   <string name="RateLastRideMessage">Nous aimerions recevoir vos commentaires sur votre dernière course, voulez-vous l\'évaluer?</string>
-  <string name="Notification_VehicleAtPickupPush">Votre véhicule est arrivé (Push)</string>
+  <string name="Notification_VehicleAtPickupPush">Votre véhicule est arrivé</string>
   <string name="RateLastRideTitle">Évaluer la dernière course?</string>
   <string name="Notification_Off">Non</string>
   <string name="Notification_On">Oui</string>
@@ -522,4 +522,13 @@
   <string name="View_AccountConfirmation_Button">Confimer</string>
   <string name="View_AccountConfirmation_Label_Code">Code</string>
   <string name="View_AccountConfirmation_Label_Instructions">Un SMS contenant votre code a été envoyé à votre téléphone.</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1452">L\'adresse de destination est en dehors de la zone de service. Merci de contacter {0} à {1} pour plus d\'assistance.</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall">L\'adresse de destination est en dehors de la zone de service normale.</string>
+  <string name="AccountPaymentQuestionsPlaceHolder">{0} caractères maximum</string>
+  <string name="AccountPaymentQuestionsRequired">(requis)</string>
+  <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">Le code de confirmation est incorrect.</string>
+  <string name="Knowledgabledriver">Trajet respecté</string>
+  <string name="Safety">Conduite sécuritaire</string>
+  <string name="Politeness">Politesse</string>
+  <string name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard">Aucune carte de crédit enregistrée dans votre compte.</string>
 </resources>
