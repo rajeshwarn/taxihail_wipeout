@@ -142,7 +142,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     return;
                 }
 
-                var alert = string.Format(string.Format(_resources.Get("PushNotification_PaymentReceived"), amount), order.ClientLanguageCode);
+                var formattedAmount = string.Format(new CultureInfo(_appSettings.Data.PriceFormat), "{0:C}", amount);
+                var alert = string.Format(string.Format(_resources.Get("PushNotification_PaymentReceived"), formattedAmount), order.ClientLanguageCode);
                 var data = new Dictionary<string, object> { { "orderId", orderId } };
 
                 SendPushOrSms(order.AccountId, alert, data);

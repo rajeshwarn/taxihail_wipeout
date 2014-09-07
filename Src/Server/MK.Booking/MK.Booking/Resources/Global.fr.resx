@@ -298,7 +298,7 @@
     <value>Client ne s'est pas présenté</value>
   </data>
   <data name="OrderStatus_wosSCHED" xml:space="preserve">
-    <value>Plannifié</value>
+    <value>Planifié</value>
   </data>
   <data name="OrderStatus_wosTIMEOUT" xml:space="preserve">
     <value>Veuillez nous excuser, en raison d'un grand nombre de demandes nous n'avons pas de véhicule disponible, merci d'essayer ultérieurement.</value>
@@ -331,7 +331,7 @@
     <value>Votre vehicule sera bientôt au lieu de départ</value>
   </data>
   <data name="PushNotification_PaymentReceived" xml:space="preserve">
-    <value>Votre carte de crédit a été chargé d'un montant de {0:c}. Ce montant inclut le prix de la course ainsi que le pourboire.</value>
+    <value>Votre carte de crédit a été chargé d'un montant de {0}. Ce montant inclut le prix de la course ainsi que le pourboire.</value>
   </data>
   <data name="PushNotification_wosLOADED" xml:space="preserve">
     <value>Veuillez confirmer le véhicule avec lequel le payment de carte de crédit sera effectué.</value>
