@@ -305,6 +305,8 @@
                         android:gravity="center_horizontal|top"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="35dip"
+                        android:layout_marginRight="35dip"
                         local:MvxBind="Text StatusInfoText" />
                 </LinearLayout>
                 <ImageView
