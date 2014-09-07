@@ -318,7 +318,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             // In versions prior to 1.4, there was no note template
             // So if the IBS.NoteTemplate setting does not exist, use the old way 
-            var formattedNote = string.Format("{0}{1}{2}{3}", 
+            var formattedNote = string.Format("{0}{1}{1}{2}{3}", 
                                                 Environment.NewLine, chargeType, 
                                                 Environment.NewLine, note);
             if (!string.IsNullOrWhiteSpace(buildingName))
