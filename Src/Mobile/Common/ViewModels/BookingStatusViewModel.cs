@@ -363,27 +363,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var setting = _paymentService.GetPaymentSettings();
             var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 
-            IsUnpairButtonVisible = !_paymentService.GetPaymentSettings().AutomaticPayment  			// we don't want to unpair if client accepted the auto payment, only for RideLinqCMT
+			// unpair is only available for RideLinqCMT
+			IsUnpairButtonVisible = _paymentService.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt &&
+								!_paymentService.GetPaymentSettings().AutomaticPayment  			
 								&& _bookingService.IsPaired(Order.Id);      
-
 
 			var defaultCardRequirement = !(Settings.DefaultCardRequiredToPayNow && !_accountService.CurrentAccount.DefaultCreditCard.HasValue);
 
-			IsPayButtonVisible = (!Settings.HidePayNowButtonDuringRide) &&
-								defaultCardRequirement &&
-								(statusId == VehicleStatuses.Common.Done
-								||statusId == VehicleStatuses.Common.Loaded)
+			IsPayButtonVisible = (!Settings.HidePayNowButtonDuringRide)
+								&& defaultCardRequirement 
+								&& (statusId == VehicleStatuses.Common.Done
+									|| statusId == VehicleStatuses.Common.Loaded)
 								&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue
                                 && !_paymentService.GetPaymentSettings().AutomaticPayment
 			                    && !IsUnpairButtonVisible
 								&& (Order.Settings.ChargeTypeId == null 
 									|| Order.Settings.ChargeTypeId != ChargeTypes.Account.Id)
-                                && (setting.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null  
+                                && ((setting.IsPayInTaxiEnabled 
+										&& _accountService.CurrentAccount.DefaultCreditCard != null) 
                                     || setting.PayPalClientSettings.IsEnabled);
 			
 			IsCancelButtonVisible = _bookingService.IsOrderCancellable (statusId);
 
-            IsResendButtonVisible = isPayEnabled && !_paymentService.GetPaymentSettings().AutomaticPayment && _paymentService.GetPaymentFromCache(Order.Id).HasValue;
+            IsResendButtonVisible = isPayEnabled 
+				&& !_paymentService.GetPaymentSettings().AutomaticPayment 
+				&& _paymentService.GetPaymentFromCache(Order.Id).HasValue;
 		}
 
 		public void GoToSummary(){
