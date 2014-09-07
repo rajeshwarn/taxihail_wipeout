@@ -230,7 +230,7 @@
                     android:id="@+id/RebookTripBtn"
                     android:text="@string/Rebook"
                     android:visibility="gone"
-                    local:MvxBind="Enabled IsCompleted; Visibility RebookIsAvailable, Converter=Visibility; Click RebookOrder" />
+                    local:MvxBind="Enabled RebookIsAvailable; Visibility RebookIsAvailable, Converter=Visibility; Click RebookOrder" />
                 <Button
                     style="@style/ButtonActionGrayStyle"
                     android:layout_width="fill_parent"
@@ -262,7 +262,7 @@
                     android:id="@+id/CancelTripBtn"
                     android:text="@string/StatusActionCancelButton"
                     android:visibility="gone"
-                    local:MvxBind="Enabled IsCompleted, Converter=BoolInverter; Visibility IsCompleted, Converter=InvertedVisibility; Click CancelOrder" />
+                    local:MvxBind="Enabled CanCancel; Visibility CanCancel, Converter=Visibility; Click CancelOrder" />
                 <Button
                     style="@style/ButtonActionGrayStyle"
                     android:layout_width="fill_parent"

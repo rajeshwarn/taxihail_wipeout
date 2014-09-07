@@ -171,6 +171,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				statusId.SoftEqual (VehicleStatuses.Common.MeterOffNotPayed);
         }
 
+		public bool IsOrderCancellable(string statusId)
+		{
+			return statusId.IsNullOrEmpty () ||
+				statusId == VehicleStatuses.Common.Assigned ||
+				statusId == VehicleStatuses.Common.Waiting ||
+				statusId == VehicleStatuses.Common.Arrived ||
+				statusId == VehicleStatuses.Common.Scheduled;
+		}
+
         public bool IsCallboxStatusActive(string statusId)
         {
             return statusId.IsNullOrEmpty() ||
@@ -187,7 +196,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool IsStatusDone (string statusId)
         {
-            return statusId.SoftEqual(VehicleStatuses.Common.Done) || statusId.SoftEqual(VehicleStatuses.Common.MeterOffNotPayed);
+            return statusId.SoftEqual(VehicleStatuses.Common.Done) || 
+				statusId.SoftEqual(VehicleStatuses.Common.MeterOffNotPayed);
         }
 
 		public async Task<DirectionInfo> GetFareEstimate(Address pickup, Address destination, int? vehicleTypeId, DateTime? pickupDate)

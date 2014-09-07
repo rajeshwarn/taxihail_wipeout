@@ -381,11 +381,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 && (setting.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null  
                                     || setting.PayPalClientSettings.IsEnabled);
 			
-            IsCancelButtonVisible = statusId == null 
-			                    || statusId == VehicleStatuses.Common.Assigned 
-                                || statusId == VehicleStatuses.Common.Waiting 
-                                || statusId == VehicleStatuses.Common.Arrived
-                                || statusId == VehicleStatuses.Common.Scheduled;
+			IsCancelButtonVisible = _bookingService.IsOrderCancellable (statusId);
 
             IsResendButtonVisible = isPayEnabled && !_paymentService.GetPaymentSettings().AutomaticPayment && _paymentService.GetPaymentFromCache(Order.Id).HasValue;
 		}
