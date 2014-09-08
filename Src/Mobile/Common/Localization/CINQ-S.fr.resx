@@ -222,4 +222,7 @@
   <data name="View_BookRating" xml:space="preserve">
     <value>Évaluer votre trajet</value>
   </data>
+  <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
+    <value>Aucune carte bancaire enregistrée dans votre compte.</value>
+  </data>
 </root>
