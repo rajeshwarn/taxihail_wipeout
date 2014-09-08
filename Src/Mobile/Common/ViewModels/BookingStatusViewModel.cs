@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -436,23 +437,51 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void CenterMap ()
         {   
-			if (Order == null) {
+			if (Order == null) 
+			{
 				return;
 			}
 
-			var pickup = CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true);
+			var showPickupOnlyStatus = new [] { VehicleStatuses.Common.Waiting, VehicleStatuses.Common.Timeout, VehicleStatuses.Common.Scheduled };
+			var showPickupAndVehicleStatus = new [] { VehicleStatuses.Common.Assigned, VehicleStatuses.Common.Arrived, VehicleStatuses.Common.NoShow };
+			var showVehicleAndDropOffStatus = new [] { VehicleStatuses.Common.Loaded, VehicleStatuses.Common.MeterOffNotPayed, VehicleStatuses.Common.Done };
 
-			if (OrderStatusDetail != null &&
-				OrderStatusDetail.IBSStatusId != VehicleStatuses.Common.Waiting &&
-				OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue) 
+			// should show nothing but pickup
+			if (OrderStatusDetail == null
+				|| showPickupOnlyStatus.Contains(OrderStatusDetail.IBSStatusId)
+				|| (!OrderStatusDetail.VehicleLatitude.HasValue && !OrderStatusDetail.VehicleLongitude.HasValue))
 			{
-				MapCenter = new[] 
-				{ 
-					pickup,
-					CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value)                   
-				};
-			} else {
+				var pickup = CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true);
 				MapCenter = new[] { pickup };
+				return;
+			}
+
+			// should show pickup and vehicle
+			if (showPickupAndVehicleStatus.Contains(OrderStatusDetail.IBSStatusId))
+			{
+				var pickup = CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true);
+				var vehicle = CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value);
+				MapCenter = new[] { pickup, vehicle };
+				return;
+			}
+
+			// should show vehicle and dropoff (if available)
+			if (showVehicleAndDropOffStatus.Contains(OrderStatusDetail.IBSStatusId))
+			{
+				var vehicle = CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value, true);
+
+				if (Order.DropOffAddress != null
+					&& Order.DropOffAddress.HasValidCoordinate ())
+				{
+					var dropOff = CoordinateViewModel.Create(Order.DropOffAddress.Latitude, Order.DropOffAddress.Longitude, true);
+					MapCenter = new[] { vehicle, dropOff };
+				}
+				else
+				{
+					MapCenter = new[] { vehicle };
+				}
+
+				return;
 			}
         }
 
