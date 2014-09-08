@@ -459,8 +459,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
             _userMovedMapSubsciption.Disposable = null;
-
-			CancelCalculateFareEstimate.Execute (null);
+			
         }
 
         private void ChangeState(HomeViewModelPresentationHint hint)

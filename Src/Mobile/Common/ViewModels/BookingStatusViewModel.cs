@@ -487,17 +487,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		#region Commands
 
-		public ICommand CancelCalculateFareEstimate
-		{
-			get {
-				return this.GetCommand (() => {
-
-					this._orderWorkflowService.CancelCalculateEstimatedFare();
-
-				});
-			}
-		}
-
 		public ICommand NewRide
         {
             get {

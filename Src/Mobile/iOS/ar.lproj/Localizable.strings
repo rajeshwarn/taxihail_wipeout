@@ -26,7 +26,7 @@
 "HistoryDetailPickupLabel"="موقعك:";
 "NearbyPlacesTitle"="أماكن قريبة";
 "PickupViewDestinationLabel"="الوجهة  &gt;&gt;";
-"StatusActionBookButton"="احجز سيارة أجرة اخرى";
+"StatusActionBookButton"="Book another vehicle";
 "CmtRideLinqCancelChanges"="إلغاء";
 "TabContacts"="قائمة الإتصال";
 "LoginForgotPassword"="ه نسيت كلمة السر ؟";
@@ -100,7 +100,7 @@
 "Tuto04Top"="إن رغبت في ذلك، يمكنك أيضا ضبط وجهتك.";
 "DeleteAddressBt"="مسح العنوان";
 "ConfirmOriginLablel"="الإلتقاء";
-"InvalidBookinInfoWhenDestinationIsRequired"="لحجز سيارة الأجرة، يجب أن تدخل عنوان صحيح لمكان المغادرة والوصول.";
+"InvalidBookinInfoWhenDestinationIsRequired"="To book an Audi, you need to enter a valid pickup address and destination address.";
 "LocalContactCannotBeResolverTitle"="الإسم غير صحيح";
 "VehicleNumberErrorTitle"="خطأ";
 "ResetPasswordSucessMessage"="تم إعادة ضبط كلمة المرور بنجاح";
@@ -115,7 +115,7 @@
 "NoPhoneNumberMessage"="رقم هاتف هذا السائق خاطئ";
 "May"="مايو (05)";
 "ServiceErrorCallTitle"="رسالة";
-"CarAssigned"="السيارة الخاصة بك {0}";
+"CarAssigned"="Your vehicle {0}";
 "AccountActivationMessage"="تم إرسال رسالة إلكترونية. اتبع الرابط في الرسالة لتأكيد عنوانك";
 "Save"="حفظ";
 "PaymentDetails.Optional"="اختياري";
@@ -323,7 +323,7 @@
 "AccountDisabled"="تم إيقاف حسابك، الرجاء الإتصال ب {0} على {1} لتفعيل حسابك";
 "FavoriteLocationsTitle"="مشاويرك المفضلة";
 "PassengerPhoneLabel"="الهاتف";
-"TaxiMapTitle"="سيارة الأجرة الخاصه بك";
+"TaxiMapTitle"="Your vehicle";
 "ConfirmPassengersLabel"="عدد الركاب:";
 "Rebook"="إعادة حجز المشوار";
 "Done"="تم";
@@ -360,7 +360,7 @@
 "ServiceErrorCreateOrder_CannotCreateInIbs"="لا يمكن إدخال الطلب. الرجاء المحاولة من جديد أو اتصل بنا.";
 "Tuto04Bottom"="بذلك سيتم تزويدك بسعر تقريبي للرحلة.";
 "ResetPasswordConfirmationMessage"="تم إرسال كلمة مرور جديدة بالبريد الإلكتروني.";
-"ReminderDetails"="تذكير: سيكون السائق في خدمتك من {0} الساعة {1} يوم {2}.";
+"ReminderDetails"="Reminder: your vehicle will pick you up from {0} at {1} on {2}.";
 "StatusActionButton"="إتصال / حجز/ إلغاء";
 "PassengerNameLabel"="الإسم";
 "DefaultRideSettingsViewTitle"="إعدادات";
@@ -417,7 +417,7 @@
 "TabHistory"="السجل";
 "View_SignIn"="تسجيل الدخول";
 "View_BookRating"="قم بتقييم مشوارك";
-"PaymentViewMeterAmountText"="قيمة العداد";
+"PaymentViewMeterAmountText"="Price";
 "YesButton"="نعم";
 "ConfirmVehiculeTypeLabel"="نوع السيارة:";
 "View_BookingStatus"="الوضع";
@@ -443,12 +443,12 @@
 "InvalidAddressMessage"="العنوان الذي أدخلته غير صحيح. يرجى التأكد من المعلومات";
 "PaymentViewTotalText"="الإجمالي";
 "DateTimePickerPickInvalidDateTitle"="التاريخ / الوقت غير صحيح";
-"DriverInfoTaxiType"="نوع سيارة الأجرة:";
+"DriverInfoTaxiType"="Vehicle Type:";
 "PaymentDetails.InvalidDataTitle"="بيانات الدفع غير صحيحة";
 "PaymentDetails.TipAmountLabel"="قيمة الإكرامية";
 "DriverInfoLicence"="رقم الرخصة:";
 "Order"="طلب";
-"TAXI"="";
+"TAXI"="Vehicle";
 "WarningLocationServiceCancel"="الغاء";
 "Error_AccountPaymentTitle"="خطأ";
 "UpdatedTermsAndConditionsAcceptButton"="موافق";
@@ -477,7 +477,7 @@
 "PendingOrderMessage"="You cannot book this ride since an order is already pending. View the order status?";
 "PendingOrderView"="View";
 "NoCardOnFileMessage"="You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.";
-"Eta"="The nearest taxi is {0} and {1} {2} away";
+"Eta"="The nearest vehicle is {1} {2} away";
 "EtaDurationUnitPlural"="mins";
 "AddACardButton"="Add Card";
 "PayInCar"="Pay in Car";
@@ -496,7 +496,7 @@
 "Notification_BookingConfirmationEmail"="Booking Confirmation (Email)";
 "View_NotificationSettings"="Notifications";
 "EtaDurationUnit"="min";
-"StatusEta"="{0} and {1} {2} away";
+"StatusEta"="and is {1} {2} away";
 "RateLastRideTitle"="Rate last ride?";
 "RateLastRide"="Rate";
 "NotNow"="Not now";
@@ -509,3 +509,8 @@
 "PaymentInCar"="Payment In Car";
 "CardOnFile"="Card on File";
 "ChargeAccount"="Charge Account";
+"ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall"="The specified Destination address lies outside the regular service area.";
+"ServiceErrorCreateOrder_CannotCreateInIbs_1452"="The specified Destination address lies outside the regular service area. Please contact {0} at {1} for further assistance.";
+"Safety"="Safety";
+"Politeness"="Politeness";
+"Knowledgabledriver"="Cleanliness";

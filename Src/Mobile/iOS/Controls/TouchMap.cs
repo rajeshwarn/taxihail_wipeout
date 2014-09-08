@@ -99,9 +99,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _moveMapCommand.Dispose();
                 _moveMapCommand = null;
             }
-
-
-			CancelCalculateFareEstimate.Execute (null);
         }
 
         private void ExecuteMoveMapCommand()
@@ -145,8 +142,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             } 
         }
-
-		public ICommand CancelCalculateFareEstimate { get; set; }
 
         private AddressSelectionMode _addressSelectionMode;
         public AddressSelectionMode AddressSelectionMode 

@@ -74,7 +74,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	    bool IsOrderRebooked();
 
         void CancelRebookOrder();
-		void CancelCalculateEstimatedFare ();
     }
 }
 

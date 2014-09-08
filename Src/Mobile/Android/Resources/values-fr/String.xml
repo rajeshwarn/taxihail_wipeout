@@ -36,7 +36,7 @@
   <string name="BookPickupLocationButtonTitle">Départ</string>
   <string name="BookPickupLocationEmptyPlaceholder">Choisissez votre lieu de départ sur la carte</string>
   <string name="BookRatingErrorMessage">Merci d\'évaluer la qualité de votre trajet</string>
-  <string name="BookRatingErrorTitle">Erreur</string>
+  <string name="BookRatingErrorTitle">Attention</string>
   <string name="BookViewInvalidDate">La date et l\'heure de départ sont invalides</string>
   <string name="BuildingName">Nom du bâtiment / commentaires</string>
   <string name="CallButton">Appeler</string>
@@ -189,7 +189,7 @@
   <string name="InvalidAddressTitle">Adresse invalide</string>
   <string name="InvalidBookinInfo">Pour commander une Audi, merci d\'entrer une adresse valide</string>
   <string name="InvalidBookinInfoTitle">Informations de commande invalides</string>
-  <string name="InvalidBookinInfoWhenDestinationIsRequired">Pour commander une Audi, vous devez entrez des adresses de départ et de destination valides.</string>
+  <string name="InvalidBookinInfoWhenDestinationIsRequired">Pour commander une Audi, vous devez entrer des adresses de départ et de destination valides.</string>
   <string name="InvalidChoiceTitle">Choix invalide</string>
   <string name="InvalidLocalContactMessage">L\'adresse semble ne pas correspondre au contact</string>
   <string name="InvalidLocalContactTitle">Informations erronées</string>
@@ -350,8 +350,8 @@
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall">La commande ne peut être créée car votre compte est actuellement désactivé</string>
   <string name="ServiceErrorCreateOrder_InvalidProvider">La commande ne peut être créé car le fournisseur est invalide. Merci de contacter {0} à {1} pour plus d\'assistance.</string>
   <string name="ServiceErrorCreateOrder_InvalidProvider_NoCall">Désolé, la demande ne peut être prise en compte. Le fournisseur n\'est pas valide.</string>
-  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable">Aucun tarif n\'est disponible pour la course. Merci de spécifier une adresse de départ et une destination.</string>
-  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall">Aucun tarif n\'est disponible pour la course. Merci de spécifier une adresse de départ et une destination.</string>
+  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable">Aucun tarif n\'est disponible pour la course. Merci de spécifier des adresses de départ et de destination valides.</string>
+  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall">Aucun tarif n\'est disponible pour la course. Merci de spécifier des adresses de départ et de destination valides.</string>
   <string name="ServiceErrorCreateOrder_NoProvider">Désolé, la demande ne peut être prise en compte car vous n\'avez pas choisi de fournisseur. Merci de réessayer ultérieurement ou de nous joindre au {0}.</string>
   <string name="ServiceErrorCreateOrder_VehiculeType">Désolé, la demande ne peut être prise en compte car le type de véhicule choisi n\'est pas valide. Merci de réessayer ultérieurement ou de nous joindre au {0}</string>
   <string name="ServiceErrorDefaultMessage">Désolé, nous avons rencontré un problème. Merci de réessayer ultérieurement</string>
@@ -428,7 +428,7 @@
   <string name="VehicleNumberNotice">Veuillez noter que si le numéro du véhicule ci-haut ne correspond pas au numéro actuel de votre Audi, nous regrettons de vous informer qu\'il sera impossible de procéder au paiement via l\'application. Veuillez retourner à l\'écran précédant et payez directement au chauffeur.</string>
   <string name="Version">v{0}</string>
   <string name="ViewAll">Voir</string>
-  <string name="ViewRatingBtn">Évaluations</string>
+  <string name="ViewRatingBtn">Évaluation</string>
   <string name="View_AboutUs">À propos</string>
   <string name="View_BookingDetail">Détails de la réservation</string>
   <string name="View_BookingDetail_TitlePickupDetails">Informations concernant le départ</string>
@@ -500,7 +500,7 @@
   <string name="EtaDurationUnitPlural">minutes</string>
   <string name="DontAsk">Ne plus demander</string>
   <string name="NotNow">Plus tard</string>
-  <string name="StatusEta">Votre véhicule arrive dans {1} {2}</string>
+  <string name="StatusEta">et arrive dans {1} {2}</string>
   <string name="EtaNotAvailable">Il n\'y a pas de véhicule disponible</string>
   <string name="RateLastRide">Évaluer</string>
   <string name="RateLastRideMessage">Nous aimerions recevoir vos commentaires sur votre dernière course, voulez-vous l\'évaluer?</string>
@@ -526,8 +526,8 @@
   <string name="AccountPaymentQuestionsPlaceHolder">{0} caractères maximum</string>
   <string name="AccountPaymentQuestionsRequired">(requis)</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">Le code de confirmation est incorrect.</string>
-  <string name="Knowledgabledriver">Trajet respecté</string>
-  <string name="Safety">Conduite sécuritaire</string>
+  <string name="Knowledgabledriver">Propreté</string>
+  <string name="Safety">Conduite</string>
   <string name="Politeness">Politesse</string>
-  <string name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard">Aucune carte de crédit enregistrée dans votre compte.</string>
+  <string name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard">Aucune carte bancaire enregistrée dans votre compte.</string>
 </resources>
