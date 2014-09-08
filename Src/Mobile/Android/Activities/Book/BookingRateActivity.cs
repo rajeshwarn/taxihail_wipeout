@@ -1,6 +1,7 @@
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
 
@@ -24,6 +25,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		{
 			base.OnViewModelSet ();
             SetContentView(Resource.Layout.View_BookingRating);
+        }
+
+        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
+        {
+            if (keyCode == Keycode.Back)
+            {
+                ViewModel.CheckAndSendRatings();
+
+                if (!ViewModel.CanUserLeaveScreen())
+                {
+                    return false;
+                }
+            }
+
+            return base.OnKeyDown(keyCode, e);
         }
     }
 }
