@@ -348,4 +348,13 @@
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
     <value>Fare will be paid using your default CC payment</value>
   </data>
+  <data name="CardOnFile" xml:space="preserve">
+    <value>Card on File</value>
+  </data>
+  <data name="ChargeAccount" xml:space="preserve">
+    <value>Charge Account</value>
+  </data>
+  <data name="PaymentInCar" xml:space="preserve">
+    <value>Payment in Car</value>
+  </data>
 </root>
