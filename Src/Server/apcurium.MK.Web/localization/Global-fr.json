@@ -27,6 +27,7 @@
     "CreateOrder_CannotCreateInIbs_1452": "L'adresse de destination est en dehors de la zone de service normale.",
 	"CreateOrder_CannotCreateInIbs_7000": "La commande ne peut être créée car votre compte est actuellement désactivé",
     "CreateOrder_CannotCreateInIbs_3000": "La commande ne peut être créée. Merci de nous contacter pour plus d'assistance.",
+    "CreateOrder_CardOnFileButNoCreditCard": "La commande ne peut être créée. Aucune carte de crédit n'est enregistrée dans votre compte.",
 	"CreateOrder_NoFareEstimateAvailable": "Désolé, nous n'avons pas pu estimer le montant de votre trajet. Merci de nous contacter pour plus d'assistance.",
 	"CreateOrder_SettingsRequired": "Paramètres requis",
     "CreateOrder_NoProvider": "Aucun fournisseur",
