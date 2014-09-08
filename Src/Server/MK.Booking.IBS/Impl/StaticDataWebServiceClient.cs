@@ -38,12 +38,18 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         public string GetZoneByCoordinate(int? providerId, double latitude, double longitude)
         {
-            var zone = "";
+            var zone = GetCachedZone(providerId, latitude, longitude);
+            if (zone != null)
+            {
+                Logger.LogMessage("Zone found in the cache : " + zone);
+                return zone;
+            }
+
             var useProvider = providerId.HasValue && providerId > 0;
             var zoneByCompanyEnabled =
                 ConfigManager.GetSetting("IBS.ZoneByCompanyEnabled")
                     .SelectOrDefault(bool.Parse, false);
-
+            
             UseService(service =>
             {
                 if (providerId != null)
@@ -53,6 +59,17 @@ namespace apcurium.MK.Booking.IBS.Impl
                         : service.GetZoneByGPS(UserNameApp, PasswordApp, latitude, longitude);
                 }
             });
+            return zone;
+        }
+
+        readonly Dictionary<string, string> _zonesCached = new Dictionary<string, string>(); 
+
+
+        private string GetCachedZone(int? providerId, double latitude, double longitude)
+        {
+            string zone;
+            var key = latitude + "|" + longitude;
+            _zonesCached.TryGetValue(key, out zone);
             return zone;
         }
 
