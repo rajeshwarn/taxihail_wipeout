@@ -459,17 +459,41 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             CalculateEstimatedFare();
 		}
 
+		private CancellationTokenSource _calculateFareCancellationTokenSource = new CancellationTokenSource();
+
 		private async Task CalculateEstimatedFare()
 		{
+			_calculateFareCancellationTokenSource.Cancel();
+			_calculateFareCancellationTokenSource = new CancellationTokenSource();
+
+			Console.WriteLine ("Estimate Fare START");
+
+			var newCancelToken = _calculateFareCancellationTokenSource.Token;
+
 			_estimatedFareDisplaySubject.OnNext(_localize["EstimateFareCalculating"]);
 
 			var order = await GetOrderForEstimate ();
 
-			var direction = await _bookingService.GetFareEstimate(order);
-			var estimatedFareString = _bookingService.GetFareEstimateDisplay(direction);
+			if (newCancelToken.IsCancellationRequested) {
+				return;
+			}
 
+			var direction = await _bookingService.GetFareEstimate(order);
+
+			if (newCancelToken.IsCancellationRequested) {
+				return;
+			}
+
+			var estimatedFareString = _bookingService.GetFareEstimateDisplay(direction);
+			Console.WriteLine ("Estimate Fare DONE");
 			_estimatedFareDetailSubject.OnNext (direction);
 			_estimatedFareDisplaySubject.OnNext(estimatedFareString);
+		}
+
+		public void CancelCalculateEstimatedFare()
+		{
+			Console.WriteLine ("Estimate Fare CANCEL");
+			_calculateFareCancellationTokenSource.Cancel ();
 		}
 
 		private async Task<CreateOrder> GetOrderForEstimate()

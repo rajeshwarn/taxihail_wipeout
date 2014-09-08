@@ -67,6 +67,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public ICommand MapMoved { get; set; }
 
+		public ICommand CancelCalculateFareEstimate { get; set; }
+
         private bool IsMapTouchDown { get; set; }
 
         public Address Pickup
@@ -245,6 +247,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _moveMapCommand.Dispose();
                 _moveMapCommand = null;
             }
+
+			CancelCalculateFareEstimate.Execute (null);
         }
 
         public override bool DispatchTouchEvent(MotionEvent e)
