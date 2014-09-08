@@ -334,7 +334,7 @@
     <value>Votre carte de crédit a été chargé d'un montant de {0}. Ce montant inclut le prix de la course ainsi que le pourboire.</value>
   </data>
   <data name="PushNotification_wosLOADED" xml:space="preserve">
-    <value>Veuillez confirmer le véhicule avec lequel le payment de carte de crédit sera effectué.</value>
+    <value>Veuillez confirmer le véhicule avec lequel le paiement de carte de crédit sera effectué.</value>
   </data>
   <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
     <value>La course #{0} sera payée automatiquement à la fin du voyage en utilisant votre carte de crédit se terminant par {1} et en utilisant votre pouroire par défaut de {2}%</value>
@@ -349,7 +349,7 @@
     <value>Itinéraire</value>
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
-    <value>La course sera payée en utilisant votre carte de crédit</value>
+    <value>La course sera payée en utilisant votre carte de crédit enregistrée</value>
   </data>
   <data name="AccountConfirmationSmsBody" xml:space="preserve">
     <value>Votre code de confirmation pour {0} est {1} </value>
