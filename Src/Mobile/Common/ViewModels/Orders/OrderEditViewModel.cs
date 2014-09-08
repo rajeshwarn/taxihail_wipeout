@@ -16,7 +16,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
-	    private bool _hasCardOnFile;
 
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
@@ -31,7 +30,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			Vehicles = (await _accountService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
 			ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
-            _hasCardOnFile = (await _accountService.GetCreditCard()) != null;
             RaisePropertyChanged(() => IsChargeTypesEnabled);
 
 			this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
@@ -42,7 +40,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-                return !_hasCardOnFile || !Settings.DisableChargeTypeWhenCardOnFile;
+				// this is in cache and set correctly when we add/update/delete credit card
+				return _accountService.CurrentAccount.DefaultCreditCard.HasValue 
+					|| !Settings.DisableChargeTypeWhenCardOnFile;
             }
         }
 

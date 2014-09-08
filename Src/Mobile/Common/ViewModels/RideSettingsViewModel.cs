@@ -42,10 +42,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged(() => ChargeTypeId );
 				RaisePropertyChanged(() => ChargeTypeName );
 
-				// this should be called last since it calls the server, we don't want to slow down other controls
-				_hasCardOnFile = (await _accountService.GetCreditCard()) != null;
+				_hasCardOnFile = _accountService.CurrentAccount.DefaultCreditCard.HasValue;
 				RaisePropertyChanged(() => IsChargeTypesEnabled);
 
+				// this should be called last since it calls the server, we don't want to slow down other controls
 				var v = await _accountService.GetVehiclesList();
 				_vehicules = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
 				RaisePropertyChanged(() => Vehicles );
