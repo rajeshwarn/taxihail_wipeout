@@ -130,7 +130,7 @@
     <value>Numéro d'appartement</value>
   </data>
   <data name="Email_Body_AuthorizationNumber" xml:space="preserve">
-    <value>Numéro d'autorisation:</value>
+    <value>Numéro d'autorisation</value>
   </data>
   <data name="Email_Body_BookingConfirmation" xml:space="preserve">
     <value>Confirmation de réservation</value>
@@ -350,5 +350,8 @@
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
     <value>La course sera payée en utilisant for carte de crédit par défaut</value>
+  </data>
+  <data name="Email_Body_SubTotal" xml:space="preserve">
+    <value>Sous Total</value>
   </data>
 </root>

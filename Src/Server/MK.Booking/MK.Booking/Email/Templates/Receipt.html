@@ -289,10 +289,12 @@
 
         .fare_list_subtotal {
             font-weight: bold;
+            text-align: left;
         }
 
         .fare_list_charged {
             font-weight: bolder;
+            text-align: left;
         }
 
             .fare_list_subtotal .fare_list_title, .fare_list_charged .fare_list_title {
@@ -482,21 +484,21 @@
                                                                         <td class="fare_list_price">{{ Fare }}</td>
                                                                     </tr>
                                                                     <tr>
+                                                                        <td class="fare_list_title">{{ localize "Email_Body_VAT"}}</td>
+                                                                        <td class="fare_list_price">{{ Tax }}</td>
+                                                                    </tr>
+                                                                    <tr class="fare_list_subtotal">
+                                                                        <td class="fare_list_title">{{ localize "Email_Body_SubTotal" }}</td>
+                                                                        <td class="fare_list_price">{{ SubTotal }}</td>
+                                                                    </tr>
+                                                                  <!--  <tr>
                                                                         <td class="fare_list_title">{{ localize "Email_Body_Toll"}}</td>
                                                                         <td class="fare_list_price">{{ Toll }}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="fare_list_title">{{ localize "Email_Body_Tip"}}</td>
                                                                         <td class="fare_list_price">{{ Tip }}</td>
-                                                                    </tr>
-                                                                    <tr class="fare_list_subtotal">
-                                                                        <td class="fare_list_title">Subtotal <!--{{ localize "" }}--></td>
-                                                                        <td class="fare_list_price">{{ SubTotal }}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="fare_list_title">{{ localize "Email_Body_VAT"}}</td>
-                                                                        <td class="fare_list_price">{{ Tax }}</td>
-                                                                    </tr>
+                                                                    </tr>-->
                                                                     <tr class="fare_list_charged">
                                                                         <td class="fare_list_title">{{ localize "Email_Body_TotalFare"}}</td>
                                                                         <td class="fare_list_price">{{ TotalFare }}</td>
@@ -505,7 +507,7 @@
                                                             </td>
                                                         </tr>
                                                     </table>
-                                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                                  <!--  <table width="100%" cellpadding="0" cellspacing="0">
                                                         <tr>
                                                             <td class="title_block">{{ localize "Email_Body_Driver" }}</td>
                                                         </tr>
@@ -519,7 +521,7 @@
                                                                 </table>
                                                             </td>
                                                         </tr>
-                                                    </table>
+                                                    </table>-->
                                                     {{#IsCardOnFile}}
                                                     <table width="100%" cellpadding="0" cellspacing="0">
                                                         <tr>

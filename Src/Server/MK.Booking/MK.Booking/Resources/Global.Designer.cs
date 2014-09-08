@@ -358,6 +358,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Subtotal.
+        /// </summary>
+        public static string Email_Body_SubTotal {
+            get {
+                return ResourceManager.GetString("Email_Body_SubTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thank you!.
         /// </summary>
         public static string Email_Body_ThankYou {
