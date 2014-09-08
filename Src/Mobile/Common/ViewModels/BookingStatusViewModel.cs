@@ -53,7 +53,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public void Init(string order, string orderStatus)
 		{
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
-			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
+			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);
+            DisplayOrderNUmber();
 			IsCancelButtonVisible = true;			
 			_waitingToNavigateAfterTimeOut = false;
 		}
@@ -327,9 +328,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 UpdatePayCancelButtons(status.IBSStatusId);
 
-                if (OrderStatusDetail.IBSOrderId.HasValue) {
-                    ConfirmationNoTxt = string.Format(this.Services().Localize["StatusDescription"], OrderStatusDetail.IBSOrderId.Value + "");
-                }
+                DisplayOrderNUmber();
 
                 if (isDone) 
                 {
@@ -347,7 +346,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		string FormatEta(Direction direction)
+	    private void DisplayOrderNUmber()
+	    {
+	        if (OrderStatusDetail.IBSOrderId.HasValue)
+	        {
+	            ConfirmationNoTxt = string.Format(this.Services().Localize["StatusDescription"],
+	                OrderStatusDetail.IBSOrderId.Value + "");
+	        }
+	    }
+
+	    string FormatEta(Direction direction)
 		{
 			if (!direction.IsValidEta())
 			{

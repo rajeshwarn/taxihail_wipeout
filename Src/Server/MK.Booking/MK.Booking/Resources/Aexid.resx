@@ -126,6 +126,9 @@
   <data name="OrderStatus_wosLOADED" xml:space="preserve">
     <value>Passengers are in the vehicle</value>
   </data>
+  <data name="PaymentInCar" xml:space="preserve">
+    <value>Payment in Car</value>
+  </data>
   <data name="PushNotification_wosARRIVED" xml:space="preserve">
     <value>Your vehicle (#{0}) has arrived</value>
   </data>

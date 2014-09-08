@@ -88,6 +88,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment in Car.
+        /// </summary>
+        internal static string PaymentInCar {
+            get {
+                return ResourceManager.GetString("PaymentInCar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your vehicle (#{0}) has arrived.
         /// </summary>
         internal static string PushNotification_wosARRIVED {
