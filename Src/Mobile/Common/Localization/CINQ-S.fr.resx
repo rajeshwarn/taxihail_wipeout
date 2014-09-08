@@ -237,4 +237,10 @@
   <data name="Safety" xml:space="preserve">
     <value>Conduite</value>
   </data>
+  <data name="RateLastRideMessage" xml:space="preserve">
+    <value>Nous aimerions recevoir vos commentaires sur votre dernière course.</value>
+  </data>
+  <data name="RateLastRideTitle" xml:space="preserve">
+    <value>Évaluer la dernière course</value>
+  </data>
 </root>

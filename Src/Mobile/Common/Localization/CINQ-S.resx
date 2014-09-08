@@ -171,4 +171,10 @@
   <data name="Knowledgabledriver" xml:space="preserve">
     <value>Cleanliness</value>
   </data>
+  <data name="RateLastRideMessage" xml:space="preserve">
+    <value>We would appreciate your feedback on your last ride.</value>
+  </data>
+  <data name="RateLastRideTitle" xml:space="preserve">
+    <value>Rate last ride</value>
+  </data>
 </root>

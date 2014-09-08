@@ -88,6 +88,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				CanRate = canRate;
 				if(!CanRate)
 				{
+				    _hasRated = true;
 					var orderRatings = _bookingService.GetOrderRating(Guid.Parse(orderId));
 					Note = orderRatings.Note;
 					RatingList = orderRatings.RatingScores.Select(c=> new RatingModel
@@ -130,6 +131,56 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					this.ReturnResult(new OrderRated(this, OrderId));
 				});
             }
+        }
+
+        public void CheckAndSendRatings()
+        {
+            if (!Settings.RatingEnabled || _hasRated)
+            {
+                return;
+            }
+
+            if (_ratingList.Any(c => c.Score == 0))
+            {
+                if (Settings.RatingRequired)
+                {
+                    this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"],
+                                                        this.Services().Localize["BookRatingErrorMessage"]);
+                    return;
+                }
+                return;
+            }
+
+            var orderRating = new OrderRatings
+            {
+                Note = Note,
+                OrderId = OrderId,
+                RatingScores =
+                    _ratingList.Select(
+                        c => new RatingScore
+                        {
+                            RatingTypeId = c.RatingTypeId,
+                            Score = c.Score,
+                            Name = c.RatingTypeName
+                        }).ToList()
+            };
+
+            _bookingService.SendRatingReview(orderRating);
+            _hasRated = true;
+        }
+
+        bool _hasRated;		
+
+        public bool CanUserLeaveScreen()
+        {
+            if (!_hasRated
+                && Settings.RatingEnabled
+                && Settings.RatingRequired
+                && !Settings.CanSkipRatingRequired)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
