@@ -27,6 +27,7 @@
     "CreateOrder_CannotCreateInIbs_1452": "Booking cannot be completed. The specified Dropoff address lies outside the regular service area. Please contact us for further assistance.",
 	"CreateOrder_CannotCreateInIbs_7000": "The order cannot be created because your account is currently inactive. Please contact us for further assistance.",
     "CreateOrder_CannotCreateInIbs_3000": "The order cannot be created. Please contact us for further assistance.",
+    "CreateOrder_CardOnFileButNoCreditCard": "The order cannot be created. No credit card on file.",
 	"CreateOrder_NoFareEstimateAvailable": "The order cannot be created because there is no estimate fare available for the ride. Please contact us for further assistance.",
 	"CreateOrder_SettingsRequired": "Settings required",
     "CreateOrder_NoProvider": "Bad Provider",

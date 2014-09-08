@@ -80,6 +80,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             Log.Info("Create order request : " + request.ToJson());
 
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             // User can still create future order, but we allow only one active Book now order.
             if (!request.PickupDate.HasValue)
             {
@@ -90,6 +91,14 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
                 }
+            }
+
+            //check if the account has a credit card
+            if (request.Settings.ChargeTypeId.HasValue
+                && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id
+                && !account.DefaultCreditCard.HasValue)
+            {
+                throw new HttpError(ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString());
             }
 
             var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue,
@@ -110,7 +119,7 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_SettingsRequired.ToString());
             }
 
-            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            
             var referenceData = (ReferenceData) _referenceDataService.Get(new ReferenceDataRequest());
 
             request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime();
@@ -127,14 +136,6 @@ namespace apcurium.MK.Booking.Api.Services
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
             {
                 // TODO (waiting for IBS endpoint to be done): send the info to ibs
-            }
-
-            //check if the account has a credit card
-            if (request.Settings.ChargeTypeId.HasValue
-                && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id
-                && !account.DefaultCreditCard.HasValue)
-            {
-                throw new HttpError(ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString());
             }
 
             var chargeType = ChargeTypes.GetList()
