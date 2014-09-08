@@ -225,4 +225,10 @@
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>Aucune carte bancaire enregistrée dans votre compte.</value>
   </data>
+  <data name="Knowledgabledriver" xml:space="preserve">
+    <value>Propreté</value>
+  </data>
+  <data name="Safety" xml:space="preserve">
+    <value>Conduite</value>
+  </data>
 </root>

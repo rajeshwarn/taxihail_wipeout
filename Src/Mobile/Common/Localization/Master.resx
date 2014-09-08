@@ -1489,7 +1489,7 @@
     <value>Meter Amount</value>
   </data>
   <data name="BookRatingErrorTitle" xml:space="preserve">
-    <value>Error</value>
+    <value>Warning</value>
   </data>
   <data name="BookRatingErrorMessage" xml:space="preserve">
     <value>You need to rate your ride</value>

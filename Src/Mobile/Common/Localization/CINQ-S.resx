@@ -162,4 +162,7 @@
   <data name="TaxiMapTitle" xml:space="preserve">
     <value>Your vehicle</value>
   </data>
+  <data name="Knowledgabledriver" xml:space="preserve">
+    <value>Cleanliness</value>
+  </data>
 </root>

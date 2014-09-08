@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 							RatingTypeId = c.RatingTypeId,
 							Score = c.Score,
-							RatingTypeName = this.Services().Localize[c.Name.Replace(" ", "")]
+							RatingTypeName = c.Name
 						}).OrderBy(c=>c.RatingTypeId).ToList();
 				}
 			}

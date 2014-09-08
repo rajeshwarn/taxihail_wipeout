@@ -220,7 +220,7 @@
     <value>Merci de noter la qualité de votre dernier trajet</value>
   </data>
   <data name="BookRatingErrorTitle" xml:space="preserve">
-    <value>Erreur</value>
+    <value>Attention</value>
   </data>
   <data name="BookViewInvalidDate" xml:space="preserve">
     <value>La date et l'heure de départ sont invalides</value>
