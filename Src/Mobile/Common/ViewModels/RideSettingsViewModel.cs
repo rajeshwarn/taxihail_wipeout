@@ -285,9 +285,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     if (ValidateRideSettings())
                     {
-						var creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty ? default(Guid?) : PaymentPreferences.SelectedCreditCardId;
-						_accountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
-						Close(this);
+						using (this.Services ().Message.ShowProgress ())
+						{
+							var creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty ? default(Guid?) : PaymentPreferences.SelectedCreditCardId;
+							_accountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
+							Close(this);
+						}
                     }
                 });
             }
