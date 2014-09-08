@@ -129,7 +129,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get 
 			{
-				return IsCompleted && !Settings.HideRebookOrder;
+				return IsCompleted 
+					&& !Settings.HideRebookOrder;
 			}
 		}
 
@@ -149,7 +150,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {          
-				return Settings.RatingEnabled && IsDone && !HasRated;
+				return Settings.RatingEnabled 
+					&& IsDone 
+					&& !HasRated;
             }
         }
 
@@ -173,7 +176,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (Order != null)
                 {
-					return Order.IBSOrderId.HasValue ? Order.IBSOrderId.Value.ToString(CultureInfo.InvariantCulture) : "Error";
+					return Order.IBSOrderId.HasValue 
+						? Order.IBSOrderId.Value.ToString(CultureInfo.InvariantCulture) 
+						: "Error";
                 }
                 return null;
             }
@@ -279,11 +284,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                	{
                     var canRate = IsDone && !HasRated;
 					ShowSubViewModel<BookRatingViewModel,OrderRated>(new 
-                    {														
-						orderId = OrderId, 
-						canRate
-					}.ToStringDictionary(),
-					RefreshOrderStatus);
+						{														
+							orderId = OrderId, 
+							canRate
+						}.ToStringDictionary(),
+						RefreshOrderStatus);
                	});
             }
         }
@@ -318,12 +323,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>
                 {
-                    if (GuidExtensions.HasValue(OrderId))
-                    {
-						_bookingService.RemoveFromHistory(OrderId);
-                        this.Services().MessengerHub.Publish(new OrderDeleted(this, OrderId, null));
-						Close(this);
-                    }
+					using(this.Services().Message.ShowProgress())
+					{
+						if (OrderId.HasValue())
+	                    {
+							_bookingService.RemoveFromHistory(OrderId);
+	                        this.Services().MessengerHub.Publish(new OrderDeleted(this, OrderId, null));
+							Close(this);
+	                    }
+					}
                 });
             }
         }
@@ -334,11 +342,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>
                 {
-					_orderWorkflowService.Rebook(Order);
-					ShowViewModel<HomeViewModel>(new { 
-						locateUser =  false, 
-						defaultHintZoomLevel = new ZoomToStreetLevelPresentationHint(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude).ToJson()});
-                });
+					using(this.Services().Message.ShowProgress())
+					{
+						_orderWorkflowService.Rebook(Order);
+						ShowViewModel<HomeViewModel>(new { 
+							locateUser =  false, 
+							defaultHintZoomLevel = new ZoomToStreetLevelPresentationHint(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude).ToJson()});
+					}
+				});
             }
         }
 
@@ -348,11 +359,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>
                 {
-                    if (OrderId.HasValue())
-                    {
-						_bookingService.SendReceipt(OrderId);
-                    }
-                    Close(this);
+					using(this.Services().Message.ShowProgress())
+					{
+						if (OrderId.HasValue())
+						{
+							_bookingService.SendReceipt(OrderId);
+						}
+						Close(this);
+					}
                 });
             }
         }
@@ -366,38 +380,48 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					this.Services().Localize["StatusConfirmCancelRide"], 
                     this.Services().Localize["YesButton"], 
 					() =>
-                	{
-						var isSuccess = _bookingService.CancelOrder(OrderId);
-
-	                    if(isSuccess)
-	                    {
-	                        LoadStatus();
-	                    }
-	                    else
-	                    {
-	                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Localize["StatusConfirmCancelRideErrorTitle"], 
-	                                                                                            this.Services().Localize["StatusConfirmCancelRideError"]));
-	                    }
-	                },
+	                	{
+							using(this.Services().Message.ShowProgress())
+							{
+								var isSuccess = _bookingService.CancelOrder(OrderId);
+			                    if(isSuccess)
+			                    {
+			                        LoadStatus();
+			                    }
+			                    else
+			                    {
+			                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(
+										this.Services().Localize["StatusConfirmCancelRideErrorTitle"], 
+		                                this.Services().Localize["StatusConfirmCancelRideError"]));
+			                    }
+							}
+		                },
                     this.Services().Localize["NoButton"], 
-					() => { })); 
+						() => { })); 
             }
         }
 
         private string FormatDateTime(DateTime? date, DateTime? time)
         {
-            var result = date.HasValue ? date.Value.ToShortDateString() : this.Services().Localize["DateToday"];
+            var result = date.HasValue 
+				? date.Value.ToShortDateString() 
+				: this.Services().Localize["DateToday"];
             result += @" / ";
-            result += time.HasValue ? time.Value.ToShortTimeString() : this.Services().Localize["TimeNow"];
+            result += time.HasValue 
+				? time.Value.ToShortTimeString() 
+				: this.Services().Localize["TimeNow"];
             return result;
         }
 
         private string FormatAptRingCode(string apt, string rCode)
         {
-			var result = apt.HasValue() ? apt : this.Services().Localize["NoAptText"];
-
+			var result = apt.HasValue() 
+				? apt 
+				: this.Services().Localize["NoAptText"];
             result += @" / ";
-			result += rCode.HasValue() ? rCode : this.Services().Localize["NoRingCodeText"];
+			result += rCode.HasValue() 
+				? rCode 
+				: this.Services().Localize["NoRingCodeText"];
             return result;
         }
     }
