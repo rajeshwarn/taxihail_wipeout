@@ -34,9 +34,9 @@
             <select name="vehicleTypeId" class="input-block-level">
                 {{#each vehiclesList}}
                     {{#ifCond this.referenceDataVehicleId ../settings.vehicleTypeId}}
-                        <option value="{{this.referenceDataVehicleId}}" selected>{{this.name}}</option>
+                        <option value="{{this.referenceDataVehicleId}}" selected>{{localize this.name}}</option>
                     {{else}}
-                        <option value="{{this.referenceDataVehicleId}}">{{this.name}}</option>
+                        <option value="{{this.referenceDataVehicleId}}">{{localize this.name}}</option>
                     {{/ifCond}}
                 {{/each}}
             </select>

@@ -126,8 +126,14 @@
   <data name="EstimatePriceOver100" xml:space="preserve">
     <value>Cost: {0:c}</value>
   </data>
+  <data name="EstimatedFareNotAvailable" xml:space="preserve">
+    <value>Fare not available</value>
+  </data>
   <data name="EstimateDistance" xml:space="preserve">
     <value />
+  </data>
+  <data name="NoFareText" xml:space="preserve">
+    <value>Choose a destination to get a price.</value>
   </data>
   <data name="TaxiServerDownMessage" xml:space="preserve">
     <value>Can't send message to driver</value>

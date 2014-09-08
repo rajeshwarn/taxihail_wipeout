@@ -43,6 +43,7 @@
         
         <script type="text/javascript">
             TaxiHail.parameters.applicationName = "<%: ApplicationName %>";
+            TaxiHail.parameters.applicationKey = "<%: ApplicationKey %>";
             TaxiHail.parameters.defaultLatitude = <%: DefaultLatitude %>;
             TaxiHail.parameters.defaultLongitude = <%: DefaultLongitude %>;
             TaxiHail.parameters.defaultPhoneNumber = '<%: DefaultPhoneNumber %>';

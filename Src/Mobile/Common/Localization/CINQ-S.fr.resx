@@ -120,6 +120,9 @@
   <data name="EstimatePrice" xml:space="preserve">
     <value>Prix</value>
   </data>
+  <data name="NoFareText" xml:space="preserve">
+    <value>Vous devez saisir une destination pour obtenir le prix du trajet</value>
+  </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
     <value>Prix: {0:c}</value>
   </data>
@@ -127,7 +130,7 @@
     <value>Cette zone n'est pas desservie</value>
   </data>
   <data name="EstimatedFareNotAvailable" xml:space="preserve">
-    <value>Le prix ne peut être estimé pour le moment</value>
+    <value>Le prix ne peut être calculé pour le moment</value>
   </data>
   <data name="EstimateDistance" xml:space="preserve">
     <value />
@@ -170,6 +173,9 @@
   </data>
   <data name="DateTimePickerSetButton" xml:space="preserve">
     <value>Réserver</value>
+  </data>
+  <data name="PaymentInCar" xml:space="preserve">
+    <value>Carte bancaire - À bord</value>
   </data>
   <data name="Error_AccountPaymentQuestionRequiredMessage" xml:space="preserve">
     <value>Vous devez renseigner tous les champs pour continuer</value>
