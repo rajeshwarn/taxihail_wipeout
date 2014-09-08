@@ -41,31 +41,30 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationManager _configManager;
+        private readonly IAppSettings _appSettings;
         private readonly ReferenceDataService _referenceDataService;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
         private readonly Resources.Resources _resources;
-        private readonly CancelOrderService _cancelService;
 
         public CreateOrderService(ICommandBus commandBus,
             IBookingWebServiceClient bookingWebServiceClient,
             IAccountDao accountDao,
             IConfigurationManager configManager,
+            IAppSettings appSettings,
             ReferenceDataService referenceDataService,
             IStaticDataWebServiceClient staticDataWebServiceClient,
             IRuleCalculator ruleCalculator,
-            IUpdateOrderStatusJob updateOrderStatusJob, 
-            IConfigurationManager configurationManager,
-            IOrderDao orderDao,
-            CancelOrderService cancelService)
+            IUpdateOrderStatusJob updateOrderStatusJob,
+            IOrderDao orderDao)
         {
-            _cancelService = cancelService;
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
             _accountDao = accountDao;
             _referenceDataService = referenceDataService;
             _configManager = configManager;
+            _appSettings = appSettings;
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _ruleCalculator = ruleCalculator;
             _updateOrderStatusJob = updateOrderStatusJob;
@@ -138,10 +137,12 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString());
             }
 
-            var chargeType =
-               referenceData.PaymentsList.Where(x => x.Id == request.Settings.ChargeTypeId)
-                   .Select(x => x.Display)
-                   .FirstOrDefault();
+            var chargeType = ChargeTypes.GetList()
+                    .Where(x => x.Id == request.Settings.ChargeTypeId)
+                    .Select(x => x.Display)
+                    .FirstOrDefault();
+
+            chargeType = _resources.Get(chargeType, _appSettings.Data.PriceFormat);
 
             var ibsOrderId = CreateIbsOrder(account, request, referenceData, chargeType);
 
@@ -304,6 +305,8 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!string.IsNullOrWhiteSpace(noteTemplate))
             {
+                noteTemplate = string.Format("{0}{1}{2}", chargeType, Environment.NewLine, noteTemplate);
+
                 var transformedTemplate = noteTemplate
                     .Replace("\\r", "\r")
                     .Replace("\\n", "\n")
@@ -318,7 +321,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             // In versions prior to 1.4, there was no note template
             // So if the IBS.NoteTemplate setting does not exist, use the old way 
-            var formattedNote = string.Format("{0}{1}{1}{2}{3}", 
+            var formattedNote = string.Format("{0}{0}{1}{2}{3}", 
                                                 Environment.NewLine, chargeType, 
                                                 Environment.NewLine, note);
             if (!string.IsNullOrWhiteSpace(buildingName))

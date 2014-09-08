@@ -354,4 +354,13 @@
   <data name="AccountConfirmationSmsBody" xml:space="preserve">
     <value>Votre code de confirmation pour {0} est {1} </value>
   </data>
+  <data name="CardOnFile" xml:space="preserve">
+    <value>Paiement In App</value>
+  </data>
+  <data name="ChargeAccount" xml:space="preserve">
+    <value>Compte</value>
+  </data>
+  <data name="PaymentInCar" xml:space="preserve">
+    <value>Carte de crédit - à bord</value>
+  </data>
 </root>

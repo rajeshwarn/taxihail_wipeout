@@ -126,6 +126,9 @@
   <data name="OrderStatus_wosLOADED" xml:space="preserve">
     <value>Passagers à bord</value>
   </data>
+  <data name="PaymentInCar" xml:space="preserve">
+    <value>Carte Bancaire - à bord</value>
+  </data>
   <data name="PushNotification_wosARRIVED" xml:space="preserve">
     <value>Votre véhicule (#{0}) est arrivé</value>
   </data>
