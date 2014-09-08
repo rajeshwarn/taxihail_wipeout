@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using ServiceStack.Text;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -31,22 +32,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async void Init(string bookingSettings)
         {
-			_bookingSettings = bookingSettings.FromJson<BookingSettings>();
+			using (this.Services ().Message.ShowProgress ())
+			{
+				_bookingSettings = bookingSettings.FromJson<BookingSettings>();
 
-			var v = await _accountService.GetVehiclesList();
-			_vehicules = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
-			RaisePropertyChanged(() => Vehicles );
-			RaisePropertyChanged(() => VehicleTypeId );
-			RaisePropertyChanged(() => VehicleTypeName );
+				var p = await _accountService.GetPaymentsList();
+				_payments = p == null ? new ListItem[0] : p.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+				RaisePropertyChanged(() => Payments );
+				RaisePropertyChanged(() => ChargeTypeId );
+				RaisePropertyChanged(() => ChargeTypeName );
 
-			var p = await _accountService.GetPaymentsList();
-			_payments = p == null ? new ListItem[0] : p.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
-			RaisePropertyChanged(() => Payments );
-			RaisePropertyChanged(() => ChargeTypeId );
-			RaisePropertyChanged(() => ChargeTypeName );
+				// this should be called last since it calls the server, we don't want to slow down other controls
+				_hasCardOnFile = (await _accountService.GetCreditCard()) != null;
+				RaisePropertyChanged(() => IsChargeTypesEnabled);
 
-            _hasCardOnFile = (await _accountService.GetCreditCard()) != null;
-            RaisePropertyChanged(() => IsChargeTypesEnabled);
+				var v = await _accountService.GetVehiclesList();
+				_vehicules = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
+				RaisePropertyChanged(() => Vehicles );
+				RaisePropertyChanged(() => VehicleTypeId );
+				RaisePropertyChanged(() => VehicleTypeName );
+			}
 		}
 
         public bool ShouldDisplayTip
