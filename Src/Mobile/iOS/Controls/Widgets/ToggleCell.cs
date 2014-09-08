@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using System.ComponentModel;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -66,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			TextLabel.TextColor = UIColor.FromRGB(44, 44, 44);
 			TextLabel.BackgroundColor = UIColor.Clear;
 			TextLabel.Font = UIFont.FromName(FontName.HelveticaNeueLight, 32 / 2);
-			this.TextLabel.TextAlignment ();
+            TextLabel.TextAlignment = NaturalLanguageHelper.GetTextAlignment();
 
 			ContentView.BackgroundColor = UIColor.Clear;
 			BackgroundColor = UIColor.Clear;

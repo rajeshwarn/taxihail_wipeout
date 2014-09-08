@@ -40,18 +40,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ? UIColor.White 
                 : UIColor.Clear;
 
+            TextAlignment = NaturalLanguageHelper.GetTextAlignment();
+
 			if (UIHelper.IsOS7orHigher) 
             {
 				TintColor = UIColor.FromRGB (44, 44, 44); // cursor color
-				TextAlignment = UITextAlignment.Natural;
 			} 
-            else 
-            {
-				if (this.Services ().Localize.IsRightToLeft)
-				{
-					TextAlignment = UITextAlignment.Right;
-				}
-			}
 
             TextColor = UIColor.FromRGB(44, 44, 44);
 			Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);

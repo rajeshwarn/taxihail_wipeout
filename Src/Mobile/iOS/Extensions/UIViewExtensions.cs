@@ -6,6 +6,7 @@ using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using MonoTouch.CoreAnimation;
+using MonoTouch.Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -34,7 +35,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 return view;
             }
-            foreach (var subView in view.Subviews) {
+
+            foreach (var subView in view.Subviews) 
+            {
                 var firstResponder = subView.FindFirstResponder();
                 if (firstResponder != null)
                     return firstResponder;
@@ -52,7 +55,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
                 
                 if (view.Superview != stopAt)
+                {
                     return view.Superview.FindSuperviewOfType(stopAt, type);
+                }
             }
             
             return null;
@@ -68,7 +73,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
                 
                 if (view.Superview != stopAt)
+                {
                     return view.Superview.FindSuperviewOfType<T>(stopAt);
+                }
             }
             
             return null;
@@ -87,7 +94,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public static void RemoveDelay(this UIView view)
         {
-            foreach (var subView in view.Subviews) {
+            foreach (var subView in view.Subviews) 
+            {
                 var scroll = subView as UIScrollView;
                 if (scroll != null)
                 {
@@ -100,6 +108,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             UIViewHelper.StackSubViews (thisView.Subviews);
         }
+
 		public static void StackSubViews (this UIView thisView, float topPadding, float spaceBetweenElements)
 		{
 			UIViewHelper.StackSubViews (thisView, topPadding, spaceBetweenElements);
@@ -108,15 +117,16 @@ namespace apcurium.MK.Booking.Mobile.Client
         public static void ResignFirstResponderOnSubviews (this UIView thisView)
         {
             thisView.ResignFirstResponder();                
-            foreach (var view in thisView.Subviews) {               
+            foreach (var view in thisView.Subviews) 
+            {               
                 view.ResignFirstResponderOnSubviews();              
             }
         }
-        
-        
+
         public static void AddToBottom (this UIView thisView, UIView toAdd)
         {
-            if (thisView.Subviews.Any()) {
+            if (thisView.Subviews.Any()) 
+            {
                 var bottom = thisView.Subviews.Max (v => v.Frame.Bottom);
                 toAdd.Frame = toAdd.Frame.IncrementY (bottom);
             }
@@ -137,14 +147,18 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             thisView.Frame = margin.ShrinkRectangle (thisView.Frame);
         }
+
         public static void RoundCorners(this UIView thisButton,float radius=2, float borderThickness = 0, UIColor borderColor = null)
         {
-            if (borderColor != null) {
+            if (borderColor != null) 
+            {
                 thisButton.Layer.BorderColor = borderColor.CGColor;
             }
-            if (borderThickness > 0) {
-// ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (borderThickness == 1f && UIHelper.IsRetinaDisplay) {
+
+            if (borderThickness > 0) 
+            {
+                if (borderThickness == 1f && UIHelper.IsRetinaDisplay) 
+                {
                     borderThickness = .5f;
                 } 
                 thisButton.Layer.BorderWidth = borderThickness;
@@ -153,6 +167,18 @@ namespace apcurium.MK.Booking.Mobile.Client
             thisButton.Layer.CornerRadius = radius;
         }
 
+        public static SizeF GetSizeThatFits(this UIView view, string text, UIFont font)
+        {
+            if (UIHelper.IsOS7orHigher)
+            {
+                return new NSString (text)
+                    .GetSizeUsingAttributes (new UIStringAttributes { Font = font });
+            }
+            else
+            {
+                return view.StringSize (text, font);
+            }
+        }
 	}
 }
 

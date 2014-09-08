@@ -4,6 +4,7 @@ using MonoTouch.Foundation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Style;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -41,14 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             ((CustomCellBackgroundView)BackgroundView).BottomLine.SetWidth (Frame.Width - LeftPadding - RightPadding);
 
             TextLabel.SetX(20);
-
-			// we can't use UITextAlignment.Natural on iOS6 apparently 
-			// (NSInvalidArgumentException Reason: textAlignment does not accept NSTextAlignmentNatural)
-			// we detect arabic, since it's currently the only RTL language we support
-			if (this.Services ().Localize.IsRightToLeft)
-			{
-				TextLabel.TextAlignment = UITextAlignment.Right;
-			}
+            TextLabel.TextAlignment = NaturalLanguageHelper.GetTextAlignment();
 		}
 
 		public bool HideBottomBar
