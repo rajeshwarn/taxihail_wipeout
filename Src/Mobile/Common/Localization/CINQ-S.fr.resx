@@ -220,7 +220,7 @@
     <value>Votre véhicule</value>
   </data>
   <data name="ViewRatingBtn" xml:space="preserve">
-    <value>Évaluations</value>
+    <value>Évaluation</value>
   </data>
   <data name="RateRide" xml:space="preserve">
     <value>Évaluer</value>
