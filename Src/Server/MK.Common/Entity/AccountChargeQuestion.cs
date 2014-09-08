@@ -21,6 +21,8 @@ namespace apcurium.MK.Common.Entity
 
 	    public bool IsRequired { get; set; }
 
+        public bool IsCaseSensitive { get; set; }
+
 		public int? MaxLength { get; set; }
 	}
 }
