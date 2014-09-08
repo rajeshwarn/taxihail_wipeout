@@ -96,14 +96,14 @@ namespace apcurium.MK.Booking.Api.Services
                     case NotificationService.EmailConstant.Template.BookingConfirmation:
                         _notificationService.SendBookingConfirmationEmail(12345, "This is a standard note",
                             _pickupAddress, _dropOffAddress,
-                            DateTime.Now, _bookingSettings, request.EmailAddress, "fr", true);
+                            DateTime.Now, _bookingSettings, request.EmailAddress, "fr-FR", true);
                         break;
                     case NotificationService.EmailConstant.Template.PasswordReset:
-                        _notificationService.SendPasswordResetEmail("N3wp@s5w0rd", request.EmailAddress, "fr");
+                        _notificationService.SendPasswordResetEmail("N3wp@s5w0rd", request.EmailAddress, "fr-FR");
                         break;
                     case NotificationService.EmailConstant.Template.Receipt:
                         _notificationService.SendReceiptEmail(12345, "9007", "Alex Proteau", 45, 2, 6.75, 4.5, 58.25,
-                            _cardOnFile, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.Now, request.EmailAddress, "fr-CA", true);
+                            _cardOnFile, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.Now, request.EmailAddress, "fr-FR", true);
                         break;
                     default:
                         throw new Exception("sendTestEmailErrorNoMatchingTemplate");

@@ -348,11 +348,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 ibsOrderId,
                 vehicleNumber,
                 driverName,
-                PickupDate = pickupDate.ToString("dddd, MMMM d, yyyy", dateFormat),
+                PickupDate = pickupDate.ToString("D", dateFormat),
                 PickupTime = pickupDate.ToString("t", dateFormat /* Short time pattern */),
                 DropOffDate = dropOffDate.HasValue
-                    ? dropOffDate.Value.ToString("dddd, MMMM d, yyyy", dateFormat)
-                    : pickupDate.ToString("dddd, MMMM d, yyyy", dateFormat), // assume it ends on the same day...
+                    ? dropOffDate.Value.ToString("D", dateFormat)
+                    : pickupDate.ToString("D", dateFormat), // assume it ends on the same day...
                 DropOffTime = dropOffTime,
                 ShowDropOffTime = !string.IsNullOrEmpty(dropOffTime),
                 Fare = fare.ToString("C", priceFormat),
