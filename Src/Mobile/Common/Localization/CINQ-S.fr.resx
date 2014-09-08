@@ -135,11 +135,14 @@
   <data name="TaxiServerDownMessage" xml:space="preserve">
     <value>Impossible d'envoyer l'information au conducteur.</value>
   </data>
+  <data name="InvalidBookinInfoWhenDestinationIsRequired" xml:space="preserve">
+    <value>Pour commander une Audi, vous devez entrer des adresses de départ et de destination valides.</value>
+  </data>
   <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
-    <value>Aucun tarif n'est disponible pour la course. Merci de spécifier une adresse de départ et une destination.</value>
+    <value>Aucun tarif n'est disponible pour la course. Merci de spécifier des adresses de départ et de destination valides.</value>
   </data>
   <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
-    <value>Aucun tarif n'est disponible pour la course. Merci de spécifier une adresse de départ et une destination.</value>
+    <value>Aucun tarif n'est disponible pour la course. Merci de spécifier des adresses de départ et de destination valides.</value>
   </data>
   <data name="AppNeedUpdateTitle" xml:space="preserve">
     <value>Mise à jour disponible</value>

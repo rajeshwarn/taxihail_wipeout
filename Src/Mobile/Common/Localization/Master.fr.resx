@@ -679,7 +679,7 @@
     <value>Informations de commande invalides</value>
   </data>
   <data name="InvalidBookinInfoWhenDestinationIsRequired" xml:space="preserve">
-    <value>Pour commander une Audi, vous devez entrez des adresses de départ et de destination valides.</value>
+    <value>Pour commander une voiture, vous devez entrer des adresses de départ et de destination valides.</value>
   </data>
   <data name="InvalidChoiceTitle" xml:space="preserve">
     <value>Choix invalide</value>
