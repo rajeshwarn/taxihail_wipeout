@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -28,22 +29,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService = accountService;
 		}
 
-		public void Init(string orderId)
+		public async void Init(string orderId)
 		{
 			Guid id;
 			if(Guid.TryParse(orderId, out id))
 			{
 				OrderId = id;
+				using (this.Services ().Message.ShowProgress ())
+				{
+					await LoadOrder();
+					await LoadStatus();
+				}
 			}
-		}
-
-		public override void Start()
-		{
-			base.Start();
-			_status = new OrderStatusDetail
-			{
-				IBSStatusDescription = this.Services().Localize["LoadingMessage"]
-			};
 		}
 
         private Guid _orderId;
@@ -247,13 +244,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public override async void OnViewLoaded ()
-        {
-			base.OnViewLoaded ();
-			LoadOrder();
-            LoadStatus();
-        }
-
         public void RefreshOrderStatus (OrderRated orderRated)
 		{
 			if (orderRated.Content == OrderId) 
@@ -262,18 +252,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		public async void LoadOrder() 
+		public async Task LoadOrder() 
 		{
 			Order = await _accountService.GetHistoryOrderAsync(OrderId);
 		}
 
-		public async void LoadStatus ()
+		public async Task LoadStatus ()
 		{
-			var ratings = await _bookingService.GetOrderRatingAsync(OrderId);
 			var status = await _bookingService.GetOrderStatusAsync(OrderId);
-
-			HasRated = ratings.RatingScores.Any();
 			Status = status;
+
+			var ratings = await _bookingService.GetOrderRatingAsync(OrderId);
+			HasRated = ratings.RatingScores.Any();
+
 			IsCompleted = _bookingService.IsStatusCompleted(Status.IBSStatusId);
 			IsDone = _bookingService.IsStatusDone(Status.IBSStatusId);
             
