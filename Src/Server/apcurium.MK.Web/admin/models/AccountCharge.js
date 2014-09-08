@@ -38,14 +38,15 @@
 
             var arrayLength = model.get('questionFields').length;
             model.set('questions', []);
-            model.set('answers', []);
+            model.set('answer', []);
             for (var i = 0; i < arrayLength; i++) {
                 model.get('questions')[i] = {
                     question: model.get('questionFields')[i],
                     answer: model.get('answerFields')[i],
                     isRequired: model.get('questionIsRequiredFields' + i) == 'on',
                     isCaseSensitive: model.get('questionIsCaseSensitiveFields' + i) == 'on',
-                    maxLength: model.get('questionMaxLengthFields')[i]
+                    maxLength: model.get('questionMaxLengthFields')[i],
+                    errorMessage: model.get('errorMessageFields')[i]
                 };
             }
 

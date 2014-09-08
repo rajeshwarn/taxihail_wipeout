@@ -13,6 +13,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 #endif
     [Route("/admin/accountscharge", "GET, POST,PUT")]
     [Route("/admin/accountscharge/{Number}", "GET,DELETE")]
+    [Route("/admin/accountscharge/{Number}/{HideAnswers}", "GET")]
     public class AccountChargeRequest
     {
         public Guid Id { get; set; }
@@ -20,6 +21,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string Name { get; set; }
 
         public string Number { get; set; }
+
+        public bool HideAnswers { get; set; }
 
         public virtual AccountChargeQuestion[] Questions { get; set; }
     }

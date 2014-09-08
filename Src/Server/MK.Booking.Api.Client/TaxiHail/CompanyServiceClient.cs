@@ -80,8 +80,14 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Task<AccountCharge> GetAccountCharge(string accountNumber)
         {
             var tcs = new TaskCompletionSource<AccountCharge>();
+            bool hideAnswers = false;
 
-            Client.GetAsync<AccountCharge>("/admin/accountscharge/" + accountNumber,
+            #if CLIENT
+            hideAnswers = true;
+            #endif
+
+            string request = string.Format("/admin/accountscharge/{0}/{1}", accountNumber, hideAnswers);
+            Client.GetAsync<AccountCharge>(request,
                 tcs.SetResult,
                 (result, error) => tcs.SetException(ServiceClientBaseExtensions.FixWebServiceException(error)));
 

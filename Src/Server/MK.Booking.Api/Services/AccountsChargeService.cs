@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -38,7 +39,19 @@ namespace apcurium.MK.Booking.Api.Services
                 }
                 else
                 {
-                    return account;
+                    if (request.HideAnswers)
+                    {
+                        // Do not return the questions' answers to the client
+                        foreach (var accountChargeQuestion in account.Questions)
+                        {
+                            accountChargeQuestion.Answer = string.Empty;
+                        }
+                        return account;
+                    }
+                    else
+                    {
+                        return account;
+                    } 
                 }
             }
         }

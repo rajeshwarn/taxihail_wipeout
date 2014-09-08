@@ -22,6 +22,8 @@
         Rule_InvalidPriority,
         ResetPassword_AccountNotFound,
         AccountCharge_AccountAlreadyExisting,
+        AccountCharge_InvalidAccountNumber,
+        AccountCharge_InvalidAnswer
  // ReSharper restore InconsistentNaming
     }
 }
