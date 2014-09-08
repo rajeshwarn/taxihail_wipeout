@@ -1600,7 +1600,7 @@
     <value>Notifications</value>
   </data>
   <data name="StatusEta" xml:space="preserve">
-    <value>Votre véhicule arrive dans {1} {2}</value>
+    <value>est à {0} et arrive dans {1} {2}</value>
   </data>
   <data name="EtaNotAvailable" xml:space="preserve">
     <value>Il n'y a pas de véhicule disponible</value>

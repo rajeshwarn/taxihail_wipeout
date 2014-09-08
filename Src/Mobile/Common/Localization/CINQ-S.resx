@@ -153,6 +153,9 @@
   <data name="Eta" xml:space="preserve">
     <value>The nearest vehicle is {1} {2} away</value>
   </data>
+  <data name="StatusEta" xml:space="preserve">
+    <value>and is {1} {2} away</value>
+  </data>
   <data name="ReminderDetails" xml:space="preserve">
     <value>Reminder: your vehicle will pick you up from {0} at {1} on {2}.</value>
   </data>

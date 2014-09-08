@@ -201,6 +201,9 @@
   <data name="Eta" xml:space="preserve">
     <value>Le véhicule le plus proche est à {1} {2}</value>
   </data>
+  <data name="StatusEta" xml:space="preserve">
+    <value>et arrive dans {1} {2}</value>
+  </data>
   <data name="Notification_NearbyTaxiPush" xml:space="preserve">
     <value>Véhicule à proximité</value>
   </data>
