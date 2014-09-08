@@ -38,6 +38,11 @@
             
             this.model.on('change:estimate', function (model, value) {
                 var $estimate = this.$('.estimate');
+
+                $estimate
+                   .find('.distance')
+                   .show();
+
                 if (value.formattedPrice && value.formattedDistance) {
                     $estimate.removeClass('hidden')
                         .find('.distance')
@@ -162,6 +167,15 @@
         },
         
         actualizeEstimate: function () {
+
+            var $estimate = this.$('.estimate');
+            $estimate
+                .find('.fare')
+                .text(TaxiHail.localize('Loading'));
+            $estimate
+                .find('.distance')
+                .hide();
+
             var pickup = this.model.get('pickupAddress'),
                 dest = this.model.get('dropOffAddress');
 
