@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             if (ann.AddressType == AddressAnnotationType.Destination ||
                ann.AddressType == AddressAnnotationType.Pickup)
             {
-                CenterOffset = new PointF(0, -Image.Size.Height / 2);
+                CenterOffset = new PointF(0, -Image.Size.Height / 2 + 2);
             }
 		}
 	}
