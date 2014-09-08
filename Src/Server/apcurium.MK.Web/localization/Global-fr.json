@@ -68,8 +68,8 @@
 	"Send Receipt" : "Envoyer la facture",
 	"Sending..." : "Envoi...",
 	"Cannot Send Receipt" : "Impossible d'envoyer la facture",
-    "Payment In Car": "Paiement à bord",
-    "Charge Account": "Compte",
+    "PaymentInCar": "Paiement à bord",
+    "ChargeAccount": "Compte",
     "Account Not Found": "Le numéro de compte semble invalide",
     "Enter An Account Rider #": "Merci de saisir un numéro de compte valide",
     "Continue": "Continuer"
