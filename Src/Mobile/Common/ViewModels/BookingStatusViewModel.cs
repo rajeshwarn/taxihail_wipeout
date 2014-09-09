@@ -305,7 +305,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if(Settings.ShowEta && status.IBSStatusId.Equals(VehicleStatuses.Common.Assigned) && status.VehicleNumber.HasValue())
 				{
 					Direction d =  _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
-					statusInfoText += "\n" + FormatEta(d);						
+					statusInfoText += " " + FormatEta(d);						
 				}
 
 				StatusInfoText = statusInfoText;
