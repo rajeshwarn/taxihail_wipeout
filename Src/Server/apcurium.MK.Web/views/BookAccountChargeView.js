@@ -65,6 +65,7 @@
                 .fail(_.bind(function (response) {
 
                     this.$('#btBook').button('reset');
+                    this.$('#title').hide();
 
                     var alert = new TaxiHail.AlertView({
                         message: TaxiHail.localize(response.statusText),
