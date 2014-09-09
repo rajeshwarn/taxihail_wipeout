@@ -53,6 +53,12 @@
 
                     this.model.set('questionsAndAnswers', data.questions);
 
+                    if (accountNumber && accountNumber != '') {
+                        var settings = this.model.get('settings');
+                        settings.accountNumber = accountNumber;
+                        this.model.save('settings', settings);
+                    }
+
                     this.refreshValidationRules(data.questions);
 
                 }, this))

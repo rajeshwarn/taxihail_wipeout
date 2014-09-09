@@ -129,7 +129,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
             {
-                ValidateChargeAccountAnswers(account.Settings.AccountNumber, request.QuestionsAndAnswers);
+                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
             }
 
             var ibsOrderId = CreateIbsOrder(account, request, referenceData);
