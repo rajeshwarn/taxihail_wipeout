@@ -372,17 +372,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
 			var defaultCardRequirement = !(Settings.DefaultCardRequiredToPayNow && !_accountService.CurrentAccount.DefaultCreditCard.HasValue);
+			var defaultCreditCard = _accountService.CurrentAccount.DefaultCreditCard;
+			var chargeType = Order.Settings.ChargeTypeId;
 
-			IsPayButtonVisible = (!Settings.HidePayNowButtonDuringRide) &&
-								defaultCardRequirement &&
-								(statusId == VehicleStatuses.Common.Done
-								||statusId == VehicleStatuses.Common.Loaded)
+			IsPayButtonVisible = !Settings.HidePayNowButtonDuringRide
+								&& (chargeType != ChargeTypes.PaymentInCar.Id && chargeType != ChargeTypes.Account.Id)
+								&& defaultCardRequirement
+								&& (statusId == VehicleStatuses.Common.Done	|| statusId == VehicleStatuses.Common.Loaded)
 								&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue
                                 && !_paymentService.GetPaymentSettings().AutomaticPayment
 			                    && !IsUnpairButtonVisible
-								&& (Order.Settings.ChargeTypeId == null 
-									|| Order.Settings.ChargeTypeId != ChargeTypes.Account.Id)
-                                && (setting.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null  
+								&& (setting.IsPayInTaxiEnabled && defaultCreditCard != null
                                     || setting.PayPalClientSettings.IsEnabled);
 			
             IsCancelButtonVisible = statusId == null 
