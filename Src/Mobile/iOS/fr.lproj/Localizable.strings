@@ -361,9 +361,9 @@
 "SignIn"="S'identifier";
 "StatusActionBookButton"="Réserver un nouveau véhicule";
 "StatusActionButton"="Appeler/Réserver/Annuler";
-"StatusActionCancelButton"="Annuler cette demande";
+"StatusActionCancelButton"="Annuler";
 "StatusCallButton"="Appeler";
-"StatusCancelButton"="Annuler cette demande";
+"StatusCancelButton"="Annuler";
 "StatusCannotBeDisplayed"="Information non disponible. Merci de nous contacter.";
 "StatusConfirmCancelRide"="Cette action annulera votre commande, souhaitez-vous continuer?";
 "StatusConfirmCancelRideError"="Désolé, vous ne pouvez plus annuler cette demande. Merci de nous contacter";
@@ -508,3 +508,7 @@
 "PaymentInCar"="Carte bancaire - À bord ";
 "CardOnFile"="Paiement In App";
 "ChargeAccount"="Compte";
+"View_AccountConfirmation_Label_Instructions"="Une message texte vous à été envoyé avec votre code.";
+"View_AccountConfirmationTitle"="Confirmation de compte";
+"View_AccountConfirmation_Button"="Confirmer";
+"View_AccountConfirmation_Label_Code"="Code";
