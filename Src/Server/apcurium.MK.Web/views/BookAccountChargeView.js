@@ -154,6 +154,9 @@
             if (result.errorCode == "CreateOrder_RuleDisable") {
                 $alert.append($('<div />').text(result.message));
             }
+            else if (result.errorCode == "AccountCharge_InvalidAnswer") {
+                $alert.append($('<div />').text(result.message));
+            }
             else if (result.statusText) {
                 $alert.append($('<div />').text(this.localize(result.statusText)));
             }
