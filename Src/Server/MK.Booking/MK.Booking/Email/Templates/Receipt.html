@@ -45,14 +45,14 @@
 
                 .container {
                     /*display: block !important;*/
-                    max-width: 900px !important;
+                    max-width: 600px !important;
                     margin: 0 auto !important;
                     /* makes it centered */
                     clear: both !important;
                 }
 
                 .content {
-                    max-width: 900px;
+                    max-width: 600px;
                     margin: 0 auto;
                     display: block;
                     padding: 20px;
@@ -314,8 +314,10 @@
                     position: relative;
                     table-layout: inherit;
                 }
-       
 
+        .list_value {
+            text-align: right; 
+        } 
         .fare_list_subtotal {
             font-weight: bold;
         }
@@ -357,21 +359,6 @@
                     }
     </style>
 
-    <style type="text/css" id="ignore">
-        @media only screen and (min-width: 640px) {
-            .receiptLeftInfo {
-                width: 50% !important;
-            }
-        }
-
-        @media only screen and (min-width: 640px) {
-            .receiptRightInfo {
-                width: 50% !important;
-            }
-        }
-    </style>
-
-
 </head>
 
 <body>
@@ -397,7 +384,7 @@
                                                     <td class="receipt_date">{{PickupDate}} - {{PickupTime}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td valign=top>{{ localize "Email_Body_OrderNo" }}{{IBSOrderId}}</td>
+                                                    <td valign=top style="text-align: center">{{ localize "Email_Body_OrderNo" }}{{IBSOrderId}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="receipt_price">{{ TotalFare }}</td>
@@ -408,7 +395,7 @@
                                     <tr>
                                         <td>
                                             <div>
-                                                <div class="receiptLeftInfo">
+                                                <div class="receiptLeftInfo" style="float: left !important;">
                                                     <table width="100%" cellpadding="0" cellspacing="0">
                                                         <tr>
                                                             <td class="title_block"><span>{{ localize "Email_Body_Route" }}</span></td>
@@ -458,7 +445,7 @@
                                                         {{/ShowStaticMap}}
                                                     </table>
                                                 </div>
-                                                <div class="receiptRightInfo">
+                                                <div class="receiptRightInfo" style="float: left !important;">
                                                     <table>
                                                         <tr>
                                                             <td class="title_block"><span>{{localize "Email_Body_FareBreakDown"}}</span></td>
@@ -468,23 +455,23 @@
                                                                 <table class="invoice" cellpadding="0" cellspacing="0">
                                                                     <tr>
                                                                         <td class="fare_list_title">{{ localize "Email_Body_Fare"}}</td>
-                                                                        <td class="fare_list_price">{{ Fare }}</td>
+                                                                        <td class="list_value">{{ Fare }}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="fare_list_title">{{ localize "Email_Body_VAT"}}</td>
-                                                                        <td class="fare_list_price">{{ Tax }}</td>
+                                                                        <td class="list_value">{{ Tax }}</td>
                                                                     </tr>
-                                                                    <tr class="fare_list_subtotal">
+                                                                    <tr class="fare_list_subtotal" style="color:{{EmailFontColor}} !important">
                                                                         <td class="fare_list_title">{{ localize "Email_Body_SubTotal" }}</td>
-                                                                        <td class="fare_list_price">{{ SubTotal }}</td>
+                                                                        <td class="list_value">{{ SubTotal }}</td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="fare_list_title">{{ localize "Email_Body_Tip"}}</td>
-                                                                        <td class="fare_list_price">{{ Tip }}</td>
+                                                                        <td class="fare_list_title" >{{ localize "Email_Body_Tip"}}</td>
+                                                                        <td class="list_value">{{ Tip }}</td>
                                                                     </tr>
-                                                                    <tr class="fare_list_charged">
+                                                                    <tr class="fare_list_charged" style="color:{{EmailFontColor}} !important">
                                                                         <td class="fare_list_title">{{ localize "Email_Body_TotalFare"}}</td>
-                                                                        <td class="fare_list_price">{{ TotalFare }}</td>
+                                                                        <td class="list_value">{{ TotalFare }}</td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -500,19 +487,19 @@
                                                                 <table class="invoice" cellpadding="0" cellspacing="0">
                                                                     <tr>
                                                                         <td class="card_list_title">{{ localize "Email_Body_PaidWith" }}</td>
-                                                                        <td class="card_list_val">{{ CardNumber }}</td>
+                                                                        <td class="list_value">{{ CardNumber }}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="card_list_title">{{ localize "Email_Body_TotalAmount" }}</td>
-                                                                        <td class="card_list_val">{{ CardOnFileAmount }}</td>
+                                                                        <td class="list_value">{{ CardOnFileAmount }}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="card_list_title">{{ localize "Email_Body_TransactionId" }}</td>
-                                                                        <td class="card_list_val">{{ CardOnFileTransactionId }}</td>
+                                                                        <td class="list_value">{{ CardOnFileTransactionId }}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="card_list_title">{{ localize "Email_Body_AuthorizationNumber" }}</td>
-                                                                        <td class="card_list_val">{{ CardOnFileAuthorizationCode }}</td>
+                                                                        <td class="list_value">{{ CardOnFileAuthorizationCode }}</td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -525,7 +512,7 @@
                                     </tr>
                                     <tr>
                                         <td class="content-block">
-                                            <p style="padding-left:45px;padding-right:45px;">{{{Note}}}</p>
+                                            <p style="text-align: center">{{{Note}}}</p>
                                         </td>
                                     </tr>
                                 </table>
