@@ -68,7 +68,8 @@ namespace apcurium.MK.Booking.ConfigTool
                     new ConfigFile(this){ Source="Settings.json", Destination=@"Mobile\Common\Settings\Settings.json" },
 
                     new ConfigFile(this){ Source="public.keystore", Destination=@"Mobile\Android\public.keystore" },
-				    new ConfigSplash(this,"splash.png",@"Mobile\Android\Resources\","splash.png"),
+				    
+					//new ConfigSplash(this,"splash.png",@"Mobile\Android\Resources\","splash.png"),
                     new ConfigFile(this){ Source="app@2x.png", Destination=@"Mobile\Android\Resources\Drawable\Icon.png" },
 
 	                new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest", Attribute="package" , SetterAtt = ( app, att )=> att.Value = androidPackage  },
