@@ -37,6 +37,8 @@ namespace MK.Common.Configuration
 			ZoomOnNearbyVehicles = false;
 			ZoomOnNearbyVehiclesCount = 6;
 			ZoomOnNearbyVehiclesRadius = 2400;
+
+			ShowAssignedVehicleNumberOnPin = true;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -255,6 +257,9 @@ namespace MK.Common.Configuration
 
 		[Display(Name = "Zoom on nearby vehicles count", Description="Maximum of included vehicles when zooming on nearby vehicles")]
 		public int ZoomOnNearbyVehiclesCount { get; private set; }
+
+		[Display(Name = "Show Assigned Vehicle Number On Pin", Description="Enable displaying the assigned vehicle number over its pin on the map")]
+		public bool ShowAssignedVehicleNumberOnPin { get; private set; }
     }
 }
 

@@ -17,18 +17,21 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
 	public class AddressAnnotation : MKAnnotation
 	{
-        public AddressAnnotation(CLLocationCoordinate2D coord, AddressAnnotationType type, string t, string s, bool useThemeColorForIcons, string vehicleTypeLogoName = null)
+		public AddressAnnotation(CLLocationCoordinate2D coord, AddressAnnotationType type, string t, string s, bool useThemeColorForIcons, bool showSubtitleOnPin, string vehicleTypeLogoName = null)
 		{
 			AddressType = type;
 			_coordinate = coord;
 			_title = t;
 			_subtitle = s;
             UseThemeColorForIcons = useThemeColorForIcons;
+			ShowSubtitleOnPin = showSubtitleOnPin;
             _vehicleTypeLogoName = vehicleTypeLogoName;
 		}
 		
 		private CLLocationCoordinate2D _coordinate;
         private string _vehicleTypeLogoName;
+
+		public bool ShowSubtitleOnPin = true;
 
 	    public override CLLocationCoordinate2D Coordinate {
 			get { return _coordinate; }
