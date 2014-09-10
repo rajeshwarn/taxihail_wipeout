@@ -541,4 +541,5 @@
   <string name="PaymentInCar">Payment In Car</string>
   <string name="CardOnFile">Card on File</string>
   <string name="ChargeAccount">Charge Account</string>
+  <string name="Modify">Modify</string>
 </resources>

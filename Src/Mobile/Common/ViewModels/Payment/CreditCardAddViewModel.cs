@@ -269,10 +269,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	            {
                     _isEditing = value;
                     RaisePropertyChanged();
+					RaisePropertyChanged(()=>CreditCardSaveButtonDisplay);
 	            }
 	        }
 	    }
-			
+
+		public string CreditCardSaveButtonDisplay
+		{
+			get{
+				var text= _isEditing ? this.Services().Localize["Modify"] : this.Services().Localize["Save"];
+				return text; 
+			}
+		}	
 		public ICommand SaveCreditCardCommand { get { return this.GetCommand(() => SaveCreditCard()); } }
 		public ICommand DeleteCreditCardCommand { get { return this.GetCommand(() => DeleteCreditCard()); } }
 
