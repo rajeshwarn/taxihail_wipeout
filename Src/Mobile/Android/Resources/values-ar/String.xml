@@ -514,6 +514,7 @@
   <string name="CardOnFile">Card on File</string>
   <string name="ChargeAccount">Charge Account</string>
   <string name="View_AccountConfirmation_Label_Instructions">A text message with your code has been sent to your phone.</string>
+  <string name="ServiceErrorAccountCharge_InvalidAccountNumber">Invalid account number</string>
   <string name="View_AccountConfirmationTitle">Account Confirmation</string>
   <string name="View_AccountConfirmation_Button">Confirm</string>
   <string name="View_AccountConfirmation_Label_Code">Code</string>

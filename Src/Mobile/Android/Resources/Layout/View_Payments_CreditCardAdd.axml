@@ -80,11 +80,11 @@
                         android:layout_height="wrap_content"
                         android:text="@string/CreditCardNumber"
                         android:layout_marginBottom="4dp" />
-                    <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
+                <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
                     <View
                         android:layout_width="0dp"
                         android:layout_weight="0.05"
-                        android:layout_height="fill_parent"/>
+                        android:layout_height="fill_parent" />
                     <TextView
                         android:layout_width="0dp"
                         android:layout_marginStart="10dip"
@@ -107,11 +107,11 @@
                         android:singleLine="true"
                         android:inputType="number"
                         local:MvxBind="CreditCardNumber CreditCardNumber; LeftImage CreditCardImagePath" />
-                    <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
+                <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
                     <View
                         android:layout_width="0dp"
                         android:layout_weight="0.02"
-                        android:layout_height="fill_parent"/>
+                        android:layout_height="fill_parent" />
                     <EditText
                         android:layout_width="0dp"
                         android:layout_marginStart="10dip"
@@ -138,11 +138,11 @@
                         android:layout_marginRight="10dip"
                         android:text="@string/CreditCardExpMonth"
                         style="@style/BlackTextLabel" />
-                    <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
+                <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
                     <View
                         android:layout_width="0dp"
                         android:layout_weight="0.05"
-                        android:layout_height="fill_parent"/>
+                        android:layout_height="fill_parent" />
                     <TextView
                         android:gravity="start"
                         android:layout_width="135dip"
@@ -164,11 +164,11 @@
                         android:inputType="number"
                         android:singleLine="true"
                         local:MvxBind="Text ExpirationMonthDisplay; Data ExpirationMonths; SelectedItem ExpirationMonth" />
-                    <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
+                <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
                     <View
                         android:layout_width="0dp"
                         android:layout_weight="0.05"
-                        android:layout_height="fill_parent"/>
+                        android:layout_height="fill_parent" />
                     <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
                         android:layout_width="0dip"
                         android:layout_weight="1"
@@ -194,8 +194,7 @@
                     android:layout_height="@dimen/HeightButton"
                     android:singleLine="true"
                     android:lines="1"
-                    android:text="@string/Save"
-                    local:MvxBind="Click SaveCreditCardCommand"
+                    local:MvxBind="Text CreditCardSaveButtonDisplay; Click SaveCreditCardCommand"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp" />
                 <Button

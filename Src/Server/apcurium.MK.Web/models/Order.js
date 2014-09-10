@@ -79,7 +79,7 @@
                 && settings.chargeTypeId == 2
         },
         fetchQuestions: function (accountChargeNumber) {
-            return $.get('api/admin/accountscharge/' + accountChargeNumber, function () { }, 'json');
+            return $.get('api/admin/accountscharge/' + accountChargeNumber + '/true', function () { }, 'json');
         }
     });
 
