@@ -185,18 +185,18 @@ namespace apcurium.MK.Booking.ConfigTool
 //                    NodeSelector=@"//resources/color[@name=""setting_menu_text_color""]", 
 //                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.MenuColor, "#ffffff", "#4f4c47") 
 //                },
-                new ConfigXML(this)
-                {  
-                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
-                    NodeSelector=@"//resources/color[@name=""setting_menu_separator_color""]", 
-                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.MenuColor, "#454545", "#a09f9c") 
-                },
-                new ConfigXML(this)
-                {  
-                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
-                    NodeSelector=@"//resources/color[@name=""setting_item_pressed_background_color""]", 
-                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.MenuColor, "#282828", "#ffffff") 
-                },
+//                new ConfigXML(this)
+//                {  
+//                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
+//                    NodeSelector=@"//resources/color[@name=""setting_menu_separator_color""]", 
+//                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.MenuColor, "#454545", "#a09f9c") 
+//                },
+//                new ConfigXML(this)
+//                {  
+//                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
+//                    NodeSelector=@"//resources/color[@name=""setting_item_pressed_background_color""]", 
+//                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.MenuColor, "#282828", "#ffffff") 
+//                },
 //                new ConfigXML(this)
 //                {  
 //                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
