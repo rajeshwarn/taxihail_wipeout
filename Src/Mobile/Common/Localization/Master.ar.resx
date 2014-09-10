@@ -1605,4 +1605,7 @@
   <data name="CardOnFile" xml:space="preserve">
     <value>Card on File</value>
   </data>
+  <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
+    <value>Invalid account number</value>
+  </data>
 </root>

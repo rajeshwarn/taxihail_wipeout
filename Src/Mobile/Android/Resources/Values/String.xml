@@ -541,5 +541,6 @@
   <string name="PaymentInCar">Payment In Car</string>
   <string name="CardOnFile">Card on File</string>
   <string name="ChargeAccount">Charge Account</string>
+  <string name="ServiceErrorAccountCharge_InvalidAccountNumber">Invalid account number</string>
   <string name="Modify">Modify</string>
 </resources>

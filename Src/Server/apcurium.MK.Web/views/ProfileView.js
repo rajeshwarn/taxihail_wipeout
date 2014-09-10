@@ -25,6 +25,11 @@
         render: function () {
             var data = this.model.toJSON();
 
+            if (!data.settings.accountNumber) {
+                // We need to make sure that the account number, if empty, is saved as a string
+                data.settings.accountNumber = "";
+            }
+
             _.extend(data, {
                 vehiclesList: TaxiHail.vehicleTypes,
                 paymentsList: TaxiHail.referenceData.paymentsList

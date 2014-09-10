@@ -1167,13 +1167,12 @@
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall" xml:space="preserve">
     <value>La commande ne peut être créée car votre compte est actuellement désactivé</value>
   </data>
-<data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
     <value>La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</value>
   </data>
-<data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall" xml:space="preserve">
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall" xml:space="preserve">
     <value>La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</value>
   </data>
-
   <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
     <value>La commande ne peut être créé car le fournisseur est invalide. Merci de contacter {0} à {1} pour plus d'assistance.</value>
   </data>
@@ -1565,7 +1564,7 @@
     <value>Notifications</value>
   </data>
   <data name="Eta" xml:space="preserve">
-  	<value>Le véhicule le plus proche est à {1} {2}</value>
+    <value>Le véhicule le plus proche est à {1} {2}</value>
   </data>
   <data name="PanelMenuViewNotificationsText" xml:space="preserve">
     <value>Notifications</value>
@@ -1577,7 +1576,7 @@
     <value>Confirmation Commande (Email)</value>
   </data>
   <data name="EtaDurationUnit" xml:space="preserve">
-  	<value>minute</value>
+    <value>minute</value>
   </data>
   <data name="Notification_ConfirmPairingPush" xml:space="preserve">
     <value>Confirmation de pairing (Push)</value>
@@ -1589,7 +1588,7 @@
     <value>Chauffeur assigné (Email)</value>
   </data>
   <data name="EtaDurationUnitPlural" xml:space="preserve">
-  	<value>minutes</value>
+    <value>minutes</value>
   </data>
   <data name="Notification_DriverAssignedPush" xml:space="preserve">
     <value>Chauffeur  assigné (Push)</value>
@@ -1601,10 +1600,10 @@
     <value>Notifications</value>
   </data>
   <data name="StatusEta" xml:space="preserve">
-  	<value>Votre véhicule arrive dans {1} {2}</value>
+    <value>Votre véhicule arrive dans {1} {2}</value>
   </data>
   <data name="EtaNotAvailable" xml:space="preserve">
-  	<value>Il n'y a pas de véhicule disponible</value>
+    <value>Il n'y a pas de véhicule disponible</value>
   </data>
   <data name="Notification_NearbyTaxiPush" xml:space="preserve">
     <value>Taxi à proximité (Push)</value>
@@ -1638,5 +1637,8 @@
   </data>
   <data name="CardOnFile" xml:space="preserve">
     <value>Paiement In App</value>
+  </data>
+  <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
+    <value>Numéro de compte non valide</value>
   </data>
 </root>
