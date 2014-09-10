@@ -955,7 +955,7 @@
     <value>Le paiement n'a pas pu être effectué</value>
   </data>
   <data name="PaymentViewMeterAmountText" xml:space="preserve">
-    <value>Distance</value>
+    <value>Montant</value>
   </data>
   <data name="PaymentViewTipText" xml:space="preserve">
     <value>Pourboire</value>
