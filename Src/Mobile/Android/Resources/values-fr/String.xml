@@ -512,4 +512,5 @@
   <string name="PaymentInCar">Carte bancaire - À bord </string>
   <string name="CardOnFile">Paiement In App</string>
   <string name="ChargeAccount">Compte</string>
+  <string name="Modify">Modifier</string>
 </resources>

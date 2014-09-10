@@ -1110,6 +1110,9 @@
   <data name="Save" xml:space="preserve">
     <value>Enregistrer</value>
   </data>
+<data name="Modify" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
   <data name="SaveAddressEmptyFieldMessage" xml:space="preserve">
     <value>Désolé, les données ne semble pas valides. Merci de saisir les informations</value>
   </data>
