@@ -152,7 +152,7 @@
   <string name="Error_AccountPaymentMessage">Le numéro de compte semble invalide</string>
   <string name="Error_AccountPaymentQuestionRequiredMessage">Vous devez renseigner tous les champs pour continuer</string>
   <string name="Error_AccountPaymentTitle">Erreur</string>
-  <string name="EstimatedFareNotAvailable">Le prix ne peut être estimé pour le moment</string>
+  <string name="EstimatedFareNotAvailable">Le prix ne peut être calculé pour le moment</string>
   <string name="EstimateDistance"></string>
   <string name="EstimatePrice">Prix</string>
   <string name="EstimatePriceFormat">Prix: {0:c}</string>
@@ -237,7 +237,7 @@
   <string name="NoConnectionMessage">Echec de connexion, le serveur peut ne pas fonctionnner de manière temporaire ou vous avez peut-être perdu votre connection internet.</string>
   <string name="NoConnectionTitle">Erreur de connexion</string>
   <string name="NoCreditCardSelected">Merci de sélectionner une carte de paiement</string>
-  <string name="NoFareText">Vous devez saisir une destination pour obtenir une estimation du prix du trajet</string>
+  <string name="NoFareText">Vous devez saisir une destination pour obtenir le prix du trajet</string>
   <string name="NoFareTextIfDestinationIsRequired">Vous devez saisir une destination</string>
   <string name="NoMailClient">Il n\'y a pas d\'adresse email client enregistrée</string>
   <string name="NoOrderId">La commande n\'est pas encore finalisée</string>
@@ -508,7 +508,7 @@
   <string name="RateLastRideTitle">Évaluer la dernière course</string>
   <string name="Notification_Off">Non</string>
   <string name="Notification_On">Oui</string>
-  <string name="PaymentInCar">Carte bancaire - À bord </string>
+  <string name="PaymentInCar">Carte bancaire - À bord</string>
   <string name="CardOnFile">Paiement In App</string>
   <string name="ChargeAccount">Compte</string>
   <string name="EstimateFareCalculating">Calcul du prix de votre course ...</string>

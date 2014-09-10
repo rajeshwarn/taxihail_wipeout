@@ -168,7 +168,7 @@
   <string name="PassengerNumberLabel">Passengers</string>
   <string name="Tuto02Bottom">If it\'s a little off, simply reposition the map to your actual location.</string>
   <string name="ParameterButton">Parameters</string>
-  <string name="EstimatedFareNotAvailable">Estimated fare not available</string>
+  <string name="EstimatedFareNotAvailable">Fare not available</string>
   <string name="February">Feb (02)</string>
   <string name="Delete">Delete</string>
   <string name="AcceptButton">Accept</string>
@@ -438,7 +438,7 @@
   <string name="ResetPasswordSubtitleText">Enter your email and we\'ll send you a new one.</string>
   <string name="CreateAccountEmptyField">The data is invalid, all the fields are required.</string>
   <string name="ConfirmNameLabel">Name:</string>
-  <string name="NoFareText">Choose a destination to get a price estimate.</string>
+  <string name="NoFareText">Choose a destination to get a price.</string>
   <string name="ConfirmationPaymentAmountOver100Title">Confirmation Required</string>
   <string name="InvalidAddressMessage">The address you provided is invalid. Please verify this information</string>
   <string name="PaymentViewTotalText">Total</string>
