@@ -205,7 +205,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			var tarifMode = _appSettings.Data.TarifMode;
 			var validationResult = await UseServiceClientAsync<OrderServiceClient, OrderValidationResult>(service => service.ValidateOrder(order, null, true));
-            
 			if (order.PickupAddress.HasValidCoordinate() 
 				&& order.DropOffAddress.HasValidCoordinate())
 			{

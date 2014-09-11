@@ -26,7 +26,7 @@
 "HistoryDetailPickupLabel"="موقعك:";
 "NearbyPlacesTitle"="أماكن قريبة";
 "PickupViewDestinationLabel"="الوجهة  &gt;&gt;";
-"StatusActionBookButton"="Book another vehicle";
+"StatusActionBookButton"="احجز سيارة أجرة اخرى";
 "CmtRideLinqCancelChanges"="إلغاء";
 "TabContacts"="قائمة الإتصال";
 "LoginForgotPassword"="ه نسيت كلمة السر ؟";
@@ -88,7 +88,7 @@
 "DeleteBookItButtonImageNamePressed"="";
 "StreetNumberPlacesBt"="البحث عن أماكن";
 "CreateAccountTitleMr"="السيد";
-"EstimatePriceFormat"="Cost: {0:c}";
+"EstimatePriceFormat"="التكلفة المتوقعة :{0} ({1})";
 "BookRatingErrorMessage"="قم بتقييم مشوارك";
 "ResetPasswordSucessTitle"="إعادة ضبط كلمة المرور";
 "TabSearch"="بحث";
@@ -100,7 +100,7 @@
 "Tuto04Top"="إن رغبت في ذلك، يمكنك أيضا ضبط وجهتك.";
 "DeleteAddressBt"="مسح العنوان";
 "ConfirmOriginLablel"="الإلتقاء";
-"InvalidBookinInfoWhenDestinationIsRequired"="To book an Audi, you need to enter a valid pickup address and destination address.";
+"InvalidBookinInfoWhenDestinationIsRequired"="لحجز سيارة الأجرة، يجب أن تدخل عنوان صحيح لمكان المغادرة والوصول.";
 "LocalContactCannotBeResolverTitle"="الإسم غير صحيح";
 "VehicleNumberErrorTitle"="خطأ";
 "ResetPasswordSucessMessage"="تم إعادة ضبط كلمة المرور بنجاح";
@@ -115,7 +115,7 @@
 "NoPhoneNumberMessage"="رقم هاتف هذا السائق خاطئ";
 "May"="مايو (05)";
 "ServiceErrorCallTitle"="رسالة";
-"CarAssigned"="Your vehicle {0}";
+"CarAssigned"="السيارة الخاصة بك {0}";
 "AccountActivationMessage"="تم إرسال رسالة إلكترونية. اتبع الرابط في الرسالة لتأكيد عنوانك";
 "Save"="حفظ";
 "PaymentDetails.Optional"="اختياري";
@@ -132,7 +132,7 @@
 "CreateAccountPhonePlaceHolder"="الجوال";
 "View_LocationDetail"="تفاصيل الموقع";
 "SettingsViewTitle"="إعدادات";
-"EstimatePriceOver100"="Cost: {0:c}";
+"EstimatePriceOver100"="إتصال لمعرفة السعر";
 "PaymentDetails.InvalidTipAmount"="قيمة الإكرامية غير صالحة";
 "BookPickupLabel"="اكد موقع الإلتقاء المختار";
 "Tuto03Top"="يمكنك أيضا إختيار نقطة الإلتقاء بالضغط على عنوان الإلتقاء.";
@@ -175,7 +175,7 @@
 "DriverInfoColor"="اللون:";
 "ResetPasswordTitleText"="نسيت كلمة المرور؟";
 "StatusNewRideButton"="رحلة جديدة";
-"TaxiServerDownMessage"="Can't send message to driver";
+"TaxiServerDownMessage"="لا يمكن إرسال رسالة لسيارة الأجرة";
 "View_RideSummary"="ملخص الرحلة";
 "PasswordLabel"="كلمة المرور";
 "PayPalExpressCheckoutCancelTitle"="تم إلغاء عملية الدفع";
@@ -276,7 +276,7 @@
 "ResetPasswordInvalidDataTitle"="عنوان البريد الإلكتروني غير صحيح";
 "Version"="v{0}";
 "CreditCardZipCode"="الرمز البريدي";
-"ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall"="No fare is available for the ride. Please specify a valid pickup and destination.";
+"ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall"="لا يمكن تقدير الأجرة لهذه الرحلة.";
 "View_Payments_CmtRideLinqConfirmPairTitle"="تأكيد بيانات الدفع:";
 "AddressSearchingText"="جار البحث";
 "GooglePlayServicesNotAvailableMessage1"="يجب أن تقوم بتحديث خدمات غوغل بلاي لتتمكن من استخدام هذا التطبيق.";
@@ -311,7 +311,7 @@
 "Continue"="استمرار";
 "StatusInvalid"="الحالة غير متاحة";
 "View_CreateAccount"="افتح حسابك";
-"ServiceErrorCreateOrder_NoFareEstimateAvailable"="No fare is available for the ride. Please specify a valid pickup and destination.";
+"ServiceErrorCreateOrder_NoFareEstimateAvailable"="لا يمكن تقدير الأجرة لهذه الرحلة. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.";
 "HistoryDetailDestinationLabel"="الوجهة:";
 "ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall"="لا يمكن إدخال الطلب لأن حسابك غير فعال حاليا.";
 "ViewRatingBtn"="رؤية التقييمات";
@@ -323,7 +323,7 @@
 "AccountDisabled"="تم إيقاف حسابك، الرجاء الإتصال ب {0} على {1} لتفعيل حسابك";
 "FavoriteLocationsTitle"="مشاويرك المفضلة";
 "PassengerPhoneLabel"="الهاتف";
-"TaxiMapTitle"="Your vehicle";
+"TaxiMapTitle"="سيارة الأجرة الخاصه بك";
 "ConfirmPassengersLabel"="عدد الركاب:";
 "Rebook"="إعادة حجز المشوار";
 "Done"="تم";
@@ -360,7 +360,7 @@
 "ServiceErrorCreateOrder_CannotCreateInIbs"="لا يمكن إدخال الطلب. الرجاء المحاولة من جديد أو اتصل بنا.";
 "Tuto04Bottom"="بذلك سيتم تزويدك بسعر تقريبي للرحلة.";
 "ResetPasswordConfirmationMessage"="تم إرسال كلمة مرور جديدة بالبريد الإلكتروني.";
-"ReminderDetails"="Reminder: your vehicle will pick you up from {0} at {1} on {2}.";
+"ReminderDetails"="تذكير: سيكون السائق في خدمتك من {0} الساعة {1} يوم {2}.";
 "StatusActionButton"="إتصال / حجز/ إلغاء";
 "PassengerNameLabel"="الإسم";
 "DefaultRideSettingsViewTitle"="إعدادات";
@@ -417,7 +417,7 @@
 "TabHistory"="السجل";
 "View_SignIn"="تسجيل الدخول";
 "View_BookRating"="قم بتقييم مشوارك";
-"PaymentViewMeterAmountText"="Price";
+"PaymentViewMeterAmountText"="قيمة العداد";
 "YesButton"="نعم";
 "ConfirmVehiculeTypeLabel"="نوع السيارة:";
 "View_BookingStatus"="الوضع";
@@ -443,7 +443,7 @@
 "InvalidAddressMessage"="العنوان الذي أدخلته غير صحيح. يرجى التأكد من المعلومات";
 "PaymentViewTotalText"="الإجمالي";
 "DateTimePickerPickInvalidDateTitle"="التاريخ / الوقت غير صحيح";
-"DriverInfoTaxiType"="Vehicle Type:";
+"DriverInfoTaxiType"="نوع سيارة الأجرة:";
 "PaymentDetails.InvalidDataTitle"="بيانات الدفع غير صحيحة";
 "PaymentDetails.TipAmountLabel"="قيمة الإكرامية";
 "DriverInfoLicence"="رقم الرخصة:";
@@ -477,7 +477,7 @@
 "PendingOrderMessage"="You cannot book this ride since an order is already pending. View the order status?";
 "PendingOrderView"="View";
 "NoCardOnFileMessage"="You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.";
-"Eta"="The nearest vehicle is {1} {2} away";
+"Eta"="The nearest taxi is {0} and {1} {2} away";
 "EtaDurationUnitPlural"="mins";
 "AddACardButton"="Add Card";
 "PayInCar"="Pay in Car";
@@ -496,7 +496,7 @@
 "Notification_BookingConfirmationEmail"="Booking Confirmation (Email)";
 "View_NotificationSettings"="Notifications";
 "EtaDurationUnit"="min";
-"StatusEta"="and is {1} {2} away";
+"StatusEta"="{0} and {1} {2} away";
 "RateLastRideTitle"="Rate last ride?";
 "RateLastRide"="Rate";
 "NotNow"="Not now";
@@ -513,4 +513,4 @@
 "ServiceErrorCreateOrder_CannotCreateInIbs_1452"="The specified Destination address lies outside the regular service area. Please contact {0} at {1} for further assistance.";
 "Safety"="Safety";
 "Politeness"="Politeness";
-"Knowledgabledriver"="Cleanliness";
+"Knowledgabledriver"="Knowledgable driver";

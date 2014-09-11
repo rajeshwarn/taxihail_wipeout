@@ -164,7 +164,7 @@
 "PassengerNumberLabel"="Passengers";
 "Tuto02Bottom"="If it's a little off, simply reposition the map to your actual location.";
 "ParameterButton"="Parameters";
-"EstimatedFareNotAvailable"="Estimated fare not available";
+"EstimatedFareNotAvailable"="Fare not available";
 "February"="Feb (02)";
 "Delete"="Delete";
 "AcceptButton"="Accept";
@@ -431,7 +431,7 @@
 "ResetPasswordSubtitleText"="Enter your email and we'll send you a new one.";
 "CreateAccountEmptyField"="The data is invalid, all the fields are required.";
 "ConfirmNameLabel"="Name:";
-"NoFareText"="Choose a destination to get a price estimate.";
+"NoFareText"="Choose a destination to get a price.";
 "ConfirmationPaymentAmountOver100Title"="Confirmation Required";
 "InvalidAddressMessage"="The address you provided is invalid. Please verify this information";
 "PaymentViewTotalText"="Total";
@@ -527,10 +527,10 @@
 "Notification_On"="On";
 "Notification_BookingConfirmationEmail"="Booking Confirmation (Email)";
 "View_NotificationSettings"="Notifications";
-"RateLastRideTitle"="Rate last ride?";
+"RateLastRideTitle"="Rate last ride";
 "RateLastRide"="Rate";
 "NotNow"="Not now";
-"RateLastRideMessage"="We would appreciate your feedback on your last ride, would you like to rate it?";
+"RateLastRideMessage"="We would appreciate your feedback on your last ride.";
 "DontAsk"="Don't ask";
 "PaymentInCar"="Payment In Car";
 "CardOnFile"="Card on File";

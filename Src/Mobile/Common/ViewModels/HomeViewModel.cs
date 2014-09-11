@@ -146,17 +146,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        {
 				if (Settings.RatingRequired)
 				{
-					this.Services().Message.ShowMessage(
-						this.Services().Localize["RateLastRideTitle"],
-						this.Services().Localize["RateLastRideMessage"],
-						this.Services().Localize["RateLastRide"],
-							() => ShowViewModel<BookRatingViewModel>(new  
-							{
-								orderId = unratedRideId.ToString(),
-								canRate = true
-							}),
-						this.Services().Localize["NotNow"],
-							() => { /* Do nothing */ });
+				    var title = this.Services().Localize["RateLastRideTitle"];
+				    var message = this.Services().Localize["RateLastRideMessage"];
+                    Action goToRate = () => ShowViewModel<BookRatingViewModel>(new
+                    {
+                        orderId = unratedRideId.ToString(),
+                        canRate = true
+                    });
+
+                    if (Settings.CanSkipRatingRequired)
+				    {
+                        var actionRate = this.Services().Localize["RateLastRide"];
+                        this.Services().Message.ShowMessage(title, message,
+                            actionRate,
+                            goToRate,
+                            this.Services().Localize["NotNow"],
+                            () => { /* Do nothing */ });
+				    }
+				    else
+				    {
+                        this.Services().Message.ShowMessage(title, message, goToRate);
+				    }
 				}
 				else
 				{

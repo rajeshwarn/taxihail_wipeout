@@ -69,5 +69,8 @@
 	"Sending..." : "Sending...",
 	"Cannot Send Receipt" : "Cannot Send Receipt",
     "PaymentInCar": "Payment In Car",
-    "ChargeAccount":  "Charge Account"
+    "ChargeAccount":  "Charge Account",
+    "Account Not Found":  "Invalid account ride number",
+    "Enter An Account Rider #": "Please enter a valid account ride number",
+    "Continue": "Continue"
 }

@@ -1630,7 +1630,7 @@
     <value>Oui</value>
   </data>
   <data name="PaymentInCar" xml:space="preserve">
-    <value>Carte bancaire - À bord </value>
+    <value>Paiement à bord</value>
   </data>
   <data name="ChargeAccount" xml:space="preserve">
     <value>Compte</value>
