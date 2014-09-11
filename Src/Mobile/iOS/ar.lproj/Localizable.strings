@@ -514,3 +514,4 @@
 "View_AccountConfirmationTitle"="Account Confirmation";
 "View_AccountConfirmation_Button"="Confirm";
 "View_AccountConfirmation_Label_Code"="Code";
+"ServiceErrorAccountCharge_InvalidAccountNumber"="Invalid account number";
