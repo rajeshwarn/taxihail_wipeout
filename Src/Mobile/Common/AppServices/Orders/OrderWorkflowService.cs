@@ -125,11 +125,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
         public async Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken)
 		{
-            var address = await SearchAddressForCoordinate(coordinate);
+			var address = await SearchAddressForCoordinate(coordinate);
 			address.Latitude = coordinate.Latitude;
 			address.Longitude = coordinate.Longitude;
 			cancellationToken.ThrowIfCancellationRequested();
-			await SetAddressToCurrentSelection(address);
+			await SetAddressToCurrentSelection(address, cancellationToken);
 		}
 
 		public async Task ClearDestinationAddress()
@@ -443,7 +443,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
-		private async Task SetAddressToCurrentSelection(Address address)
+		private async Task SetAddressToCurrentSelection(Address address, CancellationToken token = default(CancellationToken))
 		{
 			var selectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
 			if (selectionMode == AddressSelectionMode.PickupSelection)
@@ -456,31 +456,49 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 
 			// do NOT await this
-            CalculateEstimatedFare();
+			CalculateEstimatedFare(token);
 		}
 
-		private async Task CalculateEstimatedFare()
+		private CancellationTokenSource _calculateFareCancellationTokenSource = new CancellationTokenSource();
+
+		private async Task CalculateEstimatedFare(CancellationToken token = default(CancellationToken))
 		{
+			if (!_calculateFareCancellationTokenSource.IsCancellationRequested)
+			{
+				this.Logger.LogMessage("Fare Estimate - CANCEL");
+				_calculateFareCancellationTokenSource.Cancel ();
+			}
+			_calculateFareCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(new [] { token });
+
+			this.Logger.LogMessage("Fare Estimate - START");
+
+			var newCancelToken = _calculateFareCancellationTokenSource.Token;
+
 			_estimatedFareDisplaySubject.OnNext(_localize["EstimateFareCalculating"]);
 
-			var order = await GetOrderForEstimate ();
-
-			var direction = await _bookingService.GetFareEstimate(order);
+			var direction = await GetFareEstimate ();
 			var estimatedFareString = _bookingService.GetFareEstimateDisplay(direction);
 
+			if (newCancelToken.IsCancellationRequested) {
+				return;
+			}
+
+			this.Logger.LogMessage("Fare Estimate - DONE");
 			_estimatedFareDetailSubject.OnNext (direction);
 			_estimatedFareDisplaySubject.OnNext(estimatedFareString);
 		}
 
-		private async Task<CreateOrder> GetOrderForEstimate()
+		private async Task<DirectionInfo> GetFareEstimate()
 		{
+			// Create order for fare estimate
 			var order = new CreateOrder();
 			order.Id = Guid.NewGuid();
 			order.PickupDate = await _pickupDateSubject.Take(1).ToTask();
 			order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
 			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
 			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
-			return order;
+
+			return await _bookingService.GetFareEstimate(order);
 		}
 
 
