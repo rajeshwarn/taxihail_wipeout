@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions.ValueType;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
@@ -259,11 +260,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 						{
 							goto default;
 						}
+                    case "AccountCharge_InvalidAnswer":
+                        // Exception message comes from Charge account admin, already localized
+                        // Quick workaround for a bug in service stack where the response is not properly deserialized
+                        var invalidAnswerError = e.ResponseBody.FromJson<ErrorResponse>();
+                        if (invalidAnswerError.ResponseStatus != null)
+                        {
+                            throw new OrderCreationException(invalidAnswerError.ResponseStatus.Message, invalidAnswerError.ResponseStatus.Message);
+                        }
+                        else
+                        {
+                            goto default;
+                        }
 					case "CreateOrder_InvalidProvider":
 					case "CreateOrder_NoFareEstimateAvailable": /* Fare estimate is required and was not submitted */
 					case "CreateOrder_CannotCreateInIbs_1002": /* Pickup address outside of service area */
 					case "CreateOrder_CannotCreateInIbs_7000": /* Inactive account */
 					case "CreateOrder_CannotCreateInIbs_10000": /* Inactive charge account */
+                    case "AccountCharge_InvalidAccountNumber":
 						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["ServiceError" + e.ErrorCode + "_NoCall"];
 						throw new OrderCreationException(message, messageNoCall);

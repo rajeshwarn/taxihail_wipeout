@@ -24,11 +24,16 @@ namespace apcurium.MK.Booking.Api.Serialization
 
         private static void SerializeDictionaryToStream(List<Dictionary<string, string>> response, Stream stream)
         {
-            if (response == null) return;
+            if (response == null)
+            {
+                return;
+            }
 
             using (var writer = new CsvWriter(new StreamWriter(stream)))
             {
-                var columns = response.OrderByDescending(x => x.Keys.Count).First();
+                var orderedColumns = response.OrderByDescending(x => x.Keys.Count);
+                var columns = orderedColumns.Any() ? orderedColumns.First() : new Dictionary<string, string>();
+
                 string columnsName = null;
 
                 foreach (var column in columns)
