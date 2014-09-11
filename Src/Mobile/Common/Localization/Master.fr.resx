@@ -1432,7 +1432,7 @@
     <value>Code</value>
   </data>
   <data name="View_AccountConfirmation_Label_Instructions" xml:space="preserve">
-    <value>Une message texte vous a été envoyé avec votre code.</value>
+    <value>Un message texte vous a été envoyé avec votre code.</value>
   </data>
   <data name="View_BookingDetail" xml:space="preserve">
     <value>Détails de la réservation</value>

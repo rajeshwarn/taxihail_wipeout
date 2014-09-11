@@ -512,7 +512,7 @@
   <string name="PaymentInCar">Carte bancaire - À bord </string>
   <string name="CardOnFile">Paiement In App</string>
   <string name="ChargeAccount">Compte</string>
-  <string name="View_AccountConfirmation_Label_Instructions">Une message texte vous a été envoyé avec votre code.</string>
+  <string name="View_AccountConfirmation_Label_Instructions">Un message texte vous a été envoyé avec votre code.</string>
   <string name="View_AccountConfirmationTitle">Confirmation de compte</string>
   <string name="ServiceErrorAccountCharge_InvalidAccountNumber">Numéro de compte non valide</string>
   <string name="Modify">Modifier</string>
