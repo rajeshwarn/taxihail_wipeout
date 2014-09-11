@@ -1228,13 +1228,13 @@
     <value>Appeler/Réserver/Annuler</value>
   </data>
   <data name="StatusActionCancelButton" xml:space="preserve">
-    <value>Annuler cette demande</value>
+    <value>Annuler</value>
   </data>
   <data name="StatusCallButton" xml:space="preserve">
     <value>Appeler</value>
   </data>
   <data name="StatusCancelButton" xml:space="preserve">
-    <value>Annuler cette demande</value>
+    <value>Annuler</value>
   </data>
   <data name="StatusCannotBeDisplayed" xml:space="preserve">
     <value>Information non disponible. Merci de nous contacter.</value>
@@ -1421,6 +1421,18 @@
   </data>
   <data name="View_AboutUs" xml:space="preserve">
     <value>À propos</value>
+  </data>
+<data name="View_AccountConfirmation_Button" xml:space="preserve">
+    <value>Confirmer</value>
+  </data>
+  <data name="View_AccountConfirmationTitle" xml:space="preserve">
+    <value>Confirmation de compte</value>
+  </data>
+  <data name="View_AccountConfirmation_Label_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="View_AccountConfirmation_Label_Instructions" xml:space="preserve">
+    <value>Un message texte vous a été envoyé avec votre code.</value>
   </data>
   <data name="View_BookingDetail" xml:space="preserve">
     <value>Détails de la réservation</value>

@@ -510,3 +510,8 @@
 "PaymentInCar"="Payment In Car";
 "CardOnFile"="Card on File";
 "ChargeAccount"="Charge Account";
+"View_AccountConfirmation_Label_Instructions"="A text message with your code has been sent to your phone.";
+"View_AccountConfirmationTitle"="Account Confirmation";
+"View_AccountConfirmation_Button"="Confirm";
+"View_AccountConfirmation_Label_Code"="Code";
+"ServiceErrorAccountCharge_InvalidAccountNumber"="Invalid account number";

@@ -274,7 +274,7 @@
 "PaymentDetails.TipAmountLabel"="Montant du pourboire";
 "PaymentErrorMessage"="Détails: {0}";
 "PaymentErrorTitle"="Le paiement n'a pas pu être effectué";
-"PaymentViewMeterAmountText"="Distance";
+"PaymentViewMeterAmountText"="Montant";
 "PaymentViewTipText"="Pourboire";
 "PaymentViewTotalText"="Total";
 "PayNow"="Payer maintenant!";
@@ -361,9 +361,9 @@
 "SignIn"="S'identifier";
 "StatusActionBookButton"="Réserver un nouveau véhicule";
 "StatusActionButton"="Appeler/Réserver/Annuler";
-"StatusActionCancelButton"="Annuler cette demande";
+"StatusActionCancelButton"="Annuler";
 "StatusCallButton"="Appeler";
-"StatusCancelButton"="Annuler cette demande";
+"StatusCancelButton"="Annuler";
 "StatusCannotBeDisplayed"="Information non disponible. Merci de nous contacter.";
 "StatusConfirmCancelRide"="Cette action annulera votre commande, souhaitez-vous continuer?";
 "StatusConfirmCancelRideError"="Désolé, vous ne pouvez plus annuler cette demande. Merci de nous contacter";
@@ -508,4 +508,9 @@
 "PaymentInCar"="Carte bancaire - À bord ";
 "CardOnFile"="Paiement In App";
 "ChargeAccount"="Compte";
+"View_AccountConfirmation_Label_Instructions"="Un message texte vous a été envoyé avec votre code.";
 "Modify"="Modifier";
+"View_AccountConfirmationTitle"="Confirmation de compte";
+"View_AccountConfirmation_Button"="Confirmer";
+"View_AccountConfirmation_Label_Code"="Code";
+"ServiceErrorAccountCharge_InvalidAccountNumber"="Numéro de compte non valide";
