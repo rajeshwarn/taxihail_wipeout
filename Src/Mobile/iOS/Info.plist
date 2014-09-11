@@ -31,11 +31,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.6.1</string>
+    <string>1.6.4</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.6.1</string>
+    <string>1.6.4</string>
 	<key>MinimumOSVersion</key>
-	<string>6.0</string>
+    <string>6.0</string>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
 	<key>UIAppFonts</key>
