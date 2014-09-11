@@ -110,7 +110,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Support Email", Description="Email address to contact the company")]
         public string SupportEmail { get; private set; }
 
-		[Display(Name = "Hide No Preference Option", ShowAssignedVehicleNumberOnPinDescription="Settings to hide the no preference option in vehicule, company list etc.")]
+		[Display(Name = "Hide No Preference Option", Description="Settings to hide the no preference option in vehicule, company list etc.")]
 		public bool HideNoPreference { get; private set; }
         [Display(Name = "Destination Required", Description="Flag to add destination as required")]
 		public bool DestinationIsRequired { get; private set; }
