@@ -23,9 +23,13 @@ namespace MK.Common.Configuration
             TutorialEnabled = true;
 			HidePayNowButtonDuringRide = false;
 			DefaultCardRequiredToPayNow = false;
+			ShowAssignedVehicleNumberOnPin = true;
+			ZoomOnNearbyVehicles = false;
+			ZoomOnNearbyVehiclesCount = 6;
+			ZoomOnNearbyVehiclesRadius = 2400;
 
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
-            CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink";
+            CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Client.HideCallDispatchButton,Client.ShowAssignedVehicleNumberOnPin,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink";
 			DefaultTipPercentage = 15;
             DirectionDataProvider = MapProvider.Google;
 			SMSConfirmationEnabled = false;
@@ -33,12 +37,6 @@ namespace MK.Common.Configuration
 		    DisableChargeTypeWhenCardOnFile = false;
 		    VehicleTypeSelectionEnabled = false;
 		    SendPushAsSMS = false;
-
-			ZoomOnNearbyVehicles = false;
-			ZoomOnNearbyVehiclesCount = 6;
-			ZoomOnNearbyVehiclesRadius = 2400;
-
-			ShowAssignedVehicleNumberOnPin = true;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -112,7 +110,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Support Email", Description="Email address to contact the company")]
         public string SupportEmail { get; private set; }
 
-		[Display(Name = "Hide No Preference Option", Description="Settings to hide the no preference option in vehicule, company list etc.")]
+		[Display(Name = "Hide No Preference Option", ShowAssignedVehicleNumberOnPinDescription="Settings to hide the no preference option in vehicule, company list etc.")]
 		public bool HideNoPreference { get; private set; }
         [Display(Name = "Destination Required", Description="Flag to add destination as required")]
 		public bool DestinationIsRequired { get; private set; }
