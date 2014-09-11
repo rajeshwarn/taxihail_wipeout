@@ -141,8 +141,7 @@
                     android:text="@string/DestinationViewDestinationLabel"
                     android:layout_width="130dp"
                     android:gravity="end"
-                    android:layout_height="wrap_content"
-                    local:MvxBind="Visibility Settings.HideDestination, Converter=InvertedVisibility" />
+                    android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/DestinationTxt"
                     style="@style/DetailText"
@@ -151,7 +150,7 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="Destination Non specifie"
-                    local:MvxBind="Text DestinationTxt; Visibility Settings.HideDestination, Converter=InvertedVisibility" />
+                    local:MvxBind="Text DestinationTxt" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -231,7 +230,7 @@
                     android:id="@+id/RebookTripBtn"
                     android:text="@string/Rebook"
                     android:visibility="gone"
-                    local:MvxBind="Enabled IsCompleted; Visibility RebookIsAvailable, Converter=Visibility; Click RebookOrder" />
+                    local:MvxBind="Enabled RebookIsAvailable; Visibility RebookIsAvailable, Converter=Visibility; Click RebookOrder" />
                 <Button
                     style="@style/ButtonActionGrayStyle"
                     android:layout_width="fill_parent"
@@ -263,7 +262,7 @@
                     android:id="@+id/CancelTripBtn"
                     android:text="@string/StatusActionCancelButton"
                     android:visibility="gone"
-                    local:MvxBind="Enabled IsCompleted, Converter=BoolInverter; Visibility IsCompleted, Converter=InvertedVisibility; Click CancelOrder" />
+                    local:MvxBind="Enabled CanCancel; Visibility CanCancel, Converter=Visibility; Click CancelOrder" />
                 <Button
                     style="@style/ButtonActionGrayStyle"
                     android:layout_width="fill_parent"

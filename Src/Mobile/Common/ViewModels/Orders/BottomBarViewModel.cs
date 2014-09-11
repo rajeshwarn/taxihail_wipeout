@@ -71,7 +71,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand<DateTime?>(async date =>
                 {
-                    await _orderWorkflowService.SetPickupDate(date);
+					// since it can take some time, recalculate estimate for date only if 
+					// last calculated estimate was not for now
+					if(date != null)
+					{
+						await _orderWorkflowService.SetPickupDate(date);
+					}
+                    
                     try
                     {
                         await _orderWorkflowService.ValidatePickupAndDestination();

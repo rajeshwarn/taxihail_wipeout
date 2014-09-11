@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-   <data name="EstimatePrice" xml:space="preserve">
+  <data name="EstimatePrice" xml:space="preserve">
     <value>Cost</value>
   </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
@@ -126,18 +126,61 @@
   <data name="EstimatePriceOver100" xml:space="preserve">
     <value>Cost: {0:c}</value>
   </data>
+  <data name="EstimatedFareNotAvailable" xml:space="preserve">
+    <value>Fare not available</value>
+  </data>
   <data name="EstimateDistance" xml:space="preserve">
-    <value></value>
+    <value />
+  </data>
+  <data name="NoFareText" xml:space="preserve">
+    <value>Choose a destination to get a price.</value>
   </data>
   <data name="TaxiServerDownMessage" xml:space="preserve">
     <value>Can't send message to driver</value>
   </data>
-
+  <data name="InvalidBookinInfoWhenDestinationIsRequired" xml:space="preserve">
+    <value>To book an Audi, you need to enter a valid pickup address and destination address.</value>
+  </data>
   <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
     <value>No fare is available for the ride. Please specify a valid pickup and destination.</value>
   </data>
   <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
     <value>No fare is available for the ride. Please specify a valid pickup and destination.</value>
   </data>
-
+  <data name="PaymentViewMeterAmountText" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="CarAssigned" xml:space="preserve">
+    <value>Your vehicle {0}</value>
+  </data>
+  <data name="DriverInfoTaxiType" xml:space="preserve">
+    <value>Vehicle Type:</value>
+  </data>
+  <data name="Eta" xml:space="preserve">
+    <value>The nearest vehicle is {1} {2} away</value>
+  </data>
+  <data name="StatusEta" xml:space="preserve">
+    <value>and is {1} {2} away</value>
+  </data>
+  <data name="ReminderDetails" xml:space="preserve">
+    <value>Reminder: your vehicle will pick you up from {0} at {1} on {2}.</value>
+  </data>
+  <data name="StatusActionBookButton" xml:space="preserve">
+    <value>Book another vehicle</value>
+  </data>
+  <data name="TAXI" xml:space="preserve">
+    <value>Vehicle</value>
+  </data>
+  <data name="TaxiMapTitle" xml:space="preserve">
+    <value>Your vehicle</value>
+  </data>
+  <data name="Knowledgabledriver" xml:space="preserve">
+    <value>Cleanliness</value>
+  </data>
+  <data name="RateLastRideMessage" xml:space="preserve">
+    <value>We would appreciate your feedback on your last ride.</value>
+  </data>
+  <data name="RateLastRideTitle" xml:space="preserve">
+    <value>Rate last ride</value>
+  </data>
 </root>

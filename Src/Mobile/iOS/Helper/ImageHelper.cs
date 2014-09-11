@@ -110,8 +110,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return new UIImage(transformedImage);
         }
 
-        public static UIImage ApplyThemeColorToImage(string imagePath, CGBlendMode colorMode = CGBlendMode.Color)
+        public static UIImage ApplyThemeColorToImage(string imagePath, CGBlendMode colorMode = CGBlendMode.Color, bool skipApplyIfCustomImage = false, SizeF originalImageSize = new SizeF())
         {
+            if (skipApplyIfCustomImage)
+            {
+                var image = GetImage(imagePath);
+                var imageWasOverridden = image.Size.Width != originalImageSize.Width;
+
+                return imageWasOverridden 
+                    ? image
+                    : ApplyColorToImage(imagePath, Theme.CompanyColor, colorMode);
+            }
             return ApplyColorToImage(imagePath, Theme.CompanyColor, colorMode);
         }
 

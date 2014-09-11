@@ -86,7 +86,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public MapBounds GetBoundsForNearestVehicles(Address pickup, IEnumerable<AvailableVehicle> cars)
 		{
-			if ((cars == null) || (!cars.Any ()) || !_settings.Data.ZoomOnNearbyVehicles) {
+			if ((cars == null) || (!cars.Any ()) || !_settings.Data.ZoomOnNearbyVehicles) 
+			{
 				return null;
 			}
 

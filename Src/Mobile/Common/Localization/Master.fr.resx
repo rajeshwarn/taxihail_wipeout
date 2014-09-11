@@ -157,7 +157,7 @@
     <value>http://www.apcurium.com/</value>
   </data>
   <data name="ApplicationName" xml:space="preserve">
-    <value>TaxiHail</value>
+    <value>CINQ-S</value>
   </data>
   <data name="AppNeedUpdateMessage" xml:space="preserve">
     <value>Une nouvelle version de l'application est disponible, merci de la télécharger pour continuer</value>
@@ -220,7 +220,7 @@
     <value>Merci de noter la qualité de votre dernier trajet</value>
   </data>
   <data name="BookRatingErrorTitle" xml:space="preserve">
-    <value>Erreur</value>
+    <value>Attention</value>
   </data>
   <data name="BookViewInvalidDate" xml:space="preserve">
     <value>La date et l'heure de départ sont invalides</value>
@@ -286,7 +286,7 @@
     <value>Confirmer les informations relatives au paiement</value>
   </data>
   <data name="CmtRideLinqConfirmPairViewConfirmPairDetailText" xml:space="preserve">
-    <value>Merci de vérifier que vous être dans le véhicule indiquée ci-dessus. Après confirmation, le paiement sera effectué automatiquement en utilisant les paramètres de paiement par défaut.</value>
+    <value>Merci de vérifier que vous êtes dans le véhicule indiqué ci-dessus. Après confirmation, le paiement sera effectué automatiquement en utilisant les paramètres de paiement par défaut.</value>
   </data>
   <data name="CmtRideLinqErrorTitle" xml:space="preserve">
     <value>Erreur</value>
@@ -607,7 +607,7 @@
     <value>Mise à jour requise</value>
   </data>
   <data name="HistoryDetailAptRingCodeLabel" xml:space="preserve">
-    <value>Appartement / digicode:</value>
+    <value>Apt / digicode:</value>
   </data>
   <data name="HistoryDetailAuthorizationLabel" xml:space="preserve">
     <value>Autorisation:</value>
@@ -631,7 +631,7 @@
     <value>Départ:</value>
   </data>
   <data name="HistoryDetailRequestedLabel" xml:space="preserve">
-    <value>Requis:</value>
+    <value>Commandé le:</value>
   </data>
   <data name="HistoryDetailStatusLabel" xml:space="preserve">
     <value>Statut:</value>
@@ -679,7 +679,7 @@
     <value>Informations de commande invalides</value>
   </data>
   <data name="InvalidBookinInfoWhenDestinationIsRequired" xml:space="preserve">
-    <value>Pour commander une Audi, vous devez entrez des adresses de départ et de destination valides.</value>
+    <value>Pour commander une voiture, vous devez entrer des adresses de départ et de destination valides.</value>
   </data>
   <data name="InvalidChoiceTitle" xml:space="preserve">
     <value>Choix invalide</value>
@@ -811,7 +811,7 @@
     <value>Merci de saisir un montant</value>
   </data>
   <data name="NoAptText" xml:space="preserve">
-    <value>Numéro d'appartement</value>
+    <value>--</value>
   </data>
   <data name="NoButton" xml:space="preserve">
     <value>Non</value>
@@ -838,7 +838,7 @@
     <value>La commande n'est pas encore finalisée</value>
   </data>
   <data name="NoPhoneNumberMessage" xml:space="preserve">
-    <value>Le numéro de téléphone ne semble pas correcpondre au chauffeur</value>
+    <value>Le numéro de téléphone est indisponible</value>
   </data>
   <data name="NoPhoneNumberTitle" xml:space="preserve">
     <value>Le numéro de téléphone ne semble pas valide</value>
@@ -847,7 +847,7 @@
     <value>Pas de préférence</value>
   </data>
   <data name="NoRingCodeText" xml:space="preserve">
-    <value>Pas de code</value>
+    <value>--</value>
   </data>
   <data name="NotAvailable" xml:space="preserve">
     <value>Information non disponible</value>
@@ -1018,7 +1018,7 @@
     <value>S'enregistrer</value>
   </data>
   <data name="ReminderDetails" xml:space="preserve">
-    <value>Rappel: votre Audi arrivera au {0} à {1} le {2}</value>
+    <value>Rappel: votre taxi arrivera au {0} à {1} le {2}</value>
   </data>
   <data name="ReminderTitle" xml:space="preserve">
     <value>{0} Enregistré</value>
@@ -1159,7 +1159,13 @@
     <value>L'adresse de départ est en dehors de la zone de service. Merci de contacter {0} à {1} pour plus d'assistance.</value>
   </data>
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall" xml:space="preserve">
-    <value>L'adresse de départ est en dehors de la zone de service normale. </value>
+    <value>L'adresse de départ est en dehors de la zone de service normale.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
+    <value>L'adresse de destination est en dehors de la zone de service. Merci de contacter {0} à {1} pour plus d'assistance.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall" xml:space="preserve">
+    <value>L'adresse de destination est en dehors de la zone de service normale.</value>
   </data>
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
     <value>La commande ne peut être créée car votre compte est actuellement désactivé. Merci de contacter {0} à {1} pour plus d'assistance.</value>
@@ -1259,9 +1265,6 @@
   </data>
   <data name="StatusNewRideButton" xml:space="preserve">
     <value>Nouveau trajet</value>
-  </data>
-  <data name="StatusStatusLabel" xml:space="preserve">
-    <value>Statut: {0}</value>
   </data>
   <data name="StatusViewTitle" xml:space="preserve">
     <value>Confirmé</value>
@@ -1576,7 +1579,7 @@
     <value>Notifications</value>
   </data>
   <data name="Eta" xml:space="preserve">
-    <value>Le véhicule le plus proche est à {1} {2}</value>
+    <value>Le véhicule le plus proche est à {1} {2} et {0}</value>
   </data>
   <data name="PanelMenuViewNotificationsText" xml:space="preserve">
     <value>Notifications</value>
@@ -1591,7 +1594,7 @@
     <value>minute</value>
   </data>
   <data name="Notification_ConfirmPairingPush" xml:space="preserve">
-    <value>Confirmation de pairing (Push)</value>
+    <value>Confirmation de pairing</value>
   </data>
   <data name="NotNow" xml:space="preserve">
     <value>Plus tard</value>
@@ -1603,7 +1606,7 @@
     <value>minutes</value>
   </data>
   <data name="Notification_DriverAssignedPush" xml:space="preserve">
-    <value>Chauffeur  assigné (Push)</value>
+    <value>Chauffeur assigné</value>
   </data>
   <data name="RateLastRide" xml:space="preserve">
     <value>Évaluer</value>
@@ -1612,19 +1615,19 @@
     <value>Notifications</value>
   </data>
   <data name="StatusEta" xml:space="preserve">
-    <value>Votre véhicule arrive dans {1} {2}</value>
+    <value>est à {0} et arrive dans {1} {2}</value>
   </data>
   <data name="EtaNotAvailable" xml:space="preserve">
     <value>Il n'y a pas de véhicule disponible</value>
   </data>
   <data name="Notification_NearbyTaxiPush" xml:space="preserve">
-    <value>Taxi à proximité (Push)</value>
+    <value>Taxi à proximité</value>
   </data>
   <data name="RateLastRideMessage" xml:space="preserve">
     <value>Nous aimerions recevoir vos commentaires sur votre dernière course, voulez-vous l'évaluer?</value>
   </data>
   <data name="Notification_PaymentConfirmationPush" xml:space="preserve">
-    <value>Confirmation de paiement (Push)</value>
+    <value>Confirmation de paiement</value>
   </data>
   <data name="RateLastRideTitle" xml:space="preserve">
     <value>Évaluer la dernière course?</value>
@@ -1633,7 +1636,7 @@
     <value>Reçu (Email)</value>
   </data>
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
-    <value>Taxi au point de ramassage (Push)</value>
+    <value>Taxi au point de ramassage</value>
   </data>
   <data name="Notification_Off" xml:space="preserve">
     <value>Non</value>
@@ -1642,7 +1645,7 @@
     <value>Oui</value>
   </data>
   <data name="PaymentInCar" xml:space="preserve">
-    <value>Carte bancaire - À bord </value>
+    <value>Paiement à bord</value>
   </data>
   <data name="ChargeAccount" xml:space="preserve">
     <value>Compte</value>
@@ -1652,5 +1655,56 @@
   </data>
   <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
     <value>Numéro de compte non valide</value>
+  </data>
+  <data name="EstimateFareCalculating" xml:space="preserve">
+    <value>Calcul du prix de votre course ...</value>
+  </data>
+  <data name="WarningPushServiceAction" xml:space="preserve">
+    <value>Merci</value>
+  </data>
+  <data name="WarningPushServiceMessage" xml:space="preserve">
+    <value>Nous avons remarqué que vous n'avez pas les notifications activées. En les activant, vous obtiendrez alors des mises à jour sur l'état de votre réservation, sans avoir à regarder l'application !</value>
+  </data>
+  <data name="WarningPushServiceTitle" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="AccountConfirmation_ErrorTitle" xml:space="preserve">
+    <value>Impossible de confirmer votre compte.</value>
+  </data>
+  <data name="View_AccountConfirmationTitle" xml:space="preserve">
+    <value>Confirmation de compte</value>
+  </data>
+  <data name="View_AccountConfirmation_Button" xml:space="preserve">
+    <value>Confimer</value>
+  </data>
+  <data name="View_AccountConfirmation_Label_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="View_AccountConfirmation_Label_Instructions" xml:space="preserve">
+    <value>Un SMS contenant votre code a été envoyé à votre téléphone.</value>
+  </data>
+  <data name="AccountPaymentQuestionsPlaceHolder" xml:space="preserve">
+    <value>{0} caractères maximum</value>
+  </data>
+  <data name="AccountPaymentQuestionsRequired" xml:space="preserve">
+    <value>(requis)</value>
+  </data>
+  <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
+    <value>Le code de confirmation est incorrect.</value>
+  </data>
+  <data name="TAXI" xml:space="preserve">
+    <value>TAXI</value>
+  </data>
+  <data name="Knowledgabledriver" xml:space="preserve">
+    <value>Trajet respecté</value>
+  </data>
+  <data name="Safety" xml:space="preserve">
+    <value>Conduite sécuritaire</value>
+  </data>
+  <data name="Politeness" xml:space="preserve">
+    <value>Politesse</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
+    <value>Aucune carte de crédit enregistrée dans votre compte.</value>
   </data>
 </root>

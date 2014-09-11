@@ -5,12 +5,18 @@
         getClientLanguage: function () {
             return (navigator.language) ? navigator.language.split('-')[0] : navigator.userLanguage;
         },
-
+        
         localize: function (resourceName, resourceSet) {
             var resource = '';
+            var appKey = TaxiHail.parameters.applicationKey;
             var lang = TaxiHail.getClientLanguage();
+            
+            var localizedCompanyResourceSet = appKey + "-" + lang;
+            if (!_.isUndefined(TaxiHail.resources[localizedCompanyResourceSet])) {
+                resource = TaxiHail.resources[localizedCompanyResourceSet][resourceName];
+            }
 
-            if (resourceSet) {
+            if (!resource && resourceSet) {
                 var localizedResourceSet = resourceSet + "-" + lang;
 
                 if (!_.isUndefined(TaxiHail.resources[localizedResourceSet])) {

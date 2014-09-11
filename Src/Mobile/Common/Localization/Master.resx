@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ApplicationName" xml:space="preserve">
-    <value>TaxiHail</value>
+    <value>CINQ-S</value>
   </data>
   <data name="GoogleMapKey" xml:space="preserve">
     <value>0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</value>
@@ -534,9 +534,6 @@
   <data name="HistoryDetailOrderLabel" xml:space="preserve">
     <value>Order:</value>
   </data>
-  <data name="StatusStatusLabel" xml:space="preserve">
-    <value>Status: {0}</value>
-  </data>
   <data name="HistoryDetailPickupDateLabel" xml:space="preserve">
     <value>Pickup Date:</value>
   </data>
@@ -917,6 +914,12 @@
   </data>
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall" xml:space="preserve">
     <value>The specified Pickup address lies outside the regular service area.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
+    <value>The specified Destination address lies outside the regular service area. Please contact {0} at {1} for further assistance.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall" xml:space="preserve">
+    <value>The specified Destination address lies outside the regular service area.</value>
   </data>
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
     <value>The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.</value>
@@ -1489,7 +1492,7 @@
     <value>Meter Amount</value>
   </data>
   <data name="BookRatingErrorTitle" xml:space="preserve">
-    <value>Error</value>
+    <value>Warning</value>
   </data>
   <data name="BookRatingErrorMessage" xml:space="preserve">
     <value>You need to rate your ride</value>
@@ -1600,7 +1603,7 @@
     <value>mins</value>
   </data>
   <data name="StatusEta" xml:space="preserve">
-    <value>{0} and {1} {2} away</value>
+    <value>and is {0} and {1} {2} away</value>
   </data>
   <data name="NoCardOnFileMessage" xml:space="preserve">
     <value>You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</value>
@@ -1630,7 +1633,7 @@
     <value>Rate</value>
   </data>
   <data name="Notification_ConfirmPairingPush" xml:space="preserve">
-    <value>Confirm Pairing (Push)</value>
+    <value>Confirm Pairing</value>
   </data>
   <data name="RateLastRideMessage" xml:space="preserve">
     <value>We would appreciate your feedback on your last ride, would you like to rate it?</value>
@@ -1642,22 +1645,22 @@
     <value>Rate last ride?</value>
   </data>
   <data name="Notification_DriverAssignedPush" xml:space="preserve">
-    <value>Driver Assigned (Push)</value>
+    <value>Driver Assigned</value>
   </data>
   <data name="Notification_Enabled" xml:space="preserve">
     <value>Notifications</value>
   </data>
   <data name="Notification_NearbyTaxiPush" xml:space="preserve">
-    <value>Nearby Taxi (Push)</value>
+    <value>Nearby Taxi</value>
   </data>
   <data name="Notification_PaymentConfirmationPush" xml:space="preserve">
-    <value>Payment Confirmation (Push)</value>
+    <value>Payment Confirmation</value>
   </data>
   <data name="Notification_ReceiptEmail" xml:space="preserve">
     <value>Receipt (Email)</value>
   </data>
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
-    <value>Vehicle at Pickup (Push)</value>
+    <value>Vehicle at Pickup</value>
   </data>
   <data name="Notification_Off" xml:space="preserve">
     <value>Off</value>
@@ -1674,7 +1677,22 @@
   <data name="CardOnFile" xml:space="preserve">
     <value>Card on File</value>
   </data>
+  <data name="EstimateFareCalculating" xml:space="preserve">
+    <value>Calculating...</value>
+  </data>
   <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
     <value>Invalid account number</value>
+  </data>
+  <data name="Knowledgabledriver" xml:space="preserve">
+    <value>Knowledgable driver</value>
+  </data>
+  <data name="Safety" xml:space="preserve">
+    <value>Safety</value>
+  </data>
+  <data name="Politeness" xml:space="preserve">
+    <value>Politeness</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
+    <value>No Credit Card On File.</value>
   </data>
 </root>

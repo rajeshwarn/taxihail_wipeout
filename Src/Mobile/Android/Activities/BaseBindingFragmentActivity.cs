@@ -44,13 +44,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         protected override void OnStop()
         {
             base.OnStop();
-            ViewModel.OnViewStopped();
+
+            if (ViewModel != null)
+            {
+                ViewModel.OnViewStopped();
+            }
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            ViewModel.OnViewUnloaded();
+
+            if (ViewModel != null)
+            {
+                ViewModel.OnViewUnloaded ();
+            }
         }
     }
 }

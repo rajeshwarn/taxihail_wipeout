@@ -21,14 +21,17 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IConfigurationManager _configManager;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
+        private readonly IBookingWebServiceClient _bookingWebServiceClient;
 
         public ValidateOrderService(
             IConfigurationManager configManager,
             IStaticDataWebServiceClient staticDataWebServiceClient,
+            IBookingWebServiceClient bookingWebServiceClient,
             IRuleCalculator ruleCalculator)
         {
             _configManager = configManager;
             _staticDataWebServiceClient = staticDataWebServiceClient;
+            _bookingWebServiceClient = bookingWebServiceClient;
             _ruleCalculator = ruleCalculator;
         }
 
@@ -36,21 +39,68 @@ namespace apcurium.MK.Booking.Api.Services
         {
             Log.Info("Validating order request : ");
 
+            var pickupZone = request.TestZone;
+            if (!request.TestZone.HasValue())
+            {
+                pickupZone = _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
+                    request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            }
 
-            var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue,
-                request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),
-                () =>
+            string dropoffZone = null;
+            if (request.DropOffAddress != null)
+            {
+                dropoffZone = _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
+                    request.DropOffAddress.Latitude, request.DropOffAddress.Longitude);
+            }
+                       
+
+            if (request.ForError)
+            {
+                //pass dropoff because aexid is using it only for dropoff
+                var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue,
+                   request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),
+                   () => dropoffZone);
+
+                //if the rule for disable has passed then we can check the exclusion zone
+                var hasError = rule != null;
+                var message = rule != null ? rule.Message : null;
+
+                if(!hasError)
                 {
-                    var zone = request.TestZone;
-                    if (!request.TestZone.HasValue())
-                    {
-                        zone = _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
-                            request.PickupAddress.Latitude, request.PickupAddress.Longitude);
-                    }
-                    return zone;
-                });
+                    var invalidPickUpZone = !_bookingWebServiceClient.ValidateZone(pickupZone, "IBS.ValidatePickupZone",
+                        "IBS.PickupZoneToExclude");
+                    var invalidDropoffZone = !_bookingWebServiceClient.ValidateZone(dropoffZone, "IBS.ValidateDestinationZone",
+                        "IBS.DestinationZoneToExclude");
 
-            return new OrderValidationResult {HasWarning = rule != null, Message = rule != null ? rule.Message : null};
+                    hasError = invalidPickUpZone || invalidDropoffZone;
+                    if (hasError)
+                    {
+                        message = invalidPickUpZone ? "Cette zone de départ n'est pas desservie" : "Cette zone d'arrivée n'est pas desservie";
+                    }
+                }
+
+                Log.Debug(string.Format("Has Error : {0}, Message: {1}", hasError, message));
+
+                return new OrderValidationResult
+                {
+                    HasError = hasError,
+                    Message = message
+                };
+            }
+            else
+            {
+
+                var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue,
+                    request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),
+                    () => pickupZone);
+
+                return new OrderValidationResult
+                {
+                    HasWarning = rule != null,
+                    Message = rule != null ? rule.Message : null
+                };
+            }
+    
         }
 
         private DateTime GetCurrentOffsetedTime()

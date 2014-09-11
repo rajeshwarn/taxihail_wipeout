@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             SetTitleColor(Theme.ButtonTextColor.ColorWithAlpha(0.5f), UIControlState.Selected);
             SetTitleColor(Theme.ButtonTextColor.ColorWithAlpha(0.5f), UIControlState.Highlighted);
 
-            SetStrokeColor(UIColor.FromRGB(3, 27, 49));
+            SetStrokeColor(Theme.ButtonTextColor);
 
             this.Layer.CornerRadius = RadiusCorner;
             this.Layer.MasksToBounds = true;
