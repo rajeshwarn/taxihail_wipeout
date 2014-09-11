@@ -279,7 +279,7 @@
   <string name="PaymentDetails.TipAmountLabel">Montant du pourboire</string>
   <string name="PaymentErrorMessage">Détails: {0}</string>
   <string name="PaymentErrorTitle">Le paiement n\'a pas pu être effectué</string>
-  <string name="PaymentViewMeterAmountText">Distance</string>
+  <string name="PaymentViewMeterAmountText">Montant</string>
   <string name="PaymentViewTipText">Pourboire</string>
   <string name="PaymentViewTotalText">Total</string>
   <string name="PayNow">Payer maintenant!</string>
