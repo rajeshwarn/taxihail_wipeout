@@ -286,7 +286,7 @@
     <value>Confirmer les informations relatives au paiement</value>
   </data>
   <data name="CmtRideLinqConfirmPairViewConfirmPairDetailText" xml:space="preserve">
-    <value>Merci de vérifier que vous êtes dans le véhicule indiquée ci-dessus. Après confirmation, le paiement sera effectué automatiquement en utilisant les paramètres de paiement par défaut.</value>
+    <value>Merci de vérifier que vous êtes dans le véhicule indiqué ci-dessus. Après confirmation, le paiement sera effectué automatiquement en utilisant les paramètres de paiement par défaut.</value>
   </data>
   <data name="CmtRideLinqErrorTitle" xml:space="preserve">
     <value>Erreur</value>
