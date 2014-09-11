@@ -345,4 +345,7 @@
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
     <value>La course sera payée en utilisant for carte de crédit par défaut</value>
   </data>
+  <data name="PaymentItemDescription" xml:space="preserve">
+    <value>Commande #{0} montant original: {1}</value>
+  </data>
 </root>

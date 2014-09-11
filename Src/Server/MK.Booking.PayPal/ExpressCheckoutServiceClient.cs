@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Globalization;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Configuration;
+
 
 namespace MK.Booking.PayPal
 {
@@ -17,8 +19,10 @@ namespace MK.Booking.PayPal
         readonly Urls _urls;
         readonly UserIdPasswordType _credentials;
         readonly CurrencyCodeType _currency;
+        readonly IConfigurationManager _configurationManager;
 
-        public ExpressCheckoutServiceClient(PayPalCredentials credentials, RegionInfo region, bool useSandbox = false)
+
+        public ExpressCheckoutServiceClient(PayPalCredentials credentials, RegionInfo region, IConfigurationManager configurationManager, bool useSandbox = false)
         {
             if (credentials == null) throw new ArgumentNullException("credentials");
             if (region == null) throw new ArgumentNullException("region");
@@ -31,6 +35,9 @@ namespace MK.Booking.PayPal
                 Password = credentials.Password,
                 Signature = credentials.Signature,
             };
+
+            _configurationManager = configurationManager;
+
         }
 
 // ReSharper disable once InconsistentNaming
@@ -39,7 +46,7 @@ namespace MK.Booking.PayPal
             get { return _currency.ToString(); }
         }
 
-        public string SetExpressCheckout(decimal orderTotal, string returnUrl, string cancelUrl)
+        public string SetExpressCheckout(decimal orderTotal, string returnUrl, string cancelUrl, string description )
         {
             if (returnUrl == null) throw new ArgumentNullException("returnUrl");
             if (cancelUrl == null) throw new ArgumentNullException("cancelUrl");
@@ -48,7 +55,7 @@ namespace MK.Booking.PayPal
 
             using (var api = CreateApiAaClient())
             {
-                var request = BuildRequest(orderTotal, returnUrl, cancelUrl);
+                var request = BuildRequest(orderTotal, returnUrl, cancelUrl, description);
                 var response = api.SetExpressCheckout(request);
 
                 ThrowIfError(response);
@@ -174,13 +181,44 @@ namespace MK.Booking.PayPal
             return api;
         }
 
-        private SetExpressCheckoutReq BuildRequest(decimal orderTotal, string returnUrl, string cancelUrl)
+        private SetExpressCheckoutReq BuildRequest(decimal orderTotal, string returnUrl, string cancelUrl, string description)
         {
             var amount = new BasicAmountType
             {
                 Value = orderTotal.ToString(CultureInfo.InvariantCulture),
                 currencyID = _currency,
             };
+         
+            var regionName = _configurationManager.GetSetting("PayPalRegionInfoOverride");
+
+            PaymentDetailsItemType paymentDetailsItem;
+
+            if (string.IsNullOrWhiteSpace(regionName))
+            {
+                paymentDetailsItem = new PaymentDetailsItemType
+                {        
+                    Amount = amount,
+                };
+            }
+
+            else 
+            {
+                paymentDetailsItem = new PaymentDetailsItemType
+                {        
+                    Amount = amount,
+                    Description = description,
+                };
+ 
+            }          
+            var pdit = new PaymentDetailsItemType[1] { paymentDetailsItem };
+
+            var paymentDetails = new PaymentDetailsType
+            {
+                PaymentDetailsItem = pdit,
+            };
+ 
+
+            var pdt = new PaymentDetailsType[1] { paymentDetails };
 
             var requestDetails = new SetExpressCheckoutRequestDetailsType
             {
@@ -188,11 +226,12 @@ namespace MK.Booking.PayPal
                 PaymentAction = PaymentActionCodeType.Sale,
                 ReturnURL = returnUrl,
                 CancelURL = cancelUrl,
+                PaymentDetails = pdt,                
             };
 
             var requestType = new SetExpressCheckoutRequestType
             {
-                Version = ApiVersion,
+                Version = ApiVersion,   
                 SetExpressCheckoutRequestDetails = requestDetails,
             };
 

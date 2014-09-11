@@ -16,6 +16,10 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
         public decimal Amount { get; set; }
         public decimal Meter { get; set; }
         public decimal Tip { get; set; }
+		public int? IbsOrderId { get; set; }
+		public string TotalAmount { get; set; }
+		public string LanguageCode { get; set; }
+        
     }
 
     public class PayPalExpressCheckoutPaymentResponse

@@ -10,6 +10,7 @@ using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
 using System.Globalization;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -18,14 +19,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly IPayPalExpressCheckoutService _paypalExpressCheckoutService;
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
+		private readonly ILocalization _localize;
+
 
 		public PaymentViewModel(IPayPalExpressCheckoutService paypalExpressCheckoutService,
 			IAccountService accountService,
-			IPaymentService paymentService)
+			IPaymentService paymentService,
+			ILocalization localize)
 		{
 			_paypalExpressCheckoutService = paypalExpressCheckoutService;
 			_accountService = accountService;
 			_paymentService = paymentService;
+			_localize = localize;
 		}
 
 		public void Init(string order, string orderStatus)
@@ -354,7 +359,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						Order.Id,
 						Convert.ToDecimal(Amount), 
 						Convert.ToDecimal(MeterAmount.ToDouble()), 
-						Convert.ToDecimal(RoundToTwoDecimals(TipAmount.ToDouble())))
+						Convert.ToDecimal(RoundToTwoDecimals(TipAmount.ToDouble())),
+						Order.IBSOrderId,
+						TotalAmount,
+						_localize.CurrentLanguage
+						)
 					.ToObservable()
 					.Subscribe(checkoutUrl => {
                         var @params = new Dictionary<string, string> { { "url", checkoutUrl } };
