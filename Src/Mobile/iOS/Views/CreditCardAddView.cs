@@ -118,6 +118,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Apply ();   
 
             txtNameOnCard.ShouldReturn += GoToNext;
+
+			ViewModel.PropertyChanged += (sender, e) =>
+			{
+				if (e.PropertyName == "IsEditing")
+				{
+					NavigationItem.RightBarButtonItem.Title=ViewModel.CreditCardSaveButtonDisplay;
+				}
+			};
+
         }
 
         private bool GoToNext (UITextField textField)

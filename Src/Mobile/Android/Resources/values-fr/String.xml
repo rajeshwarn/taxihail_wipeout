@@ -58,7 +58,7 @@
   <string name="CmtConfirmPayment">Confirmer</string>
   <string name="CmtRideLinqCancelChanges">Annuler</string>
   <string name="CmtRideLinqConfirmPairView">Confirmer les informations relatives au paiement</string>
-  <string name="CmtRideLinqConfirmPairViewConfirmPairDetailText">Merci de vérifier que vous être dans le véhicule indiqué ci-dessus. Après confirmation, le paiement sera effectué automatiquement en utilisant vos informations de paiement</string>
+  <string name="CmtRideLinqConfirmPairViewConfirmPairDetailText">Merci de vérifier que vous êtes dans le véhicule indiqué ci-dessus. Après confirmation, le paiement sera effectué automatiquement en utilisant vos informations de paiement</string>
   <string name="CmtRideLinqErrorTitle">Erreur</string>
   <string name="CmtRideLinqGenericErrorMessage">Désolé, il semble qu\'il y ait eu une erreur lors du paiement. Merci de vérifier les paramètres de paiement ou réessayez ultérieurement.</string>
   <string name="CmtRideLinqSaveChanges">Enregistrer</string>
@@ -366,7 +366,7 @@
   <string name="SignIn">S\'identifier</string>
   <string name="StatusActionBookButton">Commander un véhicule</string>
   <string name="StatusActionButton">Annuler</string>
-  <string name="StatusActionCancelButton">Annuler cette demande</string>
+  <string name="StatusActionCancelButton">Annuler</string>
   <string name="StatusCallButton">Appeler</string>
   <string name="StatusCancelButton">Annuler</string>
   <string name="StatusCannotBeDisplayed">Information non disponible. Merci de nous contacter.</string>
@@ -530,4 +530,6 @@
   <string name="Safety">Conduite</string>
   <string name="Politeness">Politesse</string>
   <string name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard">Aucune carte bancaire enregistrée dans votre compte.</string>
+  <string name="ServiceErrorAccountCharge_InvalidAccountNumber">Numéro de compte non valide</string>
+  <string name="Modify">Modifier</string>
 </resources>

@@ -1387,6 +1387,18 @@
   <data name="View_AboutUs" xml:space="preserve">
     <value>نبذة عنا</value>
   </data>
+<data name="View_AccountConfirmation_Button" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="View_AccountConfirmationTitle" xml:space="preserve">
+    <value>Account Confirmation</value>
+  </data>
+  <data name="View_AccountConfirmation_Label_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="View_AccountConfirmation_Label_Instructions" xml:space="preserve">
+    <value>A text message with your code has been sent to your phone.</value>
+  </data>
   <data name="View_BookingDetail" xml:space="preserve">
     <value>تفاصيل الحجز</value>
   </data>
@@ -1608,6 +1620,9 @@
   </data>
   <data name="Knowledgabledriver" xml:space="preserve">
     <value>Knowledgable driver</value>
+  </data>
+  <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
+    <value>Invalid account number</value>
   </data>
   <data name="Safety" xml:space="preserve">
     <value>Safety</value>

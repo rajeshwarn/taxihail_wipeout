@@ -35,9 +35,10 @@ namespace apcurium.MK.Booking.Api.Services
     public class CreateOrderService : Service
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (CreateOrderService));
+
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
-
+        private readonly IAccountChargeDao _accountChargeDao;
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationManager _configManager;
@@ -57,8 +58,10 @@ namespace apcurium.MK.Booking.Api.Services
             IStaticDataWebServiceClient staticDataWebServiceClient,
             IRuleCalculator ruleCalculator,
             IUpdateOrderStatusJob updateOrderStatusJob,
+            IAccountChargeDao accountChargeDao,
             IOrderDao orderDao)
         {
+            _accountChargeDao = accountChargeDao;
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
             _accountDao = accountDao;
@@ -73,8 +76,6 @@ namespace apcurium.MK.Booking.Api.Services
             var applicationKey = _configManager.GetSetting("TaxiHail.ApplicationKey");
             _resources = new Resources.Resources(applicationKey);
         }
-
-        
 
         public object Post(CreateOrder request)
         {
@@ -135,7 +136,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
             {
-                // TODO (waiting for IBS endpoint to be done): send the info to ibs
+                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
             }
 
             var chargeType = ChargeTypes.GetList()
@@ -196,6 +197,39 @@ namespace apcurium.MK.Booking.Api.Services
                 IBSStatusId = "",
                 IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", command.ClientLanguageCode),
             };
+        }
+
+        private void ValidateChargeAccountAnswers(string accountNumber, AccountChargeQuestion[] userQuestionsDetails)
+        {
+            var accountChargeDetail = _accountChargeDao.FindByAccountNumber(accountNumber);
+            if (accountChargeDetail == null)
+            {
+                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
+            }
+
+            for (int i = 0; i < accountChargeDetail.Questions.Count; i++)
+            {
+                var questionDetails = accountChargeDetail.Questions[i];
+                var userQuestionDetails = userQuestionsDetails[i];
+
+                if (!questionDetails.IsRequired)
+                {
+                    // Facultative question, do nothing
+                    continue;
+                }
+
+                var userAnswer = userQuestionDetails.Answer;
+                var validAnswers = questionDetails.Answer.Split(',').Select(a => a.Trim());
+
+                if (!validAnswers.Any(p => String.Equals(userAnswer, p, questionDetails.IsCaseSensitive
+                                                                        ? StringComparison.InvariantCulture
+                                                                        : StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    // User answer is not valid
+                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
+                                        questionDetails.ErrorMessage);
+                }
+            }
         }
 
         private int? TryToSendAccountInformation(Guid orderId, int ibsOrderId, CreateOrder request, AccountDetail account)

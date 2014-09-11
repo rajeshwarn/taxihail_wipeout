@@ -517,4 +517,9 @@
   <string name="Knowledgabledriver">Knowledgable driver</string>
   <string name="Safety">Safety</string>
   <string name="Politeness">Politeness</string>
+  <string name="View_AccountConfirmation_Label_Instructions">A text message with your code has been sent to your phone.</string>
+  <string name="ServiceErrorAccountCharge_InvalidAccountNumber">Invalid account number</string>
+  <string name="View_AccountConfirmationTitle">Account Confirmation</string>
+  <string name="View_AccountConfirmation_Button">Confirm</string>
+  <string name="View_AccountConfirmation_Label_Code">Code</string>
 </resources>

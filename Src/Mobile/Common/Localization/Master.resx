@@ -417,6 +417,9 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+ <data name="Modify" xml:space="preserve">
+    <value>Modify</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
@@ -1676,6 +1679,9 @@
   </data>
   <data name="EstimateFareCalculating" xml:space="preserve">
     <value>Calculating...</value>
+  </data>
+  <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
+    <value>Invalid account number</value>
   </data>
   <data name="Knowledgabledriver" xml:space="preserve">
     <value>Knowledgable driver</value>

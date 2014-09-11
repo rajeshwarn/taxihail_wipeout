@@ -210,6 +210,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(async () => 
 				{
+					_bookingService.ClearLastOrder();
 					var address = await _orderWorkflowService.SetAddressToUserLocation();
 					if(address.HasValidCoordinate())
 					{

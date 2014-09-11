@@ -55,7 +55,7 @@
 "CmtConfirmPayment"="Confirmer";
 "CmtRideLinqCancelChanges"="Annuler";
 "CmtRideLinqConfirmPairView"="Confirmer les informations relatives au paiement";
-"CmtRideLinqConfirmPairViewConfirmPairDetailText"="Merci de vérifier que vous être dans le véhicule indiqué ci-dessus. Après confirmation, le paiement sera effectué automatiquement en utilisant vos informations de paiement";
+"CmtRideLinqConfirmPairViewConfirmPairDetailText"="Merci de vérifier que vous êtes dans le véhicule indiqué ci-dessus. Après confirmation, le paiement sera effectué automatiquement en utilisant vos informations de paiement";
 "CmtRideLinqErrorTitle"="Erreur";
 "CmtRideLinqGenericErrorMessage"="Désolé, il semble qu'il y ait eu une erreur lors du paiement. Merci de vérifier les paramètres de paiement ou réessayez ultérieurement.";
 "CmtRideLinqSaveChanges"="Enregistrer";
@@ -361,7 +361,7 @@
 "SignIn"="S'identifier";
 "StatusActionBookButton"="Commander un véhicule";
 "StatusActionButton"="Annuler";
-"StatusActionCancelButton"="Annuler cette demande";
+"StatusActionCancelButton"="Annuler";
 "StatusCallButton"="Appeler";
 "StatusCancelButton"="Annuler";
 "StatusCannotBeDisplayed"="Information non disponible. Merci de nous contacter.";
@@ -526,3 +526,5 @@
 "WarningPushServiceMessage"="Nous avons remarqué que vous n'avez pas les notifications activées. En les activant, vous obtiendrez alors des mises à jour sur l'état de votre réservation, sans avoir à regarder l'application !";
 "Knowledgabledriver"="Propreté";
 "View_AccountConfirmation_Label_Code"="Code";
+"ServiceErrorAccountCharge_InvalidAccountNumber"="Numéro de compte non valide";
+"Modify"="Modifier";

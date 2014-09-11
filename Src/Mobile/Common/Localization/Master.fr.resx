@@ -955,7 +955,7 @@
     <value>Le paiement n'a pas pu être effectué</value>
   </data>
   <data name="PaymentViewMeterAmountText" xml:space="preserve">
-    <value>Distance</value>
+    <value>Montant</value>
   </data>
   <data name="PaymentViewTipText" xml:space="preserve">
     <value>Pourboire</value>
@@ -1110,6 +1110,9 @@
   <data name="Save" xml:space="preserve">
     <value>Enregistrer</value>
   </data>
+<data name="Modify" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
   <data name="SaveAddressEmptyFieldMessage" xml:space="preserve">
     <value>Désolé, les données ne semble pas valides. Merci de saisir les informations</value>
   </data>
@@ -1231,13 +1234,13 @@
     <value>Appeler/Réserver/Annuler</value>
   </data>
   <data name="StatusActionCancelButton" xml:space="preserve">
-    <value>Annuler cette demande</value>
+    <value>Annuler</value>
   </data>
   <data name="StatusCallButton" xml:space="preserve">
     <value>Appeler</value>
   </data>
   <data name="StatusCancelButton" xml:space="preserve">
-    <value>Annuler cette demande</value>
+    <value>Annuler</value>
   </data>
   <data name="StatusCannotBeDisplayed" xml:space="preserve">
     <value>Information non disponible. Merci de nous contacter.</value>
@@ -1421,6 +1424,18 @@
   </data>
   <data name="View_AboutUs" xml:space="preserve">
     <value>À propos</value>
+  </data>
+<data name="View_AccountConfirmation_Button" xml:space="preserve">
+    <value>Confirmer</value>
+  </data>
+  <data name="View_AccountConfirmationTitle" xml:space="preserve">
+    <value>Confirmation de compte</value>
+  </data>
+  <data name="View_AccountConfirmation_Label_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="View_AccountConfirmation_Label_Instructions" xml:space="preserve">
+    <value>Un message texte vous a été envoyé avec votre code.</value>
   </data>
   <data name="View_BookingDetail" xml:space="preserve">
     <value>Détails de la réservation</value>
@@ -1637,6 +1652,9 @@
   </data>
   <data name="CardOnFile" xml:space="preserve">
     <value>Paiement In App</value>
+  </data>
+  <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
+    <value>Numéro de compte non valide</value>
   </data>
   <data name="EstimateFareCalculating" xml:space="preserve">
     <value>Calcul du prix de votre course ...</value>

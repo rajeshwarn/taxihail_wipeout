@@ -547,4 +547,6 @@
   <string name="Safety">Safety</string>
   <string name="Politeness">Politeness</string>
   <string name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard">No Credit Card On File.</string>
+  <string name="ServiceErrorAccountCharge_InvalidAccountNumber">Invalid account number</string>
+  <string name="Modify">Modify</string>
 </resources>

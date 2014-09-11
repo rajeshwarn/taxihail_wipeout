@@ -57,22 +57,23 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             var ann = ((AddressAnnotation)Annotation);
             Image = ann.GetImage();
 
-//            if (ann.AddressType == AddressAnnotationType.Taxi)
-//            {
-//                var lblVehicleNumber = new UILabel (new RectangleF (0, 8, Image.Size.Width, 16));
-//                lblVehicleNumber.BackgroundColor = UIColor.Clear;
-//                lblVehicleNumber.TextColor = Theme.CompanyColor;
-//                lblVehicleNumber.TextAlignment = UITextAlignment.Center;
-//                lblVehicleNumber.Font = UIFont.FromName (FontName.HelveticaNeueRegular, 30 / 2);
-//                lblVehicleNumber.Text = ((AddressAnnotation)Annotation).Subtitle;
-//                AddSubview (lblVehicleNumber);
-//            }
+            if (ann.AddressType == AddressAnnotationType.Taxi 
+				&& ann.ShowSubtitleOnPin) // The show vehicle number setting is handled at this level so the number can still be populated and used elsewhere
+            {
+                var lblVehicleNumber = new UILabel (new RectangleF (0, 8, Image.Size.Width, 16));
+                lblVehicleNumber.BackgroundColor = UIColor.Clear;
+                lblVehicleNumber.TextColor = Theme.CompanyColor;
+                lblVehicleNumber.TextAlignment = UITextAlignment.Center;
+                lblVehicleNumber.Font = UIFont.FromName (FontName.HelveticaNeueRegular, 30 / 2);
+                lblVehicleNumber.Text = ((AddressAnnotation)Annotation).Subtitle;
+                AddSubview (lblVehicleNumber);
+            }
 
             CenterOffset = new PointF (0, -Image.Size.Height / 2);
             if (ann.AddressType == AddressAnnotationType.Destination ||
                ann.AddressType == AddressAnnotationType.Pickup)
             {
-                CenterOffset = new PointF(0, -Image.Size.Height / 2 - 10);
+                CenterOffset = new PointF(0, -Image.Size.Height / 2 + 2);
             }
 		}
 	}
