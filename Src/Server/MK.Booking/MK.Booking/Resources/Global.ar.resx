@@ -307,7 +307,7 @@
     <value>في انتظار تعيين السائق</value>
   </data>
   <data name="PaymentConfirmationToDriver1" xml:space="preserve">
-    <value>قام الراكب بالدفع {0:c}</value>
+    <value>قام الراكب بالدفع {0}</value>
   </data>
   <data name="PaymentConfirmationToDriver2" xml:space="preserve">
     <value>رقم التصريح {0}</value>

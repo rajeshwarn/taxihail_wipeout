@@ -172,7 +172,7 @@
     <value>Sorry no cars are available due to high demand, please try later.</value>
   </data>
   <data name="PaymentConfirmationToDriver1" xml:space="preserve">
-    <value>The passenger has paid {0:c}</value>
+    <value>The passenger has paid {0}</value>
   </data>
   <data name="PaymentConfirmationToDriver2" xml:space="preserve">
     <value>Auth #{0}</value>
