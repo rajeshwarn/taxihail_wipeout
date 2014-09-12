@@ -354,4 +354,7 @@
   <data name="Email_Body_SubTotal" xml:space="preserve">
     <value>Sous Total</value>
   </data>
+  <data name="CurrencyPriceFormat" xml:space="preserve">
+    <value>{0:c}</value>
+  </data>
 </root>
