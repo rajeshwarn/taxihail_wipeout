@@ -109,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			set.Bind (ViewVehicleType)
 				.For (v => v.ShowEta)
-                .To (vm => vm.Settings.ShowEta);
+				.To (vm => vm.ShowEta);
 
 			set.Bind (ViewVehicleType)
 				.For (v => v.ShowVehicleSelection)
