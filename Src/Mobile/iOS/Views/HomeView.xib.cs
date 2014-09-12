@@ -21,9 +21,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public HomeView() : base("HomeView", null)
         {
 			this.Services().MessengerHub.Subscribe<AppActivated>(m => 
-				{
-					ViewModel.LocateMe.Execute(null);
-				});
+			{
+                ViewModel.AutomaticLocateMeAtPickup.Execute(null);
+			});
         }
 
 		protected override void OnActivated (NSNotification notification)
@@ -45,11 +45,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
             NavigationController.NavigationBar.BarStyle = UIBarStyle.Default;
             NavigationController.NavigationBar.Hidden = true;
+
+            if (ViewModel != null)
+            {
+                ViewModel.SubscribeLifetimeChangedIfNecessary ();
+            }
         }
 
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
+
+            if (ViewModel != null)
+            {
+                ViewModel.UnsubscribeLifetimeChangedIfNecessary ();
+            }
         }
 
         public override void ViewDidLoad()
@@ -80,8 +90,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnLocateMe)
                 .For(v => v.Command)
                 .To(vm => vm.LocateMe);
-
-			btnLocateMe.CommandParameter = false;
 
             set.Bind(mapView)
                 .For(v => v.DataContext)
@@ -122,12 +130,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-	
         void ChangeState(HomeViewModelPresentationHint hint)
         {
-
-
-
             if (hint.State == HomeViewModelState.PickDate)
             {
                 // Order Options: Visible

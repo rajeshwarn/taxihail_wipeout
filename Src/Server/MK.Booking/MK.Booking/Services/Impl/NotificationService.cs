@@ -142,7 +142,9 @@ namespace apcurium.MK.Booking.Services.Impl
                     return;
                 }
 
-                var alert = string.Format(string.Format(_resources.Get("PushNotification_PaymentReceived"), amount), order.ClientLanguageCode);
+                var formattedAmount = string.Format(new CultureInfo(_appSettings.Data.PriceFormat), "{0:C}", amount);
+                var message = _resources.Get("PushNotification_PaymentReceived", order.ClientLanguageCode);
+                var alert = string.Format(message, formattedAmount);
                 var data = new Dictionary<string, object> { { "orderId", orderId } };
 
                 SendPushOrSms(order.AccountId, alert, data);
@@ -192,9 +194,9 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 var order = context.Find<OrderDetail>(orderId);
 
-                var alert = success 
-                    ? string.Format(_resources.Get("PushNotification_OrderPairingSuccessful"), order.IBSOrderId, last4Digits, autoTipPercentage)
-                    : string.Format(_resources.Get("PushNotification_OrderPairingFailed"), order.IBSOrderId);
+                var alert = success
+                    ? string.Format(_resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode), order.IBSOrderId, last4Digits, autoTipPercentage)
+                    : string.Format(_resources.Get("PushNotification_OrderPairingFailed", order.ClientLanguageCode), order.IBSOrderId);
 
                 var data = new Dictionary<string, object> { { "orderId", orderId } };
 

@@ -298,7 +298,7 @@
     <value>Client ne s'est pas présenté</value>
   </data>
   <data name="OrderStatus_wosSCHED" xml:space="preserve">
-    <value>Plannifié</value>
+    <value>Planifié</value>
   </data>
   <data name="OrderStatus_wosTIMEOUT" xml:space="preserve">
     <value>Veuillez nous excuser, en raison d'un grand nombre de demandes nous n'avons pas de véhicule disponible, merci d'essayer ultérieurement.</value>
@@ -307,7 +307,7 @@
     <value>En attente d'affectation</value>
   </data>
   <data name="PaymentConfirmationToDriver1" xml:space="preserve">
-    <value>Le passager à payé un montant de  {0:c}</value>
+    <value>Le passager a payé un montant de {0:c}</value>
   </data>
   <data name="PaymentConfirmationToDriver2" xml:space="preserve">
     <value>Numéro d'authorisation {0}</value>
@@ -334,7 +334,7 @@
     <value>Votre carte de crédit a été chargé d'un montant de {0}. Ce montant inclut le prix de la course ainsi que le pourboire.</value>
   </data>
   <data name="PushNotification_wosLOADED" xml:space="preserve">
-    <value>Veuillez confirmer le véhicule avec lequel le payment de carte de crédit sera effectué.</value>
+    <value>Veuillez confirmer le véhicule avec lequel le paiement de carte de crédit sera effectué.</value>
   </data>
   <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
     <value>La course #{0} sera payée automatiquement à la fin du voyage en utilisant votre carte de crédit se terminant par {1} et en utilisant votre pouroire par défaut de {2}%</value>
@@ -349,7 +349,19 @@
     <value>Itinéraire</value>
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
-    <value>La course sera payée en utilisant for carte de crédit par défaut</value>
+    <value>La course sera payée en utilisant votre carte de crédit enregistrée</value>
+  </data>
+  <data name="AccountConfirmationSmsBody" xml:space="preserve">
+    <value>Votre code de confirmation pour {0} est {1} </value>
+  </data>
+  <data name="CardOnFile" xml:space="preserve">
+    <value>Paiement In App</value>
+  </data>
+  <data name="ChargeAccount" xml:space="preserve">
+    <value>Compte</value>
+  </data>
+  <data name="PaymentInCar" xml:space="preserve">
+    <value>Carte de crédit - à bord</value>
   </data>
   <data name="Email_Body_SubTotal" xml:space="preserve">
     <value>Sous Total</value>

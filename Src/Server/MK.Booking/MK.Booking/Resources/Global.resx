@@ -346,7 +346,16 @@
     <value>Route</value>
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
-    <value>Fare will be paid using your default CC payment</value>
+    <value>Fare will be paid using the credit card on file</value>
+  </data>
+  <data name="CardOnFile" xml:space="preserve">
+    <value>Card on File</value>
+  </data>
+  <data name="ChargeAccount" xml:space="preserve">
+    <value>Charge Account</value>
+  </data>
+  <data name="PaymentInCar" xml:space="preserve">
+    <value>Payment in Car</value>
   </data>
   <data name="Email_Body_SubTotal" xml:space="preserve">
     <value>Subtotal</value>

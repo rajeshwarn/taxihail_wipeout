@@ -34,7 +34,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             NavigationController.NavigationBar.Hidden = false;
             NavigationItem.Title = Localize.GetValue("View_BookingStatus");
-            NavigationItem.HidesBackButton = false;
+            NavigationItem.HidesBackButton = true;
+			NavigationItem.SetHidesBackButton (true, true);
 
             ChangeThemeOfBarStyle();
         }
@@ -328,7 +329,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				if(lblStatus.Text != value)
 				{
 					lblStatus.Text = value;
-					var nbLines = 1 + (int)(lblStatus.StringSize(value, lblStatus.Font).Width / lblStatus.Frame.Width);
+                    var nbLines = 1 + (int)(lblStatus.GetSizeThatFits (value, lblStatus.Font).Width / lblStatus.Frame.Width);
                     var togglePadding = DEFAULT_STATUS_LABEL_HEIGHT * (nbLines - 1);
                     lblStatus.SetHeight (DEFAULT_STATUS_LABEL_HEIGHT + togglePadding);              // increase label height
                     VisibleStatusHeight = DEFAULT_TOP_VISIBLE_STATUS_HEIGHT + togglePadding;

@@ -1,6 +1,7 @@
 using System;
 using System.Xml.Serialization;
 using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.Client.Helper;
 
 namespace apcurium.MK.Booking.Mobile.Client.Style
 {
@@ -19,31 +20,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
         static UIColor _companyColor;
 		public static UIColor CompanyColor
 		{
-            get{ return ToUIColor(_themeValues.CompanyColor, ref _companyColor); }
+            get{ return ColorHelper.ToUIColor(_themeValues.CompanyColor, ref _companyColor); }
 		}
 
         static UIColor _loginColor;
         public static UIColor LoginColor
         {
-            get{ return ToUIColor(_themeValues.LoginColor, ref _loginColor); }
+            get{ return ColorHelper.ToUIColor(_themeValues.LoginColor, ref _loginColor); }
         }
 
 		static UIColor _labelTextColor;
 		public static UIColor LabelTextColor
 		{
-			get{ return ToUIColor(_themeValues.LabelTextColor, ref _labelTextColor); }
+            get{ return ColorHelper.ToUIColor(_themeValues.LabelTextColor, ref _labelTextColor); }
 		}
 
 		static UIColor _buttonTextColor;
 		public static UIColor ButtonTextColor
 		{
-			get{ return ToUIColor(_themeValues.ButtonTextColor, ref _buttonTextColor); }
+            get{ return ColorHelper.ToUIColor(_themeValues.ButtonTextColor, ref _buttonTextColor); }
 		}
 
         static UIColor _menuColor;
         public static UIColor MenuColor
         {
-            get{ return ToUIColor(_themeValues.MenuColor, ref _menuColor); }
+            get{ return ColorHelper.ToUIColor(_themeValues.MenuColor, ref _menuColor); }
         }
 
 		public static bool IsLightContent
@@ -69,18 +70,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
         {
             return ShouldHaveLightContent(loginColor) ? UIColor.White : UIColor.Black;
         }
-
-		private static UIColor ToUIColor(string hexaDecimaleValue, ref UIColor color)
-		{
-			if (color == null)
-			{
-                var red = Convert.ToInt32(hexaDecimaleValue.Substring(1, 2), 16) / 255f;
-				var green = Convert.ToInt32(hexaDecimaleValue.Substring(3, 2), 16) / 255f;
-				var blue = Convert.ToInt32(hexaDecimaleValue.Substring(5, 2), 16) / 255f;
-				color =  UIColor.FromRGB(red, green, blue);
-			}
-			return color;
-		}
     }
 
 	public class ThemeValues 

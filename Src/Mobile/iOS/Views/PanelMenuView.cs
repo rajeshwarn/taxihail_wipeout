@@ -50,6 +50,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             menuContainer.BackgroundColor = Theme.MenuColor;
 
+            lblVersion.TextColor = Theme.IsLightContent
+                ? UIColor.White
+                : UIColor.FromRGB (79, 76, 71);
+
             var sideLine = Line.CreateVertical(menuContainer.Frame.Width, Frame.Height, UIColor.FromRGB(190, 190, 190));
             AddSubview(sideLine);
 

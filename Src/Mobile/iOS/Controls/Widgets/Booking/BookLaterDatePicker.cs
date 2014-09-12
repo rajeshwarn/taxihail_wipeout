@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
         {
             var buttonHorizontalPadding = 8f;
             var buttonVerticalPadding = 5f;
-            var buttonWidth = 120f;
+            var buttonWidth = 130f;
             _bottom = bottom;
 
             CancelButton.Frame = new RectangleF(buttonHorizontalPadding, buttonVerticalPadding, buttonWidth, 36f);

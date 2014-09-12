@@ -71,5 +71,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             _touchMap.OnLowMemory();
         }
+
+		public override void OnBackPressed ()
+		{
+			base.OnBackPressed ();
+			ViewModel.PrepareNewOrder.Execute(null);
+		}
     }
 }

@@ -30,19 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             cell.TextLabel.Font = UIFont.FromName(FontName.HelveticaNeueLight, 32/2);
             cell.TextLabel.TextColor = UIColor.FromRGB(44, 44, 44);
 
-			if (UIHelper.IsOS7orHigher) 
-			{
-				this.Alignment = UITextAlignment.Natural;
-
-			} 
-			else 
-			{
-				if (cell.Services ().Localize.IsRightToLeft)
-				{
-					this.Alignment = UITextAlignment.Right;
-				}
-			}
-
+            this.Alignment = NaturalLanguageHelper.GetTextAlignment();
 
 			cell.BackgroundView = new CustomCellBackgroundView(cell.ContentView.Frame, 10, UIColor.White, UIColor.FromRGB(190, 190, 190)) 
             {

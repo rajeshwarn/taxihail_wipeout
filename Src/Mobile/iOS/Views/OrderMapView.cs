@@ -170,7 +170,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 addressType,
                 string.Empty,
                 string.Empty,
-                useThemeColorForPickupAndDestinationMapIcons);
+                useThemeColorForPickupAndDestinationMapIcons,
+				false);
         }
 
         private Address _pickupAddress;
@@ -376,6 +377,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 								vehicle.VehicleNumber.ToString(),             
                                 string.Empty, 
                                 _useThemeColorForPickupAndDestinationMapIcons,
+								false,
                                 vehicle.LogoName);
 
             AddAnnotation (vehicleAnnotation);
@@ -459,6 +461,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
             _userMovedMapSubsciption.Disposable = null;
+			
         }
 
         private void ChangeState(HomeViewModelPresentationHint hint)

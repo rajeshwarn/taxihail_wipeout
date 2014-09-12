@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -53,17 +54,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public void Init(string order, string orderStatus)
 		{
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
-			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
+			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);
+            DisplayOrderNUmber();
 			IsCancelButtonVisible = true;			
 			_waitingToNavigateAfterTimeOut = false;
-			
 		}
 	
 		public override void OnViewLoaded ()
         {
 			base.OnViewLoaded ();
 
-			StatusInfoText = string.Format(this.Services().Localize["StatusStatusLabel"], this.Services().Localize["LoadingMessage"]);
+			StatusInfoText = string.Format(this.Services().Localize["LoadingMessage"]);
 
             CenterMap ();			
         }
@@ -78,7 +79,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.ObserveOn(SynchronizationContext.Current)
 				.Subscribe (_ => RefreshStatus())
 				.DisposeWith (Subscriptions);
-
 		}
 		
 		protected readonly CompositeDisposable Subscriptions = new CompositeDisposable ();
@@ -140,9 +140,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
         public bool IsCallTaxiVisible
         {
-            get {
-				var showCallDriver = Settings.ShowCallDriver;
-                return showCallDriver && IsDriverInfoAvailable && OrderStatusDetail.DriverInfos.MobilePhone.HasValue (); }
+            get 
+			{
+				return Settings.ShowCallDriver 
+					&& IsDriverInfoAvailable 
+					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue (); 
+			}
         }
 
         public bool IsDriverInfoAvailable
@@ -222,17 +225,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public ICommand CallTaxi
         {
-            get { 
+            get 
+			{ 
 				return this.GetCommand(() =>
                 {
                     if (!string.IsNullOrEmpty(OrderStatusDetail.DriverInfos.MobilePhone))
                     {
-                        this.Services().Message.ShowMessage(string.Empty, 
-						                            OrderStatusDetail.DriverInfos.MobilePhone,
-                                                    this.Services().Localize["CallButton"],
-													() => _phoneService.Call(OrderStatusDetail.DriverInfos.MobilePhone),
-                                                    this.Services().Localize["Cancel"], 
-						                            () => {});   
+						_phoneService.Call(OrderStatusDetail.DriverInfos.MobilePhone);
                     }
                     else
                     {
@@ -243,7 +242,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 		#endregion
-
 
         private bool HasSeenReminderPrompt( Guid orderId )
         {
@@ -307,7 +305,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if(Settings.ShowEta && status.IBSStatusId.Equals(VehicleStatuses.Common.Assigned) && status.VehicleNumber.HasValue())
 				{
 					Direction d =  _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
-					statusInfoText += "\n" + FormatEta(d);						
+					statusInfoText += " " + FormatEta(d);						
 				}
 
 				StatusInfoText = statusInfoText;
@@ -331,9 +329,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 UpdatePayCancelButtons(status.IBSStatusId);
 
-                if (OrderStatusDetail.IBSOrderId.HasValue) {
-                    ConfirmationNoTxt = string.Format(this.Services().Localize["StatusDescription"], OrderStatusDetail.IBSOrderId.Value + "");
-                }
+                DisplayOrderNUmber();
 
                 if (isDone) 
                 {
@@ -351,7 +347,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		string FormatEta(Direction direction)
+	    private void DisplayOrderNUmber()
+	    {
+	        if (OrderStatusDetail.IBSOrderId.HasValue)
+	        {
+	            ConfirmationNoTxt = string.Format(this.Services().Localize["StatusDescription"],
+	                OrderStatusDetail.IBSOrderId.Value + "");
+	        }
+	    }
+
+	    string FormatEta(Direction direction)
 		{
 			if (!direction.IsValidEta())
 			{
@@ -367,31 +372,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var setting = _paymentService.GetPaymentSettings();
             var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 
-            IsUnpairButtonVisible = !_paymentService.GetPaymentSettings().AutomaticPayment  			// we don't want to unpair if client accepted the auto payment, only for RideLinqCMT
+			// unpair is only available for RideLinqCMT
+			IsUnpairButtonVisible = _paymentService.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt &&
+								!_paymentService.GetPaymentSettings().AutomaticPayment  			
 								&& _bookingService.IsPaired(Order.Id);      
-
 
 			var defaultCardRequirement = !(Settings.DefaultCardRequiredToPayNow && !_accountService.CurrentAccount.DefaultCreditCard.HasValue);
 
-			IsPayButtonVisible = (!Settings.HidePayNowButtonDuringRide) &&
-								defaultCardRequirement &&
-								(statusId == VehicleStatuses.Common.Done
-								||statusId == VehicleStatuses.Common.Loaded)
+			IsPayButtonVisible = (!Settings.HidePayNowButtonDuringRide)
+								&& defaultCardRequirement 
+								&& (statusId == VehicleStatuses.Common.Done
+									|| statusId == VehicleStatuses.Common.Loaded)
 								&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue
                                 && !_paymentService.GetPaymentSettings().AutomaticPayment
 			                    && !IsUnpairButtonVisible
 								&& (Order.Settings.ChargeTypeId == null 
 									|| Order.Settings.ChargeTypeId != ChargeTypes.Account.Id)
-                                && (setting.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null  
+                                && ((setting.IsPayInTaxiEnabled 
+										&& _accountService.CurrentAccount.DefaultCreditCard != null) 
                                     || setting.PayPalClientSettings.IsEnabled);
 			
-            IsCancelButtonVisible = statusId == null 
-			                    || statusId == VehicleStatuses.Common.Assigned 
-                                || statusId == VehicleStatuses.Common.Waiting 
-                                || statusId == VehicleStatuses.Common.Arrived
-                                || statusId == VehicleStatuses.Common.Scheduled;
+			IsCancelButtonVisible = _bookingService.IsOrderCancellable (statusId);
 
-            IsResendButtonVisible = isPayEnabled && !_paymentService.GetPaymentSettings().AutomaticPayment && _paymentService.GetPaymentFromCache(Order.Id).HasValue;
+            IsResendButtonVisible = isPayEnabled 
+				&& !_paymentService.GetPaymentSettings().AutomaticPayment 
+				&& _paymentService.GetPaymentFromCache(Order.Id).HasValue;
 		}
 
 		public void GoToSummary(){
@@ -432,23 +437,51 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void CenterMap ()
         {   
-			if (Order == null) {
+			if (Order == null) 
+			{
 				return;
 			}
 
-			var pickup = CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true);
+			var showPickupOnlyStatus = new [] { VehicleStatuses.Common.Waiting, VehicleStatuses.Common.Timeout, VehicleStatuses.Common.Scheduled };
+			var showPickupAndVehicleStatus = new [] { VehicleStatuses.Common.Assigned, VehicleStatuses.Common.Arrived, VehicleStatuses.Common.NoShow };
+			var showVehicleAndDropOffStatus = new [] { VehicleStatuses.Common.Loaded, VehicleStatuses.Common.MeterOffNotPayed, VehicleStatuses.Common.Done };
 
-			if (OrderStatusDetail != null &&
-				OrderStatusDetail.IBSStatusId != VehicleStatuses.Common.Waiting &&
-				OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue) 
+			// should show nothing but pickup
+			if (OrderStatusDetail == null
+				|| showPickupOnlyStatus.Contains(OrderStatusDetail.IBSStatusId)
+				|| (!OrderStatusDetail.VehicleLatitude.HasValue && !OrderStatusDetail.VehicleLongitude.HasValue))
 			{
-				MapCenter = new[] 
-				{ 
-					pickup,
-					CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value)                   
-				};
-			} else {
+				var pickup = CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true);
 				MapCenter = new[] { pickup };
+				return;
+			}
+
+			// should show pickup and vehicle
+			if (showPickupAndVehicleStatus.Contains(OrderStatusDetail.IBSStatusId))
+			{
+				var pickup = CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true);
+				var vehicle = CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value);
+				MapCenter = new[] { pickup, vehicle };
+				return;
+			}
+
+			// should show vehicle and dropoff (if available)
+			if (showVehicleAndDropOffStatus.Contains(OrderStatusDetail.IBSStatusId))
+			{
+				var vehicle = CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value, true);
+
+				if (Order.DropOffAddress != null
+					&& Order.DropOffAddress.HasValidCoordinate ())
+				{
+					var dropOff = CoordinateViewModel.Create(Order.DropOffAddress.Latitude, Order.DropOffAddress.Longitude, true);
+					MapCenter = new[] { vehicle, dropOff };
+				}
+				else
+				{
+					MapCenter = new[] { vehicle };
+				}
+
+				return;
 			}
         }
 
@@ -597,7 +630,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				return this.GetCommand(async () =>{
-
+					_bookingService.ClearLastOrder();
                     var address = await _orderWorkflowService.SetAddressToUserLocation();
                     if (address.HasValidCoordinate())
                     {

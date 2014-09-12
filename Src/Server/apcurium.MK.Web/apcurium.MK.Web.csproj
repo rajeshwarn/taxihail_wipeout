@@ -481,6 +481,8 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="admin\localization\SendTestEmail.json" />
+    <Content Include="localization\Aexid-fr.json" />
+    <Content Include="localization\Aexid-en.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

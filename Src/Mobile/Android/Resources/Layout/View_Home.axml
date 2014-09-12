@@ -27,7 +27,8 @@
                     android:id="@+id/RelInnerLayout"
                     android:layout_weight="1"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
+                    android:layout_height="fill_parent"
+                    android:background="@color/setting_menu_color">
                     <fragment
                         class="apcurium.mk.booking.mobile.client.controls.TouchableMap"
                         android:id="@+id/mapPickup"
@@ -85,7 +86,7 @@
                 <!-- Locate Me button -->
                     <LinearLayout
                         android:clickable="true"
-                        local:MvxBind="Click LocateMe, CommandParameter=false"
+                        local:MvxBind="Click LocateMe"
                         android:background="@drawable/drop_shadow_selector"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -121,7 +122,8 @@
                 <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBar
                     android:layout_width="fill_parent"
                     android:id="@+id/appBar"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:background="@color/setting_menu_color" />
             </LinearLayout>
         <!-- Address Search -->
             <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses.AddressPicker
