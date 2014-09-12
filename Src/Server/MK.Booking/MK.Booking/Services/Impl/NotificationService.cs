@@ -306,6 +306,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
 
+            var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
+
             var isCardOnFile = cardOnFileInfo != null;
             var cardOnFileAmount = string.Empty;
             var cardNumber = string.Empty;
@@ -348,11 +350,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 ibsOrderId,
                 vehicleNumber,
                 driverName,
-                PickupDate = pickupDate.ToString("dddd, MMMM d, yyyy"),
-                PickupTime = pickupDate.ToString("t" /* Short time pattern */),
-                DropOffDate = dropOffDate.HasValue 
-                    ? dropOffDate.Value.ToString("dddd, MMMM d, yyyy")
-                    : pickupDate.ToString("dddd, MMMM d, yyyy"), // assume it ends on the same day...
+                PickupDate = pickupDate.ToString("D", dateFormat),
+                PickupTime = pickupDate.ToString("t", dateFormat /* Short time pattern */),
+                DropOffDate = dropOffDate.HasValue
+                    ? dropOffDate.Value.ToString("D", dateFormat)
+                    : pickupDate.ToString("D", dateFormat), // assume it ends on the same day...
                 DropOffTime = dropOffTime,
                 ShowDropOffTime = !string.IsNullOrEmpty(dropOffTime),
                 Fare = fare.ToString("C", priceFormat),
@@ -368,7 +370,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
                 PickupAddress = pickupAddress.DisplayAddress,
                 DropOffAddress = hasDropOffAddress ? dropOffAddress.DisplayAddress : "-",
-                SubTotal=(fare+toll+tip).ToString("C", priceFormat),
+                SubTotal=(fare+tax).ToString("C", priceFormat),
                 StaticMapUri = staticMapUri,
                 ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
                 BaseUrlImg = baseUrls.BaseUrlAssetsImg,
