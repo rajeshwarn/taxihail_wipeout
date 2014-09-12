@@ -342,7 +342,6 @@ namespace apcurium.MK.Booking.Api.Jobs
         private string FormatPrice(double? price)
         {
             var culture = _appSettings.Data.PriceFormat;
-            var currencyPriceFormat = _resources.Get("CurrencyPriceFormat", culture);
             return string.Format(new CultureInfo(culture), "{0:C}", price.HasValue ? price.Value : 0);
         }
     }
