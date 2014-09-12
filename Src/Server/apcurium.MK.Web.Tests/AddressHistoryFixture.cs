@@ -3,6 +3,7 @@ using System.Linq;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
 
 namespace apcurium.MK.Web.Tests
@@ -48,7 +49,7 @@ namespace apcurium.MK.Web.Tests
                         },
                     Settings = new BookingSettings
                         {
-                            ChargeTypeId = 99,
+                            ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                             VehicleTypeId = 7,
                             ProviderId = Provider.MobileKnowledgeProviderId,
                             Phone = "514-555-1212",
@@ -97,7 +98,7 @@ namespace apcurium.MK.Web.Tests
                     new Address {FullAddress = "Velvet auberge st gabriel", Latitude = 45.50643, Longitude = -73.554052},
                 Settings = new BookingSettings
                 {
-                    ChargeTypeId = 99,
+                    ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                     VehicleTypeId = 1,
                     ProviderId = Provider.MobileKnowledgeProviderId,
                     Phone = "514-555-1212",
@@ -155,7 +156,7 @@ namespace apcurium.MK.Web.Tests
                         },
                     Settings = new BookingSettings
                         {
-                            ChargeTypeId = 99,
+                            ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                             VehicleTypeId = 1,
                             ProviderId = Provider.MobileKnowledgeProviderId,
                             Phone = "514-555-1212",

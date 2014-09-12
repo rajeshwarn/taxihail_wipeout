@@ -144,7 +144,10 @@ namespace apcurium.MK.Booking.Api.Services
                     .Select(x => x.Display)
                     .FirstOrDefault();
 
-            chargeType = _resources.Get(chargeType, _appSettings.Data.PriceFormat);
+            if (chargeType != null)
+            {
+                chargeType = _resources.Get(chargeType, _appSettings.Data.PriceFormat);
+            }
 
             var ibsOrderId = CreateIbsOrder(account, request, referenceData, chargeType);
 
