@@ -357,4 +357,7 @@
   <data name="PaymentInCar" xml:space="preserve">
     <value>Payment in Car</value>
   </data>
+  <data name="CurrencyPriceFormat" xml:space="preserve">
+    <value>{0:c}</value>
+  </data>
 </root>

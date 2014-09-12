@@ -88,6 +88,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0:c}.
+        /// </summary>
+        public static string CurrencyPriceFormat {
+            get {
+                return ResourceManager.GetString("CurrencyPriceFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To confirm your email address, please visit this link:.
         /// </summary>
         public static string Email_Body_AccountConfirmationLine1 {
