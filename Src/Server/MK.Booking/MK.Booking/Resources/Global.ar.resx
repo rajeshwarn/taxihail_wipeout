@@ -345,4 +345,7 @@
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
     <value>Fare will be paid using your default CC payment</value>
   </data>
+  <data name="PaymentItemDescription" xml:space="preserve">
+    <value>Order #{0} Original amount: {1}</value>
+  </data>
 </root>

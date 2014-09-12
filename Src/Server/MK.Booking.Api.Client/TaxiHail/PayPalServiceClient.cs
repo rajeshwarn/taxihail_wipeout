@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public async Task<string> SetExpressCheckoutForAmount(Guid orderId, decimal amount, decimal meter, decimal tip)
+		public async Task<string> SetExpressCheckoutForAmount(Guid orderId, decimal amount, decimal meter, decimal tip, int? ibsOrderId, string totalAmount, string languageCode)
         {
             var response = await
                 Client.PostAsync(new InitiatePayPalExpressCheckoutPaymentRequest
@@ -25,7 +25,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                     OrderId = orderId,
                     Amount = amount,
                     Meter = meter,
-                    Tip = tip
+					Tip = tip,
+					IbsOrderId = ibsOrderId,
+                    TotalAmount = totalAmount,
+					LanguageCode = languageCode
                 });
             return response.CheckoutUrl;
         }

@@ -382,8 +382,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue
                                 && !_paymentService.GetPaymentSettings().AutomaticPayment
 			                    && !IsUnpairButtonVisible
-								&& (setting.IsPayInTaxiEnabled && defaultCreditCard != null
-                                    || setting.PayPalClientSettings.IsEnabled);
+								&& ((setting.IsPayInTaxiEnabled && defaultCreditCard != null)
+                                    || setting.PayPalClientSettings.IsEnabled);					
 			
             IsCancelButtonVisible = statusId == null 
 			                    || statusId == VehicleStatuses.Common.Assigned 

@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly IAccountDao _accountDao;
         private readonly ILogger _logger;
         private readonly IOrderDao _orderDao;
+        private readonly Resources.Resources _resources;
 
         public PayPalService(ICommandBus commandBus, IOrderPaymentDao dao,
             ExpressCheckoutServiceFactory factory, IConfigurationManager configurationManager, 
@@ -45,6 +46,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _accountDao = accountDao;
             _logger = logger;
             _orderDao = orderDao;
+
+            var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
+            _resources = new Resources.Resources(applicationKey);
         }
 
 
@@ -64,7 +68,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             var conversionRate = _configurationManager.GetSetting<decimal>("PayPalConversionRate", 1);
 
-            var token = service.SetExpressCheckout( Math.Round( request.Amount * conversionRate,2), successUrl, cancelUrl);
+            var description = _resources.Get("PaymentItemDescription", request.LanguageCode);
+            description = string.Format(description, request.IbsOrderId, request.TotalAmount);
+
+            var token = service.SetExpressCheckout( Math.Round( request.Amount * conversionRate,2), successUrl, cancelUrl, description);
             var checkoutUrl = service.GetCheckoutUrl(token);
 
 
@@ -224,7 +231,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 var service = new ExpressCheckoutServiceFactory(configurationManager)
                     .CreateService(payPalServerSettings, isSandbox);
-                service.SetExpressCheckout(2, "http://example.net/success", "http://example.net/cancel");
+                service.SetExpressCheckout(2, "http://example.net/success", "http://example.net/cancel", string.Empty);
                 return true;
             }
             catch (Exception)

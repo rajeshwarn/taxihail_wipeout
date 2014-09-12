@@ -20,7 +20,6 @@ namespace apcurium.MK.Booking.Api.Payment
 
         public ExpressCheckoutServiceClient CreateService(PayPalCredentials payPalCredentials, bool useSandbox)
         {
-
             var regionName = _configurationManager.GetSetting("PayPalRegionInfoOverride");
 
             if (string.IsNullOrWhiteSpace(regionName))
@@ -28,7 +27,7 @@ namespace apcurium.MK.Booking.Api.Payment
                regionName = _configurationManager.GetSetting("PriceFormat");
             }
 
-            return new ExpressCheckoutServiceClient(payPalCredentials, new RegionInfo(regionName), useSandbox);
+            return new ExpressCheckoutServiceClient(payPalCredentials, new RegionInfo(regionName), _configurationManager, useSandbox);
         }
     }
 }
