@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_locationService.Start();
 			CheckTermsAsync();
-			CheckActiveOrderAsync ();
+			CheckActiveOrderAsync (firstTime);
 
             if (_orderWorkflowService.IsOrderRebooked())
             {
@@ -95,7 +95,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (firstTime)
 			{
 				await Panel.Start ();
-                CheckUnratedRide();
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
@@ -125,7 +124,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		}
 
-		public async void CheckActiveOrderAsync()
+		public async void CheckActiveOrderAsync(bool firstTime)
 		{
 			var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
 			if(lastOrder != null)
@@ -135,6 +134,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					order = lastOrder.Item1.ToJson (),
 					orderStatus = lastOrder.Item2.ToJson ()
 				});
+			}else if (firstTime) {
+				CheckUnratedRide ();
 			}
 		}
 
