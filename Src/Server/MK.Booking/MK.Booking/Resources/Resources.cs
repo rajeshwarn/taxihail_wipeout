@@ -32,6 +32,11 @@ namespace apcurium.MK.Booking.Resources
 
         public string Get(string key, string languageCode = DefaultLanguageCode)
         {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentNullException("key");
+            }
+
             if (string.IsNullOrWhiteSpace(languageCode))
             {
                 languageCode = DefaultLanguageCode;
