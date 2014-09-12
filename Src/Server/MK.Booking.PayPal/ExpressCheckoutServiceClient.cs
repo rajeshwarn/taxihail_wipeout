@@ -95,12 +95,12 @@ namespace MK.Booking.PayPal
                 var amount = new BasicAmountType
                 {
                     Value = orderTotal.ToString(CultureInfo.InvariantCulture),
-                    currencyID = _currency,
+                    currencyID = _currency
                 };
 
                 var paymentDetails = new PaymentDetailsType
                 {
-                    OrderTotal = amount,
+                    OrderTotal = amount
                 };
 
                 var requestDetails = new DoExpressCheckoutPaymentRequestDetailsType
@@ -111,18 +111,18 @@ namespace MK.Booking.PayPal
                     PayerID = payerId,
                     Token = token,
                     PaymentDetails = new [] { paymentDetails },
-                    PaymentAction = PaymentActionCodeType.Sale,
+                    PaymentAction = PaymentActionCodeType.Sale
                 };
 
                 var requestType = new DoExpressCheckoutPaymentRequestType
                 {
                     Version = ApiVersion,
-                    DoExpressCheckoutPaymentRequestDetails = requestDetails,
+                    DoExpressCheckoutPaymentRequestDetails = requestDetails
                 };
 
                 var request = new DoExpressCheckoutPaymentReq
                 {
-                    DoExpressCheckoutPaymentRequest = requestType,
+                    DoExpressCheckoutPaymentRequest = requestType
                 };
 
                 var response = api.DoExpressCheckoutPayment(request);
@@ -162,7 +162,7 @@ namespace MK.Booking.PayPal
             var api = new PayPalAPIAASoapBinding
                           {
                               Url = _urls.GetApiUrl(),
-                              RequesterCredentials = securityHeader,
+                              RequesterCredentials = securityHeader
                           };
             return api;
         }
@@ -176,7 +176,7 @@ namespace MK.Booking.PayPal
             var api = new PayPalAPISoapBinding
             {
                 Url = _urls.GetApiUrl(),
-                RequesterCredentials = securityHeader,
+                RequesterCredentials = securityHeader
             };
             return api;
         }
@@ -186,60 +186,44 @@ namespace MK.Booking.PayPal
             var amount = new BasicAmountType
             {
                 Value = orderTotal.ToString(CultureInfo.InvariantCulture),
-                currencyID = _currency,
+                currencyID = _currency
             };
          
             var regionName = _configurationManager.GetSetting("PayPalRegionInfoOverride");
 
-            PaymentDetailsItemType paymentDetailsItem;
-
-            if (string.IsNullOrWhiteSpace(regionName))
-            {
-                paymentDetailsItem = new PaymentDetailsItemType
-                {        
-                    Amount = amount,
-                };
-            }
-
-            else 
-            {
-                paymentDetailsItem = new PaymentDetailsItemType
-                {        
-                    Amount = amount,
-                    Description = description,
-                };
- 
-            }          
-            var pdit = new PaymentDetailsItemType[1] { paymentDetailsItem };
-
             var paymentDetails = new PaymentDetailsType
             {
-                PaymentDetailsItem = pdit,
+                ItemTotal = amount,
+                PaymentDetailsItem = new[]
+                {
+                    new PaymentDetailsItemType
+                    {
+                        Amount = amount,
+                        Description = string.IsNullOrWhiteSpace(regionName) ? null : description
+                    }
+                }
             };
  
-
-            var pdt = new PaymentDetailsType[1] { paymentDetails };
-
             var requestDetails = new SetExpressCheckoutRequestDetailsType
             {
                 OrderTotal = amount,
                 PaymentAction = PaymentActionCodeType.Sale,
                 ReturnURL = returnUrl,
                 CancelURL = cancelUrl,
-                PaymentDetails = pdt,                
+                PaymentDetails = new[] { paymentDetails }
             };
 
             var requestType = new SetExpressCheckoutRequestType
             {
                 Version = ApiVersion,   
-                SetExpressCheckoutRequestDetails = requestDetails,
+                SetExpressCheckoutRequestDetails = requestDetails
             };
 
             var request = new SetExpressCheckoutReq
             {
-                SetExpressCheckoutRequest = requestType,
+                SetExpressCheckoutRequest = requestType
             };
-
+            
             return request;
         }
 
@@ -274,6 +258,4 @@ namespace MK.Booking.PayPal
         }
 
     }
-
-
 }

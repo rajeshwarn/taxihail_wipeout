@@ -362,24 +362,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						Convert.ToDecimal(RoundToTwoDecimals(TipAmount.ToDouble())),
 						Order.IBSOrderId,
 						TotalAmount,
-						_localize.CurrentLanguage
-						)
-					.ToObservable()
-					.Subscribe(checkoutUrl => {
-                        var @params = new Dictionary<string, string> { { "url", checkoutUrl } };
-						this.Services().Message.ShowProgress(false);
-						ShowSubViewModel<PayPalViewModel, bool>(@params, success =>
-                        {
-                            if (success)
-                            {
-                                ShowPayPalPaymentConfirmation();
-								_paymentService.SetPaymentFromCache(Order.Id, Amount);
-                            }
-                            else
-                            {
-                                this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutCancelTitle"], this.Services().Localize["PayPalExpressCheckoutCancelMessage"]);
-                            }
-                        });
+						_localize.CurrentLanguage)
+					        .ToObservable()
+					        .Subscribe(checkoutUrl => {
+                                var @params = new Dictionary<string, string> { { "url", checkoutUrl } };
+						        this.Services().Message.ShowProgress(false);
+						        ShowSubViewModel<PayPalViewModel, bool>(@params, success =>
+                                {
+                                    if (success)
+                                    {
+                                        ShowPayPalPaymentConfirmation();
+								        _paymentService.SetPaymentFromCache(Order.Id, Amount);
+                                    }
+                                    else
+                                    {
+                                        this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutCancelTitle"], this.Services().Localize["PayPalExpressCheckoutCancelMessage"]);
+                                    }
+                                });
                 }, error => { });
             }
         }
