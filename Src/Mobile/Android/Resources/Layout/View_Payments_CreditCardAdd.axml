@@ -163,6 +163,7 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:inputType="number"
                         android:singleLine="true"
+                        local:allowEmptySelection="true"
                         local:MvxBind="Text ExpirationMonthDisplay; Data ExpirationMonths; SelectedItem ExpirationMonth" />
                 <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
                     <View
@@ -175,6 +176,7 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:inputType="number"
                         android:singleLine="true"
+                        local:allowEmptySelection="true"
                         local:MvxBind="Text ExpirationYearDisplay; Data ExpirationYears; SelectedItem ExpirationYear" />
                 </LinearLayout>
                 <Button
