@@ -1564,7 +1564,7 @@
     <value>Enregistrez</value>
   </data>
   <data name="PendingOrderMessage" xml:space="preserve">
-    <value>Désolé, cette reservation ne peut être prise en compte. Vous avez déjà une commande en cours. Voir le détail?</value>
+    <value>Désolé, cette réservation ne peut être prise en compte. Vous avez déjà une commande en cours. Voir le détail?</value>
   </data>
   <data name="PendingOrderView" xml:space="preserve">
     <value>Détail</value>
