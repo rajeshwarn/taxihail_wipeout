@@ -54,16 +54,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             Progress = 0;
             _isLoading = true;
 
-			var contentView = rootView.GetChildAt (0);
-			rootView.RemoveView(contentView);
+			var contentView = rootView.GetChildAt (0).FindViewById<FrameLayout>(Android.Resource.Id.Content);
 
-			var relLayout = new RelativeLayout(_activity.ApplicationContext);
-			relLayout.LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
-			relLayout.AddView(contentView);
-			 
-            var layoutParent = new LinearLayout(_activity);
-            _layoutCenter = new LinearLayout(_activity);
-            _layoutImage = new LinearLayout(_activity);
+			var layoutParent = new LinearLayout(_activity.ApplicationContext);
+			_layoutCenter = new LinearLayout(_activity.ApplicationContext);
+			_layoutImage = new LinearLayout(_activity.ApplicationContext);
 
 			var layoutParentParameters = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.FillParent, LinearLayout.LayoutParams.FillParent);
             layoutParent.LayoutParameters = layoutParentParameters;
@@ -85,14 +80,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             _layoutCenter.AddView(_layoutImage);
             layoutParent.AddView(_layoutCenter);
-			layoutParent.BringToFront();
-			relLayout.AddView (layoutParent, layoutParentParameters);
+            
+			contentView.AddView (layoutParent, layoutParentParameters);
 			layoutParent.BringToFront ();
 
             _layoutCenter.ClearAnimation();
             _layoutImage.SetBackgroundDrawable(null);
-
-			rootView.AddView(relLayout);
 
 			if (_car == null) {
 				_car = BitmapFactory.DecodeResource (_activity.Resources, Resource.Drawable.taxi_progress);
