@@ -508,3 +508,4 @@
 "PaymentInCar"="Carte bancaire - À bord ";
 "CardOnFile"="Paiement In App";
 "ChargeAccount"="Compte";
+"ServiceErrorAccountCharge_InvalidAccountNumber"="Numéro de compte non valide";

@@ -1,0 +1,6 @@
+{
+    "CreateOrder_NoFareEstimateAvailable": "No fare is available for the ride. Please specify a valid pickup and destination.",
+    "Estimated Fare": "Fare",
+    "Estimate": "Price",
+    "Fare estimate": "Fare"
+}

@@ -529,9 +529,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<IList<ListItem>> GetPaymentsList ()
         {
 			var refData = await GetReferenceData();
-			var hasCardOnFile = (await GetCreditCard()) != null;
 
-		    if (!hasCardOnFile)
+			if (!CurrentAccount.DefaultCreditCard.HasValue)
 		    {
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
 		    }

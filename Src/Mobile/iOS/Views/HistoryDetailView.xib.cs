@@ -122,7 +122,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Bind(btnCancel)
 				.For(v => v.HiddenWithConstraints)
-				.To(vm => vm.IsCompleted);
+                .To(vm => vm.CanCancel)
+                .WithConversion("BoolInverter");
 			set.Bind(btnCancel)
 				.For("TouchUpInside")
 				.To(vm => vm.CancelOrder);
@@ -134,9 +135,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.BindSafe(txtDestination)
 				    .For(v => v.Text)
 				    .To(vm => vm.DestinationTxt);
-			set.BindSafe(txtDestination)
-				    .For(v => v.Hidden)
-					.To(vm => vm.Settings.HideDestination);
 
 			set.Bind(txtPickup)
 				.For(v => v.Text)

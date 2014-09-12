@@ -20,7 +20,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 			base.ViewWillAppear (animated);
 
 			NavigationController.NavigationBar.Hidden = false;
-			NavigationItem.HidesBackButton = false;
 			NavigationItem.Title = Localize.GetValue("View_BookRating");
 
 			ChangeThemeOfBarStyle();
@@ -29,6 +28,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+
+			if (ViewModel.CanUserLeaveScreen ()) 
+			{
+				NavigationItem.HidesBackButton = false;
+			}else 
+			{
+				NavigationItem.HidesBackButton = true;
+			}
 
             View.BackgroundColor = UIColor.FromRGB (242, 242, 242);
             ratingTableView.BackgroundColor = UIColor.Clear;

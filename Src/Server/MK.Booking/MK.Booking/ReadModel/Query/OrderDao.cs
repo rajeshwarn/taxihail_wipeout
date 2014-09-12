@@ -84,8 +84,12 @@ namespace apcurium.MK.Booking.ReadModel.Query
                     if (details == null || details.IBSOrderId != joinedLine.order.IBSOrderId)
                     {
                         if (details != null)
+                        {
                             list.Add(details);
+                        }
+
                         details = new OrderDetailWithAccount();
+
                         Mapper.Map(joinedLine.account, details);
                         Mapper.Map(joinedLine.order, details);
 
@@ -103,14 +107,16 @@ namespace apcurium.MK.Booking.ReadModel.Query
                         {
                             Mapper.Map(joinedLine.card, details);
                         }
-
-
                     }
 
+                    details.IsCompleted = joinedLine.status.Status == OrderStatus.Completed;
+                    details.IsCancelled = joinedLine.status.Status == OrderStatus.Canceled;
 
                     if (joinedLine.rating != null)
+                    {
                         details.Rating[joinedLine.rating.Name] =
                             joinedLine.rating.Score.ToString(CultureInfo.InvariantCulture);
+                    }      
                 }
                 list.Add(details);
             }

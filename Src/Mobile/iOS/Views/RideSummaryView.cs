@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 if (ViewModel.CanUserLeaveScreen ())
                 {
-                    NavigationController.PopViewControllerAnimated(true);
+                    ViewModel.CloseCommand.Execute(null);
                 }
             });
 

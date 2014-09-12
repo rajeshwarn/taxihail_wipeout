@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_accountService = accountService;
 		}
 
-        public Task<OrderValidationResult> ValidateOrder (CreateOrder order)
+		public Task<OrderValidationResult> ValidateOrder (CreateOrder order)
         {
 			return Mvx.Resolve<OrderServiceClient>().ValidateOrder(order);
         }
@@ -86,7 +86,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.GetOrderStatus(orderId));
 		}
 
-        public bool HasLastOrder {
+        public bool HasLastOrder 
+		{
             get{ return UserCache.Get<string> ("LastOrderId").HasValue ();}
         }
 
@@ -172,6 +173,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				statusId.SoftEqual (VehicleStatuses.Common.MeterOffNotPayed);
         }
 
+		public bool IsOrderCancellable(string statusId)
+		{
+			return statusId.IsNullOrEmpty () ||
+				statusId == VehicleStatuses.Common.Assigned ||
+				statusId == VehicleStatuses.Common.Waiting ||
+				statusId == VehicleStatuses.Common.Arrived ||
+				statusId == VehicleStatuses.Common.Scheduled;
+		}
+
         public bool IsCallboxStatusActive(string statusId)
         {
             return statusId.IsNullOrEmpty() ||
@@ -188,27 +198,37 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool IsStatusDone (string statusId)
         {
-            return statusId.SoftEqual(VehicleStatuses.Common.Done) || statusId.SoftEqual(VehicleStatuses.Common.MeterOffNotPayed);
+            return statusId.SoftEqual(VehicleStatuses.Common.Done) || 
+				statusId.SoftEqual(VehicleStatuses.Common.MeterOffNotPayed);
         }
 
-		public async Task<DirectionInfo> GetFareEstimate(Address pickup, Address destination, int? vehicleTypeId, DateTime? pickupDate)
+		public async Task<DirectionInfo> GetFareEstimate(CreateOrder order)
         {
-			var tarifMode = _appSettings.Data.TarifMode;            
-            var directionInfo = new DirectionInfo();
-            
-            if (pickup.HasValidCoordinate() && destination.HasValidCoordinate())
-            {
-                if (tarifMode != TarifMode.AppTarif)
-                {
-					directionInfo = await UseServiceClientAsync<IIbsFareClient, DirectionInfo>(service => service.GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude));                                                            
-                }
+			var tarifMode = _appSettings.Data.TarifMode;
+			var validationResult = await UseServiceClientAsync<OrderServiceClient, OrderValidationResult>(service => service.ValidateOrder(order, null, true));
+			if (order.PickupAddress.HasValidCoordinate() 
+				&& order.DropOffAddress.HasValidCoordinate())
+			{
+				DirectionInfo directionInfo = null;
+				if (tarifMode != TarifMode.AppTarif) 
+				{
+					directionInfo = await UseServiceClientAsync<IIbsFareClient, DirectionInfo> (service => service.GetDirectionInfoFromIbs (order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude));                                                            
+				}
 
                 if (tarifMode == TarifMode.AppTarif || (tarifMode == TarifMode.Both && directionInfo.Price == 0d))
                 {
-					directionInfo = await _geolocService.GetDirectionInfo(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude, vehicleTypeId, pickupDate);                    
+					directionInfo = await _geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId, order.PickupDate);                    
                 }            
 
-				return directionInfo ?? new DirectionInfo();
+                if (directionInfo != null 
+                    && directionInfo.Price < _appSettings.Data.MinimumFare)
+                {
+                    directionInfo.Price = _appSettings.Data.MinimumFare;
+                }
+
+				directionInfo = directionInfo ?? new DirectionInfo();
+				directionInfo.ValidationResult = validationResult;
+				return directionInfo;
             }
 
             return new DirectionInfo();
@@ -220,7 +240,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				? "NoFareTextIfDestinationIsRequired"
 				: "NoFareText"];
 
-			if (direction.Distance.HasValue)
+			if (direction.ValidationResult != null
+				&& direction.ValidationResult.HasError)
+			{
+				fareEstimate = direction.ValidationResult.Message;
+
+			}else if (direction.Distance.HasValue)
             {
 				var willShowFare = direction.Price.HasValue && direction.Price.Value > 0;                                
 				if (willShowFare)

@@ -49,6 +49,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 txtRingCode.Hidden = true;
             }
 
+			if (!ViewModel.Settings.ShowPassengerApartment)
+			{
+				lblRingCode.Hidden = true;
+				txtRingCode.Hidden = true;
+				lblApartment.Hidden = true;
+				txtAptNumber.Hidden = true;
+			}
+
 			NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, null);
 
 			var set = this.CreateBindingSet<LocationDetailView, LocationDetailViewModel> ();

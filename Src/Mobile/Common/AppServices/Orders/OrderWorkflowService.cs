@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions.ValueType;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
@@ -125,11 +126,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
         public async Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken)
 		{
-            var address = await SearchAddressForCoordinate(coordinate);
+			var address = await SearchAddressForCoordinate(coordinate);
 			address.Latitude = coordinate.Latitude;
 			address.Longitude = coordinate.Longitude;
 			cancellationToken.ThrowIfCancellationRequested();
-			await SetAddressToCurrentSelection(address);
+			await SetAddressToCurrentSelection(address, cancellationToken);
 		}
 
 		public async Task ClearDestinationAddress()
@@ -259,11 +260,26 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 						{
 							goto default;
 						}
+                    case "AccountCharge_InvalidAnswer":
+                        // Exception message comes from Charge account admin, already localized
+                        // Quick workaround for a bug in service stack where the response is not properly deserialized
+                        var invalidAnswerError = e.ResponseBody.FromJson<ErrorResponse>();
+                        if (invalidAnswerError.ResponseStatus != null)
+                        {
+                            throw new OrderCreationException(invalidAnswerError.ResponseStatus.Message, invalidAnswerError.ResponseStatus.Message);
+                        }
+                        else
+                        {
+                            goto default;
+                        }
 					case "CreateOrder_InvalidProvider":
-					case "CreateOrder_NoFareEstimateAvailable": /* Fare estimate is required and was not submitted */
-					case "CreateOrder_CannotCreateInIbs_1002": /* Pickup address outside of service area */
-					case "CreateOrder_CannotCreateInIbs_7000": /* Inactive account */
-					case "CreateOrder_CannotCreateInIbs_10000": /* Inactive charge account */
+					case "CreateOrder_NoFareEstimateAvailable":   /* Fare estimate is required and was not submitted */
+					case "CreateOrder_CannotCreateInIbs_1002":    /* Pickup address outside of service area */
+					case "CreateOrder_CannotCreateInIbs_1452":    /* Dropoff address outside of service area */
+					case "CreateOrder_CannotCreateInIbs_7000":    /* Inactive account */
+					case "CreateOrder_CannotCreateInIbs_10000":   /* Inactive charge account */
+					case "CreateOrder_CardOnFileButNoCreditCard": /* Card on file selected but no card */
+                    case "AccountCharge_InvalidAccountNumber":
 						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["ServiceError" + e.ErrorCode + "_NoCall"];
 						throw new OrderCreationException(message, messageNoCall);
@@ -441,7 +457,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
-		private async Task SetAddressToCurrentSelection(Address address)
+		private async Task SetAddressToCurrentSelection(Address address, CancellationToken token = default(CancellationToken))
 		{
 			var selectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
 			if (selectionMode == AddressSelectionMode.PickupSelection)
@@ -453,22 +469,52 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				_destinationAddressSubject.OnNext(address);
 			}
 
-            await CalculateEstimatedFare();
+			// do NOT await this
+			CalculateEstimatedFare(token);
 		}
 
-		private async Task CalculateEstimatedFare()
-		{
-			var pickupAddress = await _pickupAddressSubject.Take(1).ToTask();
-			var destinationAddress = await _destinationAddressSubject.Take(1).ToTask();
-			var pickupDate = await _pickupDateSubject.Take(1).ToTask();
-		    var bookingSettings = await _bookingSettingsSubject.Take(1).ToTask();
+		private CancellationTokenSource _calculateFareCancellationTokenSource = new CancellationTokenSource();
 
-            var direction = await _bookingService.GetFareEstimate(pickupAddress, destinationAddress, bookingSettings.VehicleTypeId, pickupDate);
+		private async Task CalculateEstimatedFare(CancellationToken token = default(CancellationToken))
+		{
+			if (!_calculateFareCancellationTokenSource.IsCancellationRequested)
+			{
+				this.Logger.LogMessage("Fare Estimate - CANCEL");
+				_calculateFareCancellationTokenSource.Cancel ();
+			}
+			_calculateFareCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(new [] { token });
+
+			this.Logger.LogMessage("Fare Estimate - START");
+
+			var newCancelToken = _calculateFareCancellationTokenSource.Token;
+
+			_estimatedFareDisplaySubject.OnNext(_localize["EstimateFareCalculating"]);
+
+			var direction = await GetFareEstimate ();
 			var estimatedFareString = _bookingService.GetFareEstimateDisplay(direction);
 
+			if (newCancelToken.IsCancellationRequested) {
+				return;
+			}
+
+			this.Logger.LogMessage("Fare Estimate - DONE");
 			_estimatedFareDetailSubject.OnNext (direction);
 			_estimatedFareDisplaySubject.OnNext(estimatedFareString);
 		}
+
+		private async Task<DirectionInfo> GetFareEstimate()
+		{
+			// Create order for fare estimate
+			var order = new CreateOrder();
+			order.Id = Guid.NewGuid();
+			order.PickupDate = await _pickupDateSubject.Take(1).ToTask();
+			order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
+			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
+			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
+
+			return await _bookingService.GetFareEstimate(order);
+		}
+
 
 		public async Task PrepareForNewOrder()
 		{

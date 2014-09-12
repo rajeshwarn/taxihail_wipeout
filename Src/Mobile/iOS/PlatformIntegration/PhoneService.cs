@@ -41,11 +41,16 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         public void Call (string phoneNumber)
         {
             var url = new NSUrl ("tel://" + phoneNumber);
-            
-            if (!UIApplication.SharedApplication.OpenUrl (url)) 
+
+            var canCall = UIApplication.SharedApplication.CanOpenUrl(new MonoTouch.Foundation.NSUrl("tel:15146543024"));
+            if (!canCall)
             {
-                var av = new UIAlertView("Not supported", "Calls are not supported on this device", null, Localize.GetValue("Close"), null);
+                var av = new UIAlertView ("Not supported", "Calls are not supported on this device", null, Localize.GetValue ("Close"), null);
                 av.Show ();
+            }
+            else
+            {
+                UIApplication.SharedApplication.OpenUrl (url);
             }
         }
 

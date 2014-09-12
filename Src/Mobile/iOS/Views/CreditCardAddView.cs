@@ -118,6 +118,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Apply ();   
 
             txtNameOnCard.ShouldReturn += GoToNext;
+
+			ViewModel.PropertyChanged += (sender, e) =>
+			{
+				if (e.PropertyName == "IsEditing")
+				{
+					NavigationItem.RightBarButtonItem.Title=ViewModel.CreditCardSaveButtonDisplay;
+				}
+			};
+
         }
 
         private bool GoToNext (UITextField textField)
@@ -135,9 +144,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				cardScannerDelegate.OnScanCompleted+= (PaymentViewController viewController, CreditCardInfo cardInfo) => 
 				{
 					_cardScanner.DismissViewController(true, () => {});
-					if (cardInfo != null )
+					if (cardInfo != null)
 					{
-                    PopulateCreditCardName(cardInfo);
+                        PopulateCreditCardName(cardInfo);
 					}
                 };
 
@@ -157,13 +166,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		private void PopulateCreditCardName(CreditCardInfo  info)
         {
-			 
             txtCardNumber.Text = info.CardNumber;
-			txtCvv.Text = info.Cvv;
-
-			txtExpYear.Text = info.ExpiryYear.ToString ();
-			txtExpMonth.Text = info.ExpiryMonth.ToString ();
-
             ViewModel.CreditCardNumber = info.CardNumber;
             txtCvv.BecomeFirstResponder();
         }

@@ -35,37 +35,39 @@ namespace apcurium.MK.Booking.Api.Services
     public class CreateOrderService : Service
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (CreateOrderService));
+
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
-
+        private readonly IAccountChargeDao _accountChargeDao;
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationManager _configManager;
+        private readonly IAppSettings _appSettings;
         private readonly ReferenceDataService _referenceDataService;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
         private readonly Resources.Resources _resources;
-        private readonly CancelOrderService _cancelService;
 
         public CreateOrderService(ICommandBus commandBus,
             IBookingWebServiceClient bookingWebServiceClient,
             IAccountDao accountDao,
             IConfigurationManager configManager,
+            IAppSettings appSettings,
             ReferenceDataService referenceDataService,
             IStaticDataWebServiceClient staticDataWebServiceClient,
             IRuleCalculator ruleCalculator,
-            IUpdateOrderStatusJob updateOrderStatusJob, 
-            IConfigurationManager configurationManager,
-            IOrderDao orderDao,
-            CancelOrderService cancelService)
+            IUpdateOrderStatusJob updateOrderStatusJob,
+            IAccountChargeDao accountChargeDao,
+            IOrderDao orderDao)
         {
-            _cancelService = cancelService;
+            _accountChargeDao = accountChargeDao;
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
             _accountDao = accountDao;
             _referenceDataService = referenceDataService;
             _configManager = configManager;
+            _appSettings = appSettings;
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _ruleCalculator = ruleCalculator;
             _updateOrderStatusJob = updateOrderStatusJob;
@@ -75,12 +77,11 @@ namespace apcurium.MK.Booking.Api.Services
             _resources = new Resources.Resources(applicationKey);
         }
 
-        
-
         public object Post(CreateOrder request)
         {
             Log.Info("Create order request : " + request.ToJson());
 
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             // User can still create future order, but we allow only one active Book now order.
             if (!request.PickupDate.HasValue)
             {
@@ -91,6 +92,14 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
                 }
+            }
+
+            //check if the account has a credit card
+            if (request.Settings.ChargeTypeId.HasValue
+                && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id
+                && !account.DefaultCreditCard.HasValue)
+            {
+                throw new HttpError(ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString());
             }
 
             var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue,
@@ -111,7 +120,7 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_SettingsRequired.ToString());
             }
 
-            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            
             var referenceData = (ReferenceData) _referenceDataService.Get(new ReferenceDataRequest());
 
             request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime();
@@ -127,10 +136,17 @@ namespace apcurium.MK.Booking.Api.Services
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
             {
-                // TODO (waiting for IBS endpoint to be done): send the info to ibs
+                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
             }
 
-            var ibsOrderId = CreateIbsOrder(account, request, referenceData);
+            var chargeType = ChargeTypes.GetList()
+                    .Where(x => x.Id == request.Settings.ChargeTypeId)
+                    .Select(x => x.Display)
+                    .FirstOrDefault();
+
+            chargeType = _resources.Get(chargeType, _appSettings.Data.PriceFormat);
+
+            var ibsOrderId = CreateIbsOrder(account, request, referenceData, chargeType);
 
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
@@ -157,11 +173,7 @@ namespace apcurium.MK.Booking.Api.Services
             command.ClientVersion = base.Request.Headers.Get("ClientVersion");
             emailCommand.EmailAddress = account.Email;
 
-            // Get Charge Type and Vehicle Type from reference data
-            var chargeType =
-                referenceData.PaymentsList.Where(x => x.Id == request.Settings.ChargeTypeId)
-                    .Select(x => x.Display)
-                    .FirstOrDefault();
+            // Get Vehicle Type from reference data
             var vehicleType =
                 referenceData.VehiclesList.Where(x => x.Id == request.Settings.VehicleTypeId)
                     .Select(x => x.Display)
@@ -185,6 +197,39 @@ namespace apcurium.MK.Booking.Api.Services
                 IBSStatusId = "",
                 IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", command.ClientLanguageCode),
             };
+        }
+
+        private void ValidateChargeAccountAnswers(string accountNumber, AccountChargeQuestion[] userQuestionsDetails)
+        {
+            var accountChargeDetail = _accountChargeDao.FindByAccountNumber(accountNumber);
+            if (accountChargeDetail == null)
+            {
+                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
+            }
+
+            for (int i = 0; i < accountChargeDetail.Questions.Count; i++)
+            {
+                var questionDetails = accountChargeDetail.Questions[i];
+                var userQuestionDetails = userQuestionsDetails[i];
+
+                if (!questionDetails.IsRequired)
+                {
+                    // Facultative question, do nothing
+                    continue;
+                }
+
+                var userAnswer = userQuestionDetails.Answer;
+                var validAnswers = questionDetails.Answer.Split(',').Select(a => a.Trim());
+
+                if (!validAnswers.Any(p => String.Equals(userAnswer, p, questionDetails.IsCaseSensitive
+                                                                        ? StringComparison.InvariantCulture
+                                                                        : StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    // User answer is not valid
+                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
+                                        questionDetails.ErrorMessage);
+                }
+            }
         }
 
         private int? TryToSendAccountInformation(Guid orderId, int ibsOrderId, CreateOrder request, AccountDetail account)
@@ -228,7 +273,7 @@ namespace apcurium.MK.Booking.Api.Services
             return offsetedTime;
         }
 
-        private int? CreateIbsOrder(AccountDetail account, CreateOrder request, ReferenceData referenceData)
+        private int? CreateIbsOrder(AccountDetail account, CreateOrder request, ReferenceData referenceData, string chargeType)
         {
             // Provider is optional
             // But if a provider is specified, it must match with one of the ReferenceData values
@@ -243,7 +288,7 @@ namespace apcurium.MK.Booking.Api.Services
                 ? Mapper.Map<IbsAddress>(request.DropOffAddress)
                 : null;
 
-            var note = BuildNote(request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags);
+            var note = BuildNote(chargeType, request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags);
             var fare = GetFare(request.Estimate);
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
             var result = _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId,
@@ -263,7 +308,7 @@ namespace apcurium.MK.Booking.Api.Services
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
 
-        private string BuildNote(string note, string buildingName, int largeBags)
+        private string BuildNote(string chargeType, string note, string buildingName, int largeBags)
         {
             // Building Name is not handled by IBS
             // Put Building Name in note, if specified
@@ -295,6 +340,8 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!string.IsNullOrWhiteSpace(noteTemplate))
             {
+                noteTemplate = string.Format("{0}{1}{2}", chargeType, Environment.NewLine, noteTemplate);
+
                 var transformedTemplate = noteTemplate
                     .Replace("\\r", "\r")
                     .Replace("\\n", "\n")
@@ -309,7 +356,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             // In versions prior to 1.4, there was no note template
             // So if the IBS.NoteTemplate setting does not exist, use the old way 
-            var formattedNote = string.Format("{0}{1}", Environment.NewLine, note);
+            var formattedNote = string.Format("{0}{0}{1}{2}{3}", 
+                                                Environment.NewLine, chargeType, 
+                                                Environment.NewLine, note);
             if (!string.IsNullOrWhiteSpace(buildingName))
             {
                 formattedNote += (Environment.NewLine + buildingName).Trim();

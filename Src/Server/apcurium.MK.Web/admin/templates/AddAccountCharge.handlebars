@@ -19,63 +19,130 @@
         </div>
         
         <br/>
-        <h4 style="text-align: left">{{localize "Prompts"}}</h4>
+        <h4 style="text-align: left">{{localize "Questions"}}</h4>
 
         <table class="table">            
             <thead>
                 <tr>
                     <th>#</th>
-                    <th style="width: 266px;">Prompt</th>
+                    <th style="width:100%">Question / Accepted answers</th>
+                    <th />
+                    <th>Error Message</th>
                     <th>Required</th>
+                    <th>Case Sensitive</th>
                     <th>Max. Length</th>
                 </tr>
                 <tr>
-                    <td>1</td>
-                    <td><input type="text" name="questionFields" value="{{questions.[0].question}}" /> </td>
-                    <td><input type="checkbox" name="questionIsRequiredFields0" {{#if questions.[0].isRequired}}checked{{/if}}/></td>
-                    <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[0].maxLength}}" />  </td>
+                    <tr>
+                      <td>1</td>
+                      <td colspan="2"><input type="text" style="width:100%" placeholder="Question" name="questionFields" value="{{questions.[0].question}}" /> </td>
+                      <td><input type="text" style="width: 130px;" name="errorMessageFields" value="{{questions.[0].errorMessage}}" /> </td>
+                      <td><input type="checkbox" name="questionIsRequiredFields0" {{#if questions.[0].isRequired}}checked{{/if}}/></td>
+                      <td><input type="checkbox" name="questionIsCaseSensitiveFields0" {{#if questions.[0].isCaseSensitive}}checked{{/if}}/></td>
+                      <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[0].maxLength}}" />  </td>
+                    </tr>
+                    <tr>
+                      <td />
+                      <td colspan="2"><input type="text" style="width:100%" placeholder="Answers (comma delimited)" name="answerFields" value="{{questions.[0].answer}}" /></td>
+                    </tr>
                 </tr>
                 <tr>
-                    <td>2</td>
-                    <td><input type="text" name="questionFields" value="{{questions.[1].question}}" /> </td>
-                    <td><input type="checkbox" name="questionIsRequiredFields1" {{#if questions.[1].isRequired}}checked{{/if}}/></td>
-                    <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[1].maxLength}}" />  </td>
+                    <tr>
+                      <td>2</td>
+                      <td colspan="2"><input type="text" style="width:100%" placeholder="Question" name="questionFields" value="{{questions.[1].question}}" /> </td>
+                      <td><input type="text" style="width: 130px;" name="errorMessageFields" value="{{questions.[1].errorMessage}}" /> </td>
+                      <td><input type="checkbox" name="questionIsRequiredFields1" {{#if questions.[1].isRequired}}checked{{/if}}/></td>
+                      <td><input type="checkbox" name="questionIsCaseSensitiveFields1" {{#if questions.[1].isCaseSensitive}}checked{{/if}}/></td>
+                      <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[1].maxLength}}" />  </td>
+                    </tr>
+                    <tr>
+                      <td />
+                      <td colspan="2"><input type="text" style="width:100%" placeholder="Answers (comma delimited)" name="answerFields" value="{{questions.[1].answer}}" /></td>
+                    </tr>
                 </tr>
                 <tr>
-                    <td>3</td>
-                    <td><input type="text" name="questionFields" value="{{questions.[2].question}}" /> </td>
-                    <td><input type="checkbox" name="questionIsRequiredFields2" {{#if questions.[2].isRequired}}checked{{/if}}/></td>
-                    <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[2].maxLength}}" />  </td>
+                    <tr>
+                      <td>3</td>
+                      <td colspan="2"><input type="text" style="width:100%" placeholder="Question" name="questionFields" value="{{questions.[2].question}}" /> </td>
+                      <td><input type="text" style="width: 130px;" name="errorMessageFields" value="{{questions.[2].errorMessage}}" /> </td>
+                      <td><input type="checkbox" name="questionIsRequiredFields2" {{#if questions.[2].isRequired}}checked{{/if}}/></td>
+                      <td><input type="checkbox" name="questionIsCaseSensitiveFields2" {{#if questions.[2].isCaseSensitive}}checked{{/if}}/></td>
+                      <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[2].maxLength}}" />  </td>
+                    </tr>
+                    <tr>
+                      <td />
+                      <td colspan="2"><input type="text" style="width:100%" placeholder="Answers (comma delimited)" name="answerFields" value="{{questions.[2].answer}}" /></td>
+                    </tr>
                 </tr>
                 <tr>
-                    <td>4</td>
-                    <td><input type="text" name="questionFields" value="{{questions.[3].question}}" /> </td>
-                    <td><input type="checkbox" name="questionIsRequiredFields3" {{#if questions.[3].isRequired}}checked{{/if}}/></td>
-                    <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[3].maxLength}}" />  </td>
+                    <tr>
+                      <td>4</td>
+                      <td colspan="2"><input type="text" style="width:100%" placeholder="Question" name="questionFields" value="{{questions.[3].question}}" /> </td>
+                      <td><input type="text" style="width: 130px;" name="errorMessageFields" value="{{questions.[3].errorMessage}}" /> </td>
+                      <td><input type="checkbox" name="questionIsRequiredFields3" {{#if questions.[3].isRequired}}checked{{/if}}/></td>
+                      <td><input type="checkbox" name="questionIsCaseSensitiveFields3" {{#if questions.[3].isCaseSensitive}}checked{{/if}}/></td>
+                      <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[3].maxLength}}" />  </td>
+                    </tr>
+                    <tr>
+                      <td />
+                      <td colspan="2"><input type="text" style="width:100%" placeholder="Answers (comma delimited)" name="answerFields" value="{{questions.[3].answer}}" /></td>
+                    </tr>
                 </tr>
                 <tr>
-                    <td>5</td>
-                    <td><input type="text" name="questionFields" value="{{questions.[4].question}}" /> </td>
-                    <td><input type="checkbox" name="questionIsRequiredFields4" {{#if questions.[4].isRequired}}checked{{/if}}/></td>
-                    <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[4].maxLength}}" />  </td>
+                    <tr>
+                      <td>5</td>
+                      <td colspan="2"><input type="text" style="width:100%" placeholder="Question" name="questionFields" value="{{questions.[4].question}}" /> </td>
+                      <td><input type="text" style="width: 130px;" name="errorMessageFields" value="{{questions.[4].errorMessage}}" /> </td>
+                      <td><input type="checkbox" name="questionIsRequiredFields4" {{#if questions.[4].isRequired}}checked{{/if}}/></td>
+                      <td><input type="checkbox" name="questionIsCaseSensitiveFields4" {{#if questions.[4].isCaseSensitive}}checked{{/if}}/></td>
+                      <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[4].maxLength}}" />  </td>
+                    </tr>
+                    <tr>
+                      <td />
+                      <td colspan="2"><input type="text" style="width:100%" placeholder="Answers (comma delimited)" name="answerFields" value="{{questions.[4].answer}}" /></td>
+                    </tr>
                 </tr>
                 <tr>
-                    <td>6</td>
-                    <td><input type="text" name="questionFields" value="{{questions.[5].question}}" /> </td>
-                    <td><input type="checkbox" name="questionIsRequiredFields5" {{#if questions.[5].isRequired}}checked{{/if}}/></td>
-                    <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[5].maxLength}}" />  </td>
+                    <tr>
+                      <td>6</td>
+                      <td colspan="2"><input type="text" style="width:100%" placeholder="Question" name="questionFields" value="{{questions.[5].question}}" /> </td>
+                      <td><input type="text" style="width: 130px;" name="errorMessageFields" value="{{questions.[5].errorMessage}}" /> </td>
+                      <td><input type="checkbox" name="questionIsRequiredFields5" {{#if questions.[5].isRequired}}checked{{/if}}/></td>
+                      <td><input type="checkbox" name="questionIsCaseSensitiveFields5" {{#if questions.[5].isCaseSensitive}}checked{{/if}}/></td>
+                      <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[5].maxLength}}" />  </td>
+                    </tr>
+                    <tr>
+                      <td />
+                      <td colspan="2"><input type="text" style="width:100%" placeholder="Answers (comma delimited)" name="answerFields" value="{{questions.[5].answer}}" /></td>
+                    </tr>
                 </tr>
                 <tr>
-                    <td>7</td>
-                    <td><input type="text" name="questionFields" value="{{questions.[6].question}}" /> </td>
-                    <td><input type="checkbox" name="questionIsRequiredFields6" {{#if questions.[6].isRequired}}checked{{/if}}/></td>
-                    <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[6].maxLength}}" />  </td>
+                    <tr>
+                      <td>7</td>
+                      <td colspan="2"><input type="text" style="width:100%" placeholder="Question" name="questionFields" value="{{questions.[6].question}}" /> </td>
+                      <td><input type="text" style="width: 130px;" name="errorMessageFields" value="{{questions.[6].errorMessage}}" /> </td>
+                      <td><input type="checkbox" name="questionIsRequiredFields6" {{#if questions.[6].isRequired}}checked{{/if}}/></td>
+                      <td><input type="checkbox" name="questionIsCaseSensitiveFields6" {{#if questions.[6].isCaseSensitive}}checked{{/if}}/></td>
+                      <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[6].maxLength}}" />  </td>
+                    </tr>
+                    <tr>
+                      <td />
+                      <td colspan="2"><input type="text" style="width:100%" placeholder="Answers (comma delimited)" name="answerFields" value="{{questions.[6].answer}}" /></td>
+                    </tr>
                 </tr>
                 <tr>
-                    <td>8</td>
-                    <td><input type="text" name="questionFields" value="{{questions.[7].question}}" /> </td>
-                    <td><input type="checkbox" name="questionIsRequiredFields7" {{#if questions.[7].isRequired}}checked{{/if}}/></td>
-                    <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[7].maxLength}}" />  </td>
+                    <tr>
+                      <td>8</td>
+                      <td colspan="2"><input type="text" style="width:100%" placeholder="Question" name="questionFields" value="{{questions.[7].question}}" /> </td>
+                      <td><input type="text" style="width: 130px;" name="errorMessageFields" value="{{questions.[7].errorMessage}}" /> </td>
+                      <td><input type="checkbox" name="questionIsRequiredFields7" {{#if questions.[7].isRequired}}checked{{/if}}/></td>
+                      <td><input type="checkbox" name="questionIsCaseSensitiveFields7" {{#if questions.[7].isCaseSensitive}}checked{{/if}}/></td>
+                      <td><input type="text" name="questionMaxLengthFields" style="width:43px" value="{{questions.[7].maxLength}}" />  </td>
+                    </tr>
+                    <tr>
+                      <td />
+                      <td colspan="2"><input type="text" style="width:100%" placeholder="Answers (comma delimited)" name="answerFields" value="{{questions.[7].answer}}" /></td>
+                    </tr>
                 </tr>
             </thead>
         </table>

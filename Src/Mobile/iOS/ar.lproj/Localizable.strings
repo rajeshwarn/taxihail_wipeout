@@ -510,3 +510,4 @@
 "PaymentInCar"="Payment In Car";
 "CardOnFile"="Card on File";
 "ChargeAccount"="Charge Account";
+"ServiceErrorAccountCharge_InvalidAccountNumber"="Invalid account number";

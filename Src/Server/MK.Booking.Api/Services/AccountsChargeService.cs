@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
+using ServiceStack.ServiceInterface.Auth;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -25,9 +29,20 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(AccountChargeRequest request)
         {
+            bool isAdmin = SessionAs<AuthUserSession>().HasPermission(RoleName.Admin);
+
             if (!request.Number.HasValue())
             {
-                return _dao.GetAll();
+                var allAccounts = _dao.GetAll();
+
+                if (request.HideAnswers || !isAdmin)
+                {
+                    foreach (var account in allAccounts)
+                    {
+                        HideAnswers(account.Questions);
+                    }
+                }
+                return allAccounts;
             }
             else
             {
@@ -36,10 +51,21 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     throw new HttpError(HttpStatusCode.NotFound, "Account Not Found");
                 }
-                else
+
+                if (request.HideAnswers || !isAdmin)
                 {
-                    return account;
+                    HideAnswers(account.Questions);
                 }
+
+                return account;
+            }
+        }
+
+        private void HideAnswers( IEnumerable<AccountChargeQuestion> questionsAndAnswers)
+        {
+            foreach (var accountChargeQuestion in questionsAndAnswers)
+            {
+                accountChargeQuestion.Answer = string.Empty;
             }
         }
 

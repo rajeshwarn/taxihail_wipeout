@@ -153,9 +153,7 @@
   <data name="ApartmentLabel" xml:space="preserve">
     <value>شقة</value>
   </data>
-  <data name="ApplicationName" xml:space="preserve">
-    <value>مشوار</value>
-  </data>
+  <data name="ApplicationName" xml:space="preserve">CINQ-S</data>
   <data name="AppNeedUpdateMessage" xml:space="preserve">
     <value>هناك تحديث جديد متاح للتطبيق ، يرجى تحديث التطبيق للإستمرار.</value>
   </data>
@@ -1131,6 +1129,12 @@
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall" xml:space="preserve">
     <value>عنوان الإلتقاء يقع خارج نطاق الخدمة المعتادة.</value>
   </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
+    <value>The specified Destination address lies outside the regular service area. Please contact {0} at {1} for further assistance.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall" xml:space="preserve">
+    <value>The specified Destination address lies outside the regular service area.</value>
+  </data>
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
     <value>لا يمكن إدخال الطلب لأن حسابك غير فعال حاليا. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</value>
   </data>
@@ -1223,9 +1227,6 @@
   </data>
   <data name="StatusNewRideButton" xml:space="preserve">
     <value>رحلة جديدة</value>
-  </data>
-  <data name="StatusStatusLabel" xml:space="preserve">
-    <value>الحالة:  {0}</value>
   </data>
   <data name="StatusViewTitle" xml:space="preserve">
     <value>تم التأكيد</value>
@@ -1385,6 +1386,18 @@
   </data>
   <data name="View_AboutUs" xml:space="preserve">
     <value>نبذة عنا</value>
+  </data>
+<data name="View_AccountConfirmation_Button" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="View_AccountConfirmationTitle" xml:space="preserve">
+    <value>Account Confirmation</value>
+  </data>
+  <data name="View_AccountConfirmation_Label_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="View_AccountConfirmation_Label_Instructions" xml:space="preserve">
+    <value>A text message with your code has been sent to your phone.</value>
   </data>
   <data name="View_BookingDetail" xml:space="preserve">
     <value>تفاصيل الحجز</value>
@@ -1555,7 +1568,7 @@
     <value>The charge account information is invalid. Please try again.</value>
   </data>
   <data name="Notification_ConfirmPairingPush" xml:space="preserve">
-    <value>Confirm Pairing (Push)</value>
+    <value>Confirm Pairing</value>
   </data>
   <data name="NotNow" xml:space="preserve">
     <value>Not now</value>
@@ -1567,7 +1580,7 @@
     <value>Rate</value>
   </data>
   <data name="Notification_DriverAssignedPush" xml:space="preserve">
-    <value>Driver Assigned (Push)</value>
+    <value>Driver Assigned</value>
   </data>
   <data name="RateLastRideMessage" xml:space="preserve">
     <value>We would appreciate your feedback on your last ride, would you like to rate it?</value>
@@ -1579,16 +1592,16 @@
     <value>Rate last ride?</value>
   </data>
   <data name="Notification_NearbyTaxiPush" xml:space="preserve">
-    <value>Nearby Taxi (Push)</value>
+    <value>Nearby Taxi</value>
   </data>
   <data name="Notification_PaymentConfirmationPush" xml:space="preserve">
-    <value>Payment Confirmation (Push)</value>
+    <value>Payment Confirmation</value>
   </data>
   <data name="Notification_ReceiptEmail" xml:space="preserve">
     <value>Receipt (Email)</value>
   </data>
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
-    <value>Vehicle at Pickup (Push)</value>
+    <value>Vehicle at Pickup</value>
   </data>
   <data name="Notification_Off" xml:space="preserve">
     <value>Off</value>
@@ -1604,5 +1617,17 @@
   </data>
   <data name="CardOnFile" xml:space="preserve">
     <value>Card on File</value>
+  </data>
+  <data name="Knowledgabledriver" xml:space="preserve">
+    <value>Knowledgable driver</value>
+  </data>
+  <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
+    <value>Invalid account number</value>
+  </data>
+  <data name="Safety" xml:space="preserve">
+    <value>Safety</value>
+  </data>
+  <data name="Politeness" xml:space="preserve">
+    <value>Politeness</value>
   </data>
 </root>
