@@ -30,7 +30,7 @@ namespace MK.Common.Configuration
 			ZoomOnNearbyVehiclesRadius = 2400;
 
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
-            CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Client.HideCallDispatchButton,Client.ShowAssignedVehicleNumberOnPin,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink";
+			CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Client.HideCallDispatchButton,Client.ShowAssignedVehicleNumberOnPin,Client.ZoomOnNearbyVehicles,Client.ZoomOnNearbyVehiclesCount,Client.ZoomOnNearbyVehiclesRadius,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink";
 			DefaultTipPercentage = 15;
             DirectionDataProvider = MapProvider.Google;
 			SMSConfirmationEnabled = false;
