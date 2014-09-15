@@ -340,8 +340,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                 else if (_bookingService.IsStatusCompleted(status.IBSStatusId))
 				{
                     var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
-                    if (order.IsRated)
-					    _bookingService.ClearLastOrder();
+					if (order.IsRated)
+					{
+						_bookingService.ClearLastOrder ();
+					}
+					else
+					{
+						_bookingService.SetLastUnratedOrderId (status.OrderId);
+					}
 				}
 			}
 
