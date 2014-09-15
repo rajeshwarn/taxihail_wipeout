@@ -452,7 +452,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     return;
                 }
 
-                _smsService.Send(phoneNumber, alert);
+                SendSms(phoneNumber, alert);
             }
         }
 
