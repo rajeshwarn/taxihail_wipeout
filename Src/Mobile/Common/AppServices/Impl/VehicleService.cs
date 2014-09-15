@@ -107,8 +107,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			var west = vehicles.OrderBy (x => x.Longitude).First ().Longitude;
 			var east = vehicles.OrderBy (x => x.Longitude).Last ().Longitude;
 
-			var deltaLatitude = Math.Max (Math.Abs (north - pickup.Latitude), Math.Abs (centerLatitude - south));
-			var deltaLongitude = Math.Max (Math.Abs (east - pickup.Longitude), Math.Abs (centerLongitude - west));
+			var deltaLatitude = Math.Max (Math.Abs (north - centerLatitude), Math.Abs (centerLatitude - south));
+			var deltaLongitude = Math.Max (Math.Abs (east - centerLongitude), Math.Abs (centerLongitude - west));
 
 			var newNorth = centerLatitude + deltaLatitude;
 			var newSouth = centerLatitude - deltaLatitude;
