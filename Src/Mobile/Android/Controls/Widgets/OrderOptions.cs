@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
+using Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -29,6 +30,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 ViewPickup.SetInvisibleButton(BigInvisibleButton);
                 ViewDestination.SetInvisibleButton(BigInvisibleButton);
+
+                ViewVehicleType.Visibility = ViewStates.Gone;
 
                 InitializeBinding();
             });
