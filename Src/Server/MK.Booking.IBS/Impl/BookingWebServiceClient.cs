@@ -42,12 +42,9 @@ namespace apcurium.MK.Booking.IBS.Impl
                 var radius = ConfigManager.GetSetting("AvailableVehicles.Radius", 2000);
                 var count = ConfigManager.GetSetting("AvailableVehicles.Count", 10);
 
-                TVehicleTypeItem[] vehicleTypeFilter = null;
-                if (vehicleTypeId.HasValue)
-                {
-                    vehicleTypeFilter = new[] { new TVehicleTypeItem { ID = vehicleTypeId.Value } };
-                }
-
+                var vehicleTypeFilter = vehicleTypeId.HasValue
+                                        ? new[] { new TVehicleTypeItem { ID = vehicleTypeId.Value } }
+                                        : new TVehicleTypeItem[0];
                 UseService(service =>
                 {
                     result = service
