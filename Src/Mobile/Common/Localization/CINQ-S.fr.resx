@@ -124,7 +124,7 @@
     <value>Vous devez saisir une destination pour obtenir le prix du trajet</value>
   </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>Prix: {0:c}</value>
+    <value>Prix: {0}</value>
   </data>
   <data name="EstimatePriceOver100" xml:space="preserve">
     <value>Cette zone n'est pas desservie</value>

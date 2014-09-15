@@ -142,7 +142,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     return;
                 }
 
-                var formattedAmount = string.Format(new CultureInfo(_appSettings.Data.PriceFormat), "{0:C}", amount);
+                var formattedAmount = FormatPrice(Convert.ToDouble(amount));
                 var message = _resources.Get("PushNotification_PaymentReceived", order.ClientLanguageCode);
                 var alert = string.Format(message, formattedAmount);
                 var data = new Dictionary<string, object> { { "orderId", orderId } };
@@ -304,7 +304,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
             }
 
-            var priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
 
             var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
 
@@ -315,7 +314,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var cardOnFileAuthorizationCode = string.Empty;
             if (isCardOnFile)
             {
-                cardOnFileAmount = cardOnFileInfo.Amount.ToString("C", priceFormat);
+                cardOnFileAmount = FormatPrice(Convert.ToDouble(cardOnFileInfo.Amount));
                 cardNumber = cardOnFileInfo.Company;
                 cardOnFileAuthorizationCode = cardOnFileInfo.AuthorizationCode;
 
@@ -357,12 +356,12 @@ namespace apcurium.MK.Booking.Services.Impl
                     : pickupDate.ToString("D", dateFormat), // assume it ends on the same day...
                 DropOffTime = dropOffTime,
                 ShowDropOffTime = !string.IsNullOrEmpty(dropOffTime),
-                Fare = fare.ToString("C", priceFormat),
-                Toll = toll.ToString("C", priceFormat),
-                Tip = tip.ToString("C", priceFormat),
-                TotalFare = totalFare.ToString("C", priceFormat),
+                Fare = FormatPrice(fare),
+                Toll = FormatPrice(toll),
+                Tip = FormatPrice(tip),
+                TotalFare = FormatPrice(totalFare),
                 Note = _configurationManager.GetSetting("Receipt.Note"),
-                Tax = tax.ToString("C", priceFormat),
+                Tax = FormatPrice(tax),
                 IsCardOnFile = isCardOnFile,
                 CardOnFileAmount = cardOnFileAmount,
                 CardNumber = cardNumber,
@@ -370,7 +369,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
                 PickupAddress = pickupAddress.DisplayAddress,
                 DropOffAddress = hasDropOffAddress ? dropOffAddress.DisplayAddress : "-",
-                SubTotal=(fare+tax).ToString("C", priceFormat),
+                SubTotal=(fare+toll+tip).ToString("C", priceFormat),
                 StaticMapUri = staticMapUri,
                 ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
                 BaseUrlImg = baseUrls.BaseUrlAssetsImg,
@@ -540,6 +539,12 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 public const string AccountConfirmation = "AccountConfirmationSmsBody";
             }
+        }
+        private string FormatPrice(double? price)
+        {
+            var culture = _appSettings.Data.PriceFormat;
+            var currencyPriceFormat = _resources.Get("CurrencyPriceFormat", culture);
+            return string.Format(new CultureInfo(culture), currencyPriceFormat, price.HasValue ? price.Value : 0);
         }
     }
 }
