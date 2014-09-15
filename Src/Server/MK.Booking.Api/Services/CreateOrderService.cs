@@ -106,7 +106,9 @@ namespace apcurium.MK.Booking.Api.Services
                 request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),
                 () =>
                     _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
-                        request.PickupAddress.Latitude, request.PickupAddress.Longitude));
+                        request.PickupAddress.Latitude, request.PickupAddress.Longitude),
+                () => request.DropOffAddress != null ? _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
+                    request.DropOffAddress.Latitude, request.DropOffAddress.Longitude) : null);
 
             if (rule != null)
             {

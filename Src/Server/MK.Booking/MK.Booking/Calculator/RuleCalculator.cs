@@ -22,36 +22,60 @@ namespace apcurium.MK.Booking.Calculator
         }
 
 
-        public RuleDetail GetActiveWarningFor(bool isFutureBooking, DateTime pickupDate, Func<string> zoneGetterFunc)
+        public RuleDetail GetActiveWarningFor(bool isFutureBooking, DateTime pickupDate, Func<string> pickupZoneGetterFunc, Func<string> dropOffZoneGetterFunc)
         {
-            IEnumerable<RuleDetail> rules = _ruleDao.GetActiveWarningRule(isFutureBooking).ToArray();
+            var rules = _ruleDao.GetActiveWarningRule(isFutureBooking).ToArray();
 
             if (rules.Any())
             {
-                rules = FilterRulesByZone(rules, zoneGetterFunc());
+                rules = FilterRulesByZone(rules, pickupZoneGetterFunc(), dropOffZoneGetterFunc());
             }
 
             return GetMatching(rules, pickupDate);
         }
 
-        public RuleDetail GetActiveDisableFor(bool isFutureBooking, DateTime pickupDate, Func<string> zoneGetterFunc)
+        public RuleDetail GetActiveDisableFor(bool isFutureBooking, DateTime pickupDate, Func<string> pickupZoneGetterFunc, Func<string> dropOffZoneGetterFunc)
         {
-            IEnumerable<RuleDetail> rules = _ruleDao.GetActiveDisableRule(isFutureBooking).ToArray();
+            var rules = _ruleDao.GetActiveDisableRule(isFutureBooking).ToArray();
 
             if (rules.Any())
             {
-                rules = FilterRulesByZone(rules, zoneGetterFunc());
+                rules = FilterRulesByZone(rules, pickupZoneGetterFunc(), dropOffZoneGetterFunc());
             }
 
             return GetMatching(rules, pickupDate);
         }
 
-        private IEnumerable<RuleDetail> FilterRulesByZone(IEnumerable<RuleDetail> rules, string zone)
+        private RuleDetail[] FilterRulesByZone(RuleDetail[] rules, string pickupZone, string dropOffZone)
         {
-            return rules.Where(r => IsTrimmedNullOrEmpty(r.ZoneList) || //Get the rules without zones
-                                    (!IsTrimmedNullOrEmpty(zone) &&
-                                     r.ZoneList.ToLower().Split(',').Contains(zone.ToLower().Trim())));
-            // Zone is set and found in list         
+            var rulesWithoutZone = from rule in rules
+                                    where IsTrimmedNullOrEmpty(rule.ZoneList) 
+                                          && !rule.ZoneRequired
+                                    select rule;
+
+            var rulesZoneRequired = from rule in rules
+                                    where IsTrimmedNullOrEmpty(rule.ZoneList) 
+                                          && rule.ZoneRequired
+                                          && ((IsTrimmedNullOrEmpty(pickupZone) && rule.AppliesToPickup)
+                                          || (IsTrimmedNullOrEmpty(dropOffZone) && rule.AppliesToDropoff))
+                                   select rule;
+
+            var rulesForPickup = from rule in rules
+                                    where !IsTrimmedNullOrEmpty(rule.ZoneList)
+                                            && rule.AppliesToPickup
+                                            && (!IsTrimmedNullOrEmpty(pickupZone)
+                                                && rule.ZoneList.ToLower().Split(',').Contains(pickupZone.ToLower().Trim()))
+                                    select rule;
+
+            var rulesForDropOff = from rule in rules
+                                 where !IsTrimmedNullOrEmpty(rule.ZoneList)
+                                         && rule.AppliesToDropoff
+                                         && (!IsTrimmedNullOrEmpty(dropOffZone)
+                                             && rule.ZoneList.ToLower().Split(',').Contains(dropOffZone.ToLower().Trim()))
+                                 select rule;
+
+            var result = rulesWithoutZone.Concat(rulesForPickup).Concat(rulesForDropOff).Concat(rulesZoneRequired).ToArray();
+            return result;
         }
 
         private bool IsTrimmedNullOrEmpty(string value)
