@@ -585,6 +585,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\suv_no_badge_selected.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\blackcar_no_badge.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\blackcar_no_badge_selected.png" />
+    <AndroidResource Include="Resources\Values\Attrs.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

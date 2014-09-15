@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_locationService.Start();
 			CheckTermsAsync();
-			CheckActiveOrderAsync ();
+			CheckActiveOrderAsync (firstTime);
 
             if (_orderWorkflowService.IsOrderRebooked())
             {
@@ -95,7 +95,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (firstTime)
 			{
 				await Panel.Start ();
-                CheckUnratedRide();
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
@@ -121,11 +120,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 
 			_vehicleService.Start();
-
-
 		}
 
-		public async void CheckActiveOrderAsync()
+		public async void CheckActiveOrderAsync(bool firstTime)
 		{
 			var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
 			if(lastOrder != null)
@@ -136,55 +133,55 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					orderStatus = lastOrder.Item2.ToJson ()
 				});
 			}
+			else if (firstTime)
+			{
+				CheckUnratedRide ();
+			}
 		}
 
 	    private void CheckUnratedRide()
 	    {
-            var unratedRideId = _orderWorkflowService.GetLastUnratedRide();
-            if (unratedRideId != null
-                && _orderWorkflowService.ShouldPromptUserToRateLastRide())
-	        {
-				if (Settings.RatingRequired)
+			if (Settings.RatingEnabled)
+			{
+				var unratedRideId = _orderWorkflowService.GetLastUnratedRide();
+				if (unratedRideId != null
+					&& _orderWorkflowService.ShouldPromptUserToRateLastRide())
 				{
-				    var title = this.Services().Localize["RateLastRideTitle"];
-				    var message = this.Services().Localize["RateLastRideMessage"];
-                    Action goToRate = () => ShowViewModel<BookRatingViewModel>(new
-                    {
-                        orderId = unratedRideId.ToString(),
-                        canRate = true
-                    });
+					var title = this.Services().Localize["RateLastRideTitle"];
+					var message = this.Services().Localize["RateLastRideMessage"];
+					Action goToRate = () => ShowViewModel<BookRatingViewModel>(new
+					{
+						orderId = unratedRideId.ToString(),
+						canRate = true
+					});
 
-                    if (Settings.CanSkipRatingRequired)
-				    {
-                        var actionRate = this.Services().Localize["RateLastRide"];
-                        this.Services().Message.ShowMessage(title, message,
-                            actionRate,
-                            goToRate,
-                            this.Services().Localize["NotNow"],
-                            () => { /* Do nothing */ });
-				    }
-				    else
-				    {
-                        this.Services().Message.ShowMessage(title, message, goToRate);
-				    }
-				}
-				else
-				{
-					this.Services().Message.ShowMessage(
-						this.Services().Localize["RateLastRideTitle"],
-						this.Services().Localize["RateLastRideMessage"],
-						this.Services().Localize["RateLastRide"],
-							() => ShowViewModel<BookRatingViewModel>(new  
-							{
-								orderId = unratedRideId.ToString(),
-								canRate = true
-							}),
-						this.Services().Localize["DontAsk"],
+					if (Settings.RatingRequired)
+					{
+						if (Settings.CanSkipRatingRequired)
+						{
+							this.Services().Message.ShowMessage(title, message,
+								this.Services().Localize["RateLastRide"],
+								goToRate,
+								this.Services().Localize["NotNow"],
+								() => { /* Do nothing */ });
+						}
+						else
+						{
+							this.Services().Message.ShowMessage(title, message, goToRate);
+						}
+					}
+					else
+					{
+						this.Services().Message.ShowMessage(title, message,
+							this.Services().Localize["RateLastRide"],
+							goToRate,
+							this.Services().Localize["DontAsk"],
 							() => this.Services().Cache.Set("RateLastRideDontPrompt", "yes"),
-						this.Services().Localize["NotNow"],
+							this.Services().Localize["NotNow"],
 							() => { /* Do nothing */ });
+					}
 				}
-	        }
+			}
 	    }
 
 		public async void CheckTermsAsync()
@@ -312,7 +309,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 									{
 										var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
 										var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, availableVehicles);	
-										this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
+										if (bounds != null)
+										{
+											this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
+										}
 									}
 									catch (TimeoutException)
 									{ 

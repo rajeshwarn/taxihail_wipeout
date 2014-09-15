@@ -158,10 +158,9 @@ namespace apcurium.MK.Web.Tests
             var tokenizeResponse = await client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "");
             var token = tokenizeResponse.CardOnFileToken;
 
-            const double amount = 22.75;
+            const double amount = 31.50;
             const double meter = 21.25;
-            const double tip = 1.25;
-
+            const double tip = 10.25;
             
             var response = await client.PreAuthorizeAndCommit(token, amount, meter, tip, orderId);
             Assert.False(response.IsSuccessfull);
