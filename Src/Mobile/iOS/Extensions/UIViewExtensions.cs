@@ -7,6 +7,8 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using MonoTouch.CoreAnimation;
 using MonoTouch.Foundation;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -178,6 +180,63 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 return view.StringSize (text, font);
             }
+        }
+
+        public static void ShowCloseButtonOnKeyboard(this UITextView text, Action onClosePressed = null)
+        {
+            Action<object, EventArgs> onClose = (sender, e) =>
+            {
+                text.ResignFirstResponder ();
+                if (onClosePressed != null)
+                {
+                    onClosePressed ();
+                }
+            };
+
+            text.InputAccessoryView = CreateAccessoryViewWithCloseButton (onClose);
+        }
+
+        public static void ShowCloseButtonOnKeyboard(this UITextField text, Action onClosePressed = null)
+        {
+            Action<object, EventArgs> onClose = (sender, e) =>
+            {
+                text.ResignFirstResponder ();
+                if (onClosePressed != null)
+                {
+                    onClosePressed ();
+                }
+            };
+
+            text.InputAccessoryView = CreateAccessoryViewWithCloseButton (onClose);
+        }
+
+        private static UIView CreateAccessoryViewWithCloseButton(Action<object, EventArgs> onClose)
+        {
+            var accessoryView = new UIView { Frame = new RectangleF(0, 0, 320, 44), BackgroundColor = UIColor.FromRGB(251, 253, 253) };
+
+            var closeButton = new FlatButton();
+            var closeButtonText = Localize.GetValue ("OkButtonText");
+            closeButton.SetTitle(closeButtonText, UIControlState.Normal);           
+            closeButton.TranslatesAutoresizingMaskIntoConstraints = false;
+            FlatButtonStyle.Green.ApplyTo(closeButton);
+            accessoryView.AddSubview(closeButton);
+
+            var widthOfText = closeButton.GetSizeThatFits (closeButtonText, closeButton.Font).Width;
+            var totalTextPaddingInButton = 30f;
+
+            closeButton.AddConstraints(new [] {
+                NSLayoutConstraint.Create(closeButton, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 36f),
+                NSLayoutConstraint.Create(closeButton, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, widthOfText + totalTextPaddingInButton)
+            });
+
+            accessoryView.AddConstraints(new [] {
+                NSLayoutConstraint.Create(closeButton, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, accessoryView, NSLayoutAttribute.Trailing, 1, -8f),
+                NSLayoutConstraint.Create(closeButton, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, accessoryView, NSLayoutAttribute.CenterY, 1, 0),
+            });
+
+            closeButton.TouchUpInside += (sender, e) => onClose(sender, e);
+
+            return accessoryView;
         }
 	}
 }
