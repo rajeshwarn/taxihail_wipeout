@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Globalization;
 using System.Resources;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 
 #endregion
@@ -14,11 +15,13 @@ namespace apcurium.MK.Booking.Resources
 {
     public class Resources : DynamicObject
     {
+        private readonly IAppSettings _appSettings;
         private readonly ResourceManager _resources;
         private const string DefaultLanguageCode = "en";
 
-        public Resources(string applicationKey)
-        {            
+        public Resources(string applicationKey, IAppSettings appSettings)
+        {
+            _appSettings = appSettings;
             var names = GetType().Assembly.GetManifestResourceNames();
             var resourceName = "apcurium.MK.Booking.Resources." + applicationKey + ".resources";
 
@@ -70,6 +73,13 @@ namespace apcurium.MK.Booking.Resources
             // we pass null since we only want to see if it exists
             result = Get(binder.Name);
             return true;
+        }
+
+        public string FormatPrice(double? price)
+        {
+            var culture = _appSettings.Data.PriceFormat;
+            var currencyPriceFormat = Get("CurrencyPriceFormat", culture);
+            return string.Format(new CultureInfo(culture), currencyPriceFormat, price.HasValue ? price.Value : 0);
         }
     }
 }

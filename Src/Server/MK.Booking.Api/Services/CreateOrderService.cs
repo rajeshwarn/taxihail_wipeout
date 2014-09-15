@@ -73,8 +73,7 @@ namespace apcurium.MK.Booking.Api.Services
             _updateOrderStatusJob = updateOrderStatusJob;
             _orderDao = orderDao;
 
-            var applicationKey = _configManager.GetSetting("TaxiHail.ApplicationKey");
-            _resources = new Resources.Resources(applicationKey);
+            _resources = new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
         }
 
         public object Post(CreateOrder request)

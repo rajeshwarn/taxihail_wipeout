@@ -252,10 +252,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 {                    
 					var isOverMaxFare = direction.Price.Value > _appSettings.Data.MaxFareEstimate;
 
-					var formattedCurrency = String.Format (
-						                       CultureProvider.CultureInfo,
-												_localize["CurrencyPriceFormat"],
-						                       direction.Price);
+                    var formattedCurrency = CultureProvider.FormatCurrency(direction.Price.Value);
 
 					fareEstimate = String.Format(
 						CultureProvider.CultureInfo, 
