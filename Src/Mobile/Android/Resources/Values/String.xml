@@ -29,7 +29,7 @@
   <string name="NearbyPlacesTitle">Nearby places</string>
   <string name="PickupViewDestinationLabel">Destination &gt;&gt;</string>
   <string name="CreditCardsListView">Credit Cards</string>
-  <string name="StatusActionBookButton">Book another vehicle</string>
+  <string name="StatusActionBookButton">Book another taxi</string>
   <string name="StatusDescription">Order #{0}</string>
   <string name="TabContacts">Contacts</string>
   <string name="LoginForgotPassword">Forgot your password?</string>
@@ -84,7 +84,7 @@
   <string name="Tuto06Bottom">Tap Confirm when you are ready to go.</string>
   <string name="October">Oct (10)</string>
   <string name="LoginForgotPasswordDetail">Enter your email and we\'ll send you a new one.</string>
-  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall">No fare is available for the ride. Please specify a valid pickup and destination.</string>
+  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall">No fare estimate available for the ride.</string>
   <string name="HistoryInfo">Displaying trips from the last month</string>
   <string name="ConfirmPassengerSettingsTitle">Passenger Settings</string>
   <string name="ChangeBookingSettingsButton">Change booking settings</string>
@@ -97,7 +97,7 @@
   <string name="DeleteBookItButtonImageNamePressed">Assets/Button/btnBookIt-Pressed_en.png</string>
   <string name="StreetNumberPlacesBt">Search for places</string>
   <string name="CreateAccountTitleMr">Mr</string>
-  <string name="EstimatePriceFormat">Cost: {0:c}</string>
+  <string name="EstimatePriceFormat">Estimated Fare : {0:C} ({1})</string>
   <string name="PanelMenuViewOrderHistoryText">History</string>
   <string name="ResetPasswordSucessTitle">Password reset</string>
   <string name="TabSearch">Search</string>
@@ -110,7 +110,7 @@
   <string name="Tuto04Top">If you want, you can also set your destination.</string>
   <string name="DeleteAddressBt">Clear Address</string>
   <string name="ConfirmOriginLablel">Pickup</string>
-  <string name="InvalidBookinInfoWhenDestinationIsRequired">To book an Audi, you need to enter a valid pickup address and destination address.</string>
+  <string name="InvalidBookinInfoWhenDestinationIsRequired">To book a ride, you need to enter a valid pickup address and destination address.</string>
   <string name="LocalContactCannotBeResolverTitle">Invalid Contact</string>
   <string name="VehicleNumberErrorTitle">Error</string>
   <string name="ResetPasswordSucessMessage">Password was reset successfully</string>
@@ -120,7 +120,7 @@
   <string name="RideSettingsCompany">Company</string>
   <string name="NoPhoneNumberMessage">The phone number is invalid for this driver.</string>
   <string name="ServiceErrorCallTitle">Message</string>
-  <string name="CarAssigned">Your vehicle {0}</string>
+  <string name="CarAssigned">Your taxi {0}</string>
   <string name="AccountActivationMessage">An email has been sent. Please follow the link in the email to confirm your address.</string>
   <string name="Save">Save</string>
   <string name="PaymentDetails.Optional">(Optional)</string>
@@ -132,7 +132,7 @@
   <string name="DriverInfoModel">Model:</string>
   <string name="NoButton">No</string>
   <string name="HistoryDetailRequestedLabel">Requested:</string>
-  <string name="TaxiMapTitle">Your vehicle</string>
+  <string name="TaxiMapTitle">Your Taxi</string>
   <string name="CreateAccountPhonePlaceHolder">Mobile</string>
   <string name="View_LocationDetail">Location Detail</string>
   <string name="SettingsViewTitle">Settings</string>
@@ -143,7 +143,7 @@
   <string name="Tuto05Top">Tap Book Now and a vehicle will be assigned as soon as possible.</string>
   <string name="OrderNoteGPSApproximate"> (approx. address)</string>
   <string name="CreateAccountTitleArray">MrMrs</string>
-  <string name="EstimatePriceOver100">Cost: {0:c}</string>
+  <string name="EstimatePriceOver100">Call for price</string>
   <string name="PanelMenuViewTutorialText">View Tutorial</string>
   <string name="CreditCard">Credit Card</string>
   <string name="InvalidAddressTextEdit">Cannot validate adddress</string>
@@ -168,14 +168,14 @@
   <string name="PassengerNumberLabel">Passengers</string>
   <string name="Tuto02Bottom">If it\'s a little off, simply reposition the map to your actual location.</string>
   <string name="ParameterButton">Parameters</string>
-  <string name="EstimatedFareNotAvailable">Fare not available</string>
+  <string name="EstimatedFareNotAvailable">Estimated fare not available</string>
   <string name="February">Feb (02)</string>
   <string name="Delete">Delete</string>
   <string name="AcceptButton">Accept</string>
   <string name="LocationServiceErrorMessage">The location service is not enabled.</string>
   <string name="LocationDetailAddressLabel">Address</string>
   <string name="NoAptText">No apt.</string>
-  <string name="TaxiServerDownMessage">Can\'t send message to driver</string>
+  <string name="TaxiServerDownMessage">Can\'t send message to Taxi</string>
   <string name="PasswordLabel">Password</string>
   <string name="RingCodeTextPlaceholder">Entry code</string>
   <string name="View_SignIn"></string>
@@ -318,7 +318,7 @@
   <string name="TermsAndConditionsLabel">Terms and Conditions</string>
   <string name="StatusInvalid">Status not available</string>
   <string name="View_CreateAccount">Create Your Account</string>
-  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable">No fare is available for the ride. Please specify a valid pickup and destination.</string>
+  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable">No fare estimate available for the ride. Please contact {0} at {1} for further assistance.</string>
   <string name="HistoryDetailDestinationLabel">Destination:</string>
   <string name="ViewRatingBtn">View ratings</string>
   <string name="NotAvailable">N/A</string>
@@ -363,7 +363,7 @@
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs">Order cannot be created. Please try again or call us.</string>
   <string name="Tuto04Bottom">Doing so will provide an estimate for the cost for the trip.</string>
   <string name="ResetPasswordConfirmationMessage">A new password was send by email.</string>
-  <string name="ReminderDetails">Reminder: your vehicle will pick you up from {0} at {1} on {2}.</string>
+  <string name="ReminderDetails">Reminder: A taxi will pick you up from {0} at {1} on {2}.</string>
   <string name="InvalidBookinInfo">To book a ride, you need to enter a valid pickup address.</string>
   <string name="PassengerNameLabel">Name</string>
   <string name="DefaultRideSettingsViewTitle">Settings</string>
@@ -416,7 +416,7 @@
   <string name="LanguageCode">en</string>
   <string name="TabHistory">History</string>
   <string name="View_BookRating">Rate Your Trip</string>
-  <string name="PaymentViewMeterAmountText">Price</string>
+  <string name="PaymentViewMeterAmountText">Meter Amount</string>
   <string name="YesButton">Yes</string>
   <string name="ConfirmVehiculeTypeLabel">Vehicle type</string>
   <string name="ServerInfo">({0} v{1})</string>
@@ -438,13 +438,13 @@
   <string name="ResetPasswordSubtitleText">Enter your email and we\'ll send you a new one.</string>
   <string name="CreateAccountEmptyField">The data is invalid, all the fields are required.</string>
   <string name="ConfirmNameLabel">Name:</string>
-  <string name="NoFareText">Choose a destination to get a price.</string>
+  <string name="NoFareText">Choose a destination to get a price estimate.</string>
   <string name="ConfirmationPaymentAmountOver100Title">Confirmation Required</string>
   <string name="InvalidAddressMessage">The address you provided is invalid. Please verify this information</string>
   <string name="PaymentViewTotalText">Total</string>
   <string name="app_id">134284363380764</string>
   <string name="DateTimePickerPickInvalidDateTitle">Invalid date / time</string>
-  <string name="DriverInfoTaxiType">Vehicle Type:</string>
+  <string name="DriverInfoTaxiType">Taxi Type:</string>
   <string name="PaymentDetails.InvalidDataTitle">Invalid payment information</string>
   <string name="PaymentDetails.TipAmountLabel">Tip Amount</string>
   <string name="DriverInfoLicence">Licence #:</string>
@@ -478,7 +478,7 @@
   <string name="Order">Order</string>
   <string name="View_InitializeOrderForAccountPayment">Please answer these questions</string>
   <string name="AccountPaymentNumberRequiredTitle">Account Rider Number required</string>
-  <string name="TAXI">Vehicle</string>
+  <string name="TAXI">TAXI</string>
   <string name="WarningPushServiceAction">Thanks for letting me know</string>
   <string name="WarningPushServiceTitle">Push Notifications</string>
   <string name="WarningPushServiceMessage">We noticed you do not have push notifications turned on. Just to let you know if you have them enabled then you get updates about the status of your booking without having to look at the app! We promise we will not spam you with useless information!</string>
@@ -510,10 +510,10 @@
   <string name="View">View</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000">The charge account information is invalid. Please try again.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall">The charge account information is invalid. Please try again.</string>
-  <string name="Eta">The nearest vehicle is {1} {2} away</string>
+  <string name="Eta">The nearest taxi is {0} and {1} {2} away</string>
   <string name="EtaDurationUnit">min</string>
   <string name="EtaDurationUnitPlural">mins</string>
-  <string name="StatusEta">and is {1} {2} away</string>
+  <string name="StatusEta">and is {0} and {1} {2} away</string>
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
   <string name="EtaNotAvailable">No vehicle available</string>
   <string name="PayInCar">Pay in Car</string>
@@ -526,8 +526,8 @@
   <string name="Notification_ConfirmPairingPush">Confirm Pairing</string>
   <string name="NotNow">Not now</string>
   <string name="RateLastRide">Rate</string>
-  <string name="RateLastRideMessage">We would appreciate your feedback on your last ride.</string>
-  <string name="RateLastRideTitle">Rate last ride</string>
+  <string name="RateLastRideMessage">We would appreciate your feedback on your last ride, would you like to rate it?</string>
+  <string name="RateLastRideTitle">Rate last ride?</string>
   <string name="Notification_DriverAssignedEmail">Driver Assigned (Email)</string>
   <string name="Notification_DriverAssignedPush">Driver Assigned</string>
   <string name="Notification_Enabled">Notifications</string>
@@ -543,7 +543,7 @@
   <string name="EstimateFareCalculating">Calculating...</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1452">The specified Destination address lies outside the regular service area. Please contact {0} at {1} for further assistance.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall">The specified Destination address lies outside the regular service area.</string>
-  <string name="Knowledgabledriver">Cleanliness</string>
+  <string name="Knowledgabledriver">Knowledgable driver</string>
   <string name="Safety">Safety</string>
   <string name="Politeness">Politeness</string>
   <string name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard">No Credit Card On File.</string>

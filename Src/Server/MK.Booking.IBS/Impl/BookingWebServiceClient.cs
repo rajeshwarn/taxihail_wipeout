@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             _staticDataWebServiceClient = staticDataWebServiceClient;
         }
 
-        public IbsVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int vehicleTypeId)
+        public IbsVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int? vehicleTypeId)
         {
             var result = new IbsVehiclePosition[0];
 
@@ -41,23 +41,19 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 var radius = ConfigManager.GetSetting("AvailableVehicles.Radius", 2000);
                 var count = ConfigManager.GetSetting("AvailableVehicles.Count", 10);
-                var vehicle = _staticDataWebServiceClient.GetVehicleTypeItemById(vehicleTypeId);
+
+                TVehicleTypeItem[] vehicleTypeFilter = null;
+                if (vehicleTypeId.HasValue)
+                {
+                    vehicleTypeFilter = new[] { new TVehicleTypeItem { ID = vehicleTypeId.Value } };
+                }
 
                 UseService(service =>
                 {
                     result = service
-                        .GetAvailableVehicles_4(UserNameApp, PasswordApp, longitude, latitude, radius, count, false, new []{ vehicle })
+                        .GetAvailableVehicles_4(UserNameApp, PasswordApp, longitude, latitude, radius, count, false, vehicleTypeFilter)
                         .Select(Mapper.Map<IbsVehiclePosition>)
                         .ToArray();
-
-                    if (result == null
-                        || result.Length == 0)
-                    {
-                        //call old method, patch aexid dployment problem
-                        result = service.GetAvailableVehicles(UserNameApp, PasswordApp, longitude, latitude, radius, count)
-                                    .Select(Mapper.Map<IbsVehiclePosition>)
-                                    .ToArray();
-                    }
                 });
             }
 

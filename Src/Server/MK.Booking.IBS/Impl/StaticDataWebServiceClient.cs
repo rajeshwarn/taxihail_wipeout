@@ -91,8 +91,13 @@ namespace apcurium.MK.Booking.IBS.Impl
             return items;
         }
 
-        public TVehicleTypeItem GetVehicleTypeItemById(int vehicleId)
+        public TVehicleTypeItem GetVehicleTypeItemById(int? vehicleId)
         {
+            if (!vehicleId.HasValue)
+            {
+                return null;
+            }
+
             var vehicleTypeItems = new List<TVehicleTypeItem>();
             UseService(service =>
             {
@@ -104,7 +109,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 }
             });
 
-            return vehicleTypeItems.FirstOrDefault(x => x.ID == vehicleId);
+            return vehicleTypeItems.FirstOrDefault(x => x.ID == vehicleId.Value);
         }
 
         protected override string GetUrl()
