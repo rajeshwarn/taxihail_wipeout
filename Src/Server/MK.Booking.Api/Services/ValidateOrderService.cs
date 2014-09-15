@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Api.Services
         public object Post(ValidateOrderRequest request)
         {
             Func<string> getPickupZone =
-                () => _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
+                () => request.TestZone.HasValue() ? request.TestZone : _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
                     request.PickupAddress.Latitude, request.PickupAddress.Longitude);
 
             Func<string> getDropoffZone =

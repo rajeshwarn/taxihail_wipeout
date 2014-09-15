@@ -104,7 +104,7 @@ namespace apcurium.MK.Web.Tests
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
-                    PickupDate = DateTime.Now,
+                    PickupDate = null,
                     DropOffAddress = TestAddresses.GetAddress2(),
                     Settings = new BookingSettings
                         {
@@ -133,7 +133,7 @@ namespace apcurium.MK.Web.Tests
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
-                    PickupDate = DateTime.Now,
+                    PickupDate = null,
                     DropOffAddress = TestAddresses.GetAddress2(),
                     Estimate = new CreateOrder.RideEstimate
                         {
@@ -281,8 +281,8 @@ namespace apcurium.MK.Web.Tests
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Recurring;
                 r.ZoneList = "100,101,200";
+                r.AppliesToPickup = true;
                 r.Priority = 2;
-
                 r.ActiveFrom = activeFromDateRef.AddHours(-1);
                 r.ActiveTo = activeFromDateRef.AddHours(1);
                 r.DaysOfTheWeek = (DayOfTheWeek) dayOfTheWeek;
@@ -302,6 +302,7 @@ namespace apcurium.MK.Web.Tests
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Date;
                 r.ZoneList = "100,101,200";
+                r.AppliesToPickup = true;
                 r.Priority = 4;
                 r.StartTime = activeFromDateRef.AddHours(-1);
                 r.EndTime = activeFromDateRef.AddHours(1);
@@ -431,6 +432,45 @@ namespace apcurium.MK.Web.Tests
 
             Assert.IsFalse(validation.HasWarning);
         }
+
+        [Test]
+        public async void TestDefaultRule_ValidZone_With_Rule_ZoneRequired()
+        {
+            var rule = CreateRule(r =>
+            {
+                r.Category = RuleCategory.WarningRule;
+                r.Type = RuleType.Default;
+                r.ZoneRequired = true;
+                r.AppliesToPickup = true;
+                r.Priority = 2;
+            });
+
+            var validation = await ValidateOrder(null);
+
+            Assert.IsFalse(validation.HasWarning);
+        }
+
+        [Test]
+        public async void TestDefaultRule_NoZone_With_Rule_ZoneRequired()
+        {
+            var rule = CreateRule(r =>
+            {
+                r.Category = RuleCategory.WarningRule;
+                r.Type = RuleType.Default;
+                r.ZoneRequired = true;
+                r.AppliesToPickup = true;
+                r.Priority = 2;
+            });
+
+            var validation = await ValidateOrder(o =>
+            {
+                o.PickupAddress.Latitude = 48.615573;
+                o.PickupAddress.Longitude = 2.024199;
+            });
+
+            Assert.IsTrue(validation.HasWarning);
+            Assert.AreEqual(rule.Message, validation.Message);
+        }
         
         [Test]
         public async void TestDefaultRule_Simple_Zone()
@@ -441,6 +481,7 @@ namespace apcurium.MK.Web.Tests
                 r.Type = RuleType.Default;
                 r.ZoneList = "100,101,200";
                 r.Priority = 2;
+                r.AppliesToPickup = true;
             });
 
             var validation = await ValidateOrder(null, "101");
@@ -511,12 +552,12 @@ namespace apcurium.MK.Web.Tests
                 r.Type = RuleType.Recurring;
                 r.ZoneList = "100,101,200";
                 r.Priority = 2;
-
                 r.ActiveFrom = activeFromDateRef.AddHours(-1);
                 r.ActiveTo = activeFromDateRef.AddHours(1);
                 r.DaysOfTheWeek = (DayOfTheWeek) dayOfTheWeek;
                 r.StartTime = activeFromDateRef.AddHours(-1);
                 r.EndTime = activeFromDateRef.AddHours(1);
+                r.AppliesToPickup = true;
             });
 
             var validation = await ValidateOrder(null, "101");

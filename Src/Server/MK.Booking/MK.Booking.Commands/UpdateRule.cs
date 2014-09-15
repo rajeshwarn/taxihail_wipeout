@@ -19,8 +19,11 @@ namespace apcurium.MK.Booking.Commands
         public Guid RuleId { get; set; }
         public string Name { get; set; }
         public string ZoneList { get; set; }
+        public bool ZoneRequired { get; set; }
         public bool AppliesToCurrentBooking { get; set; }
         public bool AppliesToFutureBooking { get; set; }
+        public bool AppliesToPickup { get; set; }
+        public bool AppliesToDropoff { get; set; }
         public DayOfTheWeek DaysOfTheWeek { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
