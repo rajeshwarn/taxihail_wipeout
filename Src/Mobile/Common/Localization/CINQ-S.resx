@@ -121,10 +121,10 @@
     <value>Cost</value>
   </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>Cost: {0:c}</value>
+    <value>Cost: {0}</value>
   </data>
   <data name="EstimatePriceOver100" xml:space="preserve">
-    <value>Cost: {0:c}</value>
+    <value>Cost: {0}</value>
   </data>
   <data name="EstimatedFareNotAvailable" xml:space="preserve">
     <value>Fare not available</value>
