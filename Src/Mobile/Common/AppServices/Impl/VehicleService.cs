@@ -94,11 +94,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			var radius = _settings.Data.ZoomOnNearbyVehiclesRadius;
 			var vehicleCount = _settings.Data.ZoomOnNearbyVehiclesCount;
 
-			var latitude = pickup.Latitude;
-			var longitude = pickup.Longitude;
+			var centerLatitude = pickup.Latitude;
+			var centerLongitude = pickup.Longitude;
 
 			var vehicles = OrderVehiclesByDistance (pickup, cars)
-				.Where (car => Position.CalculateDistance (car.Latitude, car.Longitude, latitude, longitude) <= radius)
+				.Where (car => Position.CalculateDistance (car.Latitude, car.Longitude, centerLatitude, centerLongitude) <= radius)
 				.Take (vehicleCount)
 				.ToArray();
 
@@ -107,13 +107,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			var west = vehicles.OrderBy (x => x.Longitude).First ().Longitude;
 			var east = vehicles.OrderBy (x => x.Longitude).Last ().Longitude;
 
-			var deltaLatitude = Math.Max (Math.Abs (north - pickup.Latitude), Math.Abs (latitude - south));
-			var deltaLongitude = Math.Max (Math.Abs (east - pickup.Longitude), Math.Abs (longitude - west));
+			var deltaLatitude = Math.Max (Math.Abs (north - pickup.Latitude), Math.Abs (centerLatitude - south));
+			var deltaLongitude = Math.Max (Math.Abs (east - pickup.Longitude), Math.Abs (centerLongitude - west));
 
-			var newNorth = latitude + deltaLatitude;
-			var newSouth = latitude - deltaLatitude;
-			var newEast = longitude - deltaLongitude;
-			var newWest = longitude + deltaLongitude;
+			var newNorth = centerLatitude + deltaLatitude;
+			var newSouth = centerLatitude - deltaLatitude;
+			var newEast = centerLongitude - deltaLongitude;
+			var newWest = centerLongitude + deltaLongitude;
 
 			return new MapBounds () { NorthBound = newNorth, SouthBound = newSouth, EastBound = newEast, WestBound = newWest };
 		}
