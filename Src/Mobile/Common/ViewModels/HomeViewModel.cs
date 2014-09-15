@@ -313,7 +313,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 									{
 										var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
 										var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, availableVehicles);	
-										this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
+										if (bounds != null)
+										{
+											this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
+										}
 									}
 									catch (TimeoutException)
 									{ 
