@@ -464,8 +464,31 @@ namespace apcurium.MK.Web.Tests
 
             var validation = await ValidateOrder(o =>
             {
-                o.PickupAddress.Latitude = 48.615573;
+                o.PickupAddress.Latitude = 48.615573; //location without zone attached
                 o.PickupAddress.Longitude = 2.024199;
+            });
+
+            Assert.IsTrue(validation.HasWarning);
+            Assert.AreEqual(rule.Message, validation.Message);
+        }
+
+        [Test]
+        public async void TestDefaultRule_NoZoneonDropoff_With_Rule_ZoneRequired()
+        {
+            var rule = CreateRule(r =>
+            {
+                r.Category = RuleCategory.WarningRule;
+                r.Type = RuleType.Default;
+                r.ZoneRequired = true;
+                r.AppliesToPickup = false;
+                r.AppliesToDropoff = true;
+                r.Priority = 2;
+            });
+
+            var validation = await ValidateOrder(o =>
+            {
+                o.DropOffAddress.Latitude = 48.615573; //location without zone attached
+                o.DropOffAddress.Longitude = 2.024199;
             });
 
             Assert.IsTrue(validation.HasWarning);
@@ -485,6 +508,24 @@ namespace apcurium.MK.Web.Tests
             });
 
             var validation = await ValidateOrder(null, "101");
+            Assert.IsTrue(validation.HasWarning);
+            Assert.AreEqual(rule1.Message, validation.Message);
+        }
+
+        [Test]
+        public async void TestDefaultRule_Simple_Zone_Dropoff()
+        {
+            var rule1 = CreateRule(r =>
+            {
+                r.Category = RuleCategory.WarningRule;
+                r.Type = RuleType.Default;
+                r.ZoneList = "1";
+                r.Priority = 2;
+                r.AppliesToPickup = false;
+                r.AppliesToDropoff = true;
+            });
+
+            var validation = await ValidateOrder(null);
             Assert.IsTrue(validation.HasWarning);
             Assert.AreEqual(rule1.Message, validation.Message);
         }
