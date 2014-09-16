@@ -10,13 +10,20 @@ namespace apcurium.MK.Booking.Maps.Impl
             // When we device to show the route between pickup and dropoff, use encodedPolylines
             var encodedPolylines = "";
 
+            var dropOffString = string.Empty;
+            if (dropOff.Latitude != 0
+                && dropOff.Longitude != 0)
+            {
+                dropOffString = string.Format("&markers=color:0xFF0000|size:medium|{0}", dropOff.ToString());
+            }
+
             return Uri.EscapeUriString(string.Format("http://maps.googleapis.com/maps/api/staticmap" +
                 "?markers=color:0x1EC022|size:medium|{3}" +
-                "&markers=color:0xFF0000|size:medium|{4}" +
+                "{4}" +
                 "&size={0}x{1}" +
                 "&scale={2}" +
                 "{5}"
-                , width, height, scale, pickup.ToString(), dropOff.ToString(), encodedPolylines));
+                , width, height, scale, pickup.ToString(), dropOffString, encodedPolylines));
         }
     }
 }

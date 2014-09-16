@@ -83,7 +83,7 @@
 	"DefaultBookingSettings.ChargeTypeId": "Charge type id",
 	"DefaultBookingSettings.NbPassenger": "Passengers number",
 	"DefaultBookingSettings.ProviderId": "Provider Id",
-	"DefaultBookingSettings.VehicleTypeId": "Vehicule type Id",
+	"DefaultBookingSettings.VehicleTypeId": "Vehicle type Id",
 	"GeoLoc.DefaultLatitude" : "Default latitude",
 	"GeoLoc.DefaultLongitude": "Default Longitude",
 	"GeoLoc.PlacesTypes" : "Places types",

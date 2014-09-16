@@ -73,8 +73,7 @@ namespace apcurium.MK.Booking.Api.Services
             _updateOrderStatusJob = updateOrderStatusJob;
             _orderDao = orderDao;
 
-            var applicationKey = _configManager.GetSetting("TaxiHail.ApplicationKey");
-            _resources = new Resources.Resources(applicationKey);
+            _resources = new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
         }
 
         public object Post(CreateOrder request)
@@ -139,17 +138,23 @@ namespace apcurium.MK.Booking.Api.Services
                 ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
             }
 
-            var chargeType = ChargeTypes.GetList()
+            var chargeTypeKey = ChargeTypes.GetList()
                     .Where(x => x.Id == request.Settings.ChargeTypeId)
                     .Select(x => x.Display)
                     .FirstOrDefault();
 
-            if (chargeType != null)
+            string chargeTypeIbs = string.Empty;
+            string chargeTypeEmail = string.Empty;
+            if (chargeTypeKey != null)
             {
-                chargeType = _resources.Get(chargeType, _appSettings.Data.PriceFormat);
+                // this must be localized with the priceformat to be localized in the language of the company
+                // because it is sent to the driver
+                chargeTypeIbs = _resources.Get(chargeTypeKey, _appSettings.Data.PriceFormat);
+
+                chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
             }
 
-            var ibsOrderId = CreateIbsOrder(account, request, referenceData, chargeType);
+            var ibsOrderId = CreateIbsOrder(account, request, referenceData, chargeTypeIbs);
 
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
@@ -182,9 +187,9 @@ namespace apcurium.MK.Booking.Api.Services
                     .Select(x => x.Display)
                     .FirstOrDefault();
 
-            command.Settings.ChargeType = chargeType;
+            command.Settings.ChargeType = chargeTypeIbs;
             command.Settings.VehicleType = vehicleType;
-            emailCommand.Settings.ChargeType = chargeType;
+            emailCommand.Settings.ChargeType = chargeTypeEmail;
             emailCommand.Settings.VehicleType = vehicleType;
 
             _commandBus.Send(command);

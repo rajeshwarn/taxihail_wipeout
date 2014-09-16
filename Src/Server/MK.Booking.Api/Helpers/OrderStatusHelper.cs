@@ -18,12 +18,11 @@ namespace apcurium.MK.Booking.Api.Helpers
         private readonly IOrderDao _orderDao;
         private readonly Resources.Resources _resources;
 
-        public OrderStatusHelper(IOrderDao orderDao, IConfigurationManager configurationManager)
+        public OrderStatusHelper(IOrderDao orderDao, IConfigurationManager configurationManager, IAppSettings appSettings)
         {
             _orderDao = orderDao;
 
-            var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
-            _resources = new Resources.Resources(applicationKey);
+            _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
         }
 
         public virtual OrderStatusDetail GetOrderStatus(Guid orderId, IAuthSession session)
