@@ -4,6 +4,6 @@
     "Estimate": "Price",
     "Fare estimate": "Fare",
 	"Eta" : "The nearest vehicle is {1} {2} away",
-	"Estimate Display": "{0} {1}",
+	"Estimate Display": "{0}",
     "AssignedEta" : "Your vehicle is {1} {2} away"
 }
