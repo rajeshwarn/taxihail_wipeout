@@ -491,6 +491,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					this.SetRegion(new MKCoordinateRegion (
 						new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude),
 						new MKCoordinateSpan (zoom.LatitudeDelta, zoom.LongitudeDelta)), true);
+
 				} else {
 					this.SetCenterCoordinate(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), 14, true);
 				}
