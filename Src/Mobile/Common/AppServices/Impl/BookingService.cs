@@ -220,12 +220,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					directionInfo = await _geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId, order.PickupDate);                    
                 }            
 
-                if (directionInfo != null 
-                    && directionInfo.Price < _appSettings.Data.MinimumFare)
-                {
-                    directionInfo.Price = _appSettings.Data.MinimumFare;
-                }
-
 				directionInfo = directionInfo ?? new DirectionInfo();
 				directionInfo.ValidationResult = validationResult;
 				return directionInfo;
