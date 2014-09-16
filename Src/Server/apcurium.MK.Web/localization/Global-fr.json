@@ -72,5 +72,8 @@
     "ChargeAccount": "Compte",
     "Account Not Found": "Le numéro de compte semble invalide",
     "Enter An Account Rider #": "Merci de saisir un numéro de compte valide",
-    "Continue": "Continuer"
+    "Continue": "Continuer",
+	"EtaDurationUnit" : "minute",
+	"EtaDurationUnitPlural" : "minutes",
+	"Eta" : "Le véhicule le plus proche est à {1} {2} et {0}"
 }

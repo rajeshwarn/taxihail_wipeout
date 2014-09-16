@@ -3,17 +3,6 @@
     TaxiHail.directionInfo = _.extend({}, Backbone.Events, {
         getInfo: function (originLat, originLng, destinationLat, destinationLng, date) {
 
-            // Put in a better place
-            String.prototype.format = String.prototype.format = function() {
-                var s = this,
-                    i = arguments.length;
-
-                while (i--) {
-                    s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
-                }
-                return s;
-            };
-
             var preferedPrice = null, tempPrice = null;
 
             var coordinates = {

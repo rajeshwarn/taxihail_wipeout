@@ -66,7 +66,8 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                                            request.DestinationLat.Value,
                                            request.DestinationLng.Value);
 
-                    directionInfo.Eta = etaDirectionInfo.Eta;
+                    directionInfo.EtaFormattedDistance = etaDirectionInfo.FormattedDistance;
+                    directionInfo.EtaDuration = etaDirectionInfo.Duration;
                 }
             }
 
