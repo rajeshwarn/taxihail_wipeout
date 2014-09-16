@@ -175,7 +175,7 @@ namespace DatabaseInitializer
                         CreateDefaultTariff(configurationManager, commandBus);
                     }
 
-                    CreateDefaultRules(connectionString, commandBus);
+                    CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
                     Console.WriteLine("Done playing events...");
 
                     EnsureDefaultAccountsExists(connectionString, commandBus);
@@ -184,7 +184,7 @@ namespace DatabaseInitializer
                 {                    
                     // Create default rate for company
                     CreateDefaultTariff(configurationManager, commandBus);
-                    CreateDefaultRules(connectionString, commandBus);
+                    CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
 
                     FetchingIbsDefaults(container, commandBus);
 
@@ -502,7 +502,7 @@ namespace DatabaseInitializer
             }
         }
 
-        private static void CreateDefaultRules(ConnectionStringSettings connectionString, ICommandBus commandBus)
+        private static void CheckandMigrateDefaultRules(ConnectionStringSettings connectionString, ICommandBus commandBus, Dictionary<string, string> appSettings)
         {
             var rules = new RuleDao(() => new BookingDbContext(connectionString.ConnectionString));
             if (
@@ -542,6 +542,115 @@ namespace DatabaseInitializer
                     Message = "Service is temporarily unavailable. Please call dispatch center for service.",
                 });
             }
+
+            var priortiy = 1;
+
+            //validation of the pickup zone
+            if (rules.GetAll()
+                    .None(r => (r.Category == (int)RuleCategory.DisableRule) 
+                                && r.Type == (int)RuleType.Default
+                                && r.AppliesToPickup
+                                && r.ZoneRequired))
+            {
+                //Validation of the pickup
+                commandBus.Send(new CreateRule
+                {
+                    Type = RuleType.Default,
+                    Category = RuleCategory.DisableRule,
+                    CompanyId = AppConstants.CompanyId,
+                    AppliesToCurrentBooking = true,
+                    AppliesToFutureBooking = true,
+                    AppliesToPickup = true,
+                    ZoneRequired = true,
+                    RuleId = Guid.NewGuid(),
+                    Name = "Pickup Zone Required",
+                    Message = "The pickup address is not a valid location",
+                    IsActive = true,
+                    Priority = priortiy++
+                });
+            }
+
+            //check if any pickup exclusion
+            if (appSettings.ContainsKey("IBS.PickupZoneToExclude")
+                && !string.IsNullOrWhiteSpace(appSettings["IBS.PickupZoneToExclude"])
+                && rules.GetAll()
+                    .None(r => (r.Category == (int)RuleCategory.DisableRule)
+                                && r.Type == (int)RuleType.Default
+                                && r.AppliesToPickup
+                                && r.ZoneList == appSettings["IBS.PickupZoneToExclude"]))
+            {
+
+                commandBus.Send(new CreateRule
+                {
+                    Type = RuleType.Default,
+                    Category = RuleCategory.DisableRule,
+                    CompanyId = AppConstants.CompanyId,
+                    AppliesToCurrentBooking = true,
+                    AppliesToFutureBooking = true,
+                    AppliesToPickup = true,
+                    ZoneList = appSettings["IBS.PickupZoneToExclude"],
+                    RuleId = Guid.NewGuid(),
+                    Name = "Pickup Zone Exclusion",
+                    Message = "We don't serve this pickup location",
+                    IsActive = true,
+                    Priority = priortiy++
+                });
+            }
+
+            //check if dropoff zone is required
+            if (appSettings.ContainsKey("IBS.ValidateDestinationZone")
+                && !string.IsNullOrWhiteSpace(appSettings["IBS.ValidateDestinationZone"])
+                && rules.GetAll()
+                    .None(r => (r.Category == (int)RuleCategory.DisableRule)
+                                && r.Type == (int)RuleType.Default
+                                && r.AppliesToDropoff
+                                && r.ZoneRequired))
+            {
+
+                commandBus.Send(new CreateRule
+                {
+                    Type = RuleType.Default,
+                    Category = RuleCategory.DisableRule,
+                    CompanyId = AppConstants.CompanyId,
+                    AppliesToCurrentBooking = true,
+                    AppliesToFutureBooking = true,
+                    AppliesToDropoff = true,
+                    ZoneRequired = true,
+                    RuleId = Guid.NewGuid(),
+                    Name = "Dropoff Zone Required",
+                    Message = "The dropoff address is not a valid location",
+                    IsActive = true,
+                    Priority = priortiy++
+                });
+            }
+
+            //check if any dropoff exclusion
+            if (appSettings.ContainsKey("IBS.DestinationZoneToExclude")
+                && !string.IsNullOrWhiteSpace(appSettings["IBS.DestinationZoneToExclude"])
+                && rules.GetAll()
+                    .None(r => (r.Category == (int)RuleCategory.DisableRule)
+                                && r.Type == (int)RuleType.Default
+                                && r.AppliesToDropoff
+                                && r.ZoneList == appSettings["IBS.DestinationZoneToExclude"]))
+            {
+
+                commandBus.Send(new CreateRule
+                {
+                    Type = RuleType.Default,
+                    Category = RuleCategory.DisableRule,
+                    CompanyId = AppConstants.CompanyId,
+                    AppliesToCurrentBooking = true,
+                    AppliesToFutureBooking = true,
+                    AppliesToDropoff = true,
+                    ZoneList = appSettings["IBS.DestinationZoneToExclude"],
+                    RuleId = Guid.NewGuid(),
+                    Name = "Dropoff Zone Exclusion",
+                    Message = "We don't serve this dropoff location",
+                    IsActive = true,
+                    Priority = priortiy++
+                });
+            }
+           
         }
 
         private static Dictionary<string, string> GetCombinedSettings(IDictionary<string, string> settingsInDb, string companyName )
