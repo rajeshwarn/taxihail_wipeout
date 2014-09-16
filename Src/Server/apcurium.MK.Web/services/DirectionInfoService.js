@@ -48,6 +48,27 @@
 
         getAssignedEta: function (orderId, vehicleLat, vehicleLng) {
             return $.get(TaxiHail.parameters.apiRoot + '/directions/eta', { orderId: orderId, vehicleLat: vehicleLat, vehicleLng: vehicleLng }, function () { }, 'json');
+	}
+        
+        getEta: function (originLat, originLng) {
+
+            var coordinates = {
+                originLat: originLat,
+                originLng: originLng,
+            }, fmt = 'json';
+
+            function getDirectionInfoEvent() {
+
+                var directionInfoDefer = $.Deferred();
+
+                    $.get('api/directions/', coordinates, function () { }, fmt).then(function (resultGoogleAppTarif) {
+                        directionInfoDefer.resolve(resultGoogleAppTarif);
+                    });
+                
+                return directionInfoDefer.promise();
+            }
+
+            return $.when(getDirectionInfoEvent()).done();
         }
     });
 }());
