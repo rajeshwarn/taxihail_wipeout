@@ -60,11 +60,11 @@ namespace apcurium.MK.Booking.Maps.Geo
 		const double ACCURACY = 0.01d;
 
 		// Ported from Java - http://stackoverflow.com/a/16417396/787856
-		public static MapBounds GetBoundsFromCenterAndRadius(double centerLatitude, double centerLongitude, double latRadiusInMeters, double lngRadiusInMeters) 
+		public static MapBounds GetBoundsFromCenterAndRadius(double centerLatitude, double centerLongitude, double latRadiusInMeters, double lngRadiusInMeters, double radiusPadding = 1.1d) 
 		{
 
-			latRadiusInMeters /= 2;
-			lngRadiusInMeters /= 2;
+			latRadiusInMeters *= radiusPadding;
+			lngRadiusInMeters *= radiusPadding;
 
 			Position north, south, east, west;
 
