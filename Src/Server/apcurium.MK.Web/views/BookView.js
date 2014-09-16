@@ -51,14 +51,10 @@
         updateFareEstimateVisibility: function (value) {
 
             var $estimate = this.$('.estimate');
-            $estimate
-               .find('.distance')
-               .show();
 
             if (value.formattedPrice && value.formattedDistance) {
-                $estimate.removeClass('hidden')
-                    .find('.distance')
-                    .text('(' + value.formattedDistance + ')');
+                $estimate.removeClass('hidden');
+               
 
                 if (value.callForPrice) {
                     $estimate
@@ -80,7 +76,7 @@
                     else {
                         $estimate
                             .find('.fare')
-                            .text(value.formattedPrice);
+                            .text(TaxiHail.localize('Estimate Display').format(value.formattedPrice, "(" + value.formattedDistance + ")"));
                         $estimate
                             .find('.label')
                             .show();
@@ -196,9 +192,6 @@
             $estimate
                 .find('.fare')
                 .text(TaxiHail.localize('Loading'));
-            $estimate
-                .find('.distance')
-                .hide();
 
             var pickup = this.model.get('pickupAddress'),
                 dest = this.model.get('dropOffAddress');
