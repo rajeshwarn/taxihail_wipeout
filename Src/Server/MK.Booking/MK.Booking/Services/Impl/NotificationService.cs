@@ -245,13 +245,15 @@ namespace apcurium.MK.Booking.Services.Impl
                 && (!string.IsNullOrWhiteSpace(dropOffAddress.FullAddress)
                     || !string.IsNullOrWhiteSpace(dropOffAddress.DisplayAddress));
 
+            var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
+
             var templateData = new
             {
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
                 AccentColor = _configurationManager.GetSetting(AccentColorSetting),
                 EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
                 ibsOrderId,
-                PickupDate = pickupDate.ToString("dddd, MMMM d"),
+                PickupDate = pickupDate.ToString("D", dateFormat),
                 PickupTime = pickupDate.ToString("t" /* Short time pattern */),
                 PickupAddress = pickupAddress.DisplayAddress,
                 DropOffAddress = hasDropOffAddress ? dropOffAddress.DisplayAddress : "-",
@@ -375,8 +377,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 BaseUrlImg = baseUrls.BaseUrlAssetsImg,
                 RedDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_red_dot.png"),
                 GreenDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_green_dot.png"),
-                GetBaseUrls().LogoImg,
-                VehicleType = "taxi"
+                GetBaseUrls().LogoImg
 
             };
 
