@@ -1,3 +1,8 @@
 ﻿{
-	"ibsOrderIdLabel" : "Commande n°"
+	"ibsOrderIdLabel" : "Commande n°",
+	"statusLabel" : "Statut :",
+	"statusCompleted": "Complétée ",
+	"statusCanceled": "Annulée ",
+	"statusCreated": "En cours ",
+	"statusClickLabel": "Cliquez pour voir plus de détails"
 }
