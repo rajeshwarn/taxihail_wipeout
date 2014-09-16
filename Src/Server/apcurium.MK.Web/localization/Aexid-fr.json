@@ -4,5 +4,6 @@
     "Estimate": "Prix",
     "Fare estimate": "Prix",
     "PaymentInCar": "Carte bancaire - À bord",
-	"Eta" : "Le véhicule le plus proche est à {1} {2}"
+	"Eta" : "Le véhicule le plus proche est à {1} {2}",
+	"AssignedEta" : "Votre véhicule est à {1} {2}"
 }

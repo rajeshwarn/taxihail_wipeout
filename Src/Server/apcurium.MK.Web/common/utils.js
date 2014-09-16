@@ -20,6 +20,11 @@
             var durationUnit = duration <= 1 ? TaxiHail.localize("EtaDurationUnit") : TaxiHail.localize("EtaDurationUnitPlural");
             return TaxiHail.localize("Eta").format(formattedDistance, duration, durationUnit);
         },
+
+        formatAssignedEta: function (duration, formattedDistance) {
+            var durationUnit = duration <= 1 ? TaxiHail.localize("EtaDurationUnit") : TaxiHail.localize("EtaDurationUnitPlural");
+            return TaxiHail.localize("AssignedEta").format(formattedDistance, duration, durationUnit);
+        },
         
         localize: function (resourceName, resourceSet) {
             var resource = '';

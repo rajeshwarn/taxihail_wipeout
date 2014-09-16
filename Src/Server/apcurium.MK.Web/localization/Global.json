@@ -75,5 +75,6 @@
     "Continue": "Continue",
 	"EtaDurationUnit" : "min",
 	"EtaDurationUnitPlural" : "mins",
-	"Eta" : "The nearest taxi is {0} and {1} {2} away"
+	"Eta" : "The nearest taxi is {0} and {1} {2} away",
+	"AssignedEta" : "Your taxi is {0} and {1} {2} away"
 }

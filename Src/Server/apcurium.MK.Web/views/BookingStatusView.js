@@ -20,9 +20,30 @@
             this.redirectTimeout = null;
 
 
-            status.on('change:ibsStatusId change:vehicleLatitude', this.render, this);
+            status.on('change:ibsStatusId', this.render, this);
+            status.on('change:ibsStatusId change:vehicleLatitude', this.onVehicleAssignedAndPositionUpdated, this);
             status.on('change:ibsStatusId', this.onStatusChanged, this);
             status.on('ibs:timeout', this.ontimeout, this);
+        },
+
+        onVehicleAssignedAndPositionUpdated: function (model, status) {
+            if (model.showEta()) {
+                TaxiHail.directionInfo.getAssignedEta(model.get('orderId'), model.get('vehicleLatitude'), model.get('vehicleLongitude')).done(
+                    _.bind(function(result) {
+                        var $eta = this.$('.eta');
+                        if (result.duration) {
+                            var formattedEta = TaxiHail.formatAssignedEta(result.duration, result.formattedDistance);
+
+                            $eta.removeClass('hidden')
+                                .find('#etaValue')
+                                .text(formattedEta);
+                        } else {
+                            this.$('.eta').addClass('hidden');
+                        }
+                    }, this));
+            } else {
+                this.$('.eta').addClass('hidden');
+            }
         },
 
         render: function() {
@@ -30,7 +51,6 @@
                 data = _.extend(status.toJSON(), {
 
                     isActive: status.isActive(),
-                    showEta: status.showEta(),
                     callNumber: TaxiHail.parameters.defaultPhoneNumber
                 });
 
@@ -42,10 +62,6 @@
             if(!data.ibsStatusDescription)
             {
                 data.ibsStatusDescription = this.localize('Processing');
-            }
-
-            if (data.showEta) {
-                data.eta = TaxiHail.directionInfo.getAssignedEta(data.orderId, data.vehicleLatitude, data.vehicleLongitude);
             }
 
             this.$el.html(this.renderTemplate(data));
@@ -101,7 +117,7 @@
             }
             
         },
-
+        
         onStatusChanged: function (model, status) {
             if(model.isCompleted()){
 

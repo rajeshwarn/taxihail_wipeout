@@ -15,14 +15,12 @@
                         <label>{{ibsStatusDescription}}</label>
                     </div>
                 </div>
-                {{#if showEta}}
-                    <div class='clearfix'>
-                        <label class="control-label">{{localize "ETA"}}</label>
-                        <div class="controls">
-                            <label>{{eta}}</label>
-                        </div>
+                <div class='clearfix eta hidden'>
+                    <label class="control-label">{{localize "ETA"}}</label>
+                    <div class="controls">
+                        <label id='etaValue'></label>
                     </div>
-                {{/if}}
+                </div>
                 <div class='form-actions'>
                   <div class='buttons-container
                        {{#if isActive}}th-status-active{{/if}}'>

@@ -75,5 +75,6 @@
     "Continue": "Continuer",
 	"EtaDurationUnit" : "minute",
 	"EtaDurationUnitPlural" : "minutes",
-	"Eta" : "Le véhicule le plus proche est à {1} {2} et {0}"
+	"Eta" : "Le véhicule le plus proche est à {1} {2} et {0}",
+	"AssignedEta" : "Votre véhicule est à {1} {2} et {0}"
 }

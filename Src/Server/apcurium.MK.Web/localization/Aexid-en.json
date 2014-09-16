@@ -3,5 +3,6 @@
     "Estimated Fare": "Fare",
     "Estimate": "Price",
     "Fare estimate": "Fare",
-	"Eta" : "The nearest taxi is {1} {2} away"
+	"Eta" : "The nearest vehicle is {1} {2} away",
+    "AssignedEta" : "Your vehicle is {1} {2} away"
 }
