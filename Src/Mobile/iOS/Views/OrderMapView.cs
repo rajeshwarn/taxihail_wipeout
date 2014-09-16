@@ -492,18 +492,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 						new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude),
 						new MKCoordinateSpan (zoom.LatitudeDelta, zoom.LongitudeDelta)), true);
 
-					SetAnnotation (new Address () { Latitude = zoomHint.Latitude + zoom.LatitudeDelta / 2,
-						Longitude = zoomHint.Longitude - zoom.LongitudeDelta / 2
-					}, 
-						GetAnnotation (new CLLocationCoordinate2D (), AddressAnnotationType.Destination, _useThemeColorForPickupAndDestinationMapIcons), 
-						true);
-
-					SetAnnotation (new Address () { Latitude = zoomHint.Latitude - zoom.LatitudeDelta / 2,
-						Longitude = zoomHint.Longitude + zoom.LongitudeDelta / 2
-					}, 
-						GetAnnotation (new CLLocationCoordinate2D (), AddressAnnotationType.Destination, _useThemeColorForPickupAndDestinationMapIcons), 
-						true);
-
 				} else {
 					this.SetCenterCoordinate(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), 14, true);
 				}
