@@ -328,6 +328,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             return bounds;
         }
 
+		private MKCoordinateRegion GetRegionFromMapBounds(MapBounds bounds)
+		{
+			return new MKCoordinateRegion (
+				new CLLocationCoordinate2D (bounds.GetCenter().Latitude, bounds.GetCenter().Longitude),
+				new MKCoordinateSpan (bounds.LatitudeDelta, bounds.LongitudeDelta));
+		}
+
         private void HandleTouchMove (object sender, EventArgs e)
         {
             CancelAddressSearch();
@@ -483,21 +490,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 ChangeState((HomeViewModelPresentationHint)hint);
             }
+
             var zoomHint = hint as ZoomToStreetLevelPresentationHint;
+
             if (zoomHint != null)
             {
 				if (zoomHint.Bounds != null) {
-					var zoom = zoomHint.Bounds;
-                    var newZoom = this.GetZoomLevelFromRegion(new MKCoordinateRegion(new CLLocationCoordinate2D(zoom.GetCenter().Latitude, zoom.GetCenter().Longitude), new MKCoordinateSpan(zoom.LatitudeDelta, zoom.LongitudeDelta)));
-                    var currentZoom = this.GetZoomLevelFromRegion(this.CenterCoordinate, this.Region.Span);
-                    if (currentZoom >= newZoom)
-                    {
-                        this.SetRegion(new MKCoordinateRegion(
-                            new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude),
-                            new MKCoordinateSpan(zoom.LatitudeDelta, zoom.LongitudeDelta)), true);
-                    }
 
-				} else {
+					var newBounds = zoomHint.Bounds;
+
+                    var currentBounds = this.GetMapBoundsFromProjection();
+
+					if (Math.Abs(currentBounds.LongitudeDelta) <= Math.Abs(newBounds.LongitudeDelta))
+                    {
+						this.SetRegion(GetRegionFromMapBounds(newBounds), true);
+                    }
+				} else 
+				{
 					this.SetCenterCoordinate(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), 14, true);
 				}
             }
