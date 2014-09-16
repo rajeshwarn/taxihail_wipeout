@@ -564,7 +564,7 @@ namespace DatabaseInitializer
                     ZoneRequired = true,
                     RuleId = Guid.NewGuid(),
                     Name = "Pickup Zone Required",
-                    Message = "The pickup address is not a valid location",
+                    Message = "The specified Pickup address lies outside the regular service area.",
                     IsActive = true,
                     Priority = priority++
                 });
@@ -620,7 +620,7 @@ namespace DatabaseInitializer
                     ZoneRequired = true,
                     RuleId = Guid.NewGuid(),
                     Name = "Dropoff Zone Required",
-                    Message = "The dropoff address is not a valid location",
+                    Message = "The specified Dropoff address lies outside the regular service area",
                     IsActive = bool.Parse(appSettings["IBS.ValidateDestinationZone"]),
                     Priority = priority++
                 });
