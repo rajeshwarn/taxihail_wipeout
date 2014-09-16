@@ -24,5 +24,6 @@
    "GeoLoc.SearchFilter" : "{0},ottawa,on,canada&region=ca",    
    "DefaultPhoneNumber" : "18666245330",
    "DefaultPhoneNumberDisplay" : "1.866.624.5330",
-   "Client.GoogleMapKey":  "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE"
+    "Client.GoogleMapKey": "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE",
+    "Booking.ConfirmationEmail" : "false"
 }
