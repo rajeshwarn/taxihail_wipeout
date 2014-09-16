@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 Error = (float)newLocation.HorizontalAccuracy,
                 Time = newLocation.Timestamp.ToDateTimeUtc(),
                 Latitude = newLocation.Coordinate.Latitude,
-                Longitude = newLocation.Coordinate.Longitude
+                Longitude = newLocation.Coordinate.Longitude 
             };
 
             foreach(var observer in Observers.ToArray())

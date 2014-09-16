@@ -447,12 +447,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				if (zoomHint.Bounds != null) {
 
 					var availableVehiclesBounds = zoomHint.Bounds;
-					LatLngBounds.Builder builder = new LatLngBounds.Builder();
-					builder.Include (new LatLng (availableVehiclesBounds.NorthBound, availableVehiclesBounds.WestBound));
-					builder.Include (new LatLng (availableVehiclesBounds.SouthBound, availableVehiclesBounds.EastBound));
-					LatLngBounds bounds = builder.Build();
+					var maxLat = availableVehiclesBounds.NorthBound;
+					var maxLon = availableVehiclesBounds.EastBound;
+					var minLat = availableVehiclesBounds.SouthBound;
+					var minLon = availableVehiclesBounds.WestBound;
+
+					LatLngBounds bounds = new LatLngBounds (new LatLng (minLat, minLon), new LatLng (maxLat, maxLon));
 					var cameraUpdate = CameraUpdateFactory.NewLatLngBounds (bounds, 0);
+
+					Map.AddMarker(new MarkerOptions()
+						.SetPosition(new LatLng (availableVehiclesBounds.NorthBound, availableVehiclesBounds.EastBound))
+						.Anchor(.5f, 1f)
+						.InvokeIcon(_destinationIcon)
+						.Visible(true));
+
+					Map.AddMarker(new MarkerOptions()
+						.SetPosition(new LatLng (availableVehiclesBounds.SouthBound, availableVehiclesBounds.WestBound))
+						.Anchor(.5f, 1f)
+						.InvokeIcon(_destinationIcon)
+						.Visible(true));
 					Map.AnimateCamera(cameraUpdate);
+
+
 
 				} else {
 					Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(zoomHint.Latitude, zoomHint.Longitude), 15));
