@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IDirections _directions;
         private readonly IIbsOrderService _ibsOrderService;
         private readonly Resources.Resources _resources;
-        private IAppSettings _appSettings;
+        private readonly IAppSettings _appSettings;
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(CreateOrderService));
 
@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             _commandBus = commandBus;
             _orderPaymentDao = orderPaymentDao;
 
-            _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"));
+            _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
         }
 
         public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
@@ -308,7 +308,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                             .Sum();
 
                 description = total > 0
-                    ? string.Format(_resources.Get("OrderStatus_OrderDoneFareAvailable", languageCode), FormatPrice(total))
+                    ? string.Format(_resources.Get("OrderStatus_OrderDoneFareAvailable", languageCode), _resources.FormatPrice(total))
                     : _resources.Get("OrderStatus_wosDONE", languageCode);
                     
                Log.DebugFormat("Setting Complete status description: {0}", description);
@@ -337,13 +337,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                 _ibsOrderService.SendMessageToDriver(etaMessage, vehicleNumber);
                 Log.Debug(etaMessage);
             }
-        }
-
-        private string FormatPrice(double? price)
-        {
-            var culture = _appSettings.Data.PriceFormat;
-            var currencyPriceFormat = _resources.Get("CurrencyPriceFormat", culture);
-            return string.Format(new CultureInfo(culture), currencyPriceFormat, price.HasValue ? price.Value : 0);
         }
     }
 }
