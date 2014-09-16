@@ -327,7 +327,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 && (!string.IsNullOrWhiteSpace(dropOffAddress.FullAddress) 
                     || !string.IsNullOrWhiteSpace(dropOffAddress.DisplayAddress));
 
-            var staticMapUri = dropOffAddress != null
+            var staticMapUri = hasDropOffAddress
                 ? _staticMap.GetStaticMapUri(
                     new Position(pickupAddress.Latitude, pickupAddress.Longitude),
                     new Position(dropOffAddress.Latitude, dropOffAddress.Longitude),
