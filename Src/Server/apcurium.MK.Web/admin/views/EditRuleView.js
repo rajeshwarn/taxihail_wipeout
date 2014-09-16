@@ -18,7 +18,12 @@
             
             data.highestPriority = _.max(_.pluck(this.collection.toJSON(), 'priority')) +1;
             data.currentBookingChecked = data.appliesToCurrentBooking == true ? 'checked' : '';
-            data.futureBookingChecked = data.appliesToFutureBooking == true ? 'checked' :  '';
+            data.futureBookingChecked = data.appliesToFutureBooking == true ? 'checked' : '';
+
+            data.appliesToPickupChecked = data.appliesToPickup == true ? 'checked' : '';
+            data.appliesToDropoffChecked = data.appliesToDropoff == true ? 'checked' : '';
+
+            data.zoneRequiredChecked = data.zoneRequired == true ? 'checked' : '';
             
             data.recurring = +this.model.get('type') === TaxiHail.Rule.type.recurring;
             data.isDefault = +this.model.get('type') === TaxiHail.Rule.type['default'];
@@ -122,6 +127,12 @@
                 serialized.category = +this.model.get('category');
                 serialized.appliesToCurrentBooking = $("#appliesToCurrentBooking").attr('checked') ? true : false;
                 serialized.appliesToFutureBooking = $("#appliesToFutureBooking").attr('checked') ? true : false;
+
+                serialized.appliesToPickup = $("#appliesToPickup").attr('checked') ? true : false;
+                serialized.appliesToDropoff = $("#appliesToDropoff").attr('checked') ? true : false;
+
+                serialized.zoneRequired = $("#zoneRequired").attr('checked') ? true : false;
+
                 if (+serialized.type) {
                     // Not a default rate
 

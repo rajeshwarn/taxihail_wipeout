@@ -24,6 +24,9 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string Name { get; set; }
         public bool AppliesToCurrentBooking { get; set; }
         public bool AppliesToFutureBooking { get; set; }
+        public bool AppliesToPickup { get; set; }
+        public bool AppliesToDropoff { get; set; }
+        public bool ZoneRequired { get; set; }
         public string ZoneList { get; set; }
         public DayOfTheWeek DaysOfTheWeek { get; set; }
         public DateTime? StartTime { get; set; }

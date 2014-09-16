@@ -3,15 +3,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using ServiceStack.Text;
-using System.Globalization;
 using System.Text.RegularExpressions;
 
 #endregion
@@ -20,15 +17,11 @@ namespace apcurium.MK.Booking.IBS.Impl
 {
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
-        private const int InvalidPickupZoneErrorCode = -1002;
-        private const int InvalidDropoffZoneErrorCode = -1452; //cutom code because we never know which one ibs is going to use
-        private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
 
         public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger,
             IStaticDataWebServiceClient staticDataWebServiceClient)
             : base(configManager, logger)
         {
-            _staticDataWebServiceClient = staticDataWebServiceClient;
         }
 
         public IbsVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int? vehicleTypeId)
@@ -146,9 +139,9 @@ namespace apcurium.MK.Booking.IBS.Impl
             UseService(service =>
             {
                 var status = service.GetOrdersStatus_2(UserNameApp, PasswordApp, ibsOrdersIds.ToArray());
-                foreach (var orderInfoFromIBS in status)
+                foreach (var orderInfoFromIbs in status)
                 {
-                    var statusInfos = new IBSOrderInformation(orderInfoFromIBS);
+                    var statusInfos = new IBSOrderInformation(orderInfoFromIbs);
 
                     result.Add(statusInfos);
                 }
@@ -332,16 +325,6 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             int? orderId = null;
 
-            if (!ValidatePickAddress(order))
-            {
-                return InvalidPickupZoneErrorCode;
-            }
-
-            if (!ValidateDropOffAddress(order))
-            {
-                return InvalidDropoffZoneErrorCode;
-            }
-
             UseService(service =>
             {
                 Logger.LogMessage("WebService Creating IBS Order : " +
@@ -375,83 +358,6 @@ namespace apcurium.MK.Booking.IBS.Impl
         protected override string GetUrl()
         {
             return base.GetUrl() + "IWEBOrder_7";
-        }
-
-        private bool ValidatePickAddress(TBookOrder_7 order)
-        {
-            if (
-                !ValidateZone(order.PickupAddress, order.ServiceProviderID, "IBS.ValidatePickupZone",
-                    "IBS.PickupZoneToExclude"))
-            {
-                return false;
-            }
-            
-
-            return true;
-        }
-
-        private bool ValidateDropOffAddress(TBookOrder_7 order)
-        {
-            // ReSharper disable CompareOfFloatsByEqualityOperator
-            if ((order.DropoffAddress != null) && (order.DropoffAddress.Latitude != 0) &&
-                (order.DropoffAddress.Latitude != 0))
-            {
-                // ReSharper restore CompareOfFloatsByEqualityOperator
-                if (!ValidateZone(order.DropoffAddress, order.ServiceProviderID, "IBS.ValidateDestinationZone",
-                        "IBS.DestinationZoneToExclude"))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        public bool ValidateZone(string zone, string enableValidationKey, string excludedZoneKey)
-        {
-            var isValidationEnabled = bool.Parse(ConfigManager.GetSetting(enableValidationKey));
-            if (isValidationEnabled)
-            {
-                if (zone.ToSafeString().Trim().IsNullOrEmpty())
-                {
-                    return false;
-                }
-
-                var excludedZones = ConfigManager.GetSetting(excludedZoneKey).Split(',');
-                if (excludedZones.Any() && excludedZones.Any(z => z.SoftEqual(zone)))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        private bool ValidateZone(TWEBAddress twebAddress, int? providerId, string enableValidationKey,
-            string excludedZoneKey)
-        {
-            var isValidationEnabled = bool.Parse(ConfigManager.GetSetting(enableValidationKey));
-            if (isValidationEnabled)
-            {
-                Logger.LogMessage("Validating Zone " +
-                                  JsonSerializer.SerializeToString(twebAddress, typeof(TWEBAddress)));
-                var zone = _staticDataWebServiceClient.GetZoneByCoordinate(providerId, twebAddress.Latitude,
-                    twebAddress.Longitude);
-
-
-                Logger.LogMessage("Zone returned : " + zone.ToSafeString());
-
-                if (zone.ToSafeString().Trim().IsNullOrEmpty())
-                {
-                    return false;
-                }
-
-                var excludedZones = ConfigManager.GetSetting(excludedZoneKey).Split(',');
-                if (excludedZones.Any() && excludedZones.Any(z => z.SoftEqual(zone)))
-                {
-                    return false;
-                }
-            }
-            return true;
         }
     }
 }
