@@ -24,7 +24,7 @@
                     ).done(this.renderResults);
             }
 
-            this.model.validateOrder()
+            this.model.validateOrder(false)
                 .done(_.bind(function (result) {
 
                     this.hasWarning = result.hasWarning;
