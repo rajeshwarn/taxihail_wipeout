@@ -543,7 +543,7 @@ namespace DatabaseInitializer
                 });
             }
 
-            var priortiy = 1;
+            var priority = 1;
 
             //validation of the pickup zone
             if (rules.GetAll()
@@ -566,7 +566,7 @@ namespace DatabaseInitializer
                     Name = "Pickup Zone Required",
                     Message = "The pickup address is not a valid location",
                     IsActive = true,
-                    Priority = priortiy++
+                    Priority = priority++
                 });
             }
 
@@ -593,8 +593,10 @@ namespace DatabaseInitializer
                     Name = "Pickup Zone Exclusion",
                     Message = "We don't serve this pickup location",
                     IsActive = true,
-                    Priority = priortiy++
+                    Priority = priority++
                 });
+
+                appSettings["IBS.PickupZoneToExclude"] = null;
             }
 
             //check if dropoff zone is required
@@ -619,9 +621,10 @@ namespace DatabaseInitializer
                     RuleId = Guid.NewGuid(),
                     Name = "Dropoff Zone Required",
                     Message = "The dropoff address is not a valid location",
-                    IsActive = true,
-                    Priority = priortiy++
+                    IsActive = bool.Parse(appSettings["IBS.ValidateDestinationZone"]),
+                    Priority = priority++
                 });
+                appSettings["IBS.ValidateDestinationZone"] = null;
             }
 
             //check if any dropoff exclusion
@@ -647,10 +650,12 @@ namespace DatabaseInitializer
                     Name = "Dropoff Zone Exclusion",
                     Message = "We don't serve this dropoff location",
                     IsActive = true,
-                    Priority = priortiy++
+                    Priority = priority++
                 });
+                appSettings["IBS.DestinationZoneToExclude"] = null;
             }
-           
+
+            AddOrUpdateAppSettings(commandBus, appSettings);
         }
 
         private static Dictionary<string, string> GetCombinedSettings(IDictionary<string, string> settingsInDb, string companyName )
