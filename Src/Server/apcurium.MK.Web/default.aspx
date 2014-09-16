@@ -56,6 +56,7 @@
             TaxiHail.parameters.hideDispatchButton = <%: HideDispatchButton %>;
             TaxiHail.parameters.accountActivationDisabled = <%: AccountActivationDisabled %>;
             TaxiHail.parameters.isEstimateEnabled = <%: EstimateEnabled %>;
+            TaxiHail.parameters.isEtaEnabled = <%: EtaEnabled %>;
             TaxiHail.parameters.isEstimateWarningEnabled = <%: EstimateWarningEnabled %>;
             TaxiHail.parameters.isDestinationRequired = <%: DestinationIsRequired %>;
             TaxiHail.parameters.disableFutureBooking = <%: DisableFutureBooking %>;

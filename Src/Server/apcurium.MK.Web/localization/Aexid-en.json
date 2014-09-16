@@ -2,5 +2,8 @@
     "CreateOrder_NoFareEstimateAvailable": "No fare is available for the ride. Please specify a valid pickup and destination.",
     "Estimated Fare": "Fare",
     "Estimate": "Price",
-    "Fare estimate": "Fare"
+    "Fare estimate": "Fare",
+	"Eta" : "The nearest vehicle is {1} {2} away",
+	"Estimate Display": "{0} {1}",
+    "AssignedEta" : "Your vehicle is {1} {2} away"
 }
