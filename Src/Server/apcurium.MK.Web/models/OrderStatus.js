@@ -23,6 +23,10 @@
             return this.get('ibsStatusId') === 'wosDONE';
         },
 
+        showEta: function() {
+            return this.get('ibsStatusId') === 'wosASSIGNED' && this.hasVehicle() && TaxiHail.parameters.isEtaEnabled;
+        },
+
         canSendReceipt: function() {
             return this.isCompleted() && !!this.get('fareAvailable');
         },

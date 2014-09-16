@@ -67,10 +67,12 @@ namespace apcurium.MK.Booking.Api
                 new InjectionFactory(c =>
                 {
                     var configManager = c.Resolve<IConfigurationManager>();
+                    var appSettings = c.Resolve<IAppSettings>();
+                    var orderDao = c.Resolve<IOrderDao>();
                     var mockIbsStatusUpdate = bool.Parse(configManager.GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
-                    return mockIbsStatusUpdate 
-                        ? new OrderStatusIbsMock(c.Resolve<IOrderDao>(), c.Resolve<OrderStatusUpdater>(), configManager) 
-                        : new OrderStatusHelper(c.Resolve<IOrderDao>(), configManager);
+                    return mockIbsStatusUpdate
+                        ? new OrderStatusIbsMock(orderDao, c.Resolve<OrderStatusUpdater>(), configManager, appSettings)
+                        : new OrderStatusHelper(orderDao, configManager, appSettings);
                 }));
 
             container.RegisterType<IPaymentService>(

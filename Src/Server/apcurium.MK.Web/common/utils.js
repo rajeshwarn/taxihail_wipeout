@@ -20,6 +20,11 @@
             var durationUnit = duration <= 1 ? TaxiHail.localize("EtaDurationUnit") : TaxiHail.localize("EtaDurationUnitPlural");
             return TaxiHail.localize("Eta").format(formattedDistance, duration, durationUnit);
         },
+
+        formatAssignedEta: function (duration, formattedDistance) {
+            var durationUnit = duration <= 1 ? TaxiHail.localize("EtaDurationUnit") : TaxiHail.localize("EtaDurationUnitPlural");
+            return TaxiHail.localize("AssignedEta").format(formattedDistance, duration, durationUnit);
+        },
         
         localize: function (resourceName, resourceSet) {
             var resource = '';
@@ -49,7 +54,18 @@
 
             return resource || TaxiHail.resources.Global[resourceName] || resourceName;
         },
-
+        orderStatusDisplay : function(status,resourceSet) {
+            switch (status) {
+            case "Created":
+                return TaxiHail.localize("statusCreated",resourceSet);
+            case "Completed":
+                return TaxiHail.localize("statusCompleted", resourceSet);
+            case "Canceled":
+                return TaxiHail.localize("statusCanceled", resourceSet);
+            default:
+                return "";
+            }
+        },
         addResourceSet: function (name, resourceSet) {
             TaxiHail.resources[name] = resourceSet;
         },
@@ -237,6 +253,10 @@
 
     Handlebars.registerHelper('localize', function (resourceName) {
         return new Handlebars.SafeString(TaxiHail.localize(resourceName, this.resourceSet));
+    });
+
+    Handlebars.registerHelper('orderStatusDisplay', function (resourceName) {
+        return new Handlebars.SafeString(TaxiHail.orderStatusDisplay(resourceName,this.resourceSet));
     });
 
     Handlebars.registerHelper('localizeBool', function (value, options) {

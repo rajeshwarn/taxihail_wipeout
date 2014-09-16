@@ -12,14 +12,15 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ICommandBus _commandBus;
         private readonly IIbsOrderService _ibs;
         private readonly IOrderDao _orderDao;
-        private readonly IConfigurationManager _configManager;
+        private readonly Resources.Resources _resources;
 
-        public PairingService(ICommandBus commandBus, IIbsOrderService ibs, IOrderDao orderDao, IConfigurationManager configManager)
+        public PairingService(ICommandBus commandBus, IIbsOrderService ibs, IOrderDao orderDao, IConfigurationManager configManager, IAppSettings appSettings)
         {
             _commandBus = commandBus;
             _ibs = ibs;
             _orderDao = orderDao;
-            _configManager = configManager;
+
+            _resources = new Resources.Resources(configManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
         }
 
         public void Pair(Guid orderId, string cardToken, int? autoTipPercentage)
@@ -30,9 +31,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 throw new Exception("Order has no IBSOrderId");
 
             // send a message to driver, if it fails we abort the pairing
-            _ibs.SendMessageToDriver(
-                new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"))
-                .Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
+            _ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
 
             // send a command to save the pairing state for this order
             _commandBus.Send(new PairForPayment
@@ -52,9 +51,7 @@ namespace apcurium.MK.Booking.Services.Impl
             if (orderStatusDetail == null) throw new Exception("Order not found");
 
             // send a message to driver, if it fails we abort the unpairing
-            _ibs.SendMessageToDriver(
-                new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"))
-                    .Get("UnpairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
+            _ibs.SendMessageToDriver(_resources.Get("UnpairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
 
             // send a command to delete the pairing pairing info for this order
             _commandBus.Send(new UnpairForPayment

@@ -311,7 +311,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 										var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, availableVehicles);	
 										if (bounds != null)
 										{
-											this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
+                                            this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
 										}
 									}
 									catch (TimeoutException)

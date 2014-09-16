@@ -18,20 +18,22 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IEventHandler<PayPalExpressCheckoutPaymentCompleted>,
         IEventHandler<CreditCardPaymentCaptured>
     {
-        private readonly IConfigurationManager _configurationManager;
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
-        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, ICreditCardDao creditCardDao, IIbsOrderService ibs, IConfigurationManager configurationManager)
+        private readonly Resources.Resources _resources;
+
+        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, ICreditCardDao creditCardDao, IIbsOrderService ibs, IConfigurationManager configurationManager, IAppSettings appSettings)
         {
             _accountDao = accountDao;
             _dao = dao;
             _paymentDao = paymentDao;
             _creditCardDao = creditCardDao;
             _ibs = ibs;
-            _configurationManager = configurationManager;
+
+            _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
         }
 
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
@@ -68,15 +70,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 if (card == null) throw new InvalidOperationException("Credit card not found");
             }
 
-            var applicationKey = _configurationManager.GetSetting("TaxiHail.ApplicationKey");
-            var resources = new Resources.Resources(applicationKey);
+            var amountString = _resources.FormatPrice((double)amount);
 
-            var amountString = string.Format(resources.Get("CurrencyPriceFormat"), amount);
-
-            var line1 = string.Format(resources.Get("PaymentConfirmationToDriver1"), amountString);
+            var line1 = string.Format(_resources.Get("PaymentConfirmationToDriver1"), amountString);
             line1 = line1.PadRight(32, ' ');
             //Padded with 32 char because the MDT displays line of 32 char.  This will cause to write the auth code on the second line
-            var line2 = string.Format(resources.Get("PaymentConfirmationToDriver2"), authorizationCode);
+            var line2 = string.Format(_resources.Get("PaymentConfirmationToDriver2"), authorizationCode);
             
             _ibs.SendPaymentNotification(line1 + line2, orderStatusDetail.VehicleNumber, orderDetail.IBSOrderId.Value);
             
