@@ -1,9 +1,29 @@
 ﻿(function () {
 
+    String.prototype.format = String.prototype.format = function () {
+        var s = this,
+            i = arguments.length;
+
+        while (i--) {
+            s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
+        }
+        return s;
+    };
+
     _.extend(TaxiHail, {
 
         getClientLanguage: function () {
             return (navigator.language) ? navigator.language.split('-')[0] : navigator.userLanguage;
+        },
+
+        formatEta: function (duration, formattedDistance) {
+            var durationUnit = duration <= 1 ? TaxiHail.localize("EtaDurationUnit") : TaxiHail.localize("EtaDurationUnitPlural");
+            return TaxiHail.localize("Eta").format(formattedDistance, duration, durationUnit);
+        },
+
+        formatAssignedEta: function (duration, formattedDistance) {
+            var durationUnit = duration <= 1 ? TaxiHail.localize("EtaDurationUnit") : TaxiHail.localize("EtaDurationUnitPlural");
+            return TaxiHail.localize("AssignedEta").format(formattedDistance, duration, durationUnit);
         },
         
         localize: function (resourceName, resourceSet) {

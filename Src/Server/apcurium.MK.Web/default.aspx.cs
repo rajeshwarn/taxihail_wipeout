@@ -37,6 +37,7 @@ namespace apcurium.MK.Web
         protected string AccountActivationDisabled { get; private set; }
         protected string EstimateEnabled { get; private set; }
         protected string EstimateWarningEnabled { get; private set; }
+        protected string EtaEnabled { get; private set; }
         protected string DestinationIsRequired { get; private set; }
         protected string DirectionTarifMode { get; private set; }
         protected bool DirectionNeedAValidTarif { get; private set; }
@@ -69,6 +70,7 @@ namespace apcurium.MK.Web
 
             EstimateEnabled = config.GetSetting("Client.ShowEstimate");
             EstimateWarningEnabled = config.GetSetting("Client.ShowEstimateWarning");
+            EtaEnabled = config.GetSetting("Client.ShowEta");
             DestinationIsRequired = config.GetSetting("Client.DestinationIsRequired");
             
             var accountActivationDisabled = config.GetSetting("AccountActivationDisabled");

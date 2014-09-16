@@ -6,7 +6,14 @@
         public double? Price { get; set; }
         public string FormattedDistance { get; set; }
 		public OrderValidationResult ValidationResult { get; set; }
-        //use by the webapp
+
+        // Used by the webapp
         public string FormattedPrice { get; set; }
+
+        // Used by the webapp
+        public string EtaFormattedDistance { get; set; }
+
+        // Used by the webapp
+        public int? EtaDuration { get; set; }
     }
 }

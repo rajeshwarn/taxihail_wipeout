@@ -146,24 +146,51 @@
         </div>
 {{/if}}
 
-      <div class="control-group">
-        <label class="control-label">{{localize 'Applies to'}}</label>
-        <div class="controls">
+        <div class="control-group">
+            <label class="control-label">{{localize 'Applies to'}}</label>
+            <div class="controls">
 
          
 
-              <label class="checkbox">
-          <input type="checkbox" id="appliesToCurrentBooking" name='appliesToCurrentBooking' value="{{appliesToCurrentBooking}}" {{currentBookingChecked}} >
-            {{localize "Current booking"}}
-          </input>
-              </label>
-          <label class="checkbox">
-              <input type="checkbox" id="appliesToFutureBooking" name='appliesToFutureBooking' value="{{appliesToFutureBooking}}" {{futureBookingChecked}}> {{localize "Future booking"}}</input>
-          </label>
+                <label class="checkbox">
+                    <input type="checkbox" id="appliesToCurrentBooking" name='appliesToCurrentBooking' value="{{appliesToCurrentBooking}}" {{currentBookingChecked}} >
+                        {{localize "Current booking"}}
+                    </input>
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" id="appliesToFutureBooking" name='appliesToFutureBooking' value="{{appliesToFutureBooking}}" {{futureBookingChecked}}> {{localize "Future booking"}}</input>
+                </label>
+            </div>
         </div>
-      </div>
+        
+        <div class="control-group">
+            <label class="control-label">{{localize 'Applies to'}}</label>
+            <div class="controls">
+                <label class="checkbox">
+                    <input type="checkbox" id="appliesToPickup" name='appliesToPickup' value="{{appliesToPickup}}" {{appliesToPickupChecked}}>
+                        {{localize "Pickup"}}
+                    </input>
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" id="appliesToDropoff" name='appliesToDropoff' value="{{appliesToDropoff}}" {{appliesToDropoffChecked}}>
+                        {{localize "Dropoff"}}
+                    </input>
+                </label>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label">{{localize 'Zone Validation'}}</label>
+            <div class="controls">
+                <label class="checkbox">
+                <input type="checkbox" id="zoneRequired" name='zoneRequired' value="{{zoneRequired}}" {{zoneRequiredChecked}}>
+                       {{localize "Zone Required"}}
+                 </input>
+                </label>
+            </div>
+        </div>
       
-      <div class="control-group">
+        <div class="control-group">
             <label class="control-label">{{localize 'Message'}}</label>
             <div class="controls">
               <textarea rows="3" type="text" name="message"  value="{{message}}">{{message}}</textarea>
@@ -171,9 +198,9 @@
         </div>
       <div class="control-group">
         <label class="control-label">{{localize 'Zone List'}}</label>
-        <div class="controls">
-          <input type="text" name="zoneList"  value="{{zoneList}}" placeholder="{{localize "zoneListPlaceholder"}}"></input>
-        </div>
+          <div class="controls">
+              <input type="text" name="zoneList"  value="{{zoneList}}" placeholder="{{localize "zoneListPlaceholder"}}"></input>
+          </div>
       </div>
       <div class="control-group">
         <label class="control-label">{{localize 'Priority'}}</label>

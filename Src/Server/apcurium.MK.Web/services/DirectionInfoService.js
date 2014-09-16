@@ -3,17 +3,6 @@
     TaxiHail.directionInfo = _.extend({}, Backbone.Events, {
         getInfo: function (originLat, originLng, destinationLat, destinationLng, date) {
 
-            // Put in a better place
-            String.prototype.format = String.prototype.format = function() {
-                var s = this,
-                    i = arguments.length;
-
-                while (i--) {
-                    s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
-                }
-                return s;
-            };
-
             var preferedPrice = null, tempPrice = null;
 
             var coordinates = {
@@ -55,6 +44,31 @@
                   result.callForPrice = (result.price > 100);
               }
             );
+        },
+
+        getAssignedEta: function (orderId, vehicleLat, vehicleLng) {
+            return $.get(TaxiHail.parameters.apiRoot + '/directions/eta', { orderId: orderId, vehicleLat: vehicleLat, vehicleLng: vehicleLng }, function () { }, 'json');
+	    },
+        
+        getEta: function (originLat, originLng) {
+
+            var coordinates = {
+                originLat: originLat,
+                originLng: originLng,
+            }, fmt = 'json';
+
+            function getDirectionInfoEvent() {
+
+                var directionInfoDefer = $.Deferred();
+
+                    $.get('api/directions/', coordinates, function () { }, fmt).then(function (resultGoogleAppTarif) {
+                        directionInfoDefer.resolve(resultGoogleAppTarif);
+                    });
+                
+                return directionInfoDefer.promise();
+            }
+
+            return $.when(getDirectionInfoEvent()).done();
         }
     });
 }());
