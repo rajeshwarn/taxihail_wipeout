@@ -45,9 +45,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
 
             if (_appSettings.Data.ShowEta
                 && request.OriginLat.HasValue
-                && request.OriginLng.HasValue
-                && request.DestinationLat.HasValue
-                && request.DestinationLng.HasValue)
+                && request.OriginLng.HasValue)
             {
                 // Get available vehicles
                 var availableVehicles = _bookingWebServiceClient.GetAvailableVehicles(request.OriginLat.Value, request.OriginLng.Value, null);
@@ -63,8 +61,8 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                     var etaDirectionInfo = 
                             _client.GetEta(nearestAvailableVehicle.Latitude,
                                            nearestAvailableVehicle.Longitude,
-                                           request.DestinationLat.Value,
-                                           request.DestinationLng.Value);
+                                           request.OriginLat.Value,
+                                           request.OriginLng.Value);
 
                     directionInfo.EtaFormattedDistance = etaDirectionInfo.FormattedDistance;
                     directionInfo.EtaDuration = etaDirectionInfo.Duration;

@@ -44,6 +44,27 @@
                   result.callForPrice = (result.price > 100);
               }
             );
+        },
+
+        getEta: function (originLat, originLng) {
+
+            var coordinates = {
+                originLat: originLat,
+                originLng: originLng,
+            }, fmt = 'json';
+
+            function getDirectionInfoEvent() {
+
+                var directionInfoDefer = $.Deferred();
+
+                    $.get('api/directions/', coordinates, function () { }, fmt).then(function (resultGoogleAppTarif) {
+                        directionInfoDefer.resolve(resultGoogleAppTarif);
+                    });
+                
+                return directionInfoDefer.promise();
+            }
+
+            return $.when(getDirectionInfoEvent()).done();
         }
     });
 }());

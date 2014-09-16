@@ -31,21 +31,24 @@
             // ===== Ride Estimate & ETA =====
 
             // Only update ride estimate & eta if enabled
-            (TaxiHail.parameters.isEstimateEnabled || TaxiHail.parameters.isEtaEnabled) &&
+            TaxiHail.parameters.isEstimateEnabled &&
                 this.model.on('change:pickupAddress change:dropOffAddress', function (model, value) {
                     this.actualizeEstimate();
                 }, this);
             
+            TaxiHail.parameters.isEtaEnabled &&
+                this.model.on('change:pickupAddress', function (model, value) {
+                    this.actualizeEta();
+                }, this);
+
             // Update UI values when server call is completed
             this.model.on('change:estimate', function (model, value) {
-                if (TaxiHail.parameters.isEstimateEnabled) {
                     this.updateFareEstimateVisibility(value);
-                }
+            }, this);
 
-                if (TaxiHail.parameters.isEtaEnabled) {
+            this.model.on('change:eta', function (model, value) {
                     this.updateEtaDisplayVisibility(value);
-                }
-             }, this);
+            }, this);
         },
         
         updateFareEstimateVisibility: function (value) {
@@ -208,6 +211,19 @@
                     .done(_.bind(function(result){
 
                         this.model.set({ 'estimate': result });
+
+                    }, this));
+            }
+        },
+
+        actualizeEta: function () {
+
+            var pickup = this.model.get('pickupAddress');
+
+            if (pickup) {
+                TaxiHail.directionInfo.getEta(pickup.latitude, pickup.longitude)
+                    .done(_.bind(function (result) {
+
                         this.model.set({ 'eta': result });
 
                     }, this));
