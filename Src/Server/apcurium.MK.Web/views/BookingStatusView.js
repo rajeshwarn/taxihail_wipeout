@@ -20,7 +20,7 @@
             this.redirectTimeout = null;
 
 
-            status.on('change:ibsStatusId', this.render, this);
+            status.on('change:ibsStatusId change:vehicleLatitude', this.render, this);
             status.on('change:ibsStatusId', this.onStatusChanged, this);
             status.on('ibs:timeout', this.ontimeout, this);
         },
@@ -30,6 +30,7 @@
                 data = _.extend(status.toJSON(), {
 
                     isActive: status.isActive(),
+                    showEta: status.showEta(),
                     callNumber: TaxiHail.parameters.defaultPhoneNumber
                 });
 
@@ -41,6 +42,10 @@
             if(!data.ibsStatusDescription)
             {
                 data.ibsStatusDescription = this.localize('Processing');
+            }
+
+            if (data.showEta) {
+                data.eta = TaxiHail.directionInfo.getAssignedEta(data.orderId, data.vehicleLatitude, data.vehicleLongitude);
             }
 
             this.$el.html(this.renderTemplate(data));

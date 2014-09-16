@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.Maps.Geo;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.Common.Extensions;
 using ServiceStack.ServiceInterface;
@@ -22,12 +23,14 @@ namespace apcurium.MK.Booking.Api.Services.Maps
         private readonly IDirections _client;
         private readonly IAppSettings _appSettings;
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
+        private readonly IOrderDao _orderDao;
 
-        public DirectionsService(IDirections client, IAppSettings appSettings, IBookingWebServiceClient bookingWebServiceClient)
+        public DirectionsService(IDirections client, IAppSettings appSettings, IBookingWebServiceClient bookingWebServiceClient, IOrderDao orderDao)
         {
             _client = client;
             _appSettings = appSettings;
             _bookingWebServiceClient = bookingWebServiceClient;
+            _orderDao = orderDao;
         }
 
         public object Get(DirectionsRequest request)
@@ -71,6 +74,12 @@ namespace apcurium.MK.Booking.Api.Services.Maps
             }
 
             return directionInfo;
+        }
+
+        public Direction Get(AssignedEtaRequest request)
+        {
+            var order = _orderDao.FindById(request.OrderId);
+            return _client.GetEta(request.VehicleLat, request.VehicleLng, order.PickupAddress.Latitude, order.PickupAddress.Longitude);
         }
 
         private IbsVehiclePosition GetNearestAvailableVehicle(double originLat, double originLng, IbsVehiclePosition[] avaiableVehicles)

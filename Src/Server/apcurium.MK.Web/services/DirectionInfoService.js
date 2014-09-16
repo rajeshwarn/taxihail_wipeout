@@ -55,6 +55,10 @@
                   result.callForPrice = (result.price > 100);
               }
             );
+        },
+
+        getAssignedEta: function (orderId, vehicleLat, vehicleLng) {
+            return $.get(TaxiHail.parameters.apiRoot + '/directions/eta', { orderId: orderId, vehicleLat: vehicleLat, vehicleLng: vehicleLng }, function () { }, 'json');
         }
     });
 }());
