@@ -20,15 +20,10 @@ namespace apcurium.MK.Booking.ReadModel.Query
     public class OrderDao : IOrderDao
     {
         private readonly Func<BookingDbContext> _contextFactory;
-        private readonly IPushNotificationService _pushNotificationService;
-        private readonly Resources.Resources _resources;
         
-        public OrderDao(Func<BookingDbContext> contextFactory, IPushNotificationService pushNotificationService, IConfigurationManager configManager)
+        public OrderDao(Func<BookingDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
-            _pushNotificationService = pushNotificationService;
-
-            _resources = new Resources.Resources(configManager.GetSetting("TaxiHail.ApplicationKey"));
         }
 
         public IList<OrderDetail> GetAll()

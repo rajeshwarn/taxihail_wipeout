@@ -15,6 +15,14 @@
                         <label>{{ibsStatusDescription}}</label>
                     </div>
                 </div>
+                {{#if driverInfos}}
+                <div class='clearfix'>
+                    <label class="control-label">{{localize "Driver Phone"}}</label>
+                    <div class="controls">
+                        <label><a href='tel:{{driverInfos.mobilePhone}}'>{{driverInfos.mobilePhone}}</a></label>
+                    </div>
+                </div>
+                {{/if}}
                 <div class='clearfix eta hidden'>
                     <label class="control-label">{{localize "ETA"}}</label>
                     <div class="controls">
@@ -22,8 +30,7 @@
                     </div>
                 </div>
                 <div class='form-actions'>
-                  <div class='buttons-container
-                       {{#if isActive}}th-status-active{{/if}}'>
+                  <div class='buttons-container'>
                     <a href='#' class='btn btn-danger'  data-action='cancel'>{{localize "Cancel"}}</a>
                     <a href='tel:{{callNumber}}' class='btn btn-primary' rel='popover' data-action='call' data-placement='top' data-trigger='click' id='callDispatchButton'>{{localize "Call"}}</a>
                     <a href='#'  class='btn th-btn-new-ride'>{{localize "New Ride"}}</a>
