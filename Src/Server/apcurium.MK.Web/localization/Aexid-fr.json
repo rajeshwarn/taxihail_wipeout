@@ -1,0 +1,7 @@
+{
+    "CreateOrder_NoFareEstimateAvailable": "Aucun tarif n'est disponible pour la course. Merci de spécifier des adresses de départ et de destination valides.",
+    "Estimated Fare": "Prix",
+    "Estimate": "Prix",
+    "Fare estimate": "Prix",
+    "PaymentInCar": "Carte bancaire - À bord"
+}

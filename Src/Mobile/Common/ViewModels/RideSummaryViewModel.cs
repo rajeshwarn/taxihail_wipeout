@@ -83,15 +83,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			if (OrderId.HasValue())
 			{
+				// Set the last unrated order here 
+				// if the user doesn't do anything and kills the app, we want to set the value
+				_bookingService.SetLastUnratedOrderId(OrderId);
+
 				var orderRatings = await _bookingService.GetOrderRatingAsync(OrderId);
 				HasRated = orderRatings.RatingScores.Any();
 				bool canRate = !HasRated;
 				var ratingTypes = _bookingService.GetRatingType();
 
-				if (canRate) {
+				if (canRate) 
+				{
 					RatingList = ratingTypes.Select (c => new RatingModel (canRate) {
 						RatingTypeId = c.Id, 
-						RatingTypeName = c.Name 
+						RatingTypeName = this.Services().Localize[c.Name.Replace(" ", "")]
 					}).OrderBy (c => c.RatingTypeId).ToList ();
 				}
 				else
@@ -117,17 +122,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private Order Order { get; set; }
 		private OrderStatusDetail OrderStatus { get; set;}
 
-		
-
 		public bool IsPayButtonShown
 		{
 			get
 			{
 				var setting = _paymentService.GetPaymentSettings();
-				var chargeType = Order.Settings.ChargeTypeId;
-
-				return (setting.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null // if paypal or user has a credit card
-                            || setting.PayPalClientSettings.IsEnabled) 
+				return ((setting.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null) // if paypal or user has a credit card
+                        	|| setting.PayPalClientSettings.IsEnabled) 
 						&& !(Settings.RatingEnabled && Settings.RatingRequired && !HasRated)     					 // user must rate before paying
                         && !_paymentService.GetPaymentSettings().AutomaticPayment									 // payment is processed automatically
 						&& setting.PaymentMode != PaymentMethod.RideLinqCmt 			 // payment is processed automatically
@@ -141,7 +142,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        get
 	        {
 				var setting = _paymentService.GetPaymentSettings();
-                		var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
+                var isPayEnabled = setting.IsPayInTaxiEnabled 
+					|| setting.PayPalClientSettings.IsEnabled;
 				return isPayEnabled 
 					&& setting.PaymentMode != PaymentMethod.RideLinqCmt
                     && !_paymentService.GetPaymentSettings().AutomaticPayment
@@ -149,8 +151,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
-		
-			
 		bool _hasRated;		
 		public bool HasRated 
 		{
@@ -188,16 +188,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
-		public ICommand PayCommand {
-			get {
+		public ICommand PayCommand 
+		{
+			get 
+			{
 				return this.GetCommand (() => 
+				{ 
+					this.Services().Analytics.LogEvent("PayButtonTapped");
+					ShowViewModel<ConfirmCarNumberViewModel> (new 
 					{ 
-						this.Services().Analytics.LogEvent("PayButtonTapped");
-						ShowViewModel<ConfirmCarNumberViewModel> (new 
-							{ 
-								order = Order.ToJson (), orderStatus = OrderStatus.ToJson () 
-							});
+						order = Order.ToJson (), orderStatus = OrderStatus.ToJson () 
 					});
+				});
 			}
 		}
 
@@ -205,7 +207,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return this.GetCommand(async () =>{
+				return this.GetCommand(async () => 
+				{
+					_bookingService.ClearLastOrder();
 					var address = await _orderWorkflowService.SetAddressToUserLocation();
 					if(address.HasValidCoordinate())
 					{
@@ -233,7 +237,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 // We don't send the review since it's not complete. The user will have the
                 // possibility to go back to the order history to rate it later if he so desires
-                _bookingService.SetLastUnratedOrderId(OrderId);
 			    return;
 			} 
 
@@ -261,8 +264,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				&& Settings.RatingEnabled 
 				&& Settings.RatingRequired)
 			{
-				this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"],
-													this.Services().Localize["BookRatingErrorMessage"]);
 				return false;
 			}
 			return true;

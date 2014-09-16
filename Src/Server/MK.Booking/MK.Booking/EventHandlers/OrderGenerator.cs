@@ -120,7 +120,6 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-
         public void Handle(OrderRated @event)
         {
             using (var context = _contextFactory.Invoke())
@@ -228,6 +227,11 @@ namespace apcurium.MK.Booking.EventHandlers
                     else
                     {
                         order.Status = (int)@event.Status.Status;
+                    }
+
+                    if (@event.IsCompleted)
+                    {
+                        order.DropOffDate = @event.EventDate;
                     }
 
                     order.Fare = @event.Fare;

@@ -182,6 +182,7 @@
     <Content Include="admin\collections\RuleCollection.js" />
     <Content Include="admin\collections\TariffCollection.js" />
     <Content Include="admin\controllers\NotificationSettingsController.js" />
+    <Content Include="admin\controllers\NotificationController.js" />
     <Content Include="admin\controllers\VehicleTypesController.js" />
     <Content Include="admin\controllers\Controller.js" />
     <Content Include="admin\controllers\CompanySettingsController.js" />
@@ -195,6 +196,7 @@
     <Content Include="admin\controllers\SecurityController.js" />
     <Content Include="admin\controllers\TariffsController.js" />
     <Content Include="admin\jquery.min.js" />
+    <Content Include="admin\models\EmailTemplates.js" />
     <Content Include="admin\models\NotificationSettings.js" />
     <Content Include="admin\models\UnassignedReferenceDataVehicles.js" />
     <Content Include="admin\models\VehicleType.js" />
@@ -217,6 +219,7 @@
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\AddVehicleTypeView.js" />
     <Content Include="admin\views\ManageNotificationSettingsView.js" />
+    <Content Include="admin\views\SendTestEmailView.js" />
     <Content Include="admin\views\VehicleTypeItemView.js" />
     <Content Include="admin\views\AddAccountChargeView.js" />
     <Content Include="admin\views\AddFavoriteView.js" />
@@ -250,23 +253,14 @@
     <Content Include="assets\img\app-stores-itunes.png" />
     <Content Include="assets\img\appstores-bg.png" />
     <Content Include="assets\img\appstores-play.png" />
-    <Content Include="assets\img\email\bg.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="assets\img\email\bg1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="assets\img\email\fb.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="assets\img\email\logo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="assets\img\email\tw.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="assets\img\blackcar_badge.png" />
+    <Content Include="assets\img\email_green_dot.png" />
+    <Content Include="assets\img\email_logo.png" />
+    <Content Include="assets\img\email_red_dot.png" />
     <Content Include="assets\img\nearby_cab.png" />
     <Content Include="assets\img\pin_cluster.png" />
+    <Content Include="assets\img\suv_badge.png" />
+    <Content Include="assets\img\taxi_badge.png" />
     <Content Include="assets\js\storage-polyfill.js" />
     <Content Include="common\collections\AvailableVehicleCollection.js" />
     <Content Include="common\models\AvailableVehicle.js" />
@@ -376,6 +370,7 @@
     <Content Include="services\OrderService.js" />
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
+    <Content Include="themes\TaxiHail\img\email_logo.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
     <Content Include="views\AddFavoriteView.js" />
@@ -482,6 +477,12 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="admin\localization\ManageNotificationSettings.json" />
+    <Content Include="admin\templates\SendTestEmail.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="admin\localization\SendTestEmail.json" />
+    <Content Include="localization\Aexid-fr.json" />
+    <Content Include="localization\Aexid-en.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

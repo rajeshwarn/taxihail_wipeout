@@ -3,6 +3,8 @@ using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Style;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -16,13 +18,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			: base (bindingText, UITableViewCellStyle.Default, new NSString (cellIdentifier), UITableViewCellAccessory.None)
 		{
             BackgroundColor = UIColor.Clear;
-            BackgroundView = new CustomCellBackgroundView(Frame, LeftPadding, UIColor.Clear, UIColor.White);
+
+            // this color is added on top of the menu color
+            // 0.04 value for alpha was obtained by a picky client wanting a specific selected color
+            var selectedColorDelta = Theme.IsLightContent
+                ? UIColor.White.ColorWithAlpha (0.04f)
+                : UIColor.Black.ColorWithAlpha (0.04f);
+            BackgroundView = new CustomCellBackgroundView(Frame, LeftPadding, UIColor.Clear, selectedColorDelta);
 
             SelectionStyle = UITableViewCellSelectionStyle.None;
 			Accessory = UITableViewCellAccessory.None;
 
 			TextLabel.Font = UIFont.FromName (FontName.HelveticaNeueLight, 36 / 2);
-			TextLabel.TextColor = UIColor.FromRGB (79, 76, 71);
+            TextLabel.TextColor = Theme.IsLightContent 
+                ? UIColor.White
+                : UIColor.FromRGB (79, 76, 71);
 		}
 
 		public override void LayoutSubviews ()
@@ -32,14 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             ((CustomCellBackgroundView)BackgroundView).BottomLine.SetWidth (Frame.Width - LeftPadding - RightPadding);
 
             TextLabel.SetX(20);
-
-			// we can't use UITextAlignment.Natural on iOS6 apparently 
-			// (NSInvalidArgumentException Reason: textAlignment does not accept NSTextAlignmentNatural)
-			// we detect arabic, since it's currently the only RTL language we support
-			if (this.Services ().Localize.IsRightToLeft)
-			{
-				TextLabel.TextAlignment = UITextAlignment.Right;
-			}
+            TextLabel.TextAlignment = NaturalLanguageHelper.GetTextAlignment();
 		}
 
 		public bool HideBottomBar

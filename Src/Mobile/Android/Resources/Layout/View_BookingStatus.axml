@@ -118,7 +118,7 @@
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
-                    <TextView
+                    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
                         android:id="@+id/driverLabel"
                         style="@style/BlackTextLabel"
                         android:text="@string/DriverInfoDriver"
@@ -144,7 +144,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/driverLayout"
                     local:MvxBind="Visibility OrderStatusDetail.DriverInfos.VehicleRegistration, Converter=Visibility">
-                    <TextView
+                    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
                         android:id="@+id/licenceLabel"
                         style="@style/BlackTextLabel"
                         android:text="@string/DriverInfoLicence"
@@ -167,7 +167,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/licenceLayout"
                     local:MvxBind="Visibility VehicleTypeHidden, Converter=InvertedVisibility">
-                    <TextView
+                    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
                         android:id="@+id/taxiTypeLabel"
                         style="@style/BlackTextLabel"
                         android:text="@string/DriverInfoTaxiType"
@@ -190,7 +190,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/taxiTypeLayout"
                     local:MvxBind="Visibility VehicleMakeHidden, Converter=InvertedVisibility">
-                    <TextView
+                    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
                         android:id="@+id/makeLabel"
                         style="@style/BlackTextLabel"
                         android:text="@string/DriverInfoMake"
@@ -213,7 +213,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/makeLayout"
                     local:MvxBind="Visibility VehicleModelHidden, Converter=InvertedVisibility">
-                    <TextView
+                    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
                         android:id="@+id/modelLabel"
                         style="@style/BlackTextLabel"
                         android:text="@string/DriverInfoModel"
@@ -236,7 +236,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/modelLayout"
                     local:MvxBind="Visibility VehicleColorHidden, Converter=InvertedVisibility">
-                    <TextView
+                    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
                         android:id="@+id/ColorLabel"
                         style="@style/BlackTextLabel"
                         android:text="@string/DriverInfoColor"
@@ -305,6 +305,8 @@
                         android:gravity="center_horizontal|top"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="35dip"
+                        android:layout_marginRight="35dip"
                         local:MvxBind="Text StatusInfoText" />
                 </LinearLayout>
                 <ImageView

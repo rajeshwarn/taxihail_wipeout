@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -28,22 +29,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService = accountService;
 		}
 
-		public void Init(string orderId)
+		public async void Init(string orderId)
 		{
 			Guid id;
 			if(Guid.TryParse(orderId, out id))
 			{
 				OrderId = id;
+				using (this.Services ().Message.ShowProgress ())
+				{
+					await LoadOrder();
+					await LoadStatus();
+				}
 			}
-		}
-
-		public override void Start()
-		{
-			base.Start();
-			_status = new OrderStatusDetail
-			{
-				IBSStatusDescription = this.Services().Localize["LoadingMessage"]
-			};
 		}
 
         private Guid _orderId;
@@ -94,6 +91,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
 				return (Status != null) 
+						&& Status.Status == OrderStatus.Completed
 						&& Status.FareAvailable 
 						&& Settings.SendReceiptAvailable;
             }
@@ -117,20 +115,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return _isCompleted; }
 			set 
 			{ 
-				if (value != _isCompleted) 
+				if (value != _isCompleted)
 				{
 					_isCompleted = value;
 					RaisePropertyChanged ();
-					RaisePropertyChanged (()=>RebookIsAvailable);
+					RaisePropertyChanged (() => SendReceiptAvailable);
+					RaisePropertyChanged (() => RebookIsAvailable);
 				}
 			}
 		}
 
-		public bool RebookIsAvailable 
+		public bool RebookIsAvailable
 		{
 			get 
 			{
-				return IsCompleted && !Settings.HideRebookOrder;
+				return IsCompleted 
+					&& !Settings.HideRebookOrder;
 			}
 		}
 
@@ -150,7 +150,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {          
-				return Settings.RatingEnabled && IsDone && !HasRated;
+				return Settings.RatingEnabled 
+					&& IsDone 
+					&& !HasRated;
             }
         }
 
@@ -174,7 +176,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (Order != null)
                 {
-					return Order.IBSOrderId.HasValue ? Order.IBSOrderId.Value.ToString(CultureInfo.InvariantCulture) : "Error";
+					return Order.IBSOrderId.HasValue 
+						? Order.IBSOrderId.Value.ToString(CultureInfo.InvariantCulture) 
+						: "Error";
                 }
                 return null;
             }
@@ -245,13 +249,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public override async void OnViewLoaded ()
-        {
-			base.OnViewLoaded ();
-			LoadOrder();
-            LoadStatus();
-        }
-
         public void RefreshOrderStatus (OrderRated orderRated)
 		{
 			if (orderRated.Content == OrderId) 
@@ -260,38 +257,39 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		public async void LoadOrder() 
+		public async Task LoadOrder() 
 		{
 			Order = await _accountService.GetHistoryOrderAsync(OrderId);
 		}
 
-		public async void LoadStatus ()
+		public async Task LoadStatus ()
 		{
-			var ratings = await _bookingService.GetOrderRatingAsync(OrderId);
 			var status = await _bookingService.GetOrderStatusAsync(OrderId);
-
-			HasRated = ratings.RatingScores.Any();
 			Status = status;
+
+			var ratings = await _bookingService.GetOrderRatingAsync(OrderId);
+			HasRated = ratings.RatingScores.Any();
+
 			IsCompleted = _bookingService.IsStatusCompleted(Status.IBSStatusId);
 			IsDone = _bookingService.IsStatusDone(Status.IBSStatusId);
             
-			CanCancel = !IsCompleted;
+			CanCancel = _bookingService.IsOrderCancellable (Status.IBSStatusId);
 		}
 
 		public ICommand NavigateToRatingPage
         {
             get
             {
-                return this.GetCommand(() =>
-	                           {
-	                                var canRate = IsDone && !HasRated;
-									ShowSubViewModel<BookRatingViewModel,OrderRated>(new 
-	            	                    {														
-											orderId = OrderId, 
-											canRate
-										}.ToStringDictionary(),
-									RefreshOrderStatus);
-	                           });
+            	return this.GetCommand(() =>
+               	{
+                    var canRate = IsDone && !HasRated;
+					ShowSubViewModel<BookRatingViewModel,OrderRated>(new 
+						{														
+							orderId = OrderId, 
+							canRate
+						}.ToStringDictionary(),
+						RefreshOrderStatus);
+               	});
             }
         }
 
@@ -325,12 +323,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>
                 {
-                    if (GuidExtensions.HasValue(OrderId))
-                    {
-						_bookingService.RemoveFromHistory(OrderId);
-                        this.Services().MessengerHub.Publish(new OrderDeleted(this, OrderId, null));
-						Close(this);
-                    }
+					using(this.Services().Message.ShowProgress())
+					{
+						if (OrderId.HasValue())
+	                    {
+							_bookingService.RemoveFromHistory(OrderId);
+	                        this.Services().MessengerHub.Publish(new OrderDeleted(this, OrderId, null));
+							Close(this);
+	                    }
+					}
                 });
             }
         }
@@ -341,11 +342,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>
                 {
-					_orderWorkflowService.Rebook(Order);
-					ShowViewModel<HomeViewModel>(new { 
-						locateUser =  false, 
-						defaultHintZoomLevel = new ZoomToStreetLevelPresentationHint(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude).ToJson()});
-                });
+					using(this.Services().Message.ShowProgress())
+					{
+						_orderWorkflowService.Rebook(Order);
+						ShowViewModel<HomeViewModel>(new { 
+							locateUser =  false, 
+							defaultHintZoomLevel = new ZoomToStreetLevelPresentationHint(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude).ToJson()});
+					}
+				});
             }
         }
 
@@ -355,11 +359,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>
                 {
-                    if (OrderId.HasValue())
-                    {
-						_bookingService.SendReceipt(OrderId);
-                    }
-                    Close(this);
+					using(this.Services().Message.ShowProgress())
+					{
+						if (OrderId.HasValue())
+						{
+							_bookingService.SendReceipt(OrderId);
+						}
+						Close(this);
+					}
                 });
             }
         }
@@ -373,38 +380,48 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					this.Services().Localize["StatusConfirmCancelRide"], 
                     this.Services().Localize["YesButton"], 
 					() =>
-                	{
-						var isSuccess = _bookingService.CancelOrder(OrderId);
-
-	                    if(isSuccess)
-	                    {
-	                        LoadStatus();
-	                    }
-	                    else
-	                    {
-	                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Localize["StatusConfirmCancelRideErrorTitle"], 
-	                                                                                            this.Services().Localize["StatusConfirmCancelRideError"]));
-	                    }
-	                },
+	                	{
+							using(this.Services().Message.ShowProgress())
+							{
+								var isSuccess = _bookingService.CancelOrder(OrderId);
+			                    if(isSuccess)
+			                    {
+			                        LoadStatus();
+			                    }
+			                    else
+			                    {
+			                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(
+										this.Services().Localize["StatusConfirmCancelRideErrorTitle"], 
+		                                this.Services().Localize["StatusConfirmCancelRideError"]));
+			                    }
+							}
+		                },
                     this.Services().Localize["NoButton"], 
-					() => { })); 
+						() => { })); 
             }
         }
 
         private string FormatDateTime(DateTime? date, DateTime? time)
         {
-            var result = date.HasValue ? date.Value.ToShortDateString() : this.Services().Localize["DateToday"];
+            var result = date.HasValue 
+				? date.Value.ToShortDateString() 
+				: this.Services().Localize["DateToday"];
             result += @" / ";
-            result += time.HasValue ? time.Value.ToShortTimeString() : this.Services().Localize["TimeNow"];
+            result += time.HasValue 
+				? time.Value.ToShortTimeString() 
+				: this.Services().Localize["TimeNow"];
             return result;
         }
 
         private string FormatAptRingCode(string apt, string rCode)
         {
-			var result = apt.HasValue() ? apt : this.Services().Localize["NoAptText"];
-
+			var result = apt.HasValue() 
+				? apt 
+				: this.Services().Localize["NoAptText"];
             result += @" / ";
-			result += rCode.HasValue() ? rCode : this.Services().Localize["NoRingCodeText"];
+			result += rCode.HasValue() 
+				? rCode 
+				: this.Services().Localize["NoRingCodeText"];
             return result;
         }
     }

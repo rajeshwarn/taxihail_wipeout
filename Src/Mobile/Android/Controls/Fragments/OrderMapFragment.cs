@@ -27,6 +27,7 @@ using Cirrious.MvvmCross.Binding.Droid.Views;
 using ServiceStack.Common.Utils;
 using TinyIoC;
 using MK.Common.Configuration;
+using apcurium.MK.Booking.Maps.Geo;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -119,8 +120,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public ICommand UserMovedMap { get; set; }
 
-        private IEnumerable<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
-        public IEnumerable<AvailableVehicle> AvailableVehicles
+        private IList<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
+        public IList<AvailableVehicle> AvailableVehicles
         {
             get
             {
@@ -131,7 +132,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (_availableVehicles != value)
                 {
                     _availableVehicles = value;
-                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value != null ? value.ToArray () : null, GetMapBoundsFromProjection()));
+                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value, GetMapBoundsFromProjection()));
                 }
             }
         }
@@ -357,6 +358,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 UserMovedMap.Execute(bounds);
             }
+            ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles, bounds));
+
         }
 
         private void ClearAllMarkers()
@@ -438,9 +441,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public void ChangePresentation(ChangePresentationHint hint)
         {
             var zoomHint = hint as ZoomToStreetLevelPresentationHint;
+
             if (zoomHint != null)
             {
-				Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(zoomHint.Latitude, zoomHint.Longitude), 15));
+				if (zoomHint.Bounds != null) {
+
+					var availableVehiclesBounds = zoomHint.Bounds;
+					LatLngBounds.Builder builder = new LatLngBounds.Builder();
+					builder.Include (new LatLng (availableVehiclesBounds.NorthBound, availableVehiclesBounds.WestBound));
+					builder.Include (new LatLng (availableVehiclesBounds.SouthBound, availableVehiclesBounds.EastBound));
+					LatLngBounds bounds = builder.Build();
+					var cameraUpdate = CameraUpdateFactory.NewLatLngBounds (bounds, 0);
+					Map.AnimateCamera(cameraUpdate);
+
+				} else {
+					Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(zoomHint.Latitude, zoomHint.Longitude), 15));
+				}
             }
 
             var centerHint = hint as CenterMapPresentationHint;

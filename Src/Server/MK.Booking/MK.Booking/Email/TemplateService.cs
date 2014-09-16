@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using apcurium.MK.Booking.Resources;
+using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration;
 using Nustache.i18n;
 
@@ -17,6 +18,7 @@ namespace apcurium.MK.Booking.Email
     {
         private readonly Resources.Resources _resources;
         private const string DefaultLanguageCode = "en";
+        private readonly Dictionary<string, string> _templatesDictionary=new Dictionary<string, string>();
 
         public TemplateService(IConfigurationManager configurationManager)
         {
@@ -45,9 +47,24 @@ namespace apcurium.MK.Booking.Email
             var path = GetTemplatePath(templateName, languageCode);
             if (File.Exists(path))
             {
+                
                 var templateBody = File.ReadAllText(path);
                 var translatedTemplateBody = Localizer.Translate(templateBody, _resources.GetLocalizedDictionary(languageCode), "!!MISSING!!");
-                return translatedTemplateBody;
+
+                if (!_templatesDictionary.ContainsKey(templateName))
+                {
+                    var result =
+                        PreMailer.Net.PreMailer.MoveCssInline(translatedTemplateBody, true, ignoreElements: "#ignore")
+                            .Html;
+                    _templatesDictionary.Add(templateName, result);
+                    return result;
+                }
+                else
+                {
+                    return _templatesDictionary[templateName];
+                }
+
+
             }
 
             return null;

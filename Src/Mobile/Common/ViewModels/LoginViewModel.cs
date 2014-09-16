@@ -11,7 +11,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
-using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -40,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_phoneService = phoneService;
         }
 
-		public event EventHandler LoginSucceeded; 
+	    public event EventHandler LoginSucceeded; 
 		private bool _loginWasSuccesful = false;
 		private bool _viewIsStarted;
 		private Action _executeOnStart;
@@ -51,15 +50,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Password = "password";          
 #endif
 			_registrationService.PrepareNewRegistration ();
-			_registrationService
-				.GetAndObserveRegistration()
-				.Subscribe(x => OnRegistrationFinished(x));
         }
 
         public override void OnViewStarted(bool firstTime)
         {
-
             base.OnViewStarted(firstTime);
+
+            if (firstTime)
+            {
+                _registrationService
+                    .GetAndObserveRegistration()
+                    .Subscribe(x =>
+                    {
+                        // Wait for the LoginViewModel to be started before doing
+                        // the processing so we can display the progress bar
+                        _executeOnStart = () =>
+                        {
+                            OnRegistrationFinished(x);
+                        };
+                    });
+            }
 
 			_viewIsStarted = true;
 
@@ -90,7 +100,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             this.Services().ApplicationInfo.CheckVersionAsync();
         }
 
-
         private string _email;
         public string Email
         {
@@ -120,13 +129,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				if (_signInCommand == null) {
-
+				if (_signInCommand == null) 
+				{
 					_signInCommand = (AsyncCommand)this.GetCommand(async () =>
-						{
-							_accountService.ClearCache();
-							await SignIn();
-						}, CanSignIn);
+					{
+						_accountService.ClearCache();
+						await SignIn();
+					}, CanSignIn);
 				}
 				return _signInCommand;
             }
@@ -135,7 +144,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool CanSignIn()
 		{
 			return Email.HasValue ()
-			&& Password.HasValue ();
+				&& Password.HasValue ();
 		}
 
         public ICommand SignUp
@@ -151,12 +160,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return this.GetCommand(() => ShowSubViewModel<ResetPasswordViewModel, string>(null, email =>
+                {
+                    if (email.HasValue())
                     {
-                        if (email.HasValue())
-                        {
-                            Email = email;
-                        }
-                    }));
+                        Email = email;
+                    }
+                }));
             }
         }
 
@@ -165,13 +174,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				return this.GetCommand(() =>
-					{
-
-						InvokeOnMainThread(() => _phoneService.SendFeedbackErrorLog(Settings.SupportEmail, this.Services().Localize["TechSupportEmailTitle"]));
-					});
+				{
+					InvokeOnMainThread(() => _phoneService.SendFeedbackErrorLog(Settings.SupportEmail, this.Services().Localize["TechSupportEmailTitle"]));
+				});
 			}
 		}
-
 
         public ICommand LoginTwitter
         {
@@ -231,42 +238,42 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         case AuthFailure.InvalidServiceUrl:
                         case AuthFailure.NetworkError:
-                        {
-                            var title = localize["NoConnectionTitle"];
-                            var msg = localize["NoConnectionMessage"];
-                            this.Services().Message.ShowMessage (title, msg);
-                        }
+	                        {
+	                            var title = localize["NoConnectionTitle"];
+	                            var msg = localize["NoConnectionMessage"];
+	                            this.Services().Message.ShowMessage (title, msg);
+	                        }
                             break;
                         case AuthFailure.InvalidUsernameOrPassword:
-                        {
-                            var title = localize["InvalidLoginMessageTitle"];
-                            var message = localize["InvalidLoginMessage"];
-                            this.Services().Message.ShowMessage (title, message);
-                        }
+	                        {
+	                            var title = localize["InvalidLoginMessageTitle"];
+	                            var message = localize["InvalidLoginMessage"];
+	                            this.Services().Message.ShowMessage (title, message);
+	                        }
                             break;
                         case AuthFailure.AccountDisabled:
-                        {
-                            var title = this.Services().Localize["InvalidLoginMessageTitle"];
-                            string message = null;
-                            if (!Settings.HideCallDispatchButton)
-                            {
-                                var companyName = Settings.ApplicationName;
-                                var phoneNumber = Settings.DefaultPhoneNumberDisplay;
-                                message = string.Format(localize[e.Message], companyName, phoneNumber);
-                            }
-                            else 
-                            {
-                                message = localize["AccountDisabled_NoCall"];
-                            }
-                            this.Services().Message.ShowMessage(title, message);
-                        }
+	                        {
+	                            var title = this.Services().Localize["InvalidLoginMessageTitle"];
+	                            string message = null;
+	                            if (!Settings.HideCallDispatchButton)
+	                            {
+	                                var companyName = Settings.ApplicationName;
+	                                var phoneNumber = Settings.DefaultPhoneNumberDisplay;
+	                                message = string.Format(localize[e.Message], companyName, phoneNumber);
+	                            }
+	                            else 
+	                            {
+	                                message = localize["AccountDisabled_NoCall"];
+	                            }
+	                            this.Services().Message.ShowMessage(title, message);
+	                        }
                             break;
 						case AuthFailure.AccountNotActivated:
-						{
-							var title = localize["InvalidLoginMessageTitle"];
-							var message = localize ["AccountNotActivated"];
-							this.Services ().Message.ShowMessage (title, message);
-						}
+							{
+								var title = localize["InvalidLoginMessageTitle"];
+								var message = localize ["AccountNotActivated"];
+								this.Services ().Message.ShowMessage (title, message);
+							}
 							break;
                     }
                 }
@@ -308,7 +315,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     try
                     {
-
                         if (facebookId.HasValue())
                         {						
 							Func<Task> loginAction = () =>
@@ -316,7 +322,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								return _accountService.GetFacebookAccount(facebookId);
 							};
 							await loginAction.Retry(TimeSpan.FromSeconds(1), 5); //retry because the account is maybe not yet created server-side						
-
                         }
                         else if (twitterId.HasValue())
                         {
@@ -325,20 +330,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								return _accountService.GetTwitterAccount(twitterId);
 							};
 							await loginAction.Retry(TimeSpan.FromSeconds(1), 5); //retry because the account is maybe not yet created server-side
-
                         }
                         else
-                        {						
-							Email = data.Email;
-							Password = data.Password;
-							Func<Task> loginAction = () =>
-							{
-								return _accountService.SignIn(data.Email, data.Password);
-							};
-							await loginAction.Retry(TimeSpan.FromSeconds(1), 5); //retry because the account is maybe not yet created server-side
+                        {
+                            Email = data.Email;
+                            Password = data.Password;
+                            Func<Task> loginAction = () =>
+                            {
+                                return _accountService.SignIn(data.Email, data.Password);
+                            };
+                            await loginAction.Retry(TimeSpan.FromSeconds(1), 5); //retry because the account is maybe not yet created server-side
                         }
-							
-						OnLoginSuccess();
+
+                        OnLoginSuccess();
                     }
                     catch (Exception ex)
                     {
@@ -351,7 +355,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Email = data.Email;
             }
         }
-
 
         private void HandleTwitterConnectionStatusChanged(object sender, TwitterStatus e)
         {
@@ -367,8 +370,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             this.Services().ApplicationInfo.ClearAppInfo();
 			_accountService.ClearReferenceData();
         }
-
-
 
 		private void OnLoginSuccess()
         {
@@ -388,6 +389,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 			};
 
+			// Cache company notification settings
+			_accountService.GetNotificationSettings (true, true);
+
             // Log user session start
             _accountService.LogApplicationStartUp();
 
@@ -395,7 +399,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				showNextView ();
 			}
-			else {
+			else 
+			{
 				_executeOnStart = showNextView;
 			}
         }
@@ -436,14 +441,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 catch(Exception)
                 {
                     DoSignUp(new
-                        {
-                            facebookId = info.Id,
-                            name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" "),
-                            email = info.Email,
-                        });
+                    {
+                        facebookId = info.Id,
+                        name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" "),
+                        email = info.Email,
+                    });
                 }
 			}
-
 		}
 
         private void CheckTwitterAccount()
@@ -451,26 +455,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			this.Services().Message.ShowProgress(true);
 
             _twitterService.GetUserInfos(async info =>
+            {
+                try
                 {
-                    try
+					await _accountService.GetTwitterAccount(info.Id);
+					OnLoginSuccess();
+                }
+                catch(Exception)
+                {
+                    DoSignUp(new
                     {
-						await _accountService.GetTwitterAccount(info.Id);
-						OnLoginSuccess();
-                    }
-                    catch(Exception)
-                    {
-                        DoSignUp(new
-                            {
-                                twitterId = info.Id,
-                                name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" "),
-                            });
-                    }
-                    finally
-                    {
+                        twitterId = info.Id,
+                        name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" "),
+                    });
+                }
+                finally
+                {
 					this.Services().Message.ShowProgress(false);
-                    }
-                });
+                }
+            });
         }
-
     }
 }

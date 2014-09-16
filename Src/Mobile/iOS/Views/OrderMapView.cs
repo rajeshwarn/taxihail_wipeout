@@ -18,6 +18,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using MapBounds = apcurium.MK.Booking.Maps.Geo.MapBounds;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Controls;
@@ -61,6 +62,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             };
 
             AddSubviews(_pickupCenterPin, _dropoffCenterPin);
+
+			this.RegionChanged += (s, e) => 
+			{
+				ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles != null ? AvailableVehicles.ToArray () : null, GetMapBoundsFromProjection()));
+			};
         }
 
         public override void Draw(RectangleF rect)
@@ -164,7 +170,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 addressType,
                 string.Empty,
                 string.Empty,
-                useThemeColorForPickupAndDestinationMapIcons);
+                useThemeColorForPickupAndDestinationMapIcons,
+				false);
         }
 
         private Address _pickupAddress;
@@ -246,10 +253,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void InitOverlays()
         {
             var pinSize = _pickupCenterPin.IntrinsicContentSize;
+			var mkMapPadding = 12f;
 
             _pickupCenterPin.Frame = 
                 _dropoffCenterPin.Frame = 
-                    new RectangleF((this.Bounds.Width - pinSize.Width) / 2, (this.Bounds.Height / 2) - pinSize.Height, pinSize.Width, pinSize.Height);
+					new RectangleF((this.Bounds.Width - pinSize.Width) / 2, (this.Bounds.Height / 2) - pinSize.Height + mkMapPadding, pinSize.Width, pinSize.Height);
 
             // change position of Legal link on map
             var legalView = Subviews.FirstOrDefault(x => x is UILabel);
@@ -366,9 +374,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var vehicleAnnotation = new AddressAnnotation (
                                 new CLLocationCoordinate2D(vehicle.Latitude, vehicle.Longitude),
                                 annotationType, 
-                                string.Empty, 
+								vehicle.VehicleNumber.ToString(),             
                                 string.Empty, 
                                 _useThemeColorForPickupAndDestinationMapIcons,
+								false,
                                 vehicle.LogoName);
 
             AddAnnotation (vehicleAnnotation);
@@ -444,12 +453,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 UIView.Animate(0.3f, () => _mapBlurOverlay.Alpha = 0, () => _mapBlurOverlay.Hidden = true);
             }
+
+			InitOverlays ();
         }
 
         private void CancelAddressSearch()
         {
             ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
             _userMovedMapSubsciption.Disposable = null;
+			
         }
 
         private void ChangeState(HomeViewModelPresentationHint hint)
@@ -474,7 +486,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var zoomHint = hint as ZoomToStreetLevelPresentationHint;
             if (zoomHint != null)
             {
-				this.SetCenterCoordinate(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), 14, true); 
+				if (zoomHint.Bounds != null) {
+					var zoom = zoomHint.Bounds;
+					this.SetRegion(new MKCoordinateRegion (
+						new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude),
+						new MKCoordinateSpan (zoom.LatitudeDelta, zoom.LongitudeDelta)), true);
+				} else {
+					this.SetCenterCoordinate(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), 14, true);
+				}
             }
 
             var centerHint = hint as CenterMapPresentationHint;

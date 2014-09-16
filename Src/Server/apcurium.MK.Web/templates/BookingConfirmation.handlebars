@@ -31,7 +31,7 @@
               <div class="control-group" data-popover data-placement="left">
                 <label class="control-label" for="inputEstimate">{{localize "Estimated Fare"}}</label>
                 <div class="controls">
-                  <label id="inputEstimate" class='input-block-level'><span class='distance'>{{distanceEstimate}} - </span><span>{{priceEstimate}}</span></label>
+                  <label id="inputEstimate" class='input-block-level'><span class='distance'>{{distanceEstimate}} - </span><span>{{formattedPrice}}</span></label>
                 </div>
               </div>
               <br/>
@@ -76,9 +76,9 @@
                         <select name="settings.vehicleTypeId" class='input-block-level'>
                             {{#each vehiclesList}}
                             {{#ifCond this.referenceDataVehicleId ../settings.vehicleTypeId}}
-                            <option value="{{this.referenceDataVehicleId}}" selected>{{this.name}}</option>
+                            <option value="{{this.referenceDataVehicleId}}" selected>{{localize this.name}}</option>
                             {{else}}
-                            <option value="{{this.referenceDataVehicleId}}">{{this.name}}</option>
+                            <option value="{{this.referenceDataVehicleId}}">{{localize this.name}}</option>
                             {{/ifCond}}
                             {{/each}}
                         </select>
@@ -92,9 +92,9 @@
                         <select id="inputChargeType" name="settings.chargeTypeId" class='input-block-level'>
                             {{#each paymentsList}}
                                 {{#ifCond this.id ../settings.chargeTypeId}}
-                                    <option value="{{this.id}}" selected>{{this.display}}</option>
+                                    <option value="{{this.id}}" selected>{{localize this.display}}</option>
                                 {{else}}
-                                    <option value="{{this.id}}">{{this.display}}</option>
+                                    <option value="{{this.id}}">{{localize this.display}}</option>
                                 {{/ifCond}}
                             {{/each}}
                         </select>

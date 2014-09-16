@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlatButtonStyles>
+  <Styles>
+    <!--This value is important because it acts as a placeholder-->
+    <Style name="TestValue">
+      <BackgroundNormal></BackgroundNormal>
+  	  <BackgroundSelected></BackgroundSelected>
+  	  <TextNormal></TextNormal>
+  	  <TextSelected></TextSelected>
+  	  <Border></Border>
+    </Style>
+  </Styles>
+</FlatButtonStyles>

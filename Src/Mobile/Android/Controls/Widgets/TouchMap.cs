@@ -46,6 +46,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private BitmapDescriptor _destinationIcon;
         private BitmapDescriptor _hailIcon;
 
+		private bool _showVehicleNumber;
+
         public TouchMap(Context context)
             : base(context)
         {
@@ -208,7 +210,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
 			var useColor = this.Services().Settings.UseThemeColorForMapIcons;
             var colorBgTheme = useColor ? (Color?)Resources.GetColor(Resource.Color.company_color) : (Color?)null;
-
+			_showVehicleNumber = this.Services ().Settings.ShowAssignedVehicleNumberOnPin;
             var destinationIcon =  Resources.GetDrawable(Resource.Drawable.@destination_icon);
             _destinationIcon = DrawHelper.DrawableToBitmapDescriptor(destinationIcon, colorBgTheme);
 
@@ -514,6 +516,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var textSize = DrawHelper.GetPixels(11);
             var textVerticalOffset = DrawHelper.GetPixels(12);
             var taxiIcon = BitmapFactory.DecodeResource(Resources, Resource.Drawable.taxi_icon);
+
+			if (!_showVehicleNumber) {
+				return taxiIcon;
+			}
 
             /* Find the width and height of the title*/
             var paintText = new TextPaint(PaintFlags.AntiAlias | PaintFlags.LinearText);

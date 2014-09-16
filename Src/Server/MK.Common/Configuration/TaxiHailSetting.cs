@@ -23,9 +23,14 @@ namespace MK.Common.Configuration
             TutorialEnabled = true;
 			HidePayNowButtonDuringRide = false;
 			DefaultCardRequiredToPayNow = false;
+		    CanSkipRatingRequired = true;
+			ShowAssignedVehicleNumberOnPin = true;
+			ZoomOnNearbyVehicles = false;
+			ZoomOnNearbyVehiclesCount = 6;
+			ZoomOnNearbyVehiclesRadius = 2400;
 
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
-            CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink";
+			CompanySettings = "Client.ShowEstimateWarning,Client.DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Client.HideCallDispatchButton,Client.ShowAssignedVehicleNumberOnPin,Client.ZoomOnNearbyVehicles,Client.ZoomOnNearbyVehiclesCount,Client.ZoomOnNearbyVehiclesRadius,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink";
 			DefaultTipPercentage = 15;
             DirectionDataProvider = MapProvider.Google;
 			SMSConfirmationEnabled = false;
@@ -33,6 +38,7 @@ namespace MK.Common.Configuration
 		    DisableChargeTypeWhenCardOnFile = false;
 		    VehicleTypeSelectionEnabled = false;
 		    SendPushAsSMS = false;
+            MinimumFare = 0;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -153,8 +159,11 @@ namespace MK.Common.Configuration
         public bool SendReceiptAvailable { get; private set; }
         [Display(Name = "Rating Enabled", Description="Can the user rate the order when it's done")]
 		public bool RatingEnabled { get; private set; }		
-		[Display(Name = "User needs to rate before booking again", Description="Can the user book if he hasn't rate the last ride")]
-		public bool RatingRequired { get; private set; }		
+		[Display(Name = "Rating mandatory", Description="remove the back button in rating screen and validate before leaving the screen")]
+		public bool RatingRequired { get; private set; }
+        [Display(Name = "User needs to rate before booking again", Description = "")]
+        public bool CanSkipRatingRequired { get; private set; }
+
         [Display(Name = "Show Call Driver", Description="Show button on the status screen to call the driver")]
 		public bool ShowCallDriver { get; private set; }
         [Display(Name = "Show Vehicule Information", Description="Show vehicule informatino when available")]
@@ -232,7 +241,6 @@ namespace MK.Common.Configuration
         [Display(Name = "Company Settings", Description = "List of settings that can be modified by the taxi company")]
         public string CompanySettings { get; private set; }
 					
-
 		[Display(Name = "Lower Left Latitude", Description="Lower Left Latitude limit to be used when searching for an address")]
 		public double? LowerLeftLatitude { get; private set; }
 		[Display(Name = "Lower Left Longitude", Description="Lower Left Longitude limit to be used when searching for an address")]
@@ -242,6 +250,19 @@ namespace MK.Common.Configuration
 		public double? UpperRightLatitude { get; private set; }
 		[Display(Name = "Upper Right Longitude", Description="Upper Right Longitude limit to be used when searching for an address")]
 		public double? UpperRightLongitude { get; private set; }
+
+		[Display(Name = "Zoom on nearby vehicles", Description="Enable zooming on nearby vehicles")]
+		public bool ZoomOnNearbyVehicles { get; private set; }
+		[Display(Name = "Zoom on nearby vehicles radius", Description="Inclusion radius in meters when zooming on nearby vehicles")]
+		public int ZoomOnNearbyVehiclesRadius { get; private set; }
+		[Display(Name = "Zoom on nearby vehicles count", Description="Maximum of included vehicles when zooming on nearby vehicles")]
+		public int ZoomOnNearbyVehiclesCount { get; private set; }
+
+        [Display(Name = "Minimum fare", Description="Determines the minimum price estimate")]
+        public int MinimumFare { get; private set; }
+        
+		[Display(Name = "Show Assigned Vehicle Number On Pin", Description="Enable displaying the assigned vehicle number over its pin on the map")]
+		public bool ShowAssignedVehicleNumberOnPin { get; private set; }
     }
 }
 

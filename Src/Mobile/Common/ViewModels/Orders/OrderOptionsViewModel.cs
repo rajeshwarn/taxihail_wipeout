@@ -22,16 +22,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
 		private readonly IVehicleService _vehicleService;
-		private readonly IDirections _directions;
-
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
-		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService, IDirections directions)
+		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_vehicleService = vehicleService;
-			_directions = directions;
 
 			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
 			this.Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
@@ -183,7 +180,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 			private set
 			{
-				_showDestination = value && !Settings.HideDestination;
+				_showDestination = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => VehicleAndEstimateBoxIsVisible);
 				RaisePropertyChanged (() => ShowEstimate);
@@ -212,6 +209,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{ 
 				_eta = value;
 				RaisePropertyChanged ();
+				RaisePropertyChanged(() => ShowEta);
 				RaisePropertyChanged(() => VehicleAndEstimateBoxIsVisible);
 				RaisePropertyChanged(() => FormattedEta);
 			}
@@ -221,7 +219,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				if (Eta != null && Eta.IsValidEta()) 
+				if (Eta.IsValidEta()) 
 				{
 					if (Eta.Duration > 30) 
 					{
@@ -234,13 +232,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					}
 				}
 
-				return this.Services ().Localize ["EtaNotAvailable"];
+				return string.Empty;
 			}
 		}
 
 		public bool VehicleAndEstimateBoxIsVisible
 		{
-			get { return ShowVehicleSelection || ShowEstimate || Settings.ShowEta; }
+			get { return ShowVehicleSelection || ShowEstimate || ShowEta; }
+		}
+
+		public bool ShowEta
+		{
+			get
+			{
+				return Settings.ShowEta && Eta != null;
+			}
 		}
 
 		public bool ShowEstimate

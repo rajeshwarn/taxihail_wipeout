@@ -71,7 +71,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand<DateTime?>(async date =>
                 {
-                    await _orderWorkflowService.SetPickupDate(date);
+					// since it can take some time, recalculate estimate for date only if 
+					// last calculated estimate was not for now
+					if(date != null)
+					{
+						await _orderWorkflowService.SetPickupDate(date);
+					}
+                    
                     try
                     {
                         await _orderWorkflowService.ValidatePickupAndDestination();
@@ -217,7 +223,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 										var orderInfos = await GetOrderInfos(pendingOrderId);
 
 										PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
-										ShowViewModel<BookingStatusViewModel>(new {order = orderInfos.Item1, status = orderInfos.Item2});
+										ShowViewModel<BookingStatusViewModel>(new {order = orderInfos.Item1, orderStatus = orderInfos.Item2});
 									},
                                         this.Services().Localize["Cancel"], () => {});
                                 }

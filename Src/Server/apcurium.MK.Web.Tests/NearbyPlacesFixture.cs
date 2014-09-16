@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 
@@ -55,7 +56,7 @@ namespace apcurium.MK.Web.Tests
                     Settings =
                         new BookingSettings
                             {
-                                ChargeTypeId = 99,
+                                ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                                 VehicleTypeId = 1,
                                 ProviderId = Provider.MobileKnowledgeProviderId,
                                 Phone = "514-555-1212",

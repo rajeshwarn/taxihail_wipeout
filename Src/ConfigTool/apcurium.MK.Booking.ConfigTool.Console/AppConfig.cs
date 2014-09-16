@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO.Compression;
 using System.Linq;
 using System.IO;
@@ -13,7 +14,6 @@ namespace apcurium.MK.Booking.ConfigTool
 {
     public class AppConfig
     {
-
 		private List<Config> _configs;
         private Regex pattern;
         
@@ -178,6 +178,7 @@ namespace apcurium.MK.Booking.ConfigTool
                     NodeSelector=@"//resources/color[@name=""setting_menu_color""]", 
                     SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.MenuColor) 
                 },
+                
 				new ConfigFile(this){ Source="logo_1_5@2x.png", Destination=@"Mobile\Android\Resources\drawable-xhdpi\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\iOS\Resources\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5@2x.png", Destination=@"Mobile\iOS\Resources\th_logo@2x.png" },
@@ -212,9 +213,6 @@ namespace apcurium.MK.Booking.ConfigTool
                     NodeSelector=@"//ThemeValues/MenuColor", 
                     SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.MenuColor) 
                 }
-
-
-
            };
 
 			_configs = new List<apcurium.MK.Booking.ConfigTool.Config> ();
@@ -222,12 +220,10 @@ namespace apcurium.MK.Booking.ConfigTool
 
 			/***Optional files ****/
 
-			var optionalGraphicToUpdate = new string[] { "chargetype", "hail_icon", "destination_icon", "taxi_progress","vehicle", "taxi_icon", "cluster", "nearby", "taxi_badge_selected" 
-			
-				,"tutorial_screen01","tutorial_screen02","tutorial_screen03","tutorial_screen04","tutorial_screen05","tutorial_screen06","tutorial_screen07" };
+            var allResources = GetFilesFromAssetsDirectory("png");
 
-			foreach (var g in optionalGraphicToUpdate) {
-			
+            foreach (var g in allResources) 
+            {
 				_configs.Add (new ConfigFile (this) {
 					Source = g+"@2x.png",
 					Destination = @"Mobile\Android\Resources\drawable-xhdpi\"+g+".png"
@@ -245,10 +241,48 @@ namespace apcurium.MK.Booking.ConfigTool
 				_configs.Add (new ConfigFile (this){ 
 					Source = g+".png", 
 					Destination = @"Mobile\iOS\Resources\"+g+".png" 
-				});
-					
+				});	
 			}
 
+            /*** Custom themes for Buttons ****/
+            /* iOS */
+            _configs.Add (new ConfigFile (this) {
+                Source = "FlatButtonStyle.xml",
+                Destination = @"Mobile\iOS\Style\FlatButtonStyle.xml"
+            });
+
+            /* Android */
+            // warning: only those colors are supported, when a company asks for more customization, we need to change this
+            var customThemesForButtons = new string[] { "green", "red", "gray", "label" };
+            foreach (var styleName in customThemesForButtons)
+            {
+                _configs.Add (new ConfigFile (this) {
+                    Source = string.Format("button_action_{0}_selector.xml", styleName),
+                    Destination = @"Mobile\Android\Resources\Drawable\" + string.Format("button_action_{0}_selector.xml", styleName)
+                });
+                _configs.Add (new ConfigFile (this) {
+                    Source = string.Format("button_action_{0}_text_selector.xml", styleName),
+                    Destination = @"Mobile\Android\Resources\Drawable\" + string.Format("button_action_{0}_text_selector.xml", styleName)
+                });
+            }
+
+            /*** Tutorial ****/
+            var tutorialContent = GetFilesFromAssetsDirectory("json");
+            foreach (var file in tutorialContent)
+            {
+                _configs.Add(new ConfigFile(this)
+                {
+                    Source = file + ".json",
+                    Destination = @"Mobile\Common\TutorialContent\"+ file + ".json" 
+                });
+            }
+        }
+
+        private string[] GetFilesFromAssetsDirectory(string extension)
+        {
+           var assetsDirectory = new DirectoryInfo(ConfigDirectoryPath);
+           var listofFiles = assetsDirectory.EnumerateFiles("*." + extension, SearchOption.TopDirectoryOnly);
+           return listofFiles.Select(x => x.Name.Replace(x.Extension, string.Empty)).ToArray();
         }
 
         private AppConfigFile _config;
@@ -273,6 +307,22 @@ namespace apcurium.MK.Booking.ConfigTool
         {
            
         }
+
+        string GetColorFromBackground(string color, string lightColor, string darkColor)
+        {
+            return ShouldHaveLightContent(color) ? lightColor : darkColor;
+        }
+
+        bool ShouldHaveLightContent(string colorCode)
+        {
+            var color = ColorTranslator.FromHtml(GetHexaColorCode(colorCode));
+
+            // Counting the perceptive luminance - human eye favors green color... 
+            var a = 1 - (0.299 * color.R + 0.587 * color.G + 0.114 * color.B) / 255;
+
+            return !(a < 0.5);
+        }
+
 
 		string GetHexaColorCode (string color)
 		{

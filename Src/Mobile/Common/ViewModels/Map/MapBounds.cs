@@ -1,6 +1,6 @@
 using System;
 
-namespace apcurium.MK.Booking.Mobile.ViewModels
+namespace apcurium.MK.Booking.Maps.Geo
 {
 	public class MapBounds
 	{

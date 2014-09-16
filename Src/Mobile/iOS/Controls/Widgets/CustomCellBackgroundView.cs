@@ -1,11 +1,12 @@
 using MonoTouch.UIKit;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
 	public class CustomCellBackgroundView : UIView
 	{
-		private UIColor _strokeColor = UIColor.FromRGB(190, 190, 190);
+		private UIColor _strokeColor;
 		private UIColor _selectedBackgroundColor;
 		private UIColor _backgroundColor;
 
@@ -15,6 +16,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			_backgroundColor = backgroundColor;
 			_selectedBackgroundColor = SelectedBackgroundColor;
+            _strokeColor = Theme.IsLightContent 
+                ? UIColor.FromRGB(69, 69, 69)
+                : UIColor.FromRGB(190, 190, 190);
 
 			BackgroundColor = _backgroundColor;
 

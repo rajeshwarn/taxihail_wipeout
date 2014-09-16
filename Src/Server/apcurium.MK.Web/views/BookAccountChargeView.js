@@ -53,12 +53,19 @@
 
                     this.model.set('questionsAndAnswers', data.questions);
 
+                    if (accountNumber && accountNumber != '') {
+                        var settings = this.model.get('settings');
+                        settings.accountNumber = accountNumber;
+                        this.model.save('settings', settings);
+                    }
+
                     this.refreshValidationRules(data.questions);
 
                 }, this))
                 .fail(_.bind(function (response) {
 
                     this.$('#btBook').button('reset');
+                    this.$('#title').hide();
 
                     var alert = new TaxiHail.AlertView({
                         message: TaxiHail.localize(response.statusText),
@@ -152,6 +159,9 @@
 
             var $alert = $('<div class="alert alert-error" />');
             if (result.errorCode == "CreateOrder_RuleDisable") {
+                $alert.append($('<div />').text(result.message));
+            }
+            else if (result.errorCode == "AccountCharge_InvalidAnswer") {
                 $alert.append($('<div />').text(result.message));
             }
             else if (result.statusText) {

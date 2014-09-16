@@ -210,11 +210,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             // We received a fare from IBS
             // Send payment for capture, once it's captured, we will set the status to Completed
             var meterAmount = ibsOrderInfo.Fare + ibsOrderInfo.Toll + ibsOrderInfo.VAT;
-            double tipAmount = _appSettings.Data.DefaultTipPercentage;
-            if (pairingInfo.AutoTipPercentage.HasValue)
-            {
-                tipAmount = GetTipAmount(meterAmount, pairingInfo.AutoTipPercentage.Value);
-            }
+            double tipPercentage = pairingInfo.AutoTipPercentage ?? _appSettings.Data.DefaultTipPercentage;
+            var tipAmount = GetTipAmount(meterAmount, tipPercentage);
 
             _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
             {
@@ -228,7 +225,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             // whether there's a success or not, we change the status back to Completed since we can't process the payment again
             orderStatusDetail.Status = OrderStatus.Completed;
 
-            Log.DebugFormat("Fare of amount {0} with auto tip of {1} was received from IBS.", meterAmount, tipAmount);
+            Log.DebugFormat("Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
+                                            meterAmount, tipPercentage, tipAmount, meterAmount + tipAmount);
         }
 
         private double GetTipAmount(double amount, double percentage)
@@ -344,7 +342,8 @@ namespace apcurium.MK.Booking.Api.Jobs
         private string FormatPrice(double? price)
         {
             var culture = _appSettings.Data.PriceFormat;
-            return string.Format(new CultureInfo(culture), "{0:C}", price.HasValue ? price.Value : 0);
+            var currencyPriceFormat = _resources.Get("CurrencyPriceFormat", culture);
+            return string.Format(new CultureInfo(culture), currencyPriceFormat, price.HasValue ? price.Value : 0);
         }
     }
 }

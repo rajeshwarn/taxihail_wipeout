@@ -80,7 +80,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/CreditCardNumber"
                         android:layout_marginBottom="4dp" />
-                    <Space
+                <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
+                    <View
                         android:layout_width="0dp"
                         android:layout_weight="0.05"
                         android:layout_height="fill_parent" />
@@ -106,7 +107,8 @@
                         android:singleLine="true"
                         android:inputType="number"
                         local:MvxBind="CreditCardNumber CreditCardNumber; LeftImage CreditCardImagePath" />
-                    <Space
+                <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
+                    <View
                         android:layout_width="0dp"
                         android:layout_weight="0.02"
                         android:layout_height="fill_parent" />
@@ -136,7 +138,8 @@
                         android:layout_marginRight="10dip"
                         android:text="@string/CreditCardExpMonth"
                         style="@style/BlackTextLabel" />
-                    <Space
+                <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
+                    <View
                         android:layout_width="0dp"
                         android:layout_weight="0.05"
                         android:layout_height="fill_parent" />
@@ -160,8 +163,10 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:inputType="number"
                         android:singleLine="true"
+                        local:allowEmptySelection="true"
                         local:MvxBind="Text ExpirationMonthDisplay; Data ExpirationMonths; SelectedItem ExpirationMonth" />
-                    <Space
+                <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
+                    <View
                         android:layout_width="0dp"
                         android:layout_weight="0.05"
                         android:layout_height="fill_parent" />
@@ -171,6 +176,7 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:inputType="number"
                         android:singleLine="true"
+                        local:allowEmptySelection="true"
                         local:MvxBind="Text ExpirationYearDisplay; Data ExpirationYears; SelectedItem ExpirationYear" />
                 </LinearLayout>
                 <Button
@@ -190,8 +196,7 @@
                     android:layout_height="@dimen/HeightButton"
                     android:singleLine="true"
                     android:lines="1"
-                    android:text="@string/Save"
-                    local:MvxBind="Click SaveCreditCardCommand"
+                    local:MvxBind="Text CreditCardSaveButtonDisplay; Click SaveCreditCardCommand"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp" />
                 <Button

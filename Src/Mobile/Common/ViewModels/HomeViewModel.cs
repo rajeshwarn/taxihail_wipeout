@@ -8,6 +8,12 @@ using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Messages;
+using System.Linq;
+using System.Reactive.Linq;
+using System;
+using System.Threading;
+using System.Reactive.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -21,6 +27,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITermsAndConditionsService _termsService;
 	    private readonly IMvxLifetime _mvxLifetime;
 		private readonly IAccountService _accountService;
+
+		private HomeViewModelState _currentState = HomeViewModelState.Initial;
 
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
 			IMvxWebBrowserTask browserTask,
@@ -59,8 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public override void OnViewLoaded ()
 		{
 			base.OnViewLoaded ();
-            _mvxLifetime.LifetimeChanged += OnApplicationLifetimeChanged;
-
+					            
 			Map = AddChild<MapViewModel>();
 			OrderOptions = AddChild<OrderOptionsViewModel>();
 			OrderReview = AddChild<OrderReviewViewModel>();
@@ -78,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_locationService.Start();
 			CheckTermsAsync();
-			CheckActiveOrderAsync ();
+			CheckActiveOrderAsync (firstTime);
 
             if (_orderWorkflowService.IsOrderRebooked())
             {
@@ -88,7 +95,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (firstTime)
 			{
 				await Panel.Start ();
-                CheckUnratedRide();
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
@@ -103,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (_locateUser)
 			{
-				LocateMe.Execute();
+				AutomaticLocateMeAtPickup.Execute(null);				
 				_locateUser = false;
 			}
 
@@ -112,44 +118,70 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				this.ChangePresentation(_defaultHintZoomLevel);
 				_defaultHintZoomLevel = null;
 			}
+
 			_vehicleService.Start();
 		}
 
-
-		public async void CheckActiveOrderAsync()
+		public async void CheckActiveOrderAsync(bool firstTime)
 		{
-var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
+			var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
 			if(lastOrder != null)
 			{
-				ShowViewModelAndRemoveFromHistory<BookingStatusViewModel> (new
+				ShowViewModel<BookingStatusViewModel> (new
 				{
 					order = lastOrder.Item1.ToJson (),
 					orderStatus = lastOrder.Item2.ToJson ()
 				});
 			}
-
-
+			else if (firstTime)
+			{
+				CheckUnratedRide ();
+			}
 		}
 
 	    private void CheckUnratedRide()
 	    {
-            var unratedRideId = _orderWorkflowService.GetLastUnratedRide();
-            if (unratedRideId != null
-                && _orderWorkflowService.ShouldPromptUserToRateLastRide())
-	        {
-                this.Services().Message.ShowMessage(this.Services().Localize["RateLastRideTitle"],
-                                                    this.Services().Localize["RateLastRideMessage"],
-                                                    this.Services().Localize["Rate"],
-                                                        () => ShowViewModel<BookRatingViewModel>(new  
-                                                                {
-						                                            orderId = unratedRideId.ToString(),
-						                                            canRate = true
-                                                                }),
-                                                    this.Services().Localize["Don't ask"],
-                                                        () => this.Services().Cache.Set("RateLastRideDontPrompt", "yes"),
-                                                    this.Services().Localize["NotNow"],
-                                                        () => { /* Do nothing */ });
-	        }
+			if (Settings.RatingEnabled)
+			{
+				var unratedRideId = _orderWorkflowService.GetLastUnratedRide();
+				if (unratedRideId != null
+					&& _orderWorkflowService.ShouldPromptUserToRateLastRide())
+				{
+					var title = this.Services().Localize["RateLastRideTitle"];
+					var message = this.Services().Localize["RateLastRideMessage"];
+					Action goToRate = () => ShowViewModel<BookRatingViewModel>(new
+					{
+						orderId = unratedRideId.ToString(),
+						canRate = true
+					});
+
+					if (Settings.RatingRequired)
+					{
+						if (Settings.CanSkipRatingRequired)
+						{
+							this.Services().Message.ShowMessage(title, message,
+								this.Services().Localize["RateLastRide"],
+								goToRate,
+								this.Services().Localize["NotNow"],
+								() => { /* Do nothing */ });
+						}
+						else
+						{
+							this.Services().Message.ShowMessage(title, message, goToRate);
+						}
+					}
+					else
+					{
+						this.Services().Message.ShowMessage(title, message,
+							this.Services().Localize["RateLastRide"],
+							goToRate,
+							this.Services().Localize["DontAsk"],
+							() => this.Services().Cache.Set("RateLastRideDontPrompt", "yes"),
+							this.Services().Localize["NotNow"],
+							() => { /* Do nothing */ });
+					}
+				}
+			}
 	    }
 
 		public async void CheckTermsAsync()
@@ -183,12 +215,6 @@ var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
 			_locationService.Stop();
 			_vehicleService.Stop();
 		}
-
-	    public override void OnViewUnloaded()
-	    {
-	        base.OnViewUnloaded();
-            _mvxLifetime.LifetimeChanged -= OnApplicationLifetimeChanged;
-	    }
 
 	    public PanelMenuViewModel Panel { get; set; }
 
@@ -258,20 +284,66 @@ var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
 			}
 		}
 
+		public ICommand AutomaticLocateMeAtPickup
+		{
+			get
+			{
+				return this.GetCommand(async () =>
+				{					
+					if (_accountService.CurrentAccount != null)
+					{
+						var addressSelectionMode = await _orderWorkflowService.GetAndObserveAddressSelectionMode ().Take (1).ToTask ();
+						if (_currentState == HomeViewModelState.Initial 
+							&& addressSelectionMode == AddressSelectionMode.PickupSelection)
+						{
+							var address = await _orderWorkflowService.SetAddressToUserLocation();
+							if(address.HasValidCoordinate())
+							{
+								// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
+								// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
+								this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
+
+								if(Settings.ZoomOnNearbyVehicles)
+								{
+									try 
+									{
+										var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
+										var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, availableVehicles);	
+										if (bounds != null)
+										{
+											this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
+										}
+									}
+									catch (TimeoutException)
+									{ 
+										Console.WriteLine("LocateMe: Timeout occured while waiting for available vehicles");
+									}
+								}
+							}
+						}
+					}									
+				});
+			}
+		}
+
+		/**
+		 * Should ONLY be called by the "Locate me" button
+		 * Use AutomaticLocateMeAtPickup if it's an automatic trigger after app event (appactivated, etc.)
+		 **/
 		public ICommand LocateMe
 		{
 			get
 			{
 				return this.GetCommand(async () =>
-				{
+				{					
 					if (_accountService.CurrentAccount != null)
 					{
 						var address = await _orderWorkflowService.SetAddressToUserLocation();
 						if(address.HasValidCoordinate())
 						{
-		                    this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
+							this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
 						}
-					}
+					}									
 				});
 			}
 		}
@@ -290,6 +362,8 @@ var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
 
 		private void OnPresentationStateRequested(object sender, HomeViewModelStateRequestedEventArgs e)
 		{
+			_currentState = e.State;
+
 			this.ChangePresentation(new HomeViewModelPresentationHint(e.State, e.IsNewOrder));
 
             if (e.State == HomeViewModelState.Initial)
@@ -301,6 +375,26 @@ var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
                 _vehicleService.Stop ();
             }
 
+		}
+
+		private bool _subscribedToLifetimeChanged;
+
+		public void SubscribeLifetimeChangedIfNecessary()
+		{
+			if (!_subscribedToLifetimeChanged)
+			{
+				_mvxLifetime.LifetimeChanged += OnApplicationLifetimeChanged;
+				_subscribedToLifetimeChanged = true;
+			}
+		}
+
+		public void UnsubscribeLifetimeChangedIfNecessary()
+		{
+			if (_subscribedToLifetimeChanged)
+			{
+				_mvxLifetime.LifetimeChanged -= OnApplicationLifetimeChanged;
+				_subscribedToLifetimeChanged = false;
+			}
 		}
 
         private void OnApplicationLifetimeChanged(object sender, MvxLifetimeEventArgs args)

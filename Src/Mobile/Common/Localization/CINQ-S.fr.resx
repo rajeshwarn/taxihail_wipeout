@@ -117,29 +117,136 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-
-   <data name="EstimatePrice" xml:space="preserve">
+  <data name="EstimatePrice" xml:space="preserve">
     <value>Prix</value>
   </data>
+  <data name="NoFareText" xml:space="preserve">
+    <value>Vous devez saisir une destination pour obtenir le prix du trajet</value>
+  </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
+    <value>Prix: {0}</value>
   </data>
   <data name="EstimatePriceOver100" xml:space="preserve">
-    <value>Appelez-nous pour connaître le prix!</value>
+    <value>Cette zone n'est pas desservie</value>
   </data>
   <data name="EstimatedFareNotAvailable" xml:space="preserve">
-    <value>Le prix ne peut être estimé pour le moment</value>
+    <value>Le prix ne peut être calculé pour le moment</value>
   </data>
   <data name="EstimateDistance" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="TaxiServerDownMessage" xml:space="preserve">
     <value>Impossible d'envoyer l'information au conducteur.</value>
   </data>
+  <data name="InvalidBookinInfoWhenDestinationIsRequired" xml:space="preserve">
+    <value>Pour commander une Audi, vous devez entrer des adresses de départ et de destination valides.</value>
+  </data>
   <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
-    <value>Aucun tarif n'est disponible pour la course. Merci de spécifier une adresse de départ et une destination.</value>
+    <value>Aucun tarif n'est disponible pour la course. Merci de spécifier des adresses de départ et de destination valides.</value>
   </data>
   <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
-    <value>Aucun tarif n'est disponible pour la course. Merci de spécifier une adresse de départ et une destination.</value>
+    <value>Aucun tarif n'est disponible pour la course. Merci de spécifier des adresses de départ et de destination valides.</value>
   </data>
-
+  <data name="AppNeedUpdateTitle" xml:space="preserve">
+    <value>Mise à jour disponible</value>
+  </data>
+  <data name="BookRatingErrorMessage" xml:space="preserve">
+    <value>Merci d'évaluer la qualité de votre trajet</value>
+  </data>
+  <data name="CmtRideLinqConfirmPairViewConfirmPairDetailText" xml:space="preserve">
+    <value>Merci de vérifier que vous êtes dans le véhicule indiqué ci-dessus. Après confirmation, le paiement sera effectué automatiquement en utilisant vos informations de paiement</value>
+  </data>
+  <data name="CmtTipAmount" xml:space="preserve">
+    <value>Pourboire:</value>
+  </data>
+  <data name="CreateAccountErrorNotSpecified" xml:space="preserve">
+    <value>Le serveur ne précise pas pourquoi le compte ne peut pas se créer, si l'erreur persiste merci de nous contacter à support@cinq-s.com</value>
+  </data>
+  <data name="CreditCardAdded" xml:space="preserve">
+    <value>Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant cette option dans \"éditer\".</value>
+  </data>
+  <data name="CreditCardInstructions" xml:space="preserve">
+    <value>Afin d'utiliser l'application, vous devez renseigner une carte de crédit</value>
+  </data>
+  <data name="CreditCardRemoveErrorMessage" xml:space="preserve">
+    <value>Vous devez avoir au moins une carte de crédit enregistrée. Vous devez ajouter une autre carte avant d'en supprimer une.</value>
+  </data>
+  <data name="DateTimePickerSetButton" xml:space="preserve">
+    <value>Réserver</value>
+  </data>
+  <data name="PaymentInCar" xml:space="preserve">
+    <value>Carte bancaire - À bord</value>
+  </data>
+  <data name="Error_AccountPaymentQuestionRequiredMessage" xml:space="preserve">
+    <value>Vous devez renseigner tous les champs pour continuer</value>
+  </data>
+  <data name="Facebook" xml:space="preserve">
+    <value>Connexion via Facebook</value>
+  </data>
+  <data name="FavoriteLocationsTitle" xml:space="preserve">
+    <value>Adresses favorites</value>
+  </data>
+  <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
+    <value>Votre véhicule est arrivé</value>
+  </data>
+  <data name="PaymentViewMeterAmountText" xml:space="preserve">
+    <value>Prix</value>
+  </data>
+  <data name="StatusActionButton" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="StatusCancelButton" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="CarAssigned" xml:space="preserve">
+    <value>Votre véhicule {0}</value>
+  </data>
+  <data name="DriverInfoTaxiType" xml:space="preserve">
+    <value>Type de véhicule:</value>
+  </data>
+  <data name="Eta" xml:space="preserve">
+    <value>Le véhicule le plus proche est à {1} {2}</value>
+  </data>
+  <data name="StatusEta" xml:space="preserve">
+    <value>et arrive dans {1} {2}</value>
+  </data>
+  <data name="Notification_NearbyTaxiPush" xml:space="preserve">
+    <value>Véhicule à proximité</value>
+  </data>
+  <data name="ReminderDetails" xml:space="preserve">
+    <value>Rappel: votre Audi arrivera au {0} à {1} le {2}</value>
+  </data>
+  <data name="StatusActionBookButton" xml:space="preserve">
+    <value>Commander un véhicule</value>
+  </data>
+  <data name="TAXI" xml:space="preserve">
+    <value>véhicule</value>
+  </data>
+  <data name="TaxiMapTitle" xml:space="preserve">
+    <value>Votre véhicule</value>
+  </data>
+  <data name="ViewRatingBtn" xml:space="preserve">
+    <value>Évaluation</value>
+  </data>
+  <data name="RateRide" xml:space="preserve">
+    <value>Évaluer</value>
+  </data>
+  <data name="View_BookRating" xml:space="preserve">
+    <value>Évaluer votre trajet</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
+    <value>Aucune carte bancaire enregistrée dans votre compte.</value>
+  </data>
+  <data name="Knowledgabledriver" xml:space="preserve">
+    <value>Propreté</value>
+  </data>
+  <data name="Safety" xml:space="preserve">
+    <value>Conduite</value>
+  </data>
+  <data name="RateLastRideMessage" xml:space="preserve">
+    <value>Nous aimerions recevoir vos commentaires sur votre dernière course.</value>
+  </data>
+  <data name="RateLastRideTitle" xml:space="preserve">
+    <value>Évaluer la dernière course</value>
+  </data>
 </root>

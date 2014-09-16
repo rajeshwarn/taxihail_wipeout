@@ -70,6 +70,33 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Card on File.
+        /// </summary>
+        public static string CardOnFile {
+            get {
+                return ResourceManager.GetString("CardOnFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Charge Account.
+        /// </summary>
+        public static string ChargeAccount {
+            get {
+                return ResourceManager.GetString("ChargeAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:c}.
+        /// </summary>
+        public static string CurrencyPriceFormat {
+            get {
+                return ResourceManager.GetString("CurrencyPriceFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To confirm your email address, please visit this link:.
         /// </summary>
         public static string Email_Body_AccountConfirmationLine1 {
@@ -192,6 +219,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Body_Fare {
             get {
                 return ResourceManager.GetString("Email_Body_Fare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fare breakdown.
+        /// </summary>
+        public static string Email_Body_FareBreakDown {
+            get {
+                return ResourceManager.GetString("Email_Body_FareBreakDown", resourceCulture);
             }
         }
         
@@ -336,6 +372,24 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Body_RingCode {
             get {
                 return ResourceManager.GetString("Email_Body_RingCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Route.
+        /// </summary>
+        public static string Email_Body_Route {
+            get {
+                return ResourceManager.GetString("Email_Body_Route", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subtotal.
+        /// </summary>
+        public static string Email_Body_SubTotal {
+            get {
+                return ResourceManager.GetString("Email_Body_SubTotal", resourceCulture);
             }
         }
         
@@ -574,7 +628,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fare will be paid using your default CC payment.
+        ///   Looks up a localized string similar to Fare will be paid using the credit card on file.
         /// </summary>
         public static string OrderStatus_wosLOADEDAutoPairing {
             get {
@@ -651,6 +705,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string PaymentConfirmationToDriver2 {
             get {
                 return ResourceManager.GetString("PaymentConfirmationToDriver2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment in Car.
+        /// </summary>
+        public static string PaymentInCar {
+            get {
+                return ResourceManager.GetString("PaymentInCar", resourceCulture);
             }
         }
         

@@ -10,6 +10,7 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
 using apcurium.MK.Common.Entity;
+using Android.Content.Res;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -23,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private int _selectedKey = int.MinValue;
         private Spinner _spinner;
         private string _text;
+		private bool _allowEmptySelection = false;
 
         [Register(".ctor", "(Landroid/content/Context;)V", "")]
         public EditTextSpinner(Context context)
@@ -115,7 +117,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 var att = Context.ObtainStyledAttributes(attrs, new int[] { Android.Resource.Attribute.Background }, 0, 0);
                 _initialBackgroundColor = att.GetColor(0, -1);
             }
+
+			ApplyCustomAttributes (Context, attrs);
         }
+
+		private void ApplyCustomAttributes(Context context, IAttributeSet attrs)
+		{
+			TypedArray attributeArray = context.ObtainStyledAttributes(attrs,
+				Resource.Styleable.EditTextSpinner);
+
+			_allowEmptySelection = false;
+
+			for (int i = 0; i < attributeArray.IndexCount; ++i) {
+				int attr = attributeArray.GetIndex (i);
+
+				switch (attr) {
+				case Resource.Styleable.EditTextSpinner_allowEmptySelection:
+					_allowEmptySelection = attributeArray.GetBoolean (attr, false);
+					break;
+				}
+			}
+
+			attributeArray.Recycle();
+		}
 
         protected override void OnFinishInflate()
         {
@@ -168,7 +192,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void HandleItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            if (ItemSelected != null)
+			// This allows a null selection to be kept in spinner after initialization. There is a known Android bug where ItemSelected is called without user interaction during initialization.
+			if (_allowEmptySelection) {
+				_allowEmptySelection = false;
+				return;
+			}
+
+			if (ItemSelected != null)
             {
                 ItemSelected(this, e);
             }

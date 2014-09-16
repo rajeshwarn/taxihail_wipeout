@@ -26,9 +26,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     [Register ("TouchMap")]
     public class TouchMap : MKMapView
     {
-        private UIImageView _pickupCenterPin;
-        private UIImageView _dropoffCenterPin;
-
         private TouchGesture _gesture;
         private ICommand _mapMoved;
         private Address _pickup;
@@ -36,7 +33,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private CancellationTokenSource _cancelToken;
         private CancellationTokenSource _moveMapCommand;
 
-        private bool UseThemeColorForPickupAndDestinationMapIcons;
+		private bool _useThemeColorForPickupAndDestinationMapIcons;
+		private bool _showAssignedVehicleNumberOnPin;
 
         protected TouchMap(RectangleF rect) : base(rect)
         {
@@ -65,38 +63,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void Initialize()
         {   
-            UseThemeColorForPickupAndDestinationMapIcons = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.UseThemeColorForMapIcons;
+			var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
+			_useThemeColorForPickupAndDestinationMapIcons = settings.UseThemeColorForMapIcons;
+			_showAssignedVehicleNumberOnPin = settings.ShowAssignedVehicleNumberOnPin;
 
             // prevent from showing glowing blue dot
             ShowsUserLocation = false;
-
-            if (_pickupCenterPin == null) 
-            {
-                _pickupCenterPin = new UIImageView(AddressAnnotation.GetImage(AddressAnnotationType.Pickup));
-                _pickupCenterPin.BackgroundColor = UIColor.Clear;
-                _pickupCenterPin.ContentMode = UIViewContentMode.Center;
-                _pickupCenterPin.Hidden = true;  
-                AddSubview(_pickupCenterPin);            
-            }
-
-            if (_dropoffCenterPin == null)
-            {
-                _dropoffCenterPin = new UIImageView(AddressAnnotation.GetImage(AddressAnnotationType.Destination));
-                _dropoffCenterPin.BackgroundColor = UIColor.Clear;
-                _dropoffCenterPin.ContentMode = UIViewContentMode.Center;
-                _dropoffCenterPin.Hidden = true;
-                AddSubview(_dropoffCenterPin);
-            }
-        }
-
-        public override void LayoutSubviews ()
-        {
-            base.LayoutSubviews ();
-            var p = ConvertCoordinate(CenterCoordinate,this);
-
-            //Images are 42 x 57
-            _pickupCenterPin.Frame = new RectangleF(p.X - 21, p.Y - 57, 42, 57);          
-            _dropoffCenterPin.Frame = new RectangleF(p.X - 21, p.Y - 57, 42, 57);
         }
 
         public void OnRegionChanged()
@@ -184,14 +156,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 switch (_addressSelectionMode)
                 {
                     case AddressSelectionMode.PickupSelection:
-                        _pickupCenterPin.Hidden = false;
                         if(_pickupPin != null) RemoveAnnotation(_pickupPin);
                         _pickupPin = null;
                         ShowDropOffPin(Dropoff);
                         SetNeedsDisplay();
                         break;
                     case AddressSelectionMode.DropoffSelection:
-                        _dropoffCenterPin.Hidden = false;
                         if(_dropoffPin != null) RemoveAnnotation(_dropoffPin);
                         _dropoffPin = null;
                         ShowPickupPin(Pickup);
@@ -273,7 +243,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     {
                         coord = new CLLocationCoordinate2D(value.VehicleLatitude.Value, value.VehicleLongitude.Value);
                     }
-                    _taxiLocationPin = new AddressAnnotation(coord, AddressAnnotationType.Taxi, Localize.GetValue("TaxiMapTitle"), value.VehicleNumber, UseThemeColorForPickupAndDestinationMapIcons);
+					_taxiLocationPin = new AddressAnnotation(coord, AddressAnnotationType.Taxi, Localize.GetValue("TaxiMapTitle"), value.VehicleNumber, _useThemeColorForPickupAndDestinationMapIcons, _showAssignedVehicleNumberOnPin);
                     AddAnnotation(_taxiLocationPin);
                 }
                 SetNeedsDisplay();
@@ -376,13 +346,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var coords = address.GetCoordinate();
             if (coords.Latitude != 0 && coords.Longitude != 0) 
             {
-                _dropoffPin = new AddressAnnotation(coords, AddressAnnotationType.Destination, Localize.GetValue("DestinationMapTitle"), address.Display(), UseThemeColorForPickupAndDestinationMapIcons);
+                _dropoffPin = new AddressAnnotation(coords, AddressAnnotationType.Destination, Localize.GetValue("DestinationMapTitle"), address.Display(), _useThemeColorForPickupAndDestinationMapIcons, false);
                 AddAnnotation (_dropoffPin);
-            }
-
-            if (_dropoffCenterPin != null)
-            {
-                _dropoffCenterPin.Hidden = true;
             }
         }
 
@@ -402,13 +367,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var coords = address.GetCoordinate();
             if (coords.Latitude != 0 && coords.Longitude != 0)
             {
-                _pickupPin = new AddressAnnotation(coords, AddressAnnotationType.Pickup, Localize.GetValue("PickupMapTitle"), address.Display(), UseThemeColorForPickupAndDestinationMapIcons);
+                _pickupPin = new AddressAnnotation(coords, AddressAnnotationType.Pickup, Localize.GetValue("PickupMapTitle"), address.Display(), _useThemeColorForPickupAndDestinationMapIcons, false);
                 AddAnnotation (_pickupPin);
-            }
-
-            if (_pickupCenterPin != null)
-            {
-                _pickupCenterPin.Hidden = true;
             }
         }
 
@@ -439,7 +399,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                                 annotationType,
                                 string.Empty,
                                 string.Empty, 
-                                UseThemeColorForPickupAndDestinationMapIcons,
+                                _useThemeColorForPickupAndDestinationMapIcons,
+								false,
                                 v.LogoName);
 
                 AddAnnotation (pushPin);

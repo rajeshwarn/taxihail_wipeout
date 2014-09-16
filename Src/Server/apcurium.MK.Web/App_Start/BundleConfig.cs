@@ -146,6 +146,7 @@ namespace apcurium.MK.Web.App_Start
                 "~/admin/models/Rule.js",
                 "~/admin/models/CompanySettings.js",
                 "~/admin/models/NotificationSettings.js",
+                "~/admin/models/EmailTemplates.js",
                 "~/admin/models/PaymentSettings.js",
                 "~/admin/models/TermsAndConditions.js",
                 "~/admin/models/AccountCharge.js",
@@ -162,6 +163,7 @@ namespace apcurium.MK.Web.App_Start
                 /* Controllers */
                 "~/admin/controllers/Controller.js",
                 "~/admin/controllers/SecurityController.js",
+                "~/admin/controllers/NotificationController.js",
                 "~/admin/controllers/TariffsController.js",
                 "~/admin/controllers/RulesController.js",
                 "~/admin/controllers/CompanySettingsController.js",
@@ -185,6 +187,7 @@ namespace apcurium.MK.Web.App_Start
                 "~/admin/views/GrantAdminAccessView.js",
                 "~/admin/views/ConfirmEmailView.js",
                 "~/admin/views/SendPushNotificationView.js",
+                "~/admin/views/SendTestEmailView.js",
                 "~/admin/views/ExportAccountsView.js",
                 "~/admin/views/ExportOrdersView.js",
                 "~/admin/views/AdminMenuView.js",

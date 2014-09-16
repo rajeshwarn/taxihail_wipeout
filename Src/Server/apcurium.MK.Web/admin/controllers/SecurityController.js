@@ -17,12 +17,6 @@
 
             return new TaxiHail.ConfirmEmailView();
 
-        },
-                
-        sendpushnotification: function() {
-
-            return new TaxiHail.SendPushNotificationView();
-
         }
     });
 

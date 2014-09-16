@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using ServiceStack.Text;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -31,22 +32,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async void Init(string bookingSettings)
         {
-			_bookingSettings = bookingSettings.FromJson<BookingSettings>();
+			using (this.Services ().Message.ShowProgress ())
+			{
+				_bookingSettings = bookingSettings.FromJson<BookingSettings>();
 
-			var v = await _accountService.GetVehiclesList();
-			_vehicules = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
-			RaisePropertyChanged(() => Vehicles );
-			RaisePropertyChanged(() => VehicleTypeId );
-			RaisePropertyChanged(() => VehicleTypeName );
+				var p = await _accountService.GetPaymentsList();
+				_payments = p == null ? new ListItem[0] : p.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+				RaisePropertyChanged(() => Payments );
+				RaisePropertyChanged(() => ChargeTypeId );
+				RaisePropertyChanged(() => ChargeTypeName );
 
-			var p = await _accountService.GetPaymentsList();
-			_payments = p == null ? new ListItem[0] : p.ToArray();
-			RaisePropertyChanged(() => Payments );
-			RaisePropertyChanged(() => ChargeTypeId );
-			RaisePropertyChanged(() => ChargeTypeName );
+				_hasCardOnFile = _accountService.CurrentAccount.DefaultCreditCard.HasValue;
+				RaisePropertyChanged(() => IsChargeTypesEnabled);
 
-            _hasCardOnFile = (await _accountService.GetCreditCard()) != null;
-            RaisePropertyChanged(() => IsChargeTypesEnabled);
+				// this should be called last since it calls the server, we don't want to slow down other controls
+				var v = await _accountService.GetVehiclesList();
+				_vehicules = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
+				RaisePropertyChanged(() => Vehicles );
+				RaisePropertyChanged(() => VehicleTypeId );
+				RaisePropertyChanged(() => VehicleTypeName );
+			}
 		}
 
         public bool ShouldDisplayTip
@@ -171,7 +176,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 var chargeType = Payments.FirstOrDefault(x => x.Id == ChargeTypeId);
                 if (chargeType == null)
                     return null;
-                return chargeType.Display; 
+				return this.Services().Localize[chargeType.Display]; 
             }
         }
 
@@ -280,9 +285,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     if (ValidateRideSettings())
                     {
-						var creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty ? default(Guid?) : PaymentPreferences.SelectedCreditCardId;
-						_accountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
-						Close(this);
+						using (this.Services ().Message.ShowProgress ())
+						{
+							var creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty ? default(Guid?) : PaymentPreferences.SelectedCreditCardId;
+							_accountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
+							Close(this);
+						}
                     }
                 });
             }

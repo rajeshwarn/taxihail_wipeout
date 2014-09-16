@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿q<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -307,7 +307,7 @@
     <value>في انتظار تعيين السائق</value>
   </data>
   <data name="PaymentConfirmationToDriver1" xml:space="preserve">
-    <value>قام الراكب بالدفع {0:c}</value>
+    <value>قام الراكب بالدفع {0}</value>
   </data>
   <data name="PaymentConfirmationToDriver2" xml:space="preserve">
     <value>رقم التصريح {0}</value>
@@ -342,10 +342,19 @@
   <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
     <value>The ride #{0} could not be automatically paired</value>
   </data>
+  <data name="Email_Body_FareBreakDown" xml:space="preserve">
+    <value>Fare breakdown</value>
+  </data>
+  <data name="Email_Body_Route" xml:space="preserve">
+    <value>Route</value>
+  </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
     <value>Fare will be paid using your default CC payment</value>
   </data>
-  <data name="PaymentItemDescription" xml:space="preserve">
-    <value>Order #{0} Original amount: {1}</value>
+  <data name="CurrencyPriceFormat" xml:space="preserve">
+    <value>{0}</value>
+  </data>
+  <data name="Email_Body_SubTotal" xml:space="preserve">
+    <value>Subtotal</value>
   </data>
 </root>
