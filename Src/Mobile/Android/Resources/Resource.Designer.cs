@@ -5774,6 +5774,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060089
 			public const int Theme_Base_AppCompat_DialogWhenLarge = 2131099785;
 			
+			// aapt resource value: 0x7f06008d
+			public const int Theme_Base_AppCompat_DialogWhenLarge_Base = 2131099789;
+			
 			// aapt resource value: 0x7f060085
 			public const int Theme_Base_AppCompat_Light = 2131099781;
 			
@@ -5782,6 +5785,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f06008a
 			public const int Theme_Base_AppCompat_Light_DialogWhenLarge = 2131099786;
+			
+			// aapt resource value: 0x7f06008e
+			public const int Theme_Base_AppCompat_Light_DialogWhenLarge_Base = 2131099790;
 			
 			// aapt resource value: 0x7f060083
 			public const int Theme_Base_Light = 2131099779;
