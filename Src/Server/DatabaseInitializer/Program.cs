@@ -543,7 +543,7 @@ namespace DatabaseInitializer
                 });
             }
 
-            var priority = 1;
+            var priority = rules.GetAll().Max(x => x.Priority) + 1;
 
             //validation of the pickup zone
             if (rules.GetAll()
