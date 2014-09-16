@@ -196,6 +196,9 @@
                 .find('.fare')
                 .text(TaxiHail.localize('Loading'));
 
+            this.model.validateOrder(true)
+               .done(_.bind(this.showErrors), this);
+
             var pickup = this.model.get('pickupAddress'),
                 dest = this.model.get('dropOffAddress');
 
@@ -237,6 +240,22 @@
                 this.model.saveLocal();
                 TaxiHail.app.navigate('later', { trigger:true });
             }
+        },
+
+        showErrors: function (result) {
+           
+
+            if (result.responseText) {
+                result = JSON.parse(result.responseText).responseStatus;
+            }
+
+            var $alert = '';
+            if (result.hasError)
+            {
+                var $alert = $('<div class="alert alert-error" />').text(result.message);
+            }            
+            
+            this.$('.errors').html($alert);
         }
     });
 

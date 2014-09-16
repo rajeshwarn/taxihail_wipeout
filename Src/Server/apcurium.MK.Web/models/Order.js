@@ -5,9 +5,9 @@
         idAttribute: 'orderId',
         urlRoot: 'api/account/orders',
 
-        validateOrder: function()
+        validateOrder: function (forError)
         {
-            return TaxiHail.orderService.validate(this);
+            return TaxiHail.orderService.validate(this, forError);
         },
 
         save: function(key, value, options) {

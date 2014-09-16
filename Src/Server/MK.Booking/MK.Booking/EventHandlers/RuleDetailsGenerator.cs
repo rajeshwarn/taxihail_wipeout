@@ -41,6 +41,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     Id = @event.RuleId,
                     Name = @event.Name,
                     Message = @event.Message,
+                    ZoneRequired = @event.ZoneRequired,
                     ZoneList = @event.ZoneList,
                     DaysOfTheWeek = (int) @event.DaysOfTheWeek,
                     StartTime =
@@ -70,6 +71,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     Priority = @event.Priority,
                     AppliesToCurrentBooking = @event.AppliesToCurrentBooking,
                     AppliesToFutureBooking = @event.AppliesToFutureBooking,
+                    AppliesToPickup = @event.AppliesToPickup,
+                    AppliesToDropoff = @event.AppliesToDropoff,
                     IsActive = @event.IsActive,
                     Category = (int) @event.Category,
                     Type = (int) @event.Type
@@ -107,6 +110,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 var rule = context.Find<RuleDetail>(@event.RuleId);
                 rule.Name = @event.Name;
                 rule.Message = @event.Message;
+                rule.ZoneRequired = @event.ZoneRequired;
                 rule.ZoneList = @event.ZoneList;
                 rule.DaysOfTheWeek = (int) @event.DaysOfTheWeek;
                 rule.StartTime = @event.StartTime.HasValue
@@ -132,6 +136,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 rule.Priority = @event.Priority;
                 rule.AppliesToCurrentBooking = @event.AppliesToCurrentBooking;
                 rule.AppliesToFutureBooking = @event.AppliesToFutureBooking;
+                rule.AppliesToPickup = @event.AppliesToPickup;
+                rule.AppliesToDropoff = @event.AppliesToDropoff;
                 rule.IsActive = @event.IsActive;
                 context.SaveChanges();
             }
