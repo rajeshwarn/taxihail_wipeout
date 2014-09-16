@@ -11,7 +11,7 @@
         
         initialize: function () {
             this.model.on('change', function(model, value) {
-
+                
                 // Enable the buttons if model is valid
                 if (this.model.isValidAddress('pickupAddress') && (!TaxiHail.parameters.isDestinationRequired || (  TaxiHail.parameters.isDestinationRequired && this.model.isValidAddress('dropOffAddress'))))
                 {
@@ -28,36 +28,48 @@
                 this._dropOffAddressView.model.set(value);
             }, this);
 
-            // ===== Ride Estimate =====
+            // ===== Ride Estimate & ETA =====
 
-            // Only show ride estimate if enabled
-            TaxiHail.parameters.isEstimateEnabled &&
+            // Only update ride estimate & eta if enabled
+            (TaxiHail.parameters.isEstimateEnabled || TaxiHail.parameters.isEtaEnabled) &&
                 this.model.on('change:pickupAddress change:dropOffAddress', function (model, value) {
                     this.actualizeEstimate();
                 }, this);
             
+            // Update UI values when server call is completed
             this.model.on('change:estimate', function (model, value) {
-                var $estimate = this.$('.estimate');
+                if (TaxiHail.parameters.isEstimateEnabled) {
+                    this.updateFareEstimateVisibility(value);
+                }
 
-                $estimate
-                   .find('.distance')
-                   .show();
+                if (TaxiHail.parameters.isEtaEnabled) {
+                    this.updateEtaDisplayVisibility(value);
+                }
+             }, this);
+        },
+        
+        updateFareEstimateVisibility: function (value) {
 
-                if (value.formattedPrice && value.formattedDistance) {
-                    $estimate.removeClass('hidden')
-                        .find('.distance')
-                        .text('(' + value.formattedDistance + ')');
-                     
-                    if (value.callForPrice) {
-                        $estimate
-                            .find('.fare')
-                            .text(TaxiHail.localize('CallForPrice'));
-                        $estimate
-                            .find('.label')
-                            .hide();
-                    }
-                    else
-                        if (value.noFareEstimate) {
+            var $estimate = this.$('.estimate');
+            $estimate
+               .find('.distance')
+               .show();
+
+            if (value.formattedPrice && value.formattedDistance) {
+                $estimate.removeClass('hidden')
+                    .find('.distance')
+                    .text('(' + value.formattedDistance + ')');
+
+                if (value.callForPrice) {
+                    $estimate
+                        .find('.fare')
+                        .text(TaxiHail.localize('CallForPrice'));
+                    $estimate
+                        .find('.label')
+                        .hide();
+                }
+                else
+                    if (value.noFareEstimate) {
                         $estimate
                             .find('.fare')
                             .text(TaxiHail.localize('NoFareEstimate'));
@@ -73,16 +85,28 @@
                             .find('.label')
                             .show();
                     }
-                    
-                } else {
-                    this.$('.estimate').addClass('hidden');
-                }
-             }, this);
-            
-           
+
+            } else {
+                this.$('.estimate').addClass('hidden');
+            }
         },
-        
-        
+
+        updateEtaDisplayVisibility: function (value) {
+            var $eta = this.$('.eta');
+            $eta
+               .find('.etaValue')
+               .show();
+
+            if (value.etaDuration) {
+                var formattedEta = TaxiHail.formatEta(value.etaDuration, value.etaFormattedDistance);
+
+                $eta.removeClass('hidden')
+                    .find('.etaValue')
+                    .text(formattedEta);
+            } else {
+                this.$('.eta').addClass('hidden');
+            }
+        },
 
         render: function () {
             
@@ -184,10 +208,10 @@
                     .done(_.bind(function(result){
 
                         this.model.set({ 'estimate': result });
+                        this.model.set({ 'eta': result });
 
                     }, this));
             }
-           
         },
         
         book: function (e) {

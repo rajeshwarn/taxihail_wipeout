@@ -11,6 +11,9 @@
         public string FormattedPrice { get; set; }
 
         // Used by the webapp
-        public string Eta { get; set; }
+        public string EtaFormattedDistance { get; set; }
+
+        // Used by the webapp
+        public int? EtaDuration { get; set; }
     }
 }
