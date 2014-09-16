@@ -21,7 +21,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
             Settings = new BookingSettings();
             Payment = new PaymentSettings();
             Estimate = new RideEstimate();
-            FromWebApp = false;
         }
 
         public Guid Id { get; set; }
@@ -45,8 +44,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public double? UserLatitude { get; set; }
 
         public double? UserLongitude { get; set; }
-
-        public bool FromWebApp { get; set; }
 
         public class RideEstimate
         {

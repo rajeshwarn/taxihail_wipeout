@@ -28,7 +28,6 @@
         },
         
         renderItem: function (model) {
-            
             var view = new TaxiHail.OrderItemView({
                 model: model
             });

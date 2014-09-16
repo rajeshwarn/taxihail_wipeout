@@ -38,9 +38,6 @@
   
   <div class="control-group btn-right-alignment " >
     <button type='button' class="btn  span btn-primary" data-action="rebook">{{localize "Rebook"}}</button>
-    {{#if isActive}}
-    <button type='button' class="btn span" data-action="view-status">{{localize "View Status"}}</button>
-    {{/if}}
     {{#if canPrintReceipt}}
     <button type='button' class="btn span" data-action="send-receipt" data-loading-text='{{localize "Sending..."}}'>{{localize "Send Receipt"}}</button>
     {{/if}}
