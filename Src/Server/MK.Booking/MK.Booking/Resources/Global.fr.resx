@@ -250,7 +250,7 @@
     <value>Bienvenue chez {{ ApplicationName }}</value>
   </data>
   <data name="Email_Subject_BookingConfirmation" xml:space="preserve">
-    <value>{{ ApplicationName }} : Réservation confirmation</value>
+    <value>{{ ApplicationName }} : Confirmation de réservation</value>
   </data>
   <data name="Email_Subject_DriverAssigned" xml:space="preserve">
     <value>{{ ApplicationName }} : Votre chauffeur est en chemin</value>
