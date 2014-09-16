@@ -457,6 +457,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 					var bounds = new LatLngBounds (new LatLng (minLat, minLon), new LatLng (maxLat, maxLon));
 
 					// add a negative padding to counterbalance the map padding done for the "Google" legal logo on the map
+                    
+
+
 					Map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds (bounds, -_mapPadding.ToPixels()));
 				} 
 				else 
@@ -471,5 +474,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(centerHint.Latitude, centerHint.Longitude)));
             }
         }
+
+        public static int GetBoundsZoomLevel(LatLng northeast, LatLng southwest) 
+        {  
+            int globeWidth = 256; // a constant in Google's map projection  
+            int zoomMax = 21;  
+            double latFraction = (latRad(northeast.latitude) - latRad(southwest.latitude)) / Math.PI;  
+            double lngDiff = northeast.longitude - southwest.longitude;  
+            double lngFraction = ((lngDiff < 0) ? (lngDiff + 360) : lngDiff) / 360;  
+            double latZoom = zoom(this.Height, globeWidth, latFraction);  
+            double lngZoom = zoom(this.Width, globeWidth, lngFraction);  
+            double zoom = Math.min(Math.min(latZoom, lngZoom), zoomMax);  
+            return (int)(zoom);  
+         }
+        private static double LatRad(double lat)
+        {
+            double sin = Math.sin(lat * Math.PI / 180);
+            double radX2 = Math.log((1 + sin) / (1 - sin)) / 2;
+            return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2;
+        }
+        private static double Zoom(double mapPx, double worldPx, double fraction) 
+        {  
+            double ln2 = .693147180559945309417;  
+            return (Math.log(mapPx / worldPx / fraction) / ln2);  
+        }  
     }
 }

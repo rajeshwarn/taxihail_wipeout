@@ -496,7 +496,7 @@
   <string name="ServiceErrorCreateAccount_CannotSendSMS">The confirmation code is incorrect.</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
   <string name="LoginSupport">Need support?</string>
-  <string name="CurrencyPriceFormat">{0:C}</string>
+  <string name="CurrencyPriceFormat">X{0:C}X</string>
   <string name="PendingOrderMessage">You cannot book this ride since an order is already pending. View the order status?</string>
   <string name="PendingOrderView">View</string>
   <string name="PendingOrderCancel">Cancel</string>

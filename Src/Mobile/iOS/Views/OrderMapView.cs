@@ -488,9 +488,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
 				if (zoomHint.Bounds != null) {
 					var zoom = zoomHint.Bounds;
-					this.SetRegion(new MKCoordinateRegion (
-						new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude),
-						new MKCoordinateSpan (zoom.LatitudeDelta, zoom.LongitudeDelta)), true);
+                    var newZoom = this.GetZoomLevelFromRegion(new MKCoordinateRegion(new CLLocationCoordinate2D(zoom.GetCenter().Latitude, zoom.GetCenter().Longitude), new MKCoordinateSpan(zoom.LatitudeDelta, zoom.LongitudeDelta)));
+                    var currentZoom = this.GetZoomLevelFromRegion(this.CenterCoordinate, this.Region.Span);
+                    if (currentZoom >= newZoom)
+                    {
+                        this.SetRegion(new MKCoordinateRegion(
+                            new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude),
+                            new MKCoordinateSpan(zoom.LatitudeDelta, zoom.LongitudeDelta)), true);
+                    }
 
 				} else {
 					this.SetCenterCoordinate(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), 14, true);

@@ -652,7 +652,7 @@
     <value>Estimated Fare : {0} ({1})</value>
   </data>
   <data name="CurrencyPriceFormat" xml:space="preserve">
-    <value>{0:C}</value>
+    <value>X{0:C}X</value>
   </data>
   <data name="NotAvailable" xml:space="preserve">
     <value>N/A</value>
