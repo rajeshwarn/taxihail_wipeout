@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Api.Payment
                regionName = _configurationManager.GetSetting("PriceFormat");
             }
 
-            return new ExpressCheckoutServiceClient(payPalCredentials, new RegionInfo(regionName), _configurationManager, useSandbox);
+            return new ExpressCheckoutServiceClient(payPalCredentials, new RegionInfo(regionName) , useSandbox);
         }
     }
 }

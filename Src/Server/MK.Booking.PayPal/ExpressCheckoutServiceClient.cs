@@ -18,11 +18,10 @@ namespace MK.Booking.PayPal
         const string MobileKnowledgeReferralCode = "MobileKnowledgeSystems_SP_MEC";
         readonly Urls _urls;
         readonly UserIdPasswordType _credentials;
-        readonly CurrencyCodeType _currency;
-        readonly IConfigurationManager _configurationManager;
+        readonly CurrencyCodeType _currency;        
 
 
-        public ExpressCheckoutServiceClient(PayPalCredentials credentials, RegionInfo region, IConfigurationManager configurationManager, bool useSandbox = false)
+        public ExpressCheckoutServiceClient(PayPalCredentials credentials, RegionInfo region,  bool useSandbox = false)
         {
             if (credentials == null) throw new ArgumentNullException("credentials");
             if (region == null) throw new ArgumentNullException("region");
@@ -35,8 +34,6 @@ namespace MK.Booking.PayPal
                 Password = credentials.Password,
                 Signature = credentials.Signature,
             };
-
-            _configurationManager = configurationManager;
 
         }
 
@@ -189,8 +186,6 @@ namespace MK.Booking.PayPal
                 currencyID = _currency
             };
          
-            var regionName = _configurationManager.GetSetting("PayPalRegionInfoOverride");
-
             var paymentDetails = new PaymentDetailsType
             {
                 ItemTotal = amount,
@@ -199,7 +194,7 @@ namespace MK.Booking.PayPal
                     new PaymentDetailsItemType
                     {
                         Amount = amount,
-                        Description = string.IsNullOrWhiteSpace(regionName) ? null : description
+                        Description = description
                     }
                 }
             };

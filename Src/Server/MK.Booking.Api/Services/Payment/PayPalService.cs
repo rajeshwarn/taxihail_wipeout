@@ -68,10 +68,19 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             var conversionRate = _configurationManager.GetSetting<decimal>("PayPalConversionRate", 1);
 
-            var description = _resources.Get("PaymentItemDescription", request.LanguageCode);
-            description = string.Format(description, request.IbsOrderId, request.TotalAmount);
 
-            var token = service.SetExpressCheckout( Math.Round( request.Amount * conversionRate,2), successUrl, cancelUrl, description);
+            var regionName = _configurationManager.GetSetting("PayPalRegionInfoOverride");
+            string description  =  "";
+            if (!string.IsNullOrWhiteSpace(regionName))
+            {
+                description = string.Format(_resources.Get("PaymentItemDescription", request.LanguageCode), request.IbsOrderId, request.TotalAmount);
+            }                        
+            
+            _logger.LogMessage("Paypal Converstion Rate : " + conversionRate.ToString());
+            var amount = Math.Round(request.Amount * conversionRate, 2);
+
+
+            var token = service.SetExpressCheckout( amount , successUrl, cancelUrl, description);
             var checkoutUrl = service.GetCheckoutUrl(token);
 
 
@@ -127,7 +136,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 ? payPalSettings.SandboxCredentials
                 : payPalSettings.Credentials;
             var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
-            var transactionId = service.DoExpressCheckoutPayment(payment.PayPalToken, request.PayerId, payment.Amount);
+
+            var conversionRate = _configurationManager.GetSetting<decimal>("PayPalConversionRate", 1);
+            _logger.LogMessage("Paypal Converstion Rate : " + conversionRate.ToString());
+
+            var amount = Math.Round(payment.Amount * conversionRate, 2);
+
+            var transactionId = service.DoExpressCheckoutPayment(payment.PayPalToken, request.PayerId, amount);
+
 
             var orderDetail = _orderDao.FindById(payment.OrderId);
             var account = _accountDao.FindById(orderDetail.AccountId);
