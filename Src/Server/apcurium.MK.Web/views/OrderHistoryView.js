@@ -1,6 +1,7 @@
 ﻿(function () {
     TaxiHail.OrderHistoryView = TaxiHail.TemplatedView.extend({
         events: {
+            "click [data-action=refresh]": "refresh"
         },
 
         initialize: function () {
@@ -23,10 +24,13 @@
                 this.$el.append($('<div>').addClass('no-result').text(TaxiHail.localize('order.no-result')));
             }
 
-
             return this;
         },
-        
+
+        refresh: function () {
+            this.options.parent.reloadActiveTab();
+        },
+
         renderItem: function (model) {
             
             var view = new TaxiHail.OrderItemView({
