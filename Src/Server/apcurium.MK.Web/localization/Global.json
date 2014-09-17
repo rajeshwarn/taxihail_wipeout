@@ -23,6 +23,7 @@
 	"Loading": "Loading..." ,
 	"CreateAccount_AccountAlreadyExist" : "An account is already registered with this email address.",
     "CreateOrder_InvalidPickupAddress": "Invalid Pickup Address",
+    "CreateOrder_CannotCreateInIbs": "Order cannot be created. Please try again or contact us for further assistance.",
     "CreateOrder_CannotCreateInIbs_1002": "Booking cannot be completed. The specified Pickup address lies outside the regular service area. Please contact us for further assistance.",
     "CreateOrder_CannotCreateInIbs_1452": "Booking cannot be completed. The specified Dropoff address lies outside the regular service area. Please contact us for further assistance.",
 	"CreateOrder_CannotCreateInIbs_7000": "The order cannot be created because your account is currently inactive. Please contact us for further assistance.",
