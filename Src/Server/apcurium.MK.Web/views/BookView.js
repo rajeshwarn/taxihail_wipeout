@@ -204,7 +204,10 @@
                             result = JSON.parse(result.responseText).responseStatus;
                         }
 
-                        if (result.hasError)
+                        // Don't display validation errors if no destination address is specified when destination required is on
+                        var destinationRequiredAndNoDropOff = TaxiHail.parameters.isDestinationRequired && !this.model.isValidAddress('dropOffAddress');
+
+                        if (result.hasError && !destinationRequiredAndNoDropOff)
                         {
                             this.$('.buttons .btn').addClass('disabled');
                             this.$('.buttons .btn').attr('disabled', 'disabled');
