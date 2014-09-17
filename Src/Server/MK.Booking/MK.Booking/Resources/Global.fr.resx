@@ -373,6 +373,6 @@
     <value>Total: {0}</value>
   </data>
   <data name="PaymentConfirmationToDriver4" xml:space="preserve">
-    <value>Numéro d'authorisation {0}</value>
+    <value>Numéro d'autorisation: {0}</value>
   </data>
 </root>
