@@ -8,6 +8,7 @@ using apcurium.MK.Booking.CommandBuilder;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
@@ -70,6 +71,18 @@ namespace apcurium.MK.Booking.Api.Services
             var orderPayment = _orderPaymentDao.FindByOrderId(order.Id);
             var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
             var orderStatus = _orderDao.FindOrderStatusById(request.OrderId);
+            var vat = ibsOrder.VAT;
+
+            var vatEnabled = _configurationManager.GetSetting("VATIsEnabled", false);
+            if (vatEnabled)
+            {
+                // Must manually calculate VAT since it's included in the price received from IBS
+                var taxPercentage = _configurationManager.GetSetting("VATPercentage", 0d);
+                if (ibsOrder.Fare != null)
+                {
+                    vat = Fare.FromAmountInclTax(ibsOrder.Fare.Value,taxPercentage).TaxAmount;
+                }
+            }
 
             if ((orderPayment != null) && (orderPayment.IsCompleted))
             {
@@ -90,12 +103,12 @@ namespace apcurium.MK.Booking.Api.Services
                 {
 
                     _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos.FullName,
-                        ibsOrder.Fare, ibsOrder.Toll, Math.Round(((double)pairingInfo.AutoTipPercentage.Value) / 100, 2), ibsOrder.VAT, null, creditCard));
+                        ibsOrder.Fare, ibsOrder.Toll, Math.Round(((double)pairingInfo.AutoTipPercentage.Value) / 100, 2), vat, null, creditCard));
                 }
             }
             else
             {
-                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos.FullName, ibsOrder.Fare, ibsOrder.Toll, ibsOrder.Tip, ibsOrder.VAT, null, null));
+                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos.FullName, ibsOrder.Fare, ibsOrder.Toll, ibsOrder.Tip, vat, null, null));
             }
 
             return new HttpResult(HttpStatusCode.OK, "OK");
