@@ -313,7 +313,7 @@
     <value>Numéro d'authorisation {0}</value>
   </data>
   <data name="PairingConfirmationToDriver" xml:space="preserve">
-    <value>Le passager sera chargé automatiquement à la fin de la course</value>
+    <value>La course sera payée à partir de l'application</value>
   </data>
   <data name="UnpairingConfirmationToDriver" xml:space="preserve">
     <value>ATTENTION: Le passager ne sera PAS chargé à la fin de la course</value>
