@@ -50,6 +50,8 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(CreateOrderService));
 
+        private string _languageCode = "";
+
         public OrderStatusUpdater(IConfigurationManager configurationManager, 
             ICommandBus commandBus, 
             IOrderPaymentDao orderPaymentDao, 
@@ -273,12 +275,12 @@ namespace apcurium.MK.Booking.Api.Jobs
         private string GetDescription(Guid orderId, IBSOrderInformation ibsOrderInfo)
         {
             var orderDetail = _orderDao.FindById(orderId);
-            var languageCode = orderDetail != null ? orderDetail.ClientLanguageCode : "en";
+            _languageCode = orderDetail != null ? orderDetail.ClientLanguageCode : "en";
 
             string description = null;
             if (ibsOrderInfo.IsAssigned)
             {
-                description = string.Format(_resources.Get("OrderStatus_CabDriverNumberAssigned", languageCode), ibsOrderInfo.VehicleNumber);
+                description = string.Format(_resources.Get("OrderStatus_CabDriverNumberAssigned", _languageCode), ibsOrderInfo.VehicleNumber);
                 Log.DebugFormat("Setting Assigned status description: {0}", description);
 
                 if (_configurationManager.GetSetting("Client.ShowEta", false))
@@ -296,7 +298,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             else if (ibsOrderInfo.IsCanceled)
             {
-                description = _resources.Get("OrderStatus_" + ibsOrderInfo.Status, languageCode);
+                description = _resources.Get("OrderStatus_" + ibsOrderInfo.Status, _languageCode);
                 Log.DebugFormat("Setting Canceled status description: {0}", description);
             }
             else if (ibsOrderInfo.IsComplete)
@@ -308,8 +310,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                             .Sum();
 
                 description = total > 0
-                    ? string.Format(_resources.Get("OrderStatus_OrderDoneFareAvailable", languageCode), _resources.FormatPrice(total))
-                    : _resources.Get("OrderStatus_wosDONE", languageCode);
+                    ? string.Format(_resources.Get("OrderStatus_OrderDoneFareAvailable", _languageCode), _resources.FormatPrice(total))
+                    : _resources.Get("OrderStatus_wosDONE", _languageCode);
                     
                Log.DebugFormat("Setting Complete status description: {0}", description);
             }
@@ -319,7 +321,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                                             && _configurationManager.GetPaymentSettings().AutomaticPaymentPairing
                                             && orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id))
                 {
-                    description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", languageCode);
+                    description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", _languageCode);
                 }
             }
             else if (ibsOrderInfo.IsMeterOffNotPaid)
@@ -329,7 +331,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             return description.HasValue()
                         ? description
-                        : _resources.Get("OrderStatus_" + ibsOrderInfo.Status, languageCode);
+                        : _resources.Get("OrderStatus_" + ibsOrderInfo.Status, _languageCode);
         }
 
         private void SendEtaMessageToDriver(double vehicleLatitude, double vehicleLongitude, double pickupLatitude, double pickupLongitude, string vehicleNumber)
@@ -337,7 +339,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             var eta = _directions.GetEta(vehicleLatitude, vehicleLongitude, pickupLatitude, pickupLongitude);
             if (eta != null && eta.IsValidEta())
             {
-                string etaMessage = string.Format("ETA displayed to client is {0} and {1} min", eta.FormattedDistance, eta.Duration);
+                string etaMessage = string.Format(_resources.Get("EtaMessageToDriver", _languageCode), eta.FormattedDistance, eta.Duration);
                 _ibsOrderService.SendMessageToDriver(etaMessage, vehicleNumber);
                 Log.Debug(etaMessage);
             }
@@ -345,7 +347,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void SendPayInCarMessageToDriver()
         {
-            string payInCarMessage = "Payment being processed by the app...";
+            string payInCarMessage = _resources.Get("PayInCarMessageToDriver", _languageCode);
             _ibsOrderService.SendMessageToDriver(payInCarMessage);
             Log.Debug(payInCarMessage);
         }
