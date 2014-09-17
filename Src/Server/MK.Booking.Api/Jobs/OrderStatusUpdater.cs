@@ -326,7 +326,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             else if (ibsOrderInfo.IsMeterOffNotPaid)
             {
-                SendPayInCarMessageToDriver();
+                SendPayInCarMessageToDriver(ibsOrderInfo.VehicleNumber);
             }
 
             return description.HasValue()
@@ -345,7 +345,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
         }
 
-        private void SendPayInCarMessageToDriver()
+        private void SendPayInCarMessageToDriver(string vehicleNumber)
         {
             string payInCarMessage = _resources.Get("PayInCarMessageToDriver", _languageCode);
             _ibsOrderService.SendMessageToDriver(payInCarMessage, vehicleNumber);
