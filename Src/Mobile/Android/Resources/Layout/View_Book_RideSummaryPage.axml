@@ -61,6 +61,15 @@
             <Button
                 style="@style/ButtonActionGreenStyle"
                 android:layout_marginTop="6dip"
+                android:id="@+id/RateOrderButton"
+                android:layout_below="@id/RatingListView"
+                android:text="@string/Submit"
+                android:layout_height="@dimen/HeightButton"
+                android:layout_width="fill_parent"
+                local:MvxBind="Click RateOrder; Visibility CanRate, Converter=Visibility" />
+            <Button
+                style="@style/ButtonActionGreenStyle"
+                android:layout_marginTop="6dip"
                 local:MvxBind="Click ResendConfirmationCommand; Visibility IsResendConfirmationButtonShown, Converter=Visibility"
                 android:text="@string/ReSendConfirmation"
                 android:layout_width="fill_parent"
