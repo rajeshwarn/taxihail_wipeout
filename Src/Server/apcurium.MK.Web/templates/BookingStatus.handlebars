@@ -16,12 +16,14 @@
                     </div>
                 </div>
                 {{#if driverInfos}}
+                {{#if driverInfos.mobilePhone}}
                 <div class='clearfix'>
                     <label class="control-label">{{localize "Driver Phone"}}</label>
                     <div class="controls">
                         <label><a href='tel:{{driverInfos.mobilePhone}}'>{{driverInfos.mobilePhone}}</a></label>
                     </div>
                 </div>
+                {{/if}}
                 {{/if}}
                 <div class='clearfix eta hidden'>
                     <label class="control-label">{{localize "ETA"}}</label>
