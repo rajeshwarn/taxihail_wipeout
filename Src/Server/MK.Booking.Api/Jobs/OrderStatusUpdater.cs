@@ -322,6 +322,10 @@ namespace apcurium.MK.Booking.Api.Jobs
                     description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", languageCode);
                 }
             }
+            else if (ibsOrderInfo.IsMeterOffNotPaid)
+            {
+                SendPayInCarMessageToDriver();
+            }
 
             return description.HasValue()
                         ? description
@@ -337,6 +341,13 @@ namespace apcurium.MK.Booking.Api.Jobs
                 _ibsOrderService.SendMessageToDriver(etaMessage, vehicleNumber);
                 Log.Debug(etaMessage);
             }
+        }
+
+        private void SendPayInCarMessageToDriver()
+        {
+            string payInCarMessage = "Payment being processed by the app...";
+            _ibsOrderService.SendMessageToDriver(payInCarMessage);
+            Log.Debug(payInCarMessage);
         }
     }
 }
