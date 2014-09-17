@@ -343,6 +343,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var baseUrls = GetBaseUrls();
             var templateData = new
             {
+                // template is missing the toll, if we decide to add it, we need to make sure we hide it if it's empty
                 ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
                 AccentColor = _configurationManager.GetSetting(AccentColorSetting),
                 EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
@@ -370,7 +371,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
                 PickupAddress = pickupAddress.DisplayAddress,
                 DropOffAddress = hasDropOffAddress ? dropOffAddress.DisplayAddress : "-",
-                SubTotal = _resources.FormatPrice(fare+toll+tip),
+                SubTotal = _resources.FormatPrice(totalFare - tip), // represents everything except tip
                 StaticMapUri = staticMapUri,
                 ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
                 BaseUrlImg = baseUrls.BaseUrlAssetsImg,

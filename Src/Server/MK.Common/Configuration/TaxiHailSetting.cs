@@ -264,7 +264,10 @@ namespace MK.Common.Configuration
 		[Display(Name = "Show Assigned Vehicle Number On Pin", Description="Enable displaying the assigned vehicle number over its pin on the map")]
 		public bool ShowAssignedVehicleNumberOnPin { get; private set; }
 
+        [Display(Name = "VAT is Enabled", Description = "Enables the VAT calculation in the receipt")]
         public bool VATIsEnabled { get; private set; }
+
+        [Display(Name = "VAT Percentage", Description = "Percentage to use to calculate the VAT portion of a fare")]
         public int VATPercentage { get; private set; }
     }
 }
