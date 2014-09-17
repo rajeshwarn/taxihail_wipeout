@@ -33,7 +33,7 @@
             // Only update ride estimate & eta if enabled
             TaxiHail.parameters.isEstimateEnabled &&
                 this.model.on('change:pickupAddress change:dropOffAddress', function (model, value) {
-                    this.actualizeEstimate();
+                    this.validateOrderAndRefreshEstimate();
                 }, this);
             
             TaxiHail.parameters.isEtaEnabled &&
@@ -188,16 +188,45 @@
             this.$el.remove();
             return this;
         },
-        
-        actualizeEstimate: function () {
 
+        validateOrderAndRefreshEstimate: function()
+        {
             var $estimate = this.$('.estimate');
             $estimate
                 .find('.fare')
                 .text(TaxiHail.localize('Loading'));
 
+            this.$('.errors').html('');
+
+            this.$('.buttons .btn').addClass('disabled');
+
             this.model.validateOrder(true)
-               .done(_.bind(this.showErrors), this);
+                    .done(_.bind(function (result) {
+
+                        if (result.responseText) {
+                            result = JSON.parse(result.responseText).responseStatus;
+                        }
+
+                        if (result.hasError)
+                        {
+                            this.$('.buttons .btn').addClass('disabled');
+                            this.$('.buttons .btn').attr('disabled', 'disabled');
+                            this.showErrors(result);
+                            $estimate
+                                .find('.fare')
+                                .text('--');
+
+                        } else
+                        {
+                            this.$('.buttons .btn').removeClass('disabled');
+                            this.$('.buttons .btn').removeAttr('disabled');
+                            this.actualizeEstimate();
+                        }                        
+
+                    }, this));
+        },
+        
+        actualizeEstimate: function () {          
 
             var pickup = this.model.get('pickupAddress'),
                 dest = this.model.get('dropOffAddress');
@@ -242,17 +271,12 @@
             }
         },
 
-        showErrors: function (result) {
-           
-
-            if (result.responseText) {
-                result = JSON.parse(result.responseText).responseStatus;
-            }
+        showErrors: function (validationResult) {         
 
             var $alert = '';
-            if (result.hasError)
+            if (validationResult.hasError)
             {
-                var $alert = $('<div class="alert alert-error" />').text(result.message);
+                var $alert = $('<div class="alert alert-error" />').text(validationResult.message);
             }            
             
             this.$('.errors').html($alert);
