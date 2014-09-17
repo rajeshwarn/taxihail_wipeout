@@ -7,12 +7,12 @@ using System.Net;
 using System.Reflection;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.PushNotifications.Impl;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Booking.Services.Impl;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IAccountDao _dao;
         private readonly IDeviceDao _daoDevice;
         private readonly ILogger _logger;
+        private readonly IAppSettings _appSettings;
         private readonly INotificationService _notificationService;
         private readonly IConfigurationManager _configurationManager;
 
@@ -37,11 +38,13 @@ namespace apcurium.MK.Booking.Api.Services
             IDeviceDao device,
             INotificationService notificationService,
             IConfigurationManager configurationManager,
-            ILogger logger)
+            ILogger logger,
+            IAppSettings appSettings)
         {
             _dao = dao;
             _daoDevice = device;
             _logger = logger;
+            _appSettings = appSettings;
             _notificationService = notificationService;
             _configurationManager = configurationManager;
         }
@@ -102,7 +105,13 @@ namespace apcurium.MK.Booking.Api.Services
                         _notificationService.SendPasswordResetEmail("N3wp@s5w0rd", request.EmailAddress, "en");
                         break;
                     case NotificationService.EmailConstant.Template.Receipt:
-                        _notificationService.SendReceiptEmail(12345, "9007", "Alex Proteau", 45, 2, 6.75, 4.5, 58.25,
+                        var fareObject = _appSettings.Data.VATIsEnabled
+                            ? Fare.FromAmountInclTax(45, _appSettings.Data.VATPercentage)
+                            : Fare.FromAmountInclTax(45, 0);
+                        var toll = 0;
+                        var tip = (double)45*((double)15/(double)100);
+
+                        _notificationService.SendReceiptEmail(12345, "9007", "Alex Proteau", fareObject.AmountExclTax, toll, tip, fareObject.TaxAmount, fareObject.AmountExclTax + toll + tip + fareObject.TaxAmount,
                             _cardOnFile, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.Now, request.EmailAddress, "en", true);
                         break;
                     default:
