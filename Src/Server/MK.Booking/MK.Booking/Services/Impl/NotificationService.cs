@@ -303,6 +303,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
             }
 
+            var vatIsEnabled = _appSettings.Data.VATIsEnabled;
 
             var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
 
@@ -361,6 +362,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 TotalFare = _resources.FormatPrice(totalFare),
                 Note = _configurationManager.GetSetting("Receipt.Note"),
                 Tax = _resources.FormatPrice(tax),
+                vatIsEnabled,
                 IsCardOnFile = isCardOnFile,
                 CardOnFileAmount = cardOnFileAmount,
                 CardNumber = cardNumber,
