@@ -46,6 +46,7 @@ namespace apcurium.MK.Web
         protected string VehicleTypes { get; private set; }
         protected string DisableFutureBooking { get; private set; }
         protected bool IsWebSignupVisible { get; private set; }
+        protected double MaxFareEstimate { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -72,6 +73,7 @@ namespace apcurium.MK.Web
             EstimateWarningEnabled = config.GetSetting("Client.ShowEstimateWarning");
             EtaEnabled = config.GetSetting("Client.ShowEta");
             DestinationIsRequired = config.GetSetting("Client.DestinationIsRequired");
+            MaxFareEstimate = config.GetSetting<double>("Client.MaxFareEstimate", 100);
             
             var accountActivationDisabled = config.GetSetting("AccountActivationDisabled");
             AccountActivationDisabled = string.IsNullOrWhiteSpace(accountActivationDisabled)

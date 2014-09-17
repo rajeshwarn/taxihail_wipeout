@@ -41,7 +41,7 @@
             return $.when(getDirectionInfoEvent()).done(
               function (result) {
                   result.noFareEstimate = (result.price == 0);
-                  result.callForPrice = (result.price > 100);
+                  result.callForPrice = (result.price > TaxiHail.parameters.maxFareEstimate);
               }
             );
         },
