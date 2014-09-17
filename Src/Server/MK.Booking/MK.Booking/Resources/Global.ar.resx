@@ -307,10 +307,10 @@
     <value>في انتظار تعيين السائق</value>
   </data>
   <data name="PaymentConfirmationToDriver1" xml:space="preserve">
-    <value>قام الراكب بالدفع {0}</value>
+    <value>The passenger has paid</value>
   </data>
   <data name="PaymentConfirmationToDriver2" xml:space="preserve">
-    <value>رقم التصريح {0}</value>
+    <value>Fare: {0}   Tip: {1}</value>
   </data>
   <data name="PairingConfirmationToDriver" xml:space="preserve">
     <value>The client will be charged automatically at the end of the ride</value>
@@ -356,5 +356,11 @@
   </data>
   <data name="Email_Body_SubTotal" xml:space="preserve">
     <value>Subtotal</value>
+  </data>
+  <data name="PaymentConfirmationToDriver3" xml:space="preserve">
+    <value>Total: {0}</value>
+  </data>
+  <data name="PaymentConfirmationToDriver4" xml:space="preserve">
+    <value>Auth #{0}</value>
   </data>
 </root>

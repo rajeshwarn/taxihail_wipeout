@@ -39,15 +39,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
         {
             // Send message to driver
-            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, PaymentProvider.PayPal.ToString(), @event.PayPalPayerId);
+            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, PaymentProvider.PayPal.ToString(), @event.PayPalPayerId);
         }
 
         public void Handle(CreditCardPaymentCaptured @event)
         {
-            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Provider.ToString(), @event.AuthorizationCode);
+            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
         }
 
-        private void SendPaymentConfirmationToDriver(Guid orderId, decimal amount, string provider,  string authorizationCode)
+        private void SendPaymentConfirmationToDriver(Guid orderId, decimal amount, decimal meter, decimal tip, string provider,  string authorizationCode)
         {
             // Send message to driver
             var orderStatusDetail = _dao.FindOrderStatusById(orderId);
@@ -71,14 +71,19 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
 
             var amountString = _resources.FormatPrice((double)amount);
+            var meterString = _resources.FormatPrice((double?)meter);
+            var tipString = _resources.FormatPrice((double?)tip);
 
-            var line1 = string.Format(_resources.Get("PaymentConfirmationToDriver1"), amountString);
+            // Padded with 32 char because the MDT displays line of 32 char.  This will cause to write each string on a new line
+            var line1 = string.Format(_resources.Get("PaymentConfirmationToDriver1"));
             line1 = line1.PadRight(32, ' ');
-            //Padded with 32 char because the MDT displays line of 32 char.  This will cause to write the auth code on the second line
-            var line2 = string.Format(_resources.Get("PaymentConfirmationToDriver2"), authorizationCode);
+            var line2 = string.Format(_resources.Get("PaymentConfirmationToDriver2"), meterString, tipString);
+            line2 = line2.PadRight(32, ' ');
+            var line3 = string.Format(_resources.Get("PaymentConfirmationToDriver3"), amountString);
+            line3 = line3.PadRight(32, ' ');
+            var line4 = string.Format(_resources.Get("PaymentConfirmationToDriver4"), authorizationCode);
             
-            _ibs.SendPaymentNotification(line1 + line2, orderStatusDetail.VehicleNumber, orderDetail.IBSOrderId.Value);
-            
+            _ibs.SendPaymentNotification(line1 + line2 + line3 + line4, orderStatusDetail.VehicleNumber, orderDetail.IBSOrderId.Value);
         }
     }
 }
