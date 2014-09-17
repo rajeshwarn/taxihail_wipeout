@@ -348,7 +348,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private void SendPayInCarMessageToDriver()
         {
             string payInCarMessage = _resources.Get("PayInCarMessageToDriver", _languageCode);
-            _ibsOrderService.SendMessageToDriver(payInCarMessage);
+            _ibsOrderService.SendMessageToDriver(payInCarMessage, vehicleNumber);
             Log.Debug(payInCarMessage);
         }
     }
