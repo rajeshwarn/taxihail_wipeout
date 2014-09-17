@@ -10,15 +10,6 @@
         },
         
         initialize: function () {
-            this.model.on('change', function(model, value) {
-                
-                // Enable the buttons if model is valid
-                if (this.model.isValidAddress('pickupAddress') && (!TaxiHail.parameters.isDestinationRequired || (  TaxiHail.parameters.isDestinationRequired && this.model.isValidAddress('dropOffAddress'))))
-                {
-                    this.$('.buttons .btn').prop('disabled', false).removeClass('disabled');
-                } else this.$('.buttons .btn').prop('disabled', true).addClass('disabled');
-
-            }, this);
 
            this.model.on('change:pickupAddress', function(model, value) {
                 this._pickupAddressView.model.set(value);
@@ -178,6 +169,7 @@
 
             if (!this.model.isValidAddress('pickupAddress') || (TaxiHail.parameters.isDestinationRequired && !this.model.isValidAddress('dropOffAddress'))) {
                 this.$('.buttons .btn').addClass('disabled');
+                this.$('.buttons .btn').attr('disabled', 'disabled');
             }
             return this;
         },
@@ -196,9 +188,14 @@
                 .find('.fare')
                 .text(TaxiHail.localize('Loading'));
 
+            if (this.model.isValidAddress('pickupAddress') && this.model.isValidAddress('dropOffAddress')) {
+                $estimate.removeClass('hidden');
+            }
+
             this.$('.errors').html('');
 
             this.$('.buttons .btn').addClass('disabled');
+            this.$('.buttons .btn').attr('disabled', 'disabled');
 
             this.model.validateOrder(true)
                     .done(_.bind(function (result) {
@@ -213,8 +210,10 @@
                             this.$('.buttons .btn').attr('disabled', 'disabled');
                             this.showErrors(result);
                             $estimate
+                                .addClass('hidden')
                                 .find('.fare')
                                 .text('--');
+                            this.model.set({ 'estimate': '' });
 
                         } else
                         {
