@@ -262,7 +262,8 @@ namespace DatabaseInitializer
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message + " " + e.StackTrace);
+                Console.WriteLine(e.Message + "-" + e);
+                logger.Fatal(e.ToString());
                 logger.Fatal(e.Message, e);
                 return 1;
             }
