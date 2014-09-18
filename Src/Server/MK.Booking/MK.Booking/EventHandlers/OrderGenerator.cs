@@ -44,8 +44,11 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
-                order.Status = (int) OrderStatus.Canceled;
-                context.Save(order);
+                if (order != null)
+                {
+                    order.Status = (int) OrderStatus.Canceled;
+                    context.Save(order);
+                }
 
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 if (details != null)
