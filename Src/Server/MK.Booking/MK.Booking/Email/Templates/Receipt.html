@@ -7,317 +7,319 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>{{ localize "Email_Subject_AccountConfirmation" }}</title>
     <style>
-                /* -------------------------------------
+        /* -------------------------------------
             GLOBAL
         ------------------------------------- */
-                * {
-                    margin: 0;
-                    padding: 0;
-                    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-                    box-sizing: border-box;
-                    font-size: 14px;
-                }
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
 
-                img {
-                    max-width: 100%;
-                }
+        img {
+            max-width: 100%;
+            padding: 10px;
+        }
 
-                body {
-                    -webkit-font-smoothing: antialiased;
-                    -webkit-text-size-adjust: none;
-                    width: 100% !important;
-                    height: 100%;
-                    line-height: 1.6;
-                }
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-text-size-adjust: none;
+            width: 100% !important;
+            height: 100%;
+            line-height: 1.6;
+        }
 
-                /* Let's make sure all tables have defaults */
-                table td {
-                    vertical-align: top;
-                }
-                /* -------------------------------------
+        /* Let's make sure all tables have defaults */
+        table td {
+            vertical-align: top;
+        }
+        /* -------------------------------------
             BODY & CONTAINER
         ------------------------------------- */
 
 
-                .body-wrap {
-                    width: 100%;
-                }
+        .body-wrap {
+            width: 100%;
+        }
 
-                .container {
-                    /*display: block !important;*/
-                    max-width: 600px !important;
-                    margin: 0 auto !important;
-                    /* makes it centered */
-                    clear: both !important;
-                }
+        .container {
+            /*display: block !important;*/
+            max-width: 600px !important;
+            margin: 0 auto !important;
+            /* makes it centered */
+            clear: both !important;
+        }
 
-                .content {
-                    max-width: 600px;
-                    margin: 0 auto;
-                    display: block;
-                    padding: 20px;
-                }
+        .content {
+            max-width: 600px;
+            margin: 0 auto;
+            display: block;
+            padding: 20px;
+        }
 
-                /* -------------------------------------
+        /* -------------------------------------
             HEADER, FOOTER, MAIN
         ------------------------------------- */
-                .main {
-                    background: #fff;
-                    border: 1px solid #e9e9e9;
-                    border-radius: 3px;
-                }
+        .main {
+            background: #fff;
+            border: 1px solid #e9e9e9;
+            border-radius: 3px;
+        }
 
-                .content-wrap {
-                    padding: 20px;
-                }
+        .content-wrap {
+            padding: 20px;
+        }
 
-                .content-block {
-                    padding: 0 0 20px;
-                }
+        .content-block {
+            padding: 0 0 20px;
+        }
 
-                .header {
-                    width: 100%;
-                    margin-bottom: 20px;
-                }
+        .header {
+            width: 100%;
+            margin-bottom: 20px;
+        }
 
-                .footer {
-                    width: 100%;
-                    clear: both;
-                    color: #999;
-                    padding: 20px;
-                }
+        .footer {
+            width: 100%;
+            clear: both;
+            color: #999;
+            padding: 20px;
+        }
 
-                    .footer a {
-                        color: #999;
-                    }
+            .footer a {
+                color: #999;
+            }
 
-                    .footer p, .footer a, .footer unsubscribe, .footer td {
-                        font-size: 12px;
-                    }
+            .footer p, .footer a, .footer unsubscribe, .footer td {
+                font-size: 12px;
+            }
 
-                /* -------------------------------------
+        /* -------------------------------------
             GRID AND COLUMNS
         ------------------------------------- */
-                .column-left {
-                    float: left;
-                    width: 50%;
-                }
+        .column-left {
+            float: left;
+            width: 50%;
+        }
 
-                .column-right {
-                    float: left;
-                    width: 50%;
-                }
+        .column-right {
+            float: left;
+            width: 50%;
+        }
 
-                /* -------------------------------------
+        /* -------------------------------------
             TYPOGRAPHY
         ------------------------------------- */
-                h1, h2, h3 {
-                    font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-                    color: #000;
-                    margin: 40px 0 0;
-                    line-height: 1.2;
-                    font-weight: 400;
-                }
+        h1, h2, h3 {
+            font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            color: #000;
+            margin: 40px 0 0;
+            line-height: 1.2;
+            font-weight: 400;
+        }
 
-                h1 {
-                    font-size: 32px;
-                    font-weight: 500;
-                }
+        h1 {
+            font-size: 32px;
+            font-weight: 500;
+        }
 
-                h2 {
-                    font-size: 24px;
-                }
+        h2 {
+            font-size: 24px;
+        }
 
-                h3 {
-                    font-size: 18px;
-                }
+        h3 {
+            font-size: 18px;
+        }
 
-                h4 {
-                    font-size: 14px;
-                    font-weight: 600;
-                }
+        h4 {
+            font-size: 14px;
+            font-weight: 600;
+        }
 
-                p, ul, ol {
-                    margin-bottom: 10px;
-                    font-weight: normal;
-                }
+        p, ul, ol {
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
 
-                    p li, ul li, ol li {
-                        margin-left: 5px;
-                        list-style-position: inside;
-                    }
+            p li, ul li, ol li {
+                margin-left: 5px;
+                list-style-position: inside;
+            }
 
-                /* -------------------------------------
+        /* -------------------------------------
             LINKS & BUTTONS
         ------------------------------------- */
-                a {
-                    color: #348eda;
-                    text-decoration: underline;
-                }
+        a {
+            color: #348eda;
+            text-decoration: underline;
+        }
 
-                .btn-primary {
-                    text-decoration: none;
-                    color: #FFF;
-                    background-color: #348eda;
-                    border: solid #348eda;
-                    border-width: 10px 20px;
-                    line-height: 2;
-                    font-weight: bold;
-                    text-align: center;
-                    cursor: pointer;
-                    display: inline-block;
-                    border-radius: 5px;
-                    text-transform: capitalize;
-                }
+        .btn-primary {
+            text-decoration: none;
+            color: #FFF;
+            background-color: #348eda;
+            border: solid #348eda;
+            border-width: 10px 20px;
+            line-height: 2;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            display: inline-block;
+            border-radius: 5px;
+            text-transform: capitalize;
+        }
 
-                /* -------------------------------------
+        /* -------------------------------------
             OTHER STYLES THAT MIGHT BE USEFUL
         ------------------------------------- */
-                .last {
-                    margin-bottom: 0;
-                }
+        .last {
+            margin-bottom: 0;
+        }
 
-                .first {
-                    margin-top: 0;
-                }
+        .first {
+            margin-top: 0;
+        }
 
-                .padding {
-                    padding: 10px 0;
-                }
+        .padding {
+            padding: 10px 0;
+        }
 
-                .aligncenter {
-                    text-align: center;
-                }
+        .aligncenter {
+            text-align: center;
+        }
 
-                .alignright {
-                    text-align: right;
-                }
+        .alignright {
+            text-align: right;
+        }
 
-                .alignleft {
-                    text-align: left;
-                }
+        .alignleft {
+            text-align: left;
+        }
 
-                .clear {
-                    clear: both;
-                }
+        .clear {
+            clear: both;
+        }
 
-                /* -------------------------------------
+        /* -------------------------------------
             Alerts
         ------------------------------------- */
-                .alert {
-                    font-size: 16px;
-                    color: #fff;
-                    font-weight: 500;
-                    padding: 20px;
-                    text-align: center;
-                    border-radius: 3px 3px 0 0;
-                }
+        .alert {
+            font-size: 16px;
+            color: #fff;
+            font-weight: 500;
+            padding: 20px;
+            text-align: center;
+            border-radius: 3px 3px 0 0;
+        }
 
-                    .alert a {
-                        color: #fff;
-                        text-decoration: none;
-                        font-weight: 500;
-                        font-size: 16px;
-                    }
+            .alert a {
+                color: #fff;
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 16px;
+            }
 
-                    .alert.alert-warning {
-                        background: #ff9f00;
-                    }
+            .alert.alert-warning {
+                background: #ff9f00;
+            }
 
-                    .alert.alert-bad {
-                        background: #d0021b;
-                    }
+            .alert.alert-bad {
+                background: #d0021b;
+            }
 
-                    .alert.alert-good {
-                        background: #68b90f;
-                    }
+            .alert.alert-good {
+                background: #68b90f;
+            }
 
-                /* -------------------------------------
+        /* -------------------------------------
             INVOICE
         ------------------------------------- */
-                .invoice {
-                    margin: 15px auto;
-                    text-align: left;
-                    width: 80%;
-                    table-layout: fixed;
-                    word-wrap: break-word;
+        .invoice {
+            margin: 15px auto;
+            text-align: left;
+            width: 80%;
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
+
+            .invoice td {
+                padding: 5px 0;
+            }
+
+            .invoice .invoice-items {
+                width: 100%;
+            }
+
+                .invoice .invoice-items td {
+                    border-top: #eee 1px solid;
                 }
 
-                    .invoice td {
-                        padding: 5px 0;
-                    }
+                .invoice .invoice-items .total td {
+                    border-top: 2px solid #333;
+                    border-bottom: 2px solid #333;
+                    font-weight: 700;
+                }
 
-                    .invoice .invoice-items {
-                        width: 100%;
-                    }
-
-                        .invoice .invoice-items td {
-                            border-top: #eee 1px solid;
-                        }
-
-                        .invoice .invoice-items .total td {
-                            border-top: 2px solid #333;
-                            border-bottom: 2px solid #333;
-                            font-weight: 700;
-                        }
-
-                /* -------------------------------------
+        /* -------------------------------------
             RESPONSIVE AND MOBILE FRIENDLY STYLES
         ------------------------------------- */
 
 
 
 
-                .receipt_price {
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: 20px;
-                }
+        .receipt_price {
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
 
-                .receipt_date {
-                    text-align: center;
-                    text-transform: uppercase;
-                }
+        .receipt_date {
+            text-align: center;
+            text-transform: uppercase;
+        }
 
-                .receiptLeftInfo, .receiptRightInfo {
-                    width: 100%;
-                    float: left !important;
-                }
+        .receiptLeftInfo, .receiptRightInfo {
+            width: 100%;
+            float: left !important;
+        }
 
 
-                .route_list {
-                    text-align: left;
-                    /* float: left;*/
-                }
+        .route_list {
+            text-align: left;
+            /* float: left;*/
+        }
 
-                .route_list_title {
-                    font-weight: bold;
-                }
+        .route_list_title {
+            font-weight: bold;
+        }
 
-                .route_list_adddress {
-                    color: gray;
-                }
+        .route_list_adddress {
+            color: gray;
+        }
 
-                .route_list_img {
-                    float: left;
-                    padding: 7px 7px 0 0;
-                }
+        .route_list_img {
+            float: left;
+            padding: 7px 7px 0 0;
+        }
 
-                .route_list_item {
-                    text-align: left;
-                    padding-left: 5px;
-                }
+        .route_list_item {
+            text-align: left;
+            padding-left: 5px;
+        }
 
-                .route_departure, .route_arrival {
-                    margin: 0 auto;
-                    width: 80%;
-                    position: relative;
-                    table-layout: inherit;
-                }
+        .route_departure, .route_arrival {
+            margin: 0 auto;
+            width: 80%;
+            position: relative;
+            table-layout: inherit;
+        }
 
         .list_value {
-            text-align: right; 
-        } 
+            text-align: right;
+        }
+
         .fare_list_subtotal {
             font-weight: bold;
         }
@@ -325,7 +327,7 @@
         .fare_list_charged {
             font-weight: bolder;
         }
-        
+
         .title_block {
             background: -moz-linear-gradient(#ffffff 0%, #ffffff 49%, #000000 50%, #000000 51%, #ffffff 52%, #ffffff 100%);
             background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(49%, #ffffff), color-stop(50%, #000000), color-stop(51%, #000000), color-stop(52%, #ffffff), color-stop(100%, #ffffff));
@@ -340,21 +342,21 @@
             background-image: linear-gradient(#ffffff 0%, #ffffff 49%, #000000 50%, #000000 51%, #ffffff 52%, #ffffff 100%);
         }
 
-                .title_block {
-                    position: relative;
-                    z-index: 1;
-                    overflow: hidden;
-                    text-align: center;
-                    padding: 10px 20px 10px 20px;
-                    font-weight: bold;
-                    text-transform: uppercase;
-                    background-image: linear-gradient(#ffffff 0%, #ffffff 49%, #000000 50%, #000000 51%, #ffffff 52%, #ffffff 100%);
-                }
+        .title_block {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            text-align: center;
+            padding: 10px 20px 10px 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            background-image: linear-gradient(#ffffff 0%, #ffffff 49%, #000000 50%, #000000 51%, #ffffff 52%, #ffffff 100%);
+        }
 
-                    .title_block span {
-                        background-color: white;
-                        padding: 0 5px 0 5px;
-                    }
+            .title_block span {
+                background-color: white;
+                padding: 0 5px 0 5px;
+            }
     </style>
 
 </head>
@@ -369,7 +371,7 @@
                     <table class="main" width="100%" cellpadding="0" cellspacing="0" style="color:{{EmailFontColor}}">
                         <tr>
                             <td class="content-wrap aligncenter">
-                                <table width="100%" cellpadding="0" cellspacing="0">
+                                <table width="100%" cellpadding="0" cellspacing="0" style="background-color: white !important;border-radius:5px;">
                                     <tr>
                                         <td class="content-block">
                                             <img src="{{LogoImg}}" />
@@ -456,7 +458,10 @@
                                                                         <td class="list_value">{{ Fare }}</td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="fare_list_title">{{ localize "Email_Body_VAT"}}</td>
+                                                                        <td class="fare_list_title">
+                                                                            {{#vatIsEnabled}}{{ localize "Email_Body_VAT"}}{{/vatIsEnabled}}
+                                                                            {{^vatIsEnabled}}{{ localize "Email_Body_Tax"}}{{/vatIsEnabled}}
+                                                                        </td>
                                                                         <td class="list_value">{{ Tax }}</td>
                                                                     </tr>
                                                                     <tr class="fare_list_subtotal" style="color:{{EmailFontColor}} !important">
@@ -464,7 +469,7 @@
                                                                         <td class="list_value">{{ SubTotal }}</td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="fare_list_title" >{{ localize "Email_Body_Tip"}}</td>
+                                                                        <td class="fare_list_title">{{ localize "Email_Body_Tip"}}</td>
                                                                         <td class="list_value">{{ Tip }}</td>
                                                                     </tr>
                                                                     <tr class="fare_list_charged" style="color:{{EmailFontColor}} !important">

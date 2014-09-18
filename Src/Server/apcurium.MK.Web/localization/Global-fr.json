@@ -23,6 +23,7 @@
 	"Loading": "Chargement..." ,
 	"CreateAccount_AccountAlreadyExist" : "Cette adresse email est déjà utilisée",
     "CreateOrder_InvalidPickupAddress": "Adresse de départ invalide",
+    "CreateOrder_CannotCreateInIbs": "La commande ne peut être créée. Merci d'essayer de nouveau ou de nous appeler.",
     "CreateOrder_CannotCreateInIbs_1002": "L'adresse de départ est en dehors de la zone de service normale.",
     "CreateOrder_CannotCreateInIbs_1452": "L'adresse de destination est en dehors de la zone de service normale.",
 	"CreateOrder_CannotCreateInIbs_7000": "La commande ne peut être créée car votre compte est actuellement désactivé",
@@ -72,5 +73,10 @@
     "ChargeAccount": "Compte",
     "Account Not Found": "Le numéro de compte semble invalide",
     "Enter An Account Rider #": "Merci de saisir un numéro de compte valide",
-    "Continue": "Continuer"
+    "Continue": "Continuer",
+	"EtaDurationUnit" : "minute",
+	"EtaDurationUnitPlural" : "minutes",
+	"Eta" : "Le véhicule le plus proche est à {1} {2} et {0}",
+	"Estimate Display": "{0} {1}",
+	"AssignedEta" : "Votre véhicule est à {1} {2} et {0}"
 }

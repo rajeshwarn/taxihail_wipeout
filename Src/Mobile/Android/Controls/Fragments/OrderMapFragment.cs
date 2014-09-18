@@ -52,6 +52,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private IDictionary<string, BitmapDescriptor> _vehicleIcons; 
 
+		private const int _mapPadding = 60;
+
 		public OrderMapFragment(TouchableMap mapFragment, Resources resources, TaxiHailSetting settings)
         {
             _resources = resources;
@@ -65,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             // add padding to the map to move the Google logo around
             // the padding must be the same for left/right and top/bottom for the pins to be correctly aligned
-            Map.SetPadding (60.ToPixels(), 6.ToPixels(), 60.ToPixels(), 6.ToPixels());
+			Map.SetPadding (_mapPadding.ToPixels(), 6.ToPixels(), _mapPadding.ToPixels(), 6.ToPixels());
 
             _touchableMap = mapFragment;
 
@@ -263,6 +265,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             return bounds;
         }
 
+		private LatLngBounds GetRegionFromMapBounds(MapBounds bounds)
+		{
+			var maxLat = bounds.NorthBound;
+			var maxLon = bounds.EastBound;
+			var minLat = bounds.SouthBound;
+			var minLon = bounds.WestBound;
+
+			return new LatLngBounds (new LatLng (minLat, minLon), new LatLng (maxLat, maxLon));
+		}
 
         private void CreatePins()
         {
@@ -444,17 +455,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if (zoomHint != null)
             {
-				if (zoomHint.Bounds != null) {
+				if (zoomHint.Bounds != null) 
+				{
+					var newBounds = zoomHint.Bounds;
 
-					var availableVehiclesBounds = zoomHint.Bounds;
-					LatLngBounds.Builder builder = new LatLngBounds.Builder();
-					builder.Include (new LatLng (availableVehiclesBounds.NorthBound, availableVehiclesBounds.WestBound));
-					builder.Include (new LatLng (availableVehiclesBounds.SouthBound, availableVehiclesBounds.EastBound));
-					LatLngBounds bounds = builder.Build();
-					var cameraUpdate = CameraUpdateFactory.NewLatLngBounds (bounds, 0);
-					Map.AnimateCamera(cameraUpdate);
-
-				} else {
+					var currentBounds = this.GetMapBoundsFromProjection();
+					
+					if (Math.Abs(currentBounds.LongitudeDelta) <= Math.Abs(newBounds.LongitudeDelta))
+					{
+						Map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds (GetRegionFromMapBounds(newBounds), -_mapPadding.ToPixels())); // add a negative padding to counterbalance the map padding done for the "Google" legal logo on the map
+					}
+				} else 
+				{
 					Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(zoomHint.Latitude, zoomHint.Longitude), 15));
 				}
             }

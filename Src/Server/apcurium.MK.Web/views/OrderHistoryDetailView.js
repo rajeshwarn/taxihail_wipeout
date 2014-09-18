@@ -4,6 +4,7 @@
             "click [data-action=rebook]": "rebook",
             "click [data-action=cancel]": "cancel",
             "click [data-action=remove]": "remove",
+            "click [data-action=view-status]": "viewStatus",
             "click [data-action=send-receipt]": "sendReceipt"
         },
 
@@ -29,10 +30,11 @@
 
             var data = this.model.toJSON(),
                 status = this.model.getStatus();
-
+            
             _.extend(data, {
                 orderStatus:     status.toJSON(),
-                canCancel:       status.isActive(),
+                canCancel: status.isActive(),
+                isActive: status.isActive(),
                 canDelete:      !status.isActive(),
                 canPrintReceipt: status.canSendReceipt()
             });
@@ -72,7 +74,16 @@
                 }, this);
             }
         },
+        viewStatus: function (form) {
+            var lang = TaxiHail.getClientLanguage();
+            this.model.set('ClientLanguageCode', lang);
+            this.model.set('FromWebApp', true);
+            this.model.saveLocal();
+            var model = this.model;
 
+            TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
+            
+        },
         sendReceipt: function() {
             if (this.model.getStatus().isCompleted()) {
                 

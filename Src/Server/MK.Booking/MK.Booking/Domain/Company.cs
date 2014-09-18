@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
@@ -296,8 +297,8 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void CreateRule(Guid ruleId, string name, string message, string zoneList, RuleType type,
-            RuleCategory category, bool appliedToCurrentBooking, bool appliesToFutureBooking, int priority,
+        public void CreateRule(Guid ruleId, string name, string message, string zoneList,bool zoneRequired, RuleType type,
+            RuleCategory category, bool appliedToCurrentBooking, bool appliesToFutureBooking,bool appliesToPickup, bool appliesToDropoff, int priority,
             bool isActive, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom,
             DateTime? activeTo)
         {
@@ -327,9 +328,12 @@ namespace apcurium.MK.Booking.Domain
                 Name = name,
                 Message = message,
                 ZoneList = zoneList,
+                ZoneRequired = zoneRequired,
                 Category = category,
                 AppliesToCurrentBooking = appliedToCurrentBooking,
                 AppliesToFutureBooking = appliesToFutureBooking,
+                AppliesToPickup = appliesToPickup,
+                AppliesToDropoff = appliesToDropoff,
                 IsActive = isActive,
                 DaysOfTheWeek = daysOfTheWeek,
                 StartTime = startTime,
@@ -340,8 +344,8 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdateRule(Guid ruleId, string name, string message, string zoneList, bool appliedToCurrentBooking,
-            bool appliesToFutureBooking, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime,
+        public void UpdateRule(Guid ruleId, string name, string message, string zoneList, bool zoneRequired, bool appliedToCurrentBooking,
+            bool appliesToFutureBooking, bool appliesToPickup, bool appliesToDropoff, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime,
             DateTime? activeFrom, DateTime? activeTo, int priority, bool isActive)
         {
             Update(new RuleUpdated
@@ -350,8 +354,11 @@ namespace apcurium.MK.Booking.Domain
                 Name = name,
                 Message = message,
                 ZoneList = zoneList,
+                ZoneRequired = zoneRequired,
                 AppliesToCurrentBooking = appliedToCurrentBooking,
                 AppliesToFutureBooking = appliesToFutureBooking,
+                AppliesToPickup = appliesToPickup,
+                AppliesToDropoff = appliesToDropoff,
                 IsActive = isActive,
                 DaysOfTheWeek = daysOfTheWeek,
                 StartTime = startTime,

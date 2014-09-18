@@ -259,6 +259,7 @@
     <Content Include="assets\img\email_red_dot.png" />
     <Content Include="assets\img\nearby_cab.png" />
     <Content Include="assets\img\pin_cluster.png" />
+    <Content Include="assets\img\refresh.png" />
     <Content Include="assets\img\suv_badge.png" />
     <Content Include="assets\img\taxi_badge.png" />
     <Content Include="assets\js\storage-polyfill.js" />

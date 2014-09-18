@@ -18,19 +18,19 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			_logger = logger;
         }
 
-        public async Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int vehicleTypeId)
-        {
-            var response = await  Client.GetAsync(new AvailableVehicles
-            {
-            	Latitude = latitude,
-                Longitude = longitude,
-                VehicleTypeId = vehicleTypeId
-            });
-                    
+		public async Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int vehicleTypeId)
+		{
+			var response = await  Client.GetAsync(new AvailableVehicles
+				{
+					Latitude = latitude,
+					Longitude = longitude,
+					VehicleTypeId = vehicleTypeId
+				});
+
 			_logger.Maybe(() => _logger.LogMessage (string.Format("Available vehicle found for lat {0}, long {1} count = {2}",latitude,longitude, response.Count )));
 
 			return response.ToArray();
-        }
+		}
 
 		public async Task<VehicleType[]> GetVehicleTypes()
 	    {

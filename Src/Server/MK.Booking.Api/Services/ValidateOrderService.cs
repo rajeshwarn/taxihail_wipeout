@@ -21,63 +21,38 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IConfigurationManager _configManager;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
-        private readonly IBookingWebServiceClient _bookingWebServiceClient;
 
         public ValidateOrderService(
             IConfigurationManager configManager,
             IStaticDataWebServiceClient staticDataWebServiceClient,
-            IBookingWebServiceClient bookingWebServiceClient,
             IRuleCalculator ruleCalculator)
         {
             _configManager = configManager;
             _staticDataWebServiceClient = staticDataWebServiceClient;
-            _bookingWebServiceClient = bookingWebServiceClient;
             _ruleCalculator = ruleCalculator;
         }
 
         public object Post(ValidateOrderRequest request)
         {
-            Log.Info("Validating order request : ");
-
-            var pickupZone = request.TestZone;
-            if (!request.TestZone.HasValue())
-            {
-                pickupZone = _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
+            Func<string> getPickupZone =
+                () => request.TestZone.HasValue() ? request.TestZone : _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
                     request.PickupAddress.Latitude, request.PickupAddress.Longitude);
-            }
 
-            string dropoffZone = null;
-            if (request.DropOffAddress != null)
-            {
-                dropoffZone = _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
-                    request.DropOffAddress.Latitude, request.DropOffAddress.Longitude);
-            }
-                       
+            Func<string> getDropoffZone =
+                () =>
+                    request.DropOffAddress != null
+                        ? _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
+                            request.DropOffAddress.Latitude, request.DropOffAddress.Longitude)
+                        : null;
 
             if (request.ForError)
             {
-                //pass dropoff because aexid is using it only for dropoff
-                var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue,
-                   request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),
-                   () => dropoffZone);
+                    var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue,
+                                           request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),
+                                           getPickupZone, getDropoffZone);
 
-                //if the rule for disable has passed then we can check the exclusion zone
                 var hasError = rule != null;
                 var message = rule != null ? rule.Message : null;
-
-                if(!hasError)
-                {
-                    var invalidPickUpZone = !_bookingWebServiceClient.ValidateZone(pickupZone, "IBS.ValidatePickupZone",
-                        "IBS.PickupZoneToExclude");
-                    var invalidDropoffZone = !_bookingWebServiceClient.ValidateZone(dropoffZone, "IBS.ValidateDestinationZone",
-                        "IBS.DestinationZoneToExclude");
-
-                    hasError = invalidPickUpZone || invalidDropoffZone;
-                    if (hasError)
-                    {
-                        message = invalidPickUpZone ? "Cette zone de départ n'est pas desservie" : "Cette zone d'arrivée n'est pas desservie";
-                    }
-                }
 
                 Log.Debug(string.Format("Has Error : {0}, Message: {1}", hasError, message));
 
@@ -90,9 +65,9 @@ namespace apcurium.MK.Booking.Api.Services
             else
             {
 
-                var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue,
-                    request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),
-                    () => pickupZone);
+                    var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue,
+                                            request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), 
+                                            getPickupZone, getDropoffZone);
 
                 return new OrderValidationResult
                 {
@@ -106,7 +81,7 @@ namespace apcurium.MK.Booking.Api.Services
         private DateTime GetCurrentOffsetedTime()
         {
             var ibsServerTimeDifference =
-                _configManager.GetSetting("IBS.TimeDifference").SelectOrDefault(setting => long.Parse(setting), 0);
+                _configManager.GetSetting("IBS.TimeDifference").SelectOrDefault(long.Parse, 0);
             var offsetedTime = DateTime.Now.AddMinutes(2);
             if (ibsServerTimeDifference != 0)
             {

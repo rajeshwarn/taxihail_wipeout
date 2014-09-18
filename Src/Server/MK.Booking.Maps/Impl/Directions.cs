@@ -2,11 +2,9 @@
 
 using System;
 using System.Globalization;
-using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.MapDataProvider;
-using apcurium.MK.Booking.MapDataProvider.Resources;
 
 #endregion
 namespace apcurium.MK.Booking.Maps.Impl
@@ -55,7 +53,10 @@ namespace apcurium.MK.Booking.Maps.Impl
                         direction.Distance,
                         date ?? DateTime.Now,
                         direction.Duration, vehicleTypeId);
-                    result.FormattedPrice = result.Price == null ? string.Empty : string.Format(new CultureInfo(_appSettings.Data.PriceFormat), "{0:C}",result.Price.Value);
+
+                    result.FormattedPrice = result.Price == null 
+                        ? string.Empty 
+                        : string.Format(new CultureInfo(_appSettings.Data.PriceFormat), "{0:C}", result.Price.Value);
                 }
 
                 result.FormattedDistance = FormatDistance(result.Distance);

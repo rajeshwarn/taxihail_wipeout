@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             var notificationService = new NotificationService(
                 () => new BookingDbContext(DbName),
                 null,
-                new TemplateService(_configurationManager),
+                new TemplateService(_configurationManager, _configurationManager),
                 _emailSenderMock.Object,
                 _configurationManager,
                 _configurationManager,

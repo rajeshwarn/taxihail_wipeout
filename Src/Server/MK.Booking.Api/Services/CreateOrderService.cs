@@ -73,8 +73,7 @@ namespace apcurium.MK.Booking.Api.Services
             _updateOrderStatusJob = updateOrderStatusJob;
             _orderDao = orderDao;
 
-            var applicationKey = _configManager.GetSetting("TaxiHail.ApplicationKey");
-            _resources = new Resources.Resources(applicationKey);
+            _resources = new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
         }
 
         public object Post(CreateOrder request)
@@ -88,7 +87,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Guid? pendingOrderId = GetPendingOrder();
 
                 // We don't allow order creation if there's already on order being scheduled
-                if (pendingOrderId != null)
+                if (pendingOrderId != null && !request.FromWebApp)
                 {
                     throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
                 }
@@ -106,7 +105,9 @@ namespace apcurium.MK.Booking.Api.Services
                 request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),
                 () =>
                     _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
-                        request.PickupAddress.Latitude, request.PickupAddress.Longitude));
+                        request.PickupAddress.Latitude, request.PickupAddress.Longitude),
+                () => request.DropOffAddress != null ? _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
+                    request.DropOffAddress.Latitude, request.DropOffAddress.Longitude) : null);
 
             if (rule != null)
             {
@@ -139,17 +140,23 @@ namespace apcurium.MK.Booking.Api.Services
                 ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
             }
 
-            var chargeType = ChargeTypes.GetList()
+            var chargeTypeKey = ChargeTypes.GetList()
                     .Where(x => x.Id == request.Settings.ChargeTypeId)
                     .Select(x => x.Display)
                     .FirstOrDefault();
 
-            if (chargeType != null)
+            string chargeTypeIbs = string.Empty;
+            string chargeTypeEmail = string.Empty;
+            if (chargeTypeKey != null)
             {
-                chargeType = _resources.Get(chargeType, _appSettings.Data.PriceFormat);
+                // this must be localized with the priceformat to be localized in the language of the company
+                // because it is sent to the driver
+                chargeTypeIbs = _resources.Get(chargeTypeKey, _appSettings.Data.PriceFormat);
+
+                chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
             }
 
-            var ibsOrderId = CreateIbsOrder(account, request, referenceData, chargeType);
+            var ibsOrderId = CreateIbsOrder(account, request, referenceData, chargeTypeIbs);
 
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
@@ -182,9 +189,9 @@ namespace apcurium.MK.Booking.Api.Services
                     .Select(x => x.Display)
                     .FirstOrDefault();
 
-            command.Settings.ChargeType = chargeType;
+            command.Settings.ChargeType = chargeTypeIbs;
             command.Settings.VehicleType = vehicleType;
-            emailCommand.Settings.ChargeType = chargeType;
+            emailCommand.Settings.ChargeType = chargeTypeEmail;
             emailCommand.Settings.VehicleType = vehicleType;
 
             _commandBus.Send(command);
@@ -377,15 +384,7 @@ namespace apcurium.MK.Booking.Api.Services
                 return default(Fare);
             }
 
-            var vatEnabled = _configManager.GetSetting("VATIsEnabled", false);
-
-            if (!vatEnabled)
-            {
-                return Fare.FromAmountInclTax((decimal) estimate.Price.Value, 0m);
-            }
-
-            var taxPercentage = _configManager.GetSetting("VATPercentage", 0d);
-            return Fare.FromAmountInclTax((decimal) estimate.Price.Value, (decimal) taxPercentage);
+            return Fare.FromAmountInclTax(estimate.Price.Value, 0);
         }
 
         private Guid? GetPendingOrder()

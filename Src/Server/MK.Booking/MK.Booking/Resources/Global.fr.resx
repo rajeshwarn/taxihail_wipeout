@@ -240,6 +240,9 @@
   <data name="Email_Body_VAT" xml:space="preserve">
     <value>TVA</value>
   </data>
+  <data name="Email_Body_Tax" xml:space="preserve">
+    <value>Taxes</value>
+  </data>
   <data name="Email_Body_VehicleNumber" xml:space="preserve">
     <value>Véhicule #</value>
   </data>
@@ -250,7 +253,7 @@
     <value>Bienvenue chez {{ ApplicationName }}</value>
   </data>
   <data name="Email_Subject_BookingConfirmation" xml:space="preserve">
-    <value>{{ ApplicationName }} : Réservation confirmation</value>
+    <value>{{ ApplicationName }} : Confirmation de réservation</value>
   </data>
   <data name="Email_Subject_DriverAssigned" xml:space="preserve">
     <value>{{ ApplicationName }} : Votre chauffeur est en chemin</value>

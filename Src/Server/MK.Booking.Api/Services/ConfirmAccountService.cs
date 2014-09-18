@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Api.Services
                 // Determine the root path to the app 
                 var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
 
-                var template = _templateService.Find("AccountConfirmationSuccess");
+                var template = _templateService.Find("AccountConfirmationSuccess",account.Language);
                 var templateData = new
                 {
                     ApplicationName = _configurationManager.GetSetting("TaxiHail.ApplicationName"),
