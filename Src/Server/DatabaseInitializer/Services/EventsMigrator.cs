@@ -50,8 +50,9 @@ namespace DatabaseInitializer.Services
                         .ToList();
                 
 
+                    hasMore = events.Count == pageSize;
+                    Console.WriteLine("Number of events migrated: " + (hasMore ? skip : (skip + events.Count)));
                     skip += pageSize;
-                    Console.WriteLine("Number of events: " + skip);
 
                     // fix BraintreeClientSettings namespace problem
                     foreach (var message in events.Where(x => x.EventType == typeof(PaymentSettingUpdated).FullName).ToList())
@@ -132,7 +133,6 @@ namespace DatabaseInitializer.Services
                         message.Payload = Serialize(@event);
                     }
                     context.SaveChanges();
-                    hasMore = events.Count == pageSize;
                 }
             }
         }

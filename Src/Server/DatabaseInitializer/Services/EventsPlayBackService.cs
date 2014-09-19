@@ -53,10 +53,10 @@ namespace DatabaseInitializer.Services
                                     .Take(pageSize)
                                     .ToList();
                 }
-
+                
+                hasMore = events.Count == pageSize;
+                Console.WriteLine("Number of events played: " + (hasMore ? skip : (skip + events.Count)));
                 skip += pageSize;
-
-                Console.WriteLine("Number of events: " + skip);
                 
                 if (events.Any())
                 {
@@ -68,8 +68,7 @@ namespace DatabaseInitializer.Services
                         });
                     }
                 }
-
-                hasMore = events.Count == pageSize;
+                
             }
             
         }
