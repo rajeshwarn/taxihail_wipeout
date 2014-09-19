@@ -313,7 +313,7 @@
     <value>Fare: {0}   Tip: {1}</value>
   </data>
   <data name="PairingConfirmationToDriver" xml:space="preserve">
-    <value>The client will be charged automatically at the end of the ride</value>
+    <value>Fare will be paid by the app</value>
   </data>
   <data name="UnpairingConfirmationToDriver" xml:space="preserve">
     <value>WARNING: The client will NOT be charged at the end of the ride</value>
@@ -362,5 +362,11 @@
   </data>
   <data name="PaymentConfirmationToDriver4" xml:space="preserve">
     <value>Auth #{0}</value>
+  </data>
+  <data name="PayInCarMessageToDriver" xml:space="preserve">
+    <value>Payment being processed by the app...</value>
+  </data>
+  <data name="EtaMessageToDriver" xml:space="preserve">
+    <value>ETA displayed to client is {0} and {1} min</value>
   </data>
 </root>
