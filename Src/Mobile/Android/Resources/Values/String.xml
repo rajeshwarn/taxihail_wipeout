@@ -98,7 +98,7 @@
   <string name="DeleteBookItButtonImageNamePressed">Assets/Button/btnBookIt-Pressed_en.png</string>
   <string name="StreetNumberPlacesBt">Search for places</string>
   <string name="CreateAccountTitleMr">Mr</string>
-  <string name="EstimatePriceFormat">Estimated Fare : {0}</string>
+  <string name="EstimatePriceFormat">Estimated Fare : {0:C} ({1})</string>
   <string name="PanelMenuViewOrderHistoryText">History</string>
   <string name="ResetPasswordSucessTitle">Password reset</string>
   <string name="TabSearch">Search</string>
@@ -379,7 +379,7 @@
   <string name="ResetPasswordConfirmationTitle">Password sent</string>
   <string name="View_SearchAddress">Address Search</string>
   <string name="ApartmentLabel">Apartment</string>
-  <string name="UpdatePasswordConfirmationLabel">Confirmation</string>
+  <string name="UpdatePasswordConfirmationLabel">Confirm New Password</string>
   <string name="dummyaaa">xaaa</string>
   <string name="View_BookSettingMenu">Settings</string>
   <string name="DateTimePickerPickInvalidDateMessage">The pickup date must be in the future.</string>
@@ -497,4 +497,6 @@
   <string name="AccountConfirmation_ErrorTitle">Cannot confirm account</string>
   <string name="ServiceErrorCreateAccount_CannotSendSMS">The confirmation code is incorrect.</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
+  <string name="CurrencyPriceFormat">{0:C}</string>
+  <string name="LoginSupport">Need support?</string>
 </resources>
