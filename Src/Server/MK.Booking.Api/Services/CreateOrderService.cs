@@ -384,15 +384,7 @@ namespace apcurium.MK.Booking.Api.Services
                 return default(Fare);
             }
 
-            var vatEnabled = _configManager.GetSetting("VATIsEnabled", false);
-
-            if (!vatEnabled)
-            {
-                return Fare.FromAmountInclTax((decimal) estimate.Price.Value, 0m);
-            }
-
-            var taxPercentage = _configManager.GetSetting("VATPercentage", 0d);
-            return Fare.FromAmountInclTax((decimal) estimate.Price.Value, (decimal) taxPercentage);
+            return Fare.FromAmountInclTax(estimate.Price.Value, 0);
         }
 
         private Guid? GetPendingOrder()

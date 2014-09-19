@@ -394,6 +394,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tax.
+        /// </summary>
+        public static string Email_Body_Tax {
+            get {
+                return ResourceManager.GetString("Email_Body_Tax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thank you!.
         /// </summary>
         public static string Email_Body_ThankYou {
@@ -691,7 +700,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The passenger has paid.
+        ///   Looks up a localized string similar to The passenger has paid {0}.
         /// </summary>
         public static string PaymentConfirmationToDriver1 {
             get {
