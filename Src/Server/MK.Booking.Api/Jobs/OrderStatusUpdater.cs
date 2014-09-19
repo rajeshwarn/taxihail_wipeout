@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly Resources.Resources _resources;
         private readonly IAppSettings _appSettings;
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(CreateOrderService));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(OrderStatusUpdater));
 
         private string _languageCode = "";
 
@@ -215,7 +215,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             double tipPercentage = pairingInfo.AutoTipPercentage ?? _appSettings.Data.DefaultTipPercentage;
             var tipAmount = GetTipAmount(meterAmount, tipPercentage);
 
-            _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
+           var paymentResult =  _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
             {
                 OrderId = orderStatusDetail.OrderId,
                 CardToken = pairingInfo.TokenOfCardToBeUsedForPayment,
@@ -224,11 +224,19 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Amount = Convert.ToDecimal(meterAmount + tipAmount)
             });
 
-            // whether there's a success or not, we change the status back to Completed since we can't process the payment again
-            orderStatusDetail.Status = OrderStatus.Completed;
+            if (paymentResult.IsSuccessfull)
+            {
+                // whether there's a success or not, we change the status back to Completed since we can't process the payment again
+                orderStatusDetail.Status = OrderStatus.Completed;
 
-            Log.DebugFormat("Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
-                                            meterAmount, tipPercentage, tipAmount, meterAmount + tipAmount);
+                Log.DebugFormat(
+                    "Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
+                    meterAmount, tipPercentage, tipAmount, meterAmount + tipAmount);
+            }
+            else
+            {
+               Log.DebugFormat("Error During Payment : " + paymentResult.Message);
+            }
         }
 
         private double GetTipAmount(double amount, double percentage)
