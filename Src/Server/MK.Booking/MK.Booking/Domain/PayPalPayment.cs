@@ -12,6 +12,8 @@ namespace apcurium.MK.Booking.Domain
     public class PayPalPayment : EventSourced
     {
         private decimal _amount;
+        private decimal _tip;
+        private decimal _meter;
         private bool _cancelled;
         private bool _completed;
         private Guid _orderId;
@@ -64,6 +66,8 @@ namespace apcurium.MK.Booking.Domain
                 OrderId = _orderId,
                 Token = _token,
                 Amount = _amount,
+                Meter = _meter,
+                Tip = _tip
             });
         }
 
@@ -90,6 +94,8 @@ namespace apcurium.MK.Booking.Domain
             _orderId = obj.OrderId;
             _token = obj.Token;
             _amount = obj.Amount;
+            _tip = obj.Tip;
+            _meter = obj.Meter;
         }
     }
 }

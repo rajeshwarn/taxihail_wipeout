@@ -709,11 +709,29 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auth #{0}.
+        ///   Looks up a localized string similar to Fare: {0}   Tip: {1}.
         /// </summary>
         public static string PaymentConfirmationToDriver2 {
             get {
                 return ResourceManager.GetString("PaymentConfirmationToDriver2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total: {0}.
+        /// </summary>
+        public static string PaymentConfirmationToDriver3 {
+            get {
+                return ResourceManager.GetString("PaymentConfirmationToDriver3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auth #{0}.
+        /// </summary>
+        public static string PaymentConfirmationToDriver4 {
+            get {
+                return ResourceManager.GetString("PaymentConfirmationToDriver4", resourceCulture);
             }
         }
         
