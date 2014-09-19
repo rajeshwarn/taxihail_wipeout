@@ -224,19 +224,19 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Amount = Convert.ToDecimal(meterAmount + tipAmount)
             });
 
-            if (paymentResult.IsSuccessfull)
-            {
-                // whether there's a success or not, we change the status back to Completed since we can't process the payment again
-                orderStatusDetail.Status = OrderStatus.Completed;
+           // whether there's a success or not, we change the status back to Completed since we can't process the payment again
+           orderStatusDetail.Status = OrderStatus.Completed;
 
+           if (paymentResult.IsSuccessfull)
+            {
                 Log.DebugFormat(
                     "Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
                     meterAmount, tipPercentage, tipAmount, meterAmount + tipAmount);
             }
             else
             {
-               var messageToDriver =  _resources.Get("PayInCarMessageToDriver", _languageCode);
-               _ibsOrderService.SendMessageToDriver(orderStatusDetail.VehicleNumber, messageToDriver);
+                var messageToDriver = _resources.Get("PaymentFailedToDriver", _languageCode);
+                _ibsOrderService.SendMessageToDriver(messageToDriver, orderStatusDetail.VehicleNumber);
                Log.DebugFormat("Error During Payment : " + paymentResult.Message);
             }
         }
