@@ -307,10 +307,10 @@
     <value>En attente d'affectation</value>
   </data>
   <data name="PaymentConfirmationToDriver1" xml:space="preserve">
-    <value>Le passager a payé un montant de {0}</value>
+    <value>Le passager a payé</value>
   </data>
   <data name="PaymentConfirmationToDriver2" xml:space="preserve">
-    <value>Numéro d'authorisation {0}</value>
+    <value>Course: {0}   Pourboire: {1}</value>
   </data>
   <data name="PairingConfirmationToDriver" xml:space="preserve">
     <value>La course sera payée à partir de l'application</value>
@@ -369,10 +369,18 @@
   <data name="Email_Body_SubTotal" xml:space="preserve">
     <value>Sous Total</value>
   </data>
-  <data name="EtaMessageToDriver" xml:space="preserve">
+  <data name="PaymentConfirmationToDriver3" xml:space="preserve">
+    <value>Total: {0}</value>
+  </data>
+  <data name="PaymentConfirmationToDriver4" xml:space="preserve">
+    <value>Numéro d'autorisation: {0}</value>
+  </data>
+ <data name="EtaMessageToDriver" xml:space="preserve">
     <value>L'ETA affiché au client est de {0} et {1} minutes</value>
   </data>
   <data name="PayInCarMessageToDriver" xml:space="preserve">
     <value>Paiment en cours via l'application du passager...</value>
   </data>
+
+
 </root>

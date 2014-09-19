@@ -172,9 +172,9 @@
     <value>Sorry no cars are available due to high demand, please try later.</value>
   </data>
   <data name="PaymentConfirmationToDriver1" xml:space="preserve">
-    <value>The passenger has paid {0}</value>
+    <value>The passenger has paid</value>
   </data>
-  <data name="PaymentConfirmationToDriver2" xml:space="preserve">
+  <data name="PaymentConfirmationToDriver4" xml:space="preserve">
     <value>Auth #{0}</value>
   </data>
   <data name="PairingConfirmationToDriver" xml:space="preserve">
@@ -363,10 +363,17 @@
   <data name="Email_Body_SubTotal" xml:space="preserve">
     <value>Subtotal</value>
   </data>
-  <data name="EtaMessageToDriver" xml:space="preserve">
+<data name="PaymentConfirmationToDriver2" xml:space="preserve">
+    <value>Fare: {0}   Tip: {1}</value>
+  </data>
+  <data name="PaymentConfirmationToDriver3" xml:space="preserve">
+    <value>Total: {0}</value>
+  </data>
+ <data name="EtaMessageToDriver" xml:space="preserve">
     <value>ETA displayed to client is {0} and {1} min</value>
   </data>
   <data name="PayInCarMessageToDriver" xml:space="preserve">
     <value>Payment being processed by the app...</value>
   </data>
+
 </root>
