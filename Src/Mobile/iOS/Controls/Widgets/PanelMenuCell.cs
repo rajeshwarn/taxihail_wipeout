@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             // this color is added on top of the menu color
             // 0.04 value for alpha was obtained by a picky client wanting a specific selected color
-            var selectedColorDelta = Theme.IsLightContent
+            var selectedColorDelta = Theme.ShouldHaveLightContent(Theme.MenuColor)
                 ? UIColor.White.ColorWithAlpha (0.04f)
                 : UIColor.Black.ColorWithAlpha (0.04f);
             BackgroundView = new CustomCellBackgroundView(Frame, LeftPadding, UIColor.Clear, selectedColorDelta);
@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			Accessory = UITableViewCellAccessory.None;
 
 			TextLabel.Font = UIFont.FromName (FontName.HelveticaNeueLight, 36 / 2);
-            TextLabel.TextColor = Theme.IsLightContent 
+            TextLabel.TextColor = Theme.ShouldHaveLightContent(Theme.MenuColor)
                 ? UIColor.White
                 : UIColor.FromRGB (79, 76, 71);
 		}

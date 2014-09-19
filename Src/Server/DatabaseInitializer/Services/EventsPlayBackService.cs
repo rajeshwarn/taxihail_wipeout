@@ -37,29 +37,40 @@ namespace DatabaseInitializer.Services
 
         public void ReplayAllEvents()
         {
-            IEnumerable<Event> allEvents;
-            using (var context = _contextFactory.Invoke())
+            var skip = 0;
+            var hasMore = true;
+            const int pageSize = 10000;
+            while(hasMore)
             {
-                // order by date then by version in case two events happened at the same time
-                allEvents = context.Set<Event>().OrderBy(x => x.EventDate).ThenBy(x => x.Version).ToList();
-            }
-
-            Console.WriteLine( "Total number of events: " + allEvents.Count().ToString() );
-
-            int progress = 0;
-            if (allEvents.Any())
-            {
-                foreach (var @event in allEvents)
+                List<Event> events;
+                using (var context = _contextFactory.Invoke())
                 {
-                    _eventBus.Publish(new Envelope<IEvent>(Deserialize(@event)) {CorrelationId = @event.CorrelationId});
-                    
-                    progress ++;                    
-                    if( progress % 1000 == 0 )
+                    // order by date then by version in case two events happened at the same time
+                    events = context.Set<Event>()
+                                    .OrderBy(x => x.EventDate)
+                                    .ThenBy(x => x.Version)
+                                    .Skip(skip)
+                                    .Take(pageSize)
+                                    .ToList();
+                }
+                
+                hasMore = events.Count == pageSize;
+                Console.WriteLine("Number of events played: " + (hasMore ? skip : (skip + events.Count)));
+                skip += pageSize;
+                
+                if (events.Any())
+                {
+                    foreach (var @event in events)
                     {
-                        Console.WriteLine( "Played event count : " +  progress.ToString() );
+                        _eventBus.Publish(new Envelope<IEvent>(Deserialize(@event))
+                        {
+                            CorrelationId = @event.CorrelationId
+                        });
                     }
                 }
+                
             }
+            
         }
 
         private IVersionedEvent Deserialize(Event @event)
