@@ -268,7 +268,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_bookingService.SendRatingReview(orderRating);
 			HasRated = true;
-			this.ReturnResult(new OrderRated(this, OrderId));
+			CanRate = false;
 		}
 
 		public bool CanUserLeaveScreen()
