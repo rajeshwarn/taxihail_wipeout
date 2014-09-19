@@ -235,6 +235,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             else
             {
+               var messageToDriver =  _resources.Get("PayInCarMessageToDriver", _languageCode);
+               _ibsOrderService.SendMessageToDriver(orderStatusDetail.VehicleNumber, messageToDriver);
                Log.DebugFormat("Error During Payment : " + paymentResult.Message);
             }
         }

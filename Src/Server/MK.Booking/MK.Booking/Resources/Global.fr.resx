@@ -378,12 +378,13 @@
   <data name="PaymentConfirmationToDriver4" xml:space="preserve">
     <value>Numéro d'autorisation: {0}</value>
   </data>
- <data name="EtaMessageToDriver" xml:space="preserve">
+  <data name="EtaMessageToDriver" xml:space="preserve">
     <value>L'ETA affiché au client est de {0} et {1} minutes</value>
   </data>
   <data name="PayInCarMessageToDriver" xml:space="preserve">
     <value>Paiment en cours via l'application du passager...</value>
   </data>
-
-
+  <data name="PaymentFailedToDriver" xml:space="preserve">
+    <value>Paiment in App a échoué!</value>
+  </data>
 </root>
