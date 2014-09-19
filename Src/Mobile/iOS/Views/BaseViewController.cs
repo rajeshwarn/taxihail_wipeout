@@ -106,15 +106,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			{
 				ViewModel.OnViewLoaded();
 			}  
-        }
-		
-        public override void DidReceiveMemoryWarning ()
-        {
-            UnregisterKeyboardNotifications();
-			UnregisterForApplicationNotifications ();
-            ViewModel.OnViewUnloaded ();
-            base.DidReceiveMemoryWarning ();
-        }
+        }        
 
         protected void DismissKeyboardOnReturn (params UITextField[] textFields)
         {

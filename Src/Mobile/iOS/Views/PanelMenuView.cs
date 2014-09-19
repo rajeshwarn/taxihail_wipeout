@@ -39,12 +39,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			}
 		}
 
+		PanelMenuSource _source;
+
         public PanelMenuView (IntPtr handle) : base(handle)
         {
 			this.DelayBind (() => {
 				InitializeMenu();
 			});
+
         }
+
+		public void OnInstantiate ()
+		{
+			_source = new PanelMenuSource (menuListView, UITableViewCellStyle.Default, 
+											new NSString (CellId), 
+											CellBindingText, UITableViewCellAccessory.None);
+			menuListView.Source = _source;
+		}
 
         private void InitializeMenu ()
         {
@@ -57,18 +68,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var sideLine = Line.CreateVertical(menuContainer.Frame.Width, Frame.Height, UIColor.FromRGB(190, 190, 190));
             AddSubview(sideLine);
 
-			var source = new PanelMenuSource(
-				menuListView, 
-				UITableViewCellStyle.Default,
-                new NSString(CellId), 
-				CellBindingText,
-				UITableViewCellAccessory.None);
-
-			menuListView.Source = source;
-
 			var set = this.CreateBindingSet<PanelMenuView, PanelMenuViewModel>();
 
-			set.Bind(source)
+			set.Bind(_source)
 				.For(v => v.ItemsSource)
 				.To(vm => vm.ItemMenuList);
 

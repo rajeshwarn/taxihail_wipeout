@@ -394,6 +394,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tax.
+        /// </summary>
+        public static string Email_Body_Tax {
+            get {
+                return ResourceManager.GetString("Email_Body_Tax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thank you!.
         /// </summary>
         public static string Email_Body_ThankYou {
@@ -534,6 +543,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Subject_Receipt {
             get {
                 return ResourceManager.GetString("Email_Subject_Receipt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ETA displayed to client is {0} and {1} min.
+        /// </summary>
+        public static string EtaMessageToDriver {
+            get {
+                return ResourceManager.GetString("EtaMessageToDriver", resourceCulture);
             }
         }
         
@@ -682,7 +700,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The client will be charged automatically at the end of the ride.
+        ///   Looks up a localized string similar to Fare will be paid by the app.
         /// </summary>
         public static string PairingConfirmationToDriver {
             get {
@@ -691,7 +709,16 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The passenger has paid {0:c}.
+        ///   Looks up a localized string similar to Payment being processed by the app....
+        /// </summary>
+        public static string PayInCarMessageToDriver {
+            get {
+                return ResourceManager.GetString("PayInCarMessageToDriver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The passenger has paid.
         /// </summary>
         public static string PaymentConfirmationToDriver1 {
             get {
@@ -700,11 +727,38 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auth #{0}.
+        ///   Looks up a localized string similar to Fare: {0}   Tip: {1}.
         /// </summary>
         public static string PaymentConfirmationToDriver2 {
             get {
                 return ResourceManager.GetString("PaymentConfirmationToDriver2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total: {0}.
+        /// </summary>
+        public static string PaymentConfirmationToDriver3 {
+            get {
+                return ResourceManager.GetString("PaymentConfirmationToDriver3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auth #{0}.
+        /// </summary>
+        public static string PaymentConfirmationToDriver4 {
+            get {
+                return ResourceManager.GetString("PaymentConfirmationToDriver4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment by the app has Failed!.
+        /// </summary>
+        public static string PaymentFailedToDriver {
+            get {
+                return ResourceManager.GetString("PaymentFailedToDriver", resourceCulture);
             }
         }
         

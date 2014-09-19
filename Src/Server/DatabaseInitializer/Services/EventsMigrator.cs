@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
@@ -33,82 +34,106 @@ namespace DatabaseInitializer.Services
 
         public void Do()
         {
-            using (var context = _contextFactory.Invoke())
+            var skip = 0;
+            var hasMore = true;
+            const int pageSize = 10000;
+            while (hasMore)
             {
-                var events = context.Set<Event>().Where(x => x.EventType == typeof(PaymentSettingUpdated).FullName ).ToList();
-                foreach (var message in events)
+                using (var context = _contextFactory.Invoke())
                 {
+                    // order by date then by version in case two events happened at the same time
+                    var events = context.Set<Event>()
+                        .OrderBy(x => x.EventDate)
+                        .ThenBy(x => x.Version)
+                        .Skip(skip)
+                        .Take(pageSize)
+                        .ToList();
+                
+
+                    hasMore = events.Count == pageSize;
+                    Console.WriteLine("Number of events migrated: " + (hasMore ? skip : (skip + events.Count)));
+                    skip += pageSize;
+
                     // fix BraintreeClientSettings namespace problem
-                    message.Payload = message.Payload.Replace("apcurium.MK.Common.Configuration.BraintreeClientSettings", "apcurium.MK.Common.Configuration.Impl.BraintreeClientSettings");
-                }
-                context.SaveChanges();
-
-                // rename Order Pairing events
-                events = context.Set<Event>().Where(x => x.EventType.Contains("OrderPairedForRideLinqCmtPayment") || x.EventType.Contains("OrderUnpairedForRideLinqCmtPayment")).ToList();
-                foreach (var message in events)
-                {
-                    message.Payload = message.Payload.Replace("OrderPairedForRideLinqCmtPayment", "OrderPairedForPayment");
-                    message.Payload = message.Payload.Replace("OrderUnpairedForRideLinqCmtPayment", "OrderUnpairedForPayment");
-                    message.EventType = message.EventType.Replace("OrderPairedForRideLinqCmtPayment", "OrderPairedForPayment");
-                    message.EventType = message.EventType.Replace("OrderUnpairedForRideLinqCmtPayment", "OrderUnpairedForPayment");
-                }
-                context.SaveChanges();
-
-                // convert OrderCompleted to OrderStatusChanged
-                events = context.Set<Event>().Where(x => x.EventType.Contains("OrderCompleted")).ToList();
-                foreach (var message in events)
-                {
-                    var @event = Deserialize<OrderCompleted>(message.Payload);
-                    var newEvent = new OrderStatusChanged
+                    foreach (var message in events.Where(x => x.EventType == typeof(PaymentSettingUpdated).FullName).ToList())
                     {
-                        EventDate = @event.EventDate,
-                        SourceId = @event.SourceId,
-                        Version = @event.Version,
-                        Fare = @event.Fare,
-                        Tax = @event.Tax,
-                        Tip = @event.Tip,
-                        Toll = @event.Toll,
-                        IsCompleted = true
-                    };
-                    message.Payload = Serialize(newEvent);
-                    message.EventType = message.EventType.Replace("OrderCompleted", "OrderStatusChanged");
-                }
-                context.SaveChanges();
+                        message.Payload =
+                            message.Payload.Replace("apcurium.MK.Common.Configuration.BraintreeClientSettings",
+                                "apcurium.MK.Common.Configuration.Impl.BraintreeClientSettings");
+                    }
+                    context.SaveChanges();
 
-                // convert OrderFareUpdated to OrderStatusChanged
-                events = context.Set<Event>().Where(x => x.EventType.Contains("OrderFareUpdated")).ToList();
-                foreach (var message in events)
-                {
-                    var @event = Deserialize<OrderFareUpdated>(message.Payload);
-                    var newEvent = new OrderStatusChanged
+                    // rename Order Pairing events
+                    foreach (var message in events.Where(x =>
+                                    x.EventType.Contains("OrderPairedForRideLinqCmtPayment") ||
+                                    x.EventType.Contains("OrderUnpairedForRideLinqCmtPayment")))
                     {
-                        EventDate = @event.EventDate,
-                        SourceId = @event.SourceId,
-                        Version = @event.Version,
-                        Fare = @event.Fare,
-                        Tax = @event.Tax,
-                        Tip = @event.Tip,
-                        Toll = @event.Toll,
-                        IsCompleted = false
-                    };
-                    message.Payload = Serialize(newEvent);
-                    message.EventType = message.EventType.Replace("OrderFareUpdated", "OrderStatusChanged");
-                }
-                context.SaveChanges();
+                        message.Payload = message.Payload.Replace("OrderPairedForRideLinqCmtPayment",
+                            "OrderPairedForPayment");
+                        message.Payload = message.Payload.Replace("OrderUnpairedForRideLinqCmtPayment",
+                            "OrderUnpairedForPayment");
+                        message.EventType = message.EventType.Replace("OrderPairedForRideLinqCmtPayment",
+                            "OrderPairedForPayment");
+                        message.EventType = message.EventType.Replace("OrderUnpairedForRideLinqCmtPayment",
+                            "OrderUnpairedForPayment");
+                    }
+                    context.SaveChanges();
 
-                // update OrderStatusChanged containing a Status with an invalid pickup date
-                events = context.Set<Event>().Where(x => x.EventType.Contains("OrderStatusChanged") && !x.Payload.Contains("\"Status\":null")).ToList();
-                foreach (var message in events)
-                {
-                    var @event = Deserialize<OrderStatusChanged>(message.Payload);
+                    // convert OrderCompleted to OrderStatusChanged
+                    foreach (var message in events.Where(x => x.EventType.Contains("OrderCompleted")).ToList())
+                    {
+                        var @event = Deserialize<OrderCompleted>(message.Payload);
+                        var newEvent = new OrderStatusChanged
+                        {
+                            EventDate = @event.EventDate,
+                            SourceId = @event.SourceId,
+                            Version = @event.Version,
+                            Fare = @event.Fare,
+                            Tax = @event.Tax,
+                            Tip = @event.Tip,
+                            Toll = @event.Toll,
+                            IsCompleted = true
+                        };
+                        message.Payload = Serialize(newEvent);
+                        message.EventType = message.EventType.Replace("OrderCompleted", "OrderStatusChanged");
+                    }
+                    context.SaveChanges();
 
-                    @event.Status.PickupDate = @event.Status.PickupDate < ((DateTime)SqlDateTime.MinValue)
-                            ? (DateTime)SqlDateTime.MinValue
+                    // convert OrderFareUpdated to OrderStatusChanged
+                    foreach (var message in events.Where(x => x.EventType.Contains("OrderFareUpdated")).ToList())
+                    {
+                        var @event = Deserialize<OrderFareUpdated>(message.Payload);
+                        var newEvent = new OrderStatusChanged
+                        {
+                            EventDate = @event.EventDate,
+                            SourceId = @event.SourceId,
+                            Version = @event.Version,
+                            Fare = @event.Fare,
+                            Tax = @event.Tax,
+                            Tip = @event.Tip,
+                            Toll = @event.Toll,
+                            IsCompleted = false
+                        };
+                        message.Payload = Serialize(newEvent);
+                        message.EventType = message.EventType.Replace("OrderFareUpdated", "OrderStatusChanged");
+                    }
+                    context.SaveChanges();
+
+                    // update OrderStatusChanged containing a Status with an invalid pickup date
+                    foreach (var message in events.Where(x => x.EventType.Contains("OrderStatusChanged") 
+                                                        && !x.Payload.Contains("\"Status\":null"))
+                                                        .ToList())
+                    {
+                        var @event = Deserialize<OrderStatusChanged>(message.Payload);
+
+                        @event.Status.PickupDate = @event.Status.PickupDate < ((DateTime) SqlDateTime.MinValue)
+                            ? (DateTime) SqlDateTime.MinValue
                             : @event.Status.PickupDate;
 
-                    message.Payload = Serialize(@event);
+                        message.Payload = Serialize(@event);
+                    }
+                    context.SaveChanges();
                 }
-                context.SaveChanges();
             }
         }
 

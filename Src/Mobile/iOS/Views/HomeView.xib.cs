@@ -234,6 +234,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var nib = UINib.FromName ("PanelMenuView", null);
             _menu = (PanelMenuView)nib.Instantiate (this, null)[0];
             _menu.ViewToAnimate = homeView;
+			_menu.OnInstantiate();
 
             View.InsertSubviewBelow (_menu, homeView);
         }
