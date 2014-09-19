@@ -289,9 +289,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if(status.IBSStatusId.HasValue() && status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled) )
 				{
 					AddReminder(status);
+					_bookingService.ClearLastOrder();
 				}
 
 #if DEBUG
+
                 //status.IBSStatusId = VehicleStatuses.Common.Arrived;
 #endif
                 IsPayButtonVisible = false;
@@ -560,7 +562,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				return this.GetCommand(async () =>{
-
+					_bookingService.ClearLastOrder();
                     var address = await _orderWorkflowService.SetAddressToUserLocation();
                     if (address.HasValidCoordinate())
                     {

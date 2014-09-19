@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IAccountService _accountService;
 		private readonly IBookingService _bookingService;
 		private readonly ITermsAndConditionsService _termsService;
+		 
 
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
 			IMvxWebBrowserTask browserTask,
@@ -74,6 +75,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.OnViewStarted(firstTime);
 
 			_locationService.Start();
+
+			if (_accountService.CurrentAccount  == null) {
+				return;
+			}
+
+
 			CheckTermsAsync();
 			CheckActiveOrderAsync ();
 			if (firstTime)
@@ -109,7 +116,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
 			if(lastOrder != null)
 			{
-				ShowViewModelAndRemoveFromHistory<BookingStatusViewModel> (new
+				ShowViewModel<BookingStatusViewModel> (new
 				{
 					order = lastOrder.Item1.ToJson (),
 					orderStatus = lastOrder.Item2.ToJson ()

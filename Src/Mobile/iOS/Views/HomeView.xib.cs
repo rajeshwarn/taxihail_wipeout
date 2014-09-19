@@ -30,6 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			base.OnActivated (notification);
 
+
 			ViewModel.CheckTermsAsync ();
 		}
 
