@@ -120,4 +120,7 @@
   <data name="OrderStatus_wosWAITING" xml:space="preserve">
     <value>Driver assignment may take up to 5 min.</value>
   </data>
+  <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
+    <value>Confirm that you are in the vehicle number indicated below. Your vehicle number is shown on the right rear window. By tapping confirm, this ride will automatically be paid by your credit card on file.</value>
+  </data>
 </root>

@@ -13,9 +13,11 @@ using apcurium.MK.Booking.Resources;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
+using log4net;
 
 #endregion
 
@@ -26,6 +28,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             IEventHandler<CreditCardPaymentCaptured>
     {
         private readonly INotificationService _notificationService;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(PushNotificationSender));
 
         public PushNotificationSender(INotificationService notificationService)
         {
@@ -34,29 +37,43 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderStatusChanged @event)
         {
-            switch (@event.Status.IBSStatusId)
+            try
             {
-                case VehicleStatuses.Common.Assigned:
-                    _notificationService.SendAssignedPush(@event.Status);
-                    break;
-                case VehicleStatuses.Common.Arrived:
-                    _notificationService.SendArrivedPush(@event.Status);
-                    break;
-                case VehicleStatuses.Common.Loaded:
-                    _notificationService.SendPairingInquiryPush(@event.Status);
-                    break;
-                case VehicleStatuses.Common.Timeout:
-                    _notificationService.SendTimeoutPush(@event.Status);
-                    break;
-                default:
-                    // No push notification for this order status
-                    return;
+                switch (@event.Status.IBSStatusId)
+                {
+                    case VehicleStatuses.Common.Assigned:
+                        _notificationService.SendAssignedPush(@event.Status);
+                        break;
+                    case VehicleStatuses.Common.Arrived:
+                        _notificationService.SendArrivedPush(@event.Status);
+                        break;
+                    case VehicleStatuses.Common.Loaded:
+                        _notificationService.SendPairingInquiryPush(@event.Status);
+                        break;
+                    case VehicleStatuses.Common.Timeout:
+                        _notificationService.SendTimeoutPush(@event.Status);
+                        break;
+                    default:
+                        // No push notification for this order status
+                        return;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Debug(e);
             }
         }
 
         public void Handle(CreditCardPaymentCaptured @event)
         {
-            _notificationService.SendPaymentCapturePush(@event.OrderId, @event.Amount);
+            try
+            {
+                _notificationService.SendPaymentCapturePush(@event.OrderId, @event.Amount);
+            }
+            catch (Exception e)
+            {
+                Log.Debug(e);
+            }
         }
     }
 }
