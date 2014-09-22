@@ -185,7 +185,7 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public void CreateDefaultTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double perMinuteRate,
-            double timeAdustmentFactor, double kilometerIncluded)
+            double timeAdustmentFactor, double kilometerIncluded, double minimumRate)
         {
             if (_defaultTariffId.HasValue)
             {
@@ -199,6 +199,7 @@ namespace apcurium.MK.Booking.Domain
                 TariffId = tariffId,
                 Type = TariffType.Default,
                 Name = name,
+                MinimumRate = minimumRate,
                 FlatRate = flatRate,
                 KilometricRate = distanceMultiplicator,
                 KilometerIncluded = kilometerIncluded,
@@ -208,13 +209,14 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public void CreateDefaultVehiculeTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double perMinuteRate,
-            double timeAdustmentFactor, double kilometerIncluded, int? vehicleTypeId)
+            double timeAdustmentFactor, double kilometerIncluded, int? vehicleTypeId, double minimumRate)
         {
             Update(new TariffCreated
             {
                 TariffId = tariffId,
                 Type = TariffType.VehicleDefault,
                 Name = name,
+                MinimumRate = minimumRate,
                 FlatRate = flatRate,
                 KilometricRate = distanceMultiplicator,
                 KilometerIncluded = kilometerIncluded,
@@ -226,13 +228,14 @@ namespace apcurium.MK.Booking.Domain
 
         public void CreateRecurringTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double perMinuteRate,
             double timeAdustmentFactor, double kilometerIncluded, DayOfTheWeek daysOfTheWeek,
-            DateTime startTime, DateTime endTime, int? vehicleTypeId)
+            DateTime startTime, DateTime endTime, int? vehicleTypeId, double minimumRate)
         {
             Update(new TariffCreated
             {
                 TariffId = tariffId,
                 Type = TariffType.Recurring,
                 Name = name,
+                MinimumRate = minimumRate,
                 FlatRate = flatRate,
                 KilometricRate = distanceMultiplicator,
                 MarginOfError = timeAdustmentFactor,
@@ -247,13 +250,14 @@ namespace apcurium.MK.Booking.Domain
 
         public void CreateDayTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double perMinuteRate,
             double timeAdustmentFactor, double kilometerIncluded, DateTime startTime,
-            DateTime endTime, int? vehicleTypeId)
+            DateTime endTime, int? vehicleTypeId, double minumumRate)
         {
             Update(new TariffCreated
             {
                 TariffId = tariffId,
                 Type = TariffType.Day,
                 Name = name,
+                MinimumRate = minumumRate,
                 FlatRate = flatRate,
                 KilometricRate = distanceMultiplicator,
                 PerMinuteRate = perMinuteRate,
@@ -267,12 +271,13 @@ namespace apcurium.MK.Booking.Domain
 
         public void UpdateTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double perMinuteRate,
             double timeAdustmentFactor, double kilometerIncluded, DayOfTheWeek daysOfTheWeek,
-            DateTime startTime, DateTime endTime, int? vehicleTypeId)
+            DateTime startTime, DateTime endTime, int? vehicleTypeId, double minimumRate)
         {
             Update(new TariffUpdated
             {
                 TariffId = tariffId,
                 Name = name,
+                MinimumRate = minimumRate,
                 FlatRate = flatRate,
                 KilometricRate = distanceMultiplicator,
                 PerMinuteRate = perMinuteRate,

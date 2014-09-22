@@ -38,7 +38,6 @@ namespace MK.Common.Configuration
 		    DisableChargeTypeWhenCardOnFile = false;
 		    VehicleTypeSelectionEnabled = false;
 		    SendPushAsSMS = false;
-            MinimumFare = 0;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -257,9 +256,6 @@ namespace MK.Common.Configuration
 		public int ZoomOnNearbyVehiclesRadius { get; private set; }
 		[Display(Name = "Zoom on nearby vehicles count", Description="Maximum of included vehicles when zooming on nearby vehicles")]
 		public int ZoomOnNearbyVehiclesCount { get; private set; }
-
-        [Display(Name = "Minimum fare", Description="Determines the minimum price estimate")]
-        public int MinimumFare { get; private set; }
         
 		[Display(Name = "Show Assigned Vehicle Number On Pin", Description="Enable displaying the assigned vehicle number over its pin on the map")]
 		public bool ShowAssignedVehicleNumberOnPin { get; private set; }

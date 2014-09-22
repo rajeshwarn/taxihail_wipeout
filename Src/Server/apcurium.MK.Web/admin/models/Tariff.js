@@ -4,7 +4,9 @@
         urlRoot: TaxiHail.parameters.apiRoot + '/admin/tariffs',
         defaults: function(){
             var today = new Date();
-            return { name: '',
+            return {
+                name: '',
+                minimumRate: 0,
                 flatRate: 0,
                 kilometricRate: 0,
                 perMinuteRate: 0,
