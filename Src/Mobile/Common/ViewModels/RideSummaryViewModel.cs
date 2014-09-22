@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class RideSummaryViewModel: PageViewModel
+	public class RideSummaryViewModel: PageViewModel, ISubViewModel<OrderRated>
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IPaymentService _paymentService;
@@ -41,6 +41,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order = order.FromJson<Order> ();
 			OrderId = Order.Id;
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
+
+			CanRate = false;
 
 			if (Settings.RatingEnabled) 
 			{
@@ -67,7 +69,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged();
 			}
 		}
-			
+
+		private bool _canRate;
+		public bool CanRate
+		{
+			get { return _canRate; }
+			set {
+				_canRate = value;
+				RaisePropertyChanged(); 
+			}
+		}	
 		private Guid _orderId;
 		public Guid OrderId
 		{
@@ -91,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				HasRated = orderRatings.RatingScores.Any();
 				bool canRate = !HasRated;
 				var ratingTypes = _bookingService.GetRatingType();
-
+				CanRate = canRate;
 				if (canRate) 
 				{
 					RatingList = ratingTypes.Select (c => new RatingModel (canRate) {
@@ -257,6 +268,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_bookingService.SendRatingReview(orderRating);
 			HasRated = true;
+			CanRate = false;
 		}
 
 		public bool CanUserLeaveScreen()
