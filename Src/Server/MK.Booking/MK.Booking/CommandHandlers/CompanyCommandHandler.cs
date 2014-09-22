@@ -108,15 +108,15 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             if (command.Type == TariffType.Default)
             {
-                company.CreateDefaultTariff(command.TariffId, command.Name, command.FlatRate, command.KilometricRate,
-                    command.PerMinuteRate, command.MarginOfError,
-                    kilometerIncluded: command.KilometerIncluded);
+                company.CreateDefaultTariff(command.TariffId, command.Name, command.FlatRate,
+                    command.KilometricRate, command.PerMinuteRate, command.MarginOfError,
+                    command.KilometerIncluded, command.MinimumRate);
             }
             else if (command.Type == TariffType.VehicleDefault)
             {
-                company.CreateDefaultVehiculeTariff(command.TariffId, command.Name, command.FlatRate, command.KilometricRate,
-                    command.PerMinuteRate, command.MarginOfError,
-                    command.KilometerIncluded, command.VehicleTypeId);
+                company.CreateDefaultVehiculeTariff(command.TariffId, command.Name, command.FlatRate,
+                    command.KilometricRate, command.PerMinuteRate, command.MarginOfError,
+                    command.KilometerIncluded, command.VehicleTypeId, command.MinimumRate);
             }
             else if (command.Type == TariffType.Recurring)
             {
@@ -126,16 +126,15 @@ namespace apcurium.MK.Booking.CommandHandlers
                     kilometerIncluded: command.KilometerIncluded,
                     startTime: command.StartTime,
                     endTime: command.EndTime,
-                    vehicleTypeId: command.VehicleTypeId);
+                    vehicleTypeId: command.VehicleTypeId,
+                    minimumRate: command.MinimumRate);
             }
             else if (command.Type == TariffType.Day)
             {
-                company.CreateDayTariff(command.TariffId, command.Name, command.FlatRate, command.KilometricRate,
-                    command.PerMinuteRate, command.MarginOfError,
-                    kilometerIncluded: command.KilometerIncluded,
-                    startTime: command.StartTime,
-                    endTime: command.EndTime,
-                    vehicleTypeId: command.VehicleTypeId);
+                company.CreateDayTariff(command.TariffId, command.Name, command.FlatRate, 
+                    command.KilometricRate, command.PerMinuteRate, command.MarginOfError,
+                    command.KilometerIncluded, command.StartTime, command.EndTime,
+                    command.VehicleTypeId, command.MinimumRate);
             }
 
             _repository.Save(company, command.Id.ToString());
@@ -213,7 +212,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             company.UpdateTariff(command.TariffId, command.Name, command.FlatRate, command.KilometricRate,
                 command.PerMinuteRate, command.MarginOfError, command.KilometerIncluded, command.DaysOfTheWeek,
-                command.StartTime, command.EndTime, command.VehicleTypeId);
+                command.StartTime, command.EndTime, command.VehicleTypeId, command.MinimumRate);
 
             _repository.Save(company, command.Id.ToString());
         }

@@ -30,6 +30,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     CompanyId = @event.SourceId,
                     Id = @event.TariffId,
                     Name = @event.Name,
+                    MinimumRate = @event.MinimumRate,
                     FlatRate = @event.FlatRate,
                     KilometricRate = @event.KilometricRate,
                     PerMinuteRate = @event.PerMinuteRate,
@@ -69,6 +70,7 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var tariff = context.Find<TariffDetail>(@event.TariffId);
                 tariff.Name = @event.Name;
+                tariff.MinimumRate = @event.MinimumRate;
                 tariff.FlatRate = @event.FlatRate;
                 tariff.KilometricRate = @event.KilometricRate;
                 tariff.PerMinuteRate = @event.PerMinuteRate;
