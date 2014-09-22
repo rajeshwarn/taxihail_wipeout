@@ -37,7 +37,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly IIbsOrderService _ibs;
         private readonly IAccountDao _accountDao;
         private readonly IOrderPaymentDao _paymentDao;
-        private readonly IConfigurationManager _configManager;
         private readonly IPairingService _pairingService;
 
         private BraintreeGateway BraintreeGateway { get; set; }
@@ -57,7 +56,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _ibs = ibs;
             _accountDao = accountDao;
             _paymentDao = paymentDao;
-            _configManager = configManager;
             _pairingService = pairingService;
 
             BraintreeGateway =
@@ -278,6 +276,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
             catch (Exception e)
             {
+                _logger.LogMessage("Error during payment " + e);
+                _logger.LogError(e);
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessfull = false,
