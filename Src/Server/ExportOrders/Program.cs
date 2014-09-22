@@ -10,6 +10,7 @@ using apcurium.MK.Booking.ReadModel.Query;
 using System.Threading;
 using apcurium.MK.Common.Entity;
 using System.Globalization;
+using apcurium.MK.Booking.Database;
 
 namespace ExportOrders
 {
@@ -18,33 +19,34 @@ namespace ExportOrders
         static void Main(string[] args)
         {
             //string url = @"http://staging.taxihail.biz:8181/taxiworld/Api/";
-            string url = @"http://localhost/apcurium.MK.Web/Api/";
+            string url = @"http://test.taxihail.biz:8181/Apcurium/Api";
 
             //var ibsServerTimeDifference =
                // _configurationManager.GetSetting("IBS.TimeDifference").SelectOrDefault(long.Parse, 0);
             //var offset = new TimeSpan(ibsServerTimeDifference);
+            
             var offset = TimeSpan.FromMilliseconds(0);
             var startDate = DateTime.Now.Subtract(TimeSpan.FromDays(1));
             var endDate = DateTime.Now;
-            
-            //var param = GetParamsFromArgs(args);
-            var connectionString = ""; //new ConnectionStringSettings("MkWeb", param.MkWebConnectionString);
-            var accounts = new AccountDao(() => new BookingDbContext(connectionString.ConnectionString));
 
-            var auth = new AuthServiceClient(url, null);
+            var connectionString = "Data Source=;Initial Catalog=master;Integrated Security=True; MultipleActiveResultSets=True";
+            var context = new BookingDbContext(connectionString);
+            var orderDao = new OrderDao(() => context);
+
+            var auth = new AuthServiceClient(url, null, null);
             var token = auth.Authenticate("taxihail@apcurium.com", "1l1k3B4n4n@");
 
-            var orders = _orderDao.GetAllWithAccountSummary();
+            var orders = orderDao.GetAllWithAccountSummary();
 
             var exportedOrders = orders.Where(x => x.CreatedDate >= startDate && x.CreatedDate <= endDate)
                 .Select(x =>
                 {
-                    var operatingSystem = x.UserAgent.GetOperatingSystem();
-                    var phone = string.IsNullOrWhiteSpace(x.Phone) ? "" : x.Phone.ToSafeString();
+                    var operatingSystem = x.UserAgent;
+                    var phone = string.IsNullOrWhiteSpace(x.Phone) ? "" : x.Phone.Trim();
                     var transactionId = string.IsNullOrEmpty(x.TransactionId) ||
                                         (x.TransactionId.Trim().Length <= 1)
                         ? string.Empty
-                        : "Auth: " + x.TransactionId.ToSafeString();
+                        : "Auth: " + x.TransactionId.Trim();
 
                     var excelResult = new Dictionary<string, string>();
 
@@ -106,7 +108,7 @@ namespace ExportOrders
                     return excelResult;
                 });
 
-            return exportedOrders.OrderBy(order => order["Create Date"])
+            var result = exportedOrders.OrderBy(order => order["Create Date"])
                                  .ThenBy(order => order["Create Time"]).ToList();
 
 
