@@ -31,43 +31,51 @@ namespace apcurium.MK.Booking.Api.Services
         public object Get(RatingTypesRequest request)
         {
             var allRatingTypes = _dao.GetAll();
-            return allRatingTypes.Where(r => r.Language == request.Language).ToList();
+            return allRatingTypes.Where(r => r.Language == request.ClientLanguage).ToList();
         }
 
         public object Post(RatingTypesRequest request)
         {
-            var existing = _dao.FindByName(request.Name, request.Language);
-            if (existing != null)
+            var ratingTypeId = Guid.NewGuid();
+
+            foreach (var ratingType in request.RatingTypes)
             {
-                throw new HttpError(HttpStatusCode.Conflict, ErrorCode.RatingType_DuplicateName.ToString());
+                var existing = _dao.FindByName(ratingType.Name, ratingType.Language);
+                if (existing != null)
+                {
+                    continue;
+                }
+
+                var addRatingType = new AddRatingType
+                {
+                    RatingTypeId = ratingTypeId,
+                    CompanyId = AppConstants.CompanyId,
+                    Name = ratingType.Name,
+                    Language = ratingType.Language
+                };
+
+                _commandBus.Send(addRatingType);
             }
-
-            var addRatingType = new AddRatingType
-            {
-                RatingTypeId = Guid.NewGuid(),
-                CompanyId = AppConstants.CompanyId,
-                Name = request.Name,
-                Language = request.Language
-            };
-
-            _commandBus.Send(addRatingType);
 
             return new
             {
-                Id = addRatingType.RatingTypeId
+                Id = ratingTypeId
             };
         }
 
         public object Put(RatingTypesRequest request)
         {
-            if (_dao.GetAll().Any(x => x.Id != request.Id && x.Name == request.Name && x.Language == request.Language))
+            foreach (var ratingTypes in request.RatingTypes)
             {
-                throw new HttpError(HttpStatusCode.Conflict, ErrorCode.RatingType_DuplicateName.ToString());
+                if (_dao.GetAll().Any(x => x.Id != request.Id && x.Name == ratingTypes.Name && x.Language == ratingTypes.Language))
+                {
+                    continue;
+                }
+
+                var command = Mapper.Map<UpdateRatingType>(request);
+
+                _commandBus.Send(command);
             }
-
-            var command = Mapper.Map<UpdateRatingType>(request);
-
-            _commandBus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
