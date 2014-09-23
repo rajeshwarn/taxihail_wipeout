@@ -14,6 +14,7 @@ namespace apcurium.MK.Booking.ReadModel
 
         public Guid CompanyId { get; set; }
         public string Name { get; set; }
+        public double MinimumRate { get; set; }
         public decimal FlatRate { get; set; }
         public double KilometricRate { get; set; }
         public double PerMinuteRate { get; set; }

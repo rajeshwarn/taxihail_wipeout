@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 				Latitude = placemark.Location.Coordinate.Latitude,
 				Longitude = placemark.Location.Coordinate.Longitude,
 				City = placemark.Locality,
-				FullAddress = placemark.Description,
+                FullAddress = string.Format("{0}, {1} {2}. {3}", placemark.Name, placemark.PostalCode, placemark.Locality, placemark.Country),
 				State = placemark.AdministrativeArea,
 				ZipCode = placemark.PostalCode
 			};
