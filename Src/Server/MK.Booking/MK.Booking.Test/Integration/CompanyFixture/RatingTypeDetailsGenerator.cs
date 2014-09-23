@@ -46,7 +46,8 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
             {
                 SourceId = companyId,
                 RatingTypeId = ratingTypeId,
-                Name = "RatingType"
+                Name = "RatingType",
+                Language = "en"
             };
 
             Sut.Handle(ratingTypeAdded);
@@ -58,6 +59,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 var dto = list.Single();
                 Assert.AreEqual(ratingTypeId, dto.Id);
                 Assert.AreEqual(companyId, dto.CompanyId);
+                Assert.AreEqual("en", dto.Language);
                 Assert.That(dto.Name, Is.EqualTo(ratingTypeAdded.Name));
             }
         }
@@ -107,6 +109,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 SourceId = _companyId,
                 RatingTypeId = _ratingTypeId,
                 Name = "Updated RatingType",
+                Language = "fr"
             };
 
             Sut.Handle(ratingTypeUpdated);
@@ -118,6 +121,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 var dto = list.Single();
                 Assert.AreEqual(_ratingTypeId, dto.Id);
                 Assert.AreEqual(_companyId, dto.CompanyId);
+                Assert.AreEqual("fr", dto.Language);
                 Assert.That(dto.Name, Is.EqualTo(ratingTypeUpdated.Name));
             }
         }
@@ -135,12 +139,28 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                     {
                         SourceId = (_companyId = Guid.NewGuid()),
                         RatingTypeId = (_ratingTypeId = Guid.NewGuid()),
-                        Name = firstRatingType.Name
+                        Name = firstRatingType.Name,
+                        Language = "en"
                     });
 
                     var countWithName = context.Query<RatingTypeDetail>().Count(x => x.Name == firstRatingType.Name);
                     Assert.That(countWithName, Is.EqualTo(1));
                 }
+            }
+        }
+
+        [Test]
+        public void when_ratingType_deleted()
+        {
+            Sut.Handle(new RatingTypeDeleted()
+            {
+                SourceId = _companyId,
+                RatingTypeId = _ratingTypeId
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                Assert.IsFalse(context.Query<RatingTypeDetail>().Any(x => x.Id == _ratingTypeId));
             }
         }
     }
