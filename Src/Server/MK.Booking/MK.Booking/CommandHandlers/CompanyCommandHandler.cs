@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<DeactivateRule>,
         ICommandHandler<AddRatingType>,
         ICommandHandler<UpdateRatingType>,
+        ICommandHandler<DeleteRatingType>,
         ICommandHandler<UpdatePaymentSettings>,
         ICommandHandler<HideRatingType>,
         ICommandHandler<AddPopularAddress>,
@@ -60,13 +61,6 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var company = _repository.Find(command.CompanyId);
             company.AddOrUpdateAppSettings(command.AppSettings);
-            _repository.Save(company, command.Id.ToString());
-        }
-
-        public void Handle(AddRatingType command)
-        {
-            var company = _repository.Get(command.CompanyId);
-            company.AddRatingType(command.Name, command.RatingTypeId, command.Language);
             _repository.Save(company, command.Id.ToString());
         }
 
@@ -161,13 +155,6 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(company, command.Id.ToString());
         }
 
-        public void Handle(HideRatingType command)
-        {
-            var company = _repository.Get(command.CompanyId);
-            company.HideRatingType(command.RatingTypeId);
-            _repository.Save(company, command.Id.ToString());
-        }
-
         public void Handle(UpdatePaymentSettings command)
         {
             var company = _repository.Get(command.CompanyId);
@@ -175,10 +162,31 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(company, command.Id.ToString());
         }
 
+        public void Handle(AddRatingType command)
+        {
+            var company = _repository.Get(command.CompanyId);
+            company.AddRatingType(command.Name, command.RatingTypeId, command.Language);
+            _repository.Save(company, command.Id.ToString());
+        }
+
         public void Handle(UpdateRatingType command)
         {
             var company = _repository.Get(command.CompanyId);
             company.UpdateRatingType(command.Name, command.RatingTypeId, command.Language);
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(DeleteRatingType command)
+        {
+            var company = _repository.Get(command.CompanyId);
+            company.DeleteRatingType(command.RatingTypeId);
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(HideRatingType command)
+        {
+            var company = _repository.Get(command.CompanyId);
+            company.HideRatingType(command.RatingTypeId);
             _repository.Save(company, command.Id.ToString());
         }
 

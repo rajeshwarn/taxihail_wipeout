@@ -34,5 +34,13 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 return context.Query<RatingTypeDetail>().SingleOrDefault(r => r.Id == id);
             }
         }
+
+        public RatingTypeDetail FindByName(string name, string language)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<RatingTypeDetail>().SingleOrDefault(r => r.Name == name && r.Language == language);
+            }
+        }
     }
 }

@@ -178,6 +178,14 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void DeleteRatingType(Guid ratingTypeId)
+        {
+            Update(new RatingTypeDeleted
+            {
+                RatingTypeId = ratingTypeId
+            });
+        }
+
         public void HideRatingType(Guid ratingTypeId)
         {
             Update(new RatingTypeHidded

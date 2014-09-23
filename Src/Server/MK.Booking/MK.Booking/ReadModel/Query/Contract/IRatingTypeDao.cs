@@ -11,5 +11,6 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
     {
         IList<RatingTypeDetail> GetAll();
         RatingTypeDetail GetById(Guid id);
+        RatingTypeDetail FindByName(string name, string language);
     }
 }
