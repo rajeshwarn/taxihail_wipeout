@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IOrderDao _orderDao;
         private readonly IStaticMap _staticMap;
         private readonly ISmsService _smsService;
+        private readonly IGeocoding _geocoding;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -60,6 +61,7 @@ namespace apcurium.MK.Booking.Services.Impl
             IOrderDao orderDao,
             IStaticMap staticMap,
             ISmsService smsService,
+            IGeocoding geocoding,
             ILogger logger)
         {
             _contextFactory = contextFactory;
@@ -72,6 +74,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _orderDao = orderDao;
             _staticMap = staticMap;
             _smsService = smsService;
+            _geocoding = geocoding;
             _logger = logger;
 
             var applicationKey = configurationManager.GetSetting(ApplicationKeySetting);
@@ -287,7 +290,7 @@ namespace apcurium.MK.Booking.Services.Impl
             SendEmail(clientEmailAddress, EmailConstant.Template.PasswordReset, EmailConstant.Subject.PasswordReset, templateData, clientLanguageCode);
         }
 
-        public void SendReceiptEmail(int ibsOrderId, string vehicleNumber, string driverName, double fare, double toll, double tip,
+        public void SendReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, string driverName, double fare, double toll, double tip,
             double tax, double totalFare, SendReceipt.CardOnFile cardOnFileInfo, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, DateTime? dropOffDate, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
         {
@@ -312,6 +315,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var cardNumber = string.Empty;
             var cardOnFileTransactionId = string.Empty;
             var cardOnFileAuthorizationCode = string.Empty;
+
             if (isCardOnFile)
             {
                 cardOnFileAmount = _resources.FormatPrice(Convert.ToDouble(cardOnFileInfo.Amount));
@@ -326,20 +330,38 @@ namespace apcurium.MK.Booking.Services.Impl
                 cardOnFileTransactionId = cardOnFileInfo.TransactionId;
             }
 
-            var hasDropOffAddress = dropOffAddress != null 
-                && (!string.IsNullOrWhiteSpace(dropOffAddress.FullAddress) 
-                    || !string.IsNullOrWhiteSpace(dropOffAddress.DisplayAddress));
+            Address exactDropOffAddress = dropOffAddress;
+
+            var orderStatus = _orderDao.FindOrderStatusById(orderId);
+            if (orderStatus != null)
+            {
+                var canFetchExactDropOffAddress = orderStatus.VehicleLatitude.HasValue &&
+                                                  orderStatus.VehicleLongitude.HasValue;
+
+                if (canFetchExactDropOffAddress)
+                {
+                    // Find the exact dropoff address using the last vehicle position
+                    exactDropOffAddress = _geocoding.Search(
+                        orderStatus.VehicleLatitude.Value,
+                        orderStatus.VehicleLongitude.Value,
+                        clientLanguageCode).FirstOrDefault() ?? dropOffAddress;
+                }
+            }
+
+            var hasDropOffAddress = exactDropOffAddress != null
+                && (!string.IsNullOrWhiteSpace(exactDropOffAddress.FullAddress)
+                    || !string.IsNullOrWhiteSpace(exactDropOffAddress.DisplayAddress));
 
             var staticMapUri = hasDropOffAddress
                 ? _staticMap.GetStaticMapUri(
                     new Position(pickupAddress.Latitude, pickupAddress.Longitude),
-                    new Position(dropOffAddress.Latitude, dropOffAddress.Longitude),
+                    new Position(dropOffAddress.Latitude, exactDropOffAddress.Longitude),
                     300, 300, 1)
-                : "";
+                : string.Empty;
 
             var dropOffTime = dropOffDate.HasValue
                 ? dropOffDate.Value.ToString("t" /* Short time pattern */)
-                : "";
+                : string.Empty;
             var baseUrls = GetBaseUrls();
             var templateData = new
             {
@@ -370,7 +392,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 CardOnFileTransactionId = cardOnFileTransactionId,
                 CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
                 PickupAddress = pickupAddress.DisplayAddress,
-                DropOffAddress = hasDropOffAddress ? dropOffAddress.DisplayAddress : "-",
+                DropOffAddress = hasDropOffAddress ? exactDropOffAddress.DisplayAddress : "-",
                 SubTotal = _resources.FormatPrice(totalFare - tip), // represents everything except tip
                 StaticMapUri = staticMapUri,
                 ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),

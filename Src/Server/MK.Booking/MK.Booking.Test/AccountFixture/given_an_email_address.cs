@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Booking.Test.Integration;
 using apcurium.MK.Common;
@@ -29,6 +30,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         private const string ApplicationName = "TestApplication";
         private TestConfigurationManager _configurationManager;
         private Mock<IEmailSender> _emailSenderMock;
+        private Mock<IOrderDao> _orderDaoMock;
         private EventSourcingTestHelper<Account> _sut;
 
         [TestFixtureSetUp]
@@ -67,6 +69,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             _sut = new EventSourcingTestHelper<Account>();
 
             _emailSenderMock = new Mock<IEmailSender>();
+            _orderDaoMock = new Mock<IOrderDao>();
             _configurationManager = new TestConfigurationManager();
             _configurationManager.SetSetting("TaxiHail.ApplicationName", ApplicationName);
             var notificationService = new NotificationService(
@@ -77,8 +80,9 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 _configurationManager,
                 _configurationManager,
                 new ConfigurationDao(() => new ConfigurationDbContext(DbName)),
-                null,
+                _orderDaoMock.Object,
                 new StaticMap(),
+                null,
                 null,
                 null);
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
