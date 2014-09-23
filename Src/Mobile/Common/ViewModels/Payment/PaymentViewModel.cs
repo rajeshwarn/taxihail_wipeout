@@ -425,20 +425,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             return true;
         }
 
-        private void ShowPayPalPaymentConfirmation()
+        private async void ShowPayPalPaymentConfirmation()
         {
-            this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutSuccessTitle"],
-                              this.Services().Localize["PayPalExpressCheckoutSuccessMessage"],
-							  null, () => {Close(this);},
-							  this.Services().Localize["OkButtonText"], () => {Close(this);});
+            await this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutSuccessTitle"],
+                              this.Services().Localize["PayPalExpressCheckoutSuccessMessage"]);
+			Close(this);
         }
 
-        private void ShowCreditCardPaymentConfirmation(string transactionId)
+        private async void ShowCreditCardPaymentConfirmation(string transactionId)
         {
-            this.Services().Message.ShowMessage(this.Services().Localize["CmtTransactionSuccessTitle"],
-                              string.Format(this.Services().Localize["CmtTransactionSuccessMessage"], transactionId),
-								null, () => {Close(this);},
-								this.Services().Localize["OkButtonText"], () => {Close(this);});
+            await this.Services().Message.ShowMessage(this.Services().Localize["CmtTransactionSuccessTitle"],
+                              string.Format(this.Services().Localize["CmtTransactionSuccessMessage"], transactionId));
+			Close(this);
         }
     }
 }
