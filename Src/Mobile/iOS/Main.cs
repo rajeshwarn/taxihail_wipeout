@@ -27,6 +27,7 @@ using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social;
+using GoogleConversionTracking;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -52,6 +53,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override bool FinishedLaunching (UIApplication app, NSDictionary options)
         {
+            #if !DEBUG
+                var conversionId = "";
+                var label = "";
+                ACTConversionReporter.ReportWithConversionID(conversionId, label, "1.000000", false);
+            #endif
+
             _isStarting = true;
 
             if (!UIHelper.IsOS7orHigher)
