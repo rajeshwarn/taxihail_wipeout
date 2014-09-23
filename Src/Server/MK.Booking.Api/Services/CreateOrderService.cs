@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Api.Services
                 var pendingOrderId = GetPendingOrder();
 
                 // We don't allow order creation if there's already an order scheduled
-                if (pendingOrderId != null && !request.FromWebApp)
+                if (!_appSettings.Data.AllowSimultaneousAppOrders && pendingOrderId != null && !request.FromWebApp)
                 {
                     throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
                 }
