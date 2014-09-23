@@ -273,6 +273,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
             catch (Exception e)
             {
+                _logger.LogMessage("Error during payment " + e);
+                _logger.LogError(e);
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessfull = false,
