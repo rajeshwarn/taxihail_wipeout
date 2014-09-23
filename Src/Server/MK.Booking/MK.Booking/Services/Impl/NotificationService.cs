@@ -355,7 +355,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var staticMapUri = hasDropOffAddress
                 ? _staticMap.GetStaticMapUri(
                     new Position(pickupAddress.Latitude, pickupAddress.Longitude),
-                    new Position(dropOffAddress.Latitude, exactDropOffAddress.Longitude),
+                    new Position(exactDropOffAddress.Latitude, exactDropOffAddress.Longitude),
                     300, 300, 1)
                 : string.Empty;
 
