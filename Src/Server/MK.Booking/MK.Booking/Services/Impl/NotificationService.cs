@@ -418,13 +418,20 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private void SendPushOrSms(Guid accountId, string alert, Dictionary<string, object> data)
         {
-            if (_appSettings.Data.SendPushAsSMS)
+            try
             {
-                SendSms(accountId, alert);
+                if (_appSettings.Data.SendPushAsSMS)
+                {
+                    SendSms(accountId, alert);
+                }
+                else
+                {
+                    SendPush(accountId, alert, data);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                SendPush(accountId, alert, data);
+                _logger.Maybe(() => _logger.LogError(ex));
             }
         }
 

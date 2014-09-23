@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IOrderStatusUpdateDao _orderStatusUpdateDao;
         private readonly OrderStatusUpdater _orderStatusUpdater;
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(CreateOrderService));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(UpdateOrderStatusJob));
 
         private const int NumberOfConcurrentServers = 2;
 
