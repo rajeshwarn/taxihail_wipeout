@@ -1,0 +1,125 @@
+# HG changeset patch
+# User Alex Proteau <alex.proteau@apcurium.com>
+# Date 1411484501 14400
+# Branch Production_1_6
+# Node ID 2849924003fe5ab6f3995be46bb305566e1f88d9
+# Parent  cd564b32db9bc26ad2c5ef3b4cec5361b1513088
+fix an issue with iOS8
+
+diff --git a/Src/Mobile/iOS/Controls/Widgets/Booking/BookLaterDatePicker.cs b/Src/Mobile/iOS/Controls/Widgets/Booking/BookLaterDatePicker.cs
+--- a/Src/Mobile/iOS/Controls/Widgets/Booking/BookLaterDatePicker.cs
++++ b/Src/Mobile/iOS/Controls/Widgets/Booking/BookLaterDatePicker.cs
+@@ -45,9 +45,19 @@
+             FlatButtonStyle.Red.ApplyTo(CancelButton);
+             FlatButtonStyle.Green.ApplyTo(OrderButton);
+ 
+-            AddSubviews(DatePicker, CancelButton, OrderButton);
++            
+         }
+ 
++		public override void LayoutSubviews ()
++		{
++			base.LayoutSubviews ();
++
++			//This resolve a problem with iOS8 and the sdk 7, before this was executed in the initialize method but was causing a crash on iOS 8. 
++			if (DatePicker.Superview == null) {			
++				AddSubviews (DatePicker, CancelButton, OrderButton);
++			}
++		}
++
+         private void InitializeBinding()
+         {
+             var set = this.CreateBindingSet<BookLaterDatePicker, BottomBarViewModel>();
+diff --git a/ios8hotfix.diff b/ios8hotfix.diff
+new file mode 100644
+--- /dev/null
++++ b/ios8hotfix.diff
+@@ -0,0 +1,88 @@
++# HG changeset patch
++# User Matthieu Guyonnet-Duluc <matthieu@live.com>
++# Date 1411144337 14400
++# Node ID 14511f18571aa4bc6caeb7e7e2e9aa02c750b416
++# Parent  75b60a889c2e3e7a923171f464396117aa92c673
++Fixed (hopefully) iOS8 Crash
++
++diff --git a/Src/Mobile/iOS/Views/BaseViewController.cs b/Src/Mobile/iOS/Views/BaseViewController.cs
++--- a/Src/Mobile/iOS/Views/BaseViewController.cs
+++++ b/Src/Mobile/iOS/Views/BaseViewController.cs
++@@ -106,15 +106,7 @@
++ 			{
++ 				ViewModel.OnViewLoaded();
++ 			}  
++-        }
++-		
++-        public override void DidReceiveMemoryWarning ()
++-        {
++-            UnregisterKeyboardNotifications();
++-			UnregisterForApplicationNotifications ();
++-            ViewModel.OnViewUnloaded ();
++-            base.DidReceiveMemoryWarning ();
++-        }
+++        }        
++ 
++         protected void DismissKeyboardOnReturn (params UITextField[] textFields)
++         {
++diff --git a/Src/Mobile/iOS/Views/HomeView.xib.cs b/Src/Mobile/iOS/Views/HomeView.xib.cs
++--- a/Src/Mobile/iOS/Views/HomeView.xib.cs
+++++ b/Src/Mobile/iOS/Views/HomeView.xib.cs
++@@ -234,6 +234,7 @@
++             var nib = UINib.FromName ("PanelMenuView", null);
++             _menu = (PanelMenuView)nib.Instantiate (this, null)[0];
++             _menu.ViewToAnimate = homeView;
+++			_menu.OnInstantiate();
++ 
++             View.InsertSubviewBelow (_menu, homeView);
++         }
++diff --git a/Src/Mobile/iOS/Views/PanelMenuView.cs b/Src/Mobile/iOS/Views/PanelMenuView.cs
++--- a/Src/Mobile/iOS/Views/PanelMenuView.cs
+++++ b/Src/Mobile/iOS/Views/PanelMenuView.cs
++@@ -38,13 +38,24 @@
++ 				}
++ 			}
++ 		}
+++
+++		PanelMenuSource _source;
++ 
++         public PanelMenuView (IntPtr handle) : base(handle)
++         {
++ 			this.DelayBind (() => {
++ 				InitializeMenu();
++-			});
++-        }
+++			});
+++
+++        }
+++
+++		public void OnInstantiate ()
+++		{
+++			_source = new PanelMenuSource (menuListView, UITableViewCellStyle.Default, 
+++											new NSString (CellId), 
+++											CellBindingText, UITableViewCellAccessory.None);
+++			menuListView.Source = _source;
+++		}
++ 
++         private void InitializeMenu ()
++         {
++@@ -57,18 +68,9 @@
++             var sideLine = Line.CreateVertical(menuContainer.Frame.Width, Frame.Height, UIColor.FromRGB(190, 190, 190));
++             AddSubview(sideLine);
++ 
++-			var source = new PanelMenuSource(
++-				menuListView, 
++-				UITableViewCellStyle.Default,
++-                new NSString(CellId), 
++-				CellBindingText,
++-				UITableViewCellAccessory.None);
++-
++-			menuListView.Source = source;
++-
++ 			var set = this.CreateBindingSet<PanelMenuView, PanelMenuViewModel>();
++ 
++-			set.Bind(source)
+++			set.Bind(_source)
++ 				.For(v => v.ItemsSource)
++ 				.To(vm => vm.ItemMenuList);
++ 
