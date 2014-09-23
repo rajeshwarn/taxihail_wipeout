@@ -35,7 +35,7 @@
     <key>CFBundleShortVersionString</key>
     <string>1.5.291</string>
     <key>MinimumOSVersion</key>
-    <string>4.3</string>
+    <string>6.0</string>
     <key>NSMainNibFile</key>
     <string>MainWindow</string>
     <key>UIAppFonts</key>
