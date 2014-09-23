@@ -15,5 +15,6 @@ namespace apcurium.MK.Booking.ReadModel
         public Guid CompanyId { get; set; }
         public string Name { get; set; }
         public bool IsHidden { get; set; }
+        public string Language { get; set; }
     }
 }

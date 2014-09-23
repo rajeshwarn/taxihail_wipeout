@@ -11,5 +11,6 @@ namespace apcurium.MK.Booking.Events
     {
         public string Name { get; set; }
         public Guid RatingTypeId { get; set; }
+        public string Language { get; set; }
     }
 }

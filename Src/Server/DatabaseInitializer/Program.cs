@@ -277,19 +277,22 @@ namespace DatabaseInitializer
             {
                 CompanyId = AppConstants.CompanyId,
                 Name = "Knowledgable driver",
-                RatingTypeId = Guid.NewGuid()
+                RatingTypeId = Guid.NewGuid(),
+                Language = "en"
             });
             commandBus.Send(new AddRatingType
             {
                 CompanyId = AppConstants.CompanyId,
                 Name = "Politeness",
-                RatingTypeId = Guid.NewGuid()
+                RatingTypeId = Guid.NewGuid(),
+                Language = "en"
             });
             commandBus.Send(new AddRatingType
             {
                 CompanyId = AppConstants.CompanyId,
                 Name = "Safety",
-                RatingTypeId = Guid.NewGuid()
+                RatingTypeId = Guid.NewGuid(),
+                Language = "en"
             });
         }
 

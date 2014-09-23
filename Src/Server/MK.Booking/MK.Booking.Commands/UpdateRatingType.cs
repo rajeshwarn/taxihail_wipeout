@@ -18,5 +18,6 @@ namespace apcurium.MK.Booking.Commands
         public Guid CompanyId { get; set; }
         public Guid RatingTypeId { get; set; }
         public Guid Id { get; set; }
+        public string Language { get; set; }
     }
 }

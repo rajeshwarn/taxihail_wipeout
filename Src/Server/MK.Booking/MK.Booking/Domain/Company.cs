@@ -152,7 +152,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void AddRatingType(string name, Guid ratingTypeId)
+        public void AddRatingType(string name, Guid ratingTypeId, string language)
         {
             if (name.IsNullOrEmpty())
                 throw new ArgumentException("Rating name cannot be null or empty");
@@ -160,11 +160,12 @@ namespace apcurium.MK.Booking.Domain
             Update(new RatingTypeAdded
             {
                 Name = name,
-                RatingTypeId = ratingTypeId
+                RatingTypeId = ratingTypeId,
+                Language = language
             });
         }
 
-        public void UpdateRatingType(string name, Guid ratingTypeId)
+        public void UpdateRatingType(string name, Guid ratingTypeId, string language)
         {
             if (name.IsNullOrEmpty())
                 throw new ArgumentException("Rating name cannot be null or empty");
@@ -172,7 +173,8 @@ namespace apcurium.MK.Booking.Domain
             Update(new RatingTypeUpdated
             {
                 Name = name,
-                RatingTypeId = ratingTypeId
+                RatingTypeId = ratingTypeId,
+                Language = language
             });
         }
 

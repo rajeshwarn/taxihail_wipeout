@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(AddRatingType command)
         {
             var company = _repository.Get(command.CompanyId);
-            company.AddRatingType(command.Name, command.RatingTypeId);
+            company.AddRatingType(command.Name, command.RatingTypeId, command.Language);
             _repository.Save(company, command.Id.ToString());
         }
 
@@ -178,7 +178,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(UpdateRatingType command)
         {
             var company = _repository.Get(command.CompanyId);
-            company.UpdateRatingType(command.Name, command.RatingTypeId);
+            company.UpdateRatingType(command.Name, command.RatingTypeId, command.Language);
             _repository.Save(company, command.Id.ToString());
         }
 

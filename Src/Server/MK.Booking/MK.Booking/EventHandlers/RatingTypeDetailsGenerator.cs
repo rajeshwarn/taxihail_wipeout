@@ -31,7 +31,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     {
                         CompanyId = @event.SourceId,
                         Id = @event.RatingTypeId,
-                        Name = @event.Name
+                        Name = @event.Name,
+                        Language = @event.Language
                     });
                 }
             }
@@ -54,6 +55,7 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var ratingType = context.Find<RatingTypeDetail>(@event.RatingTypeId);
                 ratingType.Name = @event.Name;
+                ratingType.Language = @event.Language;
 
                 context.SaveChanges();
             }
