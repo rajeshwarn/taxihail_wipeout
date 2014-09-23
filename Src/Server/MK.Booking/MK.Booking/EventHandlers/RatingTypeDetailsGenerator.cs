@@ -11,8 +11,11 @@ using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class RatingTypeDetailsGenerator : IEventHandler<RatingTypeAdded>, IEventHandler<RatingTypeHidded>,
-        IEventHandler<RatingTypeUpdated>
+    public class RatingTypeDetailsGenerator :
+        IEventHandler<RatingTypeAdded>,
+        IEventHandler<RatingTypeHidded>,
+        IEventHandler<RatingTypeUpdated>,
+        IEventHandler<RatingTypeDeleted>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -56,8 +59,20 @@ namespace apcurium.MK.Booking.EventHandlers
                 var ratingType = context.Find<RatingTypeDetail>(@event.RatingTypeId);
                 ratingType.Name = @event.Name;
                 ratingType.Language = @event.Language;
-
                 context.SaveChanges();
+            }
+        }
+
+        public void Handle(RatingTypeDeleted @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var ratingType = context.Find<RatingTypeDetail>(@event.RatingTypeId);
+                if (ratingType != null)
+                {
+                    context.Set<RatingTypeDetail>().Remove(ratingType);
+                    context.SaveChanges();
+                }
             }
         }
     }
