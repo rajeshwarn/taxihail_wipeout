@@ -27,8 +27,6 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         {
             _sut = new EventSourcingTestHelper<Account>();
 
-            //ar orderDao = UnityServiceLocator.Instance.Resolve<IOrderDao>();
-
             _smsSenderMock = new Mock<ISmsService>();
             _orderDaoMock = new Mock<IOrderDao>();
             _configurationManager = new TestConfigurationManager();
