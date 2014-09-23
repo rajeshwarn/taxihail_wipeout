@@ -53,12 +53,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override bool FinishedLaunching (UIApplication app, NSDictionary options)
         {
-            #if !DEBUG
-                var conversionId = "";
-                var label = "";
-                ACTConversionReporter.ReportWithConversionID(conversionId, label, "1.000000", false);
-            #endif
-
             _isStarting = true;
 
             if (!UIHelper.IsOS7orHigher)
@@ -90,6 +84,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             var paymentService = TinyIoCContainer.Current.Resolve<IPaymentService>();
             paymentService.ClearPaymentSettingsFromCache();
+
+            #if !DEBUG
+                var conversionId = appSettingsService.Data.GoogleAdWordsConversionId;
+                var label = appSettingsService.Data.GoogleAdWordsConversionLabel;
+                if(!string.IsNullOrWhiteSpace(conversionId) && !string.IsNullOrWhiteSpace(label))
+                {
+                    try
+                    {
+                        ACTConversionReporter.ReportWithConversionID(conversionId, label, "1.000000", false);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.LogError (e);
+                    }
+                }
+            #endif
 
 			var startup = Mvx.Resolve<IMvxAppStart>();
 			startup.Start(@params);

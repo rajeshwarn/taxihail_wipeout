@@ -269,6 +269,11 @@ namespace MK.Common.Configuration
 
         [Display(Name = "VAT Percentage", Description = "Percentage to use to calculate the VAT portion of a fare")]
         public int VATPercentage { get; private set; }
+
+        [Display(Name = "Google AdWords Conversion Tracking ID", Description = "Conversion ID used for Google Conversion Tracking")]
+        public string GoogleAdWordsConversionId { get; private set; }
+        [Display(Name = "Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
+        public string GoogleAdWordsConversionLabel { get; private set; }
     }
 }
 
