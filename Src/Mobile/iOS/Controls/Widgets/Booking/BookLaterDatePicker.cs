@@ -45,8 +45,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             FlatButtonStyle.Red.ApplyTo(CancelButton);
             FlatButtonStyle.Green.ApplyTo(OrderButton);
 
-            AddSubviews(DatePicker, CancelButton, OrderButton);
+            
         }
+
+		public override void LayoutSubviews ()
+		{
+			base.LayoutSubviews ();
+
+			//This resolve a problem with iOS8 and the sdk 7, before this was executed in the initialize method but was causing a crash on iOS 8. 
+			if (DatePicker.Superview == null) {			
+				AddSubviews (DatePicker, CancelButton, OrderButton);
+			}
+		}
 
         private void InitializeBinding()
         {
