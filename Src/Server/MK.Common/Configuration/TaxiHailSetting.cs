@@ -38,6 +38,7 @@ namespace MK.Common.Configuration
 		    DisableChargeTypeWhenCardOnFile = false;
 		    VehicleTypeSelectionEnabled = false;
 		    SendPushAsSMS = false;
+            AllowSimultaneousAppOrders = false;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -265,6 +266,9 @@ namespace MK.Common.Configuration
 
         [Display(Name = "VAT Percentage", Description = "Percentage to use to calculate the VAT portion of a fare")]
         public int VATPercentage { get; private set; }
+
+        [Display(Name = "Allow Simultaneous Orders", Description = "Allow to have more than one active order")]
+        public bool AllowSimultaneousAppOrders { get; private set; }
     }
 }
 
