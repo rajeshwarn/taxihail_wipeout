@@ -30,7 +30,6 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             if (tariff == null) return null;
 
-            var maxDistance = _appSettings.Data.MaxDistance;
             double? price = null;
             try
             {
@@ -44,31 +43,13 @@ namespace apcurium.MK.Booking.Maps.Impl
                     {
                         durationInMinutes = ((double) durationInSeconds.Value/60);
                     }
+                        
+                    price = (double)tariff.FlatRate + (distanceInKm * tariff.KilometricRate) + (durationInMinutes * tariff.PerMinuteRate);
 
-                    if (distanceInKm < maxDistance)
-                    {
-                        price = (double)tariff.FlatRate + (distanceInKm * tariff.KilometricRate) + (durationInMinutes * tariff.PerMinuteRate);
-
-                        // add overhead
-                        price = price * (1 + tariff.MarginOfError/100);
-                    }
-                    else
-                    {
-                        price = 1000;
-                    }
+                    // add overhead
+                    price = price * (1 + tariff.MarginOfError/100);
                     
-                    price = Math.Round(price.Value, 2);
-                    price = price.Value*100;
-                    var q = (int) (price.Value/5.0);
-                    int r;
-
-                    Math.DivRem((int) price.Value, 5, out r);
-                    if (r > 0)
-                    {
-                        q++;
-                    }
-                    price = q*5;
-                    price = price.Value/100;
+                    price = RoundPrice(price);
 
                     price = Math.Max(tariff.MinimumRate, price.Value);
                 }
@@ -79,6 +60,24 @@ namespace apcurium.MK.Booking.Maps.Impl
             }
 
             return price;
+        }
+
+        private double RoundPrice(double price)
+        {
+            var roundedPrice = Math.Round(price, 2);
+            roundedPrice = roundedPrice * 100;
+            var q = (int) (roundedPrice / 5.0);
+            int r;
+
+            Math.DivRem((int) roundedPrice, 5, out r);
+            if (r > 0)
+            {
+                q++;
+            }
+            roundedPrice = q * 5;
+            roundedPrice = roundedPrice/100;
+
+            return roundedPrice;
         }
 
         public Tariff GetTariffFor(DateTime pickupDate, int? vehicleTypeId = null)

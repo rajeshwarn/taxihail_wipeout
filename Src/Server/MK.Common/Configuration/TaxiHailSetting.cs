@@ -199,8 +199,6 @@ namespace MK.Common.Configuration
 		public string SearchFilter { get; private set; }
         [Display(Name = "Default Radius", Description="Default radius for places search")]
         public int DefaultRadius { get; private set; }
-        [Display(Name = "Max Distance", Description="??")]
-        public int MaxDistance { get; private set; }
         [Display(Name = "Default Latitude", Description="Default latitude to display the map before geoloc is done")]
         public double DefaultLatitude { get; private set; }
         [Display(Name = "Default Longitude", Description="Default longitude to display the map before geoloc is done")]
