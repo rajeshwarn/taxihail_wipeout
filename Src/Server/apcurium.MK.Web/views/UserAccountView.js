@@ -48,7 +48,8 @@
                     url: 'api/account/orders',
                     success: _.bind(function (model) {
                         this._tabView = new TaxiHail.OrderHistoryView({
-                            collection:model
+                            collection: model,
+                            parent: this
                         });
                         this._tabView.render();
                         this.$("#user-account-container").html(this._tabView.el);
@@ -76,12 +77,13 @@
 
         },
 
-        reloadActiveTab: function(e) {
-            e.preventDefault();
+        reloadActiveTab: function (e) {
+            if (e) {
+                e.preventDefault();
+            }
             var tabName = this.$('.active').data().tab;
             this.selectTab(tabName);
         }
-        
     });
 
 }());

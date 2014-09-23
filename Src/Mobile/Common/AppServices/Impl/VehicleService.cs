@@ -102,20 +102,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.Take (vehicleCount)
 				.ToArray();
 
-			var south = vehicles.OrderBy (x => x.Latitude).First ().Latitude;
-			var north = vehicles.OrderBy (x => x.Latitude).Last ().Latitude;
-			var west = vehicles.OrderBy (x => x.Longitude).First ().Longitude;
-			var east = vehicles.OrderBy (x => x.Longitude).Last ().Longitude;
+			var distanceFromLastVehicle = Position.CalculateDistance (vehicles.Last ().Latitude, vehicles.Last ().Longitude, centerLatitude, centerLongitude); 
 
-			var deltaLatitude = Math.Max (Math.Abs (north - centerLatitude), Math.Abs (centerLatitude - south));
-			var deltaLongitude = Math.Max (Math.Abs (east - centerLongitude), Math.Abs (centerLongitude - west));
+			var maximumBounds = MapBounds.GetBoundsFromCenterAndRadius(centerLatitude, centerLongitude, distanceFromLastVehicle, distanceFromLastVehicle);
 
-			var newNorth = centerLatitude + deltaLatitude;
-			var newSouth = centerLatitude - deltaLatitude;
-			var newEast = centerLongitude - deltaLongitude;
-			var newWest = centerLongitude + deltaLongitude;
-
-			return new MapBounds () { NorthBound = newNorth, SouthBound = newSouth, EastBound = newEast, WestBound = newWest };
+			return maximumBounds;
 		}
 
 		IEnumerable<AvailableVehicle> OrderVehiclesByDistance(Address pickup, IEnumerable<AvailableVehicle> cars)

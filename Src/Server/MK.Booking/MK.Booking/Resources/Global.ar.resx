@@ -240,6 +240,9 @@
   <data name="Email_Body_VAT" xml:space="preserve">
     <value />
   </data>
+  <data name="Email_Body_Tax" xml:space="preserve">
+    <value />
+  </data>
   <data name="Email_Body_VehicleNumber" xml:space="preserve">
     <value>رقم السيارة</value>
   </data>
@@ -307,13 +310,13 @@
     <value>في انتظار تعيين السائق</value>
   </data>
   <data name="PaymentConfirmationToDriver1" xml:space="preserve">
-    <value>قام الراكب بالدفع {0}</value>
+    <value>The passenger has paid</value>
   </data>
   <data name="PaymentConfirmationToDriver2" xml:space="preserve">
-    <value>رقم التصريح {0}</value>
+    <value>Fare: {0}   Tip: {1}</value>
   </data>
   <data name="PairingConfirmationToDriver" xml:space="preserve">
-    <value>The client will be charged automatically at the end of the ride</value>
+    <value>Fare will be paid by the app</value>
   </data>
   <data name="UnpairingConfirmationToDriver" xml:space="preserve">
     <value>WARNING: The client will NOT be charged at the end of the ride</value>
@@ -356,5 +359,17 @@
   </data>
   <data name="Email_Body_SubTotal" xml:space="preserve">
     <value>Subtotal</value>
+  </data>
+  <data name="PaymentConfirmationToDriver3" xml:space="preserve">
+    <value>Total: {0}</value>
+  </data>
+  <data name="PaymentConfirmationToDriver4" xml:space="preserve">
+    <value>Auth #{0}</value>
+  </data>
+  <data name="PayInCarMessageToDriver" xml:space="preserve">
+    <value>Payment being processed by the app...</value>
+  </data>
+  <data name="EtaMessageToDriver" xml:space="preserve">
+    <value>ETA displayed to client is {0} and {1} min</value>
   </data>
 </root>

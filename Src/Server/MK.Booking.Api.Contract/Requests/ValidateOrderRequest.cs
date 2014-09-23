@@ -10,7 +10,6 @@ using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Authenticate]
     [Route("/account/orders/validate", "POST")]
     [Route("/account/orders/validate/{ForError}", "POST")]
     [Route("/account/orders/validate/{ForError}/{TestZone}", "POST")]

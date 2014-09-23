@@ -1,106 +1,532 @@
-﻿<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>{{ localize "Email_Subject_Receipt" }}</title>
-    </head>
-    <body style="font-family:Calibri,Helvetica, sans-serif; color:#686868">
-        <table width="300" cellpadding="0" cellspacing="0" style="width:300px;border-right:1px solid {{ AccentColor }};border-left:1px solid {{ AccentColor }};" id="backgroundTable">       
-		    <tr style="background-color:{{ AccentColor }}">
-			    <td colspan="2">&nbsp;</td>
-		    </tr>
-            <tr>
-                <td colspan="2">
-                    <h1 style="width:300px;color:{{ AccentColor }};padding-left:45px;padding-right:20px;">{{ ApplicationName }}<br/>{{ localize "Email_Body_Receipt" }}</h1>
-                </td>
-            </tr>
-		    <tr>
-			    <td colspan='2'>
-				    <table cellpadding="1" cellspacing="0" border="0" style="border:none;margin-left:45px;margin-right:20px;width:300px;">
-				        <tr>
-				            <td width=1><strong>{{ localize "Email_Body_Date" }}</strong></td>
-                            <td>{{Date}}</td>
-				        </tr>
+﻿
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>{{ localize "Email_Subject_AccountConfirmation" }}</title>
+    <style>
+        /* -------------------------------------
+            GLOBAL
+        ------------------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        img {
+            max-width: 100%;
+            padding: 10px;
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-text-size-adjust: none;
+            width: 100% !important;
+            height: 100%;
+            line-height: 1.6;
+        }
+
+        /* Let's make sure all tables have defaults */
+        table td {
+            vertical-align: top;
+        }
+        /* -------------------------------------
+            BODY & CONTAINER
+        ------------------------------------- */
+
+
+        .body-wrap {
+            width: 100%;
+        }
+
+        .container {
+            /*display: block !important;*/
+            max-width: 600px !important;
+            margin: 0 auto !important;
+            /* makes it centered */
+            clear: both !important;
+        }
+
+        .content {
+            max-width: 600px;
+            margin: 0 auto;
+            display: block;
+            padding: 20px;
+        }
+
+        /* -------------------------------------
+            HEADER, FOOTER, MAIN
+        ------------------------------------- */
+        .main {
+            background: #fff;
+            border: 1px solid #e9e9e9;
+            border-radius: 3px;
+        }
+
+        .content-wrap {
+            padding: 20px;
+        }
+
+        .content-block {
+            padding: 0 0 20px;
+        }
+
+        .header {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            width: 100%;
+            clear: both;
+            color: #999;
+            padding: 20px;
+        }
+
+            .footer a {
+                color: #999;
+            }
+
+            .footer p, .footer a, .footer unsubscribe, .footer td {
+                font-size: 12px;
+            }
+
+        /* -------------------------------------
+            GRID AND COLUMNS
+        ------------------------------------- */
+        .column-left {
+            float: left;
+            width: 50%;
+        }
+
+        .column-right {
+            float: left;
+            width: 50%;
+        }
+
+        /* -------------------------------------
+            TYPOGRAPHY
+        ------------------------------------- */
+        h1, h2, h3 {
+            font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            color: #000;
+            margin: 40px 0 0;
+            line-height: 1.2;
+            font-weight: 400;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 500;
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+
+        h3 {
+            font-size: 18px;
+        }
+
+        h4 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        p, ul, ol {
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+            p li, ul li, ol li {
+                margin-left: 5px;
+                list-style-position: inside;
+            }
+
+        /* -------------------------------------
+            LINKS & BUTTONS
+        ------------------------------------- */
+        a {
+            color: #348eda;
+            text-decoration: underline;
+        }
+
+        .btn-primary {
+            text-decoration: none;
+            color: #FFF;
+            background-color: #348eda;
+            border: solid #348eda;
+            border-width: 10px 20px;
+            line-height: 2;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            display: inline-block;
+            border-radius: 5px;
+            text-transform: capitalize;
+        }
+
+        /* -------------------------------------
+            OTHER STYLES THAT MIGHT BE USEFUL
+        ------------------------------------- */
+        .last {
+            margin-bottom: 0;
+        }
+
+        .first {
+            margin-top: 0;
+        }
+
+        .padding {
+            padding: 10px 0;
+        }
+
+        .aligncenter {
+            text-align: center;
+        }
+
+        .alignright {
+            text-align: right;
+        }
+
+        .alignleft {
+            text-align: left;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        /* -------------------------------------
+            Alerts
+        ------------------------------------- */
+        .alert {
+            font-size: 16px;
+            color: #fff;
+            font-weight: 500;
+            padding: 20px;
+            text-align: center;
+            border-radius: 3px 3px 0 0;
+        }
+
+            .alert a {
+                color: #fff;
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 16px;
+            }
+
+            .alert.alert-warning {
+                background: #ff9f00;
+            }
+
+            .alert.alert-bad {
+                background: #d0021b;
+            }
+
+            .alert.alert-good {
+                background: #68b90f;
+            }
+
+        /* -------------------------------------
+            INVOICE
+        ------------------------------------- */
+        .invoice {
+            margin: 15px auto;
+            text-align: left;
+            width: 80%;
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
+
+            .invoice td {
+                padding: 5px 0;
+            }
+
+            .invoice .invoice-items {
+                width: 100%;
+            }
+
+                .invoice .invoice-items td {
+                    border-top: #eee 1px solid;
+                }
+
+                .invoice .invoice-items .total td {
+                    border-top: 2px solid #333;
+                    border-bottom: 2px solid #333;
+                    font-weight: 700;
+                }
+
+        /* -------------------------------------
+            RESPONSIVE AND MOBILE FRIENDLY STYLES
+        ------------------------------------- */
+
+
+
+
+        .receipt_price {
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .receipt_date {
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .receiptLeftInfo, .receiptRightInfo {
+            width: 100%;
+            float: left !important;
+        }
+
+
+        .route_list {
+            text-align: left;
+            /* float: left;*/
+        }
+
+        .route_list_title {
+            font-weight: bold;
+        }
+
+        .route_list_adddress {
+            color: gray;
+        }
+
+        .route_list_img {
+            float: left;
+            padding: 7px 7px 0 0;
+        }
+
+        .route_list_item {
+            text-align: left;
+            padding-left: 5px;
+        }
+
+        .route_departure, .route_arrival {
+            margin: 0 auto;
+            width: 80%;
+            position: relative;
+            table-layout: inherit;
+        }
+
+        .list_value {
+            text-align: right;
+        }
+
+        .fare_list_subtotal {
+            font-weight: bold;
+        }
+
+        .fare_list_charged {
+            font-weight: bolder;
+        }
+
+        .title_block {
+            background: -moz-linear-gradient(#ffffff 0%, #ffffff 49%, #000000 50%, #000000 51%, #ffffff 52%, #ffffff 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(49%, #ffffff), color-stop(50%, #000000), color-stop(51%, #000000), color-stop(52%, #ffffff), color-stop(100%, #ffffff));
+            background: -webkit-linear-gradient(#ffffff 0%, #ffffff 49%, #000000 50%, #000000 51%, #ffffff 52%, #ffffff 100%);
+            background: -o-linear-gradient(#ffffff 0%, #ffffff 49%, #000000 50%, #000000 51%, #ffffff 52%, #ffffff 100%);
+            background: linear-gradient(#ffffff 0%, #ffffff 49%, #000000 50%, #000000 51%, #ffffff 52%, #ffffff 100%);
+            background-image: -moz-linear-gradient(#ffffff 0%, #ffffff 49%, #000000 50%, #000000 51%, #ffffff 52%, #ffffff 100%);
+            background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(49%, #ffffff), color-stop(50%, #000000), color-stop(51%, #000000), color-stop(52%, #ffffff), color-stop(100%, #ffffff));
+            background-image: -webkit-linear-gradient(#ffffff 0%, #ffffff 49%, #000000 50%, #000000 51%, #ffffff 52%, #ffffff 100%);
+            background-image: -o-linear-gradient(#ffffff 0%, #ffffff 49%, #000000 50%, #000000 51%, #ffffff 52%, #ffffff 100%);
+            background-image: linear-gradient(#ffffff 0%, #ffffff 49%, #000000 50%, #000000 51%, #ffffff 52%, #ffffff 100%);
+            background-image: linear-gradient(#ffffff 0%, #ffffff 49%, #000000 50%, #000000 51%, #ffffff 52%, #ffffff 100%);
+        }
+
+        .title_block {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            text-align: center;
+            padding: 10px 20px 10px 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            background-image: linear-gradient(#ffffff 0%, #ffffff 49%, #000000 50%, #000000 51%, #ffffff 52%, #ffffff 100%);
+        }
+
+            .title_block span {
+                background-color: white;
+                padding: 0 5px 0 5px;
+            }
+    </style>
+
+</head>
+
+<body>
+
+    <table class="body-wrap">
+        <tr>
+            <td></td>
+            <td class="container" width="90%" style=" background-color:{{AccentColor}}">
+                <div class="content">
+                    <table class="main" width="100%" cellpadding="0" cellspacing="0" style="color:{{EmailFontColor}}">
                         <tr>
-						    <td valign=top><strong>{{ localize "Email_Body_PickupLocation" }}</strong></td>
-						    <td valign=top>{{PickupAddress}}</td>
-					    </tr>
-					    <tr>
-						    <td valign=top><strong>{{ localize "Email_Body_Destination" }}</strong></td>
-						    <td valign=top>{{DropOffAddress}}</td>
-					    </tr>
-					    <tr>
-					        <td><strong>{{ localize "Email_Body_OrderNo" }}&nbsp;&nbsp;</strong></td>
-                            <td>{{IBSOrderId}}</td>
-					    </tr>
-					    <tr>
-					        <td><strong>{{ localize "Email_Body_VehicleNumber" }}</strong></td>
-                            <td>{{VehicleNumber}}</td>
-					    </tr>
-					    <tr>
-					    	<td><strong>{{ localize "Email_Body_Driver" }}</strong></td>
-                        	<td>{{DriverName}}</td>
-					   	</tr>
-				        <tr>
-				            <td><strong>{{ localize "Email_Body_Fare"}}</strong></td>
-                            <td>{{Fare}}</td>
-				        </tr>
-                    
-      {{#VatEnabled}}
-				        <tr id="vatRow" >
-				            <td><strong>{{ localize "Email_Body_VAT"}}</strong></td>
-                            <td>{{VATAmount}} (#: {{VATRegistrationNumber}})</td>
-				        </tr>
-      {{/VatEnabled}}
-					    <tr>
-					        <td><strong>{{ localize "Email_Body_Toll"}}</strong></td>
-                            <td>{{Toll}}</td>
-					    </tr>
-					    <tr>
-					        <td><strong>{{ localize "Email_Body_Tip"}}</strong></td>
-                            <td>{{Tip}}</td>
-					    </tr>
-				        <tr>
-				            <td><strong>{{ localize "Email_Body_TotalFare"}}</strong></td>
-                            <td>{{TotalFare}}</td>
-				        </tr>
-	  {{#IsCardOnFile}}
+                            <td class="content-wrap aligncenter">
+                                <table width="100%" cellpadding="0" cellspacing="0" style="background-color: white !important;border-radius:5px;">
+                                    <tr>
+                                        <td class="content-block">
+                                            <img src="{{LogoImg}}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table width="100%" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td class="receipt_date">{{PickupDate}} - {{PickupTime}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign=top style="text-align: center">{{ localize "Email_Body_OrderNo" }}{{IBSOrderId}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="receipt_price">{{ TotalFare }}</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                <div class="receiptLeftInfo" style="float: left !important;">
+                                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <td class="title_block"><span>{{ localize "Email_Body_Route" }}</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <table width="100%" class="route_departure">
+                                                                    <tr class="route_list_item">
+                                                                        <td>
+                                                                            <img src="{{GreenDotImg}}" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <table>
+                                                                                <tr>
+                                                                                    <td class="route_list_title">{{PickupDate}} - {{PickupTime}}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="route_list_adddress">{{ PickupAddress }}</td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr class="route_list_item">
+                                                                        <td>
+                                                                            <img src="{{RedDotImg}}" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <table>
+                                                                                <tr>
+                                                                                    <td class="route_list_title">{{DropOffDate}}{{#HasDropOffTime}} - {{DropOffTime}}{{/HasDropOffTime}}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="route_list_adddress">{{ DropOffAddress }}</td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        {{#ShowStaticMap}}
+                                                        <tr>
+                                                            <td style="text-align:center">
+                                                                <img src="{{ StaticMapUri }}" />
+                                                            </td>
+                                                        </tr>
+                                                        {{/ShowStaticMap}}
+                                                    </table>
+                                                </div>
+                                                <div class="receiptRightInfo" style="float: left !important;">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="title_block"><span>{{localize "Email_Body_FareBreakDown"}}</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <table class="invoice" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td class="fare_list_title">{{ localize "Email_Body_Fare"}}</td>
+                                                                        <td class="list_value">{{ Fare }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="fare_list_title">
+                                                                            {{#vatIsEnabled}}{{ localize "Email_Body_VAT"}}{{/vatIsEnabled}}
+                                                                            {{^vatIsEnabled}}{{ localize "Email_Body_Tax"}}{{/vatIsEnabled}}
+                                                                        </td>
+                                                                        <td class="list_value">{{ Tax }}</td>
+                                                                    </tr>
+                                                                    <tr class="fare_list_subtotal" style="color:{{EmailFontColor}} !important">
+                                                                        <td class="fare_list_title">{{ localize "Email_Body_SubTotal" }}</td>
+                                                                        <td class="list_value">{{ SubTotal }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="fare_list_title">{{ localize "Email_Body_Tip"}}</td>
+                                                                        <td class="list_value">{{ Tip }}</td>
+                                                                    </tr>
+                                                                    <tr class="fare_list_charged" style="color:{{EmailFontColor}} !important">
+                                                                        <td class="fare_list_title">{{ localize "Email_Body_TotalFare"}}</td>
+                                                                        <td class="list_value">{{ TotalFare }}</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    {{#IsCardOnFile}}
+                                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <td class="title_block"><span>{{ localize "Email_Body_PaymentInformation" }} </span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <table class="invoice" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td class="card_list_title">{{ localize "Email_Body_PaidWith" }}</td>
+                                                                        <td class="list_value">{{ CardNumber }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="card_list_title">{{ localize "Email_Body_TotalAmount" }}</td>
+                                                                        <td class="list_value">{{ CardOnFileAmount }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="card_list_title">{{ localize "Email_Body_TransactionId" }}</td>
+                                                                        <td class="list_value">{{ CardOnFileTransactionId }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="card_list_title">{{ localize "Email_Body_AuthorizationNumber" }}</td>
+                                                                        <td class="list_value">{{ CardOnFileAuthorizationCode }}</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    {{/IsCardOnFile}}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="content-block">
+                                            <p style="text-align: center">{{{Note}}}</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td></td>
+        </tr>
+    </table>
 
-				        <tr>
-				            <td colspan="2">&nbsp;</td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"><strong>{{ localize "Email_Body_PaymentInformation" }}</strong></td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"></td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"><strong>{{ localize "Email_Body_PaidWith" }}</strong> {{ CardNumber }}</td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"><strong>{{ localize "Email_Body_TotalAmount" }}</strong> {{ CardOnFileAmount }}</td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"><strong>{{ localize "Email_Body_TransactionId" }}</strong>{{ CardOnFileTransactionId }}</td>
-				        </tr>
-				        <tr>
-				            <td colspan="2"><strong>{{ localize "Email_Body_AuthorizationNumber" }}</strong>{{ CardOnFileAuthorizationCode }}</td>
-				        </tr>
-    {{/IsCardOnFile}}                    
-
-				    </table>
-			    </td>
-		    </tr>
-            <tr>
-                <td colspan="2">
-                    <p style="padding-left:45px;padding-right:20px;width:300px;">{{{Note}}}</p>
-                </td>
-            </tr>
-            <tr style="background-color:{{ AccentColor }}">
-                <td colspan="2">&nbsp;</td>
-            </tr>
-        </table>
-    </body>
+</body>
 </html>

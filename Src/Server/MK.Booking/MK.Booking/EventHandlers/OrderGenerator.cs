@@ -30,13 +30,13 @@ namespace apcurium.MK.Booking.EventHandlers
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
-        public OrderGenerator(Func<BookingDbContext> contextFactory, ILogger logger, IConfigurationManager configurationManager)
+        public OrderGenerator(Func<BookingDbContext> contextFactory, ILogger logger, IConfigurationManager configurationManager, IAppSettings appSettings)
         {
             _contextFactory = contextFactory;
             _logger = logger;
 
             var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
-            _resources = new Resources.Resources(applicationKey);
+            _resources = new Resources.Resources(applicationKey, appSettings);
         }
 
         public void Handle(OrderCancelled @event)
@@ -44,8 +44,11 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
-                order.Status = (int) OrderStatus.Canceled;
-                context.Save(order);
+                if (order != null)
+                {
+                    order.Status = (int) OrderStatus.Canceled;
+                    context.Save(order);
+                }
 
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 if (details != null)

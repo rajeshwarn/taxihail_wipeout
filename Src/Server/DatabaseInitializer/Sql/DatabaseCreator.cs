@@ -230,6 +230,18 @@ namespace DatabaseInitializer.Sql
 
             DatabaseHelper.ExecuteNonQuery(connString, queryForEvents);
 
+            var createIndexQuery = string.Format("IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'EventDateVersionIdx' AND object_id = OBJECT_ID('[{0}].[Events].[Events]')) " +
+                                                 "CREATE NONCLUSTERED INDEX [EventDateVersionIdx] ON [{0}].[Events].[Events] " + 
+                                                 "([EventDate] ASC, [Version] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, " +
+                                                 "DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)", newDatabase);
+
+            DatabaseHelper.ExecuteNonQuery(connString, createIndexQuery);
+
+            var reBuildIndex = string.Format("ALTER INDEX [EventDateVersionIdx] ON [{0}].[Events].[Events] REBUILD PARTITION = ALL WITH (PAD_INDEX = OFF, " +
+                                             "STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON);", newDatabase);
+
+            DatabaseHelper.ExecuteNonQuery(connString, reBuildIndex);
+
             // copy cache table except the static data
             var queryForCache = string.Format("INSERT INTO [{0}].[Cache].[Items]([Key],[Value],[ExpiresAt]) " +
                                               "SELECT [Key],[Value],[ExpiresAt] " +

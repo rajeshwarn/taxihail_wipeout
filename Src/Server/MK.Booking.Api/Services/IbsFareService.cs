@@ -40,16 +40,6 @@ namespace apcurium.MK.Booking.Api.Services
                 : new DirectionInfo();
         }
 
-        private string FormatPrice(double? price)
-        {
-            if (price.HasValue)
-            {
-                var culture = _configManager.GetSetting("PriceFormat");
-                return string.Format(new CultureInfo(culture), "{0:C}", price);
-            }
-            return "";
-        }
-
         private string FormatDistance(int? distance)
         {
             if (distance.HasValue)

@@ -46,9 +46,11 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IDirections _directions;
         private readonly IIbsOrderService _ibsOrderService;
         private readonly Resources.Resources _resources;
-        private IAppSettings _appSettings;
+        private readonly IAppSettings _appSettings;
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(CreateOrderService));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(OrderStatusUpdater));
+
+        private string _languageCode = "";
 
         public OrderStatusUpdater(IConfigurationManager configurationManager, 
             ICommandBus commandBus, 
@@ -70,7 +72,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             _commandBus = commandBus;
             _orderPaymentDao = orderPaymentDao;
 
-            _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"));
+            _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
         }
 
         public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
@@ -213,7 +215,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             double tipPercentage = pairingInfo.AutoTipPercentage ?? _appSettings.Data.DefaultTipPercentage;
             var tipAmount = GetTipAmount(meterAmount, tipPercentage);
 
-            _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
+           var paymentResult =  _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
             {
                 OrderId = orderStatusDetail.OrderId,
                 CardToken = pairingInfo.TokenOfCardToBeUsedForPayment,
@@ -222,11 +224,21 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Amount = Convert.ToDecimal(meterAmount + tipAmount)
             });
 
-            // whether there's a success or not, we change the status back to Completed since we can't process the payment again
-            orderStatusDetail.Status = OrderStatus.Completed;
+           // whether there's a success or not, we change the status back to Completed since we can't process the payment again
+           orderStatusDetail.Status = OrderStatus.Completed;
 
-            Log.DebugFormat("Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
-                                            meterAmount, tipPercentage, tipAmount, meterAmount + tipAmount);
+           if (paymentResult.IsSuccessfull)
+            {
+                Log.DebugFormat(
+                    "Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
+                    meterAmount, tipPercentage, tipAmount, meterAmount + tipAmount);
+            }
+            else
+            {
+                var messageToDriver = _resources.Get("PaymentFailedToDriver", _languageCode);
+                _ibsOrderService.SendMessageToDriver(messageToDriver, orderStatusDetail.VehicleNumber);
+               Log.DebugFormat("Error During Payment : " + paymentResult.Message);
+            }
         }
 
         private double GetTipAmount(double amount, double percentage)
@@ -273,12 +285,12 @@ namespace apcurium.MK.Booking.Api.Jobs
         private string GetDescription(Guid orderId, IBSOrderInformation ibsOrderInfo)
         {
             var orderDetail = _orderDao.FindById(orderId);
-            var languageCode = orderDetail != null ? orderDetail.ClientLanguageCode : "en";
+            _languageCode = orderDetail != null ? orderDetail.ClientLanguageCode : "en";
 
             string description = null;
             if (ibsOrderInfo.IsAssigned)
             {
-                description = string.Format(_resources.Get("OrderStatus_CabDriverNumberAssigned", languageCode), ibsOrderInfo.VehicleNumber);
+                description = string.Format(_resources.Get("OrderStatus_CabDriverNumberAssigned", _languageCode), ibsOrderInfo.VehicleNumber);
                 Log.DebugFormat("Setting Assigned status description: {0}", description);
 
                 if (_configurationManager.GetSetting("Client.ShowEta", false))
@@ -296,7 +308,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             else if (ibsOrderInfo.IsCanceled)
             {
-                description = _resources.Get("OrderStatus_" + ibsOrderInfo.Status, languageCode);
+                description = _resources.Get("OrderStatus_" + ibsOrderInfo.Status, _languageCode);
                 Log.DebugFormat("Setting Canceled status description: {0}", description);
             }
             else if (ibsOrderInfo.IsComplete)
@@ -308,8 +320,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                             .Sum();
 
                 description = total > 0
-                    ? string.Format(_resources.Get("OrderStatus_OrderDoneFareAvailable", languageCode), FormatPrice(total))
-                    : _resources.Get("OrderStatus_wosDONE", languageCode);
+                    ? string.Format(_resources.Get("OrderStatus_OrderDoneFareAvailable", _languageCode), _resources.FormatPrice(total))
+                    : _resources.Get("OrderStatus_wosDONE", _languageCode);
                     
                Log.DebugFormat("Setting Complete status description: {0}", description);
             }
@@ -319,13 +331,17 @@ namespace apcurium.MK.Booking.Api.Jobs
                                             && _configurationManager.GetPaymentSettings().AutomaticPaymentPairing
                                             && orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id))
                 {
-                    description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", languageCode);
+                    description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", _languageCode);
                 }
+            }
+            else if (ibsOrderInfo.IsMeterOffNotPaid)
+            {
+                SendPayInCarMessageToDriver(ibsOrderInfo.VehicleNumber);
             }
 
             return description.HasValue()
                         ? description
-                        : _resources.Get("OrderStatus_" + ibsOrderInfo.Status, languageCode);
+                        : _resources.Get("OrderStatus_" + ibsOrderInfo.Status, _languageCode);
         }
 
         private void SendEtaMessageToDriver(double vehicleLatitude, double vehicleLongitude, double pickupLatitude, double pickupLongitude, string vehicleNumber)
@@ -333,17 +349,17 @@ namespace apcurium.MK.Booking.Api.Jobs
             var eta = _directions.GetEta(vehicleLatitude, vehicleLongitude, pickupLatitude, pickupLongitude);
             if (eta != null && eta.IsValidEta())
             {
-                string etaMessage = string.Format("ETA displayed to client is {0} and {1} min", eta.FormattedDistance, eta.Duration);
+                string etaMessage = string.Format(_resources.Get("EtaMessageToDriver", _languageCode), eta.FormattedDistance, eta.Duration);
                 _ibsOrderService.SendMessageToDriver(etaMessage, vehicleNumber);
                 Log.Debug(etaMessage);
             }
         }
 
-        private string FormatPrice(double? price)
+        private void SendPayInCarMessageToDriver(string vehicleNumber)
         {
-            var culture = _appSettings.Data.PriceFormat;
-            var currencyPriceFormat = _resources.Get("CurrencyPriceFormat", culture);
-            return string.Format(new CultureInfo(culture), currencyPriceFormat, price.HasValue ? price.Value : 0);
+            string payInCarMessage = _resources.Get("PayInCarMessageToDriver", _languageCode);
+            _ibsOrderService.SendMessageToDriver(payInCarMessage, vehicleNumber);
+            Log.Debug(payInCarMessage);
         }
     }
 }

@@ -94,7 +94,7 @@
 "DeleteBookItButtonImageNamePressed"="Assets/Button/btnBookIt-Pressed_en.png";
 "StreetNumberPlacesBt"="Search for places";
 "CreateAccountTitleMr"="Mr";
-"EstimatePriceFormat"="Estimated Fare : {0:C} ({1})";
+"EstimatePriceFormat"="Estimated Fare : {0} ({1})";
 "PanelMenuViewOrderHistoryText"="History";
 "ResetPasswordSucessTitle"="Password reset";
 "TabSearch"="Search";

@@ -23,6 +23,7 @@
 	"Loading": "Loading..." ,
 	"CreateAccount_AccountAlreadyExist" : "An account is already registered with this email address.",
     "CreateOrder_InvalidPickupAddress": "Invalid Pickup Address",
+    "CreateOrder_CannotCreateInIbs": "Order cannot be created. Please try again or contact us for further assistance.",
     "CreateOrder_CannotCreateInIbs_1002": "Booking cannot be completed. The specified Pickup address lies outside the regular service area. Please contact us for further assistance.",
     "CreateOrder_CannotCreateInIbs_1452": "Booking cannot be completed. The specified Dropoff address lies outside the regular service area. Please contact us for further assistance.",
 	"CreateOrder_CannotCreateInIbs_7000": "The order cannot be created because your account is currently inactive. Please contact us for further assistance.",
@@ -72,5 +73,10 @@
     "ChargeAccount":  "Charge Account",
     "Account Not Found":  "Invalid account ride number",
     "Enter An Account Rider #": "Please enter a valid account ride number",
-    "Continue": "Continue"
+    "Continue": "Continue",
+	"EtaDurationUnit" : "min",
+	"EtaDurationUnitPlural" : "mins",
+	"Estimate Display": "{0} {1}",
+	"Eta" : "The nearest taxi is {0} and {1} {2} away",
+	"AssignedEta" : "Your taxi is {0} and {1} {2} away"
 }

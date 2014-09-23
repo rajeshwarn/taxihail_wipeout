@@ -153,9 +153,9 @@
   <string name="Error_AccountPaymentQuestionRequiredMessage">Vous devez saisir tous les champs pour continuer</string>
   <string name="Error_AccountPaymentTitle">Erreur</string>
   <string name="EstimatedFareNotAvailable">Le prix ne peut être estimé pour le moment</string>
-  <string name="EstimateDistance">({0})</string>
-  <string name="EstimatePrice">Prix estimé</string>
-  <string name="EstimatePriceFormat">Prix estimé: {0:C} ({1})</string>
+  <string name="EstimateDistance"></string>
+  <string name="EstimatePrice">Prix</string>
+  <string name="EstimatePriceFormat">Prix estimé: {0} ({1})</string>
   <string name="EstimatePriceOver100">Appelez-nous pour connaître le prix!</string>
   <string name="EstimatingFare">Calcul du prix en cours…</string>
   <string name="Facebook">Connexion Facebook</string>

@@ -24,7 +24,7 @@
                     ).done(this.renderResults);
             }
 
-            this.model.validateOrder()
+            this.model.validateOrder(false)
                 .done(_.bind(function (result) {
 
                     this.hasWarning = result.hasWarning;
@@ -121,18 +121,14 @@
         
         renderResults: function (result) {
             if (result.callForPrice) {
-                this.model.set('priceEstimate', TaxiHail.localize("CallForPrice"));
+                this.model.set('estimateDisplay', TaxiHail.localize("CallForPrice"));
             } else
             if (result.noFareEstimate) {
-                this.model.set('priceEstimate', TaxiHail.localize("NoFareEstimate"));
+                this.model.set('estimateDisplay', TaxiHail.localize("NoFareEstimate"));
             } else
             {
-                this.model.set('formattedPrice', result.formattedPrice);
-                this.model.set('priceEstimate', result.price);
+                this.model.set('estimateDisplay', TaxiHail.localize('Estimate Display').format(result.formattedPrice, "(" + result.formattedDistance + ")"));
             }
-            this.model.set({
-                'distanceEstimate': result.formattedDistance
-            });
             this.render();
         },
 
@@ -145,6 +141,7 @@
         book: function (form) {
             var lang = TaxiHail.getClientLanguage();
             this.model.set('ClientLanguageCode', lang);
+            this.model.set('FromWebApp', true);
             this.model.saveLocal();
 
             if (this.model.isPayingWithAccountCharge()) {

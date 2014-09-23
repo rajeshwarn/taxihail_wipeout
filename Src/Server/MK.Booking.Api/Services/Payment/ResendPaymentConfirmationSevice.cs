@@ -16,20 +16,20 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 {
     public class ResendPaymentConfirmationSevice : Service
     {
-        private readonly IConfigurationManager _configurationManager;
         private readonly IIbsOrderService _ibs;
         private readonly IOrderDao _orderDao;
         private readonly IOrderPaymentDao _orderPaymentDao;
+        private readonly Resources.Resources _resources;
 
         public ResendPaymentConfirmationSevice(IOrderDao orderDao, IOrderPaymentDao orderPaymentDao,
-            IConfigurationManager configurationManager, IIbsOrderService ibs)
+            IConfigurationManager configurationManager, IIbsOrderService ibs, IAppSettings appSettings)
         {
             _orderDao = orderDao;
             _orderPaymentDao = orderPaymentDao;
-            _configurationManager = configurationManager;
             _ibs = ibs;
-        }
 
+            _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
+        }
 
         public object Post(ResendPaymentConfirmationRequest request)
         {
@@ -48,26 +48,31 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var paymentInfo = _orderPaymentDao.FindByOrderId(order.Id);
             if (paymentInfo == null) return new HttpResult(HttpStatusCode.NotFound);
 
-            SendPaymentConfirmationToDriver( order.IBSOrderId.Value, orderStatus.VehicleNumber, paymentInfo.Amount, paymentInfo.TransactionId,
+            SendPaymentConfirmationToDriver( order.IBSOrderId.Value, orderStatus.VehicleNumber, paymentInfo.Meter, paymentInfo.Tip, paymentInfo.Amount, paymentInfo.TransactionId,
                 paymentInfo.AuthorizationCode);
 
             return new HttpResult(HttpStatusCode.OK);
         }
 
-
-        private void SendPaymentConfirmationToDriver(int ibsOrderId, string vehicleNumber, decimal amount, string transactionId, 
+        private void SendPaymentConfirmationToDriver(int ibsOrderId, string vehicleNumber, decimal meter, decimal tip, decimal amount, string transactionId, 
             string authorizationCode)
         {
-            var applicationKey = _configurationManager.GetSetting("TaxiHail.ApplicationKey");
-            var resources = new Resources.Resources(applicationKey);
 
-            var amountString = string.Format(resources.Get("CurrencyPriceFormat"), amount);
+           
+            var amountString = _resources.FormatPrice((double)amount);
+            var meterString = _resources.FormatPrice((double?)meter);
+            var tipString = _resources.FormatPrice((double?)tip);
 
-            var line1 = string.Format(resources.Get("PaymentConfirmationToDriver1"), amountString);
+            // Padded with 32 char because the MDT displays line of 32 char.  This will cause to write each string on a new line
+            var line1 = string.Format(_resources.Get("PaymentConfirmationToDriver1"));
             line1 = line1.PadRight(32, ' ');
-                //Padded with 32 char because the MDT displays line of 32 char.  This will cause to write the auth code on the second line
-            var line2 = string.Format(resources.Get("PaymentConfirmationToDriver2"), authorizationCode);
-            _ibs.SendPaymentNotification(line1 + line2, vehicleNumber, ibsOrderId);
+            var line2 = string.Format(_resources.Get("PaymentConfirmationToDriver2"), meterString, tipString);
+            line2 = line2.PadRight(32, ' ');
+            var line3 = string.Format(_resources.Get("PaymentConfirmationToDriver3"), amountString);
+            line3 = line3.PadRight(32, ' ');
+            var line4 = string.Format(_resources.Get("PaymentConfirmationToDriver4"), authorizationCode);
+
+            _ibs.SendPaymentNotification(line1 + line2 + line3 + line4, vehicleNumber, ibsOrderId);
         }
     }
 }

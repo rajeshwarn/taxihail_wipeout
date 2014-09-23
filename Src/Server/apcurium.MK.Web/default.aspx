@@ -56,8 +56,10 @@
             TaxiHail.parameters.hideDispatchButton = <%: HideDispatchButton %>;
             TaxiHail.parameters.accountActivationDisabled = <%: AccountActivationDisabled %>;
             TaxiHail.parameters.isEstimateEnabled = <%: EstimateEnabled %>;
+            TaxiHail.parameters.isEtaEnabled = <%: EtaEnabled %>;
             TaxiHail.parameters.isEstimateWarningEnabled = <%: EstimateWarningEnabled %>;
             TaxiHail.parameters.isDestinationRequired = <%: DestinationIsRequired %>;
+            TaxiHail.parameters.maxFareEstimate = <%: MaxFareEstimate %>;
             TaxiHail.parameters.disableFutureBooking = <%: DisableFutureBooking %>;
             TaxiHail.parameters.showPassengerNumber = <%: ShowPassengerNumber ? "true" : "false" %>;
             TaxiHail.parameters.directionTarifMode = "<%: DirectionTarifMode %>";
