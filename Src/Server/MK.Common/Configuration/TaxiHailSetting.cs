@@ -267,6 +267,11 @@ namespace MK.Common.Configuration
 
         [Display(Name = "Allow Simultaneous Orders", Description = "Allow to have more than one active order")]
         public bool AllowSimultaneousAppOrders { get; private set; }
+        
+        [Display(Name = "Google AdWords Conversion Tracking ID", Description = "Conversion ID used for Google Conversion Tracking")]
+        public string GoogleAdWordsConversionId { get; private set; }
+        [Display(Name = "Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
+        public string GoogleAdWordsConversionLabel { get; private set; }
     }
 }
 
