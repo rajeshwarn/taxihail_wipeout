@@ -358,7 +358,6 @@
     </None>
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="Style\Style.json" />
-    <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-fr.json" />
     <None Include="Localization\CINQ-S.fr.resx">

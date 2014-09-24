@@ -287,11 +287,6 @@
     <AndroidResource Include="Resources\Drawable\logo3.png" />
     <AndroidResource Include="Resources\Drawable\target_selected.png" />
     <Compile Include="Localization\Localize.cs" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen01.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen02.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen04.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen05.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen07.png" />
     <AndroidResource Include="Resources\Drawable\favorites.png" />
     <AndroidResource Include="Resources\Drawable\history.png" />
     <AndroidResource Include="Resources\Values\Themes.xml">
@@ -519,13 +514,6 @@
     <AndroidResource Include="Resources\Drawable\tutorial_root_background_insets.xml" />
     <Compile Include="Helpers\PlatformHelper.cs" />
     <AndroidResource Include="Resources\values-sw600dp\Themes.xml" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen01.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen02.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen03.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen04.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen05.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen06.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen07.png" />
     <Compile Include="Controls\Behavior\TextFieldInHomeSubviewsBehavior.cs" />
     <AndroidResource Include="Resources\Drawable\baggage.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\baggage.png" />
@@ -574,8 +562,6 @@
     <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen03.png" />
     <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen02.png" />
     <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen01.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen08.png" />
     <AndroidResource Include="Resources\Drawable\star_unselected.png" />
     <AndroidResource Include="Resources\Drawable\star_selected.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\star_selected.png" />
@@ -701,8 +687,6 @@
     <AndroidResource Include="Resources\Drawable\erase_cross_btn.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_background.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_grey_circle.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen03.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen06.png" />
     <AndroidResource Include="Resources\Drawable\delete_card_btn.png" />
     <AndroidResource Include="Resources\Drawable\driverInfosBackGrey.png" />
     <AndroidResource Include="Resources\Drawable\driverInfosBackLightGrey.png" />

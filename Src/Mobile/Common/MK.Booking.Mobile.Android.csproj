@@ -376,7 +376,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Localization\TaxiHail NYC.resx" />
-    <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <None Include="Localization\Mishwar.resx" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-fr.json" />

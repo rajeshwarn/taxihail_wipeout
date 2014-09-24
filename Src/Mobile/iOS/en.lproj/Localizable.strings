@@ -225,7 +225,7 @@
 "TabFavorites"="Favorites";
 "PickupMapTitle"="Pickup location";
 "ReSendConfirmation"="Notify driver of payment";
-"CreditCardErrorTitle"="Cannot add credit card";
+"CreditCardErrorTitle"="Cannot save credit card";
 "PickupDateTextPlaceholder"="Date: Today";
 "BuildingName"="Building Name / Remark";
 "AddressSearchingText"="Searching...";
@@ -373,7 +373,7 @@
 "ResetPasswordConfirmationTitle"="Password sent";
 "View_SearchAddress"="Address Search";
 "ApartmentLabel"="Apartment";
-"UpdatePasswordConfirmationLabel"="Confirmation";
+"UpdatePasswordConfirmationLabel"="Confirm New Password";
 "dummyaaa"="xaaa";
 "View_BookSettingMenu"="Settings";
 "DateTimePickerPickInvalidDateMessage"="The pickup date must be in the future.";
@@ -539,3 +539,10 @@
 "Politeness"="Politeness";
 "Modify"="Modify";
 "Knowledgabledriver"="Knowledgable driver";
+"ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
+"AccountConfirmation_ErrorTitle"="Cannot confirm account";
+"View_AccountConfirmation_Label_Instructions"="A text message with your code has been sent to your phone.";
+"PanelMenuViewPaymentInfoText"="Card on File";
+"View_AccountConfirmationTitle"="Account Confirmation";
+"View_AccountConfirmation_Button"="Confirm";
+"View_AccountConfirmation_Label_Code"="Code";
