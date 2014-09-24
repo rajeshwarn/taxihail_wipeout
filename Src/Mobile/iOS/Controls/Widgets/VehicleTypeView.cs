@@ -129,8 +129,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					? "{0}_" + (etaBadge ? "no_" : "") + "badge_selected.png" 
 					: "{0}_" + (etaBadge ? "no_" : "") + "badge.png", 
                     vehicleTypeLogoName.ToLower()), 
-				etaBadge ? Theme.LabelTextColor : color, 
-                CGBlendMode.Normal);
+				etaBadge 
+                    ? Theme.LabelTextColor 
+                    : color);
         }
     }
 }

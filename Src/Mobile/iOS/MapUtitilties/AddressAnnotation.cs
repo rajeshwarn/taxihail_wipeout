@@ -66,17 +66,17 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             {
                 case AddressAnnotationType.Destination:
                     return UseThemeColorForIcons
-                        ? ImageHelper.ApplyThemeColorToImage("destination_icon.png", CGBlendMode.Hue)
+                        ? ImageHelper.ApplyThemeColorToImage("destination_icon.png", false)
                         : UIImage.FromFile("destination_icon.png");
                 case AddressAnnotationType.Taxi:
-                    return ImageHelper.ApplyThemeColorToImage("taxi_icon.png", CGBlendMode.Hue, true, new SizeF(52, 58));
+                    return ImageHelper.ApplyThemeColorToImage("taxi_icon.png", false, true, new SizeF(52, 58));
                 case AddressAnnotationType.NearbyTaxi:
-                    return ImageHelper.ApplyThemeColorToImage(string.Format("nearby_{0}.png", vehicleTypeLogoName ?? defaultIconName), CGBlendMode.Hue, true, new SizeF(34, 39));
+                    return ImageHelper.ApplyThemeColorToImage(string.Format("nearby_{0}.png", vehicleTypeLogoName ?? defaultIconName), false, true, new SizeF(34, 39));
                 case AddressAnnotationType.NearbyTaxiCluster:
-                    return ImageHelper.ApplyThemeColorToImage(string.Format("cluster_{0}.png", vehicleTypeLogoName ?? defaultIconName), CGBlendMode.Hue, true, new SizeF(34, 39));
+                    return ImageHelper.ApplyThemeColorToImage(string.Format("cluster_{0}.png", vehicleTypeLogoName ?? defaultIconName), false, true, new SizeF(34, 39));
                 default:
                     return UseThemeColorForIcons
-                        ? ImageHelper.ApplyThemeColorToImage("hail_icon.png", CGBlendMode.Hue)
+                        ? ImageHelper.ApplyThemeColorToImage("hail_icon.png", false)
                         : UIImage.FromFile("hail_icon.png");
             }
         }
