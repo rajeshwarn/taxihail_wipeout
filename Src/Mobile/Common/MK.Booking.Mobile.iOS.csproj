@@ -364,6 +364,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Localization\CINQ-S.resx" />
+    <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

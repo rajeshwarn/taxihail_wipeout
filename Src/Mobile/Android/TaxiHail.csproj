@@ -590,6 +590,26 @@
     <AndroidResource Include="Resources\drawable-xhdpi\blackcar_no_badge.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\blackcar_no_badge_selected.png" />
     <AndroidResource Include="Resources\Values\Attrs.xml" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen01.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen02.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen03.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen04.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen05.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen06.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen07.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen09.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen10.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen01.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen02.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen03.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen04.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen05.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen06.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen07.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen08.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen09.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen10.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

@@ -1,51 +1,51 @@
-﻿{ 
+{ 
   "Items": [
     {
       "Position": "1",
-      "Title": "Bienvenue!",
-      "Text": "Voici comment réserver une voiture en quelques clics.",
+      "Title": "Welcome!",
+      "Text": "Here's how to book a ride with just a couple of taps.",
       "ImageUri":"tutorial_screen01"
     }
     ,
     {
       "Position": "2",
-      "Title": "Affiner l'Adresse",
-      "Text": "Touchez le symbole dièse pour affiner le numéro de rue.",
+      "Title": "Refine Address",
+      "Text": "Tap on the hashtag to refine your address number.",
       "ImageUri":"tutorial_screen02"
     }
     ,
     {
       "Position": "3",
-      "Title": "Carte en mémoire",
-      "Text": "Ajoutez votre carte de crédit pour un paiement rapide et facile.",
+      "Title": "Card on File",
+      "Text": "Add your credit card for quick and easy payment.",
       "ImageUri":"tutorial_screen03"
     }                   
     ,
     {
       "Position": "4",
-      "Title": "Réserver pour plus tard",
-      "Text": "Réservez un véhicule pour une date ultérieure.",
+      "Title": "Future Booking",
+      "Text": "Book in the future.",
       "ImageUri":"tutorial_screen04"
     }                   
     ,
     {
       "Position": "5",
-      "Title": "Lieux",
-      "Text": "Sauvegardez des lieux.",
+      "Title": "Locations",
+      "Text": "Add locations",
       "ImageUri":"tutorial_screen05"
     }                   
     ,
     {
       "Position": "6",
-      "Title": "Historique",
-      "Text": "Souvenez-vous de vos adresses grâce à l\'historique",
+      "Title": "History",
+      "Text": "Remember all your rides past, present and future with your history list.",
       "ImageUri":"tutorial_screen06"
     }                   
     ,
     {
       "Position": "7",
-      "Title": "Informations personnelles",
-      "Text": "Modifiez vos informations personnelles.",
+      "Title": "Edit Details",
+      "Text": "Edit your details.",
       "ImageUri":"tutorial_screen07"
     } ,
     {
@@ -65,6 +65,6 @@
       "Title": "",
       "Text": "",
       "ImageUri":""
-    }                 
+    }                      
   ]
 }
