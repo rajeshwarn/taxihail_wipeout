@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                     // add overhead
                     price = price * (1 + tariff.MarginOfError/100);
                     
-                    price = RoundPrice(price);
+                    price = RoundPrice(price.Value);
 
                     price = Math.Max(tariff.MinimumRate, price.Value);
                 }
