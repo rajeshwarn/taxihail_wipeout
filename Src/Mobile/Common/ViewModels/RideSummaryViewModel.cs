@@ -139,13 +139,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				var setting = _paymentService.GetPaymentSettings();
 				return ((setting.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null) // if paypal or user has a credit card
-                        	|| setting.PayPalClientSettings.IsEnabled) 
-						&& !(Settings.RatingEnabled && Settings.RatingRequired && !HasRated)     					 // user must rate before paying
-                        && !_paymentService.GetPaymentSettings().AutomaticPayment									 // payment is processed automatically
-						&& setting.PaymentMode != PaymentMethod.RideLinqCmt 			 // payment is processed automatically
-						&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue	     // not already paid
-						&& (Order.Settings.ChargeTypeId == null 						 // user is paying with a charge account
-                            || Order.Settings.ChargeTypeId != ChargeTypes.Account.Id);
+					|| setting.PayPalClientSettings.IsEnabled) 
+					&& !(Settings.RatingEnabled && Settings.RatingRequired && !HasRated)     					 // user must rate before paying
+					&& !_paymentService.GetPaymentSettings().AutomaticPayment									 // payment is processed automatically
+					&& setting.PaymentMode != PaymentMethod.RideLinqCmt 			 // payment is processed automatically
+					&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue	     // not already paid
+					&& (Order.Settings.ChargeTypeId == null 						 // user is paying with a charge account
+						|| Order.Settings.ChargeTypeId != ChargeTypes.Account.Id);
+
 			}
 		}
 

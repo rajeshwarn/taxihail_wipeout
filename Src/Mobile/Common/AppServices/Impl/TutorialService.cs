@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.Text;
 using TinyIoC;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -52,7 +53,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public TutorialItem[] GetTutorialItems ()
         {
-            return Content.Items.OrderBy ( i=>i.Position ).ToArray ();
+			return Content.Items
+							.OrderBy(i=>i.Position)
+							.Where(x => x.ImageUri.HasValue())
+							.ToArray ();
         }
 
         private TutorialContent LoadTutorialContent ()

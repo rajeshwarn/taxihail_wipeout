@@ -87,8 +87,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
-				var direction = await Task.Run(() => _directions
+			var direction = await Task.Run(() => _directions
                     .GetDirection(originLat, originLong, destLat, destLong, vehicleTypeId, date));
+
 
                 return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, Price = direction.Price };
             }
