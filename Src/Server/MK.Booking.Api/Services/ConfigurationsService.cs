@@ -49,8 +49,7 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     "DefaultPhoneNumber", "DefaultPhoneNumberDisplay", "GCM.SenderId", "PriceFormat", "DistanceFormat",
                     "Direction.TarifMode", "Direction.NeedAValidTarif", "Direction.FlateRate", "Direction.RatePerKm",
-                    "Direction.MaxDistance", "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey",
-                    "AccountActivationDisabled"
+                    "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey", "AccountActivationDisabled"
                 };
             }
 
