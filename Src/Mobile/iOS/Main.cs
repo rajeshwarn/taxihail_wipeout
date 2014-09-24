@@ -9,8 +9,6 @@ using MonoTouch.ObjCRuntime;
 using MonoTouch.UIKit;
 using ServiceStack.Text;
 using TinyIoC;
-
-
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Settings;
@@ -28,6 +26,7 @@ using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social;
 using GoogleConversionTracking;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -88,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             #if !DEBUG
                 var conversionId = appSettingsService.Data.GoogleAdWordsConversionId;
                 var label = appSettingsService.Data.GoogleAdWordsConversionLabel;
-                if(!string.IsNullOrWhiteSpace(conversionId) && !string.IsNullOrWhiteSpace(label))
+                if(conversionId.HasValue() && label.HasValue())
                 {
                     try
                     {
