@@ -1,52 +1,62 @@
-{ 
-  "Items": [
-    {
-      "Position": "1",
-      "Title": "Welcome!",
-      "Text": "معرفة كيفية حجز رحلة بنقرتين على جهازك.",
-      "ImageUri":"tutorial_screen01"
-    }
-    ,
-    {
-      "Position": "2",
-      "Title": "Refine Address",
-      "Text": "Tap on the hashtag to refine your address number.",
-      "ImageUri":"tutorial_screen02"
-    }
-    ,
-    {
-      "Position": "3",
-      "Title": "Card on File",
-      "Text": "Add your credit card for quick and easy payment.",
-      "ImageUri":"tutorial_screen03"
-    }                   
-    ,
-    {
-      "Position": "4",
-      "Title": "Future Booking",
-      "Text": "Book in the future.",
-      "ImageUri":"tutorial_screen04"
-    }                   
-    ,
-    {
-      "Position": "5",
-      "Title": "Locations",
-      "Text": "Add locations",
-      "ImageUri":"tutorial_screen05"
-    }                   
-    ,
-    {
-      "Position": "6",
-      "Title": "History",
-      "Text": "Remember all your rides past, present and future with your history list.",
-      "ImageUri":"tutorial_screen06"
-    }                   
-    ,
-    {
-      "Position": "7",
-      "Title": "Edit Details",
-      "Text": "Edit your details.",
-      "ImageUri":"tutorial_screen07"
-    }                   
-  ]
+ { 
+ "Items": [
+   {
+     "Position": "1",
+     "Title": "إحجز الآن",
+     "Text": "",
+     "ImageUri":"tutorial_screen01"
+   }
+   ,
+   {
+     "Position": "2",
+     "Title": "تحديد العنوان",
+     "Text": "",
+     "ImageUri":"tutorial_screen02"
+   }
+   ,
+   {
+     "Position": "3",
+     "Title": "تحديد الموقع و التكلفة المتوقعة",
+     "Text": "",
+     "ImageUri":"tutorial_screen03"
+   }                   
+   ,
+
+   {
+     "Position": "4",
+     "Title": "إحجز لاحقا",
+     "Text": "",
+     "ImageUri":"tutorial_screen04"
+   }                   
+   ,
+   {
+     "Position": "5",
+     "Title": "طريقة الدفع",
+     "Text": "",
+     "ImageUri":"tutorial_screen05"
+   }                   
+   ,
+   {
+     "Position": "6",
+     "Title": "مواقع",
+     "Text": "هنا قائمة مواقعك السابقة",
+     "ImageUri":"tutorial_screen06"
+   }                   
+   ,
+   {
+     "Position": "7",
+     "Title": "مشاوير سابقة",
+     "Text": "",
+     "ImageUri":"tutorial_screen07"
+   }                   
+ ,
+
+
+   {
+     "Position": "8",
+     "Title": "الملف الشخصي",
+     "Text": "",
+     "ImageUri":"tutorial_screen08"
+   }                   
+ ]
 }

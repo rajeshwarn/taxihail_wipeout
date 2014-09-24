@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly IAccountDao _accountDao;
         private readonly ILogger _logger;
         private readonly IOrderDao _orderDao;
+        private readonly Resources.Resources _resources;
 
         public PayPalService(ICommandBus commandBus, IOrderPaymentDao dao,
             ExpressCheckoutServiceFactory factory, IConfigurationManager configurationManager, 
@@ -45,6 +46,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _accountDao = accountDao;
             _logger = logger;
             _orderDao = orderDao;
+
+            var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
+            _resources = new Resources.Resources(applicationKey);
         }
 
 
@@ -62,8 +66,24 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
 
-            var token = service.SetExpressCheckout(request.Amount, successUrl, cancelUrl);
+            var conversionRate = _configurationManager.GetSetting<decimal>("PayPalConversionRate", 1);
+
+
+            var regionName = _configurationManager.GetSetting("PayPalRegionInfoOverride");
+            string description  =  "";
+            if (!string.IsNullOrWhiteSpace(regionName))
+            {
+                description = string.Format(_resources.Get("PaymentItemDescription", request.LanguageCode), request.IbsOrderId, request.TotalAmount);
+            }                        
+            
+            _logger.LogMessage("Paypal Converstion Rate : " + conversionRate.ToString());
+            var amount = Math.Round(request.Amount * conversionRate, 2);
+
+
+            var token = service.SetExpressCheckout( amount , successUrl, cancelUrl, description);
             var checkoutUrl = service.GetCheckoutUrl(token);
+
+
 
             _commandBus.Send(new InitiatePayPalExpressCheckoutPayment
             {
@@ -116,7 +136,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 ? payPalSettings.SandboxCredentials
                 : payPalSettings.Credentials;
             var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
-            var transactionId = service.DoExpressCheckoutPayment(payment.PayPalToken, request.PayerId, payment.Amount);
+
+            var conversionRate = _configurationManager.GetSetting<decimal>("PayPalConversionRate", 1);
+            _logger.LogMessage("Paypal Converstion Rate : " + conversionRate.ToString());
+
+            var amount = Math.Round(payment.Amount * conversionRate, 2);
+
+            var transactionId = service.DoExpressCheckoutPayment(payment.PayPalToken, request.PayerId, amount);
+
 
             var orderDetail = _orderDao.FindById(payment.OrderId);
             var account = _accountDao.FindById(orderDetail.AccountId);
@@ -220,7 +247,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 var service = new ExpressCheckoutServiceFactory(configurationManager)
                     .CreateService(payPalServerSettings, isSandbox);
-                service.SetExpressCheckout(2, "http://example.net/success", "http://example.net/cancel");
+                service.SetExpressCheckout(2, "http://example.net/success", "http://example.net/cancel", string.Empty);
                 return true;
             }
             catch (Exception)

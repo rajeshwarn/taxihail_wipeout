@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Globalization;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Configuration;
+
 
 namespace MK.Booking.PayPal
 {
@@ -16,9 +18,10 @@ namespace MK.Booking.PayPal
         const string MobileKnowledgeReferralCode = "MobileKnowledgeSystems_SP_MEC";
         readonly Urls _urls;
         readonly UserIdPasswordType _credentials;
-        readonly CurrencyCodeType _currency;
+        readonly CurrencyCodeType _currency;        
 
-        public ExpressCheckoutServiceClient(PayPalCredentials credentials, RegionInfo region, bool useSandbox = false)
+
+        public ExpressCheckoutServiceClient(PayPalCredentials credentials, RegionInfo region,  bool useSandbox = false)
         {
             if (credentials == null) throw new ArgumentNullException("credentials");
             if (region == null) throw new ArgumentNullException("region");
@@ -31,6 +34,7 @@ namespace MK.Booking.PayPal
                 Password = credentials.Password,
                 Signature = credentials.Signature,
             };
+
         }
 
 // ReSharper disable once InconsistentNaming
@@ -39,7 +43,7 @@ namespace MK.Booking.PayPal
             get { return _currency.ToString(); }
         }
 
-        public string SetExpressCheckout(decimal orderTotal, string returnUrl, string cancelUrl)
+        public string SetExpressCheckout(decimal orderTotal, string returnUrl, string cancelUrl, string description )
         {
             if (returnUrl == null) throw new ArgumentNullException("returnUrl");
             if (cancelUrl == null) throw new ArgumentNullException("cancelUrl");
@@ -48,7 +52,7 @@ namespace MK.Booking.PayPal
 
             using (var api = CreateApiAaClient())
             {
-                var request = BuildRequest(orderTotal, returnUrl, cancelUrl);
+                var request = BuildRequest(orderTotal, returnUrl, cancelUrl, description);
                 var response = api.SetExpressCheckout(request);
 
                 ThrowIfError(response);
@@ -88,12 +92,12 @@ namespace MK.Booking.PayPal
                 var amount = new BasicAmountType
                 {
                     Value = orderTotal.ToString(CultureInfo.InvariantCulture),
-                    currencyID = _currency,
+                    currencyID = _currency
                 };
 
                 var paymentDetails = new PaymentDetailsType
                 {
-                    OrderTotal = amount,
+                    OrderTotal = amount
                 };
 
                 var requestDetails = new DoExpressCheckoutPaymentRequestDetailsType
@@ -104,18 +108,18 @@ namespace MK.Booking.PayPal
                     PayerID = payerId,
                     Token = token,
                     PaymentDetails = new [] { paymentDetails },
-                    PaymentAction = PaymentActionCodeType.Sale,
+                    PaymentAction = PaymentActionCodeType.Sale
                 };
 
                 var requestType = new DoExpressCheckoutPaymentRequestType
                 {
                     Version = ApiVersion,
-                    DoExpressCheckoutPaymentRequestDetails = requestDetails,
+                    DoExpressCheckoutPaymentRequestDetails = requestDetails
                 };
 
                 var request = new DoExpressCheckoutPaymentReq
                 {
-                    DoExpressCheckoutPaymentRequest = requestType,
+                    DoExpressCheckoutPaymentRequest = requestType
                 };
 
                 var response = api.DoExpressCheckoutPayment(request);
@@ -155,7 +159,7 @@ namespace MK.Booking.PayPal
             var api = new PayPalAPIAASoapBinding
                           {
                               Url = _urls.GetApiUrl(),
-                              RequesterCredentials = securityHeader,
+                              RequesterCredentials = securityHeader
                           };
             return api;
         }
@@ -169,38 +173,52 @@ namespace MK.Booking.PayPal
             var api = new PayPalAPISoapBinding
             {
                 Url = _urls.GetApiUrl(),
-                RequesterCredentials = securityHeader,
+                RequesterCredentials = securityHeader
             };
             return api;
         }
 
-        private SetExpressCheckoutReq BuildRequest(decimal orderTotal, string returnUrl, string cancelUrl)
+        private SetExpressCheckoutReq BuildRequest(decimal orderTotal, string returnUrl, string cancelUrl, string description)
         {
             var amount = new BasicAmountType
             {
                 Value = orderTotal.ToString(CultureInfo.InvariantCulture),
-                currencyID = _currency,
+                currencyID = _currency
             };
-
+         
+            var paymentDetails = new PaymentDetailsType
+            {
+                ItemTotal = amount,
+                PaymentDetailsItem = new[]
+                {
+                    new PaymentDetailsItemType
+                    {
+                        Amount = amount,
+                        Description = description
+                    }
+                }
+            };
+ 
             var requestDetails = new SetExpressCheckoutRequestDetailsType
             {
                 OrderTotal = amount,
                 PaymentAction = PaymentActionCodeType.Sale,
                 ReturnURL = returnUrl,
                 CancelURL = cancelUrl,
+                PaymentDetails = new[] { paymentDetails }
             };
 
             var requestType = new SetExpressCheckoutRequestType
             {
-                Version = ApiVersion,
-                SetExpressCheckoutRequestDetails = requestDetails,
+                Version = ApiVersion,   
+                SetExpressCheckoutRequestDetails = requestDetails
             };
 
             var request = new SetExpressCheckoutReq
             {
-                SetExpressCheckoutRequest = requestType,
+                SetExpressCheckoutRequest = requestType
             };
-
+            
             return request;
         }
 
@@ -235,6 +253,4 @@ namespace MK.Booking.PayPal
         }
 
     }
-
-
 }

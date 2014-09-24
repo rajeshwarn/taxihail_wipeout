@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO.Compression;
@@ -305,7 +305,7 @@ namespace apcurium.MK.Booking.ConfigTool
                 {
                     Source = file + ".json",
                     Destination = @"Mobile\Common\TutorialContent\"+ file + ".json" 
-                });
+            }
             }
         }
 
@@ -315,7 +315,6 @@ namespace apcurium.MK.Booking.ConfigTool
            var listofFiles = assetsDirectory.EnumerateFiles("*." + extension, SearchOption.TopDirectoryOnly);
            return listofFiles.Select(x => x.Name.Replace(x.Extension, string.Empty)).ToArray();
         }
-
         private AppConfigFile _config;
 
         public AppConfigFile Config
@@ -457,4 +456,5 @@ namespace apcurium.MK.Booking.ConfigTool
             }
         }        
     }
+}
 }
