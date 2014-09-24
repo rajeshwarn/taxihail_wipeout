@@ -221,7 +221,7 @@ namespace apcurium.MK.Web.Tests
 
             // Act
             var account = await new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo()).GetMyAccount();
-
+            
             // Assert
             Assert.AreEqual("en", account.Language);
             Assert.IsNotNull(account.Settings);
