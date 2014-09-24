@@ -38,7 +38,7 @@ namespace MK.Common.Configuration
 		    DisableChargeTypeWhenCardOnFile = false;
 		    VehicleTypeSelectionEnabled = false;
 		    SendPushAsSMS = false;
-            MinimumFare = 0;
+            AllowSimultaneousAppOrders = false;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -199,8 +199,6 @@ namespace MK.Common.Configuration
 		public string SearchFilter { get; private set; }
         [Display(Name = "Default Radius", Description="Default radius for places search")]
         public int DefaultRadius { get; private set; }
-        [Display(Name = "Max Distance", Description="??")]
-        public int MaxDistance { get; private set; }
         [Display(Name = "Default Latitude", Description="Default latitude to display the map before geoloc is done")]
         public double DefaultLatitude { get; private set; }
         [Display(Name = "Default Longitude", Description="Default longitude to display the map before geoloc is done")]
@@ -257,9 +255,6 @@ namespace MK.Common.Configuration
 		public int ZoomOnNearbyVehiclesRadius { get; private set; }
 		[Display(Name = "Zoom on nearby vehicles count", Description="Maximum of included vehicles when zooming on nearby vehicles")]
 		public int ZoomOnNearbyVehiclesCount { get; private set; }
-
-        [Display(Name = "Minimum fare", Description="Determines the minimum price estimate")]
-        public int MinimumFare { get; private set; }
         
 		[Display(Name = "Show Assigned Vehicle Number On Pin", Description="Enable displaying the assigned vehicle number over its pin on the map")]
 		public bool ShowAssignedVehicleNumberOnPin { get; private set; }
@@ -269,6 +264,14 @@ namespace MK.Common.Configuration
 
         [Display(Name = "VAT Percentage", Description = "Percentage to use to calculate the VAT portion of a fare")]
         public int VATPercentage { get; private set; }
+
+        [Display(Name = "Allow Simultaneous Orders", Description = "Allow to have more than one active order")]
+        public bool AllowSimultaneousAppOrders { get; private set; }
+        
+        [Display(Name = "Google AdWords Conversion Tracking ID", Description = "Conversion ID used for Google Conversion Tracking")]
+        public string GoogleAdWordsConversionId { get; private set; }
+        [Display(Name = "Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
+        public string GoogleAdWordsConversionLabel { get; private set; }
     }
 }
 

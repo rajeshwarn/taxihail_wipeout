@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Commands
         public Guid CompanyId { get; set; }
         public Guid TariffId { get; set; }
         public string Name { get; set; }
+        public double MinimumRate { get; set; }
         public decimal FlatRate { get; set; }
         public double KilometricRate { get; set; }
         public double PerMinuteRate { get; set; }

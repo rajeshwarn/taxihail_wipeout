@@ -259,6 +259,9 @@
     <Reference Include="Card.IO.iOS">
       <HintPath>..\Libraries\Monotouch\Card.IO.iOS.dll</HintPath>
     </Reference>
+    <Reference Include="GoogleConversionTracking">
+      <HintPath>..\Libraries\Monotouch\GoogleConversionTracking.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
