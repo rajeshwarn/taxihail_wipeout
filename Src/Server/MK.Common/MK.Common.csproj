@@ -125,6 +125,7 @@
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Entity\OrderStatus.cs" />
     <Compile Include="Entity\OrderStatusDetail.cs" />
+    <Compile Include="Entity\RatingTypeWrapper.cs" />
     <Compile Include="Entity\Rule.cs" />
     <Compile Include="Entity\RuleCategory.cs" />
     <Compile Include="Entity\RuleType.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Enumeration\PaymentProvider.cs" />
     <Compile Include="Enumeration\PaymentType.cs" />
     <Compile Include="Enumeration\PushNotificationServicePlatform.cs" />
+    <Compile Include="Enumeration\SupportedLanguages.cs" />
     <Compile Include="Extensions\ActionExtension.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />

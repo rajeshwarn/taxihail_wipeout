@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -19,19 +20,28 @@ namespace apcurium.MK.Booking.ReadModel.Query
             _contextFactory = contextFactory;
         }
 
-        public IList<RatingTypeDetail> GetAll()
+        public IList<RatingTypeDetail[]> GetAll()
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<RatingTypeDetail>().ToList();
+                var resultList = new List<RatingTypeDetail[]>();
+                var allDetails = context.Query<RatingTypeDetail>().ToList();
+                var uniqueIds = allDetails.Select(d => d.Id).Distinct();
+
+                foreach (var ids in uniqueIds)
+                {
+                    resultList.Add(allDetails.Where(d => d.Id == ids).ToArray());
+                }
+
+                return resultList;
             }
         }
 
-        public RatingTypeDetail GetById(Guid id)
+        public IList<RatingTypeDetail> GetById(Guid id)
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<RatingTypeDetail>().SingleOrDefault(r => r.Id == id);
+                return context.Query<RatingTypeDetail>().Where(r => r.Id == id).ToList();
             }
         }
 

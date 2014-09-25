@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -62,23 +63,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void Init(string orderId, bool canRate = false)
 		{
-			RatingList = _bookingService.GetRatingType().Select(c => new RatingModel
-				{
-					RatingTypeId = c.Id, 
-					RatingTypeName = this.Services().Localize[c.Name.Replace(" ", "")]
-				})
-				.OrderBy(c=>c.RatingTypeId).ToList();
+            RatingList = _bookingService.GetRatingType().Select(c => new RatingModel
+                {
+                    RatingTypeId = c.Id,
+                    RatingTypeName = c.RatingTypes.First().Name
+                })
+                .OrderBy(c => c.RatingTypeId).ToList();
 
 			CanRate = false;
 
 			if (orderId != null)
 			{
-				var ratingTypes = _bookingService.GetRatingType();
-				RatingList = ratingTypes.Select(c => new RatingModel(canRate) 
-					{
-						RatingTypeId = c.Id, 
-						RatingTypeName = this.Services().Localize[c.Name.Replace(" ", "")]
-					}).OrderBy(c=>c.RatingTypeId).ToList();
+                var ratingTypes = _bookingService.GetRatingType();
+                RatingList = ratingTypes.Select(c => new RatingModel(canRate)
+                {
+                    RatingTypeId = c.Id,
+                    RatingTypeName = c.RatingTypes.First().Name
+                }).OrderBy(c => c.RatingTypeId).ToList();
 
 				Guid id;
 				if (Guid.TryParse (orderId, out id)) {

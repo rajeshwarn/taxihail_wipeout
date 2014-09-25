@@ -1,0 +1,38 @@
+﻿<div class='well'>
+    <h4 class="table-title">{{localize "Add or Update Ratings"}}</h4>
+
+    <div class="errors" style="margin-top: 10px;"></div>
+
+    <form class="form-horizontal clearfix" >
+        
+        <h4 style="text-align: left">{{localize "Rating Questions"}}</h4>
+
+		<!-- TODO: Don't hard code. Do a loop for each supported languages -->
+		<div class="control-group">
+            <label class="control-label">{{localize 'Arabic'}}</label>
+            <div class="controls">
+                <input type="text" id="inputRating" name="ratingFields" value="{{ratingTypes.[0].name}}" class='input-block-level' />
+            </div>
+        </div>
+		<div class="control-group">
+			<label class="control-label">{{localize 'English'}}</label>
+            <div class="controls">
+                <input type="text" id="inputRating" name="ratingFields" value="{{ratingTypes.[1].name}}" class='input-block-level' />
+            </div>
+        </div>
+		<div class="control-group">
+            <label class="control-label">{{localize 'French'}}</label>
+            <div class="controls">
+                <input type="text" id="inputRating" name="ratingFields" value="{{ratingTypes.[2].name}}" class='input-block-level' />
+            </div>
+        </div>
+		
+        <div class="control-group btn-right-alignment" >
+          <button type='submit' class='btn btn-primary span' data-loading-text="{{localize 'Loading'}}">{{localize "Save"}}</button>
+          <a href='#' class='btn  span' data-action='cancel'>{{localize "Cancel"}}</a>
+          {{#unless isNew }}
+          <a href='#' class='btn btn-danger  span' data-action='destroy'>{{localize "Remove"}}</a>
+          {{/unless}}
+        </div>
+    </form>
+</div>

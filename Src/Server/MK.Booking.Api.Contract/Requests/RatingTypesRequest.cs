@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     [AuthorizationRequired(ApplyTo.Post | ApplyTo.Put | ApplyTo.Delete, RoleName.Admin)]
 #endif
     [Route("/ratingtypes", "GET,POST,PUT")]
-    [Route("/ratingtypes/{Language}", "GET")]
+    [Route("/ratingtypes/{ClientLanguage}", "GET")]
     [Route("/ratingtypes/{Id}", "DELETE")]
     public class RatingTypesRequest
     {

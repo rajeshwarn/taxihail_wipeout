@@ -105,10 +105,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				CanRate = canRate;
 				if (canRate) 
 				{
-					RatingList = ratingTypes.Select (c => new RatingModel (canRate) {
-						RatingTypeId = c.Id, 
-						RatingTypeName = this.Services().Localize[c.Name.Replace(" ", "")]
-					}).OrderBy (c => c.RatingTypeId).ToList ();
+                    RatingList = ratingTypes.Select(c => new RatingModel(canRate)
+                    {
+                        RatingTypeId = c.Id,
+                        RatingTypeName = c.RatingTypes.First().Name
+                    }).OrderBy(c => c.RatingTypeId).ToList();
 				}
 				else
 				{

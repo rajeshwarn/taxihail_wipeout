@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var ratingType = context.Find<RatingTypeDetail>(@event.RatingTypeId);
+                var ratingType = context.Set<RatingTypeDetail>().Find(@event.RatingTypeId, @event.Language);
                 ratingType.Name = @event.Name;
                 ratingType.Language = @event.Language;
                 context.SaveChanges();
@@ -67,11 +67,14 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var ratingType = context.Find<RatingTypeDetail>(@event.RatingTypeId);
-                if (ratingType != null)
+                foreach (var language in @event.Languages)
                 {
-                    context.Set<RatingTypeDetail>().Remove(ratingType);
-                    context.SaveChanges();
+                    var ratingType = context.Set<RatingTypeDetail>().Find(@event.RatingTypeId, language);
+                    if (ratingType != null)
+                    {
+                        context.Set<RatingTypeDetail>().Remove(ratingType);
+                        context.SaveChanges();
+                    }
                 }
             }
         }

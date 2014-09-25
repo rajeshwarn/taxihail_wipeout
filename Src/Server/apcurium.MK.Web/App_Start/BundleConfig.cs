@@ -21,6 +21,7 @@ namespace apcurium.MK.Web.App_Start
                 "~/assets/js/jquery.validate.js",
                 "~/assets/js/underscore.js",
                 "~/assets/js/backbone.js",
+                "~/assets/js/backbone-composite-keys.js",
                 "~/assets/bootstrap/js/bootstrap-alert.js",
                 "~/assets/bootstrap/js/bootstrap-transition.js",
                 "~/assets/bootstrap/js/bootstrap-button.js",
@@ -152,6 +153,7 @@ namespace apcurium.MK.Web.App_Start
                 "~/admin/models/AccountCharge.js",
                 "~/admin/models/VehicleType.js",
                 "~/admin/models/UnassignedReferenceDataVehicles.js",
+                "~/admin/models/RideRatings.js",
                 /* Collections */
                 "~/common/collections/AddressCollection.js",
                 "~/common/collections/AvailableVehicleCollection.js",
@@ -160,6 +162,7 @@ namespace apcurium.MK.Web.App_Start
                 "~/admin/collections/RuleCollection.js",
                 "~/admin/collections/AccountChargeCollection.js",
                 "~/admin/collections/VehicleTypeCollection.js",
+                "~/admin/collections/RideRatingCollection.js",
                 /* Controllers */
                 "~/admin/controllers/Controller.js",
                 "~/admin/controllers/SecurityController.js",
@@ -175,6 +178,7 @@ namespace apcurium.MK.Web.App_Start
                 "~/admin/controllers/TermsAndConditionsController.js",
                 "~/admin/controllers/AccountsChargeController.js",
                 "~/admin/controllers/VehicleTypesController.js",
+                "~/admin/controllers/RideRatingsController.js",
                 /* Views */
                 "~/admin/views/AddPopularAddressView.js",
                 "~/common/views/AlertView.js",
@@ -206,6 +210,9 @@ namespace apcurium.MK.Web.App_Start
                 "~/admin/views/UpdateTermsAndConditionsView.js",
                 "~/admin/views/AddAccountChargeView.js",
                 "~/admin/views/ManageAccountsChargeView.js",
+                "~/admin/views/ManageRideRatingsView.js",
+                "~/admin/views/AddRideRatingView.js",
+                "~/admin/views/RideRatingItemView.js",
                 "~/admin/views/AccountChargeItemView.js",
                 "~/admin/views/AddVehicleTypeView.js",
                 "~/admin/views/ManageVehicleTypesView.js",

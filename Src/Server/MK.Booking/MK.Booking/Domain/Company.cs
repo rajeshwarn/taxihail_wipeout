@@ -70,6 +70,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<RatingTypeAdded>(NoAction);
             Handles<RatingTypeHidded>(NoAction);
             Handles<RatingTypeUpdated>(NoAction);
+            Handles<RatingTypeDeleted>(NoAction);
 
             Handles<TermsAndConditionsUpdated>(NoAction);
             Handles<TermsAndConditionsRetriggered>(NoAction);
@@ -152,10 +153,10 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void AddRatingType(string name, Guid ratingTypeId, string language)
+        public void AddRatingType(Guid ratingTypeId, string name, string language)
         {
-            if (name.IsNullOrEmpty())
-                throw new ArgumentException("Rating name cannot be null or empty");
+            if (language.IsNullOrEmpty())
+                throw new ArgumentException("Rating language cannot be null or empty");
 
             Update(new RatingTypeAdded
             {
@@ -165,10 +166,10 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdateRatingType(string name, Guid ratingTypeId, string language)
+        public void UpdateRatingType(Guid ratingTypeId, string name, string language)
         {
-            if (name.IsNullOrEmpty())
-                throw new ArgumentException("Rating name cannot be null or empty");
+            if (language.IsNullOrEmpty())
+                throw new ArgumentException("Rating language cannot be null or empty");
 
             Update(new RatingTypeUpdated
             {
@@ -178,11 +179,12 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void DeleteRatingType(Guid ratingTypeId)
+        public void DeleteRatingType(Guid ratingTypeId, IEnumerable<string> languages)
         {
             Update(new RatingTypeDeleted
             {
-                RatingTypeId = ratingTypeId
+                RatingTypeId = ratingTypeId,
+                Languages = languages
             });
         }
 
