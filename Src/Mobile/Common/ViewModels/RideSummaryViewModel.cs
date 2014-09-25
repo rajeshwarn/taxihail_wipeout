@@ -284,7 +284,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private string GetRatingTypeName(string ratingTypeNameUnlocalized)
 		{
-			var key = ratingTypeNameUnlocalized.Replace (" ", "");
+			var key = ratingTypeNameUnlocalized.Replace (" ", string.Empty);
 			if(this.Services().Localize.Exists(key))
 			{
 				return this.Services ().Localize[key];
