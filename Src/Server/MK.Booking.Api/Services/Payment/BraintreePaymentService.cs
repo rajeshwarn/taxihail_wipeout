@@ -104,12 +104,24 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request)
         {
-            BraintreeGateway.CreditCard.Delete(request.CardToken);
-            return new DeleteTokenizedCreditcardResponse
+            try
             {
-                IsSuccessfull = true,
-                Message = "Success"
-            };
+                BraintreeGateway.CreditCard.Delete(request.CardToken);
+                return new DeleteTokenizedCreditcardResponse
+                {
+                    IsSuccessfull = true,
+                    Message = "Success"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+                return new DeleteTokenizedCreditcardResponse
+                {
+                    IsSuccessfull = false,
+                    Message = ex.Message,
+                };
+            }
         }
 
         public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request)
