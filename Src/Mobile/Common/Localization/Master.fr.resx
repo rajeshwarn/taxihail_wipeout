@@ -157,7 +157,7 @@
     <value>http://www.apcurium.com/</value>
   </data>
   <data name="ApplicationName" xml:space="preserve">
-    <value>CINQ-S</value>
+    <value>TaxiHail</value>
   </data>
   <data name="AppNeedUpdateMessage" xml:space="preserve">
     <value>Une nouvelle version de l'application est disponible, merci de la télécharger pour continuer</value>
