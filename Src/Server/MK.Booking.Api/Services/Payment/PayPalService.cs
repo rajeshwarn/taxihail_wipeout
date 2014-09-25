@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public PayPalService(ICommandBus commandBus, IOrderPaymentDao dao,
             ExpressCheckoutServiceFactory factory, IConfigurationManager configurationManager, 
-            IIbsOrderService ibs, IAccountDao accountDao, ILogger logger, IOrderDao orderDao)
+            IIbsOrderService ibs, IAccountDao accountDao, ILogger logger, IOrderDao orderDao, IAppSettings appSettings)
         {
             _commandBus = commandBus;
             _dao = dao;
@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _orderDao = orderDao;
 
             var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
-            _resources = new Resources.Resources(applicationKey);
+            _resources = new Resources.Resources(applicationKey, appSettings);
         }
 
 
