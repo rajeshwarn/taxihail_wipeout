@@ -422,7 +422,7 @@
   <string name="ServerInfo">({0} v{1})</string>
   <string name="ApproxPrice">Estimated Fare</string>
   <string name="RideSettingsVehiculeType">Vehicle type</string>
-  <string name="ApplicationName">CINQ-S</string>
+  <string name="ApplicationName">TaxiHail</string>
   <string name="WarningEstimateTitle">Warning</string>
   <string name="InvalidBookinInfoTitle">Invalid booking info</string>
   <string name="March">Mar (03)</string>
