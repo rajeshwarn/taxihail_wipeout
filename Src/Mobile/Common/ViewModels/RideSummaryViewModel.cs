@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					RatingList = ratingTypes.Select (c => new RatingModel (canRate) {
 						RatingTypeId = c.Id, 
-						RatingTypeName = this.Services().Localize[c.Name.Replace(" ", "")]
+						RatingTypeName = GetRatingTypeName(c.Name)
 					}).OrderBy (c => c.RatingTypeId).ToList ();
 				}
 				else
@@ -280,6 +280,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return false;
 			}
 			return true;
+		}
+
+		private string GetRatingTypeName(string ratingTypeNameUnlocalized)
+		{
+			var key = ratingTypeNameUnlocalized.Replace (" ", "");
+			if(this.Services().Localize.Exists(key))
+			{
+				return this.Services ().Localize[key];
+			}
+
+			return ratingTypeNameUnlocalized;
 		}
 	}
 }
