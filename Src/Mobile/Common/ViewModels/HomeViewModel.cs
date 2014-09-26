@@ -148,6 +148,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if (unratedRideId != null
 					&& _orderWorkflowService.ShouldPromptUserToRateLastRide())
 				{
+					_isShowingUnratedPopup = true;
+
 					var title = this.Services().Localize["RateLastRideTitle"];
 					var message = this.Services().Localize["RateLastRideMessage"];
 					Action goToRate = () =>
@@ -160,7 +162,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						});
 					};
 
-					_isShowingUnratedPopup = true;
 					if (Settings.RatingRequired)
 					{
 						if (Settings.CanSkipRatingRequired)
