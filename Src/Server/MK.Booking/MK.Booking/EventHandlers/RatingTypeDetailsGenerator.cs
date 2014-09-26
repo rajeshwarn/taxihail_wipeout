@@ -5,6 +5,7 @@ using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
 
 #endregion
@@ -28,7 +29,10 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                if (context.Query<RatingTypeDetail>().FirstOrDefault(x => x.Name == @event.Name) == null)
+                // Support for old events without language property
+                var language = @event.Language ?? SupportedLanguages.en.ToString();
+
+                if (context.Query<RatingTypeDetail>().FirstOrDefault(x => x.Name == @event.Name && x.Language == language) == null)
                 {
                     context.Save(new RatingTypeDetail
                     {
@@ -56,7 +60,10 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var ratingType = context.Set<RatingTypeDetail>().Find(@event.RatingTypeId, @event.Language);
+                // Support for old events without language property
+                var language = @event.Language ?? SupportedLanguages.en.ToString();
+
+                var ratingType = context.Set<RatingTypeDetail>().Find(@event.RatingTypeId, language);
                 ratingType.Name = @event.Name;
                 ratingType.Language = @event.Language;
                 context.SaveChanges();
@@ -67,7 +74,10 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                foreach (var language in @event.Languages)
+                // Support for old events without language property
+                var languages = @event.Languages ?? new [] { SupportedLanguages.en.ToString() };
+
+                foreach (var language in languages)
                 {
                     var ratingType = context.Set<RatingTypeDetail>().Find(@event.RatingTypeId, language);
                     if (ratingType != null)
