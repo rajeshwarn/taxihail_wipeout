@@ -7,7 +7,6 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
-    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -259,6 +258,9 @@
     </Reference>
     <Reference Include="Card.IO.iOS">
       <HintPath>..\Libraries\Monotouch\Card.IO.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="GoogleConversionTracking">
+      <HintPath>..\Libraries\Monotouch\GoogleConversionTracking.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -530,6 +532,26 @@
     <Compile Include="Style\FlatButtonStyle.cs" />
     <Compile Include="Helper\ColorHelper.cs" />
     <Compile Include="Extensions\Helpers\NaturalLanguageHelper.cs" />
+    <BundleResource Include="Resources\tutorial_screen08.png" />
+    <BundleResource Include="Resources\tutorial_screen08%402x.png" />
+    <BundleResource Include="Resources\tutorial_screen09.png" />
+    <BundleResource Include="Resources\tutorial_screen09%402x.png" />
+    <BundleResource Include="Resources\tutorial_screen10.png" />
+    <BundleResource Include="Resources\tutorial_screen10%402x.png" />
+    <BundleResource Include="Resources\tutorial_screen01.png" />
+    <BundleResource Include="Resources\tutorial_screen01%402x.png" />
+    <BundleResource Include="Resources\tutorial_screen02.png" />
+    <BundleResource Include="Resources\tutorial_screen02%402x.png" />
+    <BundleResource Include="Resources\tutorial_screen03.png" />
+    <BundleResource Include="Resources\tutorial_screen03%402x.png" />
+    <BundleResource Include="Resources\tutorial_screen04.png" />
+    <BundleResource Include="Resources\tutorial_screen04%402x.png" />
+    <BundleResource Include="Resources\tutorial_screen05.png" />
+    <BundleResource Include="Resources\tutorial_screen05%402x.png" />
+    <BundleResource Include="Resources\tutorial_screen06.png" />
+    <BundleResource Include="Resources\tutorial_screen06%402x.png" />
+    <BundleResource Include="Resources\tutorial_screen07.png" />
+    <BundleResource Include="Resources\tutorial_screen07%402x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -728,20 +750,6 @@
     <BundleResource Include="Resources\forward.png" />
     <BundleResource Include="Resources\forward%402x.png" />
     <BundleResource Include="Resources\tutorial_background.png" />
-    <BundleResource Include="Resources\tutorial_screen01.png" />
-    <BundleResource Include="Resources\tutorial_screen01%402x.png" />
-    <BundleResource Include="Resources\tutorial_screen02.png" />
-    <BundleResource Include="Resources\tutorial_screen02%402x.png" />
-    <BundleResource Include="Resources\tutorial_screen03.png" />
-    <BundleResource Include="Resources\tutorial_screen03%402x.png" />
-    <BundleResource Include="Resources\tutorial_screen04.png" />
-    <BundleResource Include="Resources\tutorial_screen04%402x.png" />
-    <BundleResource Include="Resources\tutorial_screen05.png" />
-    <BundleResource Include="Resources\tutorial_screen05%402x.png" />
-    <BundleResource Include="Resources\tutorial_screen06.png" />
-    <BundleResource Include="Resources\tutorial_screen06%402x.png" />
-    <BundleResource Include="Resources\tutorial_screen07.png" />
-    <BundleResource Include="Resources\tutorial_screen07%402x.png" />
     <BundleResource Include="Resources\poweredby.png" />
     <BundleResource Include="Resources\poweredByGoogle.png" />
     <BundleResource Include="Resources\places.png" />
@@ -759,6 +767,22 @@
     <BundleResource Include="Resources\destination_small_icon_pressed.png" />
     <BundleResource Include="Resources\destination_small_icon_pressed%402x.png" />
     <BundleResource Include="Resources\Icon-60%402x.png" />
+    <BundleResource Include="ar.lproj\tutorial_screen01.png" />
+    <BundleResource Include="ar.lproj\tutorial_screen02.png" />
+    <BundleResource Include="ar.lproj\tutorial_screen03.png" />
+    <BundleResource Include="ar.lproj\tutorial_screen04.png" />
+    <BundleResource Include="ar.lproj\tutorial_screen05.png" />
+    <BundleResource Include="ar.lproj\tutorial_screen06.png" />
+    <BundleResource Include="ar.lproj\tutorial_screen07.png" />
+    <BundleResource Include="ar.lproj\tutorial_screen08.png" />
+    <BundleResource Include="ar.lproj\tutorial_screen08%402x.png" />
+    <BundleResource Include="ar.lproj\tutorial_screen07%402x.png" />
+    <BundleResource Include="ar.lproj\tutorial_screen06%402x.png" />
+    <BundleResource Include="ar.lproj\tutorial_screen05%402x.png" />
+    <BundleResource Include="ar.lproj\tutorial_screen04%402x.png" />
+    <BundleResource Include="ar.lproj\tutorial_screen03%402x.png" />
+    <BundleResource Include="ar.lproj\tutorial_screen02%402x.png" />
+    <BundleResource Include="ar.lproj\tutorial_screen01%402x.png" />
     <BundleResource Include="Resources\star_selected.png" />
     <BundleResource Include="Resources\star_selected%402x.png" />
     <BundleResource Include="Resources\star_unselected.png" />

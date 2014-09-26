@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
@@ -24,6 +26,8 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly IOrderStatusUpdateDao _orderStatusUpdateDao;
         private readonly OrderStatusUpdater _orderStatusUpdater;
+
+        private static readonly ILog Log = LogManager.GetLogger(typeof(UpdateOrderStatusJob));
 
         private const int NumberOfConcurrentServers = 2;
 
@@ -67,6 +71,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             var lastUpdate = _orderStatusUpdateDao.GetLastUpdate();
             bool hasOrdersWaitingForPayment = false;
             
+            Log.DebugFormat("Attempting to CheckStatus with {0}", updaterUniqueId);
+
             if ((lastUpdate == null) ||
                 (lastUpdate.UpdaterUniqueId == updaterUniqueId) ||
                 (DateTime.UtcNow.Subtract(lastUpdate.LastUpdateDate).TotalSeconds > NumberOfConcurrentServers * pollingValue))
@@ -75,13 +81,17 @@ namespace apcurium.MK.Booking.Api.Jobs
                 var timer = Observable.Timer(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(pollingValue))
                                 .Subscribe(_ =>_orderStatusUpdateDao.UpdateLastUpdate(updaterUniqueId, DateTime.UtcNow));
 
-                
+                Log.DebugFormat("CheckStatus was allowed for {0}", updaterUniqueId);
+
                 try
                 {
                     var orders = _orderDao.GetOrdersInProgress().ToArray();
 
+                    Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", orders.Count(o => o.Status == OrderStatus.WaitingForPayment), "WaitingForPayment");
                     BatchUpdateStatus(orders.Where(o => o.Status == OrderStatus.WaitingForPayment));
+                    Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", orders.Count(o => o.Status == OrderStatus.Pending), "Pending");
                     BatchUpdateStatus(orders.Where(o => o.Status == OrderStatus.Pending));
+                    Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", orders.Count(o => o.Status == OrderStatus.Created), "Created");
                     BatchUpdateStatus(orders.Where(o => o.Status == OrderStatus.Created));
 
                     hasOrdersWaitingForPayment = orders.Any(o => o.Status == OrderStatus.WaitingForPayment);
@@ -91,6 +101,11 @@ namespace apcurium.MK.Booking.Api.Jobs
                     timer.Dispose();
                 }
             }
+            else
+            {
+                Log.DebugFormat("CheckStatus was blocked for {0}", updaterUniqueId);
+            }
+
             return hasOrdersWaitingForPayment;
         }
 
@@ -109,6 +124,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                     if (order == null) continue;
 
+                    Log.DebugFormat("Starting OrderStatusUpdater for order {0} (IbsOrderId: {1})", order.OrderId, order.IBSOrderId);
                     _orderStatusUpdater.Update(ibsStatus, order);
                 }
             }

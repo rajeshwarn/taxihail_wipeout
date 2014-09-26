@@ -85,6 +85,7 @@ namespace apcurium.MK.Booking.Api.Security
                     {
                         ClientLanguageCode = account.Language,
                         EmailAddress = account.Email,
+                        BaseUrl = new Uri(root),
                         ConfirmationUrl =
                             new Uri(root +
                                     string.Format("/api/account/confirm/{0}/{1}", account.Email,

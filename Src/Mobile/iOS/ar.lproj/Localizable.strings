@@ -80,6 +80,7 @@
 "HistoryInfo"="عرض حجوزاتكم خلال الشهر الماضي";
 "ConfirmPassengerSettingsTitle"="إعدادات الركاب";
 "ChangeBookingSettingsButton"="تغيير إعدادات الحجز";
+"View_CreditCardAdd"="بطاقة إئتمان جديدة";
 "Tuto03Bottom"="يمكنك البحث عن عنوان محدد أوإختيار عنوان من المفضلة، إتصالاتك أو قائمة بالأماكن القريبة.";
 "OrderHistoryListTitle"="طلبية #{0} ({1:ddd, MMM d}, {1:h:mm tt})";
 "ServiceError_ErrorCreatingOrderMessage_NoCall"="لا يمكن إدخال الطلب.";
@@ -89,7 +90,7 @@
 "DeleteBookItButtonImageNamePressed"="";
 "StreetNumberPlacesBt"="البحث عن أماكن";
 "CreateAccountTitleMr"="السيد";
-"EstimatePriceFormat"="التكلفة المتوقعة :{0} ({1})";
+"EstimatePriceFormat"="({التكلفة المتوقعة :{0} ({1";
 "BookRatingErrorMessage"="قم بتقييم مشوارك";
 "ResetPasswordSucessTitle"="إعادة ضبط كلمة المرور";
 "TabSearch"="بحث";
@@ -225,7 +226,7 @@
 "TabFavorites"="المفضلة";
 "PickupMapTitle"="موقع الإلتقاء";
 "ReSendConfirmation"="بلغ السائق بالدفع";
-"CreditCardErrorTitle"="لا يمكنك حفظ هذه البطاقة الائتمانية";
+"CreditCardErrorTitle"="لا يمكن إضافة بطاقة إئتمان";
 "PickupDateTextPlaceholder"="التاريخ: اليوم";
 "BuildingName"="إسم المبنى / ملاحظات";
 "InvalidLocalContactMessage"="لا يمكن تأكيد العنوان الخاص بهذا الشخص.";
@@ -423,7 +424,7 @@
 "ConfirmVehiculeTypeLabel"="نوع السيارة:";
 "View_BookingStatus"="الوضع";
 "RideSettingsVehiculeType"="نوع السیارة";
-"ApplicationName"="CINQ-S";
+"ApplicationName"="TaxiHail";
 "WarningEstimateTitle"="تحذير";
 "EmptyString"="جاري تقييم قيمة رحلتك...";
 "RemoveCreditCardMessage"="هل أنت متأكد من رغبتك في إزالة بطاقة الائتمان هذه؟";
@@ -465,13 +466,6 @@
 "dummyaaa"="xaaa";
 "Error_AccountPaymentQuestionRequiredMessage"="يجب الإجابة على جميع الأسئلة للإستمرار";
 "View_UpdatedTermsAndConditions"="أحكام و شروط جديدة";
-"View_CreditCard"="بطاقة إئتمان";
-"DeleteCreditCardTitle"="حذف بطاقة الائتمان";
-"DeleteCreditCard"="حذف بطاقة الائتمان المسجلة في هذا الحساب؟";
-"View"="View";
-"ServiceErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
-"CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
-"PanelMenuViewPaymentInfoText"="Card on File";
 "LoginSupport"="Need support?";
 "CurrencyPriceFormat"="{0}";
 "PendingOrderCancel"="Cancel";

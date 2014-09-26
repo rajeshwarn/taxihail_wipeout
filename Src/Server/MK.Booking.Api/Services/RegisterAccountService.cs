@@ -126,6 +126,7 @@ namespace apcurium.MK.Booking.Api.Services
                         {
                             ClientLanguageCode = command.Language,
                             EmailAddress = command.Email,
+                        BaseUrl = new Uri(root),
                             ConfirmationUrl =
                                 new Uri(root +
                                         string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken)),

@@ -12,10 +12,9 @@
   <string name="AddressSearchingText">جار البحث</string>
   <string name="ApartmentLabel">شقة</string>
   <string name="apcuriumUrl"></string>
-  <string name="ApplicationName">CINQ-S</string>
+  <string name="ApplicationName">TaxiHail</string>
   <string name="AppNeedUpdateMessage">هناك تحديث جديد متاح للتطبيق ، يرجى تحديث التطبيق للإستمرار.</string>
   <string name="AppNeedUpdateTitle">هناك تحديثات متاحة</string>
-  <string name="ApproxPrice">التكلفة المتوقعة</string>
   <string name="April">أبريل (04)</string>
   <string name="AptNumber">رقم الشقة.</string>
   <string name="August">أغسطس (08)</string>
@@ -147,8 +146,6 @@
   <string name="EntryCodeLabel">رمز الدخول</string>
   <string name="ErrorCreatingOrderTitle">لا يمكن إتمام الحجز</string>
   <string name="EstimatedFareNotAvailable">التكلفة المتوقعة غير متاحة</string>
-  <string name="EstimateDistance">({0})</string>
-  <string name="EstimatePrice">التكلفة المتوقعة</string>
   <string name="EstimatePriceFormat">التكلفة المتوقعة :{0} ({1})</string>
   <string name="EstimatePriceOver100">إتصال لمعرفة السعر</string>
   <string name="EstimatingFare">جاري تقييم قيمة مشوارك...</string>

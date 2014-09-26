@@ -373,7 +373,7 @@
 "ResetPasswordConfirmationTitle"="Password sent";
 "View_SearchAddress"="Address Search";
 "ApartmentLabel"="Apartment";
-"UpdatePasswordConfirmationLabel"="Confirmation";
+"UpdatePasswordConfirmationLabel"="Confirm New Password";
 "dummyaaa"="xaaa";
 "View_BookSettingMenu"="Settings";
 "DateTimePickerPickInvalidDateMessage"="The pickup date must be in the future.";
@@ -416,7 +416,7 @@
 "ConfirmVehiculeTypeLabel"="Vehicle type";
 "ServerInfo"="({0} v{1})";
 "RideSettingsVehiculeType"="Vehicle type";
-"ApplicationName"="CINQ-S";
+"ApplicationName"="TaxiHail";
 "WarningEstimateTitle"="Warning";
 "InvalidBookinInfoTitle"="Invalid booking info";
 "March"="Mar (03)";
@@ -447,6 +447,7 @@
 "apcuriumUrl"="http://www.apcurium.com/";
 "mobileKnowledgeUrl"="http://www.mobile-knowledge.com/";
 "View_ConfirmCarNumber"="Confirmation";
+"View_CreditCardAdd"="New Credit Card";
 "View_RideSettings"="Profile";
 "View_Payment"="Payment Info";
 "Create"="Create";
@@ -484,13 +485,6 @@
 "WarningPushServiceTitle"="Push Notifications";
 "TAXI"="TAXI";
 "WarningPushServiceMessage"="We noticed you do not have push notifications turned on. Just to let you know if you have them enabled then you get updates about the status of your booking without having to look at the app! We promise we will not spam you with useless information!";
-"View_AccountConfirmation_Label_Instructions"="A text message with your code has been sent to your phone.";
-"View_AccountConfirmationTitle"="Account Confirmation";
-"View_AccountConfirmation_Button"="Confirm";
-"View_AccountConfirmation_Label_Code"="Code";
-"ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
-"AccountConfirmation_ErrorTitle"="Cannot confirm account";
-"PanelMenuViewPaymentInfoText"="Card on File";
 "LoginSupport"="Need support?";
 "CurrencyPriceFormat"="{0:C}";
 "PendingOrderCancel"="Cancel";
@@ -545,3 +539,10 @@
 "Politeness"="Politeness";
 "Modify"="Modify";
 "Knowledgabledriver"="Knowledgable driver";
+"ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
+"AccountConfirmation_ErrorTitle"="Cannot confirm account";
+"View_AccountConfirmation_Label_Instructions"="A text message with your code has been sent to your phone.";
+"PanelMenuViewPaymentInfoText"="Card on File";
+"View_AccountConfirmationTitle"="Account Confirmation";
+"View_AccountConfirmation_Button"="Confirm";
+"View_AccountConfirmation_Label_Code"="Code";

@@ -38,6 +38,7 @@ namespace MK.Common.Configuration
 		    DisableChargeTypeWhenCardOnFile = false;
 		    VehicleTypeSelectionEnabled = false;
 		    SendPushAsSMS = false;
+            AllowSimultaneousAppOrders = false;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -175,8 +176,6 @@ namespace MK.Common.Configuration
         public bool CreditCardIsMandatory { get; private set; }
 		[Display(Name = "Default Percentage Tip", Description="default value for the tip percentage ex: 15")]
 		public int DefaultTipPercentage { get; private set; }
-		[Display(Name = "Credit Card ChargeTypeId", Description = "ChargeTypeId of the Credit Card Charge Type")]
-		public int? CreditCardChargeTypeId { get; private set; }
 
 
 		[Display(Name = "Hide Pay Now Button During Ride", Description = "This will hide the pay now button, on the status screen, if the ride is not completed")]
@@ -198,8 +197,6 @@ namespace MK.Common.Configuration
 		public string SearchFilter { get; private set; }
         [Display(Name = "Default Radius", Description="Default radius for places search")]
         public int DefaultRadius { get; private set; }
-        [Display(Name = "Max Distance", Description="??")]
-        public int MaxDistance { get; private set; }
         [Display(Name = "Default Latitude", Description="Default latitude to display the map before geoloc is done")]
         public double DefaultLatitude { get; private set; }
         [Display(Name = "Default Longitude", Description="Default longitude to display the map before geoloc is done")]
@@ -265,6 +262,14 @@ namespace MK.Common.Configuration
 
         [Display(Name = "VAT Percentage", Description = "Percentage to use to calculate the VAT portion of a fare")]
         public int VATPercentage { get; private set; }
+
+        [Display(Name = "Allow Simultaneous Orders", Description = "Allow to have more than one active order")]
+        public bool AllowSimultaneousAppOrders { get; private set; }
+        
+        [Display(Name = "Google AdWords Conversion Tracking ID", Description = "Conversion ID used for Google Conversion Tracking")]
+        public string GoogleAdWordsConversionId { get; private set; }
+        [Display(Name = "Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
+        public string GoogleAdWordsConversionLabel { get; private set; }
     }
 }
 

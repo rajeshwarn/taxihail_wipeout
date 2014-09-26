@@ -20,15 +20,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITwitterService _twitterService;
 		private readonly ILocationService _locationService;
 		private readonly IAccountService _accountService;
-		private readonly IRegisterWorkflowService _registrationService;
 		private readonly IPhoneService _phoneService;
+		private readonly IRegisterWorkflowService _registrationService;
 
         public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocationService locationService,
 			IAccountService accountService,
-			IRegisterWorkflowService registrationService,
-			IPhoneService phoneService)
+			IPhoneService phoneService,
+			IRegisterWorkflowService registrationService)
         {
 			_registrationService = registrationService;
             _facebookService = facebookService;

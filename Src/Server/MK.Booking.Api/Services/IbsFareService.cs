@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     Distance = (int) (fare.Distance*1000),
                     Price = fare.FareEstimate,
-                    FormattedDistance = FormatDistance((int) (fare.Distance*1000)),
+                    FormattedDistance = FormatDistance((int) (fare.Distance*1000)),                    
                 }
                 : new DirectionInfo();
         }
