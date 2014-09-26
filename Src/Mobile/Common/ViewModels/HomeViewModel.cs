@@ -138,10 +138,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				CheckUnratedRide ();
 			}
 		}
-
+			
+		private bool _isShowingUnratedPopup;
 	    private void CheckUnratedRide()
 	    {
-			if (Settings.RatingEnabled)
+			if (Settings.RatingEnabled && !_isShowingUnratedPopup)
 			{
 				var unratedRideId = _orderWorkflowService.GetLastUnratedRide();
 				if (unratedRideId != null
@@ -149,12 +150,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					var title = this.Services().Localize["RateLastRideTitle"];
 					var message = this.Services().Localize["RateLastRideMessage"];
-					Action goToRate = () => ShowViewModel<BookRatingViewModel>(new
+					Action goToRate = () =>
 					{
-						orderId = unratedRideId.ToString(),
-						canRate = true
-					});
+						_isShowingUnratedPopup = false;
+						ShowViewModel<BookRatingViewModel> (new
+						{
+							orderId = unratedRideId.ToString (),
+							canRate = true
+						});
+					};
 
+					_isShowingUnratedPopup = true;
 					if (Settings.RatingRequired)
 					{
 						if (Settings.CanSkipRatingRequired)
@@ -163,7 +169,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								this.Services().Localize["RateLastRide"],
 								goToRate,
 								this.Services().Localize["NotNow"],
-								() => { /* Do nothing */ });
+								() => { _isShowingUnratedPopup = false; });
 						}
 						else
 						{
@@ -176,9 +182,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							this.Services().Localize["RateLastRide"],
 							goToRate,
 							this.Services().Localize["DontAsk"],
-							() => this.Services().Cache.Set("RateLastRideDontPrompt", "yes"),
+							() => { 
+								_isShowingUnratedPopup = false;
+								this.Services().Cache.Set("RateLastRideDontPrompt", "yes");
+							},
 							this.Services().Localize["NotNow"],
-							() => { /* Do nothing */ });
+							() => { _isShowingUnratedPopup = false; });
 					}
 				}
 			}
