@@ -8,6 +8,7 @@ using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
@@ -40,21 +41,13 @@ namespace apcurium.MK.Booking.Api.Services
 
             var displayQuestionLanguage = request.ClientLanguage ?? SupportedLanguages.en.ToString();
 
-            //var res = allRatingTypes.Select(details => new
-            //{
-            //    Id = details.First().Id,
-            //    Name = details.FirstOrDefault(t => t.Language == questionLanguage)
-            //                  .SelectOrDefault(t => t.Name),
-            //    RatingTypes = details
-            //});
-
-            // TODO: refactor that shit
-            var res = allRatingTypes.Select(details => new RatingTypeWrapper
+            var wrappedRatingTypes = allRatingTypes.Select(details => new RatingTypeWrapper
             {
                 Id = details.First().Id,
                 Name = details.FirstOrDefault(t => t.Language == displayQuestionLanguage)
                               .SelectOrDefault(t => t.Name),
                 RatingTypes = supportedLanguages.Contains(request.ClientLanguage)
+                    // Filter by selected language
                     ? details.Select(s => new RatingType
                         {
                             Id = s.Id,
@@ -62,6 +55,7 @@ namespace apcurium.MK.Booking.Api.Services
                             Language = s.Language,
                             IsHidden = s.IsHidden
                         }).Where(l => l.Language == request.ClientLanguage).ToArray()
+                    // Return all languages
                     : details.Select(s => new RatingType
                     {
                         Id = s.Id,
@@ -71,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Services
                     }).ToArray()
             });
 
-            return res;
+            return wrappedRatingTypes;
         }
 
         public object Post(RatingTypesRequest request)
@@ -133,8 +127,7 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus.Send(new DeleteRatingType
             {
                 CompanyId = AppConstants.CompanyId,
-                RatingTypeId = request.Id,
-                Languages = Enum.GetNames(typeof(SupportedLanguages))
+                RatingTypeId = request.Id
             });
 
             return new HttpResult(HttpStatusCode.OK, "OK");

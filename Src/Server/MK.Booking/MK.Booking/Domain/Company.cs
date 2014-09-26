@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Policy;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
@@ -20,8 +21,8 @@ namespace apcurium.MK.Booking.Domain
     public class Company : EventSourced
     {
         private readonly Dictionary<RuleCategory, Guid> _defaultRules = new Dictionary<RuleCategory, Guid>();
+        private readonly Dictionary<Guid, IList<RatingType>> _ratingTypes = new Dictionary<Guid, IList<RatingType>>(); 
         private Guid? _defaultTariffId;
-
 
         public Company(Guid id)
             : base(id)
@@ -67,10 +68,10 @@ namespace apcurium.MK.Booking.Domain
             Handles<RuleActivated>(NoAction);
             Handles<RuleDeactivated>(NoAction);
 
-            Handles<RatingTypeAdded>(NoAction);
+            Handles<RatingTypeAdded>(OnRatingTypeAdded);
             Handles<RatingTypeHidded>(NoAction);
-            Handles<RatingTypeUpdated>(NoAction);
-            Handles<RatingTypeDeleted>(NoAction);
+            Handles<RatingTypeUpdated>(OnRatingTypeUpdated);
+            Handles<RatingTypeDeleted>(OnRatingTypeDeleted);
 
             Handles<TermsAndConditionsUpdated>(NoAction);
             Handles<TermsAndConditionsRetriggered>(NoAction);
@@ -171,6 +172,18 @@ namespace apcurium.MK.Booking.Domain
             if (language.IsNullOrEmpty())
                 throw new ArgumentException("Rating language cannot be null or empty");
 
+            if (_ratingTypes.ContainsKey(ratingTypeId))
+            {
+                var ratingTypes = _ratingTypes[ratingTypeId];
+                var ratingType = ratingTypes.FirstOrDefault(t => t.Language == language);
+
+                // Only send Update event if the name value has changed
+                if (ratingType != null && ratingType.Name == name)
+                {
+                    return;
+                } 
+            }
+
             Update(new RatingTypeUpdated
             {
                 Name = name,
@@ -179,12 +192,11 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void DeleteRatingType(Guid ratingTypeId, IEnumerable<string> languages)
+        public void DeleteRatingType(Guid ratingTypeId)
         {
             Update(new RatingTypeDeleted
             {
-                RatingTypeId = ratingTypeId,
-                Languages = languages
+                RatingTypeId = ratingTypeId
             });
         }
 
@@ -471,6 +483,42 @@ namespace apcurium.MK.Booking.Domain
                 {
                     _defaultRules[@event.Category] = @event.RuleId;
                 }
+            }
+        }
+
+        private void OnRatingTypeAdded(RatingTypeAdded @event)
+        {
+            if (!_ratingTypes.ContainsKey(@event.RatingTypeId))
+            {
+                _ratingTypes.Add(@event.RatingTypeId, new List<RatingType>());
+            }
+
+            _ratingTypes[@event.RatingTypeId].Add(new RatingType
+            {
+                Id = @event.RatingTypeId,
+                Name = @event.Name,
+                Language = @event.Language
+            });
+        }
+
+        private void OnRatingTypeUpdated(RatingTypeUpdated @event)
+        {
+            if (_ratingTypes.ContainsKey(@event.RatingTypeId))
+            {
+                var ratingType = _ratingTypes[@event.RatingTypeId];
+                var ratingTypeToUpdate = ratingType.FirstOrDefault(t => t.Language == @event.Language);
+                if (ratingTypeToUpdate != null)
+                {
+                    ratingTypeToUpdate.Name = @event.Name;
+                }
+            }
+        }
+
+        private void OnRatingTypeDeleted(RatingTypeDeleted @event)
+        {
+            if (_ratingTypes.ContainsKey(@event.RatingTypeId))
+            {
+                _ratingTypes.Remove(@event.RatingTypeId);
             }
         }
 

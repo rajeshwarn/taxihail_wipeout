@@ -108,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     RatingList = ratingTypes.Select(c => new RatingModel(canRate)
                     {
                         RatingTypeId = c.Id,
-                        RatingTypeName = c.RatingTypes.First().Name
+                        RatingTypeName = c.RatingTypes.Any() ? c.RatingTypes.First().Name : string.Empty
                     }).OrderBy(c => c.RatingTypeId).ToList();
 				}
 				else
