@@ -248,6 +248,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             PanelMenuInit();
         }
 
+        protected override void OnRestart ()
+        {
+            // when we come back to Home, resubscribe before calling base.OnRestart();
+            if (ViewModel != null)
+            {
+                ViewModel.SubscribeLifetimeChangedIfNecessary ();
+            }
+            base.OnRestart ();
+        }
+
         protected override void OnResume()
         { 
             base.OnResume();
@@ -259,6 +269,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnPause()
         {
             base.OnPause();	        
+            if (ViewModel != null)
+            {
+                ViewModel.UnsubscribeLifetimeChangedIfNecessary ();
+            }
         }
 
         bool _locateUserOnStart;
