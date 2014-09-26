@@ -22,6 +22,8 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Common.Utils;
 using TinyIoC;
+using System.Drawing;
+using Color = Android.Graphics.Color;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -207,15 +209,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public event EventHandler MapTouchUp;
 
         private void Initialize()
-        {
-			var useColor = this.Services().Settings.UseThemeColorForMapIcons;
-            var colorBgTheme = useColor ? (Color?)Resources.GetColor(Resource.Color.company_color) : (Color?)null;
+        {			
 			_showVehicleNumber = this.Services ().Settings.ShowAssignedVehicleNumberOnPin;
-            var destinationIcon =  Resources.GetDrawable(Resource.Drawable.@destination_icon);
-            _destinationIcon = DrawHelper.DrawableToBitmapDescriptor(destinationIcon, colorBgTheme);
 
-            var hailIcon = Resources.GetDrawable(Resource.Drawable.@hail_icon);       
-            _hailIcon = DrawHelper.DrawableToBitmapDescriptor(hailIcon, colorBgTheme);
+            var useCompanyColor = this.Services().Settings.UseThemeColorForMapIcons;
+            var companyColor = Resources.GetColor(Resource.Color.company_color);
+
+            var hailIcon = Resources.GetDrawable(Resource.Drawable.@hail_icon);   
+            var destinationIcon =  Resources.GetDrawable(Resource.Drawable.@destination_icon);
+            var bigBackgroundIcon = Resources.GetDrawable (Resource.Drawable.map_bigicon_background);
+
+            _destinationIcon = DrawHelper.GetMapIcon(
+                destinationIcon, 
+                useCompanyColor 
+                    ? companyColor
+                    : Color.Argb(255, 255, 0, 23), 
+                bigBackgroundIcon, 
+                new SizeF(52, 58));
+
+            _hailIcon = DrawHelper.GetMapIcon(
+                hailIcon, 
+                useCompanyColor 
+                    ? companyColor
+                    : Color.Argb(255, 30, 192, 34), 
+                bigBackgroundIcon, 
+                new SizeF(52, 58));
         }
 
         public void SetMapReady()
@@ -513,13 +531,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private Bitmap CreateTaxiBitmap(string vehicleNumber)
         {
-            var textSize = DrawHelper.GetPixels(11);
-            var textVerticalOffset = DrawHelper.GetPixels(12);
-            var taxiIcon = BitmapFactory.DecodeResource(Resources, Resource.Drawable.taxi_icon);
+            var taxiIcon = DrawHelper.GetMapIconBitmap (
+                Resources.GetDrawable (Resource.Drawable.taxi_icon), 
+                Resources.GetColor(Resource.Color.company_color), 
+                Resources.GetDrawable (Resource.Drawable.map_bigicon_background), 
+                new SizeF (52, 58));
 
-			if (!_showVehicleNumber) {
+			if (!_showVehicleNumber) 
+            {
 				return taxiIcon;
 			}
+
+            var textSize = DrawHelper.GetPixels(11);
+            var textVerticalOffset = DrawHelper.GetPixels(12);
 
             /* Find the width and height of the title*/
             var paintText = new TextPaint(PaintFlags.AntiAlias | PaintFlags.LinearText);
@@ -542,8 +566,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			base.OnPause();
 			_mapReady = false;
 		}
-
-
     }
 
 	public class LayoutObserverForMap : Java.Lang.Object, ViewTreeObserver.IOnGlobalLayoutListener

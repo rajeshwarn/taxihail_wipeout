@@ -28,6 +28,8 @@ using ServiceStack.Common.Utils;
 using TinyIoC;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Maps.Geo;
+using System.Drawing;
+using Color = Android.Graphics.Color;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -221,15 +223,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 .To(vm => vm.AvailableVehicles);
 
             set.Apply();
-
         }
 
         private void InitDrawables()
         {     
             _vehicleIcons = new Dictionary<string, BitmapDescriptor>();
 
-			var useColor = _settings.UseThemeColorForMapIcons;
-            var colorBgTheme = useColor ? (Color?)_resources.GetColor(Resource.Color.company_color) : (Color?)null;
+			var useCompanyColor = _settings.UseThemeColorForMapIcons;
+            var companyColor = _resources.GetColor (Resource.Color.company_color);
 
             var destinationIcon =  _resources.GetDrawable(Resource.Drawable.@destination_icon);
             var hailIcon = _resources.GetDrawable(Resource.Drawable.@hail_icon);
@@ -239,16 +240,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var nearbyClusterTaxiIcon = _resources.GetDrawable(Resource.Drawable.@cluster_taxi);
             var nearbySuvClusterIcon = _resources.GetDrawable(Resource.Drawable.@cluster_suv);
             var nearbyBlackcarClusterIcon = _resources.GetDrawable(Resource.Drawable.@cluster_blackcar);
+            var bigBackgroundIcon = _resources.GetDrawable (Resource.Drawable.map_bigicon_background);
+            var smallBackgroundIcon = _resources.GetDrawable (Resource.Drawable.map_smallicon_background);
 
-            _destinationIcon = DrawHelper.DrawableToBitmapDescriptor(destinationIcon, colorBgTheme);
-            _hailIcon = DrawHelper.DrawableToBitmapDescriptor(hailIcon, colorBgTheme);
+            _destinationIcon = DrawHelper.GetMapIcon(
+                destinationIcon, 
+                useCompanyColor 
+                    ? companyColor
+                    : Color.Argb(255, 255, 0, 23), 
+                bigBackgroundIcon, 
+                new SizeF(52, 58));
 
-            _vehicleIcons.Add("nearby_taxi", DrawHelper.DrawableToBitmapDescriptor(nearbyTaxiIcon, colorBgTheme));
-            _vehicleIcons.Add("nearby_suv", DrawHelper.DrawableToBitmapDescriptor(nearbySuvIcon, colorBgTheme));
-            _vehicleIcons.Add("nearby_blackcar", DrawHelper.DrawableToBitmapDescriptor(nearbyBlackcarIcon, colorBgTheme));
-            _vehicleIcons.Add("cluster_taxi", DrawHelper.DrawableToBitmapDescriptor(nearbyClusterTaxiIcon, colorBgTheme));
-            _vehicleIcons.Add("cluster_suv", DrawHelper.DrawableToBitmapDescriptor(nearbySuvClusterIcon, colorBgTheme));
-            _vehicleIcons.Add("cluster_blackcar", DrawHelper.DrawableToBitmapDescriptor(nearbyBlackcarClusterIcon, colorBgTheme));
+            _hailIcon = DrawHelper.GetMapIcon(
+                hailIcon, 
+                useCompanyColor 
+                    ? companyColor
+                    : Color.Argb(255, 30, 192, 34), 
+                bigBackgroundIcon, 
+                new SizeF(52, 58));
+
+            _vehicleIcons.Add("nearby_taxi", DrawHelper.GetMapIcon(nearbyTaxiIcon, companyColor, smallBackgroundIcon, new SizeF(34, 39)));
+            _vehicleIcons.Add("nearby_suv", DrawHelper.GetMapIcon(nearbySuvIcon, companyColor, smallBackgroundIcon, new SizeF(34, 39)));
+            _vehicleIcons.Add("nearby_blackcar", DrawHelper.GetMapIcon(nearbyBlackcarIcon, companyColor, smallBackgroundIcon, new SizeF(34, 39)));
+            _vehicleIcons.Add("cluster_taxi", DrawHelper.GetMapIcon(nearbyClusterTaxiIcon, companyColor, smallBackgroundIcon, new SizeF(34, 39)));
+            _vehicleIcons.Add("cluster_suv", DrawHelper.GetMapIcon(nearbySuvClusterIcon, companyColor, smallBackgroundIcon, new SizeF(34, 39)));
+            _vehicleIcons.Add("cluster_blackcar", DrawHelper.GetMapIcon(nearbyBlackcarClusterIcon, companyColor, smallBackgroundIcon, new SizeF(34, 39)));
         }
 
         private MapBounds GetMapBoundsFromProjection()
@@ -299,16 +315,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private void OnPickupAddressChanged()
         {
             if (PickupAddress == null)
+            {
                 return;
-
+            }
+                
             ShowMarkers();
         }
 
         private void OnDestinationAddressChanged()
         {
             if (DestinationAddress == null)
+            {
                 return; 
-
+            }
+                
             ShowMarkers();
         }
 
@@ -355,7 +375,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }            
         }
 
-
         private void OnCameraChanged(System.Reactive.EventPattern<GoogleMap.CameraChangeEventArgs> e)
         {
             if (bypassCameraChangeEvent)
@@ -369,8 +388,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 UserMovedMap.Execute(bounds);
             }
-            ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles, bounds));
 
+            ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles, bounds)); 
         }
 
         private void ClearAllMarkers()
@@ -400,7 +419,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 var vehicleMarker =
                 Map.AddMarker(new MarkerOptions()
                   .SetPosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
-                        .Anchor(.5f, 1f)
+                  .Anchor(.5f, 1f)
                   .InvokeIcon(_vehicleIcons[logoKey]));
 
             _availableVehicleMarkers.Add (vehicleMarker);

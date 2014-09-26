@@ -157,8 +157,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
         public static UIImage ApplyColorToMapIcon(string imagePath, UIColor color, bool isBigIcon, SizeF originalImageSize)
         {
             var image = GetImage(imagePath);
-            var imageWasOverridden = image.Size.Width != originalImageSize.Width;
 
+            var imageWasOverridden = image.Size.Width != originalImageSize.Width;
             if (imageWasOverridden)
             {
                 return image;

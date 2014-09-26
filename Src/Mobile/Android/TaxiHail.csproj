@@ -610,6 +610,10 @@
     <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen08.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen09.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen10.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\map_bigicon_background.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\map_smallicon_background.png" />
+    <AndroidResource Include="Resources\Drawable\map_bigicon_background.png" />
+    <AndroidResource Include="Resources\Drawable\map_smallicon_background.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
