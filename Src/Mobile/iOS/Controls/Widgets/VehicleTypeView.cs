@@ -20,6 +20,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     [Register("VehicleTypeView")]
     public class VehicleTypeView : UIControl
     {
+		private const float MINIMUM_WIDTH = 40f;
+
         private UIImageView VehicleTypeImage { get; set; }
         private UILabel VehicleTypeLabel { get; set; }
         private bool IsForSelection { get; set; }
@@ -45,6 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private void Initialize()
         {
             VehicleTypeImage = new UIImageView(new RectangleF(this.Frame.Width / 2 - 34f / 2, 4f, 34f, 34f));
+			VehicleTypeImage = new UIImageView(new RectangleF(this.Frame.Width / 2 - 34f / 2, 4f, 34f, 34f));
 
 			AddSubview (VehicleTypeImage);
 
@@ -61,6 +64,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				AddSubview (VehicleTypeLabel);
 			}
         }
+
+		public VehicleTypeView SizeToFitLabel()
+		{
+			var width = Math.Max (MINIMUM_WIDTH, this.GetSizeThatFits (this.VehicleTypeLabel.Text, this.VehicleTypeLabel.Font).Width) * 1.1f;
+			VehicleTypeLabel.SetWidth (width);
+			this.SetWidth (width);
+			VehicleTypeImage.SetHorizontalCenter (this.Frame.Width / 2);
+			return this;
+		}
 
         public override bool Selected 
         {

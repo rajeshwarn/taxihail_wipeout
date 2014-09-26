@@ -30,8 +30,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private const float VEHICLE_SELECTION_HEIGHT = 52.0f;
 		private const float ETA_CONTAINER_HEIGHT = 23.0f;
-		private const float LABEL_WIDTH = 56.0f;
-		private const float LABEL_RIGHT_PADDING = 5f;
+		private const float VEHICLE_LEFT_BADGE_WIDTH = 56.0f;
+		private const float LABEL_PADDING = 5f;
 
         public Action<VehicleType> VehicleSelected { get; set; }
 
@@ -76,9 +76,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ShadowColor = UIColor.Clear
             };
 
-			EstimatedFareLabel.SetWidth(Frame.Width - LABEL_WIDTH - LABEL_RIGHT_PADDING);
+			EstimatedFareLabel.SetWidth(Frame.Width - VEHICLE_LEFT_BADGE_WIDTH - LABEL_PADDING);
 			EstimatedFareLabel.SetHeight(Frame.Height / 2);
-			EstimatedFareLabel.SetHorizontalCenter((Frame.Width / 2) + (LABEL_WIDTH / 2) - LABEL_RIGHT_PADDING);
+			EstimatedFareLabel.SetHorizontalCenter((Frame.Width / 2) + (VEHICLE_LEFT_BADGE_WIDTH / 2) - LABEL_PADDING);
 			EstimatedFareLabel.SetVerticalCenter(16f);
 
 			EtaLabel = new UILabel
@@ -92,9 +92,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				ShadowColor = UIColor.Clear,
 			};
 
-			EtaLabel.SetWidth(Frame.Width - LABEL_WIDTH - LABEL_RIGHT_PADDING);
+			EtaLabel.SetWidth(Frame.Width - VEHICLE_LEFT_BADGE_WIDTH - LABEL_PADDING);
             EtaLabel.SetHeight(ETA_CONTAINER_HEIGHT);
-			EtaLabel.SetHorizontalCenter((Frame.Width / 2) + (LABEL_WIDTH / 2) - LABEL_RIGHT_PADDING);
+			EtaLabel.SetHorizontalCenter((Frame.Width / 2) + (VEHICLE_LEFT_BADGE_WIDTH / 2) - LABEL_PADDING);
 
 			EtaContainer = new UIView (
 				new RectangleF (0f, this.Frame.Height - ETA_CONTAINER_HEIGHT, 
@@ -270,11 +270,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					true,
 					true);
 				EtaContainer.Add (EtaBadge);
-
-
-
             }
-        }
+
+			// Since this control doesn't use constraints:
+			var badgeWidth = ShowEstimate ? EstimateSelectedVehicleType.SizeToFitLabel().Frame.Width : VEHICLE_LEFT_BADGE_WIDTH;
+			EstimateSelectedVehicleType.SetWidth (badgeWidth);
+			EstimatedFareLabel.SetWidth (this.Frame.Width - badgeWidth - LABEL_PADDING * 2);
+			EtaLabel.SetWidth (this.Frame.Width - badgeWidth - LABEL_PADDING * 2);
+			EtaLabel.SetX (badgeWidth + LABEL_PADDING);
+			EstimatedFareLabel.SetX (badgeWidth + LABEL_PADDING);
+		}
 
 		private void showEtaView(bool showEta)
 		{
