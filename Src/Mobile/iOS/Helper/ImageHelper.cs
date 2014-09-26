@@ -43,7 +43,51 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return resultImage;
         }
 
-        public static UIImage ApplyColorToImage(string imagePath, UIColor color, bool colorizeWhite = true)
+        private static UIImage ApplyColorToMapIcon(string imagePath, UIColor color, bool bigIcon = true)
+        {
+            var backgroundToColorize = bigIcon
+                ? UIImage.FromBundle ("map_bigicon_background")
+                : UIImage.FromBundle ("map_smallicon_background");
+
+            var rect = new RectangleF(0f, 0f, backgroundToColorize.Size.Width, backgroundToColorize.Size.Height);
+            UIGraphics.BeginImageContextWithOptions(rect.Size, false, 0f);
+            var context = UIGraphics.GetCurrentContext();
+
+            // Step 1: Add the background (this is only a grayscale bubble)
+            backgroundToColorize.Draw(rect);
+
+            // translate/flip the graphics context (for transforming from CG* coords to UI* coords)
+            context.TranslateCTM(0, backgroundToColorize.Size.Height);
+            context.ScaleCTM(1, -1);
+
+            // Step 2: Apply clip to mask to prevent the colorize from creating a colorized rectangle
+            context.ClipToMask (rect, backgroundToColorize.CGImage);
+
+            // Step 3: Colorize the background
+            context.SetFillColorWithColor (color.CGColor);
+            context.SetBlendMode (CGBlendMode.SourceIn);
+
+            // Step 4: Add the white portion on top of background
+            var imageForeground = UIImage.FromFile (imagePath);
+            context.DrawImage (rect, imageForeground.CGImage);
+            context.SetBlendMode (CGBlendMode.DestinationOver);
+
+            context.FillRect(rect);
+
+            // translate/flip the graphics context (for transforming from UI* coords back to CG* coords)
+            context.TranslateCTM(0, backgroundToColorize.Size.Height);
+            context.ScaleCTM(1, -1);
+
+            var resultImage = UIGraphics.GetImageFromCurrentImageContext();
+            UIGraphics.EndImageContext();
+
+            backgroundToColorize = null;
+            imageForeground = null;
+
+            return resultImage;
+        }
+
+        public static UIImage ApplyColorToImage(string imagePath, UIColor color)
         {
             var image = UIImage.FromFile(imagePath);
 
@@ -59,33 +103,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             // apply clip to mask
             context.ClipToMask (rect, image.CGImage);
 
-            if (colorizeWhite)
-            {
-                context.SetFillColorWithColor(color.CGColor);
-                context.SetBlendMode(CGBlendMode.Normal);
-
-                context.FillRect(rect);
-            }
-            else
-            {
-                //convert to uncompressed jpg to remove any alpha channels
-                //this is a necessary first step when processing images that already have transparency
-                var jpgImage = new UIImage (image.AsJPEG (), UIScreen.MainScreen.Scale);
-
-                // extract the white portion of the image that we don't want to colorize
-                var whitePortionOfImage = jpgImage.CGImage.WithMaskingColors (new float[] { 0, 253f, 0, 253f, 0, 253f });
-
-                // colorize image completely
-                context.SetFillColorWithColor (color.CGColor);
-                context.SetBlendMode (CGBlendMode.SourceIn);
-
-                // readd the white portion on top of the full colorized image
-                context.DrawImage (rect, whitePortionOfImage);
-                context.SetBlendMode (CGBlendMode.DestinationOver);
-
-                jpgImage = null;
-                whitePortionOfImage = null;
-            }
+            context.SetFillColorWithColor(color.CGColor);
+            context.SetBlendMode(CGBlendMode.Normal);
 
             context.FillRect(rect);
 
@@ -135,7 +154,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return new UIImage(transformedImage);
         }
 
-        public static UIImage ApplyThemeColorToImage(string imagePath, bool colorizeWhite = true, bool skipApplyIfCustomImage = false, SizeF originalImageSize = new SizeF())
+        public static UIImage ApplyColorToMapIcon(string imagePath, UIColor color, bool isBigIcon, SizeF originalImageSize)
+        {
+            var image = GetImage(imagePath);
+            var imageWasOverridden = image.Size.Width != originalImageSize.Width;
+
+            if (imageWasOverridden)
+            {
+                return image;
+            }
+
+            return ApplyColorToMapIcon(imagePath, color, isBigIcon);
+        }
+
+        public static UIImage ApplyThemeColorToMapIcon(string imagePath, bool isBigIcon, SizeF originalImageSize)
+        {
+            return ApplyColorToMapIcon(imagePath, Theme.CompanyColor, isBigIcon, originalImageSize);
+        }
+
+        public static UIImage ApplyThemeColorToImage(string imagePath, bool skipApplyIfCustomImage = false, SizeF originalImageSize = new SizeF())
         {
             if (skipApplyIfCustomImage)
             {
@@ -147,7 +184,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
                     return image;
                 }
             }
-            return ApplyColorToImage(imagePath, Theme.CompanyColor, colorizeWhite);
+            return ApplyColorToImage(imagePath, Theme.CompanyColor);
         }
 
         public static UIImage ApplyThemeTextColorToImage(string imagePath)

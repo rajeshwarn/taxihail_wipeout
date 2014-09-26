@@ -552,6 +552,10 @@
     <BundleResource Include="Resources\tutorial_screen06%402x.png" />
     <BundleResource Include="Resources\tutorial_screen07.png" />
     <BundleResource Include="Resources\tutorial_screen07%402x.png" />
+    <BundleResource Include="Resources\map_bigicon_background%402x.png" />
+    <BundleResource Include="Resources\map_bigicon_background.png" />
+    <BundleResource Include="Resources\map_smallicon_background.png" />
+    <BundleResource Include="Resources\map_smallicon_background%402x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
