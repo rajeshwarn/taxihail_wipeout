@@ -179,7 +179,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(DeleteRatingType command)
         {
             var company = _repository.Get(command.CompanyId);
-            company.DeleteRatingType(command.RatingTypeId, command.Languages);
+            company.DeleteRatingType(command.RatingTypeId);
             _repository.Save(company, command.Id.ToString());
         }
 

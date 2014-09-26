@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 
 #endregion
@@ -30,17 +31,20 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 // Support for old events without language property
-                var language = @event.Language ?? SupportedLanguages.en.ToString();
+                var languages = @event.Language.IsNullOrEmpty() ? Enum.GetNames(typeof(SupportedLanguages)) : new []{ @event.Language };
 
-                if (context.Query<RatingTypeDetail>().FirstOrDefault(x => x.Name == @event.Name && x.Language == language) == null)
+                foreach (var language in languages)
                 {
-                    context.Save(new RatingTypeDetail
+                    if (context.Query<RatingTypeDetail>().FirstOrDefault(x => x.Name == @event.Name && x.Language == language) == null)
                     {
-                        CompanyId = @event.SourceId,
-                        Id = @event.RatingTypeId,
-                        Name = @event.Name,
-                        Language = @event.Language
-                    });
+                        context.Save(new RatingTypeDetail
+                        {
+                            CompanyId = @event.SourceId,
+                            Id = @event.RatingTypeId,
+                            Name = @event.Name,
+                            Language = language
+                        });
+                    }
                 }
             }
         }
@@ -49,9 +53,11 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var ratingType = context.Find<RatingTypeDetail>(@event.RatingTypeId);
-                ratingType.IsHidden = true;
-
+                var ratingTypes = context.Set<RatingTypeDetail>().Where(x => x.Id == @event.RatingTypeId);
+                foreach (var ratingType in ratingTypes)
+                {
+                    ratingType.IsHidden = true; 
+                }
                 context.SaveChanges();
             }
         }
@@ -61,11 +67,13 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 // Support for old events without language property
-                var language = @event.Language ?? SupportedLanguages.en.ToString();
-
-                var ratingType = context.Set<RatingTypeDetail>().Find(@event.RatingTypeId, language);
-                ratingType.Name = @event.Name;
-                ratingType.Language = @event.Language;
+                var languages = @event.Language.IsNullOrEmpty() ? Enum.GetNames(typeof(SupportedLanguages)) : new[] { @event.Language };
+                foreach (var language in languages)
+                {
+                    var ratingType = context.Set<RatingTypeDetail>().Find(@event.RatingTypeId, language);
+                    ratingType.Name = @event.Name;
+                    ratingType.Language = @event.Language;
+                }
                 context.SaveChanges();
             }
         }
@@ -74,18 +82,12 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                // Support for old events without language property
-                var languages = @event.Languages ?? new [] { SupportedLanguages.en.ToString() };
-
-                foreach (var language in languages)
+                var ratingTypes = context.Query<RatingTypeDetail>().Where(x => x.Id == @event.RatingTypeId);
+                foreach (var ratingType in ratingTypes)
                 {
-                    var ratingType = context.Set<RatingTypeDetail>().Find(@event.RatingTypeId, language);
-                    if (ratingType != null)
-                    {
-                        context.Set<RatingTypeDetail>().Remove(ratingType);
-                        context.SaveChanges();
-                    }
+                    context.Set<RatingTypeDetail>().Remove(ratingType);
                 }
+                context.SaveChanges();
             }
         }
     }
