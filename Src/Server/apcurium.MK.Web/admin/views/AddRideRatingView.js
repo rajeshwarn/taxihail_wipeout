@@ -16,9 +16,6 @@
         render: function () {
 
             var data = _.extend(this.model.toJSON(), {
-                arabicIndex: 0,
-                englishIndex: 1,
-                frenchIndex: 2,
                 isNew: this.model.isNew(),
                 languages: TaxiHail.parameters.languages
             });
@@ -26,20 +23,26 @@
             var html = this.renderTemplate(data);
             this.$el.html(html);
 
-            // TODO: No validation to do?
             this.validate({
-                rules: {
-                    number: "required",
-                    name: "required"
-                },
-                messages: {
-                    number: {
-                        required: TaxiHail.localize('error.accountNumberRequired')
-                    },
-                    name: {
-                        required: TaxiHail.localize('error.accountNameRequired')
-                    },
-                },
+                //rules: {
+                //    ratingFields: {
+                //        required: true,
+                //        minlength: 1
+                //    }
+                //},
+                //messages: {
+                //    ratingFields: {
+                //        required: TaxiHail.localize('error.rideRatingRequired')
+                //    }
+                //},
+                //invalidHandler: _.bind(function (event, validator) {
+                //    var alert = new TaxiHail.AlertView({
+                //        message: TaxiHail.localize("Need at least one!"),
+                //        type: 'error'
+                //    });
+                //    alert.on('ok', alert.remove, alert);
+                //    this.$('.errors').html(alert.render().el);
+                //}, this),
                 submitHandler: this.save
             });
 
@@ -48,13 +51,29 @@
 
         save: function (form) {
             var ratings = this.serializeForm(form);
-            var ratings = _.extend(this.model.toJSON(), ratings);
+            //var ratings = _.extend(this.model.toJSON(), ratings);
+
             this.model.save(ratings, {
                 success: _.bind(function (model) {
-                    
+                    var displayName;
+                    var ratingTypes = this.model.attributes.ratingTypes;
+                    var englishLocalization = ratingTypes[1].name;
+
+                    if (englishLocalization) {
+                        displayName = englishLocalization;
+                    } else {
+                        // Take first localized string that we find
+                        for (i = 0; i < ratingTypes.length; i++) {
+                            if (ratingTypes[i].name) {
+                                displayName = ratingTypes[i].name;
+                                break;
+                            }
+                        }    
+                    }
+
                     var namedModel = _.extend(this.model.toJSON(),
                     {
-                        name: this.model.attributes.ratingTypes[1].name // English
+                        name: displayName
                     });
 
                     this.collection.add(namedModel);

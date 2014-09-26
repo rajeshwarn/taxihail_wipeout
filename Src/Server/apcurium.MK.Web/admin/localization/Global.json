@@ -41,6 +41,7 @@
 	"error.stateRequired" : "State is required",
 	"error.accountNumberRequired" : "Account Rider Number is required",
 	"error.accountNameRequired" : "Account Rider Name is required",
+	"error.rideRatingRequired" : "At least one rating question is required",
 	"error.vehicleTypeRefIdRequired" : "Reference Type is required",
 	"error.vehicleTypeLogoNameRequired" : "Logo is required",
 	"error.vehicleTypeNameRequired" : "Vehicle Name is required",
