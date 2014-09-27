@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                 // If we can't, we'll display the first available rating question
                 var firstAvailableDisplayName = 
-                    details.FirstOrDefault(t => !t.Language.IsNullOrEmpty())
+                    details.FirstOrDefault(t => !t.Name.IsNullOrEmpty())
                            .SelectOrDefault(t => t.Name);
 
                 var ratingTypes = details.Select(s => new RatingType

@@ -20,7 +20,6 @@
     };
 
     var RideRatings = TaxiHail.RideRatings = Backbone.Model.extend({
-        //idAttribute: ['id', 'language'],
         urlRoot: TaxiHail.parameters.apiRoot + '/ratingtypes/',
         sync: function (method, model, options) {
 
@@ -37,11 +36,12 @@
             if (!options.data && model && (method == 'create' || method == 'update')) {
                 params.contentType = 'application/json';
 
-                var arrayLength = model.get('ratingFields').length;
+                var arrayLength = TaxiHail.parameters.languages.length;
+
                 model.set('ratingTypes', []);
                 for (var i = 0; i < arrayLength; i++) {
                     model.get('ratingTypes')[i] = {
-                        name: model.get('ratingFields')[i],
+                        name: model.get('ratingFields' + i),
                         language: TaxiHail.parameters.languages[i]
                     };
                 }

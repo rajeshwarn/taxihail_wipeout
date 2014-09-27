@@ -24,25 +24,17 @@
             this.$el.html(html);
 
             this.validate({
-                //rules: {
-                //    ratingFields: {
-                //        required: true,
-                //        minlength: 1
-                //    }
-                //},
-                //messages: {
-                //    ratingFields: {
-                //        required: TaxiHail.localize('error.rideRatingRequired')
-                //    }
-                //},
-                //invalidHandler: _.bind(function (event, validator) {
-                //    var alert = new TaxiHail.AlertView({
-                //        message: TaxiHail.localize("Need at least one!"),
-                //        type: 'error'
-                //    });
-                //    alert.on('ok', alert.remove, alert);
-                //    this.$('.errors').html(alert.render().el);
-                //}, this),
+                rules: {
+                    ratingFields0: {
+                        require_from_group: [1, ".input-block-level"]
+                    },
+                    ratingFields1: {
+                        require_from_group: [1, ".input-block-level"]
+                    },
+                    ratingFields2: {
+                        require_from_group: [1, ".input-block-level"]
+                    }
+                },
                 submitHandler: this.save
             });
 
@@ -51,11 +43,10 @@
 
         save: function (form) {
             var ratings = this.serializeForm(form);
-            //var ratings = _.extend(this.model.toJSON(), ratings);
 
             this.model.save(ratings, {
                 success: _.bind(function (model) {
-                    var displayName;
+                    var displayName = '';
                     var ratingTypes = this.model.attributes.ratingTypes;
                     var englishLocalization = ratingTypes[1].name;
 

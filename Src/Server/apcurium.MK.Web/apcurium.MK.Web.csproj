@@ -268,7 +268,7 @@
     <Content Include="assets\img\refresh.png" />
     <Content Include="assets\img\suv_badge.png" />
     <Content Include="assets\img\taxi_badge.png" />
-    <Content Include="assets\js\backbone-composite-keys.js" />
+    <Content Include="assets\js\additional-methods.js" />
     <Content Include="assets\js\storage-polyfill.js" />
     <Content Include="common\collections\AvailableVehicleCollection.js" />
     <Content Include="common\models\AvailableVehicle.js" />
