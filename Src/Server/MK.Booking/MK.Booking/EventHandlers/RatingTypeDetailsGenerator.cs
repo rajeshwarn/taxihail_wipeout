@@ -35,7 +35,11 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 foreach (var language in languages)
                 {
-                    if (context.Query<RatingTypeDetail>().FirstOrDefault(x => x.Name == @event.Name && x.Language == language) == null)
+                    var duplicate = context.Query<RatingTypeDetail>()
+                                           .FirstOrDefault(x => x.Id == @event.RatingTypeId
+                                                                && x.Name == @event.Name
+                                                                && x.Language == language);
+                    if (duplicate == null)
                     {
                         context.Save(new RatingTypeDetail
                         {

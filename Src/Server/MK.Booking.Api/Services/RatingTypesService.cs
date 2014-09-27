@@ -38,34 +38,40 @@ namespace apcurium.MK.Booking.Api.Services
         {
             var allRatingTypes = _dao.GetAll();
             var supportedLanguages = Enum.GetNames(typeof(SupportedLanguages));
-
             var displayQuestionLanguage = request.ClientLanguage ?? SupportedLanguages.en.ToString();
 
-            var wrappedRatingTypes = allRatingTypes.Select(details => new RatingTypeWrapper
+            return allRatingTypes.Select(details =>
             {
-                Id = details.First().Id,
-                Name = details.FirstOrDefault(t => t.Language == displayQuestionLanguage)
-                              .SelectOrDefault(t => t.Name),
-                RatingTypes = supportedLanguages.Contains(request.ClientLanguage)
-                    // Filter by selected language
-                    ? details.Select(s => new RatingType
-                        {
-                            Id = s.Id,
-                            Name = s.Name,
-                            Language = s.Language,
-                            IsHidden = s.IsHidden
-                        }).Where(l => l.Language == request.ClientLanguage).ToArray()
-                    // Return all languages
-                    : details.Select(s => new RatingType
-                    {
-                        Id = s.Id,
-                        Name = s.Name,
-                        Language = s.Language,
-                        IsHidden = s.IsHidden
-                    }).ToArray()
-            });
+                // Try to use the prefered display name first for the wrapper name
+                var preferedDisplayName = 
+                    details.FirstOrDefault(t => t.Language == displayQuestionLanguage)
+                            .SelectOrDefault(t => t.Name);
 
-            return wrappedRatingTypes;
+                // If we can't, we'll display the first available rating question
+                var firstAvailableDisplayName = 
+                    details.FirstOrDefault(t => !t.Language.IsNullOrEmpty())
+                           .SelectOrDefault(t => t.Name);
+
+                var ratingTypes = details.Select(s => new RatingType
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Language = s.Language,
+                    IsHidden = s.IsHidden
+                });
+                
+                // Wrap each rating type groups so that it can be nicely displayed in the admin web portal
+                return new RatingTypeWrapper
+                {
+                    Id = details.First().Id,
+                    Name = preferedDisplayName.IsNullOrEmpty()
+                        ? firstAvailableDisplayName
+                        : preferedDisplayName,
+                    RatingTypes = supportedLanguages.Contains(request.ClientLanguage)
+                        ? ratingTypes.Where(l => l.Language == request.ClientLanguage).ToArray() // Filter by lauguage
+                        : ratingTypes.ToArray() // Return all
+                };
+            });
         }
 
         public object Post(RatingTypesRequest request)
@@ -76,7 +82,7 @@ namespace apcurium.MK.Booking.Api.Services
             foreach (var ratingType in request.RatingTypes)
             {
                 var existing = _dao.FindByName(ratingType.Name, ratingType.Language);
-                if (existing != null)
+                if (existing != null && existing.Id == ratingTypeId)
                 {
                     continue;
                 }
