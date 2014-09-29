@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    void RemoveFromHistory(Guid orderId);
 
-        List<RatingTypeWrapper> GetRatingType();
+        IEnumerable<RatingTypeWrapper> GetRatingTypes();
 
 		[Obsolete("Migrate to async/await")]
 		OrderRatings GetOrderRating(Guid orderId);

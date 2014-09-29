@@ -24,16 +24,10 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                var resultList = new List<RatingTypeDetail[]>();
                 var allDetails = context.Query<RatingTypeDetail>().ToList();
                 var uniqueIds = allDetails.Select(d => d.Id).Distinct();
 
-                foreach (var ids in uniqueIds)
-                {
-                    resultList.Add(allDetails.Where(d => d.Id == ids).ToArray());
-                }
-
-                return resultList;
+                return uniqueIds.Select(ids => allDetails.Where(d => d.Id == ids).ToArray()).ToList();
             }
         }
 

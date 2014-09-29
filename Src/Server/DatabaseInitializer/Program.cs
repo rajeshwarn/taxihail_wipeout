@@ -274,7 +274,7 @@ namespace DatabaseInitializer
         private static void AddDefaultRatings(ICommandBus commandBus)
         {
             var knowledgeId = Guid.NewGuid();
-            var politenesseId = Guid.NewGuid();
+            var politenessId = Guid.NewGuid();
             var safetyId = Guid.NewGuid();
             var supportedLanguages = Enum.GetNames(typeof(SupportedLanguages));
 
@@ -295,7 +295,7 @@ namespace DatabaseInitializer
                 {
                     CompanyId = AppConstants.CompanyId,
                     Name = "Politeness",
-                    RatingTypeId = politenesseId,
+                    RatingTypeId = politenessId,
                     Language = supportedLanguage
                 });
             }

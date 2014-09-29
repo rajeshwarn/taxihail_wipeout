@@ -287,10 +287,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return isCompleted;
         }
 
-        public List<RatingTypeWrapper> GetRatingType()
+        public IEnumerable<RatingTypeWrapper> GetRatingTypes()
         {
             var ratingType =
-            UseServiceClientTask<OrderServiceClient, List<RatingTypeWrapper>>(service => service.GetRatingTypes(_localize.CurrentLanguage));
+            UseServiceClientTask<OrderServiceClient, IEnumerable<RatingTypeWrapper>>(service => service.GetRatingTypes(_localize.CurrentLanguage));
             return ratingType;
 
         }

@@ -63,10 +63,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void Init(string orderId, bool canRate = false)
 		{
-            RatingList = _bookingService.GetRatingType().Select(c => new RatingModel
+            RatingList = _bookingService.GetRatingTypes().Select(c => new RatingModel
                 {
                     RatingTypeId = c.Id,
-                    RatingTypeName = c.RatingTypes.Any() ? c.RatingTypes.First().Name : string.Empty
+                    RatingTypeName = c.Name
                 })
                 .OrderBy(c => c.RatingTypeId).ToList();
 
@@ -74,11 +74,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (orderId != null)
 			{
-                var ratingTypes = _bookingService.GetRatingType();
+                var ratingTypes = _bookingService.GetRatingTypes();
                 RatingList = ratingTypes.Select(c => new RatingModel(canRate)
                 {
                     RatingTypeId = c.Id,
-                    RatingTypeName = c.RatingTypes.Any() ? c.RatingTypes.First().Name : string.Empty
+                    RatingTypeName = c.Name
                 }).OrderBy(c => c.RatingTypeId).ToList();
 
 				Guid id;

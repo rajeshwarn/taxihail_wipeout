@@ -107,10 +107,11 @@ namespace apcurium.MK.Booking.Api.Services
         public object Put(RatingTypesRequest request)
         {
             var commands = new List<UpdateRatingType>();
+            var currentRatingTypes = _dao.GetById(request.Id);
 
             foreach (var ratingType in request.RatingTypes)
             {
-                if (_dao.GetById(request.Id).Any(x => x.Id != request.Id && x.Name == ratingType.Name && x.Language == ratingType.Language))
+                if (currentRatingTypes.Any(x => x.Name == ratingType.Name && x.Language == ratingType.Language))
                 {
                     continue;
                 }

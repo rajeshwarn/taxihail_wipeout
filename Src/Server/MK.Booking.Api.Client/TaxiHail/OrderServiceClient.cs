@@ -82,10 +82,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return result;
         }
 
-        public Task<List<RatingTypeWrapper>> GetRatingTypes(string currentLanguage)
+        public Task<IEnumerable<RatingTypeWrapper>> GetRatingTypes(string currentLanguage)
         {
             var req = string.Format("/ratingtypes/{0}", currentLanguage);
-            return Client.GetAsync<List<RatingTypeWrapper>>(req);
+            return Client.GetAsync<IEnumerable<RatingTypeWrapper>>(req);
         }
 
         public Task RateOrder(OrderRatingsRequest orderRatingRequest)

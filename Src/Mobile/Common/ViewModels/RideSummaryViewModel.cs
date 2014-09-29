@@ -101,14 +101,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var orderRatings = await _bookingService.GetOrderRatingAsync(OrderId);
 				HasRated = orderRatings.RatingScores.Any();
 				bool canRate = !HasRated;
-				var ratingTypes = _bookingService.GetRatingType();
+				var ratingTypes = _bookingService.GetRatingTypes();
 				CanRate = canRate;
 				if (canRate) 
 				{
                     RatingList = ratingTypes.Select(c => new RatingModel(canRate)
                     {
                         RatingTypeId = c.Id,
-                        RatingTypeName = c.RatingTypes.Any() ? c.RatingTypes.First().Name : string.Empty
+                        RatingTypeName = c.Name
                     }).OrderBy(c => c.RatingTypeId).ToList();
 				}
 				else
@@ -196,7 +196,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        {
 	            return this.GetCommand(() =>
 	            {
-					CheckAndSendRatings();
+					CheckAndSendRatings(true);
 	            });
 	        }
 	    }
@@ -232,7 +232,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public void CheckAndSendRatings()
+        public void CheckAndSendRatings(bool sendRatingButtonWasPressed = false)
 		{
             if (!Settings.RatingEnabled || HasRated)
 			{
@@ -241,7 +241,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             if (_ratingList.Any(c => c.Score == 0))
 			{
-			    if (Settings.RatingRequired)
+			    if (Settings.RatingRequired 
+					|| sendRatingButtonWasPressed) // button was pressed, send feedback to user in case of error
+					// CheckAndSendRatings is also called when exiting the view
 			    {
                     this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"],
 														this.Services().Localize["BookRatingErrorMessage"]);
