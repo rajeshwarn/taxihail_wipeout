@@ -6,6 +6,8 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
+using Cirrious.MvvmCross.ViewModels;
+using ServiceStack.Common.Web;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Messages;
 using System.Linq;
@@ -70,8 +72,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					            
 			Map = AddChild<MapViewModel>();
 			OrderOptions = AddChild<OrderOptionsViewModel>();
-			OrderReview = AddChild<OrderReviewViewModel>();
-			OrderEdit = AddChild<OrderEditViewModel>();
+			OrderReview = AddChild<OrderReviewViewModel>(true);
+			OrderEdit = AddChild<OrderEditViewModel>(true);
 			BottomBar = AddChild<BottomBarViewModel>();
 			AddressPicker = AddChild<AddressPickerViewModel>();
 
@@ -358,9 +360,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		protected override TViewModel AddChild<TViewModel>()
+		protected override TViewModel AddChild<TViewModel>(bool lazyLoad = false)
 		{
-			var child = base.AddChild<TViewModel>();
+            var child = base.AddChild<TViewModel>(lazyLoad);
 			var rps = child as IRequestPresentationState<HomeViewModelStateRequestedEventArgs>;
 			if (rps != null)
 			{
@@ -375,6 +377,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_currentState = e.State;
 
 			this.ChangePresentation(new HomeViewModelPresentationHint(e.State, e.IsNewOrder));
+		    if (e.State == HomeViewModelState.Review)
+		    {
+		        if (OrderReview.IsDeferredLoaded)
+		        {
+                    OrderReview.Init();
+		        }  
+		    }
+            else if (e.State == HomeViewModelState.Edit)
+            {
+                if (OrderEdit.IsDeferredLoaded)
+                {
+                    OrderEdit.Init();
+                } 
+            }
 
             if (e.State == HomeViewModelState.Initial)
             {
@@ -384,7 +400,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _vehicleService.Stop ();
             }
-
 		}
 
 		private bool _subscribedToLifetimeChanged;
