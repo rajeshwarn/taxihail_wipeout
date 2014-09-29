@@ -18,10 +18,7 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
-using ServiceStack.Common.Utils;
-using TinyIoC;
 using System.Drawing;
 using Color = Android.Graphics.Color;
 
@@ -29,6 +26,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class TouchMap : MapView
     {
+        private static readonly SizeF SizeOfDefaultBigIcon = new SizeF(52, 58);
+
         private readonly IList<Marker> _availableVehiclePushPins = new List<Marker>();
         private readonly Stack<Action> _deferedMapActions = new Stack<Action>();
         private AddressSelectionMode _addressSelectionMode;
@@ -219,21 +218,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var destinationIcon =  Resources.GetDrawable(Resource.Drawable.@destination_icon);
             var bigBackgroundIcon = Resources.GetDrawable (Resource.Drawable.map_bigicon_background);
 
+            var red = Color.Argb(255, 255, 0, 23);
+            var green = Color.Argb(255, 30, 192, 34);
+
             _destinationIcon = DrawHelper.GetMapIcon(
                 destinationIcon, 
                 useCompanyColor 
                     ? companyColor
-                    : Color.Argb(255, 255, 0, 23), 
-                bigBackgroundIcon, 
-                new SizeF(52, 58));
+                    : red, 
+                bigBackgroundIcon,
+                SizeOfDefaultBigIcon);
 
             _hailIcon = DrawHelper.GetMapIcon(
                 hailIcon, 
                 useCompanyColor 
                     ? companyColor
-                    : Color.Argb(255, 30, 192, 34), 
-                bigBackgroundIcon, 
-                new SizeF(52, 58));
+                    : green, 
+                bigBackgroundIcon,
+                SizeOfDefaultBigIcon);
         }
 
         public void SetMapReady()
@@ -534,8 +536,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var taxiIcon = DrawHelper.GetMapIconBitmap (
                 Resources.GetDrawable (Resource.Drawable.taxi_icon), 
                 Resources.GetColor(Resource.Color.company_color), 
-                Resources.GetDrawable (Resource.Drawable.map_bigicon_background), 
-                new SizeF (52, 58));
+                Resources.GetDrawable (Resource.Drawable.map_bigicon_background),
+                SizeOfDefaultBigIcon);
 
 			if (!_showVehicleNumber) 
             {

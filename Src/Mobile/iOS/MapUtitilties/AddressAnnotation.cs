@@ -2,7 +2,6 @@ using MonoTouch.CoreLocation;
 using MonoTouch.MapKit;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Helper;
-using MonoTouch.CoreGraphics;
 using System.Drawing;
 
 namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
@@ -18,6 +17,11 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
 	public class AddressAnnotation : MKAnnotation
 	{
+        private static readonly SizeF SizeOfDefaultSmallIcon = new SizeF(34, 39);
+        private static readonly SizeF SizeOfDefaultBigIcon = new SizeF(52, 58);
+        private static readonly UIColor Red = UIColor.FromRGB(255, 0, 23);
+        private static readonly UIColor Green = UIColor.FromRGB(30, 192, 34);
+
 		public AddressAnnotation(CLLocationCoordinate2D coord, AddressAnnotationType type, string t, string s, bool useThemeColorForIcons, bool showSubtitleOnPin, string vehicleTypeLogoName = null)
 		{
 			AddressType = type;
@@ -66,18 +70,18 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             {
                 case AddressAnnotationType.Destination:
                     return UseThemeColorForIcons
-                        ? ImageHelper.ApplyThemeColorToMapIcon("destination_icon.png", true, new SizeF(52, 58))
-                        : ImageHelper.ApplyColorToMapIcon("destination_icon.png", UIColor.FromRGB(255, 0, 23), true, new SizeF(52, 58));
+                        ? ImageHelper.ApplyThemeColorToMapIcon("destination_icon.png", true, SizeOfDefaultBigIcon)
+                        : ImageHelper.ApplyColorToMapIcon("destination_icon.png", Red, true, SizeOfDefaultBigIcon);
                 case AddressAnnotationType.Taxi:
-                    return ImageHelper.ApplyThemeColorToMapIcon("taxi_icon.png", true, new SizeF(52, 58));
+                    return ImageHelper.ApplyThemeColorToMapIcon("taxi_icon.png", true, SizeOfDefaultBigIcon);
                 case AddressAnnotationType.NearbyTaxi:
-                    return ImageHelper.ApplyThemeColorToMapIcon(string.Format("nearby_{0}.png", vehicleTypeLogoName ?? defaultIconName), false, new SizeF(34, 39));
+                    return ImageHelper.ApplyThemeColorToMapIcon(string.Format("nearby_{0}.png", vehicleTypeLogoName ?? defaultIconName), false, SizeOfDefaultSmallIcon);
                 case AddressAnnotationType.NearbyTaxiCluster:
-                    return ImageHelper.ApplyThemeColorToMapIcon(string.Format("cluster_{0}.png", vehicleTypeLogoName ?? defaultIconName), false, new SizeF(34, 39));
+                    return ImageHelper.ApplyThemeColorToMapIcon(string.Format("cluster_{0}.png", vehicleTypeLogoName ?? defaultIconName), false, SizeOfDefaultSmallIcon);
                 default:
                     return UseThemeColorForIcons
-                        ? ImageHelper.ApplyThemeColorToMapIcon("hail_icon.png", true, new SizeF(52, 58))
-                        : ImageHelper.ApplyColorToMapIcon("hail_icon.png", UIColor.FromRGB(30, 192, 34), true, new SizeF(52, 58));
+                        ? ImageHelper.ApplyThemeColorToMapIcon("hail_icon.png", true, SizeOfDefaultBigIcon)
+                        : ImageHelper.ApplyColorToMapIcon("hail_icon.png", Green, true, SizeOfDefaultBigIcon);
             }
         }
 	}
