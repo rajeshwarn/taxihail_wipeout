@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
@@ -93,7 +94,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
 
             using (var context = new BookingDbContext(DbName))
             {
-                var ratingType = context.Query<RatingTypeDetail>().SingleOrDefault(x => x.Id == _ratingTypeId);
+                var ratingType = context.Query<RatingTypeDetail>().FirstOrDefault(x => x.Id == _ratingTypeId);
 
                 Assert.That(ratingType, Is.Not.Null);
 // ReSharper disable once PossibleNullReferenceException
@@ -117,8 +118,8 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
             using (var context = new BookingDbContext(DbName))
             {
                 var list = context.Query<RatingTypeDetail>().Where(x => x.Id == _ratingTypeId);
-                Assert.AreEqual(1, list.Count());
-                var dto = list.Single();
+                Assert.AreEqual(Enum.GetNames(typeof(SupportedLanguages)).Count(), list.Count());
+                var dto = list.First(t => t.Language == "fr");
                 Assert.AreEqual(_ratingTypeId, dto.Id);
                 Assert.AreEqual(_companyId, dto.CompanyId);
                 Assert.AreEqual("fr", dto.Language);
@@ -137,14 +138,14 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 {
                     Sut.Handle(new RatingTypeAdded
                     {
-                        SourceId = (_companyId = Guid.NewGuid()),
-                        RatingTypeId = (_ratingTypeId = Guid.NewGuid()),
+                        SourceId = (_companyId = firstRatingType.CompanyId),
+                        RatingTypeId = (_ratingTypeId = firstRatingType.Id),
                         Name = firstRatingType.Name,
-                        Language = "en"
+                        Language = firstRatingType.Language
                     });
 
-                    var countWithName = context.Query<RatingTypeDetail>().Count(x => x.Name == firstRatingType.Name);
-                    Assert.That(countWithName, Is.EqualTo(1));
+                    var countWithName = context.Query<RatingTypeDetail>().Count(x => x.Id == firstRatingType.Id && x.Name == firstRatingType.Name);
+                    Assert.That(countWithName, Is.EqualTo(Enum.GetNames(typeof(SupportedLanguages)).Count()));
                 }
             }
         }
