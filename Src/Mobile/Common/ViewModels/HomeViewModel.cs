@@ -401,6 +401,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             if (args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk
                 || args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)
             {
+				// since this is called before OnViewStarted and AutomaticLocateMe needs it, do it here, otherwise AutomaticLocateMe will be very slow
+				_locationService.Start();
+
 				AutomaticLocateMeAtPickup.Execute(null);
                 CheckUnratedRide();
 				CheckTermsAsync();
