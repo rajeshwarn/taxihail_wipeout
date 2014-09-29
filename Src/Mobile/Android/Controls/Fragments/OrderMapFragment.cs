@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Input;
 using Android.Content.Res;
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
-using Android.Graphics;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -19,13 +17,10 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Binding.Attributes;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
-using ServiceStack.Common.Utils;
-using TinyIoC;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Maps.Geo;
 using System.Drawing;
@@ -243,28 +238,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var bigBackgroundIcon = _resources.GetDrawable (Resource.Drawable.map_bigicon_background);
             var smallBackgroundIcon = _resources.GetDrawable (Resource.Drawable.map_smallicon_background);
 
+            var sizeOfDefaultSmallIcon = new SizeF(34, 39);
+            var sizeOfDefaultBigIcon = new SizeF(52, 58);
+            var red = Color.Argb(255, 255, 0, 23);
+            var green = Color.Argb(255, 30, 192, 34);
+
             _destinationIcon = DrawHelper.GetMapIcon(
                 destinationIcon, 
                 useCompanyColor 
                     ? companyColor
-                    : Color.Argb(255, 255, 0, 23), 
-                bigBackgroundIcon, 
-                new SizeF(52, 58));
+                    : red,
+                bigBackgroundIcon,
+                sizeOfDefaultBigIcon);
 
             _hailIcon = DrawHelper.GetMapIcon(
                 hailIcon, 
                 useCompanyColor 
                     ? companyColor
-                    : Color.Argb(255, 30, 192, 34), 
-                bigBackgroundIcon, 
-                new SizeF(52, 58));
-
-            _vehicleIcons.Add("nearby_taxi", DrawHelper.GetMapIcon(nearbyTaxiIcon, companyColor, smallBackgroundIcon, new SizeF(34, 39)));
-            _vehicleIcons.Add("nearby_suv", DrawHelper.GetMapIcon(nearbySuvIcon, companyColor, smallBackgroundIcon, new SizeF(34, 39)));
-            _vehicleIcons.Add("nearby_blackcar", DrawHelper.GetMapIcon(nearbyBlackcarIcon, companyColor, smallBackgroundIcon, new SizeF(34, 39)));
-            _vehicleIcons.Add("cluster_taxi", DrawHelper.GetMapIcon(nearbyClusterTaxiIcon, companyColor, smallBackgroundIcon, new SizeF(34, 39)));
-            _vehicleIcons.Add("cluster_suv", DrawHelper.GetMapIcon(nearbySuvClusterIcon, companyColor, smallBackgroundIcon, new SizeF(34, 39)));
-            _vehicleIcons.Add("cluster_blackcar", DrawHelper.GetMapIcon(nearbyBlackcarClusterIcon, companyColor, smallBackgroundIcon, new SizeF(34, 39)));
+                    : green,
+                bigBackgroundIcon,
+                sizeOfDefaultBigIcon);
+            
+            _vehicleIcons.Add("nearby_taxi", DrawHelper.GetMapIcon(nearbyTaxiIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
+            _vehicleIcons.Add("nearby_suv", DrawHelper.GetMapIcon(nearbySuvIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
+            _vehicleIcons.Add("nearby_blackcar", DrawHelper.GetMapIcon(nearbyBlackcarIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
+            _vehicleIcons.Add("cluster_taxi", DrawHelper.GetMapIcon(nearbyClusterTaxiIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
+            _vehicleIcons.Add("cluster_suv", DrawHelper.GetMapIcon(nearbySuvClusterIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
+            _vehicleIcons.Add("cluster_blackcar", DrawHelper.GetMapIcon(nearbyBlackcarClusterIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
         }
 
         private MapBounds GetMapBoundsFromProjection()
