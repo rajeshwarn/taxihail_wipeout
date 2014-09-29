@@ -386,9 +386,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue
                                 && !_paymentService.GetPaymentSettings().AutomaticPayment
 			                    && !IsUnpairButtonVisible
-								&& (Order.Settings.ChargeTypeId == null 
+								&& (Order.Settings.ChargeTypeId == null
 									|| Order.Settings.ChargeTypeId != ChargeTypes.Account.Id)
-                                && ((setting.IsPayInTaxiEnabled 
+                                && ((setting.IsPayInTaxiEnabled
 										&& _accountService.CurrentAccount.DefaultCreditCard != null) 
                                     || setting.PayPalClientSettings.IsEnabled);
 			
