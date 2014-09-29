@@ -66,22 +66,19 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             {
                 case AddressAnnotationType.Destination:
                     return UseThemeColorForIcons
-                        ? ImageHelper.ApplyThemeColorToImage("destination_icon.png", CGBlendMode.Hue)
-                        : UIImage.FromFile("destination_icon.png");
+                        ? ImageHelper.ApplyThemeColorToMapIcon("destination_icon.png", true, new SizeF(52, 58))
+                        : ImageHelper.ApplyColorToMapIcon("destination_icon.png", UIColor.FromRGB(255, 0, 23), true, new SizeF(52, 58));
                 case AddressAnnotationType.Taxi:
-                    return ImageHelper.ApplyThemeColorToImage("taxi_icon.png", CGBlendMode.Hue, true, new SizeF(52, 58));
+                    return ImageHelper.ApplyThemeColorToMapIcon("taxi_icon.png", true, new SizeF(52, 58));
                 case AddressAnnotationType.NearbyTaxi:
-                    return ImageHelper.ApplyThemeColorToImage(string.Format("nearby_{0}.png", vehicleTypeLogoName ?? defaultIconName), CGBlendMode.Hue, true, new SizeF(34, 39));
+                    return ImageHelper.ApplyThemeColorToMapIcon(string.Format("nearby_{0}.png", vehicleTypeLogoName ?? defaultIconName), false, new SizeF(34, 39));
                 case AddressAnnotationType.NearbyTaxiCluster:
-                    return ImageHelper.ApplyThemeColorToImage(string.Format("cluster_{0}.png", vehicleTypeLogoName ?? defaultIconName), CGBlendMode.Hue, true, new SizeF(34, 39));
+                    return ImageHelper.ApplyThemeColorToMapIcon(string.Format("cluster_{0}.png", vehicleTypeLogoName ?? defaultIconName), false, new SizeF(34, 39));
                 default:
                     return UseThemeColorForIcons
-                        ? ImageHelper.ApplyThemeColorToImage("hail_icon.png", CGBlendMode.Hue)
-                        : UIImage.FromFile("hail_icon.png");
+                        ? ImageHelper.ApplyThemeColorToMapIcon("hail_icon.png", true, new SizeF(52, 58))
+                        : ImageHelper.ApplyColorToMapIcon("hail_icon.png", UIColor.FromRGB(30, 192, 34), true, new SizeF(52, 58));
             }
         }
 	}
 }
-
-
-
