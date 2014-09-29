@@ -129,7 +129,6 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        [Ignore("Waiting Moneris response")]
         public async void when_capturing_a_preauthorized_commit_a_credit_card_payment_but_ibs_failed()
         {
             _fakeIbs.Fail = true;
