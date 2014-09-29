@@ -101,14 +101,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var orderRatings = await _bookingService.GetOrderRatingAsync(OrderId);
 				HasRated = orderRatings.RatingScores.Any();
 				bool canRate = !HasRated;
-				var ratingTypes = _bookingService.GetRatingType();
+				var ratingTypes = _bookingService.GetRatingTypes();
 				CanRate = canRate;
 				if (canRate) 
 				{
-					RatingList = ratingTypes.Select (c => new RatingModel (canRate) {
-						RatingTypeId = c.Id, 
-						RatingTypeName = GetRatingTypeName(c.Name)
-					}).OrderBy (c => c.RatingTypeId).ToList ();
+                    RatingList = ratingTypes.Select(c => new RatingModel(canRate)
+                    {
+                        RatingTypeId = c.Id,
+                        RatingTypeName = c.Name
+                    }).OrderBy(c => c.RatingTypeId).ToList();
 				}
 				else
 				{
@@ -139,14 +140,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				var setting = _paymentService.GetPaymentSettings();
 				return ((setting.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null) // if paypal or user has a credit card
-					|| setting.PayPalClientSettings.IsEnabled) 
-					&& !(Settings.RatingEnabled && Settings.RatingRequired && !HasRated)     					 // user must rate before paying
-					&& !_paymentService.GetPaymentSettings().AutomaticPayment									 // payment is processed automatically
-					&& setting.PaymentMode != PaymentMethod.RideLinqCmt 			 // payment is processed automatically
-					&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue	     // not already paid
-					&& (Order.Settings.ChargeTypeId == null 						 // user is paying with a charge account
-						|| Order.Settings.ChargeTypeId != ChargeTypes.Account.Id);
-
+                        	|| setting.PayPalClientSettings.IsEnabled) 
+						&& !(Settings.RatingEnabled && Settings.RatingRequired && !HasRated)     					 // user must rate before paying
+                        && !_paymentService.GetPaymentSettings().AutomaticPayment									 // payment is processed automatically
+						&& setting.PaymentMode != PaymentMethod.RideLinqCmt 			 // payment is processed automatically
+						&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue	     // not already paid
+						&& (Order.Settings.ChargeTypeId == null 						 // user is paying with a charge account
+                            || Order.Settings.ChargeTypeId != ChargeTypes.Account.Id);
 			}
 		}
 
@@ -232,7 +232,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public void CheckAndSendRatings(bool sendRatingButtonWasPressed = false)
+        public void CheckAndSendRatings(bool sendRatingButtonWasPressed = false)
 		{
             if (!Settings.RatingEnabled || HasRated)
 			{
@@ -241,7 +241,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             if (_ratingList.Any(c => c.Score == 0))
 			{
-				if (Settings.RatingRequired 
+			    if (Settings.RatingRequired 
 					|| sendRatingButtonWasPressed) // button was pressed, send feedback to user in case of error
 					// CheckAndSendRatings is also called when exiting the view
 			    {
@@ -283,17 +283,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return false;
 			}
 			return true;
-		}
-
-		private string GetRatingTypeName(string ratingTypeNameUnlocalized)
-		{
-			var key = ratingTypeNameUnlocalized.Replace (" ", string.Empty);
-			if(this.Services().Localize.Exists(key))
-			{
-				return this.Services ().Localize[key];
-			}
-
-			return ratingTypeNameUnlocalized;
 		}
 	}
 }
