@@ -7,19 +7,31 @@
 
 		<!-- TODO: Don't hard code. Do a loop for each supported languages -->
 		<div class="control-group">
-            <label class="control-label">{{localize 'Arabic'}}</label>
+			{{#if ratingTypes.[0]}}
+			<label class="control-label">{{localize ratingTypes.[0].language}}</label>
+			{{else}}
+            <label class="control-label">{{localize languages.[0]}}</label>
+			{{/if}}
             <div class="controls">
                 <input type="text" id="inputRating0" name="ratingFields0" value="{{ratingTypes.[0].name}}" class='input-block-level' />
             </div>
         </div>
 		<div class="control-group">
-			<label class="control-label">{{localize 'English'}}</label>
+			{{#if ratingTypes.[1]}}
+			<label class="control-label">{{localize ratingTypes.[1].language}}</label>
+			{{else}}
+            <label class="control-label">{{localize languages.[1]}}</label>
+			{{/if}}
             <div class="controls">
                 <input type="text" id="inputRating1" name="ratingFields1" value="{{ratingTypes.[1].name}}" class='input-block-level' />
             </div>
         </div>
 		<div class="control-group">
-            <label class="control-label">{{localize 'French'}}</label>
+            {{#if ratingTypes.[2]}}
+			<label class="control-label">{{localize ratingTypes.[2].language}}</label>
+			{{else}}
+            <label class="control-label">{{localize languages.[2]}}</label>
+			{{/if}}
             <div class="controls">
                 <input type="text" id="inputRating2" name="ratingFields2" value="{{ratingTypes.[2].name}}" class='input-block-level' />
             </div>

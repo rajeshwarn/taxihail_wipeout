@@ -48,18 +48,20 @@
                 success: _.bind(function (model) {
                     var displayName = '';
                     var ratingTypes = this.model.attributes.ratingTypes;
-                    var englishLocalization = ratingTypes[1].name;
 
-                    if (englishLocalization) {
-                        displayName = englishLocalization;
-                    } else {
-                        // Take first localized string that we find
-                        for (i = 0; i < ratingTypes.length; i++) {
-                            if (ratingTypes[i].name) {
-                                displayName = ratingTypes[i].name;
-                                break;
-                            }
-                        }    
+                    // Try to find an existing english localization
+                    for (var i = 0; i < ratingTypes.length; i++) {
+                        var ratingType = ratingTypes[i];
+
+                        // First localized string that we find, use that by default if no english local is found
+                        if (!displayName && ratingType.name) {
+                            displayName = ratingType.name;
+                        }
+
+                        // English localization
+                        if (ratingType.language == 'en' && ratingType.name) {
+                            displayName = ratingType.name;
+                        }
                     }
 
                     var namedModel = _.extend(this.model.toJSON(),
