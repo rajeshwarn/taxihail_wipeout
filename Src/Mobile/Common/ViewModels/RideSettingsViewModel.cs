@@ -17,7 +17,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
 		private readonly IOrderWorkflowService _orderWorkflowService;
-	    private bool _hasCardOnFile;
 
 		public RideSettingsViewModel(IAccountService accountService, 
 			IPaymentService paymentService,
@@ -42,7 +41,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged(() => ChargeTypeId );
 				RaisePropertyChanged(() => ChargeTypeName );
 
-				_hasCardOnFile = _accountService.CurrentAccount.DefaultCreditCard.HasValue;
 				RaisePropertyChanged(() => IsChargeTypesEnabled);
 
 				// this should be called last since it calls the server, we don't want to slow down other controls
@@ -67,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        get
             {
-                return !_hasCardOnFile || !Settings.DisableChargeTypeWhenCardOnFile;
+                return !_accountService.CurrentAccount.DefaultCreditCard.HasValue || !Settings.DisableChargeTypeWhenCardOnFile;
             }
 	    }
 
