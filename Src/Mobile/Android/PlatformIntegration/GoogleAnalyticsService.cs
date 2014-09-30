@@ -8,6 +8,7 @@ using Exception = System.Exception;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
+    // V2
     public class GoogleAnalyticsService : IAnalyticsService
     {
         private Tracker Tracker { get; set; }
@@ -18,10 +19,14 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 GAServiceManager.Instance.SetDispatchPeriod(20);
 
-                var g = Com.Google.Analytics.Tracking.Android.GoogleAnalytics.GetInstance(c);
-                g.SetDebug(true);
+                var instance = Com.Google.Analytics.Tracking.Android.GoogleAnalytics.GetInstance(c);
 
-                Tracker = g.GetTracker("UA-44714416-1");
+                // Prevent testing/debugging data from being sent to GA
+                #if DEBUG
+                instance.SetDebug(true);
+                #endif
+
+                Tracker = instance.GetTracker("UA-44714416-1");
                 Tracker.SetAppName(settings.Data.ApplicationName.Replace(' ', '_'));
                 Tracker.SetAppVersion(packageInfo.Version);
             }

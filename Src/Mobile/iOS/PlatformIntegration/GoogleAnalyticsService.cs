@@ -7,6 +7,7 @@ using MonoTouch.Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
+    // v3.0.3.4
 	public class GoogleAnalyticsService: IAnalyticsService
 	{
 		private IGAITracker Tracker { get; set; }
@@ -16,8 +17,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			GAI.SharedInstance.TrackUncaughtExceptions = true;
 			GAI.SharedInstance.DispatchInterval = 20;
 
+            // Prevent testing/debugging data from being sent to GA
+            #if DEBUG
+            GAI.SharedInstance.DryRun = true;
+            #endif
+
             Tracker = GAI.SharedInstance.GetTracker ("UA-44714416-1");
-			Tracker.Set( GAIConstants.AppName, settings.Data.ApplicationName.Replace(' ' , '_'));
+			Tracker.Set(GAIConstants.AppName, settings.Data.ApplicationName.Replace(' ' , '_'));
 			Tracker.Set(GAIConstants.AppVersion, packageInfo.Version);
 		}
 
