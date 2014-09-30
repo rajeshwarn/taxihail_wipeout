@@ -28,10 +28,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private UIView VehicleSelection { get; set; }
 		private UIView EtaContainer { get; set; }
 
-		private const float VEHICLE_SELECTION_HEIGHT = 52.0f;
-		private const float ETA_CONTAINER_HEIGHT = 23.0f;
-		private const float VEHICLE_LEFT_BADGE_WIDTH = 56.0f;
-		private const float LABEL_PADDING = 5f;
+		private const float VehicleSelectionHeight = 52.0f;
+		private const float EtaContainerHeight = 23.0f;
+		private const float VehicleLeftBadgeWidth = 56.0f;
+		private const float LabelPadding = 5f;
 
         public Action<VehicleType> VehicleSelected { get; set; }
 
@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				NSLayoutRelation.Equal, 
 				null, 
 				NSLayoutAttribute.NoAttribute, 
-				1.0f, VEHICLE_SELECTION_HEIGHT);
+				1.0f, VehicleSelectionHeight);
 
 			this.AddConstraint(_heightConstraint);
 
@@ -76,9 +76,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ShadowColor = UIColor.Clear
             };
 
-			EstimatedFareLabel.SetWidth(Frame.Width - VEHICLE_LEFT_BADGE_WIDTH - LABEL_PADDING);
+			EstimatedFareLabel.SetWidth(Frame.Width - VehicleLeftBadgeWidth - LabelPadding);
 			EstimatedFareLabel.SetHeight(Frame.Height / 2);
-			EstimatedFareLabel.SetHorizontalCenter((Frame.Width / 2) + (VEHICLE_LEFT_BADGE_WIDTH / 2) - LABEL_PADDING);
+			EstimatedFareLabel.SetHorizontalCenter((Frame.Width / 2) + (VehicleLeftBadgeWidth / 2) - LabelPadding);
 			EstimatedFareLabel.SetVerticalCenter(16f);
 
 			EtaLabel = new UILabel
@@ -92,13 +92,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				ShadowColor = UIColor.Clear,
 			};
 
-			EtaLabel.SetWidth(Frame.Width - VEHICLE_LEFT_BADGE_WIDTH - LABEL_PADDING);
-            EtaLabel.SetHeight(ETA_CONTAINER_HEIGHT);
-			EtaLabel.SetHorizontalCenter((Frame.Width / 2) + (VEHICLE_LEFT_BADGE_WIDTH / 2) - LABEL_PADDING);
+			EtaLabel.SetWidth(Frame.Width - VehicleLeftBadgeWidth - LabelPadding);
+            EtaLabel.SetHeight(EtaContainerHeight);
+			EtaLabel.SetHorizontalCenter((Frame.Width / 2) + (VehicleLeftBadgeWidth / 2) - LabelPadding);
 
 			EtaContainer = new UIView (
-				new RectangleF (0f, this.Frame.Height - ETA_CONTAINER_HEIGHT, 
-					this.Frame.Width, ETA_CONTAINER_HEIGHT));
+				new RectangleF (0f, this.Frame.Height - EtaContainerHeight, 
+					this.Frame.Width, EtaContainerHeight));
 
 
 			EtaContainer.BackgroundColor = Theme.CompanyColor;
@@ -265,7 +265,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 				EtaBadge.RemoveFromSuperview ();
 				EtaBadge = new VehicleTypeView (
-                    new RectangleF (4f, (ETA_CONTAINER_HEIGHT - 40f) / 2, 40f, 40f), // use real size of image
+                    new RectangleF (4f, (EtaContainerHeight - 40f) / 2, 40f, 40f), // use real size of image
 					etaBadge,
 					true,
 					true);
@@ -273,12 +273,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
 
 			// Since this control doesn't use constraints:
-			var badgeWidth = ShowEstimate ? EstimateSelectedVehicleType.SizeToFitLabel().Frame.Width : VEHICLE_LEFT_BADGE_WIDTH;
+			var badgeWidth = ShowEstimate ? EstimateSelectedVehicleType.SizeToFitLabel().Frame.Width : VehicleLeftBadgeWidth;
 			EstimateSelectedVehicleType.SetWidth (badgeWidth);
-			EstimatedFareLabel.SetWidth (this.Frame.Width - badgeWidth - LABEL_PADDING * 2);
-			EtaLabel.SetWidth (this.Frame.Width - badgeWidth - LABEL_PADDING * 2);
-			EtaLabel.SetX (badgeWidth + LABEL_PADDING);
-			EstimatedFareLabel.SetX (badgeWidth + LABEL_PADDING);
+			EstimatedFareLabel.SetWidth (this.Frame.Width - badgeWidth - LabelPadding * 2);
+			EtaLabel.SetWidth (this.Frame.Width - badgeWidth - LabelPadding * 2);
+			EtaLabel.SetX (badgeWidth + LabelPadding);
+			EstimatedFareLabel.SetX (badgeWidth + LabelPadding);
 		}
 
 		private void showEtaView(bool showEta)
@@ -286,8 +286,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			EtaLabel.RemoveFromSuperview ();
 			VehicleSelection.Hidden = ShowEstimate;
 
-			float etaTop = (!ShowVehicleSelection && !ShowEstimate) ? 0f : VEHICLE_SELECTION_HEIGHT;
-			float etaHeight = etaTop + ((showEta && !ShowEstimate) ? ETA_CONTAINER_HEIGHT : 0f);
+			float etaTop = (!ShowVehicleSelection && !ShowEstimate) ? 0f : VehicleSelectionHeight;
+			float etaHeight = etaTop + ((showEta && !ShowEstimate) ? EtaContainerHeight : 0f);
 			EtaContainer.SetY (etaTop);
 			this.SetHeight (etaHeight);
 			_heightConstraint.Constant = etaHeight;
@@ -302,7 +302,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			if (!ShowEstimate && showEta) 
 			{
 				EtaContainer.Add (EtaLabel);
-                EtaLabel.SetVerticalCenter(ETA_CONTAINER_HEIGHT / 2);
+                EtaLabel.SetVerticalCenter(EtaContainerHeight / 2);
 			}
 				
 			if (ShowEstimate) {

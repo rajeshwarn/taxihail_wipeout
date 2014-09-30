@@ -20,7 +20,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     [Register("VehicleTypeView")]
     public class VehicleTypeView : UIControl
     {
-		private const float MINIMUM_WIDTH = 40f;
+		private const float LabelMinimumWidth = 40f;
+        private const float LabelPadding = 5f;
 
         private UIImageView VehicleTypeImage { get; set; }
         private UILabel VehicleTypeLabel { get; set; }
@@ -67,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		public VehicleTypeView SizeToFitLabel()
 		{
-			var width = Math.Max (MINIMUM_WIDTH, this.GetSizeThatFits (this.VehicleTypeLabel.Text, this.VehicleTypeLabel.Font).Width) * 1.1f;
+            var width = Math.Max(LabelMinimumWidth, this.GetSizeThatFits(this.VehicleTypeLabel.Text, this.VehicleTypeLabel.Font).Width) + LabelPadding * 2;
 			VehicleTypeLabel.SetWidth (width);
 			this.SetWidth (width);
 			VehicleTypeImage.SetHorizontalCenter (this.Frame.Width / 2);
@@ -141,8 +142,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					? "{0}_" + (etaBadge ? "no_" : "") + "badge_selected.png" 
 					: "{0}_" + (etaBadge ? "no_" : "") + "badge.png", 
                     vehicleTypeLogoName.ToLower()), 
-				etaBadge ? Theme.LabelTextColor : color, 
-                CGBlendMode.Normal);
+				etaBadge 
+                    ? Theme.LabelTextColor 
+                    : color);
         }
     }
 }

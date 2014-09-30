@@ -66,7 +66,12 @@ namespace Infrastructure.Messaging.InMemory
 
         public void Send(Envelope<ICommand> command)
         {
-            Task.Factory.StartNew(() =>
+            SendInternal(command);
+        }
+
+        private Task SendInternal(Envelope<ICommand> command)
+        {
+            return Task.Factory.StartNew(() =>
             {
                 try
                 {
@@ -79,16 +84,16 @@ namespace Infrastructure.Messaging.InMemory
                     ICommandHandler handler = null;
 
                     if (this.handlers.TryGetValue(commandType, out handler))
-                    {                     
+                    {
                         ((dynamic)handler).Handle((dynamic)command.Body);
                     }
 
                     // There can be a generic logging/tracing/auditing handlers
                     if (this.handlers.TryGetValue(typeof(ICommand), out handler))
-                    {                        
+                    {
                         ((dynamic)handler).Handle((dynamic)command.Body);
                     }
-                   
+
                 }
                 catch (Exception e)
                 {
@@ -99,17 +104,21 @@ namespace Infrastructure.Messaging.InMemory
                         innerException = e.InnerException.ToString();
                     }
                     Log.Error("Error in handling command " + command.Body.GetType() + Environment.NewLine + payload + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + innerException, e);
-                    
+
                 }
             });
         }
 
         public void Send(IEnumerable<Envelope<ICommand>> commands)
         {
-            foreach (var command in commands)
+            Task.Run(async () =>
             {
-                this.Send(command);
-            }
+                foreach (var command in commands)
+                {
+                    // Make sure to await batched commands or else they may not all be executed
+                    await this.SendInternal(command);
+                }
+            });
         }
     }
 }

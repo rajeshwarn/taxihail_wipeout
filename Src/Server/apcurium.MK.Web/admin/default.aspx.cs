@@ -5,7 +5,9 @@ using System.Linq;
 using System.Reflection;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 using Microsoft.Practices.ServiceLocation;
+using ServiceStack.Text;
 
 #endregion
 
@@ -24,6 +26,8 @@ namespace apcurium.MK.Web.admin
         protected string GeolocSearchRegion { get; private set; }
         protected string GeolocSearchBounds { get; private set; }
 
+        protected string Languages { get; private set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             var config = ServiceLocator.Current.GetInstance<IConfigurationManager>();
@@ -38,6 +42,8 @@ namespace apcurium.MK.Web.admin
             IsAuthenticated = base.UserSession.IsAuthenticated;
             IsSuperAdmin = UserSession.HasPermission(RoleName.SuperAdmin);
 
+            var languages = Enum.GetNames(typeof(SupportedLanguages)).ToList();
+            Languages = JsonSerializer.SerializeToString(languages, languages.GetType());
 
             var filters = config.GetSetting("GeoLoc.SearchFilter").Split('&');
             GeolocSearchFilter = filters.Length > 0

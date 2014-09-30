@@ -7,6 +7,7 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
+    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -531,6 +532,7 @@
     <Compile Include="Controls\Widgets\ToggleCell.cs" />
     <Compile Include="Style\FlatButtonStyle.cs" />
     <Compile Include="Helper\ColorHelper.cs" />
+    <Compile Include="Extensions\UIImageExtensions.cs" />
     <Compile Include="Extensions\Helpers\NaturalLanguageHelper.cs" />
     <BundleResource Include="Resources\tutorial_screen08.png" />
     <BundleResource Include="Resources\tutorial_screen08%402x.png" />
@@ -552,7 +554,10 @@
     <BundleResource Include="Resources\tutorial_screen06%402x.png" />
     <BundleResource Include="Resources\tutorial_screen07.png" />
     <BundleResource Include="Resources\tutorial_screen07%402x.png" />
-    <Compile Include="Extensions\UIImageExtensions.cs" />
+    <BundleResource Include="Resources\map_bigicon_background%402x.png" />
+    <BundleResource Include="Resources\map_bigicon_background.png" />
+    <BundleResource Include="Resources\map_smallicon_background.png" />
+    <BundleResource Include="Resources\map_smallicon_background%402x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
