@@ -519,16 +519,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
 
 		public async Task<IList<VehicleType>> GetVehiclesList ()
-        {
-            var cached = Mvx.Resolve<ICacheService>().Get<VehicleType[]>(VehicleTypesDataCacheKey);
+		{
+		    var cacheService = Mvx.Resolve<ICacheService>();
 
+            var cached = cacheService.Get<VehicleType[]>(VehicleTypesDataCacheKey);
             if (cached != null)
             {
                 return cached;
             }
 
 			var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
-            Mvx.Resolve<ICacheService>().Set(VehicleTypesDataCacheKey, vehiclesList);
+            cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
 
 		    return vehiclesList;
         }
