@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public PayPalService(ICommandBus commandBus, IOrderPaymentDao dao,
             ExpressCheckoutServiceFactory factory, IConfigurationManager configurationManager, 
-            IIbsOrderService ibs, IAccountDao accountDao, ILogger logger, IOrderDao orderDao, IAppSettings appSettings)
+            IIbsOrderService ibs, IAccountDao accountDao, ILogger logger, IOrderDao orderDao, IServerSettings appSettings)
         {
             _commandBus = commandBus;
             _dao = dao;

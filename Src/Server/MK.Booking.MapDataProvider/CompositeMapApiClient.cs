@@ -23,7 +23,7 @@
 //		private const string PlacesAutoCompleteServiceUrl = "https://maps.googleapis.com/maps/api/place/autocomplete/";
 //		private const string MapsServiceUrl = "http://maps.googleapis.com/maps/api/";
 //
-//		private readonly IAppSettings _settings;
+//		private readonly IServerSettings _settings;
 //		private readonly ILogger _logger;
 //		private readonly IMapsApiClient _osmApi;  //We use google for method not implemented by OpenStreetMap
 //		private readonly IMapsApiClient _foursquare;
@@ -33,7 +33,7 @@
 //			"airport", "transit_station", "bus_station", "train_station",
 //			"route", "postal_code", "street_address"
 //		};
-//		public CompositeMapApiClient(IAppSettings settings, ILogger logger)
+//		public CompositeMapApiClient(IServerSettings settings, ILogger logger)
 //		{
 //			_logger = logger;
 //			_settings = settings;

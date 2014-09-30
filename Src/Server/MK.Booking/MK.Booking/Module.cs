@@ -49,13 +49,13 @@ namespace apcurium.MK.Booking
                     container.Resolve<ConnectionStringSettings>(Common.Module.MkConnectionString).ConnectionString));
 
             container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
-            container.RegisterInstance<ITemplateService>(new TemplateService(container.Resolve<IConfigurationManager>(), container.Resolve<IAppSettings>()));
+            container.RegisterInstance<ITemplateService>(new TemplateService(container.Resolve<IConfigurationManager>(), container.Resolve<IServerSettings>()));
             container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IConfigurationManager>(), container.Resolve<ILogger>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterType<INotificationService, NotificationService>(new ContainerControlledLifetimeManager());
                     
             container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(), 
-                new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IConfigurationManager>(), c.Resolve<IAppSettings>())));
+                new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IConfigurationManager>(), c.Resolve<IServerSettings>())));
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));

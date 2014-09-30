@@ -20,14 +20,14 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 		private const string PlacesServiceUrl = "https://maps.googleapis.com/maps/api/place/search/";
 		private const string PlacesAutoCompleteServiceUrl = "https://maps.googleapis.com/maps/api/place/autocomplete/";
 		private const string MapsServiceUrl = "https://maps.googleapis.com/maps/api/";
-		private readonly IAppSettings _settings;
+		private readonly IServerSettings _settings;
 		private readonly ILogger _logger;
 		private readonly IGeocoder _fallbackGeocoder;
 		private readonly string[] _otherTypesAllowed = {
             "airport", "transit_station", "bus_station", "train_station",
             "route", "postal_code", "street_address"
         };
-		public GoogleApiClient(IAppSettings settings, ILogger logger, IGeocoder fallbackGeocoder = null)
+		public GoogleApiClient(IServerSettings settings, ILogger logger, IGeocoder fallbackGeocoder = null)
         {
             _logger = logger;
             _settings = settings;

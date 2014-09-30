@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ITemplateService _templateService;
         private readonly IEmailSender _emailSender;
         private readonly IConfigurationManager _configurationManager;
-        private readonly IAppSettings _appSettings;
+        private readonly IServerSettings _appSettings;
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
         private readonly IStaticMap _staticMap;
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Services.Impl
             ITemplateService templateService,
             IEmailSender emailSender,
             IConfigurationManager configurationManager,
-            IAppSettings appSettings,
+            IServerSettings appSettings,
             IConfigurationDao configurationDao,
             IOrderDao orderDao,
             IStaticMap staticMap,

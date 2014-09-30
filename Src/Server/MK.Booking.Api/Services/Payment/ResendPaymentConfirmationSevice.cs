@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly Resources.Resources _resources;
 
         public ResendPaymentConfirmationSevice(IOrderDao orderDao, IOrderPaymentDao orderPaymentDao,
-            IConfigurationManager configurationManager, IIbsOrderService ibs, IAppSettings appSettings)
+            IConfigurationManager configurationManager, IIbsOrderService ibs, IServerSettings appSettings)
         {
             _orderDao = orderDao;
             _orderPaymentDao = orderPaymentDao;

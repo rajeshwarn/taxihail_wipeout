@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationManager _configManager;
-        private readonly IAppSettings _appSettings;
+        private readonly IServerSettings _appSettings;
         private readonly ReferenceDataService _referenceDataService;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Api.Services
             IBookingWebServiceClient bookingWebServiceClient,
             IAccountDao accountDao,
             IConfigurationManager configManager,
-            IAppSettings appSettings,
+            IServerSettings appSettings,
             ReferenceDataService referenceDataService,
             IStaticDataWebServiceClient staticDataWebServiceClient,
             IRuleCalculator ruleCalculator,

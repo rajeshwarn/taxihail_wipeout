@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IAccountDao _dao;
         private readonly IDeviceDao _daoDevice;
         private readonly ILogger _logger;
-        private readonly IAppSettings _appSettings;
+        private readonly IServerSettings _appSettings;
         private readonly INotificationService _notificationService;
         private readonly IConfigurationManager _configurationManager;
 
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Api.Services
             INotificationService notificationService,
             IConfigurationManager configurationManager,
             ILogger logger,
-            IAppSettings appSettings)
+            IServerSettings appSettings)
         {
             _dao = dao;
             _daoDevice = device;

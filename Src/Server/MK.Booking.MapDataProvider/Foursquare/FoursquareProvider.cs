@@ -16,14 +16,14 @@ namespace MK.Booking.MapDataProvider.Foursquare
 	/// </summary>
 	public class FoursquareProvider : IPlaceDataProvider
 	{
-	    private readonly IAppSettings _settings;
+	    private readonly IServerSettings _settings;
 	    private readonly ILogger _logger;
 	    private const string ApiUrl = "https://api.foursquare.com/v2/";
 
         private const string SearchVenues = "venues/search?client_id={0}&client_secret={1}&intent=browse&radius={2}&v=2014100805";
         private const string VenueDetails = "venues/{0}/?client_id={1}&client_secret={2}&v=2014100805";
 
-		public FoursquareProvider (IAppSettings settings, ILogger logger)
+		public FoursquareProvider (IServerSettings settings, ILogger logger)
 		{
 		    _settings = settings;
 		    _logger = logger;

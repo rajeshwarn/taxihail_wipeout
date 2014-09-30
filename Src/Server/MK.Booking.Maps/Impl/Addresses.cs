@@ -20,12 +20,12 @@ namespace apcurium.MK.Booking.Maps.Impl
     public class Addresses : IAddresses
     {
 		private readonly IGeocoder _geocoder;
-        private readonly IAppSettings _appSettings;
+        private readonly IServerSettings _appSettings;
         private readonly IPopularAddressProvider _popularAddressProvider;
         private readonly ILogger _logger;
 		private readonly IPlaceDataProvider _placeProvider;
 
-		public Addresses(IGeocoder geocoder, IPlaceDataProvider placeProvider, IAppSettings appSettings,
+		public Addresses(IGeocoder geocoder, IPlaceDataProvider placeProvider, IServerSettings appSettings,
             IPopularAddressProvider popularAddressProvider, ILogger logger)
         {
 			_placeProvider = placeProvider;

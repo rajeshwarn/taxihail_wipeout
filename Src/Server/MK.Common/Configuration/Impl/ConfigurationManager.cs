@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using apcurium.MK.Common.Diagnostic;
 using MK.Common.Configuration;
 using ServiceStack.Text;
@@ -13,7 +14,7 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Common.Configuration.Impl
 {
-    public class ConfigurationManager : IConfigurationManager, IAppSettings
+    public class ConfigurationManager : IConfigurationManager, IServerSettings
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -22,7 +23,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         {
             _contextFactory = contextFactory;
             _logger = logger;
-            Data = new TaxiHailSetting();
+            Data = new ServerTaxiHailSetting();
             Load();
         }
 
@@ -76,7 +77,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             }
         }
 
-        public TaxiHailSetting Data { get; private set; }
+        public ServerTaxiHailSetting Data { get; private set; }
         public void Load()
         {
             SetSettingsValue(GetSettings());
@@ -102,7 +103,6 @@ namespace apcurium.MK.Common.Configuration.Impl
                         continue;
                     }
 
-
                     var targetType = IsNullableType(propertyType.PropertyType)
                             ? Nullable.GetUnderlyingType(propertyType.PropertyType)
                             : propertyType.PropertyType;
@@ -121,10 +121,6 @@ namespace apcurium.MK.Common.Configuration.Impl
                         var propertyVal = Convert.ChangeType(item.Value, targetType);
                         propertyType.SetValue(Data, propertyVal);
                     }
-
-
-
-
                 }
                 catch (Exception e)
                 {
@@ -135,19 +131,22 @@ namespace apcurium.MK.Common.Configuration.Impl
             }
         }
 
+        private static PropertyInfo GetProperty<T>(string propertyName)
+        {
+            if (typeof(T).GetProperties().Count(p => p.Name == propertyName.Split('.')[0]) == 0)
+            {
+                throw new ArgumentNullException(string.Format("Property {0}, is not exists in type {1}", propertyName, typeof(T)));
+            }
+
+            return propertyName.Split('.').Length == 1
+                ? typeof(T).GetProperty(propertyName)
+                : GetProperty(typeof(T).GetProperty(propertyName.Split('.')[0]), propertyName.Split('.')[1]);
+        }
+
         private static bool IsNullableType(Type type)
         {
             return type.IsGenericType
                 && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
         }
-
-
-
-        public void ChangeServerUrl(string serverUrl)
-        {
-            throw new NotImplementedException();
-        }
-
-
     }
 }

@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IAccountDao _accountDao;
         private readonly Resources.Resources _resources;
 
-        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, ICreditCardDao creditCardDao, IIbsOrderService ibs, IConfigurationManager configurationManager, IAppSettings appSettings)
+        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, ICreditCardDao creditCardDao, IIbsOrderService ibs, IConfigurationManager configurationManager, IServerSettings appSettings)
         {
             _accountDao = accountDao;
             _dao = dao;
