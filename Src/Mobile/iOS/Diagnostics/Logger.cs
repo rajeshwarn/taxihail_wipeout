@@ -9,6 +9,8 @@ using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Helper;
+using Mindscape.Raygun4Net;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
 {
@@ -78,23 +80,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
             return "no stack frame";
         }
 
+        private static void SendToRaygun(Exception ex)
+        {
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
+            var account = TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount;
+
+            RaygunClient.Current.User = account != null ? account.Email : null;
+            RaygunClient.Current.SendInBackground (ex, new List<string> () { settings.ApplicationName });
+        }
+
         public static void LogError (Exception ex, int indent)
         {
             var indentStr = "";
-            for (var i = 0; i < indent; i++) {
+            for (var i = 0; i < indent; i++) 
+            {
                 indentStr += "   ";
             }
-            if (indent == 0) {
+
+            if (indent == 0) 
+            {
                 Write (indentStr + "Error on " + DateTime.Now);
+
+                SendToRaygun (ex);
             }
-            
-            
+
             Write (indentStr + "Message : " + ex.Message);
             Write (indentStr + "Stack : " + ex.StackTrace);
             
-            if (ex.InnerException != null) {
-// ReSharper disable once RedundantAssignment
-                LogError (ex.InnerException, indent++);
+            if (ex.InnerException != null)
+            {
+                LogError (ex.InnerException, ++indent);
             }
         }
 
@@ -136,7 +151,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
 					packageInfo.PlatformDetails);
 
                 Console.WriteLine (message);            
-            
+ 
                 if (settings.ErrorLogEnabled)
                 {
                     if (File.Exists (filePath))

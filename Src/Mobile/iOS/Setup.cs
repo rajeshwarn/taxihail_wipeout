@@ -28,6 +28,7 @@ using apcurium.MK.Booking.MapDataProvider.Google;
 using MonoTouch.Foundation;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
+using Mindscape.Raygun4Net;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -56,6 +57,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 			CustomBindingsLoader.Load (registry);
 		}
 
+        private void ConfigureRaygun()
+        {
+            #if !DEBUG
+            RaygunClient.Attach("38wzDAtQRTIdR0nhKGYX2Q=="); // Test api key
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
+            var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
+            RaygunClient.Current.ApplicationVersion = settings.ApplicationName + " " + packageInfo.Version;
+            #endif
+        }
+
 		protected override void InitializeLastChance ()
 		{
 			base.InitializeLastChance ();
@@ -79,6 +90,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			container.Register<IPushNotificationService> (new PushNotificationService (container.Resolve<ICacheService> ()));
 
             container.Register<IAppSettings> (new AppSettingsService (container.Resolve<ICacheService> (), container.Resolve<ILogger> ()));
+
+            ConfigureRaygun ();
 
             container.Register<IGeocoder> ((c, p) => new GoogleApiClient (c.Resolve<IAppSettings>(), c.Resolve<ILogger> (), new AppleGeocoder ()));
 			container.Register<IPlaceDataProvider, GoogleApiClient> ();
