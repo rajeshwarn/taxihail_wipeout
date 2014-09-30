@@ -501,23 +501,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             });
         }
 
-		public async Task<IList<ListItem>> GetCompaniesList ()
-        {
-			var refData = await GetReferenceData();
-			if (!_appSettings.Data.HideNoPreference
-                && refData.CompaniesList != null)
-            {
-				refData.CompaniesList.Insert(0,
-					new ListItem
-					{
-						Id = null,
-						Display = _localize["NoPreference"]
-					});
-            }
-            
-            return refData.CompaniesList;         
-        }
-
 		public async Task<IList<VehicleType>> GetVehiclesList ()
 		{
 		    var cacheService = Mvx.Resolve<ICacheService>();
