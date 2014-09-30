@@ -43,25 +43,29 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
             var ratingTypeId = Guid.NewGuid();
             var companyId = Guid.NewGuid();
 
-            var ratingTypeAdded = new RatingTypeAdded
+            foreach (var language in Enum.GetNames(typeof(SupportedLanguages)))
             {
-                SourceId = companyId,
-                RatingTypeId = ratingTypeId,
-                Name = "RatingType",
-                Language = "en"
-            };
+                var ratingTypeAdded = new RatingTypeAdded
+                {
+                    SourceId = companyId,
+                    RatingTypeId = ratingTypeId,
+                    Name = "RatingType",
+                    Language = language
+                };
 
-            Sut.Handle(ratingTypeAdded);
+                Sut.Handle(ratingTypeAdded);
 
-            using (var context = new BookingDbContext(DbName))
-            {
-                var list = context.Query<RatingTypeDetail>().Where(x => x.Id == ratingTypeId);
-                Assert.AreEqual(1, list.Count());
-                var dto = list.Single();
-                Assert.AreEqual(ratingTypeId, dto.Id);
-                Assert.AreEqual(companyId, dto.CompanyId);
-                Assert.AreEqual("en", dto.Language);
-                Assert.That(dto.Name, Is.EqualTo(ratingTypeAdded.Name));
+                using (var context = new BookingDbContext(DbName))
+                {
+                    string ratingLanguage = language;
+                    var list = context.Query<RatingTypeDetail>().Where(x => x.Id == ratingTypeId && x.Name == "RatingType" && x.Language == ratingLanguage);
+                    Assert.AreEqual(1, list.Count());
+                    var dto = list.Single();
+                    Assert.AreEqual(ratingTypeId, dto.Id);
+                    Assert.AreEqual(companyId, dto.CompanyId);
+                    Assert.AreEqual(language, dto.Language);
+                    Assert.That(dto.Name, Is.EqualTo(ratingTypeAdded.Name));
+                }
             }
         }
     }
