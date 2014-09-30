@@ -552,6 +552,7 @@
     <BundleResource Include="Resources\tutorial_screen06%402x.png" />
     <BundleResource Include="Resources\tutorial_screen07.png" />
     <BundleResource Include="Resources\tutorial_screen07%402x.png" />
+    <Compile Include="Extensions\UIImageExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

@@ -24,7 +24,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _dialogView = new UIView();
             _dialogView.BackgroundColor = UIColor.White;
 
-            _imageView = new UIImageView(ImageHelper.ApplyThemeColorToImage("taxi_progress.png"));
+			var taxiProgressFile = "taxi_progress.png";
+			var isTaxiProgressOverrided = ImageHelper.CheckForAssetOverride (taxiProgressFile, UIColor.FromRGBA (0, 122, 255, 255), new Point (10, 20) );
+			var loadingImage = isTaxiProgressOverrided ? ImageHelper.GetImage(taxiProgressFile) : ImageHelper.ApplyThemeColorToImage (taxiProgressFile);
+			_imageView = new UIImageView (loadingImage);
                 
             _imageView.SizeToFit();
             _imageView.Hidden = true;

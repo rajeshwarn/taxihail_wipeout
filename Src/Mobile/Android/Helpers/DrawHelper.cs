@@ -182,5 +182,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             var colorList = new ColorStateList (states, colors);
             textView.SetTextColor(colorList);
         }
+
+		public static bool CheckForAssetOverride(Bitmap image, Color expectedColor, Point expectedColorCoordinate)
+		{
+			var detectedColor = image.GetPixel (expectedColorCoordinate.X, expectedColorCoordinate.Y);
+			return !detectedColor.Equals(expectedColor.ToArgb());
+		}
     }
 }

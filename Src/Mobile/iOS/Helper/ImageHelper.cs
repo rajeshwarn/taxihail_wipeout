@@ -6,6 +6,7 @@ using MonoTouch.CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using MonoTouch.CoreImage;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
@@ -138,6 +139,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 			}
 
             return UIImage.FromFile (imagePath);
+		}
+
+		public static bool CheckForAssetOverride(string imagePath, UIColor expectedColor, Point expectedColorCoordinate)
+		{
+			var asset = GetImage (imagePath);
+			var detectedColor = asset.GetPixel(expectedColorCoordinate.X, expectedColorCoordinate.Y);
+			return !detectedColor.CGColor.Equals(expectedColor.CGColor);
 		}
 	}
 }
