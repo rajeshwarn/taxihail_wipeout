@@ -11,7 +11,6 @@ using apcurium.MK.Common.Entity;
 using MonoTouch.CoreLocation;
 using MonoTouch.Foundation;
 using MonoTouch.MapKit;
-using MonoTouch.UIKit;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

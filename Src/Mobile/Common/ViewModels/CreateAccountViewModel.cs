@@ -112,11 +112,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					try
 					{	
-						Data.AccountActivationDisabled = Settings.AccountActivationDisabled;
 						try
 						{
 							await _registerService.RegisterAccount(Data);
-							if (!HasSocialInfo && !Data.AccountActivationDisabled)
+                            if (!HasSocialInfo && !Settings.AccountActivationDisabled)
 							{
 								if(Settings.SMSConfirmationEnabled)
 								{

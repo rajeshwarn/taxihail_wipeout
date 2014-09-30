@@ -273,24 +273,43 @@ namespace DatabaseInitializer
 
         private static void AddDefaultRatings(ICommandBus commandBus)
         {
-            commandBus.Send(new AddRatingType
+            var knowledgeId = Guid.NewGuid();
+            var politenessId = Guid.NewGuid();
+            var safetyId = Guid.NewGuid();
+            var supportedLanguages = Enum.GetNames(typeof(SupportedLanguages));
+
+            foreach (var supportedLanguage in supportedLanguages)
             {
-                CompanyId = AppConstants.CompanyId,
-                Name = "Knowledgable driver",
-                RatingTypeId = Guid.NewGuid()
-            });
-            commandBus.Send(new AddRatingType
+                commandBus.Send(new AddRatingType
+                {
+                    CompanyId = AppConstants.CompanyId,
+                    Name = "Knowledgable driver",
+                    RatingTypeId = knowledgeId,
+                    Language = supportedLanguage
+                });
+            }
+
+            foreach (var supportedLanguage in supportedLanguages)
             {
-                CompanyId = AppConstants.CompanyId,
-                Name = "Politeness",
-                RatingTypeId = Guid.NewGuid()
-            });
-            commandBus.Send(new AddRatingType
+                commandBus.Send(new AddRatingType
+                {
+                    CompanyId = AppConstants.CompanyId,
+                    Name = "Politeness",
+                    RatingTypeId = politenessId,
+                    Language = supportedLanguage
+                });
+            }
+
+            foreach (var supportedLanguage in supportedLanguages)
             {
-                CompanyId = AppConstants.CompanyId,
-                Name = "Safety",
-                RatingTypeId = Guid.NewGuid()
-            });
+                commandBus.Send(new AddRatingType
+                {
+                    CompanyId = AppConstants.CompanyId,
+                    Name = "Safety",
+                    RatingTypeId = safetyId,
+                    Language = supportedLanguage
+                });
+            }
         }
 
         private static void CreateDefaultAccounts(UnityContainer container, ICommandBus commandBus)

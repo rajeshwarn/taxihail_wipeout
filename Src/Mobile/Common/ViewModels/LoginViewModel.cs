@@ -303,9 +303,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_registrationService.PrepareNewRegistration ();
 
 			//no confirmation required
-            if (data.FacebookId.HasValue() 
-				|| data.TwitterId.HasValue() 
-				|| data.AccountActivationDisabled
+            if (Settings.AccountActivationDisabled
+                || data.FacebookId.HasValue()
+				|| data.TwitterId.HasValue()
 				|| data.IsConfirmed)
             {
                 var facebookId = data.FacebookId;

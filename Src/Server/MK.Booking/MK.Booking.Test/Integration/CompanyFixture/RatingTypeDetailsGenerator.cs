@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
@@ -42,23 +43,29 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
             var ratingTypeId = Guid.NewGuid();
             var companyId = Guid.NewGuid();
 
-            var ratingTypeAdded = new RatingTypeAdded
+            foreach (var language in Enum.GetNames(typeof(SupportedLanguages)))
             {
-                SourceId = companyId,
-                RatingTypeId = ratingTypeId,
-                Name = "RatingType"
-            };
+                var ratingTypeAdded = new RatingTypeAdded
+                {
+                    SourceId = companyId,
+                    RatingTypeId = ratingTypeId,
+                    Name = "RatingType",
+                    Language = language
+                };
 
-            Sut.Handle(ratingTypeAdded);
+                Sut.Handle(ratingTypeAdded);
 
-            using (var context = new BookingDbContext(DbName))
-            {
-                var list = context.Query<RatingTypeDetail>().Where(x => x.Id == ratingTypeId);
-                Assert.AreEqual(1, list.Count());
-                var dto = list.Single();
-                Assert.AreEqual(ratingTypeId, dto.Id);
-                Assert.AreEqual(companyId, dto.CompanyId);
-                Assert.That(dto.Name, Is.EqualTo(ratingTypeAdded.Name));
+                using (var context = new BookingDbContext(DbName))
+                {
+                    string ratingLanguage = language;
+                    var list = context.Query<RatingTypeDetail>().Where(x => x.Id == ratingTypeId && x.Name == "RatingType" && x.Language == ratingLanguage);
+                    Assert.AreEqual(1, list.Count());
+                    var dto = list.Single();
+                    Assert.AreEqual(ratingTypeId, dto.Id);
+                    Assert.AreEqual(companyId, dto.CompanyId);
+                    Assert.AreEqual(language, dto.Language);
+                    Assert.That(dto.Name, Is.EqualTo(ratingTypeAdded.Name));
+                }
             }
         }
     }
@@ -91,7 +98,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
 
             using (var context = new BookingDbContext(DbName))
             {
-                var ratingType = context.Query<RatingTypeDetail>().SingleOrDefault(x => x.Id == _ratingTypeId);
+                var ratingType = context.Query<RatingTypeDetail>().FirstOrDefault(x => x.Id == _ratingTypeId);
 
                 Assert.That(ratingType, Is.Not.Null);
 // ReSharper disable once PossibleNullReferenceException
@@ -107,6 +114,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 SourceId = _companyId,
                 RatingTypeId = _ratingTypeId,
                 Name = "Updated RatingType",
+                Language = "fr"
             };
 
             Sut.Handle(ratingTypeUpdated);
@@ -114,10 +122,11 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
             using (var context = new BookingDbContext(DbName))
             {
                 var list = context.Query<RatingTypeDetail>().Where(x => x.Id == _ratingTypeId);
-                Assert.AreEqual(1, list.Count());
-                var dto = list.Single();
+                Assert.AreEqual(Enum.GetNames(typeof(SupportedLanguages)).Count(), list.Count());
+                var dto = list.First(t => t.Language == "fr");
                 Assert.AreEqual(_ratingTypeId, dto.Id);
                 Assert.AreEqual(_companyId, dto.CompanyId);
+                Assert.AreEqual("fr", dto.Language);
                 Assert.That(dto.Name, Is.EqualTo(ratingTypeUpdated.Name));
             }
         }
@@ -133,14 +142,30 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 {
                     Sut.Handle(new RatingTypeAdded
                     {
-                        SourceId = (_companyId = Guid.NewGuid()),
-                        RatingTypeId = (_ratingTypeId = Guid.NewGuid()),
-                        Name = firstRatingType.Name
+                        SourceId = (_companyId = firstRatingType.CompanyId),
+                        RatingTypeId = (_ratingTypeId = firstRatingType.Id),
+                        Name = firstRatingType.Name,
+                        Language = firstRatingType.Language
                     });
 
-                    var countWithName = context.Query<RatingTypeDetail>().Count(x => x.Name == firstRatingType.Name);
-                    Assert.That(countWithName, Is.EqualTo(1));
+                    var countWithName = context.Query<RatingTypeDetail>().Count(x => x.Id == firstRatingType.Id && x.Name == firstRatingType.Name);
+                    Assert.That(countWithName, Is.EqualTo(Enum.GetNames(typeof(SupportedLanguages)).Count()));
                 }
+            }
+        }
+
+        [Test]
+        public void when_ratingType_deleted()
+        {
+            Sut.Handle(new RatingTypeDeleted()
+            {
+                SourceId = _companyId,
+                RatingTypeId = _ratingTypeId
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                Assert.IsFalse(context.Query<RatingTypeDetail>().Any(x => x.Id == _ratingTypeId));
             }
         }
     }
