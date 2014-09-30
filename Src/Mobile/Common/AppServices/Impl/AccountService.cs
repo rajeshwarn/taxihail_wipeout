@@ -61,9 +61,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             if (cached == null)
             {
-                var refData = UseServiceClientAsync<ReferenceDataServiceClient, ReferenceData>(service => service.GetReferenceData());
-				UserCache.Set(RefDataCacheKey, await refData, DateTime.Now.AddHours(1));
-				return await refData;
+                var refData = await UseServiceClientAsync<ReferenceDataServiceClient, ReferenceData>(service => service.GetReferenceData());
+				UserCache.Set(RefDataCacheKey, refData, DateTime.Now.AddHours(1));
+				return refData;
             }
             return cached;
         }
