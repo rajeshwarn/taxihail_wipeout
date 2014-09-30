@@ -377,10 +377,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								!_paymentService.GetPaymentSettings().AutomaticPayment  			
 								&& _bookingService.IsPaired(Order.Id);      
 
-			var defaultCardRequirement = !(Settings.DefaultCardRequiredToPayNow && !_accountService.CurrentAccount.DefaultCreditCard.HasValue);
-
 			IsPayButtonVisible = (!Settings.HidePayNowButtonDuringRide)
-								&& defaultCardRequirement 
 								&& (statusId == VehicleStatuses.Common.Done
 									|| statusId == VehicleStatuses.Common.Loaded)
 								&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue
