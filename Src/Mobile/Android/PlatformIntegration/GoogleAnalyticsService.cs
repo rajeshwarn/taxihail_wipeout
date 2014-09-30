@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class GoogleAnalyticsService : IAnalyticsService
     {
-        #region IAnaliticsService implementation
+        private Tracker Tracker { get; set; }
 
         public GoogleAnalyticsService(Context c, IPackageInfo packageInfo, IAppSettings settings, ILogger logger)
         {
@@ -22,7 +22,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 g.SetDebug(true);
 
                 Tracker = g.GetTracker("UA-44714416-1");
-
                 Tracker.SetAppName(settings.Data.ApplicationName.Replace(' ', '_'));
                 Tracker.SetAppVersion(packageInfo.Version);
             }
@@ -31,8 +30,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 logger.LogError(ex);
             }
         }
-
-        private Tracker Tracker { get; set; }
 
         public void LogViewModel(string name)
         {
@@ -58,7 +55,5 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             Tracker.TrackException(className + ":" + methodName + ": " + e.Message, isFatal);
         }
-
-        #endregion
     }
 }

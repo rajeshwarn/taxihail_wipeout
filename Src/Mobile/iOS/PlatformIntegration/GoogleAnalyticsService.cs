@@ -3,34 +3,29 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using GoogleAnalytics;
 using GoogleAnalytics.iOS;
+using MonoTouch.Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
 	public class GoogleAnalyticsService: IAnalyticsService
 	{
-
-		IGAITracker Tracker {
-			get;
-			set;
-		}
+		private IGAITracker Tracker { get; set; }
 
 		public GoogleAnalyticsService (IAppSettings settings,IPackageInfo packageInfo)
 		{
 			GAI.SharedInstance.TrackUncaughtExceptions = true;
 			GAI.SharedInstance.DispatchInterval = 20;
 
-
-			Tracker = GAI.SharedInstance.GetTracker (  "UA-44714416-1" );
-			Tracker.Set( GAIConstants.AppName,   settings.Data.ApplicationName.Replace( ' ' , '_' ));
+            Tracker = GAI.SharedInstance.GetTracker ("UA-44714416-1");
+			Tracker.Set( GAIConstants.AppName, settings.Data.ApplicationName.Replace(' ' , '_'));
 			Tracker.Set(GAIConstants.AppVersion, packageInfo.Version);
-
-
 		}
 
-		public void LogViewModel (string viewModelName){
+		public void LogViewModel (string viewModelName)
+        {
 			var appView = GAIDictionaryBuilder.CreateAppView ();
 			appView.Set (viewModelName, GAIConstants.ScreenName);
-			Tracker.Send(  appView.Build() );
+			Tracker.Send(appView.Build());
 		}
 
 		public void LogEvent(string @event)
@@ -47,9 +42,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		{
 
 		}
-		public void LogException(string className, string methodName, Exception e, bool isFatal = false)
-		{
 
+		public void LogException(string className, string methodName, Exception e, bool isFatal = false)
+		{   
+//            var exception = GAIDictionaryBuilder.CreateException (e.Message, new NSNumber (isFatal));
+//            exception.Set(GAIConstants.ex
+//            Tracker.Send(exception.Build());
 		}
 	}
 }
