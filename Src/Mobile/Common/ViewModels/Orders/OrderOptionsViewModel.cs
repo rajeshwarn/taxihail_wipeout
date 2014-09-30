@@ -41,16 +41,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public async Task Init()
 		{
-            //var list = await _accountService.GetVehiclesList();
-
-            //if (list.None())
-            //{
-            //    await SetDefaultVehicleType();
-            //}
-            //else
-            //{
-            //    VehicleTypes = list;
-            //}
 		    Start();
 		}
 

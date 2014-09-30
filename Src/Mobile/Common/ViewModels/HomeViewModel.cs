@@ -61,13 +61,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool _locateUser;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
 
-	    private long loadingTime;
-	    private Stopwatch _stopwatch = new Stopwatch();
-
         public void Init(bool locateUser, string defaultHintZoomLevel)
         {
-            Logger.LogMessage("================== LOADING START ==========");
-            _stopwatch.Start();
 			_locateUser = locateUser;
 			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);
 		}
@@ -87,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			BottomBar.CancelEdit = OrderEdit.Cancel;
 		}
 
-		public async override void OnViewStarted(bool firstTime)
+		public override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
 
@@ -114,9 +109,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					_locateUser = true;
 				});
-                _stopwatch.Stop();
-			    loadingTime = _stopwatch.ElapsedMilliseconds;
-                Logger.LogMessage("================== LOADING TIME : " + loadingTime + " ms");
 			}
 
 			if (_locateUser)
