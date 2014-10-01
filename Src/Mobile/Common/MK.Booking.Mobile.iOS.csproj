@@ -257,7 +257,6 @@
     <Compile Include="AppServices\ITermsAndConditionsService.cs" />
     <Compile Include="AppServices\Impl\TermsAndConditionsService.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
-    <Compile Include="Messages\AppActivated.cs" />
     <Compile Include="ViewModels\Payment\PairingState.cs" />
     <Compile Include="AppServices\IVehicleService.cs" />
     <Compile Include="AppServices\Impl\VehicleService.cs" />
