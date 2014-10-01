@@ -6,12 +6,13 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using System.Net;
 
 #endregion
 
 namespace apcurium.MK.Booking.IBS.Impl
 {
-    public class StaticDataWebServiceClient : BaseService<StaticDataservice>, IStaticDataWebServiceClient
+    public class StaticDataWebServiceClient : BaseService<StaticDataserviceEx>, IStaticDataWebServiceClient
     {
         public StaticDataWebServiceClient(IConfigurationManager configManager, ILogger logger)
             : base(configManager, logger)

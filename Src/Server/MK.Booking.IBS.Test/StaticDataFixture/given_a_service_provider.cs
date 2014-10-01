@@ -12,14 +12,14 @@ namespace MK.Booking.IBS.Test.StaticDataFixture
         [SetUp]
         public void Setup()
         {
-            Sut = new StaticDataservice
+            Sut = new StaticDataserviceEx
             {
                 Url = "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/IStaticData"
             };
         }
 
         private const int MobileKnowledgeProviderId = 18;
-        protected StaticDataservice Sut { get; private set; }
+        protected StaticDataserviceEx Sut { get; private set; }
 
 
         [Test]
