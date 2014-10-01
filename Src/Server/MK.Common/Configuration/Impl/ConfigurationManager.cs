@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
 using ServiceStack.Text;
 
@@ -89,7 +90,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             {
                 try
                 {
-                    var typeOfSettings = typeof(TaxiHailSetting);
+                    var typeOfSettings = typeof(ServerTaxiHailSetting);
 
                     var propertyName = item.Key.Contains(".")
                         ? item.Key.SplitOnLast('.')[1]
@@ -125,22 +126,22 @@ namespace apcurium.MK.Common.Configuration.Impl
                 catch (Exception e)
                 {
                     Console.WriteLine("Warning - can't set value for property {0}, value was {1}", item.Key, item.Value);
-                    _logger.LogMessage("Warning - can't set value for property {0}, value was {1}", item.Key, item.Value);
+                    _logger.Maybe(() => _logger.LogMessage("Warning - can't set value for property {0}, value was {1}", item.Key, item.Value));
                     _logger.LogError(e);
                 }
             }
         }
 
-        private static PropertyInfo GetProperty<T>(string propertyName)
+        private static PropertyInfo GetProperty(Type type, string propertyName)
         {
-            if (typeof(T).GetProperties().Count(p => p.Name == propertyName.Split('.')[0]) == 0)
+            if (type.GetProperties().Count(p => p.Name == propertyName.Split('.')[0]) == 0)
             {
-                throw new ArgumentNullException(string.Format("Property {0}, is not exists in type {1}", propertyName, typeof(T)));
+                throw new ArgumentNullException(string.Format("Property {0}, does not exist in type {1}", propertyName, type));
             }
 
             return propertyName.Split('.').Length == 1
-                ? typeof(T).GetProperty(propertyName)
-                : GetProperty(typeof(T).GetProperty(propertyName.Split('.')[0]), propertyName.Split('.')[1]);
+                ? type.GetProperty(propertyName)
+                : GetProperty(type.GetProperty(propertyName.Split('.')[0]).PropertyType, propertyName.Split('.')[1]);
         }
 
         private static bool IsNullableType(Type type)

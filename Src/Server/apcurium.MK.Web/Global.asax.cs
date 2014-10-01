@@ -47,8 +47,6 @@ namespace apcurium.MK.Web
 
         private void PollIbs(int pollingValue)
         {
-            var test = GetProperty()
-
             Log.Info("Queue OrderStatusJob " + DateTime.Now.ToString("HH:MM:ss"));
 
             bool hasOrdersWaitingForPayment = false;
@@ -68,18 +66,6 @@ namespace apcurium.MK.Web
                         PollIbs(hasOrdersWaitingForPayment ? WaitingForPaymentPollingValue : _defaultPollingValue);
                     }
                 });
-        }
-
-        private static PropertyInfo GetProperty(object t, string propertyName)
-        {
-            if (t.GetType().GetProperties().Count(p => p.Name == propertyName.Split('.')[0]) == 0)
-            {
-                throw new ArgumentNullException(string.Format("Property {0}, is not exists in object {1}", propertyName, t));
-            }
-
-            return propertyName.Split('.').Length == 1
-                ? t.GetType().GetProperty(propertyName)
-                : GetProperty(t.GetType().GetProperty(propertyName.Split('.')[0]).GetValue(t, null), propertyName.Split('.')[1]);
         }
 
         private string GetServerProcessId()
