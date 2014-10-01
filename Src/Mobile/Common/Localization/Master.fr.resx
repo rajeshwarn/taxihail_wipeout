@@ -574,7 +574,7 @@
     <value>Le prix ne peut être estimé pour le moment</value>
   </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>Prix estimé: {0:C} ({1})</value>
+    <value>Prix estimé: {0} ({1})</value>
   </data>
   <data name="CurrencyPriceFormat" xml:space="preserve">
     <value>{0:C}</value>

@@ -124,7 +124,7 @@
     <value>Payment type</value>
   </data>
  <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>Estimated Fare : SR {0:0.00} ({1})</value>
+    <value>Estimated Fare : {0} ({1})</value>
   </data>
   <data name="CurrencyPriceFormat" xml:space="preserve">
     <value>SR {0:0.00}</value>

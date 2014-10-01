@@ -22,7 +22,8 @@ namespace apcurium.MK.Booking.Mobile
 
 		public static string FormatCurrency(double amount)
 		{
-            return string.Format (CultureInfo, Mvx.Resolve<ILocalization> ()["CurrencyPriceFormat"], amount);
+			var stringFormattedAsACurrency = string.Format (CultureInfo, Mvx.Resolve<ILocalization> () ["CurrencyPriceFormat"], amount);
+			return stringFormattedAsACurrency.Replace (CultureInfo.NumberFormat.NumberDecimalSeparator, CultureInfo.NumberFormat.CurrencyDecimalSeparator);
 		}
 
 		public static CultureInfo CultureInfo
