@@ -15,11 +15,11 @@ namespace apcurium.MK.Booking.Resources
 {
     public class Resources : DynamicObject
     {
-        private readonly IAppSettings _appSettings;
+        private readonly IServerSettings _appSettings;
         private readonly ResourceManager _resources;
         private const string DefaultLanguageCode = "en";
 
-        public Resources(string applicationKey, IAppSettings appSettings)
+        public Resources(string applicationKey, IServerSettings appSettings)
         {
             _appSettings = appSettings;
             var names = GetType().Assembly.GetManifestResourceNames();

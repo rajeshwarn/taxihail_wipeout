@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 {
     public class Geocoding : IGeocoding
     {
-        private readonly IAppSettings _appSettings;
+        private readonly IServerSettings _appSettings;
 		private readonly IGeocoder  _mapApi;
         private readonly ILogger _logger;
 
@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
         private readonly IPopularAddressProvider _popularAddressProvider;
 
-		public Geocoding(IGeocoder mapApi, IAppSettings appSettings,
+		public Geocoding(IGeocoder mapApi, IServerSettings appSettings,
             IPopularAddressProvider popularAddressProvider, ILogger logger)
         {
             _logger = logger;

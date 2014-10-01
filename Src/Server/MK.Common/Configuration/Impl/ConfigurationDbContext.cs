@@ -39,7 +39,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             return Set<T>().Find(id);
         }
 
-        public IQueryable<T> Query<T>() where T : class
+        public virtual IQueryable<T> Query<T>() where T : class
         {
             return Set<T>();
         }

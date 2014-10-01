@@ -3,7 +3,9 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Reactive.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Optimization;
 using apcurium.MK.Booking.Api.Jobs;
@@ -13,6 +15,7 @@ using apcurium.MK.Common.IoC;
 using apcurium.MK.Web.App_Start;
 using log4net;
 using log4net.Config;
+using MK.Common.Configuration;
 using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensions;
 
 #endregion

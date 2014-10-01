@@ -21,11 +21,11 @@ namespace apcurium.MK.Booking.Api.Services.Maps
     public class DirectionsService : Service
     {
         private readonly IDirections _client;
-        private readonly IAppSettings _appSettings;
+        private readonly IServerSettings _appSettings;
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly IOrderDao _orderDao;
 
-        public DirectionsService(IDirections client, IAppSettings appSettings, IBookingWebServiceClient bookingWebServiceClient, IOrderDao orderDao)
+        public DirectionsService(IDirections client, IServerSettings appSettings, IBookingWebServiceClient bookingWebServiceClient, IOrderDao orderDao)
         {
             _client = client;
             _appSettings = appSettings;

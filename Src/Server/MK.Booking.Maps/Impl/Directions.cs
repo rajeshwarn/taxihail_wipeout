@@ -18,10 +18,10 @@ namespace apcurium.MK.Booking.Maps.Impl
         }
 
         private readonly IDirectionDataProvider _client;
-        private readonly IAppSettings _appSettings;
+        private readonly IServerSettings _appSettings;
         private readonly IPriceCalculator _priceCalculator;
 
-        public Directions(IDirectionDataProvider client, IAppSettings appSettings, IPriceCalculator priceCalculator)
+        public Directions(IDirectionDataProvider client, IServerSettings appSettings, IPriceCalculator priceCalculator)
         {
             _client = client;
             _appSettings = appSettings;

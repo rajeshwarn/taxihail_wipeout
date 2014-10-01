@@ -17,10 +17,10 @@ namespace apcurium.MK.Booking.Maps.Impl
     public class Places : IPlaces
     {
 		private readonly IPlaceDataProvider _client;
-        private readonly IAppSettings _appSettings;
+        private readonly IServerSettings _appSettings;
         private readonly IPopularAddressProvider _popularAddressProvider;
 
-		public Places(IPlaceDataProvider client, IAppSettings appSettings,
+		public Places(IPlaceDataProvider client, IServerSettings appSettings,
             IPopularAddressProvider popularAddressProvider)
         {
             _client = client;

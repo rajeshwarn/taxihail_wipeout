@@ -16,7 +16,7 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Common.Tests
 {
-    public class TestConfigurationManager : IConfigurationManager, IAppSettings
+    public class TestConfigurationManager : IConfigurationManager, IServerSettings
     {
         private readonly Dictionary<string, string> _config;
 
@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Common.Tests
             {
                 _config.Add(token.Key, token.Value.ToString());
             }
-            Data = new TaxiHailSetting();
+            Data = new ServerTaxiHailSetting();
             SetSettingsValue(_config);
         }
 
@@ -128,11 +128,11 @@ namespace apcurium.MK.Booking.Common.Tests
         public void SetSetting(string key, string value)
         {
             _config[key] = value;
-            Data = new TaxiHailSetting();
+            Data = new ServerTaxiHailSetting();
             SetSettingsValue(_config);
         }
 
-        public TaxiHailSetting Data { get; private set; }
+        public ServerTaxiHailSetting Data { get; private set; }
         public void Load()
         {
            //done in the ctor
