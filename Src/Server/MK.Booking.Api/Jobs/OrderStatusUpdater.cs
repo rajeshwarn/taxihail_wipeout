@@ -124,23 +124,23 @@ namespace apcurium.MK.Booking.Api.Jobs
         {
             if (orderStatusDetail.Status == OrderStatus.WaitingForPayment)
             {
-                Log.DebugFormat("Order Status is: {0}. Don't update since it's a special case outside of IBS.", orderStatusDetail.Status);
+                Log.DebugFormat("Order {1}: Status is: {0}. Don't update since it's a special case outside of IBS.", orderStatusDetail.Status, orderStatusDetail.OrderId);
                 return;
             }
             if (ibsOrderInfo.IsCanceled)
             {
                 orderStatusDetail.Status = OrderStatus.Canceled;
-                Log.DebugFormat("Order Status updated to: {0}", orderStatusDetail.Status);
+                Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
             else if (ibsOrderInfo.IsTimedOut)
             {
                 orderStatusDetail.Status = OrderStatus.TimedOut;
-                Log.DebugFormat("Order Status updated to: {0}", orderStatusDetail.Status);
+                Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
             else if (ibsOrderInfo.IsComplete)
             {
                 orderStatusDetail.Status = OrderStatus.Completed;
-                Log.DebugFormat("Order Status updated to: {0}", orderStatusDetail.Status);
+                Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
         }
 
@@ -196,6 +196,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     // no fare received but order is completed, change status to increase polling speed
                     orderStatusDetail.Status = OrderStatus.WaitingForPayment;
                     orderStatusDetail.PairingTimeOut = DateTime.UtcNow.AddMinutes(30);
+                    Log.DebugFormat("Order {1}: Status updated to: {0} with timeout in 30 minutes", orderStatusDetail.Status, orderStatusDetail.OrderId);
                 }
 
                 if (orderStatusDetail.Status == OrderStatus.WaitingForPayment
@@ -203,7 +204,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     orderStatusDetail.Status = OrderStatus.Completed;
                     orderStatusDetail.PairingError = "Timed out period reached while waiting for payment informations from IBS.";
-                    Log.ErrorFormat("Pairing error: {0}", orderStatusDetail.PairingError);
+                    Log.ErrorFormat("Order {1}: Pairing error: {0}", orderStatusDetail.PairingError, orderStatusDetail.OrderId);
                 }
 
                 return;
@@ -215,7 +216,11 @@ namespace apcurium.MK.Booking.Api.Jobs
             double tipPercentage = pairingInfo.AutoTipPercentage ?? _appSettings.Data.DefaultTipPercentage;
             var tipAmount = GetTipAmount(meterAmount, tipPercentage);
 
-           var paymentResult =  _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
+            Log.DebugFormat(
+                    "Order {4}: Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
+                    meterAmount, tipPercentage, tipAmount, meterAmount + tipAmount, orderStatusDetail.OrderId);
+
+            var paymentResult =  _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
             {
                 OrderId = orderStatusDetail.OrderId,
                 CardToken = pairingInfo.TokenOfCardToBeUsedForPayment,
@@ -224,20 +229,22 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Amount = Convert.ToDecimal(meterAmount + tipAmount)
             });
 
-           // whether there's a success or not, we change the status back to Completed since we can't process the payment again
-           orderStatusDetail.Status = OrderStatus.Completed;
+            // whether there's a success or not, we change the status back to Completed since we can't process the payment again
+            orderStatusDetail.Status = OrderStatus.Completed;
 
-           if (paymentResult.IsSuccessfull)
+            if (paymentResult.IsSuccessfull)
             {
-                Log.DebugFormat(
-                    "Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
-                    meterAmount, tipPercentage, tipAmount, meterAmount + tipAmount);
+                Log.DebugFormat("Order {0}: Payment Successful (Auth: {1})", orderStatusDetail.OrderId, paymentResult.AuthorizationCode);
             }
             else
             {
                 var messageToDriver = _resources.Get("PaymentFailedToDriver", _languageCode);
                 _ibsOrderService.SendMessageToDriver(messageToDriver, orderStatusDetail.VehicleNumber);
-               Log.DebugFormat("Error During Payment : " + paymentResult.Message);
+
+                // set the payment error message in OrderStatusDetail for reporting purpose
+                orderStatusDetail.PairingError = paymentResult.Message;
+
+                Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1})", orderStatusDetail.OrderId, paymentResult.Message);
             }
         }
 
@@ -252,7 +259,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             var pairingInfo = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
             if (pairingInfo == null)
             {
-                Log.DebugFormat("No pairing to process for order {0} as no pairing information was found.", orderStatusDetail.OrderId);
+                Log.DebugFormat("Order {0}: No pairing to process as no pairing information was found.", orderStatusDetail.OrderId);
                 return;
             }
 
