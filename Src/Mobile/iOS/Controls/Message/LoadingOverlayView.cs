@@ -25,8 +25,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _dialogView.BackgroundColor = UIColor.White;
 
 			var taxiProgressFile = "taxi_progress.png";
-			var isTaxiProgressOverrided = ImageHelper.CheckForAssetOverride (taxiProgressFile, UIColor.FromRGBA (0, 122, 255, 255), new Point (10, 20) );
-			var loadingImage = isTaxiProgressOverrided ? ImageHelper.GetImage(taxiProgressFile) : ImageHelper.ApplyThemeColorToImage (taxiProgressFile);
+			var taxiProgressOverriden = IsTaxiAssetOverriden (taxiProgressFile, UIColor.FromRGBA (0, 122, 255, 255), new Point (10, 20) );
+			var loadingImage = taxiProgressOverriden ? ImageHelper.GetImage(taxiProgressFile) : ImageHelper.ApplyThemeColorToImage (taxiProgressFile);
 			_imageView = new UIImageView (loadingImage);
                 
             _imageView.SizeToFit();
@@ -131,8 +131,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             this.RemoveFromSuperview();
             _modalWindow.Hidden = true;
         }
+
+        public bool IsTaxiAssetOverriden(string imagePath, UIColor expectedColor, Point expectedColorCoordinate)
+        {
+            var asset = ImageHelper.GetImage(imagePath);
+            var detectedColor = asset.GetPixel(expectedColorCoordinate.X, expectedColorCoordinate.Y);
+            return !detectedColor.CGColor.Equals(expectedColor.CGColor);
+        }
     }
-
-
 }
 

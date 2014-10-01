@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 				var carDrawable = _activity.Resources.GetDrawable (Resource.Drawable.taxi_progress);
 				_car = DrawHelper.DrawableToBitmap (carDrawable);
                  
-				if (!DrawHelper.CheckForAssetOverride (_car, Android.Graphics.Color.Argb (255, 0, 122, 255), new Android.Graphics.Point (10, 20))) {
+				if (!IsAssetOverriden (_car, Android.Graphics.Color.Argb (255, 0, 122, 255), new Android.Graphics.Point (10, 20))) {
 					_colorToUse = _activity.Resources.GetColor (Resource.Color.company_color);
 					_car = DrawHelper.DrawableToBitmap (carDrawable, _colorToUse);                	
 				}
@@ -263,6 +263,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             _layoutCenter.RequestLayout();
             return new BitmapDrawable(_progressImage);
+        }
+
+        public static bool IsAssetOverriden(Bitmap image, Android.Graphics.Color expectedColor, Android.Graphics.Point expectedColorCoordinate)
+        {
+            var detectedColor = image.GetPixel(expectedColorCoordinate.X, expectedColorCoordinate.Y);
+            return !detectedColor.Equals(expectedColor.ToArgb());
         }
     }
 }
