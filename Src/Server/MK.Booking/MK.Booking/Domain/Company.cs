@@ -55,6 +55,7 @@ namespace apcurium.MK.Booking.Domain
 
             Handles<CompanyCreated>(NoAction);
             Handles<AppSettingsAddedOrUpdated>(NoAction);
+            Handles<AppSettingsDeleted>(NoAction);
             Handles<PaymentModeChanged>(NoAction);
             Handles<PaymentSettingUpdated>(OnPaymentSettingUpdated);
 
@@ -149,6 +150,14 @@ namespace apcurium.MK.Booking.Domain
         public void AddOrUpdateAppSettings(IDictionary<string, string> appSettings)
         {
             Update(new AppSettingsAddedOrUpdated
+            {
+                AppSettings = appSettings
+            });
+        }
+
+        public void DeleteAppSettings(IDictionary<string, string> appSettings)
+        {
+            Update(new AppSettingsDeleted
             {
                 AppSettings = appSettings
             });

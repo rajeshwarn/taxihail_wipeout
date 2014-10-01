@@ -10,7 +10,9 @@ using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class AppSettingsGenerator : IEventHandler<AppSettingsAddedOrUpdated>
+    public class AppSettingsGenerator :
+        IEventHandler<AppSettingsAddedOrUpdated>,
+        IEventHandler<AppSettingsDeleted>
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
 
@@ -37,6 +39,22 @@ namespace apcurium.MK.Booking.EventHandlers
                     {
                         context.Set<AppSetting>().Add(new AppSetting(appSetting.Key, appSetting.Value));
                     }
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        public void Handle(AppSettingsDeleted @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var settings = context.Query<AppSetting>().ToList();
+
+                foreach (var appSetting in @event.AppSettings)
+                {
+                    var setting = settings.FirstOrDefault(x => x.Key.Equals(appSetting.Key));
+                    settings.Remove(setting);
                 }
 
                 context.SaveChanges();

@@ -1,16 +1,12 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Infrastructure.Messaging;
 
-#endregion
-
 namespace apcurium.MK.Booking.Commands
 {
-    public class AddOrUpdateAppSettings : ICommand
+    public class DeleteAppSettings : ICommand
     {
-        public AddOrUpdateAppSettings()
+        public DeleteAppSettings()
         {
             Id = Guid.NewGuid();
             AppSettings = new Dictionary<string, string>();
