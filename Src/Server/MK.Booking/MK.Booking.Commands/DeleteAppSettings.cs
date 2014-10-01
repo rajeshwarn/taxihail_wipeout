@@ -9,10 +9,10 @@ namespace apcurium.MK.Booking.Commands
         public DeleteAppSettings()
         {
             Id = Guid.NewGuid();
-            AppSettings = new Dictionary<string, string>();
+            AppSettings = new List<string>();
         }
 
-        public IDictionary<string, string> AppSettings { get; set; }
+        public IList<string> AppSettings { get; set; }
 
         public Guid CompanyId { get; set; }
         public Guid Id { get; set; }

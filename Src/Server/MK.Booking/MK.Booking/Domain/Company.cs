@@ -155,7 +155,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void DeleteAppSettings(IDictionary<string, string> appSettings)
+        public void DeleteAppSettings(IList<string> appSettings)
         {
             Update(new AppSettingsDeleted
             {

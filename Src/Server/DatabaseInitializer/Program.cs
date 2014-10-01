@@ -107,7 +107,16 @@ namespace DatabaseInitializer
 #endif
                 }
 
-                var appSettings = GetCombinedSettings(isUpdate ? configurationManager.GetSettings() : null, param.CompanyName);
+                var commandBus = container.Resolve<ICommandBus>();
+
+                if (isUpdate)
+                {
+                    // Remove all default value DB settings
+                    CleanDefaultSettings(commandBus, configurationManager.GetSettings());
+                }
+
+                // TODO: update to use the settings class instead of key/value dictionnary
+                var appSettings = GetCombinedSettings(isUpdate ? configurationManager.GetSettings() : null);
 
                 if (isUpdate)
                 {                    
@@ -135,7 +144,6 @@ namespace DatabaseInitializer
                 }
 
                 //Init data
-                var commandBus = container.Resolve<ICommandBus>();
                 var companyIsCreated = container.Resolve<IEventsPlayBackService>().CountEvent("Company") > 0;
 
                 if (!companyIsCreated)
@@ -678,27 +686,44 @@ namespace DatabaseInitializer
             AddOrUpdateAppSettings(commandBus, appSettings);
         }
 
-        private static Dictionary<string, string> GetCombinedSettings(IDictionary<string, string> settingsInDb, string companyName )
+        private static void CleanDefaultSettings(ICommandBus commandBus, IDictionary<string, string> settingsInDb)
+        {
+            var settingsToRemove = new List<string>();
+            var taxiHailSettings = new TaxiHailSetting();
+            var defaultSettings = taxiHailSettings.GetType().GetProperties();
+
+            foreach (var setting in defaultSettings)
+            {
+                var settingName = setting.Name;
+                var settingValue = setting.GetValue(taxiHailSettings, null);
+                string settingStringValue = settingValue == null ? string.Empty : settingValue.ToString();
+
+                // For boolean values, string comparison will ignore case
+                bool isValueBoolean;
+                bool.TryParse(settingStringValue, out isValueBoolean);
+
+                if (settingsInDb.Any(x => x.Key.EndsWith(settingName)))
+                {
+                    string dbValue = settingsInDb.First(x => x.Key.EndsWith(settingName)).Value;
+                    if (isValueBoolean
+                        ? dbValue.Equals(settingStringValue, StringComparison.InvariantCultureIgnoreCase)
+                        : dbValue == settingStringValue)
+                    {
+                        // Mark as delete settings with default value
+                        settingsToRemove.Add(settingName);
+                    }
+                }
+            }
+
+            DeleteAppSettings(commandBus, settingsToRemove);
+        }
+
+        private static Dictionary<string, string> GetCombinedSettings(IDictionary<string, string> settingsInDb)
         {            
-            //Create settings
+            // Create settings
             var appSettings = new Dictionary<string, string>();
-            var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\Common.json"));
-            var objectSettings = JObject.Parse(jsonSettings);
 
             Console.WriteLine("Loading settings...");
-            
-            foreach (var token in objectSettings)
-            {
-                appSettings[token.Key] = token.Value.ToString();
-            }
-
-            jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
-            objectSettings = JObject.Parse(jsonSettings);
-            
-            foreach (var token in objectSettings)
-            {
-                appSettings[token.Key] = token.Value.ToString();
-            }
 
             if (settingsInDb != null)
             {
@@ -711,6 +736,15 @@ namespace DatabaseInitializer
         private static void AddOrUpdateAppSettings(ICommandBus commandBus, Dictionary<string, string> appSettings)
         {
             commandBus.Send(new AddOrUpdateAppSettings
+            {
+                AppSettings = appSettings,
+                CompanyId = AppConstants.CompanyId
+            });
+        }
+
+        private static void DeleteAppSettings(ICommandBus commandBus, IList<string> appSettings)
+        {
+            commandBus.Send(new DeleteAppSettings
             {
                 AppSettings = appSettings,
                 CompanyId = AppConstants.CompanyId

@@ -7,9 +7,9 @@ namespace apcurium.MK.Booking.Events
     {
         public AppSettingsDeleted()
         {
-            AppSettings = new Dictionary<string, string>();
+            AppSettings = new List<string>();
         }
 
-        public IDictionary<string, string> AppSettings { get; set; }
+        public IList<string> AppSettings { get; set; }
     }
 }

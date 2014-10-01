@@ -53,8 +53,8 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 foreach (var appSetting in @event.AppSettings)
                 {
-                    var setting = settings.FirstOrDefault(x => x.Key.Equals(appSetting.Key));
-                    settings.Remove(setting);
+                    var setting = settings.FirstOrDefault(x => x.Key.EndsWith(appSetting));
+                    context.Set<AppSetting>().Remove(setting);
                 }
 
                 context.SaveChanges();

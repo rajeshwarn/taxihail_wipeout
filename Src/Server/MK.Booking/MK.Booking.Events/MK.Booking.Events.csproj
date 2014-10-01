@@ -55,6 +55,7 @@
     <Compile Include="AddressRemovedFromHistory.cs" />
     <Compile Include="AccountChargeAddedUpdated.cs" />
     <Compile Include="AdminRightGranted.cs" />
+    <Compile Include="AppSettingsDeleted.cs" />
     <Compile Include="AppSettingsUpdated.cs" />
     <Compile Include="BookingSettingsUpdated.cs" />
     <Compile Include="CompanyCreated.cs" />
