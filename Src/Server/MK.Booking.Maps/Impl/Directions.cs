@@ -3,6 +3,7 @@
 using System;
 using System.Globalization;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.MapDataProvider;
 
@@ -11,12 +12,6 @@ namespace apcurium.MK.Booking.Maps.Impl
 {
     public class Directions : IDirections
     {
-        public enum DistanceFormat
-        {
-            Km,
-            Mile,
-        }
-
         private readonly IDirectionDataProvider _client;
         private readonly IAppSettings _appSettings;
         private readonly IPriceCalculator _priceCalculator;
@@ -78,14 +73,12 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 double meters = (double)distance.Value / 1000;
 
-                switch (_appSettings.Data.DistanceFormat.ToEnum(true, DistanceFormat.Km))
+                switch (_appSettings.Data.DistanceFormat)
                 {
-
                     case DistanceFormat.Mile:
                         double miles = Math.Round(meters / 1.609344, 1);
                         result = string.Format("{0:n1} mile" + ((miles == 1 || miles == 0) ? "" : "s"), miles);
                         break;
-
                     case DistanceFormat.Km:
                     default:
                         result = string.Format("{0:n1} km", Math.Round(meters, 1));

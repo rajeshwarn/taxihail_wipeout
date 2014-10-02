@@ -80,9 +80,9 @@ namespace apcurium.MK.Booking.Api.Services
                 var template = _templateService.Find("AccountConfirmationSuccess",account.Language);
                 var templateData = new
                 {
-                    ApplicationName = _configurationManager.GetSetting("TaxiHail.ApplicationName"),
+                    ApplicationName = _configurationManager.ServerData.TaxiHail.ApplicationName,
                     RootUrl = root,
-                    AccentColor = _configurationManager.GetSetting("TaxiHail.AccentColor")
+                    AccentColor = _configurationManager.ServerData.TaxiHail.AccentColor
                 };
                 var body = _templateService.Render(template, templateData);
                 return new HttpResult(body, ContentType.Html);

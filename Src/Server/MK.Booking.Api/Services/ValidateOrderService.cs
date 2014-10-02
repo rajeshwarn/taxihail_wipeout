@@ -80,8 +80,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         private DateTime GetCurrentOffsetedTime()
         {
-            var ibsServerTimeDifference =
-                _configManager.GetSetting("IBS.TimeDifference").SelectOrDefault(long.Parse, 0);
+            var ibsServerTimeDifference = _configManager.ServerData.IBS.TimeDifference;
             var offsetedTime = DateTime.Now.AddMinutes(2);
             if (ibsServerTimeDifference != 0)
             {

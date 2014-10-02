@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         public int CreateAccount(Guid accountId, string email, string firstName, string lastName, string phone)
         {
-            var password = ConfigManager.GetSetting("IBS.DefaultAccountPassword");
+            var password = ConfigManager.ServerData.IBS.DefaultAccountPassword;
             var isSuccess = false;
             var ibsAcccountId = 0;
             Regex regEx = new Regex(@"\D");

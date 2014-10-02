@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Email
 
         public TemplateService(IConfigurationManager configurationManager, IAppSettings appSettings)
         {
-            _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
+            _resources = new Resources.Resources(configurationManager.ServerData.TaxiHail.ApplicationKey, appSettings);
         }
         
         public static string AssemblyDirectory

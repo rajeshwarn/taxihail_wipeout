@@ -11,7 +11,11 @@ namespace apcurium.MK.Common.Configuration
 
         public string ApplicationKey { get; protected internal set; }
 
+        public string AccentColor { get; protected internal set; }
 
+        public string EmailFontColor { get; protected internal set; }
+
+        public string SiteName { get; protected internal set; }
     }
 
     public class OrderStatusSettingContainer
@@ -43,7 +47,7 @@ namespace apcurium.MK.Common.Configuration
         public bool NeedAValidTarif { get; protected internal set; }
 
         [Display(Name = "Flate Rate", Description = "Flate Rate for estimation")]
-        public double FlateRate { get; protected internal set; }
+        public decimal FlateRate { get; protected internal set; }
 
         [Display(Name = "Rate Per Km", Description = "Rate per km for estimation")]
         public double RatePerKm { get; protected internal set; }

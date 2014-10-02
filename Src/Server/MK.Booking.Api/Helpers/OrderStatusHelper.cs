@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Helpers
         {
             _orderDao = orderDao;
 
-            _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
+            _resources = new Resources.Resources(configurationManager.ServerData.TaxiHail.ApplicationKey, appSettings);
         }
 
         public virtual OrderStatusDetail GetOrderStatus(Guid orderId, IAuthSession session)
@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Api.Helpers
                     Status = OrderStatus.Created,
                     IBSOrderId =  0,
                     IBSStatusId = "",
-                    IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", "en"),
+                    IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING"),
                 };
             }
 

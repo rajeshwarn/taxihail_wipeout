@@ -21,17 +21,11 @@ namespace apcurium.MK.Booking.Api.Services.Maps
 
         public object Get(DefaultGeoLocationRequest request)
         {
-            var address = new Address
+            return new Address
             {
-                Latitude =
-                    double.Parse(_configurationManager.GetSetting("GeoLoc.DefaultLatitude"),
-                        CultureInfo.InvariantCulture),
-                Longitude =
-                    double.Parse(_configurationManager.GetSetting("GeoLoc.DefaultLongitude"),
-                        CultureInfo.InvariantCulture)
+                Latitude = _configurationManager.ServerData.GeoLoc.DefaultLatitude,
+                Longitude = _configurationManager.ServerData.GeoLoc.DefaultLongitude
             };
-
-            return address;
         }
     }
 }

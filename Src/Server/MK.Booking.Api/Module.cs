@@ -53,8 +53,7 @@ namespace apcurium.MK.Booking.Api
                 new InjectionFactory(c =>
                 {
                     var configManager = c.Resolve<IConfigurationManager>();
-                    var mockIbsStatusUpdate = bool.Parse(configManager.GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
-                    if (mockIbsStatusUpdate)
+                    if (configManager.ServerData.IBS.FakeOrderStatusUpdate)
                     {
                         return new UpdateOrderStatusJobStub();
                     }
@@ -69,8 +68,7 @@ namespace apcurium.MK.Booking.Api
                     var configManager = c.Resolve<IConfigurationManager>();
                     var appSettings = c.Resolve<IAppSettings>();
                     var orderDao = c.Resolve<IOrderDao>();
-                    var mockIbsStatusUpdate = bool.Parse(configManager.GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
-                    return mockIbsStatusUpdate
+                    return configManager.ServerData.IBS.FakeOrderStatusUpdate
                         ? new OrderStatusIbsMock(orderDao, c.Resolve<OrderStatusUpdater>(), configManager, appSettings)
                         : new OrderStatusHelper(orderDao, configManager, appSettings);
                 }));

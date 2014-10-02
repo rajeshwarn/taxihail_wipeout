@@ -29,22 +29,22 @@ namespace apcurium.MK.Web
         protected string DefaultPhoneNumber { get; private set; }
         protected bool IsAuthenticated { get; private set; }
         protected string FacebookAppId { get; private set; }
-        protected string FacebookEnabled { get; private set; }
-        protected string HideDispatchButton { get; private set; }
+        protected bool FacebookEnabled { get; private set; }
+        protected bool HideDispatchButton { get; private set; }
         protected string GeolocSearchFilter { get; private set; }
         protected string GeolocSearchRegion { get; private set; }
         protected string GeolocSearchBounds { get; private set; }
-        protected string AccountActivationDisabled { get; private set; }
-        protected string EstimateEnabled { get; private set; }
-        protected string EstimateWarningEnabled { get; private set; }
-        protected string EtaEnabled { get; private set; }
-        protected string DestinationIsRequired { get; private set; }
+        protected bool AccountActivationDisabled { get; private set; }
+        protected bool EstimateEnabled { get; private set; }
+        protected bool EstimateWarningEnabled { get; private set; }
+        protected bool EtaEnabled { get; private set; }
+        protected bool DestinationIsRequired { get; private set; }
         protected string DirectionTarifMode { get; private set; }
         protected bool DirectionNeedAValidTarif { get; private set; }
         protected bool ShowPassengerNumber { get; private set; }
         protected string ReferenceData { get; private set; }
         protected string VehicleTypes { get; private set; }
-        protected string DisableFutureBooking { get; private set; }
+        protected bool DisableFutureBooking { get; private set; }
         protected bool IsWebSignupVisible { get; private set; }
         protected double MaxFareEstimate { get; private set; }
         
@@ -52,37 +52,33 @@ namespace apcurium.MK.Web
         {
             var config = ServiceLocator.Current.GetInstance<IConfigurationManager>();
 
-            ApplicationKey = config.GetSetting("TaxiHail.ApplicationKey");
-            ApplicationName = config.GetSetting("TaxiHail.ApplicationName");
-            DefaultLatitude = config.GetSetting("GeoLoc.DefaultLatitude");
-            DefaultLongitude = config.GetSetting("GeoLoc.DefaultLongitude");
-            DefaultPhoneNumber = config.GetSetting("DefaultPhoneNumberDisplay");
+            ApplicationKey = config.ServerData.TaxiHail.ApplicationKey;
+            ApplicationName = config.ServerData.TaxiHail.ApplicationName;
+            DefaultLatitude = config.ServerData.GeoLoc.DefaultLatitude.ToString();
+            DefaultLongitude = config.ServerData.GeoLoc.DefaultLongitude.ToString();
+            DefaultPhoneNumber = config.ServerData.DefaultPhoneNumberDisplay;
             IsAuthenticated = base.UserSession.IsAuthenticated;
-            FacebookAppId = config.GetSetting("FacebookAppId");
-            FacebookEnabled = config.GetSetting("FacebookEnabled");
-            HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
-            DisableFutureBooking = config.GetSetting("Client.DisableFutureBooking");
-            IsWebSignupVisible = !config.GetSetting<bool>("IsWebSignupHidden", false);
+            FacebookAppId = config.ServerData.FacebookAppId;
+            FacebookEnabled = config.ServerData.FacebookEnabled;
+            HideDispatchButton = config.ServerData.HideCallDispatchButton;
+            DisableFutureBooking = config.ServerData.DisableFutureBooking;
+            IsWebSignupVisible = !config.ServerData.IsWebSignupHidden;
 
-            DirectionTarifMode = config.GetSetting("Direction.TarifMode");
-            DirectionNeedAValidTarif = config.GetSetting("Direction.NeedAValidTarif", false);
+            DirectionTarifMode = config.ServerData.Direction.TarifMode.ToString("G");
+            DirectionNeedAValidTarif = config.ServerData.Direction.NeedAValidTarif;
 
             ApplicationVersion = Assembly.GetAssembly(typeof (_default)).GetName().Version.ToString();
 
-            EstimateEnabled = config.GetSetting("Client.ShowEstimate");
-            EstimateWarningEnabled = config.GetSetting("Client.ShowEstimateWarning");
-            EtaEnabled = config.GetSetting("Client.ShowEta");
-            DestinationIsRequired = config.GetSetting("Client.DestinationIsRequired");
-            MaxFareEstimate = config.GetSetting<double>("Client.MaxFareEstimate", 100);
-            
-            var accountActivationDisabled = config.GetSetting("AccountActivationDisabled");
-            AccountActivationDisabled = string.IsNullOrWhiteSpace(accountActivationDisabled)
-                ? bool.FalseString.ToLower()
-                : accountActivationDisabled;
+            EstimateEnabled = config.ServerData.ShowEstimate;
+            EstimateWarningEnabled = config.ServerData.ShowEstimateWarning;
+            EtaEnabled = config.ServerData.ShowEta;
+            DestinationIsRequired = config.ServerData.DestinationIsRequired;
+            MaxFareEstimate = config.ServerData.MaxFareEstimate;
+            AccountActivationDisabled = config.ServerData.AccountActivationDisabled;
 
-            ShowPassengerNumber = config.GetSetting("Client.ShowPassengerNumber", true);
+            ShowPassengerNumber = config.ServerData.ShowPassengerNumber;
 
-            var filters = config.GetSetting("GeoLoc.SearchFilter").Split('&');
+            var filters = config.ServerData.GeoLoc.SearchFilter.Split('&');
             GeolocSearchFilter = filters.Length > 0
                 ? Uri.UnescapeDataString(filters[0]).Replace('+', ' ')
                 : "{0}";

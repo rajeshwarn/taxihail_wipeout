@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _ibs = ibs;
             _orderDao = orderDao;
 
-            _resources = new Resources.Resources(configManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
+            _resources = new Resources.Resources(configManager.ServerData.TaxiHail.ApplicationKey, appSettings);
         }
 
         public void Pair(Guid orderId, string cardToken, int? autoTipPercentage)

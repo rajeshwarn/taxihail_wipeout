@@ -20,12 +20,17 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         protected string UserNameApp
         {
-            get { return ConfigManager.GetSetting("IBS.WebServicesUserName"); }
+            get { return ConfigManager.ServerData.IBS.WebServicesUserName; }
         }
 
         protected string PasswordApp
         {
-            get { return ConfigManager.GetSetting("IBS.WebServicesPassword"); }
+            get { return ConfigManager.ServerData.IBS.WebServicesPassword; }
+        }
+
+        protected virtual string GetUrl()
+        {
+            return ConfigManager.ServerData.IBS.WebServicesUrl;
         }
 
         protected IConfigurationManager ConfigManager { get; set; }
@@ -48,11 +53,6 @@ namespace apcurium.MK.Booking.IBS.Impl
                 service.Abort();
                 service.Dispose();
             }
-        }
-
-        protected virtual string GetUrl()
-        {
-            return ConfigManager.GetSetting("IBS.WebServicesUrl");
         }
     }
 }

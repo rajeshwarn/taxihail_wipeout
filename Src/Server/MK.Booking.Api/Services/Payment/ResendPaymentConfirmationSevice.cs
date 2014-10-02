@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _orderPaymentDao = orderPaymentDao;
             _ibs = ibs;
 
-            _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
+            _resources = new Resources.Resources(configurationManager.ServerData.TaxiHail.ApplicationKey, appSettings);
         }
 
         public object Post(ResendPaymentConfirmationRequest request)

@@ -92,6 +92,7 @@
     <Compile Include="Caching\EFCacheClient.cs" />
     <Compile Include="ChargeTypesClient.cs" />
     <Compile Include="Configuration\Attributes\SendToClient.cs" />
+    <Compile Include="Configuration\Helpers\ConfigManagerLoader.cs" />
     <Compile Include="Configuration\IAppSettings.cs" />
     <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
     <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />

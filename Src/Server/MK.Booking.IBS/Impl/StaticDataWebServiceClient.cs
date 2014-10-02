@@ -46,9 +46,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             }
 
             var useProvider = providerId.HasValue && providerId > 0;
-            var zoneByCompanyEnabled =
-                ConfigManager.GetSetting("IBS.ZoneByCompanyEnabled")
-                    .SelectOrDefault(bool.Parse, false);
+            var zoneByCompanyEnabled = ConfigManager.ServerData.IBS.ZoneByCompanyEnabled;
             
             UseService(service =>
             {

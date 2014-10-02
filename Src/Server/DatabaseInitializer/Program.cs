@@ -760,14 +760,13 @@ namespace DatabaseInitializer
                 CompanyId = AppConstants.CompanyId
             });
         }
-
         private static void CreateDefaultTariff(ServerTaxiHailSetting serverSettings, ICommandBus commandBus)
         {
             commandBus.Send(new CreateTariff
             {
                 Type = TariffType.Default,
                 KilometricRate = serverSettings.Direction.FlateRate,
-                FlatRate = (decimal)serverSettings.Direction.RatePerKm,
+                FlatRate = serverSettings.Direction.RatePerKm,
                 MarginOfError = 20,
                 CompanyId = AppConstants.CompanyId,
                 TariffId = Guid.NewGuid(),

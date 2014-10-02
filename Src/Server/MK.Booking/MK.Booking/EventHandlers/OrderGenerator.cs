@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.EventHandlers
             _contextFactory = contextFactory;
             _logger = logger;
 
-            var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
+            var applicationKey = configurationManager.ServerData.TaxiHail.ApplicationKey;
             _resources = new Resources.Resources(applicationKey, appSettings);
         }
 

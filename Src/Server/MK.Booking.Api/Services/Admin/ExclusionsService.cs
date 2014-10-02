@@ -32,10 +32,10 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 
         public object Get(ExclusionsRequest request)
         {
-            var excludedVehicleTypeId = _configManager.GetSetting("IBS.ExcludedVehicleTypeId").SelectOrDefault(s => s
+            var excludedVehicleTypeId = _configManager.ServerData.IBS.ExcludedVehicleTypeId.SelectOrDefault(s => s
                 .Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries)
                 .Select(int.Parse).ToArray(), new int[0]);
-            var excludedProviderId = _configManager.GetSetting("IBS.ExcludedProviderId").SelectOrDefault(s => s
+            var excludedProviderId = _configManager.ServerData.IBS.ExcludedProviderId.SelectOrDefault(s => s
                 .Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries)
                 .Select(int.Parse).ToArray(), new int[0]);
 
