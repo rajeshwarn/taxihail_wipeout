@@ -556,10 +556,10 @@
     <value>التكلفة المتوقعة غير متاحة</value>
   </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>({1}) {0}: التكلفة المتوقعة</value>
+    <value>({1}) التكلفة المتوقعة: {0}</value>
   </data>
   <data name="CurrencyPriceFormat" xml:space="preserve">
-    <value>{0:0.00}ر.س</value>
+    <value>{0} ر.س</value>
   </data>
   <data name="EstimatePriceOver100" xml:space="preserve">
     <value>إتصال لمعرفة السعر</value>
