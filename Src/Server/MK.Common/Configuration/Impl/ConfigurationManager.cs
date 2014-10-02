@@ -66,11 +66,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             }
         }
 
-        public void Reset()
-        {
-        }
-
-        public ClientPaymentSettings GetPaymentSettings(bool force = true)
+        public ClientPaymentSettings GetPaymentSettings()
         {
             using (var context = _contextFactory.Invoke())
             {

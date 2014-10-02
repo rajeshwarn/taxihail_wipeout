@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Api.Services
             var info = new ApplicationInfo
             {
                 Version = Assembly.GetAssembly(typeof (ApplicationInfoService)).GetName().Version.ToString(),
-                SiteName = _configManager.GetSetting("TaxiHail.SiteName")
+                SiteName = _configManager.ServerData.TaxiHail.SiteName
             };
             return info;
         }

@@ -56,17 +56,16 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 #if DEBUG
             const bool production = false;
             var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                _configurationManager.GetSetting("APNS.DevelopmentCertificatePath"));
+                _configurationManager.ServerData.APNS.DevelopmentCertificatePath);
 #else
             const bool production = true;
             var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
-                _configurationManager.GetSetting("APNS.ProductionCertificatePath"));
+                _configurationManager.ServerData.APNS.ProductionCertificatePath);
 #endif
             // Push notifications
-            var test = _configurationManager.GetSetting("GCM.SenderId");
-            var apiKey = _configurationManager.GetSetting("GCM.APIKey");
-            var androidSettings = new GcmPushChannelSettings(test, apiKey,
-                _configurationManager.GetSetting("GCM.PackageName"));
+            var test = _configurationManager.ServerData.GCM.SenderId;
+            var apiKey = _configurationManager.ServerData.GCM.APIKey;
+            var androidSettings = new GcmPushChannelSettings(test, apiKey, _configurationManager.ServerData.GCM.PackageName);
 
             //Wire up the events
             _push.OnDeviceSubscriptionExpired += OnDeviceSubscriptionExpired;
@@ -81,8 +80,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
             // Apple settings placed next for development purpose. (Crashing the method when certificate is missing.)
             var appleCert = File.ReadAllBytes(certificatePath);
-            var appleSettings = new ApplePushChannelSettings(production, appleCert,
-                _configurationManager.GetSetting("APNS.CertificatePassword"));
+            var appleSettings = new ApplePushChannelSettings(production, appleCert, _configurationManager.ServerData.APNS.CertificatePassword);
             _push.RegisterAppleService(appleSettings);
         }
 

@@ -37,21 +37,13 @@ namespace apcurium.MK.Booking.Email
                 {
                     _configuration = new SmtpConfiguration
                     {
-                        Host = _configurationManager.GetSetting("Smtp.Host"),
-                        Port =
-                            Convert.ToInt32(_configurationManager.GetSetting("Smtp.Port"), CultureInfo.InvariantCulture),
-                        EnableSsl =
-                            Convert.ToBoolean(_configurationManager.GetSetting("Smtp.EnableSsl"),
-                                CultureInfo.InvariantCulture),
-                        DeliveryMethod =
-                            (SmtpDeliveryMethod)
-                                Enum.Parse(typeof (SmtpDeliveryMethod),
-                                    _configurationManager.GetSetting("Smtp.DeliveryMethod")),
-                        UseDefaultCredentials =
-                            Convert.ToBoolean(_configurationManager.GetSetting("Smtp.UseDefaultCredentials"),
-                                CultureInfo.InvariantCulture),
-                        Username = _configurationManager.GetSetting("Smtp.Credentials.Username"),
-                        Password = _configurationManager.GetSetting("Smtp.Credentials.Password"),
+                        Host = _configurationManager.ServerData.Smtp.Host,
+                        Port = _configurationManager.ServerData.Smtp.Port,
+                        EnableSsl = _configurationManager.ServerData.Smtp.EnableSsl,
+                        DeliveryMethod = _configurationManager.ServerData.Smtp.DeliveryMethod,
+                        UseDefaultCredentials = _configurationManager.ServerData.Smtp.UseDefaultCredentials,
+                        Username = _configurationManager.ServerData.Smtp.Credentials.Username,
+                        Password = _configurationManager.ServerData.Smtp.Credentials.Password,
                     };
                 }
 
@@ -64,7 +56,6 @@ namespace apcurium.MK.Booking.Email
                         client.Send(message);
                     }
                 };
-
 
                 sendAction.Retry(new TimeSpan(0, 0, 0, 15), 10);
             });

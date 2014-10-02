@@ -719,14 +719,11 @@ namespace DatabaseInitializer
 
         private static void CreateDefaultTariff(IConfigurationManager configurationManager, ICommandBus commandBus)
         {
-            var flatRate = configurationManager.GetSetting("Direction.FlateRate");
-            var ratePerKm = configurationManager.GetSetting("Direction.RatePerKm");
-
             commandBus.Send(new CreateTariff
             {
                 Type = TariffType.Default,
-                KilometricRate = double.Parse(ratePerKm, CultureInfo.InvariantCulture),
-                FlatRate = decimal.Parse(flatRate, CultureInfo.InvariantCulture),
+                KilometricRate = configurationManager.ServerData.Direction.RatePerKm,
+                FlatRate = configurationManager.ServerData.Direction.FlateRate,
                 MarginOfError = 20,
                 CompanyId = AppConstants.CompanyId,
                 TariffId = Guid.NewGuid(),

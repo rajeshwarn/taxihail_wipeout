@@ -21,36 +21,6 @@ namespace MK.Booking.IBS.Test
             {"IBS.WebServicesUserName", "taxi"}
         };
 
-        public void Reset()
-        {
-            throw new NotImplementedException();
-        }
-        
-        public string GetSetting(string key)
-        {
-            string val;
-            if (_settings.TryGetValue(key, out val))
-            {
-                return val;
-            }
-            return null;
-        }
-
-        public T GetSetting<T>(string key, T defaultValue) where T : struct
-        {
-            var value = GetSetting(key);
-            if (string.IsNullOrWhiteSpace(value)) return defaultValue;
-            var converter = TypeDescriptor.GetConverter(defaultValue);
-            if (converter == null)
-                throw new InvalidOperationException("Type " + typeof (T).Name + " has no type converter");
-            
-            var convertFromInvariantString = converter.ConvertFromInvariantString(value);
-            if (convertFromInvariantString != null)
-                return (T) convertFromInvariantString;
-            
-            return defaultValue;
-        }
-
         public ServerTaxiHailSetting ServerData { get; private set; }
 
         public IDictionary<string, string> GetSettings()
@@ -58,14 +28,9 @@ namespace MK.Booking.IBS.Test
             return _settings;
         }
 
-        public ClientPaymentSettings GetPaymentSettings(bool cleanCache = false)
+        public ClientPaymentSettings GetPaymentSettings()
         {
             throw new NotImplementedException();
-        }
-
-        public void AddKey(string key, string val)
-        {
-            _settings.Add(key, val);
         }
     }
 }

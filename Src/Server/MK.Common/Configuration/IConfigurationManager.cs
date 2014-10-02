@@ -10,11 +10,8 @@ namespace apcurium.MK.Common.Configuration
 {
     public interface IConfigurationManager
     {
-        void Reset();
-        string GetSetting(string key);
-        T GetSetting<T>(string key, T defaultValue) where T : struct;
         ServerTaxiHailSetting ServerData { get; }
         IDictionary<string, string> GetSettings();
-        ClientPaymentSettings GetPaymentSettings(bool force = true);
+        ClientPaymentSettings GetPaymentSettings();
     }
 }

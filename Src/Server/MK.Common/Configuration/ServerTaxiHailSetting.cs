@@ -76,6 +76,8 @@ namespace MK.Common.Configuration
             {
                 Note = "Thank You!"
             };
+
+            PayPalConversionRate = 1;
         }
 
         public AdminSettingContainer Admin { get; protected set; }
@@ -86,5 +88,9 @@ namespace MK.Common.Configuration
         public IBSSettingContainer IBS { get; protected set; }
         public EmailSettingContainer Email { get; protected set; }
         public ReceiptSettingContainer Receipt { get; protected set; }
+
+        public bool IsWebSignupHidden { get; protected set; }
+        public string PayPalRegionInfoOverride { get; protected set; }
+        public decimal PayPalConversionRate { get; protected set; }
     }
 }

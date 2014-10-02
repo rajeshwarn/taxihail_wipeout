@@ -32,11 +32,11 @@ namespace apcurium.MK.Web.admin
         {
             var config = ServiceLocator.Current.GetInstance<IConfigurationManager>();
 
-            ApplicationKey = config.GetSetting("TaxiHail.ApplicationKey");
-            ApplicationName = config.GetSetting("TaxiHail.ApplicationName");
+            ApplicationKey = config.ServerData.TaxiHail.ApplicationKey;
+            ApplicationName = config.ServerData.TaxiHail.ApplicationName;
 
-            DefaultLatitude = config.GetSetting("GeoLoc.DefaultLatitude");
-            DefaultLongitude = config.GetSetting("GeoLoc.DefaultLongitude");
+            DefaultLatitude = config.ServerData.GeoLoc.DefaultLatitude.ToString();
+            DefaultLongitude = config.ServerData.GeoLoc.DefaultLongitude.ToString();
             ApplicationVersion = Assembly.GetAssembly(typeof (_default)).GetName().Version.ToString();
 
             IsAuthenticated = base.UserSession.IsAuthenticated;
@@ -45,7 +45,7 @@ namespace apcurium.MK.Web.admin
             var languages = Enum.GetNames(typeof(SupportedLanguages)).ToList();
             Languages = JsonSerializer.SerializeToString(languages, languages.GetType());
 
-            var filters = config.GetSetting("GeoLoc.SearchFilter").Split('&');
+            var filters = config.ServerData.GeoLoc.SearchFilter.Split('&');
             GeolocSearchFilter = filters.Length > 0
                 ? Uri.UnescapeDataString(filters[0]).Replace('+', ' ')
                 : "{0}";

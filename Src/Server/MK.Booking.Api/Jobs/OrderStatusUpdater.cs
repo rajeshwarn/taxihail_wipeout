@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             _commandBus = commandBus;
             _orderPaymentDao = orderPaymentDao;
 
-            _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
+            _resources = new Resources.Resources(configurationManager.ServerData.TaxiHail.ApplicationKey, appSettings);
         }
 
         public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
@@ -293,7 +293,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 description = string.Format(_resources.Get("OrderStatus_CabDriverNumberAssigned", _languageCode), ibsOrderInfo.VehicleNumber);
                 Log.DebugFormat("Setting Assigned status description: {0}", description);
 
-                if (_configurationManager.GetSetting("Client.ShowEta", false))
+                if (_configurationManager.ServerData.ShowEta)
                 {
                     try
                     {

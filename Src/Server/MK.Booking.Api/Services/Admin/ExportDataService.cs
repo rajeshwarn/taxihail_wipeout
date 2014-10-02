@@ -35,9 +35,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 
         public object Post(ExportDataRequest request)
         {
-            var ibsServerTimeDifference =
-                _configurationManager.GetSetting("IBS.TimeDifference").SelectOrDefault(long.Parse, 0);
-            var offset = new TimeSpan(ibsServerTimeDifference);
+            var offset = new TimeSpan(_configurationManager.ServerData.IBS.TimeDifference);
             
             var startDate = request.StartDate ?? DateTime.MinValue;
             var endDate = (request.EndDate ?? DateTime.MaxValue).AddDays(1); // Add one day to include the current day since it ends at midnight

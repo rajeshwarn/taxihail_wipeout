@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (request.AppSettingsType.Equals(AppSettingsType.Webapp))
             {
-                var listKeys = _configManager.GetSetting("Admin.CompanySettings");
+                var listKeys = _configManager.ServerData.Admin.CompanySettings;
                 if (listKeys != null) keys = listKeys.Split(',');
             }
             else //AppSettingsType.Mobile

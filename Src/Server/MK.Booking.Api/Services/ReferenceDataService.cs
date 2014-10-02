@@ -45,8 +45,8 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!request.WithoutFiltering)
             {
-                result.VehiclesList = FilterReferenceData(result.VehiclesList, "IBS.ExcludedVehicleTypeId");
-                result.CompaniesList = FilterReferenceData(result.CompaniesList, "IBS.ExcludedProviderId");
+                result.VehiclesList = FilterReferenceData(result.VehiclesList, _configManager.ServerData.IBS.ExcludedVehicleTypeId);
+                result.CompaniesList = FilterReferenceData(result.CompaniesList, _configManager.ServerData.IBS.ExcludedProviderId);
             }
 
             return result;
@@ -76,12 +76,11 @@ namespace apcurium.MK.Booking.Api.Services
             return result;
         }
 
-        private IList<ListItem> FilterReferenceData(IEnumerable<ListItem> reference, string settingName)
+        private IList<ListItem> FilterReferenceData(IEnumerable<ListItem> reference, string excludedTypeId)
         {
-            var excludedVehicleTypeId = _configManager.GetSetting(settingName);
-            var excluded = excludedVehicleTypeId.IsNullOrEmpty()
+            var excluded = excludedTypeId.IsNullOrEmpty()
                 ? new int[0]
-                : excludedVehicleTypeId.Split(';').Select(int.Parse).ToArray();
+                : excludedTypeId.Split(';').Select(int.Parse).ToArray();
 
             return reference.Where(c => excluded.None(e => e == c.Id)).ToList();
         }

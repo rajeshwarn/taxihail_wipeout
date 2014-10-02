@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 
 namespace MK.Common.Configuration
 {
@@ -75,6 +76,8 @@ namespace MK.Common.Configuration
 		    VehicleTypeSelectionEnabled = false;
 		    SendPushAsSMS = false;
             AllowSimultaneousAppOrders = false;
+
+		    MaxFareEstimate = 100;
 		}
 
         public TaxiHailSettingContainer TaxiHail { get; protected set; }
@@ -220,15 +223,11 @@ namespace MK.Common.Configuration
 
 		[Display(Name = "Hide Pay Now Button During Ride", Description = "This will hide the pay now button, on the status screen, if the ride is not completed")]
 		public bool HidePayNowButtonDuringRide { get; protected set; }
-
-		
         
         [Display(Name = "Price Format Culture", Description="Format to display amount (Culture, ex: en-US)")]
 		public string PriceFormat { get; protected set; }
         [Display(Name = "Distance Format", Description="Format to display distance ('km' or 'mile')")]
-		public string DistanceFormat { get; protected set; }
-        
-        
+		public DistanceFormat DistanceFormat { get; protected set; }
         
         [Display(Name = "Range", Description="???")]
         public double Range { get; protected set; }

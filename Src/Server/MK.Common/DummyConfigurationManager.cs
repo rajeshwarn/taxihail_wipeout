@@ -25,24 +25,6 @@ namespace apcurium.MK.Common
 
         private IDictionary<string, string> AppSettings { get; set; }
 
-        public void Reset()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetSetting(string key)
-        {
-            string value;
-            AppSettings.TryGetValue(key, out value);
-
-            return value;
-        }
-
-        public T GetSetting<T>(string key, T defaultValue) where T : struct
-        {
-            throw new NotImplementedException();
-        }
-
         public ServerTaxiHailSetting ServerData { get; private set; }
 
         public IDictionary<string, string> GetSettings()
@@ -50,7 +32,7 @@ namespace apcurium.MK.Common
             return AppSettings;
         }
 
-        public ClientPaymentSettings GetPaymentSettings(bool force = true)
+        public ClientPaymentSettings GetPaymentSettings()
         {
             throw new NotImplementedException();
         }

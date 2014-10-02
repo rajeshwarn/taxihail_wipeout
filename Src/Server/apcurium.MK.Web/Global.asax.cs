@@ -36,12 +36,11 @@ namespace apcurium.MK.Web
             new MkWebAppHost().Init();
 
             var config = UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
-            BundleConfig.RegisterBundles(BundleTable.Bundles, config.GetSetting("TaxiHail.ApplicationKey"));
+            BundleConfig.RegisterBundles(BundleTable.Bundles, config.ServerData.TaxiHail.ApplicationKey);
 
-            var configurationManager =
-                UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
+            var configurationManager = UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
 
-            _defaultPollingValue = configurationManager.GetSetting<int>("OrderStatus.ServerPollingInterval", 10);
+            _defaultPollingValue = configurationManager.ServerData.OrderStatus.ServerPollingInterval;
             PollIbs(_defaultPollingValue);
         }
 
@@ -105,7 +104,7 @@ namespace apcurium.MK.Web
 
                     var config = UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
                     Log.Info(string.Format("[{2}] Request info : {0} completed in {1}ms ", Request.Path,
-                        watch.ElapsedMilliseconds, config.GetSetting("TaxiHail.ApplicationKey")));
+                        watch.ElapsedMilliseconds, config.ServerData.TaxiHail.ApplicationKey));
                 }
             }
         }

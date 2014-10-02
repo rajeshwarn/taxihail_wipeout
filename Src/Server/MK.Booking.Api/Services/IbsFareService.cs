@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 using ServiceStack.ServiceInterface;
 
 #endregion
@@ -44,10 +45,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             if (distance.HasValue)
             {
-                //var format = _configManager.GetSetting("DistanceFormat").ToEnum<DistanceFormat>(true, DistanceFormat.Km);                                                           
-                var format = _configManager.GetSetting("DistanceFormat", Directions.DistanceFormat.Km);
-
-                if (format == Directions.DistanceFormat.Km)
+                if (_configManager.ServerData.DistanceFormat == DistanceFormat.Km)
                 {
                     var distanceInKm = Math.Round((double) distance.Value/1000, 1);
                     return string.Format("{0:n1} km", distanceInKm);

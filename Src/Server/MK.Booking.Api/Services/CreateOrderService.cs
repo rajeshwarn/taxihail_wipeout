@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Api.Services
             _updateOrderStatusJob = updateOrderStatusJob;
             _orderDao = orderDao;
 
-            _resources = new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
+            _resources = new Resources.Resources(_configManager.ServerData.TaxiHail.ApplicationKey, appSettings);
         }
 
         public object Post(CreateOrder request)
@@ -138,8 +138,8 @@ namespace apcurium.MK.Booking.Api.Services
                 ? 1 
                 : request.Settings.Passengers;
 
-            var needATarif = bool.Parse(_configManager.GetSetting("Direction.NeedAValidTarif"));
-            if (needATarif && (!request.Estimate.Price.HasValue || request.Estimate.Price == 0))
+            if (_configManager.ServerData.Direction.NeedAValidTarif 
+                && (!request.Estimate.Price.HasValue || request.Estimate.Price == 0))
             {
                 throw new HttpError(ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString());
             }
@@ -176,14 +176,12 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             //Temporary solution for Aexid, we call the save extr payment to send the account info.  if not successful, we cancel the order.
-            var result = TryToSendAccountInformation(  request.Id,   ibsOrderId.Value , request, account);
-            if ( result.HasValue  )
+            var result = TryToSendAccountInformation(request.Id, ibsOrderId.Value, request, account);
+            if (result.HasValue)
             {
-                
                 return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + "_" + Math.Abs(result.Value));
             }
             
-
             var command = Mapper.Map<Commands.CreateOrder>(request);
             var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(request);
 
@@ -254,13 +252,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         private int? TryToSendAccountInformation(Guid orderId, int ibsOrderId, CreateOrder request, AccountDetail account)
         {
-            var accountChargeTypeId = _configManager.GetSetting<int>("AccountChargeTypeId", -1);
-            if (accountChargeTypeId == -1)
-            {
-                accountChargeTypeId = _configManager.GetSetting<int>("Client.AccountChargeTypeId", -1);
-            }
-
-            if (accountChargeTypeId == request.Settings.ChargeTypeId)
+            if (ChargeTypes.Account.Id == request.Settings.ChargeTypeId)
             {
                 return  _bookingWebServiceClient.SendAccountInformation(orderId, ibsOrderId, "Account", request.Settings.AccountNumber, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, account.Email);                
             }
@@ -282,8 +274,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             //TODO : need to check ibs setup for shortesst time.
 
-            var ibsServerTimeDifference =
-                _configManager.GetSetting("IBS.TimeDifference").SelectOrDefault(setting => long.Parse(setting), 0);
+            var ibsServerTimeDifference = _configManager.ServerData.IBS.TimeDifference;
             var offsetedTime = DateTime.Now.AddMinutes(2);
             if (ibsServerTimeDifference != 0)
             {
@@ -345,7 +336,7 @@ namespace apcurium.MK.Booking.Api.Services
             // Put Building Name in note, if specified
 
             // Get NoteTemplate from app settings, if it exists
-            var noteTemplate = _configManager.GetSetting("IBS.NoteTemplate");
+            var noteTemplate = _configManager.ServerData.IBS.NoteTemplate;
 
             if (!string.IsNullOrWhiteSpace(buildingName))
             {

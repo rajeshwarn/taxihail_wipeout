@@ -119,8 +119,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
                 var config = new TestConfigurationManager();
                 Assert.IsNull(dto.Settings.ChargeTypeId);
-                Assert.AreEqual(dto.Settings.Passengers.ToString(CultureInfo.InvariantCulture),
-                    config.GetSetting("DefaultBookingSettings.NbPassenger"));
+                Assert.AreEqual(dto.Settings.Passengers, config.ServerData.DefaultBookingSettings.NbPassenger);
                 Assert.IsNull(dto.Settings.VehicleTypeId);
                 Assert.IsNull(dto.Settings.ProviderId);
             }

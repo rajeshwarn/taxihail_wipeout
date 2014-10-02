@@ -47,13 +47,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _logger = logger;
             _orderDao = orderDao;
 
-            var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
+            var applicationKey = configurationManager.ServerData.TaxiHail.ApplicationKey;
             _resources = new Resources.Resources(applicationKey, appSettings);
         }
 
-
-        public PayPalExpressCheckoutPaymentResponse Post(
-            InitiatePayPalExpressCheckoutPaymentRequest request)
+        public PayPalExpressCheckoutPaymentResponse Post(InitiatePayPalExpressCheckoutPaymentRequest request)
         {
             var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
             var successUrl = root + "/api/payment/paypal/success";
@@ -66,10 +64,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
 
-            var conversionRate = _configurationManager.GetSetting<decimal>("PayPalConversionRate", 1);
-
-
-            var regionName = _configurationManager.GetSetting("PayPalRegionInfoOverride");
+            var conversionRate = _configurationManager.ServerData.PayPalConversionRate;
+            
+            var regionName = _configurationManager.ServerData.PayPalRegionInfoOverride;
             string description  =  "";
             if (!string.IsNullOrWhiteSpace(regionName))
             {
@@ -78,13 +75,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             
             _logger.LogMessage("Paypal Converstion Rate : " + conversionRate.ToString());
             var amount = Math.Round(request.Amount * conversionRate, 2);
-
-
+            
             var token = service.SetExpressCheckout( amount , successUrl, cancelUrl, description);
             var checkoutUrl = service.GetCheckoutUrl(token);
-
-
-
+            
             _commandBus.Send(new InitiatePayPalExpressCheckoutPayment
             {
                 OrderId = request.OrderId,
@@ -137,8 +131,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 : payPalSettings.Credentials;
             var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
 
-            var conversionRate = _configurationManager.GetSetting<decimal>("PayPalConversionRate", 1);
-            _logger.LogMessage("Paypal Converstion Rate : " + conversionRate.ToString());
+            var conversionRate = _configurationManager.ServerData.PayPalConversionRate;
+            _logger.LogMessage("Paypal Converstion Rate : " + conversionRate);
 
             var amount = Math.Round(payment.Amount * conversionRate, 2);
 

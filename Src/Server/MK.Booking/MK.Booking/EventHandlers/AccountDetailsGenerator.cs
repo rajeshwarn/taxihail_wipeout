@@ -104,12 +104,11 @@ namespace apcurium.MK.Booking.EventHandlers
                     account.Roles |= (int) Roles.Admin;
                 }
 
-                var nbPassenger = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.NbPassenger"));
                 account.Settings = new BookingSettings
                 {
                     Name = account.Name,
                     NumberOfTaxi = 1,
-                    Passengers = nbPassenger,
+                    Passengers = _configurationManager.ServerData.DefaultBookingSettings.NbPassenger,
                     Phone = @event.Phone,
                 };
 
@@ -157,25 +156,20 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.ProviderId = @event.ProviderId;
                 settings.VehicleTypeId = @event.VehicleTypeId;
 
-                if (settings.ChargeTypeId ==
-                    ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.ChargeTypeId")))
+                if (settings.ChargeTypeId == _configurationManager.ServerData.DefaultBookingSettings.ChargeTypeId)
                 {
                     settings.ChargeTypeId = null;
                 }
 
-
-                if (settings.VehicleTypeId ==
-                    ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.VehicleTypeId")))
+                if (settings.VehicleTypeId == _configurationManager.ServerData.DefaultBookingSettings.VehicleTypeId)
                 {
                     settings.VehicleTypeId = null;
                 }
 
-                if (settings.ProviderId ==
-                    ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.ProviderId")))
+                if (settings.ProviderId == _configurationManager.ServerData.DefaultBookingSettings.ProviderId)
                 {
                     settings.ProviderId = null;
                 }
-
 
                 settings.NumberOfTaxi = @event.NumberOfTaxi;
                 settings.Passengers = @event.Passengers;
