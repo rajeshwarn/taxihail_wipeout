@@ -112,7 +112,7 @@ namespace DatabaseInitializer
                 if (isUpdate)
                 {
                     // Remove all default value DB settings
-                    CleanDefaultSettings(commandBus, configurationManager.Data);
+                    CleanDefaultSettings(commandBus, configurationManager.ServerData);
                 }
 
                 // TODO: update to use the settings class instead of key/value dictionnary
@@ -695,7 +695,7 @@ namespace DatabaseInitializer
 
             foreach (var setting in defaultSettingsProperties)
             {
-                var settingValue = /*setting.Value*/taxiHailSettings.GetNestedPropertyValue(/*setting.Key*/"GCM.APIKey");
+                var settingValue = taxiHailSettings.GetNestedPropertyValue(setting.Key);
                 string settingStringValue = settingValue == null ? string.Empty : settingValue.ToString();
 
                 // For boolean values, string comparison will ignore case

@@ -24,7 +24,7 @@ namespace apcurium.MK.Common.Extensions
             return allProperties;
         }
 
-        private static void GetNestedTypeProperties(this Type type, string fullName, Dictionary<string, PropertyInfo> allProperties)
+        private static void GetNestedTypeProperties(this Type type, string fullName, IDictionary<string, PropertyInfo> allProperties)
         {
             var nestedTypes = new List<Type>();
             if (type.BaseType != null)
