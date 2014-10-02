@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IAccountDao _accountDao;
         private readonly Resources.Resources _resources;
 
-        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, ICreditCardDao creditCardDao, IIbsOrderService ibs, IConfigurationManager configurationManager, IAppSettings appSettings)
+        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, ICreditCardDao creditCardDao, IIbsOrderService ibs, IConfigurationManager configurationManager)
         {
             _accountDao = accountDao;
             _dao = dao;
@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _creditCardDao = creditCardDao;
             _ibs = ibs;
 
-            _resources = new Resources.Resources(configurationManager.ServerData.TaxiHail.ApplicationKey, appSettings);
+            _resources = new Resources.Resources(configurationManager);
         }
 
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)

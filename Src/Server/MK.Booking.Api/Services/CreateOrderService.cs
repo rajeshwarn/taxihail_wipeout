@@ -42,7 +42,6 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationManager _configManager;
-        private readonly IAppSettings _appSettings;
         private readonly ReferenceDataService _referenceDataService;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
@@ -53,7 +52,6 @@ namespace apcurium.MK.Booking.Api.Services
             IBookingWebServiceClient bookingWebServiceClient,
             IAccountDao accountDao,
             IConfigurationManager configManager,
-            IAppSettings appSettings,
             ReferenceDataService referenceDataService,
             IStaticDataWebServiceClient staticDataWebServiceClient,
             IRuleCalculator ruleCalculator,
@@ -67,13 +65,12 @@ namespace apcurium.MK.Booking.Api.Services
             _accountDao = accountDao;
             _referenceDataService = referenceDataService;
             _configManager = configManager;
-            _appSettings = appSettings;
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _ruleCalculator = ruleCalculator;
             _updateOrderStatusJob = updateOrderStatusJob;
             _orderDao = orderDao;
 
-            _resources = new Resources.Resources(_configManager.ServerData.TaxiHail.ApplicationKey, appSettings);
+            _resources = new Resources.Resources(_configManager);
         }
 
         public object Post(CreateOrder request)
@@ -87,7 +84,9 @@ namespace apcurium.MK.Booking.Api.Services
                 var pendingOrderId = GetPendingOrder();
 
                 // We don't allow order creation if there's already an order scheduled
-                if (!_appSettings.Data.AllowSimultaneousAppOrders && pendingOrderId != null && !request.FromWebApp)
+                if (!_configManager.ServerData.AllowSimultaneousAppOrders 
+                    && pendingOrderId != null 
+                    && !request.FromWebApp)
                 {
                     throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
                 }
@@ -161,7 +160,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 // this must be localized with the priceformat to be localized in the language of the company
                 // because it is sent to the driver
-                chargeTypeIbs = _resources.Get(chargeTypeKey, _appSettings.Data.PriceFormat);
+                chargeTypeIbs = _resources.Get(chargeTypeKey, _configManager.ServerData.PriceFormat);
 
                 chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
             }

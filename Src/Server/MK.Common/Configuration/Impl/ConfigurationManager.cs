@@ -28,36 +28,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             ServerData = new ServerTaxiHailSetting();
             Load();
         }
-
-        public string GetSetting(string key)
-        {
-            string value;
-
-            GetSettings().TryGetValue(key, out value);
-
-            return value;
-        }
-
-        public T GetSetting<T>(string key, T defaultValue) where T : struct
-        {
-            var value = GetSetting(key);
-            if (string.IsNullOrWhiteSpace(value)) return defaultValue;
-            var converter = TypeDescriptor.GetConverter(defaultValue);
-            if (converter == null)
-                throw new InvalidOperationException("Type " + typeof(T).Name + " has no type converter");
-            try
-            {
-                var convertFromInvariantString = converter.ConvertFromInvariantString(value);
-                if (convertFromInvariantString != null)
-                    return (T)convertFromInvariantString;
-            }
-            catch
-            {
-                Trace.WriteLine("Could not convert setting " + key + " to " + typeof(T).Name);
-            }
-            return defaultValue;
-        }
-
+        
         public IDictionary<string, string> GetSettings()
         {
             using (var context = _contextFactory.Invoke())
@@ -73,6 +44,11 @@ namespace apcurium.MK.Common.Configuration.Impl
                 var settings = context.Set<ServerPaymentSettings>().Find(AppConstants.CompanyId);
                 return settings ?? new ServerPaymentSettings();
             }
+        }
+
+        public void Reload()
+        {
+            Load();
         }
 
         public TaxiHailSetting Data { get { return ServerData; } }

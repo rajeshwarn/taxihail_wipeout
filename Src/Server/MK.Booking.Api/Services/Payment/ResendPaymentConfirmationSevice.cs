@@ -22,13 +22,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly Resources.Resources _resources;
 
         public ResendPaymentConfirmationSevice(IOrderDao orderDao, IOrderPaymentDao orderPaymentDao,
-            IConfigurationManager configurationManager, IIbsOrderService ibs, IAppSettings appSettings)
+            IConfigurationManager configurationManager, IIbsOrderService ibs)
         {
             _orderDao = orderDao;
             _orderPaymentDao = orderPaymentDao;
             _ibs = ibs;
 
-            _resources = new Resources.Resources(configurationManager.ServerData.TaxiHail.ApplicationKey, appSettings);
+            _resources = new Resources.Resources(configurationManager);
         }
 
         public object Post(ResendPaymentConfirmationRequest request)

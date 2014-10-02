@@ -69,8 +69,8 @@ namespace apcurium.MK.Booking.Api
                     var appSettings = c.Resolve<IAppSettings>();
                     var orderDao = c.Resolve<IOrderDao>();
                     return configManager.ServerData.IBS.FakeOrderStatusUpdate
-                        ? new OrderStatusIbsMock(orderDao, c.Resolve<OrderStatusUpdater>(), configManager, appSettings)
-                        : new OrderStatusHelper(orderDao, configManager, appSettings);
+                        ? new OrderStatusIbsMock(orderDao, c.Resolve<OrderStatusUpdater>(), configManager)
+                        : new OrderStatusHelper(orderDao, configManager);
                 }));
 
             container.RegisterType<IPaymentService>(

@@ -30,8 +30,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICreditCardDao _creditCardDao;
         private readonly IOrderDao _orderDao;
         private readonly IOrderPaymentDao _orderPaymentDao;
-        private readonly IConfigurationManager _configurationManager;
-        private readonly IAppSettings _appSettings;
+        private readonly IConfigurationManager _configManager;
 
         public SendReceiptService(
             ICommandBus commandBus,
@@ -40,12 +39,10 @@ namespace apcurium.MK.Booking.Api.Services
             IOrderPaymentDao orderPaymentDao,
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
-            IConfigurationManager configurationManager,
-            IAppSettings appSettings
+            IConfigurationManager configManager
             )
         {
-            _configurationManager = configurationManager;
-            _appSettings = appSettings;
+            _configManager = configManager;
             _bookingWebServiceClient = bookingWebServiceClient;
             _orderDao = orderDao;
             _orderPaymentDao = orderPaymentDao;
@@ -138,15 +135,15 @@ namespace apcurium.MK.Booking.Api.Services
                 return 0;
             }
             // if VAT is enabled, we need to substract the VAT amount from the meter amount, otherwise we return it as is
-            return _appSettings.Data.VATIsEnabled
-                ? Fare.FromAmountInclTax(meterAmount.Value, _appSettings.Data.VATPercentage).AmountExclTax
+            return _configManager.ServerData.VATIsEnabled
+                ? Fare.FromAmountInclTax(meterAmount.Value, _configManager.ServerData.VATPercentage).AmountExclTax
                 : Fare.FromAmountInclTax(meterAmount.Value, 0).AmountExclTax;
         }
 
         private double GetTaxAmount(double? meterAmount, double? taxAmountIfVATIsDisabled)
         {
-            return _appSettings.Data.VATIsEnabled
-                ? Fare.FromAmountInclTax(meterAmount.GetValueOrDefault(0), _appSettings.Data.VATPercentage).TaxAmount
+            return _configManager.ServerData.VATIsEnabled
+                ? Fare.FromAmountInclTax(meterAmount.GetValueOrDefault(0), _configManager.ServerData.VATPercentage).TaxAmount
                 : taxAmountIfVATIsDisabled.GetValueOrDefault(0);
         }
 
@@ -160,7 +157,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             try
             {
-                var cmtClient = new CmtMobileServiceClient(_configurationManager.GetPaymentSettings().CmtPaymentSettings, null, null);
+                var cmtClient = new CmtMobileServiceClient(_configManager.GetPaymentSettings().CmtPaymentSettings, null, null);
                 var trip = cmtClient.Get(new TripRequest { Token = pairingToken });
 
                 return trip;

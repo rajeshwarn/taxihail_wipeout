@@ -62,7 +62,6 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var attributes = setting.Value.GetCustomAttributes(false);
                 bool sendToClient = attributes.Any(a => a is SendToClientAttribute);
-
                 if (returnAllKeys || sendToClient || keys.Contains(setting.Key))
                 {
                     var settingValue = _configManager.ServerData.GetNestedPropertyValue(setting.Key).ToString();

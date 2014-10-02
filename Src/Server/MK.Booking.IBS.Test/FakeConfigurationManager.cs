@@ -32,5 +32,9 @@ namespace MK.Booking.IBS.Test
         {
             throw new NotImplementedException();
         }
+
+        public void Reload()
+        {
+        }
     }
 }

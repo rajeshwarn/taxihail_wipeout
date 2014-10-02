@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Test.Integration.AppSettingsFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            Sut = new AppSettingsGenerator(() => new ConfigurationDbContext(DbName));
+            Sut = new AppSettingsGenerator(() => new ConfigurationDbContext(DbName), new DummyConfigManager());
         }
     }
 

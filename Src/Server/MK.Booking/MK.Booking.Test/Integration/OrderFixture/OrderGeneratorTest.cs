@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            Sut = new OrderGenerator(() => new BookingDbContext(DbName), new Logger(), new TestConfigurationManager(), new TestConfigurationManager());
+            Sut = new OrderGenerator(() => new BookingDbContext(DbName), new Logger(), new TestConfigurationManager());
         }
     }
 
