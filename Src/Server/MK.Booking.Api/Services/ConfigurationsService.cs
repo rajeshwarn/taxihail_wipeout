@@ -1,5 +1,6 @@
 ﻿#region
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -9,6 +10,7 @@ using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using MK.Common.Configuration;
 using ServiceStack.Common.Web;
@@ -53,16 +55,20 @@ namespace apcurium.MK.Booking.Api.Services
                 };
             }
 
-            
+            var result = new Dictionary<string, string>();
+            var settings = _configManager.ServerData.GetType().GetAllProperties();
 
-            var allKeys = _configManager.GetSettings();
+            foreach (var setting in settings)
+            {
+                var attributes = setting.Value.GetCustomAttributes(false);
+                bool sendToClient = attributes.Any(a => a is SendToClientAttribute);
 
-            var result = allKeys.Where(k => returnAllKeys
-                                            || keys.Contains(k.Key)
-                                            || k.Key.StartsWith("Client.")
-                                            || k.Key.StartsWith("GeoLoc.")
-                                            || k.Key.StartsWith("AvailableVehicles."))
-                .ToDictionary(s => s.Key, s => s.Value);
+                if (returnAllKeys || sendToClient || keys.Contains(setting.Key))
+                {
+                    var settingValue = _configManager.ServerData.GetNestedPropertyValue(setting.Key).ToString();
+                    result.Add(setting.Key, settingValue);
+                }
+            }
 
             return result;
         }
