@@ -24,13 +24,13 @@ namespace apcurium.MK.Common
                     container.Resolve<ConnectionStringSettings>(MkConnectionString).ConnectionString));
 
             container.RegisterInstance<ILogger>(new Logger());
+
             container.RegisterInstance<IConfigurationManager>(
                 new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>(), container.Resolve<ILogger>()));
 
             container.RegisterInstance<IAppSettings>(
                new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>(), container.Resolve<ILogger>()));
-
-
+            
             container.RegisterType<CachingDbContext>(new TransientLifetimeManager(),
                 new InjectionConstructor(
                     container.Resolve<ConnectionStringSettings>(MkConnectionString).ConnectionString));

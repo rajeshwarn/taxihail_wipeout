@@ -37,6 +37,10 @@ namespace apcurium.MK.Common
             throw new NotImplementedException();
         }
 
+        public void Reload()
+        {
+        }
+
         public void AddOrSet(string key, string value)
         {
             if (AppSettings.ContainsKey(key))

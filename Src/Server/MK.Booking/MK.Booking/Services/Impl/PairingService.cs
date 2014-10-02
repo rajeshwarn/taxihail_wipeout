@@ -14,13 +14,13 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IOrderDao _orderDao;
         private readonly Resources.Resources _resources;
 
-        public PairingService(ICommandBus commandBus, IIbsOrderService ibs, IOrderDao orderDao, IConfigurationManager configManager, IAppSettings appSettings)
+        public PairingService(ICommandBus commandBus, IIbsOrderService ibs, IOrderDao orderDao, IConfigurationManager configManager)
         {
             _commandBus = commandBus;
             _ibs = ibs;
             _orderDao = orderDao;
 
-            _resources = new Resources.Resources(configManager.ServerData.TaxiHail.ApplicationKey, appSettings);
+            _resources = new Resources.Resources(configManager);
         }
 
         public void Pair(Guid orderId, string cardToken, int? autoTipPercentage)

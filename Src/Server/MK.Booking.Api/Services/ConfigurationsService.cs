@@ -53,8 +53,6 @@ namespace apcurium.MK.Booking.Api.Services
                 };
             }
 
-            
-
             var allKeys = _configManager.GetSettings();
 
             var result = allKeys.Where(k => returnAllKeys

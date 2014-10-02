@@ -33,8 +33,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IPushNotificationService _pushNotificationService;
         private readonly ITemplateService _templateService;
         private readonly IEmailSender _emailSender;
-        private readonly IConfigurationManager _configurationManager;
-        private readonly IAppSettings _appSettings;
+        private readonly IConfigurationManager _configManager;
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
         private readonly IStaticMap _staticMap;
@@ -50,8 +49,7 @@ namespace apcurium.MK.Booking.Services.Impl
             IPushNotificationService pushNotificationService,
             ITemplateService templateService,
             IEmailSender emailSender,
-            IConfigurationManager configurationManager,
-            IAppSettings appSettings,
+            IConfigurationManager configManager,
             IConfigurationDao configurationDao,
             IOrderDao orderDao,
             IStaticMap staticMap,
@@ -63,8 +61,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _pushNotificationService = pushNotificationService;
             _templateService = templateService;
             _emailSender = emailSender;
-            _configurationManager = configurationManager;
-            _appSettings = appSettings;
+            _configManager = configManager;
             _configurationDao = configurationDao;
             _orderDao = orderDao;
             _staticMap = staticMap;
@@ -72,13 +69,12 @@ namespace apcurium.MK.Booking.Services.Impl
             _geocoding = geocoding;
             _logger = logger;
 
-            var applicationKey = configurationManager.ServerData.TaxiHail.ApplicationKey;
-            _resources = new Resources.Resources(applicationKey, appSettings);
+            _resources = new Resources.Resources(configManager);
         }
 
         public void SetBaseUrl(Uri baseUrl)
         {
-            this._baseUrls = new BaseUrls(baseUrl, _configurationManager);
+            this._baseUrls = new BaseUrls(baseUrl, _configManager);
         }
 
 
@@ -107,8 +103,8 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendPairingInquiryPush(OrderStatusDetail orderStatusDetail)
         {
             var order = _orderDao.FindById(orderStatusDetail.OrderId);
-            if (_configurationManager.GetPaymentSettings().AutomaticPayment
-                    && !_configurationManager.GetPaymentSettings().AutomaticPaymentPairing
+            if (_configManager.GetPaymentSettings().AutomaticPayment
+                    && !_configManager.GetPaymentSettings().AutomaticPaymentPairing
                     && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id // Only send notification if using card on file
                     && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
             {
@@ -204,9 +200,9 @@ namespace apcurium.MK.Booking.Services.Impl
             var templateData = new
             {
                 confirmationUrl,
-                ApplicationName = _configurationManager.ServerData.TaxiHail.ApplicationName,
-                EmailFontColor = _configurationManager.ServerData.TaxiHail.EmailFontColor,
-                AccentColor = _configurationManager.ServerData.TaxiHail.AccentColor,
+                ApplicationName = _configManager.ServerData.TaxiHail.ApplicationName,
+                EmailFontColor = _configManager.ServerData.TaxiHail.EmailFontColor,
+                AccentColor = _configManager.ServerData.TaxiHail.AccentColor,
                 GetBaseUrls().LogoImg
             };
 
@@ -216,7 +212,7 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendAccountConfirmationSMS(string phoneNumber, string code, string clientLanguageCode)
         {
             var template = _resources.Get(SMSConstant.Template.AccountConfirmation, clientLanguageCode);
-            var message = string.Format(template, _configurationManager.ServerData.TaxiHail.ApplicationName, code);
+            var message = string.Format(template, _configManager.ServerData.TaxiHail.ApplicationName, code);
 
             SendSms(phoneNumber, message);
         }
@@ -244,9 +240,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var templateData = new
             {
-                ApplicationName = _configurationManager.ServerData.TaxiHail.ApplicationName,
-                AccentColor = _configurationManager.ServerData.TaxiHail.AccentColor,
-                EmailFontColor = _configurationManager.ServerData.TaxiHail.EmailFontColor,
+                ApplicationName = _configManager.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _configManager.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _configManager.ServerData.TaxiHail.EmailFontColor,
                 ibsOrderId,
                 PickupDate = pickupDate.ToString("D", dateFormat),
                 PickupTime = pickupDate.ToString("t" /* Short time pattern */),
@@ -274,9 +270,9 @@ namespace apcurium.MK.Booking.Services.Impl
             var templateData = new
             {
                 password,
-                ApplicationName = _configurationManager.ServerData.TaxiHail.ApplicationName,
-                AccentColor = _configurationManager.ServerData.TaxiHail.AccentColor,
-                EmailFontColor = _configurationManager.ServerData.TaxiHail.EmailFontColor,
+                ApplicationName = _configManager.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _configManager.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _configManager.ServerData.TaxiHail.EmailFontColor,
                 GetBaseUrls().LogoImg
             };
 
@@ -299,7 +295,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
             }
 
-            var vatIsEnabled = _appSettings.Data.VATIsEnabled;
+            var vatIsEnabled = _configManager.ServerData.VATIsEnabled;
 
             var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
 
@@ -359,9 +355,9 @@ namespace apcurium.MK.Booking.Services.Impl
             var templateData = new
             {
                 // template is missing the toll, if we decide to add it, we need to make sure we hide it if it's empty
-                ApplicationName = _configurationManager.ServerData.TaxiHail.ApplicationName,
-                AccentColor = _configurationManager.ServerData.TaxiHail.AccentColor,
-                EmailFontColor = _configurationManager.ServerData.TaxiHail.EmailFontColor,
+                ApplicationName = _configManager.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _configManager.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _configManager.ServerData.TaxiHail.EmailFontColor,
                 ibsOrderId,
                 vehicleNumber,
                 driverName,
@@ -376,7 +372,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 Toll = _resources.FormatPrice(toll),
                 Tip = _resources.FormatPrice(tip),
                 TotalFare = _resources.FormatPrice(totalFare),
-                Note = _configurationManager.ServerData.Receipt.Note,
+                Note = _configManager.ServerData.Receipt.Note,
                 Tax = _resources.FormatPrice(tax),
                 vatIsEnabled,
                 IsCardOnFile = isCardOnFile,
@@ -409,7 +405,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 throw new InvalidOperationException("Template not found: " + bodyTemplate);
             }
                 
-            var mailMessage = new MailMessage(_configurationManager.ServerData.Email.NoReply, to, messageSubject, null)
+            var mailMessage = new MailMessage(_configManager.ServerData.Email.NoReply, to, messageSubject, null)
             {
                 IsBodyHtml = true, 
                 BodyEncoding = Encoding.UTF8, 
@@ -435,7 +431,7 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             try
             {
-                if (_appSettings.Data.SendPushAsSMS)
+                if (_configManager.ServerData.SendPushAsSMS)
                 {
                     SendSms(accountId, alert);
                 }

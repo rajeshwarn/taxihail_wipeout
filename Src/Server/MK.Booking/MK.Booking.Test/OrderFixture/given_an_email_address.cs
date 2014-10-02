@@ -77,9 +77,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
             var notificationService = new NotificationService(() => new BookingDbContext(DbName),
                 null,
-                new TemplateService(_configurationManager, _configurationManager),
+                new TemplateService(_configurationManager),
                 _emailSenderMock.Object,
-                _configurationManager,
                 _configurationManager,
                 new ConfigurationDao(() => new ConfigurationDbContext(DbName)),
                 _orderDaoMock.Object,

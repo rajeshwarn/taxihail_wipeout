@@ -3,6 +3,7 @@
 using System;
 using System.Linq;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using Infrastructure.Messaging.Handling;
 
@@ -13,10 +14,12 @@ namespace apcurium.MK.Booking.EventHandlers
     public class AppSettingsGenerator : IEventHandler<AppSettingsAddedOrUpdated>
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
+        private readonly IConfigurationManager _configManager;
 
-        public AppSettingsGenerator(Func<ConfigurationDbContext> contextFactory)
+        public AppSettingsGenerator(Func<ConfigurationDbContext> contextFactory, IConfigurationManager configManager)
         {
             _contextFactory = contextFactory;
+            _configManager = configManager;
         }
 
         public void Handle(AppSettingsAddedOrUpdated @event)
@@ -41,6 +44,9 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 context.SaveChanges();
             }
+
+            // Refresh the ServerData object
+            _configManager.Reload();
         }
     }
 }

@@ -112,6 +112,10 @@ namespace apcurium.MK.Booking.Common.Tests
             throw new NotImplementedException();
         }
 
+        public void Reload()
+        {
+        }
+
         public void SetSetting(string key, string value)
         {
             _config[key] = value;

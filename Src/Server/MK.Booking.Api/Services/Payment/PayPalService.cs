@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public PayPalService(ICommandBus commandBus, IOrderPaymentDao dao,
             ExpressCheckoutServiceFactory factory, IConfigurationManager configurationManager, 
-            IIbsOrderService ibs, IAccountDao accountDao, ILogger logger, IOrderDao orderDao, IAppSettings appSettings)
+            IIbsOrderService ibs, IAccountDao accountDao, ILogger logger, IOrderDao orderDao)
         {
             _commandBus = commandBus;
             _dao = dao;
@@ -47,8 +47,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _logger = logger;
             _orderDao = orderDao;
 
-            var applicationKey = configurationManager.ServerData.TaxiHail.ApplicationKey;
-            _resources = new Resources.Resources(applicationKey, appSettings);
+            _resources = new Resources.Resources(configurationManager);
         }
 
         public PayPalExpressCheckoutPaymentResponse Post(InitiatePayPalExpressCheckoutPaymentRequest request)

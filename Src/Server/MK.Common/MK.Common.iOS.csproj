@@ -76,6 +76,7 @@
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Entity\RatingTypeWrapper.cs" />
     <Compile Include="Entity\ToggleItem.cs" />
+    <Compile Include="Enumeration\DistanceFormat.cs" />
     <Compile Include="Enumeration\SupportedLanguages.cs" />
     <Compile Include="Extensions\ActionExtension.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
