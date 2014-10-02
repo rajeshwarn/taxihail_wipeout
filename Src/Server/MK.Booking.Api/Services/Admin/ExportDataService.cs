@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
             var offset = new TimeSpan(ibsServerTimeDifference);
             
             var startDate = request.StartDate ?? DateTime.MinValue;
-            var endDate = (request.EndDate ?? DateTime.MaxValue).AddDays(1); // Add one day to include the current day since it ends at midnight
+            var endDate = request.EndDate.HasValue  ? request.EndDate.Value.AddDays(1) :  DateTime.MaxValue// Add one day to include the current day since it ends at midnight
 
             switch (request.Target)
             {
