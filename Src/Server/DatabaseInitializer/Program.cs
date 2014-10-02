@@ -115,7 +115,7 @@ namespace DatabaseInitializer
                 {
                     // Remove all default value DB settings
                     RenameClientSettings(commandBus);
-                    CleanDefaultSettings(commandBus, configurationManager.ServerData);
+                    CleanDefaultSettings(commandBus, configurationManager);
                 }
 
                 var appSettings = GetCompanySettings(param.CompanyName);
@@ -182,7 +182,7 @@ namespace DatabaseInitializer
                     if (tariffs.GetAll().All(x => x.Type != (int)TariffType.Default))
                     {
                         // Default rate does not exist for this company 
-                        CreateDefaultTariff(configurationManager.ServerData, commandBus);
+                        CreateDefaultTariff(configurationManager, commandBus);
                     }
 
                     CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
@@ -193,7 +193,7 @@ namespace DatabaseInitializer
                 else
                 {                    
                     // Create default rate for company
-                    CreateDefaultTariff(configurationManager.ServerData, commandBus);
+                    CreateDefaultTariff(configurationManager, commandBus);
                     CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
 
                     FetchingIbsDefaults(container, commandBus);
@@ -688,11 +688,11 @@ namespace DatabaseInitializer
             AddOrUpdateAppSettings(commandBus, appSettings);
         }
 
-        private static void CleanDefaultSettings(ICommandBus commandBus, ServerTaxiHailSetting settingsInDb)
+        private static void CleanDefaultSettings(ICommandBus commandBus, IConfigurationManager configurationManager)
         {
             var settingsToRemove = new List<string>();
             var taxiHailSettings = new ServerTaxiHailSetting();
-            var settingsInDbProperties = settingsInDb.GetType().GetAllProperties();
+            var settingsInDbProperties = configurationManager.ServerData.GetType().GetAllProperties();
             var defaultSettingsProperties = taxiHailSettings.GetType().GetAllProperties();
 
             foreach (var setting in defaultSettingsProperties)
@@ -760,13 +760,14 @@ namespace DatabaseInitializer
                 CompanyId = AppConstants.CompanyId
             });
         }
-        private static void CreateDefaultTariff(ServerTaxiHailSetting serverSettings, ICommandBus commandBus)
+
+        private static void CreateDefaultTariff(IConfigurationManager configurationManager, ICommandBus commandBus)
         {
             commandBus.Send(new CreateTariff
             {
                 Type = TariffType.Default,
-                KilometricRate = serverSettings.Direction.RatePerKm,
-                FlatRate = serverSettings.Direction.FlateRate,
+                KilometricRate = configurationManager.ServerData.Direction.RatePerKm,
+                FlatRate = configurationManager.ServerData.Direction.FlateRate,
                 MarginOfError = 20,
                 CompanyId = AppConstants.CompanyId,
                 TariffId = Guid.NewGuid(),
