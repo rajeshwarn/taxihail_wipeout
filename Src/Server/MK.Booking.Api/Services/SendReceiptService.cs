@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IOrderDao _orderDao;
         private readonly IOrderPaymentDao _orderPaymentDao;
         private readonly IConfigurationManager _configurationManager;
-        private readonly IServerSettings _appSettings;
+        private readonly IAppSettings _appSettings;
 
         public SendReceiptService(
             ICommandBus commandBus,
@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Api.Services
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
             IConfigurationManager configurationManager,
-            IServerSettings appSettings
+            IAppSettings appSettings
             )
         {
             _configurationManager = configurationManager;

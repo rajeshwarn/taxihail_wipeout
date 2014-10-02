@@ -27,8 +27,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var bestPosition = TinyIoCContainer.Current.Resolve<ILocationService>().BestPosition;
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
 
-			var latitude = bestPosition != null ? bestPosition.Latitude : settings.DefaultLatitude;
-			var longitude = bestPosition != null ? bestPosition.Longitude : settings.DefaultLongitude;
+			var latitude = bestPosition != null ? bestPosition.Latitude : settings.GeoLoc.DefaultLatitude;
+			var longitude = bestPosition != null ? bestPosition.Longitude : settings.GeoLoc.DefaultLongitude;
 
             Map.MapType = GoogleMap.MapTypeNormal;
             Map.MoveCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(latitude, longitude) , 12f));

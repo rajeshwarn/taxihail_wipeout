@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IDirections _directions;
         private readonly IIbsOrderService _ibsOrderService;
         private readonly Resources.Resources _resources;
-        private readonly IServerSettings _appSettings;
+        private readonly IAppSettings _appSettings;
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(OrderStatusUpdater));
 
@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             IPaymentService paymentService,
             INotificationService notificationService,
             IDirections directions,
-            IServerSettings appSettings,
+            IAppSettings appSettings,
             IIbsOrderService ibsOrderService)
         {
             _appSettings = appSettings;

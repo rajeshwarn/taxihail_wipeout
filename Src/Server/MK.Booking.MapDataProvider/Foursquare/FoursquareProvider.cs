@@ -16,20 +16,18 @@ namespace MK.Booking.MapDataProvider.Foursquare
 	/// </summary>
 	public class FoursquareProvider : IPlaceDataProvider
 	{
-	    private readonly IServerSettings _settings;
+	    private readonly IAppSettings _settings;
 	    private readonly ILogger _logger;
 	    private const string ApiUrl = "https://api.foursquare.com/v2/";
 
         private const string SearchVenues = "venues/search?client_id={0}&client_secret={1}&intent=browse&radius={2}&v=2014100805";
         private const string VenueDetails = "venues/{0}/?client_id={1}&client_secret={2}&v=2014100805";
 
-		public FoursquareProvider (IServerSettings settings, ILogger logger)
+        public FoursquareProvider(IAppSettings settings, ILogger logger)
 		{
 		    _settings = settings;
 		    _logger = logger;
 		}
-
-	    #region IMapsApiClient implementation
 
 		public GeoPlace[] GetNearbyPlaces (double? latitude, double? longitude, string languageCode, bool sensor, int radius, string pipedTypeList = null)
 		{
@@ -77,8 +75,8 @@ namespace MK.Booking.MapDataProvider.Foursquare
 	    {
             var searchQueryString = string.Format(SearchVenues, _settings.Data.FoursquareClientId, _settings.Data.FoursquareClientSecret, radius);
 
-	        latitude = latitude ?? _settings.Data.DefaultLatitude;
-	        longitude = longitude ?? _settings.Data.DefaultLongitude;
+            latitude = latitude ?? _settings.Data.GeoLoc.DefaultLatitude;
+            longitude = longitude ?? _settings.Data.GeoLoc.DefaultLongitude;
 
 	        searchQueryString = searchQueryString +
 	                            string.Format("&ll={0},{1}", latitude.Value.ToString(CultureInfo.InvariantCulture),
@@ -108,13 +106,8 @@ namespace MK.Booking.MapDataProvider.Foursquare
 				FullAddress = location.address,
 				Street = street,
 				StreetNumber = streetNumber,
-
-				}};
+		    }};
 		}
-
-	
-		#endregion
 	}
-    
 }
 

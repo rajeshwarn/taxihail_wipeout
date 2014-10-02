@@ -20,15 +20,12 @@ namespace apcurium.MK.Booking.Maps.Impl
 {
     public class Geocoding : IGeocoding
     {
-        private readonly IServerSettings _appSettings;
+        private readonly IAppSettings _appSettings;
 		private readonly IGeocoder  _mapApi;
         private readonly ILogger _logger;
-
-        
-
         private readonly IPopularAddressProvider _popularAddressProvider;
 
-		public Geocoding(IGeocoder mapApi, IServerSettings appSettings,
+        public Geocoding(IGeocoder mapApi, IAppSettings appSettings,
             IPopularAddressProvider popularAddressProvider, ILogger logger)
         {
             _logger = logger;
@@ -39,8 +36,6 @@ namespace apcurium.MK.Booking.Maps.Impl
 
 		public Address[] Search(string addressName, string currentLanguage, GeoResult geoResult = null)
         {
-            
-
             var popularPlaces = new Address[0];
 
             if (addressName.HasValue())
@@ -51,33 +46,19 @@ namespace apcurium.MK.Booking.Maps.Impl
             if (geoResult == null)
             {
 				var addresses = SearchUsingName(addressName, true, currentLanguage);
-                if ( addresses == null )
-                {
-                    return popularPlaces;
-                }
-                else
-                {
-                    return popularPlaces.Concat(addresses.Select(a => new GeoObjToAddressMapper().ConvertToAddress(a, null, true))).ToArray();
-                }
+                return addresses == null 
+                    ? popularPlaces 
+                    : popularPlaces.Concat(addresses.Select(a => new GeoObjToAddressMapper().ConvertToAddress(a, null, true))).ToArray();
             }
             else            
             {
 				var addresses = new MapDataProvider.Google.GoogleApiClient(_appSettings, _logger).ConvertGeoResultToAddresses(geoResult);
                  
-                if ( addresses == null )
-                {
-                    return popularPlaces;
-                }
-                else
-                {
-                    return popularPlaces.Concat(addresses.Select(a => new GeoObjToAddressMapper().ConvertToAddress(a, null, true))).ToArray();
-                }
-                
+                return addresses == null 
+                    ? popularPlaces 
+                    : popularPlaces.Concat(addresses.Select(a => new GeoObjToAddressMapper().ConvertToAddress(a, null, true))).ToArray();
             }
-
-            
         }
-
 
 		public Address[] Search(double latitude, double longitude, string currentLanguage, GeoResult geoResult = null,
             bool searchPopularAddress = false)
@@ -98,15 +79,12 @@ namespace apcurium.MK.Booking.Maps.Impl
 				var addresses = _mapApi.GeocodeLocation(latitude, longitude, currentLanguage);
                 var rr = addresses.Select(r => new GeoObjToAddressMapper().ConvertToAddress(r, null, false));
                 return addressesInRange.Concat(rr).ToArray();
-
             }
-            
-            
         }
 
 		private GeoAddress[] SearchUsingName(string name, bool useFilter, string currentLanguage)
         {
-            var filter = _appSettings.Data.SearchFilter;
+            var filter = _appSettings.Data.GeoLoc.SearchFilter;
             if (name != null)
             {
                 if ((filter.HasValue()) && (useFilter))
@@ -119,7 +97,6 @@ namespace apcurium.MK.Booking.Maps.Impl
             return null;
         }
 
-
         private Address[] SearchPopularAddresses(string name)
         {
             var words = name.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
@@ -131,10 +108,8 @@ namespace apcurium.MK.Booking.Maps.Impl
                             a.FullAddress.ToUpper().Contains(w.ToUpper()))
                 select a;
 
-
             return popularAddresses.ToArray();
         }
-
 
         private Address[] GetPopularAddressesInRange(Position position)
         {
@@ -149,7 +124,5 @@ namespace apcurium.MK.Booking.Maps.Impl
             inRange.ForEach(a => a.AddressType = "popular");
             return inRange.ToArray();
         }
-
-       
     }
 }

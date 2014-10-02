@@ -30,7 +30,13 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			LoadSettingsFromFile();
 		}
 
-		public void Load()
+        public ServerTaxiHailSetting ServerData
+        {
+            get { throw new NotImplementedException(); }
+            private set { }
+        }
+
+        public void Load()
 		{
 			//check if the cache has already something
 			var data = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);

@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.EventHandlers
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
-        public OrderGenerator(Func<BookingDbContext> contextFactory, ILogger logger, IConfigurationManager configurationManager, IServerSettings appSettings)
+        public OrderGenerator(Func<BookingDbContext> contextFactory, ILogger logger, IConfigurationManager configurationManager, IAppSettings appSettings)
         {
             _contextFactory = contextFactory;
             _logger = logger;

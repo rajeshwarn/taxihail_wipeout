@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 Log.Info(tag, "Registering...");
 
                 //Call to register
-                var registerIdDebug = _appSettings.Data.SenderId;
+                var registerIdDebug = _appSettings.Data.GCM.SenderId;
                 PushClient.Register(_context, registerIdDebug);
             }
             else
@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         IUseServiceClient
     {
         public PushHandlerService()
-            : base(TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().Data.SenderId)
+            : base(TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().Data.GCM.SenderId)
         {
 
         }

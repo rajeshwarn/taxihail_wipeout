@@ -280,17 +280,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					case "CreateOrder_CannotCreateInIbs_10000":   /* Inactive charge account */
 					case "CreateOrder_CardOnFileButNoCreditCard": /* Card on file selected but no card */
                     case "AccountCharge_InvalidAccountNumber":
-						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
+						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["ServiceError" + e.ErrorCode + "_NoCall"];
 						throw new OrderCreationException(message, messageNoCall);
 					case "CreateOrder_CannotCreateInIbs_3000": /* Disabled account */
-						message = string.Format(_localize["AccountDisabled"], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
+						message = string.Format(_localize["AccountDisabled"], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["AccountDisabled_NoCall"];
 						throw new OrderCreationException(message, messageNoCall);
 					default:
 						// Unhandled errors
 						// if ibs3000, there's a problem with the account, use a different one
-						message = string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
+						message = string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"];
 						throw new OrderCreationException(message, messageNoCall);
 

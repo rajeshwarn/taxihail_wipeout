@@ -48,6 +48,9 @@
     <Compile Include="Configuration\Impl\MonerisPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\PaymentMethod.cs" />
     <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
+    <Compile Include="Configuration\NotificationSettings.cs" />
+    <Compile Include="Configuration\ServerTaxiHailSetting.cs" />
+    <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="CurencyCodes.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\DirectionSetting.cs" />
@@ -82,7 +85,6 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="ICacheService.cs" />
     <Compile Include="IPackageInfo.cs" />
-    <Compile Include="NotificationSettings.cs" />
     <Compile Include="Params.cs">
       <SubType>Code</SubType>
     </Compile>

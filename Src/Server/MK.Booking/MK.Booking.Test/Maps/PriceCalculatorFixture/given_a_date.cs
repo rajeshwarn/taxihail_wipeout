@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
             {
                 tariff1, tariff2
             });
-            _sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider, new Logger());
+            _sut = new PriceCalculator(_tariffProvider, new Logger());
         }
 
         private PriceCalculator _sut;
@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
             {
                 tariff1
             });
-            _sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider, new Logger());
+            _sut = new PriceCalculator(_tariffProvider, new Logger());
         }
 
         private PriceCalculator _sut;
@@ -223,7 +223,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
             {
                 tariff1, tariff2
             });
-            _sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider, new Logger());
+            _sut = new PriceCalculator(_tariffProvider, new Logger());
         }
 
         private PriceCalculator _sut;
@@ -308,7 +308,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
             {
                 tariff1
             });
-            _sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider, new Logger());
+            _sut = new PriceCalculator(_tariffProvider, new Logger());
         }
 
         private PriceCalculator _sut;
@@ -394,7 +394,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
             {
                 tariff1
             });
-            _sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider, new Logger());
+            _sut = new PriceCalculator(_tariffProvider, new Logger());
         }
 
         private PriceCalculator _sut;
@@ -429,7 +429,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
             {
                 tariff1
             });
-            _sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider, new Logger());
+            _sut = new PriceCalculator(_tariffProvider, new Logger());
         }
 
         private PriceCalculator _sut;

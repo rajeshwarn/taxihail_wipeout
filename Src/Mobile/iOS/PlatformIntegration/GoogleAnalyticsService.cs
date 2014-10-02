@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 
 			Tracker = GAI.SharedInstance.GetTracker (  "UA-44714416-1" );
-			Tracker.Set( GAIConstants.AppName,   settings.Data.ApplicationName.Replace( ' ' , '_' ));
+			Tracker.Set( GAIConstants.AppName,   settings.Data.TaxiHail.ApplicationName.Replace( ' ' , '_' ));
 			Tracker.Set(GAIConstants.AppVersion, packageInfo.Version);
 
 
