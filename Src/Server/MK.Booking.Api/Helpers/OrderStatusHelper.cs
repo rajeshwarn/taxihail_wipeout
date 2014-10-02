@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Api.Helpers
         private readonly IOrderDao _orderDao;
         private readonly Resources.Resources _resources;
 
-        public OrderStatusHelper(IOrderDao orderDao, IConfigurationManager configurationManager, IServerSettings appSettings)
+        public OrderStatusHelper(IOrderDao orderDao, IConfigurationManager configurationManager, IAppSettings appSettings)
         {
             _orderDao = orderDao;
 

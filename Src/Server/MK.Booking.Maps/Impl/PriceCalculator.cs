@@ -13,13 +13,11 @@ namespace apcurium.MK.Booking.Maps.Impl
 {
     public class PriceCalculator : IPriceCalculator
     {
-        private readonly IServerSettings _appSettings;
         private readonly ITariffProvider _tariffProvider;
         private readonly ILogger _logger;
 
-        public PriceCalculator(IServerSettings appSettings, ITariffProvider tariffProvider, ILogger logger)
+        public PriceCalculator(ITariffProvider tariffProvider, ILogger logger)
         {
-            _appSettings = appSettings;
             _tariffProvider = tariffProvider;
             _logger = logger;
         }

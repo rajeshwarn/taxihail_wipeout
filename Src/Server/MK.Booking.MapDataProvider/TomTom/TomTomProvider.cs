@@ -1,7 +1,7 @@
 ﻿using System;
 using apcurium.MK.Booking.MapDataProvider.Resources;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.MapDataProvider.TomTom.Resources;
 using ServiceStack.Text;
@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 	/// </summary>
 	public class TomTomProvider : IDirectionDataProvider
 	{
-		private readonly IServerSettings _settings;
+        private readonly IAppSettings _settings;
 		private readonly ILogger _logger;
 
 		private const string ApiUrl = "https://api.tomtom.com/lbs/services/";
@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 		private const string PointsFormat = "{0},{1}:{2},{3}";
 		private const string DateTimeFormat = "&day={0}&time={1}";
 
-		public TomTomProvider(IServerSettings settings, ILogger logger)
+        public TomTomProvider(IAppSettings settings, ILogger logger)
 		{
 			_logger = logger;
 			_settings = settings;

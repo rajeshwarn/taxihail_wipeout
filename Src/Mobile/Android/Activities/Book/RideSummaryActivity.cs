@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             SetContentView(Resource.Layout.View_Book_RideSummaryPage);
             var lblSubTitle = FindViewById<TextView>(Resource.Id.lblSubTitle);
-			lblSubTitle.Text = String.Format(this.Services().Localize["RideSummarySubTitleText"], this.Services().Settings.ApplicationName);
+			lblSubTitle.Text = String.Format(this.Services().Localize["RideSummarySubTitleText"], this.Services().Settings.TaxiHail.ApplicationName);
 
 			var listView = FindViewById<MvxListView> (Resource.Id.RatingListView);
 			listView.Divider = null;

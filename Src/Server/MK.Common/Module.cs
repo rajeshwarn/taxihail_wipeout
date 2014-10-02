@@ -27,7 +27,7 @@ namespace apcurium.MK.Common
             container.RegisterInstance<IConfigurationManager>(
                 new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>(), container.Resolve<ILogger>()));
 
-            container.RegisterInstance<IServerSettings>(
+            container.RegisterInstance<IAppSettings>(
                new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>(), container.Resolve<ILogger>()));
 
 

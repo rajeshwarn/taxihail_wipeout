@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Email
         private const string DefaultLanguageCode = "en";
         private readonly Dictionary<string, string> _templatesDictionary=new Dictionary<string, string>();
 
-        public TemplateService(IConfigurationManager configurationManager, IServerSettings appSettings)
+        public TemplateService(IConfigurationManager configurationManager, IAppSettings appSettings)
         {
             _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
         }

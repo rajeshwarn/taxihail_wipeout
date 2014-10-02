@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
 		public string ApplicationName
 		{
-            get { return Settings.ApplicationName; }
+            get { return Settings.TaxiHail.ApplicationName; }
 		}
 
         public override void OnViewLoaded()
@@ -311,7 +311,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                 Logger.LogError(e);
 				InvokeOnMainThread(() =>
 				{
-                    string err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], Settings.ApplicationName, this.Services().Settings.DefaultPhoneNumberDisplay);
+                    string err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], Settings.TaxiHail.ApplicationName, this.Services().Settings.DefaultPhoneNumberDisplay);
                     this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
 				});
 			}

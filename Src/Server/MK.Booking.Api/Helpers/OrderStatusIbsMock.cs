@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Helpers
         private const double DefaultTaxiLongitude = -73.5530;
         private const double NearbyTaxiDelta = 0.0009; // Approx. 100 meters
 
-        public OrderStatusIbsMock(IOrderDao orderDao, OrderStatusUpdater updater, IConfigurationManager configManager, IServerSettings appSettings)
+        public OrderStatusIbsMock(IOrderDao orderDao, OrderStatusUpdater updater, IConfigurationManager configManager, IAppSettings appSettings)
             : base(orderDao, configManager, appSettings)
         {
             _updater = updater;

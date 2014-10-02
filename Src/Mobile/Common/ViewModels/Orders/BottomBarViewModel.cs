@@ -233,7 +233,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                     if (!Settings.HideCallDispatchButton)
                                     {
                                         this.Services().Message.ShowMessage(title, e.Message,
-                                            "Call", () => _phone.MakePhoneCall(Settings.ApplicationName, Settings.DefaultPhoneNumber),
+                                            "Call", () => _phone.MakePhoneCall(Settings.TaxiHail.ApplicationName, Settings.DefaultPhoneNumber),
                                             "Cancel", () => { });
                                     }
                                     else

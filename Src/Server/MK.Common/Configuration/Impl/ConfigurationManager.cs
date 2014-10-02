@@ -15,7 +15,7 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Common.Configuration.Impl
 {
-    public class ConfigurationManager : IConfigurationManager, IServerSettings
+    public class ConfigurationManager : IConfigurationManager, IAppSettings
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -24,7 +24,8 @@ namespace apcurium.MK.Common.Configuration.Impl
         {
             _contextFactory = contextFactory;
             _logger = logger;
-            Data = new ServerTaxiHailSetting();
+            Data = new TaxiHailSetting();
+            ServerData = new ServerTaxiHailSetting();
             Load();
         }
 
@@ -78,14 +79,33 @@ namespace apcurium.MK.Common.Configuration.Impl
             }
         }
 
-        public ServerTaxiHailSetting Data { get; private set; }
+        public TaxiHailSetting Data { get; private set; }
+        public ServerTaxiHailSetting ServerData { get; private set; }
         public void Load()
         {
-            SetSettingsValue(GetSettings());
+            var dbSettings = GetSettings();
+            SetSettingsValue(dbSettings);
+            SetServerSettingsValue(dbSettings);
+        }
+
+        public void ChangeServerUrl(string serverUrl)
+        {
+            throw new NotImplementedException();
         }
 
         private void SetSettingsValue(IDictionary<string, string> values)
         {
+            InitializeDataObjects(Data, values);
+        }
+
+        private void SetServerSettingsValue(IDictionary<string, string> values)
+        {
+            InitializeDataObjects(ServerData, values);
+        }
+
+        private void InitializeDataObjects<T>(T objectToInitialize, IDictionary<string, string> values) where T : class
+        {
+            var typeOfSettings = typeof(T);
             foreach (KeyValuePair<string, string> item in values)
             {
                 try
@@ -99,7 +119,7 @@ namespace apcurium.MK.Common.Configuration.Impl
                         }
                     }
 
-                    var propertyType = GetProperty(typeof(ServerTaxiHailSetting), propertyName);
+                    var propertyType = GetProperty(typeOfSettings, propertyName);
                     
                     if (propertyType == null)
                     {
@@ -114,16 +134,16 @@ namespace apcurium.MK.Common.Configuration.Impl
                     if (targetType.IsEnum)
                     {
                         var propertyVal = Enum.Parse(targetType, item.Value);
-                        SetValue(propertyName, Data, propertyVal);
+                        SetValue(propertyName, objectToInitialize, propertyVal);
                     }
                     else if (IsNullableType(propertyType.PropertyType) && string.IsNullOrEmpty(item.Value))
                     {
-                        SetValue(propertyName, Data, null);
+                        SetValue(propertyName, objectToInitialize, null);
                     }
                     else
                     {
                         var propertyVal = Convert.ChangeType(item.Value, targetType);
-                        SetValue(propertyName, Data, propertyVal);
+                        SetValue(propertyName, objectToInitialize, propertyVal);
                     }
                 }
                 catch (Exception e)

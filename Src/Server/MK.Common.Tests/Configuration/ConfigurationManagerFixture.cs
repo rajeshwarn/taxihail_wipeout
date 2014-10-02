@@ -53,7 +53,7 @@ namespace apcurium.MK.Common.Tests.Configuration
 
             _sut.Load();
 
-            Assert.That(_sut.Data.Admin.CompanySettings, Is.EqualTo("Yes"));
+            Assert.That(_sut.ServerData.Admin.CompanySettings, Is.EqualTo("Yes"));
         }
 
         [Test]
@@ -64,7 +64,34 @@ namespace apcurium.MK.Common.Tests.Configuration
 
             _sut.Load();
 
-            Assert.That(_sut.Data.Smtp.Host, Is.EqualTo("google.com"));
+            Assert.That(_sut.ServerData.Smtp.Host, Is.EqualTo("google.com"));
+        }
+
+        [Test]
+        public void When_receiving_a_setting_in_nested_partial_class_property_then_object_is_populated_with_value()
+        {
+            _appSettingsFromDatabase.Clear();
+            _appSettingsFromDatabase.Add(new AppSetting("GCM.SenderId", "123"));
+            _appSettingsFromDatabase.Add(new AppSetting("GCM.APIKey", "456"));
+
+            _sut.Load();
+
+            Assert.That(_sut.Data.GCM.SenderId, Is.EqualTo("123"));
+            Assert.That(_sut.Data.GCM.APIKey, Is.EqualTo("456"));
+            Assert.That(_sut.ServerData.GCM.SenderId, Is.EqualTo("123"));
+            Assert.That(_sut.ServerData.GCM.APIKey, Is.EqualTo("456"));
+        }
+
+        [Test]
+        public void When_receiving_a_setting_from_client_then_the_two_objects_are_populated_then_object_is_populated_with_value()
+        {
+            _appSettingsFromDatabase.Clear();
+            _appSettingsFromDatabase.Add(new AppSetting("TwitterEnabled", "true"));
+
+            _sut.Load();
+
+            Assert.That(_sut.Data.TwitterEnabled, Is.EqualTo(true));
+            Assert.That(_sut.ServerData.TwitterEnabled, Is.EqualTo(true));
         }
     }
 }

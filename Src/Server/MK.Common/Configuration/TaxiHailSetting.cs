@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 
 namespace MK.Common.Configuration
@@ -7,19 +8,46 @@ namespace MK.Common.Configuration
     {
 		public TaxiHailSetting()
 		{
-			//default values here
-            TaxiHail = new TaxiHailSettingContainer
-            {
-                ApplicationName = "Taxi Hail"
-            };
+            TaxiHail = new TaxiHailSettingContainer();
 
 		    OrderStatus = new OrderStatusSettingContainer
 		    {
                 ClientPollingInterval = 10
 		    };
-            
-			ShowEstimateWarning = true;
-            DefaultRadius = 500;
+
+		    GCM = new GCMSettingContainer
+		    {
+		        SenderId = "385816297456"
+		    };
+
+		    Direction = new DirectionSettingContainer
+		    {
+		        TarifMode = TarifMode.AppTarif
+		    };
+
+		    NearbyPlacesService = new NearbyPlacesServiceSettingContainer
+		    {
+                DefaultRadius = 500
+		    };
+
+		    Map = new MapSettingContainer
+		    {
+		        PlacesApiKey = "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE"
+		    };
+
+		    GeoLoc = new GeoLocSettingContainerd
+		    {
+                PlacesTypes = "airport,amusement_park,art_gallery,bank,bar,bus_station,cafe,casino,clothing_store,convenience_store,courthouse,department_store,doctor,embassy,food,gas_station,hospital,lawyer,grocery_or_supermarket,library,liquor_store,lodging,local_government_office,movie_theater,moving_company,museum,night_club,park,parking,pharmacy,police,physiotherapist"
+		    };
+
+            AvailableVehicles = new AvailableVehiclesSettingContainer
+            {
+                Enabled = true,
+                Count = 10,
+                Radius = 2000
+            };
+
+            ShowEstimateWarning = true;
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;
             ErrorLogEnabled = true;
@@ -49,34 +77,23 @@ namespace MK.Common.Configuration
             AllowSimultaneousAppOrders = false;
 		}
 
-	    public class TaxiHailSettingContainer 
-	    {
-            [Display(Name = "Application Name", Description = "Application name as displayed in message")]
-            public string ApplicationName { get; protected internal set; }
-	    }
-
-	    public class OrderStatusSettingContainer
-	    {
-            [Display(Name = "Client Polling Interval", Description = "Status refresh interval")]
-            public int ClientPollingInterval { get; protected internal set; }
-	    }
-
-	    public partial class GCMSettingContainer
-	    {
-            [Display(Name = "SenderId", Description = "Google Push Notification API Id")]
-            public string SenderId { get; protected set; }
-	    }
-
         public TaxiHailSettingContainer TaxiHail { get; protected set; }
         public OrderStatusSettingContainer OrderStatus { get; protected set; }
         public GCMSettingContainer GCM { get; protected set; }
-		
+        public DirectionSettingContainer Direction { get; protected set; }
+        public NearbyPlacesServiceSettingContainer NearbyPlacesService { get; protected set; }
+        public MapSettingContainer Map { get; protected set; }
+        public GeoLocSettingContainerd GeoLoc { get; protected set; }
+        public AvailableVehiclesSettingContainer AvailableVehicles { get; protected set; }
+
 		[Display(Name = "Can Change Service Url", Description="Display a button on the login page to change the API server url")]
 		public bool CanChangeServiceUrl { get; protected set; }
         [Display(Name = "Service Url", Description="Url of the TaxiHail Server")]
 		public string ServiceUrl { get; set; }
+        
         [Display(Name = "Error Log Enabled", Description="Flag to enable the log of the errors in file")]
 		public bool ErrorLogEnabled{ get { return true; } protected set{ } }
+        
         [Display(Name = "Twitter Enabled", Description="Enable register/log in with Twitter")]
 		public bool TwitterEnabled{ get; protected set; }
         [Display(Name = "Twitter Consumer Key", Description="Twitter API settings")]
@@ -94,20 +111,19 @@ namespace MK.Common.Configuration
         
 		[Display(Name = "Facebook Publish Enabled", Description="Facebook Publish Enabled")]
 		public bool FacebookPublishEnabled { get; protected set; }
-
-		[Display(Name = "Facebook Enabled", Description="Enable register/log in with Facebook")]
+        [Display(Name = "Facebook Enabled", Description="Enable register/log in with Facebook")]
 		public bool FacebookEnabled { get; protected set; }
         [Display(Name = "Facebook App Id", Description="Facebook API settings")]
 		public string FacebookAppId{ get; protected set; }
-
-
 
         [Display(Name = "Account Activation Disabled", Description="Disable the confirmation requirement")]
         public bool AccountActivationDisabled { get; protected set; }
 		[Display(Name = "Account Activation By SMS", Description="Enable the activation by SMS")]
         public bool SMSConfirmationEnabled { get; protected set; }
+        
         [Display(Name = "Disable Charge type when card on file", Description = "When active, locks the user on Card on File payment type if a credit card is registered")]
         public bool DisableChargeTypeWhenCardOnFile { get; protected set; }
+        
         [Display(Name = "Enable vehicle type selection", Description = "Hide the vehicle type selection box")]
         public bool VehicleTypeSelectionEnabled { get; protected set; }
 
@@ -148,14 +164,11 @@ namespace MK.Common.Configuration
         public bool DisableFutureBooking { get; protected set; }
         [Display(Name = "Hide Destination", Description="Hide destination address")]
         public bool HideDestination { get; protected set; }
-        [Display(Name = "Tarif Mode", Description="How the tarif calculation is done: by the app or by IBS")]
-        public TarifMode TarifMode { get; protected set; }
+        
         [Display(Name = "Max Fare Estimate", Description="Maximum amount for estimation, if greater, a 'call the company' message is displayed")]
 		public double MaxFareEstimate { get; protected set; }
-        [Display(Name = "Flate Rate", Description="Flate Rate for estimation")]
-        public double FlateRate { get; protected set; }
-        [Display(Name = "Rate Per Km", Description="Rate per km for estimation")]
-        public double RatePerKm { get; protected set; }
+        
+        
         [Display(Name = "Street Number Screen Enabled", Description="Enable the change street number screen")]
 		public bool StreetNumberScreenEnabled { get; protected set; }
         [Display(Name = "Number of Char in Refine Address", Description="Number of characters in the textbox to change street number")]
@@ -208,22 +221,15 @@ namespace MK.Common.Configuration
 		[Display(Name = "Hide Pay Now Button During Ride", Description = "This will hide the pay now button, on the status screen, if the ride is not completed")]
 		public bool HidePayNowButtonDuringRide { get; protected set; }
 
-		[Display(Name = "Place Types", Description="Give a list of Google Maps places types to filter search")]
-		public string PlacesTypes { get; protected set; }
-        [Display(Name = "Place Types", Description = "Give a list of Google Maps places types to filter search")]
-        public string PlacesApiKey { get; protected set; }
+		
+        
         [Display(Name = "Price Format Culture", Description="Format to display amount (Culture, ex: en-US)")]
 		public string PriceFormat { get; protected set; }
         [Display(Name = "Distance Format", Description="Format to display distance ('km' or 'mile')")]
 		public string DistanceFormat { get; protected set; }
-        [Display(Name = "Search Filter", Description="Filter for geolocation search")]
-		public string SearchFilter { get; protected set; }
-        [Display(Name = "Default Radius", Description="Default radius for places search")]
-        public int DefaultRadius { get; protected set; }
-        [Display(Name = "Default Latitude", Description="Default latitude to display the map before geoloc is done")]
-        public double DefaultLatitude { get; protected set; }
-        [Display(Name = "Default Longitude", Description="Default longitude to display the map before geoloc is done")]
-        public double DefaultLongitude { get; protected set; }
+        
+        
+        
         [Display(Name = "Range", Description="???")]
         public double Range { get; protected set; }
 
@@ -242,8 +248,7 @@ namespace MK.Common.Configuration
 
         public bool AllowAddressRange { get; protected set; }
 
-        [Display(Name = "Need a Valid Tarif", Description="Prevent order when tarif is not available")]
-        public bool NeedAValidTarif { get; protected set; }
+        
         [Display(Name = "Hide Rebook Order", Description="Hide the button in order history details")]
         public bool HideRebookOrder { get; protected set; }
        

@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							this.Services().Message.ShowMessage(title,
 								e.Message,
 								"Call",
-								() => _phone.MakePhoneCall (settings.ApplicationName, settings.DefaultPhoneNumber),
+								() => _phone.MakePhoneCall (settings.TaxiHail.ApplicationName, settings.DefaultPhoneNumber),
 								"Cancel",
 								delegate { });
 						}

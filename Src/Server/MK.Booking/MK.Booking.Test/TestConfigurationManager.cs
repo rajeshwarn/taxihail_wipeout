@@ -16,7 +16,7 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Common.Tests
 {
-    public class TestConfigurationManager : IConfigurationManager, IServerSettings
+    public class TestConfigurationManager : IConfigurationManager, IAppSettings
     {
         private readonly Dictionary<string, string> _config;
 
@@ -30,13 +30,17 @@ namespace apcurium.MK.Booking.Common.Tests
             {
                 _config.Add(token.Key, token.Value.ToString());
             }
-            Data = new ServerTaxiHailSetting();
+
+            Data = new TaxiHailSetting();
+            ServerData = new ServerTaxiHailSetting();
+            
             SetSettingsValue(_config);
+            SetServerSettingsValue(_config);
         }
 
-        void SetSettingsValue(IDictionary<string, string> values)
+        private void InitializeDataObjects<T>(T objectToInitialize, IDictionary<string, string> values) where T : class
         {
-            var typeOfSettings = typeof(TaxiHailSetting);
+            var typeOfSettings = typeof (T);
             foreach (KeyValuePair<string, string> item in values)
             {
                 try
@@ -55,12 +59,12 @@ namespace apcurium.MK.Booking.Common.Tests
                         if (targetType.IsEnum)
                         {
                             var propertyVal = Enum.Parse(targetType, item.Value);
-                            propertyType.SetValue(Data, propertyVal);
+                            propertyType.SetValue(objectToInitialize, propertyVal);
                         }
                         else
                         {
                             var propertyVal = Convert.ChangeType(item.Value, targetType);
-                            propertyType.SetValue(Data, propertyVal);
+                            propertyType.SetValue(objectToInitialize, propertyVal);
                         }
                     }
                 }
@@ -69,6 +73,16 @@ namespace apcurium.MK.Booking.Common.Tests
                     Console.WriteLine("can't set {0} : {1}" + e.Message, item.Key, item.Value);
                 }
             }
+        }
+
+        private void SetSettingsValue(IDictionary<string, string> values)
+        {
+            InitializeDataObjects(Data, values);
+        }
+
+        private void SetServerSettingsValue(IDictionary<string, string> values)
+        {
+            InitializeDataObjects(ServerData, values);
         }
 
         private static bool IsNullableType(Type type)
@@ -132,7 +146,8 @@ namespace apcurium.MK.Booking.Common.Tests
             SetSettingsValue(_config);
         }
 
-        public ServerTaxiHailSetting Data { get; private set; }
+        public TaxiHailSetting Data { get; private set; }
+        public ServerTaxiHailSetting ServerData { get; private set; }
         public void Load()
         {
            //done in the ctor

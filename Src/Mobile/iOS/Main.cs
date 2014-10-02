@@ -192,7 +192,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
 			Console.WriteLine(url.ToString());
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            if (url.AbsoluteString.StartsWith("fb" + settings.Data.FacebookAppId + settings.Data.ApplicationName.ToLower().Replace( " ", string.Empty ) ))
+            if (url.AbsoluteString.StartsWith("fb" + settings.Data.FacebookAppId + settings.Data.TaxiHail.ApplicationName.ToLower().Replace( " ", string.Empty ) ))
 			{
                 _callbackFromFb = true;
 				return FBAppCall.HandleOpenURL(url, sourceApplication);

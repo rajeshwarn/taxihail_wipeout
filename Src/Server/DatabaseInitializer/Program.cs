@@ -212,7 +212,7 @@ namespace DatabaseInitializer
                         NotificationSettings = new NotificationSettings
                         {
                             Enabled = true,
-                            BookingConfirmationEmail = configurationManager.GetSetting("Booking.ConfirmationEmail", true),
+                            BookingConfirmationEmail = true,
                             ConfirmPairingPush = true,
                             DriverAssignedPush = true,
                             NearbyTaxiPush = true,
