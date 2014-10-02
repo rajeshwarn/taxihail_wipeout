@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Configuration.Impl;
+using MK.Common.Configuration;
 
 #endregion
 
@@ -23,7 +25,7 @@ namespace MK.Booking.IBS.Test
         {
             throw new NotImplementedException();
         }
-
+        
         public string GetSetting(string key)
         {
             string val;
@@ -48,6 +50,8 @@ namespace MK.Booking.IBS.Test
             
             return defaultValue;
         }
+
+        public ServerTaxiHailSetting ServerData { get; private set; }
 
         public IDictionary<string, string> GetSettings()
         {

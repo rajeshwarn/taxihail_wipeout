@@ -3,7 +3,9 @@
 using System;
 using System.Collections.Generic;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Configuration.Impl;
+using MK.Common.Configuration;
 
 #endregion
 
@@ -40,6 +42,8 @@ namespace apcurium.MK.Common
         {
             throw new NotImplementedException();
         }
+
+        public ServerTaxiHailSetting ServerData { get; private set; }
 
         public IDictionary<string, string> GetSettings()
         {
