@@ -26,13 +26,10 @@ namespace apcurium.MK.Common.Extensions
 
         private static void GetNestedTypeProperties(this Type type, string fullName, IDictionary<string, PropertyInfo> allProperties)
         {
-            var nestedTypes = new List<Type>();
-            if (type.BaseType != null)
-            {
-                // Get the properties of the parent class
-                nestedTypes.AddRange(type.BaseType.GetNestedTypes());
-            }
-            nestedTypes.AddRange(type.GetNestedTypes());
+            // Find complex properties
+            var nestedTypes = (from typeProperty in type.GetProperties()
+                               where typeProperty.PropertyType.IsUserDefinedClass()
+                               select typeProperty.PropertyType).ToList();
 
             // Add normal properties
             var nonNestedPropertyTypes = type.GetProperties().Where(x => !nestedTypes.Contains(x.PropertyType));
@@ -79,6 +76,19 @@ namespace apcurium.MK.Common.Extensions
                 obj = info.GetValue(obj, null);
             }
             return obj;
+        }
+
+        /// <summary>
+        /// Extension method that checks if the type is user defined.
+        /// </summary>
+        /// <param name="type">The type to check if it is user defined.</param>
+        /// <returns>True if the type is user defined; false otherwise.</returns>
+        public static bool IsUserDefinedClass(this Type type)
+        {
+            return type.IsClass
+                   && !type.IsPrimitive
+                   && !type.IsEnum
+                   && !type.FullName.StartsWith("System.");
         }
     }
 }

@@ -40,6 +40,8 @@ namespace DatabaseInitializer
 {
     public class Program
     {
+        private const string LocalDevProjectName = "MKWebDev";
+
         private static string AssemblyDirectory
         {
             get
@@ -94,7 +96,7 @@ namespace DatabaseInitializer
                     (() => new ConfigurationDbContext(connectionString.ConnectionString), container.Resolve<ILogger>());
 
                 //for dev company, delete old database to prevent keeping too many databases
-                if (param.CompanyName == "MKWebDev" && isUpdate)
+                if (param.CompanyName == LocalDevProjectName && isUpdate)
                 {
 #if DEBUG
                     Console.WriteLine("Drop Existing Database? Y or N");
@@ -112,11 +114,11 @@ namespace DatabaseInitializer
                 if (isUpdate)
                 {
                     // Remove all default value DB settings
+                    RenameClientSettings(commandBus);
                     CleanDefaultSettings(commandBus, configurationManager.ServerData);
                 }
 
-                // TODO: update to use the settings class instead of key/value dictionnary
-                var appSettings = GetCombinedSettings(isUpdate ? configurationManager.GetSettings() : null);
+                var appSettings = GetCompanySettings(param.CompanyName);
 
                 if (isUpdate)
                 {                    
@@ -129,7 +131,7 @@ namespace DatabaseInitializer
                 Console.WriteLine("Add user for IIS...");
 
                 ////add user for IIS IIS APPPOOL\MyCompany
-                if ((param.CompanyName != "MKWebDev") && (connectionString.ConnectionString.ToLower().Contains("integrated security=true")))
+                if ((param.CompanyName != LocalDevProjectName) && (connectionString.ConnectionString.ToLower().Contains("integrated security=true")))
                 {
                     creatorDb.AddUserAndRighst(param.MasterConnectionString, connectionString.ConnectionString,
                         "IIS APPPOOL\\" + param.CompanyName, param.CompanyName);
@@ -180,7 +182,7 @@ namespace DatabaseInitializer
                     if (tariffs.GetAll().All(x => x.Type != (int)TariffType.Default))
                     {
                         // Default rate does not exist for this company 
-                        CreateDefaultTariff(configurationManager, commandBus);
+                        CreateDefaultTariff(configurationManager.ServerData, commandBus);
                     }
 
                     CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
@@ -191,7 +193,7 @@ namespace DatabaseInitializer
                 else
                 {                    
                     // Create default rate for company
-                    CreateDefaultTariff(configurationManager, commandBus);
+                    CreateDefaultTariff(configurationManager.ServerData, commandBus);
                     CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
 
                     FetchingIbsDefaults(container, commandBus);
@@ -403,14 +405,14 @@ namespace DatabaseInitializer
                 }
                 var paramFileContent = File.ReadAllText(paramFile);
 
-                result = ServiceStack.Text.JsonSerializer.DeserializeFromString<DatabaseInitializerParams>(paramFileContent); 
+                result = JsonSerializer.DeserializeFromString<DatabaseInitializerParams>(paramFileContent); 
             }
             else if (args.Length > 0)
             {
                 result.CompanyName = args[0];
             }
 
-            result.CompanyName = string.IsNullOrWhiteSpace(result.CompanyName) ? "MKWebDev" : result.CompanyName;
+            result.CompanyName = string.IsNullOrWhiteSpace(result.CompanyName) ? LocalDevProjectName : result.CompanyName;
 
             //Sql instance name
             if (string.IsNullOrWhiteSpace(result.MkWebConnectionString) && (args.Length > 1))
@@ -720,18 +722,24 @@ namespace DatabaseInitializer
             DeleteAppSettings(commandBus, settingsToRemove);
         }
 
-        private static Dictionary<string, string> GetCombinedSettings(IDictionary<string, string> settingsInDb)
+        private static Dictionary<string, string> GetCompanySettings(string companyName)
         {            
             // Create settings
             var appSettings = new Dictionary<string, string>();
 
-            Console.WriteLine("Loading settings...");
+            Console.WriteLine("Loading company settings...");
 
-            if (settingsInDb != null)
+            if (companyName == LocalDevProjectName)
             {
-                settingsInDb.ForEach(setting => appSettings[setting.Key] = setting.Value);
-            }
+                var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
+                var objectSettings = JObject.Parse(jsonSettings);
 
+                foreach (var token in objectSettings)
+                {
+                    appSettings[token.Key] = token.Value.ToString();
+                }
+            }
+            
             return appSettings;
         }
 
@@ -753,16 +761,13 @@ namespace DatabaseInitializer
             });
         }
 
-        private static void CreateDefaultTariff(IConfigurationManager configurationManager, ICommandBus commandBus)
+        private static void CreateDefaultTariff(ServerTaxiHailSetting serverSettings, ICommandBus commandBus)
         {
-            var flatRate = configurationManager.GetSetting("Direction.FlateRate");
-            var ratePerKm = configurationManager.GetSetting("Direction.RatePerKm");
-
             commandBus.Send(new CreateTariff
             {
                 Type = TariffType.Default,
-                KilometricRate = double.Parse(ratePerKm, CultureInfo.InvariantCulture),
-                FlatRate = decimal.Parse(flatRate, CultureInfo.InvariantCulture),
+                KilometricRate = serverSettings.Direction.FlateRate,
+                FlatRate = (decimal)serverSettings.Direction.RatePerKm,
                 MarginOfError = 20,
                 CompanyId = AppConstants.CompanyId,
                 TariffId = Guid.NewGuid(),
@@ -785,6 +790,14 @@ namespace DatabaseInitializer
                     CompanyId = AppConstants.CompanyId
                 });
             }
+        }
+
+        private static void RenameClientSettings(ICommandBus commandBus)
+        {
+            commandBus.Send(new MigrateAppSettingNames
+            {
+                CompanyId = AppConstants.CompanyId
+            });
         }
     }
 }

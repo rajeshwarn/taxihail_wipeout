@@ -35,7 +35,7 @@ namespace MK.Common.Configuration
 		        PlacesApiKey = "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE"
 		    };
 
-		    GeoLoc = new GeoLocSettingContainerd
+		    GeoLoc = new GeoLocSettingContainer
 		    {
                 PlacesTypes = "airport,amusement_park,art_gallery,bank,bar,bus_station,cafe,casino,clothing_store,convenience_store,courthouse,department_store,doctor,embassy,food,gas_station,hospital,lawyer,grocery_or_supermarket,library,liquor_store,lodging,local_government_office,movie_theater,moving_company,museum,night_club,park,parking,pharmacy,police,physiotherapist"
 		    };
@@ -83,7 +83,7 @@ namespace MK.Common.Configuration
         public DirectionSettingContainer Direction { get; protected set; }
         public NearbyPlacesServiceSettingContainer NearbyPlacesService { get; protected set; }
         public MapSettingContainer Map { get; protected set; }
-        public GeoLocSettingContainerd GeoLoc { get; protected set; }
+        public GeoLocSettingContainer GeoLoc { get; protected set; }
         public AvailableVehiclesSettingContainer AvailableVehicles { get; protected set; }
 
 		[Display(Name = "Can Change Service Url", Description="Display a button on the login page to change the API server url")]

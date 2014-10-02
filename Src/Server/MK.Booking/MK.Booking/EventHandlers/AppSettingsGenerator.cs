@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 using MK.Common.Configuration;
 
@@ -13,7 +14,8 @@ namespace apcurium.MK.Booking.EventHandlers
 {
     public class AppSettingsGenerator :
         IEventHandler<AppSettingsAddedOrUpdated>,
-        IEventHandler<AppSettingsDeleted>
+        IEventHandler<AppSettingsDeleted>,
+        IEventHandler<AppSettingNamesMigrated>
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
 
@@ -28,33 +30,43 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var settings = context.Query<AppSetting>().ToList();
                 var taxiHailSettings = new TaxiHailSetting();
-                var defaultSettings = taxiHailSettings.GetType().GetProperties();
+                var defaultSettings = taxiHailSettings.GetType().GetAllProperties();
 
                 foreach (var appSetting in @event.AppSettings)
                 {
-                    var setting = settings.FirstOrDefault(x => x.Key.Equals(appSetting.Key));
-                    var keySubstring = appSetting.Key.Split('.').Last();
+                    var settingToUpdate = settings.FirstOrDefault(x => x.Key == appSetting.Key);
 
-                    if (setting != null)
+                    if (!defaultSettings.ContainsKey(appSetting.Key))
                     {
-                        setting.Value = appSetting.Value;
+                        // Setting doesn't exist
+                        continue;
+                    }
+
+                    var defaultSettingValue = taxiHailSettings.GetNestedPropertyValue(appSetting.Key);
+                    string defaultSettingStringValue = defaultSettingValue == null ? string.Empty : defaultSettingValue.ToString();
+
+                    // For boolean values, string comparison will ignore case
+                    bool isValueBoolean;
+                    bool.TryParse(defaultSettingStringValue, out isValueBoolean);
+
+                    if (settingToUpdate != null)
+                    {
+                        if (AreSettingsEqual(appSetting.Value, defaultSettingStringValue))
+                        {
+                            // Value is it's different than default
+                            settingToUpdate.Value = appSetting.Value;
+                        }
+                        else
+                        {
+                            // Value is the same as the default, remove the setting
+                            context.Set<AppSetting>().Remove(settingToUpdate);
+                        }
                     }
                     else
                     {
-                        // TODO: check if setting is different before saving it
-                        var defaultSetting = defaultSettings.FirstOrDefault(x => x.Name == keySubstring);
-                        var defaultSettingValue = defaultSetting.GetValue(taxiHailSettings, null);
-                        string defaultSettingStringValue = defaultSettingValue == null ? string.Empty : defaultSettingValue.ToString();
-
-                        // For boolean values, string comparison will ignore case
-                        bool isValueBoolean;
-                        bool.TryParse(defaultSettingStringValue, out isValueBoolean);
-
-                        if (isValueBoolean
-                            ? appSetting.Value.Equals(defaultSettingStringValue, StringComparison.InvariantCultureIgnoreCase)
-                            : appSetting.Value == defaultSettingStringValue)
+                        if (AreSettingsEqual(appSetting.Value, defaultSettingStringValue))
                         {
-                            // Only save setting in DB if different than default value
+                            // New setting with value different than default
                             context.Set<AppSetting>().Add(new AppSetting(appSetting.Key, appSetting.Value));
                         }
                     }
@@ -78,6 +90,40 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 context.SaveChanges();
             }
+        }
+
+        public void Handle(AppSettingNamesMigrated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var settings = context.Query<AppSetting>().ToList();
+
+                foreach (var appSetting in settings)
+                {
+                    if (appSetting.Key.StartsWith("Client.", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        context.Set<AppSetting>().Remove(appSetting);
+                        context.Set<AppSetting>().Add(new AppSetting
+                        {
+                            Key = appSetting.Key.Split(new []{"Client."}, StringSplitOptions.RemoveEmptyEntries).First(),
+                            Value = appSetting.Value
+                        });
+                    }
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        private bool AreSettingsEqual(string setting1, string setting2)
+        {
+            // For boolean values, string comparison will ignore case
+            bool isValueBoolean;
+            bool.TryParse(setting1, out isValueBoolean);
+
+            return isValueBoolean
+                ? setting1.Equals(setting2, StringComparison.InvariantCultureIgnoreCase)
+                : setting1 == setting2;
         }
     }
 }

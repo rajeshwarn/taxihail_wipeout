@@ -61,7 +61,7 @@ namespace apcurium.MK.Common.Configuration
         public string PlacesApiKey { get; protected internal set; }
     }
 
-    public class GeoLocSettingContainerd
+    public class GeoLocSettingContainer
     {
         [Display(Name = "Default Latitude", Description = "Default latitude to display the map before geoloc is done")]
         public double DefaultLatitude { get; protected internal set; }
