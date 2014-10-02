@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Api.Services
             _referenceDataService = referenceDataService;
         }
 
-        public AvailableVehiclesResponse Get(AvailableVehicles request)
+        public AvailableVehiclesResponse Post(AvailableVehicles request)
         {
             var vehicles = _bookingWebServiceClient.GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
             var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId);

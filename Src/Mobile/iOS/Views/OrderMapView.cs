@@ -430,12 +430,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         public void SetEnabled(bool enabled)
         {
-            if (this.UserInteractionEnabled == enabled)
-            {
-                // already in the good state, no need to change
-                return;
-            }
-
             this.ScrollEnabled = enabled;
             this.UserInteractionEnabled = enabled;                       
 

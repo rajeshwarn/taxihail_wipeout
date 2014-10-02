@@ -22,7 +22,6 @@ namespace MK.Common.Configuration
 		    ShowPassengerApartment = true;
             TutorialEnabled = true;
 			HidePayNowButtonDuringRide = false;
-			DefaultCardRequiredToPayNow = false;
 		    CanSkipRatingRequired = true;
 			ShowAssignedVehicleNumberOnPin = true;
 			ZoomOnNearbyVehicles = false;
@@ -180,10 +179,6 @@ namespace MK.Common.Configuration
 
 		[Display(Name = "Hide Pay Now Button During Ride", Description = "This will hide the pay now button, on the status screen, if the ride is not completed")]
 		public bool HidePayNowButtonDuringRide { get; private set; }
-
-		[Display(Name = "Default Card Required To Pay Now", Description = "This will hide the pay now button if the user doesn't have a default card setup.")]
-		public bool DefaultCardRequiredToPayNow { get; private set; }
-
 
 		[Display(Name = "Place Types", Description="Give a list of Google Maps places types to filter search")]
 		public string PlacesTypes { get; private set; }

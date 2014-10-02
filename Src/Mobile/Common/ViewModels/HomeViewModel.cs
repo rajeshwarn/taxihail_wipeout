@@ -29,7 +29,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IVehicleService _vehicleService;
 		private readonly ITermsAndConditionsService _termsService;
 	    private readonly IMvxLifetime _mvxLifetime;
-		private readonly IAccountService _accountService;
 
 		private HomeViewModelState _currentState = HomeViewModelState.Initial;
 
@@ -52,7 +51,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService = vehicleService;
 			_termsService = termsService;
 		    _mvxLifetime = mvxLifetime;
-			_accountService = accountService;
 
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService, paymentService);
 		}
@@ -87,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.OnViewStarted(firstTime);
 
 			_locationService.Start();
-			CheckTermsAsync();
+
 			CheckActiveOrderAsync (firstTime);
 
             if (_orderWorkflowService.IsOrderRebooked())
@@ -99,21 +97,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
                 // Don't await side panel creation
 				Panel.Start();
+				CheckTermsAsync();
+
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
 				_tutorialService.DisplayTutorialToNewUser();
 				_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
-
-				this.Services().MessengerHub.Subscribe<AppActivated>(m => 
-				{
-					_locateUser = true;
-				});
 			}
-
+				
 			if (_locateUser)
 			{
-				AutomaticLocateMeAtPickup.Execute(null);				
+				AutomaticLocateMeAtPickup.Execute (null);
 				_locateUser = false;
 			}
 
@@ -304,34 +299,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(async () =>
 				{					
-					if (_accountService.CurrentAccount != null)
+					var addressSelectionMode = await _orderWorkflowService.GetAndObserveAddressSelectionMode ().Take (1).ToTask ();
+					if (_currentState == HomeViewModelState.Initial 
+						&& addressSelectionMode == AddressSelectionMode.PickupSelection)
 					{
-						var addressSelectionMode = await _orderWorkflowService.GetAndObserveAddressSelectionMode ().Take (1).ToTask ();
-						if (_currentState == HomeViewModelState.Initial 
-							&& addressSelectionMode == AddressSelectionMode.PickupSelection)
+						var address = await _orderWorkflowService.SetAddressToUserLocation();
+						if(address.HasValidCoordinate())
 						{
-							var address = await _orderWorkflowService.SetAddressToUserLocation();
-							if(address.HasValidCoordinate())
-							{
-								// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
-								// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
-								this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
+							// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
+							// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
+							this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
 
-								if(Settings.ZoomOnNearbyVehicles)
+							if(Settings.ZoomOnNearbyVehicles)
+							{
+								try 
 								{
-									try 
+									var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
+									var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, availableVehicles);	
+									if (bounds != null)
 									{
-										var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
-										var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, availableVehicles);	
-										if (bounds != null)
-										{
-                                            this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
-										}
+										this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
 									}
-									catch (TimeoutException)
-									{ 
-										Console.WriteLine("LocateMe: Timeout occured while waiting for available vehicles");
-									}
+								}
+								catch (TimeoutException)
+								{ 
+									Console.WriteLine("LocateMe: Timeout occured while waiting for available vehicles");
 								}
 							}
 						}
@@ -350,14 +342,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(async () =>
 				{					
-					if (_accountService.CurrentAccount != null)
+					var address = await _orderWorkflowService.SetAddressToUserLocation();
+					if(address.HasValidCoordinate())
 					{
-						var address = await _orderWorkflowService.SetAddressToUserLocation();
-						if(address.HasValidCoordinate())
-						{
-							this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
-						}
-					}									
+						this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
+					}								
 				});
 			}
 		}
@@ -429,7 +418,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             if (args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk
                 || args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)
             {
+				// since this is called before OnViewStarted and AutomaticLocateMe needs it, do it here, otherwise AutomaticLocateMe will be very slow
+				_locationService.Start();
+
+				AutomaticLocateMeAtPickup.Execute(null);
                 CheckUnratedRide();
+				CheckTermsAsync();
             }
         }
     }
