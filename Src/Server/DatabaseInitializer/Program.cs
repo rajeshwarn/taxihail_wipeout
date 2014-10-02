@@ -112,7 +112,7 @@ namespace DatabaseInitializer
                 if (isUpdate)
                 {
                     // Remove all default value DB settings
-                    CleanDefaultSettings(commandBus, configurationManager.GetSettings());
+                    CleanDefaultSettings(commandBus, configurationManager.Data);
                 }
 
                 // TODO: update to use the settings class instead of key/value dictionnary
@@ -686,31 +686,33 @@ namespace DatabaseInitializer
             AddOrUpdateAppSettings(commandBus, appSettings);
         }
 
-        private static void CleanDefaultSettings(ICommandBus commandBus, IDictionary<string, string> settingsInDb)
+        private static void CleanDefaultSettings(ICommandBus commandBus, ServerTaxiHailSetting settingsInDb)
         {
             var settingsToRemove = new List<string>();
-            var taxiHailSettings = new TaxiHailSetting();
-            var defaultSettings = taxiHailSettings.GetType().GetProperties();
+            var taxiHailSettings = new ServerTaxiHailSetting();
+            var settingsInDbProperties = settingsInDb.GetType().GetAllProperties();
+            var defaultSettingsProperties = taxiHailSettings.GetType().GetAllProperties();
 
-            foreach (var setting in defaultSettings)
+            foreach (var setting in defaultSettingsProperties)
             {
-                var settingName = setting.Name;
-                var settingValue = setting.GetValue(taxiHailSettings, null);
+                var settingValue = /*setting.Value*/taxiHailSettings.GetNestedPropertyValue(/*setting.Key*/"GCM.APIKey");
                 string settingStringValue = settingValue == null ? string.Empty : settingValue.ToString();
 
                 // For boolean values, string comparison will ignore case
                 bool isValueBoolean;
                 bool.TryParse(settingStringValue, out isValueBoolean);
 
-                if (settingsInDb.Any(x => x.Key.EndsWith(settingName)))
+                if (settingsInDbProperties.ContainsKey(setting.Key))
                 {
-                    string dbValue = settingsInDb.First(x => x.Key.EndsWith(settingName)).Value;
+                    var dbValue = taxiHailSettings.GetNestedPropertyValue(setting.Key);
+                    string dbStringValue = dbValue == null ? string.Empty : dbValue.ToString();
+
                     if (isValueBoolean
-                        ? dbValue.Equals(settingStringValue, StringComparison.InvariantCultureIgnoreCase)
-                        : dbValue == settingStringValue)
+                        ? dbStringValue.Equals(settingStringValue, StringComparison.InvariantCultureIgnoreCase)
+                        : dbStringValue == settingStringValue)
                     {
                         // Mark as delete settings with default value
-                        settingsToRemove.Add(settingName);
+                        settingsToRemove.Add(setting.Key);
                     }
                 }
             }

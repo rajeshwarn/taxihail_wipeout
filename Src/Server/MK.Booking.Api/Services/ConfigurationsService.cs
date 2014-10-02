@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Api.Services
                 _commandBus.Send(command);
             }
 
-            return "";
+            return string.Empty;
         }
 
         public object Get(NotificationSettingsRequest request)
