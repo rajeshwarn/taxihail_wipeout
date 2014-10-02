@@ -265,7 +265,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             return new BitmapDrawable(_progressImage);
         }
 
-        public static bool IsAssetOverriden(Bitmap image, Android.Graphics.Color expectedColor, Android.Graphics.Point expectedColorCoordinate)
+        private static bool IsAssetOverriden(Bitmap image, Android.Graphics.Color expectedColor, Android.Graphics.Point expectedColorCoordinate)
         {
             var detectedColor = image.GetPixel(expectedColorCoordinate.X, expectedColorCoordinate.Y);
             return !detectedColor.Equals(expectedColor.ToArgb());

@@ -531,7 +531,6 @@
     <Compile Include="Controls\Widgets\ToggleCell.cs" />
     <Compile Include="Style\FlatButtonStyle.cs" />
     <Compile Include="Helper\ColorHelper.cs" />
-    <Compile Include="Extensions\UIImageExtensions.cs" />
     <Compile Include="Extensions\Helpers\NaturalLanguageHelper.cs" />
     <BundleResource Include="Resources\tutorial_screen08.png" />
     <BundleResource Include="Resources\tutorial_screen08%402x.png" />
