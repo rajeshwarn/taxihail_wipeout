@@ -765,8 +765,8 @@ namespace DatabaseInitializer
             commandBus.Send(new CreateTariff
             {
                 Type = TariffType.Default,
-                KilometricRate = serverSettings.Direction.FlateRate,
-                FlatRate = serverSettings.Direction.RatePerKm,
+                KilometricRate = serverSettings.Direction.RatePerKm,
+                FlatRate = serverSettings.Direction.FlateRate,
                 MarginOfError = 20,
                 CompanyId = AppConstants.CompanyId,
                 TariffId = Guid.NewGuid(),
