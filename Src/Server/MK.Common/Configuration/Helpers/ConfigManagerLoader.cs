@@ -4,61 +4,63 @@ using System.Linq;
 using System.Reflection;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Common.Configuration.Helpers
 {
     public static class ConfigManagerLoader
     {
-        public static void InitializeDataObjects<T>(T objectToInitialize, IDictionary<string, string> values, ILogger logger) where T : class
+		public static void InitializeDataObjects<T>(T objectToInitialize, IDictionary<string, string> values, ILogger logger, string[] excludedKeys = null) where T : class
         {
             var typeOfSettings = typeof(T);
             foreach (KeyValuePair<string, string> item in values)
             {
-                try
-                {
-                    var propertyName = item.Key;
-                    if (propertyName.Contains("."))
-                    {
-                        if (propertyName.SplitOnFirst('.')[0] == "Client")
-                        {
-                            propertyName = propertyName.SplitOnFirst('.')[1];
-                        }
-                    }
+				if (excludedKeys == null || !excludedKeys.Any (key => item.Key.Contains (key))) 
+				{
+					try
+					{
+						var propertyName = item.Key;
+						if (propertyName.Contains("."))
+						{
+							if (propertyName.SplitOnFirst('.')[0] == "Client")
+							{
+								propertyName = propertyName.SplitOnFirst('.')[1];
+							}
+						}
 
-                    var propertyType = GetProperty(typeOfSettings, propertyName);
+						var propertyType = GetProperty(typeOfSettings, propertyName);
 
-                    if (propertyType == null)
-                    {
-                        Console.WriteLine("Warning - can't set value for property {0}, value was {1} - property not found", propertyName, item.Value);
-                        continue;
-                    }
+						if (propertyType == null)
+						{
+							Console.WriteLine("Warning - can't set value for property {0}, value was {1} - property not found", propertyName, item.Value);
+							continue;
+						}
 
-                    var targetType = IsNullableType(propertyType.PropertyType)
-                        ? Nullable.GetUnderlyingType(propertyType.PropertyType)
-                        : propertyType.PropertyType;
+						var targetType = IsNullableType(propertyType.PropertyType)
+							? Nullable.GetUnderlyingType(propertyType.PropertyType)
+							: propertyType.PropertyType;
 
-                    if (targetType.IsEnum)
-                    {
-                        var propertyVal = Enum.Parse(targetType, item.Value);
-                        SetValue(propertyName, objectToInitialize, propertyVal);
-                    }
-                    else if (IsNullableType(propertyType.PropertyType) && string.IsNullOrEmpty(item.Value))
-                    {
-                        SetValue(propertyName, objectToInitialize, null);
-                    }
-                    else
-                    {
-                        var propertyVal = Convert.ChangeType(item.Value, targetType);
-                        SetValue(propertyName, objectToInitialize, propertyVal);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Warning - can't set value for property {0}, value was {1}", item.Key, item.Value);
-                    logger.Maybe(() => logger.LogMessage("Warning - can't set value for property {0}, value was {1}", item.Key, item.Value));
-//                    _logger.Maybe(() => _logger.LogError(e));
-                }
+						if (targetType.IsEnum)
+						{
+							var propertyVal = Enum.Parse(targetType, item.Value);
+							SetValue(propertyName, objectToInitialize, propertyVal);
+						}
+						else if (IsNullableType(propertyType.PropertyType) && string.IsNullOrEmpty(item.Value))
+						{
+							SetValue(propertyName, objectToInitialize, null);
+						}
+						else
+						{
+							var propertyVal = Convert.ChangeType(item.Value, targetType);
+							SetValue(propertyName, objectToInitialize, propertyVal);
+						}
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine("Warning - can't set value for property {0}, value was {1}", item.Key, item.Value);
+						logger.Maybe(() => logger.LogMessage("Warning - can't set value for property {0}, value was {1}", item.Key, item.Value));
+						logger.Maybe(() => logger.LogError(e));
+					}
+				}
             }
         }
 

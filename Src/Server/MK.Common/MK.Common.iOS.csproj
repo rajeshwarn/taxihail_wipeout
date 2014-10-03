@@ -125,6 +125,7 @@
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Entity\AccountChargeQuestion.cs" />
     <Compile Include="Enumeration\ChargeTypes.cs" />
+    <Compile Include="Configuration\Helpers\ConfigManagerLoader.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
