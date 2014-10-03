@@ -3,27 +3,17 @@
    "APNS.DevelopmentCertificatePath": "../../Certificates/development.p12",
    "GCM.PackageName": "com.apcurium.MK.TaxiHailDemo",
    "Receipt.Note": "Thank You!<br>The Taxi Hail Team",
-   "IBS.TimeDifference" : "0",
-   "TaxiHail.ApplicationName" : "Taxi Hail",
    "TaxiHail.ApplicationKey" : "TaxiHail",
    "TaxiHail.AccentColor" : "#0057a3",
    "TaxiHail.EmailFontColor" : "#000",
    "TaxiHail.SiteName" : "Dev",
-
-   "IBS.WebServicesUrl.1" : "http://mk.drivelinq.com:6928/XDS_IASPI.DLL/soap/",     
-   "IBS.WebServicesUrl.2":"http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/",
-   "IBS.WebServicesUrl" : "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/",         
-   "IBS.WebServicesUrl.4" : "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/",
-   "IBS.WebServicesUrl.5" : "http://mkcsales.drivelinq.com:6928/XDS_IASPI.DLL/soap/",          
- 
-   "Direction.FlateRate" : "3.45",   
+   "IBS.WebServicesUrl" : "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/",
+   "Direction.FlateRate" : "3.45",
    "Direction.RatePerKm" : "1.70",
-   "DistanceFormat" : "KM",
    "GeoLoc.DefaultLatitude" : "45.516667",
    "GeoLoc.DefaultLongitude" : "-73.65",
-   "GeoLoc.SearchFilter" : "{0},ottawa,on,canada&region=ca",    
+   "GeoLoc.SearchFilter" : "{0},ottawa,on,canada&region=ca",
    "DefaultPhoneNumber" : "18666245330",
    "DefaultPhoneNumberDisplay" : "1.866.624.5330",
-    "Client.GoogleMapKey": "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE",
-    "Booking.ConfirmationEmail" : "false"
+   "GoogleMapKey": "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE"
 }
