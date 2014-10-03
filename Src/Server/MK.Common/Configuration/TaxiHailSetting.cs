@@ -54,7 +54,6 @@ namespace MK.Common.Configuration
             ShowEstimateWarning = true;
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;
-            ErrorLogEnabled = true;
             SupportEmail = "taxihail@apcurium.com";
             ShowPassengerName = true;
             ShowPassengerNumber = true;
@@ -97,9 +96,6 @@ namespace MK.Common.Configuration
 
         [Display(Name = "Service Url", Description="Url of the TaxiHail Server")]
 		public string ServiceUrl { get; set; }
-        
-        [Display(Name = "Error Log Enabled", Description="Flag to enable the log of the errors in file")]
-		public bool ErrorLogEnabled{ get { return true; } protected set{ } }
         
         [Display(Name = "Twitter Enabled", Description="Enable register/log in with Twitter")]
 		public bool TwitterEnabled{ get; protected set; }

@@ -137,27 +137,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
 
                 Console.WriteLine (message);            
             
-                if (settings.ErrorLogEnabled)
-                {
-                    if (File.Exists (filePath))
-                    {
-                        var f = new FileInfo (filePath);
-                        var lenKb = f.Length / 1024;
-                        if (lenKb > 375)
-                        {
-                            f.Delete();
-                        }
-                    }
+				if (File.Exists (filePath))
+				{
+					var f = new FileInfo (filePath);
+					var lenKb = f.Length / 1024;
+					if (lenKb > 375)
+					{
+						f.Delete();
+					}
+				}
 
-                    File.AppendAllLines(filePath, new[] { message });
-                }
+				File.AppendAllLines(filePath, new[] { message });
 
             }
             catch(Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-            
         }
     }
 }
