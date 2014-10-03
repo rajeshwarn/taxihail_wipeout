@@ -10,6 +10,7 @@ using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
+using ServiceStack.Messaging.Rcon;
 using ServiceStack.Text;
 
 #endregion
@@ -48,6 +49,7 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public void Reload()
         {
+            ServerData = new ServerTaxiHailSetting();
             Load();
         }
 
