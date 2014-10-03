@@ -7,6 +7,8 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Messages;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -20,7 +22,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IAccountService _accountService;
 		private readonly IBookingService _bookingService;
 		private readonly ITermsAndConditionsService _termsService;
-		 
+		private HomeViewModelState _currentState = HomeViewModelState.Initial;
+
 
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
 			IMvxWebBrowserTask browserTask,
@@ -98,7 +101,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (_locateUser)
 			{
-				LocateMe.Execute();
+				var mode =  _orderWorkflowService.GetAndObserveAddressSelectionMode ().Take (1).ToTask ().Result;
+				if (_currentState == HomeViewModelState.Initial && mode == apcurium.MK.Booking.Mobile.Data.AddressSelectionMode.PickupSelection)
+				{
+					LocateMe.Execute();
+				}                    
+
+
 				_locateUser = false;
 			}
 
@@ -255,6 +264,7 @@ var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
 
 		private void OnPresentationStateRequested(object sender, HomeViewModelStateRequestedEventArgs e)
 		{
+			_currentState = e.State;
 			this.ChangePresentation(new HomeViewModelPresentationHint(e.State, e.IsNewOrder));
 
             if (e.State == HomeViewModelState.Initial)
