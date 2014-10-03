@@ -197,7 +197,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 						_localize[isOverMaxFare
                         	? "EstimatePriceOver100"
 							: "EstimatePriceFormat"], 
-						direction.Price, 
+						CultureProvider.FormatCurrency((double)direction.Price),
 						direction.FormattedDistance);
                 }
                 else
