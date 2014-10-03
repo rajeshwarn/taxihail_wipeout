@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Common.Configuration.Helpers
 {
@@ -20,9 +19,9 @@ namespace apcurium.MK.Common.Configuration.Helpers
                     var propertyName = item.Key;
                     if (propertyName.Contains("."))
                     {
-                        if (propertyName.SplitOnFirst('.')[0] == "Client")
+                        if (propertyName.SplitOnFirst(".")[0] == "Client")
                         {
-                            propertyName = propertyName.SplitOnFirst('.')[1];
+                            propertyName = propertyName.SplitOnFirst(".")[1];
                         }
                     }
 
@@ -98,6 +97,26 @@ namespace apcurium.MK.Common.Configuration.Helpers
         {
             return type.IsGenericType
                 && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
+        }
+
+        private static string[] SplitOnFirst(this string strVal, string needle)
+        {
+            if (strVal == null)
+            {
+                return new string[0];
+            }
+                
+            int length = strVal.IndexOf(needle);
+            if (length != -1)
+            {
+                return new[]
+                {
+                    strVal.Substring(0, length),
+                    strVal.Substring(length + 1)
+                };
+            }
+
+            return new[] { strVal };
         }
     }
 }
