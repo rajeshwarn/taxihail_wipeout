@@ -301,11 +301,11 @@ namespace apcurium.MK.Booking.ConfigTool
             var tutorialContent = GetFilesFromAssetsDirectory("json");
             foreach (var file in tutorialContent)
             {
-                _configs.Add(new ConfigFile(this)
-                {
-                    Source = file + ".json",
-                    Destination = @"Mobile\Common\TutorialContent\"+ file + ".json" 
-            }
+				_configs.Add (new ConfigFile (this) 
+				{
+					Source = file + ".json",
+					Destination = @"Mobile\Common\TutorialContent\" + file + ".json" 
+				});
             }
         }
 
@@ -456,5 +456,4 @@ namespace apcurium.MK.Booking.ConfigTool
             }
         }        
     }
-}
 }
