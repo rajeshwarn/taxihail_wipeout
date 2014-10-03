@@ -112,11 +112,18 @@ namespace apcurium.MK.Booking.EventHandlers
                     if (appSetting.Key.StartsWith("Client.", StringComparison.InvariantCultureIgnoreCase))
                     {
                         context.Set<AppSetting>().Remove(appSetting);
-                        context.Set<AppSetting>().Add(new AppSetting
+
+                        var newKey = appSetting.Key.Split(new[] {"Client."}, StringSplitOptions.RemoveEmptyEntries).First();
+                        var existingEntry = context.Set<AppSetting>().FirstOrDefault(x => x.Key == newKey);
+                        
+                        if (existingEntry == null)
                         {
-                            Key = appSetting.Key.Split(new []{"Client."}, StringSplitOptions.RemoveEmptyEntries).First(),
-                            Value = appSetting.Value
-                        });
+                            context.Set<AppSetting>().Add(new AppSetting
+                            {
+                                Key = newKey,
+                                Value = appSetting.Value
+                            });
+                        }
                     }
                 }
 
