@@ -1,0 +1,384 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountConfirmationSmsBody" xml:space="preserve">
+    <value>Su Código de verificación es {0} is {1}</value>
+  </data>
+  <data name="CardOnFile" xml:space="preserve">
+    <value>Tarjeta en Archivo</value>
+  </data>
+  <data name="ChargeAccount" xml:space="preserve">
+    <value>Cuenta de cargo</value>
+  </data>
+  <data name="CurrencyPriceFormat" xml:space="preserve">
+    <value>{0:c}</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationLine1" xml:space="preserve">
+    <value>Para confirmar su email, por favor visite este vínculo:</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationSuccessfulLine1" xml:space="preserve">
+    <value>Su dirección de correo ha sido confirmada correctamente.</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationSuccessfulLine2" xml:space="preserve">
+    <value>Usted puede ahora engresarse en la aplicación</value>
+  </data>
+  <data name="Email_Body_AptNumber" xml:space="preserve">
+    <value>Apt&amp;nbsp;No.</value>
+  </data>
+  <data name="Email_Body_AuthorizationNumber" xml:space="preserve">
+    <value>Número de autorización</value>
+  </data>
+  <data name="Email_Body_BookingConfirmation" xml:space="preserve">
+    <value>Confirmación de reserva</value>
+  </data>
+  <data name="Email_Body_ChargeType" xml:space="preserve">
+    <value>Cargonbsp;Tipo</value>
+  </data>
+  <data name="Email_Body_Date" xml:space="preserve">
+    <value>Fecha</value>
+  </data>
+  <data name="Email_Body_Destination" xml:space="preserve">
+    <value>Destino</value>
+  </data>
+  <data name="Email_Body_Driver" xml:space="preserve">
+    <value>Chofer</value>
+  </data>
+  <data name="Email_Body_EmailConfirmationRequired" xml:space="preserve">
+    <value>Confirmación de email requerida</value>
+  </data>
+  <data name="Email_Body_EmailConfirmationSuccessful" xml:space="preserve">
+    <value>Confirmación de email satisfactoria</value>
+  </data>
+  <data name="Email_Body_EstimatedFare" xml:space="preserve">
+    <value>Estimado&amp;nbsp;Fare</value>
+  </data>
+  <data name="Email_Body_Fare" xml:space="preserve">
+    <value>Costo</value>
+  </data>
+  <data name="Email_Body_FareBreakDown" xml:space="preserve">
+    <value>Detalles de costo</value>
+  </data>
+  <data name="Email_Body_LargeBags" xml:space="preserve">
+    <value>Equipage&amp;nbsp;grande</value>
+  </data>
+  <data name="Email_Body_Name" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="Email_Body_Note" xml:space="preserve">
+    <value>Detalles</value>
+  </data>
+  <data name="Email_Body_OrderNo" xml:space="preserve">
+    <value>Orden&amp;nbsp;#</value>
+  </data>
+  <data name="Email_Body_PaidWith" xml:space="preserve">
+    <value>Pagado con</value>
+  </data>
+  <data name="Email_Body_Passengers" xml:space="preserve">
+    <value>Pasajeros</value>
+  </data>
+  <data name="Email_Body_PasswordReset" xml:space="preserve">
+    <value>Restablecer contraseña</value>
+  </data>
+  <data name="Email_Body_PasswordResetLine1" xml:space="preserve">
+    <value>Su contraseña ha sido restablecida</value>
+  </data>
+  <data name="Email_Body_PasswordResetLine2" xml:space="preserve">
+    <value>Nueva contraseña:</value>
+  </data>
+  <data name="Email_Body_PaymentInformation" xml:space="preserve">
+    <value>Información de pago</value>
+  </data>
+  <data name="Email_Body_PhoneNumber" xml:space="preserve">
+    <value>Teléfono&amp;nbsp;Número</value>
+  </data>
+  <data name="Email_Body_PickupLocation" xml:space="preserve">
+    <value>Recojida&amp;nbsp;Ubicación</value>
+  </data>
+  <data name="Email_Body_PickupTime" xml:space="preserve">
+    <value>Recojida&amp;nbsp;Hora</value>
+  </data>
+  <data name="Email_Body_PickupTimeValue" xml:space="preserve">
+    <value>{{PickupDate}} at {{PickupTime}}</value>
+  </data>
+  <data name="Email_Body_Receipt" xml:space="preserve">
+    <value>Recibo de pago</value>
+  </data>
+  <data name="Email_Body_RingCode" xml:space="preserve">
+    <value>Llamada&amp;nbsp;Código</value>
+  </data>
+  <data name="Email_Body_Route" xml:space="preserve">
+    <value>Ruta</value>
+  </data>
+  <data name="Email_Body_SubTotal" xml:space="preserve">
+    <value>Subtotal</value>
+  </data>
+  <data name="Email_Body_Tax" xml:space="preserve">
+    <value>Impuesto</value>
+  </data>
+  <data name="Email_Body_ThankYou" xml:space="preserve">
+    <value>Gracias!</value>
+  </data>
+  <data name="Email_Body_TheTeam" xml:space="preserve">
+    <value>El {{ ApplicationName }} Team</value>
+  </data>
+  <data name="Email_Body_Tip" xml:space="preserve">
+    <value>Propina</value>
+  </data>
+  <data name="Email_Body_Toll" xml:space="preserve">
+    <value>Peaje</value>
+  </data>
+  <data name="Email_Body_TotalAmount" xml:space="preserve">
+    <value>Monto total</value>
+  </data>
+  <data name="Email_Body_TotalFare" xml:space="preserve">
+    <value>Total&amp;nbsp;Monto</value>
+  </data>
+  <data name="Email_Body_TransactionId" xml:space="preserve">
+    <value>ID de transacción</value>
+  </data>
+  <data name="Email_Body_TransactionTime" xml:space="preserve">
+    <value>Transacción&amp;nbsp;hora</value>
+  </data>
+  <data name="Email_Body_TransactionTimeValue" xml:space="preserve">
+    <value>{{TransactionDate}} at {{TransactionTime}}</value>
+  </data>
+  <data name="Email_Body_VAT" xml:space="preserve">
+    <value>VAT</value>
+  </data>
+  <data name="Email_Body_VehicleNumber" xml:space="preserve">
+    <value>Vehículo#</value>
+  </data>
+  <data name="Email_Body_VehicleType" xml:space="preserve">
+    <value>Vehículo&amp;nbsp;Tipo</value>
+  </data>
+  <data name="Email_Subject_AccountConfirmation" xml:space="preserve">
+    <value>Bienvenido a {{ ApplicationName }}</value>
+  </data>
+  <data name="Email_Subject_BookingConfirmation" xml:space="preserve">
+    <value>{{ ApplicationName }} - Confirmación de reserva</value>
+  </data>
+  <data name="Email_Subject_PasswordReset" xml:space="preserve">
+    <value>{{ ApplicationName }} - Su contraseña ha sido restabledida</value>
+  </data>
+  <data name="Email_Subject_Receipt" xml:space="preserve">
+    <value>{{ ApplicationName }} - Recibo</value>
+  </data>
+  <data name="EtaMessageToDriver" xml:space="preserve">
+    <value>TEA mostrado al cliente es{0} and {1} min</value>
+  </data>
+  <data name="OrderStatus_CabDriverETA" xml:space="preserve">
+    <value>TEA: {0}</value>
+  </data>
+  <data name="OrderStatus_CabDriverNumberAssigned" xml:space="preserve">
+    <value>Vehículo {0} le ha sido asignado</value>
+  </data>
+  <data name="OrderStatus_OrderDoneFareAvailable" xml:space="preserve">
+    <value>Completado ({0})</value>
+  </data>
+  <data name="OrderStatus_wosAddrNotValid" xml:space="preserve">
+    <value>Esta dirección no es válida</value>
+  </data>
+  <data name="OrderStatus_wosARRIVED" xml:space="preserve">
+    <value>Su Taxi esta en la ubicación de recojida</value>
+  </data>
+  <data name="OrderStatus_wosASSIGNED" xml:space="preserve">
+    <value>Chofer asignado</value>
+  </data>
+  <data name="OrderStatus_wosCANCELLED" xml:space="preserve">
+    <value>Cancelado</value>
+  </data>
+  <data name="OrderStatus_wosCANCELLED_DONE" xml:space="preserve">
+    <value>Cancelado</value>
+  </data>
+  <data name="OrderStatus_wosDONE" xml:space="preserve">
+    <value>Completado</value>
+  </data>
+  <data name="OrderStatus_wosLOADED" xml:space="preserve">
+    <value>Pasajero en vehículo</value>
+  </data>
+  <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
+    <value>Costo de servicio sera pagado con tarjeta en archivo</value>
+  </data>
+  <data name="OrderStatus_wosNone" xml:space="preserve">
+    <value>Orden inválida, por favor llame nuestro centro de dispacho</value>
+  </data>
+  <data name="OrderStatus_wosNOSHOW" xml:space="preserve">
+    <value>Pasajero no presente</value>
+  </data>
+  <data name="OrderStatus_wosSCHED" xml:space="preserve">
+    <value>Programado</value>
+  </data>
+  <data name="OrderStatus_wosTIMEOUT" xml:space="preserve">
+    <value>Lo sentimos, no hay taxis disponibles dado a alta demanda, por favor trate nuevamente más tarde</value>
+  </data>
+  <data name="OrderStatus_wosWAITING" xml:space="preserve">
+    <value>Espere mientras un taxi se le asigna</value>
+  </data>
+  <data name="PairingConfirmationToDriver" xml:space="preserve">
+    <value>Costo será pagado a través de la aplicación</value>
+  </data>
+  <data name="PayInCarMessageToDriver" xml:space="preserve">
+    <value>Pago está siendo procesado a través de la aplicación</value>
+  </data>
+  <data name="PaymentConfirmationToDriver1" xml:space="preserve">
+    <value>El pasajero ha pagado</value>
+  </data>
+  <data name="PaymentConfirmationToDriver2" xml:space="preserve">
+    <value>Costo: {0}   Propina: {1}</value>
+  </data>
+  <data name="PaymentConfirmationToDriver3" xml:space="preserve">
+    <value>Total: {0}</value>
+  </data>
+  <data name="PaymentConfirmationToDriver4" xml:space="preserve">
+    <value>Autorización #{0}</value>
+  </data>
+  <data name="PaymentFailedToDriver" xml:space="preserve">
+    <value>Pago por aplicación ha fallado!</value>
+  </data>
+  <data name="PaymentInCar" xml:space="preserve">
+    <value>Pago en vehículo</value>
+  </data>
+  <data name="PushNotification_NearbyTaxi" xml:space="preserve">
+    <value>Su taxi esta casi en su ubicación</value>
+  </data>
+  <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
+    <value>Su servicio #{0} no pudo ser pareada automáticamente</value>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
+    <value>Su servicio#{0} sera pagado automáticamente al final del servicio usando su tarjeta terminando en {1} y usando su propona por defecto de {2}%</value>
+  </data>
+  <data name="PushNotification_PaymentReceived" xml:space="preserve">
+    <value>Su tarjeta de crédito ha sido cargada un total de {0}. Este monto incluye ambos su servicio y su propina</value>
+  </data>
+  <data name="PushNotification_wosARRIVED" xml:space="preserve">
+    <value>Su Taxi (#{0}) ha arrivado</value>
+  </data>
+  <data name="PushNotification_wosASSIGNED" xml:space="preserve">
+    <value>Taxi #{0} le ha sido asignado</value>
+  </data>
+  <data name="PushNotification_wosLOADED" xml:space="preserve">
+    <value>Por favor confirme vehículo para pagar con su tarjeta en archivo</value>
+  </data>
+  <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
+    <value>Lo sentimos, no hay taxis disponibles dado a alta demanda, por favor trate nuevamente más tarde</value>
+  </data>
+  <data name="UnpairingConfirmationToDriver" xml:space="preserve">
+    <value>Carrera</value>
+  </data>
+</root>
