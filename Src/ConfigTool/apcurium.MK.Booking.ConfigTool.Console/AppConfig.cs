@@ -400,10 +400,42 @@ namespace apcurium.MK.Booking.ConfigTool
 			}
         }
 
+		private string CleanUpSettingKey(string key)
+		{
+			var propertyName = key;
+
+			// remove Client. suffix
+			if (SplitOnFirst(key, ".")[0] == "Client") 
+			{
+				propertyName = SplitOnFirst(key, ".")[1];
+			}
+
+			// special case where TaxiHail.ApplicationName could be called ApplicationName
+			if (key == "ApplicationName") 
+			{
+				propertyName = "TaxiHail.ApplicationName";
+			}
+
+			return propertyName;
+		}
+
 		void CreateConfigFile (string fileName, Func<CompanySetting,bool> predicate)
 		{
 			var newFile = File.CreateText (fileName);
-			var dict = Company.CompanySettings.Where(predicate).ToDictionary (s => s.Key, s => s.Value ?? "");
+			var listOfSettings = Company.CompanySettings
+				.Where (predicate)
+				.Select (s => new
+					{ 
+						Key = CleanUpSettingKey (s.Key),
+						Value = s.Value 
+					});
+
+			var dict = new Dictionary<string, string> ();
+			foreach (var setting in listOfSettings) 
+			{
+				// if we have the same key twice, we take the last one, it doesn't matter since it should be the same value
+				dict [setting.Key] = setting.Value ?? string.Empty;
+			}
 
 			dict["ServiceUrl"] = _serviceUrl;
 
@@ -454,6 +486,26 @@ namespace apcurium.MK.Booking.ConfigTool
             {
                 output.Write(buffer, 0, len);
             }
-        }        
+        }       
+
+		private string[] SplitOnFirst(string strVal, string needle)
+		{
+			if (strVal == null)
+			{
+				return new string[0];
+			}
+
+			int length = strVal.IndexOf(needle);
+			if (length != -1)
+			{
+				return new[]
+				{
+					strVal.Substring(0, length),
+					strVal.Substring(length + 1)
+				};
+			}
+
+			return new[] { strVal };
+		}
     }
 }
