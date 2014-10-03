@@ -413,12 +413,6 @@ namespace apcurium.MK.Booking.ConfigTool
 				propertyName = SplitOnFirst(key, ".")[1];
 			}
 
-			// special case where TaxiHail.ApplicationName could be called ApplicationName
-			if (key == "ApplicationName") 
-			{
-				propertyName = "TaxiHail.ApplicationName";
-			}
-
 			return propertyName;
 		}
 
@@ -436,6 +430,11 @@ namespace apcurium.MK.Booking.ConfigTool
 			var dict = new Dictionary<string, string> ();
 			foreach (var setting in listOfSettings) 
 			{
+                // special case where TaxiHail.ApplicationName could be called ApplicationName
+                if (setting.Key == "ApplicationName")
+                {
+                    dict["TaxiHail.ApplicationName"] = setting.Value ?? string.Empty;
+                }
 				// if we have the same key twice, we take the last one, it doesn't matter since it should be the same value
 				dict [setting.Key] = setting.Value ?? string.Empty;
 			}
