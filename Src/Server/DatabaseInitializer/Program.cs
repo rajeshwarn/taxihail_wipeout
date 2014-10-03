@@ -40,6 +40,8 @@ namespace DatabaseInitializer
 {
     public class Program
     {
+        private const string LocalDevProjectName = "MKWebDev";
+
         private static string AssemblyDirectory
         {
             get
@@ -94,7 +96,7 @@ namespace DatabaseInitializer
                     (() => new ConfigurationDbContext(connectionString.ConnectionString), container.Resolve<ILogger>());
 
                 //for dev company, delete old database to prevent keeping too many databases
-                if (param.CompanyName == "MKWebDev" && isUpdate)
+                if (param.CompanyName == LocalDevProjectName && isUpdate)
                 {
 #if DEBUG
                     Console.WriteLine("Drop Existing Database? Y or N");
@@ -107,7 +109,16 @@ namespace DatabaseInitializer
 #endif
                 }
 
-                var appSettings = GetCombinedSettings(isUpdate ? configurationManager.GetSettings() : null, param.CompanyName);
+                var commandBus = container.Resolve<ICommandBus>();
+
+                if (isUpdate)
+                {
+                    // Remove all default value DB settings
+                    RenameClientSettings(commandBus);
+                    CleanDefaultSettings(commandBus, configurationManager);
+                }
+
+                var appSettings = GetCompanySettings(param.CompanyName);
 
                 if (isUpdate)
                 {                    
@@ -120,7 +131,7 @@ namespace DatabaseInitializer
                 Console.WriteLine("Add user for IIS...");
 
                 ////add user for IIS IIS APPPOOL\MyCompany
-                if ((param.CompanyName != "MKWebDev") && (connectionString.ConnectionString.ToLower().Contains("integrated security=true")))
+                if ((param.CompanyName != LocalDevProjectName) && (connectionString.ConnectionString.ToLower().Contains("integrated security=true")))
                 {
                     creatorDb.AddUserAndRighst(param.MasterConnectionString, connectionString.ConnectionString,
                         "IIS APPPOOL\\" + param.CompanyName, param.CompanyName);
@@ -135,7 +146,6 @@ namespace DatabaseInitializer
                 }
 
                 //Init data
-                var commandBus = container.Resolve<ICommandBus>();
                 var companyIsCreated = container.Resolve<IEventsPlayBackService>().CountEvent("Company") > 0;
 
                 if (!companyIsCreated)
@@ -395,14 +405,14 @@ namespace DatabaseInitializer
                 }
                 var paramFileContent = File.ReadAllText(paramFile);
 
-                result = ServiceStack.Text.JsonSerializer.DeserializeFromString<DatabaseInitializerParams>(paramFileContent); 
+                result = JsonSerializer.DeserializeFromString<DatabaseInitializerParams>(paramFileContent); 
             }
             else if (args.Length > 0)
             {
                 result.CompanyName = args[0];
             }
 
-            result.CompanyName = string.IsNullOrWhiteSpace(result.CompanyName) ? "MKWebDev" : result.CompanyName;
+            result.CompanyName = string.IsNullOrWhiteSpace(result.CompanyName) ? LocalDevProjectName : result.CompanyName;
 
             //Sql instance name
             if (string.IsNullOrWhiteSpace(result.MkWebConnectionString) && (args.Length > 1))
@@ -678,39 +688,73 @@ namespace DatabaseInitializer
             AddOrUpdateAppSettings(commandBus, appSettings);
         }
 
-        private static Dictionary<string, string> GetCombinedSettings(IDictionary<string, string> settingsInDb, string companyName )
+        private static void CleanDefaultSettings(ICommandBus commandBus, IConfigurationManager configurationManager)
+        {
+            var settingsToRemove = new List<string>();
+            var taxiHailSettings = new ServerTaxiHailSetting();
+            var settingsInDbProperties = configurationManager.ServerData.GetType().GetAllProperties();
+            var defaultSettingsProperties = taxiHailSettings.GetType().GetAllProperties();
+
+            foreach (var setting in defaultSettingsProperties)
+            {
+                var settingValue = taxiHailSettings.GetNestedPropertyValue(setting.Key);
+                string settingStringValue = settingValue == null ? string.Empty : settingValue.ToString();
+
+                // For boolean values, string comparison will ignore case
+                bool isValueBoolean;
+                bool.TryParse(settingStringValue, out isValueBoolean);
+
+                if (settingsInDbProperties.ContainsKey(setting.Key))
+                {
+                    var dbValue = taxiHailSettings.GetNestedPropertyValue(setting.Key);
+                    string dbStringValue = dbValue == null ? string.Empty : dbValue.ToString();
+
+                    if (isValueBoolean
+                        ? dbStringValue.Equals(settingStringValue, StringComparison.InvariantCultureIgnoreCase)
+                        : dbStringValue == settingStringValue)
+                    {
+                        // Mark as delete settings with default value
+                        settingsToRemove.Add(setting.Key);
+                    }
+                }
+            }
+
+            DeleteAppSettings(commandBus, settingsToRemove);
+        }
+
+        private static Dictionary<string, string> GetCompanySettings(string companyName)
         {            
-            //Create settings
+            // Create settings
             var appSettings = new Dictionary<string, string>();
-            var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\Common.json"));
-            var objectSettings = JObject.Parse(jsonSettings);
 
-            Console.WriteLine("Loading settings...");
+            Console.WriteLine("Loading company settings...");
+
+            if (companyName == LocalDevProjectName)
+            {
+                var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
+                var objectSettings = JObject.Parse(jsonSettings);
+
+                foreach (var token in objectSettings)
+                {
+                    appSettings[token.Key] = token.Value.ToString();
+                }
+            }
             
-            foreach (var token in objectSettings)
-            {
-                appSettings[token.Key] = token.Value.ToString();
-            }
-
-            jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
-            objectSettings = JObject.Parse(jsonSettings);
-            
-            foreach (var token in objectSettings)
-            {
-                appSettings[token.Key] = token.Value.ToString();
-            }
-
-            if (settingsInDb != null)
-            {
-                settingsInDb.ForEach(setting => appSettings[setting.Key] = setting.Value);
-            }
-
             return appSettings;
         }
 
         private static void AddOrUpdateAppSettings(ICommandBus commandBus, Dictionary<string, string> appSettings)
         {
             commandBus.Send(new AddOrUpdateAppSettings
+            {
+                AppSettings = appSettings,
+                CompanyId = AppConstants.CompanyId
+            });
+        }
+
+        private static void DeleteAppSettings(ICommandBus commandBus, IList<string> appSettings)
+        {
+            commandBus.Send(new DeleteAppSettings
             {
                 AppSettings = appSettings,
                 CompanyId = AppConstants.CompanyId
@@ -746,6 +790,14 @@ namespace DatabaseInitializer
                     CompanyId = AppConstants.CompanyId
                 });
             }
+        }
+
+        private static void RenameClientSettings(ICommandBus commandBus)
+        {
+            commandBus.Send(new MigrateAppSettingNames
+            {
+                CompanyId = AppConstants.CompanyId
+            });
         }
     }
 }

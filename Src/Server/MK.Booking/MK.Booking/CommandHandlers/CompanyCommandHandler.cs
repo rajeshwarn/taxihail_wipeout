@@ -17,6 +17,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateTariff>,
         ICommandHandler<DeleteTariff>,
         ICommandHandler<AddOrUpdateAppSettings>,
+        ICommandHandler<DeleteAppSettings>,
+        ICommandHandler<MigrateAppSettingNames>,
         ICommandHandler<CreateRule>,
         ICommandHandler<UpdateRule>,
         ICommandHandler<DeleteRule>,
@@ -61,6 +63,20 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var company = _repository.Find(command.CompanyId);
             company.AddOrUpdateAppSettings(command.AppSettings);
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(DeleteAppSettings command)
+        {
+            var company = _repository.Find(command.CompanyId);
+            company.DeleteAppSettings(command.AppSettings);
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(MigrateAppSettingNames command)
+        {
+            var company = _repository.Find(command.CompanyId);
+            company.MigrateAppSettingNames();
             _repository.Save(company, command.Id.ToString());
         }
 

@@ -162,6 +162,19 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual("Value.newValue", evt.AppSettings.First().Value);
         }
 
+        public void when_appsettings_deleted_successfully()
+        {
+            _sut.When(new DeleteAppSettings
+            {
+                CompanyId = _companyId,
+                AppSettings = new List<string> { "Key.hi" }
+            });
+
+            var evt = _sut.ThenHasSingle<AppSettingsDeleted>();
+            Assert.AreEqual(_companyId, evt.SourceId);
+            Assert.AreEqual("Key.hi", evt.AppSettings.First());
+        }
+
         [Test]
         public void when_creating_a_new_rate()
         {

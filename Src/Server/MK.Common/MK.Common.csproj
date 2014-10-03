@@ -91,6 +91,7 @@
     <Compile Include="Caching\CachingDbContext.cs" />
     <Compile Include="Caching\EFCacheClient.cs" />
     <Compile Include="ChargeTypesClient.cs" />
+    <Compile Include="Configuration\Attributes\SendToClientAttribute.cs" />
     <Compile Include="Configuration\Helpers\ConfigManagerLoader.cs" />
     <Compile Include="Configuration\IAppSettings.cs" />
     <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Extensions\GuidExtensions.cs" />
     <Compile Include="Extensions\NullableExtension.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Extensions\StringBuilderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
