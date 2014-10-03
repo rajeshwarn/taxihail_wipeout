@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using apcurium.MK.Common.Entity;
+using MK.Common.Configuration;
 
 namespace apcurium.MK.Common.Configuration
 {
@@ -20,6 +21,7 @@ namespace apcurium.MK.Common.Configuration
 
     public class OrderStatusSettingContainer
     {
+        [SendToClient]
         [Display(Name = "Client Polling Interval", Description = "Status refresh interval")]
         public int ClientPollingInterval { get; protected internal set; }
 
@@ -67,23 +69,32 @@ namespace apcurium.MK.Common.Configuration
 
     public class GeoLocSettingContainer
     {
+        [SendToClient]
         [Display(Name = "Default Latitude", Description = "Default latitude to display the map before geoloc is done")]
         public double DefaultLatitude { get; protected internal set; }
 
+        [SendToClient]
         [Display(Name = "Default Longitude", Description = "Default longitude to display the map before geoloc is done")]
         public double DefaultLongitude { get; protected internal set; }
 
+        [SendToClient]
         [Display(Name = "Place Types", Description = "Give a list of Google Maps places types to filter search")]
         public string PlacesTypes { get; protected internal set; }
 
+        [SendToClient]
         [Display(Name = "Search Filter", Description = "Filter for geolocation search")]
         public string SearchFilter { get; protected internal set; }
     }
 
     public class AvailableVehiclesSettingContainer
     {
+        [SendToClient]
         public bool Enabled { get; protected internal set; }
+
+        [SendToClient]
         public int Count { get; protected internal set; }
+
+        [SendToClient]
         public int Radius { get; protected internal set; }
     }
 
