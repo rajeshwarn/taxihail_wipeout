@@ -45,16 +45,16 @@ namespace apcurium.MK.Booking.Test.Integration.AppSettingsFixture
             Sut.Handle(new AppSettingsAddedOrUpdated
             {
                 SourceId = companyId,
-                AppSettings = new Dictionary<string, string> {{"Key.Default", "Value.Default"}}
+                AppSettings = new Dictionary<string, string> { { "AboutUsUrl", "DefaultUrl" } }
             });
 
             using (var context = new ConfigurationDbContext(DbName))
             {
-                var list = context.Query<AppSetting>().Where(x => x.Key == "Key.Default");
+                var list = context.Query<AppSetting>().Where(x => x.Key == "AboutUsUrl");
 
                 Assert.AreEqual(1, list.Count());
                 var dto = list.Single();
-                Assert.AreEqual("Value.Default", dto.Value);
+                Assert.AreEqual("DefaultUrl", dto.Value);
             }
         }
     }
@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Test.Integration.AppSettingsFixture
             Sut.Handle(new AppSettingsAddedOrUpdated
             {
                 SourceId = _companyId,
-                AppSettings = new Dictionary<string, string> {{"Key.Default", "Value.Default"}}
+                AppSettings = new Dictionary<string, string> { { "AboutUsUrl", "DefaultUrl" } }
             });
         }
 
@@ -80,16 +80,16 @@ namespace apcurium.MK.Booking.Test.Integration.AppSettingsFixture
             Sut.Handle(new AppSettingsAddedOrUpdated
             {
                 SourceId = _companyId,
-                AppSettings = new Dictionary<string, string> {{"Key.Default", "Value.Updated"}}
+                AppSettings = new Dictionary<string, string> { { "AboutUsUrl", "UpdatedUrl" } }
             });
 
             using (var context = new ConfigurationDbContext(DbName))
             {
-                var list = context.Query<AppSetting>().Where(x => x.Key == "Key.Default");
+                var list = context.Query<AppSetting>().Where(x => x.Key == "AboutUsUrl");
 
                 Assert.AreEqual(1, list.Count());
                 var dto = list.Single();
-                Assert.AreEqual("Value.Updated", dto.Value);
+                Assert.AreEqual("UpdatedUrl", dto.Value);
             }
         }
 
@@ -99,12 +99,12 @@ namespace apcurium.MK.Booking.Test.Integration.AppSettingsFixture
             Sut.Handle(new AppSettingsAddedOrUpdated
             {
                 SourceId = _companyId,
-                AppSettings = new Dictionary<string, string> {{"Key.Defaulte", "Value.Updated"}}
+                AppSettings = new Dictionary<string, string> { { "AboutUsUrl", "UpdatedUrl" } }
             });
 
             using (var context = new ConfigurationDbContext(DbName))
             {
-                var list = context.Query<AppSetting>().Where(x => x.Key == "Key.Defaulte");
+                var list = context.Query<AppSetting>().Where(x => x.Key == "AboutUsUrl");
 
                 Assert.AreEqual(1, list.Count());
             }

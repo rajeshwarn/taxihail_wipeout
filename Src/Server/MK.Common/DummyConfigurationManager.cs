@@ -21,8 +21,14 @@ namespace apcurium.MK.Common
             }
 
             AppSettings = dictionary;
-        }
 
+            ServerData = new ServerTaxiHailSetting();
+            Load();
+        }
+        public void Load()
+        {
+            ConfigManagerLoader.InitializeDataObjects(ServerData, GetSettings(), null);
+        }
         private IDictionary<string, string> AppSettings { get; set; }
 
         public ServerTaxiHailSetting ServerData { get; private set; }

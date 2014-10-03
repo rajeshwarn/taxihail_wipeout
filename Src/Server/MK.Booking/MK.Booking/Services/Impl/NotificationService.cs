@@ -236,7 +236,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 && (!string.IsNullOrWhiteSpace(dropOffAddress.FullAddress)
                     || !string.IsNullOrWhiteSpace(dropOffAddress.DisplayAddress));
 
-            var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
+            var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode.IsNullOrEmpty()
+                    ? SupportedLanguages.en.ToString()
+                    : clientLanguageCode);
 
             var templateData = new
             {

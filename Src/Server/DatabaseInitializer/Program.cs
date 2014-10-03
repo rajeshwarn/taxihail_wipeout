@@ -733,15 +733,12 @@ namespace DatabaseInitializer
 
             Console.WriteLine("Loading company settings...");
 
-            if (companyName == LocalDevProjectName)
-            {
-                var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
-                var objectSettings = JObject.Parse(jsonSettings);
+            var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
+            var objectSettings = JObject.Parse(jsonSettings);
 
-                foreach (var token in objectSettings)
-                {
-                    appSettings[token.Key] = token.Value.ToString();
-                }
+            foreach (var token in objectSettings)
+            {
+                appSettings[token.Key] = token.Value.ToString();
             }
             
             return appSettings;

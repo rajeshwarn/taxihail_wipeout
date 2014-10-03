@@ -300,7 +300,7 @@ namespace MK.Common.Configuration
 		[Display(Name = "Hide Pay Now Button During Ride", Description = "This will hide the pay now button, on the status screen, if the ride is not completed")]
 		public bool HidePayNowButtonDuringRide { get; protected set; }
 
-        [SendToClient(true)]
+        [SendToClient(false)]
         [Display(Name = "Price Format Culture", Description="Format to display amount (Culture, ex: en-US)")]
 		public string PriceFormat { get; protected set; }
 

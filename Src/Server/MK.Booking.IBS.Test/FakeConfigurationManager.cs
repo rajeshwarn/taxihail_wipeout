@@ -16,12 +16,22 @@ namespace MK.Booking.IBS.Test
     {
         private readonly Dictionary<string, string> _settings = new Dictionary<string, string>
         {
-            {"IBS.WebServicesPassword", "test"},
-            {"IBS.WebServicesUrl", "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/"},
-            {"IBS.WebServicesUserName", "taxi"}
+            {"IBS.WebServicesUrl", "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/"}
         };
 
         public ServerTaxiHailSetting ServerData { get; private set; }
+
+
+        public FakeConfigurationManager()
+        {
+            ServerData = new ServerTaxiHailSetting();
+            Load();
+        }
+
+        public void Load()
+        {
+            ConfigManagerLoader.InitializeDataObjects(ServerData, GetSettings(), null);
+        }
 
         public IDictionary<string, string> GetSettings()
         {
@@ -35,6 +45,8 @@ namespace MK.Booking.IBS.Test
 
         public void Reload()
         {
+            ServerData = new ServerTaxiHailSetting();
+            Load();
         }
     }
 }
