@@ -32,13 +32,11 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var settings = context.Query<AppSetting>().ToList();
-                var taxiHailSettings = new TaxiHailSetting();
+                var taxiHailSettings = new ServerTaxiHailSetting();
                 var defaultSettings = taxiHailSettings.GetType().GetAllProperties();
 
                 foreach (var appSetting in @event.AppSettings)
                 {
-                    var settingToUpdate = settings.FirstOrDefault(x => x.Key == appSetting.Key);
-
                     if (!defaultSettings.ContainsKey(appSetting.Key))
                     {
                         // Setting doesn't exist
@@ -47,27 +45,29 @@ namespace apcurium.MK.Booking.EventHandlers
 
                     var defaultSettingValue = taxiHailSettings.GetNestedPropertyValue(appSetting.Key);
                     string defaultSettingStringValue = defaultSettingValue == null ? string.Empty : defaultSettingValue.ToString();
+                    if (defaultSettingStringValue.IsBool())
+                    {
+                        // Needed because ToString() returns False instead of false
+                        defaultSettingStringValue = defaultSettingStringValue.ToLower();
+                    }
 
-                    // For boolean values, string comparison will ignore case
-                    bool isValueBoolean;
-                    bool.TryParse(defaultSettingStringValue, out isValueBoolean);
-
+                    var settingToUpdate = settings.FirstOrDefault(x => x.Key == appSetting.Key);
                     if (settingToUpdate != null)
                     {
-                        if (AreSettingsEqual(appSetting.Value, defaultSettingStringValue))
+                        if (appSetting.Value != defaultSettingStringValue)
                         {
-                            // Value is it's different than default
+                            // Value is different than default
                             settingToUpdate.Value = appSetting.Value;
                         }
                         else
                         {
-                            // Value is the same as the default, remove the setting
+                            // Value is the same as default, remove the setting
                             context.Set<AppSetting>().Remove(settingToUpdate);
                         }
                     }
                     else
                     {
-                        if (AreSettingsEqual(appSetting.Value, defaultSettingStringValue))
+                        if (appSetting.Value != defaultSettingStringValue)
                         {
                             // New setting with value different than default
                             context.Set<AppSetting>().Add(new AppSetting(appSetting.Key, appSetting.Value));
@@ -90,8 +90,11 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 foreach (var appSetting in @event.AppSettings)
                 {
-                    var setting = settings.FirstOrDefault(x => x.Key.EndsWith(appSetting));
-                    context.Set<AppSetting>().Remove(setting);
+                    var settingToDelete = settings.FirstOrDefault(x => x.Key == appSetting);
+                    if (settingToDelete != null)
+                    {
+                        context.Set<AppSetting>().Remove(settingToDelete);
+                    }  
                 }
 
                 context.SaveChanges();
@@ -119,17 +122,6 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 context.SaveChanges();
             }
-        }
-
-        private bool AreSettingsEqual(string setting1, string setting2)
-        {
-            // For boolean values, string comparison will ignore case
-            bool isValueBoolean;
-            bool.TryParse(setting1, out isValueBoolean);
-
-            return isValueBoolean
-                ? setting1.Equals(setting2, StringComparison.InvariantCultureIgnoreCase)
-                : setting1 == setting2;
         }
     }
 }

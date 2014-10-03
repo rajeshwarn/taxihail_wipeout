@@ -19,14 +19,6 @@ namespace apcurium.MK.Common.Configuration.Helpers
 					try
 					{
 						var propertyName = item.Key;
-						if (propertyName.Contains("."))
-						{
-							if (propertyName.SplitOnFirst('.')[0] == "Client")
-							{
-								propertyName = propertyName.SplitOnFirst('.')[1];
-							}
-						}
-
 						var propertyType = GetProperty(typeOfSettings, propertyName);
 
 						if (propertyType == null)
