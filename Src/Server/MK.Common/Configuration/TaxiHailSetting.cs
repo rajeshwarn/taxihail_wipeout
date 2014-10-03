@@ -91,40 +91,34 @@ namespace MK.Common.Configuration
         public GeoLocSettingContainer GeoLoc { get; protected set; }
         public AvailableVehiclesSettingContainer AvailableVehicles { get; protected set; }
 
+        // ---- Must be packaged with app ---- //
 		[Display(Name = "Can Change Service Url", Description="Display a button on the login page to change the API server url")]
 		public bool CanChangeServiceUrl { get; protected set; }
-
         [Display(Name = "Service Url", Description="Url of the TaxiHail Server")]
 		public string ServiceUrl { get; set; }
         
         [Display(Name = "Twitter Enabled", Description="Enable register/log in with Twitter")]
 		public bool TwitterEnabled{ get; protected set; }
-
         [Display(Name = "Twitter Consumer Key", Description="Twitter API settings")]
 		public string TwitterConsumerKey{ get; protected set; }
-
         [Display(Name = "Twitter CallBack", Description="Twitter API settings")]
 		public string TwitterCallback{ get; protected set; }
-
         [Display(Name = "Twitter Consumer Secret", Description="Twitter API settings")]
 		public string TwitterConsumerSecret{ get; protected set; }
-
         [Display(Name = "Twitter Token Url", Description="Twitter API settings")]
 		public string TwitterRequestTokenUrl{ get; protected set; }
         [Display(Name = "Twitter Access Token Url", Description="Twitter API settings")]
 		public string TwitterAccessTokenUrl{ get; protected set; }
-
         [Display(Name = "Twitter Authorize Url", Description="Twitter API settings")]
 		public string TwitterAuthorizeUrl { get; protected set; }
-        
-		[Display(Name = "Facebook Publish Enabled", Description="Facebook Publish Enabled")]
+		
+        [Display(Name = "Facebook Publish Enabled", Description="Facebook Publish Enabled")]
 		public bool FacebookPublishEnabled { get; protected set; }
-
         [Display(Name = "Facebook Enabled", Description="Enable register/log in with Facebook")]
 		public bool FacebookEnabled { get; protected set; }
-
         [Display(Name = "Facebook App Id", Description="Facebook API settings")]
 		public string FacebookAppId{ get; protected set; }
+        // ---- Must be packaged with app ---- //
 
         [SendToClient(true)]
         [Display(Name = "Account Activation Disabled", Description="Disable the confirmation requirement")]
@@ -159,6 +153,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Show Terms and Conditions", Description="Display and require T&C screen")]
         public bool ShowTermsAndConditions { get; protected set; }
 
+        [SendToClient(true)]
 		[Display(Name = "Hide Mobile Knownledge and Apcurium logos", Description="In the menu")]
 		public bool HideMkApcuriumLogos { get; protected set; }
 
@@ -191,10 +186,6 @@ namespace MK.Common.Configuration
         public string SupportEmail { get; protected set; }
 
         [SendToClient]
-		[Display(Name = "Hide No Preference Option", Description="Settings to hide the no preference option in vehicule, company list etc.")]
-		public bool HideNoPreference { get; protected set; }
-
-        [SendToClient]
         [Display(Name = "Destination Required", Description="Flag to add destination as required")]
 		public bool DestinationIsRequired { get; protected set; }
 
@@ -210,13 +201,6 @@ namespace MK.Common.Configuration
         [Display(Name = "Max Fare Estimate", Description="Maximum amount for estimation, if greater, a 'call the company' message is displayed")]
 		public double MaxFareEstimate { get; protected set; }
 
-        [Display(Name = "Street Number Screen Enabled", Description="Enable the change street number screen")]
-		public bool StreetNumberScreenEnabled { get; protected set; }
-
-        [SendToClient]
-        [Display(Name = "Number of Char in Refine Address", Description="Number of characters in the textbox to change street number")]
-        public int NumberOfCharInRefineAddress { get; protected set; }
-
         [SendToClient]
         [Display(Name = "Show Estimate Warning", Description="Show or not the the warning about the estimate being only an estimate")]
         public bool ShowEstimateWarning { get; protected set; }
@@ -229,6 +213,7 @@ namespace MK.Common.Configuration
 		[Display(Name = "Show Eta", Description="Show eta")]
 		public bool ShowEta { get; protected set; }
 
+        [SendToClient(true)]
 		[Display(Name = "Google Map Key", Description="Google API Key for business, required for directions aka eta feature")]
         public string GoogleMapKey { get; protected set; }
 
@@ -236,6 +221,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Eta Padding Ratio", Description = "Eta duration padding ratio (multiply duration in seconds by...)")]
 		public double EtaPaddingRatio { get; protected set; }
 
+        [SendToClient]
         [Display(Name = "Use Theme Color On Map Icons", Description="Use company color for pickup and destination map icons")]
         public bool UseThemeColorForMapIcons { get; protected set; }
 
@@ -266,10 +252,12 @@ namespace MK.Common.Configuration
         [SendToClient]
         [Display(Name = "Rating Enabled", Description="Can the user rate the order when it's done")]
 		public bool RatingEnabled { get; protected set; }
-	
+
+        [SendToClient(true)]
 		[Display(Name = "Rating mandatory", Description="remove the back button in rating screen and validate before leaving the screen")]
 		public bool RatingRequired { get; protected set; }
 
+        [SendToClient(true)]
         [Display(Name = "User needs to rate before booking again", Description = "")]
         public bool CanSkipRatingRequired { get; protected set; }
 
@@ -293,19 +281,17 @@ namespace MK.Common.Configuration
 		[Display(Name = "Default Percentage Tip", Description="default value for the tip percentage ex: 15")]
 		public int DefaultTipPercentage { get; protected set; }
 
+        [SendToClient(true)]
 		[Display(Name = "Hide Pay Now Button During Ride", Description = "This will hide the pay now button, on the status screen, if the ride is not completed")]
 		public bool HidePayNowButtonDuringRide { get; protected set; }
 
-        [SendToClient(false)]
+        [SendToClient(true)]
         [Display(Name = "Price Format Culture", Description="Format to display amount (Culture, ex: en-US)")]
 		public string PriceFormat { get; protected set; }
 
         [SendToClient(true)]
         [Display(Name = "Distance Format", Description="Format to display distance ('km' or 'mile')")]
 		public DistanceFormat DistanceFormat { get; protected set; }
-        
-        [Display(Name = "Range", Description="???")]
-        public double Range { get; protected set; }
 
         [SendToClient]
         [Display(Name = "Foursquare Client Id", Description = "Foursquare API credentials Id")]
@@ -328,20 +314,10 @@ namespace MK.Common.Configuration
         public MapProvider DirectionDataProvider { get; protected set; }
 
         [SendToClient]
-        public bool AllowAddressRange { get; protected set; }
-
-        [SendToClient]
         [Display(Name = "Hide Rebook Order", Description="Hide the button in order history details")]
         public bool HideRebookOrder { get; protected set; }
 
-        [SendToClient]
-        [Display(Name = "Push Notifications Enabled", Description="Enable push notificaiton for status changes")]
-        public bool PushNotificationsEnabled { get; protected set; }
-
-        [SendToClient]
-        [Display(Name = "Hide Send Receipt", Description="Hides the send receipt button in the app")]
-        public bool HideSendReceipt { get; protected set; }
-
+        [SendToClient(true)]
         [Display(Name = "Card.IO Token", Description="Token for the Card.IO API (If empty, hides the button)")]
         public string CardIOToken { get; protected set; }
 
@@ -386,9 +362,11 @@ namespace MK.Common.Configuration
         [Display(Name = "Allow Simultaneous Orders", Description = "Allow to have more than one active order")]
         public bool AllowSimultaneousAppOrders { get; protected set; }
         
+        [SendToClient(true)]
         [Display(Name = "Google AdWords Conversion Tracking ID", Description = "Conversion ID used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionId { get; protected set; }
 
+        [SendToClient(true)]
         [Display(Name = "Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionLabel { get; protected set; }
     }

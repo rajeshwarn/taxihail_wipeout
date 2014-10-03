@@ -7,6 +7,7 @@ namespace apcurium.MK.Common.Configuration
 {
     public class TaxiHailSettingContainer
     {
+        [SendToClient]
         [Display(Name = "Application Name", Description = "Application name as displayed in message")]
         public string ApplicationName { get; protected internal set; }
 
