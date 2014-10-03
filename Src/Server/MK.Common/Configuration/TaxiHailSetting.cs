@@ -130,6 +130,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Facebook App Id", Description="Facebook API settings")]
 		public string FacebookAppId{ get; protected set; }
 
+        [SendToClient(true)]
         [Display(Name = "Account Activation Disabled", Description="Disable the confirmation requirement")]
         public bool AccountActivationDisabled { get; protected set; }
 
@@ -177,9 +178,11 @@ namespace MK.Common.Configuration
         [Display(Name = "Hide Report Problem", Description="Remove button in the menu")]
         public bool HideReportProblem { get; protected set; }
 
+        [SendToClient(true)]
         [Display(Name = "Default Phone Number", Description="Phone number as displayed to the user (1.800.XXX.XXXX)")]
         public string DefaultPhoneNumberDisplay { get; protected set; }
 
+        [SendToClient(true)]
         [Display(Name = "Default Phone Number", Description="Phone number as dialed")]
         public string DefaultPhoneNumber { get; protected set; }
 
@@ -296,10 +299,12 @@ namespace MK.Common.Configuration
 
 		[Display(Name = "Hide Pay Now Button During Ride", Description = "This will hide the pay now button, on the status screen, if the ride is not completed")]
 		public bool HidePayNowButtonDuringRide { get; protected set; }
-        
+
+        [SendToClient(true)]
         [Display(Name = "Price Format Culture", Description="Format to display amount (Culture, ex: en-US)")]
 		public string PriceFormat { get; protected set; }
 
+        [SendToClient(true)]
         [Display(Name = "Distance Format", Description="Format to display distance ('km' or 'mile')")]
 		public DistanceFormat DistanceFormat { get; protected set; }
         

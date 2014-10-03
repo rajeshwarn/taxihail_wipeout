@@ -38,30 +38,29 @@ namespace apcurium.MK.Booking.Api.Services
         public object Get(ConfigurationsRequest request)
         {
             var keys = new string[0];
+            var result = new Dictionary<string, string>();
+
+            var isFromWebApp = request.AppSettingsType == AppSettingsType.Webapp;
+            var settings = _configManager.ServerData.GetType().GetAllProperties();
             var returnAllKeys = SessionAs<AuthUserSession>().HasPermission(RoleName.SuperAdmin);
 
-            if (request.AppSettingsType.Equals(AppSettingsType.Webapp))
+            if (isFromWebApp)
             {
                 var listKeys = _configManager.ServerData.Admin.CompanySettings;
                 if (listKeys != null) keys = listKeys.Split(',');
             }
-            else //AppSettingsType.Mobile
-            {
-                keys = new[]
-                {
-                    "DefaultPhoneNumber", "DefaultPhoneNumberDisplay", "GCM.SenderId", "PriceFormat", "DistanceFormat",
-                    "Direction.TarifMode", "Direction.NeedAValidTarif", "Direction.FlateRate", "Direction.RatePerKm",
-                    "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey", "AccountActivationDisabled"
-                };
-            }
-
-            var result = new Dictionary<string, string>();
-            var settings = _configManager.ServerData.GetType().GetAllProperties();
-
+ 
             foreach (var setting in settings)
             {
+                bool sendToClient = false;
                 var attributes = setting.Value.GetCustomAttributes(false);
-                bool sendToClient = attributes.Any(a => a is SendToClientAttribute);
+
+                // Check if we have to return this setting to the client
+                var sendToClientAttribute = attributes.OfType<SendToClientAttribute>().FirstOrDefault();
+                if (sendToClientAttribute != null)
+                {
+                    sendToClient = !isFromWebApp || !sendToClientAttribute.ExcludeFromWebApp;
+                }
 
                 if (returnAllKeys || sendToClient || keys.Contains(setting.Key))
                 {

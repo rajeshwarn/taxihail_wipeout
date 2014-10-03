@@ -695,7 +695,6 @@ namespace DatabaseInitializer
             var settingsInDbProperties = configurationManager.ServerData.GetType().GetAllProperties();
             var defaultSettingsProperties = taxiHailSettings.GetType().GetAllProperties();
 
-            
             foreach (var setting in defaultSettingsProperties)
             {
                 var settingValue = taxiHailSettings.GetNestedPropertyValue(setting.Key);
