@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
+	    private bool _isInitialized;
 
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
@@ -28,15 +29,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public async Task Init()
 		{
-			Vehicles = (await _accountService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
-			ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
-            RaisePropertyChanged(() => IsChargeTypesEnabled);
+		    if (!_isInitialized)
+		    {
+		        _isInitialized = true;
+                Vehicles = (await _accountService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
+                ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+                RaisePropertyChanged(() => IsChargeTypesEnabled);
 
-			this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
-			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
+                this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
+                this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
+		    }
 		}
 
-        public bool IsChargeTypesEnabled
+	    public bool IsChargeTypesEnabled
         {
             get
             {

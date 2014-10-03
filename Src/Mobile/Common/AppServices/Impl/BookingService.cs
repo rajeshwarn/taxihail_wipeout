@@ -13,7 +13,6 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
-using Direction = apcurium.MK.Common.Entity.DirectionSetting;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using System.Globalization;
 
