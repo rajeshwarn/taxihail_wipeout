@@ -299,30 +299,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					if (_currentState == HomeViewModelState.Initial 
 						&& addressSelectionMode == AddressSelectionMode.PickupSelection)
 					{
-						var address = await _orderWorkflowService.SetAddressToUserLocation();
-						if(address.HasValidCoordinate())
-						{
-							// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
-							// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
-							this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
-
-							if(Settings.ZoomOnNearbyVehicles)
-							{
-								try 
-								{
-									var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
-									var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, availableVehicles);	
-									if (bounds != null)
-									{
-										this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
-									}
-								}
-								catch (TimeoutException)
-								{ 
-									Console.WriteLine("LocateMe: Timeout occured while waiting for available vehicles");
-								}
-							}
-						}
+							SetMapCenterToUserLocation();
 					}									
 				});
 			}
@@ -338,12 +315,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(async () =>
 				{					
-					var address = await _orderWorkflowService.SetAddressToUserLocation();
-					if(address.HasValidCoordinate())
-					{
-						this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
-					}								
+						SetMapCenterToUserLocation();							
 				});
+			}
+		}
+
+		private async void SetMapCenterToUserLocation()
+		{
+			var address = await _orderWorkflowService.SetAddressToUserLocation();
+			if(address.HasValidCoordinate())
+			{
+				// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
+				// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
+				this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
+
+				if(Settings.ZoomOnNearbyVehicles)
+				{
+					try 
+					{
+						var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
+						var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, availableVehicles);	
+						if (bounds != null)
+						{
+							this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
+						}
+					}
+					catch (TimeoutException)
+					{ 
+						Console.WriteLine("LocateMe: Timeout occured while waiting for available vehicles");
+					}
+				}
 			}
 		}
 

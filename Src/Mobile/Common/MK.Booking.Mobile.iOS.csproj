@@ -362,6 +362,7 @@
     <None Include="Localization\CINQ-S.fr.resx">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Localization\MearsTaxi.resx" />
     <None Include="Localization\CINQ-S.resx" />
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
   </ItemGroup>
