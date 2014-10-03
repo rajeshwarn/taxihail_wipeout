@@ -699,19 +699,23 @@ namespace DatabaseInitializer
             {
                 var settingValue = taxiHailSettings.GetNestedPropertyValue(setting.Key);
                 string settingStringValue = settingValue == null ? string.Empty : settingValue.ToString();
-
-                // For boolean values, string comparison will ignore case
-                bool isValueBoolean;
-                bool.TryParse(settingStringValue, out isValueBoolean);
+                if (settingStringValue.IsBool())
+                {
+                    // Needed because ToString() returns False instead of false
+                    settingStringValue = settingStringValue.ToLower();
+                }
 
                 if (settingsInDbProperties.ContainsKey(setting.Key))
                 {
                     var dbValue = taxiHailSettings.GetNestedPropertyValue(setting.Key);
                     string dbStringValue = dbValue == null ? string.Empty : dbValue.ToString();
+                    if (dbStringValue.IsBool())
+                    {
+                        // Needed because ToString() returns False instead of false
+                        dbStringValue = settingStringValue.ToLower();
+                    }
 
-                    if (isValueBoolean
-                        ? dbStringValue.Equals(settingStringValue, StringComparison.InvariantCultureIgnoreCase)
-                        : dbStringValue == settingStringValue)
+                    if (dbStringValue == settingStringValue)
                     {
                         // Mark as delete settings with default value
                         settingsToRemove.Add(setting.Key);

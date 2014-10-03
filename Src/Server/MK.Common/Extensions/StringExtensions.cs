@@ -52,6 +52,12 @@ namespace apcurium.MK.Common.Extensions
             return instance.ToCharArray().All(Char.IsDigit);
         }
 
+        public static bool IsBool(this string instance)
+        {
+            bool isBoolean;
+            return bool.TryParse(instance, out isBoolean);
+        }
+
         //TODO Filter Where HasValue()
         public static string JoinBy(this IEnumerable<string> items, string joinBy)
         {

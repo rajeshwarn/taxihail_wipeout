@@ -65,12 +65,22 @@ namespace apcurium.MK.Booking.Api.Services
 
                 if (returnAllKeys || sendToClient || keys.Contains(setting.Key))
                 {
-                    var settingValue = _configManager.ServerData.GetNestedPropertyValue(setting.Key).ToString();
-                    result.Add(setting.Key, settingValue);
+                    var settingValue = _configManager.ServerData.GetNestedPropertyValue(setting.Key);
+
+                    string settingStringValue = settingValue == null ? string.Empty : settingValue.ToString();
+                    if (settingStringValue.IsBool())
+                    {
+                        // Needed because ToString() returns False instead of false
+                        settingStringValue = settingStringValue.ToLower();
+                    }
+
+                    result.Add(setting.Key, settingStringValue);
                 }
             }
 
-            return result;
+            // Order results alphabetically
+            return result.OrderBy(s => s.Key)
+                         .ToDictionary(s => s.Key, s => s.Value);
         }
 
         public object Post(ConfigurationsRequest request)
