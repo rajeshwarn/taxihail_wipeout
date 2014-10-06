@@ -42,8 +42,15 @@ namespace apcurium.MK.Common.Configuration.Helpers
 						}
 						else
 						{
-							var propertyVal = Convert.ChangeType(item.Value, targetType);
-							SetValue(propertyName, objectToInitialize, propertyVal);
+                            if (targetType == typeof(bool) && string.IsNullOrEmpty(item.Value))
+						    {
+                                SetValue(propertyName, objectToInitialize, false);
+						    }
+                            else
+                            {
+                                var propertyVal = Convert.ChangeType(item.Value, targetType);
+                                SetValue(propertyName, objectToInitialize, propertyVal);
+                            }
 						}
 					}
 					catch (Exception e)

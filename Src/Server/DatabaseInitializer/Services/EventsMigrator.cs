@@ -139,7 +139,9 @@ namespace DatabaseInitializer.Services
                     {
                         message.Payload = message.Payload.Replace("\"Client.", "\"");
                         message.Payload = message.Payload.Replace("\"DistanceFormat\": \"KM\"", "\"DistanceFormat\": \"Km\"");
+                        message.Payload = message.Payload.Replace("\"DistanceFormat\":\"KM\"", "\"DistanceFormat\":\"Km\"");
                     }
+                    context.SaveChanges();
                 }
             }
         }

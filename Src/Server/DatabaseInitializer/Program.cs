@@ -29,6 +29,7 @@ using log4net;
 using Microsoft.Practices.Unity;
 using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
+using ServiceStack.ServiceInterface;
 using ConfigurationManager = apcurium.MK.Common.Configuration.Impl.ConfigurationManager;
 using DeploymentServiceTools;
 using ServiceStack.Text;
@@ -157,10 +158,16 @@ namespace DatabaseInitializer
                     migrator.Do();
                 }
 
-                var appSettings = GetCompanySettings(param.CompanyName);
+                // make sure we reload the ConfigManager object before events playback
+                IDictionary<string, string> appSettings = new Dictionary<string, string>();
 
-                //Save settings so that next calls to referenceDataService has the IBS Url
-                AddOrUpdateAppSettings(commandBus, appSettings);
+                if (!isUpdate)
+                {
+                    appSettings = GetCompanySettings(param.CompanyName);
+
+                    //Save settings so that next calls to referenceDataService has the IBS Url
+                    AddOrUpdateAppSettings(commandBus, appSettings);
+                }
 
                 if (isUpdate)
                 {
@@ -170,20 +177,22 @@ namespace DatabaseInitializer
                     var replayService = container.Resolve<IEventsPlayBackService>();
                     replayService.ReplayAllEvents();
 
+                    appSettings = configurationManager.GetSettings();
+
                     var tariffs = new TariffDao(() => new BookingDbContext(connectionString.ConnectionString));
                     if (tariffs.GetAll().All(x => x.Type != (int)TariffType.Default))
                     {
                         // Default rate does not exist for this company 
                         CreateDefaultTariff(configurationManager, commandBus);
                     }
-
+                    
                     CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
                     Console.WriteLine("Done playing events...");
 
                     EnsureDefaultAccountsExists(connectionString, commandBus);
                 }
                 else
-                {                    
+                {
                     // Create default rate for company
                     CreateDefaultTariff(configurationManager, commandBus);
                     CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
@@ -224,10 +233,6 @@ namespace DatabaseInitializer
                         }
                     });
                 }
-
-                // Settings cleanup, remove settings with default values
-                Console.WriteLine("Migrating settings...");
-                CleanDefaultSettings(commandBus, configurationManager);
 
                 if (isUpdate && !string.IsNullOrEmpty(param.BackupFolder))
                 {
@@ -528,7 +533,7 @@ namespace DatabaseInitializer
             }
         }
 
-        private static void CheckandMigrateDefaultRules(ConnectionStringSettings connectionString, ICommandBus commandBus, Dictionary<string, string> appSettings)
+        private static void CheckandMigrateDefaultRules(ConnectionStringSettings connectionString, ICommandBus commandBus, IDictionary<string, string> appSettings)
         {
             var rules = new RuleDao(() => new BookingDbContext(connectionString.ConnectionString));
             if (
@@ -684,44 +689,6 @@ namespace DatabaseInitializer
             AddOrUpdateAppSettings(commandBus, appSettings);
         }
 
-        private static void CleanDefaultSettings(ICommandBus commandBus, IConfigurationManager configurationManager)
-        {
-            var settingsToRemove = new List<string>();
-            var taxiHailSettings = new ServerTaxiHailSetting();
-            var settingsInDbProperties = configurationManager.ServerData.GetType().GetAllProperties();
-            var defaultSettingsProperties = taxiHailSettings.GetType().GetAllProperties();
-
-            foreach (var setting in defaultSettingsProperties)
-            {
-                var settingValue = taxiHailSettings.GetNestedPropertyValue(setting.Key);
-                string settingStringValue = settingValue == null ? string.Empty : settingValue.ToString();
-                if (settingStringValue.IsBool())
-                {
-                    // Needed because ToString() returns False instead of false
-                    settingStringValue = settingStringValue.ToLower();
-                }
-
-                if (settingsInDbProperties.ContainsKey(setting.Key))
-                {
-                    var dbValue = taxiHailSettings.GetNestedPropertyValue(setting.Key);
-                    string dbStringValue = dbValue == null ? string.Empty : dbValue.ToString();
-                    if (dbStringValue.IsBool())
-                    {
-                        // Needed because ToString() returns False instead of false
-                        dbStringValue = settingStringValue.ToLower();
-                    }
-
-                    if (dbStringValue == settingStringValue)
-                    {
-                        // Mark as delete settings with default value
-                        settingsToRemove.Add(setting.Key);
-                    }
-                }
-            }
-
-            DeleteAppSettings(commandBus, settingsToRemove);
-        }
-
         private static Dictionary<string, string> GetCompanySettings(string companyName)
         {            
             // Create settings
@@ -740,18 +707,9 @@ namespace DatabaseInitializer
             return appSettings;
         }
 
-        private static void AddOrUpdateAppSettings(ICommandBus commandBus, Dictionary<string, string> appSettings)
+        private static void AddOrUpdateAppSettings(ICommandBus commandBus, IDictionary<string, string> appSettings)
         {
             commandBus.Send(new AddOrUpdateAppSettings
-            {
-                AppSettings = appSettings,
-                CompanyId = AppConstants.CompanyId
-            });
-        }
-
-        private static void DeleteAppSettings(ICommandBus commandBus, IList<string> appSettings)
-        {
-            commandBus.Send(new DeleteAppSettings
             {
                 AppSettings = appSettings,
                 CompanyId = AppConstants.CompanyId
