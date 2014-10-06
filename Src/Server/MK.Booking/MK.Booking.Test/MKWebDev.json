@@ -8,7 +8,7 @@
    "Direction.TarifMode" : "Ibs",
    "Direction.NeedAValidTarif" : "true",   
 
-   "DistanceFormat" : "KM",
+   "DistanceFormat" : "Km",
    "Email.NoReply" : "noreply@apcurium.com",  
    "GeoLoc.DefaultLatitude" : "45.516667",
    "GeoLoc.DefaultLongitude" : "-73.65",
