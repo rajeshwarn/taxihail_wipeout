@@ -133,6 +133,13 @@ namespace DatabaseInitializer.Services
                         message.Payload = Serialize(@event);
                     }
                     context.SaveChanges();
+
+                    // update AppSettings
+                    foreach (var message in events.Where(x => x.EventType.Contains("AppSettingsAddedOrUpdated")))
+                    {
+                        message.Payload = message.Payload.Replace("\"Client.", "\"");
+                        message.Payload = message.Payload.Replace("\"DistanceFormat\": \"KM\"", "\"DistanceFormat\": \"Km\"");
+                    }
                 }
             }
         }

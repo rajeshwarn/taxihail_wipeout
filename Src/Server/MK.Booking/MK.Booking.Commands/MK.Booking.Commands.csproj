@@ -71,7 +71,6 @@
     <Compile Include="LogApplicationStartUp.cs" />
     <Compile Include="LogCancellationFailurePayPalPayment.cs" />
     <Compile Include="LogCreditCardError.cs" />
-    <Compile Include="MigrateAppSettingNames.cs" />
     <Compile Include="PairForPayment.cs" />
     <Compile Include="RetriggerTermsAndConditions.cs" />
     <Compile Include="SendAccountConfirmationSMS.cs" />

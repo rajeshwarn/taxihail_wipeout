@@ -16,8 +16,7 @@ namespace apcurium.MK.Booking.EventHandlers
 {
     public class AppSettingsGenerator :
         IEventHandler<AppSettingsAddedOrUpdated>,
-        IEventHandler<AppSettingsDeleted>,
-        IEventHandler<AppSettingNamesMigrated>
+        IEventHandler<AppSettingsDeleted>
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
         private readonly IConfigurationManager _configManager;
@@ -96,42 +95,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     {
                         context.Set<AppSetting>().Remove(settingToDelete);
                     }  
-                }
-
-                context.SaveChanges();
-            }
-        }
-
-        public void Handle(AppSettingNamesMigrated @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var settings = context.Query<AppSetting>().ToList();
-
-                foreach (var appSetting in settings)
-                {
-                    if (appSetting.Key.StartsWith("Client.", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        context.Set<AppSetting>().Remove(appSetting);
-
-                        var newKey = appSetting.Key.Split(new[] {"Client."}, StringSplitOptions.RemoveEmptyEntries).First();
-                        var existingEntry = context.Set<AppSetting>().FirstOrDefault(x => x.Key == newKey);
-                        
-                        if (existingEntry == null)
-                        {
-                            context.Set<AppSetting>().Add(new AppSetting
-                            {
-                                Key = newKey,
-                                Value = appSetting.Value
-                            });
-                        }
-                    }
-
-                    if (appSetting.Key == "DistanceFormat"
-                        && (appSetting.Value == "KM" || appSetting.Value == "km"))
-                    {
-                        appSetting.Value = DistanceFormat.Km.ToString();
-                    }
                 }
 
                 context.SaveChanges();

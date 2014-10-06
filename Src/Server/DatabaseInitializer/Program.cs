@@ -157,15 +157,6 @@ namespace DatabaseInitializer
                     migrator.Do();
                 }
 
-                // Settings migration
-                if (isUpdate)
-                {
-                    // Remove all default value DB settings
-                    Console.WriteLine("Migrating settings...");
-                    RenameClientSettings(commandBus);
-                    CleanDefaultSettings(commandBus, configurationManager);
-                }
-
                 var appSettings = GetCompanySettings(param.CompanyName);
 
                 //Save settings so that next calls to referenceDataService has the IBS Url
@@ -233,6 +224,10 @@ namespace DatabaseInitializer
                         }
                     });
                 }
+
+                // Settings cleanup, remove settings with default values
+                Console.WriteLine("Migrating settings...");
+                CleanDefaultSettings(commandBus, configurationManager);
 
                 if (isUpdate && !string.IsNullOrEmpty(param.BackupFolder))
                 {
@@ -792,14 +787,6 @@ namespace DatabaseInitializer
                     CompanyId = AppConstants.CompanyId
                 });
             }
-        }
-
-        private static void RenameClientSettings(ICommandBus commandBus)
-        {
-            commandBus.Send(new MigrateAppSettingNames
-            {
-                CompanyId = AppConstants.CompanyId
-            });
         }
     }
 }
