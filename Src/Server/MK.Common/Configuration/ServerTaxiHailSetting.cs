@@ -33,7 +33,7 @@ namespace MK.Common.Configuration
                 EnableSsl = false,
                 UseDefaultCredentials = false,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                Credentials = new SmtpSettingContainer.CredentialsContainer
+                Credentials = new CredentialsContainer
                 {
                     Username = "Password01",
                     Password = "TaxiHail"
