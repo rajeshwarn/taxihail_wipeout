@@ -25,11 +25,11 @@ namespace apcurium.MK.Common
 
             container.RegisterInstance<ILogger>(new Logger());
 
-            container.RegisterInstance<IConfigurationManager>(
-                new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>(), container.Resolve<ILogger>()));
+            var settings = new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>(),
+                container.Resolve<ILogger>());
 
-            container.RegisterInstance<IAppSettings>(
-               new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>(), container.Resolve<ILogger>()));
+            container.RegisterInstance<IConfigurationManager>(settings);
+            container.RegisterInstance<IAppSettings>(settings);
             
             container.RegisterType<CachingDbContext>(new TransientLifetimeManager(),
                 new InjectionConstructor(
