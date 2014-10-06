@@ -142,7 +142,7 @@ namespace MK.Common.Configuration
 		public string FacebookAppId{ get; protected set; }
         // ---- Must be packaged with app ---- //
 
-        [SendToClient(true)]
+        [SendToClient(ExcludeFromWebApp = true)]
         [Display(Name = "Account Activation Disabled", Description="Disable the confirmation requirement")]
         public bool AccountActivationDisabled { get; protected set; }
 
@@ -175,7 +175,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Show Terms and Conditions", Description="Display and require T&C screen")]
         public bool ShowTermsAndConditions { get; protected set; }
 
-        [SendToClient(true)]
+        [SendToClient(ExcludeFromWebApp = true)]
 		[Display(Name = "Hide Mobile Knownledge and Apcurium logos", Description="In the menu")]
 		public bool HideMkApcuriumLogos { get; protected set; }
 
@@ -191,11 +191,11 @@ namespace MK.Common.Configuration
         [Display(Name = "Hide Report Problem", Description="Remove button in the menu")]
         public bool HideReportProblem { get; protected set; }
 
-        [SendToClient(true)]
+        [SendToClient(ExcludeFromWebApp = true)]
         [Display(Name = "Default Phone Number", Description="Phone number as displayed to the user (1.800.XXX.XXXX)")]
         public string DefaultPhoneNumberDisplay { get; protected set; }
 
-        [SendToClient(true)]
+        [SendToClient(ExcludeFromWebApp = true)]
         [Display(Name = "Default Phone Number", Description="Phone number as dialed")]
         public string DefaultPhoneNumber { get; protected set; }
 
@@ -235,7 +235,7 @@ namespace MK.Common.Configuration
 		[Display(Name = "Show Eta", Description="Show eta")]
 		public bool ShowEta { get; protected set; }
 
-        [SendToClient(true)]
+        [SendToClient(ExcludeFromWebApp = true)]
 		[Display(Name = "Google Map Key", Description="Google API Key for business, required for directions aka eta feature")]
         public string GoogleMapKey { get; protected set; }
 
@@ -275,11 +275,11 @@ namespace MK.Common.Configuration
         [Display(Name = "Rating Enabled", Description="Can the user rate the order when it's done")]
 		public bool RatingEnabled { get; protected set; }
 
-        [SendToClient(true)]
+        [SendToClient(ExcludeFromWebApp = true)]
 		[Display(Name = "Rating mandatory", Description="remove the back button in rating screen and validate before leaving the screen")]
 		public bool RatingRequired { get; protected set; }
 
-        [SendToClient(true)]
+        [SendToClient(ExcludeFromWebApp = true)]
         [Display(Name = "User needs to rate before booking again", Description = "")]
         public bool CanSkipRatingRequired { get; protected set; }
 
@@ -303,15 +303,15 @@ namespace MK.Common.Configuration
 		[Display(Name = "Default Percentage Tip", Description="default value for the tip percentage ex: 15")]
 		public int DefaultTipPercentage { get; protected set; }
 
-        [SendToClient(true)]
+        [SendToClient(ExcludeFromWebApp = true)]
 		[Display(Name = "Hide Pay Now Button During Ride", Description = "This will hide the pay now button, on the status screen, if the ride is not completed")]
 		public bool HidePayNowButtonDuringRide { get; protected set; }
 
-        [SendToClient(true)]
+        [SendToClient(ExcludeFromWebApp = true)]
         [Display(Name = "Price Format Culture", Description="Format to display amount (Culture, ex: en-US)")]
 		public string PriceFormat { get; protected set; }
 
-        [SendToClient(true)]
+        [SendToClient(ExcludeFromWebApp = true)]
         [Display(Name = "Distance Format", Description="Format to display distance ('km' or 'mile')")]
 		public DistanceFormat DistanceFormat { get; protected set; }
 
@@ -339,7 +339,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Hide Rebook Order", Description="Hide the button in order history details")]
         public bool HideRebookOrder { get; protected set; }
 
-        [SendToClient(true)]
+        [SendToClient(ExcludeFromWebApp = true)]
         [Display(Name = "Card.IO Token", Description="Token for the Card.IO API (If empty, hides the button)")]
         public string CardIOToken { get; protected set; }
 
@@ -383,12 +383,12 @@ namespace MK.Common.Configuration
 
         [Display(Name = "Allow Simultaneous Orders", Description = "Allow to have more than one active order")]
         public bool AllowSimultaneousAppOrders { get; protected set; }
-        
-        [SendToClient(true)]
+
+        [SendToClient(ExcludeFromWebApp = true)]
         [Display(Name = "Google AdWords Conversion Tracking ID", Description = "Conversion ID used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionId { get; protected set; }
 
-        [SendToClient(true)]
+        [SendToClient(ExcludeFromWebApp = true)]
         [Display(Name = "Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionLabel { get; protected set; }
     }
