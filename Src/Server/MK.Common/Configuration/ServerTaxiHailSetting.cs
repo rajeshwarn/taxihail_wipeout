@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
@@ -9,11 +8,6 @@ namespace MK.Common.Configuration
     {
         public ServerTaxiHailSetting()
         {
-            Admin = new AdminSettingContainer
-            {
-                CompanySettings = "ShowEstimateWarning,DestinationIsRequired,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,HideCallDispatchButton,ShowAssignedVehicleNumberOnPin,ZoomOnNearbyVehicles,ZoomOnNearbyVehiclesCount,ZoomOnNearbyVehiclesRadius,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink"
-            };
-
             OrderStatus = new OrderStatusSettingContainer
             {
                 ClientPollingInterval = 10,
@@ -80,7 +74,6 @@ namespace MK.Common.Configuration
             PayPalConversionRate = 1;
         }
 
-        public AdminSettingContainer Admin { get; protected set; }
         public SmtpSettingContainer Smtp { get; protected set; }
         public APNSSettingContainer APNS { get; protected set; }
         public DefaultBookingSettingsSettingContainer DefaultBookingSettings { get; protected set; }

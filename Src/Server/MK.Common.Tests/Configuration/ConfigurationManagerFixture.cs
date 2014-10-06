@@ -46,17 +46,6 @@ namespace apcurium.MK.Common.Tests.Configuration
         }
 
         [Test]
-        public void When_receiving_a_setting_then_object_is_populated_with_value()
-        {
-            _appSettingsFromDatabase.Clear();
-            _appSettingsFromDatabase.Add(new AppSetting("Admin.CompanySettings", "Yes"));
-
-            _sut.Load();
-
-            Assert.That(_sut.ServerData.Admin.CompanySettings, Is.EqualTo("Yes"));
-        }
-
-        [Test]
         public void When_receiving_a_setting_in_nested_property_then_object_is_populated_with_value()
         {
             _appSettingsFromDatabase.Clear();

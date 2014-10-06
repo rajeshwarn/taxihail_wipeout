@@ -142,19 +142,19 @@ namespace MK.Common.Configuration
 		public string FacebookAppId{ get; protected set; }
         // ---- Must be packaged with app ---- //
 
-        [SendToClient(ExcludeFromWebApp = true)]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Account Activation Disabled", Description="Disable the confirmation requirement")]
         public bool AccountActivationDisabled { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
 		[Display(Name = "Account Activation By SMS", Description="Enable the activation by SMS")]
         public bool SMSConfirmationEnabled { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Disable Charge type when card on file", Description = "When active, locks the user on Card on File payment type if a credit card is registered")]
         public bool DisableChargeTypeWhenCardOnFile { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Enable vehicle type selection", Description = "Hide the vehicle type selection box")]
         public bool VehicleTypeSelectionEnabled { get; protected set; }
 
@@ -167,211 +167,211 @@ namespace MK.Common.Configuration
         [Display(Name = "Twilio SMS authentication token", Description = "Authentication token for twilio")]
         public string SMSAuthToken { get; protected set; }
 
-        [SendToClient]
+        [CustomizableByCompany]
         [Display(Name = "Send push notifications as SMS", Description = "Send push notifications as SMS")]
         public bool SendPushAsSMS { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Show Terms and Conditions", Description="Display and require T&C screen")]
         public bool ShowTermsAndConditions { get; protected set; }
 
-        [SendToClient(ExcludeFromWebApp = true)]
+        [SendToClient]
 		[Display(Name = "Hide Mobile Knownledge and Apcurium logos", Description="In the menu")]
 		public bool HideMkApcuriumLogos { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Tutorial Enabled", Description="Enable the tutorial")]
         public bool TutorialEnabled { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
 		[Display(Name = "Tutorial slides disabled", Description="Index of the slides to hide")]
         public string DisabledTutorialSlides { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Hide Report Problem", Description="Remove button in the menu")]
         public bool HideReportProblem { get; protected set; }
 
-        [SendToClient(ExcludeFromWebApp = true)]
+        [SendToClient]
         [Display(Name = "Default Phone Number", Description="Phone number as displayed to the user (1.800.XXX.XXXX)")]
         public string DefaultPhoneNumberDisplay { get; protected set; }
 
-        [SendToClient(ExcludeFromWebApp = true)]
+        [SendToClient]
         [Display(Name = "Default Phone Number", Description="Phone number as dialed")]
         public string DefaultPhoneNumber { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "About Us Url", Description="Url of the page on the company website")]
         public string AboutUsUrl { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Support Email", Description="Email address to contact the company")]
         public string SupportEmail { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Destination Required", Description="Flag to add destination as required")]
 		public bool DestinationIsRequired { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Disable Future Booking", Description="Hide button to scheduled a booking in the future")]
         public bool DisableFutureBooking { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Hide Destination", Description="Hide destination address")]
         public bool HideDestination { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Max Fare Estimate", Description="Maximum amount for estimation, if greater, a 'call the company' message is displayed")]
 		public double MaxFareEstimate { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Show Estimate Warning", Description="Show or not the the warning about the estimate being only an estimate")]
         public bool ShowEstimateWarning { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Show Estimate", Description="Show an estimate")]
         public bool ShowEstimate { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
 		[Display(Name = "Show Eta", Description="Show eta")]
 		public bool ShowEta { get; protected set; }
 
-        [SendToClient(ExcludeFromWebApp = true)]
+        [SendToClient]
 		[Display(Name = "Google Map Key", Description="Google API Key for business, required for directions aka eta feature")]
         public string GoogleMapKey { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Eta Padding Ratio", Description = "Eta duration padding ratio (multiply duration in seconds by...)")]
 		public double EtaPaddingRatio { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Use Theme Color On Map Icons", Description="Use company color for pickup and destination map icons")]
         public bool UseThemeColorForMapIcons { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Show Passenger Name", Description="Show the passenger name field in confirmation")]
         public bool ShowPassengerName { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Show Passenger Phone", Description="Show the passenger phone field in confirmation")]
         public bool ShowPassengerPhone { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Show Passenger Number", Description="Show the passenger number field in confirmation")]
         public bool ShowPassengerNumber { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Show Ring Code", Description="Show the ring code field in confirmation")]
         public bool ShowRingCodeField { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Show Passenger Apartment", Description = "Show the passenger apartment field in confirmation")]
         public bool ShowPassengerApartment { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Send Receipt Available", Description="Can the user send a receipt for the order")]
         public bool SendReceiptAvailable { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Rating Enabled", Description="Can the user rate the order when it's done")]
 		public bool RatingEnabled { get; protected set; }
 
-        [SendToClient(ExcludeFromWebApp = true)]
+        [SendToClient]
 		[Display(Name = "Rating mandatory", Description="remove the back button in rating screen and validate before leaving the screen")]
 		public bool RatingRequired { get; protected set; }
 
-        [SendToClient(ExcludeFromWebApp = true)]
+        [SendToClient]
         [Display(Name = "User needs to rate before booking again", Description = "")]
         public bool CanSkipRatingRequired { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Show Call Driver", Description="Show button on the status screen to call the driver")]
 		public bool ShowCallDriver { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Show Vehicule Information", Description="Show vehicule informatino when available")]
 		public bool ShowVehicleInformation { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Hide Call Dispatch Button", Description="Hide button to call dispatch in panel menu, status screens")]
         public bool HideCallDispatchButton { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Credit Card Is Mandatory", Description="If true, the user needs to have a card on file")]
         public bool CreditCardIsMandatory { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
 		[Display(Name = "Default Percentage Tip", Description="default value for the tip percentage ex: 15")]
 		public int DefaultTipPercentage { get; protected set; }
 
-        [SendToClient(ExcludeFromWebApp = true)]
+        [SendToClient]
 		[Display(Name = "Hide Pay Now Button During Ride", Description = "This will hide the pay now button, on the status screen, if the ride is not completed")]
 		public bool HidePayNowButtonDuringRide { get; protected set; }
 
-        [SendToClient(ExcludeFromWebApp = true)]
+        [SendToClient]
         [Display(Name = "Price Format Culture", Description="Format to display amount (Culture, ex: en-US)")]
 		public string PriceFormat { get; protected set; }
 
-        [SendToClient(ExcludeFromWebApp = true)]
-        [Display(Name = "Distance Format", Description="Format to display distance ('km' or 'mile')")]
+        [SendToClient]
+        [Display(Name = "Distance Format", Description="Format to display distance ('Km' or 'Mile')")]
 		public DistanceFormat DistanceFormat { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Foursquare Client Id", Description = "Foursquare API credentials Id")]
         public string FoursquareClientId { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Foursquare Client Secret", Description = "Foursquare Client Secret")]
         public string FoursquareClientSecret { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Foursquare Categories", Description = "filter venues for include only those categories")]
         public string FoursquarePlacesTypes { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "TomTom Map Toolkit API Key", Description = "TomTom Map Toolkit API Key")]
         public string TomTomMapToolkitKey { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Direction Map Provider", Description = "Map Provider to use for Directions/Estimates")]
         public MapProvider DirectionDataProvider { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Hide Rebook Order", Description="Hide the button in order history details")]
         public bool HideRebookOrder { get; protected set; }
 
-        [SendToClient(ExcludeFromWebApp = true)]
+        [SendToClient]
         [Display(Name = "Card.IO Token", Description="Token for the Card.IO API (If empty, hides the button)")]
         public string CardIOToken { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
 		[Display(Name = "Lower Left Latitude", Description="Lower Left Latitude limit to be used when searching for an address")]
 		public double? LowerLeftLatitude { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
 		[Display(Name = "Lower Left Longitude", Description="Lower Left Longitude limit to be used when searching for an address")]
 		public double? LowerLeftLongitude { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
 		[Display(Name = "Upper Right Latitude", Description="Upper Right Latitude limit to be used when searching for an address")]
 		public double? UpperRightLatitude { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
 		[Display(Name = "Upper Right Longitude", Description="Upper Right Longitude limit to be used when searching for an address")]
 		public double? UpperRightLongitude { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
 		[Display(Name = "Zoom on nearby vehicles", Description="Enable zooming on nearby vehicles")]
 		public bool ZoomOnNearbyVehicles { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
 		[Display(Name = "Zoom on nearby vehicles radius", Description="Inclusion radius in meters when zooming on nearby vehicles")]
 		public int ZoomOnNearbyVehiclesRadius { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
 		[Display(Name = "Zoom on nearby vehicles count", Description="Maximum of included vehicles when zooming on nearby vehicles")]
 		public int ZoomOnNearbyVehiclesCount { get; protected set; }
 
-        [SendToClient]
+        [SendToClient, CustomizableByCompany]
 		[Display(Name = "Show Assigned Vehicle Number On Pin", Description="Enable displaying the assigned vehicle number over its pin on the map")]
 		public bool ShowAssignedVehicleNumberOnPin { get; protected set; }
 
@@ -384,11 +384,11 @@ namespace MK.Common.Configuration
         [Display(Name = "Allow Simultaneous Orders", Description = "Allow to have more than one active order")]
         public bool AllowSimultaneousAppOrders { get; protected set; }
 
-        [SendToClient(ExcludeFromWebApp = true)]
+        [SendToClient]
         [Display(Name = "Google AdWords Conversion Tracking ID", Description = "Conversion ID used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionId { get; protected set; }
 
-        [SendToClient(ExcludeFromWebApp = true)]
+        [SendToClient]
         [Display(Name = "Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionLabel { get; protected set; }
     }

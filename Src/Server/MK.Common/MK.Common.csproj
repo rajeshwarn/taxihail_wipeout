@@ -91,6 +91,7 @@
     <Compile Include="Caching\CachingDbContext.cs" />
     <Compile Include="Caching\EFCacheClient.cs" />
     <Compile Include="ChargeTypesClient.cs" />
+    <Compile Include="Configuration\Attributes\CustomizableByCompanyAttribute.cs" />
     <Compile Include="Configuration\Attributes\RequiredAtStartup.cs" />
     <Compile Include="Configuration\Attributes\SendToClientAttribute.cs" />
     <Compile Include="Configuration\Helpers\ConfigManagerLoader.cs" />
