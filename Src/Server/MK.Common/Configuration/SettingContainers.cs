@@ -122,12 +122,12 @@ namespace apcurium.MK.Common.Configuration
         public bool EnableSsl { get; protected internal set; }
         public SmtpDeliveryMethod DeliveryMethod { get; protected internal set; }
         public CredentialsContainer Credentials { get; protected internal set; }
+    }
 
-        public class CredentialsContainer
-        {
-            public string Username { get; protected internal set; }
-            public string Password { get; protected internal set; }
-        }
+    public class CredentialsContainer
+    {
+        public string Username { get; protected internal set; }
+        public string Password { get; protected internal set; }
     }
 
     public class APNSSettingContainer

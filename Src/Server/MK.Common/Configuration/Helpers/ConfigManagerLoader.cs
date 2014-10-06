@@ -80,12 +80,12 @@ namespace apcurium.MK.Common.Configuration.Helpers
                 return type.GetProperty(propertyName);
             }
 
-            var firstProperty = type.GetProperty(propertyName.Split('.')[0]);
+            var firstProperty = type.GetProperty(propertyName.SplitOnFirst(".")[0]);
             if (firstProperty == null)
             {
                 return null;
             }
-            return GetProperty(firstProperty.PropertyType, propertyName.Split('.')[1]);
+            return GetProperty(firstProperty.PropertyType, propertyName.SplitOnFirst(".")[1]);
         }
 
         private static bool IsNullableType(Type type)
@@ -93,5 +93,26 @@ namespace apcurium.MK.Common.Configuration.Helpers
             return type.IsGenericType
                 && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
         }
+
+        private static string[] SplitOnFirst(this string strVal, string needle)
+        {
+            if (strVal == null)
+            {
+                return new string[0];
+            }
+
+            int length = strVal.IndexOf(needle);
+            if (length != -1)
+            {
+                return new[]
+                {
+                    strVal.Substring(0, length),
+                    strVal.Substring(length + 1)
+                };
+            }
+
+            return new[] { strVal };
+        }
+
     }
 }

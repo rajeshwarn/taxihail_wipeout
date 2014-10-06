@@ -68,6 +68,17 @@ namespace apcurium.MK.Common.Tests.Configuration
         }
 
         [Test]
+        public void When_receiving_a_setting_in_doubly_nested_property_then_object_is_populated_with_value()
+        {
+            _appSettingsFromDatabase.Clear();
+            _appSettingsFromDatabase.Add(new AppSetting("Smtp.Credentials.Username", "test123456"));
+
+            _sut.Load();
+
+            Assert.That(_sut.ServerData.Smtp.Credentials.Username, Is.EqualTo("test123456"));
+        }
+
+        [Test]
         public void When_receiving_a_setting_in_nested_partial_class_property_then_object_is_populated_with_value()
         {
             _appSettingsFromDatabase.Clear();
