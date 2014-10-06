@@ -653,6 +653,35 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return true;
 		}
 
+		public async Task<bool> ValidateCardExpiration()
+		{
+			var orderToValidate = await GetOrder ();	
+			if (orderToValidate.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+			{
+				var creditCard = await _accountService.GetCreditCard ();
+
+				if (creditCard == null) {
+					return false;
+				}
+
+				if (!creditCard.ExpirationMonth.HasValue() || !creditCard.ExpirationYear.HasValue()) {
+					return true; // Prevent expiration verification from failing
+				}
+
+				var expYear = int.Parse (creditCard.ExpirationYear);
+				var expMonth = int.Parse (creditCard.ExpirationMonth);
+				var expirationDate = new DateTime (expYear, expMonth, DateTime.DaysInMonth (expYear, expMonth));
+
+				if (expirationDate < DateTime.Now) {
+					return false;
+				}
+
+				return true;
+			}
+
+			return true;
+		}
+
 		public void ConfirmValidationOrder()
 		{
 			_orderCanBeConfirmed.OnNext (true);
