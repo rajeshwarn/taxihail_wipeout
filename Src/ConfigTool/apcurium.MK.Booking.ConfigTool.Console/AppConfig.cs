@@ -510,4 +510,3 @@ namespace apcurium.MK.Booking.ConfigTool
 			return new[] { strVal };
 		}
     }
-}
