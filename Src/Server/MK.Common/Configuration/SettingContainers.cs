@@ -33,7 +33,7 @@ namespace apcurium.MK.Common.Configuration
 
     public class GCMSettingContainer
     {
-        [SendToClient(true)]
+        [SendToClient(ExcludeFromWebApp = true)]
         [Display(Name = "SenderId", Description = "Google Push Notification API Id")]
         public string SenderId { get; protected internal set; }
 
@@ -44,7 +44,7 @@ namespace apcurium.MK.Common.Configuration
 
     public class DirectionSettingContainer
     {
-        [SendToClient(true)]
+        [SendToClient(ExcludeFromWebApp = true)]
         [Display(Name = "Tarif Mode", Description = "How the tarif calculation is done: by the app or by IBS")]
         public TarifMode TarifMode { get; protected internal set; }
 
@@ -60,14 +60,14 @@ namespace apcurium.MK.Common.Configuration
 
     public class NearbyPlacesServiceSettingContainer
     {
-        [SendToClient(true)]
+        [SendToClient(ExcludeFromWebApp = true)]
         [Display(Name = "Default Radius", Description = "Default radius for places search")]
         public int DefaultRadius { get; protected internal set; }
     }
 
     public class MapSettingContainer
     {
-        [SendToClient(true)]
+        [SendToClient(ExcludeFromWebApp = true)]
         [Display(Name = "Place Types", Description = "Give a list of Google Maps places types to filter search")]
         public string PlacesApiKey { get; protected internal set; }
     }
