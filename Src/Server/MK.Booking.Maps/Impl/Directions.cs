@@ -50,6 +50,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                     direction.Duration, vehicleTypeId);
                     
 				result.FormattedDistance = FormatDistance (result.Distance);
+				result.FormattedPrice = result.Price == null ? string.Empty : string.Format(new CultureInfo(_appSettings.Data.PriceFormat), "{0:C}",result.Price.Value);
 			}
 
 			return result;

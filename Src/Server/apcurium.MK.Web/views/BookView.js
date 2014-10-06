@@ -52,10 +52,9 @@
 
             var $estimate = this.$('.estimate');
 
-            if (value.price && value.formattedDistance) {
+            if (value.formattedPrice && value.formattedDistance) {
                 $estimate.removeClass('hidden');
-				console.log(value);
-				globalt = value;
+				
                 if (value.callForPrice) {
                     $estimate
                         .find('.fare')
@@ -77,7 +76,7 @@
                     else {
                         $estimate
                             .find('.fare')
-                            .text(TaxiHail.localize('Estimate Display').format(value.price, "(" + value.formattedDistance + ")"));
+                            .text(TaxiHail.localize('Estimate Display').format(value.formattedPrice, "(" + value.formattedDistance + ")"));
                         $estimate
                             .find('.label')
                             .show();

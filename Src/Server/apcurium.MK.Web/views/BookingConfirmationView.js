@@ -127,7 +127,8 @@
                 this.model.set('priceEstimate', TaxiHail.localize("NoFareEstimate"));
             } else
             {
-                this.model.set('priceEstimate', result.formattedPrice);
+                this.model.set('formattedPrice', result.formattedPrice);
+                this.model.set('priceEstimate', result.price);
             }
             this.model.set({
                 'distanceEstimate': result.formattedDistance
