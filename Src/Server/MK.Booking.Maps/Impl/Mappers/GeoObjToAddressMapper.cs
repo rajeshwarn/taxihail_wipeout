@@ -65,8 +65,16 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
             {
                 address.FullAddress = placeName + ", " + address.FullAddress.ToSafeString();
             }
+            else if (address.FullAddress.HasValue()
+                && (address.FullAddress.Split(' ').Length > 0)
+                && (address.StreetNumber.HasValue())
+                && isRange)
+            {
+                address.FullAddress = address.FullAddress.Replace(address.FullAddress.Split(' ')[0],
+                    address.StreetNumber);
+            }
 
-            return address;
+            return address; 
         }
 
         private string AddLeadingZeroIfSingleNumber(string val)
