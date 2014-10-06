@@ -5,6 +5,7 @@ using System.Linq;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 using MK.Common.Configuration;
@@ -125,10 +126,19 @@ namespace apcurium.MK.Booking.EventHandlers
                             });
                         }
                     }
+
+                    if (appSetting.Key == "DistanceFormat"
+                        && (appSetting.Value == "KM" || appSetting.Value == "km"))
+                    {
+                        appSetting.Value = DistanceFormat.Km.ToString();
+                    }
                 }
 
                 context.SaveChanges();
             }
+
+            // Refresh the ServerData object
+            _configManager.Reload();
         }
     }
 }
