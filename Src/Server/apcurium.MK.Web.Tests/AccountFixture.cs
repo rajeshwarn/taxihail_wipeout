@@ -39,7 +39,7 @@ namespace apcurium.MK.Web.Tests
         public async void ConfirmAccountViaSMS()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            ConfigurationManager.AppSettings.Set("Client.SMSConfirmationEnabled", "true");
+            ConfigurationManager.AppSettings.Set("SMSConfirmationEnabled", "true");
 
             Guid accountId = Guid.NewGuid();
             string tempEmail = GetTempEmail();
@@ -69,7 +69,7 @@ namespace apcurium.MK.Web.Tests
                 await sut.ConfirmAccount(request);                
             }
 
-            ConfigurationManager.AppSettings.Set("Client.SMSConfirmationEnabled", "false");
+            ConfigurationManager.AppSettings.Set("SMSConfirmationEnabled", "false");
 
             using (var context = new BookingDbContext(ConfigurationManager.ConnectionStrings["MKWebDev"].ConnectionString))
             {

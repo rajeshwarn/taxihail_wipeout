@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             _orderDaoMock = new Mock<IOrderDao>();
             _configurationManager = new TestConfigurationManager();
             _configurationManager.SetSetting("TaxiHail.ApplicationName", ApplicationName);
-            _configurationManager.SetSetting("Client.SMSConfirmationEnabled", "true");
+            _configurationManager.SetSetting("SMSConfirmationEnabled", "true");
             _configurationManager.SetSetting("SMSAccountSid", "AC081ad5bacfad6c50e0598052fc062693");
             _configurationManager.SetSetting("SMSAuthToken", "9b142e2d163a5688ada040d8c71e3fb1");
             _configurationManager.SetSetting("SMSFromNumber", "15147002781");
