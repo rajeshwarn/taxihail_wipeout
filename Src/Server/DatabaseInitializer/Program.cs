@@ -92,8 +92,7 @@ namespace DatabaseInitializer
                 var module = new Module();
                 module.Init(container, connectionString);
                 
-                var configurationManager = new ConfigurationManager
-                    (() => new ConfigurationDbContext(connectionString.ConnectionString), container.Resolve<ILogger>());
+                var configurationManager = container.Resolve<IConfigurationManager>();
 
                 //for dev company, delete old database to prevent keeping too many databases
                 if (param.CompanyName == LocalDevProjectName && isUpdate)
