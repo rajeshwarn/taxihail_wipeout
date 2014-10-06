@@ -60,6 +60,7 @@
 	"Settings Changed" : "Settings Changed",
 	"CallForPrice" : "Call for price",
 	"NoFareEstimate" : "No Fare Estimate Available",
+	"Estimate Display" : "{0} {1}",
 	"NotSpecified" : "Not Specified",
 	"Password updated." : "The password was updated successfully",
 	"Now" : "Now",

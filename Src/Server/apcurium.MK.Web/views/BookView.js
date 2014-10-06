@@ -27,32 +27,46 @@
             this.model.on('change:dropOffAddress', function(model, value) {
                 this._dropOffAddressView.model.set(value);
             }, this);
-            
-            // ===== Ride Estimate =====
 
-            // Only show ride estimate if enabled
-            TaxiHail.parameters.isEstimateEnabled &&
+            // ===== Ride Estimate & ETA =====
+
+            // Only update ride estimate & eta if enabled
+            (TaxiHail.parameters.isEstimateEnabled || TaxiHail.parameters.isEtaEnabled) &&
                 this.model.on('change:pickupAddress change:dropOffAddress', function (model, value) {
                     this.actualizeEstimate();
                 }, this);
             
+            // Update UI values when server call is completed
             this.model.on('change:estimate', function (model, value) {
-                var $estimate = this.$('.estimate');
-                if (value.formattedPrice && value.formattedDistance) {
-                    $estimate.removeClass('hidden')
-                        .find('.distance')
-                        .text('(' + value.formattedDistance + ')');
-                     
-                    if (value.callForPrice) {
-                        $estimate
-                            .find('.fare')
-                            .text(TaxiHail.localize('CallForPrice'));
-                        $estimate
-                            .find('.label')
-                            .hide();
-                    }
-                    else
-                        if (value.noFareEstimate) {
+                if (TaxiHail.parameters.isEstimateEnabled) {
+                    this.updateFareEstimateVisibility(value);
+                }
+
+                if (TaxiHail.parameters.isEtaEnabled) {
+                    this.updateEtaDisplayVisibility(value);
+                }
+             }, this);
+        },
+        
+        updateFareEstimateVisibility: function (value) {
+
+            var $estimate = this.$('.estimate');
+
+            if (value.price && value.formattedDistance) {
+                $estimate.removeClass('hidden');
+				console.log(value);
+				globalt = value;
+                if (value.callForPrice) {
+                    $estimate
+                        .find('.fare')
+                        .text(TaxiHail.localize('CallForPrice'));
+                    $estimate
+                        .find('.label')
+                        .hide();
+						console.log("hide label2");
+                }
+                else
+                    if (value.noFareEstimate) {
                         $estimate
                             .find('.fare')
                             .text(TaxiHail.localize('NoFareEstimate'));
@@ -63,23 +77,37 @@
                     else {
                         $estimate
                             .find('.fare')
-                            .text(value.formattedPrice);
+                            .text(TaxiHail.localize('Estimate Display').format(value.price, "(" + value.formattedDistance + ")"));
                         $estimate
                             .find('.label')
                             .show();
                     }
-                    
-                } else {
-                    this.$('.estimate').addClass('hidden');
-                }
-             }, this);
-            
-           
+
+            } else {
+                this.$('.estimate').addClass('hidden');
+				console.log("hidden2");
+            }
         },
-        
-        
+
+        updateEtaDisplayVisibility: function (value) {
+            var $eta = this.$('.eta');
+            $eta
+               .find('.etaValue')
+               .show();
+
+            if (value.etaDuration) {
+                var formattedEta = TaxiHail.formatEta(value.etaDuration, value.etaFormattedDistance);
+
+                $eta.removeClass('hidden')
+                    .find('.etaValue')
+                    .text(formattedEta);
+            } else {
+                this.$('.eta').addClass('hidden');
+            }
+        },
 
         render: function () {
+            
             this.$el.html(this.renderTemplate(this.model.toJSON()));
 
             var pickupAddress = new Backbone.Model(),
@@ -98,7 +126,9 @@
                     locatepopular : true
             });
             
-            
+            if (TaxiHail.parameters.disableFutureBooking) {
+                this.$('#bookLaterButton').addClass('hidden');
+            }
 
             this.$('.pickup-address-container').html(this._pickupAddressView.render().el);
             this.$('.drop-off-address-container').html(this._dropOffAddressView.render().el);
@@ -161,6 +191,12 @@
         },
         
         actualizeEstimate: function () {
+
+            var $estimate = this.$('.estimate');
+            $estimate
+                .find('.fare')
+                .text(TaxiHail.localize('Loading'));
+
             var pickup = this.model.get('pickupAddress'),
                 dest = this.model.get('dropOffAddress');
 
@@ -169,6 +205,7 @@
                     .done(_.bind(function(result){
 
                         this.model.set({ 'estimate': result });
+                        this.model.set({ 'eta': result });
 
                     }, this));
             }
