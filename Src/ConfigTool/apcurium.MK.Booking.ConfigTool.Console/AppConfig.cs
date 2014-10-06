@@ -307,8 +307,8 @@ namespace apcurium.MK.Booking.ConfigTool
                 _configs.Add(new ConfigFile(this)
                 {
                     Source = file + ".json",
-                    Destination = @"Mobile\Common\TutorialContent\"+ file + ".json" 
-            }
+                    Destination = @"Mobile\Common\TutorialContent\" + file + ".json"
+                });
             }
         }
 
@@ -459,5 +459,4 @@ namespace apcurium.MK.Booking.ConfigTool
             }
         }        
     }
-}
 }
