@@ -126,12 +126,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request)
         {
+            string transactionId = null;
             try
             {
                 var isSuccessful = false;
                 string message;
                 var authorizationCode = string.Empty;
-
+                
                 var orderDetail = _orderDao.FindById(request.OrderId);
                 if (orderDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
                 if (orderDetail.IBSOrderId == null)
@@ -163,9 +164,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 //sale
                 var result = BraintreeGateway.Transaction.Sale(transactionRequest);
                 message = result.Message;
+                transactionId = result.Target.Id;
                 if (result.IsSuccess())
                 {
-                    var transactionId = result.Target.Id;
                     var paymentId = Guid.NewGuid();
 
                     _commandBus.Send(new InitiateCreditCardPayment
@@ -282,6 +283,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 return new CommitPreauthorizedPaymentResponse
                 {
                     AuthorizationCode = authorizationCode,
+                    TransactionId = transactionId,
                     IsSuccessfull = isSuccessful,
                     Message = isSuccessful ? "Success" : message
                 };
@@ -293,6 +295,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessfull = false,
+                    TransactionId = transactionId,
                     Message = e.Message,
                 };
             }

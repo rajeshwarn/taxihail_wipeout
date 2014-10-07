@@ -245,7 +245,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             if (paymentResult.IsSuccessfull)
             {
-                Log.DebugFormat("Order {0}: Payment Successful (Auth: {1})", orderStatusDetail.OrderId, paymentResult.AuthorizationCode);
+                Log.DebugFormat("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
             }
             else
             {
@@ -257,7 +257,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 // set the payment error message in OrderStatusDetail for reporting purpose
                 orderStatusDetail.PairingError = paymentResult.Message;
 
-                Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1})", orderStatusDetail.OrderId, paymentResult.Message);
+                Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.Message, paymentResult.TransactionId);
             }
         }
         

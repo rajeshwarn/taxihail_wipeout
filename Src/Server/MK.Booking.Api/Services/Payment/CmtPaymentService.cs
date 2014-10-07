@@ -269,6 +269,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         
         public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request)
         {
+            string transactionId = null;
             try
             {
                 var isSuccessful = false;
@@ -329,11 +330,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 responseTask.Wait();
                 var authResponse = responseTask.Result;
                 message = authResponse.ResponseMessage;
+                transactionId = authResponse.TransactionId.ToString(CultureInfo.InvariantCulture);
 
                 if (authResponse.ResponseCode == 1)
                 {
                     isSuccessful = true;
-                    var transactionId = authResponse.TransactionId.ToString(CultureInfo.InvariantCulture);
+                    
                     var paymentId = Guid.NewGuid();
 
                     _commandBus.Send(new InitiateCreditCardPayment
@@ -435,6 +437,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessfull = isSuccessful,
+                    TransactionId = transactionId,
                     Message = message,
                     AuthorizationCode = authorizationCode,
                 };
@@ -449,6 +452,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessfull = false,
+                    TransactionId = transactionId,
                     Message = ex.InnerExceptions.First().Message,
                 };
             }
@@ -459,6 +463,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessfull = false,
+                    TransactionId = transactionId,
                     Message = e.Message,
                 };
             }
