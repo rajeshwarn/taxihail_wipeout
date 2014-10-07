@@ -290,7 +290,7 @@ namespace DatabaseInitializer
                 var ratingTypeLanguages = ratingType.Select(t => t.Language);
                 var missingRatingTypeLanguages = supportedLanguages.Except(ratingTypeLanguages).ToArray();
 
-                if (missingRatingTypeLanguages.Count() < supportedLanguages.Count())
+                if (missingRatingTypeLanguages.Any())
                 {
                     // Every rating share the same ID for one language
                     var ratingId = ratingType.First().Id;
