@@ -209,6 +209,24 @@ namespace CustomerPortal.Web.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End.
+        /// </summary>
+        public static string CoordinateEndTaxiHailNetwork {
+            get {
+                return ResourceManager.GetString("CoordinateEndTaxiHailNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string CoordinateStartTaxiHailNetwork {
+            get {
+                return ResourceManager.GetString("CoordinateStartTaxiHailNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Corporate Color.
         /// </summary>
         public static string CorporateColor {
@@ -372,6 +390,15 @@ namespace CustomerPortal.Web.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Region.
+        /// </summary>
+        public static string RegionTaxhiHailNetworkLabel {
+            get {
+                return ResourceManager.GetString("RegionTaxhiHailNetworkLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {{Mobile Knowledge}} Taxi Hail Application:
         ///
         ///{{Mobile Knowledge}} is a leading provider of {{Taxi}} services in {{Ottawa, Ontario Canada}}. We are pleased to 
@@ -428,7 +455,7 @@ namespace CustomerPortal.Web.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Include in TaxiHail Network.
+        ///   Looks up a localized string similar to Taxi Hail Network Settings.
         /// </summary>
         public static string TaxiHailNetworkSettings {
             get {

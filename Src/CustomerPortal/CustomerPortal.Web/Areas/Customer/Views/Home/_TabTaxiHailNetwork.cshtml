@@ -4,6 +4,27 @@
     <legend>
         @Html.DisplayNameFor(x => x.Company.Network)
     </legend>
-    @Html.DisplayNameFor(x => x.Company.Network.IsInNetwork)
-    @Html.CheckBoxFor(_=>_.Company.Network.IsInNetwork)
+    <div class="editor-field">
+        @Html.LabelFor(x => x.Company.Network.IsInNetwork)
+        @Html.CheckBoxFor(x => x.Company.Network.IsInNetwork)
+    </div>
 </fieldset>
+
+<fieldset>
+    <legend>
+        @Html.DisplayNameFor(x => x.Company.Network.Region)
+    </legend>
+    <div class="editor-coordinate-field">
+        @Html.LabelFor(x => x.Company.Network.Region.CoordinateStart)
+        @Html.EditorFor(x => x.Company.Network.Region.CoordinateStart.Latitude)
+        @Html.EditorFor(x => x.Company.Network.Region.CoordinateStart.Longitude)
+    </div>
+    <div class="editor-coordinate-field">
+        @Html.LabelFor(x => x.Company.Network.Region.CoordinateEnd)
+        @Html.EditorFor(x => x.Company.Network.Region.CoordinateEnd.Latitude)
+        @Html.EditorFor(x => x.Company.Network.Region.CoordinateEnd.Longitude)
+    </div>
+</fieldset>
+
+
+

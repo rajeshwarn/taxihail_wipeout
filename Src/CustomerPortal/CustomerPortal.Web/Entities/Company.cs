@@ -68,7 +68,7 @@ namespace CustomerPortal.Web.Entities
         public Questionnaire Application { get; set; }
         public StoreSettings Store { get; set; }
 
-        [Display(Name = "TaxiHailNetworkSettings",ResourceType = typeof(Resources))]
+        [Display(Name = "TaxiHailNetworkSettings", ResourceType = typeof(Resources))]
         public TaxiHailNetworkSettings Network { get; set; }
 
         [Display(Name = "AppleAppStoreCredentials", Description = "AppleAppStoreCredentialsHelp",
