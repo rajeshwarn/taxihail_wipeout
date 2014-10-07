@@ -38,6 +38,7 @@ namespace MK.Common.Configuration
 		    VehicleTypeSelectionEnabled = false;
 		    SendPushAsSMS = false;
             AllowSimultaneousAppOrders = false;
+
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -265,6 +266,15 @@ namespace MK.Common.Configuration
         public string GoogleAdWordsConversionId { get; private set; }
         [Display(Name = "Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionLabel { get; private set; }
+
+
+
+
+        [Display(Name = "PreAuthorize on order creation", Description = "PreAuthorize a small amount to verify validity of the card")]
+        public bool PreAuthorizeOnOrderCreation { get; private set; }
+
+        [Display(Name = "PreAuthorize on order creation amount", Description = "Amount to use for PreAuthorization on order creation")]
+        public decimal PreAuthorizeOnOrderCreationAmount { get; private set; }
     }
 }
 

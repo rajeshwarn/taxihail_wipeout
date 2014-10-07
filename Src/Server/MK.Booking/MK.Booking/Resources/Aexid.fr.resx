@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CannotCreateOrder_CreditCardWasDeclined" xml:space="preserve">
+    <value>Votre commande ne peut pas être prise en compte, la préauthorisation de votre carte bancaire a échouée.</value>
+  </data>
   <data name="OrderStatus_CabDriverNumberAssigned" xml:space="preserve">
     <value>Le véhicule {0} vous a été réservé</value>
   </data>

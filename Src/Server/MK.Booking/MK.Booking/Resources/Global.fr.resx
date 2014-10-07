@@ -390,4 +390,7 @@
   <data name="PaymentItemDescription" xml:space="preserve">
     <value>Commande #{0} montant original: {1}</value>
   </data>
+  <data name="CannotCreateOrder_CreditCardWasDeclined" xml:space="preserve">
+    <value>Votre commande ne peut pas être prise en compte, la préauthorisation de votre carte de crédit a échouée.</value>
+  </data>
 </root>
