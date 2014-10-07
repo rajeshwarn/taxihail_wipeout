@@ -372,4 +372,7 @@
   <data name="EtaMessageToDriver" xml:space="preserve">
     <value>ETA displayed to client is {0} and {1} min</value>
   </data>
+  <data name="CannotCreateOrderInvalidVersion" xml:space="preserve">
+    <value>The order cannot be create using this version of the app. Please upgrade the app to book a ride.</value>
+  </data>
 </root>

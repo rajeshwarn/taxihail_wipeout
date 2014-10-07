@@ -70,6 +70,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The order cannot be create using this version of the app. Please upgrade the app to book a ride..
+        /// </summary>
+        public static string CannotCreateOrderInvalidVersion {
+            get {
+                return ResourceManager.GetString("CannotCreateOrderInvalidVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Card on File.
         /// </summary>
         public static string CardOnFile {

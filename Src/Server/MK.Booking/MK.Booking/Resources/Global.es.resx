@@ -381,4 +381,7 @@
   <data name="UnpairingConfirmationToDriver" xml:space="preserve">
     <value>Carrera</value>
   </data>
+  <data name="CannotCreateOrderInvalidVersion" xml:space="preserve">
+    <value>The order cannot be create using this version of the app. Please upgrade the app to book a ride.</value>
+  </data>
 </root>
