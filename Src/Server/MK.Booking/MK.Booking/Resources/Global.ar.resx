@@ -366,7 +366,7 @@
   <data name="PaymentConfirmationToDriver4" xml:space="preserve">
     <value>Auth #{0}</value>
   </data>
-  <data name="PayInCarMessageToDriver" xml:space="preserve">
+  <data name="PaymentBeingProcessedMessageToDriver" xml:space="preserve">
     <value>Payment being processed by the app...</value>
   </data>
   <data name="EtaMessageToDriver" xml:space="preserve">
