@@ -1,0 +1,129 @@
+﻿@model CustomerPortal.Web.Models.LayoutsViewModel
+
+@{
+    <script src="/Scripts/jquery-1.8.2.js"></script>    
+    
+    var rows = Model.Layouts.Select((Path, Index) => new {Path, Index})
+        .GroupBy(x => x.Index/3);
+
+    <style>
+        #layout-container {
+            padding: 0 0 20px 0;
+            margin: 0;
+            width: 750px;
+            overflow: hidden;
+        }
+
+        #buttons-container {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            width: 350px;
+            height: 40px;
+            display: block;
+        }
+
+        #buttons-container li { float: left; }
+
+        #buttons-container li:last-child { padding-left: 20px; }
+
+        #buttons-container li:first-child { padding-left: 0; }
+
+        #reject-note { width: 350px; }
+
+        #note {
+            width: 320px;
+            height: 80px;
+        }
+    </style>
+}
+<h4>Layouts</h4>
+<p>
+    This section contains the proposed layouts for your app.
+</p>
+@if (Model.IsEmpty)
+{
+    <p>There are no layouts to show yet.</p>
+}
+else if (Model.IsApproved)
+{
+    <p>Layouts were approved on @Model.ApprovedDate.ToLocalTime()</p>
+}
+else if (Model.IsRejected.Any())
+{
+    foreach (var key in @Model.IsRejected.Keys)
+    {
+        <p>Layouts were rejected on @key</p>
+    }
+}
+else
+{
+    <div id="layout-container">
+        <ul id="buttons-container">
+            @using (Html.BeginForm("Approve", "Layout"))
+            {
+                <li>
+                    <input type="submit" class="btn btn-primary" value="Approve these layouts" />
+                </li>
+            }
+            <li>
+                <input type="button" class="btn btn-primary" value="Reject these layouts" id="reject-btn" />
+            </li>
+
+        </ul>
+        <div id="reject-note">
+            <label for="note">Note:</label>
+            <textarea id="note"></textarea>
+            <input type="button" id="submit-reject" class="btn btn-danger" value="Reject" />
+        </div>
+    </div>
+}
+
+@foreach (var row in rows)
+{
+    <div class="row">
+        @foreach (var path in row.Select(x => x.Path))
+        {
+            <div class="span3">
+                <div class="thumbnail">
+                    <img alt='' src="@Url.Action("Image", new {filename = Path.GetFileName(path)})"/>
+                </div>
+            </div>
+        }
+
+    </div>
+}
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#reject-note').hide();
+            $('#reject-btn').click(
+                function() {
+                    $('#reject-note').toggle(400);
+                });
+            $('#submit-reject').click(
+                function() {
+                    var note = $('#note').val();
+                    var id = '@Model.CompanyId';
+                    var data = {};
+                    data[id] = note;
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: 'application/json',
+                        data: JSON.stringify({ rejectLayout: data }),
+                        url: '@Url.Action("Reject", "Layout", new {area = "Customer"})',
+                    success: function() {
+                        data = {},
+                            location.reload(true);
+                    },
+                    error: function(xhr, status, error) {
+                        alert("An AJAX error occured: " + status + "\nError: " + error + xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}

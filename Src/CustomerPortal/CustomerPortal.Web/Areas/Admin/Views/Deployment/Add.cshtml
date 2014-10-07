@@ -1,0 +1,91 @@
+﻿@using CustomerPortal.Web.Areas.Admin.Models
+@using CustomerPortal.Web.Entities
+@model CustomerPortal.Web.Areas.Admin.Models.AddDeploymentJobModel
+@{
+    ViewBag.Title = "Add Deployment";
+    Layout = "~/Views/Shared/_SettingsLayout.cshtml"; 
+}
+
+<h3>Add Deployment : @Model.Title   </h3>
+<br />
+<div id="ul-wrapper">
+    
+    @using (Html.BeginForm())
+    {
+        if (Model.Type != DeploymentJobType.ServerPackage)
+        {
+            <div>
+                @Html.LabelFor(m => m.ModelForView.Company)
+                @Html.DropDownListFor(m => m.CompanyId, Model.ModelForView.Company, "-- select --")
+            </div>
+        }
+        <div>
+            @Html.LabelFor(m => m.ModelForView.Environment)
+            @Html.DropDownListFor(m => m.ServerId, Model.ModelForView.Environment, "-- select --", new {data_server_select = ""})
+        </div>
+        <div>
+            @Html.LabelFor(m => m.ModelForView.Revision)
+            @Html.DropDownListFor(m => m.RevisionId, Model.ModelForView.Revision, "-- select --")
+        </div>
+        if (Model.Type == DeploymentJobType.DeployClient)
+        {
+            <div>
+                @Html.LabelFor(m => m.ServerUrl)
+                @Html.RadioButtonFor(x => x.ServerUrlOptions, ServerUrlOptions.Staging) Staging
+                @Html.RadioButtonFor(x => x.ServerUrlOptions, ServerUrlOptions.Production) Production
+                @Html.RadioButtonFor(x => x.ServerUrlOptions, ServerUrlOptions.Dev) Dev
+                @Html.RadioButtonFor(x => x.ServerUrlOptions, ServerUrlOptions.Other) Other :
+         
+                @Html.TextBoxFor(m => m.ServerUrl)
+            </div>
+
+            <div>
+                <label>Modules</label>
+               
+                @Html.CheckBoxFor(m => m.Android, true) Android
+                @Html.CheckBoxFor(m => m.CallBox, true) Callbox
+                @Html.CheckBoxFor(m => m.IosAdhoc, true) iOS(Adhoc)
+                @Html.CheckBoxFor(m => m.IosAppStore, true) iOS(AppStore)
+               
+                
+            </div>
+        }
+
+        if (Model.Type == DeploymentJobType.DeployServer)
+        {
+            <div>
+                <label>Options</label>
+                @Html.CheckBoxFor(m => m.Database, false) Deploy Database
+            </div>
+        }
+
+        <div>
+            @Html.HiddenFor(m => m.CreateType)
+        </div>
+        <br />
+        <div id="button-container">
+            <input type="submit" class="btn btn-primary" value="Add" id="add-button" onclick="return ProductionConfirm()" />
+        
+            
+            <a href="@Url.Action("UpdateVersions", new { createType = Model.CreateType })" class="btn">Update Versions List</a>
+            
+        
+            <a href="@Url.Action("Index")" class="btn btn-link">Back to deployment list</a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        function ProductionConfirm() {
+            if ($('#ServerId').find(":selected").text() == 'Production') {
+                if (confirm("Are you sure you want to deploy on the PRODUCTION server?"))
+                    return true;
+                else
+                    return false;
+            }else {
+                return true;
+            }
+        }
+    </script>
+}

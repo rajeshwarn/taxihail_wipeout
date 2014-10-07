@@ -1,0 +1,40 @@
+﻿@model CustomerPortal.Web.Entities.Company
+
+
+@using (Html.BeginForm( "Edit", "Home" ))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Company information</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        @Html.LabelFor(model => model.CompanyName)
+        @Html.EditorFor(model => model.CompanyName)
+        @Html.ValidationMessageFor(model => model.CompanyName)
+        
+        <legend>Contact information</legend>
+        @Html.LabelFor(x => x.ProjectContactName)
+        @Html.TextBoxFor(x => x.ProjectContactName)
+        @Html.ValidationMessageFor(x => x.ProjectContactName)
+
+        @Html.LabelFor(x => x.ProjectContactEmail)
+        @Html.TextBoxFor(x => x.ProjectContactEmail)
+        @Html.ValidationMessageFor(x => x.ProjectContactEmail)
+                
+        @Html.LabelFor(x => x.ProjectContactTel)
+        @Html.TextBoxFor(x => x.ProjectContactTel)
+        @Html.ValidationMessageFor(x => x.ProjectContactTel)
+    </fieldset>
+
+    <div class="form-actions">
+        <input type="submit" class="btn btn-primary" value="Save" />
+        <a href="@Url.Action("Delete", new {Model.Id})" class="btn btn-danger">Delete this company</a>
+        <a href="@Url.Action("ForceVersionRefresh", new {Model.Id})" class="btn">Force version refresh</a>       
+    </div>
+}
+
+@section Scripts {
+}

@@ -1,0 +1,84 @@
+﻿@model IEnumerable<CustomerPortal.Web.Models.VersionViewModel>
+@{
+    ViewBag.Title = "Versions";
+    var id = ViewContext.RouteData.Values["id"];
+}
+
+<h2>@ViewBag.Title</h2>
+<div class='row'>
+    <div class='span12'>
+        <p>
+            <a href='@Url.Action("Create", "Version", new {id})' class='btn btn-primary'>New Version</a>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-link">Back to company list</a>
+        </p>
+    </div>
+    <div class="span12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Version number</th>
+                    <th>Date Created</th>
+                    <th colspan="2">Action</th>
+                    <th>IPA</th>
+                    <th>IPA AppStore</th>
+                    <th>APK</th>
+                    <th>Website</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            @foreach (var version in Model)
+            {
+                <tr>
+                    <td>
+                        @version.Number
+                    </td>
+                    <td>@version.CreatedOn</td>
+                    <td>@Html.ActionLink("View", "Index", "Distribution", new {area = "", id = version.CompanyId, versionId = version.VersionId}, null)</td>
+                    <td>@Html.ActionLink("Send email", "Email", "Version", new {area = "Admin", version.Number, version.CompanyId}, null)</td>
+                    <td>@if (version.HasIpa)
+                        {
+                            <a href="@Url.Action("Package", "Distribution", new {area = "", id, version.Number, package = version.IpaFilename})">Download</a>
+                        }
+                        else
+                        {
+                            <text>-</text>
+                        }
+                    </td>
+                    <td>
+                        @if (version.HasIpaAppStore)
+                        {
+                            <a href="@Url.Action("Package", "Distribution", new { area = "", id, version.Number, package = version.IpaAppStoreFilename })">Download</a>
+                        }
+                        else
+                        {
+                            <text>-</text>
+                        }
+                </td>
+                    <td>@if (version.HasApk)
+                        {
+                            <a href="@Url.Action("Package", "Distribution", new {area = "", id, version.Number, package = version.ApkFilename})">Download</a>
+                        }
+                        else
+                        {
+                            <text>-</text>
+                        }
+                    </td>
+
+                    <td>
+                        @if (version.HasWebsite)
+                        {
+                            <a href="@version.WebsiteUrl" target="_blank">Open</a>
+                        }
+                        else
+                        {
+                            <text>-</text>
+                        }
+                    </td>
+                    <td>
+                        <a class="btn" href="@Url.Action("Delete", "Version", new {id, version.Number})">Delete</a>
+                    </td>
+                </tr>
+            }   
+        </table>
+    </div>
+</div>

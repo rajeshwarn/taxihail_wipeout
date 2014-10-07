@@ -1,0 +1,15 @@
+﻿@model CustomerPortal.Web.Models.CompanyViewModel
+
+<fieldset>
+    <legend>
+        @Html.DisplayNameFor(x => x.Company.AppDescription) 
+        @if (!Model.IsAppDescriptionReadOnly)
+        {
+            <a href="@Url.Action("EditAppDescription")" class="btn btn-link">Edit</a>
+        }
+    </legend>
+    <p>
+        @Html.DisplayDescriptionFor(x => x.Company.AppDescription)
+    </p>
+    <pre class="app-description">@Html.DisplayFor(x => x.Company.AppDescription)</pre>
+</fieldset>

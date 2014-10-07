@@ -1,0 +1,63 @@
+﻿@model CustomerPortal.Web.Models.VersionViewModel
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - TaxiHail Customer Portal</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/bundles/bootstrap/less")
+        @Scripts.Render("~/bundles/modernizr")
+        <style>
+            #container {
+                height: 50px;
+                background-color: gainsboro;
+                border-bottom: 1px grey solid;
+            }
+
+            #brand-container {
+                position: relative;
+                width: 300px;
+                margin: 0 auto;
+                top: 15px;
+            }
+
+            #brand-container h4 {
+                margin: 0;
+                padding: 0;
+                text-align: center;
+                color: gray;
+            }
+        </style>
+    </head>
+    <body>
+        <div >
+            <div id="container">
+            
+                <div id="brand-container">
+                    <h4 style="color: gray !important;">@Model.CompanyName</h4>                
+                </div>
+            
+            </div>
+            <div >
+                @if (TempData["message"] != null)
+                {
+                    <div style="color: forestgreen">@TempData["message"]</div>
+                }
+
+                @if (TempData["warning"] != null)
+                {
+                    <div style="color: firebrick">@TempData["warning"]</div>
+                }
+            </div>
+        
+            @RenderBody()
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/bootstrap/js")
+
+        @RenderSection("scripts", false)
+    </body>
+</html>

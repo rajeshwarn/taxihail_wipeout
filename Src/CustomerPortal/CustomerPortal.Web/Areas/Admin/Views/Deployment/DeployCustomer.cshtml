@@ -1,0 +1,54 @@
+﻿@using CustomerPortal.Web.Areas.Admin.Models
+@using CustomerPortal.Web.Entities
+@model CustomerPortal.Web.Areas.Admin.Models.DeployCustomerModel
+@{
+    
+}
+
+<h3>Deploy customer : @Model.Company.CompanyName   </h3>
+<br />
+<div id="ul-wrapper">
+
+    @using (Html.BeginForm())
+    {
+        <br />
+        <div>
+            <label>Server</label>
+            @Html.RadioButtonFor(x => x.ServerUrlOptions, ServerUrlOptions.Staging) Staging
+            @Html.RadioButtonFor(x => x.ServerUrlOptions, ServerUrlOptions.Production) Production
+        </div>
+        <br />
+        <div>
+            <label>Deploy Options</label>
+            @Html.RadioButtonFor(x => x.DeployOptions, DeployOptions.MobileApp) Mobile App
+            @Html.RadioButtonFor(x => x.DeployOptions, DeployOptions.Server) Server
+            @Html.RadioButtonFor(x => x.DeployOptions, DeployOptions.Both) Both
+        </div>
+        <br />
+        <div>
+            @Html.LabelFor(m => m.Revision)
+            @Html.DropDownListFor(m => m.RevisionId, Model.Revision, "-- select --")
+        </div>
+
+        @Html.HiddenFor(m=>m.CompanyKey)
+        <br />
+        <div id="button-container">
+            <input type="submit" class="btn btn-primary" value="Add" id="add-button" onclick="return ProductionConfirm()" />
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        function ProductionConfirm() {
+            if ($('#ServerId').find(":selected").text() == 'Production') {
+                if (confirm("Are you sure you want to deploy on the PRODUCTION server?"))
+                    return true;
+                else
+                    return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
+}

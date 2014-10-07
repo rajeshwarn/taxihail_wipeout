@@ -1,0 +1,36 @@
+﻿@model CustomerPortal.Web.Entities.Revision
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+@using (Html.BeginForm())
+{
+    <table>
+        <tr>
+            <td>
+                @Html.LabelFor(x => x.Tag)
+                @Html.TextBoxFor(m => m.Tag)
+            </td>
+        </tr>
+        <tr>            
+            <td>
+                @Html.LabelFor(x => x.Commit)
+                @Html.TextBoxFor(m => m.Commit)
+            </td>
+        </tr>
+        <tr>           
+            <td>
+                @Html.LabelFor(x => x.Hidden)
+                @Html.CheckBoxFor(m => m.Hidden)
+            </td>
+        </tr>
+    </table>
+
+
+    <div class="form-actions">
+        <button class="btn btn-primary" type="submit">Create Revision</button>
+        <a href="@Url.Action("Index", "Home")" class="btn btn-link">Back to company list</a>
+    </div>
+}

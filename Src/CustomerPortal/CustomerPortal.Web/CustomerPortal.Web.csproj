@@ -1,0 +1,568 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{66FB44CA-BF67-4B22-9BF4-0A41EC227F0B}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CustomerPortal.Web</RootNamespace>
+    <AssemblyName>CustomerPortal.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="dotless.Core, Version=1.4.1.0, Culture=neutral, PublicKeyToken=96b446c9e63eae34, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\dotless.1.4.1.0\lib\dotless.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="ExtendedMongoMembership, Version=1.6.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ExtMongoMembership.1.6.7-beta\lib\ExtendedMongoMembership.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\packages\mongocsharpdriver.1.8.1\lib\net35\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\packages\mongocsharpdriver.1.8.1\lib\net35\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoRepository">
+      <HintPath>..\packages\MongoRepository.1.5.1\lib\MongoRepository.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PList">
+      <HintPath>..\packages\plist.net.1.0\lib\Net35\PList.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.0.0\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.0.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization.Less">
+      <HintPath>..\packages\System.Web.Optimization.Less.1.3.2\lib\net40\System.Web.Optimization.Less.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.2.0.20710.0\lib\net40\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.2.0.30506.0\lib\net40\WebMatrix.WebData.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Android\KeystoreGenerator.cs" />
+    <Compile Include="App_Start\AutoMapperConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\API\AppleDevCenterController.cs" />
+    <Compile Include="Areas\Admin\Controllers\API\VersionController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PaymentController.cs" />
+    <Compile Include="Areas\Admin\Controllers\StoreCredentialController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CompanyControllerBase.cs" />
+    <Compile Include="Areas\Admin\Controllers\DeploymentController.cs" />
+    <Compile Include="Areas\Admin\Controllers\DeployementControllerBase.cs" />
+    <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\IBSController.cs" />
+    <Compile Include="Areas\Admin\Controllers\LayoutController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MembershipController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RevisionController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RevisionControllerBase.cs" />
+    <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\VersionController.cs" />
+    <Compile Include="Areas\Admin\Models\AddDeploymentJobModel.cs" />
+    <Compile Include="Areas\Admin\Models\AppleSearchByBundle.cs" />
+    <Compile Include="Areas\Admin\Models\ApplicationInfo.cs" />
+    <Compile Include="Areas\Admin\Models\ChangeRevisionStatus.cs" />
+    <Compile Include="Areas\Admin\Models\ColorModel.cs" />
+    <Compile Include="Areas\Admin\Models\CreateNewVersionRequest.cs" />
+    <Compile Include="Areas\Admin\Models\CreateUser.cs" />
+    <Compile Include="Areas\Admin\Models\DeployCustomerModel.cs" />
+    <Compile Include="Areas\Admin\Models\DeploymentJobModel.cs" />
+    <Compile Include="Areas\Admin\Models\FileModel.cs" />
+    <Compile Include="Areas\Admin\Models\DeploymentModel.cs" />
+    <Compile Include="Areas\Admin\Models\DownloadProvisioningProfileRequest.cs" />
+    <Compile Include="Areas\Admin\Models\EditSettings.cs" />
+    <Compile Include="Areas\Admin\Models\BitbucketTagsResponse.cs" />
+    <Compile Include="Areas\Admin\Models\IbsTestResult.cs" />
+    <Compile Include="Areas\Admin\Models\InitSettingsModel.cs" />
+    <Compile Include="Areas\Admin\Models\LayoutRejectModel.cs" />
+    <Compile Include="Areas\Admin\Models\StoreInfoModel.cs" />
+    <Compile Include="Areas\Admin\Models\TestAppleDevCenterLoginRequest.cs" />
+    <Compile Include="Areas\Admin\Models\VersionEmailViewModel.cs" />
+    <Compile Include="Attributes\NoCacheAttribute.cs" />
+    <Compile Include="BitBucket\VersionUpdater.cs" />
+    <Compile Include="Controllers\API\CompanyController.cs" />
+    <Compile Include="Areas\Customer\Controllers\CustomerControllerBase.cs" />
+    <Compile Include="Areas\Customer\Controllers\GraphicsController.cs" />
+    <Compile Include="Areas\Customer\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Customer\Controllers\LayoutController.cs" />
+    <Compile Include="Areas\Customer\Controllers\VersionController.cs" />
+    <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
+    <Compile Include="Areas\Customer\Models\VersionEmailViewModel.cs" />
+    <Compile Include="Controllers\API\DeploymentController.cs" />
+    <Compile Include="Controllers\API\PackageController.cs" />
+    <Compile Include="Controllers\DeploymentJobController.cs" />
+    <Compile Include="Controllers\DistributionController.cs" />
+    <Compile Include="Distribution\InfoPlistExtractor.cs" />
+    <Compile Include="Entities\DefaultCompanySetting.cs" />
+    <Compile Include="Entities\IosDevice.cs" />
+    <Compile Include="Entities\ChangeStatusEmail.cs" />
+    <Compile Include="Entities\CompanySetting.cs" />
+    <Compile Include="Entities\DeploymentJob.cs" />
+    <Compile Include="Entities\JobStatusDetails.cs" />
+    <Compile Include="Entities\Payment.cs" />
+    <Compile Include="Entities\Questionnaire.cs" />
+    <Compile Include="Entities\AppStatus.cs" />
+    <Compile Include="Entities\IBSSettings.cs" />
+    <Compile Include="Entities\Revision.cs" />
+    <Compile Include="Entities\Environment.cs" />
+    <Compile Include="Entities\StoreCredentials.cs" />
+    <Compile Include="Entities\StoreSettings.cs" />
+    <Compile Include="Entities\Style.cs" />
+    <Compile Include="Entities\UserPreference.cs" />
+    <Compile Include="Entities\Version.cs" />
+    <Compile Include="Extensions\ControllerExtensions.cs" />
+    <Compile Include="Extensions\DateFormatterExtension.cs" />
+    <Compile Include="Helpers\ColorHelper.cs" />
+    <Compile Include="HtmlHelpers\ActiveTab.cs" />
+    <Compile Include="HtmlHelpers\HtmlExtensions.cs" />
+    <Compile Include="IBSServices\IBSTestScript.cs" />
+    <Compile Include="IBSServices\StaticDataservice.cs" />
+    <Compile Include="IBSServices\WebAccount3Service.cs" />
+    <Compile Include="IBSServices\WEBOrder7Service.cs" />
+    <Compile Include="Models\CompanyViewModel.cs" />
+    <Compile Include="Models\LayoutsViewModel.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Domain\CompanyService.cs" />
+    <Compile Include="Domain\ICompanyService.cs" />
+    <Compile Include="Entities\Company.cs" />
+    <Compile Include="Entities\CompanyIdGenerator.cs" />
+    <Compile Include="Entities\UnitOfLength.cs" />
+    <Compile Include="Extensions\HtmlExtensions.cs" />
+    <Compile Include="Extensions\UrlExtensions.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\ManifestViewModel.cs" />
+    <Compile Include="Models\PackageInfo.cs" />
+    <Compile Include="Models\QuestionnaireViewModel.cs" />
+    <Compile Include="Models\StoreSettingsViewModel.cs" />
+    <Compile Include="Models\VersionViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Security\BasicAuthHttpModule.cs" />
+    <Compile Include="Security\CustomerCompanyFilterAttribute.cs" />
+    <Compile Include="Security\MembershipAccountExtensions.cs" />
+    <Compile Include="Security\MembershipService.cs" />
+    <Compile Include="Security\SecurityHelper.cs" />
+    <Compile Include="Services\GoogleApi.cs" />
+    <Compile Include="Services\IClock.cs" />
+    <Compile Include="Services\IFileManager.cs" />
+    <Compile Include="Services\Impl\PackagesManager.cs" />
+    <Compile Include="Services\Impl\Clock.cs" />
+    <Compile Include="Services\Impl\GraphicsManager.cs" />
+    <Compile Include="Services\Impl\FileManagerBase.cs" />
+    <Compile Include="Services\Impl\AssetsManager.cs" />
+    <Compile Include="Services\Impl\LayoutsManager.cs" />
+    <Compile Include="Services\Impl\PackageManager.cs" />
+    <Compile Include="Services\Impl\WebThemeFilesManager.cs" />
+    <Compile Include="Validation\ListRegularExpressionAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\bootstrap\img\glyphicons-halflings-white.png" />
+    <Content Include="assets\bootstrap\img\glyphicons-halflings.png" />
+    <Content Include="assets\bootstrap\js\bootstrap-affix.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-alert.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-button.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-carousel.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-collapse.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-dropdown.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-modal.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-popover.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-scrollspy.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-tab.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-tooltip.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-transition.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-typeahead.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-tooltip-custom.js" />
+    <Content Include="assets\css\tipsy.css" />
+    <Content Include="assets\jquery-fileupload\css\jquery.fileupload-ui.css" />
+    <Content Include="assets\jquery-fileupload\js\app.js" />
+    <Content Include="assets\jquery-fileupload\js\cors\jquery.postmessage-transport.js" />
+    <Content Include="assets\jquery-fileupload\js\cors\jquery.xdr-transport.js" />
+    <Content Include="assets\jquery-fileupload\js\jquery.fileupload-angular.js" />
+    <Content Include="assets\jquery-fileupload\js\jquery.fileupload-audio.js" />
+    <Content Include="assets\jquery-fileupload\js\jquery.fileupload-image.js" />
+    <Content Include="assets\jquery-fileupload\js\jquery.fileupload-jquery-ui.js" />
+    <Content Include="assets\jquery-fileupload\js\jquery.fileupload-process.js" />
+    <Content Include="assets\jquery-fileupload\js\jquery.fileupload-ui.js" />
+    <Content Include="assets\jquery-fileupload\js\jquery.fileupload-validate.js" />
+    <Content Include="assets\jquery-fileupload\js\jquery.fileupload-video.js" />
+    <Content Include="assets\jquery-fileupload\js\jquery.fileupload.js" />
+    <Content Include="assets\jquery-fileupload\js\jquery.iframe-transport.js" />
+    <Content Include="assets\jquery-fileupload\js\main.js" />
+    <Content Include="assets\jquery-fileupload\js\vendor\jquery.ui.widget.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-datepicker.js" />
+    <Content Include="assets\js\jquery.fetch-status.js" />
+    <Content Include="assets\js\tipsy.js" />
+    <Content Include="assets\js\jquery.fetch-version.js" />
+    <Content Include="assets\js\jquery.highlight-curly-brackets.js" />
+    <Content Include="Content\512x512.png" />
+    <Content Include="Content\57x57.png" />
+    <Content Include="Content\load.gif" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Areas\Admin\Views\Web.config" />
+    <Content Include="Areas\Customer\Views\Web.config" />
+    <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="assets\bootstrap\less\accordion.less" />
+    <Content Include="assets\bootstrap\less\alerts.less" />
+    <Content Include="assets\bootstrap\less\bootstrap.less" />
+    <Content Include="assets\bootstrap\less\breadcrumbs.less" />
+    <Content Include="assets\bootstrap\less\button-groups.less" />
+    <Content Include="assets\bootstrap\less\buttons.less" />
+    <Content Include="assets\bootstrap\less\carousel.less" />
+    <Content Include="assets\bootstrap\less\close.less" />
+    <Content Include="assets\bootstrap\less\code.less" />
+    <Content Include="assets\bootstrap\less\component-animations.less" />
+    <Content Include="assets\bootstrap\less\dropdowns.less" />
+    <Content Include="assets\bootstrap\less\forms.less" />
+    <Content Include="assets\bootstrap\less\grid.less" />
+    <Content Include="assets\bootstrap\less\hero-unit.less" />
+    <Content Include="assets\bootstrap\less\labels-badges.less" />
+    <Content Include="assets\bootstrap\less\layouts.less" />
+    <Content Include="assets\bootstrap\less\media.less" />
+    <Content Include="assets\bootstrap\less\mixins.less" />
+    <Content Include="assets\bootstrap\less\modals.less" />
+    <Content Include="assets\bootstrap\less\navbar.less" />
+    <Content Include="assets\bootstrap\less\navs.less" />
+    <Content Include="assets\bootstrap\less\pager.less" />
+    <Content Include="assets\bootstrap\less\pagination.less" />
+    <Content Include="assets\bootstrap\less\popovers.less" />
+    <Content Include="assets\bootstrap\less\progress-bars.less" />
+    <Content Include="assets\bootstrap\less\reset.less" />
+    <Content Include="assets\bootstrap\less\responsive-1200px-min.less" />
+    <Content Include="assets\bootstrap\less\responsive-767px-max.less" />
+    <Content Include="assets\bootstrap\less\responsive-768px-979px.less" />
+    <Content Include="assets\bootstrap\less\responsive-navbar.less" />
+    <Content Include="assets\bootstrap\less\responsive-utilities.less" />
+    <Content Include="assets\bootstrap\less\responsive.less" />
+    <Content Include="assets\bootstrap\less\scaffolding.less" />
+    <Content Include="assets\bootstrap\less\sprites.less" />
+    <Content Include="assets\bootstrap\less\tables.less" />
+    <Content Include="assets\bootstrap\less\thumbnails.less" />
+    <Content Include="assets\bootstrap\less\tooltip.less" />
+    <Content Include="assets\bootstrap\less\type.less" />
+    <Content Include="assets\bootstrap\less\utilities.less" />
+    <Content Include="assets\bootstrap\less\variables.less" />
+    <Content Include="assets\bootstrap\less\wells.less" />
+    <Content Include="assets\less\scaffolding.less" />
+    <Content Include="assets\less\portal.less" />
+    <Content Include="Areas\Admin\Views\Home\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Membership\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Delete.cshtml" />
+    <Content Include="Areas\Customer\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Customer\Views\_ViewStart.cshtml" />
+    <Content Include="assets\less\forms.less" />
+    <Content Include="Areas\Admin\Views\IBS\Index.cshtml" />
+    <Content Include="Areas\Customer\Views\Home\Edit.cshtml" />
+    <Content Include="Areas\Customer\Views\Home\DisplayTemplates\String.cshtml" />
+    <Content Include="Areas\Customer\Views\Home\DisplayTemplates\AndroidStoreCredentials.cshtml" />
+    <Content Include="Areas\Customer\Views\Home\EditStore.cshtml" />
+    <Content Include="Areas\Customer\Views\Home\DisplayTemplates\Color.cshtml" />
+    <Content Include="Areas\Customer\Views\Home\DisplayTemplates\Url.cshtml" />
+    <Content Include="Areas\Customer\Views\Home\DisplayTemplates\EmailAddress.cshtml" />
+    <Content Include="Areas\Customer\Views\Home\DisplayTemplates\Decimal.cshtml" />
+    <Content Include="Areas\Customer\Views\Home\EditAppDescription.cshtml" />
+    <Content Include="Areas\Customer\Views\Home\_TabQuestionnaire.cshtml" />
+    <Content Include="Areas\Customer\Views\Home\_TabStore.cshtml" />
+    <Content Include="Areas\Customer\Views\Home\_TabDescription.cshtml" />
+    <Content Include="Areas\Customer\Views\Graphics\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Layout\Index.cshtml" />
+    <Content Include="Areas\Customer\Views\Layout\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Version\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Version\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Version\Create.cshtml" />
+    <Content Include="Areas\Customer\Views\Version\Index.cshtml" />
+    <Content Include="Areas\Customer\Views\Version\Email.cshtml" />
+    <Content Include="Areas\Admin\Views\Version\CreateIpa.cshtml" />
+    <Content Include="Areas\Admin\Views\Version\CreateApk.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Status.cshtml" />
+    <Content Include="Areas\Customer\Views\Home\DisplayTemplates\ListOfString.cshtml" />
+    <Content Include="Areas\Admin\Views\Membership\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Membership\Company.cshtml" />
+    <Content Include="Areas\Admin\Views\Membership\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Membership\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Membership\ChangePassword.cshtml" />
+    <Content Include="Areas\Admin\Views\AdditionalSettings\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\AdditionalSettings\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Settings\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Settings\Index.cshtml" />
+    <Content Include="HtmlPage1.html" />
+    <Content Include="Images\android.png" />
+    <Content Include="Images\apple.png" />
+    <Content Include="Images\check.png" />
+    <Content Include="Images\copy.png" />
+    <Content Include="Images\delete.png" />
+    <Content Include="Images\download.jpg" />
+    <Content Include="Images\settings.jpg" />
+    <Content Include="Images\THNetwork.png" />
+    <Content Include="Images\warn.jpg" />
+    <Content Include="log4net.xml" />
+    <Content Include="Views\Shared\_SettingsLayout.cshtml" />
+    <Content Include="Areas\Admin\SettingsDataSrc\Common.json" />
+    <Content Include="Areas\Admin\SettingsDataSrc\MKWebDev.json" />
+    <Content Include="Areas\Admin\Views\Settings\Assets.cshtml" />
+    <Content Include="Areas\Admin\Views\Revision\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Revision\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Revision\Update.cshtml" />
+    <Content Include="Areas\Admin\Views\Deployment\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Deployment\Update.cshtml" />
+    <Content Include="Areas\Admin\Views\Version\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Version\Email.cshtml" />
+    <Content Include="assets\DefaultSettings\Common.json" />
+    <Content Include="assets\DefaultSettings\MKWebDev.json" />
+    <Content Include="Areas\Admin\Views\Settings\Init.cshtml" />
+    <Content Include="Areas\Admin\Views\Deployment\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\IBS\Test.cshtml" />
+    <Content Include="Areas\Admin\Views\Settings\WebTheme.cshtml" />
+    <Content Include="Areas\Admin\Views\Deployment\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Settings\DefaultSettings.cshtml" />
+    <Content Include="assets\DefaultSettings\defaults.json" />
+    <Content Include="Areas\Admin\Views\StoreCredential\Index.cshtml" />
+    <Content Include="Areas\Customer\Views\Home\DisplayTemplates\AppleStoreCredentials.cshtml" />
+    <Content Include="Areas\Admin\Views\Settings\Color.cshtml" />
+    <Content Include="Areas\Admin\Views\Payment\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Payment\Edit.cshtml" />
+    <Content Include="assets\less\datepicker.less" />
+    <Content Include="Areas\Admin\Views\Deployment\DeployCustomer.cshtml" />
+    <Content Include="Areas\Admin\Views\Settings\Edit.cshtml" />
+    <None Include="Properties\PublishProfiles\local.pubxml" />
+    <None Include="Properties\PublishProfiles\Production.pubxml" />
+    <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.8.2.js" />
+    <Content Include="Scripts\jquery-1.8.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\_RemoveExternalLoginsPartial.cshtml" />
+    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\Shared\_LoginStatusPartial.cshtml" />
+    <Content Include="Views\Distribution\Manifest.cshtml" />
+    <Content Include="Views\Distribution\Index.cshtml" />
+    <Content Include="Views\Shared\_Email.cshtml" />
+    <Content Include="Views\Shared\SettingsPartial.cshtml" />
+    <Content Include="Views\Shared\_CustomerLayout.cshtml" />
+    <Content Include="Views\Shared\_DeployRevisionPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Areas\Customer\Views\Home\EditorTemplates\" />
+    <Folder Include="Areas\Customer\Views\Shared\" />
+    <Folder Include="assets\Scripts\" />
+    <Folder Include="Views\Home\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cupertino\Cupertino.csproj">
+      <Project>{ef63d209-cc8f-4b7d-9e64-2b59395a3cbe}</Project>
+      <Name>Cupertino</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2287</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/CustomerPortal.Web</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

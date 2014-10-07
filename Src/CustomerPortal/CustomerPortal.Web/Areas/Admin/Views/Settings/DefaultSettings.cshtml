@@ -1,0 +1,71 @@
+﻿@model  IEnumerable<CustomerPortal.Web.Entities.DefaultCompanySetting>
+@{
+    ViewBag.Title = "Default Company Setting";
+
+   
+}
+
+<h3>Default Settings</h3>
+
+<br />
+
+<div style="width: 860px; float: right">
+    <table class="table table-striped" id="settings-table">
+
+        <thead>
+            <tr>
+                <th>Key</th>
+                <th>Value</th>                
+            </tr>
+        </thead>
+
+        @foreach (var setting in Model)
+        {
+            <tr>
+                <td>
+                    @Html.Label(setting.Key)
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => setting.Value)
+                </td>                
+            </tr>
+
+        }
+    </table>
+    
+    <input type="submit" class="btn btn-primary" value="Save" id="sendDataToController" />    
+    <a class="btn" href="@Url.Action("ApplyDefaultsToCompanies", "Settings")">Apply To All Companies</a>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-link">Back to company list</a>
+</div>
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#sendDataToController").click(function () {
+
+            var data = {};
+            $("#settings-table tr").each(function (index) {
+                var tds = $(this).find("td");
+                var labelForKey = $(tds).eq(0).find("label").text();
+                var textBoxForValue = $(tds).eq(1).find("input").val();
+                data['[' + index + '].Key'] = labelForKey;
+                data['[' + index + '].Value'] = textBoxForValue;
+            });
+
+            $.ajax({
+                type: "POST",
+                data: data,
+                url: '@Url.Action("EditDefault", "Settings")',
+                success: function () {
+                    alert("Settings were successfully changed");
+                },
+                error: function(xhr, status, error) {
+                    alert("An AJAX error occured: " + status + "\nError: " + error+ xhr.responseText);
+                }
+            });
+        });
+    });
+
+</script>

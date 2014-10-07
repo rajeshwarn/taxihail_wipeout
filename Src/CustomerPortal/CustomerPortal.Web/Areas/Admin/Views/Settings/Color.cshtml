@@ -1,0 +1,90 @@
+﻿@model CustomerPortal.Web.Areas.Admin.Models.ColorModel
+@{
+    ViewBag.Title = "Colors";
+    
+}
+
+<style>
+    #assets {
+        width: 680px;
+        overflow: hidden;
+    }
+
+        #assets td {
+            padding: 10px;
+        }
+
+    .btn-delete {
+        position: relative;
+        margin-top: 3px;
+        padding-left: 25px;
+    }
+
+    #upload-controls-container {
+        margin-top: 60px;
+        background-color: ghostwhite;
+        border-top: 1px grey solid;
+    }
+
+        #upload-controls-container input {
+            margin: 20px;
+        }
+</style>
+
+
+
+    <div id="ul-wrapper">
+        @using (Html.BeginForm("Color", "Settings", FormMethod.Post))
+        {
+            <div>
+            @Html.LabelFor(m => m.CompanyColor)
+            @Html.TextBoxFor(m => m.CompanyColor)           
+            </div>
+            
+            <div title="">
+                @Html.LabelFor(m => m.LoginColor)
+            @Html.TextBoxFor(m => m.LoginColor)
+            </div>
+
+            <div title="Set the app menu color">
+                @Html.LabelFor(m => m.MenuColor)
+                @Html.TextBoxFor(m => m.MenuColor)
+            </div>
+
+            <div title="Set the title color in the app">
+                @Html.LabelFor(m => m.TitleColor)
+                @Html.TextBoxFor(m => m.TitleColor)
+            </div>
+
+            <div title="Affects the Web and email colous">
+                @Html.LabelFor(m => m.WebAccentColor)
+                @Html.TextBoxFor(m => m.WebAccentColor)
+            </div>
+
+            <div title="Set the email font color">
+                @Html.LabelFor(m => m.EmailFontColor)
+                @Html.TextBoxFor(m => m.EmailFontColor)
+            </div>
+
+
+
+
+            @Html.Hidden("id", Model.Company.Id);
+
+
+            <input type="submit" class="btn btn-primary" value="Save" />
+            
+        }
+
+    </div>
+
+
+<script type="text/javascript">
+    function DeleteConfirm() {
+
+        if (confirm("Are you sure you want to delete this file?"))
+            return true;
+        else
+            return false;
+    }
+</script>

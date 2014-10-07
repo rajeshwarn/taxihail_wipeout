@@ -1,0 +1,71 @@
+﻿@model CustomerPortal.Web.Areas.Admin.Models.CreateUser
+@{
+    ViewBag.Title = "Create user";
+    var isCompanyCreationWizard = ViewContext.HttpContext.Request.Params["cw"] != null;
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>User info</legend>
+        
+        @if (!string.IsNullOrEmpty(Model.CompanyId))
+        {
+            @Html.HiddenFor(x => x.CompanyId)
+            @Html.HiddenFor(x => x.CompanyName)
+            @Html.Label("Company")
+            <p>@Model.CompanyName</p>
+        }
+        else
+        {
+            <label class="checkbox">
+                @Html.CheckBoxFor(x => x.IsAdmin) Admin user
+            </label>
+            <div class="company-selector">
+                @Html.Label("Company")
+                @Html.Action("Company", ViewContext.RouteData.Values["id"])
+            </div>
+        }
+
+        @Html.LabelFor(model => model.EmailAddress)
+        @Html.EditorFor(model => model.EmailAddress)
+        @Html.ValidationMessageFor(model => model.EmailAddress)
+
+        @Html.LabelFor(model => model.Name)
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+
+        @Html.LabelFor(model => model.Password)
+        @Html.EditorFor(model => model.Password)
+        @Html.ValidationMessageFor(model => model.Password)
+    </fieldset>
+
+    <div class="form-actions">
+        <input type="submit" class="btn btn-primary" value="Create user" />
+        @if (isCompanyCreationWizard)
+        {
+            <a class="btn btn-link" href="@Url.Action("Index", "Home")">Skip this step >></a>
+        }
+        else
+        {
+            <a class="btn btn-link" href="@Url.Action("Index", "Membership")">Back to user list</a>
+        }
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(function() {
+            $(':checkbox[name=IsAdmin]').on('change init', function() {
+                if ($(this).is(':checked')) {
+                    $('.company-selector').hide();
+                } else $('.company-selector').show();
+            }).trigger('init');
+        });
+    </script>
+}

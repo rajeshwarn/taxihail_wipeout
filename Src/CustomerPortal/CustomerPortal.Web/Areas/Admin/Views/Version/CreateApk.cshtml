@@ -1,0 +1,53 @@
+﻿@model CustomerPortal.Web.Entities.Version
+@{
+    var id = ViewContext.RouteData.Values["id"];
+}
+
+
+<h2>@ViewBag.Title</h2>
+
+<form action="@Url.Action("CreateApk", new {Model.Number})" method="POST"  enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Version @Model.Number</legend>
+        
+        @Html.LabelFor(model => model.ApkFilename)
+        <div class="span4">
+            <div class="control-group">
+                <span class="btn fileinput-button">
+                    <input type="file" name="file" id="file" accept='.apk' />
+                    <span>Select .apk file</span>                </span>
+            </div>
+            <div id="progress" class="progress">
+                <div class="bar bar-success"></div>
+            </div>
+        </div>
+        
+        <a href="@Url.Action("Index", new {id})" class="btn btn-link" >&gt;&gt; Skip this step</a>
+
+    </fieldset>
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery-fileupload")
+    <script>
+        $(function() {
+            $('#file').fileupload({
+                dataType: 'json',
+                done: function(e, data) {
+                    setTimeout(function() {
+                        window.location.href = data.result.redirect;
+                    }, 1000);
+                }
+            }).on('fileuploadprogressall', function(e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .bar').css(
+                    'width',
+                    progress + '%'
+                );
+            });
+        });
+    </script>
+}

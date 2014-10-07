@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutUsLink" xml:space="preserve">
+    <value>About Us Link</value>
+  </data>
+  <data name="AboutUsLinkHelp" xml:space="preserve">
+    <value>A link to a page on your website which offers a general overview description of your company.
+For example: http://www.mobile-knowledge.com/Company.html</value>
+  </data>
+  <data name="AppleAppStoreCredentials" xml:space="preserve">
+    <value>Apple App Store Credentials</value>
+  </data>
+  <data name="AppleAppStoreCredentialsHelp" xml:space="preserve">
+    <value>To set up an account in the Apple app store, &lt;a href='https://developer.apple.com/programs/start/standard/'&gt;you must enroll in the iOS Developer Program&lt;/a&gt; (US$99/year). &lt;br&gt; Note that you will need your DUNS number to complete this process.</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>App Name</value>
+  </data>
+  <data name="AppNameHelp" xml:space="preserve">
+    <value>As you would like it to appear in the stores and the app.
+You may only have one.
+Max 30 Characters including spaces.</value>
+  </data>
+  <data name="CompanyPhoneNumber" xml:space="preserve">
+    <value>Company Phone Number</value>
+  </data>
+  <data name="CompanyPhoneNumberHelp" xml:space="preserve">
+    <value>As you would like it to appear in the app</value>
+  </data>
+  <data name="CompanyWebsiteUrl" xml:space="preserve">
+    <value>Company Website Url</value>
+  </data>
+  <data name="CompanyWebsiteUrlHelp" xml:space="preserve">
+    <value>As you would like it to appear in the app. For example: http://www.mobile-knowledge.com</value>
+  </data>
+  <data name="FlagDropRate" xml:space="preserve">
+    <value>Flag Drop Rate</value>
+  </data>
+  <data name="FlagDropRateHelp" xml:space="preserve">
+    <value>Initial meter rate</value>
+  </data>
+  <data name="GooglePlayCredentials" xml:space="preserve">
+    <value>Google Play Credentials</value>
+  </data>
+  <data name="GooglePlayCredentialsHelp" xml:space="preserve">
+    <value>&lt;a href='https://play.google.com/apps/publish/signup'&gt;Set up an account&lt;/a&gt; in the Google Play store and provide your credentials below.</value>
+  </data>
+  <data name="MileageRate" xml:space="preserve">
+    <value>Mileage Rate</value>
+  </data>
+  <data name="MileageRateHelp" xml:space="preserve">
+    <value>Rate charged per mile/kilometer after the initial meter rate.</value>
+  </data>
+  <data name="SupportContactEmail" xml:space="preserve">
+    <value>Support Contact Email</value>
+  </data>
+  <data name="SupportContactEmailHelp" xml:space="preserve">
+    <value>When a user taps on the "Report a problem" button, this is the email used. 
+For example:
+appsupport@YourTaxiCompanyName.com (fictional)</value>
+  </data>
+  <data name="UnitOfLength" xml:space="preserve">
+    <value>Unit of Length</value>
+  </data>
+  <data name="UnitOfLengthHelp" xml:space="preserve">
+    <value>Miles or Kilometers</value>
+  </data>
+  <data name="AdditionalChargeTypes" xml:space="preserve">
+    <value>Additional Charge Types</value>
+  </data>
+  <data name="AdditionalChargeTypesHelp" xml:space="preserve">
+    <value>Include Charge Types that your customers can choose from</value>
+  </data>
+  <data name="AdditionalVehicleTypes" xml:space="preserve">
+    <value>Additional Vehicle Types</value>
+  </data>
+  <data name="AdditionalVehicleTypesHelp" xml:space="preserve">
+    <value>Include Vehicle Types that your customers can choose from</value>
+  </data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>Company / App Description</value>
+  </data>
+  <data name="AppDescriptionHelp" xml:space="preserve">
+    <value>This is the description that potential users will see when they search for your app in the stores. You should give a brief description of your company and a more detailed description of the app. (features, advantages, benefits).
+Max 4000 characters (including spaces)</value>
+  </data>
+  <data name="CorporateColor" xml:space="preserve">
+    <value>Corporate Color</value>
+  </data>
+  <data name="CorporateColorHelp" xml:space="preserve">
+    <value>As you would like it to appear in the app. Typically we use one colour for the splash screen background and the info bar at the top of the app pages. Web hex color code appreciated (your webmaster may be able to provide this). Contact Mobile Knowledge if you require assistance. (613-287-5020 x1061)</value>
+  </data>
+  <data name="DefaultChargeType" xml:space="preserve">
+    <value>Default Charge Type</value>
+  </data>
+  <data name="DefaultChargeTypeHelp" xml:space="preserve">
+    <value>Typically "Cash"</value>
+  </data>
+  <data name="DefaultNumberOfPassengers" xml:space="preserve">
+    <value>Default Number of Passengers</value>
+  </data>
+  <data name="DefaultNumberOfPassengersHelp" xml:space="preserve">
+    <value>Typically "1"</value>
+  </data>
+  <data name="DefaultVehicleType" xml:space="preserve">
+    <value>Default Vehicle Type</value>
+  </data>
+  <data name="DefaultVehicleTypeHelp" xml:space="preserve">
+    <value>Typically "Sedan"</value>
+  </data>
+  <data name="Keywords" xml:space="preserve">
+    <value>Applicable Keywords</value>
+  </data>
+  <data name="KeywordsHelp" xml:space="preserve">
+    <value>Max 92 characters, including spaces.
+These keywords will be used by the store to find your app. For example when a customer looks for the app they might use terms such as "taxi", "cab", "yellow cab", your city name, your company name, etc.</value>
+  </data>
+  <data name="UniqueDeviceIdentificationNumber" xml:space="preserve">
+    <value>Unique Device Identification Number (UDID)</value>
+  </data>
+  <data name="UniqueDeviceIdentificationNumberHelp" xml:space="preserve">
+    <value>In order to test the app on an iPhone we need to know the UDID.
+Example UDID: 2b6f0cc904d137be2e1730235f5664094b831186.
+To obtain the UDID please download and run the following app.
+http://itunes.apple.com/ca/app/udid/id458358726?mt=8
+</value>
+  </data>
+  <data name="SampleAppDescription" xml:space="preserve">
+    <value>{{Mobile Knowledge}} Taxi Hail Application:
+
+{{Mobile Knowledge}} is a leading provider of {{Taxi}} services in {{Ottawa, Ontario Canada}}. We are pleased to 
+offer our valued clients the very latest in smartphone booking technology with our free {{Mobile Knowledge}} 
+Taxi Hail application.
+
+Key Features of the Mobile Knowledge Taxi Hail application include:
+• Book a reservation in as few as 3 clicks
+• Get a fare estimate by entering both pickup and destination addresses
+• Receive a confirmation number for your reservation immediately on booking
+• Receive notifications including vehicle number once your reservation has been dispatched
+• Monitor the progress of your vehicle on a map
+• Create a list of favorite addresses and assign a custom name for each
+• Specify the number of passengers, vehicle type and preferred payment method
+• Review all reservations you have made over the past 30 days
+• Provide feedback related to the application and/or service you received
+• Call {{Mobile Knowledge}} with the push of a button
+
+To begin using the {{Mobile Knowledge}} Taxi Hail application today:
+• Download the free app
+• Create an account (Email, Name, Phone # and Password)
+• Validate your account (via the confirmation email you receive)
+• Login to the app (Email &amp; Password)
+• Enter your pickup address
+• Enter your destination address (this allows us to provide an estimated fare amount)
+• Book your trip (reservations can be immediate or for a future time/date)
+
+On booking a reservation, you will immediately receive a confirmation number, along with an update 
+when your vehicle has been assigned. From here you can monitor the progress of your vehicle as it 
+moves towards your pickup location.
+
+The {{Mobile Knowledge}} Taxi Hail application retains a history of your previous reservations (up to 30 
+days) for expense management and to quickly rebook the same trip with the push of a button. You may 
+also create a list of favorite locations (Home, Work, etc.) to speed the booking process.
+
+You can also customize your orders by selecting the number of passengers, preferred vehicle type, 
+and preferred method of payment. These preferences can be saved to your account profile for future 
+bookings.
+
+At {{Mobile Knowledge}}, your comfort and safety are our top priorities! Let us know how we can serve you 
+better by providing feedback via the {{Mobile Knowledge}} Taxi Hail application or by calling {{866-624-5330}}.
+
+We look forward to adding many exciting new features to the {{Mobile Knowledge}} Taxi Hail application in 
+the months ahead, and are always interested in what you have to say!</value>
+  </data>
+  <data name="UniqueDeviceIdentificationNumberError" xml:space="preserve">
+    <value>The UDID must be a 40 characters long string containing only digits and letters from a to f.</value>
+  </data>
+  <data name="ServiceUrl" xml:space="preserve">
+    <value>Service Url</value>
+  </data>
+  <data name="ServiceUrlHelp" xml:space="preserve">
+    <value>For xds site, the url must be formatted like this : http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/ . For cabmate, the url must be formatted like this : http://216.13.56.235:2555/IBSCab/IBSCab.dll/soap/.  The url must end with "/"</value>
+  </data>
+</root>

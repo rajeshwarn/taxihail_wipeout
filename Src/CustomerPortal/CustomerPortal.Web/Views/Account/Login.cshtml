@@ -1,0 +1,26 @@
+﻿@model CustomerPortal.Web.Models.LoginModel
+
+@{
+    ViewBag.Title = "Log in";
+}
+
+<section class="form-signin-section">
+    @using (Html.BeginForm(new {ViewBag.ReturnUrl}))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <h2 class="form-signin-heading">Please sign in</h2>
+        @Html.TextBoxFor(m => m.UserName, new {placeholder = "Username", @class = "input-block-level"})
+        @Html.ValidationMessageFor(m => m.UserName)
+        @Html.PasswordFor(m => m.Password, new {placeholder = "Password", @class = "input-block-level"})
+        @Html.ValidationMessageFor(m => m.Password)
+        <label class="checkbox">
+            <input type="checkbox" value="true" name="RememberMe" checked> Remember me
+        </label>
+        <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+    }
+</section>
+
+@section Scripts {
+}

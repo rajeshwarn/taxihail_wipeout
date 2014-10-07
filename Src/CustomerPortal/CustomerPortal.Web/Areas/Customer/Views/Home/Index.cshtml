@@ -1,0 +1,153 @@
+﻿@using CustomerPortal.Web
+@model CustomerPortal.Web.Models.CompanyViewModel
+@{
+    ViewBag.Title = string.Format("Manage your app - {0} ", Model.Company.CompanyName, Model.Company.CompanyKey);
+}
+<h2>@ViewBag.Title</h2>
+
+<div class="tabbable tabs-left">
+    
+    <ul class="nav nav-tabs">
+        <!-- Only required for left/right tabs -->
+        
+        @if (User.IsInRole(RoleName.Admin))
+        {
+            <div><h4>Administration</h4></div>
+                <li><a href="#tab-info" data-toggle="tab">Info</a></li>
+                <li><a href="#tab-settings" data-toggle="tab">Settings</a></li>
+                <li><a href="#tab-assets" data-toggle="tab">Assets</a></li>
+                <li><a href="#tab-webTheme" data-toggle="tab">Web Theme</a></li>
+                <li><a href="#tab-colors" data-toggle="tab">Colors</a></li>
+                <li><a href="#tab-kiosk" data-toggle="tab">Kiosk</a></li>
+            <div><h4><br />Customer</h4></div>
+        }
+        
+        @if (Model.ShowLayoutTabFirst)
+        {
+            <li><a href="#tab-layout" data-toggle="tab">Layout @Model.LayoutTabCheck</a></li>
+        }
+        @if (Model.ShowVersionsTabFirst)
+        {
+            <li><a href="#tab-versions" data-toggle="tab">Versions</a></li>
+        }
+        <li class="active"><a href="#tab-questionnaire" data-toggle="tab">Questionnaire @Model.QuestionnaireTabCheck</a></li>
+        <li><a href="#tab-description" data-toggle="tab">App Description @Model.AppDescriptionTabCheck</a></li>
+        <li><a href="#tab-store" data-toggle="tab">Store / Devices @Model.StoreTabCheck</a></li>
+        <li><a href="#tab-graphics" data-toggle="tab">Graphics @Model.GraphicsTabCheck</a></li>
+        @if (Model.ShowLayoutTab && !Model.ShowLayoutTabFirst)
+        {
+            <li><a href="#tab-layout" data-toggle="tab">Layout @Model.LayoutTabCheck</a></li>
+        }
+        @if (Model.ShowVersionsTab && !Model.ShowVersionsTabFirst)
+        {
+            <li><a href="#tab-versions" data-toggle="tab">Versions</a></li>
+        }
+
+
+
+    </ul>
+
+
+    
+    <div class="tab-content">
+
+        <div class="tab-pane" id='tab-info'>
+            @if (User.IsInRole(RoleName.Admin))
+            {
+                @Html.Action("Edit", "Home", new { area = "Admin", id = Model.Company.Id })
+            }
+        </div>
+        
+        <div class="tab-pane" id='tab-assets'>
+            @if (User.IsInRole(RoleName.Admin))
+            {
+                @Html.Action("Assets", "Settings", new { area = "Admin", id = Model.Company.Id })
+            }
+        </div>
+        <div class="tab-pane" id='tab-settings'>
+            @if (User.IsInRole(RoleName.Admin))
+            {
+                @Html.Action("Edit", "Settings", new { area = "Admin", id = Model.Company.Id })
+            }
+        </div>
+        <div class="tab-pane" id='tab-webTheme'>
+            @if (User.IsInRole(RoleName.Admin))
+            {
+                @Html.Action("WebTheme", "Settings", new { area = "Admin", id = Model.Company.Id })
+            }
+        </div>
+        <div class="tab-pane" id='tab-colors'>
+            @if (User.IsInRole(RoleName.Admin))
+            {
+                @Html.Action("Color", "Settings", new { area = "Admin", id = Model.Company.Id })
+            }
+        </div>
+      
+        <div class="tab-pane active" id="tab-questionnaire">
+            @if (Model.ShowQuestionnaireInEditMode)
+            {
+                @Html.Action("Edit")                
+            }
+            else
+            {
+                @Html.Partial("_TabQuestionnaire", Model.Questionnaire)
+            }
+        </div>
+
+        <div class="tab-pane" id='tab-kiosk'>
+            @if (User.IsInRole(RoleName.Admin))
+            {
+                <a class="btn" href="@Url.Action("CreateKiosk", "Home", new { area = "Admin", id = Model.Company.Id })">Create Kisok Site</a>                
+            }
+        </div>
+
+        <div class="tab-pane" id="tab-description">
+            @Html.Partial("_TabDescription", Model)
+        </div>
+        <div class="tab-pane" id="tab-store">
+            @Html.Partial("_TabStore", Model.Company)
+        </div>
+        <div class="tab-pane" id='tab-graphics'>
+            @Html.Action("Index", "Graphics")
+        </div>
+        <div class="tab-pane" id='tab-layout'>
+            @if (Model.ShowLayoutTab)
+            {
+                @Html.Action("Index", "Layout")
+            }
+        </div>
+        <div class="tab-pane" id='tab-versions'>
+            @if (Model.ShowVersionsTab)
+            {
+                @Html.Action("Index", "Version")
+            }
+        </div>
+
+
+    </div>
+</div>
+
+@section scripts
+{
+
+    <script>
+        $(function () {
+            $('a[data-toggle="tab"]').on('click', function (e) {
+                //save the latest tab; use cookies if you like 'em better                                                
+                localStorage.setItem('lastTab', $(e.target.attributes.href.value).attr('id'));
+            });
+
+            //go to the latest tab, if it exists:
+            var lastTab = localStorage.getItem('lastTab');
+            if (lastTab) {
+                $('[data-toggle=tab][href=#' + lastTab + ']').tab('show');
+            }
+        });
+
+
+        $(function () {
+            $('pre.app-description').highlightCurlyBrackets();
+        });
+
+    </script>
+}

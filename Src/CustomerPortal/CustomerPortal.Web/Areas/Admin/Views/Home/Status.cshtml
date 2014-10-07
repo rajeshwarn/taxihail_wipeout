@@ -1,0 +1,29 @@
+﻿@model CustomerPortal.Web.Entities.Company
+@{
+    ViewBag.Title = "Change app status";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>App status</legend>
+
+        @Html.LabelFor(model => model.Status)
+        @Html.EnumDropDownListFor(model => model.Status)
+        @Html.ValidationMessageFor(model => model.Status)
+        
+        <div class="form-actions">
+            <input type="submit" class="btn btn-primary" value="Save" />
+            <a href="@Url.Action("Index", "Home")" class="btn btn-link">Back to company list</a>
+        </div>
+    </fieldset>
+}
+
+
+@section Scripts {
+}

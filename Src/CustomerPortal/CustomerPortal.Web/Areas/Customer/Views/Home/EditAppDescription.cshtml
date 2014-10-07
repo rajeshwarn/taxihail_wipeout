@@ -1,0 +1,24 @@
+﻿@model CustomerPortal.Web.Entities.Company
+@{
+    ViewBag.Title = "Edit app description";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>@Html.DisplayNameFor(x => x.AppDescription)</legend>
+        @Html.TextAreaFor(x => x.AppDescription, new {rows = 20, @class = "span8"})
+        @Html.ValidationMessageFor(x => x.AppDescription)
+    </fieldset>
+
+    <div class="form-actions">
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <a href='@Url.Action("Index")' class="btn btn-link">Back to home</a>
+    </div>
+}
+
+@section Scripts {
+}

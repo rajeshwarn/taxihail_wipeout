@@ -1,0 +1,20 @@
+﻿@model CustomerPortal.Web.Entities.Company
+
+@{
+    ViewBag.Title = "Company Additional Setting";
+}
+
+<h2>Company Additional Setting</h2>
+
+<h3>@Model.CompanyName</h3>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.Id)
+    @Html.TextBox("parameterKey")
+    @Html.TextBox("parameterValue")
+    <input type="submit" class="btn btn-primary" value="Add" />
+    @*@Html.ActionLink("Add", "Add", "AdditionalSettings", new { Model.Id }, null)
+    @Html.ActionLink("Edit", "Edit", "Settings", new { Model.Id }, null)
+    @Html.ActionLink("Delete", "Delete", "Settings", new { Model.Id }, null)    *@
+}

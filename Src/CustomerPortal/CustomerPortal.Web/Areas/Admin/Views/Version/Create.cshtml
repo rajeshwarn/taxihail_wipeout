@@ -1,0 +1,31 @@
+﻿@model CustomerPortal.Web.Entities.Version
+
+<h2>@ViewBag.Title</h2>
+
+<form action="@Url.Action("Create")" method="POST"  enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Version</legend>
+
+        @Html.HelpLabelFor(model => model.Number)
+        @Html.EditorFor(model => model.Number)
+        @Html.ValidationMessageFor(model => model.Number)
+        
+        @Html.HelpLabelFor(model => model.WebsiteUrl)
+        @Html.TextBoxFor(model => model.WebsiteUrl, new {@class = "span6"})
+        @Html.ValidationMessageFor(model => model.WebsiteUrl)
+
+    </fieldset>
+    <div class="form-actions">
+        <input type="submit" class="btn btn-primary" value="Create version"/>
+
+        <a href="@Url.Action("Index", "Home")" class="btn btn-link" >Back to company list</a>
+    </div>
+</form>
+
+
+
+@section Scripts {
+}

@@ -1,0 +1,98 @@
+﻿@model CustomerPortal.Web.Models.StoreSettingsViewModel
+
+@{
+    ViewBag.Title = "Store / Device Settings";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+
+    @Html.HelpLabelFor(model => model.Keywords)
+    @Html.TextAreaFor(model => model.Keywords, new {@class = "span6"})
+    @Html.ValidationMessageFor(model => model.Keywords)
+
+    @Html.HelpLabelFor(model => model.UniqueDeviceIdentificationNumber0)
+    <div>
+        @Html.TextBoxFor(model => model.UniqueDeviceIdentificationNumber0, new {@class = "span5"})
+        @Html.ValidationMessageFor(model => model.UniqueDeviceIdentificationNumber0)
+    </div>
+    <div>
+        @Html.TextBoxFor(model => model.UniqueDeviceIdentificationNumber1, new {@class = "span5"})
+        @Html.ValidationMessageFor(model => model.UniqueDeviceIdentificationNumber1)
+    </div>
+    <div>
+        @Html.TextBoxFor(model => model.UniqueDeviceIdentificationNumber2, new {@class = "span5"})
+        @Html.ValidationMessageFor(model => model.UniqueDeviceIdentificationNumber2)
+    </div>
+    <div>
+        @Html.TextBoxFor(model => model.UniqueDeviceIdentificationNumber3, new {@class = "span5"})
+        @Html.ValidationMessageFor(model => model.UniqueDeviceIdentificationNumber3)
+    </div>
+    <div>
+        @Html.TextBoxFor(model => model.UniqueDeviceIdentificationNumber4, new {@class = "span5"})
+        @Html.ValidationMessageFor(model => model.UniqueDeviceIdentificationNumber4)
+    </div>
+    <div>
+        @Html.TextBoxFor(model => model.UniqueDeviceIdentificationNumber5, new {@class = "span5"})
+        @Html.ValidationMessageFor(model => model.UniqueDeviceIdentificationNumber5)
+    </div>
+    <div>
+        @Html.TextBoxFor(model => model.UniqueDeviceIdentificationNumber6, new {@class = "span5"})
+        @Html.ValidationMessageFor(model => model.UniqueDeviceIdentificationNumber6)
+    </div>
+    <div>
+        @Html.TextBoxFor(model => model.UniqueDeviceIdentificationNumber7, new {@class = "span5"})
+        @Html.ValidationMessageFor(model => model.UniqueDeviceIdentificationNumber7)
+    </div>
+    <div>
+        @Html.TextBoxFor(model => model.UniqueDeviceIdentificationNumber8, new {@class = "span5"})
+        @Html.ValidationMessageFor(model => model.UniqueDeviceIdentificationNumber8)
+    </div>
+    <div>
+        @Html.TextBoxFor(model => model.UniqueDeviceIdentificationNumber9, new {@class = "span5"})
+        @Html.ValidationMessageFor(model => model.UniqueDeviceIdentificationNumber9)
+    </div>
+    <fieldset>
+        <legend>Apple App Store Credentials</legend>
+
+        @Html.HelpLabelFor(model => model.AppStoreCredentials.Username)
+        @Html.EditorFor(model => model.AppStoreCredentials.Username)
+        @Html.ValidationMessageFor(model => model.AppStoreCredentials.Username)
+
+        @Html.HelpLabelFor(model => model.AppStoreCredentials.Password)
+        @Html.EditorFor(model => model.AppStoreCredentials.Password)
+        @Html.ValidationMessageFor(model => model.AppStoreCredentials.Password)
+        
+        @Html.HelpLabelFor(model => model.AppStoreCredentials.Team)
+        @Html.EditorFor(model => model.AppStoreCredentials.Team)
+        @Html.ValidationMessageFor(model => model.AppStoreCredentials.Team)
+    </fieldset>
+
+    <fieldset>
+        <legend>Google Play Credentials</legend>
+
+        @Html.HelpLabelFor(model => model.GooglePlayCredentials.Username)
+        @Html.EditorFor(model => model.GooglePlayCredentials.Username)
+        @Html.ValidationMessageFor(model => model.GooglePlayCredentials.Username)
+
+        @Html.HelpLabelFor(model => model.GooglePlayCredentials.Password)
+        @Html.EditorFor(model => model.GooglePlayCredentials.Password)
+        @Html.ValidationMessageFor(model => model.GooglePlayCredentials.Password)
+        
+        @Html.HiddenFor(model => model.GooglePlayCredentials.KeystoreMD5Signature)
+        @Html.HiddenFor(model => model.GooglePlayCredentials.KeystoreSHA1Signature)
+    </fieldset>
+
+    <div class="form-actions">
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <a href='@Url.Action("Index")' class="btn btn-link">Back to home</a>
+    </div>
+}
+
+@section Scripts {
+}

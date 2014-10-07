@@ -1,0 +1,8 @@
+﻿@model CustomerPortal.Web.Models.VersionViewModel
+@{
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    ViewBag.InBrowser = true;
+}
+<div >
+    @Html.Partial("_Email", Model);
+</div>

@@ -1,0 +1,14 @@
+﻿@model CustomerPortal.Web.Entities.Company
+
+@{
+    ViewBag.Title = "Company Additional Setting";
+}
+
+<h2>Add Setting</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.TextBox("parameterKey")
+    @Html.TextBox("parameterValue")
+    <input type="submit" class="btn btn-primary" value="Add" />
+}
