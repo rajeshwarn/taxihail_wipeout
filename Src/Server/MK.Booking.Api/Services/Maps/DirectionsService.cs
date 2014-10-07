@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 var culture = new CultureInfo(HttpContext.Current.Request.UserLanguages[0]);
                 var applicationKey = _configurationManager.GetSetting("TaxiHail.ApplicationKey");
                 var resources = new Resources.Resources(applicationKey);
-                return resources.Get("CurrencyPriceFormat", "ar"); //culture.TwoLetterISOLanguageName);
+                return resources.Get("CurrencyPriceFormat", culture.TwoLetterISOLanguageName);
             }
         }
     }

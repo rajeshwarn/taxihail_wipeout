@@ -62,7 +62,6 @@
                     $estimate
                         .find('.label')
                         .hide();
-						console.log("hide label2");
                 }
                 else
                     if (value.noFareEstimate) {
@@ -84,7 +83,6 @@
 
             } else {
                 this.$('.estimate').addClass('hidden');
-				console.log("hidden2");
             }
         },
 
