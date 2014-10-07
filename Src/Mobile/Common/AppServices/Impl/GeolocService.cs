@@ -19,13 +19,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IAddresses _addresses;
 		readonly IDirections _directions;
 		readonly IAccountService _accountService;
+        readonly ILocalization _localize;
 
-		public GeolocService(IGeocoding geocoding, IAddresses addresses, IDirections directions, IAccountService accountService)
+		public GeolocService(IGeocoding geocoding, IAddresses addresses, IDirections directions, IAccountService accountService, ILocalization localize)
 		{
 			_accountService = accountService;
 			_directions = directions;
 			_addresses = addresses;
 			_geocoding = geocoding;
+            _localize = localize;
 		}
 
         public Address ValidateAddress(string address)
@@ -87,8 +89,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
-			var direction = await Task.Run(() => _directions
-                    .GetDirection(originLat, originLong, destLat, destLong, vehicleTypeId, date));
+
+                var currencyPriceFormat = _localize["CurrencyPriceFormat"];
+			    var direction = await Task.Run(() => _directions
+                    .GetDirection(originLat, originLong, destLat, destLong, currencyPriceFormat, vehicleTypeId, date));
 
 
                 return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, Price = direction.Price };

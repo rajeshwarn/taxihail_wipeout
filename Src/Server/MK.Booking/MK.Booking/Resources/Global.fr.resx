@@ -321,4 +321,7 @@
   <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
     <value>Veuillez nous excuser, en raison d'un grand nombre de demandes nous n'avons pas de véhicule disponible, merci d'essayer ultérieurement.</value>
   </data>
+  <data name="CurrencyPriceFormat" xml:space="preserve">
+    <value>{0:C}</value>
+  </data>
 </root>

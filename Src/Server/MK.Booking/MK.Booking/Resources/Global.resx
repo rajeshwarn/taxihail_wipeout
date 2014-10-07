@@ -324,4 +324,7 @@
   <data name="AccountConfirmationSmsBody" xml:space="preserve">
     <value>Your verification code for {0} is {1}</value>
   </data>
+  <data name="CurrencyPriceFormat" xml:space="preserve">
+    <value>{0:C}</value>
+  </data>
 </root>

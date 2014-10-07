@@ -233,6 +233,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Global.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Mishwar.Designer.cs">
+      <DependentUpon>Mishwar.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Resources\Thriev.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -316,6 +321,11 @@
     <EmbeddedResource Include="Resources\Global.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Global.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Mishwar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Mishwar.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Thriev.resx">

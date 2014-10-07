@@ -1,12 +1,11 @@
 ﻿#region
 
-using System;
-using System.Globalization;
-using System.Linq;
+using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.MapDataProvider;
-using apcurium.MK.Booking.MapDataProvider.Resources;
+using System;
+using System.Globalization;
+
 
 #endregion
 namespace apcurium.MK.Booking.Maps.Impl
@@ -23,15 +22,18 @@ namespace apcurium.MK.Booking.Maps.Impl
 		private readonly IAppSettings _appSettings;
 		private readonly IPriceCalculator _priceCalculator;
 
-		public Directions (IDirectionDataProvider client, IAppSettings appSettings, IPriceCalculator priceCalculator)
+        private CultureInfo _currentCulture;
+        public Directions(IDirectionDataProvider client, IAppSettings appSettings, IPriceCalculator priceCalculator)
 		{
 			_client = client;
 			_appSettings = appSettings;
 			_priceCalculator = priceCalculator;
+
+            _currentCulture = new CultureInfo(_appSettings.Data.PriceFormat);
 		}
 
 		public Direction GetDirection (double? originLat, double? originLng, double? destinationLat,
-		                                    double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?))
+                                            double? destinationLng, string currencyPriceFormat, int? vehicleTypeId = null, DateTime? date = default(DateTime?))
 		{
 			var result = new Direction ();
 			var direction = _client.GetDirections (
@@ -48,9 +50,10 @@ namespace apcurium.MK.Booking.Maps.Impl
                     direction.Distance, 
                     date ?? DateTime.Now, 
                     direction.Duration, vehicleTypeId);
-                    
-				result.FormattedDistance = FormatDistance (result.Distance);
-				result.FormattedPrice = result.Price == null ? string.Empty : string.Format(new CultureInfo(_appSettings.Data.PriceFormat), "{0:C}",result.Price.Value);
+
+                
+                result.FormattedDistance = FormatDistance (result.Distance);
+                result.FormattedPrice = result.Price == null ? string.Empty : FormatCurrency(result.Price.Value, currencyPriceFormat);
 			}
 
 			return result;
@@ -58,18 +61,23 @@ namespace apcurium.MK.Booking.Maps.Impl
 
 		private string FormatDistance (int? distance)
 		{
-			if (distance.HasValue) 
+            if (distance.HasValue) 
             {
 				var format = _appSettings.Data.DistanceFormat.ToEnum (true, DistanceFormat.Km);
-				if (format == DistanceFormat.Km) 
-                {
-					var distanceInKm = Math.Round ((double)distance.Value / 1000, 1);
-					return string.Format ("{0:n1} km", distanceInKm);
-				}
-				var distanceInMiles = Math.Round ((double)distance.Value / 1000 / 1.609344, 1);
-				return string.Format ("{0:n1} miles", distanceInMiles);
+                var distanceIsKm = format.Equals(DistanceFormat.Km);
+                var distanceUnit = distanceIsKm ? "km" : "miles";
+                var distanceInUnit = distanceIsKm ? Math.Round ((double)distance.Value / 1000, 1) : Math.Round ((double)distance.Value / 1000 / 1.609344, 1);
+                var distanceStringFormat = "{0:n2} {1}";
+                return string.Format(distanceStringFormat, distanceInUnit, distanceUnit);
 			}
 			return "";
 		}
+
+
+        public string FormatCurrency(double amount, string currencyPriceFormat)
+        {
+            var stringFormattedAsACurrency = string.Format(_currentCulture, currencyPriceFormat, amount);
+            return stringFormattedAsACurrency.Replace(_currentCulture.NumberFormat.NumberDecimalSeparator, _currentCulture.NumberFormat.CurrencyDecimalSeparator);
+        }
 	}
 }
