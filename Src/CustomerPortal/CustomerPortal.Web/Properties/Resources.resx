@@ -235,6 +235,17 @@ These keywords will be used by the store to find your app. For example when a cu
   <data name="UniqueDeviceIdentificationNumber" xml:space="preserve">
     <value>Unique Device Identification Number (UDID)</value>
   </data>
+  
+
+  <data name="TaxiHailNetworkSettings" xml:space="preserve">
+    <value>Include in TaxiHail Network</value>
+  </data>
+  <data name="IncludeInTaxiHailNetwork" xml:space="preserve">
+    <value>Include in TaxiHail Network</value>
+  </data>
+  <data name="IncludeInTaxiHailNetworkHelp" xml:space="preserve">
+    <value>Include this customer in the Taxi Hail Network</value>
+  </data>
   <data name="UniqueDeviceIdentificationNumberHelp" xml:space="preserve">
     <value>In order to test the app on an iPhone we need to know the UDID.
 Example UDID: 2b6f0cc904d137be2e1730235f5664094b831186.

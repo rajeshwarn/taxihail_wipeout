@@ -1,0 +1,9 @@
+﻿@model CustomerPortal.Web.Models.CompanyViewModel
+
+<fieldset>
+    <legend>
+        @Html.DisplayNameFor(x => x.Company.Network)
+    </legend>
+    @Html.DisplayNameFor(x => x.Company.Network.IsInNetwork)
+    @Html.CheckBoxFor(_=>_.Company.Network.IsInNetwork)
+</fieldset>

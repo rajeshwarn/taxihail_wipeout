@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Odbc;
 using System.Linq;
+using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Properties;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoRepository;
@@ -22,7 +23,8 @@ namespace CustomerPortal.Web.Entities
             IBS = new IBSSettings();
             Application = new Questionnaire();
             Store = new StoreSettings();
-            
+            Network = new TaxiHailNetworkSettings();
+
             AppleAppStoreCredentials = new AppleStoreCredentials();
             GooglePlayCredentials = new AndroidStoreCredentials();
             Versions = new List<Version>();
@@ -65,6 +67,9 @@ namespace CustomerPortal.Web.Entities
         public IBSSettings IBS { get; set; }
         public Questionnaire Application { get; set; }
         public StoreSettings Store { get; set; }
+
+        [Display(Name = "TaxiHailNetworkSettings",ResourceType = typeof(Resources))]
+        public TaxiHailNetworkSettings Network { get; set; }
 
         [Display(Name = "AppleAppStoreCredentials", Description = "AppleAppStoreCredentialsHelp",
             ResourceType = typeof (Resources))]

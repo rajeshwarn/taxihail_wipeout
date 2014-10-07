@@ -229,6 +229,8 @@
     <Compile Include="Entities\CompanySetting.cs" />
     <Compile Include="Entities\DeploymentJob.cs" />
     <Compile Include="Entities\JobStatusDetails.cs" />
+    <Compile Include="Entities\Network\MapCoordinate.cs" />
+    <Compile Include="Entities\Network\MapRegion.cs" />
     <Compile Include="Entities\Payment.cs" />
     <Compile Include="Entities\Questionnaire.cs" />
     <Compile Include="Entities\AppStatus.cs" />
@@ -238,6 +240,7 @@
     <Compile Include="Entities\StoreCredentials.cs" />
     <Compile Include="Entities\StoreSettings.cs" />
     <Compile Include="Entities\Style.cs" />
+    <Compile Include="Entities\Network\TaxiHailNetworkSettings.cs" />
     <Compile Include="Entities\UserPreference.cs" />
     <Compile Include="Entities\Version.cs" />
     <Compile Include="Extensions\ControllerExtensions.cs" />
@@ -465,6 +468,7 @@
     <Content Include="assets\less\datepicker.less" />
     <Content Include="Areas\Admin\Views\Deployment\DeployCustomer.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\Edit.cshtml" />
+    <Content Include="Areas\Customer\Views\Home\_TabTaxiHailNetwork.cshtml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\Production.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
@@ -522,6 +526,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
