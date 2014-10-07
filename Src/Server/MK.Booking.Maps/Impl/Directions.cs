@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                 var distanceIsKm = format.Equals(DistanceFormat.Km);
                 var distanceUnit = distanceIsKm ? "km" : "miles";
                 var distanceInUnit = distanceIsKm ? Math.Round ((double)distance.Value / 1000, 1) : Math.Round ((double)distance.Value / 1000 / 1.609344, 1);
-                var distanceStringFormat = "{0:n2} {1}";
+                var distanceStringFormat = "{0:n1} {1}";
                 return string.Format(distanceStringFormat, distanceInUnit, distanceUnit);
 			}
 			return "";
