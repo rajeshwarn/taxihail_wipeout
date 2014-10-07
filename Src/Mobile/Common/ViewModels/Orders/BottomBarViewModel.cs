@@ -143,6 +143,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                             return;
                         }
 
+						var cardExpirationValidated = await _orderWorkflowService.ValidateCardExpiration();
+						if (!cardExpirationValidated)
+						{
+							this.Services().Message.ShowMessage(
+								this.Services().Localize["ErrorCreatingOrderTitle"],
+								this.Services().Localize["CardExpiredMessage"]);
+
+							return;
+						}
+
                         _orderWorkflowService.BeginCreateOrder();
 
                         if (await _orderWorkflowService.ShouldGoToAccountNumberFlow())

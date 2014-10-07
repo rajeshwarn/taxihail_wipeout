@@ -45,7 +45,8 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             {
                 CompanyId = _companyId,
                 RatingTypeId = _ratingTypeId,
-                Name = "Updated"
+                Name = "Updated",
+                Language = "en"
             });
 
             var evt = _sut.ThenHasSingle<RatingTypeUpdated>();

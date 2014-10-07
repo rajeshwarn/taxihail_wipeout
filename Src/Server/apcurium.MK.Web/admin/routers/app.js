@@ -64,6 +64,11 @@
             "accounts/add": "addAccount",
             "accounts/edit/:number": "editAccount",
 
+            /* Ratings */
+            "ratings": "manageRatings",
+            "ratings/add": "addRating",
+            "ratings/edit/:number": "editRating",
+
             /* Vehicle Types */
             "vehicleTypes": "manageVehicleTypes",
             "vehicleTypes/add": "addVehicleType",
@@ -201,6 +206,18 @@
 
         exportOrders: function () {
             action(TaxiHail.ExportController, 'exportOrders');
+        },
+
+        manageRatings: function () {
+            action(TaxiHail.RideRatingsController, 'index');
+        },
+
+        addRating: function () {
+            action(TaxiHail.RideRatingsController, 'add');
+        },
+
+        editRating: function (id) {
+            action(TaxiHail.RideRatingsController, 'edit', id);
         },
 
         manageAccounts: function() {

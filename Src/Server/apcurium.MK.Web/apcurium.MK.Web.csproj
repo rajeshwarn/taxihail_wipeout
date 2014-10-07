@@ -177,12 +177,14 @@
     <Content Include="admin\assets\img\blackcar_badge.png" />
     <Content Include="admin\assets\img\suv_badge.png" />
     <Content Include="admin\assets\img\taxi_badge.png" />
+    <Content Include="admin\collections\RideRatingCollection.js" />
     <Content Include="admin\collections\VehicleTypeCollection.js" />
     <Content Include="admin\collections\AccountChargeCollection.js" />
     <Content Include="admin\collections\RuleCollection.js" />
     <Content Include="admin\collections\TariffCollection.js" />
     <Content Include="admin\controllers\NotificationSettingsController.js" />
     <Content Include="admin\controllers\NotificationController.js" />
+    <Content Include="admin\controllers\RideRatingsController.js" />
     <Content Include="admin\controllers\VehicleTypesController.js" />
     <Content Include="admin\controllers\Controller.js" />
     <Content Include="admin\controllers\CompanySettingsController.js" />
@@ -198,6 +200,7 @@
     <Content Include="admin\jquery.min.js" />
     <Content Include="admin\models\EmailTemplates.js" />
     <Content Include="admin\models\NotificationSettings.js" />
+    <Content Include="admin\models\RideRatings.js" />
     <Content Include="admin\models\UnassignedReferenceDataVehicles.js" />
     <Content Include="admin\models\VehicleType.js" />
     <Content Include="admin\models\AccountCharge.js" />
@@ -217,8 +220,11 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="admin\models\CompanySettings.js" />
+    <Content Include="admin\views\AddRideRatingView.js" />
     <Content Include="admin\views\AddVehicleTypeView.js" />
     <Content Include="admin\views\ManageNotificationSettingsView.js" />
+    <Content Include="admin\views\ManageRideRatingsView.js" />
+    <Content Include="admin\views\RideRatingItemView.js" />
     <Content Include="admin\views\SendTestEmailView.js" />
     <Content Include="admin\views\VehicleTypeItemView.js" />
     <Content Include="admin\views\AddAccountChargeView.js" />
@@ -262,6 +268,7 @@
     <Content Include="assets\img\refresh.png" />
     <Content Include="assets\img\suv_badge.png" />
     <Content Include="assets\img\taxi_badge.png" />
+    <Content Include="assets\js\additional-methods.js" />
     <Content Include="assets\js\storage-polyfill.js" />
     <Content Include="common\collections\AvailableVehicleCollection.js" />
     <Content Include="common\models\AvailableVehicle.js" />
@@ -484,6 +491,11 @@
     <Content Include="admin\localization\SendTestEmail.json" />
     <Content Include="localization\Aexid-fr.json" />
     <Content Include="localization\Aexid-en.json" />
+    <Content Include="admin\templates\ManageRideRatings.handlebars" />
+    <Content Include="admin\templates\RideRatingItem.handlebars" />
+    <Content Include="admin\localization\ManageRideRatings.json" />
+    <Content Include="admin\templates\AddRideRating.handlebars" />
+    <Content Include="admin\localization\AddRideRating.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

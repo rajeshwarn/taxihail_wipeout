@@ -164,7 +164,7 @@
   </data>
   <data name="AppNeedUpdateTitle" xml:space="preserve">
     <value>Nouvelle version disponible</value>
-  </data>
+    </data>
   <data name="app_id" xml:space="preserve">
     <value>134284363380764</value>
   </data>
@@ -771,8 +771,8 @@
   <data name="LoginForgotPassword" xml:space="preserve">
     <value>Mot de passe oublié?</value>
   </data>
-  <data name="LoginSupport" xml:space="preserve">
-    <value>Support Technique?</value>
+<data name="LoginSupport" xml:space="preserve">
+   	<value>Support Technique?</value>
   </data>
   <data name="LoginForgotPasswordDetail" xml:space="preserve">
     <value>Saisissez votre email pour recevoir votre nouveau mot de passe</value>
@@ -1574,6 +1574,9 @@
   </data>
   <data name="NoCardOnFileMessage" xml:space="preserve">
     <value>Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.</value>
+  </data>
+  <data name="CardExpiredMessage" xml:space="preserve">
+    <value>Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.</value>
   </data>
   <data name="View_NotificationSettings" xml:space="preserve">
     <value>Notifications</value>

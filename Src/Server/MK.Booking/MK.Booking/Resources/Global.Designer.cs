@@ -772,6 +772,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Order #{0} Original amount: {1}.
+        /// </summary>
+        public static string PaymentItemDescription {
+            get {
+                return ResourceManager.GetString("PaymentItemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your vehicle is almost at pickup location.
         /// </summary>
         public static string PushNotification_NearbyTaxi {

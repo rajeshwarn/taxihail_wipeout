@@ -551,10 +551,10 @@
     <value>التكلفة المتوقعة غير متاحة</value>
   </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>التكلفة المتوقعة :{0} ({1})</value>
+    <value>({التكلفة المتوقعة :{0}ر.س ({1</value>
   </data>
   <data name="CurrencyPriceFormat" xml:space="preserve">
-    <value>{0}</value>
+    <value>{0}ر.س</value>
   </data>
   <data name="EstimatePriceOver100" xml:space="preserve">
     <value>إتصال لمعرفة السعر</value>
@@ -1548,6 +1548,9 @@
   </data>
   <data name="NoCardOnFileMessage" xml:space="preserve">
     <value>You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</value>
+  </data>
+  <data name="CardExpiredMessage" xml:space="preserve">
+    <value>Your credit card is expired. Add a new card to your account or update card informations to continue.</value>
   </data>
   <data name="View_NotificationSettings" xml:space="preserve">
     <value>Notifications</value>

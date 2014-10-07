@@ -264,7 +264,6 @@
     <Compile Include="AppServices\ITermsAndConditionsService.cs" />
     <Compile Include="AppServices\Impl\TermsAndConditionsService.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
-    <Compile Include="Messages\AppActivated.cs" />
     <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
     <Compile Include="AppServices\Impl\VehicleService.cs" />
     <Compile Include="AppServices\IVehicleService.cs" />
@@ -377,12 +376,13 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Localization\TaxiHail NYC.resx" />
-    <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <None Include="Localization\Mishwar.resx" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-fr.json" />
     <None Include="Localization\CINQ-S.fr.resx" />
     <None Include="Localization\CINQ-S.resx" />
+    <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
+    <None Include="Localization\MearsTaxi.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">

@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		void EndCreateOrder ();
 
 		Task<bool> ValidateCardOnFile ();
+		Task<bool> ValidateCardExpiration ();
 
 		Task SetAddress(Address address);
 		Task SetPickupAptAndRingCode(string apt, string ringCode);

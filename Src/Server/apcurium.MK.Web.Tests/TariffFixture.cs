@@ -59,6 +59,7 @@ namespace apcurium.MK.Web.Tests
                     StartTime = DateTime.Today.AddHours(2),
                     EndTime = DateTime.Today.AddHours(3),
                     Name = "Rate " + tariffId,
+                    MinimumRate = 12.52,
                     KilometricRate = 1.1,
                     FlatRate = 1.2m,
                     MarginOfError = 1.4,
@@ -74,6 +75,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual("Rate " + tariffId, rate.Name);
             Assert.AreEqual(2, rate.StartTime.Hour);
             Assert.AreEqual(3, rate.EndTime.Hour);
+            Assert.AreEqual(12.52, rate.MinimumRate);
             Assert.AreEqual(1.1, rate.KilometricRate);
             Assert.AreEqual(1.2m, rate.FlatRate);
             Assert.AreEqual(1.4, rate.MarginOfError);
@@ -93,6 +95,7 @@ namespace apcurium.MK.Web.Tests
                 Id = tariffId,
                 Type = (int)TariffType.VehicleDefault,
                 Name = "Rate " + tariffId,
+                MinimumRate = 12.52,
                 KilometricRate = 1.1,
                 FlatRate = 1.2m,
                 MarginOfError = 1.4,
@@ -107,6 +110,7 @@ namespace apcurium.MK.Web.Tests
             var rate = rates.Single(x => x.Id == tariffId);
             Assert.AreEqual(3, rate.Type);
             Assert.AreEqual("Rate " + tariffId, rate.Name);
+            Assert.AreEqual(12.52, rate.MinimumRate);
             Assert.AreEqual(1.1, rate.KilometricRate);
             Assert.AreEqual(1.2m, rate.FlatRate);
             Assert.AreEqual(1.4, rate.MarginOfError);

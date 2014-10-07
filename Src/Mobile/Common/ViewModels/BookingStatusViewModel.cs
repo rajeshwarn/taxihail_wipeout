@@ -302,7 +302,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				var statusInfoText = status.IBSStatusDescription;
 
-				if(Settings.ShowEta && status.IBSStatusId.Equals(VehicleStatuses.Common.Assigned) && status.VehicleNumber.HasValue())
+				if(Settings.ShowEta 
+					&& status.IBSStatusId.Equals(VehicleStatuses.Common.Assigned) 
+					&& status.VehicleNumber.HasValue()
+					&& status.VehicleLatitude.HasValue
+					&& status.VehicleLongitude.HasValue)
 				{
 					Direction d =  _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
 					statusInfoText += " " + FormatEta(d);						
@@ -377,18 +381,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								!_paymentService.GetPaymentSettings().AutomaticPayment  			
 								&& _bookingService.IsPaired(Order.Id);      
 
-			var defaultCardRequirement = !(Settings.DefaultCardRequiredToPayNow && !_accountService.CurrentAccount.DefaultCreditCard.HasValue);
-
 			IsPayButtonVisible = (!Settings.HidePayNowButtonDuringRide)
-								&& defaultCardRequirement 
 								&& (statusId == VehicleStatuses.Common.Done
 									|| statusId == VehicleStatuses.Common.Loaded)
 								&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue
                                 && !_paymentService.GetPaymentSettings().AutomaticPayment
 			                    && !IsUnpairButtonVisible
-								&& (Order.Settings.ChargeTypeId == null 
+								&& (Order.Settings.ChargeTypeId == null
 									|| Order.Settings.ChargeTypeId != ChargeTypes.Account.Id)
-                                && ((setting.IsPayInTaxiEnabled 
+                                && ((setting.IsPayInTaxiEnabled
 										&& _accountService.CurrentAccount.DefaultCreditCard != null) 
                                     || setting.PayPalClientSettings.IsEnabled);
 			

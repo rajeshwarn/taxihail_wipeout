@@ -54,6 +54,7 @@
     <AssemblyName>MK.Common.iOS</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Monotouch" />
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -71,7 +72,9 @@
     <Compile Include="Configuration\NotificationSettings.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\ListItem.cs" />
+    <Compile Include="Entity\RatingTypeWrapper.cs" />
     <Compile Include="Entity\ToggleItem.cs" />
+    <Compile Include="Enumeration\SupportedLanguages.cs" />
     <Compile Include="Extensions\ActionExtension.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
