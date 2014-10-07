@@ -111,7 +111,7 @@ namespace apcurium.MK.Booking.Api.Services
                         var toll = 0;
                         var tip = (double)45*((double)15/(double)100);
 
-                        _notificationService.SendReceiptEmail(12345, "9007", "Alex Proteau", fareObject.AmountExclTax, toll, tip, fareObject.TaxAmount, fareObject.AmountExclTax + toll + tip + fareObject.TaxAmount,
+                        _notificationService.SendReceiptEmail(Guid.NewGuid(), 12345, "9007", "Alex Proteau", fareObject.AmountExclTax, toll, tip, fareObject.TaxAmount, fareObject.AmountExclTax + toll + tip + fareObject.TaxAmount,
                             _cardOnFile, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.Now, request.EmailAddress, "en", true);
                         break;
                     default:

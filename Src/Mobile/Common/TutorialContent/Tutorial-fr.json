@@ -47,6 +47,24 @@
       "Title": "Informations personnelles",
       "Text": "Modifiez vos informations personnelles.",
       "ImageUri":"tutorial_screen07"
-    }                   
+    } ,
+    {
+      "Position": "8",
+      "Title": "",
+      "Text": "",
+      "ImageUri":""
+    } ,
+    {
+      "Position": "9",
+      "Title": "",
+      "Text": "",
+      "ImageUri":""
+    },
+    {
+      "Position": "10",
+      "Title": "",
+      "Text": "",
+      "ImageUri":""
+    }                 
   ]
 }

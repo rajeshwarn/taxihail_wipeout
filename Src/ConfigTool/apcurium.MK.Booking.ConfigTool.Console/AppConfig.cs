@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO.Compression;
@@ -179,36 +179,36 @@ namespace apcurium.MK.Booking.ConfigTool
                     SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.MenuColor) 
                 },
 
-//                new ConfigXML(this)
-//                {  
-//                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
-//                    NodeSelector=@"//resources/color[@name=""setting_menu_text_color""]", 
-//                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.MenuColor, "#ffffff", "#4f4c47") 
-//                },
-//                new ConfigXML(this)
-//                {  
-//                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
-//                    NodeSelector=@"//resources/color[@name=""setting_menu_separator_color""]", 
-//                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.MenuColor, "#454545", "#a09f9c") 
-//                },
-//                new ConfigXML(this)
-//                {  
-//                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
-//                    NodeSelector=@"//resources/color[@name=""setting_item_pressed_background_color""]", 
-//                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.MenuColor, "#282828", "#ffffff") 
-//                },
-//                new ConfigXML(this)
-//                {  
-//                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
-//                    NodeSelector=@"//resources/color[@name=""button_border_color""]", 
-//                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.LoginColor, "#ffffff", "#031b31") 
-//                },
-//                new ConfigXML(this)
-//                {  
-//                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
-//                    NodeSelector=@"//resources/color[@name=""button_pressed_background_color""]", 
-//                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.LoginColor, "#282828", "#70004785") 
-//                },
+                new ConfigXML(this)
+                {  
+                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
+                    NodeSelector=@"//resources/color[@name=""setting_menu_text_color""]", 
+                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.MenuColor, "#ffffff", "#4f4c47") 
+                },
+                new ConfigXML(this)
+                {  
+                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
+                    NodeSelector=@"//resources/color[@name=""setting_menu_separator_color""]", 
+                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.MenuColor, "#454545", "#a09f9c") 
+                },
+                new ConfigXML(this)
+                {  
+                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
+                    NodeSelector=@"//resources/color[@name=""setting_item_pressed_background_color""]", 
+                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.MenuColor, "#282828", "#ffffff") 
+                },
+                new ConfigXML(this)
+                {  
+                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
+                    NodeSelector=@"//resources/color[@name=""button_border_color""]", 
+                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.LoginColor, "#ffffff", "#031b31") 
+                },
+                new ConfigXML(this)
+                {  
+                    Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
+                    NodeSelector=@"//resources/color[@name=""button_pressed_background_color""]", 
+                    SetterEle = (app,ele) => ele.InnerText = GetColorFromBackground(Company.Style.LoginColor, "#282828", "#70004785") 
+                },
                 
 				new ConfigFile(this){ Source="logo_1_5@2x.png", Destination=@"Mobile\Android\Resources\drawable-xhdpi\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\iOS\Resources\th_logo.png" },
@@ -307,7 +307,7 @@ namespace apcurium.MK.Booking.ConfigTool
                 _configs.Add(new ConfigFile(this)
                 {
                     Source = file + ".json",
-                    Destination = @"Mobile\Common\TutorialContent\"+ file + ".json" 
+                    Destination = @"Mobile\Common\TutorialContent\" + file + ".json"
                 });
             }
         }
@@ -318,7 +318,6 @@ namespace apcurium.MK.Booking.ConfigTool
            var listofFiles = assetsDirectory.EnumerateFiles("*." + extension, SearchOption.TopDirectoryOnly);
            return listofFiles.Select(x => x.Name.Replace(x.Extension, string.Empty)).ToArray();
         }
-
         private AppConfigFile _config;
 
         public AppConfigFile Config

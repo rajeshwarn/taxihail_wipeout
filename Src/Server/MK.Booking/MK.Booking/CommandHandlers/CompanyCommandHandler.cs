@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<DeactivateRule>,
         ICommandHandler<AddRatingType>,
         ICommandHandler<UpdateRatingType>,
+        ICommandHandler<DeleteRatingType>,
         ICommandHandler<UpdatePaymentSettings>,
         ICommandHandler<HideRatingType>,
         ICommandHandler<AddPopularAddress>,
@@ -60,13 +61,6 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var company = _repository.Find(command.CompanyId);
             company.AddOrUpdateAppSettings(command.AppSettings);
-            _repository.Save(company, command.Id.ToString());
-        }
-
-        public void Handle(AddRatingType command)
-        {
-            var company = _repository.Get(command.CompanyId);
-            company.AddRatingType(command.Name, command.RatingTypeId);
             _repository.Save(company, command.Id.ToString());
         }
 
@@ -108,15 +102,15 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             if (command.Type == TariffType.Default)
             {
-                company.CreateDefaultTariff(command.TariffId, command.Name, command.FlatRate, command.KilometricRate,
-                    command.PerMinuteRate, command.MarginOfError,
-                    kilometerIncluded: command.KilometerIncluded);
+                company.CreateDefaultTariff(command.TariffId, command.Name, command.FlatRate,
+                    command.KilometricRate, command.PerMinuteRate, command.MarginOfError,
+                    command.KilometerIncluded, command.MinimumRate);
             }
             else if (command.Type == TariffType.VehicleDefault)
             {
-                company.CreateDefaultVehiculeTariff(command.TariffId, command.Name, command.FlatRate, command.KilometricRate,
-                    command.PerMinuteRate, command.MarginOfError,
-                    command.KilometerIncluded, command.VehicleTypeId);
+                company.CreateDefaultVehiculeTariff(command.TariffId, command.Name, command.FlatRate,
+                    command.KilometricRate, command.PerMinuteRate, command.MarginOfError,
+                    command.KilometerIncluded, command.VehicleTypeId, command.MinimumRate);
             }
             else if (command.Type == TariffType.Recurring)
             {
@@ -126,16 +120,15 @@ namespace apcurium.MK.Booking.CommandHandlers
                     kilometerIncluded: command.KilometerIncluded,
                     startTime: command.StartTime,
                     endTime: command.EndTime,
-                    vehicleTypeId: command.VehicleTypeId);
+                    vehicleTypeId: command.VehicleTypeId,
+                    minimumRate: command.MinimumRate);
             }
             else if (command.Type == TariffType.Day)
             {
-                company.CreateDayTariff(command.TariffId, command.Name, command.FlatRate, command.KilometricRate,
-                    command.PerMinuteRate, command.MarginOfError,
-                    kilometerIncluded: command.KilometerIncluded,
-                    startTime: command.StartTime,
-                    endTime: command.EndTime,
-                    vehicleTypeId: command.VehicleTypeId);
+                company.CreateDayTariff(command.TariffId, command.Name, command.FlatRate, 
+                    command.KilometricRate, command.PerMinuteRate, command.MarginOfError,
+                    command.KilometerIncluded, command.StartTime, command.EndTime,
+                    command.VehicleTypeId, command.MinimumRate);
             }
 
             _repository.Save(company, command.Id.ToString());
@@ -162,13 +155,6 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(company, command.Id.ToString());
         }
 
-        public void Handle(HideRatingType command)
-        {
-            var company = _repository.Get(command.CompanyId);
-            company.HideRatingType(command.RatingTypeId);
-            _repository.Save(company, command.Id.ToString());
-        }
-
         public void Handle(UpdatePaymentSettings command)
         {
             var company = _repository.Get(command.CompanyId);
@@ -176,10 +162,31 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(company, command.Id.ToString());
         }
 
+        public void Handle(AddRatingType command)
+        {
+            var company = _repository.Get(command.CompanyId);
+            company.AddRatingType(command.RatingTypeId, command.Name, command.Language);
+            _repository.Save(company, command.Id.ToString());
+        }
+
         public void Handle(UpdateRatingType command)
         {
             var company = _repository.Get(command.CompanyId);
-            company.UpdateRatingType(command.Name, command.RatingTypeId);
+            company.UpdateRatingType(command.RatingTypeId, command.Name, command.Language);
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(DeleteRatingType command)
+        {
+            var company = _repository.Get(command.CompanyId);
+            company.DeleteRatingType(command.RatingTypeId);
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(HideRatingType command)
+        {
+            var company = _repository.Get(command.CompanyId);
+            company.HideRatingType(command.RatingTypeId);
             _repository.Save(company, command.Id.ToString());
         }
 
@@ -213,7 +220,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             company.UpdateTariff(command.TariffId, command.Name, command.FlatRate, command.KilometricRate,
                 command.PerMinuteRate, command.MarginOfError, command.KilometerIncluded, command.DaysOfTheWeek,
-                command.StartTime, command.EndTime, command.VehicleTypeId);
+                command.StartTime, command.EndTime, command.VehicleTypeId, command.MinimumRate);
 
             _repository.Save(company, command.Id.ToString());
         }

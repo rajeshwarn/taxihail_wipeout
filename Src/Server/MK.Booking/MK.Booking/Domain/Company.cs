@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Policy;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
@@ -20,8 +21,8 @@ namespace apcurium.MK.Booking.Domain
     public class Company : EventSourced
     {
         private readonly Dictionary<RuleCategory, Guid> _defaultRules = new Dictionary<RuleCategory, Guid>();
+        private readonly Dictionary<Guid, IList<RatingType>> _ratingTypes = new Dictionary<Guid, IList<RatingType>>(); 
         private Guid? _defaultTariffId;
-
 
         public Company(Guid id)
             : base(id)
@@ -67,9 +68,10 @@ namespace apcurium.MK.Booking.Domain
             Handles<RuleActivated>(NoAction);
             Handles<RuleDeactivated>(NoAction);
 
-            Handles<RatingTypeAdded>(NoAction);
+            Handles<RatingTypeAdded>(OnRatingTypeAdded);
             Handles<RatingTypeHidded>(NoAction);
-            Handles<RatingTypeUpdated>(NoAction);
+            Handles<RatingTypeUpdated>(OnRatingTypeUpdated);
+            Handles<RatingTypeDeleted>(OnRatingTypeDeleted);
 
             Handles<TermsAndConditionsUpdated>(NoAction);
             Handles<TermsAndConditionsRetriggered>(NoAction);
@@ -152,26 +154,48 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void AddRatingType(string name, Guid ratingTypeId)
+        public void AddRatingType(Guid ratingTypeId, string name, string language)
         {
-            if (name.IsNullOrEmpty())
-                throw new ArgumentException("Rating name cannot be null or empty");
+            if (language.IsNullOrEmpty())
+                throw new ArgumentException("Rating language cannot be null or empty");
 
             Update(new RatingTypeAdded
             {
                 Name = name,
-                RatingTypeId = ratingTypeId
+                RatingTypeId = ratingTypeId,
+                Language = language
             });
         }
 
-        public void UpdateRatingType(string name, Guid ratingTypeId)
+        public void UpdateRatingType(Guid ratingTypeId, string name, string language)
         {
-            if (name.IsNullOrEmpty())
-                throw new ArgumentException("Rating name cannot be null or empty");
+            if (language.IsNullOrEmpty())
+                throw new ArgumentException("Rating language cannot be null or empty");
+
+            if (_ratingTypes.ContainsKey(ratingTypeId))
+            {
+                var ratingTypes = _ratingTypes[ratingTypeId];
+                var ratingType = ratingTypes.FirstOrDefault(t => t.Language == language);
+
+                // Only send Update event if the name value has changed
+                if (ratingType != null && ratingType.Name == name)
+                {
+                    return;
+                } 
+            }
 
             Update(new RatingTypeUpdated
             {
                 Name = name,
+                RatingTypeId = ratingTypeId,
+                Language = language
+            });
+        }
+
+        public void DeleteRatingType(Guid ratingTypeId)
+        {
+            Update(new RatingTypeDeleted
+            {
                 RatingTypeId = ratingTypeId
             });
         }
@@ -185,7 +209,7 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public void CreateDefaultTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double perMinuteRate,
-            double timeAdustmentFactor, double kilometerIncluded)
+            double timeAdustmentFactor, double kilometerIncluded, double minimumRate)
         {
             if (_defaultTariffId.HasValue)
             {
@@ -199,6 +223,7 @@ namespace apcurium.MK.Booking.Domain
                 TariffId = tariffId,
                 Type = TariffType.Default,
                 Name = name,
+                MinimumRate = minimumRate,
                 FlatRate = flatRate,
                 KilometricRate = distanceMultiplicator,
                 KilometerIncluded = kilometerIncluded,
@@ -208,13 +233,14 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public void CreateDefaultVehiculeTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double perMinuteRate,
-            double timeAdustmentFactor, double kilometerIncluded, int? vehicleTypeId)
+            double timeAdustmentFactor, double kilometerIncluded, int? vehicleTypeId, double minimumRate)
         {
             Update(new TariffCreated
             {
                 TariffId = tariffId,
                 Type = TariffType.VehicleDefault,
                 Name = name,
+                MinimumRate = minimumRate,
                 FlatRate = flatRate,
                 KilometricRate = distanceMultiplicator,
                 KilometerIncluded = kilometerIncluded,
@@ -226,13 +252,14 @@ namespace apcurium.MK.Booking.Domain
 
         public void CreateRecurringTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double perMinuteRate,
             double timeAdustmentFactor, double kilometerIncluded, DayOfTheWeek daysOfTheWeek,
-            DateTime startTime, DateTime endTime, int? vehicleTypeId)
+            DateTime startTime, DateTime endTime, int? vehicleTypeId, double minimumRate)
         {
             Update(new TariffCreated
             {
                 TariffId = tariffId,
                 Type = TariffType.Recurring,
                 Name = name,
+                MinimumRate = minimumRate,
                 FlatRate = flatRate,
                 KilometricRate = distanceMultiplicator,
                 MarginOfError = timeAdustmentFactor,
@@ -247,13 +274,14 @@ namespace apcurium.MK.Booking.Domain
 
         public void CreateDayTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double perMinuteRate,
             double timeAdustmentFactor, double kilometerIncluded, DateTime startTime,
-            DateTime endTime, int? vehicleTypeId)
+            DateTime endTime, int? vehicleTypeId, double minumumRate)
         {
             Update(new TariffCreated
             {
                 TariffId = tariffId,
                 Type = TariffType.Day,
                 Name = name,
+                MinimumRate = minumumRate,
                 FlatRate = flatRate,
                 KilometricRate = distanceMultiplicator,
                 PerMinuteRate = perMinuteRate,
@@ -267,12 +295,13 @@ namespace apcurium.MK.Booking.Domain
 
         public void UpdateTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double perMinuteRate,
             double timeAdustmentFactor, double kilometerIncluded, DayOfTheWeek daysOfTheWeek,
-            DateTime startTime, DateTime endTime, int? vehicleTypeId)
+            DateTime startTime, DateTime endTime, int? vehicleTypeId, double minimumRate)
         {
             Update(new TariffUpdated
             {
                 TariffId = tariffId,
                 Name = name,
+                MinimumRate = minimumRate,
                 FlatRate = flatRate,
                 KilometricRate = distanceMultiplicator,
                 PerMinuteRate = perMinuteRate,
@@ -454,6 +483,42 @@ namespace apcurium.MK.Booking.Domain
                 {
                     _defaultRules[@event.Category] = @event.RuleId;
                 }
+            }
+        }
+
+        private void OnRatingTypeAdded(RatingTypeAdded @event)
+        {
+            if (!_ratingTypes.ContainsKey(@event.RatingTypeId))
+            {
+                _ratingTypes.Add(@event.RatingTypeId, new List<RatingType>());
+            }
+
+            _ratingTypes[@event.RatingTypeId].Add(new RatingType
+            {
+                Id = @event.RatingTypeId,
+                Name = @event.Name,
+                Language = @event.Language
+            });
+        }
+
+        private void OnRatingTypeUpdated(RatingTypeUpdated @event)
+        {
+            if (_ratingTypes.ContainsKey(@event.RatingTypeId))
+            {
+                var ratingType = _ratingTypes[@event.RatingTypeId];
+                var ratingTypeToUpdate = ratingType.FirstOrDefault(t => t.Language == @event.Language);
+                if (ratingTypeToUpdate != null)
+                {
+                    ratingTypeToUpdate.Name = @event.Name;
+                }
+            }
+        }
+
+        private void OnRatingTypeDeleted(RatingTypeDeleted @event)
+        {
+            if (_ratingTypes.ContainsKey(@event.RatingTypeId))
+            {
+                _ratingTypes.Remove(@event.RatingTypeId);
             }
         }
 

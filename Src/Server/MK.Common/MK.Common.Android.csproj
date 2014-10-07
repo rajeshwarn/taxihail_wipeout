@@ -57,6 +57,7 @@
     <Compile Include="Entity\OrderPairingDetail.cs" />
     <Compile Include="Entity\OrderRatings.cs" />
     <Compile Include="Entity\RatingScore.cs" />
+    <Compile Include="Entity\RatingTypeWrapper.cs" />
     <Compile Include="Entity\Rule.cs" />
     <Compile Include="Entity\RuleCategory.cs" />
     <Compile Include="Entity\RuleType.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Entity\RatingType.cs" />
     <Compile Include="Entity\ToggleItem.cs" />
     <Compile Include="Enumeration\ChargeTypes.cs" />
+    <Compile Include="Enumeration\SupportedLanguages.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />

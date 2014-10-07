@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -62,23 +63,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void Init(string orderId, bool canRate = false)
 		{
-			RatingList = _bookingService.GetRatingType().Select(c => new RatingModel
-				{
-					RatingTypeId = c.Id, 
-					RatingTypeName = GetRatingTypeName(c.Name)
-				})
-				.OrderBy(c=>c.RatingTypeId).ToList();
+            RatingList = _bookingService.GetRatingTypes().Select(c => new RatingModel
+                {
+                    RatingTypeId = c.Id,
+                    RatingTypeName = c.Name
+                })
+                .OrderBy(c => c.RatingTypeId).ToList();
 
 			CanRate = false;
 
 			if (orderId != null)
 			{
-				var ratingTypes = _bookingService.GetRatingType();
-				RatingList = ratingTypes.Select(c => new RatingModel(canRate) 
-					{
-						RatingTypeId = c.Id, 
-						RatingTypeName = GetRatingTypeName(c.Name)
-					}).OrderBy(c=>c.RatingTypeId).ToList();
+                var ratingTypes = _bookingService.GetRatingTypes();
+                RatingList = ratingTypes.Select(c => new RatingModel(canRate)
+                {
+                    RatingTypeId = c.Id,
+                    RatingTypeName = c.Name
+                }).OrderBy(c => c.RatingTypeId).ToList();
 
 				Guid id;
 				if (Guid.TryParse (orderId, out id)) {
@@ -95,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 							RatingTypeId = c.RatingTypeId,
 							Score = c.Score,
-							RatingTypeName = c.Name // don't try to localize this since it's already localized
+							RatingTypeName = c.Name
 						}).OrderBy(c=>c.RatingTypeId).ToList();
 				}
 			}
@@ -182,16 +183,5 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             return true;
         }
-
-		private string GetRatingTypeName(string ratingTypeNameUnlocalized)
-		{
-			var key = ratingTypeNameUnlocalized.Replace (" ", string.Empty);
-			if(this.Services().Localize.Exists(key))
-			{
-				return this.Services ().Localize[key];
-			}
-
-			return ratingTypeNameUnlocalized;
-		}
     }
 }

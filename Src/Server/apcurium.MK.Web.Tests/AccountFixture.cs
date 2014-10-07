@@ -50,8 +50,7 @@ namespace apcurium.MK.Web.Tests
                 Phone = "", // TODO: set phone number here
                 Email = tempEmail,
                 Name = "First Name Test",
-                Language = "en",
-                AccountActivationDisabled = false
+                Language = "en"
             };
 
             await sut.RegisterAccount(newAccount);

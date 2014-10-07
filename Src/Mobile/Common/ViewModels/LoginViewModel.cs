@@ -20,15 +20,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITwitterService _twitterService;
 		private readonly ILocationService _locationService;
 		private readonly IAccountService _accountService;
-		private readonly IRegisterWorkflowService _registrationService;
 		private readonly IPhoneService _phoneService;
+		private readonly IRegisterWorkflowService _registrationService;
 
         public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocationService locationService,
 			IAccountService accountService,
-			IRegisterWorkflowService registrationService,
-			IPhoneService phoneService)
+			IPhoneService phoneService,
+			IRegisterWorkflowService registrationService)
         {
 			_registrationService = registrationService;
             _facebookService = facebookService;
@@ -303,9 +303,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_registrationService.PrepareNewRegistration ();
 
 			//no confirmation required
-            if (data.FacebookId.HasValue() 
-				|| data.TwitterId.HasValue() 
-				|| data.AccountActivationDisabled
+            if (Settings.AccountActivationDisabled
+                || data.FacebookId.HasValue()
+				|| data.TwitterId.HasValue()
 				|| data.IsConfirmed)
             {
                 var facebookId = data.FacebookId;
@@ -389,8 +389,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 			};
 
-			// Cache company notification settings
-			_accountService.GetNotificationSettings (true, true);
+            // Load and cache company notification settings
+            _accountService.GetNotificationSettings(true, true); 
 
             // Log user session start
             _accountService.LogApplicationStartUp();

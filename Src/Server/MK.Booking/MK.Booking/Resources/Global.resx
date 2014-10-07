@@ -381,4 +381,7 @@
   <data name="PaymentFailedToDriver" xml:space="preserve">
     <value>Payment by the app has Failed!</value>
   </data>
+  <data name="PaymentItemDescription" xml:space="preserve">
+    <value>Order #{0} Original amount: {1}</value>
+  </data>
 </root>

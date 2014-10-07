@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public Guid Id { get; set; }
         public TariffType Type { get; set; }
         public string Name { get; set; }
+        public double MinimumRate { get; set; }
         public decimal FlatRate { get; set; }
         public double KilometricRate { get; set; }
         public double PerMinuteRate { get; set; }
