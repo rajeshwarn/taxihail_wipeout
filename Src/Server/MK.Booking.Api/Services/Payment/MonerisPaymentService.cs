@@ -228,8 +228,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                                 if (!correctionSuccess)
                                 {
-                                    message = string.Format("{0} {1}", message, monerisMessage);
-                                    throw new Exception("Moneris PurchaseCorrection failed");
+                                    message = string.Format("{0} and {1}", message, monerisMessage);
+                                    throw new Exception("Moneris Purchase Correction failed");
                                 }
 
                                 message = message + " The transaction has been cancelled.";

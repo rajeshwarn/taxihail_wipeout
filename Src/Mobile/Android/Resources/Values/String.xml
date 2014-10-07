@@ -378,7 +378,7 @@
   <string name="ResetPasswordConfirmationTitle">Password sent</string>
   <string name="View_SearchAddress">Address Search</string>
   <string name="ApartmentLabel">Apartment</string>
-  <string name="UpdatePasswordConfirmationLabel">Confirmation</string>
+  <string name="UpdatePasswordConfirmationLabel">Confirm New Password</string>
   <string name="dummyaaa">xaaa</string>
   <string name="View_BookSettingMenu">Settings</string>
   <string name="DateTimePickerPickInvalidDateMessage">The pickup date must be in the future.</string>

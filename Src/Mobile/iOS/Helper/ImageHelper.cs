@@ -6,6 +6,7 @@ using MonoTouch.CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using MonoTouch.CoreImage;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
@@ -43,7 +44,51 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return resultImage;
         }
 
-        public static UIImage ApplyColorToImage(string imagePath, UIColor color, CGBlendMode colorMode)
+        private static UIImage ApplyColorToMapIcon(string imagePath, UIColor color, bool bigIcon = true)
+        {
+            var backgroundToColorize = bigIcon
+                ? UIImage.FromBundle ("map_bigicon_background")
+                : UIImage.FromBundle ("map_smallicon_background");
+
+            var rect = new RectangleF(0f, 0f, backgroundToColorize.Size.Width, backgroundToColorize.Size.Height);
+            UIGraphics.BeginImageContextWithOptions(rect.Size, false, 0f);
+            var context = UIGraphics.GetCurrentContext();
+
+            // Step 1: Add the background (this is only a grayscale bubble)
+            backgroundToColorize.Draw(rect);
+
+            // translate/flip the graphics context (for transforming from CG* coords to UI* coords)
+            context.TranslateCTM(0, backgroundToColorize.Size.Height);
+            context.ScaleCTM(1, -1);
+
+            // Step 2: Apply clip to mask to prevent the colorize from creating a colorized rectangle
+            context.ClipToMask (rect, backgroundToColorize.CGImage);
+
+            // Step 3: Colorize the background
+            context.SetFillColorWithColor (color.CGColor);
+            context.SetBlendMode (CGBlendMode.SourceIn);
+
+            // Step 4: Add the white portion on top of background
+            var imageForeground = UIImage.FromFile (imagePath);
+            context.DrawImage (rect, imageForeground.CGImage);
+            context.SetBlendMode (CGBlendMode.DestinationOver);
+
+            context.FillRect(rect);
+
+            // translate/flip the graphics context (for transforming from UI* coords back to CG* coords)
+            context.TranslateCTM(0, backgroundToColorize.Size.Height);
+            context.ScaleCTM(1, -1);
+
+            var resultImage = UIGraphics.GetImageFromCurrentImageContext();
+            UIGraphics.EndImageContext();
+
+            backgroundToColorize = null;
+            imageForeground = null;
+
+            return resultImage;
+        }
+
+        public static UIImage ApplyColorToImage(string imagePath, UIColor color)
         {
             var image = UIImage.FromFile(imagePath);
 
@@ -57,16 +102,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             context.ScaleCTM(1, -1);
 
             // apply clip to mask
-            context.ClipToMask(rect, image.CGImage);
+            context.ClipToMask (rect, image.CGImage);
+
+            context.SetFillColorWithColor(color.CGColor);
+            context.SetBlendMode(CGBlendMode.Normal);
+
+            context.FillRect(rect);
 
             // translate/flip the graphics context (for transforming from UI* coords back to CG* coords)
             context.TranslateCTM(0, image.Size.Height);
             context.ScaleCTM(1, -1);
-
-            context.SetFillColorWithColor(color.CGColor);
-            context.SetBlendMode(colorMode);
-
-            context.FillRect(rect);
 
             var resultImage = UIGraphics.GetImageFromCurrentImageContext();
             UIGraphics.EndImageContext();
@@ -110,23 +155,42 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return new UIImage(transformedImage);
         }
 
-        public static UIImage ApplyThemeColorToImage(string imagePath, CGBlendMode colorMode = CGBlendMode.Color, bool skipApplyIfCustomImage = false, SizeF originalImageSize = new SizeF())
+        public static UIImage ApplyColorToMapIcon(string imagePath, UIColor color, bool isBigIcon, SizeF originalImageSize)
+        {
+            var image = GetImage(imagePath);
+
+            var imageWasOverridden = image.Size.Width != originalImageSize.Width;
+            if (imageWasOverridden)
+            {
+                return image;
+            }
+
+            return ApplyColorToMapIcon(imagePath, color, isBigIcon);
+        }
+
+        public static UIImage ApplyThemeColorToMapIcon(string imagePath, bool isBigIcon, SizeF originalImageSize)
+        {
+            return ApplyColorToMapIcon(imagePath, Theme.CompanyColor, isBigIcon, originalImageSize);
+        }
+
+        public static UIImage ApplyThemeColorToImage(string imagePath, bool skipApplyIfCustomImage = false, SizeF originalImageSize = new SizeF())
         {
             if (skipApplyIfCustomImage)
             {
                 var image = GetImage(imagePath);
                 var imageWasOverridden = image.Size.Width != originalImageSize.Width;
 
-                return imageWasOverridden 
-                    ? image
-                    : ApplyColorToImage(imagePath, Theme.CompanyColor, colorMode);
+                if (imageWasOverridden)
+                {
+                    return image;
+                }
             }
-            return ApplyColorToImage(imagePath, Theme.CompanyColor, colorMode);
+            return ApplyColorToImage(imagePath, Theme.CompanyColor);
         }
 
         public static UIImage ApplyThemeTextColorToImage(string imagePath)
         {
-            return ApplyColorToImage(imagePath, Theme.LabelTextColor, CGBlendMode.Color);
+            return ApplyColorToImage(imagePath, Theme.LabelTextColor);
         }
 
 		public static UIImage GetImage ( string imagePath )

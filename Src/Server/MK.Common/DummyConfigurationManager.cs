@@ -30,7 +30,10 @@ namespace apcurium.MK.Common
 
         public string GetSetting(string key)
         {
-            return AppSettings[key];
+            string value;
+            AppSettings.TryGetValue(key, out value);
+
+            return value;
         }
 
         public T GetSetting<T>(string key, T defaultValue) where T : struct

@@ -47,6 +47,24 @@
       "Title": "Edit Details",
       "Text": "Edit your details.",
       "ImageUri":"tutorial_screen07"
-    }                   
+    } ,
+    {
+      "Position": "8",
+      "Title": "",
+      "Text": "",
+      "ImageUri":""
+    } ,
+    {
+      "Position": "9",
+      "Title": "",
+      "Text": "",
+      "ImageUri":""
+    },
+    {
+      "Position": "10",
+      "Title": "",
+      "Text": "",
+      "ImageUri":""
+    }                      
   ]
 }

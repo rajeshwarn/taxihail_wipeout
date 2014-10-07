@@ -90,8 +90,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         .SetY(labelTopTitle.Frame.Bottom);
                 pageView.AddSubview(labelTop);
 
-                var image = new UIImageView(UIImage.FromFile(listTutorial[i].ImageUri + ".png"));
+                var image = new UIImageView();
+				image.Image = UIImage.FromBundle (listTutorial [i].ImageUri);
                 image.SetWidth(pageView.Frame.Width);
+				image.SetHeight(pageView.Frame.Width);
                 image.ContentMode = UIViewContentMode.ScaleAspectFit;
                 image.SetX(0).SetY(96f);
                 pageView.AddSubview(image);

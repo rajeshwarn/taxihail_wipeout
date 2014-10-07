@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string CompanyNotificationSettingsCacheKey = "Account.CompanyNotificationSettings";
         private const string UserNotificationSettingsCacheKey = "Account.UserNotificationSettings";
         private const string AuthenticationDataCacheKey = "AuthenticationData";
+        private const string VehicleTypesDataCacheKey = "VehicleTypesData";
 
 		readonly IAppSettings _appSettings;
 		readonly IFacebookService _facebookService;
@@ -60,9 +61,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             if (cached == null)
             {
-                var refData = UseServiceClientAsync<ReferenceDataServiceClient, ReferenceData>(service => service.GetReferenceData());
-				UserCache.Set(RefDataCacheKey, await refData, DateTime.Now.AddHours(1));
-				return await refData;
+                var refData = await UseServiceClientAsync<ReferenceDataServiceClient, ReferenceData>(service => service.GetReferenceData());
+				UserCache.Set(RefDataCacheKey, refData, DateTime.Now.AddHours(1));
+				return refData;
             }
             return cached;
         }
@@ -74,12 +75,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void ClearCache ()
         {
-            UserCache.Clear (HistoryAddressesCacheKey);
-            UserCache.Clear (FavoriteAddressesCacheKey);
-            UserCache.Clear(CompanyNotificationSettingsCacheKey);
-            UserCache.Clear(UserNotificationSettingsCacheKey);
-            UserCache.Clear (AuthenticationDataCacheKey);
             UserCache.ClearAll ();
+            Mvx.Resolve<ICacheService>().Clear(VehicleTypesDataCacheKey);
         }
 
         public void SignOut ()
@@ -504,26 +501,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             });
         }
 
-		public async Task<IList<ListItem>> GetCompaniesList ()
-        {
-			var refData = await GetReferenceData();
-			if (!_appSettings.Data.HideNoPreference
-                && refData.CompaniesList != null)
-            {
-				refData.CompaniesList.Insert(0,
-					new ListItem
-					{
-						Id = null,
-						Display = _localize["NoPreference"]
-					});
-            }
-            
-            return refData.CompaniesList;         
-        }
-
 		public async Task<IList<VehicleType>> GetVehiclesList ()
-        {
-			return await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
+		{
+		    var cacheService = Mvx.Resolve<ICacheService>();
+
+            var cached = cacheService.Get<VehicleType[]>(VehicleTypesDataCacheKey);
+            if (cached != null)
+            {
+                return cached;
+            }
+
+			var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
+            cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
+
+		    return vehiclesList;
         }
 
 		public async Task<IList<ListItem>> GetPaymentsList ()

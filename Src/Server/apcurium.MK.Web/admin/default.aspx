@@ -54,6 +54,7 @@
             TaxiHail.parameters.geolocSearchBounds = '<%= GeolocSearchBounds %>';
             TaxiHail.parameters.apiRoot = "../api";
             TaxiHail.parameters.version = '<%: ApplicationVersion %>';
+            TaxiHail.parameters.languages = <%= Languages %>;
         </script>
 
         <%: Scripts.Render("~/admin/bundles/app") %>

@@ -11,9 +11,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Framework.Extensions.ValueType;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
@@ -21,7 +19,6 @@ using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface.ServiceModel;
 using ServiceStack.Text;
-using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -651,6 +648,35 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				(!_accountService.CurrentAccount.DefaultCreditCard.HasValue))
 			{
 				return false;
+			}
+
+			return true;
+		}
+
+		public async Task<bool> ValidateCardExpiration()
+		{
+			var orderToValidate = await GetOrder ();	
+			if (orderToValidate.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+			{
+				var creditCard = await _accountService.GetCreditCard ();
+
+				if (creditCard == null) {
+					return false;
+				}
+
+				if (!creditCard.ExpirationMonth.HasValue() || !creditCard.ExpirationYear.HasValue()) {
+					return true; // Prevent expiration verification from failing
+				}
+
+				var expYear = int.Parse (creditCard.ExpirationYear);
+				var expMonth = int.Parse (creditCard.ExpirationMonth);
+				var expirationDate = new DateTime (expYear, expMonth, DateTime.DaysInMonth (expYear, expMonth));
+
+				if (expirationDate < DateTime.Now) {
+					return false;
+				}
+
+				return true;
 			}
 
 			return true;

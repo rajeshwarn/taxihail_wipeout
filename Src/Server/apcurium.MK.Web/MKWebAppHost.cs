@@ -1,6 +1,9 @@
 ﻿#region
 
 using System;
+using System.Web;
+using System.Web.Routing;
+using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Security;
 using apcurium.MK.Booking.Api.Serialization;
 using apcurium.MK.Booking.Api.Services;
@@ -13,6 +16,7 @@ using apcurium.MK.Common.IoC;
 using Funq;
 using Infrastructure.Messaging;
 using log4net;
+using Microsoft.Practices.Unity;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
@@ -21,6 +25,7 @@ using ServiceStack.Text;
 using ServiceStack.Text.Common;
 using ServiceStack.WebHost.Endpoints;
 using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensions;
+using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 #endregion
 
@@ -69,6 +74,7 @@ namespace apcurium.MK.Web
 
             var container = UnityServiceLocator.Instance;
             containerFunq.Adapter = new UnityContainerAdapter(container, new Logger());
+            
 
             Plugins.Add(new AuthFeature(() => new AuthUserSession(),
                 new IAuthProvider[]

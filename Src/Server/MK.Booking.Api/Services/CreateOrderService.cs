@@ -84,10 +84,10 @@ namespace apcurium.MK.Booking.Api.Services
             // User can still create future order, but we allow only one active Book now order.
             if (!request.PickupDate.HasValue)
             {
-                Guid? pendingOrderId = GetPendingOrder();
+                var pendingOrderId = GetPendingOrder();
 
-                // We don't allow order creation if there's already on order being scheduled
-                if (pendingOrderId != null && !request.FromWebApp)
+                // We don't allow order creation if there's already an order scheduled
+                if (!_appSettings.Data.AllowSimultaneousAppOrders && pendingOrderId != null && !request.FromWebApp)
                 {
                     throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
                 }
@@ -101,18 +101,25 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString());
             }
 
-            var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue,
-                request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),
-                () =>
-                    _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
-                        request.PickupAddress.Latitude, request.PickupAddress.Longitude),
-                () => request.DropOffAddress != null ? _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
-                    request.DropOffAddress.Latitude, request.DropOffAddress.Longitude) : null);
+            var rule = _ruleCalculator.GetActiveDisableFor(
+                request.PickupDate.HasValue,
+                request.PickupDate.HasValue 
+                    ? request.PickupDate.Value 
+                    : GetCurrentOffsetedTime(),
+                () => _staticDataWebServiceClient.GetZoneByCoordinate(
+                        request.Settings.ProviderId,
+                        request.PickupAddress.Latitude, 
+                        request.PickupAddress.Longitude),
+                () => request.DropOffAddress != null 
+                    ? _staticDataWebServiceClient.GetZoneByCoordinate(
+                            request.Settings.ProviderId, 
+                            request.DropOffAddress.Latitude,
+                            request.DropOffAddress.Longitude) 
+                    : null);
 
             if (rule != null)
             {
-                var err = new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
-                    rule.Message);
+                var err = new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);
                 throw err;
             }
 
@@ -120,15 +127,18 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw new HttpError(ErrorCode.CreateOrder_SettingsRequired.ToString());
             }
-
             
             var referenceData = (ReferenceData) _referenceDataService.Get(new ReferenceDataRequest());
 
-            request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime();
-            request.Settings.Passengers = request.Settings.Passengers <= 0 ? 1 : request.Settings.Passengers;
+            request.PickupDate = request.PickupDate.HasValue
+                ? request.PickupDate.Value
+                : GetCurrentOffsetedTime();
+
+            request.Settings.Passengers = request.Settings.Passengers <= 0 
+                ? 1 
+                : request.Settings.Passengers;
 
             var needATarif = bool.Parse(_configManager.GetSetting("Direction.NeedAValidTarif"));
-
             if (needATarif && (!request.Estimate.Price.HasValue || request.Estimate.Price == 0))
             {
                 throw new HttpError(ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString());
@@ -145,8 +155,8 @@ namespace apcurium.MK.Booking.Api.Services
                     .Select(x => x.Display)
                     .FirstOrDefault();
 
-            string chargeTypeIbs = string.Empty;
-            string chargeTypeEmail = string.Empty;
+            var chargeTypeIbs = string.Empty;
+            var chargeTypeEmail = string.Empty;
             if (chargeTypeKey != null)
             {
                 // this must be localized with the priceformat to be localized in the language of the company
@@ -300,11 +310,22 @@ namespace apcurium.MK.Booking.Api.Services
 
             var note = BuildNote(chargeType, request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags);
             var fare = GetFare(request.Estimate);
+
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
-            var result = _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId,
-                request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
-                request.Settings.VehicleTypeId, null, note, request.PickupDate.Value,
-                ibsPickupAddress, ibsDropOffAddress, fare);
+
+            var result = _bookingWebServiceClient.CreateOrder(
+                request.Settings.ProviderId,
+                account.IBSAccountId,
+                request.Settings.Name,
+                request.Settings.Phone,
+                request.Settings.Passengers,
+                request.Settings.VehicleTypeId,
+                null,
+                note,
+                request.PickupDate.Value,
+                ibsPickupAddress,
+                ibsDropOffAddress,
+                fare);
 
             return result;
         }
