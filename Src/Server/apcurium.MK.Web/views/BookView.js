@@ -21,11 +21,10 @@
 
             // ===== Ride Estimate & ETA =====
 
-            // Only update ride estimate & eta if enabled
-            TaxiHail.parameters.isEstimateEnabled &&
-                this.model.on('change:pickupAddress change:dropOffAddress', function (model, value) {
-                    this.validateOrderAndRefreshEstimate();
-                }, this);
+            // Validate addresses + Only update ride estimate & eta if enabled
+            this.model.on('change:pickupAddress change:dropOffAddress', function (model, value) {
+                this.validateOrderAndRefreshEstimate();
+            }, this);
             
             TaxiHail.parameters.isEtaEnabled &&
                 this.model.on('change:pickupAddress', function (model, value) {
@@ -188,7 +187,10 @@
                 .find('.fare')
                 .text(TaxiHail.localize('Loading'));
 
-            if (this.model.isValidAddress('pickupAddress') && this.model.isValidAddress('dropOffAddress')) {
+            if (TaxiHail.parameters.isEstimateEnabled
+                && this.model.isValidAddress('pickupAddress')
+                && this.model.isValidAddress('dropOffAddress')) {
+
                 $estimate.removeClass('hidden');
             }
 
@@ -217,14 +219,19 @@
                                 .find('.fare')
                                 .text('--');
                             this.model.set({ 'estimate': '' });
+                        } else {
 
-                        } else
-                        {
-                            this.$('.buttons .btn').removeClass('disabled');
-                            this.$('.buttons .btn').removeAttr('disabled');
-                            this.actualizeEstimate();
+                            if (!TaxiHail.parameters.isDestinationRequired
+                                || (TaxiHail.parameters.isDestinationRequired && this.model.isValidAddress('dropOffAddress'))) {
+
+                                this.$('.buttons .btn').removeClass('disabled');
+                                this.$('.buttons .btn').removeAttr('disabled');
+                            }
+                           
+                            if (TaxiHail.parameters.isEstimateEnabled) {
+                                this.actualizeEstimate();
+                            }
                         }                        
-
                     }, this));
         },
         
