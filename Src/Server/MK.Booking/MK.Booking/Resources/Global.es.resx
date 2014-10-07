@@ -333,7 +333,7 @@
   <data name="PairingConfirmationToDriver" xml:space="preserve">
     <value>Costo será pagado a través de la aplicación</value>
   </data>
-  <data name="PayInCarMessageToDriver" xml:space="preserve">
+  <data name="PaymentBeingProcessedMessageToDriver" xml:space="preserve">
     <value>Pago está siendo procesado a través de la aplicación</value>
   </data>
   <data name="PaymentConfirmationToDriver1" xml:space="preserve">

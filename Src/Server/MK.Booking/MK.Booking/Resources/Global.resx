@@ -375,7 +375,7 @@
   <data name="EtaMessageToDriver" xml:space="preserve">
     <value>ETA displayed to client is {0} and {1} min</value>
   </data>
-  <data name="PayInCarMessageToDriver" xml:space="preserve">
+  <data name="PaymentBeingProcessedMessageToDriver" xml:space="preserve">
     <value>Payment being processed by the app...</value>
   </data>
   <data name="PaymentFailedToDriver" xml:space="preserve">

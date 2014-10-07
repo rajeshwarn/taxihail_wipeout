@@ -38,6 +38,9 @@ namespace MK.Common.Configuration
 		    VehicleTypeSelectionEnabled = false;
 		    SendPushAsSMS = false;
             AllowSimultaneousAppOrders = false;
+
+            SendDetailedPaymentInfoToDriver = true;
+
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -265,6 +268,10 @@ namespace MK.Common.Configuration
         public string GoogleAdWordsConversionId { get; private set; }
         [Display(Name = "Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionLabel { get; private set; }
+
+        [Display(Name = "Send Payment Detail To Driver", Description = "Inform the driver of auto payment success or failure")]
+        public bool SendDetailedPaymentInfoToDriver { get; private set; }
+
     }
 }
 

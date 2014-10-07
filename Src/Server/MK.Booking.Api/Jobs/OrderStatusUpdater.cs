@@ -187,6 +187,11 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
+            if (ibsOrderInfo.IsMeterOffNotPaid)
+            {
+                SendPaymentBeingProcessedMessageToDriver(ibsOrderInfo.VehicleNumber);
+            }
+
             if (ibsOrderInfo.Fare <= 0)
             {
                 // fare was not returned by ibs
@@ -220,6 +225,12 @@ namespace apcurium.MK.Booking.Api.Jobs
                     "Order {4}: Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
                     meterAmount, tipPercentage, tipAmount, meterAmount + tipAmount, orderStatusDetail.OrderId);
 
+            if (!_appSettings.Data.SendDetailedPaymentInfoToDriver)
+            {
+                // this is the only payment related message sent to the driver when this setting is false
+                SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, meterAmount + tipAmount, meterAmount, tipAmount);
+            }
+
             var paymentResult =  _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
             {
                 OrderId = orderStatusDetail.OrderId,
@@ -238,16 +249,18 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             else
             {
-                var messageToDriver = _resources.Get("PaymentFailedToDriver", _languageCode);
-                _ibsOrderService.SendMessageToDriver(messageToDriver, orderStatusDetail.VehicleNumber);
-
+                if (_appSettings.Data.SendDetailedPaymentInfoToDriver)
+                {
+                    _ibsOrderService.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+                }
+                
                 // set the payment error message in OrderStatusDetail for reporting purpose
                 orderStatusDetail.PairingError = paymentResult.Message;
 
                 Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1})", orderStatusDetail.OrderId, paymentResult.Message);
             }
         }
-
+        
         private double GetTipAmount(double amount, double percentage)
         {
             var tip = percentage / 100;
@@ -341,10 +354,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                     description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", _languageCode);
                 }
             }
-            else if (ibsOrderInfo.IsMeterOffNotPaid)
-            {
-                SendPayInCarMessageToDriver(ibsOrderInfo.VehicleNumber);
-            }
 
             return description.HasValue()
                         ? description
@@ -356,17 +365,22 @@ namespace apcurium.MK.Booking.Api.Jobs
             var eta = _directions.GetEta(vehicleLatitude, vehicleLongitude, pickupLatitude, pickupLongitude);
             if (eta != null && eta.IsValidEta())
             {
-                string etaMessage = string.Format(_resources.Get("EtaMessageToDriver", _languageCode), eta.FormattedDistance, eta.Duration);
+                var etaMessage = string.Format(_resources.Get("EtaMessageToDriver"), eta.FormattedDistance, eta.Duration);
                 _ibsOrderService.SendMessageToDriver(etaMessage, vehicleNumber);
                 Log.Debug(etaMessage);
             }
         }
 
-        private void SendPayInCarMessageToDriver(string vehicleNumber)
+        private void SendPaymentBeingProcessedMessageToDriver(string vehicleNumber)
         {
-            string payInCarMessage = _resources.Get("PayInCarMessageToDriver", _languageCode);
-            _ibsOrderService.SendMessageToDriver(payInCarMessage, vehicleNumber);
-            Log.Debug(payInCarMessage);
+            var paymentBeingProcessedMessage = _resources.Get("PaymentBeingProcessedMessageToDriver");
+            _ibsOrderService.SendMessageToDriver(paymentBeingProcessedMessage, vehicleNumber);
+            Log.Debug(paymentBeingProcessedMessage);
+        }
+
+        private void SendMinimalPaymentProcessedMessageToDriver(string vehicleNumber, double amount, double meter, double tip)
+        {
+            _ibsOrderService.SendPaymentNotification(amount, meter, tip, null, vehicleNumber);
         }
     }
 }
