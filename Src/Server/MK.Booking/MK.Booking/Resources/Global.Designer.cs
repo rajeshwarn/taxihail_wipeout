@@ -70,6 +70,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The order cannot be create using this version of the app. Please upgrade the app to book a ride..
+        /// </summary>
+        public static string CannotCreateOrderInvalidVersion {
+            get {
+                return ResourceManager.GetString("CannotCreateOrderInvalidVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The order cannot be created because your credit card failed the preauthorization check..
         /// </summary>
         public static string CannotCreateOrder_CreditCardWasDeclined {
@@ -720,9 +729,9 @@ namespace apcurium.MK.Booking.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Payment being processed by the app....
         /// </summary>
-        public static string PayInCarMessageToDriver {
+        public static string PaymentBeingProcessedMessageToDriver {
             get {
-                return ResourceManager.GetString("PayInCarMessageToDriver", resourceCulture);
+                return ResourceManager.GetString("PaymentBeingProcessedMessageToDriver", resourceCulture);
             }
         }
         

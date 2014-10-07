@@ -366,11 +366,14 @@
   <data name="PaymentConfirmationToDriver4" xml:space="preserve">
     <value>Auth #{0}</value>
   </data>
-  <data name="PayInCarMessageToDriver" xml:space="preserve">
+  <data name="PaymentBeingProcessedMessageToDriver" xml:space="preserve">
     <value>Payment being processed by the app...</value>
   </data>
   <data name="EtaMessageToDriver" xml:space="preserve">
     <value>ETA displayed to client is {0} and {1} min</value>
+  </data>
+  <data name="CannotCreateOrderInvalidVersion" xml:space="preserve">
+    <value>The order cannot be created using this version of the app. Please upgrade the app to book a ride.</value>
   </data>
   <data name="CannotCreateOrder_CreditCardWasDeclined" xml:space="preserve">
     <value>The order cannot be created because your credit card failed the preauthorization check.</value>
