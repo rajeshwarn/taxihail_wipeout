@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
@@ -188,9 +189,18 @@ namespace DatabaseInitializer
 
                     FetchingIbsDefaults(container, commandBus);
 
-                    CreateDefaultAccounts(container, commandBus);
+                    CreateDefaultAccounts(container, commandBus);                    
+                }
 
+                // Add or update rating types
+                var ratingTypes = new RatingTypeDao(() => new BookingDbContext(connectionString.ConnectionString)).GetAll();
+                if (!ratingTypes.Any())
+                {
                     AddDefaultRatings(commandBus);
+                }
+                else
+                {
+                    UpdateRatings(commandBus, ratingTypes);
                 }
 
                 // Update vehicle types
@@ -269,6 +279,45 @@ namespace DatabaseInitializer
             }
             return 0;
 // ReSharper restore LocalizableElement
+        }
+
+        private static void UpdateRatings(ICommandBus commandBus, IEnumerable<RatingTypeDetail[]> ratingTypes)
+        {
+            var supportedLanguages = Enum.GetNames(typeof(SupportedLanguages));
+
+            foreach (var ratingType in ratingTypes)
+            {
+                var ratingTypeLanguages = ratingType.Select(t => t.Language);
+                var missingRatingTypeLanguages = supportedLanguages.Except(ratingTypeLanguages).ToArray();
+
+                if (missingRatingTypeLanguages.Count() < supportedLanguages.Count())
+                {
+                    // Every rating share the same ID for one language
+                    var ratingId = ratingType.First().Id;
+
+                    // Take english name by default. If none, take first that we find.
+                    var ratingName =
+                            ratingType.FirstOrDefault(r => r.Language == SupportedLanguages.en.ToString())
+                                      .SelectOrDefault(r => r.Name);
+
+                    if (ratingName.IsNullOrEmpty())
+                    {
+                        ratingName = ratingType.First().Name;
+                    }
+
+                    // Add missing language
+                    foreach (var missingRatingTypeLanguage in missingRatingTypeLanguages)
+                    {
+                        commandBus.Send(new AddRatingType
+                        {
+                            CompanyId = AppConstants.CompanyId,
+                            Name = ratingName,
+                            RatingTypeId = ratingId,
+                            Language = missingRatingTypeLanguage
+                        });
+                    }
+                }
+            }
         }
 
         private static void AddDefaultRatings(ICommandBus commandBus)
