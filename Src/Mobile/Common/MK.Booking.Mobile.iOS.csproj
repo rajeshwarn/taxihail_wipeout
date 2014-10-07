@@ -355,6 +355,7 @@
     <None Include="Localization\Master.fr.resx">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="Localization\Master.es.resx" />
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="Style\Style.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />

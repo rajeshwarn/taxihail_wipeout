@@ -361,6 +361,7 @@
     <None Include="Localization\Master.resx">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="Localization\Master.es.resx" />
     <EmbeddedResource Include="Localization\Master.fr.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
