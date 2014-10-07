@@ -79,6 +79,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The order cannot be created because your credit card failed the preauthorization check..
+        /// </summary>
+        public static string CannotCreateOrder_CreditCardWasDeclined {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_CreditCardWasDeclined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Card on File.
         /// </summary>
         public static string CardOnFile {

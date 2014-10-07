@@ -124,6 +124,34 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
+        public bool PreAuthorize(string email, string cardToken, decimal amountToPreAuthorize)
+        {
+            try
+            {
+                var transactionRequest = new TransactionRequest
+                {
+                    Amount = amountToPreAuthorize,
+                    PaymentMethodToken = cardToken,
+                    OrderId = Guid.NewGuid().ToString(),        // random id since we can't reuse the same id later on for a new transaction
+                    Options = new TransactionOptionsRequest
+                    {
+                        SubmitForSettlement = false
+                    }
+                };
+
+                //sale
+                var result = BraintreeGateway.Transaction.Sale(transactionRequest);
+
+                return result.IsSuccess();
+            }
+            catch (Exception e)
+            {
+                _logger.LogMessage(string.Format("Error during preauthorization (validation of the card) for client {0}: {1}", email, e));
+                _logger.LogError(e);
+                return false;
+            }
+        }
+
         public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request)
         {
             string transactionId = null;
