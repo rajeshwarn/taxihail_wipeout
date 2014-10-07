@@ -384,4 +384,7 @@
   <data name="PaymentItemDescription" xml:space="preserve">
     <value>Order #{0} Original amount: {1}</value>
   </data>
+  <data name="CannotCreateOrderInvalidVersion" xml:space="preserve">
+    <value>The order cannot be create using this version of the app. Please upgrade the app to book a ride.</value>
+  </data>
 </root>

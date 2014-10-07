@@ -80,7 +80,13 @@ namespace apcurium.MK.Booking.Api.Services
         {
             Log.Info("Create order request : " + request.ToJson());
 
+            if (!request.FromWebApp)
+            {
+                ValidateAppVersion(request.ClientLanguageCode);
+            }
+
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+
             // User can still create future order, but we allow only one active Book now order.
             if (!request.PickupDate.HasValue)
             {
@@ -217,6 +223,32 @@ namespace apcurium.MK.Booking.Api.Services
                 IBSStatusId = "",
                 IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", command.ClientLanguageCode),
             };
+        }
+
+        private void ValidateAppVersion(string clientLanguage)
+        {
+            var appVersion = base.Request.Headers.Get("ClientVersion");
+            var minimumAppVersion = _configManager.GetSetting("MinimumRequiredAppVersion");
+
+            if (appVersion.IsNullOrEmpty() || minimumAppVersion.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            var minimumMajorMinorBuild = minimumAppVersion.Split(new[]{ "." }, StringSplitOptions.RemoveEmptyEntries);
+            var appMajorMinorBuild = appVersion.Split('.');
+
+            for (var i = 0; i < appMajorMinorBuild.Length; i++)
+            {
+                var appVersionItem = int.Parse(appMajorMinorBuild[i]);
+                var minimumVersionItem = int.Parse(minimumMajorMinorBuild.Length <= i ? "0" : minimumMajorMinorBuild[i]);
+
+                if (appVersionItem < minimumVersionItem)
+                {
+                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                                        _resources.Get("CannotCreateOrderInvalidVersion", clientLanguage));
+                }
+            }
         }
 
         private void ValidateChargeAccountAnswers(string accountNumber, AccountChargeQuestion[] userQuestionsDetails)

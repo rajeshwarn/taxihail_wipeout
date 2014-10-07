@@ -269,6 +269,8 @@ namespace MK.Common.Configuration
         [Display(Name = "Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionLabel { get; private set; }
 
+        [Display(Name = "Minimum Required App Version", Description = "Minimum required app version to create an order.")]
+        public string MinimumRequiredAppVersion { get; private set; }
         [Display(Name = "Send Payment Detail To Driver", Description = "Inform the driver of auto payment success or failure")]
         public bool SendDetailedPaymentInfoToDriver { get; private set; }
 
