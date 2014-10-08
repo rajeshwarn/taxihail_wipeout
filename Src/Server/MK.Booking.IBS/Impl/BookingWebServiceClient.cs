@@ -17,9 +17,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 {
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
-
-        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger,
-            IStaticDataWebServiceClient staticDataWebServiceClient)
+        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger)
             : base(configManager, logger)
         {
         }
@@ -155,21 +153,6 @@ namespace apcurium.MK.Booking.IBS.Impl
             var success = false;
             UseService(service =>
             {
-                var result = service.SendDriverMsg(UserNameApp, PasswordApp, vehicleNumber, message);
-                success = result == 0;
-
-            });
-            return success;
-        }
-
-        public bool SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId)
-        {
-            var success = false;
-            UseService(service =>
-            {
-                //*********************************Keep this code.  They are testing this method 
-                //var resultat = service.SendMsg_3dPartyPaymentNotification(UserNameApp, PasswordApp, vehicleNumber, true, ibsOrderId, message);
-                //success = resultat == 0;
                 var result = service.SendDriverMsg(UserNameApp, PasswordApp, vehicleNumber, message);
                 success = result == 0;
 

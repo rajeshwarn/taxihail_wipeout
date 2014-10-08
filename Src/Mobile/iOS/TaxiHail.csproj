@@ -557,6 +557,7 @@
     <BundleResource Include="Resources\map_bigicon_background.png" />
     <BundleResource Include="Resources\map_smallicon_background.png" />
     <BundleResource Include="Resources\map_smallicon_background%402x.png" />
+    <BundleResource Include="es.lproj\Localizable.strings" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -828,5 +829,8 @@
     <EmbeddedResource Include="Style\FlatButtonStyle.xml">
       <LogicalName>FlatButtonStyle.xml</LogicalName>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="es.lproj\" />
   </ItemGroup>
 </Project>

@@ -1575,6 +1575,9 @@
   <data name="NoCardOnFileMessage" xml:space="preserve">
     <value>Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.</value>
   </data>
+  <data name="CardExpiredMessage" xml:space="preserve">
+    <value>Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.</value>
+  </data>
   <data name="View_NotificationSettings" xml:space="preserve">
     <value>Notifications</value>
   </data>

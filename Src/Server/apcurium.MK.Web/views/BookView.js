@@ -224,6 +224,8 @@
                             if (!TaxiHail.parameters.isDestinationRequired
                                 || (TaxiHail.parameters.isDestinationRequired && this.model.isValidAddress('dropOffAddress'))) {
 
+
+
                                 this.$('.buttons .btn').removeClass('disabled');
                                 this.$('.buttons .btn').removeAttr('disabled');
                             }

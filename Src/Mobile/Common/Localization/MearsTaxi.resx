@@ -117,25 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CannotCreateOrder_CreditCardWasDeclined" xml:space="preserve">
-    <value>Votre commande ne peut pas être prise en compte, la préauthorisation de votre carte bancaire a échouée.</value>
+  <data name="CmtRideLinqConfirmPairViewConfirmPairDetailText" xml:space="preserve">
+    <value>Confirm that you are in the vehicle number indicated below.  Your vehicle number is shown on the right rear window.  By tapping confirm, this ride will automatically be paid by your credit card on file.</value>
   </data>
-  <data name="OrderStatus_CabDriverNumberAssigned" xml:space="preserve">
-    <value>Le véhicule {0} vous a été réservé</value>
-  </data>
-  <data name="OrderStatus_wosARRIVED" xml:space="preserve">
-    <value>Votre véhicule vous attend</value>
-  </data>
-  <data name="OrderStatus_wosLOADED" xml:space="preserve">
-    <value>Passagers à bord</value>
-  </data>
-  <data name="PaymentInCar" xml:space="preserve">
-    <value>Carte Bancaire - à bord</value>
-  </data>
-  <data name="PushNotification_wosARRIVED" xml:space="preserve">
-    <value>Votre véhicule (#{0}) est arrivé</value>
-  </data>
-  <data name="PushNotification_wosASSIGNED" xml:space="preserve">
-    <value>Votre véhicule (#{0}) est en chemin</value>
-  </data>
+
 </root>

@@ -39,11 +39,21 @@
                 var arrayLength = TaxiHail.parameters.languages.length;
 
                 model.set('ratingTypes', []);
+                model.set('name', model.get('ratingFields0')); // Default rating name if no english one is found
+
                 for (var i = 0; i < arrayLength; i++) {
+                    var ratingLanguage = TaxiHail.parameters.languages[i];
+                    var ratingName = model.get('ratingFields' + i);
+
                     model.get('ratingTypes')[i] = {
-                        name: model.get('ratingFields' + i),
-                        language: TaxiHail.parameters.languages[i]
+                        name: ratingName,
+                        language: ratingLanguage
                     };
+
+                    // Use english rating name if there's one
+                    if (ratingLanguage == 'en' && ratingName) {
+                        model.set('name', ratingName);
+                    }
                 }
 
                 params.data = JSON.stringify(model);

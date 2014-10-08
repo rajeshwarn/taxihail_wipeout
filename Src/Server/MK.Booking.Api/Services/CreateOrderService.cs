@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Jobs;
+using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
@@ -38,6 +39,8 @@ namespace apcurium.MK.Booking.Api.Services
 
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
+        private readonly IPaymentService _paymentService;
+        private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountChargeDao _accountChargeDao;
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly ICommandBus _commandBus;
@@ -57,7 +60,9 @@ namespace apcurium.MK.Booking.Api.Services
             IRuleCalculator ruleCalculator,
             IUpdateOrderStatusJob updateOrderStatusJob,
             IAccountChargeDao accountChargeDao,
-            IOrderDao orderDao)
+            IOrderDao orderDao,
+            IPaymentService paymentService,
+            ICreditCardDao creditCardDao)
         {
             _accountChargeDao = accountChargeDao;
             _commandBus = commandBus;
@@ -69,6 +74,8 @@ namespace apcurium.MK.Booking.Api.Services
             _ruleCalculator = ruleCalculator;
             _updateOrderStatusJob = updateOrderStatusJob;
             _orderDao = orderDao;
+            _paymentService = paymentService;
+            _creditCardDao = creditCardDao;
 
             _resources = new Resources.Resources(_configManager);
         }
@@ -77,7 +84,13 @@ namespace apcurium.MK.Booking.Api.Services
         {
             Log.Info("Create order request : " + request.ToJson());
 
+            if (!request.FromWebApp)
+            {
+                ValidateAppVersion(request.ClientLanguageCode);
+            }
+
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+
             // User can still create future order, but we allow only one active Book now order.
             if (!request.PickupDate.HasValue)
             {
@@ -92,14 +105,12 @@ namespace apcurium.MK.Booking.Api.Services
                 }
             }
 
-            //check if the account has a credit card
             if (request.Settings.ChargeTypeId.HasValue
-                && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id
-                && !account.DefaultCreditCard.HasValue)
+                && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
             {
-                throw new HttpError(ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString());
+                ValidateCreditCard(account, request.ClientLanguageCode);
             }
-
+            
             var rule = _ruleCalculator.GetActiveDisableFor(
                 request.PickupDate.HasValue,
                 request.PickupDate.HasValue 
@@ -214,6 +225,53 @@ namespace apcurium.MK.Booking.Api.Services
                 IBSStatusId = "",
                 IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", command.ClientLanguageCode),
             };
+        }
+
+        private void ValidateCreditCard(AccountDetail account, string clientLanguageCode)
+        {
+            // check if the account has a credit card
+            if (!account.DefaultCreditCard.HasValue)
+            {
+                throw new HttpError(ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString());
+            }
+
+            // try to preauthorize a small amount on the card to verify the validity
+            if (_configManager.ServerData.PreAuthorizeOnOrderCreation)
+            {
+                var card = _creditCardDao.FindByAccountId(account.Id).First();
+                var preAuthWasASuccess = _paymentService.PreAuthorize(account.Email, card.Token, _configManager.ServerData.PreAuthorizeOnOrderCreationAmount);
+                if (!preAuthWasASuccess)
+                {
+                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                        _resources.Get("CannotCreateOrder_CreditCardWasDeclined", clientLanguageCode));
+                }
+            }
+        }
+        
+        private void ValidateAppVersion(string clientLanguage)
+        {
+            var appVersion = base.Request.Headers.Get("ClientVersion");
+            var minimumAppVersion = _configManager.ServerData.MinimumRequiredAppVersion;
+
+            if (appVersion.IsNullOrEmpty() || minimumAppVersion.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            var minimumMajorMinorBuild = minimumAppVersion.Split(new[]{ "." }, StringSplitOptions.RemoveEmptyEntries);
+            var appMajorMinorBuild = appVersion.Split('.');
+
+            for (var i = 0; i < appMajorMinorBuild.Length; i++)
+            {
+                var appVersionItem = int.Parse(appMajorMinorBuild[i]);
+                var minimumVersionItem = int.Parse(minimumMajorMinorBuild.Length <= i ? "0" : minimumMajorMinorBuild[i]);
+
+                if (appVersionItem < minimumVersionItem)
+                {
+                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                                        _resources.Get("CannotCreateOrderInvalidVersion", clientLanguage));
+                }
+            }
         }
 
         private void ValidateChargeAccountAnswers(string accountNumber, AccountChargeQuestion[] userQuestionsDetails)
