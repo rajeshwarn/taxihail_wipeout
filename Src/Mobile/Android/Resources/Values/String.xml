@@ -549,4 +549,5 @@
   <string name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard">No Credit Card On File.</string>
   <string name="ServiceErrorAccountCharge_InvalidAccountNumber">Invalid account number</string>
   <string name="Modify">Modify</string>
+  <string name="CardExpiredMessage">Your credit card is expired. Add a new card to your account or update card informations to continue.</string>
 </resources>
