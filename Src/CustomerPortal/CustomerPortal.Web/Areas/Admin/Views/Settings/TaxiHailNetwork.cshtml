@@ -1,0 +1,48 @@
+﻿@model CustomerPortal.Web.Entities.Network.TaxiHailNetworkSettings
+
+
+<div id="ul-wrapper">
+    @using (Html.BeginForm("TaxiHailNetwork", "Settings", FormMethod.Post, new {id="taxiHailNetworkForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <input type="hidden" value="@ViewBag.Id" name="id" />
+        <fieldset>
+            <legend>
+                @ViewBag.CompanyName
+            </legend>
+            <div class="editor-field">
+                @Html.LabelFor(x => x.IsInNetwork)
+                @Html.CheckBoxFor(x => x.IsInNetwork, new { id = "IsInNetworkCheckBox", onchange = "CheckChanged(this)" })
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>
+                @Html.DisplayNameFor(x => x.Region)
+            </legend>
+            <div class="editor-coordinate-field">
+                @Html.LabelFor(x => x.Region.CoordinateStart)
+                @Html.EditorFor(x => x.Region.CoordinateStart.Latitude)
+                @Html.EditorFor(x => x.Region.CoordinateStart.Longitude)
+            </div>
+            <div class="editor-coordinate-field">
+                @Html.LabelFor(x => x.Region.CoordinateEnd)
+                @Html.EditorFor(x => x.Region.CoordinateEnd.Latitude)
+                @Html.EditorFor(x => x.Region.CoordinateEnd.Longitude)
+            </div>
+        </fieldset>
+       
+        <input type="submit" class="btn btn-primary" value="Save" />
+    }
+</div>
+
+<script type="text/javascript">
+    function CheckChanged(checkbox) {
+        if (checkbox.checked && !$('#taxiHailNetworkForm').valid()) {
+            $('#IsInNetworkCheckBox').attr('checked', false);
+            alert('please enter start and end regions below');
+        }
+       
+    }
+</script>

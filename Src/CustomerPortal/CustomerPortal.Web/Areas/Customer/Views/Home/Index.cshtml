@@ -83,7 +83,12 @@
                 @Html.Action("Color", "Settings", new { area = "Admin", id = Model.Company.Id })
             }
         </div>
-      
+        <div class="tab-pane" id='tab-th-network'>
+            @if (User.IsInRole(RoleName.Admin))
+            {
+                @Html.Action("TaxiHailNetwork", "Settings", new { area = "Admin", id = Model.Company.Id })
+            }
+        </div>
         <div class="tab-pane active" id="tab-questionnaire">
             @if (Model.ShowQuestionnaireInEditMode)
             {
@@ -101,10 +106,7 @@
                 <a class="btn" href="@Url.Action("CreateKiosk", "Home", new { area = "Admin", id = Model.Company.Id })">Create Kisok Site</a>                
             }
         </div>
-        <div class="tab-pane" id="tab-th-network">
-            @Html.Partial("_TabTaxiHailNetwork", Model)
-        </div>
-
+        
         <div class="tab-pane" id="tab-description">
             @Html.Partial("_TabDescription", Model)
         </div>
