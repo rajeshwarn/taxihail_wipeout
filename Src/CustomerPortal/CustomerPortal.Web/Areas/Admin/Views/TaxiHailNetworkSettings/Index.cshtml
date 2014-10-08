@@ -13,13 +13,13 @@
             </legend>
             <div class="editor-coordinate-field">
                 @Html.LabelFor(x => x.Region.CoordinateStart)
-                @Html.EditorFor(x => x.Region.CoordinateStart.Latitude)
-                @Html.EditorFor(x => x.Region.CoordinateStart.Longitude)
+                @Html.TextBoxFor(x => x.Region.CoordinateStart.Latitude, new { id = "StartLatitude", onkeyup = "CoordinatesChanged()" })
+                @Html.TextBoxFor(x => x.Region.CoordinateStart.Longitude, new { id = "StartLongitude", onkeyup = "CoordinatesChanged()" })
             </div>
             <div class="editor-coordinate-field">
                 @Html.LabelFor(x => x.Region.CoordinateEnd)
-                @Html.EditorFor(x => x.Region.CoordinateEnd.Latitude)
-                @Html.EditorFor(x => x.Region.CoordinateEnd.Longitude)
+                @Html.TextBoxFor(x => x.Region.CoordinateEnd.Latitude, new { id = "EndLongitude", onkeyup = "CoordinatesChanged()" })
+                @Html.TextBoxFor(x => x.Region.CoordinateEnd.Longitude, new { id = "EndLongitude", onkeyup = "CoordinatesChanged()" })
             </div>
         </fieldset>
 
@@ -40,6 +40,16 @@
 </div>
 
 <script type="text/javascript">
+
+    function CoordinatesChanged() {
+        var startLat = $("#StartLatitude").val();
+        var startLon = $("#StartLongitude").val();
+        var endLat = $("#EndLongitude").val();
+        var endLon = $("#EndLongitude").val();
+
+        alert("Tomato");
+    }
+
     function CheckChanged(checkbox) {
         if (checkbox.checked && !$('#taxiHailNetworkForm').valid()) {
             $('#IsInNetworkCheckBox').attr('checked', false);
