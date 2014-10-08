@@ -45,6 +45,7 @@
     <Compile Include="Configuration\Attributes\CustomizableByCompanyAttribute.cs" />
     <Compile Include="Configuration\Attributes\RequiredAtStartup.cs" />
     <Compile Include="Configuration\Attributes\SendToClientAttribute.cs" />
+    <Compile Include="Configuration\Helpers\SettingsLoader.cs" />
     <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
     <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />
@@ -110,7 +111,6 @@
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Extensions\ActionExtension.cs" />
     <Compile Include="Entity\AccountChargeQuestion.cs" />
-    <Compile Include="Configuration\Helpers\ConfigManagerLoader.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

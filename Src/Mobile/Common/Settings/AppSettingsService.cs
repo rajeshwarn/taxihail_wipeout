@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 					{
 						string serializedData = reader.ReadToEnd();
 						Dictionary<string,string> values = JsonObject.Parse(serializedData);
-						ConfigManagerLoader.InitializeDataObjects (Data, values, _logger);
+						SettingsLoader.InitializeDataObjects (Data, values, _logger);
 					}
 				}
 			}
@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			_logger.LogMessage("load settings from server");
 
 			var settingsFromServer = TinyIoCContainer.Current.Resolve<ConfigurationClientService>().GetSettings();
-			ConfigManagerLoader.InitializeDataObjects (Data, settingsFromServer, _logger, new []{ "ServiceUrl", "CanChangeServiceUrl" });
+            SettingsLoader.InitializeDataObjects(Data, settingsFromServer, _logger, new[] { "ServiceUrl", "CanChangeServiceUrl" });
 
 			SaveSettings();			
 		}
