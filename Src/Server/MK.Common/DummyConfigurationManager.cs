@@ -3,15 +3,17 @@
 using System;
 using System.Collections.Generic;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Configuration.Impl;
+using MK.Common.Configuration;
 
 #endregion
 
 namespace apcurium.MK.Common
 {
-    public class DummyConfigManager : IConfigurationManager
+    public class DummyServerSettings : IServerSettings
     {
-        public DummyConfigManager(Dictionary<string, string> dictionary = null)
+        public DummyServerSettings(Dictionary<string, string> dictionary = null)
         {
             if (dictionary == null)
             {
@@ -19,36 +21,30 @@ namespace apcurium.MK.Common
             }
 
             AppSettings = dictionary;
-        }
 
+            ServerData = new ServerTaxiHailSetting();
+            Load();
+        }
+        public void Load()
+        {
+            SettingsLoader.InitializeDataObjects(ServerData, GetSettings(), null);
+        }
         private IDictionary<string, string> AppSettings { get; set; }
 
-        public void Reset()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetSetting(string key)
-        {
-            string value;
-            AppSettings.TryGetValue(key, out value);
-
-            return value;
-        }
-
-        public T GetSetting<T>(string key, T defaultValue) where T : struct
-        {
-            throw new NotImplementedException();
-        }
+        public ServerTaxiHailSetting ServerData { get; private set; }
 
         public IDictionary<string, string> GetSettings()
         {
             return AppSettings;
         }
 
-        public ClientPaymentSettings GetPaymentSettings(bool force = true)
+        public ClientPaymentSettings GetPaymentSettings()
         {
             throw new NotImplementedException();
+        }
+
+        public void Reload()
+        {
         }
 
         public void AddOrSet(string key, string value)

@@ -30,7 +30,7 @@ using log4net;
 using Microsoft.Practices.Unity;
 using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
-using ConfigurationManager = apcurium.MK.Common.Configuration.Impl.ConfigurationManager;
+using ServiceStack.ServiceInterface;
 using DeploymentServiceTools;
 using ServiceStack.Text;
 using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
@@ -41,6 +41,8 @@ namespace DatabaseInitializer
 {
     public class Program
     {
+        private const string LocalDevProjectName = "MKWebDev";
+
         private static string AssemblyDirectory
         {
             get
@@ -91,11 +93,10 @@ namespace DatabaseInitializer
                 var module = new Module();
                 module.Init(container, connectionString);
                 
-                var configurationManager = new ConfigurationManager
-                    (() => new ConfigurationDbContext(connectionString.ConnectionString), container.Resolve<ILogger>());
+                var serverSettings = container.Resolve<IServerSettings>();
 
                 //for dev company, delete old database to prevent keeping too many databases
-                if (param.CompanyName == "MKWebDev" && isUpdate)
+                if (param.CompanyName == LocalDevProjectName && isUpdate)
                 {
 #if DEBUG
                     Console.WriteLine("Drop Existing Database? Y or N");
@@ -108,7 +109,7 @@ namespace DatabaseInitializer
 #endif
                 }
 
-                var appSettings = GetCombinedSettings(isUpdate ? configurationManager.GetSettings() : null, param.CompanyName);
+                var commandBus = container.Resolve<ICommandBus>();
 
                 if (isUpdate)
                 {                    
@@ -121,7 +122,7 @@ namespace DatabaseInitializer
                 Console.WriteLine("Add user for IIS...");
 
                 ////add user for IIS IIS APPPOOL\MyCompany
-                if ((param.CompanyName != "MKWebDev") && (connectionString.ConnectionString.ToLower().Contains("integrated security=true")))
+                if ((param.CompanyName != LocalDevProjectName) && (connectionString.ConnectionString.ToLower().Contains("integrated security=true")))
                 {
                     creatorDb.AddUserAndRighst(param.MasterConnectionString, connectionString.ConnectionString,
                         "IIS APPPOOL\\" + param.CompanyName, param.CompanyName);
@@ -136,7 +137,6 @@ namespace DatabaseInitializer
                 }
 
                 //Init data
-                var commandBus = container.Resolve<ICommandBus>();
                 var companyIsCreated = container.Resolve<IEventsPlayBackService>().CountEvent("Company") > 0;
 
                 if (!companyIsCreated)
@@ -158,8 +158,15 @@ namespace DatabaseInitializer
                     migrator.Do();
                 }
 
-                //Save settings so that next calls to referenceDataService has the IBS Url
-                AddOrUpdateAppSettings(commandBus, appSettings);
+                IDictionary<string, string> appSettings = new Dictionary<string, string>();
+
+                if (!isUpdate)
+                {
+                    appSettings = GetCompanySettings(param.CompanyName);
+
+                    //Save settings so that next calls to referenceDataService has the IBS Url
+                    AddOrUpdateAppSettings(commandBus, appSettings);
+                }
 
                 if (isUpdate)
                 {
@@ -169,22 +176,24 @@ namespace DatabaseInitializer
                     var replayService = container.Resolve<IEventsPlayBackService>();
                     replayService.ReplayAllEvents();
 
+                    appSettings = serverSettings.GetSettings();
+
                     var tariffs = new TariffDao(() => new BookingDbContext(connectionString.ConnectionString));
                     if (tariffs.GetAll().All(x => x.Type != (int)TariffType.Default))
                     {
                         // Default rate does not exist for this company 
-                        CreateDefaultTariff(configurationManager, commandBus);
+                        CreateDefaultTariff(serverSettings, commandBus);
                     }
-
+                    
                     CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
                     Console.WriteLine("Done playing events...");
 
                     EnsureDefaultAccountsExists(connectionString, commandBus);
                 }
                 else
-                {                    
+                {
                     // Create default rate for company
-                    CreateDefaultTariff(configurationManager, commandBus);
+                    CreateDefaultTariff(serverSettings, commandBus);
                     CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
 
                     FetchingIbsDefaults(container, commandBus);
@@ -207,7 +216,7 @@ namespace DatabaseInitializer
                 var vehicleTypes = new VehicleTypeDao(() => new BookingDbContext(connectionString.ConnectionString));
                 if (!vehicleTypes.GetAll().Any())
                 {
-                    appSettings["Client.VehicleTypeSelectionEnabled"] = "false";
+                    appSettings["VehicleTypeSelectionEnabled"] = "false";
                     AddOrUpdateAppSettings(commandBus, appSettings);
                     CreateDefaultVehicleTypes(container, commandBus);
                 }
@@ -222,7 +231,7 @@ namespace DatabaseInitializer
                         NotificationSettings = new NotificationSettings
                         {
                             Enabled = true,
-                            BookingConfirmationEmail = configurationManager.GetSetting("Booking.ConfirmationEmail", true),
+                            BookingConfirmationEmail = true,
                             ConfirmPairingPush = true,
                             DriverAssignedPush = true,
                             NearbyTaxiPush = true,
@@ -444,14 +453,14 @@ namespace DatabaseInitializer
                 }
                 var paramFileContent = File.ReadAllText(paramFile);
 
-                result = ServiceStack.Text.JsonSerializer.DeserializeFromString<DatabaseInitializerParams>(paramFileContent); 
+                result = JsonSerializer.DeserializeFromString<DatabaseInitializerParams>(paramFileContent); 
             }
             else if (args.Length > 0)
             {
                 result.CompanyName = args[0];
             }
 
-            result.CompanyName = string.IsNullOrWhiteSpace(result.CompanyName) ? "MKWebDev" : result.CompanyName;
+            result.CompanyName = string.IsNullOrWhiteSpace(result.CompanyName) ? LocalDevProjectName : result.CompanyName;
 
             //Sql instance name
             if (string.IsNullOrWhiteSpace(result.MkWebConnectionString) && (args.Length > 1))
@@ -571,7 +580,7 @@ namespace DatabaseInitializer
             }
         }
 
-        private static void CheckandMigrateDefaultRules(ConnectionStringSettings connectionString, ICommandBus commandBus, Dictionary<string, string> appSettings)
+        private static void CheckandMigrateDefaultRules(ConnectionStringSettings connectionString, ICommandBus commandBus, IDictionary<string, string> appSettings)
         {
             var rules = new RuleDao(() => new BookingDbContext(connectionString.ConnectionString));
             if (
@@ -727,37 +736,25 @@ namespace DatabaseInitializer
             AddOrUpdateAppSettings(commandBus, appSettings);
         }
 
-        private static Dictionary<string, string> GetCombinedSettings(IDictionary<string, string> settingsInDb, string companyName )
+        private static Dictionary<string, string> GetCompanySettings(string companyName)
         {            
-            //Create settings
+            // Create settings
             var appSettings = new Dictionary<string, string>();
-            var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\Common.json"));
+
+            Console.WriteLine("Loading company settings...");
+
+            var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
             var objectSettings = JObject.Parse(jsonSettings);
 
-            Console.WriteLine("Loading settings...");
-            
             foreach (var token in objectSettings)
             {
                 appSettings[token.Key] = token.Value.ToString();
             }
-
-            jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
-            objectSettings = JObject.Parse(jsonSettings);
             
-            foreach (var token in objectSettings)
-            {
-                appSettings[token.Key] = token.Value.ToString();
-            }
-
-            if (settingsInDb != null)
-            {
-                settingsInDb.ForEach(setting => appSettings[setting.Key] = setting.Value);
-            }
-
             return appSettings;
         }
 
-        private static void AddOrUpdateAppSettings(ICommandBus commandBus, Dictionary<string, string> appSettings)
+        private static void AddOrUpdateAppSettings(ICommandBus commandBus, IDictionary<string, string> appSettings)
         {
             commandBus.Send(new AddOrUpdateAppSettings
             {
@@ -766,16 +763,13 @@ namespace DatabaseInitializer
             });
         }
 
-        private static void CreateDefaultTariff(IConfigurationManager configurationManager, ICommandBus commandBus)
+        private static void CreateDefaultTariff(IServerSettings serverSettings, ICommandBus commandBus)
         {
-            var flatRate = configurationManager.GetSetting("Direction.FlateRate");
-            var ratePerKm = configurationManager.GetSetting("Direction.RatePerKm");
-
             commandBus.Send(new CreateTariff
             {
                 Type = TariffType.Default,
-                KilometricRate = double.Parse(ratePerKm, CultureInfo.InvariantCulture),
-                FlatRate = decimal.Parse(flatRate, CultureInfo.InvariantCulture),
+                KilometricRate = serverSettings.ServerData.Direction.RatePerKm,
+                FlatRate = serverSettings.ServerData.Direction.FlateRate,
                 MarginOfError = 20,
                 CompanyId = AppConstants.CompanyId,
                 TariffId = Guid.NewGuid(),

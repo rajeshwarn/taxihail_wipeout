@@ -18,11 +18,11 @@ namespace apcurium.MK.Booking.Api.Helpers
         private readonly IOrderDao _orderDao;
         private readonly Resources.Resources _resources;
 
-        public OrderStatusHelper(IOrderDao orderDao, IConfigurationManager configurationManager, IAppSettings appSettings)
+        public OrderStatusHelper(IOrderDao orderDao, IServerSettings serverSettings)
         {
             _orderDao = orderDao;
 
-            _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public virtual OrderStatusDetail GetOrderStatus(Guid orderId, IAuthSession session)
@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Api.Helpers
                     Status = OrderStatus.Created,
                     IBSOrderId =  0,
                     IBSStatusId = "",
-                    IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", "en"),
+                    IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING"),
                 };
             }
 

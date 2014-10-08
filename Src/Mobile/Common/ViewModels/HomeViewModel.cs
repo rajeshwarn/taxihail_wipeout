@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -7,14 +6,10 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
-using Cirrious.MvvmCross.ViewModels;
-using ServiceStack.Common.Web;
 using ServiceStack.Text;
-using apcurium.MK.Booking.Mobile.Messages;
 using System.Linq;
 using System.Reactive.Linq;
 using System;
-using System.Threading;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Data;
 

@@ -20,19 +20,19 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
     {
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
 
-        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, ICreditCardDao creditCardDao, IIbsOrderService ibs, IConfigurationManager configurationManager)
+        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings)
         {
             _accountDao = accountDao;
             _dao = dao;
             _paymentDao = paymentDao;
             _creditCardDao = creditCardDao;
             _ibs = ibs;
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
         }
 
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 return;
             }
 
-            if (_configurationManager.GetSetting("SendDetailedPaymentInfoToDriver", true))
+            if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
                 SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
             }

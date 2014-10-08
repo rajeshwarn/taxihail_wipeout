@@ -15,14 +15,17 @@ namespace apcurium.MK.Booking.Resources
 {
     public class Resources : DynamicObject
     {
-        private readonly IAppSettings _appSettings;
+        private readonly IServerSettings _serverSettings;
         private readonly ResourceManager _resources;
         private const string DefaultLanguageCode = "en";
 
-        public Resources(string applicationKey, IAppSettings appSettings)
+        public Resources(IServerSettings serverSettings)
         {
-            _appSettings = appSettings;
+            _serverSettings = serverSettings;
+            
             var names = GetType().Assembly.GetManifestResourceNames();
+
+            var applicationKey = serverSettings.ServerData.TaxiHail.ApplicationKey;
             var resourceName = "apcurium.MK.Booking.Resources." + applicationKey + ".resources";
 
             MissingResourceFile = names.None(n => n.ToLower() == resourceName.ToLower());
@@ -77,7 +80,7 @@ namespace apcurium.MK.Booking.Resources
 
         public string FormatPrice(double? price)
         {
-            var culture = _appSettings.Data.PriceFormat;
+            var culture = _serverSettings.ServerData.PriceFormat;
             var currencyPriceFormat = Get("CurrencyPriceFormat", culture);
             return string.Format(new CultureInfo(culture), currencyPriceFormat, price.HasValue ? price.Value : 0);
         }

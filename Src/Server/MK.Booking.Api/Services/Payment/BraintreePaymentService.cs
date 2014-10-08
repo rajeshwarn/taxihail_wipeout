@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             IIbsOrderService ibs,
             IAccountDao accountDao,
             IOrderPaymentDao paymentDao,
-            IConfigurationManager configManager,
+            IServerSettings serverSettings,
             IPairingService pairingService)
         {
             _commandBus = commandBus;
@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             BraintreeGateway =
                     GetBraintreeGateway(
-                        ((ServerPaymentSettings)configManager.GetPaymentSettings()).BraintreeServerSettings);
+                        ((ServerPaymentSettings)serverSettings.GetPaymentSettings()).BraintreeServerSettings);
         }
         
         public TokenizedCreditCardResponse Post(TokenizeCreditCardBraintreeRequest tokenizeRequest)

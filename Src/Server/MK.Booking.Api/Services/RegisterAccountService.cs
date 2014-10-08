@@ -25,15 +25,15 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IAccountDao _accountDao;
         private readonly IAccountWebServiceClient _accountWebServiceClient;
         private readonly ICommandBus _commandBus;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _serverSettings;
 
         public RegisterAccountService(ICommandBus commandBus, IAccountWebServiceClient accountWebServiceClient,
-            IAccountDao accountDao, IConfigurationManager configManager)
+            IAccountDao accountDao, IServerSettings serverSettings)
         {
             _commandBus = commandBus;
             _accountDao = accountDao;
             _accountWebServiceClient = accountWebServiceClient;
-            _configManager = configManager;
+            _serverSettings = serverSettings;
         }
 
         public object Post(RegisterAccount request)
@@ -78,15 +78,12 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
-                var setting = _configManager.GetSetting("AccountActivationDisabled");
-                var accountActivationDisabled =
-                    bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
+                var accountActivationDisabled = _serverSettings.ServerData.AccountActivationDisabled;
+                var smsConfirmationEnabled = _serverSettings.ServerData.SMSConfirmationEnabled;
 
-                setting = _configManager.GetSetting("Client.SMSConfirmationEnabled");
-                var smsConfirmationEnabled =
-                    bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
-
-                var confirmationToken = smsConfirmationEnabled ? GenerateActivationCode() : Guid.NewGuid().ToString();
+                var confirmationToken = smsConfirmationEnabled 
+                    ? GenerateActivationCode() 
+                    : Guid.NewGuid().ToString();
 
                 var command = new Commands.RegisterAccount();
 
@@ -108,7 +105,6 @@ namespace apcurium.MK.Booking.Api.Services
 
                 if (!accountActivationDisabled)
                 {
-
                     if (smsConfirmationEnabled
                         && (request.ActivationMethod == null  
                                 || request.ActivationMethod == ActivationMethod.Sms))
@@ -126,13 +122,11 @@ namespace apcurium.MK.Booking.Api.Services
                         {
                             ClientLanguageCode = command.Language,
                             EmailAddress = command.Email,
-                        BaseUrl = new Uri(root),
+                            BaseUrl = new Uri(root),
                             ConfirmationUrl =
-                                new Uri(root +
-                                        string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken)),
+                                new Uri(root + string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken)),
                         });
                     }
-                    
                 }
 
                 return new Account {Id = command.AccountId};

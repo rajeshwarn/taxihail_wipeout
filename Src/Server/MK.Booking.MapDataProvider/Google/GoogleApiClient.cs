@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             "airport", "transit_station", "bus_station", "train_station",
             "route", "postal_code", "street_address"
         };
-		public GoogleApiClient(IAppSettings settings, ILogger logger, IGeocoder fallbackGeocoder = null)
+        public GoogleApiClient(IAppSettings settings, ILogger logger, IGeocoder fallbackGeocoder = null)
         {
             _logger = logger;
             _settings = settings;
@@ -36,13 +36,13 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
         protected string PlacesApiKey
         {
-            get { return _settings.Data.PlacesApiKey; }
+            get { return _settings.Data.Map.PlacesApiKey; }
         }
 
 		public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius,
             string pipedTypeList = null)
         {
-            pipedTypeList = pipedTypeList ?? new PlaceTypes(_settings.Data.PlacesTypes).GetPipedTypeList();
+            pipedTypeList = pipedTypeList ?? new PlaceTypes(_settings.Data.GeoLoc.PlacesTypes).GetPipedTypeList();
             var client = new JsonServiceClient(PlacesServiceUrl);
 
             var @params = new Dictionary<string, string>

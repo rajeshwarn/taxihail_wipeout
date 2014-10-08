@@ -64,6 +64,7 @@
     <Compile Include="DeleteAccountCreditCards.cs" />
     <Compile Include="DeleteAllCreditCards.cs" />
     <Compile Include="DeleteRatingType.cs" />
+    <Compile Include="DeleteAppSettings.cs" />
     <Compile Include="DeleteVehicleType.cs" />
     <Compile Include="InitiateCreditCardPayment.cs" />
     <Compile Include="InitiatePayPalExpressCheckoutPayment.cs" />
