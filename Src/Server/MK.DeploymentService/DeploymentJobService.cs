@@ -65,7 +65,6 @@ namespace MK.DeploymentService
             }
         }
 
-        //private ConfigurationManagerDbContext dbContext;
         private void CheckAndRunJobWithBuild()
         {
             var job = new DeploymentJobServiceClient().GetNext();

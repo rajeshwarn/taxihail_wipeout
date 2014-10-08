@@ -12,6 +12,10 @@ namespace apcurium.MK.Common.Enumeration
 // ReSharper disable once InconsistentNaming
         en,
 
+        [Description("Spanish")]
+// ReSharper disable once InconsistentNaming
+        es,
+
         [Description("French")]
 // ReSharper disable once InconsistentNaming
         fr

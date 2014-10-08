@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Jobs;
+using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
@@ -38,11 +39,12 @@ namespace apcurium.MK.Booking.Api.Services
 
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
+        private readonly IPaymentService _paymentService;
+        private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountChargeDao _accountChargeDao;
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly ICommandBus _commandBus;
-        private readonly IConfigurationManager _configManager;
-        private readonly IAppSettings _appSettings;
+        private readonly IServerSettings _serverSettings;
         private readonly ReferenceDataService _referenceDataService;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
@@ -52,55 +54,63 @@ namespace apcurium.MK.Booking.Api.Services
         public CreateOrderService(ICommandBus commandBus,
             IBookingWebServiceClient bookingWebServiceClient,
             IAccountDao accountDao,
-            IConfigurationManager configManager,
-            IAppSettings appSettings,
+            IServerSettings serverSettings,
             ReferenceDataService referenceDataService,
             IStaticDataWebServiceClient staticDataWebServiceClient,
             IRuleCalculator ruleCalculator,
             IUpdateOrderStatusJob updateOrderStatusJob,
             IAccountChargeDao accountChargeDao,
-            IOrderDao orderDao)
+            IOrderDao orderDao,
+            IPaymentService paymentService,
+            ICreditCardDao creditCardDao)
         {
             _accountChargeDao = accountChargeDao;
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
             _accountDao = accountDao;
             _referenceDataService = referenceDataService;
-            _configManager = configManager;
-            _appSettings = appSettings;
+            _serverSettings = serverSettings;
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _ruleCalculator = ruleCalculator;
             _updateOrderStatusJob = updateOrderStatusJob;
             _orderDao = orderDao;
+            _paymentService = paymentService;
+            _creditCardDao = creditCardDao;
 
-            _resources = new Resources.Resources(_configManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
+            _resources = new Resources.Resources(_serverSettings);
         }
 
         public object Post(CreateOrder request)
         {
             Log.Info("Create order request : " + request.ToJson());
 
+            if (!request.FromWebApp)
+            {
+                ValidateAppVersion(request.ClientLanguageCode);
+            }
+
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+
             // User can still create future order, but we allow only one active Book now order.
             if (!request.PickupDate.HasValue)
             {
                 var pendingOrderId = GetPendingOrder();
 
                 // We don't allow order creation if there's already an order scheduled
-                if (!_appSettings.Data.AllowSimultaneousAppOrders && pendingOrderId != null && !request.FromWebApp)
+                if (!_serverSettings.ServerData.AllowSimultaneousAppOrders 
+                    && pendingOrderId != null 
+                    && !request.FromWebApp)
                 {
                     throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
                 }
             }
 
-            //check if the account has a credit card
             if (request.Settings.ChargeTypeId.HasValue
-                && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id
-                && !account.DefaultCreditCard.HasValue)
+                && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
             {
-                throw new HttpError(ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString());
+                ValidateCreditCard(account, request.ClientLanguageCode);
             }
-
+            
             var rule = _ruleCalculator.GetActiveDisableFor(
                 request.PickupDate.HasValue,
                 request.PickupDate.HasValue 
@@ -138,8 +148,8 @@ namespace apcurium.MK.Booking.Api.Services
                 ? 1 
                 : request.Settings.Passengers;
 
-            var needATarif = bool.Parse(_configManager.GetSetting("Direction.NeedAValidTarif"));
-            if (needATarif && (!request.Estimate.Price.HasValue || request.Estimate.Price == 0))
+            if (_serverSettings.ServerData.Direction.NeedAValidTarif 
+                && (!request.Estimate.Price.HasValue || request.Estimate.Price == 0))
             {
                 throw new HttpError(ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString());
             }
@@ -161,7 +171,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 // this must be localized with the priceformat to be localized in the language of the company
                 // because it is sent to the driver
-                chargeTypeIbs = _resources.Get(chargeTypeKey, _appSettings.Data.PriceFormat);
+                chargeTypeIbs = _resources.Get(chargeTypeKey, _serverSettings.ServerData.PriceFormat);
 
                 chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
             }
@@ -176,14 +186,12 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             //Temporary solution for Aexid, we call the save extr payment to send the account info.  if not successful, we cancel the order.
-            var result = TryToSendAccountInformation(  request.Id,   ibsOrderId.Value , request, account);
-            if ( result.HasValue  )
+            var result = TryToSendAccountInformation(request.Id, ibsOrderId.Value, request, account);
+            if (result.HasValue)
             {
-                
                 return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + "_" + Math.Abs(result.Value));
             }
             
-
             var command = Mapper.Map<Commands.CreateOrder>(request);
             var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(request);
 
@@ -217,6 +225,53 @@ namespace apcurium.MK.Booking.Api.Services
                 IBSStatusId = "",
                 IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", command.ClientLanguageCode),
             };
+        }
+
+        private void ValidateCreditCard(AccountDetail account, string clientLanguageCode)
+        {
+            // check if the account has a credit card
+            if (!account.DefaultCreditCard.HasValue)
+            {
+                throw new HttpError(ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString());
+            }
+
+            // try to preauthorize a small amount on the card to verify the validity
+            if (_serverSettings.ServerData.PreAuthorizeOnOrderCreation)
+            {
+                var card = _creditCardDao.FindByAccountId(account.Id).First();
+                var preAuthWasASuccess = _paymentService.PreAuthorize(account.Email, card.Token, _serverSettings.ServerData.PreAuthorizeOnOrderCreationAmount);
+                if (!preAuthWasASuccess)
+                {
+                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                        _resources.Get("CannotCreateOrder_CreditCardWasDeclined", clientLanguageCode));
+                }
+            }
+        }
+        
+        private void ValidateAppVersion(string clientLanguage)
+        {
+            var appVersion = base.Request.Headers.Get("ClientVersion");
+            var minimumAppVersion = _serverSettings.ServerData.MinimumRequiredAppVersion;
+
+            if (appVersion.IsNullOrEmpty() || minimumAppVersion.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            var minimumMajorMinorBuild = minimumAppVersion.Split(new[]{ "." }, StringSplitOptions.RemoveEmptyEntries);
+            var appMajorMinorBuild = appVersion.Split('.');
+
+            for (var i = 0; i < appMajorMinorBuild.Length; i++)
+            {
+                var appVersionItem = int.Parse(appMajorMinorBuild[i]);
+                var minimumVersionItem = int.Parse(minimumMajorMinorBuild.Length <= i ? "0" : minimumMajorMinorBuild[i]);
+
+                if (appVersionItem < minimumVersionItem)
+                {
+                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                                        _resources.Get("CannotCreateOrderInvalidVersion", clientLanguage));
+                }
+            }
         }
 
         private void ValidateChargeAccountAnswers(string accountNumber, AccountChargeQuestion[] userQuestionsDetails)
@@ -254,13 +309,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         private int? TryToSendAccountInformation(Guid orderId, int ibsOrderId, CreateOrder request, AccountDetail account)
         {
-            var accountChargeTypeId = _configManager.GetSetting<int>("AccountChargeTypeId", -1);
-            if (accountChargeTypeId == -1)
-            {
-                accountChargeTypeId = _configManager.GetSetting<int>("Client.AccountChargeTypeId", -1);
-            }
-
-            if (accountChargeTypeId == request.Settings.ChargeTypeId)
+            if (ChargeTypes.Account.Id == request.Settings.ChargeTypeId)
             {
                 return  _bookingWebServiceClient.SendAccountInformation(orderId, ibsOrderId, "Account", request.Settings.AccountNumber, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, account.Email);                
             }
@@ -282,8 +331,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             //TODO : need to check ibs setup for shortesst time.
 
-            var ibsServerTimeDifference =
-                _configManager.GetSetting("IBS.TimeDifference").SelectOrDefault(setting => long.Parse(setting), 0);
+            var ibsServerTimeDifference = _serverSettings.ServerData.IBS.TimeDifference;
             var offsetedTime = DateTime.Now.AddMinutes(2);
             if (ibsServerTimeDifference != 0)
             {
@@ -345,7 +393,7 @@ namespace apcurium.MK.Booking.Api.Services
             // Put Building Name in note, if specified
 
             // Get NoteTemplate from app settings, if it exists
-            var noteTemplate = _configManager.GetSetting("IBS.NoteTemplate");
+            var noteTemplate = _serverSettings.ServerData.IBS.NoteTemplate;
 
             if (!string.IsNullOrWhiteSpace(buildingName))
             {

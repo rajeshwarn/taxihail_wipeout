@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
         private readonly ILogger _logger;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _serverSettings;
         private readonly IPairingService _pairingService;
         private readonly IIbsOrderService _ibs;
         private readonly IAccountDao _accountDao;
@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             IIbsOrderService ibs,
             IAccountDao accountDao,
             IOrderPaymentDao paymentDao,
-            IConfigurationManager configManager, 
+            IServerSettings serverSettings, 
             IPairingService pairingService)
         {
             _commandBus = commandBus;
@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _ibs = ibs;
             _accountDao = accountDao;
             _paymentDao = paymentDao;
-            _configManager = configManager;
+            _serverSettings = serverSettings;
             _pairingService = pairingService;
         }
 
@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request)
         {
-            var monerisSettings = _configManager.GetPaymentSettings().MonerisPaymentSettings;
+            var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
 
             try
             {
@@ -126,8 +126,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
+        public bool PreAuthorize(string email, string cardToken, decimal amountToPreAuthorize)
+        {
+            return true;
+        }
+
         public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request)
         {
+            string transactionId = null;
             try
             {
                 var isSuccessful = false;
@@ -151,17 +157,19 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     };
                 }
 
-                var monerisSettings = _configManager.GetPaymentSettings().MonerisPaymentSettings;
+                var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
 
                 // PreAuthorize transaction
                 var preAuthorizeCommand = new ResPreauthCC(request.CardToken, request.OrderId.ToString(), request.Amount.ToString("F"), CryptType_SSLEnabledMerchant);
                 var preAuthRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
                 var preAuthReceipt = preAuthRequest.GetReceipt();
 
+                transactionId = preAuthReceipt.GetTxnNumber();
+
                 var success = RequestSuccesful(preAuthReceipt, out message);
                 if (success)
                 {
-                    var transactionId = preAuthReceipt.GetTxnNumber();
+                    
                     var paymentId = Guid.NewGuid();
 
                     _commandBus.Send(new InitiateCreditCardPayment
@@ -174,6 +182,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         OrderId = request.OrderId,
                         CardToken = request.CardToken,
                         Provider = PaymentProvider.Moneris,
+                        IsNoShowFee = request.IsNoShowFee
                     });
 
                     // wait for OrderPaymentDetail to be created
@@ -185,7 +194,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     var commitReceipt = commitRequest.GetReceipt();
 
                     isSuccessful = RequestSuccesful(commitReceipt, out message);
-                    if (isSuccessful)
+                    if (isSuccessful && !request.IsNoShowFee)
                     {
                         authorizationCode = commitReceipt.GetAuthCode();
                         var commitTransactionId = commitReceipt.GetTxnNumber();
@@ -267,6 +276,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 return new CommitPreauthorizedPaymentResponse
                 {
                     AuthorizationCode = authorizationCode,
+                    TransactionId = transactionId,
                     IsSuccessfull = isSuccessful,
                     Message = isSuccessful ? "Success" : message
                 };
@@ -278,6 +288,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessfull = false,
+                    TransactionId = transactionId,
                     Message = e.Message,
                 };
             }

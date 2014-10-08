@@ -103,8 +103,8 @@ namespace MK.Booking.PayPal.Test
             var returnUrl = "http://example.net/return";
             var cancelUrl = "http://example.net/cancel";
 
-            var configurationManager = new DummyConfigManager();
-            configurationManager.AddOrSet("PriceFormat", "en-US");
+            var dummyServerSettings = new DummyServerSettings();
+            dummyServerSettings.AddOrSet("PriceFormat", "en-US");
 
             var sut = new ExpressCheckoutServiceClient(new PayPalCredentials(), new RegionInfo("en-US"), true);
 

@@ -75,8 +75,11 @@ namespace apcurium.MK.Booking.EventHandlers
                 foreach (var language in languages)
                 {
                     var ratingType = context.Set<RatingTypeDetail>().Find(@event.RatingTypeId, language);
-                    ratingType.Name = @event.Name;
-                    ratingType.Language = @event.Language;
+                    if (ratingType != null)
+                    {
+                        ratingType.Name = @event.Name;
+                        ratingType.Language = @event.Language;
+                    }
                 }
                 context.SaveChanges();
             }

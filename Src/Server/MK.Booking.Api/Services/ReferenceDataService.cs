@@ -20,17 +20,17 @@ namespace apcurium.MK.Booking.Api.Services
     {
         public const string CacheKey = "IBS.StaticData";
         private readonly ICacheClient _cacheClient;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _serverSettings;
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
 
         public ReferenceDataService(
             IStaticDataWebServiceClient staticDataWebServiceClient,
             ICacheClient cacheClient,
-            IConfigurationManager configManager)
+            IServerSettings serverSettings)
         {
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _cacheClient = cacheClient;
-            _configManager = configManager;
+            _serverSettings = serverSettings;
         }
 
         public object Get(ReferenceDataRequest request)
@@ -45,8 +45,8 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!request.WithoutFiltering)
             {
-                result.VehiclesList = FilterReferenceData(result.VehiclesList, "IBS.ExcludedVehicleTypeId");
-                result.CompaniesList = FilterReferenceData(result.CompaniesList, "IBS.ExcludedProviderId");
+                result.VehiclesList = FilterReferenceData(result.VehiclesList, _serverSettings.ServerData.IBS.ExcludedVehicleTypeId);
+                result.CompaniesList = FilterReferenceData(result.CompaniesList, _serverSettings.ServerData.IBS.ExcludedProviderId);
             }
 
             return result;
@@ -76,12 +76,11 @@ namespace apcurium.MK.Booking.Api.Services
             return result;
         }
 
-        private IList<ListItem> FilterReferenceData(IEnumerable<ListItem> reference, string settingName)
+        private IList<ListItem> FilterReferenceData(IEnumerable<ListItem> reference, string excludedTypeId)
         {
-            var excludedVehicleTypeId = _configManager.GetSetting(settingName);
-            var excluded = excludedVehicleTypeId.IsNullOrEmpty()
+            var excluded = excludedTypeId.IsNullOrEmpty()
                 ? new int[0]
-                : excludedVehicleTypeId.Split(';').Select(int.Parse).ToArray();
+                : excludedTypeId.Split(';').Select(int.Parse).ToArray();
 
             return reference.Where(c => excluded.None(e => e == c.Id)).ToList();
         }

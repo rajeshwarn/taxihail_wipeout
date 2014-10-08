@@ -151,6 +151,7 @@
 
             var autPaymentDiv = this.$("#automaticPaymentDiv");
             var autPairingDiv = this.$("#automaticPairingDiv");
+            var noShowFeeDiv = this.$("#noShowFeeDiv");
 
             var btDiv = this.$("#braintreeSettingsDiv");
             var cmtDiv = this.$("#cmtSettingsDiv");
@@ -186,6 +187,7 @@
                 monerisDiv.hide();
                 autPaymentDiv.show();
                 autPairingDiv.show();
+                noShowFeeDiv.show();
             }
             else if (newPaymentMode == "Braintree")
             {
@@ -194,6 +196,7 @@
                 monerisDiv.hide();
                 autPaymentDiv.show();
                 autPairingDiv.show();
+                noShowFeeDiv.show();
             }
             else if (newPaymentMode == "Moneris")
             {
@@ -202,6 +205,7 @@
                 monerisDiv.show();
                 autPaymentDiv.show();
                 autPairingDiv.show();
+                noShowFeeDiv.show();
             }
             else
             {
@@ -210,6 +214,7 @@
                 monerisDiv.hide();
                 autPaymentDiv.hide();
                 autPairingDiv.hide();
+                noShowFeeDiv.hide();
             }
         }
     });

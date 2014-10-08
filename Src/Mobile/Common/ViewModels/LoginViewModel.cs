@@ -257,7 +257,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	                            string message = null;
 	                            if (!Settings.HideCallDispatchButton)
 	                            {
-	                                var companyName = Settings.ApplicationName;
+	                                var companyName = Settings.TaxiHail.ApplicationName;
 	                                var phoneNumber = Settings.DefaultPhoneNumberDisplay;
 	                                message = string.Format(localize[e.Message], companyName, phoneNumber);
 	                            }

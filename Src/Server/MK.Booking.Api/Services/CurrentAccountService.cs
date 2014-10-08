@@ -14,16 +14,15 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class CurrentAccountService : Service
     {
-        public CurrentAccountService(IAccountDao dao, IConfigurationManager configurationManager)
+        public CurrentAccountService(IAccountDao dao, IServerSettings serverSettings)
         {
             Dao = dao;
-            ConfigurationManager = configurationManager;
+            ServerSettings = serverSettings;
         }
 
         protected IAccountDao Dao { get; set; }
-        protected IConfigurationManager ConfigurationManager { get; set; }
-
-
+        protected IServerSettings ServerSettings { get; set; }
+        
         public object Get(CurrentAccount request)
         {
             var session = this.GetSession();
@@ -31,29 +30,11 @@ namespace apcurium.MK.Booking.Api.Services
 
             var currentAccount = Mapper.Map<CurrentAccountResponse>(account);
 
-            currentAccount.Settings.ChargeTypeId = account.Settings.ChargeTypeId ??
-                                                   ParseToNullable(
-                                                       ConfigurationManager.GetSetting(
-                                                           "DefaultBookingSettings.ChargeTypeId"));
-            currentAccount.Settings.VehicleTypeId = account.Settings.VehicleTypeId ??
-                                                    ParseToNullable(
-                                                        ConfigurationManager.GetSetting(
-                                                            "DefaultBookingSettings.VehicleTypeId"));
-            currentAccount.Settings.ProviderId = account.Settings.ProviderId ??
-                                                 ParseToNullable(
-                                                     ConfigurationManager.GetSetting("DefaultBookingSettings.ProviderId"));
+            currentAccount.Settings.ChargeTypeId = account.Settings.ChargeTypeId ?? ServerSettings.ServerData.DefaultBookingSettings.ChargeTypeId;
+            currentAccount.Settings.VehicleTypeId = account.Settings.VehicleTypeId ?? ServerSettings.ServerData.DefaultBookingSettings.VehicleTypeId;
+            currentAccount.Settings.ProviderId = account.Settings.ProviderId ?? ServerSettings.ServerData.DefaultBookingSettings.ProviderId;
 
             return currentAccount;
-        }
-
-        private int? ParseToNullable(string val)
-        {
-            int result;
-            if (int.TryParse(val, out result))
-            {
-                return result;
-            }
-            return default(int?);
         }
     }
 }

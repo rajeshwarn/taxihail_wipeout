@@ -16,11 +16,11 @@ namespace MK.Booking.Google.Tests.GeocodingFixture
     [TestFixture]
     public class given_a_valid_address
     {
-        private TestConfigurationManager _config = new TestConfigurationManager();
+        private TestServerSettings _config = new TestServerSettings();
         [SetUp]
         public void Setup()
         {
-            _sut = new GoogleApiClient(new TestConfigurationManager(), new Logger());
+            _sut = new GoogleApiClient(new TestServerSettings(), new Logger());
             
         }
 

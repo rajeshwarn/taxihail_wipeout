@@ -17,5 +17,6 @@ namespace apcurium.MK.Booking.Events
         public decimal Tip { get; set; }
         public PaymentProvider Provider { get; set; }
         public string CardToken { get; set; }
+        public bool IsNoShowFee { get; set; }
     }
 }

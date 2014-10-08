@@ -14,5 +14,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
         public decimal TipAmount { get; set; }
         public string CardToken { get; set; }
         public Guid OrderId { get; set; }
+        public bool IsNoShowFee { get; set; }
     }
 }

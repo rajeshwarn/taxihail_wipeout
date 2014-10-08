@@ -70,6 +70,11 @@
     <option value="Fake">{{localize "Demo Payment Service"}}</option>
   </select>
 
+  <div class="control-group" id="noShowFeeDiv">
+    <label class="control-label settingsLabel" >{{{localize "No Show Fee (Amount)"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="noShowFee" value="{{noShowFee}}" />
+  </div>
+
   <div class="control-group" id="automaticPaymentDiv">
     <label class="control-label settingsLabel">{{{localize "Automatic Payment"}}}</label>
     <select  name="automaticPayment" class="settingsBox">

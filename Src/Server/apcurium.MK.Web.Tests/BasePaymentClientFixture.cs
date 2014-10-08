@@ -308,14 +308,13 @@ namespace apcurium.MK.Web.Tests
             }
         }
 
-        public void SendPaymentNotification(string message, string vehicleNumber, int ibsOrderId)
+        public void SendPaymentNotification(double totalAmount, double meterAmount, double tipAmount, string authorizationCode,
+            string vehicleNumber)
         {
-            
         }
 
         public void SendMessageToDriver(string message, string vehicleNumber)
         {
-            
         }
 
         public bool Fail { get; set; }

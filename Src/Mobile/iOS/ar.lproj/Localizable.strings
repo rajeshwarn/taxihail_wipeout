@@ -521,3 +521,4 @@
 "ServiceErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
 "DeleteCreditCardTitle"="حذف بطاقة الائتمان";
 "DeleteCreditCard"="حذف بطاقة الائتمان المسجلة في هذا الحساب؟";
+"CardExpiredMessage"="Your credit card is expired. Add a new card to your account or update card informations to continue.";

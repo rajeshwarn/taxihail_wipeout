@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Resources;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
@@ -68,6 +69,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             try
             {
+                if (@event.IsNoShowFee)
+                {
+                    // Don't message user for now
+                    return;
+                }
+
                 _notificationService.SendPaymentCapturePush(@event.OrderId, @event.Amount);
             }
             catch (Exception e)

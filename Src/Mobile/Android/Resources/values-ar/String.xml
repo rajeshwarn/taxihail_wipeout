@@ -146,7 +146,7 @@
   <string name="EntryCodeLabel">رمز الدخول</string>
   <string name="ErrorCreatingOrderTitle">لا يمكن إتمام الحجز</string>
   <string name="EstimatedFareNotAvailable">التكلفة المتوقعة غير متاحة</string>
-  <string name="EstimatePriceFormat">التكلفة المتوقعة :{0} ({1})</string>
+  <string name="EstimatePriceFormat">({التكلفة المتوقعة :{0}ر.س ({1</string>
   <string name="EstimatePriceOver100">إتصال لمعرفة السعر</string>
   <string name="EstimatingFare">جاري تقييم قيمة مشوارك...</string>
   <string name="Facebook">الدخول عبر حساب الفيسبوك</string>
@@ -473,7 +473,7 @@
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
   <string name="PanelMenuViewPaymentInfoText">Card on File</string>
   <string name="LoginSupport">Need support?</string>
-  <string name="CurrencyPriceFormat">{0}</string>
+  <string name="CurrencyPriceFormat">{0}ر.س</string>
   <string name="PendingOrderMessage">You cannot book this ride since an order is already pending. View the order status?</string>
   <string name="PendingOrderView">View</string>
   <string name="PendingOrderCancel">Cancel</string>
@@ -519,4 +519,5 @@
   <string name="View_AccountConfirmationTitle">Account Confirmation</string>
   <string name="View_AccountConfirmation_Button">Confirm</string>
   <string name="View_AccountConfirmation_Label_Code">Code</string>
+  <string name="CardExpiredMessage">Your credit card is expired. Add a new card to your account or update card informations to continue.</string>
 </resources>
