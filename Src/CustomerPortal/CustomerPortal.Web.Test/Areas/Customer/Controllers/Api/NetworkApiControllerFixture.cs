@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using CustomerPortal.Web.Areas.Admin.Models;
+using CustomerPortal.Web.Areas.Admin.Models.RequestResponse;
 using CustomerPortal.Web.Areas.Customer.Controllers.Api;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Test.Helpers.Repository;
@@ -71,13 +72,45 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             var response = Sut.Get(_chrisTaxi.CompanyId);
              Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<TaxiHailNetworkSettings[]>(json));
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
 
             var response2 = Sut.Get(_tonyTaxi.CompanyId);
             Assert.True(response2.IsSuccessStatusCode);
             var json2 = response2.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<TaxiHailNetworkSettings[]>(json2));
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json2));
 
+        }
+
+        [Test]
+        public void Post_Preferences()
+        {
+            var response = Sut.Get(_chrisTaxi.CompanyId);
+            var json = response.Content.ReadAsStringAsync().Result;
+            var chrisPreferences = JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
+
+            var tony = chrisPreferences.FirstOrDefault(p => p.CompanyId == _tonyTaxi.CompanyId);
+            Assert.NotNull(tony,"Precondition Failed");
+            Assert.False(tony.CanAccept, "Precondition Failed");
+            Assert.False(tony.CanDispatch, "Precondition Failed");
+
+            tony.CanAccept = tony.CanDispatch = true;
+
+            response = Sut.Post(new PostCompanyPreferencesRequest()
+            {
+                CompanyId = _chrisTaxi.CompanyId,
+                Preferences = chrisPreferences.ToArray()
+            });
+            Assert.True(response.IsSuccessStatusCode);
+
+
+            response = Sut.Get(_chrisTaxi.CompanyId);
+            json = response.Content.ReadAsStringAsync().Result;
+            chrisPreferences = JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
+
+            tony = chrisPreferences.FirstOrDefault(p => p.CompanyId == _tonyTaxi.CompanyId);
+            Assert.NotNull(tony);
+            Assert.True(tony.CanAccept );
+            Assert.True(tony.CanDispatch);
         }
 
     }
