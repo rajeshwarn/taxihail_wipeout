@@ -1,0 +1,20 @@
+﻿@model CustomerPortal.Web.Models.VersionViewModel
+@{
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    ViewBag.InBrowser = true;
+    <style>
+        #back-link {
+            width: 200px;
+            margin: 0 auto;
+            text-align: center;
+            padding-top: 60px;
+        }
+    </style>
+}
+<div >
+    @Html.Partial("_Email", Model)
+    
+</div>
+<div id="back-link">
+    <a href="@Url.Action("Index", "Home")" class="btn btn-link">Back to company list</a>
+</div>

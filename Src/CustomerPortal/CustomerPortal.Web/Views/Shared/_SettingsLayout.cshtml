@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - TaxiHail Customer Portal</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/bundles/bootstrap/less")
+    </head>
+    <body>
+        <div class="container">
+            <div class="navbar navbar-fixed-top">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <a class="brand" href="#">TaxiHail Customer Portal</a>
+                        <section class="pull-right">
+                            @Html.Partial("_LoginStatusPartial")
+                        </section>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 980px; overflow: hidden;">
+
+                <div>
+                    @if (TempData["message"] != null)
+                    {
+                        <div style="color: forestgreen">@TempData["message"]</div>
+                    }
+
+                    @if (TempData["warning"] != null)
+                    {
+                        <div style="color: firebrick">@TempData["warning"]</div>
+                    }
+                </div>
+
+                @RenderBody()
+            </div>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/bootstrap/js")
+
+        @RenderSection("scripts", false)
+    </body>
+</html>

@@ -1,0 +1,13 @@
+﻿@{
+    var value = ViewData.TemplateInfo.FormattedModelValue;
+}
+
+@if (string.IsNullOrWhiteSpace(Convert.ToString(value)))
+{
+    @Html.ValueNotSet()
+    ;
+}
+else
+{
+    <a href="@Html.AttributeEncode(Model)">@value</a>
+}
