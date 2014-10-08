@@ -219,7 +219,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         private PayPalServerSettings GetPayPalSettings()
         {
-            var paymentSettings = (ServerPaymentSettings) _serverSettings.GetPaymentSettings();
+            var paymentSettings = _serverSettings.GetPaymentSettings();
             if (paymentSettings == null)
                 throw new HttpError(HttpStatusCode.InternalServerError, "InternalServerError",
                     "Payment settings not found");

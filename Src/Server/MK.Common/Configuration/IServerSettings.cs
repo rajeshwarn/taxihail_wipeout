@@ -11,7 +11,7 @@ namespace apcurium.MK.Common.Configuration
     public interface IServerSettings
     {
         ServerTaxiHailSetting ServerData { get; }
-        ClientPaymentSettings GetPaymentSettings();
+        ServerPaymentSettings GetPaymentSettings();
 
         IDictionary<string, string> GetSettings();
         void Reload();

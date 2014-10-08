@@ -58,9 +58,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _paymentDao = paymentDao;
             _pairingService = pairingService;
 
-            BraintreeGateway =
-                    GetBraintreeGateway(
-                        ((ServerPaymentSettings)serverSettings.GetPaymentSettings()).BraintreeServerSettings);
+            BraintreeGateway = GetBraintreeGateway(serverSettings.GetPaymentSettings().BraintreeServerSettings);
         }
         
         public TokenizedCreditCardResponse Post(TokenizeCreditCardBraintreeRequest tokenizeRequest)

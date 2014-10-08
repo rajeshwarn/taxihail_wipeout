@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Common.Tests
             return _config;
         }
 
-        public ClientPaymentSettings GetPaymentSettings()
+        public ServerPaymentSettings GetPaymentSettings()
         {
             throw new NotImplementedException();
         }

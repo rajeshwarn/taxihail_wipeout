@@ -38,7 +38,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             }
         }
 
-        public ClientPaymentSettings GetPaymentSettings()
+        public ServerPaymentSettings GetPaymentSettings()
         {
             using (var context = _contextFactory.Invoke())
             {

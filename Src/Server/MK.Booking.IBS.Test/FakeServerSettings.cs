@@ -38,7 +38,7 @@ namespace MK.Booking.IBS.Test
             return _settings;
         }
 
-        public ClientPaymentSettings GetPaymentSettings()
+        public ServerPaymentSettings GetPaymentSettings()
         {
             throw new NotImplementedException();
         }
