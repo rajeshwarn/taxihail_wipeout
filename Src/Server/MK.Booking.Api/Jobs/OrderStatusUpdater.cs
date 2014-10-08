@@ -163,9 +163,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 && paymentSettings.NoShowFee.Value > 0
                 && account.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
             {
-                var defaultCreditCard = 
-                    _creditCardDao.FindByAccountId(account.Id)
-                                  .FirstOrDefault(c => c.CreditCardId == account.DefaultCreditCard);
+                var defaultCreditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
 
                 if (defaultCreditCard != null)
                 {
@@ -182,12 +180,12 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                     if (paymentResult.IsSuccessfull)
                     {
-                        Log.DebugFormat("No show fee of ammount {0} was charged for order {1}.", paymentSettings.NoShowFee.Value, ibsOrderInfo.IBSOrderId);
+                        Log.DebugFormat("No show fee of amount {0} was charged for order {1}.", paymentSettings.NoShowFee.Value, ibsOrderInfo.IBSOrderId);
                     }
                     else
                     {
                         orderStatusDetail.PairingError = paymentResult.Message;
-                        Log.DebugFormat("Could process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, paymentResult.Message);
+                        Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, paymentResult.Message);
                     }
                 }
             }
