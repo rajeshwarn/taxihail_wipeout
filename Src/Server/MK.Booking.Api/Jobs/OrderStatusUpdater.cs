@@ -172,8 +172,6 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                 if (defaultCreditCard != null)
                 {
-                    orderStatusDetail.NoShowFeeCharged = true;
-
                     var paymentResult = _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
                     {
                         OrderId = orderStatusDetail.OrderId,
@@ -181,7 +179,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         MeterAmount = paymentSettings.NoShowFee.Value,
                         TipAmount = 0,
                         Amount = paymentSettings.NoShowFee.Value,
-                        NoShowFeeCharged = true
+                        IsNoShowFee = true
                     });
 
 

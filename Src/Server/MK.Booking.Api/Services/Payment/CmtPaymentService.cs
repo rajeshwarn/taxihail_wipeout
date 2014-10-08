@@ -353,6 +353,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         Meter = Convert.ToDecimal(request.MeterAmount),
                         CardToken = request.CardToken,
                         Provider = PaymentProvider.Cmt,
+                        IsNoShowFee = request.IsNoShowFee
                     });
 
                     // wait for OrderPaymentDetail to be created
@@ -361,7 +362,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     authorizationCode = authResponse.AuthorizationCode;
 
                     //send information to IBS
-                    if (!request.NoShowFeeCharged)
+                    if (!request.IsNoShowFee)
                     { 
                         try
                         {

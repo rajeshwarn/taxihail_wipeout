@@ -182,6 +182,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         OrderId = request.OrderId,
                         CardToken = request.CardToken,
                         Provider = PaymentProvider.Moneris,
+                        IsNoShowFee = request.IsNoShowFee
                     });
 
                     // wait for OrderPaymentDetail to be created
@@ -193,7 +194,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     var commitReceipt = commitRequest.GetReceipt();
 
                     isSuccessful = RequestSuccesful(commitReceipt, out message);
-                    if (isSuccessful && !request.NoShowFeeCharged)
+                    if (isSuccessful && !request.IsNoShowFee)
                     {
                         authorizationCode = commitReceipt.GetAuthCode();
                         var commitTransactionId = commitReceipt.GetTxnNumber();

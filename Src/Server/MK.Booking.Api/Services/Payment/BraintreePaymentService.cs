@@ -207,6 +207,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         OrderId = request.OrderId,
                         CardToken = request.CardToken,
                         Provider = PaymentProvider.Braintree,
+                        IsNoShowFee = request.IsNoShowFee
                     });
 
                     // wait for OrderPaymentDetail to be created
@@ -219,7 +220,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     isSuccessful = settlementResult.IsSuccess() && (settlementResult.Target != null) &&
                                    (settlementResult.Target.ProcessorAuthorizationCode.HasValue());
 
-                    if (isSuccessful && !request.NoShowFeeCharged)
+                    if (isSuccessful && !request.IsNoShowFee)
                     {
                         authorizationCode = settlementResult.Target.ProcessorAuthorizationCode;
 

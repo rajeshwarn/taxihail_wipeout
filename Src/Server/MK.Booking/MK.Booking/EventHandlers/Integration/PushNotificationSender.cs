@@ -29,13 +29,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             IEventHandler<CreditCardPaymentCaptured>
     {
         private readonly INotificationService _notificationService;
-        private readonly IOrderDao _orderDao;
         private static readonly ILog Log = LogManager.GetLogger(typeof(PushNotificationSender));
 
-        public PushNotificationSender(INotificationService notificationService, IOrderDao orderDao)
+        public PushNotificationSender(INotificationService notificationService)
         {
             _notificationService = notificationService;
-            _orderDao = orderDao;
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -71,8 +69,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             try
             {
-                var orderStatusDetail = _orderDao.FindOrderStatusById(@event.OrderId);
-                if (orderStatusDetail.NoShowFeeCharged)
+                if (@event.IsNoShowFee)
                 {
                     // Don't message user for now
                     return;
