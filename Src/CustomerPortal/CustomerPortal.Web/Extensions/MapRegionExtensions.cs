@@ -11,9 +11,12 @@ namespace CustomerPortal.Web.Extensions
     {
         public static RectangleF GetRectangle(this MapRegion thisRegion)
         {
-            return RectangleF.FromLTRB(
-                (float)thisRegion.CoordinateStart.Longitude, (float)thisRegion.CoordinateStart.Latitude,
-                (float)thisRegion.CoordinateEnd.Longitude, (float)thisRegion.CoordinateEnd.Latitude
+
+            return new RectangleF(
+                Math.Min((float)thisRegion.CoordinateStart.Latitude, (float)thisRegion.CoordinateEnd.Latitude),
+                Math.Min((float)thisRegion.CoordinateStart.Longitude, (float)thisRegion.CoordinateEnd.Longitude),
+                Math.Abs((float)thisRegion.CoordinateEnd.Latitude - (float)thisRegion.CoordinateStart.Latitude),
+                Math.Abs((float)thisRegion.CoordinateEnd.Longitude - (float)thisRegion.CoordinateStart.Longitude)
                 );
         }
 
@@ -21,9 +24,9 @@ namespace CustomerPortal.Web.Extensions
         {
             var myRect = thisRegion.GetRectangle();
             var otherRect = region.GetRectangle();
-            var intersect = RectangleF.Intersect(myRect, otherRect);
+            var intersect = myRect.IntersectsWith(otherRect);
 
-            return intersect.Width > 0;
+            return intersect;
         }
     }
 }

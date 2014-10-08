@@ -28,17 +28,17 @@ namespace CustomerPortal.Web.Test.Helpers.Repository
 
         public Expression Expression
         {
-            get { return ((IQueryable) _db).Expression; }
+            get { return _db.AsQueryable().Expression; }
         }
 
         public Type ElementType
         {
-            get { return ((IQueryable) _db).ElementType; }
+            get { return _db.AsQueryable().ElementType; }
         }
 
         public IQueryProvider Provider
         {
-            get { return ((IQueryable) _db).Provider; }
+            get { return _db.AsQueryable().Provider; }
         }
 
         public T GetById(string id)

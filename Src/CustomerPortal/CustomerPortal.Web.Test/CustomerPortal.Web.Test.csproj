@@ -113,6 +113,7 @@
     <Compile Include="Areas\Admin\Controllers\API\AppleDevCenterControllerFixture.cs" />
     <Compile Include="Areas\Admin\Controllers\API\VersionControllerFixture.cs" />
     <Compile Include="Areas\Admin\Controllers\VersionControllerFixture.cs" />
+    <Compile Include="Areas\Customer\Controllers\Api\NetworkApiControllerFixture.cs" />
     <Compile Include="Areas\Customer\Controllers\GraphicsControllerFixture\GraphicsControllerFixture.cs" />
     <Compile Include="Areas\Admin\Controllers\IBSControllerFixture\IBSControllerFixture.cs" />
     <Compile Include="Areas\Admin\Controllers\LayoutControllerFixture\LayoutControllerFixture.cs" />

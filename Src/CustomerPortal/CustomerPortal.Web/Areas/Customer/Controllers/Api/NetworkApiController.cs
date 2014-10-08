@@ -15,18 +15,24 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 {
     public class NetworkApiController : ApiController
     {
-        private readonly MongoRepository<TaxiHailNetworkSettings> _networkRepository;
+        private readonly IRepository<TaxiHailNetworkSettings> _networkRepository;
 
-        public NetworkApiController()
+
+        public NetworkApiController():this(new MongoRepository<TaxiHailNetworkSettings>())
         {
-
-            _networkRepository = new MongoRepository<TaxiHailNetworkSettings>();
+            
         }
 
-        [Route("api/customer/{id}/network/")]
-        public HttpResponseMessage Get(string id)
+        public NetworkApiController(IRepository<TaxiHailNetworkSettings> repository)
         {
-            var networkSettings = _networkRepository.FirstOrDefault(n=>n.CompanyId == id);
+
+            _networkRepository = repository;
+        }
+
+        [Route("api/customer/{companyId}/network/")]
+        public HttpResponseMessage Get(string companyId)
+        {
+            var networkSettings = _networkRepository.FirstOrDefault(n => n.CompanyId == companyId);
 
             if (networkSettings == null || !networkSettings.IsInNetwork)
             {
@@ -39,7 +45,6 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             var myNetwork = network.Where(n => n.Region.Contains(networkSettings.Region))
                 .ToArray();
                 
-
             var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(JsonConvert.SerializeObject(myNetwork))
