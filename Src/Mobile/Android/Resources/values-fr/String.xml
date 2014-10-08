@@ -532,4 +532,5 @@
   <string name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard">Aucune carte de crédit enregistrée dans votre compte.</string>
   <string name="ServiceErrorAccountCharge_InvalidAccountNumber">Numéro de compte non valide</string>
   <string name="Modify">Modifier</string>
+  <string name="CardExpiredMessage">Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.</string>
 </resources>

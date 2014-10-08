@@ -42,12 +42,18 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\Attributes\CustomizableByCompanyAttribute.cs" />
+    <Compile Include="Configuration\Attributes\RequiredAtStartup.cs" />
+    <Compile Include="Configuration\Attributes\SendToClientAttribute.cs" />
+    <Compile Include="Configuration\Helpers\SettingsLoader.cs" />
     <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
     <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\MonerisPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\PaymentMethod.cs" />
     <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
+    <Compile Include="Configuration\NotificationSettings.cs" />
+    <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="CurencyCodes.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\DirectionSetting.cs" />
@@ -66,6 +72,7 @@
     <Compile Include="Entity\RatingType.cs" />
     <Compile Include="Entity\ToggleItem.cs" />
     <Compile Include="Enumeration\ChargeTypes.cs" />
+    <Compile Include="Enumeration\DistanceFormat.cs" />
     <Compile Include="Enumeration\SupportedLanguages.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
@@ -82,7 +89,6 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="ICacheService.cs" />
     <Compile Include="IPackageInfo.cs" />
-    <Compile Include="NotificationSettings.cs" />
     <Compile Include="Params.cs">
       <SubType>Code</SubType>
     </Compile>

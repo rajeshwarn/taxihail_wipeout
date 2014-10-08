@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Domain
         private Guid _orderId;
         private decimal _tip;
         private string _transactionId;
+        private bool _isNoShowFee;
 
         protected CreditCardPayment(Guid id)
             : base(id)
@@ -34,7 +35,7 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public CreditCardPayment(Guid id, Guid orderId, string transactionId, decimal amount, decimal meter, decimal tip,
-            string cardToken, PaymentProvider provider)
+            string cardToken, PaymentProvider provider, bool isNoShowFee)
             : this(id)
         {
             if (transactionId == null) throw new InvalidOperationException("transactionId cannot be null");
@@ -48,6 +49,7 @@ namespace apcurium.MK.Booking.Domain
                 Tip = tip,
                 CardToken = cardToken,
                 Provider = provider,
+                IsNoShowFee = isNoShowFee
             });
         }
 
@@ -66,7 +68,8 @@ namespace apcurium.MK.Booking.Domain
                 Amount = _amount,
                 Meter = _meter,
                 Tip = _tip,
-                Provider = provider
+                Provider = provider,
+                IsNoShowFee = _isNoShowFee
             });
         }
 
@@ -85,6 +88,7 @@ namespace apcurium.MK.Booking.Domain
             _amount = obj.Amount;
             _meter = obj.Meter;
             _tip = obj.Tip;
+            _isNoShowFee = obj.IsNoShowFee;
         }
 
         private void OnCreditCardPaymentCaptured(CreditCardPaymentCaptured obj)

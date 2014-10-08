@@ -242,6 +242,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Resources\Global.es.Designer.cs" />
     <Compile Include="Resources\MearsTaxi.Designer.cs" />
     <Compile Include="Resources\Resources.cs" />
     <Compile Include="Resources\Global.fr.Designer.cs">
@@ -340,6 +341,9 @@
     <EmbeddedResource Include="Resources\Global.ar.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Global.ar.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Global.es.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Global.fr.resx">

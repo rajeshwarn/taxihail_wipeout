@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 
@@ -62,7 +63,7 @@ namespace apcurium.MK.Web.Tests
                             LargeBags = 1,
                             AccountNumber = "123"
                         },
-                    ClientLanguageCode = "fr"
+                    ClientLanguageCode = SupportedLanguages.fr.ToString()
                 };
 
             var details = await sut.CreateOrder(order);
@@ -104,7 +105,8 @@ namespace apcurium.MK.Web.Tests
                     NumberOfTaxi = 1,
                     Name = "Joe Smith",
                     LargeBags = 1
-                }
+                },
+                ClientLanguageCode = SupportedLanguages.en.ToString()
             };
 
             var details = await sut.CreateOrder(order);
@@ -132,7 +134,7 @@ namespace apcurium.MK.Web.Tests
                     Price = 10,
                     Distance = 3
                 },
-                ClientLanguageCode = "fr"
+                ClientLanguageCode = SupportedLanguages.fr.ToString()
             };
 
             Assert.Throws<WebServiceException>(async () => await sut.CreateOrder(order), "CreateOrder_SettingsRequired");
@@ -178,7 +180,7 @@ namespace apcurium.MK.Web.Tests
                             Name = "Joe Smith",
                             LargeBags = 1
                         },
-                    ClientLanguageCode = "fr"
+                    ClientLanguageCode = SupportedLanguages.fr.ToString()
                 };
             sut.CreateOrder(order).Wait();
         }

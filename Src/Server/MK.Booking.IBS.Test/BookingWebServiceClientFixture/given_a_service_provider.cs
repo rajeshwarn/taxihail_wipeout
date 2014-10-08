@@ -18,14 +18,13 @@ namespace MK.Booking.IBS.Test.BookingWebServiceClientFixture
         [Test]
         public void StaticDataservice_test()
         {
-            IConfigurationManager config = new FakeConfigurationManager();
+            IServerSettings config = new FakeServerSettings();
             ILogger logger = new Logger();
-            IStaticDataWebServiceClient webServiceClient = new StaticDataWebServiceClient(config, logger);
 
             var profile = new IbsAutoMapperProfile();
             Mapper.AddProfile(profile);
 
-            var service = new BookingWebServiceClient(config, logger, webServiceClient);
+            var service = new BookingWebServiceClient(config, logger);
 
             var test = service.GetAvailableVehicles(45.498247, -73.656673, 1).ToList();
 
