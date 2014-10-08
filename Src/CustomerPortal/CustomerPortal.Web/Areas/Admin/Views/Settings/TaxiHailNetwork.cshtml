@@ -6,16 +6,10 @@
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
-        <input type="hidden" value="@ViewBag.Id" name="id" />
-        <fieldset>
-            <legend>
-                @ViewBag.CompanyName
-            </legend>
-            <div class="editor-field">
-                @Html.LabelFor(x => x.IsInNetwork)
-                @Html.CheckBoxFor(x => x.IsInNetwork, new { id = "IsInNetworkCheckBox", onchange = "CheckChanged(this)" })
-            </div>
-        </fieldset>
+        
+        
+        
+      
 
         <fieldset>
             <legend>
@@ -32,7 +26,16 @@
                 @Html.EditorFor(x => x.Region.CoordinateEnd.Longitude)
             </div>
         </fieldset>
-       
+
+        <fieldset>
+            <legend>
+            </legend>
+            <div class="editor-field">
+                @Html.LabelFor(x => x.IsInNetwork)
+                @Html.CheckBoxFor(x => x.IsInNetwork, new { id = "IsInNetworkCheckBox", onchange = "CheckChanged(this)" })
+            </div>
+        </fieldset>
+
         <input type="submit" class="btn btn-primary" value="Save" />
     }
 </div>
@@ -41,8 +44,7 @@
     function CheckChanged(checkbox) {
         if (checkbox.checked && !$('#taxiHailNetworkForm').valid()) {
             $('#IsInNetworkCheckBox').attr('checked', false);
-            alert('please enter start and end regions below');
+            alert('please enter start and end regions above');
         }
-       
     }
 </script>
