@@ -21,7 +21,11 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
     public class NetworkApiControllerFixture
     {
         private TaxiHailNetworkSettings _chrisTaxi;
+        private TaxiHailNetworkSettings _chrisTaxiBis;
         private TaxiHailNetworkSettings _tonyTaxi;
+        private TaxiHailNetworkSettings _tomTaxi;
+        private TaxiHailNetworkSettings _pilouTaxi;
+        private TaxiHailNetworkSettings _lastTaxi;
         const string BaseUrl = "http://localhost/CustomerPortal.Web/";
 
 
@@ -44,6 +48,18 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
 
                 }
             };
+            _chrisTaxiBis = new TaxiHailNetworkSettings()
+            {
+                CompanyId = "ChrisTaxiBis",
+                Id = "ChrisTaxiBis",
+                IsInNetwork = true,
+                Region = new MapRegion()
+                {
+                    CoordinateStart = new MapCoordinate() { Latitude = 45.514466, Longitude = -73.846313 }, // MTL Top left 
+                    CoordinateEnd = new MapCoordinate() { Latitude = 45.411296, Longitude = -73.513314 } // MTL BTM Right
+
+                }
+            };
 
             _tonyTaxi = new TaxiHailNetworkSettings()
             {
@@ -57,9 +73,52 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 }
             };
 
+            _tomTaxi = new TaxiHailNetworkSettings()
+            {
+                //same Longitude as TonyTaxi
+                CompanyId = "TomTaxi",
+                Id = "TomTaxi",
+                IsInNetwork = true,
+                Region = new MapRegion()
+                {
+                    CoordinateStart = new MapCoordinate() { Latitude = 5000000, Longitude = -73.656990 },  
+                    CoordinateEnd = new MapCoordinate() { Latitude = 45.43874, Longitude = -73.584120 } 
+                }
+            };
+
+            _pilouTaxi = new TaxiHailNetworkSettings()
+            {
+                //Same Latitude as ChrisTaxi and Chris TaxiBis
+                CompanyId = "PilouTaxi",
+                Id = "PilouTaxi",
+                IsInNetwork = true,
+                Region = new MapRegion()
+                {
+                    CoordinateStart = new MapCoordinate() { Latitude = 45.514466, Longitude = -73.889451 },
+                    CoordinateEnd = new MapCoordinate() { Latitude = 45.411296, Longitude = -73.496042 } 
+                }
+            };
+
+            _lastTaxi = new TaxiHailNetworkSettings()
+            {
+                //Overlap ChrisTaxi and ChrisTaxiBis
+                CompanyId = "LastTaxi",
+                Id = "LastTaxi",
+                IsInNetwork = true,
+                Region = new MapRegion()
+                {
+                    CoordinateStart = new MapCoordinate() { Latitude = 45.563135, Longitude = -73.719532 }, //College Montmorency Laval
+                    CoordinateEnd = new MapCoordinate() { Latitude = 45.498094, Longitude = -73.622335 } //Station cote des neiges
+                }
+            };
+
             Repository.DeleteAll();
             Repository.Add(_chrisTaxi);
+            Repository.Add(_chrisTaxiBis);
             Repository.Add(_tonyTaxi);
+            Repository.Add(_tomTaxi);
+            Repository.Add(_pilouTaxi);
+            Repository.Add(_lastTaxi);
 
 
         }
@@ -67,7 +126,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         public NetworkApiController Sut { get; set; }
         
         [Test]
-        public void When_Regions_overlap()
+        public void When_Regions_Inside()
         {
             var response = Sut.Get(_chrisTaxi.CompanyId);
              Assert.True(response.IsSuccessStatusCode);
@@ -78,7 +137,54 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.True(response2.IsSuccessStatusCode);
             var json2 = response2.Content.ReadAsStringAsync().Result;
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json2));
+        }
 
+
+        [Test]
+        public void When_Regions_Identical()
+        {
+            //should Not return ChrisTaxi
+            var response = Sut.Get(_chrisTaxi.CompanyId);
+            Assert.True(response.IsSuccessStatusCode);
+            var json = response.Content.ReadAsStringAsync().Result;
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
+        }
+
+        [Test]
+        public void When_Regions_Overlap()
+        {
+            var response = Sut.Get(_lastTaxi.CompanyId);
+            Assert.True(response.IsSuccessStatusCode);
+            var json = response.Content.ReadAsStringAsync().Result;
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
+        }
+
+        [Test]
+        public void When_Regions_Overlap_Same_Latitude()
+        {
+            var response = Sut.Get(_pilouTaxi.CompanyId);
+            Assert.True(response.IsSuccessStatusCode);
+            var json = response.Content.ReadAsStringAsync().Result;
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
+        }
+
+        [Test]
+        public void When_Regions_Overlap_Same_Longitude()
+        {
+            var response = Sut.Get(_tonyTaxi.CompanyId);
+            Assert.True(response.IsSuccessStatusCode);
+            var json = response.Content.ReadAsStringAsync().Result;
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
+        }
+
+        [Test]
+        public void When_Regions_No_Overlap()
+        {
+            //Should return nothing
+            var response = Sut.Get(_chrisTaxi.CompanyId);
+            Assert.True(response.IsSuccessStatusCode);
+            var json = response.Content.ReadAsStringAsync().Result;
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
         }
 
         [Test]
