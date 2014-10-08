@@ -30,6 +30,7 @@ namespace apcurium.MK.Common.Entity
         public string ReferenceNumber { get; set; }
         public string TerminalId { get; set; }
         public bool IsTaxiNearbyNotificationSent { get; set; }
+        public bool NoShowFeeCharged { get; set; }
         public DateTime? PairingTimeOut { get; set; }
         public string PairingError { get; set; }
 

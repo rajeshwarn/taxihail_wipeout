@@ -43,6 +43,13 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(CreditCardPaymentCaptured @event)
         {
+            var orderStatusDetail = _dao.FindOrderStatusById(@event.OrderId);
+            if (orderStatusDetail.NoShowFeeCharged)
+            {
+                // Don't message driver
+                return;
+            }
+
             if (_configurationManager.GetSetting("SendDetailedPaymentInfoToDriver", true))
             {
                 SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);

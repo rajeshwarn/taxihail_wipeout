@@ -219,7 +219,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     isSuccessful = settlementResult.IsSuccess() && (settlementResult.Target != null) &&
                                    (settlementResult.Target.ProcessorAuthorizationCode.HasValue());
 
-                    if (isSuccessful)
+                    if (isSuccessful && !request.NoShowFeeCharged)
                     {
                         authorizationCode = settlementResult.Target.ProcessorAuthorizationCode;
 

@@ -27,19 +27,29 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICommandBus _commandBus;
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ICreditCardDao _creditCardDao;
+        private readonly IOrderDao _orderDao;
 
         public MailSender(Func<BookingDbContext> contextFactory,
             ICommandBus commandBus,
-            ICreditCardDao creditCardDao
+            ICreditCardDao creditCardDao,
+            IOrderDao orderDao
             )
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _creditCardDao = creditCardDao;
+            _orderDao = orderDao;
         }
 
         public void Handle(CreditCardPaymentCaptured @event)
         {
+            var orderStatusDetail = _orderDao.FindOrderStatusById(@event.OrderId);
+            if (orderStatusDetail.NoShowFeeCharged)
+            {
+                // Don't message user
+                return;
+            }
+
             SendReceipt(@event.OrderId);
         }
 

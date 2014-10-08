@@ -200,6 +200,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         details.Eta = @event.Status.Eta;
                         details.Status = @event.Status.Status;
                         details.IBSStatusDescription = @event.Status.IBSStatusDescription;
+                        details.NoShowFeeCharged = @event.Status.NoShowFeeCharged;
                         details.PairingTimeOut = @event.Status.PairingTimeOut;
                         details.PairingError = @event.Status.PairingError;
                     }

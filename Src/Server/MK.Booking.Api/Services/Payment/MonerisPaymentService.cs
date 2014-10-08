@@ -193,7 +193,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     var commitReceipt = commitRequest.GetReceipt();
 
                     isSuccessful = RequestSuccesful(commitReceipt, out message);
-                    if (isSuccessful)
+                    if (isSuccessful && !request.NoShowFeeCharged)
                     {
                         authorizationCode = commitReceipt.GetAuthCode();
                         var commitTransactionId = commitReceipt.GetTxnNumber();

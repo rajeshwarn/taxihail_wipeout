@@ -135,6 +135,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (ibsOrderInfo.IsCanceled)
             {
                 orderStatusDetail.Status = OrderStatus.Canceled;
+                ChargeNoShowFeeIfNecessary(ibsOrderInfo, orderStatusDetail);
                 Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
             else if (ibsOrderInfo.IsTimedOut)
@@ -156,10 +157,13 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
+            Log.DebugFormat("No show fee will be charged for order {0}.", ibsOrderInfo.IBSOrderId);
+
             var paymentSettings = _configurationManager.GetPaymentSettings();
             var account = _accountDao.FindById(orderStatusDetail.AccountId);
 
-            if (paymentSettings.ChargeNoShowFee
+            if (paymentSettings.NoShowFee.HasValue
+                && paymentSettings.NoShowFee.Value > 0
                 && account.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
             {
                 var defaultCreditCard = 
@@ -168,18 +172,28 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                 if (defaultCreditCard != null)
                 {
-                    var noShowFee = paymentSettings.NoShowFee != null ? paymentSettings.NoShowFee.Value : 0;
+                    orderStatusDetail.NoShowFeeCharged = true;
 
                     var paymentResult = _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
                     {
                         OrderId = orderStatusDetail.OrderId,
                         CardToken = defaultCreditCard.Token,
-                        MeterAmount = noShowFee,
+                        MeterAmount = paymentSettings.NoShowFee.Value,
                         TipAmount = 0,
-                        Amount = noShowFee
+                        Amount = paymentSettings.NoShowFee.Value,
+                        NoShowFeeCharged = true
                     });
 
-                    // TODO: log if it fails? or fire and forget
+
+                    if (paymentResult.IsSuccessfull)
+                    {
+                        Log.DebugFormat("No show fee of ammount {0} was charged for order {1}.", paymentSettings.NoShowFee.Value, ibsOrderInfo.IBSOrderId);
+                    }
+                    else
+                    {
+                        orderStatusDetail.PairingError = paymentResult.Message;
+                        Log.DebugFormat("Could process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, paymentResult.Message);
+                    }
                 }
             }
         }

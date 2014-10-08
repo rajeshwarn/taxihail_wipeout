@@ -361,60 +361,63 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     authorizationCode = authResponse.AuthorizationCode;
 
                     //send information to IBS
-                    try
-                    {
-                        _ibs.ConfirmExternalPayment(orderDetail.Id,
-                            orderDetail.IBSOrderId.Value,
-                            Convert.ToDecimal(request.Amount),
-                            Convert.ToDecimal(request.TipAmount),
-                            Convert.ToDecimal(request.MeterAmount),
-                            PaymentType.CreditCard.ToString(),
-                            PaymentProvider.Cmt.ToString(),
-                            transactionId,
-                            authorizationCode,
-                            request.CardToken,
-                            account.IBSAccountId,
-                            orderDetail.Settings.Name,
-                            orderDetail.Settings.Phone,
-                            account.Email,
-                            orderDetail.UserAgent.GetOperatingSystem(),
-                            orderDetail.UserAgent);
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.LogError(e);
-                        message = e.Message;
-                        isSuccessful = false;
-
-                        //cancel CMT transaction
+                    if (!request.NoShowFeeCharged)
+                    { 
                         try
                         {
-                            var reverseRequest = new ReverseRequest
-                            {
-                                FleetToken = fleetToken,
-                                DeviceId = deviceId,
-                                TransactionId = authResponse.TransactionId,
-                                DriverId = driverId,
-                                TripId = tripId
-                            };
-
-                            var responseReverseTask = _cmtPaymentServiceClient.PostAsync(reverseRequest);
-                            responseReverseTask.Wait();
-                            var reverseResponse = responseReverseTask.Result;
-                            _logger.LogMessage("CMT reverse response : " + reverseResponse.ResponseMessage);
-
-                            if (reverseResponse.ResponseCode != 1)
-                            {
-                                throw new Exception("Cannot cancel cmt transaction");
-                            }
-
-                            message = message + " The transaction has been cancelled.";
+                            _ibs.ConfirmExternalPayment(orderDetail.Id,
+                                orderDetail.IBSOrderId.Value,
+                                Convert.ToDecimal(request.Amount),
+                                Convert.ToDecimal(request.TipAmount),
+                                Convert.ToDecimal(request.MeterAmount),
+                                PaymentType.CreditCard.ToString(),
+                                PaymentProvider.Cmt.ToString(),
+                                transactionId,
+                                authorizationCode,
+                                request.CardToken,
+                                account.IBSAccountId,
+                                orderDetail.Settings.Name,
+                                orderDetail.Settings.Phone,
+                                account.Email,
+                                orderDetail.UserAgent.GetOperatingSystem(),
+                                orderDetail.UserAgent);
                         }
-                        catch (Exception ex)
+                        catch (Exception e)
                         {
-                            _logger.LogMessage("Can't cancel CMT transaction");
-                            _logger.LogError(ex);
-                            message = message + ex.Message;
+                            _logger.LogError(e);
+                            message = e.Message;
+                            isSuccessful = false;
+
+                            //cancel CMT transaction
+                            try
+                            {
+                                var reverseRequest = new ReverseRequest
+                                {
+                                    FleetToken = fleetToken,
+                                    DeviceId = deviceId,
+                                    TransactionId = authResponse.TransactionId,
+                                    DriverId = driverId,
+                                    TripId = tripId
+                                };
+
+                                var responseReverseTask = _cmtPaymentServiceClient.PostAsync(reverseRequest);
+                                responseReverseTask.Wait();
+                                var reverseResponse = responseReverseTask.Result;
+                                _logger.LogMessage("CMT reverse response : " + reverseResponse.ResponseMessage);
+
+                                if (reverseResponse.ResponseCode != 1)
+                                {
+                                    throw new Exception("Cannot cancel cmt transaction");
+                                }
+
+                                message = message + " The transaction has been cancelled.";
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.LogMessage("Can't cancel CMT transaction");
+                                _logger.LogError(ex);
+                                message = message + ex.Message;
+                            }
                         }
                     }
 
