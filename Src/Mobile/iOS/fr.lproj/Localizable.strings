@@ -529,3 +529,4 @@
 "WarningPushServiceMessage"="Nous avons remarqué que vous n'avez pas les notifications activées. En les activant, vous obtiendrez alors des mises à jour sur l'état de votre réservation, sans avoir à regarder l'application !";
 "Knowledgabledriver"="Trajet respecté";
 "View_AccountConfirmation_Label_Code"="Code";
+"CardExpiredMessage"="Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.";

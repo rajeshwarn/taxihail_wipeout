@@ -20,20 +20,19 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
     {
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
+        private readonly IConfigurationManager _configurationManager;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
-        private readonly Resources.Resources _resources;
 
-        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, ICreditCardDao creditCardDao, IIbsOrderService ibs, IConfigurationManager configurationManager, IAppSettings appSettings)
+        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, ICreditCardDao creditCardDao, IIbsOrderService ibs, IConfigurationManager configurationManager)
         {
             _accountDao = accountDao;
             _dao = dao;
             _paymentDao = paymentDao;
             _creditCardDao = creditCardDao;
             _ibs = ibs;
-
-            _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
+            _configurationManager = configurationManager;
         }
 
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
@@ -44,7 +43,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(CreditCardPaymentCaptured @event)
         {
-            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
+            if (_configurationManager.GetSetting("SendDetailedPaymentInfoToDriver", true))
+            {
+                SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
+            }
         }
 
         private void SendPaymentConfirmationToDriver(Guid orderId, decimal amount, decimal meter, decimal tip, string provider,  string authorizationCode)
@@ -70,20 +72,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 if (card == null) throw new InvalidOperationException("Credit card not found");
             }
 
-            var amountString = _resources.FormatPrice((double)amount);
-            var meterString = _resources.FormatPrice((double?)meter);
-            var tipString = _resources.FormatPrice((double?)tip);
-
-            // Padded with 32 char because the MDT displays line of 32 char.  This will cause to write each string on a new line
-            var line1 = string.Format(_resources.Get("PaymentConfirmationToDriver1"));
-            line1 = line1.PadRight(32, ' ');
-            var line2 = string.Format(_resources.Get("PaymentConfirmationToDriver2"), meterString, tipString);
-            line2 = line2.PadRight(32, ' ');
-            var line3 = string.Format(_resources.Get("PaymentConfirmationToDriver3"), amountString);
-            line3 = line3.PadRight(32, ' ');
-            var line4 = string.Format(_resources.Get("PaymentConfirmationToDriver4"), authorizationCode);
-            
-            _ibs.SendPaymentNotification(line1 + line2 + line3 + line4, orderStatusDetail.VehicleNumber, orderDetail.IBSOrderId.Value);
+            _ibs.SendPaymentNotification((double)amount, (double)meter, (double)tip, authorizationCode, orderStatusDetail.VehicleNumber);
         }
     }
 }

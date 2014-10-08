@@ -343,7 +343,9 @@
       <LastGenOutput>Global.ar.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Global.es.resx" />
+    <EmbeddedResource Include="Resources\Global.es.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Global.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Global.fr.Designer.cs</LastGenOutput>
