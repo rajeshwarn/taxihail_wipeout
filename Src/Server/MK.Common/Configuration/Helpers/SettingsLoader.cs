@@ -7,7 +7,7 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Common.Configuration.Helpers
 {
-    public static class ConfigManagerLoader
+    public static class SettingsLoader
     {
 		public static void InitializeDataObjects<T>(T objectToInitialize, IDictionary<string, string> values, ILogger logger, string[] excludedKeys = null) where T : class
         {
