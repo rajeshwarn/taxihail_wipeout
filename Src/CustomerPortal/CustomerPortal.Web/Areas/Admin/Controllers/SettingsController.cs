@@ -575,29 +575,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home", new { area = "Customer", companyId = id });
         }
 
-        public ActionResult TaxiHailNetwork(string id)
-        {
-
-            var company = Repository.GetById(id);
-            if (company == null) return HttpNotFound();
-
-            ViewBag.Id = id;
-            ViewBag.CompanyName = company.CompanyName;
-            return PartialView(company.Network);
-        }
-
-        [HttpPost]
-        public ActionResult TaxiHailNetwork(string id,TaxiHailNetworkSettings model)
-        {
-            var company = Repository.GetById(id); 
-
-                company.Network = model;
-
-                Repository.Update(company);
-
-            return RedirectToAction("Index", "Home", new { area = "Customer", companyId = id });
-        }
-
+      
         public ActionResult Assets(string id)
         {
             var company = Repository.GetById(id);

@@ -2,14 +2,10 @@
 
 
 <div id="ul-wrapper">
-    @using (Html.BeginForm("TaxiHailNetwork", "Settings", FormMethod.Post, new {id="taxiHailNetworkForm" }))
+    @using (Html.BeginForm("Index", "TaxiHailNetworkSettings", FormMethod.Post, new { id = "taxiHailNetworkForm" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
-        
-        
-        
-      
 
         <fieldset>
             <legend>
@@ -36,6 +32,9 @@
             </div>
         </fieldset>
 
+        @Html.HiddenFor(x => x.CompanyId);
+        @Html.HiddenFor(x => x.Id);
+        
         <input type="submit" class="btn btn-primary" value="Save" />
     }
 </div>

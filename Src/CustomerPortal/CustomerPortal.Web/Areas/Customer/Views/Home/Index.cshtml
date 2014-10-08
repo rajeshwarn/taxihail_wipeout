@@ -86,7 +86,7 @@
         <div class="tab-pane" id='tab-th-network'>
             @if (User.IsInRole(RoleName.Admin))
             {
-                @Html.Action("TaxiHailNetwork", "Settings", new { area = "Admin", id = Model.Company.Id })
+                @Html.Action("Index", "TaxiHailNetworkSettings", new { area = "Admin", id = Model.Company.Id })
             }
         </div>
         <div class="tab-pane active" id="tab-questionnaire">
