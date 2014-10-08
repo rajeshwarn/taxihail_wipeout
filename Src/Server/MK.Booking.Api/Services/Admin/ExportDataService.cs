@@ -21,21 +21,21 @@ namespace apcurium.MK.Booking.Api.Services.Admin
     public class ExportDataService : Service
     {
         private readonly IAccountDao _accountDao;
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
         private readonly IOrderDao _orderDao;
         private readonly IAppStartUpLogDao _appStartUpLogDao;
 
-        public ExportDataService(IAccountDao accountDao, IOrderDao orderDao, IConfigurationManager configurationManager, IAppStartUpLogDao appStartUpLogDao)
+        public ExportDataService(IAccountDao accountDao, IOrderDao orderDao, IServerSettings serverSettings, IAppStartUpLogDao appStartUpLogDao)
         {
             _accountDao = accountDao;
             _orderDao = orderDao;
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
             _appStartUpLogDao = appStartUpLogDao;
         }
 
         public object Post(ExportDataRequest request)
         {
-            var offset = new TimeSpan(_configurationManager.ServerData.IBS.TimeDifference);
+            var offset = new TimeSpan(_serverSettings.ServerData.IBS.TimeDifference);
             
             var startDate = request.StartDate ?? DateTime.MinValue;
             var endDate = request.EndDate.HasValue ? request.EndDate.Value.AddDays(1) : DateTime.MaxValue;// Add one day to include the current day since it ends at midnight

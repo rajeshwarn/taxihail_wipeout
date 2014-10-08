@@ -8,7 +8,7 @@ using MK.Common.Configuration;
 
 namespace apcurium.MK.Common.Configuration
 {
-    public interface IConfigurationManager
+    public interface IServerSettings
     {
         ServerTaxiHailSetting ServerData { get; }
         ClientPaymentSettings GetPaymentSettings();

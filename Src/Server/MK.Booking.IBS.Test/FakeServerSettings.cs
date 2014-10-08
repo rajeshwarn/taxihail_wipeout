@@ -12,7 +12,7 @@ using MK.Common.Configuration;
 
 namespace MK.Booking.IBS.Test
 {
-    public class FakeConfigurationManager : IConfigurationManager
+    public class FakeServerSettings : IServerSettings
     {
         private readonly Dictionary<string, string> _settings = new Dictionary<string, string>
         {
@@ -22,7 +22,7 @@ namespace MK.Booking.IBS.Test
         public ServerTaxiHailSetting ServerData { get; private set; }
 
 
-        public FakeConfigurationManager()
+        public FakeServerSettings()
         {
             ServerData = new ServerTaxiHailSetting();
             Load();

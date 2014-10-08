@@ -16,14 +16,14 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 {
     public class PushNotificationService : IPushNotificationService
     {
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
         private readonly PushBroker _push;
         private bool _started;
 
-        public PushNotificationService(IConfigurationManager configurationManager, ILogger logger)
+        public PushNotificationService(IServerSettings serverSettings, ILogger logger)
         {
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
             _logger = logger;
             _push = new PushBroker();
         }
@@ -56,16 +56,16 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 #if DEBUG
             const bool production = false;
             var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                _configurationManager.ServerData.APNS.DevelopmentCertificatePath);
+                _serverSettings.ServerData.APNS.DevelopmentCertificatePath);
 #else
             const bool production = true;
             var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
-                _configurationManager.ServerData.APNS.ProductionCertificatePath);
+                _serverSettings.ServerData.APNS.ProductionCertificatePath);
 #endif
             // Push notifications
-            var test = _configurationManager.ServerData.GCM.SenderId;
-            var apiKey = _configurationManager.ServerData.GCM.APIKey;
-            var androidSettings = new GcmPushChannelSettings(test, apiKey, _configurationManager.ServerData.GCM.PackageName);
+            var test = _serverSettings.ServerData.GCM.SenderId;
+            var apiKey = _serverSettings.ServerData.GCM.APIKey;
+            var androidSettings = new GcmPushChannelSettings(test, apiKey, _serverSettings.ServerData.GCM.PackageName);
 
             //Wire up the events
             _push.OnDeviceSubscriptionExpired += OnDeviceSubscriptionExpired;
@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
             // Apple settings placed next for development purpose. (Crashing the method when certificate is missing.)
             var appleCert = File.ReadAllBytes(certificatePath);
-            var appleSettings = new ApplePushChannelSettings(production, appleCert, _configurationManager.ServerData.APNS.CertificatePassword);
+            var appleSettings = new ApplePushChannelSettings(production, appleCert, _serverSettings.ServerData.APNS.CertificatePassword);
             _push.RegisterAppleService(appleSettings);
         }
 

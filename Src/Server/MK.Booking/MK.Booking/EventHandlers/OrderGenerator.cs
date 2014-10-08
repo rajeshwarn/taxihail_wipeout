@@ -30,12 +30,12 @@ namespace apcurium.MK.Booking.EventHandlers
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
-        public OrderGenerator(Func<BookingDbContext> contextFactory, ILogger logger, IConfigurationManager configurationManager)
+        public OrderGenerator(Func<BookingDbContext> contextFactory, ILogger logger, IServerSettings serverSettings)
         {
             _contextFactory = contextFactory;
             _logger = logger;
 
-            _resources = new Resources.Resources(configurationManager);
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public void Handle(OrderCancelled @event)

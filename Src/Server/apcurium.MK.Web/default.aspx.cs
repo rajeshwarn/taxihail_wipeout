@@ -50,7 +50,7 @@ namespace apcurium.MK.Web
         
         protected void Page_Load(object sender, EventArgs e)
         {
-            var config = ServiceLocator.Current.GetInstance<IConfigurationManager>();
+            var config = ServiceLocator.Current.GetInstance<IServerSettings>();
 
             ApplicationKey = config.ServerData.TaxiHail.ApplicationKey;
             ApplicationName = config.ServerData.TaxiHail.ApplicationName;

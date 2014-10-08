@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IPushNotificationService _pushNotificationService;
         private readonly ITemplateService _templateService;
         private readonly IEmailSender _emailSender;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _configManager;
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
         private readonly IStaticMap _staticMap;
@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Services.Impl
             IPushNotificationService pushNotificationService,
             ITemplateService templateService,
             IEmailSender emailSender,
-            IConfigurationManager configManager,
+            IServerSettings configManager,
             IConfigurationDao configurationDao,
             IOrderDao orderDao,
             IStaticMap staticMap,
@@ -524,9 +524,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private class BaseUrls
         {
-            public BaseUrls(Uri baseUrl, IConfigurationManager configurationManager)
+            public BaseUrls(Uri baseUrl, IServerSettings serverSettings)
             {
-                LogoImg = String.Concat(baseUrl, "/themes/" + configurationManager.ServerData.TaxiHail.ApplicationKey + "/img/email_logo.png");
+                LogoImg = String.Concat(baseUrl, "/themes/" + serverSettings.ServerData.TaxiHail.ApplicationKey + "/img/email_logo.png");
                 BaseUrlAssetsImg = String.Concat(baseUrl, "/assets/img/");
             }
 

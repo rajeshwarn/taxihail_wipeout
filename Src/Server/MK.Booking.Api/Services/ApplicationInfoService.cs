@@ -12,9 +12,9 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class ApplicationInfoService : Service
     {
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _configManager;
 
-        public ApplicationInfoService(IConfigurationManager configManager)
+        public ApplicationInfoService(IServerSettings configManager)
         {
             _configManager = configManager;
         }

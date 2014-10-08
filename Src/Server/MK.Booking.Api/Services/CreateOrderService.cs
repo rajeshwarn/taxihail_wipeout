@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IAccountChargeDao _accountChargeDao;
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly ICommandBus _commandBus;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _configManager;
         private readonly ReferenceDataService _referenceDataService;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Services
         public CreateOrderService(ICommandBus commandBus,
             IBookingWebServiceClient bookingWebServiceClient,
             IAccountDao accountDao,
-            IConfigurationManager configManager,
+            IServerSettings configManager,
             ReferenceDataService referenceDataService,
             IStaticDataWebServiceClient staticDataWebServiceClient,
             IRuleCalculator ruleCalculator,

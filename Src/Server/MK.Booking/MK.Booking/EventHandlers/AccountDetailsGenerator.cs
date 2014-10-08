@@ -29,12 +29,12 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>
     {
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
 
-        public AccountDetailsGenerator(Func<BookingDbContext> contextFactory, IConfigurationManager configurationManager)
+        public AccountDetailsGenerator(Func<BookingDbContext> contextFactory, IServerSettings serverSettings)
         {
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
             _contextFactory = contextFactory;
         }
 
@@ -108,7 +108,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     Name = account.Name,
                     NumberOfTaxi = 1,
-                    Passengers = _configurationManager.ServerData.DefaultBookingSettings.NbPassenger,
+                    Passengers = _serverSettings.ServerData.DefaultBookingSettings.NbPassenger,
                     Phone = @event.Phone,
                 };
 
@@ -156,17 +156,17 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.ProviderId = @event.ProviderId;
                 settings.VehicleTypeId = @event.VehicleTypeId;
 
-                if (settings.ChargeTypeId == _configurationManager.ServerData.DefaultBookingSettings.ChargeTypeId)
+                if (settings.ChargeTypeId == _serverSettings.ServerData.DefaultBookingSettings.ChargeTypeId)
                 {
                     settings.ChargeTypeId = null;
                 }
 
-                if (settings.VehicleTypeId == _configurationManager.ServerData.DefaultBookingSettings.VehicleTypeId)
+                if (settings.VehicleTypeId == _serverSettings.ServerData.DefaultBookingSettings.VehicleTypeId)
                 {
                     settings.VehicleTypeId = null;
                 }
 
-                if (settings.ProviderId == _configurationManager.ServerData.DefaultBookingSettings.ProviderId)
+                if (settings.ProviderId == _serverSettings.ServerData.DefaultBookingSettings.ProviderId)
                 {
                     settings.ProviderId = null;
                 }

@@ -18,9 +18,9 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AppSettingsDeleted>
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _configManager;
 
-        public AppSettingsGenerator(Func<ConfigurationDbContext> contextFactory, IConfigurationManager configManager)
+        public AppSettingsGenerator(Func<ConfigurationDbContext> contextFactory, IServerSettings configManager)
         {
             _contextFactory = contextFactory;
             _configManager = configManager;

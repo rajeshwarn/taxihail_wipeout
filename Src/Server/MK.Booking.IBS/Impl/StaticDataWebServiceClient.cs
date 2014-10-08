@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 {
     public class StaticDataWebServiceClient : BaseService<StaticDataservice>, IStaticDataWebServiceClient
     {
-        public StaticDataWebServiceClient(IConfigurationManager configManager, ILogger logger)
+        public StaticDataWebServiceClient(IServerSettings configManager, ILogger logger)
             : base(configManager, logger)
         {
         }

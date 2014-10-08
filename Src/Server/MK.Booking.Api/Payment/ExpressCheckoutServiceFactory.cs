@@ -11,20 +11,20 @@ namespace apcurium.MK.Booking.Api.Payment
 {
     public class ExpressCheckoutServiceFactory
     {
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
 
-        public ExpressCheckoutServiceFactory(IConfigurationManager configurationManager)
+        public ExpressCheckoutServiceFactory(IServerSettings serverSettings)
         {
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
         }
 
         public ExpressCheckoutServiceClient CreateService(PayPalCredentials payPalCredentials, bool useSandbox)
         {
-            var regionName = _configurationManager.ServerData.PayPalRegionInfoOverride;
+            var regionName = _serverSettings.ServerData.PayPalRegionInfoOverride;
 
             if (string.IsNullOrWhiteSpace(regionName))
             {
-                regionName = _configurationManager.ServerData.PriceFormat;
+                regionName = _serverSettings.ServerData.PriceFormat;
             }
 
             return new ExpressCheckoutServiceClient(payPalCredentials, new RegionInfo(regionName) , useSandbox);

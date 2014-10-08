@@ -24,16 +24,16 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     {
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationDao _configurationDao;
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
 
         public PaymentSettingsService(ICommandBus commandBus, IConfigurationDao configurationDao,
-            IConfigurationManager configurationManager,ILogger logger)
+            IServerSettings serverSettings,ILogger logger)
         {
             _logger = logger;
             _commandBus = commandBus;
             _configurationDao = configurationDao;
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
         }
 
         public PaymentSettingsResponse Get(PaymentSettingsRequest request)
@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             try
             {
-                if (PayPalService.TestClient(_configurationManager, RequestContext, request.Credentials, false))
+                if (PayPalService.TestClient(_serverSettings, RequestContext, request.Credentials, false))
                 {
                     return new TestServerPaymentSettingsResponse
                     {
@@ -100,7 +100,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             try
             {
-                if (PayPalService.TestClient(_configurationManager, RequestContext, request.Credentials, true))
+                if (PayPalService.TestClient(_serverSettings, RequestContext, request.Credentials, true))
                 {
                     return new TestServerPaymentSettingsResponse
                     {

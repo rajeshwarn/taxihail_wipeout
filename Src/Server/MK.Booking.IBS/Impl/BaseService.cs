@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 {
     public class BaseService<T> where T : SoapHttpClientProtocol, new()
     {
-        public BaseService(IConfigurationManager configManager, ILogger logger)
+        public BaseService(IServerSettings configManager, ILogger logger)
         {
             Logger = logger;
             ConfigManager = configManager;
@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return ConfigManager.ServerData.IBS.WebServicesUrl;
         }
 
-        protected IConfigurationManager ConfigManager { get; set; }
+        protected IServerSettings ConfigManager { get; set; }
         protected ILogger Logger { get; set; }
 
         protected void UseService(Action<T> action)

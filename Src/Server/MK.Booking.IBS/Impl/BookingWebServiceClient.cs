@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 {
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
-        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger)
+        public BookingWebServiceClient(IServerSettings configManager, ILogger logger)
             : base(configManager, logger)
         {
         }

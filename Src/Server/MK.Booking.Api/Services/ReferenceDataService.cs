@@ -20,13 +20,13 @@ namespace apcurium.MK.Booking.Api.Services
     {
         public const string CacheKey = "IBS.StaticData";
         private readonly ICacheClient _cacheClient;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _configManager;
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
 
         public ReferenceDataService(
             IStaticDataWebServiceClient staticDataWebServiceClient,
             ICacheClient cacheClient,
-            IConfigurationManager configManager)
+            IServerSettings configManager)
         {
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _cacheClient = cacheClient;

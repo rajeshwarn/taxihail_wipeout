@@ -15,13 +15,13 @@ namespace apcurium.MK.Booking.Email
 {
     public class EmailSender : IEmailSender
     {
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
         private readonly string[] _debugEmails = {"john@taxihail.com"};
         private SmtpConfiguration _configuration;
 
-        public EmailSender(IConfigurationManager configurationManager)
+        public EmailSender(IServerSettings serverSettings)
         {
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
         }
 
         public void Send(MailMessage message)
@@ -37,13 +37,13 @@ namespace apcurium.MK.Booking.Email
                 {
                     _configuration = new SmtpConfiguration
                     {
-                        Host = _configurationManager.ServerData.Smtp.Host,
-                        Port = _configurationManager.ServerData.Smtp.Port,
-                        EnableSsl = _configurationManager.ServerData.Smtp.EnableSsl,
-                        DeliveryMethod = _configurationManager.ServerData.Smtp.DeliveryMethod,
-                        UseDefaultCredentials = _configurationManager.ServerData.Smtp.UseDefaultCredentials,
-                        Username = _configurationManager.ServerData.Smtp.Credentials.Username,
-                        Password = _configurationManager.ServerData.Smtp.Credentials.Password,
+                        Host = _serverSettings.ServerData.Smtp.Host,
+                        Port = _serverSettings.ServerData.Smtp.Port,
+                        EnableSsl = _serverSettings.ServerData.Smtp.EnableSsl,
+                        DeliveryMethod = _serverSettings.ServerData.Smtp.DeliveryMethod,
+                        UseDefaultCredentials = _serverSettings.ServerData.Smtp.UseDefaultCredentials,
+                        Username = _serverSettings.ServerData.Smtp.Credentials.Username,
+                        Password = _serverSettings.ServerData.Smtp.Credentials.Password,
                     };
                 }
 

@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
         private readonly ILogger _logger;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _configManager;
         private readonly IPairingService _pairingService;
         private readonly IIbsOrderService _ibs;
         private readonly IAccountDao _accountDao;
@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             IIbsOrderService ibs,
             IAccountDao accountDao,
             IOrderPaymentDao paymentDao,
-            IConfigurationManager configManager, 
+            IServerSettings configManager, 
             IPairingService pairingService)
         {
             _commandBus = commandBus;

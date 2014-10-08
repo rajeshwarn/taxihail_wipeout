@@ -7,7 +7,6 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using Microsoft.Practices.Unity;
 using ServiceStack.CacheAccess;
-using ConfigurationManager = apcurium.MK.Common.Configuration.Impl.ConfigurationManager;
 
 #endregion
 
@@ -25,10 +24,10 @@ namespace apcurium.MK.Common
 
             container.RegisterInstance<ILogger>(new Logger());
 
-            var settings = new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>(),
+            var settings = new ServerSettings(() => container.Resolve<ConfigurationDbContext>(),
                 container.Resolve<ILogger>());
 
-            container.RegisterInstance<IConfigurationManager>(settings);
+            container.RegisterInstance<IServerSettings>(settings);
             container.RegisterInstance<IAppSettings>(settings);
             
             container.RegisterType<CachingDbContext>(new TransientLifetimeManager(),

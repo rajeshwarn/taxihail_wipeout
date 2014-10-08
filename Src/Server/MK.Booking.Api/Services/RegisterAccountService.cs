@@ -25,10 +25,10 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IAccountDao _accountDao;
         private readonly IAccountWebServiceClient _accountWebServiceClient;
         private readonly ICommandBus _commandBus;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _configManager;
 
         public RegisterAccountService(ICommandBus commandBus, IAccountWebServiceClient accountWebServiceClient,
-            IAccountDao accountDao, IConfigurationManager configManager)
+            IAccountDao accountDao, IServerSettings configManager)
         {
             _commandBus = commandBus;
             _accountDao = accountDao;

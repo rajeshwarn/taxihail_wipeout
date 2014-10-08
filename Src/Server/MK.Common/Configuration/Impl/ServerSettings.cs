@@ -17,12 +17,12 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Common.Configuration.Impl
 {
-    public class ConfigurationManager : IConfigurationManager, IAppSettings
+    public class ServerSettings : IServerSettings, IAppSettings
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
         private readonly ILogger _logger;
 
-        public ConfigurationManager(Func<ConfigurationDbContext> contextFactory, ILogger logger)
+        public ServerSettings(Func<ConfigurationDbContext> contextFactory, ILogger logger)
         {
             _contextFactory = contextFactory;
             _logger = logger;

@@ -14,14 +14,14 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class CurrentAccountService : Service
     {
-        public CurrentAccountService(IAccountDao dao, IConfigurationManager configurationManager)
+        public CurrentAccountService(IAccountDao dao, IServerSettings serverSettings)
         {
             Dao = dao;
-            ConfigurationManager = configurationManager;
+            ServerSettings = serverSettings;
         }
 
         protected IAccountDao Dao { get; set; }
-        protected IConfigurationManager ConfigurationManager { get; set; }
+        protected IServerSettings ServerSettings { get; set; }
         
         public object Get(CurrentAccount request)
         {
@@ -30,9 +30,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             var currentAccount = Mapper.Map<CurrentAccountResponse>(account);
 
-            currentAccount.Settings.ChargeTypeId = account.Settings.ChargeTypeId ?? ConfigurationManager.ServerData.DefaultBookingSettings.ChargeTypeId;
-            currentAccount.Settings.VehicleTypeId = account.Settings.VehicleTypeId ?? ConfigurationManager.ServerData.DefaultBookingSettings.VehicleTypeId;
-            currentAccount.Settings.ProviderId = account.Settings.ProviderId ?? ConfigurationManager.ServerData.DefaultBookingSettings.ProviderId;
+            currentAccount.Settings.ChargeTypeId = account.Settings.ChargeTypeId ?? ServerSettings.ServerData.DefaultBookingSettings.ChargeTypeId;
+            currentAccount.Settings.VehicleTypeId = account.Settings.VehicleTypeId ?? ServerSettings.ServerData.DefaultBookingSettings.VehicleTypeId;
+            currentAccount.Settings.ProviderId = account.Settings.ProviderId ?? ServerSettings.ServerData.DefaultBookingSettings.ProviderId;
 
             return currentAccount;
         }

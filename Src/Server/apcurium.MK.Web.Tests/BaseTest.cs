@@ -34,7 +34,7 @@ namespace apcurium.MK.Web.Tests
         protected string TestAccountPassword { get { return "password1"; } }
         protected string SessionId { get; set; }
         protected AccountServiceClient AccountService { get { return new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), GetFakePaymentClient()); } }
-        protected DummyConfigManager DummyConfigManager { get { return new DummyConfigManager(); } }
+        protected DummyServerSettings DummyServerSettings { get { return new DummyServerSettings(); } }
         static BaseTest()
         {
             XmlConfigurator.ConfigureAndWatch(new FileInfo(".\\log4net.xml"));

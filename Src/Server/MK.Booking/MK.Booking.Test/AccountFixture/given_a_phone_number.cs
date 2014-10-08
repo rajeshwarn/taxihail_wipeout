@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
     public class given_a_phone_number
     {
         private const string ApplicationName = "TestApplication";
-        private TestConfigurationManager _configurationManager;
+        private TestServerSettings _serverSettings;
         private Mock<ISmsService> _smsSenderMock;
         private Mock<IOrderDao> _orderDaoMock;
         private EventSourcingTestHelper<Account> _sut;
@@ -29,14 +29,14 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
             _smsSenderMock = new Mock<ISmsService>();
             _orderDaoMock = new Mock<IOrderDao>();
-            _configurationManager = new TestConfigurationManager();
-            _configurationManager.SetSetting("TaxiHail.ApplicationName", ApplicationName);
-            _configurationManager.SetSetting("SMSConfirmationEnabled", "true");
-            _configurationManager.SetSetting("SMSAccountSid", "AC081ad5bacfad6c50e0598052fc062693");
-            _configurationManager.SetSetting("SMSAuthToken", "9b142e2d163a5688ada040d8c71e3fb1");
-            _configurationManager.SetSetting("SMSFromNumber", "15147002781");
+            _serverSettings = new TestServerSettings();
+            _serverSettings.SetSetting("TaxiHail.ApplicationName", ApplicationName);
+            _serverSettings.SetSetting("SMSConfirmationEnabled", "true");
+            _serverSettings.SetSetting("SMSAccountSid", "AC081ad5bacfad6c50e0598052fc062693");
+            _serverSettings.SetSetting("SMSAuthToken", "9b142e2d163a5688ada040d8c71e3fb1");
+            _serverSettings.SetSetting("SMSFromNumber", "15147002781");
 
-            _sut.Setup(new SmsCommandHandler(new NotificationService(null, null, null, null, _configurationManager, null, _orderDaoMock.Object, new StaticMap(), _smsSenderMock.Object, null, null)));
+            _sut.Setup(new SmsCommandHandler(new NotificationService(null, null, null, null, _serverSettings, null, _orderDaoMock.Object, new StaticMap(), _smsSenderMock.Object, null, null)));
         }
 
         [Test]

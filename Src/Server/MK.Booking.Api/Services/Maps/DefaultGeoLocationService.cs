@@ -12,19 +12,19 @@ namespace apcurium.MK.Booking.Api.Services.Maps
 {
     public class DefaultGeoLocationService : Service
     {
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
 
-        public DefaultGeoLocationService(IConfigurationManager configurationManager)
+        public DefaultGeoLocationService(IServerSettings serverSettings)
         {
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
         }
 
         public object Get(DefaultGeoLocationRequest request)
         {
             return new Address
             {
-                Latitude = _configurationManager.ServerData.GeoLoc.DefaultLatitude,
-                Longitude = _configurationManager.ServerData.GeoLoc.DefaultLongitude
+                Latitude = _serverSettings.ServerData.GeoLoc.DefaultLatitude,
+                Longitude = _serverSettings.ServerData.GeoLoc.DefaultLongitude
             };
         }
     }

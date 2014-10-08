@@ -31,7 +31,6 @@ using Microsoft.Practices.Unity;
 using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
 using ServiceStack.ServiceInterface;
-using ConfigurationManager = apcurium.MK.Common.Configuration.Impl.ConfigurationManager;
 using DeploymentServiceTools;
 using ServiceStack.Text;
 using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
@@ -94,7 +93,7 @@ namespace DatabaseInitializer
                 var module = new Module();
                 module.Init(container, connectionString);
                 
-                var configurationManager = container.Resolve<IConfigurationManager>();
+                var serverSettings = container.Resolve<IServerSettings>();
 
                 //for dev company, delete old database to prevent keeping too many databases
                 if (param.CompanyName == LocalDevProjectName && isUpdate)
@@ -178,13 +177,13 @@ namespace DatabaseInitializer
                     var replayService = container.Resolve<IEventsPlayBackService>();
                     replayService.ReplayAllEvents();
 
-                    appSettings = configurationManager.GetSettings();
+                    appSettings = serverSettings.GetSettings();
 
                     var tariffs = new TariffDao(() => new BookingDbContext(connectionString.ConnectionString));
                     if (tariffs.GetAll().All(x => x.Type != (int)TariffType.Default))
                     {
                         // Default rate does not exist for this company 
-                        CreateDefaultTariff(configurationManager, commandBus);
+                        CreateDefaultTariff(serverSettings, commandBus);
                     }
                     
                     CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
@@ -195,7 +194,7 @@ namespace DatabaseInitializer
                 else
                 {
                     // Create default rate for company
-                    CreateDefaultTariff(configurationManager, commandBus);
+                    CreateDefaultTariff(serverSettings, commandBus);
                     CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
 
                     FetchingIbsDefaults(container, commandBus);
@@ -765,13 +764,13 @@ namespace DatabaseInitializer
             });
         }
 
-        private static void CreateDefaultTariff(IConfigurationManager configurationManager, ICommandBus commandBus)
+        private static void CreateDefaultTariff(IServerSettings serverSettings, ICommandBus commandBus)
         {
             commandBus.Send(new CreateTariff
             {
                 Type = TariffType.Default,
-                KilometricRate = configurationManager.ServerData.Direction.RatePerKm,
-                FlatRate = configurationManager.ServerData.Direction.FlateRate,
+                KilometricRate = serverSettings.ServerData.Direction.RatePerKm,
+                FlatRate = serverSettings.ServerData.Direction.FlateRate,
                 MarginOfError = 20,
                 CompanyId = AppConstants.CompanyId,
                 TariffId = Guid.NewGuid(),

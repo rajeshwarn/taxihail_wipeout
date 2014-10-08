@@ -18,11 +18,11 @@ namespace apcurium.MK.Booking.Api.Helpers
         private readonly IOrderDao _orderDao;
         private readonly Resources.Resources _resources;
 
-        public OrderStatusHelper(IOrderDao orderDao, IConfigurationManager configurationManager)
+        public OrderStatusHelper(IOrderDao orderDao, IServerSettings serverSettings)
         {
             _orderDao = orderDao;
 
-            _resources = new Resources.Resources(configurationManager);
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public virtual OrderStatusDetail GetOrderStatus(Guid orderId, IAuthSession session)

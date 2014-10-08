@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Api
                 new TransientLifetimeManager(),
                 new InjectionFactory(c =>
                 {
-                    var configManager = c.Resolve<IConfigurationManager>();
+                    var configManager = c.Resolve<IServerSettings>();
                     if (configManager.ServerData.IBS.FakeOrderStatusUpdate)
                     {
                         return new UpdateOrderStatusJobStub();
@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Api
                 new TransientLifetimeManager(),
                 new InjectionFactory(c =>
                 {
-                    var configManager = c.Resolve<IConfigurationManager>();
+                    var configManager = c.Resolve<IServerSettings>();
                     var appSettings = c.Resolve<IAppSettings>();
                     var orderDao = c.Resolve<IOrderDao>();
                     return configManager.ServerData.IBS.FakeOrderStatusUpdate
@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Api
                 new TransientLifetimeManager(),
                 new InjectionFactory(c =>
                 {
-                    var configManager = c.Resolve<IConfigurationManager>();
+                    var configManager = c.Resolve<IServerSettings>();
                     switch (configManager.GetPaymentSettings().PaymentMode)
                     {
                         case PaymentMethod.Braintree:

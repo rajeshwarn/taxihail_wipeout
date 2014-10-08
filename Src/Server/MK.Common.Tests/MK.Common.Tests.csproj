@@ -89,7 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caching\EFCacheClientFixture.cs" />
-    <Compile Include="Configuration\ConfigurationManagerFixture.cs" />
+    <Compile Include="Configuration\ServerSettingsFixture.cs" />
     <Compile Include="Entity\AddressFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

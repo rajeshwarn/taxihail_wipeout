@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Api.Jobs
     public class OrderStatusUpdater
     {
         private readonly ICommandBus _commandBus;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _configManager;
         private readonly IOrderPaymentDao _orderPaymentDao;
         private readonly IOrderDao _orderDao;
         private readonly IPaymentService _paymentService;
@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private string _languageCode = "";
 
-        public OrderStatusUpdater(IConfigurationManager configManager, 
+        public OrderStatusUpdater(IServerSettings configManager, 
             ICommandBus commandBus, 
             IOrderPaymentDao orderPaymentDao, 
             IOrderDao orderDao,

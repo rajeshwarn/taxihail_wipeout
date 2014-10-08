@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 {
     public class AccountWebServiceClient : BaseService<WebAccount3Service>, IAccountWebServiceClient
     {
-        public AccountWebServiceClient(IConfigurationManager configManager, ILogger logger)
+        public AccountWebServiceClient(IServerSettings configManager, ILogger logger)
             : base(configManager, logger)
         {
         }

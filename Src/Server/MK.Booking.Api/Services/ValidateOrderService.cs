@@ -18,12 +18,12 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ValidateOrderService));
 
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _configManager;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
 
         public ValidateOrderService(
-            IConfigurationManager configManager,
+            IServerSettings configManager,
             IStaticDataWebServiceClient staticDataWebServiceClient,
             IRuleCalculator ruleCalculator)
         {

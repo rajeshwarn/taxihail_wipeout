@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             IIbsOrderService ibs,
             IAccountDao accountDao,
             IOrderPaymentDao paymentDao,
-            IConfigurationManager configManager,
+            IServerSettings configManager,
             IPairingService pairingService)
         {
             _commandBus = commandBus;

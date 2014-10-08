@@ -11,9 +11,9 @@ using MK.Common.Configuration;
 
 namespace apcurium.MK.Common
 {
-    public class DummyConfigManager : IConfigurationManager
+    public class DummyServerSettings : IServerSettings
     {
-        public DummyConfigManager(Dictionary<string, string> dictionary = null)
+        public DummyServerSettings(Dictionary<string, string> dictionary = null)
         {
             if (dictionary == null)
             {

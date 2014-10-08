@@ -30,13 +30,13 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IDeviceDao _daoDevice;
         private readonly ILogger _logger;
         private readonly INotificationService _notificationService;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _configManager;
 
         public NotificationAdministrationService(
             IAccountDao dao, 
             IDeviceDao device,
             INotificationService notificationService,
-            IConfigurationManager configManager,
+            IServerSettings configManager,
             ILogger logger)
         {
             _dao = dao;

@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Api.Payment
         private readonly IBookingWebServiceClient _client;
         private readonly Resources.Resources _resources;
 
-        public IbsOrderService(IBookingWebServiceClient client, IConfigurationManager configManager)
+        public IbsOrderService(IBookingWebServiceClient client, IServerSettings configManager)
         {
             _client = client;
 

@@ -21,9 +21,9 @@ namespace apcurium.MK.Booking.Api.Services.Admin
     {
         private readonly ICacheClient _cacheClient;
         private readonly ICommandBus _commandBus;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _configManager;
 
-        public ExclusionsService(IConfigurationManager configManager, ICommandBus commandBus, ICacheClient cacheClient)
+        public ExclusionsService(IServerSettings configManager, ICommandBus commandBus, ICacheClient cacheClient)
         {
             _configManager = configManager;
             _commandBus = commandBus;

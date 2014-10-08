@@ -17,11 +17,11 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Common.Tests
 {
-    public class TestConfigurationManager : IConfigurationManager, IAppSettings
+    public class TestServerSettings : IServerSettings, IAppSettings
     {
         private readonly Dictionary<string, string> _config;
 
-        public TestConfigurationManager()
+        public TestServerSettings()
         {
             _config = new Dictionary<string, string>();
 

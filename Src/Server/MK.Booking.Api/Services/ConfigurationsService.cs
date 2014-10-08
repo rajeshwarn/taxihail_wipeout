@@ -26,9 +26,9 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationDao _configDao;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _configManager;
 
-        public ConfigurationsService(IConfigurationManager configManager, ICommandBus commandBus, IConfigurationDao configDao)
+        public ConfigurationsService(IServerSettings configManager, ICommandBus commandBus, IConfigurationDao configDao)
         {
             _configManager = configManager;
             _commandBus = commandBus;
@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Api.Services
                 _commandBus.Send(command);
             }
 
-            return string.Empty;
+            return new HttpResult(HttpStatusCode.OK, "OK");
         }
 
         public object Get(NotificationSettingsRequest request)

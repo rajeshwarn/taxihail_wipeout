@@ -18,7 +18,7 @@ namespace MK.Booking.IBS.Test.BookingWebServiceClientFixture
         [Test]
         public void StaticDataservice_test()
         {
-            IConfigurationManager config = new FakeConfigurationManager();
+            IServerSettings config = new FakeServerSettings();
             ILogger logger = new Logger();
 
             var profile = new IbsAutoMapperProfile();

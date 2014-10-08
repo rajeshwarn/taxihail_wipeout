@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     public class PayPalService : Service
     {
         private readonly ICommandBus _commandBus;
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
         private readonly IOrderPaymentDao _dao;
         private readonly ExpressCheckoutServiceFactory _factory;
         private readonly IIbsOrderService _ibs;
@@ -35,19 +35,19 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly Resources.Resources _resources;
 
         public PayPalService(ICommandBus commandBus, IOrderPaymentDao dao,
-            ExpressCheckoutServiceFactory factory, IConfigurationManager configurationManager, 
+            ExpressCheckoutServiceFactory factory, IServerSettings serverSettings, 
             IIbsOrderService ibs, IAccountDao accountDao, ILogger logger, IOrderDao orderDao)
         {
             _commandBus = commandBus;
             _dao = dao;
             _factory = factory;
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
             _ibs = ibs;
             _accountDao = accountDao;
             _logger = logger;
             _orderDao = orderDao;
 
-            _resources = new Resources.Resources(configurationManager);
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public PayPalExpressCheckoutPaymentResponse Post(InitiatePayPalExpressCheckoutPaymentRequest request)
@@ -63,9 +63,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
 
-            var conversionRate = _configurationManager.ServerData.PayPalConversionRate;
+            var conversionRate = _serverSettings.ServerData.PayPalConversionRate;
             
-            var regionName = _configurationManager.ServerData.PayPalRegionInfoOverride;
+            var regionName = _serverSettings.ServerData.PayPalRegionInfoOverride;
             string description  =  "";
             if (!string.IsNullOrWhiteSpace(regionName))
             {
@@ -130,7 +130,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 : payPalSettings.Credentials;
             var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
 
-            var conversionRate = _configurationManager.ServerData.PayPalConversionRate;
+            var conversionRate = _serverSettings.ServerData.PayPalConversionRate;
             _logger.LogMessage("Paypal Converstion Rate : " + conversionRate);
 
             var amount = Math.Round(payment.Amount * conversionRate, 2);
@@ -219,7 +219,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         private PayPalServerSettings GetPayPalSettings()
         {
-            var paymentSettings = (ServerPaymentSettings) _configurationManager.GetPaymentSettings();
+            var paymentSettings = (ServerPaymentSettings) _serverSettings.GetPaymentSettings();
             if (paymentSettings == null)
                 throw new HttpError(HttpStatusCode.InternalServerError, "InternalServerError",
                     "Payment settings not found");
@@ -233,12 +233,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         }
 
 
-        public static bool TestClient(IConfigurationManager configurationManager, IRequestContext requestContext,
+        public static bool TestClient(IServerSettings serverSettings, IRequestContext requestContext,
             PayPalCredentials payPalServerSettings, bool isSandbox)
         {
             try
             {
-                var service = new ExpressCheckoutServiceFactory(configurationManager)
+                var service = new ExpressCheckoutServiceFactory(serverSettings)
                     .CreateService(payPalServerSettings, isSandbox);
                 service.SetExpressCheckout(2, "http://example.net/success", "http://example.net/cancel", string.Empty);
                 return true;

@@ -18,9 +18,9 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
 
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _configManager;
 
-        public IbsFareService(IBookingWebServiceClient bookingWebServiceClient, IConfigurationManager configManager)
+        public IbsFareService(IBookingWebServiceClient bookingWebServiceClient, IServerSettings configManager)
         {
             _bookingWebServiceClient = bookingWebServiceClient;
             _configManager = configManager;

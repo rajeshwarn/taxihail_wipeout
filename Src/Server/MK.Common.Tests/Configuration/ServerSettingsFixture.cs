@@ -7,9 +7,9 @@ using NUnit.Framework;
 namespace apcurium.MK.Common.Tests.Configuration
 {
     [TestFixture]
-    public class ConfigurationManagerFixture
+    public class ServerSettingsFixture
     {
-        private ConfigurationManager _sut;
+        private ServerSettings _sut;
         private List<AppSetting> _appSettingsFromDatabase = new List<AppSetting>();
 
         [SetUp]
@@ -20,7 +20,7 @@ namespace apcurium.MK.Common.Tests.Configuration
                 .Setup(x => x.Query<AppSetting>())
                 .Returns(() => _appSettingsFromDatabase.AsQueryable());
 
-            _sut = new ConfigurationManager(() => dbContext.Object, null);
+            _sut = new ServerSettings(() => dbContext.Object, null);
         }
 
         [Test]

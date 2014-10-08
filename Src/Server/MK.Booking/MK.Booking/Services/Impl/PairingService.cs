@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IOrderDao _orderDao;
         private readonly Resources.Resources _resources;
 
-        public PairingService(ICommandBus commandBus, IIbsOrderService ibs, IOrderDao orderDao, IConfigurationManager configManager)
+        public PairingService(ICommandBus commandBus, IIbsOrderService ibs, IOrderDao orderDao, IServerSettings configManager)
         {
             _commandBus = commandBus;
             _ibs = ibs;
