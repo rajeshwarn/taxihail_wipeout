@@ -13,7 +13,7 @@ namespace CustomerPortal.Web.Extensions
         {
             return RectangleF.FromLTRB(
                 (float)thisRegion.CoordinateStart.Longitude, (float)thisRegion.CoordinateStart.Latitude,
-                (float)thisRegion.CoordinateEnd.Longitude, (float)thisRegion.CoordinateEnd.Longitude
+                (float)thisRegion.CoordinateEnd.Longitude, (float)thisRegion.CoordinateEnd.Latitude
                 );
         }
 

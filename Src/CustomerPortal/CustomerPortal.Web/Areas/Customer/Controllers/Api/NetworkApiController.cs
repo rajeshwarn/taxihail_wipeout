@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -8,6 +9,7 @@ using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Extensions;
 using MongoRepository;
+using Newtonsoft.Json;
 
 namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 {
@@ -31,9 +33,18 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 return new HttpResponseMessage(HttpStatusCode.Forbidden);    
             }
 
-            var myNetwork = _networkRepository.Where(n=>n.IsInNetwork).Where(n => n.Region.Contains(networkSettings.Region)).ToArray();
+            var network = _networkRepository.Where(n => n.IsInNetwork && n.Id != networkSettings.Id)
+                .ToArray();
 
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            var myNetwork = network.Where(n => n.Region.Contains(networkSettings.Region))
+                .ToArray();
+                
+
+            var response = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(myNetwork))
+            };
+            return response;
         }
     }
 }
