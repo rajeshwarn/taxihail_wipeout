@@ -1,5 +1,6 @@
 ﻿#region
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -9,6 +10,7 @@ using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using MK.Common.Configuration;
 using ServiceStack.Common.Web;
@@ -24,47 +26,63 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationDao _configDao;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _serverSettings;
 
-        public ConfigurationsService(IConfigurationManager configManager, ICommandBus commandBus, IConfigurationDao configDao)
+        public ConfigurationsService(IServerSettings serverSettings, ICommandBus commandBus, IConfigurationDao configDao)
         {
-            _configManager = configManager;
+            _serverSettings = serverSettings;
             _commandBus = commandBus;
             _configDao = configDao;
         }
 
         public object Get(ConfigurationsRequest request)
         {
-            var keys = new string[0];
+            var result = new Dictionary<string, string>();
+
+            var isFromAdminPortal = request.AppSettingsType == AppSettingsType.Webapp;
+            var settings = _serverSettings.ServerData.GetType().GetAllProperties();
             var returnAllKeys = SessionAs<AuthUserSession>().HasPermission(RoleName.SuperAdmin);
+ 
+            foreach (var setting in settings)
+            {
+                var sendToClient = false;
+                var customizableByCompany = false;
+                var attributes = setting.Value.GetCustomAttributes(false);
 
-            if (request.AppSettingsType.Equals(AppSettingsType.Webapp))
-            {
-                var listKeys = _configManager.GetSetting("Admin.CompanySettings");
-                if (listKeys != null) keys = listKeys.Split(',');
-            }
-            else //AppSettingsType.Mobile
-            {
-                keys = new[]
+                // Check if we have to return this setting to the mobile client
+                var sendToClientAttribute = attributes.OfType<SendToClientAttribute>().FirstOrDefault();
+                if (sendToClientAttribute != null)
                 {
-                    "DefaultPhoneNumber", "DefaultPhoneNumberDisplay", "GCM.SenderId", "PriceFormat", "DistanceFormat",
-                    "Direction.TarifMode", "Direction.NeedAValidTarif", "Direction.FlateRate", "Direction.RatePerKm",
-                    "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey", "AccountActivationDisabled"
-                };
+                    sendToClient = !isFromAdminPortal;
+                }
+
+                // Check if we have to return this setting to the company settings of admin section
+                var customizableByCompanyAttribute = attributes.OfType<CustomizableByCompanyAttribute>().FirstOrDefault();
+                if (customizableByCompanyAttribute != null)
+                {
+                    customizableByCompany = isFromAdminPortal;
+                }
+
+                if (returnAllKeys                       // in the case of superadmin
+                    || sendToClient                     // send to mobile client
+                    || customizableByCompany)           // company settings in admin section
+                {
+                    var settingValue = _serverSettings.ServerData.GetNestedPropertyValue(setting.Key);
+
+                    string settingStringValue = settingValue == null ? string.Empty : settingValue.ToString();
+                    if (settingStringValue.IsBool())
+                    {
+                        // Needed because ToString() returns False instead of false
+                        settingStringValue = settingStringValue.ToLower();
+                    }
+
+                    result.Add(setting.Key, settingStringValue);
+                }
             }
 
-            
-
-            var allKeys = _configManager.GetSettings();
-
-            var result = allKeys.Where(k => returnAllKeys
-                                            || keys.Contains(k.Key)
-                                            || k.Key.StartsWith("Client.")
-                                            || k.Key.StartsWith("GeoLoc.")
-                                            || k.Key.StartsWith("AvailableVehicles."))
-                .ToDictionary(s => s.Key, s => s.Value);
-
-            return result;
+            // Order results alphabetically
+            return result.OrderBy(s => s.Key)
+                         .ToDictionary(s => s.Key, s => s.Value);
         }
 
         public object Post(ConfigurationsRequest request)
@@ -79,7 +97,7 @@ namespace apcurium.MK.Booking.Api.Services
                 _commandBus.Send(command);
             }
 
-            return "";
+            return new HttpResult(HttpStatusCode.OK, "OK");
         }
 
         public object Get(NotificationSettingsRequest request)

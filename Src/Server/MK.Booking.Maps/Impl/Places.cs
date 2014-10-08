@@ -10,7 +10,6 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Provider;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider;
-using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 
 namespace apcurium.MK.Booking.Maps.Impl
 {
@@ -20,7 +19,7 @@ namespace apcurium.MK.Booking.Maps.Impl
         private readonly IAppSettings _appSettings;
         private readonly IPopularAddressProvider _popularAddressProvider;
 
-		public Places(IPlaceDataProvider client, IAppSettings appSettings,
+        public Places(IPlaceDataProvider client, IAppSettings appSettings,
             IPopularAddressProvider popularAddressProvider)
         {
             _client = client;
@@ -39,7 +38,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
 		public Address[] SearchPlaces(string name, double? latitude, double? longitude, int? radius, string currentLanguage)
         {
-            int defaultRadius = _appSettings.Data.DefaultRadius;
+            int defaultRadius = _appSettings.Data.NearbyPlacesService.DefaultRadius;
 
             var popularAddresses = Enumerable.Empty<Address>();
             if (latitude.HasValue && longitude.HasValue)

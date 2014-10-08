@@ -91,6 +91,10 @@
     <Compile Include="Caching\CachingDbContext.cs" />
     <Compile Include="Caching\EFCacheClient.cs" />
     <Compile Include="ChargeTypesClient.cs" />
+    <Compile Include="Configuration\Attributes\CustomizableByCompanyAttribute.cs" />
+    <Compile Include="Configuration\Attributes\RequiredAtStartup.cs" />
+    <Compile Include="Configuration\Attributes\SendToClientAttribute.cs" />
+    <Compile Include="Configuration\Helpers\SettingsLoader.cs" />
     <Compile Include="Configuration\IAppSettings.cs" />
     <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
     <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />
@@ -98,8 +102,8 @@
     <Compile Include="Configuration\Impl\BrainTreeSettings.cs" />
     <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\ConfigurationDbContext.cs" />
-    <Compile Include="Configuration\Impl\ConfigurationManager.cs" />
-    <Compile Include="Configuration\IConfigurationManager.cs" />
+    <Compile Include="Configuration\Impl\ServerSettings.cs" />
+    <Compile Include="Configuration\IServerSettings.cs" />
     <Compile Include="Configuration\Impl\MonerisPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\PaymentMethod.cs" />
     <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
@@ -107,6 +111,8 @@
     <Compile Include="Configuration\Impl\PayPalServerSettings.cs" />
     <Compile Include="Configuration\Impl\ServerPaymentSetting.cs" />
     <Compile Include="Configuration\NotificationSettings.cs" />
+    <Compile Include="Configuration\ServerTaxiHailSetting.cs" />
+    <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="CreditCard.cs" />
     <Compile Include="CurencyCodes.cs" />
@@ -136,6 +142,7 @@
     <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
     <Compile Include="Enumeration\ChargeTypes.cs" />
+    <Compile Include="Enumeration\DistanceFormat.cs" />
     <Compile Include="Enumeration\PaymentProvider.cs" />
     <Compile Include="Enumeration\PaymentType.cs" />
     <Compile Include="Enumeration\PushNotificationServicePlatform.cs" />
@@ -153,6 +160,7 @@
     <Compile Include="Extensions\GuidExtensions.cs" />
     <Compile Include="Extensions\NullableExtension.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Extensions\StringBuilderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

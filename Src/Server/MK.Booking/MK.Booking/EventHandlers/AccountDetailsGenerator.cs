@@ -29,12 +29,12 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>
     {
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
 
-        public AccountDetailsGenerator(Func<BookingDbContext> contextFactory, IConfigurationManager configurationManager)
+        public AccountDetailsGenerator(Func<BookingDbContext> contextFactory, IServerSettings serverSettings)
         {
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
             _contextFactory = contextFactory;
         }
 
@@ -104,12 +104,11 @@ namespace apcurium.MK.Booking.EventHandlers
                     account.Roles |= (int) Roles.Admin;
                 }
 
-                var nbPassenger = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.NbPassenger"));
                 account.Settings = new BookingSettings
                 {
                     Name = account.Name,
                     NumberOfTaxi = 1,
-                    Passengers = nbPassenger,
+                    Passengers = _serverSettings.ServerData.DefaultBookingSettings.NbPassenger,
                     Phone = @event.Phone,
                 };
 
@@ -157,25 +156,20 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.ProviderId = @event.ProviderId;
                 settings.VehicleTypeId = @event.VehicleTypeId;
 
-                if (settings.ChargeTypeId ==
-                    ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.ChargeTypeId")))
+                if (settings.ChargeTypeId == _serverSettings.ServerData.DefaultBookingSettings.ChargeTypeId)
                 {
                     settings.ChargeTypeId = null;
                 }
 
-
-                if (settings.VehicleTypeId ==
-                    ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.VehicleTypeId")))
+                if (settings.VehicleTypeId == _serverSettings.ServerData.DefaultBookingSettings.VehicleTypeId)
                 {
                     settings.VehicleTypeId = null;
                 }
 
-                if (settings.ProviderId ==
-                    ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.ProviderId")))
+                if (settings.ProviderId == _serverSettings.ServerData.DefaultBookingSettings.ProviderId)
                 {
                     settings.ProviderId = null;
                 }
-
 
                 settings.NumberOfTaxi = @event.NumberOfTaxi;
                 settings.Passengers = @event.Passengers;

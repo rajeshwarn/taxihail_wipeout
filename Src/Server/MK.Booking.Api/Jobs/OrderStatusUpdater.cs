@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Api.Jobs
     public class OrderStatusUpdater
     {
         private readonly ICommandBus _commandBus;
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
         private readonly IOrderPaymentDao _orderPaymentDao;
         private readonly IOrderDao _orderDao;
         private readonly IPaymentService _paymentService;
@@ -46,33 +46,30 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IDirections _directions;
         private readonly IIbsOrderService _ibsOrderService;
         private readonly Resources.Resources _resources;
-        private readonly IAppSettings _appSettings;
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(OrderStatusUpdater));
 
         private string _languageCode = "";
 
-        public OrderStatusUpdater(IConfigurationManager configurationManager, 
+        public OrderStatusUpdater(IServerSettings serverSettings, 
             ICommandBus commandBus, 
             IOrderPaymentDao orderPaymentDao, 
             IOrderDao orderDao,
             IPaymentService paymentService,
             INotificationService notificationService,
             IDirections directions,
-            IAppSettings appSettings,
             IIbsOrderService ibsOrderService)
         {
-            _appSettings = appSettings;
             _orderDao = orderDao;
             _paymentService = paymentService;
             _notificationService = notificationService;
             _directions = directions;
             _ibsOrderService = ibsOrderService;
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
             _commandBus = commandBus;
             _orderPaymentDao = orderPaymentDao;
 
-            _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
@@ -173,7 +170,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void HandlePairingForStandardPairing(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo)
         {
-            if (!_configurationManager.GetPaymentSettings().AutomaticPayment)
+            if (!_serverSettings.GetPaymentSettings().AutomaticPayment)
             {
                 Log.Debug("Standard Pairing: Automatic payment is disabled, nothing else to do.");
                 return;
@@ -218,14 +215,14 @@ namespace apcurium.MK.Booking.Api.Jobs
             // We received a fare from IBS
             // Send payment for capture, once it's captured, we will set the status to Completed
             var meterAmount = ibsOrderInfo.Fare + ibsOrderInfo.Toll + ibsOrderInfo.VAT;
-            double tipPercentage = pairingInfo.AutoTipPercentage ?? _appSettings.Data.DefaultTipPercentage;
+            double tipPercentage = pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage;
             var tipAmount = GetTipAmount(meterAmount, tipPercentage);
 
             Log.DebugFormat(
                     "Order {4}: Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
                     meterAmount, tipPercentage, tipAmount, meterAmount + tipAmount, orderStatusDetail.OrderId);
 
-            if (!_appSettings.Data.SendDetailedPaymentInfoToDriver)
+            if (!_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
                 // this is the only payment related message sent to the driver when this setting is false
                 SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, meterAmount + tipAmount, meterAmount, tipAmount);
@@ -249,7 +246,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             else
             {
-                if (_appSettings.Data.SendDetailedPaymentInfoToDriver)
+                if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
                 {
                     _ibsOrderService.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
                 }
@@ -276,7 +273,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
-            var paymentMode = _configurationManager.GetPaymentSettings().PaymentMode;
+            var paymentMode = _serverSettings.GetPaymentSettings().PaymentMode;
             switch (paymentMode)
             {
                 case PaymentMethod.Cmt:
@@ -313,7 +310,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 description = string.Format(_resources.Get("OrderStatus_CabDriverNumberAssigned", _languageCode), ibsOrderInfo.VehicleNumber);
                 Log.DebugFormat("Setting Assigned status description: {0}", description);
 
-                if (_configurationManager.GetSetting("Client.ShowEta", false))
+                if (_serverSettings.ServerData.ShowEta)
                 {
                     try
                     {
@@ -347,8 +344,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             else if (ibsOrderInfo.IsLoaded)
             {
-                if (orderDetail != null && (_configurationManager.GetPaymentSettings().AutomaticPayment
-                                            && _configurationManager.GetPaymentSettings().AutomaticPaymentPairing
+                if (orderDetail != null && (_serverSettings.GetPaymentSettings().AutomaticPayment
+                                            && _serverSettings.GetPaymentSettings().AutomaticPaymentPairing
                                             && orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id))
                 {
                     description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", _languageCode);

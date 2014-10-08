@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
         private readonly IAccountDao _accountDao;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _serverSettings;
         private readonly IPairingService _pairingService;
         private readonly ILogger _logger;
         private readonly IIbsOrderService _ibs;
@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             IIbsOrderService ibs,
             IAccountDao accountDao, 
             IOrderPaymentDao orderPaymentDao,
-            IConfigurationManager configManager,
+            IServerSettings serverSettings,
             IPairingService pairingService)
         {
             _commandBus = commandBus;
@@ -62,13 +62,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _ibs = ibs;
             _accountDao = accountDao;
             _orderPaymentDao = orderPaymentDao;
-            _configManager = configManager;
+            _serverSettings = serverSettings;
             _pairingService = pairingService;
 
             _cmtPaymentServiceClient =
-                new CmtPaymentServiceClient(configManager.GetPaymentSettings().CmtPaymentSettings, null, null, logger);
+                new CmtPaymentServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, logger);
             _cmtMobileServiceClient =
-                new CmtMobileServiceClient(configManager.GetPaymentSettings().CmtPaymentSettings, null,  null);
+                new CmtMobileServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null,  null);
         }
 
         private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, PairingForPaymentRequest request)
@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
 
             // send pairing request                                
-            var cmtPaymentSettings = _configManager.GetPaymentSettings().CmtPaymentSettings;
+            var cmtPaymentSettings = _serverSettings.GetPaymentSettings().CmtPaymentSettings;
             var pairingRequest = new PairingRequest
             {
                 AutoTipAmount = request.AutoTipAmount,
@@ -147,7 +147,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             try
             {
-                if (_configManager.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
+                if (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
                 {
                     var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
                     if (orderStatusDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
@@ -204,7 +204,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             try
             {
-                if (_configManager.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
+                if (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
                 {
                     var orderPairingDetail = _orderDao.FindOrderPairingById(request.OrderId);
                     if (orderPairingDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
@@ -306,7 +306,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>(); //?
                 var employeeId = orderStatus.DriverInfos == null ? "" : orderStatus.DriverInfos.DriverId; //?
                 var tripId = orderStatus.IBSOrderId.Value; //?
-                var fleetToken = _configManager.GetPaymentSettings().CmtPaymentSettings.FleetToken;
+                var fleetToken = _serverSettings.GetPaymentSettings().CmtPaymentSettings.FleetToken;
                 var customerReferenceNumber = orderStatus.ReferenceNumber.HasValue() ?
                                                     orderStatus.ReferenceNumber :
                                                     orderDetail.IBSOrderId.ToString();

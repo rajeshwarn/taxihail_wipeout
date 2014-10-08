@@ -16,8 +16,6 @@ namespace apcurium.MK.Booking.Commands
             AppSettings = new Dictionary<string, string>();
         }
 
-        //public string Key { get;  set; }
-        //public string Value { get;  set; }
         public IDictionary<string, string> AppSettings { get; set; }
 
         public Guid CompanyId { get; set; }
