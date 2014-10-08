@@ -44,7 +44,7 @@ namespace apcurium.MK.Common.Configuration.Helpers
 						{
                             if (targetType == typeof(bool) && string.IsNullOrEmpty(overriddenSetting.Value))
 						    {
-                                SetValue(propertyName, objectToInitialize, false);
+                                Console.WriteLine("Warning - can't set value for property {0}, value was {1}", overriddenSetting.Key, overriddenSetting.Value);
 						    }
                             else
                             {

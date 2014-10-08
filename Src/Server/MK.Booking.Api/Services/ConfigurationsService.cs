@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             var result = new Dictionary<string, string>();
 
-            var isFromWebApp = request.AppSettingsType == AppSettingsType.Webapp;
+            var isFromAdminPortal = request.AppSettingsType == AppSettingsType.Webapp;
             var settings = _serverSettings.ServerData.GetType().GetAllProperties();
             var returnAllKeys = SessionAs<AuthUserSession>().HasPermission(RoleName.SuperAdmin);
  
@@ -53,14 +53,14 @@ namespace apcurium.MK.Booking.Api.Services
                 var sendToClientAttribute = attributes.OfType<SendToClientAttribute>().FirstOrDefault();
                 if (sendToClientAttribute != null)
                 {
-                    sendToClient = !isFromWebApp;
+                    sendToClient = !isFromAdminPortal;
                 }
 
                 // Check if we have to return this setting to the company settings of admin section
                 var customizableByCompanyAttribute = attributes.OfType<CustomizableByCompanyAttribute>().FirstOrDefault();
                 if (customizableByCompanyAttribute != null)
                 {
-                    customizableByCompany = isFromWebApp;
+                    customizableByCompany = isFromAdminPortal;
                 }
 
                 if (returnAllKeys                       // in the case of superadmin
