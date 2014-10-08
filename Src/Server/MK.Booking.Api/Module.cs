@@ -52,8 +52,8 @@ namespace apcurium.MK.Booking.Api
                 new TransientLifetimeManager(),
                 new InjectionFactory(c =>
                 {
-                    var configManager = c.Resolve<IServerSettings>();
-                    if (configManager.ServerData.IBS.FakeOrderStatusUpdate)
+                    var serverSettings = c.Resolve<IServerSettings>();
+                    if (serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
                     {
                         return new UpdateOrderStatusJobStub();
                     }
@@ -65,28 +65,27 @@ namespace apcurium.MK.Booking.Api
                 new TransientLifetimeManager(),
                 new InjectionFactory(c =>
                 {
-                    var configManager = c.Resolve<IServerSettings>();
-                    var appSettings = c.Resolve<IAppSettings>();
+                    var serverSettings = c.Resolve<IServerSettings>();
                     var orderDao = c.Resolve<IOrderDao>();
-                    return configManager.ServerData.IBS.FakeOrderStatusUpdate
-                        ? new OrderStatusIbsMock(orderDao, c.Resolve<OrderStatusUpdater>(), configManager)
-                        : new OrderStatusHelper(orderDao, configManager);
+                    return serverSettings.ServerData.IBS.FakeOrderStatusUpdate
+                        ? new OrderStatusIbsMock(orderDao, c.Resolve<OrderStatusUpdater>(), serverSettings)
+                        : new OrderStatusHelper(orderDao, serverSettings);
                 }));
 
             container.RegisterType<IPaymentService>(
                 new TransientLifetimeManager(),
                 new InjectionFactory(c =>
                 {
-                    var configManager = c.Resolve<IServerSettings>();
-                    switch (configManager.GetPaymentSettings().PaymentMode)
+                    var serverSettings = c.Resolve<IServerSettings>();
+                    switch (serverSettings.GetPaymentSettings().PaymentMode)
                     {
                         case PaymentMethod.Braintree:
-                            return new BraintreePaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), configManager, c.Resolve<IPairingService>());
+                            return new BraintreePaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
                         case PaymentMethod.RideLinqCmt:
                         case PaymentMethod.Cmt:
-                            return new CmtPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), configManager, c.Resolve<IPairingService>());
+                            return new CmtPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
                         case PaymentMethod.Moneris:
-                            return new MonerisPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), configManager, c.Resolve<IPairingService>());
+                            return new MonerisPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
                         default:
                             return null;
                     }

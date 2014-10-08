@@ -17,8 +17,8 @@ namespace apcurium.MK.Booking.IBS.Impl
 {
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
-        public BookingWebServiceClient(IServerSettings configManager, ILogger logger)
-            : base(configManager, logger)
+        public BookingWebServiceClient(IServerSettings serverSettings, ILogger logger)
+            : base(serverSettings, logger)
         {
         }
 
@@ -26,12 +26,12 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             var result = new IbsVehiclePosition[0];
 
-            var optionEnabled = ConfigManager.ServerData.AvailableVehicles.Enabled;
+            var optionEnabled = ServerSettings.ServerData.AvailableVehicles.Enabled;
 
             if (optionEnabled)
             {
-                var radius = ConfigManager.ServerData.AvailableVehicles.Radius;
-                var count = ConfigManager.ServerData.AvailableVehicles.Count;
+                var radius = ServerSettings.ServerData.AvailableVehicles.Radius;
+                var count = ServerSettings.ServerData.AvailableVehicles.Count;
 
                 var vehicleTypeFilter = vehicleTypeId.HasValue
                                         ? new[] { new TVehicleTypeItem { ID = vehicleTypeId.Value } }
@@ -256,8 +256,8 @@ namespace apcurium.MK.Booking.IBS.Impl
                 VAT = (double)fare.TaxAmount
             };
 
-            order.DispByAuto = ConfigManager.ServerData.IBS.AutoDispatch;
-            order.Priority = ConfigManager.ServerData.IBS.OrderPriority 
+            order.DispByAuto = ServerSettings.ServerData.IBS.AutoDispatch;
+            order.Priority = ServerSettings.ServerData.IBS.OrderPriority 
                 ? 1 
                 : 0;
 

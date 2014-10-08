@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IAccountChargeDao _accountChargeDao;
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly ICommandBus _commandBus;
-        private readonly IServerSettings _configManager;
+        private readonly IServerSettings _serverSettings;
         private readonly ReferenceDataService _referenceDataService;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Services
         public CreateOrderService(ICommandBus commandBus,
             IBookingWebServiceClient bookingWebServiceClient,
             IAccountDao accountDao,
-            IServerSettings configManager,
+            IServerSettings serverSettings,
             ReferenceDataService referenceDataService,
             IStaticDataWebServiceClient staticDataWebServiceClient,
             IRuleCalculator ruleCalculator,
@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Api.Services
             _bookingWebServiceClient = bookingWebServiceClient;
             _accountDao = accountDao;
             _referenceDataService = referenceDataService;
-            _configManager = configManager;
+            _serverSettings = serverSettings;
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _ruleCalculator = ruleCalculator;
             _updateOrderStatusJob = updateOrderStatusJob;
@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Api.Services
             _paymentService = paymentService;
             _creditCardDao = creditCardDao;
 
-            _resources = new Resources.Resources(_configManager);
+            _resources = new Resources.Resources(_serverSettings);
         }
 
         public object Post(CreateOrder request)
@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Api.Services
                 var pendingOrderId = GetPendingOrder();
 
                 // We don't allow order creation if there's already an order scheduled
-                if (!_configManager.ServerData.AllowSimultaneousAppOrders 
+                if (!_serverSettings.ServerData.AllowSimultaneousAppOrders 
                     && pendingOrderId != null 
                     && !request.FromWebApp)
                 {
@@ -148,7 +148,7 @@ namespace apcurium.MK.Booking.Api.Services
                 ? 1 
                 : request.Settings.Passengers;
 
-            if (_configManager.ServerData.Direction.NeedAValidTarif 
+            if (_serverSettings.ServerData.Direction.NeedAValidTarif 
                 && (!request.Estimate.Price.HasValue || request.Estimate.Price == 0))
             {
                 throw new HttpError(ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString());
@@ -171,7 +171,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 // this must be localized with the priceformat to be localized in the language of the company
                 // because it is sent to the driver
-                chargeTypeIbs = _resources.Get(chargeTypeKey, _configManager.ServerData.PriceFormat);
+                chargeTypeIbs = _resources.Get(chargeTypeKey, _serverSettings.ServerData.PriceFormat);
 
                 chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
             }
@@ -236,10 +236,10 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // try to preauthorize a small amount on the card to verify the validity
-            if (_configManager.ServerData.PreAuthorizeOnOrderCreation)
+            if (_serverSettings.ServerData.PreAuthorizeOnOrderCreation)
             {
                 var card = _creditCardDao.FindByAccountId(account.Id).First();
-                var preAuthWasASuccess = _paymentService.PreAuthorize(account.Email, card.Token, _configManager.ServerData.PreAuthorizeOnOrderCreationAmount);
+                var preAuthWasASuccess = _paymentService.PreAuthorize(account.Email, card.Token, _serverSettings.ServerData.PreAuthorizeOnOrderCreationAmount);
                 if (!preAuthWasASuccess)
                 {
                     throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
@@ -251,7 +251,7 @@ namespace apcurium.MK.Booking.Api.Services
         private void ValidateAppVersion(string clientLanguage)
         {
             var appVersion = base.Request.Headers.Get("ClientVersion");
-            var minimumAppVersion = _configManager.ServerData.MinimumRequiredAppVersion;
+            var minimumAppVersion = _serverSettings.ServerData.MinimumRequiredAppVersion;
 
             if (appVersion.IsNullOrEmpty() || minimumAppVersion.IsNullOrEmpty())
             {
@@ -331,7 +331,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             //TODO : need to check ibs setup for shortesst time.
 
-            var ibsServerTimeDifference = _configManager.ServerData.IBS.TimeDifference;
+            var ibsServerTimeDifference = _serverSettings.ServerData.IBS.TimeDifference;
             var offsetedTime = DateTime.Now.AddMinutes(2);
             if (ibsServerTimeDifference != 0)
             {
@@ -393,7 +393,7 @@ namespace apcurium.MK.Booking.Api.Services
             // Put Building Name in note, if specified
 
             // Get NoteTemplate from app settings, if it exists
-            var noteTemplate = _configManager.ServerData.IBS.NoteTemplate;
+            var noteTemplate = _serverSettings.ServerData.IBS.NoteTemplate;
 
             if (!string.IsNullOrWhiteSpace(buildingName))
             {

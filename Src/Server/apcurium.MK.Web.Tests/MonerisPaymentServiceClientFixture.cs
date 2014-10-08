@@ -48,9 +48,9 @@ namespace apcurium.MK.Web.Tests
             var ibsOrderService = UnityServiceLocator.Instance.Resolve<IIbsOrderService>();
             var accountDao = UnityServiceLocator.Instance.Resolve<IAccountDao>();
             var orderPaymentDao = UnityServiceLocator.Instance.Resolve<IOrderPaymentDao>();
-            var configManager = UnityServiceLocator.Instance.Resolve<IServerSettings>();
+            var serverSettings = UnityServiceLocator.Instance.Resolve<IServerSettings>();
             var pairingService = UnityServiceLocator.Instance.Resolve<IPairingService>();
-            return new MonerisPaymentService(commandBus, orderDao, logger, ibsOrderService, accountDao, orderPaymentDao, configManager, pairingService);
+            return new MonerisPaymentService(commandBus, orderDao, logger, ibsOrderService, accountDao, orderPaymentDao, serverSettings, pairingService);
         }
     }
 }

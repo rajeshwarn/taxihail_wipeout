@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Common.Tests
 
         private void SetSettingsValue(IDictionary<string, string> values)
         {
-            ConfigManagerLoader.InitializeDataObjects(ServerData, values, null);
+            SettingsLoader.InitializeDataObjects(ServerData, values, null);
         }
 
         private static bool IsNullableType(Type type)

@@ -18,12 +18,12 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AppSettingsDeleted>
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
-        private readonly IServerSettings _configManager;
+        private readonly IServerSettings _serverSettings;
 
-        public AppSettingsGenerator(Func<ConfigurationDbContext> contextFactory, IServerSettings configManager)
+        public AppSettingsGenerator(Func<ConfigurationDbContext> contextFactory, IServerSettings serverSettings)
         {
             _contextFactory = contextFactory;
-            _configManager = configManager;
+            _serverSettings = serverSettings;
         }
 
         public void Handle(AppSettingsAddedOrUpdated @event)
@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
 
             // Refresh the ServerData object
-            _configManager.Reload();
+            _serverSettings.Reload();
         }
 
         public void Handle(AppSettingsDeleted @event)
@@ -100,7 +100,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
 
             // Refresh the ServerData object
-            _configManager.Reload();
+            _serverSettings.Reload();
         }
     }
 }

@@ -14,8 +14,8 @@ namespace apcurium.MK.Booking.IBS.Impl
 {
     public class StaticDataWebServiceClient : BaseService<StaticDataservice>, IStaticDataWebServiceClient
     {
-        public StaticDataWebServiceClient(IServerSettings configManager, ILogger logger)
-            : base(configManager, logger)
+        public StaticDataWebServiceClient(IServerSettings serverSettings, ILogger logger)
+            : base(serverSettings, logger)
         {
         }
 
@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             }
 
             var useProvider = providerId.HasValue && providerId > 0;
-            var zoneByCompanyEnabled = ConfigManager.ServerData.IBS.ZoneByCompanyEnabled;
+            var zoneByCompanyEnabled = ServerSettings.ServerData.IBS.ZoneByCompanyEnabled;
             
             UseService(service =>
             {

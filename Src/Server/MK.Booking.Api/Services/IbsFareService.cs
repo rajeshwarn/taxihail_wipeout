@@ -18,12 +18,12 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
 
-        private readonly IServerSettings _configManager;
+        private readonly IServerSettings _serverSettings;
 
-        public IbsFareService(IBookingWebServiceClient bookingWebServiceClient, IServerSettings configManager)
+        public IbsFareService(IBookingWebServiceClient bookingWebServiceClient, IServerSettings serverSettings)
         {
             _bookingWebServiceClient = bookingWebServiceClient;
-            _configManager = configManager;
+            _serverSettings = serverSettings;
         }
 
         public DirectionInfo Get(IbsFareRequest request)
@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             if (distance.HasValue)
             {
-                if (_configManager.ServerData.DistanceFormat == DistanceFormat.Km)
+                if (_serverSettings.ServerData.DistanceFormat == DistanceFormat.Km)
                 {
                     var distanceInKm = Math.Round((double) distance.Value/1000, 1);
                     return string.Format("{0:n1} km", distanceInKm);

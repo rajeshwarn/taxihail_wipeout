@@ -25,15 +25,15 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IAccountDao _accountDao;
         private readonly IAccountWebServiceClient _accountWebServiceClient;
         private readonly ICommandBus _commandBus;
-        private readonly IServerSettings _configManager;
+        private readonly IServerSettings _serverSettings;
 
         public RegisterAccountService(ICommandBus commandBus, IAccountWebServiceClient accountWebServiceClient,
-            IAccountDao accountDao, IServerSettings configManager)
+            IAccountDao accountDao, IServerSettings serverSettings)
         {
             _commandBus = commandBus;
             _accountDao = accountDao;
             _accountWebServiceClient = accountWebServiceClient;
-            _configManager = configManager;
+            _serverSettings = serverSettings;
         }
 
         public object Post(RegisterAccount request)
@@ -78,8 +78,8 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
-                var accountActivationDisabled = _configManager.ServerData.AccountActivationDisabled;
-                var smsConfirmationEnabled = _configManager.ServerData.SMSConfirmationEnabled;
+                var accountActivationDisabled = _serverSettings.ServerData.AccountActivationDisabled;
+                var smsConfirmationEnabled = _serverSettings.ServerData.SMSConfirmationEnabled;
 
                 var confirmationToken = smsConfirmationEnabled 
                     ? GenerateActivationCode() 

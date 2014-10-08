@@ -20,17 +20,17 @@ namespace apcurium.MK.Booking.Api.Services
     {
         public const string CacheKey = "IBS.StaticData";
         private readonly ICacheClient _cacheClient;
-        private readonly IServerSettings _configManager;
+        private readonly IServerSettings _serverSettings;
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
 
         public ReferenceDataService(
             IStaticDataWebServiceClient staticDataWebServiceClient,
             ICacheClient cacheClient,
-            IServerSettings configManager)
+            IServerSettings serverSettings)
         {
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _cacheClient = cacheClient;
-            _configManager = configManager;
+            _serverSettings = serverSettings;
         }
 
         public object Get(ReferenceDataRequest request)
@@ -45,8 +45,8 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!request.WithoutFiltering)
             {
-                result.VehiclesList = FilterReferenceData(result.VehiclesList, _configManager.ServerData.IBS.ExcludedVehicleTypeId);
-                result.CompaniesList = FilterReferenceData(result.CompaniesList, _configManager.ServerData.IBS.ExcludedProviderId);
+                result.VehiclesList = FilterReferenceData(result.VehiclesList, _serverSettings.ServerData.IBS.ExcludedVehicleTypeId);
+                result.CompaniesList = FilterReferenceData(result.CompaniesList, _serverSettings.ServerData.IBS.ExcludedProviderId);
             }
 
             return result;

@@ -58,7 +58,7 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public void Load()
         {
-            ConfigManagerLoader.InitializeDataObjects(ServerData, GetSettings(), _logger);
+            SettingsLoader.InitializeDataObjects(ServerData, GetSettings(), _logger);
         }
 
         public void ChangeServerUrl(string serverUrl)

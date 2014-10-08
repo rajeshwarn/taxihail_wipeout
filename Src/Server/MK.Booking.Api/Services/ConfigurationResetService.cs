@@ -12,18 +12,18 @@ namespace apcurium.MK.Booking.Api.Services
     public class ConfigurationResetService : Service
     {
         private readonly ICacheClient _cacheClient;
-        private readonly IServerSettings _configManager;
+        private readonly IServerSettings _serverSettings;
 
-        public ConfigurationResetService(ICacheClient cacheClient, IServerSettings configManager)
+        public ConfigurationResetService(ICacheClient cacheClient, IServerSettings serverSettings)
         {
             _cacheClient = cacheClient;
-            _configManager = configManager;
+            _serverSettings = serverSettings;
         }
 
         public object Get(ConfigurationResetRequest request)
         {
             _cacheClient.Remove(ReferenceDataService.CacheKey);
-            _configManager.Reload();
+            _serverSettings.Reload();
             return true;
         }
     }

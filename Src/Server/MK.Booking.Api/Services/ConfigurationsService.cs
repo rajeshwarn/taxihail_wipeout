@@ -26,11 +26,11 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationDao _configDao;
-        private readonly IServerSettings _configManager;
+        private readonly IServerSettings _serverSettings;
 
-        public ConfigurationsService(IServerSettings configManager, ICommandBus commandBus, IConfigurationDao configDao)
+        public ConfigurationsService(IServerSettings serverSettings, ICommandBus commandBus, IConfigurationDao configDao)
         {
-            _configManager = configManager;
+            _serverSettings = serverSettings;
             _commandBus = commandBus;
             _configDao = configDao;
         }
@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Api.Services
             var result = new Dictionary<string, string>();
 
             var isFromWebApp = request.AppSettingsType == AppSettingsType.Webapp;
-            var settings = _configManager.ServerData.GetType().GetAllProperties();
+            var settings = _serverSettings.ServerData.GetType().GetAllProperties();
             var returnAllKeys = SessionAs<AuthUserSession>().HasPermission(RoleName.SuperAdmin);
  
             foreach (var setting in settings)
@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Api.Services
                     || sendToClient                     // send to mobile client
                     || customizableByCompany)           // company settings in admin section
                 {
-                    var settingValue = _configManager.ServerData.GetNestedPropertyValue(setting.Key);
+                    var settingValue = _serverSettings.ServerData.GetNestedPropertyValue(setting.Key);
 
                     string settingStringValue = settingValue == null ? string.Empty : settingValue.ToString();
                     if (settingStringValue.IsBool())

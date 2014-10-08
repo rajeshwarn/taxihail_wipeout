@@ -27,7 +27,7 @@ namespace apcurium.MK.Common
         }
         public void Load()
         {
-            ConfigManagerLoader.InitializeDataObjects(ServerData, GetSettings(), null);
+            SettingsLoader.InitializeDataObjects(ServerData, GetSettings(), null);
         }
         private IDictionary<string, string> AppSettings { get; set; }
 

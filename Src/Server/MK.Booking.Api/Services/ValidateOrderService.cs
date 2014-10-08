@@ -18,16 +18,16 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ValidateOrderService));
 
-        private readonly IServerSettings _configManager;
+        private readonly IServerSettings _serverSettings;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
 
         public ValidateOrderService(
-            IServerSettings configManager,
+            IServerSettings serverSettings,
             IStaticDataWebServiceClient staticDataWebServiceClient,
             IRuleCalculator ruleCalculator)
         {
-            _configManager = configManager;
+            _serverSettings = serverSettings;
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _ruleCalculator = ruleCalculator;
         }
@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         private DateTime GetCurrentOffsetedTime()
         {
-            var ibsServerTimeDifference = _configManager.ServerData.IBS.TimeDifference;
+            var ibsServerTimeDifference = _serverSettings.ServerData.IBS.TimeDifference;
             var offsetedTime = DateTime.Now.AddMinutes(2);
             if (ibsServerTimeDifference != 0)
             {

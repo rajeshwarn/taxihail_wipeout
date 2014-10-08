@@ -30,7 +30,7 @@ namespace MK.Booking.IBS.Test
 
         public void Load()
         {
-            ConfigManagerLoader.InitializeDataObjects(ServerData, GetSettings(), null);
+            SettingsLoader.InitializeDataObjects(ServerData, GetSettings(), null);
         }
 
         public IDictionary<string, string> GetSettings()

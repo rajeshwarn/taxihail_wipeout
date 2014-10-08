@@ -21,21 +21,21 @@ namespace apcurium.MK.Booking.Api.Services.Admin
     {
         private readonly ICacheClient _cacheClient;
         private readonly ICommandBus _commandBus;
-        private readonly IServerSettings _configManager;
+        private readonly IServerSettings _serverSettings;
 
-        public ExclusionsService(IServerSettings configManager, ICommandBus commandBus, ICacheClient cacheClient)
+        public ExclusionsService(IServerSettings serverSettings, ICommandBus commandBus, ICacheClient cacheClient)
         {
-            _configManager = configManager;
+            _serverSettings = serverSettings;
             _commandBus = commandBus;
             _cacheClient = cacheClient;
         }
 
         public object Get(ExclusionsRequest request)
         {
-            var excludedVehicleTypeId = _configManager.ServerData.IBS.ExcludedVehicleTypeId.SelectOrDefault(s => s
+            var excludedVehicleTypeId = _serverSettings.ServerData.IBS.ExcludedVehicleTypeId.SelectOrDefault(s => s
                 .Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries)
                 .Select(int.Parse).ToArray(), new int[0]);
-            var excludedProviderId = _configManager.ServerData.IBS.ExcludedProviderId.SelectOrDefault(s => s
+            var excludedProviderId = _serverSettings.ServerData.IBS.ExcludedProviderId.SelectOrDefault(s => s
                 .Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries)
                 .Select(int.Parse).ToArray(), new int[0]);
 

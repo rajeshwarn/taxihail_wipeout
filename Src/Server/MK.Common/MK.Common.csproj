@@ -94,7 +94,7 @@
     <Compile Include="Configuration\Attributes\CustomizableByCompanyAttribute.cs" />
     <Compile Include="Configuration\Attributes\RequiredAtStartup.cs" />
     <Compile Include="Configuration\Attributes\SendToClientAttribute.cs" />
-    <Compile Include="Configuration\Helpers\ConfigManagerLoader.cs" />
+    <Compile Include="Configuration\Helpers\SettingsLoader.cs" />
     <Compile Include="Configuration\IAppSettings.cs" />
     <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
     <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />

@@ -158,7 +158,6 @@ namespace DatabaseInitializer
                     migrator.Do();
                 }
 
-                // make sure we reload the ConfigManager object before events playback
                 IDictionary<string, string> appSettings = new Dictionary<string, string>();
 
                 if (!isUpdate)
