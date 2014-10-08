@@ -8,7 +8,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/vehicles/", "GET")]
+    [Route("/vehicles/", "POST")]
     public class AvailableVehicles : IReturn<AvailableVehiclesResponse>
     {
         public double Latitude { get; set; }

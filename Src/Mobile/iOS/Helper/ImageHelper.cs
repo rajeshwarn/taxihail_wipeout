@@ -6,6 +6,7 @@ using MonoTouch.CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using MonoTouch.CoreImage;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {

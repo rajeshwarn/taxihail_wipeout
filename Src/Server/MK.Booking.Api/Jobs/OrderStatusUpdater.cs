@@ -124,23 +124,23 @@ namespace apcurium.MK.Booking.Api.Jobs
         {
             if (orderStatusDetail.Status == OrderStatus.WaitingForPayment)
             {
-                Log.DebugFormat("Order Status is: {0}. Don't update since it's a special case outside of IBS.", orderStatusDetail.Status);
+                Log.DebugFormat("Order {1}: Status is: {0}. Don't update since it's a special case outside of IBS.", orderStatusDetail.Status, orderStatusDetail.OrderId);
                 return;
             }
             if (ibsOrderInfo.IsCanceled)
             {
                 orderStatusDetail.Status = OrderStatus.Canceled;
-                Log.DebugFormat("Order Status updated to: {0}", orderStatusDetail.Status);
+                Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
             else if (ibsOrderInfo.IsTimedOut)
             {
                 orderStatusDetail.Status = OrderStatus.TimedOut;
-                Log.DebugFormat("Order Status updated to: {0}", orderStatusDetail.Status);
+                Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
             else if (ibsOrderInfo.IsComplete)
             {
                 orderStatusDetail.Status = OrderStatus.Completed;
-                Log.DebugFormat("Order Status updated to: {0}", orderStatusDetail.Status);
+                Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
         }
 
@@ -187,6 +187,11 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
+            if (ibsOrderInfo.IsMeterOffNotPaid)
+            {
+                SendPaymentBeingProcessedMessageToDriver(ibsOrderInfo.VehicleNumber);
+            }
+
             if (ibsOrderInfo.Fare <= 0)
             {
                 // fare was not returned by ibs
@@ -196,6 +201,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     // no fare received but order is completed, change status to increase polling speed
                     orderStatusDetail.Status = OrderStatus.WaitingForPayment;
                     orderStatusDetail.PairingTimeOut = DateTime.UtcNow.AddMinutes(30);
+                    Log.DebugFormat("Order {1}: Status updated to: {0} with timeout in 30 minutes", orderStatusDetail.Status, orderStatusDetail.OrderId);
                 }
 
                 if (orderStatusDetail.Status == OrderStatus.WaitingForPayment
@@ -203,7 +209,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     orderStatusDetail.Status = OrderStatus.Completed;
                     orderStatusDetail.PairingError = "Timed out period reached while waiting for payment informations from IBS.";
-                    Log.ErrorFormat("Pairing error: {0}", orderStatusDetail.PairingError);
+                    Log.ErrorFormat("Order {1}: Pairing error: {0}", orderStatusDetail.PairingError, orderStatusDetail.OrderId);
                 }
 
                 return;
@@ -215,7 +221,17 @@ namespace apcurium.MK.Booking.Api.Jobs
             double tipPercentage = pairingInfo.AutoTipPercentage ?? _appSettings.Data.DefaultTipPercentage;
             var tipAmount = GetTipAmount(meterAmount, tipPercentage);
 
-           var paymentResult =  _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
+            Log.DebugFormat(
+                    "Order {4}: Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
+                    meterAmount, tipPercentage, tipAmount, meterAmount + tipAmount, orderStatusDetail.OrderId);
+
+            if (!_appSettings.Data.SendDetailedPaymentInfoToDriver)
+            {
+                // this is the only payment related message sent to the driver when this setting is false
+                SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, meterAmount + tipAmount, meterAmount, tipAmount);
+            }
+
+            var paymentResult =  _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
             {
                 OrderId = orderStatusDetail.OrderId,
                 CardToken = pairingInfo.TokenOfCardToBeUsedForPayment,
@@ -224,23 +240,27 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Amount = Convert.ToDecimal(meterAmount + tipAmount)
             });
 
-           // whether there's a success or not, we change the status back to Completed since we can't process the payment again
-           orderStatusDetail.Status = OrderStatus.Completed;
+            // whether there's a success or not, we change the status back to Completed since we can't process the payment again
+            orderStatusDetail.Status = OrderStatus.Completed;
 
-           if (paymentResult.IsSuccessfull)
+            if (paymentResult.IsSuccessfull)
             {
-                Log.DebugFormat(
-                    "Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
-                    meterAmount, tipPercentage, tipAmount, meterAmount + tipAmount);
+                Log.DebugFormat("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
             }
             else
             {
-                var messageToDriver = _resources.Get("PaymentFailedToDriver", _languageCode);
-                _ibsOrderService.SendMessageToDriver(messageToDriver, orderStatusDetail.VehicleNumber);
-               Log.DebugFormat("Error During Payment : " + paymentResult.Message);
+                if (_appSettings.Data.SendDetailedPaymentInfoToDriver)
+                {
+                    _ibsOrderService.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+                }
+                
+                // set the payment error message in OrderStatusDetail for reporting purpose
+                orderStatusDetail.PairingError = paymentResult.Message;
+
+                Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.Message, paymentResult.TransactionId);
             }
         }
-
+        
         private double GetTipAmount(double amount, double percentage)
         {
             var tip = percentage / 100;
@@ -252,7 +272,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             var pairingInfo = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
             if (pairingInfo == null)
             {
-                Log.DebugFormat("No pairing to process for order {0} as no pairing information was found.", orderStatusDetail.OrderId);
+                Log.DebugFormat("Order {0}: No pairing to process as no pairing information was found.", orderStatusDetail.OrderId);
                 return;
             }
 
@@ -334,10 +354,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                     description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", _languageCode);
                 }
             }
-            else if (ibsOrderInfo.IsMeterOffNotPaid)
-            {
-                SendPayInCarMessageToDriver(ibsOrderInfo.VehicleNumber);
-            }
 
             return description.HasValue()
                         ? description
@@ -349,17 +365,22 @@ namespace apcurium.MK.Booking.Api.Jobs
             var eta = _directions.GetEta(vehicleLatitude, vehicleLongitude, pickupLatitude, pickupLongitude);
             if (eta != null && eta.IsValidEta())
             {
-                string etaMessage = string.Format(_resources.Get("EtaMessageToDriver", _languageCode), eta.FormattedDistance, eta.Duration);
+                var etaMessage = string.Format(_resources.Get("EtaMessageToDriver"), eta.FormattedDistance, eta.Duration);
                 _ibsOrderService.SendMessageToDriver(etaMessage, vehicleNumber);
                 Log.Debug(etaMessage);
             }
         }
 
-        private void SendPayInCarMessageToDriver(string vehicleNumber)
+        private void SendPaymentBeingProcessedMessageToDriver(string vehicleNumber)
         {
-            string payInCarMessage = _resources.Get("PayInCarMessageToDriver", _languageCode);
-            _ibsOrderService.SendMessageToDriver(payInCarMessage, vehicleNumber);
-            Log.Debug(payInCarMessage);
+            var paymentBeingProcessedMessage = _resources.Get("PaymentBeingProcessedMessageToDriver");
+            _ibsOrderService.SendMessageToDriver(paymentBeingProcessedMessage, vehicleNumber);
+            Log.Debug(paymentBeingProcessedMessage);
+        }
+
+        private void SendMinimalPaymentProcessedMessageToDriver(string vehicleNumber, double amount, double meter, double tip)
+        {
+            _ibsOrderService.SendPaymentNotification(amount, meter, tip, null, vehicleNumber);
         }
     }
 }

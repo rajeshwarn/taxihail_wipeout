@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
 		public async Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int vehicleTypeId)
 		{
-			var response = await  Client.GetAsync(new AvailableVehicles
+			var response = await  Client.PostAsync(new AvailableVehicles
 				{
 					Latitude = latitude,
 					Longitude = longitude,

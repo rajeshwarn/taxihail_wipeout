@@ -31,8 +31,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
         Account CurrentAccount { get; }
         
-		Task<IList<ListItem>> GetCompaniesList();
-        
 		Task<IList<VehicleType>> GetVehiclesList();
         
 		Task<IList<ListItem>> GetPaymentsList();

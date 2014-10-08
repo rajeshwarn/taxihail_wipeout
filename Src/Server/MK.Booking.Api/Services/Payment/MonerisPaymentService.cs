@@ -126,8 +126,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
+        public bool PreAuthorize(string email, string cardToken, decimal amountToPreAuthorize)
+        {
+            return true;
+        }
+
         public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request)
         {
+            string transactionId = null;
             try
             {
                 var isSuccessful = false;
@@ -158,10 +164,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var preAuthRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
                 var preAuthReceipt = preAuthRequest.GetReceipt();
 
+                transactionId = preAuthReceipt.GetTxnNumber();
+
                 var success = RequestSuccesful(preAuthReceipt, out message);
                 if (success)
                 {
-                    var transactionId = preAuthReceipt.GetTxnNumber();
+                    
                     var paymentId = Guid.NewGuid();
 
                     _commandBus.Send(new InitiateCreditCardPayment
@@ -267,6 +275,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 return new CommitPreauthorizedPaymentResponse
                 {
                     AuthorizationCode = authorizationCode,
+                    TransactionId = transactionId,
                     IsSuccessfull = isSuccessful,
                     Message = isSuccessful ? "Success" : message
                 };
@@ -278,6 +287,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessfull = false,
+                    TransactionId = transactionId,
                     Message = e.Message,
                 };
             }

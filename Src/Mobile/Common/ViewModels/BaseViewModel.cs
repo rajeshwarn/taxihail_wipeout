@@ -18,6 +18,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class BaseViewModel: MvxViewModel, IDisposable
     {
         protected readonly CompositeDisposable Subscriptions = new CompositeDisposable();
+
+        public bool IsDeferredLoaded { get; private set; }
+
 		protected new void RaisePropertyChanged([CallerMemberName]string whichProperty = null)
 		{
 			base.RaisePropertyChanged(whichProperty);
@@ -93,19 +96,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             base.ShowViewModel<TViewModel>(dictionary);
         }
 
-		protected TViewModel AddChild<TViewModel>(Func<TViewModel> builder)
+		protected TViewModel AddChild<TViewModel>(Func<TViewModel> builder, bool lazyLoad = false)
             where TViewModel: BaseViewModel
 		{
-			var viewModel = builder.Invoke();
-			viewModel.CallBundleMethods("Init", new MvxBundle());
+		    var viewModel = builder.Invoke();
+            viewModel.IsDeferredLoaded = lazyLoad;
+
+		    if (!lazyLoad)
+		    {
+                viewModel.CallBundleMethods("Init", new MvxBundle());
+		    }
+
 			viewModel.DisposeWith(Subscriptions);
 			return viewModel;
 		}
 
-		protected virtual TViewModel AddChild<TViewModel>()
+		protected virtual TViewModel AddChild<TViewModel>(bool layzyLoad = false)
             where TViewModel: BaseViewModel
 		{
-			return AddChild<TViewModel>(() => Mvx.IocConstruct<TViewModel>());
+			return AddChild(Mvx.IocConstruct<TViewModel>, layzyLoad);
 		}
 
 		protected override void InitFromBundle(IMvxBundle parameters)

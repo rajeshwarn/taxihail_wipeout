@@ -257,7 +257,6 @@
     <Compile Include="AppServices\ITermsAndConditionsService.cs" />
     <Compile Include="AppServices\Impl\TermsAndConditionsService.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
-    <Compile Include="Messages\AppActivated.cs" />
     <Compile Include="ViewModels\Payment\PairingState.cs" />
     <Compile Include="AppServices\IVehicleService.cs" />
     <Compile Include="AppServices\Impl\VehicleService.cs" />
@@ -356,6 +355,7 @@
     <None Include="Localization\Master.fr.resx">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="Localization\Master.es.resx" />
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="Style\Style.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />
@@ -363,6 +363,7 @@
     <None Include="Localization\CINQ-S.fr.resx">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Localization\MearsTaxi.resx" />
     <None Include="Localization\CINQ-S.resx" />
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
   </ItemGroup>

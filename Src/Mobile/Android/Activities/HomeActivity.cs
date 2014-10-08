@@ -312,8 +312,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (ViewModel != null)
             {
                 ViewModel.Start();
+
                 if (_locateUserOnStart)
                 {
+                    // this happens ONLY when returning from a ride
                     ViewModel.AutomaticLocateMeAtPickup.Execute(null);
                     _locateUserOnStart = false;
                 }
@@ -522,7 +524,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     _locateUserOnStart = true;
                 }
             }
-
         }
 
 

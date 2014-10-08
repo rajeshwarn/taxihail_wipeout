@@ -123,7 +123,6 @@ namespace apcurium.MK.Booking.Mobile
                 case MvxLifetimeEvent.Launching:
                 case MvxLifetimeEvent.ActivatedFromMemory:
                 case MvxLifetimeEvent.ActivatedFromDisk:
-                    _container.Resolve<ITinyMessengerHub>().Publish(new AppActivated(this));
                     RefreshAppData ();
                     break;
             }

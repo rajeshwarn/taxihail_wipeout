@@ -19,16 +19,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly IIbsOrderService _ibs;
         private readonly IOrderDao _orderDao;
         private readonly IOrderPaymentDao _orderPaymentDao;
-        private readonly Resources.Resources _resources;
 
-        public ResendPaymentConfirmationSevice(IOrderDao orderDao, IOrderPaymentDao orderPaymentDao,
-            IConfigurationManager configurationManager, IIbsOrderService ibs, IAppSettings appSettings)
+        public ResendPaymentConfirmationSevice(IOrderDao orderDao, IOrderPaymentDao orderPaymentDao, IIbsOrderService ibs)
         {
             _orderDao = orderDao;
             _orderPaymentDao = orderPaymentDao;
             _ibs = ibs;
-
-            _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
         }
 
         public object Post(ResendPaymentConfirmationRequest request)
@@ -57,22 +53,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private void SendPaymentConfirmationToDriver(int ibsOrderId, string vehicleNumber, decimal meter, decimal tip, decimal amount, string transactionId, 
             string authorizationCode)
         {
-
-           
-            var amountString = _resources.FormatPrice((double)amount);
-            var meterString = _resources.FormatPrice((double?)meter);
-            var tipString = _resources.FormatPrice((double?)tip);
-
-            // Padded with 32 char because the MDT displays line of 32 char.  This will cause to write each string on a new line
-            var line1 = string.Format(_resources.Get("PaymentConfirmationToDriver1"));
-            line1 = line1.PadRight(32, ' ');
-            var line2 = string.Format(_resources.Get("PaymentConfirmationToDriver2"), meterString, tipString);
-            line2 = line2.PadRight(32, ' ');
-            var line3 = string.Format(_resources.Get("PaymentConfirmationToDriver3"), amountString);
-            line3 = line3.PadRight(32, ' ');
-            var line4 = string.Format(_resources.Get("PaymentConfirmationToDriver4"), authorizationCode);
-
-            _ibs.SendPaymentNotification(line1 + line2 + line3 + line4, vehicleNumber, ibsOrderId);
+            _ibs.SendPaymentNotification((double)amount, (double)meter, (double)tip, authorizationCode, vehicleNumber);
         }
     }
 }

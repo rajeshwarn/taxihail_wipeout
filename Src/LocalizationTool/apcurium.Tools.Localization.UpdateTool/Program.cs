@@ -19,7 +19,7 @@ namespace apcurium.Tools.Localization.UpdateTool
         static void Main(string[] args)
         {
 
-            var supportedLanguages = new string[] { "", "fr", "ar" };
+            var supportedLanguages = new string[] { "", "fr", "ar", "es" };
             string target = string.Empty;
             string source = string.Empty;
             string settings = string.Empty;

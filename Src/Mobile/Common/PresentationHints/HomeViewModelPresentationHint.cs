@@ -22,6 +22,7 @@ namespace apcurium.MK.Booking.Mobile.PresentationHints
 			private set;
 		}
 
+		// used on Android
         public bool IsNewOrder
         {
             get;

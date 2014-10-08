@@ -18,7 +18,7 @@
                 success: function (response) {
                     self.availableVehicles = response;
                     self.updateAvailableVehiclesPosition();
-                }
+                }, type: 'POST'
             });
         },
 

@@ -190,7 +190,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
                 else
                 {
-                    // possible only with migration from OrderCompleted or OrderFareUpdated
                     if (@event.Status != null) 
                     {
                         details.IBSStatusId = @event.Status.IBSStatusId;
@@ -206,6 +205,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     }
                     else
                     {
+                        // it will enter here only with migration from OrderCompleted or OrderFareUpdated
                         if (@event.IsCompleted)
                         {
                             details.Status = OrderStatus.Completed;

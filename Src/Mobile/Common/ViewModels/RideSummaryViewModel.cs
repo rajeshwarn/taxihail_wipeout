@@ -77,8 +77,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set {
 				_canRate = value;
 				RaisePropertyChanged(); 
+				UpdateRatingList ();
 			}
 		}	
+			
+		private void UpdateRatingList()
+		{
+			if (RatingList != null) 
+			{
+				RatingList.ForEach (x => x.CanRate = _canRate);
+				RaisePropertyChanged (() => RatingList);
+			}
+		}
+
 		private Guid _orderId;
 		public Guid OrderId
 		{

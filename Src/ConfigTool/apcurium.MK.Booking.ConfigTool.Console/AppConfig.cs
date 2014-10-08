@@ -253,8 +253,11 @@ namespace apcurium.MK.Booking.ConfigTool
 
             var allResources = GetFilesFromAssetsDirectory("png");
 
-            foreach (var g in allResources) 
+            
+
+            foreach (var g in allResources.Where(r=> !r.ToLower().Contains("icon")) ) // The where clause need to be improved. 
             {
+
 				_configs.Add (new ConfigFile (this) {
 					Source = g+"@2x.png",
 					Destination = @"Mobile\Android\Resources\drawable-xhdpi\"+g+".png"
@@ -304,8 +307,8 @@ namespace apcurium.MK.Booking.ConfigTool
                 _configs.Add(new ConfigFile(this)
                 {
                     Source = file + ".json",
-                    Destination = @"Mobile\Common\TutorialContent\"+ file + ".json" 
-            }
+                    Destination = @"Mobile\Common\TutorialContent\" + file + ".json"
+                });
             }
         }
 
@@ -456,5 +459,4 @@ namespace apcurium.MK.Booking.ConfigTool
             }
         }        
     }
-}
 }
