@@ -45,6 +45,8 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly INotificationService _notificationService;
         private readonly IDirections _directions;
         private readonly IIbsOrderService _ibsOrderService;
+        private readonly IAccountDao _accountDao;
+        private readonly ICreditCardDao _creditCardDao;
         private readonly Resources.Resources _resources;
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(OrderStatusUpdater));
@@ -58,7 +60,9 @@ namespace apcurium.MK.Booking.Api.Jobs
             IPaymentService paymentService,
             INotificationService notificationService,
             IDirections directions,
-            IIbsOrderService ibsOrderService)
+            IIbsOrderService ibsOrderService,
+            IAccountDao accountDao,
+            ICreditCardDao creditCardDao)
         {
             _orderDao = orderDao;
             _paymentService = paymentService;
@@ -66,9 +70,10 @@ namespace apcurium.MK.Booking.Api.Jobs
             _directions = directions;
             _ibsOrderService = ibsOrderService;
             _serverSettings = serverSettings;
+            _accountDao = accountDao;
+            _creditCardDao = creditCardDao;
             _commandBus = commandBus;
             _orderPaymentDao = orderPaymentDao;
-
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -127,6 +132,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (ibsOrderInfo.IsCanceled)
             {
                 orderStatusDetail.Status = OrderStatus.Canceled;
+                ChargeNoShowFeeIfNecessary(ibsOrderInfo, orderStatusDetail);
                 Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
             else if (ibsOrderInfo.IsTimedOut)
@@ -138,6 +144,50 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 orderStatusDetail.Status = OrderStatus.Completed;
                 Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
+            }
+        }
+
+        private void ChargeNoShowFeeIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
+        {
+            if (ibsOrderInfo.Status != VehicleStatuses.Common.NoShow)
+            {
+                return;
+            }
+
+            Log.DebugFormat("No show fee will be charged for order {0}.", ibsOrderInfo.IBSOrderId);
+
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+            var account = _accountDao.FindById(orderStatusDetail.AccountId);
+
+            if (paymentSettings.NoShowFee.HasValue
+                && paymentSettings.NoShowFee.Value > 0
+                && account.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+            {
+                var defaultCreditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
+
+                if (defaultCreditCard != null)
+                {
+                    var paymentResult = _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
+                    {
+                        OrderId = orderStatusDetail.OrderId,
+                        CardToken = defaultCreditCard.Token,
+                        MeterAmount = paymentSettings.NoShowFee.Value,
+                        TipAmount = 0,
+                        Amount = paymentSettings.NoShowFee.Value,
+                        IsNoShowFee = true
+                    });
+
+
+                    if (paymentResult.IsSuccessfull)
+                    {
+                        Log.DebugFormat("No show fee of amount {0} was charged for order {1}.", paymentSettings.NoShowFee.Value, ibsOrderInfo.IBSOrderId);
+                    }
+                    else
+                    {
+                        orderStatusDetail.PairingError = paymentResult.Message;
+                        Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, paymentResult.Message);
+                    }
+                }
             }
         }
 
@@ -302,7 +352,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private string GetDescription(Guid orderId, IBSOrderInformation ibsOrderInfo)
         {
             var orderDetail = _orderDao.FindById(orderId);
-            _languageCode = orderDetail != null ? orderDetail.ClientLanguageCode : "en";
+            _languageCode = orderDetail != null ? orderDetail.ClientLanguageCode : SupportedLanguages.en.ToString();
 
             string description = null;
             if (ibsOrderInfo.IsAssigned)

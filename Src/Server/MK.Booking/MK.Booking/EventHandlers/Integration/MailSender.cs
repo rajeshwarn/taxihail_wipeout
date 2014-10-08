@@ -40,6 +40,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(CreditCardPaymentCaptured @event)
         {
+            if (@event.IsNoShowFee)
+            {
+                // Don't message user
+                return;
+            }
+
             SendReceipt(@event.OrderId);
         }
 

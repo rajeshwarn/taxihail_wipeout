@@ -43,6 +43,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(CreditCardPaymentCaptured @event)
         {
+            if (@event.IsNoShowFee)
+            {
+                // Don't message driver
+                return;
+            }
+
             if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
                 SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);

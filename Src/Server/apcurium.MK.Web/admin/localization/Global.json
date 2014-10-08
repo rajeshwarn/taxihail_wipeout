@@ -108,7 +108,7 @@
 
     "/******* Begin notification settings Aliases ******/": "",
 
-    "NotificationSettingsWarning": "Notifications other than Email will be sent by Push or SMS depending on the setting \"Client.SendPushAsSMS\"",
+    "NotificationSettingsWarning": "Notifications other than Email will be sent by Push or SMS depending on the setting \"SendPushAsSMS\"",
     "enabled":  "Enable Notifications",
     "bookingConfirmationEmail":  "Booking Confirmation (Email)",
     "receiptEmail":  "Receipt (Email)",
