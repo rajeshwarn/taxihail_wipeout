@@ -14,6 +14,9 @@ using MongoRepository;
 
 namespace CompaniesData
 {
+
+
+
     internal class Program
     {
         private static readonly MongoRepository<Company> repository = new MongoRepository<Company>();

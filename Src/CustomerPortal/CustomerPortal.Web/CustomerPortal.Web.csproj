@@ -208,6 +208,7 @@
     <Compile Include="Areas\Admin\Models\StoreInfoModel.cs" />
     <Compile Include="Areas\Admin\Models\TestAppleDevCenterLoginRequest.cs" />
     <Compile Include="Areas\Admin\Models\VersionEmailViewModel.cs" />
+    <Compile Include="Areas\Customer\Controllers\Api\NetworkApiController.cs" />
     <Compile Include="Attributes\NoCacheAttribute.cs" />
     <Compile Include="BitBucket\VersionUpdater.cs" />
     <Compile Include="Controllers\API\CompanyController.cs" />
@@ -245,6 +246,7 @@
     <Compile Include="Entities\Version.cs" />
     <Compile Include="Extensions\ControllerExtensions.cs" />
     <Compile Include="Extensions\DateFormatterExtension.cs" />
+    <Compile Include="Extensions\MapRegionExtensions.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="HtmlHelpers\ActiveTab.cs" />
     <Compile Include="HtmlHelpers\HtmlExtensions.cs" />

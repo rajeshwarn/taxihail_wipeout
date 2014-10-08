@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using CustomerPortal.Web.Properties;
+using MongoRepository;
 
 namespace CustomerPortal.Web.Entities.Network
 {
-    public class TaxiHailNetworkSettings
+    public class TaxiHailNetworkSettings : IEntity
     {
         [Display(Name = "IncludeInTaxiHailNetwork", Description = "IncludeInTaxiHailNetworkHelp",
             ResourceType = typeof(Resources))]
@@ -11,5 +12,8 @@ namespace CustomerPortal.Web.Entities.Network
 
          [Display(Name = "RegionTaxhiHailNetworkLabel", ResourceType = typeof(Resources))]
         public MapRegion Region {get; set; }
+
+        public string Id { get; set; }
+        public string CompanyId { get; set; }
     }
 }

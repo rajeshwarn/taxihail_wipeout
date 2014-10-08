@@ -1,5 +1,5 @@
+using System.Drawing;
 using CustomerPortal.Web.Properties;
-using CustomerPortal.Web.Services;
 using System.ComponentModel.DataAnnotations;
 
 namespace CustomerPortal.Web.Entities.Network
@@ -11,5 +11,6 @@ namespace CustomerPortal.Web.Entities.Network
 
          [Display(Name = "CoordinateEndTaxiHailNetwork", ResourceType = typeof(Resources))]
          public MapCoordinate CoordinateEnd { get; set; }
+    
     }
 }

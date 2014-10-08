@@ -1,0 +1,29 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Web;
+using CustomerPortal.Web.Entities.Network;
+
+namespace CustomerPortal.Web.Extensions
+{
+    public static class MapRegionExtensions
+    {
+        public static RectangleF GetRectangle(this MapRegion thisRegion)
+        {
+            return RectangleF.FromLTRB(
+                (float)thisRegion.CoordinateStart.Longitude, (float)thisRegion.CoordinateStart.Latitude,
+                (float)thisRegion.CoordinateEnd.Longitude, (float)thisRegion.CoordinateEnd.Longitude
+                );
+        }
+
+        public static bool Contains(this MapRegion thisRegion, MapRegion region)
+        {
+            var myRect = thisRegion.GetRectangle();
+            var otherRect = region.GetRectangle();
+            var intersect = RectangleF.Intersect(myRect, otherRect);
+
+            return intersect.Width > 0;
+        }
+    }
+}
