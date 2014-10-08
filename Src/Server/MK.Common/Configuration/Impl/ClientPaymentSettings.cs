@@ -20,7 +20,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         public bool AutomaticPayment { get; set; }
         public bool AutomaticPaymentPairing { get; set; }
         public bool ChargeNoShowFee { get; set; }
-        public double? NoShowFee { get; set; }
+        public decimal? NoShowFee { get; set; }
         public CmtPaymentSettings CmtPaymentSettings { get; set; }
         public BraintreeClientSettings BraintreeClientSettings { get; set; }
         public MonerisPaymentSettings MonerisPaymentSettings { get; set; }

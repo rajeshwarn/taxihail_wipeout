@@ -151,7 +151,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void ChargeNoShowFeeIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
         {
-            if (ibsOrderInfo.Status != "wosNOSHOW")
+            if (ibsOrderInfo.Status != VehicleStatuses.Common.NoShow)
             {
                 return;
             }
@@ -162,16 +162,21 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (paymentSettings.ChargeNoShowFee
                 && account.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
             {
-                var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
-                if (creditCard != null)
+                var defaultCreditCard = 
+                    _creditCardDao.FindByAccountId(account.Id)
+                                  .FirstOrDefault(c => c.CreditCardId == account.DefaultCreditCard);
+
+                if (defaultCreditCard != null)
                 {
+                    var noShowFee = paymentSettings.NoShowFee != null ? paymentSettings.NoShowFee.Value : 0;
+
                     var paymentResult = _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
                     {
                         OrderId = orderStatusDetail.OrderId,
-                        CardToken = creditCard.Token,
-                        MeterAmount = Convert.ToDecimal(10), // Put in settings
+                        CardToken = defaultCreditCard.Token,
+                        MeterAmount = noShowFee,
                         TipAmount = 0,
-                        Amount = Convert.ToDecimal(10) // Put in settings
+                        Amount = noShowFee
                     });
 
                     // TODO: log if it fails? or fire and forget
