@@ -296,6 +296,10 @@
     <Content Include="assets\js\storage-polyfill.js" />
     <Content Include="common\collections\AvailableVehicleCollection.js" />
     <Content Include="common\models\AvailableVehicle.js" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="PayPalExpressCheckout\mobile-cancel.html" />
     <Content Include="PayPalExpressCheckout\mobile-success.html" />
     <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />
@@ -391,6 +395,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="models\CompanySettings.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="services\MathService.js" />
     <Content Include="models\NewAccount.js" />
     <Content Include="models\OrderStatus.js" />
@@ -520,6 +530,14 @@
     <Content Include="admin\localization\ManageRideRatings.json" />
     <Content Include="admin\templates\AddRideRating.handlebars" />
     <Content Include="admin\localization\AddRideRating.json" />
+    <Content Include="Areas\AdminTH\Views\web.config" />
+    <Content Include="Areas\AdminTH\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\AdminTH\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\AdminTH\Views\TaxiHailNetwork\Index.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -545,6 +563,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\AdminTH\AdminTHAreaRegistration.cs" />
+    <Compile Include="Areas\AdminTH\Controllers\TaxiHailNetworkController.cs" />
     <Compile Include="Config.aspx.cs">
       <DependentUpon>Config.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -817,6 +837,7 @@
     <Content Include="admin\localization\AddPopularAddress.json" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\AdminTH\Models\" />
     <Folder Include="mixins\" />
   </ItemGroup>
   <ItemGroup>
