@@ -207,7 +207,6 @@
     <Compile Include="Areas\Admin\Models\IbsTestResult.cs" />
     <Compile Include="Areas\Admin\Models\InitSettingsModel.cs" />
     <Compile Include="Areas\Admin\Models\LayoutRejectModel.cs" />
-    <Compile Include="Areas\Admin\Models\RequestResponse\PostCompanyPreferencesRequest.cs" />
     <Compile Include="Areas\Admin\Models\StoreInfoModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestResponse\TestAppleDevCenterLoginRequest.cs" />
     <Compile Include="Areas\Admin\Models\VersionEmailViewModel.cs" />
@@ -233,9 +232,9 @@
     <Compile Include="Entities\CompanySetting.cs" />
     <Compile Include="Entities\DeploymentJob.cs" />
     <Compile Include="Entities\JobStatusDetails.cs" />
-    <Compile Include="Entities\Network\CompanyPreference.cs" />
     <Compile Include="Entities\Network\MapCoordinate.cs" />
     <Compile Include="Entities\Network\MapRegion.cs" />
+    <Compile Include="Entities\Network\TaxiHailNetworkSettings.cs" />
     <Compile Include="Entities\Payment.cs" />
     <Compile Include="Entities\Questionnaire.cs" />
     <Compile Include="Entities\AppStatus.cs" />
@@ -245,7 +244,6 @@
     <Compile Include="Entities\StoreCredentials.cs" />
     <Compile Include="Entities\StoreSettings.cs" />
     <Compile Include="Entities\Style.cs" />
-    <Compile Include="Entities\Network\TaxiHailNetworkSettings.cs" />
     <Compile Include="Entities\UserPreference.cs" />
     <Compile Include="Entities\Version.cs" />
     <Compile Include="Extensions\ControllerExtensions.cs" />
@@ -539,6 +537,10 @@
     <ProjectReference Include="..\Cupertino\Cupertino.csproj">
       <Project>{ef63d209-cc8f-4b7d-9e64-2b59395a3cbe}</Project>
       <Name>Cupertino</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CustomerPortal.Contract\CustomerPortal.Contract.csproj">
+      <Project>{6a4623e1-41ef-4286-9a34-2adc6407e94f}</Project>
+      <Name>CustomerPortal.Contract</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

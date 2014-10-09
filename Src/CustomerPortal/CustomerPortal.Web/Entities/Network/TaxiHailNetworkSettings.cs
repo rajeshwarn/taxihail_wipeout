@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using CustomerPortal.Contract.Resources;
 using CustomerPortal.Web.Properties;
 using MongoRepository;
 

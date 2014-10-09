@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using CustomerPortal.Web.Areas.Admin.Models.RequestResponse;
-using CustomerPortal.Web.Entities;
+using CustomerPortal.Contract.Requests;
+using CustomerPortal.Contract.Resources;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Extensions;
 using MongoRepository;

@@ -24,7 +24,7 @@ using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensi
 
 namespace apcurium.MK.Web
 {
-    public class Global : HttpApplication
+    public class Global : System.Web.HttpApplication
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(Global));
 

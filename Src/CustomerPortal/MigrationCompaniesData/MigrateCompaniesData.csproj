@@ -69,9 +69,6 @@
     <Compile Include="..\CustomerPortal.Web\Entities\IBSSettings.cs">
       <Link>Entities\IBSSettings.cs</Link>
     </Compile>
-    <Compile Include="..\CustomerPortal.Web\Entities\Network\CompanyPreference.cs">
-      <Link>Entities\Network\CompanyPreference.cs</Link>
-    </Compile>
     <Compile Include="..\CustomerPortal.Web\Entities\Network\MapCoordinate.cs">
       <Link>Entities\Network\MapCoordinate.cs</Link>
     </Compile>

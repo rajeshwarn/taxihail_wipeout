@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
-using CustomerPortal.Web.Areas.Admin.Models;
-using CustomerPortal.Web.Areas.Admin.Models.RequestResponse;
+using CustomerPortal.Contract.Requests;
+using CustomerPortal.Contract.Resources;
 using CustomerPortal.Web.Areas.Customer.Controllers.Api;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Test.Helpers.Repository;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using MongoRepository;
 
 namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
 {
