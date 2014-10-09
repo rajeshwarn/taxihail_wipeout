@@ -26,9 +26,9 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             _networkRepository = repository;
         }
 
-        [Route("api/customer/{companyId}/network/")]
-        public HttpResponseMessage Get(string companyId)
+        public HttpResponseMessage Get(CompanyNetworkPreferencesRequest companyNetworkPreferences)
         {
+            var companyId = companyNetworkPreferences.CompanyId;
             var networkSettings = _networkRepository.FirstOrDefault(n => n.CompanyId == companyId);
             
             if (networkSettings == null || !networkSettings.IsInNetwork)
@@ -36,13 +36,13 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 return new HttpResponseMessage(HttpStatusCode.Forbidden);    
             }
 
-            var network = _networkRepository.Where(n => n.IsInNetwork && n.Id != networkSettings.Id)
+            var otherCompaniesInNetwork = _networkRepository.Where(n => n.IsInNetwork && n.Id != networkSettings.Id)
                 .ToArray();
 
-            var myNetwork = network.Where(n => n.Region.Contains(networkSettings.Region))
+            var overlappingCompanies = otherCompaniesInNetwork.Where(n => n.Region.Contains(networkSettings.Region))
                 .ToArray();
 
-            foreach (var nearbyCompany in myNetwork)
+            foreach (var nearbyCompany in overlappingCompanies)
             {
                 if (!networkSettings.Preferences.Any(p => p.CompanyId == nearbyCompany.CompanyId))
                 {
@@ -60,15 +60,15 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             return response;
         }
 
-        public HttpResponseMessage Post(PostCompanyPreferencesRequest postCompanyPreferences)
+        public HttpResponseMessage Post(CompanyNetworkPreferencesRequest companyNetworkPreferences)
         {
-            var networkSetting = _networkRepository.FirstOrDefault(n => n.CompanyId == postCompanyPreferences.CompanyId);
+            var networkSetting = _networkRepository.FirstOrDefault(n => n.CompanyId == companyNetworkPreferences.CompanyId);
             if (networkSetting == null)
             {
                 return new HttpResponseMessage(HttpStatusCode.Forbidden); 
             }
 
-            networkSetting.Preferences = postCompanyPreferences.Preferences.ToList();
+            networkSetting.Preferences = companyNetworkPreferences.Preferences.ToList();
 
             _networkRepository.Update(networkSetting);
 

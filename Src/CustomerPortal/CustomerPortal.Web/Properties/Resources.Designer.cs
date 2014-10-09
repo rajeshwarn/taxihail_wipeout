@@ -392,9 +392,9 @@ namespace CustomerPortal.Web.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Region.
         /// </summary>
-        public static string RegionTaxhiHailNetworkLabel {
+        public static string RegionTaxiHailNetworkLabel {
             get {
-                return ResourceManager.GetString("RegionTaxhiHailNetworkLabel", resourceCulture);
+                return ResourceManager.GetString("RegionTaxiHailNetworkLabel", resourceCulture);
             }
         }
         

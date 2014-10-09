@@ -242,7 +242,7 @@ These keywords will be used by the store to find your app. For example when a cu
   <data name="CoordinateEndTaxiHailNetwork" xml:space="preserve">
     <value>End</value>
   </data>
-  <data name="RegionTaxhiHailNetworkLabel" xml:space="preserve">
+  <data name="RegionTaxiHailNetworkLabel" xml:space="preserve">
     <value>Region</value>
   </data>
   <data name="TaxiHailNetworkSettings" xml:space="preserve">
