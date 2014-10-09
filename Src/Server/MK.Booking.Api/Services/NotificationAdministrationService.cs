@@ -29,24 +29,21 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IAccountDao _dao;
         private readonly IDeviceDao _daoDevice;
         private readonly ILogger _logger;
-        private readonly IAppSettings _appSettings;
         private readonly INotificationService _notificationService;
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
 
         public NotificationAdministrationService(
             IAccountDao dao, 
             IDeviceDao device,
             INotificationService notificationService,
-            IConfigurationManager configurationManager,
-            ILogger logger,
-            IAppSettings appSettings)
+            IServerSettings serverSettings,
+            ILogger logger)
         {
             _dao = dao;
             _daoDevice = device;
             _logger = logger;
-            _appSettings = appSettings;
             _notificationService = notificationService;
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
         }
 
         public object Post(PushNotificationAdministrationRequest request)
@@ -67,7 +64,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // We create a new instance each time as we need to start from a clean state to get meaningful error messages
-            var pushNotificationService = new PushNotificationService(_configurationManager, _logger);
+            var pushNotificationService = new PushNotificationService(_serverSettings, _logger);
 
             foreach (var device in deviceDetails)
             {
@@ -105,8 +102,8 @@ namespace apcurium.MK.Booking.Api.Services
                         _notificationService.SendPasswordResetEmail("N3wp@s5w0rd", request.EmailAddress, "en");
                         break;
                     case NotificationService.EmailConstant.Template.Receipt:
-                        var fareObject = _appSettings.Data.VATIsEnabled
-                            ? Fare.FromAmountInclTax(45, _appSettings.Data.VATPercentage)
+                        var fareObject = _serverSettings.ServerData.VATIsEnabled
+                            ? Fare.FromAmountInclTax(45, _serverSettings.ServerData.VATPercentage)
                             : Fare.FromAmountInclTax(45, 0);
                         var toll = 0;
                         var tip = (double)45*((double)15/(double)100);

@@ -17,8 +17,8 @@ namespace apcurium.MK.Booking.IBS.Impl
 {
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
-        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger)
-            : base(configManager, logger)
+        public BookingWebServiceClient(IServerSettings serverSettings, ILogger logger)
+            : base(serverSettings, logger)
         {
         }
 
@@ -26,12 +26,12 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             var result = new IbsVehiclePosition[0];
 
-            var optionEnabled = ConfigManager.GetSetting("AvailableVehicles.Enabled", true);
+            var optionEnabled = ServerSettings.ServerData.AvailableVehicles.Enabled;
 
             if (optionEnabled)
             {
-                var radius = ConfigManager.GetSetting("AvailableVehicles.Radius", 2000);
-                var count = ConfigManager.GetSetting("AvailableVehicles.Count", 10);
+                var radius = ServerSettings.ServerData.AvailableVehicles.Radius;
+                var count = ServerSettings.ServerData.AvailableVehicles.Count;
 
                 var vehicleTypeFilter = vehicleTypeId.HasValue
                                         ? new[] { new TVehicleTypeItem { ID = vehicleTypeId.Value } }
@@ -256,13 +256,10 @@ namespace apcurium.MK.Booking.IBS.Impl
                 VAT = (double)fare.TaxAmount
             };
 
-            var autoDispatch =
-                ConfigManager.GetSetting("IBS.AutoDispatch").SelectOrDefault(bool.Parse, true);
-            order.DispByAuto = autoDispatch;
-
-            var priority = ConfigManager.GetSetting("IBS.OrderPriority")
-                .SelectOrDefault(bool.Parse, true);
-            order.Priority = priority ? 1 : 0;
+            order.DispByAuto = ServerSettings.ServerData.IBS.AutoDispatch;
+            order.Priority = ServerSettings.ServerData.IBS.OrderPriority 
+                ? 1 
+                : 0;
 
             order.PickupDate = new TWEBTimeStamp
             {

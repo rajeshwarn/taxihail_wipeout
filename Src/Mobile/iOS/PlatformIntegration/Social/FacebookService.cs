@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 			{
 
 				FBSettings.DefaultAppID = _settings.Data.FacebookAppId;
-				FBSettings.DefaultUrlSchemeSuffix = _settings.Data.ApplicationName.ToLower ().Replace (" ", string.Empty);
+				FBSettings.DefaultUrlSchemeSuffix = _settings.Data.TaxiHail.ApplicationName.ToLower ().Replace (" ", string.Empty);
 
 				if (FBSession.ActiveSession.State == FBSessionState.CreatedTokenLoaded) {
 					// If there's one, just open the session silently

@@ -6,9 +6,9 @@
         {
 #if DEBUG
 
-            MerchantId = "v3kjnzjzhv8z37pq";
-            PrivateKey = "92780e4aa457e9269b1910d88ac79d17";
-            PublicKey = "d268b7by244xnvw9";
+            MerchantId = "8xv86vbp9cy3cv96";
+            PrivateKey = "eaee7d483323a971beb07edfc91880ae";
+            PublicKey = "33nbqvrwjg7hy2n5";
             IsSandbox = true;
 
 #endif

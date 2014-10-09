@@ -133,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
                 message += string.Format(" by : {0} with version {1} - company {2} - platform {3}",
                     user,
                     packageInfo.Version,
-                    settings.ApplicationName,
+                    settings.TaxiHail.ApplicationName,
 					packageInfo.PlatformDetails);
 
                 Console.WriteLine(message);

@@ -1,0 +1,24 @@
+﻿@model CustomerPortal.Web.Areas.Customer.Models.VersionEmailViewModel
+@{
+    ViewBag.Title = "Send by email (version " + Model.Version.Number + ")";
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>@ViewBag.Title</legend>
+
+        @Html.HelpLabelFor(model => model.RecipientEmailAddress)
+        @Html.EditorFor(model => model.RecipientEmailAddress)
+        @Html.ValidationMessageFor(model => model.RecipientEmailAddress)
+
+        <div class="form-actions">
+            <input type="submit" value="Send" class="btn btn-primary" />
+            <a href='@Url.Action("Index", "Home")' class="btn btn-link">Back to home</a>
+        </div>
+    </fieldset>
+}
+
+@section Scripts {
+}

@@ -21,14 +21,14 @@ namespace apcurium.MK.Booking.Api.Services.Maps
     public class DirectionsService : Service
     {
         private readonly IDirections _client;
-        private readonly IAppSettings _appSettings;
+        private readonly IServerSettings _serverSettings;
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly IOrderDao _orderDao;
 
-        public DirectionsService(IDirections client, IAppSettings appSettings, IBookingWebServiceClient bookingWebServiceClient, IOrderDao orderDao)
+        public DirectionsService(IDirections client, IServerSettings serverSettings, IBookingWebServiceClient bookingWebServiceClient, IOrderDao orderDao)
         {
             _client = client;
-            _appSettings = appSettings;
+            _serverSettings = serverSettings;
             _bookingWebServiceClient = bookingWebServiceClient;
             _orderDao = orderDao;
         }
@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 FormattedPrice = result.FormattedPrice
             };
 
-            if (_appSettings.Data.ShowEta
+            if (_serverSettings.ServerData.ShowEta
                 && request.OriginLat.HasValue
                 && request.OriginLng.HasValue)
             {

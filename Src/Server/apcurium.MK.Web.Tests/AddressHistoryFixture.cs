@@ -56,7 +56,8 @@ namespace apcurium.MK.Web.Tests
                             Passengers = 6,
                             NumberOfTaxi = 1,
                             Name = "Joe Smith"
-                        }
+                        },
+                   ClientLanguageCode = "en"
                 };
             await orderService.CreateOrder(order);
 
@@ -110,7 +111,8 @@ namespace apcurium.MK.Web.Tests
                 {
                     Distance = 3,
                     Price = 10
-                }
+                },
+                ClientLanguageCode = "en"
             };
             await orderService.CreateOrder(order);
             
@@ -163,7 +165,8 @@ namespace apcurium.MK.Web.Tests
                             Passengers = 6,
                             NumberOfTaxi = 1,
                             Name = "Joe Smith"
-                        }
+                        },
+                    ClientLanguageCode = "en"
                 };
             await orderService.CreateOrder(order);
 

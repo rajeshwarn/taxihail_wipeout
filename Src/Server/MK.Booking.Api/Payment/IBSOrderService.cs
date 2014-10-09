@@ -14,11 +14,11 @@ namespace apcurium.MK.Booking.Api.Payment
         private readonly IBookingWebServiceClient _client;
         private readonly Resources.Resources _resources;
 
-        public IbsOrderService(IBookingWebServiceClient client, IConfigurationManager configManager, IAppSettings appSettings)
+        public IbsOrderService(IBookingWebServiceClient client, IServerSettings serverSettings)
         {
             _client = client;
 
-            _resources = new Resources.Resources(configManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
+            _resources = new Resources.Resources(serverSettings);
         }
         
         public void ConfirmExternalPayment(Guid orderId, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,

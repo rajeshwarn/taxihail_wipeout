@@ -1,0 +1,11 @@
+﻿@using CustomerPortal.Web.HtmlHelpers
+@model CustomerPortal.Web.Entities.Company
+<div class="tabbable tabs-left">
+    <ul class="nav nav-tabs">
+        @Html.MenuItem("Settings", "Index", "Settings", @Model.Id)
+        @Html.MenuItem("Assets", "Assets", "Settings", @Model.Id)
+        @Html.MenuItem("Web Theme", "WebTheme", "Settings", @Model.Id)
+        @Html.MenuItem("Colors", "Color", "Settings", @Model.Id)
+        @Html.MenuItem("Default Settings", "DefaultSettings", "Settings", @Model.Id)
+    </ul>
+</div>
