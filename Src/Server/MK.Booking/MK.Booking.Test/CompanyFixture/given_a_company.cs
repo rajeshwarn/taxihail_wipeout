@@ -133,7 +133,6 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         [Test]
         public void when_appsettings_added_successfully()
         {
-            //this.sut.When(new AddAppSettings() { CompanyId = _companyId,  Key = "Key.hi", Value = "Value.hi" });
             _sut.When(new AddOrUpdateAppSettings
             {
                 CompanyId = _companyId,
@@ -149,7 +148,6 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         [Test]
         public void when_appsettings_updated_successfully()
         {
-            //this.sut.When(new UpdateAppSettings() { CompanyId = _companyId, Key = "Key.Default", Value = "Value.newValue" });
             _sut.When(new AddOrUpdateAppSettings
             {
                 CompanyId = _companyId,
@@ -160,19 +158,6 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual("Key.Default", evt.AppSettings.First().Key);
             Assert.AreEqual("Value.newValue", evt.AppSettings.First().Value);
-        }
-
-        public void when_appsettings_deleted_successfully()
-        {
-            _sut.When(new DeleteAppSettings
-            {
-                CompanyId = _companyId,
-                AppSettings = new List<string> { "Key.hi" }
-            });
-
-            var evt = _sut.ThenHasSingle<AppSettingsDeleted>();
-            Assert.AreEqual(_companyId, evt.SourceId);
-            Assert.AreEqual("Key.hi", evt.AppSettings.First());
         }
 
         [Test]

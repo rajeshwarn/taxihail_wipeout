@@ -14,8 +14,7 @@ using MK.Common.Configuration;
 namespace apcurium.MK.Booking.EventHandlers
 {
     public class AppSettingsGenerator :
-        IEventHandler<AppSettingsAddedOrUpdated>,
-        IEventHandler<AppSettingsDeleted>
+        IEventHandler<AppSettingsAddedOrUpdated>
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
         private readonly IServerSettings _serverSettings;
@@ -72,28 +71,6 @@ namespace apcurium.MK.Booking.EventHandlers
                             context.Set<AppSetting>().Add(new AppSetting(appSetting.Key, appSetting.Value));
                         }
                     }
-                }
-
-                context.SaveChanges();
-            }
-
-            // Refresh the ServerData object
-            _serverSettings.Reload();
-        }
-
-        public void Handle(AppSettingsDeleted @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var settings = context.Query<AppSetting>().ToList();
-
-                foreach (var appSetting in @event.AppSettings)
-                {
-                    var settingToDelete = settings.FirstOrDefault(x => x.Key == appSetting);
-                    if (settingToDelete != null)
-                    {
-                        context.Set<AppSetting>().Remove(settingToDelete);
-                    }  
                 }
 
                 context.SaveChanges();
