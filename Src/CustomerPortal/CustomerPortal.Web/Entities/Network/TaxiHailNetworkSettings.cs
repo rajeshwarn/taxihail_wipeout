@@ -18,7 +18,7 @@ namespace CustomerPortal.Web.Entities.Network
             ResourceType = typeof(Resources))]
         public bool IsInNetwork { get; set; }
 
-         [Display(Name = "RegionTaxhiHailNetworkLabel", ResourceType = typeof(Resources))]
+         [Display(Name = "RegionTaxiHailNetworkLabel", ResourceType = typeof(Resources))]
          [Required]
         public MapRegion Region {get; set; }
 
