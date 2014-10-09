@@ -26,7 +26,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             _networkRepository = repository;
         }
 
-        public HttpResponseMessage Get(CompanyNetworkPreferencesRequest companyNetworkPreferences)
+        public HttpResponseMessage Get(PostCompanyPreferencesRequest companyNetworkPreferences)
         {
             var companyId = companyNetworkPreferences.CompanyId;
             var networkSettings = _networkRepository.FirstOrDefault(n => n.CompanyId == companyId);
@@ -60,7 +60,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             return response;
         }
 
-        public HttpResponseMessage Post(CompanyNetworkPreferencesRequest companyNetworkPreferences)
+        public HttpResponseMessage Post(PostCompanyPreferencesRequest companyNetworkPreferences)
         {
             var networkSetting = _networkRepository.FirstOrDefault(n => n.CompanyId == companyNetworkPreferences.CompanyId);
             if (networkSetting == null)

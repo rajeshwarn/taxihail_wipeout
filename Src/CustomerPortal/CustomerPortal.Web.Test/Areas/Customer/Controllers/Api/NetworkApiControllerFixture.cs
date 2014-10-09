@@ -121,12 +121,12 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         public void When_Regions_Inside()
         {
 
-            var response = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId = _chrisTaxi.CompanyId });
+            var response = Sut.Get(new PostCompanyPreferencesRequest { CompanyId = _chrisTaxi.CompanyId });
              Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
 
-            var response2 = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId = _tonyTaxi.CompanyId });
+            var response2 = Sut.Get(new PostCompanyPreferencesRequest { CompanyId = _tonyTaxi.CompanyId });
             Assert.True(response2.IsSuccessStatusCode);
             var json2 = response2.Content.ReadAsStringAsync().Result;
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json2));
@@ -137,7 +137,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         public void When_Regions_Identical()
         {
             //should Not return ChrisTaxi
-            var response = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId =_chrisTaxi.CompanyId });
+            var response = Sut.Get(new PostCompanyPreferencesRequest { CompanyId = _chrisTaxi.CompanyId });
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
@@ -146,7 +146,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         [Test]
         public void When_Regions_Overlap()
         {
-            var response = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId = _lastTaxi.CompanyId });
+            var response = Sut.Get(new PostCompanyPreferencesRequest { CompanyId = _lastTaxi.CompanyId });
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
@@ -155,7 +155,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         [Test]
         public void When_Regions_Overlap_Same_Latitude()
         {
-            var response = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId = _pilouTaxi.CompanyId });
+            var response = Sut.Get(new PostCompanyPreferencesRequest { CompanyId = _pilouTaxi.CompanyId });
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
@@ -164,7 +164,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         [Test]
         public void When_Regions_Overlap_Same_Longitude()
         {
-            var response = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId = _tonyTaxi.CompanyId });
+            var response = Sut.Get(new PostCompanyPreferencesRequest { CompanyId = _tonyTaxi.CompanyId });
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
@@ -174,7 +174,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         public void When_Regions_No_Overlap()
         {
             //Should return nothing
-            var response = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId = _chrisTaxi.CompanyId });
+            var response = Sut.Get(new PostCompanyPreferencesRequest { CompanyId = _chrisTaxi.CompanyId });
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
@@ -183,7 +183,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         [Test]
         public void Post_Preferences()
         {
-            var response = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId = _chrisTaxi.CompanyId });
+            var response = Sut.Get(new PostCompanyPreferencesRequest { CompanyId = _chrisTaxi.CompanyId });
             var json = response.Content.ReadAsStringAsync().Result;
             var chrisPreferences = JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
 
@@ -194,7 +194,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
 
             tony.CanAccept = tony.CanDispatch = true;
 
-            response = Sut.Post(new CompanyNetworkPreferencesRequest()
+            response = Sut.Post(new PostCompanyPreferencesRequest()
             {
                 CompanyId = _chrisTaxi.CompanyId,
                 Preferences = chrisPreferences.ToArray()
@@ -202,7 +202,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.True(response.IsSuccessStatusCode);
 
 
-            response = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId = _chrisTaxi.CompanyId });
+            response = Sut.Get(new PostCompanyPreferencesRequest { CompanyId = _chrisTaxi.CompanyId });
             json = response.Content.ReadAsStringAsync().Result;
             chrisPreferences = JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
 
