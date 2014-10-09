@@ -1,0 +1,30 @@
+﻿@model CustomerPortal.Web.Areas.Admin.Models.EditUser
+
+@{
+    ViewBag.Title = "Edit User Account";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend></legend>
+
+        @Html.HelpLabelFor(model => model.EmailAddress)
+        @Html.EditorFor(model => model.EmailAddress)
+        @Html.ValidationMessageFor(model => model.EmailAddress)
+        
+        @Html.HelpLabelFor(model => model.Name)
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+        
+    </fieldset>
+    <div class="form-actions">
+        <input type="submit" class="btn btn-primary" value="Save Changes" />
+        <a class="btn btn-link" href="@Url.Action("Index", "Membership")">Back to user list</a>
+    </div>
+}

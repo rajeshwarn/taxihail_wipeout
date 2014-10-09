@@ -107,5 +107,6 @@ Src\Server\apcurium.MK.Web\themes\cinq-s\less\combined-responsive.less
 Src\Server\apcurium.MK.Web\themes\cinq-s\less\combined.less
 Src\Server\apcurium.MK.Web\themes\cinq-s\less\style.less
 Src\Server\apcurium.MK.Web\themes\cinq-s\less\variables.less
+Src/CustomerPortal/CustomerPortal.Web/logs/
 syntax: regexp
 Deployment/Database/*

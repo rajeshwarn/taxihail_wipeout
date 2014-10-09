@@ -1,0 +1,39 @@
+﻿@model IEnumerable<CustomerPortal.Web.Entities.Version>
+@{
+    Layout = null;
+    var id = ViewContext.RouteData.Values["companyId"];
+}
+<h4>Versions</h4>
+<p>
+    This section contains pre-release versions of your app
+    that you can install on your devices for testing purposes
+</p>
+@if (Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Version number</th>
+                <th>Date Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        @foreach (var version in Model)
+        {
+            <tr>
+                <td>
+                    @version.Number
+                </td>
+                <td>@version.CreatedOn</td>
+                <td>
+                    <a href="@Url.Action("Index", "Distribution", new {area = "", id, version.VersionId})" class="btn btn-link">View</a>
+                    <a href="@Url.Action("Email", "Version", new {version.Number})" class="btn btn-link">Send email</a>
+                </td>
+            </tr>
+        }   
+    </table>
+}
+else
+{
+    <p>No versions to show here yet.</p>
+}

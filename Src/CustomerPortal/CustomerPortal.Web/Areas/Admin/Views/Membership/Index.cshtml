@@ -1,0 +1,41 @@
+﻿@using CustomerPortal.Web.Security
+@using MongoDB.Bson
+@model IEnumerable<ExtendedMongoMembership.MembershipAccount>
+
+@{
+    ViewBag.Title = "Users";
+}
+
+<h2>Users</h2>
+<div class='row'>
+    <div class='span12'>
+        <p>
+            <a class="btn" href='@Url.Action("Create")'>Create user</a>
+        </p>
+    </div>
+    <div class="span12">
+        <table class="table table-striped">
+            <tr>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Company Id</th>
+                <th>Roles</th>
+                <th>Actions</th>
+            </tr>
+            @foreach (var account in Model)
+            {
+                <tr>
+                    <td>@account.UserName</td>
+                    <td>@account.GetValue("Name", default(BsonString))</td>
+                    <td>@account.GetValue("Company", default(BsonString))</td>
+                    <td>@string.Join(", ", account.Roles.Select(x => x.RoleName))</td>
+                    <td>
+                        <a class="btn" href="@Url.Action("Edit", new {id = account.UserId})">Edit</a>
+                        <a class="btn" href="@Url.Action("ChangePassword", new {id = account.UserId})">Change Password</a>
+                        <a class="btn btn-danger" href="@Url.Action("Delete", new {id = account.UserId})">Delete</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

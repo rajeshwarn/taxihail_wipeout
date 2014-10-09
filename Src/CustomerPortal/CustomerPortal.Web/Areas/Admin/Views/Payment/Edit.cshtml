@@ -1,0 +1,67 @@
+﻿@model CustomerPortal.Web.Entities.Company
+
+@{
+    ViewBag.Title = "Payment Info For " + Model.CompanyName;
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <br>
+        <legend>Purchase Order information</legend>
+        @Html.HiddenFor(model => model.Id)
+        
+        @Html.LabelFor(model => model.Payment.PODate)
+        @Html.TextBoxFor(model => model.Payment.PODate, new { @class = "datepicker" })        
+        
+        @Html.LabelFor(model => model.Payment.PONumber)
+        @Html.EditorFor(model => model.Payment.PONumber)
+        
+        @Html.LabelFor(model => model.Payment.QtyLicense)
+        @Html.EditorFor(model => model.Payment.QtyLicense)
+        
+        @Html.LabelFor(model => model.Payment.NoCharge)
+        @Html.CheckBoxFor(model => model.Payment.NoCharge)
+        
+       
+        <br>
+        <br>
+        <legend>Test Links</legend>
+
+        
+        
+        @Html.LabelFor(x => x.Payment.TestLinkDate)
+        @Html.TextBoxFor(x => x.Payment.TestLinkDate, new { @class = "datepicker" })
+        
+        @Html.LabelFor(x => x.Payment.TestLinkInvoiceNumber)
+        @Html.EditorFor(x => x.Payment.TestLinkInvoiceNumber)
+        
+        <br>
+        <br>
+        <legend>Publish to Store</legend>
+
+        @Html.LabelFor(x => x.Payment.PublishToStoreDate)
+        @Html.TextBoxFor(x => x.Payment.PublishToStoreDate, new { @class = "datepicker" })       
+        
+                
+        @Html.LabelFor(x => x.Payment.PublishToStoreInvoiceNumber)
+        @Html.EditorFor(x => x.Payment.PublishToStoreInvoiceNumber)
+        
+    </fieldset>
+
+    <div class="form-actions">
+        <input type="submit" class="btn btn-primary" value="Save" />        
+        <a href="@Url.Action("Index")" class="btn btn-link">Back to payment list</a>
+    </div>
+}
+
+@section Scripts {
+    <script>
+    $('.datepicker').datepicker();
+    </script>
+}

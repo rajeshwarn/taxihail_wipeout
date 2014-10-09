@@ -1,0 +1,35 @@
+﻿@model CustomerPortal.Web.Entities.Company
+
+<fieldset>
+        
+    <legend>Store / Devices <a href="@Url.Action("EditStore")" class="btn btn-link">Edit</a></legend>
+    <dl>
+        <dt>@Html.DisplayNameFor(x => x.Store.Keywords)</dt>
+        <dd>@Html.DisplayFor(x => x.Store.Keywords)</dd>
+        
+        <dt>@Html.DisplayNameFor(x => x.Store.UniqueDeviceIdentificationNumber)</dt>
+        <dd>@Html.DisplayFor(x => x.Store.UniqueDeviceIdentificationNumber, "ListOfString")</dd>
+    </dl>
+
+</fieldset>
+          
+<h4>Store credentials</h4>
+<p>
+    You must set up your own store accounts for the Apple App Store and the Google Play Store.	
+</p>
+          
+<fieldset>
+    <legend>
+        @Html.DisplayNameFor(x => x.AppleAppStoreCredentials)
+    </legend>
+
+    @Html.DisplayFor(model => model.AppleAppStoreCredentials)
+</fieldset>
+          
+<fieldset>
+    <legend>
+        @Html.DisplayNameFor(x => x.GooglePlayCredentials)
+    </legend>
+
+    @Html.DisplayFor(model => model.GooglePlayCredentials)
+</fieldset>
