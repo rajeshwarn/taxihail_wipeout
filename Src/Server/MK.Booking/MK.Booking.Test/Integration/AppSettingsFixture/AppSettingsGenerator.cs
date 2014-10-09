@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Test.Integration.AppSettingsFixture
         }
 
         [Test]
-        public void when_appsettings_is_updated_with_default_value()
+        public void when_appsettings_is_updated_with_default_value_then_key_removed_from_database()
         {
             Sut.Handle(new AppSettingsAddedOrUpdated
             {
