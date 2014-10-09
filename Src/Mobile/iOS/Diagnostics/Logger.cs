@@ -7,9 +7,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
-using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.Client.Helper;
-using Mindscape.Raygun4Net;
 using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
@@ -83,10 +80,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
         private static void SendToRaygun(Exception ex)
         {
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
+            var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
+            
             var account = TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount;
+            var email = account != null 
+                ? account.Email 
+                : "unknown@user.com";
 
-            RaygunClient.Current.User = account != null ? account.Email : null;
-            RaygunClient.Current.SendInBackground (ex, new List<string> () { settings.ApplicationName });
+            Xamarin.Insights.Identify(email, new Dictionary<string, string>
+            {
+                { "ApplicationVersion", packageInfo.Version },
+                { "Company", settings.ApplicationName },
+            });
+
+            Xamarin.Insights.Report(ex);
+            Xamarin.Insights.Report(ex, new Dictionary<string, string>
+            {
+                { "ApplicationVersion", packageInfo.Version },
+                { "Company", settings.ApplicationName },
+            });
         }
 
         public static void LogError (Exception ex, int indent)

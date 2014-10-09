@@ -19,16 +19,13 @@ using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
-using MonoTouch.FacebookConnect;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Dialog.Touch;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Google;
-using MonoTouch.Foundation;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
-using Mindscape.Raygun4Net;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -59,11 +56,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void ConfigureRaygun()
         {
-            #if !DEBUG
-            RaygunClient.Attach("38wzDAtQRTIdR0nhKGYX2Q=="); // Test api key
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
+            #if DEBUG
+            // When Xamarin adds support to initiliaze and pass appname and version, remove the identify below
+            Xamarin.Insights.Initialize("a34cb0ffa9cae700769950f66237125e8ba4ed0d"); // This is a test API key
+
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
             var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
-            RaygunClient.Current.ApplicationVersion = settings.ApplicationName + " " + packageInfo.Version;
+            Xamarin.Insights.Identify("unknown@user.com", new Dictionary<string, string>
+            {
+                { "ApplicationVersion", packageInfo.Version },
+                { "Company", settings.ApplicationName },
+            });
             #endif
         }
 
