@@ -1,0 +1,10 @@
+﻿{
+	"Login": "Ingresar",
+	"Email Address": "Dirección Email",
+	"Password": "Contraseña",
+	"Signup": "Registrarse",
+	"Forgot password": "Olvidé contraseña",
+	"InvalidLoginMessage": "Email ó Contraseña inválido",
+	"AccountDisabled": "Su cuenta ha sido desabilitada",
+	"AccountNotActivated": "Su cuenta no ha sido abilitada.",
+﻿}
