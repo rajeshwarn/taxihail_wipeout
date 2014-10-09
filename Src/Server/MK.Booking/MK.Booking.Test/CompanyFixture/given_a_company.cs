@@ -151,12 +151,12 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             _sut.When(new AddOrUpdateAppSettings
             {
                 CompanyId = _companyId,
-                AppSettings = new Dictionary<string, string> {{"Key.Default", "Value.newValue"}}
+                AppSettings = new Dictionary<string, string> { { "Key.hi", "Value.newValue" } }
             });
 
             var evt = _sut.ThenHasSingle<AppSettingsAddedOrUpdated>();
             Assert.AreEqual(_companyId, evt.SourceId);
-            Assert.AreEqual("Key.Default", evt.AppSettings.First().Key);
+            Assert.AreEqual("Key.hi", evt.AppSettings.First().Key);
             Assert.AreEqual("Value.newValue", evt.AppSettings.First().Value);
         }
 
