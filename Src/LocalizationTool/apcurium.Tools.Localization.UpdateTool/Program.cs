@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using apcurium.MK.Common.Enumeration;
 using Mono.Options;
 using Newtonsoft.Json;
@@ -26,7 +25,7 @@ namespace apcurium.Tools.Localization.UpdateTool
             string destination = string.Empty;
             bool backup = false;
 
-            var p = new OptionSet()
+            var p = new OptionSet
             {
                 {"t|target=", "Target application: ios or android", t => target = t.ToLowerInvariant()},
                 {"m|master=", "Master .resx file path", m => source = m},
@@ -68,10 +67,13 @@ namespace apcurium.Tools.Localization.UpdateTool
                         }
                     }
 
+                    // Create files for both platforms
+                    AndroidLanguageFileManager.CreateResourceFileIfNecessary(lang);
+                    iOSLanguageFileManager.CreateResourceFileIfNecessary(lang);
+
                     switch (target)
                     {
                         case "android":
-                            AndroidLanguageResourceManager.CreateResourceFileIfNecessary(lang);
                             resourceManager.AddDestination(handler = new AndroidResourceFileHandler(destination, lang));
                             break;
                         case "ios":
