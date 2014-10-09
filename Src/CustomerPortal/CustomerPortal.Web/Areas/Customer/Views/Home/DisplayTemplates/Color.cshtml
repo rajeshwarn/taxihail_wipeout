@@ -1,0 +1,14 @@
+﻿@model string
+@{
+    var value = ViewData.TemplateInfo.FormattedModelValue;
+}
+
+@if (string.IsNullOrWhiteSpace(Convert.ToString(value)))
+{
+    @Html.ValueNotSet()
+    ;
+}
+else
+{
+    <span style="padding: 0 1em; border: 1px solid black; background: @Html.AttributeEncode(Model)">@value</span>
+}
