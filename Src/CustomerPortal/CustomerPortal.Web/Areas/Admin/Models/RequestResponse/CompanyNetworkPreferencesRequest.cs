@@ -8,7 +8,7 @@ using CustomerPortal.Web.Entities.Network;
 namespace CustomerPortal.Web.Areas.Admin.Models.RequestResponse
 {
     [Route("api/customer/{companyId}/network/")]
-    public class PostCompanyPreferencesRequest
+    public class CompanyNetworkPreferencesRequest
     {
         public string CompanyId { get; set; }
 

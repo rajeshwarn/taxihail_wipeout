@@ -207,7 +207,7 @@
     <Compile Include="Areas\Admin\Models\IbsTestResult.cs" />
     <Compile Include="Areas\Admin\Models\InitSettingsModel.cs" />
     <Compile Include="Areas\Admin\Models\LayoutRejectModel.cs" />
-    <Compile Include="Areas\Admin\Models\RequestResponse\PostCompanyPreferencesRequest.cs" />
+    <Compile Include="Areas\Admin\Models\RequestResponse\CompanyNetworkPreferencesRequest.cs" />
     <Compile Include="Areas\Admin\Models\StoreInfoModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestResponse\TestAppleDevCenterLoginRequest.cs" />
     <Compile Include="Areas\Admin\Models\VersionEmailViewModel.cs" />
