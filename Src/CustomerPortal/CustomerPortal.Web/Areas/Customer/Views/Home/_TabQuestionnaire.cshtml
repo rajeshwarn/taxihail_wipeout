@@ -1,0 +1,48 @@
+﻿@model CustomerPortal.Web.Models.QuestionnaireViewModel
+<div id='ajax-panel'>
+    <fieldset>
+        <legend>Application settings
+            @if (!Model.IsReadOnly)
+            {
+                @Ajax.ActionLink("Edit", "Edit", new {}, new AjaxOptions
+                {
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "ajax-panel",
+                }, new {@class = "btn btn-link"})
+            }
+        </legend>
+        <dl>
+            <dt>@Html.DisplayNameFor(x => x.AppName)</dt>
+            <dd>@Html.DisplayFor(x => x.AppName)</dd>
+
+            <dt>@Html.DisplayNameFor(x => x.CorporateColor)</dt>
+            <dd>@Html.DisplayFor(x => x.CorporateColor)</dd>
+
+            <dt>@Html.DisplayNameFor(x => x.CompanyPhoneNumber)</dt>
+            <dd>@Html.DisplayFor(x => x.CompanyPhoneNumber)</dd>
+        
+            <dt>@Html.DisplayNameFor(x => x.CompanyWebsiteUrl)</dt>
+            <dd>@Html.DisplayFor(x => x.CompanyWebsiteUrl)</dd>
+        
+            <dt>@Html.DisplayNameFor(x => x.AboutUsLink)</dt>
+            <dd>@Html.DisplayFor(x => x.AboutUsLink)</dd>
+        
+            <dt>@Html.DisplayNameFor(x => x.SupportContactEmail)</dt>
+            <dd>@Html.DisplayFor(x => x.SupportContactEmail)</dd>
+        </dl>
+    </fieldset>
+    <fieldset>
+        <legend>Rates</legend>
+    
+        <dl>
+            <dt>@Html.DisplayNameFor(x => x.UnitOfLength)</dt>
+            <dd>@Html.DisplayFor(x => x.UnitOfLength)</dd>
+
+            <dt>@Html.DisplayNameFor(x => x.FlagDropRate)</dt>
+            <dd>@Html.DisplayFor(x => x.FlagDropRate)</dd>
+        
+            <dt>@Html.DisplayNameFor(x => x.MileageRate)</dt>
+            <dd>@Html.DisplayFor(x => x.MileageRate)</dd>
+        </dl>
+    </fieldset>
+</div>
