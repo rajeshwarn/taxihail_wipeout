@@ -7,7 +7,9 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.Optimization;
+using System.Web.Routing;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
@@ -42,6 +44,9 @@ namespace apcurium.MK.Web
 
             _defaultPollingValue = serverSettings.ServerData.OrderStatus.ServerPollingInterval;
             PollIbs(_defaultPollingValue);
+
+            AreaRegistration.RegisterAllAreas();
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
         }
 
         private void PollIbs(int pollingValue)
