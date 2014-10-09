@@ -94,6 +94,22 @@ namespace apcurium.MK.Booking.Test.Integration.AppSettingsFixture
         }
 
         [Test]
+        public void when_appsettings_is_updated_with_default_value_then_key_removed_from_database()
+        {
+            Sut.Handle(new AppSettingsAddedOrUpdated
+            {
+                SourceId = _companyId,
+                AppSettings = new Dictionary<string, string> { { "AboutUsUrl", string.Empty } }
+            });
+
+            using (var context = new ConfigurationDbContext(DbName))
+            {
+                var list = context.Query<AppSetting>().Where(x => x.Key == "AboutUsUrl");
+                Assert.AreEqual(0, list.Count());
+            }
+        }
+
+        [Test]
         public void when_appsettings_is_updated_when_no_settings_before_then_list_updated()
         {
             Sut.Handle(new AppSettingsAddedOrUpdated
