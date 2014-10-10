@@ -7,16 +7,11 @@ namespace apcurium.MK.Web.App_Start
 {
     public class UnityConfig
     {
-        private static Lazy<IUnityContainer> container = new Lazy<IUnityContainer>(() =>
-        {
-            return UnityServiceLocator.Instance;
-            var container = new UnityContainer();
-            return container;
-        });
+        private static readonly Lazy<IUnityContainer> Container = new Lazy<IUnityContainer>(() => UnityServiceLocator.Instance);
 
         public static IUnityContainer GetConfiguredContainer()
         {
-            return container.Value;
+            return Container.Value;
         }
     }
 }

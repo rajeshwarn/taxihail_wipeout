@@ -69,15 +69,6 @@
     <Compile Include="..\CustomerPortal.Web\Entities\IBSSettings.cs">
       <Link>Entities\IBSSettings.cs</Link>
     </Compile>
-    <Compile Include="..\CustomerPortal.Web\Entities\Network\MapCoordinate.cs">
-      <Link>Entities\Network\MapCoordinate.cs</Link>
-    </Compile>
-    <Compile Include="..\CustomerPortal.Web\Entities\Network\MapRegion.cs">
-      <Link>Entities\Network\MapRegion.cs</Link>
-    </Compile>
-    <Compile Include="..\CustomerPortal.Web\Entities\Network\TaxiHailNetworkSettings.cs">
-      <Link>Entities\Network\TaxiHailNetworkSettings.cs</Link>
-    </Compile>
     <Compile Include="..\CustomerPortal.Web\Entities\Payment.cs">
       <Link>Entities\Payment.cs</Link>
     </Compile>
