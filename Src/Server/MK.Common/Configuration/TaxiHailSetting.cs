@@ -10,10 +10,7 @@ namespace MK.Common.Configuration
     {
 		public TaxiHailSetting()
 		{
-			TaxiHail = new TaxiHailSettingContainer 
-			{
-				ApplicationName = "Taxi Hail"
-			};
+			TaxiHail = new TaxiHailSettingContainer();
 
 		    OrderStatus = new OrderStatusSettingContainer
 		    {

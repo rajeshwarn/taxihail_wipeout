@@ -28,8 +28,6 @@ namespace apcurium.MK.Common.Configuration
         [Display(Name = "Client Polling Interval", Description = "Status refresh interval")]
         public int ClientPollingInterval { get; protected internal set; }
 
-        public bool DemoMode { get; protected internal set; }
-
         [CustomizableByCompany]
         public int ServerPollingInterval { get; protected internal set; }
     }
@@ -180,16 +178,12 @@ namespace apcurium.MK.Common.Configuration
 
         public bool ZoneByCompanyEnabled { get; protected internal set; }
 
-        [CustomizableByCompany]
         public bool ValidateDestinationZone { get; protected internal set; }
 
-        [CustomizableByCompany]
         public bool ValidatePickupZone { get; protected internal set; }
 
-        [CustomizableByCompany]
         public string DestinationZoneToExclude { get; protected internal set; }
 
-        [CustomizableByCompany]
         public string PickupZoneToExclude { get; protected internal set; }
         
         [RequiredAtStartup]
