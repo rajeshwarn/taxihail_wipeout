@@ -27,7 +27,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             _networkRepository = repository;
         }
 
-        [Route("customer/{companyId}/network/")]
+        [Route("api/customer/{companyId}/network")]
         public HttpResponseMessage Get(string companyId)
         {
             var networkSettings = _networkRepository.FirstOrDefault(n => n.CompanyId == companyId);
@@ -61,7 +61,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             return response;
         }
 
-        [Route("customer/{companyId}/network/")]
+        [Route("api/customer/{companyId}/network")]
         public HttpResponseMessage Post(string companyId, CompanyPreference[] preferences)
         {
             var networkSetting = _networkRepository.FirstOrDefault(n => n.CompanyId == companyId);

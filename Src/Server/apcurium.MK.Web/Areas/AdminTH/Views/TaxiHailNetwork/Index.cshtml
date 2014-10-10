@@ -1,5 +1,4 @@
-﻿@using apcurium.MK.Web.Areas.AdminTH.Models
-@model List<apcurium.MK.Web.Areas.AdminTH.Models.CompanyPreference>
+﻿@model List<CustomerPortal.Contract.Resources.CompanyPreference>
           
 @using (Html.BeginForm("Index", "TaxiHailNetwork", FormMethod.Post))
 {
@@ -17,12 +16,13 @@
             <tr>
                 <td>
                     @company.CompanyId
+                    @Html.Hidden("idKey_"+company.CompanyId,company.CompanyId)
                 </td>
                 <td>
-                    @Html.CheckBox("tet", company.CanAccept)
+                    @Html.CheckBox("acceptKey_" + company.CompanyId, company.CanAccept)
                 </td>
                 <td>
-                    @Html.CheckBox("test", company.CanAccept)
+                    @Html.CheckBox("dispatchKey_" + company.CompanyId, company.CanDispatch)
                 </td>
             </tr>
             i = i + 1;

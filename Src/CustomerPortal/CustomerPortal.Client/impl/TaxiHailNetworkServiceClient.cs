@@ -11,7 +11,7 @@ namespace CustomerPortal.Client.impl
         
         public List<CompanyPreference> GetOverlapingCompaniesPreferences(string companyId)
         {
-             var response = Client.GetAsync(@"customer/"+companyId+"/Network/").Result;
+             var response = Client.GetAsync(@"customer/"+companyId+"/network").Result;
             var json = response.Content.ReadAsStringAsync().Result;
             var overlapingCompanies = JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
             return overlapingCompanies;
@@ -21,7 +21,7 @@ namespace CustomerPortal.Client.impl
         public void SetOverlapingCompaniesPreferences(string companyId, CompanyPreference[] preferences)
         {
             var content = new ObjectContent<CompanyPreference[]>(preferences, new JsonMediaTypeFormatter());
-            Client.PostAsync(@"customer/" + companyId + "/Network/", content);
+            Client.PostAsync(@"customer/" + companyId + "/network", content);
         }
     }
 }

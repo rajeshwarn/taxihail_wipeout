@@ -20,9 +20,9 @@ namespace CustomerPortal.Client
         private static string GetUrl()
         {
             var url = "http://customer.taxihail.com/api/";
-            //			#if DEBUG
-            //			url = "http://localhost:2287/api/";
-            //			#endif
+            			#if DEBUG
+                        url = "http://localhost/CustomerPortal.Web/api/";
+            			#endif
             return url;
         }
 
