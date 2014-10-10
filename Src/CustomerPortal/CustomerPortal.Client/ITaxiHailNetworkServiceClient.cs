@@ -5,9 +5,7 @@ namespace CustomerPortal.Client
 {
     public interface ITaxiHailNetworkServiceClient
     {
-        List<CompanyPreference> GetOverlapingCompaniesPreferences(
-            string companyId);
-
+        List<CompanyPreference> GetOverlapingCompaniesPreferences(string companyId);
         void SetOverlapingCompaniesPreferences(string companyId,CompanyPreference[] companyPreferences);
 
     }
