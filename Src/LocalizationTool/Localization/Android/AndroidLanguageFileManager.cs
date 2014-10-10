@@ -11,15 +11,15 @@ namespace apcurium.Tools.Localization.Android
                 return;
             }
 
-            const string resourcesBasePath = @"..\Mobile\Android\Resources";
-            const string taxiHailProjectPath = @"..\Mobile\Android\TaxiHail.csproj";
+            string resourcesBasePath = Path.GetFullPath(Path.Combine("..", "Mobile", "Android", "Resources"));
+            string taxiHailProjectPath = Path.GetFullPath(Path.Combine("..", "Mobile", "Android", "TaxiHail.csproj"));
 
-            string folderAndFileName = string.Format(@"values-{0}\String.xml", language);
-            string languageFileName = string.Format(@"{0}\{1}", resourcesBasePath, folderAndFileName);
+            string folderAndFileName = Path.Combine(string.Format("values-{0}", language), "String.xml");
+            string languageFileName = Path.Combine(resourcesBasePath, folderAndFileName);
 
             if (!File.Exists(languageFileName))
             {
-                Directory.CreateDirectory(string.Format(@"{0}\values-{1}", resourcesBasePath, language));
+                Directory.CreateDirectory(Path.Combine(resourcesBasePath, string.Format("values-{0}", language)));
                 var stringFile = File.Create(languageFileName);
                 stringFile.Close();
 
@@ -33,7 +33,7 @@ namespace apcurium.Tools.Localization.Android
                 }
 
                 // Add resource file to VS project
-                var resourceFile = string.Format(@"Resources\{0}", folderAndFileName);
+                var resourceFile = Path.Combine("Resources", folderAndFileName);
                 CsProjHelper.IncludeFile(taxiHailProjectPath, resourceFile, "AndroidResource");
             }
         }

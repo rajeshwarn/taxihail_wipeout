@@ -12,15 +12,15 @@ namespace apcurium.Tools.Localization.iOS
                 return;
             }
 
-            const string resourcesBasePath = @"..\Mobile\iOS";
+            string resourcesBasePath = Path.GetFullPath(Path.Combine("..", "Mobile", "iOS"));
+            string taxiHailProjectPath = Path.Combine(resourcesBasePath, "TaxiHail.csproj");
 
-            string taxiHailProjectPath = string.Format(@"{0}\TaxiHail.csproj", resourcesBasePath);
-            string folderAndFileName = string.Format(@"{0}.lproj\Localizable.strings", language);
-            string languageFileName = string.Format(@"{0}\{1}", resourcesBasePath, folderAndFileName);
+            string folderAndFileName = Path.Combine(string.Format("{0}.lproj", language), "Localizable.strings");
+            string languageFileName = Path.Combine(resourcesBasePath, folderAndFileName);
 
             if (!File.Exists(languageFileName))
             {
-                Directory.CreateDirectory(string.Format(@"{0}\{1}.lproj", resourcesBasePath, language));
+                Directory.CreateDirectory(Path.Combine(resourcesBasePath, string.Format("{0}.lproj", language)));
                 var stringFile = File.Create(languageFileName);
                 stringFile.Close();
 
