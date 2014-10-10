@@ -81,6 +81,11 @@ namespace MK.Common.Configuration
             AllowSimultaneousAppOrders = false;
 
 		    MaxFareEstimate = 100;
+
+		    TwitterAccessTokenUrl = "https://api.twitter.com/oauth/access_token";
+            TwitterAuthorizeUrl = "https://api.twitter.com/oauth/authorize";
+            TwitterCallback = "http://www.taxihail.com/oauth";
+            TwitterRequestTokenUrl = "https://api.twitter.com/oauth/request_token";
 		}
 
         public TaxiHailSettingContainer TaxiHail { get; protected set; }
@@ -92,7 +97,6 @@ namespace MK.Common.Configuration
         public GeoLocSettingContainer GeoLoc { get; protected set; }
         public AvailableVehiclesSettingContainer AvailableVehicles { get; protected set; }
 
-        // ---- Must be packaged with app ---- //
         [RequiredAtStartup]
 		[Display(Name = "Can Change Service Url", Description="Display a button on the login page to change the API server url")]
 		public bool CanChangeServiceUrl { get; protected set; }
@@ -110,22 +114,18 @@ namespace MK.Common.Configuration
 		public string TwitterConsumerKey{ get; protected set; }
 
         [RequiredAtStartup]
+        [Display(Name = "Twitter Consumer Secret", Description = "Twitter API settings")]
+        public string TwitterConsumerSecret { get; protected set; }
+
         [Display(Name = "Twitter CallBack", Description="Twitter API settings")]
 		public string TwitterCallback{ get; protected set; }
-
-        [RequiredAtStartup]
-        [Display(Name = "Twitter Consumer Secret", Description="Twitter API settings")]
-		public string TwitterConsumerSecret{ get; protected set; }
-
-        [RequiredAtStartup]
+        
         [Display(Name = "Twitter Token Url", Description="Twitter API settings")]
 		public string TwitterRequestTokenUrl{ get; protected set; }
 
-        [RequiredAtStartup]
         [Display(Name = "Twitter Access Token Url", Description="Twitter API settings")]
 		public string TwitterAccessTokenUrl{ get; protected set; }
 
-        [RequiredAtStartup]
         [Display(Name = "Twitter Authorize Url", Description="Twitter API settings")]
 		public string TwitterAuthorizeUrl { get; protected set; }
 
@@ -140,7 +140,6 @@ namespace MK.Common.Configuration
         [RequiredAtStartup]
         [Display(Name = "Facebook App Id", Description="Facebook API settings")]
 		public string FacebookAppId{ get; protected set; }
-        // ---- Must be packaged with app ---- //
 
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Account Activation Disabled", Description="Disable the confirmation requirement")]
