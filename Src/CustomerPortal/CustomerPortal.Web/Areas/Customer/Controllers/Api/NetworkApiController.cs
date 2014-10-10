@@ -27,10 +27,10 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             _networkRepository = repository;
         }
 
-        [Route("customer/{companyId}/network/")]
+        [Route("api/customer/{companyId}/network")]
         public HttpResponseMessage Get(string companyId)
         {
-            var networkSettings = _networkRepository.FirstOrDefault(n => n.CompanyId == companyId);
+            var networkSettings = _networkRepository.FirstOrDefault(n => n.Id == companyId);
             
             if (networkSettings == null || !networkSettings.IsInNetwork)
             {
@@ -45,11 +45,11 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
             foreach (var nearbyCompany in overlappingCompanies)
             {
-                if (!networkSettings.Preferences.Any(p => p.CompanyId == nearbyCompany.CompanyId))
+                if (!networkSettings.Preferences.Any(p => p.CompanyKey == nearbyCompany.CompanyKey))
                 {
-                    networkSettings.Preferences.Add(new CompanyPreference()
+                    networkSettings.Preferences.Add(new CompanyPreference
                     {
-                        CompanyId = nearbyCompany.CompanyId
+                        CompanyKey = nearbyCompany.CompanyKey
                     });
                 }
             }
@@ -61,10 +61,10 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             return response;
         }
 
-        [Route("customer/{companyId}/network/")]
+        [Route("api/customer/{companyId}/network")]
         public HttpResponseMessage Post(string companyId, CompanyPreference[] preferences)
         {
-            var networkSetting = _networkRepository.FirstOrDefault(n => n.CompanyId == companyId);
+            var networkSetting = _networkRepository.FirstOrDefault(n => n.Id == companyId);
             if (networkSetting == null)
             {
                 return new HttpResponseMessage(HttpStatusCode.Forbidden); 

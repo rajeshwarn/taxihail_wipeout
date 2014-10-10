@@ -395,7 +395,6 @@
     <Content Include="common\views\AlertView.js" />
     <Content Include="common\views\LoginStatusView.js" />
     <Content Include="common\views\TemplatedView.js" />
-    <Content Include="Config.aspx" />
     <Content Include="default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="assets\bootstrap-datepicker\less\datepicker.less" />
@@ -586,13 +585,6 @@
     <Compile Include="Areas\AdminTH\AdminTHAreaRegistration.cs" />
     <Compile Include="Areas\AdminTH\Controllers\TaxiHailNetworkController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\ServiceStackController.cs" />
-    <Compile Include="Config.aspx.cs">
-      <DependentUpon>Config.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Config.aspx.designer.cs">
-      <DependentUpon>Config.aspx</DependentUpon>
-    </Compile>
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -616,6 +608,14 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CustomerPortal\CustomerPortal.Client\CustomerPortal.Client.csproj">
+      <Project>{15824aae-2d25-414e-b9ff-618de088c9e7}</Project>
+      <Name>CustomerPortal.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CustomerPortal\CustomerPortal.Contract\CustomerPortal.Contract.csproj">
+      <Project>{6a4623e1-41ef-4286-9a34-2adc6407e94f}</Project>
+      <Name>CustomerPortal.Contract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
       <Name>Infrastructure</Name>
