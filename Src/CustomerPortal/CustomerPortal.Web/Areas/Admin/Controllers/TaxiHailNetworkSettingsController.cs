@@ -1,4 +1,5 @@
 ﻿using CustomerPortal.Web.Android;
+using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
 using MongoRepository;
 using System;
@@ -23,14 +24,17 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         public ActionResult Index(string id)
         {
             var network = Repository.FirstOrDefault(x => x.CompanyId == id);
-
+            
             if (network == null)
             {
-                network = new TaxiHailNetworkSettings
-                {
-                    CompanyId = id,
-                    Id=id
-                };
+                var companyRepo = new MongoRepository<Company>().FirstOrDefault(x => x.CompanyKey == id);
+
+                if (companyRepo != null)
+                    network = new TaxiHailNetworkSettings
+                    {
+                        CompanyId = companyRepo.CompanyKey,
+                        Id = companyRepo.CompanyKey
+                    };
             }
          
             return PartialView(network);

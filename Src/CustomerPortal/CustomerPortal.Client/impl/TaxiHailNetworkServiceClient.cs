@@ -6,14 +6,22 @@ using Newtonsoft.Json;
 
 namespace CustomerPortal.Client.impl
 {
-    public class TaxiHailNetworkServiceClient :  BaseServiceClient, ITaxiHailNetworkServiceClient
+    public class TaxiHailNetworkServiceClient : BaseServiceClient, ITaxiHailNetworkServiceClient
     {
-        
+        public TaxiHailNetworkServiceClient() : base()
+        {
+            
+        }
+
         public List<CompanyPreference> GetOverlapingCompaniesPreferences(string companyId)
         {
              var response = Client.GetAsync(@"customer/"+companyId+"/network").Result;
             var json = response.Content.ReadAsStringAsync().Result;
-            var overlapingCompanies = JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
+            var overlapingCompanies=new List<CompanyPreference>();
+            if (response.IsSuccessStatusCode)
+            {
+                overlapingCompanies = JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
+            }
             return overlapingCompanies;
         }
 
