@@ -7,7 +7,7 @@ using apcurium.MK.Web.Optimization;
 
 #endregion
 
-namespace apcurium.MK.Web.App_Start
+namespace apcurium.MK.Web
 {
     public class BundleConfig
     {

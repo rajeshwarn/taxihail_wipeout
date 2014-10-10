@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using apcurium.MK.Common.Enumeration;
 using Mono.Options;
 using Newtonsoft.Json;
 using apcurium.Tools.Localization.Android;
@@ -18,15 +15,18 @@ namespace apcurium.Tools.Localization.UpdateTool
     {
         static void Main(string[] args)
         {
+            // string.Empty is english, since english resource file name doesn't have language suffix
+            var supportedLanguages = new List<string> { string.Empty };
+            supportedLanguages.AddRange(
+                Enum.GetNames(typeof (SupportedLanguages)).Except(new[] {SupportedLanguages.en.ToString()}));
 
-            var supportedLanguages = new string[] { "", "fr", "ar", "es" };
             string target = string.Empty;
             string source = string.Empty;
             string settings = string.Empty;
             string destination = string.Empty;
             bool backup = false;
 
-            var p = new OptionSet()
+            var p = new OptionSet
             {
                 {"t|target=", "Target application: ios or android", t => target = t.ToLowerInvariant()},
                 {"m|master=", "Master .resx file path", m => source = m},
@@ -47,10 +47,8 @@ namespace apcurium.Tools.Localization.UpdateTool
 
             try
             {
-
                 foreach (var lang in supportedLanguages)
                 {
-
                     var resourceManager = new ResourceManager();
                     var handler = default(ResourceFileHandlerBase);                    
                     
@@ -70,11 +68,14 @@ namespace apcurium.Tools.Localization.UpdateTool
                         }
                     }
 
+                    // Create files for both platforms
+                    AndroidLanguageFileManager.CreateResourceFileIfNecessary(lang);
+                    iOSLanguageFileManager.CreateResourceFileIfNecessary(lang);
+
                     switch (target)
                     {
                         case "android":
-                            
-                            resourceManager.AddDestination(handler = new AndroidResourceFileHandler(destination, lang ));
+                            resourceManager.AddDestination(handler = new AndroidResourceFileHandler(destination, lang));
                             break;
                         case "ios":
                             resourceManager.AddDestination(handler = new iOSResourceFileHandler(destination, lang ));
@@ -115,7 +116,7 @@ namespace apcurium.Tools.Localization.UpdateTool
             return firstPart + "." + lang + ".resx";
         }
 
-        public static void ShowHelpAndExit(string message, OptionSet optionSet)
+        private static void ShowHelpAndExit(string message, OptionSet optionSet)
         {
             Console.Error.WriteLine(message);
             optionSet.WriteOptionDescriptions(Console.Error);
