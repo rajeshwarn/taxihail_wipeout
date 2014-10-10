@@ -1,36 +1,31 @@
 ﻿using System;
 using System.Net;
-using ServiceStack;
+using System.Net.Http;
+
 namespace CustomerPortal.Client
 {
     public class BaseServiceClient
     {
-        private ServiceClientBase _client;
-        private readonly string _url;
-        private readonly string _sessionId;
-
-        public BaseServiceClient(string url, string sessionId)
+        public BaseServiceClient()
         {
-            _url = url;
-            _sessionId = sessionId;
-        }
-
-        protected virtual ServiceClientBase Client
-        {
-            get { return _client ?? (_client = CreateClient()); }
-        }
-
-        private ServiceClientBase CreateClient()
-        {
-            var client = new JsonServiceClient(_url);
-            var uri = new Uri(_url);
-            if (!string.IsNullOrEmpty(_sessionId))
+            Client = new HttpClient(new HttpClientHandler
             {
-                client.CookieContainer = new CookieContainer();
-                client.CookieContainer.Add(uri, new Cookie("ss-opt", "perm"));
-                client.CookieContainer.Add(uri, new Cookie("ss-pid", _sessionId));
-            }
-            return client;
+                Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
+            });
+            Client.BaseAddress = new Uri(GetUrl());
         }
+
+        public HttpClient Client { get; set; }
+
+        private static string GetUrl()
+        {
+            var url = "http://customer.taxihail.com/api/";
+            //			#if DEBUG
+            //			url = "http://localhost:2287/api/";
+            //			#endif
+            return url;
+        }
+
+       
     }
 }

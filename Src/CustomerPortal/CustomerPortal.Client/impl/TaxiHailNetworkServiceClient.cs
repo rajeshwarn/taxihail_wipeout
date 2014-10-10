@@ -1,30 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
-using CustomerPortal.Contract.Requests;
+using System.Net.Http.Formatting;
 using CustomerPortal.Contract.Resources;
 using Newtonsoft.Json;
 
 namespace CustomerPortal.Client.impl
 {
-    class TaxiHailNetworkServiceClient :  BaseServiceClient, ITaxiHailNetworkServiceClient
+    public class TaxiHailNetworkServiceClient :  BaseServiceClient, ITaxiHailNetworkServiceClient
     {
-        public TaxiHailNetworkServiceClient(string url, string sessionId)
-            : base(url, sessionId)
+        
+        public List<CompanyPreference> GetOverlapingCompaniesPreferences(string companyId)
         {
-        }
-        public List<CompanyPreference> GetOverlapingCompaniesPreferences(PostCompanyPreferencesRequest postCompanyPreferencesRequest)
-        {
-
-            var response = Client.Get<HttpResponseMessage>(postCompanyPreferencesRequest);
+             var response = Client.GetAsync(@"customer/"+companyId+"/Network/").Result;
             var json = response.Content.ReadAsStringAsync().Result;
             var overlapingCompanies = JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
             return overlapingCompanies;
         }
 
-        public void SetOverlapingCompaniesPreferences(PostCompanyPreferencesRequest postCompanyPreferencesRequest)
-        {
 
-            Client.Post(postCompanyPreferencesRequest);
+        public void SetOverlapingCompaniesPreferences(string companyId, CompanyPreference[] preferences)
+        {
+            var content = new ObjectContent<CompanyPreference[]>(preferences, new JsonMediaTypeFormatter());
+            Client.PostAsync(@"customer/" + companyId + "/Network/", content);
         }
     }
 }

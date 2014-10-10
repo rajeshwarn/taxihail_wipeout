@@ -1,9 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using CustomerPortal.Contract.Requests;
 using CustomerPortal.Contract.Resources;
+using CustomerPortal.Web.Areas.Customer.Models.RequestResponse;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Extensions;
 using MongoRepository;
@@ -26,14 +27,14 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             _networkRepository = repository;
         }
 
-        public HttpResponseMessage Get(PostCompanyPreferencesRequest companyNetworkPreferences)
+        [Route("customer/{companyId}/network/")]
+        public HttpResponseMessage Get(string companyId)
         {
-            var companyId = companyNetworkPreferences.CompanyId;
             var networkSettings = _networkRepository.FirstOrDefault(n => n.CompanyId == companyId);
             
             if (networkSettings == null || !networkSettings.IsInNetwork)
             {
-                return new HttpResponseMessage(HttpStatusCode.Forbidden);    
+                return null;
             }
 
             var otherCompaniesInNetwork = _networkRepository.Where(n => n.IsInNetwork && n.Id != networkSettings.Id)
@@ -60,15 +61,16 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             return response;
         }
 
-        public HttpResponseMessage Post(PostCompanyPreferencesRequest companyNetworkPreferences)
+        [Route("customer/{companyId}/network/")]
+        public HttpResponseMessage Post(string companyId, CompanyPreference[] preferences)
         {
-            var networkSetting = _networkRepository.FirstOrDefault(n => n.CompanyId == companyNetworkPreferences.CompanyId);
+            var networkSetting = _networkRepository.FirstOrDefault(n => n.CompanyId == companyId);
             if (networkSetting == null)
             {
                 return new HttpResponseMessage(HttpStatusCode.Forbidden); 
             }
 
-            networkSetting.Preferences = companyNetworkPreferences.Preferences.ToList();
+            networkSetting.Preferences = preferences.ToList();
 
             _networkRepository.Update(networkSetting);
 
