@@ -108,7 +108,8 @@ namespace apcurium.MK.Booking.Api.Services
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
             {
-                ValidateCreditCard(account, request.ClientLanguageCode);
+                // TODO: validate if we can use request.Id
+                ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
             }
             
             var rule = _ruleCalculator.GetActiveDisableFor(
@@ -227,7 +228,7 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        private void ValidateCreditCard(AccountDetail account, string clientLanguageCode)
+        private void ValidateCreditCard(Guid requestId, AccountDetail account, string clientLanguageCode)
         {
             // check if the account has a credit card
             if (!account.DefaultCreditCard.HasValue)
@@ -239,7 +240,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (_serverSettings.ServerData.PreAuthorizeOnOrderCreation)
             {
                 var card = _creditCardDao.FindByAccountId(account.Id).First();
-                var preAuthWasASuccess = _paymentService.PreAuthorize(account.Email, card.Token, _serverSettings.ServerData.PreAuthorizeOnOrderCreationAmount);
+                var preAuthWasASuccess = _paymentService.PreAuthorize(requestId, account.Email, card.Token, _serverSettings.ServerData.PreAuthorizeOnOrderCreationAmount);
                 if (!preAuthWasASuccess)
                 {
                     throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),

@@ -122,7 +122,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        public bool PreAuthorize(string email, string cardToken, decimal amountToPreAuthorize)
+        public bool PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 {
                     Amount = amountToPreAuthorize,
                     PaymentMethodToken = cardToken,
-                    OrderId = Guid.NewGuid().ToString(),        // random id since we can't reuse the same id later on for a new transaction
+                    OrderId = orderId.ToString(),
                     Options = new TransactionOptionsRequest
                     {
                         SubmitForSettlement = false
@@ -140,6 +140,23 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 //sale
                 var result = BraintreeGateway.Transaction.Sale(transactionRequest);
 
+                var transactionId = result.Target.Id;
+                if (result.IsSuccess())
+                {
+                    _commandBus.Send(new InitiateCreditCardPayment
+                    {
+                        PaymentId = orderId,
+                        Amount = 0,
+                        Meter = 0,
+                        Tip = 0,
+                        TransactionId = transactionId,
+                        OrderId = orderId,
+                        CardToken = cardToken,
+                        Provider = PaymentProvider.Braintree,
+                        IsNoShowFee = false
+                    });
+                }
+
                 return result.IsSuccess();
             }
             catch (Exception e)
@@ -148,6 +165,122 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 _logger.LogError(e);
                 return false;
             }
+        }
+
+        public CommitPreauthorizedPaymentResponse CommitPayment(PreAuthorizeAndCommitPaymentRequest request)
+        {
+            var orderDetail = _orderDao.FindById(request.OrderId);
+            var account = _accountDao.FindById(orderDetail.AccountId);
+            var paymentDetail = _paymentDao.FindByOrderId(request.OrderId);
+
+            // commit transaction
+            var settlementResult = BraintreeGateway.Transaction.SubmitForSettlement(paymentDetail.TransactionId, request.Amount);
+            var message = settlementResult.Message;
+
+            var isSuccessful = settlementResult.IsSuccess() && (settlementResult.Target != null) &&
+                           (settlementResult.Target.ProcessorAuthorizationCode.HasValue());
+
+            string authorizationCode = null;
+
+            if (isSuccessful && !request.IsNoShowFee)
+            {
+                authorizationCode = settlementResult.Target.ProcessorAuthorizationCode;
+
+                //send information to IBS
+                try
+                {
+                    _ibs.ConfirmExternalPayment(orderDetail.Id,
+                                                    orderDetail.IBSOrderId.Value,
+                                                    request.Amount,
+                                                    request.TipAmount,
+                                                    request.MeterAmount,
+                                                    PaymentType.CreditCard.ToString(),
+                                                    PaymentProvider.Braintree.ToString(),
+                                                    paymentDetail.TransactionId,
+                                                    authorizationCode,
+                                                    request.CardToken,
+                                                    account.IBSAccountId,
+                                                    orderDetail.Settings.Name,
+                                                    orderDetail.Settings.Phone,
+                                                    account.Email,
+                                                    orderDetail.UserAgent.GetOperatingSystem(),
+                                                    orderDetail.UserAgent);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e);
+                    message = e.Message;
+                    isSuccessful = false;
+
+                    //cancel braintree transaction
+                    //see paragraph oops here https://www.braintreepayments.com/docs/dotnet/transactions/submit_for_settlement
+                    try
+                    {
+                        var transaction = BraintreeGateway.Transaction.Find(paymentDetail.TransactionId);
+                        Result<Transaction> cancellationResult = null;
+                        if (transaction.Status == TransactionStatus.SUBMITTED_FOR_SETTLEMENT)
+                        {
+                            // can void
+                            cancellationResult = BraintreeGateway.Transaction.Void(paymentDetail.TransactionId);
+                        }
+                        else if (transaction.Status == TransactionStatus.SETTLED)
+                        {
+                            // will have to refund it
+                            cancellationResult = BraintreeGateway.Transaction.Refund(paymentDetail.TransactionId);
+                        }
+
+                        if (cancellationResult == null
+                            || !cancellationResult.IsSuccess())
+                        {
+                            throw new Exception(cancellationResult != null ?
+                                    cancellationResult.Message
+                                    : string.Format("transaction {0} status unkonw, can't cancel it", paymentDetail.TransactionId));
+                        }
+
+                        message = message + " The transaction has been cancelled.";
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogMessage("Can't cancel Braintree transaction");
+                        _logger.LogError(ex);
+                        message = message + ex.Message;
+                        //can't cancel transaction, send a command to log
+
+                    }
+                }
+            }
+
+            if (isSuccessful)
+            {
+                //payment completed
+                // TODO: add amount here
+                _commandBus.Send(new CaptureCreditCardPayment
+                {
+                    PaymentId = paymentDetail.PaymentId,
+                    AuthorizationCode = authorizationCode,
+                    Provider = PaymentProvider.Braintree,
+                    Amount = request.Amount,
+                    MeterAmount = request.MeterAmount,
+                    TipAmount = request.TipAmount
+                });
+            }
+            else
+            {
+                //payment error
+                _commandBus.Send(new LogCreditCardError
+                {
+                    PaymentId = paymentDetail.PaymentId,
+                    Reason = message
+                });
+            }
+
+            return new CommitPreauthorizedPaymentResponse
+            {
+                AuthorizationCode = authorizationCode,
+                TransactionId = paymentDetail.TransactionId,
+                IsSuccessfull = isSuccessful,
+                Message = isSuccessful ? "Success" : message
+            };
         }
 
         public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request)

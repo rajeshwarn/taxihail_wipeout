@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(CaptureCreditCardPayment command)
         {
             var payment = _repository.Get(command.PaymentId);
-            payment.Capture(command.Provider, command.AuthorizationCode);
+            payment.Capture(command.Provider, command.Amount, command.MeterAmount, command.TipAmount, command.AuthorizationCode);
             _repository.Save(payment, command.Id.ToString());
         }
 

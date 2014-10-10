@@ -53,11 +53,19 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void Capture(PaymentProvider provider, string authorizationCode)
+        public void Capture(PaymentProvider provider, decimal? amount, decimal? meterAmount, decimal? tipAmount, string authorizationCode)
         {
             if (_isCaptured)
             {
                 throw new InvalidOperationException("Payment is already captured");
+            }
+
+            // TODO: make private field to indicate if preauth or not
+            if (_amount == 0 && _meter == 0 && _tip == 0)
+            {
+                _amount = amount.Value;
+                _meter = meterAmount.Value;
+                _tip = tipAmount.Value;
             }
 
             Update(new CreditCardPaymentCaptured

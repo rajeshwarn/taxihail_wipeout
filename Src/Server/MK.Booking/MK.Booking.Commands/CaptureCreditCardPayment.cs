@@ -21,5 +21,11 @@ namespace apcurium.MK.Booking.Commands
 
         public PaymentProvider Provider { get; set; }
         public Guid Id { get; private set; }
+
+        public decimal? Amount { get; set; }
+
+        public decimal? MeterAmount { get; set; }
+
+        public decimal? TipAmount { get; set; }
     }
 }

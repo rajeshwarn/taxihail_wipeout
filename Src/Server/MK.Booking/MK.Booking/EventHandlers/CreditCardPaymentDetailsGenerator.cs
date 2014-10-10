@@ -45,6 +45,14 @@ namespace apcurium.MK.Booking.EventHandlers
                     order.Tip = Convert.ToDouble(payment.Tip);
                 }
 
+                if (payment.Amount == 0 && payment.Amount == 0 && payment.Tip == 0)
+                {
+                    // Replace the PreAuth values with the real amounts
+                    payment.Amount = @event.Amount;
+                    payment.Meter = @event.Meter;
+                    payment.Tip = @event.Tip;
+                }
+
                 context.SaveChanges();
             }
         }

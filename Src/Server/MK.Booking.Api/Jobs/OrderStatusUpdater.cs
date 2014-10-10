@@ -227,7 +227,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
 
             var orderPayment = _orderPaymentDao.FindByOrderId(orderStatusDetail.OrderId);
-            if (orderPayment != null)
+            if (orderPayment != null && (orderPayment.IsCompleted || orderPayment.IsCancelled))
             {
                 // Payment was already processed
                 Log.DebugFormat("Payment for order {0} was already processed, nothing else to do.", orderStatusDetail.OrderId);
@@ -278,7 +278,16 @@ namespace apcurium.MK.Booking.Api.Jobs
                 SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, meterAmount + tipAmount, meterAmount, tipAmount);
             }
 
-            var paymentResult =  _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
+            //var paymentResult =  _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
+            //{
+            //    OrderId = orderStatusDetail.OrderId,
+            //    CardToken = pairingInfo.TokenOfCardToBeUsedForPayment,
+            //    MeterAmount = Convert.ToDecimal(meterAmount),
+            //    TipAmount = Convert.ToDecimal(tipAmount),
+            //    Amount = Convert.ToDecimal(meterAmount + tipAmount)
+            //});
+
+            var paymentResult = _paymentService.CommitPayment(new PreAuthorizeAndCommitPaymentRequest
             {
                 OrderId = orderStatusDetail.OrderId,
                 CardToken = pairingInfo.TokenOfCardToBeUsedForPayment,
