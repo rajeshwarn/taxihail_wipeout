@@ -7,13 +7,13 @@ namespace apcurium.Tools.Localization
     {
         public static void IncludeFile(string projectPath, string filePath, string parentNodeName)
         {
-            var csProDocument = new XmlDocument();
-            csProDocument.Load(projectPath);
+            var csProjDocument = new XmlDocument();
+            csProjDocument.Load(projectPath);
 
-            XmlNode root = csProDocument.DocumentElement;
+            XmlNode root = csProjDocument.DocumentElement;
             if (root != null)
             {
-                XmlElement node = csProDocument.CreateElement(parentNodeName, root.NamespaceURI);
+                XmlElement node = csProjDocument.CreateElement(parentNodeName, root.NamespaceURI);
                 node.SetAttribute("Include", filePath);
 
                 foreach (var child in root.ChildNodes)
@@ -32,7 +32,7 @@ namespace apcurium.Tools.Localization
                     }
                 }
 
-                csProDocument.Save(projectPath);
+                csProjDocument.Save(projectPath);
             }
         }
     }

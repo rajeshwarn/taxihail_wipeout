@@ -15,6 +15,7 @@ namespace apcurium.Tools.Localization.UpdateTool
     {
         static void Main(string[] args)
         {
+            // string.Empty is english, since english resource file name doesn't have language suffix
             var supportedLanguages = new List<string> { string.Empty };
             supportedLanguages.AddRange(
                 Enum.GetNames(typeof (SupportedLanguages)).Except(new[] {SupportedLanguages.en.ToString()}));

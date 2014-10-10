@@ -8,6 +8,7 @@ namespace apcurium.Tools.Localization.Android
         {
             if (string.IsNullOrEmpty(language))
             {
+                // English will always already be created
                 return;
             }
 

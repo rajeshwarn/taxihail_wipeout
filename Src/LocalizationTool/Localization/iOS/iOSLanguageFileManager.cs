@@ -9,6 +9,7 @@ namespace apcurium.Tools.Localization.iOS
         {
             if (string.IsNullOrEmpty(language))
             {
+                // English will always already be created
                 return;
             }
 
