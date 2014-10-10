@@ -1,4 +1,4 @@
-namespace CustomerPortal.Web.Entities.Network
+namespace CustomerPortal.Contract.Resources
 {
     public class CompanyPreference
     {
