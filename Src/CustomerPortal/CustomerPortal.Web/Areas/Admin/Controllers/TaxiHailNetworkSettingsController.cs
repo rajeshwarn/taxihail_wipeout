@@ -23,17 +23,17 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
         public ActionResult Index(string id)
         {
-            var network = Repository.FirstOrDefault(x => x.CompanyId == id);
+            var network = Repository.FirstOrDefault(x => x.Id == id);
             
             if (network == null)
             {
-                var companyRepo = new MongoRepository<Company>().FirstOrDefault(x => x.CompanyKey == id);
+                var company = new MongoRepository<Company>().FirstOrDefault(x => x.Id == id);
 
-                if (companyRepo != null)
+                if (company != null)
                     network = new TaxiHailNetworkSettings
                     {
-                        CompanyId = companyRepo.CompanyKey,
-                        Id = companyRepo.CompanyKey
+                        CompanyKey = company.CompanyKey,
+                        Id = company.Id
                     };
             }
          
@@ -45,7 +45,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             Repository.Update(model);
 
-            return RedirectToAction("Index", "Home", new { area = "Customer", companyId = model.CompanyId });
+            return RedirectToAction("Index", "Home", new { area = "Customer", companyId = model.Id });
         }
 
     }

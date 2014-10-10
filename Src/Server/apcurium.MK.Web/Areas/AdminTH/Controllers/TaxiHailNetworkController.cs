@@ -10,21 +10,22 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
     public class TaxiHailNetworkController : ServiceStackController
     {
-        private readonly IServerSettings _serverSettings;
         private readonly TaxiHailNetworkServiceClient _taxiHailNetworkService;
+        private string _applicationKey;
 
         // GET: AdminTH/TaxiHailNetwork
         public TaxiHailNetworkController(ICacheClient cache,IServerSettings serverSettings) : base(cache)
         {
-            _serverSettings = serverSettings;
             _taxiHailNetworkService=new TaxiHailNetworkServiceClient();
+
+            _applicationKey = serverSettings.ServerData.TaxiHail.ApplicationKey;
         }
 
         public ActionResult Index()
         {
             if (AuthSession.IsAuthenticated)
             {
-                var response =_taxiHailNetworkService.GetOverlapingCompaniesPreferences(_serverSettings.ServerData.TaxiHail.ApplicationKey);
+                var response = _taxiHailNetworkService.GetOverlapingCompaniesPreferences(_applicationKey);
 
                 return View(response);
             }
@@ -37,23 +38,21 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             if (AuthSession.IsAuthenticated)
             {
-                var response = _taxiHailNetworkService.GetOverlapingCompaniesPreferences("tes1");
-                var preferences= (from companyPreference in response
-                    let canAccept = form["acceptKey_" + companyPreference.CompanyId].Contains("true")
-                    let canDispatch = form["dispatchKey_" + companyPreference.CompanyId].Contains("true")
+                var response = _taxiHailNetworkService.GetOverlapingCompaniesPreferences(_applicationKey);
+                var preferences = (from companyPreference in response
+                    let canAccept = form["acceptKey_" + companyPreference.CompanyKey].Contains("true")
+                    let canDispatch = form["dispatchKey_" + companyPreference.CompanyKey].Contains("true")
                     select new CompanyPreference
                     {
-                        CompanyId = form["idKey_" + companyPreference.CompanyId], CanAccept = canAccept, CanDispatch = canDispatch
+                        CompanyKey = form["idKey_" + companyPreference.CompanyKey], CanAccept = canAccept, CanDispatch = canDispatch
                     }).ToList();
 
-                _taxiHailNetworkService.SetOverlapingCompaniesPreferences("tes1",preferences.ToArray());
+                _taxiHailNetworkService.SetOverlapingCompaniesPreferences(_applicationKey, preferences.ToArray());
 
                  return View(preferences);
             }
 
             return new HttpUnauthorizedResult();
         }
-
-
     }
 }

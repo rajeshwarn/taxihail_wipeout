@@ -15,14 +15,14 @@
         {
             <tr>
                 <td>
-                    @company.CompanyId
-                    @Html.Hidden("idKey_"+company.CompanyId,company.CompanyId)
+                    @company.CompanyKey
+                    @Html.Hidden("idKey_" + company.CompanyKey, company.CompanyKey)
                 </td>
                 <td>
-                    @Html.CheckBox("acceptKey_" + company.CompanyId, company.CanAccept)
+                    @Html.CheckBox("acceptKey_" + company.CompanyKey, company.CanAccept)
                 </td>
                 <td>
-                    @Html.CheckBox("dispatchKey_" + company.CompanyId, company.CanDispatch)
+                    @Html.CheckBox("dispatchKey_" + company.CompanyKey, company.CanDispatch)
                 </td>
             </tr>
             i = i + 1;
