@@ -14,6 +14,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             Id = AppConstants.CompanyId;
             BraintreeServerSettings = new BraintreeServerSettings();
             PayPalServerSettings = new PayPalServerSettings();
+            //PreAuthAmmount = 200;
         }
 
         [Key]
@@ -23,5 +24,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         public PayPalServerSettings PayPalServerSettings { get; set; }
 
         public decimal? NoShowFee { get; set; }
+
+        //public decimal? PreAuthAmmount { get; set; }
     }
 }
