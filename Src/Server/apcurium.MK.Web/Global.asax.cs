@@ -14,7 +14,7 @@ using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.IoC;
-using apcurium.MK.Web.App_Start;
+using apcurium.MK.Web;
 using log4net;
 using log4net.Config;
 using MK.Common.Configuration;
@@ -24,7 +24,7 @@ using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensi
 
 namespace apcurium.MK.Web
 {
-    public class Global : HttpApplication
+    public class Global : System.Web.HttpApplication
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(Global));
 
