@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using apcurium.MK.Web.Areas.AdminTH.Models;
 using ServiceStack.CacheAccess;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
@@ -18,7 +19,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             if (AuthSession.IsAuthenticated)
             {
-                return View();
+                var compamyPreferences = new List<CompanyPreference>
+                {
+                    new CompanyPreference{CanAccept = true,CanDispatch = true, CompanyId = "test1"}
+                };
+                return View(compamyPreferences);
             }
 
             return new HttpUnauthorizedResult();
