@@ -243,7 +243,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						if(Settings.CallDriverUsingProxy)
 						{
 							var driver = ConvertToValidPhoneNumberIfNecessary(OrderStatusDetail.DriverInfos.MobilePhone);
-							var passenger = ConvertToValidPhoneNumberIfNecessary(_accountService.CurrentAccount.Phone);
+							var passenger = ConvertToValidPhoneNumberIfNecessary(Order.Settings.Phone);
 
 							var proxyUrl = Settings.CallDriverUsingProxyUrl;
 							var request = WebRequest.Create(string.Format(proxyUrl, driver, passenger));
