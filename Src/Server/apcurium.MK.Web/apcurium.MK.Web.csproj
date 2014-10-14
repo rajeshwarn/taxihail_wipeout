@@ -293,10 +293,6 @@
     <Content Include="admin\views\ManagePopularAddressesView.js" />
     <Content Include="admin\views\TemplatedView.js" />
     <Content Include="ApiDoc.aspx" />
-    <Content Include="Areas\assets\css\admin.css" />
-    <Content Include="Areas\assets\img\blackcar_badge.png" />
-    <Content Include="Areas\assets\img\suv_badge.png" />
-    <Content Include="Areas\assets\img\taxi_badge.png" />
     <Content Include="assets\img\app-stores-itunes.png" />
     <Content Include="assets\img\appstores-bg.png" />
     <Content Include="assets\img\appstores-play.png" />
@@ -413,7 +409,6 @@
     <Content Include="models\CompanySettings.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Areas\assets\less\TaxiHail-admin-grid.less" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

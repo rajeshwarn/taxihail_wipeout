@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using apcurium.MK.Common.Configuration;
-using CustomerPortal.Client.impl;
+using CustomerPortal.Client.Impl;
 using CustomerPortal.Contract.Resources;
 using ServiceStack.CacheAccess;
 
@@ -11,7 +10,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
     public class TaxiHailNetworkController : ServiceStackController
     {
         private readonly TaxiHailNetworkServiceClient _taxiHailNetworkService;
-        private string _applicationKey;
+        private readonly string _applicationKey;
 
         // GET: AdminTH/TaxiHailNetwork
         public TaxiHailNetworkController(ICacheClient cache,IServerSettings serverSettings) : base(cache)

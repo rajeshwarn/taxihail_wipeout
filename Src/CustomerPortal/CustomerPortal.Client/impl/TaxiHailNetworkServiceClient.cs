@@ -4,7 +4,7 @@ using System.Net.Http.Formatting;
 using CustomerPortal.Contract.Resources;
 using Newtonsoft.Json;
 
-namespace CustomerPortal.Client.impl
+namespace CustomerPortal.Client.Impl
 {
     public class TaxiHailNetworkServiceClient : BaseServiceClient, ITaxiHailNetworkServiceClient
     {
