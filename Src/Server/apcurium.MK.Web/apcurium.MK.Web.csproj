@@ -517,6 +517,8 @@
     <Content Include="localization\Signup-es.json" />
     <Content Include="localization\UpdatePassword-es.json" />
     <Content Include="localization\UserAccount-es.json" />
+    <Content Include="localization\TaxiHailPro-en.json" />
+    <Content Include="localization\TaxiHailPro-fr.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
