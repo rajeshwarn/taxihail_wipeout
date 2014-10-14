@@ -37,8 +37,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					orderWorkflowService.GetAndObservePickupAddress(), 
 					orderWorkflowService.GetAndObserveVehicleType(), 
 					(_, address, vehicleTypeId) => new { address, vehicleTypeId })
-				.Where(x => x.address.HasValidCoordinate() && x.vehicleTypeId.HasValue)
-				.SelectMany(x => CheckForAvailableVehicles(x.address, x.vehicleTypeId.Value));
+				.Where(x => x.address.HasValidCoordinate())
+				.SelectMany(x => CheckForAvailableVehicles(x.address, x.vehicleTypeId));
 
 			_etaObservable = _availableVehiclesObservable
 				.Where (_ => _settings.Data.ShowEta)
@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_timerSubject.OnNext(Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds (5)));
 		}
 
-		private async Task<AvailableVehicle[]> CheckForAvailableVehicles(Address address, int vehicleTypeId)
+		private async Task<AvailableVehicle[]> CheckForAvailableVehicles(Address address, int? vehicleTypeId)
 		{
 			try
 			{
