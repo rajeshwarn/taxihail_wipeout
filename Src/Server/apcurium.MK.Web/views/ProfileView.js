@@ -32,7 +32,8 @@
 
             _.extend(data, {
                 vehiclesList: TaxiHail.vehicleTypes,
-                paymentsList: TaxiHail.referenceData.paymentsList
+                paymentsList: TaxiHail.referenceData.paymentsList,
+                isChargeAccountPaymentEnabled: TaxiHail.parameters.isChargeAccountPaymentEnabled
             });
 
             this.$el.html(this.renderTemplate(data));

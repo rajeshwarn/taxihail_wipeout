@@ -30,7 +30,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
-			if (!ViewModel.ShouldDisplayTip) {
+			if (!ViewModel.IsChargeAccountPaymentEnabled)
+			{
+				lblAccountNumber.RemoveFromSuperview();
+				txtAccountNumber.RemoveFromSuperview();
+			}
+
+			if (!ViewModel.ShouldDisplayTip)
+            {
                 lblTip.RemoveFromSuperview();
                 txtTip.RemoveFromSuperview();
 			}
