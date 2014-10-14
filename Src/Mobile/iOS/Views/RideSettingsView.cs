@@ -30,10 +30,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
-			if (!ViewModel.ShouldDisplayTip) {
+			if (!ViewModel.ShouldDisplayTip)
+            {
                 lblTip.RemoveFromSuperview();
                 txtTip.RemoveFromSuperview();
 			}
+
+            if (!ViewModel.IsChargeAccountPaymentEnabled)
+            {
+                lblAccountNumber.RemoveFromSuperview();
+                txtAccountNumber.RemoveFromSuperview();
+            }
 
             lblName.Text = Localize.GetValue("RideSettingsName");
             lblPhone.Text = Localize.GetValue("RideSettingsPhone");
