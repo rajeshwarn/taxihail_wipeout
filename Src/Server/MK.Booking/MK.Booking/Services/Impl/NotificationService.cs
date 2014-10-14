@@ -330,32 +330,17 @@ namespace apcurium.MK.Booking.Services.Impl
                 cardOnFileTransactionId = cardOnFileInfo.TransactionId;
             }
 
-            Address exactDropOffAddress = dropOffAddress;
+            var addressToUseForDropOff = TryToGetExactDropOffAddress(orderId, dropOffAddress, clientLanguageCode);
+            var positionForStaticMap = TryToGetPositionOfDropOffAddress(orderId, dropOffAddress);
+            
+            var hasDropOffAddress = addressToUseForDropOff != null
+                && (!string.IsNullOrWhiteSpace(addressToUseForDropOff.FullAddress)
+                    || !string.IsNullOrWhiteSpace(addressToUseForDropOff.DisplayAddress));
 
-            var orderStatus = _orderDao.FindOrderStatusById(orderId);
-            if (orderStatus != null)
-            {
-                var canFetchExactDropOffAddress = orderStatus.VehicleLatitude.HasValue &&
-                                                  orderStatus.VehicleLongitude.HasValue;
-
-                if (canFetchExactDropOffAddress)
-                {
-                    // Find the exact dropoff address using the last vehicle position
-                    exactDropOffAddress = _geocoding.Search(
-                        orderStatus.VehicleLatitude.Value,
-                        orderStatus.VehicleLongitude.Value,
-                        clientLanguageCode).FirstOrDefault() ?? dropOffAddress;
-                }
-            }
-
-            var hasDropOffAddress = exactDropOffAddress != null
-                && (!string.IsNullOrWhiteSpace(exactDropOffAddress.FullAddress)
-                    || !string.IsNullOrWhiteSpace(exactDropOffAddress.DisplayAddress));
-
-            var staticMapUri = hasDropOffAddress
+            var staticMapUri = positionForStaticMap.HasValue
                 ? _staticMap.GetStaticMapUri(
                     new Position(pickupAddress.Latitude, pickupAddress.Longitude),
-                    new Position(exactDropOffAddress.Latitude, exactDropOffAddress.Longitude),
+                    positionForStaticMap.Value,
                     300, 300, 1)
                 : string.Empty;
 
@@ -392,7 +377,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 CardOnFileTransactionId = cardOnFileTransactionId,
                 CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
                 PickupAddress = pickupAddress.DisplayAddress,
-                DropOffAddress = hasDropOffAddress ? exactDropOffAddress.DisplayAddress : "-",
+                DropOffAddress = hasDropOffAddress ? addressToUseForDropOff.DisplayAddress : "-",
                 SubTotal = _resources.FormatPrice(totalFare - tip), // represents everything except tip
                 StaticMapUri = staticMapUri,
                 ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
@@ -404,6 +389,43 @@ namespace apcurium.MK.Booking.Services.Impl
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
+        }
+
+        private Position? TryToGetPositionOfDropOffAddress(Guid orderId, Address dropOffAddress)
+        {
+            var orderStatus = _orderDao.FindOrderStatusById(orderId);
+            if (orderStatus != null 
+                && orderStatus.VehicleLatitude.HasValue 
+                && orderStatus.VehicleLongitude.HasValue)
+            {
+                return new Position(orderStatus.VehicleLatitude.Value, orderStatus.VehicleLongitude.Value);
+            }
+                
+            if (dropOffAddress != null)
+            {
+                return new Position(dropOffAddress.Latitude, dropOffAddress.Longitude);
+            }
+
+            return null;
+        }
+
+        private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode)
+        {
+            var orderStatus = _orderDao.FindOrderStatusById(orderId);
+            if (orderStatus == null
+                || !orderStatus.VehicleLatitude.HasValue
+                || !orderStatus.VehicleLongitude.HasValue)
+            {
+                return dropOffAddress;
+            }
+
+            // Find the exact dropoff address using the last vehicle position
+            var exactDropOffAddress = _geocoding.Search(
+                orderStatus.VehicleLatitude.Value,
+                orderStatus.VehicleLongitude.Value,
+                clientLanguageCode).FirstOrDefault();
+
+            return exactDropOffAddress ?? dropOffAddress;
         }
 
         private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData, string languageCode, params KeyValuePair<string, string>[] embeddedIMages)
