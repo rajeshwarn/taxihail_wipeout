@@ -65,7 +65,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_locationService = locationService;
 
 			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(accountService.CurrentAccount.Settings);
-			_vehicleTypeSubject = new BehaviorSubject<int?> (accountService.CurrentAccount.Settings.VehicleTypeId);
+
+            _vehicleTypeSubject = new BehaviorSubject<int?>(
+                _appSettings.Data.VehicleTypeSelectionEnabled
+                ? accountService.CurrentAccount.Settings.VehicleTypeId
+                : null);
+
 			_localize = localize;
 			_bookingService = bookingService;
 			_accountPaymentService = accountPaymentService;
