@@ -20,6 +20,7 @@ using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Maps;
 using Cirrious.CrossCore;
+using System.Net;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -138,6 +139,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged ();
 			}
 		}
+
         public bool IsCallTaxiVisible
         {
             get 
@@ -223,15 +225,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		private string ConvertToValidPhoneNumberIfNecessary(string phoneNumber)
+		{
+			return phoneNumber.Length == 11
+				? phoneNumber
+				: string.Concat("1", phoneNumber);
+		}
+
 		public ICommand CallTaxi
         {
             get 
 			{ 
 				return this.GetCommand(() =>
                 {
-                    if (!string.IsNullOrEmpty(OrderStatusDetail.DriverInfos.MobilePhone))
+					if (!string.IsNullOrEmpty(OrderStatusDetail.DriverInfos.MobilePhone))
                     {
-						_phoneService.Call(OrderStatusDetail.DriverInfos.MobilePhone);
+						if(Settings.CallDriverUsingProxy)
+						{
+							var driver = ConvertToValidPhoneNumberIfNecessary(OrderStatusDetail.DriverInfos.MobilePhone);
+							var passenger = ConvertToValidPhoneNumberIfNecessary(_accountService.CurrentAccount.Phone);
+
+							var proxyUrl = Settings.CallDriverUsingProxyUrl;
+							var request = WebRequest.Create(string.Format(proxyUrl, driver, passenger));
+							request.GetResponseAsync();
+
+							this.Services().Message.ShowMessage(this.Services().Localize["GenericTitle"], this.Services().Localize["CallDriverUsingProxyMessage"]);
+						}
+						else
+						{
+							_phoneService.Call(OrderStatusDetail.DriverInfos.MobilePhone);
+						}
                     }
                     else
                     {

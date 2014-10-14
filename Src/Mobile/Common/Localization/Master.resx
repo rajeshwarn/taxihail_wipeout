@@ -1689,4 +1689,7 @@
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>No Credit Card On File.</value>
   </data>
+  <data name="CallDriverUsingProxyMessage" xml:space="preserve">
+    <value>Your driver will call you back in a few minutes</value>
+  </data>
 </root>
