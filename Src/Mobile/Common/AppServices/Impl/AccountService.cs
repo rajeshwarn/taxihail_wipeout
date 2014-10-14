@@ -529,11 +529,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
 		    }
 
-		    if (!_paymentService.GetPaymentSettings().IsChargeAccountPaymentEnabled)
-		    {
-		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.Account.Id);
-		    }
-
             return refData.PaymentsList;
         }
 
