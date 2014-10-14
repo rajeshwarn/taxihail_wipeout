@@ -9,16 +9,14 @@ namespace apcurium.MK.Booking.Mobile.PresentationHints
 			
 		}
 
-		public ZoomToStreetLevelPresentationHint(double latitude, double longitude, MapBounds bounds = null)
+		public ZoomToStreetLevelPresentationHint(double latitude, double longitude)
         {
             Longitude = longitude;
             Latitude = latitude;
-			Bounds = bounds;
         }
 
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-		public MapBounds Bounds { get; set; }
     }
 }
 

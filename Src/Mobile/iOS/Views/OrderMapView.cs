@@ -485,25 +485,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 ChangeState((HomeViewModelPresentationHint)hint);
             }
 
-            var zoomHint = hint as ZoomToStreetLevelPresentationHint;
-
-            if (zoomHint != null)
+            var streetLevelZoomHint = hint as ZoomToStreetLevelPresentationHint;
+			if (streetLevelZoomHint != null)
             {
-				if (zoomHint.Bounds != null) {
-
-					var newBounds = zoomHint.Bounds;
-
-                    var currentBounds = this.GetMapBoundsFromProjection();
-
-					if (Math.Abs(currentBounds.LongitudeDelta) <= Math.Abs(newBounds.LongitudeDelta))
-                    {
-						this.SetRegion(GetRegionFromMapBounds(newBounds), true);
-                    }
-				} else 
-				{
-					this.SetCenterCoordinate(new CLLocationCoordinate2D(zoomHint.Latitude, zoomHint.Longitude), 14, true);
-				}
+				this.SetCenterCoordinate(new CLLocationCoordinate2D(streetLevelZoomHint.Latitude, streetLevelZoomHint.Longitude), 14, true);
             }
+
+			var zoomHint = hint as ChangeZoomPresentationHint;
+			if (zoomHint != null) 
+			{
+				var newBounds = zoomHint.Bounds;
+				var currentBounds = this.GetMapBoundsFromProjection();
+
+				if (Math.Abs(currentBounds.LongitudeDelta) <= Math.Abs(newBounds.LongitudeDelta))
+				{
+					this.SetRegion(GetRegionFromMapBounds(newBounds), true);
+				}
+			}
 
             var centerHint = hint as CenterMapPresentationHint;
             if (centerHint != null)
