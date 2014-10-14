@@ -26,6 +26,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Task<ReferenceData> GetReferenceData();
 
         void ClearReferenceData();
+
+	    void ClearVehicleTypesCache();
         
         Account RefreshAccount();
         
