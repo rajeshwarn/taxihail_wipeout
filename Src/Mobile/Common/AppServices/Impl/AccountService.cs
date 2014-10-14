@@ -73,10 +73,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             UserCache.Clear(RefDataCacheKey);
         }
 
-        public void ClearCache ()
+        public void ClearVehicleTypesCache()
+        {
+            Mvx.Resolve<ICacheService>().Clear(VehicleTypesDataCacheKey);
+        }
+
+        public void ClearCache()
         {
             UserCache.ClearAll ();
-            Mvx.Resolve<ICacheService>().Clear(VehicleTypesDataCacheKey);
+            ClearVehicleTypesCache();
         }
 
         public void SignOut ()
