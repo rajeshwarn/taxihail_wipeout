@@ -366,8 +366,8 @@
     <None Include="Localization\MearsTaxi.resx" />
     <None Include="Localization\CINQ-S.resx" />
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
-    <None Include="Localization\TaxiHailPro.fr.resx" />
-    <None Include="Localization\TaxiHailPro.resx" />
+    <None Include="Localization\TaxiHail Pro.resx" />
+    <None Include="Localization\TaxiHail Pro.fr.resx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
