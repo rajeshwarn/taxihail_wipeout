@@ -7,7 +7,7 @@ namespace apcurium.MK.Booking.Maps.Impl
     {
         public string GetStaticMapUri(Position pickup, Position dropOff, float width, float height, float scale)
         {
-            // When we device to show the route between pickup and dropoff, use encodedPolylines
+            // When we decide to show the route between pickup and dropoff, use encodedPolylines
             var encodedPolylines = "";
 
             var dropOffString = string.Empty;
