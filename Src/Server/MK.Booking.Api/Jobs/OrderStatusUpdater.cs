@@ -177,7 +177,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                         IsNoShowFee = true
                     });
 
-
                     if (paymentResult.IsSuccessfull)
                     {
                         Log.DebugFormat("No show fee of amount {0} was charged for order {1}.", paymentSettings.NoShowFee.Value, ibsOrderInfo.IBSOrderId);
