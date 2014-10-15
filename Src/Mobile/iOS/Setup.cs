@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             Xamarin.Insights.Identify("unknown@user.com", new Dictionary<string, string>
             {
                 { "ApplicationVersion", packageInfo.Version },
-                { "Company", settings.ApplicationName },
+                { "Company", settings.TaxiHail.ApplicationName },
             });
             #endif
         }

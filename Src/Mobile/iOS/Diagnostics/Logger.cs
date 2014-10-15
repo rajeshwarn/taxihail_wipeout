@@ -90,14 +90,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
             Xamarin.Insights.Identify(email, new Dictionary<string, string>
             {
                 { "ApplicationVersion", packageInfo.Version },
-                { "Company", settings.ApplicationName },
+                { "Company", settings.TaxiHail.ApplicationName },
             });
 
             Xamarin.Insights.Report(ex);
             Xamarin.Insights.Report(ex, new Dictionary<string, string>
             {
                 { "ApplicationVersion", packageInfo.Version },
-                { "Company", settings.ApplicationName },
+                    { "Company", settings.TaxiHail.ApplicationName },
             });
         }
 
