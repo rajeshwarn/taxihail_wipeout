@@ -295,7 +295,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 CommitPreauthorizedPaymentResponse paymentResult = null;
                 
                 var orderDetail = _orderDao.FindById(request.OrderId);
-                if (orderDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
+                if (orderDetail == null)
+                    throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
                 if (orderDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
 
@@ -349,12 +350,19 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     paymentResult = CommitPayment(request, paymentId, transactionId);
                 }
 
+                var isSuccessful = false;
+                if (paymentResult != null)
+                {
+                    isSuccessful = paymentResult.IsSuccessfull;
+                    message += paymentResult.Message;
+                }
+
                 return new CommitPreauthorizedPaymentResponse
                 {
                     AuthorizationCode = authorizationCode,
                     TransactionId = transactionId,
-                    IsSuccessfull = paymentResult != null && paymentResult.IsSuccessfull,
-                    Message = paymentResult != null && paymentResult.IsSuccessfull ? "Success" : message
+                    IsSuccessfull = isSuccessful,
+                    Message = isSuccessful ? "Success" : message
                 };
             }
             catch (Exception e)
