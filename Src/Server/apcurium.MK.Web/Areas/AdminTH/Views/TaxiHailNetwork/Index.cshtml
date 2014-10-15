@@ -10,9 +10,9 @@
             <th>CanAccept</th>
             <th>CanDispatch</th>
         </tr>
-        @{ int i = 1; }
         @foreach (var company in Model)
         {
+            
             <tr>
                 <td>
                     @company.CompanyKey
@@ -25,7 +25,6 @@
                     @Html.CheckBox("dispatchKey_" + company.CompanyKey, company.CanDispatch)
                 </td>
             </tr>
-            i = i + 1;
         }
     </table>
 

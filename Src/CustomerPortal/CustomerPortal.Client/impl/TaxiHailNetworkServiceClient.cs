@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using Newtonsoft.Json;
 
@@ -8,28 +9,25 @@ namespace CustomerPortal.Client.Impl
 {
     public class TaxiHailNetworkServiceClient : BaseServiceClient, ITaxiHailNetworkServiceClient
     {
-        public TaxiHailNetworkServiceClient() : base()
-        {
-            
-        }
 
-        public List<CompanyPreference> GetOverlapingCompaniesPreferences(string companyId)
+        public async Task<List<CompanyPreference>> GetNetworkCompanyPreferences(string companyId)
         {
-             var response = Client.GetAsync(@"customer/"+companyId+"/network").Result;
-            var json = response.Content.ReadAsStringAsync().Result;
-            var overlapingCompanies=new List<CompanyPreference>();
+            var response = await Client.GetAsync(@"customer/"+companyId+"/network");
+            var json = await response.Content.ReadAsStringAsync();
+
             if (response.IsSuccessStatusCode)
             {
-                overlapingCompanies = JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
+               return JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
             }
-            return overlapingCompanies;
+            return new List<CompanyPreference>();
         }
 
 
-        public void SetOverlapingCompaniesPreferences(string companyId, CompanyPreference[] preferences)
+        public Task SetNetworkCompanyPreferences(string companyId, CompanyPreference[] preferences)
         {
             var content = new ObjectContent<CompanyPreference[]>(preferences, new JsonMediaTypeFormatter());
-            Client.PostAsync(@"customer/" + companyId + "/network", content);
+            
+            return Client.PostAsync(@"customer/" + companyId + "/network", content);
         }
     }
 }

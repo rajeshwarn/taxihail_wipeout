@@ -78,5 +78,38 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
 
         }
+//        [Route("api/customer/{companyId}/network")]
+//        public HttpResponseMessage Get(string companyId, MapPosition position)
+//        {
+//           var networkSettings = _networkRepository.FirstOrDefault(n => n.Id == companyId);
+//            
+//            if (networkSettings == null || !networkSettings.IsInNetwork)
+//            {
+//                return null;
+//            }
+//
+//            var otherCompaniesInNetwork = _networkRepository.Where(n => n.IsInNetwork && n.Id != networkSettings.Id)
+//                .ToArray();
+//
+//            var overlappingCompanies = otherCompaniesInNetwork.Where(n => n.Region.Contains(position))
+//                .ToArray();
+//
+//            foreach (var nearbyCompany in overlappingCompanies)
+//            {
+//                if (!networkSettings.Preferences.Any(p => p.CompanyKey == nearbyCompany.CompanyKey))
+//                {
+//                    networkSettings.Preferences.Add(new CompanyPreference
+//                    {
+//                        CompanyKey = nearbyCompany.CompanyKey
+//                    });
+//                }
+//            }
+//            
+//            var response = new HttpResponseMessage(HttpStatusCode.OK)
+//            {
+//                Content = new StringContent(JsonConvert.SerializeObject(networkSettings.Preferences))
+//            };
+//            return response;
+//        }
     }
 }

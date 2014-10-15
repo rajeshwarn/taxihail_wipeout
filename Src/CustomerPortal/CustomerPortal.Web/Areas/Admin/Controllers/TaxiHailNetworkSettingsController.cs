@@ -27,25 +27,31 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             
             if (network == null)
             {
-                var company = new MongoRepository<Company>().FirstOrDefault(x => x.Id == id);
+                var company = new MongoRepository<Company>().First(x => x.Id == id);
 
-                if (company != null)
                     network = new TaxiHailNetworkSettings
                     {
                         CompanyKey = company.CompanyKey,
                         Id = company.Id
                     };
             }
-         
             return PartialView(network);
         }
 
         [HttpPost]
-        public ActionResult Index(TaxiHailNetworkSettings model)
+        public JsonResult Index(TaxiHailNetworkSettings model)
         {
             Repository.Update(model);
+            if (ModelState.IsValid)
+            {
+                return Json(new {Success = true});
+            }
+            else
+            {
+                return Json(new { Success = false });
+            }
 
-            return RedirectToAction("Index", "Home", new { area = "Customer", companyId = model.Id });
+            return RedirectToAction("Index", "Home", new { area = "Customer", companyId = model.Id,error="Done" });
         }
 
     }

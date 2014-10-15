@@ -1,8 +1,14 @@
 ﻿@model CustomerPortal.Web.Entities.Network.TaxiHailNetworkSettings
 
 <div id="ul-wrapper">
-    @using (Html.BeginForm("Index", "TaxiHailNetworkSettings", FormMethod.Post, new { id = "taxiHailNetworkForm" }))
-    {
+    
+   @if (ViewBag.Test != null)
+   {
+       <div class="alert alert-success" role="alert" style="display: none"></div>
+   }
+    
+@using (Html.BeginForm("Index", "TaxiHailNetworkSettings", FormMethod.Post, new { id = "taxiHailNetworkForm" }))
+{
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
 
@@ -34,7 +40,7 @@
         @Html.HiddenFor(x => x.CompanyKey);
         @Html.HiddenFor(x => x.Id);
         
-        <input type="submit" class="btn btn-primary" value="Save" />
+        <a href="javascript:void(0)" onclick="Save()" type="button" class="btn btn-primary"  >Save</a>
     }
 </div>
 
@@ -44,6 +50,23 @@
 
     var map;
     var mapRegion;
+
+    function Save() {
+        $.ajax({
+            url: this.action,
+            type: "POST",
+            data: $(this).serialize(),
+            statusCode: {
+                400: function (xhr, textStatus, errorThrown) {
+                    var errors = $.parseJSON(xhr.responseText);
+                    validator.showErrors(errors);
+                }
+            },
+            success: function (response) {
+                alert(response);
+            }
+        });
+    }
 
     function initialize() {
         map = new google.maps.Map(document.getElementById('map-canvas'), {
