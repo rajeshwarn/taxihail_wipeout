@@ -5,8 +5,10 @@
     <div id="validationPanel" class="alert-success alert" style="display: none">
     </div>
 
-    @using (Html.BeginForm("Index", "TaxiHailNetworkSettings", FormMethod.Post, new { id = "taxiHailNetworkForm" }))
-    {
+   
+    
+@using (Html.BeginForm("Index", "TaxiHailNetworkSettings", FormMethod.Post, new { id = "taxiHailNetworkForm" }))
+{
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
 
@@ -82,6 +84,23 @@
 
     var map;
     var mapRegion;
+
+    function Save() {
+        $.ajax({
+            url: this.action,
+            type: "POST",
+            data: $(this).serialize(),
+            statusCode: {
+                400: function (xhr, textStatus, errorThrown) {
+                    var errors = $.parseJSON(xhr.responseText);
+                    validator.showErrors(errors);
+                }
+            },
+            success: function (response) {
+                alert(response);
+            }
+        });
+    }
 
     function initialize() {
         map = new google.maps.Map(document.getElementById('map-canvas'), {

@@ -27,16 +27,14 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             
             if (network == null)
             {
-                var company = new MongoRepository<Company>().FirstOrDefault(x => x.Id == id);
+                var company = new MongoRepository<Company>().First(x => x.Id == id);
 
-                if (company != null)
                     network = new TaxiHailNetworkSettings
                     {
                         CompanyKey = company.CompanyKey,
                         Id = company.Id
                     };
             }
-         
             return PartialView(network);
         }
 
