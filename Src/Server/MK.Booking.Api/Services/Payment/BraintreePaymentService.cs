@@ -170,10 +170,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         public CommitPreauthorizedPaymentResponse CommitPayment(PreAuthorizeAndCommitPaymentRequest request, Guid? paymentId = null, string transactionId = null)
         {
             var orderDetail = _orderDao.FindById(request.OrderId);
+            if (orderDetail == null)
+                throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
+            if (orderDetail.IBSOrderId == null)
+                throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
+
             var account = _accountDao.FindById(orderDetail.AccountId);
             var paymentDetail = _paymentDao.FindByOrderId(request.OrderId);
 
-            // If those are null, that means that that there was a PreCommit operation, so we should use
+            // TODO: keep? If those are null, that means that that there was a PreCommit operation, so we should use
             // The payment and transaction id from that operation instead
             var actualPaymentId = paymentId ?? paymentDetail.PaymentId;
             var actualTransactionId = transactionId ?? paymentDetail.TransactionId;
@@ -291,6 +296,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             string transactionId = null;
             try
             {
+                var isSuccessful = false;
                 var authorizationCode = string.Empty;
                 CommitPreauthorizedPaymentResponse paymentResult = null;
                 
@@ -350,7 +356,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     paymentResult = CommitPayment(request, paymentId, transactionId);
                 }
 
-                var isSuccessful = false;
                 if (paymentResult != null)
                 {
                     isSuccessful = paymentResult.IsSuccessfull;
