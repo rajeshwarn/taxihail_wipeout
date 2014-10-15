@@ -33,9 +33,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(FormCollection form)
+        public JsonResult Index(FormCollection form)
         {
-            if (AuthSession.IsAuthenticated)
+            if (ModelState.IsValid)
             {
                 var response = _taxiHailNetworkService.GetOverlapingCompaniesPreferences(_applicationKey);
                 var preferences = (from companyPreference in response
@@ -48,10 +48,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
                 _taxiHailNetworkService.SetOverlapingCompaniesPreferences(_applicationKey, preferences.ToArray());
 
-                 return View(preferences);
+                 return Json(new { Success = true, Message = "Changes Saved" });
             }
 
-            return new HttpUnauthorizedResult();
+            return Json(new { Success = false, Message = "Error" });
         }
     }
 }

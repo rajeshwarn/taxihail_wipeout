@@ -1,34 +1,78 @@
 ﻿@model List<CustomerPortal.Contract.Resources.CompanyPreference>
-          
-@using (Html.BeginForm("Index", "TaxiHailNetwork", FormMethod.Post))
+   
+<div id="validationPanel" class="alert-success alert" style="display: none">
+</div>
+       
+@using (Html.BeginForm("Index", "TaxiHailNetwork", FormMethod.Post, new { id = "taxiHailNetworkForm" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-    <table class="table table-striped">
-        <tr>
-            <th>CompanyId</th>
-            <th>CanAccept</th>
-            <th>CanDispatch</th>
-        </tr>
-        @{ int i = 1; }
-        @foreach (var company in Model)
-        {
+    if (Model != null)
+    {
+        <table class="table table-striped">
             <tr>
-                <td>
-                    @company.CompanyKey
-                    @Html.Hidden("idKey_" + company.CompanyKey, company.CompanyKey)
-                </td>
-                <td>
-                    @Html.CheckBox("acceptKey_" + company.CompanyKey, company.CanAccept)
-                </td>
-                <td>
-                    @Html.CheckBox("dispatchKey_" + company.CompanyKey, company.CanDispatch)
-                </td>
+                <th>CompanyId</th>
+                <th>CanAccept</th>
+                <th>CanDispatch</th>
             </tr>
-            i = i + 1;
-        }
-    </table>
+            @foreach (var company in Model)
+            {
+                <tr>
+                    <td>
+                        @company.CompanyKey
+                        @Html.Hidden("idKey_" + company.CompanyKey, company.CompanyKey)
+                    </td>
+                    <td>
+                        @Html.CheckBox("acceptKey_" + company.CompanyKey, company.CanAccept)
+                    </td>
+                    <td>
+                        @Html.CheckBox("dispatchKey_" + company.CompanyKey, company.CanDispatch)
+                    </td>
+                </tr>
+            }
+        </table>
 
-
-    <input type="submit" class="btn btn-primary" value="Save" />
+        <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick=" Save ">Save</a>
+    }
+    else
+    {
+        
+    }
 }
+
+        <script type="text/javascript">
+
+
+            function displayValidationMessage(control, message, valid) {
+                var html = ' <button type="button" id="validationClose" class="close" data-dismiss="alert" onclick="this.parentNode.style.display=\'none\'">&times;</button>';
+                if (valid) {
+                    if (control.hasClass("alert-danger")) {
+                        control.removeClass("alert-danger");
+                    }
+                    control.addClass("alert-success");
+                    control.html(html + message);
+                } else {
+                    if (control.hasClass("alert-success")) {
+                        control.removeClass("alert-success");
+                    }
+                    control.addClass("alert-danger");
+                    control.html(html + message);
+                }
+                control.css("display", "block");
+            }
+
+            function Save() {
+                var form = $('#taxiHailNetworkForm');
+                var panel = $('#validationPanel');
+
+                $.ajax({
+                    type: "POST",
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function (response) {
+
+                        displayValidationMessage(panel, response.Message, response.Success);
+                    }
+                });
+            }
+        </script>

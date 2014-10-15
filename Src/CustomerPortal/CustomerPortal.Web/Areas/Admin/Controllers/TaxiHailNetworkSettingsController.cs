@@ -41,11 +41,15 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(TaxiHailNetworkSettings model)
+        public JsonResult Index(TaxiHailNetworkSettings model)
         {
-            Repository.Update(model);
+            if (ModelState.IsValid)
+            {
+                Repository.Update(model);
+                return Json(new { Success = true, Message = "Changes Saved" });
+            }
 
-            return RedirectToAction("Index", "Home", new { area = "Customer", companyId = model.Id });
+                return Json(new {Success = false, Message = "Error"});
         }
 
     }
