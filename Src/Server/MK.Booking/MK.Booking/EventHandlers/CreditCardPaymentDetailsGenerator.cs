@@ -82,8 +82,14 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var payment = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
-                if (payment == null) throw new InvalidOperationException("Payment not found");
+                if (payment == null)
+                {
+                    throw new InvalidOperationException("Payment not found"); 
+                }
+
+                payment.IsCancelled = true;
                 payment.Error = @event.Reason;
+
                 context.SaveChanges();
             }
         }
