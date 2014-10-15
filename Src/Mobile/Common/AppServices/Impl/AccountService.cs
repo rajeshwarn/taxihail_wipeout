@@ -26,6 +26,8 @@ using MK.Common.Configuration;
 using ServiceStack.Common;
 using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -39,18 +41,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string AuthenticationDataCacheKey = "AuthenticationData";
         private const string VehicleTypesDataCacheKey = "VehicleTypesData";
 
-		readonly IAppSettings _appSettings;
-		readonly IFacebookService _facebookService;
-		readonly ITwitterService _twitterService;
-		readonly ILocalization _localize;
+		private readonly IAppSettings _appSettings;
+		private readonly IFacebookService _facebookService;
+		private readonly ITwitterService _twitterService;
+		private readonly ILocalization _localize;
         private readonly IPaymentService _paymentService;
+		private readonly ILocationService _locationService;
 
         public AccountService(IAppSettings appSettings,
 			IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocalization localize,
-            IPaymentService paymentService)
+            IPaymentService paymentService,
+			ILocationService locationService)
 		{
+			_locationService = locationService;
 			_localize = localize;
 		    _paymentService = paymentService;
 		    _twitterService = twitterService;
@@ -681,18 +686,26 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateNotificationSettings(request));
         }
 
-		public void LogApplicationStartUp()
+		public async void LogApplicationStartUp()
 		{
 			try
 			{
 				var packageInfo = Mvx.Resolve<IPackageInfo> ();
+
+				var position = await GetUserPosition();
 
 				var request = new LogApplicationStartUpRequest
 				{
 					StartUpDate = DateTime.UtcNow,
 					Platform = packageInfo.Platform,
 					PlatformDetails = packageInfo.PlatformDetails,
-					ApplicationVersion = packageInfo.Version
+					ApplicationVersion = packageInfo.Version,
+					Latitude = position != null
+						? position.Latitude
+						: 0,
+					Longitude = position != null
+						? position.Longitude
+						: 0
 				};
 
 				// No need to await since we do not want to slowdown the app
@@ -703,6 +716,28 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				// If logging fails, run app anyway and log exception
                 Logger.LogError(e);
 			}
+		}
+
+		private async Task<apcurium.MK.Booking.Mobile.Infrastructure.Position> GetUserPosition ()
+		{
+			if (_locationService.BestPosition != null)
+			{
+				return _locationService.BestPosition;
+			}
+
+			var position = await _locationService
+				.GetNextPosition(TimeSpan.FromSeconds(6), 50)
+				.Take(1)
+				.DefaultIfEmpty() // Will return null in case of a timeout
+				.ToTask();
+
+			if (position != null)
+			{
+				return position;
+			}
+
+			// between the first call to BestPosition, we might have received a position if LocationService was started by GetNextPosition()
+			return _locationService.BestPosition;
 		}
     }
 }
