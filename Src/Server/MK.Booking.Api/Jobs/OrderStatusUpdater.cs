@@ -177,7 +177,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         IsNoShowFee = true
                     });
 
-                    if (paymentResult.IsSuccessfull)
+                    if (paymentResult.IsSuccessful)
                     {
                         Log.DebugFormat("No show fee of amount {0} was charged for order {1}.", paymentSettings.NoShowFee.Value, ibsOrderInfo.IBSOrderId);
                     }
@@ -298,7 +298,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             // whether there's a success or not, we change the status back to Completed since we can't process the payment again
             orderStatusDetail.Status = OrderStatus.Completed;
 
-            if (paymentResult.IsSuccessfull)
+            if (paymentResult.IsSuccessful)
             {
                 Log.DebugFormat("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
             }

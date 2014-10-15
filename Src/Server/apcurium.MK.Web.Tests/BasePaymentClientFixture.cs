@@ -110,8 +110,8 @@ namespace apcurium.MK.Web.Tests
             const double tip = 1.50;
 
             
-            var response = await client.PreAuthorizeAndCommit(token, amount, meter, tip, orderId);
-            Assert.True(response.IsSuccessfull, response.Message);
+            var response = await client.CommitPayment(token, amount, meter, tip, orderId);
+            Assert.True(response.IsSuccessful, response.Message);
 
             await client.ResendConfirmationToDriver(orderId);
             
@@ -161,9 +161,9 @@ namespace apcurium.MK.Web.Tests
             const double amount = 31.50;
             const double meter = 21.25;
             const double tip = 10.25;
-            
-            var response = await client.PreAuthorizeAndCommit(token, amount, meter, tip, orderId);
-            Assert.False(response.IsSuccessfull);
+
+            var response = await client.CommitPayment(token, amount, meter, tip, orderId);
+            Assert.False(response.IsSuccessful);
             Assert.True(response.Message.Contains("ibs failed"));
         }
 
@@ -176,7 +176,7 @@ namespace apcurium.MK.Web.Tests
             var token = tokenizeResponse.CardOnFileToken;
 
             var response = await client.ForgetTokenizedCard(token);
-            Assert.True(response.IsSuccessfull, response.Message);
+            Assert.True(response.IsSuccessful, response.Message);
         }
 
    
@@ -214,8 +214,8 @@ namespace apcurium.MK.Web.Tests
             const double meter = 21.25;
             const double tip = 10.25;
 
-            var authorization = await client.PreAuthorizeAndCommit(token, amount, meter, tip, orderId);
-            Assert.True(authorization.IsSuccessfull, authorization.Message);
+            var authorization = await client.CommitPayment(token, amount, meter, tip, orderId);
+            Assert.True(authorization.IsSuccessful, authorization.Message);
         }
 
         [Test]
@@ -258,8 +258,8 @@ namespace apcurium.MK.Web.Tests
             const double meter = 21.25;
             const double tip = 10.25;
 
-            var authorization = await client.PreAuthorizeAndCommit(token, amount, meter, tip, orderId);
-            Assert.False(authorization.IsSuccessfull);
+            var authorization = await client.CommitPayment(token, amount, meter, tip, orderId);
+            Assert.False(authorization.IsSuccessful);
             Assert.AreEqual("order already paid or payment currently processing", authorization.Message);
         }
 
@@ -268,7 +268,7 @@ namespace apcurium.MK.Web.Tests
         {
             var client = GetPaymentClient();
             var response = await client.Tokenize(TestCreditCards.AmericanExpress.Number, TestCreditCards.AmericanExpress.ExpirationDate, TestCreditCards.AmericanExpress.AvcCvvCvv2 + "");
-            Assert.True(response.IsSuccessfull, response.Message);
+            Assert.True(response.IsSuccessful, response.Message);
         }
 
         [Test]
@@ -276,7 +276,7 @@ namespace apcurium.MK.Web.Tests
         {
             var client = GetPaymentClient();
             var response = await client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "");
-            Assert.True(response.IsSuccessfull, response.Message);
+            Assert.True(response.IsSuccessful, response.Message);
         }
 
         [Test]
@@ -284,7 +284,7 @@ namespace apcurium.MK.Web.Tests
         {
             var client = GetPaymentClient();
             var response = await client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate, TestCreditCards.Mastercard.AvcCvvCvv2 + "");
-            Assert.True(response.IsSuccessfull, response.Message);
+            Assert.True(response.IsSuccessful, response.Message);
         }
 
         [Test]
@@ -292,7 +292,7 @@ namespace apcurium.MK.Web.Tests
         {
             var client = GetPaymentClient();
             var response = await client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2 + "");
-            Assert.True(response.IsSuccessfull, response.Message);
+            Assert.True(response.IsSuccessful, response.Message);
         }
     }
 

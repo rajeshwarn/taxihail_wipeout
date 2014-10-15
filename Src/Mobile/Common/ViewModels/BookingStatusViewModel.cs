@@ -612,7 +612,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 							var response = await _paymentService.Unpair(Order.Id);
 
-							if(response.IsSuccessfull)
+							if(response.IsSuccessful)
 							{
 								this.Services().Cache.Set("PairState" + Order.Id, PairingState.Unpaired);
 								RefreshStatus();

@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 
                 return new PairingResponse
                 {
-                    IsSuccessfull = true,
+                    IsSuccessful = true,
                     Message = "Success"
                 };
             }
@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 _logger.LogError(e);
                 return new PairingResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     Message = e.Message
                 };
             }
@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             return new BasePaymentResponse
             {
-                IsSuccessfull = true,
+                IsSuccessful = true,
                 Message = "Success"
             };
         }
@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 BraintreeGateway.CreditCard.Delete(request.CardToken);
                 return new DeleteTokenizedCreditcardResponse
                 {
-                    IsSuccessfull = true,
+                    IsSuccessful = true,
                     Message = "Success"
                 };
             }
@@ -116,14 +116,16 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 _logger.LogError(ex);
                 return new DeleteTokenizedCreditcardResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     Message = ex.Message,
                 };
             }
         }
 
-        public bool PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
         {
+            string message = string.Empty;
+
             try
             {
                 var transactionRequest = new TransactionRequest
@@ -141,6 +143,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var result = BraintreeGateway.Transaction.Sale(transactionRequest);
 
                 var transactionId = result.Target.Id;
+                message = result.Message;
+
                 if (result.IsSuccess())
                 {
                     _commandBus.Send(new InitiateCreditCardPayment
@@ -157,13 +161,23 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     });
                 }
 
-                return result.IsSuccess();
+                return new PreAuthorizePaymentResponse
+                {
+                    IsSuccessful = result.IsSuccess(),
+                    Message = message,
+                    TransactionId = transactionId
+                };
             }
             catch (Exception e)
             {
-                _logger.LogMessage(string.Format("Error during preauthorization (validation of the card) for client {0}: {1}", email, e));
+                _logger.LogMessage(string.Format("Error during preauthorization (validation of the card) for client {0}: {1} - {2}", email, message, e));
                 _logger.LogError(e);
-                return false;
+
+                return new PreAuthorizePaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = message
+                };
             }
         }
 
@@ -280,7 +294,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 AuthorizationCode = authorizationCode,
                 TransactionId = paymentDetail.TransactionId,
-                IsSuccessfull = isSuccessful,
+                IsSuccessful = isSuccessful,
                 Message = isSuccessful ? "Success" : message
             };
         }
@@ -290,8 +304,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             string transactionId = null;
             try
             {
-                string message = null;
                 var isSuccessful = false;
+                var message = string.Empty;
                 var authorizationCode = string.Empty;
                 CommitPreauthorizedPaymentResponse paymentResult = null;
                 
@@ -308,14 +322,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 {
                     return new CommitPreauthorizedPaymentResponse
                     {
-                        IsSuccessfull = false,
+                        IsSuccessful = false,
                         Message = "order already paid or payment currently processing"
                     };
                 }
 
-                // TODO: find a wait to get preauth failure message if any
-                var isPreAuthorized = PreAuthorize(request.OrderId, account.Email, request.CardToken, request.Amount);
-                if (isPreAuthorized)
+                var preAuthResponse = PreAuthorize(request.OrderId, account.Email, request.CardToken, request.Amount);
+                message += preAuthResponse.Message;
+
+                if (preAuthResponse.IsSuccessful)
                 {
                     // wait for OrderPaymentDetail to be created
                     Thread.Sleep(500);
@@ -325,7 +340,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 if (paymentResult != null)
                 {
-                    isSuccessful = paymentResult.IsSuccessfull;
+                    isSuccessful = paymentResult.IsSuccessful;
                     message += paymentResult.Message;
                     transactionId = paymentResult.TransactionId;
                 }
@@ -334,7 +349,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 {
                     AuthorizationCode = authorizationCode,
                     TransactionId = transactionId,
-                    IsSuccessfull = isSuccessful,
+                    IsSuccessful = isSuccessful,
                     Message = isSuccessful ? "Success" : message
                 };
             }
@@ -344,7 +359,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 _logger.LogError(e);
                 return new CommitPreauthorizedPaymentResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     TransactionId = transactionId,
                     Message = e.Message,
                 };
@@ -364,7 +379,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 EncryptedCreditCardNumber = braintreeEncrypter.Encrypt(dummyCreditCard.Number),
                 EncryptedCvv = braintreeEncrypter.Encrypt(dummyCreditCard.AvcCvvCvv2 + ""),
                 EncryptedExpirationDate = braintreeEncrypter.Encrypt(dummyCreditCard.ExpirationDate.ToString("MM/yyyy", CultureInfo.InvariantCulture)),
-            }).IsSuccessfull;
+            }).IsSuccessful;
         }
 
         private static TokenizedCreditCardResponse TokenizedCreditCard(BraintreeGateway client, TokenizeCreditCardBraintreeRequest tokenizeRequest)
@@ -389,7 +404,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 CardOnFileToken = cc.Token,
                 CardType = cc.CardType.ToString(),
                 LastFour = cc.LastFour,
-                IsSuccessfull = result.IsSuccess(),
+                IsSuccessful = result.IsSuccess(),
                 Message = result.Message,
             };
         }

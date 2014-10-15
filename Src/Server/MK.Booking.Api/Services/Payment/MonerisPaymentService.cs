@@ -17,6 +17,7 @@ using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using Moneris;
 using ServiceStack.Common.Web;
+using ServiceStack.Messaging;
 using ServiceStack.ServiceInterface;
 
 #endregion
@@ -64,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 return new PairingResponse
                 {
-                    IsSuccessfull = true,
+                    IsSuccessful = true,
                     Message = "Success"
                 };
             }
@@ -73,7 +74,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 _logger.LogError(e);
                 return new PairingResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     Message = e.Message
                 };
             }
@@ -85,7 +86,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             return new BasePaymentResponse
             {
-                IsSuccessfull = true,
+                IsSuccessful = true,
                 Message = "Success"
             };
         }
@@ -105,7 +106,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 return new DeleteTokenizedCreditcardResponse
                 {
-                    IsSuccessfull = success,
+                    IsSuccessful = success,
                     Message = success 
                                 ? "Success" 
                                 : message
@@ -120,17 +121,18 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 });
                 return new DeleteTokenizedCreditcardResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     Message = ex.InnerExceptions.First().Message,
                 };
             }
         }
 
-        public bool PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
         {
+            var message = string.Empty;
+
             try
             {
-                string message;
                 var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
 
                 // PreAuthorize transaction
@@ -157,13 +159,23 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     });
                 }
 
-                return isSuccessful;
+                return new PreAuthorizePaymentResponse
+                {
+                    IsSuccessful = isSuccessful,
+                    Message = message,
+                    TransactionId = transactionId
+                };
             }
             catch (Exception e)
             {
-                _logger.LogMessage(string.Format("Error during preauthorization (validation of the card) for client {0}: {1}", email, e));
+                _logger.LogMessage(string.Format("Error during preauthorization (validation of the card) for client {0}: {1} - {2}", email, message, e));
                 _logger.LogError(e);
-                return false;
+
+                return new PreAuthorizePaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = message
+                };
             }
         }
 
@@ -273,7 +285,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 AuthorizationCode = authorizationCode,
                 TransactionId = paymentDetail.TransactionId,
-                IsSuccessfull = isSuccessful,
+                IsSuccessful = isSuccessful,
                 Message = isSuccessful ? "Success" : message
             };
         }
@@ -283,8 +295,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             string transactionId = null;
             try
             {
-                string message = null;
                 var isSuccessful = false;
+                var message = string.Empty;
                 var authorizationCode = string.Empty;
                 CommitPreauthorizedPaymentResponse paymentResult = null;
 
@@ -301,13 +313,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 {
                     return new CommitPreauthorizedPaymentResponse
                     {
-                        IsSuccessfull = false,
+                        IsSuccessful = false,
                         Message = "order already paid or payment currently processing"
                     };
                 }
 
-                var isPreAuthorized = PreAuthorize(request.OrderId, account.Email, request.CardToken, request.Amount);
-                if (isPreAuthorized)
+                var preAuthResponse = PreAuthorize(request.OrderId, account.Email, request.CardToken, request.Amount);
+                message += preAuthResponse.Message;
+
+                if (preAuthResponse.IsSuccessful)
                 {
                     // wait for OrderPaymentDetail to be created
                     Thread.Sleep(500);
@@ -317,7 +331,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 if (paymentResult != null)
                 {
-                    isSuccessful = paymentResult.IsSuccessfull;
+                    isSuccessful = paymentResult.IsSuccessful;
                     message += paymentResult.Message;
                     transactionId = paymentResult.TransactionId;
                 }
@@ -326,7 +340,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 {
                     AuthorizationCode = authorizationCode,
                     TransactionId = transactionId,
-                    IsSuccessfull = isSuccessful,
+                    IsSuccessful = isSuccessful,
                     Message = isSuccessful ? "Success" : message
                 };
             }
@@ -334,9 +348,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 _logger.LogMessage("Error during payment " + e);
                 _logger.LogError(e);
+
                 return new CommitPreauthorizedPaymentResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     TransactionId = transactionId,
                     Message = e.Message,
                 };
