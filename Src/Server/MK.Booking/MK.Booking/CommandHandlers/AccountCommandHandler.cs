@@ -7,7 +7,6 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
@@ -240,7 +239,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                // Check with a log with from this user already exists. If not, create it.
+                // Check if a log from this user already exists. If not, create it.
                 var log = context.Find<AppStartUpLogDetail>(command.UserId) ?? new AppStartUpLogDetail
                 {
                     UserId = command.UserId,
@@ -252,6 +251,8 @@ namespace apcurium.MK.Booking.CommandHandlers
                 log.Platform = command.Platform;
                 log.PlatformDetails = command.PlatformDetails;
                 log.ServerVersion = Assembly.GetAssembly(typeof (AppStartUpLogDetail)).GetName().Version.ToString();
+                log.Latitude = command.Latitude;
+                log.Longitude = command.Longitude;
 
                 context.Save(log);
             }
