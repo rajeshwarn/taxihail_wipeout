@@ -269,14 +269,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public bool PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
         {
-            // TODO
             return true;
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(PreAuthorizeAndCommitPaymentRequest request, Guid? paymentId = null, string transactionId = null)
+        public CommitPreauthorizedPaymentResponse CommitPayment(PreAuthorizeAndCommitPaymentRequest request)
         {
-            // TODO
-            throw new NotImplementedException();
+            return PreAuthorizeAndCommitPayment(request);
         }
 
         public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request)

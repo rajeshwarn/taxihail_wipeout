@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(PreAuthorizeAndCommitPaymentRequest request, Guid? paymentId = null, string transactionId = null)
+        public CommitPreauthorizedPaymentResponse CommitPayment(PreAuthorizeAndCommitPaymentRequest request)
         {
             var orderDetail = _orderDao.FindById(request.OrderId);
             if (orderDetail == null)
@@ -178,13 +178,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var account = _accountDao.FindById(orderDetail.AccountId);
             var paymentDetail = _paymentDao.FindByOrderId(request.OrderId);
 
-            // TODO: keep? If those are null, that means that that there was a PreCommit operation, so we should use
-            // The payment and transaction id from that operation instead
-            var actualPaymentId = paymentId ?? paymentDetail.PaymentId;
-            var actualTransactionId = transactionId ?? paymentDetail.TransactionId;
-
             // commit transaction
-            var settlementResult = BraintreeGateway.Transaction.SubmitForSettlement(actualTransactionId, request.Amount);
+            var settlementResult = BraintreeGateway.Transaction.SubmitForSettlement(paymentDetail.TransactionId, request.Amount);
             var message = settlementResult.Message;
 
             var isSuccessful = settlementResult.IsSuccess() && (settlementResult.Target != null) &&
@@ -206,7 +201,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                                                 request.MeterAmount,
                                                 PaymentType.CreditCard.ToString(),
                                                 PaymentProvider.Braintree.ToString(),
-                                                actualTransactionId,
+                                                paymentDetail.TransactionId,
                                                 authorizationCode,
                                                 request.CardToken,
                                                 account.IBSAccountId,
@@ -226,17 +221,17 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     //see paragraph oops here https://www.braintreepayments.com/docs/dotnet/transactions/submit_for_settlement
                     try
                     {
-                        var transaction = BraintreeGateway.Transaction.Find(actualTransactionId);
+                        var transaction = BraintreeGateway.Transaction.Find(paymentDetail.TransactionId);
                         Result<Transaction> cancellationResult = null;
                         if (transaction.Status == TransactionStatus.SUBMITTED_FOR_SETTLEMENT)
                         {
                             // can void
-                            cancellationResult = BraintreeGateway.Transaction.Void(actualTransactionId);
+                            cancellationResult = BraintreeGateway.Transaction.Void(paymentDetail.TransactionId);
                         }
                         else if (transaction.Status == TransactionStatus.SETTLED)
                         {
                             // will have to refund it
-                            cancellationResult = BraintreeGateway.Transaction.Refund(actualTransactionId);
+                            cancellationResult = BraintreeGateway.Transaction.Refund(paymentDetail.TransactionId);
                         }
 
                         if (cancellationResult == null
@@ -244,7 +239,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         {
                             throw new Exception(cancellationResult != null ?
                                     cancellationResult.Message
-                                    : string.Format("transaction {0} status unkonw, can't cancel it", actualTransactionId));
+                                    : string.Format("transaction {0} status unkonw, can't cancel it", paymentDetail.TransactionId));
                         }
 
                         message = message + " The transaction has been cancelled.";
@@ -264,8 +259,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 //payment completed
                 _commandBus.Send(new CaptureCreditCardPayment
                 {
-                    PaymentId = actualPaymentId,
-                    AuthorizationCode = authorizationCode,
+                    PaymentId = paymentDetail.PaymentId,
                     Provider = PaymentProvider.Braintree,
                     Amount = request.Amount,
                     MeterAmount = request.MeterAmount,
@@ -277,7 +271,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 //payment error
                 _commandBus.Send(new LogCreditCardError
                 {
-                    PaymentId = actualPaymentId,
+                    PaymentId = paymentDetail.PaymentId,
                     Reason = message
                 });
             }
@@ -285,7 +279,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             return new CommitPreauthorizedPaymentResponse
             {
                 AuthorizationCode = authorizationCode,
-                TransactionId = actualTransactionId,
+                TransactionId = paymentDetail.TransactionId,
                 IsSuccessfull = isSuccessful,
                 Message = isSuccessful ? "Success" : message
             };
@@ -296,6 +290,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             string transactionId = null;
             try
             {
+                string message = null;
                 var isSuccessful = false;
                 var authorizationCode = string.Empty;
                 CommitPreauthorizedPaymentResponse paymentResult = null;
@@ -305,6 +300,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
                 if (orderDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
+
+                var account = _accountDao.FindById(orderDetail.AccountId);
 
                 //check if already a payment
                 if (_paymentDao.FindByOrderId(request.OrderId) != null)
@@ -316,50 +313,21 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     };
                 }
 
-                var transactionRequest = new TransactionRequest
+                // TODO: find a wait to get preauth failure message if any
+                var isPreAuthorized = PreAuthorize(request.OrderId, account.Email, request.CardToken, request.Amount);
+                if (isPreAuthorized)
                 {
-                    Amount = request.Amount,
-                    PaymentMethodToken = request.CardToken,
-                    OrderId = orderDetail.IBSOrderId.ToString(),
-                    Options = new TransactionOptionsRequest
-                    {
-                        SubmitForSettlement = false
-                    }
-                };
-
-                //sale
-                var result = BraintreeGateway.Transaction.Sale(transactionRequest);
-                string message = result.Message;
-                transactionId = result.Target.Id;
-
-                if (result.IsSuccess())
-                {
-                    var paymentId = Guid.NewGuid();
-
-                    _commandBus.Send(new InitiateCreditCardPayment
-                    {
-                        PaymentId = paymentId,
-                        Amount = request.Amount,
-                        Meter = request.MeterAmount,
-                        Tip = request.TipAmount,
-                        TransactionId = transactionId,
-                        OrderId = request.OrderId,
-                        CardToken = request.CardToken,
-                        Provider = PaymentProvider.Braintree,
-                        IsNoShowFee = request.IsNoShowFee
-                    });
-
                     // wait for OrderPaymentDetail to be created
                     Thread.Sleep(500);
 
-                    // commit transaction
-                    paymentResult = CommitPayment(request, paymentId, transactionId);
+                    paymentResult = CommitPayment(request);
                 }
 
                 if (paymentResult != null)
                 {
                     isSuccessful = paymentResult.IsSuccessfull;
                     message += paymentResult.Message;
+                    transactionId = paymentResult.TransactionId;
                 }
 
                 return new CommitPreauthorizedPaymentResponse

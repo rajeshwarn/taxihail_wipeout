@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(PreAuthorizeAndCommitPaymentRequest request, Guid? paymentId = null, string transactionId = null)
+        public CommitPreauthorizedPaymentResponse CommitPayment(PreAuthorizeAndCommitPaymentRequest request)
         {
             var orderDetail = _orderDao.FindById(request.OrderId);
             if (orderDetail == null)
@@ -180,13 +180,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var paymentDetail = _paymentDao.FindByOrderId(request.OrderId);
             var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
 
-            // TODO: keep? If those are null, that means that that there was a PreCommit operation, so we should use
-            // The payment and transaction id from that operation instead
-            var actualPaymentId = paymentId ?? paymentDetail.PaymentId;
-            var actualTransactionId = transactionId ?? paymentDetail.TransactionId;
-
             // commit transaction
-            var completionCommand = new Completion(request.OrderId.ToString(), request.Amount.ToString("F"), actualTransactionId, CryptType_SSLEnabledMerchant);
+            var completionCommand = new Completion(request.OrderId.ToString(), request.Amount.ToString("F"), paymentDetail.TransactionId, CryptType_SSLEnabledMerchant);
             var commitRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, completionCommand);
             var commitReceipt = commitRequest.GetReceipt();
 
@@ -208,7 +203,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                                                 Convert.ToDecimal(request.MeterAmount),
                                                 PaymentType.CreditCard.ToString(),
                                                 PaymentProvider.Moneris.ToString(),
-                                                actualTransactionId,
+                                                paymentDetail.TransactionId,
                                                 authorizationCode,
                                                 request.CardToken,
                                                 account.IBSAccountId,
@@ -256,7 +251,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 //payment completed
                 _commandBus.Send(new CaptureCreditCardPayment
                 {
-                    PaymentId = actualPaymentId,
+                    PaymentId = paymentDetail.PaymentId,
                     AuthorizationCode = authorizationCode,
                     Provider = PaymentProvider.Moneris,
                     Amount = request.Amount,
@@ -269,7 +264,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 //payment error
                 _commandBus.Send(new LogCreditCardError
                 {
-                    PaymentId = actualPaymentId,
+                    PaymentId = paymentDetail.PaymentId,
                     Reason = message
                 });
             }
@@ -277,7 +272,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             return new CommitPreauthorizedPaymentResponse
             {
                 AuthorizationCode = authorizationCode,
-                TransactionId = actualTransactionId,
+                TransactionId = paymentDetail.TransactionId,
                 IsSuccessfull = isSuccessful,
                 Message = isSuccessful ? "Success" : message
             };
@@ -317,17 +312,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     // wait for OrderPaymentDetail to be created
                     Thread.Sleep(500);
 
-                    // TODO: remove + update interface
-                    var paymentDetail = _paymentDao.FindByOrderId(request.OrderId);
-                    transactionId = paymentDetail.TransactionId;
-
-                    paymentResult = CommitPayment(request, paymentDetail.PaymentId, paymentDetail.TransactionId);
+                    paymentResult = CommitPayment(request);
                 }
 
                 if (paymentResult != null)
                 {
                     isSuccessful = paymentResult.IsSuccessfull;
                     message += paymentResult.Message;
+                    transactionId = paymentResult.TransactionId;
                 }
 
                 return new CommitPreauthorizedPaymentResponse
