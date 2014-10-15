@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
-using CustomerPortal.Web.Areas.Admin.Models;
-using CustomerPortal.Web.Areas.Admin.Models.RequestResponse;
+using CustomerPortal.Contract.Resources;
 using CustomerPortal.Web.Areas.Customer.Controllers.Api;
+using CustomerPortal.Web.Areas.Customer.Models.RequestResponse;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Test.Helpers.Repository;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using MongoRepository;
 
 namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
 {
@@ -38,7 +30,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
 
             _chrisTaxi = new TaxiHailNetworkSettings()
             {
-                CompanyId = "ChrisTaxi",
+                CompanyKey = "ChrisTaxi",
                 Id = "ChrisTaxi",
                 IsInNetwork = true,
                 Region = new MapRegion()
@@ -50,7 +42,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             };
             _chrisTaxiBis = new TaxiHailNetworkSettings()
             {
-                CompanyId = "ChrisTaxiBis",
+                CompanyKey = "ChrisTaxiBis",
                 Id = "ChrisTaxiBis",
                 IsInNetwork = true,
                 Region = new MapRegion()
@@ -63,7 +55,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
 
             _tonyTaxi = new TaxiHailNetworkSettings()
             {
-                CompanyId = "TonyTaxi",
+                CompanyKey = "TonyTaxi",
                 Id = "TonyTaxi",
                 IsInNetwork = true,
                 Region = new MapRegion()
@@ -76,7 +68,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             _tomTaxi = new TaxiHailNetworkSettings()
             {
                 //same Longitude as TonyTaxi
-                CompanyId = "TomTaxi",
+                CompanyKey = "TomTaxi",
                 Id = "TomTaxi",
                 IsInNetwork = true,
                 Region = new MapRegion()
@@ -89,7 +81,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             _pilouTaxi = new TaxiHailNetworkSettings()
             {
                 //Same Latitude as ChrisTaxi and Chris TaxiBis
-                CompanyId = "PilouTaxi",
+                CompanyKey = "PilouTaxi",
                 Id = "PilouTaxi",
                 IsInNetwork = true,
                 Region = new MapRegion()
@@ -102,7 +94,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             _lastTaxi = new TaxiHailNetworkSettings()
             {
                 //Overlap ChrisTaxi and ChrisTaxiBis
-                CompanyId = "LastTaxi",
+                CompanyKey = "LastTaxi",
                 Id = "LastTaxi",
                 IsInNetwork = true,
                 Region = new MapRegion()
@@ -119,9 +111,8 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Repository.Add(_tomTaxi);
             Repository.Add(_pilouTaxi);
             Repository.Add(_lastTaxi);
-
-
         }
+
         public InMemoryRepository<TaxiHailNetworkSettings> Repository { get; set; }
         public NetworkApiController Sut { get; set; }
         
@@ -129,12 +120,12 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         public void When_Regions_Inside()
         {
 
-            var response = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId = _chrisTaxi.CompanyId });
+            var response = Sut.Get(_chrisTaxi.Id);
              Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
 
-            var response2 = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId = _tonyTaxi.CompanyId });
+            var response2 = Sut.Get(_tonyTaxi.Id);
             Assert.True(response2.IsSuccessStatusCode);
             var json2 = response2.Content.ReadAsStringAsync().Result;
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json2));
@@ -145,7 +136,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         public void When_Regions_Identical()
         {
             //should Not return ChrisTaxi
-            var response = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId =_chrisTaxi.CompanyId });
+            var response = Sut.Get(_chrisTaxi.Id);
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
@@ -154,7 +145,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         [Test]
         public void When_Regions_Overlap()
         {
-            var response = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId = _lastTaxi.CompanyId });
+            var response = Sut.Get(_lastTaxi.Id);
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
@@ -163,7 +154,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         [Test]
         public void When_Regions_Overlap_Same_Latitude()
         {
-            var response = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId = _pilouTaxi.CompanyId });
+            var response = Sut.Get(_pilouTaxi.Id);
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
@@ -172,7 +163,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         [Test]
         public void When_Regions_Overlap_Same_Longitude()
         {
-            var response = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId = _tonyTaxi.CompanyId });
+            var response = Sut.Get(_tonyTaxi.Id);
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
@@ -182,7 +173,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         public void When_Regions_No_Overlap()
         {
             //Should return nothing
-            var response = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId = _chrisTaxi.CompanyId });
+            var response = Sut.Get(_chrisTaxi.Id);
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
@@ -191,30 +182,26 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         [Test]
         public void Post_Preferences()
         {
-            var response = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId = _chrisTaxi.CompanyId });
+            var response = Sut.Get(_chrisTaxi.Id);
             var json = response.Content.ReadAsStringAsync().Result;
             var chrisPreferences = JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
 
-            var tony = chrisPreferences.FirstOrDefault(p => p.CompanyId == _tonyTaxi.CompanyId);
+            var tony = chrisPreferences.FirstOrDefault(p => p.CompanyKey == _tonyTaxi.CompanyKey);
             Assert.NotNull(tony,"Precondition Failed");
             Assert.False(tony.CanAccept, "Precondition Failed");
             Assert.False(tony.CanDispatch, "Precondition Failed");
 
             tony.CanAccept = tony.CanDispatch = true;
 
-            response = Sut.Post(new CompanyNetworkPreferencesRequest()
-            {
-                CompanyId = _chrisTaxi.CompanyId,
-                Preferences = chrisPreferences.ToArray()
-            });
+            response = Sut.Post(_chrisTaxi.Id, chrisPreferences.ToArray());
             Assert.True(response.IsSuccessStatusCode);
 
 
-            response = Sut.Get(new CompanyNetworkPreferencesRequest { CompanyId = _chrisTaxi.CompanyId });
+            response = Sut.Get(_chrisTaxi.Id);
             json = response.Content.ReadAsStringAsync().Result;
             chrisPreferences = JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
 
-            tony = chrisPreferences.FirstOrDefault(p => p.CompanyId == _tonyTaxi.CompanyId);
+            tony = chrisPreferences.FirstOrDefault(p => p.CompanyKey == _tonyTaxi.CompanyKey);
             Assert.NotNull(tony);
             Assert.True(tony.CanAccept );
             Assert.True(tony.CanDispatch);

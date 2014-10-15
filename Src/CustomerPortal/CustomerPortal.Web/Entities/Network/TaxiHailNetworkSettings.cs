@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using CustomerPortal.Contract.Resources;
 using CustomerPortal.Web.Properties;
 using MongoRepository;
 
@@ -23,7 +24,7 @@ namespace CustomerPortal.Web.Entities.Network
         public MapRegion Region {get; set; }
 
         public string Id { get; set; }
-        public string CompanyId { get; set; }
+        public string CompanyKey { get; set; }
 
         public List<CompanyPreference> Preferences { get; set; }
     }
