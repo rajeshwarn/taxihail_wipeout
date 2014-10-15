@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _paymentService = paymentService;
         }
 
-        public CommitPreauthorizedPaymentResponse Post(PreAuthorizeAndCommitPaymentRequest request)
+        public CommitPreauthorizedPaymentResponse Post(CommitPaymentRequest request)
         {
             return _paymentService.CommitPayment(request);
         }

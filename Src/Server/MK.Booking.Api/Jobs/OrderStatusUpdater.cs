@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                 if (defaultCreditCard != null)
                 {
-                    var paymentResult = _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
+                    var paymentResult = _paymentService.PreAuthorizeAndCommitPayment(new CommitPaymentRequest
                     {
                         OrderId = orderStatusDetail.OrderId,
                         CardToken = defaultCreditCard.Token,
@@ -286,7 +286,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             //    Amount = Convert.ToDecimal(meterAmount + tipAmount)
             //});
 
-            var paymentResult = _paymentService.CommitPayment(new PreAuthorizeAndCommitPaymentRequest
+            var paymentResult = _paymentService.CommitPayment(new CommitPaymentRequest
             {
                 OrderId = orderStatusDetail.OrderId,
                 CardToken = pairingInfo.TokenOfCardToBeUsedForPayment,

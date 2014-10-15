@@ -181,7 +181,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(PreAuthorizeAndCommitPaymentRequest request)
+        public CommitPreauthorizedPaymentResponse CommitPayment(CommitPaymentRequest request)
         {
             var orderDetail = _orderDao.FindById(request.OrderId);
             if (orderDetail == null)
@@ -299,7 +299,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             };
         }
 
-        public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request)
+        public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(CommitPaymentRequest request)
         {
             string transactionId = null;
             try

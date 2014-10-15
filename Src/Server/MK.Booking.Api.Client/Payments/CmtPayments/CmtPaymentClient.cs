@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
         public Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount,
             double meterAmount, double tipAmount, Guid orderId)
         {
-            return Client.PostAsync(new PreAuthorizeAndCommitPaymentRequest
+            return Client.PostAsync(new CommitPaymentRequest
             {
                 Amount = Convert.ToDecimal(amount),
                 MeterAmount = Convert.ToDecimal(meterAmount),
