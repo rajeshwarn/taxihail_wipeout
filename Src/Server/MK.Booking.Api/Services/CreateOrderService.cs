@@ -108,7 +108,6 @@ namespace apcurium.MK.Booking.Api.Services
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
             {
-                // TODO: validate if we can use request.Id
                 ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
             }
             
