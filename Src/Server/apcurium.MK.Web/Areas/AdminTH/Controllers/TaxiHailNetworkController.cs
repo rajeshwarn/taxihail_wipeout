@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,11 +34,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 return View(response);
             }
 
-            return new HttpUnauthorizedResult();
+               return Redirect(Request.Url.GetLeftPart(UriPartial.Authority) + Request.ApplicationPath);
         }
 
         [HttpPost]
-        public JsonResult Index(FormCollection form)
+        public async Task<JsonResult> Index(FormCollection form)
         {
             if (ModelState.IsValid)
             {
