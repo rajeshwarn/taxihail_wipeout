@@ -238,7 +238,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             // try to preauthorize a small amount on the card to verify the validity
             var card = _creditCardDao.FindByAccountId(account.Id).First();
-            var preAuthResponse = _paymentService.PreAuthorize(requestId, account.Email, card.Token, _serverSettings.GetPaymentSettings().PreAuthAmmount ?? 0);
+            var preAuthResponse = _paymentService.PreAuthorize(requestId, account.Email, card.Token, _serverSettings.GetPaymentSettings().PreAuthAmount ?? 0);
             
             if (!preAuthResponse.IsSuccessful)
             {
