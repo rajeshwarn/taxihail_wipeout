@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
@@ -13,8 +14,8 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 		IObservable<Position> Positions { get;}
 
 		IObservable<Position> GetNextBest(TimeSpan timeout);
-        
-		IObservable<Position> GetNextPosition(TimeSpan timeout, float maxAccuracy);
+
+        Task<Position> GetUserPosition();
         
         Position LastKnownPosition { get; }
 

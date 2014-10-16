@@ -86,44 +86,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public async Task<Address> SetAddressToUserLocation()
 		{
 			_loadingAddressSubject.OnNext(true);
-			// TODO: Location service refactoring is needed in order
-			// to simplify this method
 
-			// TODO: Handle when location services are not available
+		    var position = await _locationService.GetUserPosition();
+		    if (position == null)
+		    {
+                //this.Services().Message.ShowToast("Cant find location, please try again", ToastDuration.Short);
+                _loadingAddressSubject.OnNext(false);
+                return new Address();
+		    }
 
-			if (_locationService.BestPosition != null)
-			{
-				var address = await SearchAddressForCoordinate(_locationService.BestPosition);
-				await SetAddressToCurrentSelection(address);
+            var address = await SearchAddressForCoordinate(position);
+            await SetAddressToCurrentSelection(address);
 
-				return address;
-			}
-
-			var position = await _locationService
-				.GetNextPosition(TimeSpan.FromSeconds(6), 50)
-				.Take(1)
-				.DefaultIfEmpty() // Will return null in case of a timeout
-				.ToTask();
-
-			if (position != null)
-			{
-				var address = await SearchAddressForCoordinate(position);
-				await SetAddressToCurrentSelection(address);
-				return address;
-			}
-
-			if (_locationService.BestPosition == null)
-			{
-				//this.Services().Message.ShowToast("Cant find location, please try again", ToastDuration.Short);
-				_loadingAddressSubject.OnNext(false);
-				return new Address();
-			}
-			else
-			{
-				var address = await SearchAddressForCoordinate(_locationService.BestPosition);    
-				await SetAddressToCurrentSelection(address);
-				return address;
-			}
+            return address;
 		}
 
         public async Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken)

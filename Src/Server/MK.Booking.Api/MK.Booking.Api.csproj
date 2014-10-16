@@ -144,6 +144,7 @@
     <Compile Include="Services\Admin\ExclusionsService.cs" />
     <Compile Include="Services\Admin\ExportDataService.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
+    <Compile Include="Services\AppStartUpLogService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
     <Compile Include="Services\LogApplicationStartUpService.cs" />
     <Compile Include="Services\OrderPairingService.cs" />

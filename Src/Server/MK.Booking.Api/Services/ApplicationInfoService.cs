@@ -19,7 +19,6 @@ namespace apcurium.MK.Booking.Api.Services
             _configManager = configManager;
         }
 
-
         public object Get(ApplicationInfoRequest request)
         {
             var info = new ApplicationInfo
