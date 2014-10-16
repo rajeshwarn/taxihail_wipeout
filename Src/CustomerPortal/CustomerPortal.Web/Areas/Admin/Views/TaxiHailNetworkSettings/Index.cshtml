@@ -65,6 +65,7 @@
             control.html(html+message);
         }
         control.css("display", "block");
+        setTimeout(function () { control.css("display", "none"); }, 2000);
     }
 
     function Save() {
@@ -84,23 +85,6 @@
 
     var map;
     var mapRegion;
-
-    function Save() {
-        $.ajax({
-            url: this.action,
-            type: "POST",
-            data: $(this).serialize(),
-            statusCode: {
-                400: function (xhr, textStatus, errorThrown) {
-                    var errors = $.parseJSON(xhr.responseText);
-                    validator.showErrors(errors);
-                }
-            },
-            success: function (response) {
-                alert(response);
-            }
-        });
-    }
 
     function initialize() {
         map = new google.maps.Map(document.getElementById('map-canvas'), {
