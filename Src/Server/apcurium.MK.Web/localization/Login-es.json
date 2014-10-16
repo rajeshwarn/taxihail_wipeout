@@ -3,8 +3,8 @@
 	"Email Address": "Dirección Email",
 	"Password": "Contraseña",
 	"Signup": "Registrarse",
-	"Forgot password": "Olvidé contraseña",
-	"InvalidLoginMessage": "Email ó Contraseña inválido",
-	"AccountDisabled": "Su cuenta ha sido desabilitada",
-	"AccountNotActivated": "Su cuenta no ha sido abilitada.",
+	"Forgot password": "Olvidé mi contraseña",
+	"InvalidLoginMessage": "Email y/o Contraseña inválidos.",
+	"AccountDisabled": "Su cuenta ha sido deshabilitada",
+	"AccountNotActivated": "Su cuenta no ha sido activada. Se le ha enviado un nuevo mail de activación."
 ﻿}
