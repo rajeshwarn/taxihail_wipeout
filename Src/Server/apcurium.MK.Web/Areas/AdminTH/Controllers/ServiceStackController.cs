@@ -17,8 +17,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             ViewData["ApplicationName"] = serverSettings.ServerData.TaxiHail.ApplicationName;
             ViewData["ApplicationKey"] = serverSettings.ServerData.TaxiHail.ApplicationKey;
             ViewData["IsAuthenticated"] = AuthSession.IsAuthenticated;
+
         }
+
         public string BaseUrl { get; set; }
+
         protected IAuthSession AuthSession
         {
             get { return SessionAs<AuthUserSession>(); }
@@ -30,7 +33,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             ViewData["BaseUrl"] = BaseUrl;
             return base.BeginExecute(requestContext, callback, state);
         }
+
         private object _userSession;
+
         protected TUserSession SessionAs<TUserSession>()
         {
             if (_userSession == null)
@@ -39,5 +44,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             }
             return (TUserSession)_userSession;
         }
+
+
     }
 }
