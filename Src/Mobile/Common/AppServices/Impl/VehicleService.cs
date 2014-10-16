@@ -117,6 +117,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.Take (vehicleCount)
 				.ToArray();
 
+			if (vehicles.Count() == 0) {
+				return null;
+			}
+
+
 			var distanceFromLastVehicle = Position.CalculateDistance (vehicles.Last ().Latitude, vehicles.Last ().Longitude, centerLatitude, centerLongitude); 
 
 			var maximumBounds = MapBounds.GetBoundsFromCenterAndRadius(centerLatitude, centerLongitude, distanceFromLastVehicle, distanceFromLastVehicle);
