@@ -356,10 +356,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     {
                         PaymentId = paymentId,
                         TransactionId = transactionId,
-                        Amount = Convert.ToDecimal(request.Amount),
+                        Amount = 0,
                         OrderId = request.OrderId,
-                        Tip = Convert.ToDecimal(request.TipAmount),
-                        Meter = Convert.ToDecimal(request.MeterAmount),
+                        Tip = 0,
+                        Meter = 0,
                         CardToken = request.CardToken,
                         Provider = PaymentProvider.Cmt,
                         IsNoShowFee = request.IsNoShowFee
@@ -439,6 +439,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             PaymentId = paymentId,
                             AuthorizationCode = authorizationCode,
                             Provider = PaymentProvider.Cmt,
+                            Amount = Convert.ToDecimal(request.Amount),
+                            MeterAmount = Convert.ToDecimal(request.MeterAmount),
+                            TipAmount = Convert.ToDecimal(request.TipAmount),
                             IsNoShowFee = request.IsNoShowFee
                         });
                     }

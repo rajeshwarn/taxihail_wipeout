@@ -30,9 +30,14 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var payment = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
-                if (payment == null) throw new InvalidOperationException("Payment not found");
+                if (payment == null)
+                    throw new InvalidOperationException("Payment not found");
+
                 payment.AuthorizationCode = @event.AuthorizationCode;
                 payment.IsCompleted = true;
+                payment.Amount = @event.Amount;
+                payment.Meter = @event.Meter;
+                payment.Tip = @event.Tip;
 
                 var order = context.Set<OrderDetail>().Single(o => o.Id == payment.OrderId);
                 if (!order.Fare.HasValue || order.Fare == 0)
@@ -43,14 +48,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (!order.Tip.HasValue || order.Tip == 0)
                 {
                     order.Tip = Convert.ToDouble(payment.Tip);
-                }
-
-                if (payment.Amount == 0 && payment.Meter == 0)
-                {
-                    // Replace the PreAuth values with the real amounts
-                    payment.Amount = @event.Amount;
-                    payment.Meter = @event.Meter;
-                    payment.Tip = @event.Tip;
                 }
 
                 context.SaveChanges();

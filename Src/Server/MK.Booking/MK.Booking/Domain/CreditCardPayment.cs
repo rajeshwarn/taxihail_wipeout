@@ -12,11 +12,8 @@ namespace apcurium.MK.Booking.Domain
 {
     public class CreditCardPayment : EventSourced
     {
-        private decimal _amount;
         private bool _isCaptured;
-        private decimal _meter;
         private Guid _orderId;
-        private decimal _tip;
         private string _transactionId;
 
         protected CreditCardPayment(Guid id)
@@ -51,24 +48,11 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void Capture(PaymentProvider provider, decimal? amount, decimal? meterAmount, decimal? tipAmount, string authorizationCode, bool isNoShowFee)
+        public void Capture(PaymentProvider provider, decimal amount, decimal meterAmount, decimal tipAmount, string authorizationCode, bool isNoShowFee)
         {
             if (_isCaptured)
             {
                 throw new InvalidOperationException("Payment is already captured");
-            }
-
-            // Replace preath placeholder with actual amounts
-            if (_amount == 0 && _meter == 0)
-            {
-                if (amount.HasValue)
-                    _amount = amount.Value;
-
-                if (meterAmount.HasValue)
-                    _meter = meterAmount.Value;
-
-                if (tipAmount.HasValue)
-                    _tip = tipAmount.Value;
             }
 
             Update(new CreditCardPaymentCaptured
@@ -76,9 +60,9 @@ namespace apcurium.MK.Booking.Domain
                 OrderId = _orderId,
                 TransactionId = _transactionId,
                 AuthorizationCode = authorizationCode,
-                Amount = _amount,
-                Meter = _meter,
-                Tip = _tip,
+                Amount = amount,
+                Meter = meterAmount,
+                Tip = tipAmount,
                 Provider = provider,
                 IsNoShowFee = isNoShowFee
             });
@@ -96,9 +80,6 @@ namespace apcurium.MK.Booking.Domain
         {
             _orderId = obj.OrderId;
             _transactionId = obj.TransactionId;
-            _amount = obj.Amount;
-            _meter = obj.Meter;
-            _tip = obj.Tip;
         }
 
         private void OnCreditCardPaymentCaptured(CreditCardPaymentCaptured obj)
