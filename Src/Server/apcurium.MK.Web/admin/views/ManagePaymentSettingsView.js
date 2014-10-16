@@ -32,6 +32,13 @@
             this.onPaymentModeChanged();
 
             this.validate({
+                rules: {
+                    preAuthAmount: {
+                        required: true,
+                        number: true,
+                        min: 50
+                    }
+                },
                 submitHandler: this.save
             });
 
