@@ -547,3 +547,4 @@
 "View_AccountConfirmation_Button"="Confirm";
 "View_AccountConfirmation_Label_Code"="Code";
 "CardExpiredMessage"="Your credit card is expired. Add a new card to your account or update card informations to continue.";
+"CallDriverUsingProxyMessage"="Your driver will call you back in a few minutes";

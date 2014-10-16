@@ -3742,6 +3742,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0501d0
 			public const int CallButton = 2131034576;
 			
+			// aapt resource value: 0x7f05026d
+			public const int CallDriverUsingProxyMessage = 2131034733;
+			
 			// aapt resource value: 0x7f0500c5
 			public const int Cancel = 2131034309;
 			
@@ -4180,14 +4183,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050108
 			public const int GooglePlayServicesNotAvailableMessage = 2131034376;
 			
-			// aapt resource value: 0x7f05026d
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034733;
+			// aapt resource value: 0x7f05026e
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034734;
 			
 			// aapt resource value: 0x7f050068
 			public const int GooglePlayServicesNotAvailableTitle = 2131034216;
 			
-			// aapt resource value: 0x7f05026e
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034734;
+			// aapt resource value: 0x7f05026f
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034735;
 			
 			// aapt resource value: 0x7f05005d
 			public const int HistoryDetailAptRingCodeLabel = 2131034205;

@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                 if (defaultCreditCard != null)
                 {
-                    var paymentResult = _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
+                    var paymentResult = _paymentService.CommitPayment(new CommitPaymentRequest
                     {
                         OrderId = orderStatusDetail.OrderId,
                         CardToken = defaultCreditCard.Token,
@@ -177,8 +177,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         IsNoShowFee = true
                     });
 
-
-                    if (paymentResult.IsSuccessfull)
+                    if (paymentResult.IsSuccessful)
                     {
                         Log.DebugFormat("No show fee of amount {0} was charged for order {1}.", paymentSettings.NoShowFee.Value, ibsOrderInfo.IBSOrderId);
                     }
@@ -227,7 +226,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
 
             var orderPayment = _orderPaymentDao.FindByOrderId(orderStatusDetail.OrderId);
-            if (orderPayment != null)
+            if (orderPayment != null && (orderPayment.IsCompleted || orderPayment.IsCancelled))
             {
                 // Payment was already processed
                 Log.DebugFormat("Payment for order {0} was already processed, nothing else to do.", orderStatusDetail.OrderId);
@@ -278,7 +277,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, meterAmount + tipAmount, meterAmount, tipAmount);
             }
 
-            var paymentResult =  _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
+            var paymentResult = _paymentService.CommitPayment(new CommitPaymentRequest
             {
                 OrderId = orderStatusDetail.OrderId,
                 CardToken = pairingInfo.TokenOfCardToBeUsedForPayment,
@@ -290,7 +289,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             // whether there's a success or not, we change the status back to Completed since we can't process the payment again
             orderStatusDetail.Status = OrderStatus.Completed;
 
-            if (paymentResult.IsSuccessfull)
+            if (paymentResult.IsSuccessful)
             {
                 Log.DebugFormat("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
             }

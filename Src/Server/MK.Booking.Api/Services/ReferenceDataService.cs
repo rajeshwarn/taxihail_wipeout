@@ -8,6 +8,7 @@ using apcurium.MK.Booking.IBS;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.CacheAccess;
 using ServiceStack.ServiceInterface;
@@ -47,6 +48,12 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 result.VehiclesList = FilterReferenceData(result.VehiclesList, _serverSettings.ServerData.IBS.ExcludedVehicleTypeId);
                 result.CompaniesList = FilterReferenceData(result.CompaniesList, _serverSettings.ServerData.IBS.ExcludedProviderId);
+            }
+
+            var isChargeAccountPaymentEnabled = _serverSettings.GetPaymentSettings().IsChargeAccountPaymentEnabled;
+            if (!isChargeAccountPaymentEnabled)
+            {
+                result.PaymentsList = result.PaymentsList.Where(x => x.Id != ChargeTypes.Account.Id).ToList();
             }
 
             return result;

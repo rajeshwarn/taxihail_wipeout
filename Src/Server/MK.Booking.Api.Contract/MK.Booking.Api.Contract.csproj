@@ -85,6 +85,7 @@
     <Compile Include="Requests\AddressHistoryRequest.cs" />
     <Compile Include="Requests\AccountOrderListRequest.cs" />
     <Compile Include="BaseDTO.cs" />
+    <Compile Include="Requests\AppStartUpLogRequest.cs" />
     <Compile Include="Requests\AssignedEtaRequest.cs" />
     <Compile Include="Requests\IbsFareRequest.cs" />
     <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
@@ -92,7 +93,7 @@
     <Compile Include="Requests\OrderPairingRequest.cs" />
     <Compile Include="Requests\Payment\DeleteTokenizedCreditcardRequest.cs" />
     <Compile Include="Requests\Payment\PairingForPaymentRequest.cs" />
-    <Compile Include="Requests\Payment\PreAuthorizeAndCommitPaymentRequest.cs" />
+    <Compile Include="Requests\Payment\CommitPaymentRequest.cs" />
     <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
     <Compile Include="Requests\DisableAccountByAdminRequest.cs" />

@@ -830,7 +830,4 @@
       <LogicalName>FlatButtonStyle.xml</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="es.lproj\" />
-  </ItemGroup>
 </Project>

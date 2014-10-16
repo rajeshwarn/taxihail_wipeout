@@ -108,7 +108,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
             {
-                ValidateCreditCard(account, request.ClientLanguageCode);
+                ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
             }
             
             var rule = _ruleCalculator.GetActiveDisableFor(
@@ -227,7 +227,7 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        private void ValidateCreditCard(AccountDetail account, string clientLanguageCode)
+        private void ValidateCreditCard(Guid orderId, AccountDetail account, string clientLanguageCode)
         {
             // check if the account has a credit card
             if (!account.DefaultCreditCard.HasValue)
@@ -236,15 +236,17 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // try to preauthorize a small amount on the card to verify the validity
-            if (_serverSettings.ServerData.PreAuthorizeOnOrderCreation)
+            var card = _creditCardDao.FindByAccountId(account.Id).First();
+
+            // there's a minimum amount of $50 (warning indicating that on the admin ui)
+            var preAuthAmount = Math.Max(_serverSettings.GetPaymentSettings().PreAuthAmount ?? 0, 50);
+
+            var preAuthResponse = _paymentService.PreAuthorize(orderId, account.Email, card.Token, preAuthAmount);
+            
+            if (!preAuthResponse.IsSuccessful)
             {
-                var card = _creditCardDao.FindByAccountId(account.Id).First();
-                var preAuthWasASuccess = _paymentService.PreAuthorize(account.Email, card.Token, _serverSettings.ServerData.PreAuthorizeOnOrderCreationAmount);
-                if (!preAuthWasASuccess)
-                {
-                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
-                        _resources.Get("CannotCreateOrder_CreditCardWasDeclined", clientLanguageCode));
-                }
+                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                    _resources.Get("CannotCreateOrder_CreditCardWasDeclined", clientLanguageCode));
             }
         }
         

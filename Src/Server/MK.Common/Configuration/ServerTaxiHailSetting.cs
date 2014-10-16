@@ -96,13 +96,5 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Send Payment Detail To Driver", Description = "Inform the driver of auto payment success or failure")]
         public bool SendDetailedPaymentInfoToDriver { get; private set; }
-
-        [CustomizableByCompany]
-        [Display(Name = "PreAuthorize on order creation", Description = "PreAuthorize a small amount to verify validity of the card")]
-        public bool PreAuthorizeOnOrderCreation { get; private set; }
-
-        [CustomizableByCompany]
-        [Display(Name = "PreAuthorize on order creation amount", Description = "Amount to use for PreAuthorization on order creation")]
-        public decimal PreAuthorizeOnOrderCreationAmount { get; private set; }
     }
 }

@@ -1710,4 +1710,7 @@
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>Aucune carte de crédit enregistrée dans votre compte.</value>
   </data>
+  <data name="CallDriverUsingProxyMessage" xml:space="preserve">
+    <value>Votre chauffeur vous rappellera dans quelques minutes</value>
+  </data>
 </root>
