@@ -202,7 +202,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                         : "1.25", false)); // Convertion in the questionnaire is invalid, this fixes the issue
             }
             model.Settings.Add("DistanceFormat", new Value(
-                company.Application.UnitOfLength == UnitOfLength.Kilometers ? "KM" : "MILE", false));
+                company.Application.UnitOfLength == UnitOfLength.Kilometers ? "Km" : "Mile", false));
 
             model.Settings.Add("GeoLoc.DefaultLatitude", new Value(cityInfo != null ? cityInfo.Center.Latitude.ToString(CultureInfo.InstalledUICulture) : "", true));
             model.Settings.Add("GeoLoc.DefaultLongitude", new Value(cityInfo != null ? cityInfo.Center.Longitude.ToString(CultureInfo.InstalledUICulture) : "", true));

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
+using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Entity;
 using MK.Common.Configuration;
 
@@ -7,10 +8,11 @@ namespace apcurium.MK.Common.Configuration
 {
     public class TaxiHailSettingContainer
     {
-        [SendToClient, CustomizableByCompany]
+        [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Application Name", Description = "Application name as displayed in message")]
         public string ApplicationName { get; protected internal set; }
 
+        [RequiredAtStartup]
         public string ApplicationKey { get; protected internal set; }
 
         public string AccentColor { get; protected internal set; }
@@ -25,8 +27,6 @@ namespace apcurium.MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Client Polling Interval", Description = "Status refresh interval")]
         public int ClientPollingInterval { get; protected internal set; }
-
-        public bool DemoMode { get; protected internal set; }
 
         [CustomizableByCompany]
         public int ServerPollingInterval { get; protected internal set; }
@@ -75,11 +75,11 @@ namespace apcurium.MK.Common.Configuration
 
     public class GeoLocSettingContainer
     {
-        [SendToClient, CustomizableByCompany]
+        [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Default Latitude", Description = "Default latitude to display the map before geoloc is done")]
         public double DefaultLatitude { get; protected internal set; }
 
-        [SendToClient, CustomizableByCompany]
+        [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Default Longitude", Description = "Default longitude to display the map before geoloc is done")]
         public double DefaultLongitude { get; protected internal set; }
 
@@ -87,7 +87,7 @@ namespace apcurium.MK.Common.Configuration
         [Display(Name = "Place Types", Description = "Give a list of Google Maps places types to filter search")]
         public string PlacesTypes { get; protected internal set; }
 
-        [SendToClient, CustomizableByCompany]
+        [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Search Filter", Description = "Filter for geolocation search")]
         public string SearchFilter { get; protected internal set; }
     }
@@ -178,23 +178,22 @@ namespace apcurium.MK.Common.Configuration
 
         public bool ZoneByCompanyEnabled { get; protected internal set; }
 
-        [CustomizableByCompany]
         public bool ValidateDestinationZone { get; protected internal set; }
 
-        [CustomizableByCompany]
         public bool ValidatePickupZone { get; protected internal set; }
 
-        [CustomizableByCompany]
         public string DestinationZoneToExclude { get; protected internal set; }
 
-        [CustomizableByCompany]
         public string PickupZoneToExclude { get; protected internal set; }
-
-        public string WebServicesPassword { get; protected internal set; }
-
+        
+        [RequiredAtStartup]
         public string WebServicesUrl { get; protected internal set; }
 
+        [RequiredAtStartup]
         public string WebServicesUserName { get; protected internal set; }
+
+        [RequiredAtStartup]
+        public string WebServicesPassword { get; protected internal set; }
     }
 
     public class EmailSettingContainer
