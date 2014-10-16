@@ -22,6 +22,12 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(PaymentSettingUpdated @event)
         {
+            // migration for old events, set the default value
+            if (!@event.ServerPaymentSettings.PreAuthAmount.HasValue)
+            {
+                @event.ServerPaymentSettings.PreAuthAmount = new ServerPaymentSettings().PreAuthAmount;
+            }
+
             using (var context = _contextFactory.Invoke())
             {
                 context.RemoveAll<ServerPaymentSettings>();
