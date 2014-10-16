@@ -192,112 +192,137 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var account = _accountDao.FindById(orderDetail.AccountId);
             var paymentDetail = _paymentDao.FindByOrderId(request.OrderId);
 
-            // commit transaction
-            var settlementResult = BraintreeGateway.Transaction.SubmitForSettlement(paymentDetail.TransactionId, request.Amount);
-            var message = settlementResult.Message;
+            if (paymentDetail == null)
+                throw new HttpError(HttpStatusCode.BadRequest, "Payment not found");
 
-            var isSuccessful = settlementResult.IsSuccess() && (settlementResult.Target != null) &&
-                              (settlementResult.Target.ProcessorAuthorizationCode.HasValue());
-
-            string authorizationCode = null;
-
-            if (isSuccessful && !request.IsNoShowFee)
+            try
             {
-                authorizationCode = settlementResult.Target.ProcessorAuthorizationCode;
+                string message = "Order already paid or payment currently processing";
+                bool isSuccessful = false;
+                string authorizationCode = null;
+                Result<Transaction> settlementResult = null;
 
-                //send information to IBS
-                try
+                // commit transaction
+                if (!paymentDetail.IsCompleted)
                 {
-                    _ibs.ConfirmExternalPayment(orderDetail.Id,
-                                                orderDetail.IBSOrderId.Value,
-                                                request.Amount,
-                                                request.TipAmount,
-                                                request.MeterAmount,
-                                                PaymentType.CreditCard.ToString(),
-                                                PaymentProvider.Braintree.ToString(),
-                                                paymentDetail.TransactionId,
-                                                authorizationCode,
-                                                request.CardToken,
-                                                account.IBSAccountId,
-                                                orderDetail.Settings.Name,
-                                                orderDetail.Settings.Phone,
-                                                account.Email,
-                                                orderDetail.UserAgent.GetOperatingSystem(),
-                                                orderDetail.UserAgent);
+                    settlementResult = BraintreeGateway.Transaction.SubmitForSettlement(paymentDetail.TransactionId,
+                    request.Amount);
+                    message = settlementResult.Message;
+
+                    isSuccessful = settlementResult.IsSuccess() && (settlementResult.Target != null) &&
+                                       (settlementResult.Target.ProcessorAuthorizationCode.HasValue());
                 }
-                catch (Exception e)
-                {
-                    _logger.LogError(e);
-                    message = e.Message;
-                    isSuccessful = false;
 
-                    //cancel braintree transaction
-                    //see paragraph oops here https://www.braintreepayments.com/docs/dotnet/transactions/submit_for_settlement
+                if (isSuccessful && !request.IsNoShowFee)
+                {
+                    authorizationCode = settlementResult.Target.ProcessorAuthorizationCode;
+
+                    //send information to IBS
                     try
                     {
-                        var transaction = BraintreeGateway.Transaction.Find(paymentDetail.TransactionId);
-                        Result<Transaction> cancellationResult = null;
-                        if (transaction.Status == TransactionStatus.SUBMITTED_FOR_SETTLEMENT)
-                        {
-                            // can void
-                            cancellationResult = BraintreeGateway.Transaction.Void(paymentDetail.TransactionId);
-                        }
-                        else if (transaction.Status == TransactionStatus.SETTLED)
-                        {
-                            // will have to refund it
-                            cancellationResult = BraintreeGateway.Transaction.Refund(paymentDetail.TransactionId);
-                        }
-
-                        if (cancellationResult == null
-                            || !cancellationResult.IsSuccess())
-                        {
-                            throw new Exception(cancellationResult != null ?
-                                    cancellationResult.Message
-                                    : string.Format("transaction {0} status unkonw, can't cancel it", paymentDetail.TransactionId));
-                        }
-
-                        message = message + " The transaction has been cancelled.";
+                        _ibs.ConfirmExternalPayment(orderDetail.Id,
+                            orderDetail.IBSOrderId.Value,
+                            request.Amount,
+                            request.TipAmount,
+                            request.MeterAmount,
+                            PaymentType.CreditCard.ToString(),
+                            PaymentProvider.Braintree.ToString(),
+                            paymentDetail.TransactionId,
+                            authorizationCode,
+                            request.CardToken,
+                            account.IBSAccountId,
+                            orderDetail.Settings.Name,
+                            orderDetail.Settings.Phone,
+                            account.Email,
+                            orderDetail.UserAgent.GetOperatingSystem(),
+                            orderDetail.UserAgent);
                     }
-                    catch (Exception ex)
+                    catch (Exception e)
                     {
-                        _logger.LogMessage("Can't cancel Braintree transaction");
-                        _logger.LogError(ex);
-                        message = message + ex.Message;
-                        //can't cancel transaction, send a command to log
+                        _logger.LogError(e);
+                        message = e.Message;
+                        isSuccessful = false;
+
+                        //cancel braintree transaction
+                        //see paragraph oops here https://www.braintreepayments.com/docs/dotnet/transactions/submit_for_settlement
+                        try
+                        {
+                            var transaction = BraintreeGateway.Transaction.Find(paymentDetail.TransactionId);
+                            Result<Transaction> cancellationResult = null;
+                            if (transaction.Status == TransactionStatus.SUBMITTED_FOR_SETTLEMENT)
+                            {
+                                // can void
+                                cancellationResult = BraintreeGateway.Transaction.Void(paymentDetail.TransactionId);
+                            }
+                            else if (transaction.Status == TransactionStatus.SETTLED)
+                            {
+                                // will have to refund it
+                                cancellationResult = BraintreeGateway.Transaction.Refund(paymentDetail.TransactionId);
+                            }
+
+                            if (cancellationResult == null
+                                || !cancellationResult.IsSuccess())
+                            {
+                                throw new Exception(cancellationResult != null
+                                    ? cancellationResult.Message
+                                    : string.Format("transaction {0} status unkonw, can't cancel it",
+                                        paymentDetail.TransactionId));
+                            }
+
+                            message = message + " The transaction has been cancelled.";
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogMessage("Can't cancel Braintree transaction");
+                            _logger.LogError(ex);
+                            message = message + ex.Message;
+                            //can't cancel transaction, send a command to log
+                        }
                     }
                 }
-            }
 
-            if (isSuccessful)
-            {
-                //payment completed
-                _commandBus.Send(new CaptureCreditCardPayment
+                if (isSuccessful)
                 {
-                    PaymentId = paymentDetail.PaymentId,
-                    Provider = PaymentProvider.Braintree,
-                    Amount = request.Amount,
-                    MeterAmount = request.MeterAmount,
-                    TipAmount = request.TipAmount,
-                    IsNoShowFee = request.IsNoShowFee
-                });
-            }
-            else
-            {
-                //payment error
-                _commandBus.Send(new LogCreditCardError
+                    //payment completed
+                    _commandBus.Send(new CaptureCreditCardPayment
+                    {
+                        PaymentId = paymentDetail.PaymentId,
+                        Provider = PaymentProvider.Braintree,
+                        Amount = request.Amount,
+                        MeterAmount = request.MeterAmount,
+                        TipAmount = request.TipAmount,
+                        IsNoShowFee = request.IsNoShowFee
+                    });
+                }
+                else
                 {
-                    PaymentId = paymentDetail.PaymentId,
-                    Reason = message
-                });
-            }
+                    //payment error
+                    _commandBus.Send(new LogCreditCardError
+                    {
+                        PaymentId = paymentDetail.PaymentId,
+                        Reason = message
+                    });
+                }
 
-            return new CommitPreauthorizedPaymentResponse
+                return new CommitPreauthorizedPaymentResponse
+                {
+                    AuthorizationCode = authorizationCode,
+                    TransactionId = paymentDetail.TransactionId,
+                    IsSuccessful = isSuccessful,
+                    Message = isSuccessful ? "Success" : message
+                };
+            }
+            catch (Exception e)
             {
-                AuthorizationCode = authorizationCode,
-                TransactionId = paymentDetail.TransactionId,
-                IsSuccessful = isSuccessful,
-                Message = isSuccessful ? "Success" : message
-            };
+                _logger.LogMessage("Error during payment " + e);
+                _logger.LogError(e);
+                return new CommitPreauthorizedPaymentResponse
+                {
+                    IsSuccessful = false,
+                    TransactionId = paymentDetail.TransactionId,
+                    Message = e.Message,
+                };
+            }
         }
 
         public static bool TestClient(BraintreeServerSettings settings, BraintreeClientSettings braintreeClientSettings)
