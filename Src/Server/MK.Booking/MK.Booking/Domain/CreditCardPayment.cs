@@ -60,8 +60,7 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("Payment is already captured");
             }
 
-            // TODO: make private field to indicate if preauth or not
-            if (_amount == 0 && _meter == 0 && _tip == 0)
+            if (_amount == 0 && _meter == 0)
             {
                 _amount = amount.Value;
                 _meter = meterAmount.Value;

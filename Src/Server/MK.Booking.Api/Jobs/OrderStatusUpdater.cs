@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                 if (defaultCreditCard != null)
                 {
-                    var paymentResult = _paymentService.PreAuthorizeAndCommitPayment(new CommitPaymentRequest
+                    var paymentResult = _paymentService.CommitPayment(new CommitPaymentRequest
                     {
                         OrderId = orderStatusDetail.OrderId,
                         CardToken = defaultCreditCard.Token,
@@ -276,15 +276,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                 // this is the only payment related message sent to the driver when this setting is false
                 SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, meterAmount + tipAmount, meterAmount, tipAmount);
             }
-
-            //var paymentResult =  _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
-            //{
-            //    OrderId = orderStatusDetail.OrderId,
-            //    CardToken = pairingInfo.TokenOfCardToBeUsedForPayment,
-            //    MeterAmount = Convert.ToDecimal(meterAmount),
-            //    TipAmount = Convert.ToDecimal(tipAmount),
-            //    Amount = Convert.ToDecimal(meterAmount + tipAmount)
-            //});
 
             var paymentResult = _paymentService.CommitPayment(new CommitPaymentRequest
             {
