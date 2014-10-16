@@ -1,7 +1,6 @@
 {
    "AboutUsUrl" : "http://www.mobile-knowledge.com",
    "AccountActivationDisabled" : "false",
-   "Admin.CompanySettings": "ShowEstimateWarning,DestinationIsRequired,HideDestination,DisabledTutorialSlides,IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count,Store.AppleLink,Store.PlayLink",
    "APNS.CertificatePassword": "TaxiHail",
    "APNS.ProductionCertificatePath": "../../Certificates/production.p12",
    "APNS.DevelopmentCertificatePath": "../../Certificates/development.p12",
@@ -13,6 +12,7 @@
    "GCM.PackageName": "com.apcurium.MK.TaxiHailDemo",
    "Receipt.Note": "Thank You!<br>The Taxi Hail Team",
    "TaxiHail.ApplicationKey" : "TaxiHail",
+   "TaxiHail.ApplicationName" : "Taxi Hail",
    "TaxiHail.AccentColor" : "#0057a3",
    "TaxiHail.EmailFontColor" : "#000",
    "TaxiHail.SiteName" : "Dev",

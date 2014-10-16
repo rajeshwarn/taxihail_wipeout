@@ -47,6 +47,7 @@ namespace apcurium.MK.Web
         protected bool DisableFutureBooking { get; private set; }
         protected bool IsWebSignupVisible { get; private set; }
         protected double MaxFareEstimate { get; private set; }
+        protected bool IsChargeAccountPaymentEnabled { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -75,6 +76,7 @@ namespace apcurium.MK.Web
             DestinationIsRequired = config.ServerData.DestinationIsRequired;
             MaxFareEstimate = config.ServerData.MaxFareEstimate;
             AccountActivationDisabled = config.ServerData.AccountActivationDisabled;
+            IsChargeAccountPaymentEnabled = config.GetPaymentSettings().IsChargeAccountPaymentEnabled;
 
             ShowPassengerNumber = config.ServerData.ShowPassengerNumber;
 

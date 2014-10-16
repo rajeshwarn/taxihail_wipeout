@@ -2,7 +2,6 @@
 using System.Reflection;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
@@ -33,12 +32,12 @@ namespace apcurium.MK.Booking.Api.Services
                 ApplicationVersion = request.ApplicationVersion,
                 Platform = request.Platform,
                 PlatformDetails = request.PlatformDetails,
-                ServerVersion = Assembly.GetAssembly(typeof(ApplicationInfoService)).GetName().Version.ToString()
+                ServerVersion = Assembly.GetAssembly(typeof(ApplicationInfoService)).GetName().Version.ToString(),
+                Latitude = request.Latitude,
+                Longitude = request.Longitude
             };
 
             _commandBus.Send(command);
-
-            
         }
     }
 }

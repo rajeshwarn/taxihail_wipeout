@@ -3,12 +3,10 @@ using System.Linq;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Enumeration;
 using ServiceStack.Text;
-using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -17,6 +15,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
 		private readonly IOrderWorkflowService _orderWorkflowService;
+
+        private BookingSettings _bookingSettings;
+	    private ClientPaymentSettings _paymentSettings;
 
 		public RideSettingsViewModel(IAccountService accountService, 
 			IPaymentService paymentService,
@@ -27,21 +28,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService = accountService;
 		}
 
-		private BookingSettings _bookingSettings;
-
 		public async void Init(string bookingSettings)
         {
 			using (this.Services ().Message.ShowProgress ())
 			{
 				_bookingSettings = bookingSettings.FromJson<BookingSettings>();
+			    _paymentSettings = _paymentService.GetPaymentSettings();
 
 				var p = await _accountService.GetPaymentsList();
 				_payments = p == null ? new ListItem[0] : p.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
-				RaisePropertyChanged(() => Payments );
+				
+                RaisePropertyChanged(() => Payments );
 				RaisePropertyChanged(() => ChargeTypeId );
 				RaisePropertyChanged(() => ChargeTypeName );
-
 				RaisePropertyChanged(() => IsChargeTypesEnabled);
+                RaisePropertyChanged(() => IsChargeAccountPaymentEnabled);
 
 				// this should be called last since it calls the server, we don't want to slow down other controls
 				var v = await _accountService.GetVehiclesList();
@@ -56,8 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				var setting = _paymentService.GetPaymentSettings();
-                return setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
+                return _paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled;
             }
         }
 
@@ -67,6 +67,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return !_accountService.CurrentAccount.DefaultCreditCard.HasValue || !Settings.DisableChargeTypeWhenCardOnFile;
             }
+	    }
+
+	    public bool IsChargeAccountPaymentEnabled
+	    {
+	        get
+	        {
+                return _paymentSettings.IsChargeAccountPaymentEnabled;
+	        }
 	    }
 
         private PaymentDetailsViewModel _paymentPreferences;

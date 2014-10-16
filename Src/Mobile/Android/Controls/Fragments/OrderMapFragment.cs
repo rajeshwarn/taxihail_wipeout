@@ -467,28 +467,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _subscriptions.Dispose();
         }
 
-
         public void ChangePresentation(ChangePresentationHint hint)
         {
-            var zoomHint = hint as ZoomToStreetLevelPresentationHint;
-
-            if (zoomHint != null)
+			var streetLevelZoomHint = hint as ZoomToStreetLevelPresentationHint;
+			if (streetLevelZoomHint != null)
             {
-				if (zoomHint.Bounds != null) 
-				{
-					var newBounds = zoomHint.Bounds;
-
-					var currentBounds = this.GetMapBoundsFromProjection();
-					
-					if (Math.Abs(currentBounds.LongitudeDelta) <= Math.Abs(newBounds.LongitudeDelta))
-					{
-						Map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds (GetRegionFromMapBounds(newBounds), -_mapPadding.ToPixels())); // add a negative padding to counterbalance the map padding done for the "Google" legal logo on the map
-					}
-				} else 
-				{
-					Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(zoomHint.Latitude, zoomHint.Longitude), 15));
-				}
+				Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(streetLevelZoomHint.Latitude, streetLevelZoomHint.Longitude), 15));
             }
+
+			var zoomHint = hint as ChangeZoomPresentationHint;
+			if (zoomHint != null) 
+			{
+				var newBounds = zoomHint.Bounds;
+				var currentBounds = this.GetMapBoundsFromProjection();
+
+				if (Math.Abs(currentBounds.LongitudeDelta) <= Math.Abs(newBounds.LongitudeDelta))
+				{
+					// add a negative padding to counterbalance the map padding done for the "Google" legal logo on the map
+					Map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds (GetRegionFromMapBounds(newBounds), -_mapPadding.ToPixels())); 
+				}
+			}
 
             var centerHint = hint as CenterMapPresentationHint;
             if(centerHint != null)

@@ -26,6 +26,8 @@ using MK.Common.Configuration;
 using ServiceStack.Common;
 using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -39,18 +41,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string AuthenticationDataCacheKey = "AuthenticationData";
         private const string VehicleTypesDataCacheKey = "VehicleTypesData";
 
-		readonly IAppSettings _appSettings;
-		readonly IFacebookService _facebookService;
-		readonly ITwitterService _twitterService;
-		readonly ILocalization _localize;
+		private readonly IAppSettings _appSettings;
+		private readonly IFacebookService _facebookService;
+		private readonly ITwitterService _twitterService;
+		private readonly ILocalization _localize;
+		private readonly ILocationService _locationService;
 
-		public AccountService(IAppSettings appSettings,
+        public AccountService(IAppSettings appSettings,
 			IFacebookService facebookService,
 			ITwitterService twitterService,
-			ILocalization localize)
+			ILocalization localize,
+			ILocationService locationService)
 		{
+			_locationService = locationService;
 			_localize = localize;
-			_twitterService = twitterService;
+		    _twitterService = twitterService;
 			_facebookService = facebookService;
 			_appSettings = appSettings;
 		}
@@ -73,10 +78,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             UserCache.Clear(RefDataCacheKey);
         }
 
-        public void ClearCache ()
+        public void ClearVehicleTypesCache()
+        {
+            Mvx.Resolve<ICacheService>().Clear(VehicleTypesDataCacheKey);
+        }
+
+        public void ClearCache()
         {
             UserCache.ClearAll ();
-            Mvx.Resolve<ICacheService>().Clear(VehicleTypesDataCacheKey);
+            ClearVehicleTypesCache();
         }
 
         public void SignOut ()
@@ -673,18 +683,26 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateNotificationSettings(request));
         }
 
-		public void LogApplicationStartUp()
+		public async void LogApplicationStartUp()
 		{
 			try
 			{
 				var packageInfo = Mvx.Resolve<IPackageInfo> ();
+
+				var position = await _locationService.GetUserPosition();
 
 				var request = new LogApplicationStartUpRequest
 				{
 					StartUpDate = DateTime.UtcNow,
 					Platform = packageInfo.Platform,
 					PlatformDetails = packageInfo.PlatformDetails,
-					ApplicationVersion = packageInfo.Version
+					ApplicationVersion = packageInfo.Version,
+					Latitude = position != null
+						? position.Latitude
+						: 0,
+					Longitude = position != null
+						? position.Longitude
+						: 0
 				};
 
 				// No need to await since we do not want to slowdown the app

@@ -1,0 +1,10 @@
+﻿{
+    "CreateOrder_NoFareEstimateAvailable": "Aucun tarif n'est disponible pour la course. Merci de spécifier des adresses de départ et de destination valides.",
+    "Estimated Fare": "Prix",
+    "Estimate": "Prix",
+    "Fare estimate": "Prix",
+	"Estimate Display": "{0} {1}",
+    "PaymentInCar": "Carte bancaire - à bord",
+	"Eta" : "Le véhicule le plus proche est à {1} {2} et {0}",
+	"AssignedEta" : "Votre véhicule est à {1} {2} et {0}"
+}
