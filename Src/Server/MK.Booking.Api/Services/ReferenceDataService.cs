@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Api.Services
                 result.CompaniesList = FilterReferenceData(result.CompaniesList, _serverSettings.ServerData.IBS.ExcludedProviderId);
             }
 
-            var isChargeAccountPaymentEnabled = _configManager.GetPaymentSettings().IsChargeAccountPaymentEnabled;
+            var isChargeAccountPaymentEnabled = _serverSettings.GetPaymentSettings().IsChargeAccountPaymentEnabled;
             if (!isChargeAccountPaymentEnabled)
             {
                 result.PaymentsList = result.PaymentsList.Where(x => x.Id != ChargeTypes.Account.Id).ToList();
