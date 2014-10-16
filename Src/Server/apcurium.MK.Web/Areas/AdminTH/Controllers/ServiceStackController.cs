@@ -11,17 +11,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
     public class ServiceStackController : Controller
     {
         private readonly ICacheClient _cache;
-        private readonly IServerSettings _serverSettings;
         public ServiceStackController(ICacheClient cache, IServerSettings serverSettings)
         {
             _cache = cache;
-            _serverSettings = serverSettings;
             ViewData["ApplicationName"] = serverSettings.ServerData.TaxiHail.ApplicationName;
             ViewData["ApplicationKey"] = serverSettings.ServerData.TaxiHail.ApplicationKey;
             ViewData["IsAuthenticated"] = AuthSession.IsAuthenticated;
-            BaseUrl = Request.Url.GetLeftPart(UriPartial.Authority) + Request.ApplicationPath;
-            ViewData["BaseUrl"] = BaseUrl;
-
         }
         public string BaseUrl { get; set; }
         protected IAuthSession AuthSession
@@ -29,6 +24,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             get { return SessionAs<AuthUserSession>(); }
         }
 
+        protected override IAsyncResult BeginExecute(System.Web.Routing.RequestContext requestContext, AsyncCallback callback, object state)
+        {
+            BaseUrl = requestContext.HttpContext.Request.Url.GetLeftPart(UriPartial.Authority) + requestContext.HttpContext.Request.ApplicationPath;
+            ViewData["BaseUrl"] = BaseUrl;
+            return base.BeginExecute(requestContext, callback, state);
+        }
         private object _userSession;
         protected TUserSession SessionAs<TUserSession>()
         {

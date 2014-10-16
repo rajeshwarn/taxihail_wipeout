@@ -34,7 +34,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 return View(response);
             }
 
-               return Redirect(Request.Url.GetLeftPart(UriPartial.Authority) + Request.ApplicationPath);
+               return Redirect(BaseUrl);
         }
 
         [HttpPost]
