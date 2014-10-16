@@ -15,6 +15,10 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string Platform { get; set; }
 
         public string PlatformDetails { get; set; }
+
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
 	}
 }
 

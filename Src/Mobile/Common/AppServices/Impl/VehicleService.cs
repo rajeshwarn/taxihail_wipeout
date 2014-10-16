@@ -11,12 +11,14 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Configuration;
+using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class VehicleService : BaseService, IVehicleService
     {
-		readonly IObservable<AvailableVehicle[]> _availableVehiclesObservable;
+		readonly IConnectableObservable<AvailableVehicle[]> _availableVehiclesObservable;
+        readonly IObservable<AvailableVehicle[]> _availableVehiclesWhenTypeChangesObservable;
 		readonly IObservable<Direction> _etaObservable;
 		readonly ISubject<IObservable<long>> _timerSubject = new BehaviorSubject<IObservable<long>>(Observable.Never<long>());
 		readonly IDirections _directions;
@@ -31,14 +33,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_directions = directions;
 			_settings = settings;
 
-			_availableVehiclesObservable = _timerSubject
-				.Switch()
-				.CombineLatest(
-					orderWorkflowService.GetAndObservePickupAddress(), 
-					orderWorkflowService.GetAndObserveVehicleType(), 
-					(_, address, vehicleTypeId) => new { address, vehicleTypeId })
-				.Where(x => x.address.HasValidCoordinate() && x.vehicleTypeId.HasValue)
-				.SelectMany(x => CheckForAvailableVehicles(x.address, x.vehicleTypeId.Value));
+			// having publish and connect fixes the problem that caused the code to be executed 2 times
+			// because there was 2 subscriptions
+            _availableVehiclesObservable = _timerSubject
+                .Switch()
+                .CombineLatest(orderWorkflowService.GetAndObservePickupAddress(), (_, address) => address)
+                .Where(x => x.HasValidCoordinate())
+                .SelectMany(async x => {
+                    var vehicleTypeId = await orderWorkflowService.GetAndObserveVehicleType().Take(1).ToTask();
+                    return await CheckForAvailableVehicles(x, vehicleTypeId);
+                })
+				.Publish();
+			_availableVehiclesObservable.Connect ();
+
+            _availableVehiclesWhenTypeChangesObservable = orderWorkflowService.GetAndObserveVehicleType()
+                .SelectMany(async vehicleTypeId => 
+                    { 
+                        var address = await orderWorkflowService.GetAndObservePickupAddress().Take(1).ToTask();
+                        return new { vehicleTypeId, address };
+                    })
+                .Where(x => x.address.HasValidCoordinate())
+                .SelectMany(x => CheckForAvailableVehicles(x.address, x.vehicleTypeId));
 
 			_etaObservable = _availableVehiclesObservable
 				.Where (_ => _settings.Data.ShowEta)
@@ -60,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_timerSubject.OnNext(Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds (5)));
 		}
 
-		private async Task<AvailableVehicle[]> CheckForAvailableVehicles(Address address, int vehicleTypeId)
+		private async Task<AvailableVehicle[]> CheckForAvailableVehicles(Address address, int? vehicleTypeId)
 		{
 			try
 			{
@@ -142,8 +157,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public IObservable<AvailableVehicle[]> GetAndObserveAvailableVehicles()
 		{
-			return _availableVehiclesObservable;
+            return _availableVehiclesObservable.Merge (_availableVehiclesWhenTypeChangesObservable);
 		}
+
+        public IObservable<AvailableVehicle[]> GetAndObserveAvailableVehiclesWhenVehicleTypeChanges()
+        {
+            return _availableVehiclesWhenTypeChangesObservable;
+        }
 
 		public IObservable<Direction> GetAndObserveEta()
 		{

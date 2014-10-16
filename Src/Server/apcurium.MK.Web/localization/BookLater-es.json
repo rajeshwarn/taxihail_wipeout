@@ -1,0 +1,7 @@
+﻿{
+	"error.PickupDateMustBeInFuture": "Hora de Recojida debe ser en el futuro",
+	"Pickup date and time": "Hora y Fecha de recojida",
+	"Date": "Fecha",
+	"Time": "Hora",
+	"Set Time": "Ajustar hora"
+}

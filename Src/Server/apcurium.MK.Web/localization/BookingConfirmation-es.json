@@ -1,0 +1,20 @@
+﻿{
+	"Confirm Information": "Confirmar Reservación",
+	"Pickup Time": "Hora de Recojida",
+	"Pickup": "Recojida",
+	"Destination": "Destino",
+	"Estimated Fare": "Costo estimado",
+	"Settings": "Ajustes",
+	"Name": "Nombre",
+	"Phone": "Teléfono",
+	"Passengers": "Pasajeros",
+	"Vehicle Type": "Tipo de Vehículo",
+	"Charge Type": "Tip de Cargo",
+	"Apt No.": "No Apartamento",
+	"Entry Code": "Código de entrada",
+	"Notes": "Notas",
+	"Book Now!": "Reservar Ahora!",
+	"Cancel": "Cancelar",
+	"Edit": "Cambiar",
+	"Save": "Guardar"
+}

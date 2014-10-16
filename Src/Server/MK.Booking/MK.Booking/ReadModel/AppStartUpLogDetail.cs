@@ -17,5 +17,9 @@ namespace apcurium.MK.Booking.ReadModel
         public string PlatformDetails { get; set; }
 
         public string ServerVersion { get; set; }
+
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
     }
 }

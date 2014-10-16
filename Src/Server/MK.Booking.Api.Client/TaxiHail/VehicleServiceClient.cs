@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			_logger = logger;
         }
 
-		public async Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int vehicleTypeId)
+		public async Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int? vehicleTypeId)
 		{
 			var response = await  Client.PostAsync(new AvailableVehicles
 				{

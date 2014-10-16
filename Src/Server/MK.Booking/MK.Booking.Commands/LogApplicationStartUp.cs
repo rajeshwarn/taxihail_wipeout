@@ -19,5 +19,7 @@ namespace apcurium.MK.Booking.Commands
         public string Platform { get; set; }
         public string PlatformDetails { get; set; }
         public string ServerVersion { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 }

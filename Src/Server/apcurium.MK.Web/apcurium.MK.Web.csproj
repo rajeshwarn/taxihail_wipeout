@@ -550,6 +550,29 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="localization\AddFavorite-es.json" />
+    <Content Include="localization\AddressSelection-es.json" />
+    <Content Include="localization\Book-es.json" />
+    <Content Include="localization\BookingConfirmation-es.json" />
+    <Content Include="localization\BookingStatus-es.json" />
+    <Content Include="localization\BookLater-es.json" />
+    <Content Include="localization\BootstrapConfirmation-es.json" />
+    <Content Include="localization\Global-es.json" />
+    <Content Include="localization\Home-es.json" />
+    <Content Include="localization\Login-es.json" />
+    <Content Include="localization\LoginStatus-es.json" />
+    <Content Include="localization\Map-es.json" />
+    <Content Include="localization\OrderHistory-es.json" />
+    <Content Include="localization\OrderHistoryDetail-es.json" />
+    <Content Include="localization\OrderItem-es.json" />
+    <Content Include="localization\Profile-es.json" />
+    <Content Include="localization\ResetPassword-es.json" />
+    <Content Include="localization\SettingsEdit-es.json" />
+    <Content Include="localization\Signup-es.json" />
+    <Content Include="localization\UpdatePassword-es.json" />
+    <Content Include="localization\UserAccount-es.json" />
+    <Content Include="localization\TaxiHailPro-en.json" />
+    <Content Include="localization\TaxiHailPro-fr.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
