@@ -18,7 +18,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private readonly string _applicationKey;
 
         // GET: AdminTH/TaxiHailNetwork
-        public TaxiHailNetworkController(ICacheClient cache,IServerSettings serverSettings,ITaxiHailNetworkServiceClient taxiHailNetworkService ) : base(cache)
+        public TaxiHailNetworkController(ICacheClient cache,IServerSettings serverSettings,ITaxiHailNetworkServiceClient taxiHailNetworkService ) : base(cache,serverSettings)
         {
             _taxiHailNetworkService = taxiHailNetworkService;
 
