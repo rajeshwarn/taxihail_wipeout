@@ -227,7 +227,7 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        private void ValidateCreditCard(Guid requestId, AccountDetail account, string clientLanguageCode)
+        private void ValidateCreditCard(Guid orderId, AccountDetail account, string clientLanguageCode)
         {
             // check if the account has a credit card
             if (!account.DefaultCreditCard.HasValue)
@@ -237,7 +237,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             // try to preauthorize a small amount on the card to verify the validity
             var card = _creditCardDao.FindByAccountId(account.Id).First();
-            var preAuthResponse = _paymentService.PreAuthorize(requestId, account.Email, card.Token, _serverSettings.GetPaymentSettings().PreAuthAmount ?? 0);
+            var preAuthResponse = _paymentService.PreAuthorize(orderId, account.Email, card.Token, _serverSettings.GetPaymentSettings().PreAuthAmount ?? 0);
             
             if (!preAuthResponse.IsSuccessful)
             {

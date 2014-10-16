@@ -281,7 +281,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             return PreAuthorizeAndCommitPayment(request);
         }
 
-        public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(CommitPaymentRequest request)
+        private CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(CommitPaymentRequest request)
         {
             string transactionId = null;
             try
