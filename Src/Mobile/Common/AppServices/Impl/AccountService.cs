@@ -45,19 +45,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly IFacebookService _facebookService;
 		private readonly ITwitterService _twitterService;
 		private readonly ILocalization _localize;
-        private readonly IPaymentService _paymentService;
 		private readonly ILocationService _locationService;
 
         public AccountService(IAppSettings appSettings,
 			IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocalization localize,
-            IPaymentService paymentService,
 			ILocationService locationService)
 		{
 			_locationService = locationService;
 			_localize = localize;
-		    _paymentService = paymentService;
 		    _twitterService = twitterService;
 			_facebookService = facebookService;
 			_appSettings = appSettings;
@@ -692,7 +689,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				var packageInfo = Mvx.Resolve<IPackageInfo> ();
 
-				var position = await GetUserPosition();
+				var position = await _locationService.GetUserPosition();
 
 				var request = new LogApplicationStartUpRequest
 				{
@@ -716,28 +713,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				// If logging fails, run app anyway and log exception
                 Logger.LogError(e);
 			}
-		}
-
-		private async Task<apcurium.MK.Booking.Mobile.Infrastructure.Position> GetUserPosition ()
-		{
-			if (_locationService.BestPosition != null)
-			{
-				return _locationService.BestPosition;
-			}
-
-			var position = await _locationService
-				.GetNextPosition(TimeSpan.FromSeconds(6), 50)
-				.Take(1)
-				.DefaultIfEmpty() // Will return null in case of a timeout
-				.ToTask();
-
-			if (position != null)
-			{
-				return position;
-			}
-
-			// between the first call to BestPosition, we might have received a position if LocationService was started by GetNextPosition()
-			return _locationService.BestPosition;
 		}
     }
 }

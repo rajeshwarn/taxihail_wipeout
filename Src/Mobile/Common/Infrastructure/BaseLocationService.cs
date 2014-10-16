@@ -1,5 +1,7 @@
 using System;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
@@ -18,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 			return Positions.TakeLast(timeout).Select(_ => BestPosition);
 		}
 
-		public IObservable<Position> GetNextPosition(TimeSpan timeout, float maxAccuracy)
+		private IObservable<Position> GetNextPosition(TimeSpan timeout, float maxAccuracy)
 		{
 			if (!IsStarted)
 			{
@@ -26,6 +28,28 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 			}
 			return Positions.Where(p => p.Error <= maxAccuracy).Take(timeout).Take(1);
 		}
+
+        public async Task<Position> GetUserPosition()
+        {
+            // TODO: Handle when location services are not available
+            if (BestPosition != null)
+            {
+                return BestPosition;
+            }
+
+            var position = await GetNextPosition(TimeSpan.FromSeconds(6), 50)
+                .Take(1)
+                .DefaultIfEmpty() // Will return null in case of a timeout
+                .ToTask();
+
+            if (position != null)
+            {
+                return position;
+            }
+
+            // between the first call to BestPosition, we might have received a position if LocationService was started by GetNextPosition()
+            return BestPosition;
+        }
 
 		public abstract Position LastKnownPosition { get; }
 
