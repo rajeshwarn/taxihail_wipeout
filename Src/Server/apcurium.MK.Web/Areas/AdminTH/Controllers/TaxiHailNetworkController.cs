@@ -1,6 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity.Core.Metadata.Edm;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using apcurium.MK.Common.Configuration;
+using CustomerPortal.Client;
 using CustomerPortal.Client.Impl;
 using CustomerPortal.Contract.Resources;
 using ServiceStack.CacheAccess;
@@ -9,49 +14,56 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
     public class TaxiHailNetworkController : ServiceStackController
     {
-        private readonly TaxiHailNetworkServiceClient _taxiHailNetworkService;
+        private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkService;
         private readonly string _applicationKey;
 
         // GET: AdminTH/TaxiHailNetwork
-        public TaxiHailNetworkController(ICacheClient cache,IServerSettings serverSettings) : base(cache)
+        public TaxiHailNetworkController(ICacheClient cache,IServerSettings serverSettings,ITaxiHailNetworkServiceClient taxiHailNetworkService ) : base(cache)
         {
-            _taxiHailNetworkService=new TaxiHailNetworkServiceClient();
+            _taxiHailNetworkService = taxiHailNetworkService;
 
             _applicationKey = serverSettings.ServerData.TaxiHail.ApplicationKey;
         }
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             if (AuthSession.IsAuthenticated)
             {
-                var response = _taxiHailNetworkService.GetOverlapingCompaniesPreferences(_applicationKey);
+                var response = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
 
                 return View(response);
             }
 
-            return new HttpUnauthorizedResult();
+               return Redirect(Request.Url.GetLeftPart(UriPartial.Authority) + Request.ApplicationPath);
         }
 
         [HttpPost]
-        public ActionResult Index(FormCollection form)
+        public async Task<JsonResult> Index(FormCollection form)
         {
-            if (AuthSession.IsAuthenticated)
+            if (ModelState.IsValid)
             {
-                var response = _taxiHailNetworkService.GetOverlapingCompaniesPreferences(_applicationKey);
-                var preferences = (from companyPreference in response
-                    let canAccept = form["acceptKey_" + companyPreference.CompanyKey].Contains("true")
-                    let canDispatch = form["dispatchKey_" + companyPreference.CompanyKey].Contains("true")
-                    select new CompanyPreference
+                var response = await  _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
+
+                var preferences = new List<CompanyPreference>();
+                foreach (var companyPreference in response)
+                {
+                    var canAccept = form["acceptKey_" + companyPreference.CompanyKey].Contains("true");
+                    var canDispatch = form["dispatchKey_" + companyPreference.CompanyKey].Contains("true");
+                    preferences.Add(new CompanyPreference
                     {
-                        CompanyKey = form["idKey_" + companyPreference.CompanyKey], CanAccept = canAccept, CanDispatch = canDispatch
-                    }).ToList();
+                        CompanyKey = form["idKey_" + companyPreference.CompanyKey], 
+                        CanAccept = canAccept, 
+                        CanDispatch = canDispatch
+                    });
 
-                _taxiHailNetworkService.SetOverlapingCompaniesPreferences(_applicationKey, preferences.ToArray());
+                }
 
-                 return View(preferences);
+                await _taxiHailNetworkService.SetNetworkCompanyPreferences(_applicationKey, preferences.ToArray());
+
+                 return Json(new { Success = true, Message = "Changes Saved" });
             }
 
-            return new HttpUnauthorizedResult();
+            return Json(new { Success = false, Message = "Error" });
         }
     }
 }
