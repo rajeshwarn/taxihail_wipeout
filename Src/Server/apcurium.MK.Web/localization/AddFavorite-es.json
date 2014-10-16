@@ -1,12 +1,12 @@
 ﻿{
-	"Friendly Name": "Nombre común",
+	"Friendly Name": "Nombre",
 	"Full Address": "Dirección completa",
-	"Apartment": "Apartamento",
+	"Apartment": "Departamento",
 	"Entry Code": "Código de entrada",
 	"Save": "Guardar",
 	"Cancel": "Cancelar",
 	"Give it a name": "Darle un nombre",
-	"Add to Favorites": "Adicionar a Favoritos",
+	"Add to Favorites": "Agregar a Favoritos",
 	"Building Name": "Nombre de Edificio",
 	"Remove": "Eliminar"
 }
