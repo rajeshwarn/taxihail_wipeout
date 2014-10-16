@@ -1,7 +1,7 @@
 ﻿{
 	"Email": "Email",
 	"FullName": "Nombre completo",
-	"Phone": "Número de Móvil",
+	"Phone": "Número de Celular",
 	"Password": "Contraseña",
 	"ConfirmPassword": "Confirmar",
 	"CreateBt": "Registrarse",

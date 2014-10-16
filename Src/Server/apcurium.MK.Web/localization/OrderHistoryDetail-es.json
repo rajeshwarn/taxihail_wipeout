@@ -1,17 +1,17 @@
 ﻿{
-	"Pickup Time": "Hora de Recojida",
-	"Pickup": "Recojida",
+	"Pickup Time": "Hora del servicio",
+	"Pickup": "Abordaje",
 	"Destination": "Destino",
 	"Estimate": "Estimado",
 	"Rebook": "Reservar nuevamente",
 	"Delete": "Borrar",
 	"Cancel": "Cancelar",
 	"View Status": "Ver estado",
-	"Order details": "Detalles de Servicio",
-	"OrderStatus": "Estado de Servicio",
-	"ibsOrderIdLabel": "Servicio #",
+	"Order details": "Detalles del Servicio",
+	"OrderStatus": "Estado del Servicio",
+	"ibsOrderIdLabel": "Reservación #",
 	"Send Receipt": "Enviar Recibo",
 	"Sending...": "Enviando...",
 	"Receipt Sent": "Enviar Recibo",
-	"Cannot Send Receipt": "Recibo no puede ser enviado"
+	"Cannot Send Receipt": "El recibo no pudo ser enviado"
 ﻿}
