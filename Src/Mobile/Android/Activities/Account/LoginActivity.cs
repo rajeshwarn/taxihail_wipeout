@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using TinyIoC;
 using Xamarin.FacebookBinding;
+using ClipboardManager = Android.Text.ClipboardManager;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {

@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void LogViewModel(string name)
         {
-            Tracker.SendView(name);
+//            Tracker.SendView(name);
         }
 
         public void LogNavigation(string source, string destination)
