@@ -27,5 +27,7 @@ namespace apcurium.MK.Booking.Commands
         public decimal? MeterAmount { get; set; }
 
         public decimal? TipAmount { get; set; }
+
+        public bool IsNoShowFee { get; set; }
     }
 }

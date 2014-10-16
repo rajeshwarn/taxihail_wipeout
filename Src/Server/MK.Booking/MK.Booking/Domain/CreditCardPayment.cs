@@ -18,7 +18,6 @@ namespace apcurium.MK.Booking.Domain
         private Guid _orderId;
         private decimal _tip;
         private string _transactionId;
-        private bool _isNoShowFee;
 
         protected CreditCardPayment(Guid id)
             : base(id)
@@ -35,7 +34,7 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public CreditCardPayment(Guid id, Guid orderId, string transactionId, decimal amount, decimal meter, decimal tip,
-            string cardToken, PaymentProvider provider, bool isNoShowFee)
+            string cardToken, PaymentProvider provider)
             : this(id)
         {
             if (transactionId == null) throw new InvalidOperationException("transactionId cannot be null");
@@ -48,23 +47,28 @@ namespace apcurium.MK.Booking.Domain
                 Meter = meter,
                 Tip = tip,
                 CardToken = cardToken,
-                Provider = provider,
-                IsNoShowFee = isNoShowFee
+                Provider = provider
             });
         }
 
-        public void Capture(PaymentProvider provider, decimal? amount, decimal? meterAmount, decimal? tipAmount, string authorizationCode)
+        public void Capture(PaymentProvider provider, decimal? amount, decimal? meterAmount, decimal? tipAmount, string authorizationCode, bool isNoShowFee)
         {
             if (_isCaptured)
             {
                 throw new InvalidOperationException("Payment is already captured");
             }
 
+            // Replace preath placeholder with actual amounts
             if (_amount == 0 && _meter == 0)
             {
-                _amount = amount.Value;
-                _meter = meterAmount.Value;
-                _tip = tipAmount.Value;
+                if (amount.HasValue)
+                    _amount = amount.Value;
+
+                if (meterAmount.HasValue)
+                    _meter = meterAmount.Value;
+
+                if (tipAmount.HasValue)
+                    _tip = tipAmount.Value;
             }
 
             Update(new CreditCardPaymentCaptured
@@ -76,7 +80,7 @@ namespace apcurium.MK.Booking.Domain
                 Meter = _meter,
                 Tip = _tip,
                 Provider = provider,
-                IsNoShowFee = _isNoShowFee
+                IsNoShowFee = isNoShowFee
             });
         }
 
@@ -95,7 +99,6 @@ namespace apcurium.MK.Booking.Domain
             _amount = obj.Amount;
             _meter = obj.Meter;
             _tip = obj.Tip;
-            _isNoShowFee = obj.IsNoShowFee;
         }
 
         private void OnCreditCardPaymentCaptured(CreditCardPaymentCaptured obj)

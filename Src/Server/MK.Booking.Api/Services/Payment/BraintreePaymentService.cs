@@ -277,7 +277,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     Provider = PaymentProvider.Braintree,
                     Amount = request.Amount,
                     MeterAmount = request.MeterAmount,
-                    TipAmount = request.TipAmount
+                    TipAmount = request.TipAmount,
+                    IsNoShowFee = request.IsNoShowFee
                 });
             }
             else
