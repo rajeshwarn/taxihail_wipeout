@@ -27,8 +27,7 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             {
                 SourceId = _paymentId,
                 OrderId = _orderId,
-                TransactionId = "the transaction",
-                Amount = 12.34m
+                TransactionId = "the transaction"
             });
         }
 
@@ -46,7 +45,7 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
 
             var @event = _sut.ThenHasSingle<CreditCardPaymentCaptured>();
             Assert.AreEqual("the transaction", @event.TransactionId);
-            Assert.AreEqual(12.34m, @event.Amount);
+            Assert.AreEqual(0, @event.Amount);
             Assert.AreEqual(_orderId, @event.OrderId);
         }
 
