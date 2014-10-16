@@ -391,8 +391,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	            {
 					var meterAmount = MeterAmount.ToDouble();
 					var tipAmount = RoundToTwoDecimals(TipAmount.ToDouble()).ToDouble();
-					var response = await _paymentService.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, meterAmount, tipAmount, Order.Id);
-                    if (!response.IsSuccessfull)
+					var response = await _paymentService.CommitPayment(PaymentPreferences.SelectedCreditCard.Token, Amount, meterAmount, tipAmount, Order.Id);
+                    
+                    if (!response.IsSuccessful)
                     {
 						this.Services().Message.ShowProgress(false);
 						this.Services().Message.ShowMessage(

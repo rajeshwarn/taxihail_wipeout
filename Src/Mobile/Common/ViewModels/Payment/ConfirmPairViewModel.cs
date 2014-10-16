@@ -92,9 +92,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 						var pairingResponse = await _paymentService.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip, null);                    
 
-							this.Services().Cache.Set("PairState" + Order.Id, pairingResponse.IsSuccessfull ? PairingState.Success : PairingState.Failed);
+							this.Services().Cache.Set("PairState" + Order.Id, pairingResponse.IsSuccessful ? PairingState.Success : PairingState.Failed);
 
-							if(!pairingResponse.IsSuccessfull)
+							if(!pairingResponse.IsSuccessful)
 							{
 								this.Services().Message.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["CmtRideLinqGenericErrorMessage"]);
 								return;

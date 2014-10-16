@@ -6,8 +6,8 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
     [Authenticate]
-    [Route("/payments/preAuthorizeAndCommitPayment", "POST")]
-    public class PreAuthorizeAndCommitPaymentRequest : IReturn<CommitPreauthorizedPaymentResponse>
+    [Route("/payments/commitPayment", "POST")]
+    public class CommitPaymentRequest : IReturn<CommitPreauthorizedPaymentResponse>
     {
         public decimal Amount { get; set; }
         public decimal MeterAmount { get; set; }

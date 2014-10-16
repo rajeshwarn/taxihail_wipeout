@@ -76,6 +76,11 @@
     <option value="Fake">{{localize "Demo Payment Service"}}</option>
   </select>
 
+  <div class="control-group" id="preAuthAmountDiv">
+    <label class="control-label settingsLabel" >{{{localize "PreAuthorization Amount"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="preAuthAmount" value="{{preAuthAmount}}" />
+  </div>
+
   <div class="control-group" id="noShowFeeDiv">
     <label class="control-label settingsLabel" >{{{localize "No Show Fee (Amount)"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="noShowFee" value="{{noShowFee}}" />

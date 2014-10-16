@@ -6,8 +6,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 {
     public interface IPaymentService
     {
-        bool PreAuthorize(string email, string cardToken, decimal amountToPreAuthorize);
-        CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request);
+        PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize);
+        CommitPreauthorizedPaymentResponse CommitPayment(CommitPaymentRequest request);
         DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request);
         PairingResponse Pair(PairingForPaymentRequest request);
         BasePaymentResponse Unpair(UnpairingForPaymentRequest request);
