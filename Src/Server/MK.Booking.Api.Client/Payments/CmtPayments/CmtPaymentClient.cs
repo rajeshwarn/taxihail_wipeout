@@ -48,10 +48,10 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             return result;
         }
 
-        public Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit(string cardToken, double amount,
+        public Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount,
             double meterAmount, double tipAmount, Guid orderId)
         {
-            return Client.PostAsync(new PreAuthorizeAndCommitPaymentRequest
+            return Client.PostAsync(new CommitPaymentRequest
             {
                 Amount = Convert.ToDecimal(amount),
                 MeterAmount = Convert.ToDecimal(meterAmount),
@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             }
             catch (ServiceStack.ServiceClient.Web.WebServiceException)
             {                
-                return new PairingResponse { IsSuccessfull = false };
+                return new PairingResponse { IsSuccessful = false };
             }            
         }
 
@@ -111,7 +111,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                 return new TokenizedCreditCardResponse
                 {
                     CardOnFileToken = response.CardOnFileToken,
-                    IsSuccessfull = response.ResponseCode == 1,
+                    IsSuccessful = response.ResponseCode == 1,
                     Message = response.ResponseMessage,
                     CardType = response.CardType,
                     LastFour = response.LastFour,
@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             {
                 return new TokenizedCreditCardResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     Message = e.Message
                 };
             }
@@ -143,7 +143,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                 return new TokenizedCreditCardResponse
                 {
                     CardOnFileToken = response.Result.CardOnFileToken,
-                    IsSuccessfull = response.Result.ResponseCode == 1,
+                    IsSuccessful = response.Result.ResponseCode == 1,
                     Message = response.Result.ResponseMessage,
                     CardType = response.Result.CardType,
                     LastFour = response.Result.LastFour,
@@ -153,7 +153,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             {
                 return new TokenizedCreditCardResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     Message = e.Message
                 };
             }
@@ -163,7 +163,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
         {
             var cmtPaymentServiceClient = new CmtPaymentServiceClient(serverPaymentSettings, null, null, logger);
             var result = TokenizeSyncForSettingsTest(cmtPaymentServiceClient, number, date);
-            return result.IsSuccessfull;
+            return result.IsSuccessful;
         }
     }
 }

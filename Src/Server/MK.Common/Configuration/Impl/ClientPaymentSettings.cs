@@ -10,6 +10,7 @@ namespace apcurium.MK.Common.Configuration.Impl
 			MonerisPaymentSettings = new MonerisPaymentSettings();
             PayPalClientSettings = new PayPalClientSettings();
 
+            IsChargeAccountPaymentEnabled = false;
             IsPayInTaxiEnabled = false;
             AutomaticPayment = false;
             AutomaticPaymentPairing = false;
@@ -17,6 +18,7 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public PaymentMethod PaymentMode { get; set; }
         public bool IsPayInTaxiEnabled { get; set; }
+        public bool IsChargeAccountPaymentEnabled { get; set; }
         public bool AutomaticPayment { get; set; }
         public bool AutomaticPaymentPairing { get; set; }
         public CmtPaymentSettings CmtPaymentSettings { get; set; }

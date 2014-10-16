@@ -171,7 +171,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                     return new PairingResponse
                     {
-                        IsSuccessfull = true,
+                        IsSuccessful = true,
                         Message = "Success",
                         PairingToken = response.PairingToken,
                         PairingCode = response.PairingCode,
@@ -185,7 +185,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 return new PairingResponse
                 {
-                    IsSuccessfull = true,
+                    IsSuccessful = true,
                     Message = "Success"
                 };
             }
@@ -194,7 +194,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 _logger.LogError(e);
                 return new PairingResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     Message = e.Message
                 };
             }
@@ -221,7 +221,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 return new BasePaymentResponse
                 {
-                    IsSuccessfull = true,
+                    IsSuccessful = true,
                     Message = "Success"
                 };
             }
@@ -229,7 +229,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 return new BasePaymentResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     Message = e.Message
                 };
             }
@@ -248,7 +248,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 return new DeleteTokenizedCreditcardResponse
                 {
-                    IsSuccessfull = response.ResponseCode == 1,
+                    IsSuccessful = response.ResponseCode == 1,
                     Message = response.ResponseMessage
                 };
             }
@@ -261,18 +261,27 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 });
                 return new DeleteTokenizedCreditcardResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     Message = ex.InnerExceptions.First().Message,
                 };
             }
         }
 
-        public bool PreAuthorize(string email, string cardToken, decimal amountToPreAuthorize)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
         {
-            return true;
+            return new PreAuthorizePaymentResponse
+            {
+                IsSuccessful = true,
+                Message = string.Empty
+            };
         }
 
-        public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request)
+        public CommitPreauthorizedPaymentResponse CommitPayment(CommitPaymentRequest request)
+        {
+            return PreAuthorizeAndCommitPayment(request);
+        }
+
+        private CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(CommitPaymentRequest request)
         {
             string transactionId = null;
             try
@@ -293,7 +302,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 {
                     return new CommitPreauthorizedPaymentResponse
                     {
-                        IsSuccessfull = false,
+                        IsSuccessful = false,
                         Message = "order already paid or payment currently processing"
                     };
                 }
@@ -347,10 +356,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     {
                         PaymentId = paymentId,
                         TransactionId = transactionId,
-                        Amount = Convert.ToDecimal(request.Amount),
+                        Amount = 0,
                         OrderId = request.OrderId,
-                        Tip = Convert.ToDecimal(request.TipAmount),
-                        Meter = Convert.ToDecimal(request.MeterAmount),
+                        Tip = 0,
+                        Meter = 0,
                         CardToken = request.CardToken,
                         Provider = PaymentProvider.Cmt,
                         IsNoShowFee = request.IsNoShowFee
@@ -430,6 +439,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             PaymentId = paymentId,
                             AuthorizationCode = authorizationCode,
                             Provider = PaymentProvider.Cmt,
+                            Amount = Convert.ToDecimal(request.Amount),
+                            MeterAmount = Convert.ToDecimal(request.MeterAmount),
+                            TipAmount = Convert.ToDecimal(request.TipAmount),
+                            IsNoShowFee = request.IsNoShowFee
                         });
                     }
                     else
@@ -445,7 +458,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 return new CommitPreauthorizedPaymentResponse
                 {
-                    IsSuccessfull = isSuccessful,
+                    IsSuccessful = isSuccessful,
                     TransactionId = transactionId,
                     Message = message,
                     AuthorizationCode = authorizationCode,
@@ -460,7 +473,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 });
                 return new CommitPreauthorizedPaymentResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     TransactionId = transactionId,
                     Message = ex.InnerExceptions.First().Message,
                 };
@@ -471,7 +484,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 _logger.LogError(e);
                 return new CommitPreauthorizedPaymentResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     TransactionId = transactionId,
                     Message = e.Message,
                 };

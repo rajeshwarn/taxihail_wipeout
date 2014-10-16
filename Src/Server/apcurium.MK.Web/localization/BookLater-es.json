@@ -1,0 +1,7 @@
+﻿{
+	"error.PickupDateMustBeInFuture": "La hora del servicio debe ser en el futuro",
+	"Pickup date and time": "Hora y Fecha del servicio",
+	"Date": "Fecha",
+	"Time": "Hora",
+	"Set Time": "Fijar hora"
+}

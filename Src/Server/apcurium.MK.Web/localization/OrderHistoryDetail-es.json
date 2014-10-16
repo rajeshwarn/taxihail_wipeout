@@ -1,0 +1,17 @@
+﻿{
+	"Pickup Time": "Hora del servicio",
+	"Pickup": "Abordaje",
+	"Destination": "Destino",
+	"Estimate": "Estimado",
+	"Rebook": "Reservar nuevamente",
+	"Delete": "Borrar",
+	"Cancel": "Cancelar",
+	"View Status": "Ver estado",
+	"Order details": "Detalles del Servicio",
+	"OrderStatus": "Estado del Servicio",
+	"ibsOrderIdLabel": "Reservación #",
+	"Send Receipt": "Enviar Recibo",
+	"Sending...": "Enviando...",
+	"Receipt Sent": "Enviar Recibo",
+	"Cannot Send Receipt": "El recibo no pudo ser enviado"
+﻿}

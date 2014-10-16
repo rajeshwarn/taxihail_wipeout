@@ -1,0 +1,8 @@
+﻿{
+	"ibsOrderIdLabel": "Reservación #",
+	"statusLabel": "Estado",
+	"statusCompleted": "Completado",
+	"statusCanceled": "Cancelado",
+	"statusCreated": "En progreso",
+	"statusClickLabel": "Haga Click aqui para ver más detalles"
+﻿}

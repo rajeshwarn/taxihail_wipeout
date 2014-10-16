@@ -12,6 +12,7 @@ using System.Reactive.Linq;
 using System;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -24,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IVehicleService _vehicleService;
 		private readonly ITermsAndConditionsService _termsService;
 	    private readonly IMvxLifetime _mvxLifetime;
+		private readonly IAccountService _accountService;
 
 		private HomeViewModelState _currentState = HomeViewModelState.Initial;
 
@@ -46,8 +48,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService = vehicleService;
 			_termsService = termsService;
 		    _mvxLifetime = mvxLifetime;
+			_accountService = accountService;
 
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService, paymentService);
+
+			this.Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), vehicles => ZoomOnNearbyVehiclesIfPossible(vehicles));
 		}
 
 		private bool _isShowingTermsAndConditions;
@@ -312,9 +317,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return this.GetCommand(async () =>
+				return this.GetCommand(() =>
 				{					
-						SetMapCenterToUserLocation();							
+					SetMapCenterToUserLocation();							
 				});
 			}
 		}
@@ -326,23 +331,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
 				// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
-				this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, null));
+				this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
 
-				if(Settings.ZoomOnNearbyVehicles)
+				// do the uber zoom
+				try 
 				{
-					try 
-					{
-						var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
-						var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, availableVehicles);	
-						if (bounds != null)
-						{
-							this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, bounds));
-						}
-					}
-					catch (TimeoutException)
-					{ 
-						Console.WriteLine("LocateMe: Timeout occured while waiting for available vehicles");
-					}
+					var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
+					ZoomOnNearbyVehiclesIfPossible (availableVehicles);
+				}
+				catch (TimeoutException)
+				{ 
+					Console.WriteLine("ZoomOnNearbyVehiclesIfPossible: Timeout occured while waiting for available vehicles");
+				}
+			}
+		}
+
+		private async void ZoomOnNearbyVehiclesIfPossible(AvailableVehicle[] vehicles)
+		{
+			if(Settings.ZoomOnNearbyVehicles)
+			{
+				var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, vehicles);	
+				if (bounds != null)
+				{
+					this.ChangePresentation(new ChangeZoomPresentationHint(bounds));
 				}
 			}
 		}
@@ -420,6 +431,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				AutomaticLocateMeAtPickup.Execute(null);
                 CheckUnratedRide();
 				CheckTermsAsync();
+
+				_accountService.LogApplicationStartUp ();
             }
         }
     }

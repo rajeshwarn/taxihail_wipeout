@@ -32,6 +32,13 @@
             this.onPaymentModeChanged();
 
             this.validate({
+                rules: {
+                    preAuthAmount: {
+                        required: true,
+                        number: true,
+                        min: 50
+                    }
+                },
                 submitHandler: this.save
             });
 
@@ -151,6 +158,7 @@
 
             var autPaymentDiv = this.$("#automaticPaymentDiv");
             var autPairingDiv = this.$("#automaticPairingDiv");
+            var preAuthAmountDiv = this.$("#preAuthAmountDiv");
             var noShowFeeDiv = this.$("#noShowFeeDiv");
 
             var btDiv = this.$("#braintreeSettingsDiv");
@@ -187,6 +195,7 @@
                 monerisDiv.hide();
                 autPaymentDiv.show();
                 autPairingDiv.show();
+                preAuthAmountDiv.show();
                 noShowFeeDiv.show();
             }
             else if (newPaymentMode == "Braintree")
@@ -196,6 +205,7 @@
                 monerisDiv.hide();
                 autPaymentDiv.show();
                 autPairingDiv.show();
+                preAuthAmountDiv.show();
                 noShowFeeDiv.show();
             }
             else if (newPaymentMode == "Moneris")
@@ -205,6 +215,7 @@
                 monerisDiv.show();
                 autPaymentDiv.show();
                 autPairingDiv.show();
+                preAuthAmountDiv.show();
                 noShowFeeDiv.show();
             }
             else
@@ -214,6 +225,7 @@
                 monerisDiv.hide();
                 autPaymentDiv.hide();
                 autPairingDiv.hide();
+                preAuthAmountDiv.hide();
                 noShowFeeDiv.hide();
             }
         }
