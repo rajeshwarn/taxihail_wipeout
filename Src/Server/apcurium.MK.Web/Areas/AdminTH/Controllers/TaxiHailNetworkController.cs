@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity.Core.Metadata.Edm;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
 using CustomerPortal.Client;
+using CustomerPortal.Client.Impl;
 using CustomerPortal.Contract.Resources;
 using ServiceStack.CacheAccess;
 
@@ -12,18 +15,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
     public class TaxiHailNetworkController : ServiceStackController
     {
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkService;
-        private readonly ILogger _logger;
         private readonly string _applicationKey;
 
         // GET: AdminTH/TaxiHailNetwork
-        public TaxiHailNetworkController(
-            ICacheClient cache,
-            IServerSettings serverSettings,
-            ITaxiHailNetworkServiceClient taxiHailNetworkService,
-            ILogger logger) : base(cache,serverSettings)
+        public TaxiHailNetworkController(ICacheClient cache,IServerSettings serverSettings,ITaxiHailNetworkServiceClient taxiHailNetworkService ) : base(cache,serverSettings)
         {
             _taxiHailNetworkService = taxiHailNetworkService;
-            _logger = logger;
 
             _applicationKey = serverSettings.ServerData.TaxiHail.ApplicationKey;
         }
@@ -37,9 +34,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 return View(response);
             }
 
-            _logger.LogMessage("User not authenticated, redirecting to home page.");
-
-            return Redirect(BaseUrl);
+               return Redirect(BaseUrl);
         }
 
         [HttpPost]
