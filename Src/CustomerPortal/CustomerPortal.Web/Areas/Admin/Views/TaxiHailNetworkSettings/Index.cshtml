@@ -17,13 +17,13 @@
             </legend>
             <div class="editor-coordinate-field">
                 @Html.LabelFor(x => x.Region.CoordinateStart)
-                @Html.TextBoxFor(x => x.Region.CoordinateStart.Latitude, new { id = "StartLatitude", onkeyup = "coordinatesChanged()" })
-                @Html.TextBoxFor(x => x.Region.CoordinateStart.Longitude, new { id = "StartLongitude", onkeyup = "coordinatesChanged()" })
+                @Html.TextBoxFor(x => x.Region.CoordinateStart.Latitude, new { id = "StartLatitude", onkeyup = "coordinatesChanged()", placeholder = "Latitude"  })
+                @Html.TextBoxFor(x => x.Region.CoordinateStart.Longitude, new { id = "StartLongitude", onkeyup = "coordinatesChanged()", placeholder = "Longitude" })
             </div>
             <div class="editor-coordinate-field">
                 @Html.LabelFor(x => x.Region.CoordinateEnd)
-                @Html.TextBoxFor(x => x.Region.CoordinateEnd.Latitude, new { id = "EndLatitude", onkeyup = "coordinatesChanged()" })
-                @Html.TextBoxFor(x => x.Region.CoordinateEnd.Longitude, new { id = "EndLongitude", onkeyup = "coordinatesChanged()" })
+                @Html.TextBoxFor(x => x.Region.CoordinateEnd.Latitude, new { id = "EndLatitude", onkeyup = "coordinatesChanged()", placeholder = "Latitude" })
+                @Html.TextBoxFor(x => x.Region.CoordinateEnd.Longitude, new { id = "EndLongitude", onkeyup = "coordinatesChanged()", placeholder = "Longitude" })
             </div>
         </fieldset>
 
