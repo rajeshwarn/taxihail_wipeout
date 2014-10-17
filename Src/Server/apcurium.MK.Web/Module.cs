@@ -13,6 +13,7 @@ using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
+using apcurium.MK.Common.Configuration;
 
 #endregion
 
@@ -30,8 +31,8 @@ namespace apcurium.MK.Web
 			new Booking.Maps.Module().Init(container);
             new Booking.IBS.Module().Init(container);
             new Booking.Api.Module().Init(container);
-            
-
+           
+            RegisterTaxiHailNetwork(container);
             RegisterEventHandlers(container);
             RegisterCommandHandlers(container);
         }
@@ -70,7 +71,13 @@ namespace apcurium.MK.Web
             container.RegisterInstance<IEventBus>(eventBus);
             container.RegisterInstance<IEventHandlerRegistry>(eventBus);
 
-            container.RegisterType<ITaxiHailNetworkServiceClient, TaxiHailNetworkServiceClient>();
+          
+
+        }
+        private static void RegisterTaxiHailNetwork(IUnityContainer unityContainer)
+        {
+            var thNetworkServiceClient = new TaxiHailNetworkServiceClient(unityContainer.Resolve<IServerSettings>());
+            unityContainer.RegisterInstance<ITaxiHailNetworkServiceClient>(thNetworkServiceClient);
 
         }
 

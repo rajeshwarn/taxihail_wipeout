@@ -2,8 +2,7 @@
 
 <div id="ul-wrapper">
     
-    <div id="validationPanel" class="alert-success alert" style="display: none">
-    </div>
+    <div id="validationPanel" class="alert-success alert" style="display: none" > </div>
 
    
     
@@ -18,13 +17,13 @@
             </legend>
             <div class="editor-coordinate-field">
                 @Html.LabelFor(x => x.Region.CoordinateStart)
-                @Html.TextBoxFor(x => x.Region.CoordinateStart.Latitude, new { id = "StartLatitude", onkeyup = "CoordinatesChanged()" })
-                @Html.TextBoxFor(x => x.Region.CoordinateStart.Longitude, new { id = "StartLongitude", onkeyup = "CoordinatesChanged()" })
+                @Html.TextBoxFor(x => x.Region.CoordinateStart.Latitude, new { id = "StartLatitude", onkeyup = "coordinatesChanged()" })
+                @Html.TextBoxFor(x => x.Region.CoordinateStart.Longitude, new { id = "StartLongitude", onkeyup = "coordinatesChanged()" })
             </div>
             <div class="editor-coordinate-field">
                 @Html.LabelFor(x => x.Region.CoordinateEnd)
-                @Html.TextBoxFor(x => x.Region.CoordinateEnd.Latitude, new { id = "EndLatitude", onkeyup = "CoordinatesChanged()" })
-                @Html.TextBoxFor(x => x.Region.CoordinateEnd.Longitude, new { id = "EndLongitude", onkeyup = "CoordinatesChanged()" })
+                @Html.TextBoxFor(x => x.Region.CoordinateEnd.Latitude, new { id = "EndLatitude", onkeyup = "coordinatesChanged()" })
+                @Html.TextBoxFor(x => x.Region.CoordinateEnd.Longitude, new { id = "EndLongitude", onkeyup = "coordinatesChanged()" })
             </div>
         </fieldset>
 
@@ -33,14 +32,14 @@
             </legend>
             <div class="editor-field">
                 @Html.LabelFor(x => x.IsInNetwork)
-                @Html.CheckBoxFor(x => x.IsInNetwork, new { id = "IsInNetworkCheckBox", onchange = "CheckChanged(this)" })
+                @Html.CheckBoxFor(x => x.IsInNetwork, new { id = "IsInNetworkCheckBox", onchange = "checkChanged(this)" })
             </div>
         </fieldset>
 
         @Html.HiddenFor(x => x.CompanyKey);
         @Html.HiddenFor(x => x.Id);
 
-    <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick="Save()">Save</a>
+    <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick="save()">Save</a>
     }
 </div>
 
@@ -56,19 +55,19 @@
                 control.removeClass("alert-danger");
             }
             control.addClass("alert-success");
-            control.html(html + message);
         } else {
             if (control.hasClass("alert-success")) {
                 control.removeClass("alert-success");
             }
             control.addClass("alert-danger");
-            control.html(html+message);
         }
+
+        control.html(html + message);
         control.css("display", "block");
         setTimeout(function () { control.css("display", "none"); }, 2000);
     }
 
-    function Save() {
+    function save() {
         var form = $('#taxiHailNetworkForm');
         var panel = $('#validationPanel');
 
@@ -92,13 +91,13 @@
             center: new google.maps.LatLng(45.514466, -73.846313),
             mapTypeId: google.maps.MapTypeId.TERRAIN
         });
-        CoordinatesChanged();
+        coordinatesChanged();
     }
 
     google.maps.event.addDomListener(window, 'load', initialize);
 
 
-    function CoordinatesChanged() {
+    function coordinatesChanged() {
         var startLat = $("#StartLatitude").val();
         var startLon = $("#StartLongitude").val();
         var endLat = $("#EndLatitude").val();
@@ -126,7 +125,7 @@
     }
 
 
-    function CheckChanged(checkbox) {
+    function checkChanged(checkbox) {
         if (checkbox.checked && !$('#taxiHailNetworkForm').valid()) {
             $('#IsInNetworkCheckBox').attr('checked', false);
             alert('please enter start and end regions above');
