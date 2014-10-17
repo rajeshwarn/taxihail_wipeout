@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 instance.SetDebug(true);
                 #endif
 
+                Tracker = instance.GetTracker("UA-44714416-1");
                 Tracker.SetAppName(settings.Data.TaxiHail.ApplicationName.Replace(' ', '_'));
                 Tracker.SetAppVersion(packageInfo.Version);
             }
@@ -37,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void LogViewModel(string name)
         {
-//            Tracker.SendView(name);
+            Tracker.SendView(name);
         }
 
         public void LogNavigation(string source, string destination)
