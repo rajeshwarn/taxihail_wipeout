@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 	{
 		private IGAITracker Tracker { get; set; }
 
-		public GoogleAnalyticsService (IAppSettings settings,IPackageInfo packageInfo)
+		public GoogleAnalyticsService (IAppSettings settings, IPackageInfo packageInfo)
 		{
 			GAI.SharedInstance.TrackUncaughtExceptions = true;
 			GAI.SharedInstance.DispatchInterval = 20;
@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             #endif
 
             Tracker = GAI.SharedInstance.GetTracker ("UA-44714416-1");
-			Tracker.Set(GAIConstants.AppName, settings.Data.TaxiHail.ApplicationName.Replace( ' ' , '_' ));
+			Tracker.Set(GAIConstants.AppName, settings.Data.TaxiHail.ApplicationName.Replace(' ' , '_'));
 			Tracker.Set(GAIConstants.AppVersion, packageInfo.Version);
 		}
 

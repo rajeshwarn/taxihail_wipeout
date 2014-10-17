@@ -54,13 +54,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 			CustomBindingsLoader.Load (registry);
 		}
 
-        private void ConfigureRaygun()
+        private void ConfigureInsights()
         {
             #if DEBUG
+            Xamarin.Insights.Initialize("a34cb0ffa9cae700769950f66237125e8ba4ed0d"); // This is a test API key
             Xamarin.Insights.DisableCollection = false;
             Xamarin.Insights.DisableDataTransmission = false;
             Xamarin.Insights.DisableExceptionCatching = false;
-            Xamarin.Insights.Initialize("a34cb0ffa9cae700769950f66237125e8ba4ed0d"); // This is a test API key
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
             var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             container.Register<IAppSettings> (new AppSettingsService (container.Resolve<ICacheService> (), container.Resolve<ILogger> ()));
 
-            ConfigureRaygun ();
+            ConfigureInsights ();
 
             container.Register<IGeocoder> ((c, p) => new GoogleApiClient (c.Resolve<IAppSettings>(), c.Resolve<ILogger> (), new AppleGeocoder ()));
 			container.Register<IPlaceDataProvider, GoogleApiClient> ();

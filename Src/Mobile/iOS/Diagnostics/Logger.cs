@@ -77,8 +77,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
             return "no stack frame";
         }
 
-        private static void SendToRaygun(Exception ex)
+        private static void SendToInsights(Exception ex)
         {
+            #if DEBUG
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
             var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
             
@@ -87,18 +88,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
                 ? account.Email 
                 : "unknown@user.com";
 
-            Xamarin.Insights.Identify(email, new Dictionary<string, string>
+            var identification = new Dictionary<string, string>
             {
                 { "ApplicationVersion", packageInfo.Version },
                 { "Company", settings.TaxiHail.ApplicationName },
-            });
+            };
+
+            Xamarin.Insights.Identify(email, identification);
 
             Xamarin.Insights.Report(ex);
-            Xamarin.Insights.Report(ex, new Dictionary<string, string>
-            {
-                { "ApplicationVersion", packageInfo.Version },
-                    { "Company", settings.TaxiHail.ApplicationName },
-            });
+            Xamarin.Insights.Report(ex, identification);
+            #endif
         }
 
         public static void LogError (Exception ex, int indent)
@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
             {
                 Write (indentStr + "Error on " + DateTime.Now);
 
-                SendToRaygun (ex);
+                SendToInsights (ex);
             }
 
             Write (indentStr + "Message : " + ex.Message);
