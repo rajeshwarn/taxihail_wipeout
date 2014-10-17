@@ -105,7 +105,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 
             if (ex.InnerException != null)
             {
-// ReSharper disable once RedundantAssignment
                 LogError(ex.InnerException, indent++);
             }
         }
@@ -181,7 +180,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
                     fs.Close();
                 }
             }
-// ReSharper disable once EmptyGeneralCatchClause
             catch
             {
             }

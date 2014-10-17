@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
             var account = TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount;
             var email = account != null 
                 ? account.Email 
-                : "unknown@user.com";
+                : settings.Insights.UnknownUserIdentifier;
 
             var identification = new Dictionary<string, string>
             {
@@ -95,9 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
             };
 
             Xamarin.Insights.Identify(email, identification);
-
             Xamarin.Insights.Report(ex);
-            Xamarin.Insights.Report(ex, identification);
             #endif
         }
 
