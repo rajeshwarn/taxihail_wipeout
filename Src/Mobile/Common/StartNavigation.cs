@@ -23,11 +23,6 @@ namespace apcurium.MK.Booking.Mobile
 			JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
 
 			var accountService = Mvx.Resolve<IAccountService> ();
-			var paymentService = Mvx.Resolve<IPaymentService> ();
-
-			// Make sure to reload notification/payment settings even if the user has killed the app
-			accountService.GetNotificationSettings(true, true);
-			paymentService.GetPaymentSettings(true);
 
 			if (accountService.CurrentAccount == null 
 				|| (Mvx.Resolve<IAppSettings> ().Data.CreditCardIsMandatory 
@@ -51,6 +46,10 @@ namespace apcurium.MK.Booking.Mobile
                 var orderStatus = bookingService.GetOrderStatus (orderId);
 				var order = accountService.GetHistoryOrder(orderId);
                 
+				// Make sure to reload notification/payment settings even if the user has killed the app
+				accountService.GetNotificationSettings(true, true);
+				Mvx.Resolve<IPaymentService> ().GetPaymentSettings(true);
+
 				if (order != null && orderStatus != null) 
                 {
                     if (isPairingNotification)
@@ -74,6 +73,10 @@ namespace apcurium.MK.Booking.Mobile
             {
                 // Log user session start
 				accountService.LogApplicationStartUp();
+
+				// Make sure to reload notification/payment settings even if the user has killed the app
+				accountService.GetNotificationSettings(true, true);
+				Mvx.Resolve<IPaymentService> ().GetPaymentSettings(true);
 
 				ShowViewModel<HomeViewModel>(new { locateUser =  true });
             }
