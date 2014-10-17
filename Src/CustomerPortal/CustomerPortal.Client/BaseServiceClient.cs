@@ -1,4 +1,5 @@
-﻿using System;
+﻿using apcurium.MK.Common.Configuration;
+using System;
 using System.Net;
 using System.Net.Http;
 
@@ -6,20 +7,26 @@ namespace CustomerPortal.Client
 {
     public class BaseServiceClient
     {
-        public BaseServiceClient()
+        private readonly IServerSettings _serverSettings;
+        public BaseServiceClient(IServerSettings serverSettings)
         {
+            _serverSettings = serverSettings;
+
+            var userName=_serverSettings.ServerData.CustomerPortal.UserName;
+            var password=_serverSettings.ServerData.CustomerPortal.Password;
+
             Client = new HttpClient(new HttpClientHandler
             {
-                Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
+                Credentials = new NetworkCredential(userName, password)
             });
             Client.BaseAddress = new Uri(GetUrl());
         }
-
+        
         public HttpClient Client { get; set; }
 
-        private static string GetUrl()
+        private string GetUrl()
         {
-            var url = "http://customer.taxihail.com/api/";
+            var url = _serverSettings.ServerData.CustomerPortal.Url;
             			#if DEBUG
                         url = "http://localhost/CustomerPortal.Web/api/";
             			#endif

@@ -206,4 +206,13 @@ namespace apcurium.MK.Common.Configuration
         [CustomizableByCompany]
         public string Note { get; protected internal set; }
     }
+
+    public class CustomerPortalSettingContainer 
+    {
+        public string Url { get; protected internal set; }
+
+        public string UserName { get; protected internal set; }
+
+        public string Password { get; protected internal set; }
+    }
 }
