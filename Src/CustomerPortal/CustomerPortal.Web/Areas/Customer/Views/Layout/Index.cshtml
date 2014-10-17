@@ -1,6 +1,8 @@
 ﻿@model CustomerPortal.Web.Models.LayoutsViewModel
 
 @{
+    Layout=null;
+    
     <script src="~/Scripts/jquery-1.8.2.js"></script>    
     
     var rows = Model.Layouts.Select((Path, Index) => new {Path, Index})

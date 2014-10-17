@@ -63,7 +63,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                  return Json(new { Success = true, Message = "Changes Saved" });
             }
 
-            return Json(new { Success = false, Message = "Error" });
+            return Json(new { Success = false, Message = "All fields are required" });
         }
     }
 }

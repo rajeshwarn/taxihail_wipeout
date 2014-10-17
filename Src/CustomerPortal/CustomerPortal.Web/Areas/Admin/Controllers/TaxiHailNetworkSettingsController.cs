@@ -47,7 +47,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 return Json(new { Success = true, Message = "Changes Saved" });
             }
 
-                return Json(new {Success = false, Message = "Error"});
+            return Json(new { Success = false, Message = "All fields are required" });
         }
 
     }
