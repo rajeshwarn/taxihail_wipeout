@@ -77,11 +77,11 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			}
 		}
 
-		private void RefreshSettingsFromServer()
+		private async Task RefreshSettingsFromServer()
 		{
 			_logger.LogMessage("load settings from server");
 
-			var settingsFromServer = TinyIoCContainer.Current.Resolve<ConfigurationClientService>().GetSettings();
+			var settingsFromServer = await TinyIoCContainer.Current.Resolve<ConfigurationClientService>().GetSettings();
             SettingsLoader.InitializeDataObjects(Data, settingsFromServer, _logger, new[] { "ServiceUrl", "CanChangeServiceUrl" });
 
 			SaveSettings();			

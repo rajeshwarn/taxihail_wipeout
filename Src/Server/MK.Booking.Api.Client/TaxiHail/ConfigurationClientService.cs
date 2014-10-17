@@ -15,9 +15,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public IDictionary<string, string> GetSettings()
+        public async Task<IDictionary<string, string>> GetSettings()
         {
-            return Client.Get<Dictionary<string, string>>("/settings");
+            return await Client.GetAsync<Dictionary<string, string>>("/settings");
         }
 
         public async Task<ClientPaymentSettings> GetPaymentSettings()
