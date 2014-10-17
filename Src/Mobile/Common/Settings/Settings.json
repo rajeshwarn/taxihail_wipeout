@@ -1,4 +1,6 @@
 { 
+	"TaxiHail.ApplicationKey" : "TaxiHail",
+	"TaxiHail.ApplicationName" : "TaxiHail",
 	"FacebookAppId" : "134284363380764",
 	"FacebookEnabled": "true",
 	"FacebookPublishEnabled": "true",
