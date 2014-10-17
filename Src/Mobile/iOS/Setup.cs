@@ -57,7 +57,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         private void ConfigureRaygun()
         {
             #if DEBUG
-            // When Xamarin adds support to initiliaze and pass appname and version, remove the identify below
+            Xamarin.Insights.DisableCollection = false;
+            Xamarin.Insights.DisableDataTransmission = false;
+            Xamarin.Insights.DisableExceptionCatching = false;
             Xamarin.Insights.Initialize("a34cb0ffa9cae700769950f66237125e8ba4ed0d"); // This is a test API key
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
