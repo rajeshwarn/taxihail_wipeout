@@ -55,6 +55,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Server\MK.Common\MK.Common.csproj">
+      <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
+      <Name>MK.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CustomerPortal.Contract\CustomerPortal.Contract.csproj">
       <Project>{6A4623E1-41EF-4286-9A34-2ADC6407E94F}</Project>
       <Name>CustomerPortal.Contract</Name>

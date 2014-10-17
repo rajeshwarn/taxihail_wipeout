@@ -1,7 +1,6 @@
 ﻿@model List<CustomerPortal.Contract.Resources.CompanyPreference>
    
-<div id="validationPanel" class="alert-success alert" style="display: none">
-</div>
+<div id="validationPanel" class="alert-success alert" style="display: none" > </div>
        
 @using (Html.BeginForm("Index", "TaxiHailNetwork", FormMethod.Post, new { id = "taxiHailNetworkForm" }))
 {
@@ -11,9 +10,9 @@
     {
         <table class="table table-striped">
             <tr>
-                <th>CompanyId</th>
-                <th>CanAccept</th>
-                <th>CanDispatch</th>
+                <th>Company Name</th>
+                <th>Can Accept</th>
+                <th>Can Dispatch</th>
             </tr>
             @foreach (var company in Model)
             {
@@ -33,11 +32,11 @@
             }
         </table>
 
-        <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick=" Save()">Save</a>
+        <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick=" save()">Save</a>
     }
     else
     {
-        <h4>You don't have any companies within your network</h4>
+        <h4>You don't have any companies within your Network</h4>
     }
 }
 
@@ -51,19 +50,19 @@
                         control.removeClass("alert-danger");
                     }
                     control.addClass("alert-success");
-                    control.html(html + message);
                 } else {
                     if (control.hasClass("alert-success")) {
                         control.removeClass("alert-success");
                     }
                     control.addClass("alert-danger");
-                    control.html(html + message);
                 }
+
+                control.html(html + message);
                 control.css("display", "block");
-                setTimeout(function () { control.css("display", "block") }, 2000);
+                setTimeout(function () { control.css("display", "none") }, 2000);
             }
 
-            function Save() {
+            function save() {
                 var form = $('#taxiHailNetworkForm');
                 var panel = $('#validationPanel');
 

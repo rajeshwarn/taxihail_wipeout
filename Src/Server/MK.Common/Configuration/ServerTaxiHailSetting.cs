@@ -72,6 +72,13 @@ namespace MK.Common.Configuration
                 Note = "Thank You!"
             };
 
+            CustomerPortal = new CustomerPortalSettingContainer
+            {
+                Url = "http://customer.taxihail.com/api/",
+                UserName = "taxihail@apcurium.com",
+                Password = "apcurium5200!"
+            };
+
             PayPalConversionRate = 1;
 
             SendDetailedPaymentInfoToDriver = true;
@@ -84,7 +91,7 @@ namespace MK.Common.Configuration
         public IBSSettingContainer IBS { get; protected set; }
         public EmailSettingContainer Email { get; protected set; }
         public ReceiptSettingContainer Receipt { get; protected set; }
-
+        public CustomerPortalSettingContainer CustomerPortal { get; protected set; }
         public bool IsWebSignupHidden { get; protected set; }
         public string PayPalRegionInfoOverride { get; protected set; }
         public decimal PayPalConversionRate { get; protected set; }
