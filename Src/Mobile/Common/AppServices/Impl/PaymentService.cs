@@ -42,11 +42,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_serviceClient = serviceClient;
         }
 
-		public ClientPaymentSettings GetPaymentSettings(bool cleanCache = false)
+		public async Task<ClientPaymentSettings> GetPaymentSettings(bool cleanCache = false)
 		{
 			if (_cachedSettings == null || cleanCache)
 			{
-				_cachedSettings = _serviceClient.GetPaymentSettings();
+				_cachedSettings = await _serviceClient.GetPaymentSettings();
 			}
 			return _cachedSettings;
 		}
@@ -75,11 +75,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             _cache.Set(orderId + PayedCacheSuffix, amount.ToString(CultureInfo.InvariantCulture));
         }
 
-        public IPaymentServiceClient GetClient()
+        public async Task<IPaymentServiceClient> GetClient()
         {
             const string onErrorMessage = "Payment Method not found or unknown";
 
-            var settings = GetPaymentSettings();
+            var settings = await GetPaymentSettings();
             switch (settings.PaymentMode)
             {
                 case PaymentMethod.Braintree:
@@ -100,34 +100,34 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        public Task ResendConfirmationToDriver(Guid orderId)
+        public async Task ResendConfirmationToDriver(Guid orderId)
         {
-            return GetClient().ResendConfirmationToDriver(orderId);
+			await (await GetClient()).ResendConfirmationToDriver(orderId);
         }
 
-        public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
+        public async Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
         {
-            return GetClient().Tokenize(creditCardNumber, expiryDate, cvv);
+			return await (await GetClient()).Tokenize(creditCardNumber, expiryDate, cvv);
         }
 
-        public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
+        public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
-            return GetClient().ForgetTokenizedCard(cardToken);
+			return await (await GetClient()).ForgetTokenizedCard(cardToken);
         }
 
-        public Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
+        public async Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
         {
-            return GetClient().CommitPayment(cardToken, amount, meterAmount, tipAmount, orderId);
+			return await (await GetClient()).CommitPayment(cardToken, amount, meterAmount, tipAmount, orderId);
         }
 
-        public Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
         {
-            return GetClient().Pair(orderId, cardToken, autoTipPercentage, autoTipAmount);
+			return await (await GetClient()).Pair(orderId, cardToken, autoTipPercentage, autoTipAmount);
         }
 
-        public Task<BasePaymentResponse> Unpair(Guid orderId)
+        public async Task<BasePaymentResponse> Unpair(Guid orderId)
         {
-            return GetClient().Unpair(orderId);
+			return await (await GetClient()).Unpair(orderId);
         }
     }
 }

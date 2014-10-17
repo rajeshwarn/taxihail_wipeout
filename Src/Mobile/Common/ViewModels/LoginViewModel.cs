@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ILocationService _locationService;
 		private readonly IAccountService _accountService;
 		private readonly IPhoneService _phoneService;
+		private readonly IPaymentService _paymentService;
 		private readonly IRegisterWorkflowService _registrationService;
 
         public LoginViewModel(IFacebookService facebookService,
@@ -28,6 +29,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			ILocationService locationService,
 			IAccountService accountService,
 			IPhoneService phoneService,
+			IPaymentService paymentService,
 			IRegisterWorkflowService registrationService)
         {
 			_registrationService = registrationService;
@@ -37,6 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_locationService = locationService;
 			_accountService = accountService;
 			_phoneService = phoneService;
+			_paymentService = paymentService;
         }
 
 	    public event EventHandler LoginSucceeded; 
@@ -376,9 +379,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _loginWasSuccesful = true;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
 
-			Action showNextView = () => 
+			Action showNextView = async () => 
             {
-				if (NeedsToNavigateToAddCreditCard ()) {
+				if (await NeedsToNavigateToAddCreditCard ()) {
 					ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel> (new { showInstructions = true, isMandatory = true });
 					return;
 				}
@@ -389,8 +392,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 			};
 
-            // Load and cache company notification settings
+            // Load and cache company notification settings/payment settings
             _accountService.GetNotificationSettings(true, true); 
+			_paymentService.GetPaymentSettings(true);
 
             // Log user session start
             _accountService.LogApplicationStartUp();
@@ -405,11 +409,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		private bool NeedsToNavigateToAddCreditCard()
+		private async Task<bool> NeedsToNavigateToAddCreditCard()
 		{
             // Resolve via TinyIoC because we cannot pass it via the constructor since it the PaymentService needs
             // the user to be authenticated and it may not be when the class is initialized
-            var paymentSettings = TinyIoC.TinyIoCContainer.Current.Resolve<IPaymentService>().GetPaymentSettings();
+            var paymentSettings = await TinyIoC.TinyIoCContainer.Current.Resolve<IPaymentService>().GetPaymentSettings();
 
 			if (this.Settings.CreditCardIsMandatory && paymentSettings.IsPayInTaxiEnabled)
 			{
