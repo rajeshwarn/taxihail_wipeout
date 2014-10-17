@@ -85,8 +85,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 				var carDrawable = _activity.Resources.GetDrawable (Resource.Drawable.taxi_progress);
 				_car = DrawHelper.DrawableToBitmap (carDrawable);
                  
+				_colorToUse = _activity.Resources.GetColor (Resource.Color.company_color);
+
 				if (!IsAssetOverriden (_car, Android.Graphics.Color.Argb (255, 0, 122, 255), new Android.Graphics.Point (10, 20))) {
-					_colorToUse = _activity.Resources.GetColor (Resource.Color.company_color);
 					_car = DrawHelper.DrawableToBitmap (carDrawable, _colorToUse);                	
 				}
                 
