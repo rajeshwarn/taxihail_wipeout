@@ -135,7 +135,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void ConfigureInsights()
         {
-            #if DEBUG
+            #if !DEBUG
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
             var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
 
@@ -146,10 +146,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             // identify with an unknown user in case an exception occurs before the user can log in
             Xamarin.Insights.Identify(settings.Insights.UnknownUserIdentifier, new Dictionary<string, string>
-            {
-                { "ApplicationVersion", packageInfo.Version },
-                { "Company", settings.TaxiHail.ApplicationName },
-            });
+                {
+                    { "ApplicationVersion", packageInfo.Version },
+                    { "Company", settings.TaxiHail.ApplicationName },
+                });
             #endif
         }
 	}

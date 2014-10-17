@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
 
         protected override void SendToInsights (Exception ex)
         {
-            #if DEBUG
+            #if !DEBUG
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
             var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
 

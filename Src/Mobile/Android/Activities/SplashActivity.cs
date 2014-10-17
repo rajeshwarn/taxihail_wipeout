@@ -9,6 +9,7 @@ using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Droid.Views;
 using Cirrious.MvvmCross.ViewModels;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
@@ -20,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
+            ConfigureInsights ();
 
 			DensityHelper.OutputToConsole();
 
@@ -55,6 +58,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         {
             base.OnDestroy();
             GC.Collect();
+        }
+
+        private void ConfigureInsights ()
+        {
+            #if !DEBUG
+            if(PlatformHelper.APILevel >= 15)
+            {
+                Xamarin.Insights.Initialize(this.Services().Settings.Insights.APIKey, ApplicationContext);
+                Xamarin.Insights.DisableCollection = false;
+                Xamarin.Insights.DisableDataTransmission = false;
+                Xamarin.Insights.DisableExceptionCatching = false;
+
+                // identify with an unknown user in case an exception occurs before the user can log in
+                Xamarin.Insights.Identify(this.Services().Settings.Insights.UnknownUserIdentifier, new Dictionary<string, string>
+                    {
+                        { "ApplicationVersion", this.Services().PackageInfo.Version },
+                        { "Company", this.Services().Settings.TaxiHail.ApplicationName },
+                    });
+            }
+            #endif
         }
     }
 }
