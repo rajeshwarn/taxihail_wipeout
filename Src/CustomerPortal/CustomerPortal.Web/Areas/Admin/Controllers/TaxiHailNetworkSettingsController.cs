@@ -43,6 +43,19 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (!model.IsInNetwork)
+                {
+                    foreach (var taxiHailNetworkSettings in Repository)
+                    {
+                        if (taxiHailNetworkSettings.Preferences.Any(x => x.CompanyKey == model.CompanyKey))
+                        {
+                            var preference = taxiHailNetworkSettings.Preferences.First(x => x.CompanyKey == model.CompanyKey);
+                            taxiHailNetworkSettings.Preferences.Remove(preference);
+                            Repository.Update(taxiHailNetworkSettings);
+                        }
+                    }
+                }
+
                 Repository.Update(model);
                 return Json(new { Success = true, Message = "Changes Saved" });
             }
