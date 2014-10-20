@@ -31,8 +31,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
                     network = new TaxiHailNetworkSettings
                     {
-                        CompanyKey = company.CompanyKey,
-                        Id = company.Id
+                        Id = company.CompanyKey
                     };
             }
             return PartialView(network);
