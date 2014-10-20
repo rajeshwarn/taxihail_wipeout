@@ -87,6 +87,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new CancellableCommand<MapBounds>(async (bounds, token) =>
                 {
+                    _orderWorkflowService.SetIgnoreNextGeoLocResult(true);
                 	await _orderWorkflowService.SetAddressToCoordinate(
 						new Position 
 							{ 
