@@ -81,9 +81,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             window.RootViewController = new SplashView();
 
-            var appSettingsService = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            appSettingsService.Load();
-
             var paymentService = TinyIoCContainer.Current.Resolve<IPaymentService>();
             paymentService.ClearPaymentSettingsFromCache();
 

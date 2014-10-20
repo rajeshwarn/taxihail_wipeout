@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			LoadSettingsFromFile();
 		}
 
-        public void Load()
+        public async Task Load()
 		{
 			//check if the cache has already something
 			var data = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);
@@ -43,11 +43,10 @@ namespace apcurium.MK.Booking.Mobile.Settings
 				Data = data;
 			}
 
-			//launch async refresh from the server
-			Task.Factory.StartNew(() => RefreshSettingsFromServer());
+			await RefreshSettingsFromServer();
 		}
 
-		public void ChangeServerUrl(string serverUrl)
+		public async Task ChangeServerUrl(string serverUrl)
 		{
 			// Reset cache
 			Data = new TaxiHailSetting();
@@ -55,7 +54,8 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			Data.ServiceUrl = serverUrl;
 
 			_cacheService.Clear(SettingsCacheKey);
-			Task.Factory.StartNew(() => RefreshSettingsFromServer());
+
+			await RefreshSettingsFromServer();
 		}
 
 		private void LoadSettingsFromFile()

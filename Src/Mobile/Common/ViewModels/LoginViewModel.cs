@@ -365,11 +365,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public void SetServerUrl(string serverUrl)
+        public async void SetServerUrl(string serverUrl)
         {
-			this.Container.Resolve<IAppSettings>().ChangeServerUrl(serverUrl);
-            this.Services().ApplicationInfo.ClearAppInfo();
-			_accountService.ClearReferenceData();
+			using (this.Services().Message.ShowProgress())
+			{
+				await this.Container.Resolve<IAppSettings>().ChangeServerUrl(serverUrl);
+				this.Services().ApplicationInfo.ClearAppInfo();
+				_accountService.ClearReferenceData();
+			}
         }
 
 		private async Task OnLoginSuccess()
