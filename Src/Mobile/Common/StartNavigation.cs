@@ -22,18 +22,13 @@ namespace apcurium.MK.Booking.Mobile
 
 			JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
 
-			// load the payment settings now
-			await Mvx.Resolve<IPaymentService> ().GetPaymentSettings(true);
-
-			var accountService = Mvx.Resolve<IAccountService> ();
-
-			if (accountService.CurrentAccount == null 
+			if (Mvx.Resolve<IAccountService>().CurrentAccount == null 
 				|| (Mvx.Resolve<IAppSettings> ().Data.CreditCardIsMandatory 
-					&& !accountService.CurrentAccount.DefaultCreditCard.HasValue))
+					&& !Mvx.Resolve<IAccountService>().CurrentAccount.DefaultCreditCard.HasValue))
 			{
-				if (accountService.CurrentAccount != null)
+				if (Mvx.Resolve<IAccountService>().CurrentAccount != null)
 				{
-					accountService.SignOut();
+					Mvx.Resolve<IAccountService>().SignOut();
 				}
 
 				ShowViewModel<LoginViewModel>();
@@ -44,13 +39,12 @@ namespace apcurium.MK.Booking.Mobile
                 bool isPairingNotification;
                 bool.TryParse(@params["isPairingNotification"], out isPairingNotification);
 
-				var bookingService = Mvx.Resolve<IBookingService> ();
+				// Make sure to reload notification/payment settings even if the user has killed the app
+				await Mvx.Resolve<IAccountService>().GetNotificationSettings(true, true);
+				await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
                 
-                var orderStatus = bookingService.GetOrderStatus (orderId);
-				var order = accountService.GetHistoryOrder(orderId);
-                
-				// Make sure to reload notificationsettings even if the user has killed the app
-				accountService.GetNotificationSettings(true, true);
+				var orderStatus = await Mvx.Resolve<IBookingService>().GetOrderStatusAsync (orderId);
+				var order = await Mvx.Resolve<IAccountService>().GetHistoryOrderAsync(orderId);
 
 				if (order != null && orderStatus != null) 
                 {
@@ -73,11 +67,12 @@ namespace apcurium.MK.Booking.Mobile
             }
             else
             {
-                // Log user session start
-				accountService.LogApplicationStartUp();
-
 				// Make sure to reload notification/payment settings even if the user has killed the app
-				accountService.GetNotificationSettings(true, true);
+				await Mvx.Resolve<IAccountService>().GetNotificationSettings(true, true);
+				await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
+
+                // Log user session start
+				Mvx.Resolve<IAccountService>().LogApplicationStartUp();
 
 				ShowViewModel<HomeViewModel>(new { locateUser =  true });
             }

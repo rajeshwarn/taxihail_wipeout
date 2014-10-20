@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -21,7 +22,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ILocationService _locationService;
 		private readonly IAccountService _accountService;
 		private readonly IPhoneService _phoneService;
-		private readonly IPaymentService _paymentService;
 		private readonly IRegisterWorkflowService _registrationService;
 
         public LoginViewModel(IFacebookService facebookService,
@@ -29,7 +29,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			ILocationService locationService,
 			IAccountService accountService,
 			IPhoneService phoneService,
-			IPaymentService paymentService,
 			IRegisterWorkflowService registrationService)
         {
 			_registrationService = registrationService;
@@ -39,7 +38,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_locationService = locationService;
 			_accountService = accountService;
 			_phoneService = phoneService;
-			_paymentService = paymentService;
         }
 
 	    public event EventHandler LoginSucceeded; 
@@ -232,7 +230,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					await _accountService.SignIn(Email, Password);   
                     Password = string.Empty;                    
-					OnLoginSuccess();
+					await OnLoginSuccess();
                 }
                 catch (AuthException e)
                 {
@@ -345,7 +343,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             await loginAction.Retry(TimeSpan.FromSeconds(1), 5); //retry because the account is maybe not yet created server-side
                         }
 
-                        OnLoginSuccess();
+                        await OnLoginSuccess();
                     }
                     catch (Exception ex)
                     {
@@ -393,11 +391,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			};
 
             // Load and cache company notification settings/payment settings
-            await _accountService.GetNotificationSettings(true, true); 
-			await _paymentService.GetPaymentSettings(true);
+			await Mvx.Resolve<IAccountService>().GetNotificationSettings(true, true); // resolve because the accountService injected in the constructor is not authorized here
+			await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
 
             // Log user session start
-            _accountService.LogApplicationStartUp();
+			Mvx.Resolve<IAccountService>().LogApplicationStartUp();
 
 			if (_viewIsStarted) 
 			{
@@ -411,9 +409,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private async Task<bool> NeedsToNavigateToAddCreditCard()
 		{
-            // Resolve via TinyIoC because we cannot pass it via the constructor since it the PaymentService needs
+            // Resolve here because we cannot pass it via the constructor since it the PaymentService needs
             // the user to be authenticated and it may not be when the class is initialized
-            var paymentSettings = await TinyIoC.TinyIoCContainer.Current.Resolve<IPaymentService>().GetPaymentSettings();
+            var paymentSettings = await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
 
 			if (this.Settings.CreditCardIsMandatory && paymentSettings.IsPayInTaxiEnabled)
 			{
