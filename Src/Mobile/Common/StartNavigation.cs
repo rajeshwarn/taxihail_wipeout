@@ -16,11 +16,14 @@ namespace apcurium.MK.Booking.Mobile
             MvxNavigatingObject,
             IMvxAppStart
     {
-		public void Start (object hint)
+		public async void Start (object hint)
         {
 			var @params = (Dictionary<string, string>)hint;
 
 			JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
+
+			// load the payment settings now
+			await Mvx.Resolve<IPaymentService> ().GetPaymentSettings(true);
 
 			var accountService = Mvx.Resolve<IAccountService> ();
 
@@ -46,9 +49,8 @@ namespace apcurium.MK.Booking.Mobile
                 var orderStatus = bookingService.GetOrderStatus (orderId);
 				var order = accountService.GetHistoryOrder(orderId);
                 
-				// Make sure to reload notification/payment settings even if the user has killed the app
+				// Make sure to reload notificationsettings even if the user has killed the app
 				accountService.GetNotificationSettings(true, true);
-				Mvx.Resolve<IPaymentService> ().GetPaymentSettings(true);
 
 				if (order != null && orderStatus != null) 
                 {
@@ -76,7 +78,6 @@ namespace apcurium.MK.Booking.Mobile
 
 				// Make sure to reload notification/payment settings even if the user has killed the app
 				accountService.GetNotificationSettings(true, true);
-				Mvx.Resolve<IPaymentService> ().GetPaymentSettings(true);
 
 				ShowViewModel<HomeViewModel>(new { locateUser =  true });
             }

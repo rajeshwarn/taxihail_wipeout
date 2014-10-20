@@ -27,6 +27,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social;
 using GoogleConversionTracking;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -77,6 +78,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			var setup = new Setup(this, window);
             setup.Initialize();
+
+            window.RootViewController = new SplashView();
 
             var appSettingsService = TinyIoCContainer.Current.Resolve<IAppSettings>();
             appSettingsService.Load();

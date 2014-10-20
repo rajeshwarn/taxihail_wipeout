@@ -374,7 +374,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService.ClearReferenceData();
         }
 
-		private void OnLoginSuccess()
+		private async Task OnLoginSuccess()
         {
             _loginWasSuccesful = true;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
@@ -393,8 +393,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			};
 
             // Load and cache company notification settings/payment settings
-            _accountService.GetNotificationSettings(true, true); 
-			_paymentService.GetPaymentSettings(true);
+            await _accountService.GetNotificationSettings(true, true); 
+			await _paymentService.GetPaymentSettings(true);
 
             // Log user session start
             _accountService.LogApplicationStartUp();
@@ -440,7 +440,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 try
                 {
 					await _accountService.GetFacebookAccount(info.Id);
-					OnLoginSuccess();
+					await OnLoginSuccess();
                 }
                 catch(Exception)
                 {
@@ -463,7 +463,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 try
                 {
 					await _accountService.GetTwitterAccount(info.Id);
-					OnLoginSuccess();
+					await OnLoginSuccess();
                 }
                 catch(Exception)
                 {
