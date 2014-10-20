@@ -182,10 +182,13 @@
     <Compile Include="Messages\BookUsingAddress.cs" />
     <Compile Include="Messages\CallboxOrderCreated.cs" />
     <Compile Include="Messages\CloseViewsToRoot.cs" />
+    <Compile Include="Messages\OrderStatusChanged.cs" />
+    <Compile Include="Messages\OrderConfirmed.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Messages\OrderDeleted.cs" />
     <Compile Include="Messages\OrderRated.cs" />
     <Compile Include="Messages\DateTimePicked.cs" />
-    <Compile Include="Messages\OrderConfirmed.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Models\RideSettingsModel.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />

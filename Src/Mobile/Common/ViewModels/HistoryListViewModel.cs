@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Common.Entity;
 using TinyMessenger;
-using Cirrious.CrossCore;
-using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -22,11 +20,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			_accountService = accountService;
 
-			_orderDeletedToken = this.Services().MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));  
+			_orderDeletedToken = this.Services().MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));
+            _orderStatusChangedToken = this.Services().MessengerHub.Subscribe<OrderStatusChanged>(c => OnOrderStatusChanged(c.Content, c.Status));
         }
 
 		private ObservableCollection<OrderViewModel> _orders;
+
 		private readonly TinyMessageSubscriptionToken _orderDeletedToken;
+        private readonly TinyMessageSubscriptionToken _orderStatusChangedToken;
 
 		public void Init()
 		{
@@ -60,6 +61,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+	    private void OnOrderStatusChanged(Guid orderId, OrderStatus status)
+	    {
+            Task.Factory.StartNew(() =>
+            {
+                var order = Orders.FirstOrDefault(o => o.Id == orderId);
+                if (order != null)
+                {
+                    order.Status = status;
+                }
+
+                Orders = new ObservableCollection<OrderViewModel>(Orders.Select(x => new OrderViewModel
+                {
+                    IBSOrderId = x.IBSOrderId,
+                    Id = x.Id,
+                    CreatedDate = x.CreatedDate,
+                    PickupAddress = x.PickupAddress,
+                    PickupDate = x.PickupDate,
+                    Status = x.Status,
+                    Title = FormatDateTime(x.PickupDate),
+                    IsFirst = x.Equals(Orders.First()),
+                    IsLast = x.Equals(Orders.Last()),
+                    ShowRightArrow = true
+                }));
+                HasOrders = Orders.Any();
+            });
+	    }
+
         private void OnOrderDeleted(Guid orderId)
         {
             Task.Factory.StartNew(() =>
@@ -87,7 +115,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			await LoadOrders ();
 		}
 
-		public async Task LoadOrders ()
+	    public async Task LoadOrders ()
 		{
 			using (this.Services().Message.ShowProgress())
 			{
@@ -134,7 +162,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             base.OnViewUnloaded ();
             this.Services().MessengerHub.Unsubscribe<OrderDeleted>(_orderDeletedToken);
+            this.Services().MessengerHub.Unsubscribe<OrderStatusChanged>(_orderStatusChangedToken);
         }
-
     }
 }
