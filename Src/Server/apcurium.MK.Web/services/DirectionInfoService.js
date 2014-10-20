@@ -1,7 +1,7 @@
 ﻿(function () {
 
     TaxiHail.directionInfo = _.extend({}, Backbone.Events, {
-        getInfo: function (originLat, originLng, destinationLat, destinationLng, date) {
+        getInfo: function (originLat, originLng, destinationLat, destinationLng, vehicleTypeId, date) {
 
             var preferedPrice = null, tempPrice = null;
 
@@ -10,6 +10,7 @@
                 originLng: originLng,
                 destinationLat: destinationLat,
                 destinationLng: destinationLng,
+                vehicleTypeId: vehicleTypeId,
                 date: date
             }, tarifMode = TaxiHail.parameters.directionTarifMode, needAValidTarif = TaxiHail.parameters.directionNeedAValidTarif, fmt = 'json';
 
