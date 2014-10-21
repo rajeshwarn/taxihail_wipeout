@@ -166,7 +166,9 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
         {
             var client = new JsonServiceClient(MapsServiceUrl);
 
-			var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=true&language={1}", address, currentLanguage);
+			var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=true&language={1}&key={2}",
+                address, currentLanguage, _settings.Data.GoogleMapKey);
+
             _logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
 
             var result = client.Get<GeoResult>(resource);
@@ -184,12 +186,11 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
         {
             var client = new JsonServiceClient(MapsServiceUrl);
 
-			var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?latlng={0},{1}&sensor=true&language={2}",
-				latitude, longitude, currentLanguage);
+			var resource = string.Format(CultureInfo.InvariantCulture,"geocode/json?latlng={0},{1}&sensor=true&language={2}&key={3}",
+                latitude, longitude, currentLanguage, _settings.Data.GoogleMapKey);
 
             _logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
 
-            
             var result = client.Get<GeoResult>(resource);
 			if ( (result.Status == ResultStatus.OVER_QUERY_LIMIT || result.Status == ResultStatus.REQUEST_DENIED) && (_fallbackGeocoder != null )) {
 				return _fallbackGeocoder.GeocodeLocation (latitude, longitude, currentLanguage);
