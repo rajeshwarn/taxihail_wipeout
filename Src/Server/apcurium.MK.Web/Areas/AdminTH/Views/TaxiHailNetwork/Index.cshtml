@@ -1,12 +1,39 @@
 ﻿@model List<CustomerPortal.Contract.Resources.CompanyPreference>
-   
-<div id="validationPanel" class="alert-success alert" style="display: none" > </div>
-       
+
+<style>
+    .sortable {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 60%;
+    }
+
+    .handle {
+        cursor: move;
+    }
+
+    .sortable li {
+        list-style: none;
+        border: 1px solid #CCC;
+        background: #F6F6F6;
+        color: #1C94C4;
+        margin: 5px;
+        padding: 5px;
+        height: 22px;
+    }
+</style>
+
+<div id="validationPanel" class="alert-success alert" style="display: none"> </div>
+
+
 @using (Html.BeginForm("Index", "TaxiHailNetwork", FormMethod.Post, new { id = "taxiHailNetworkForm" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-    if (Model.Count >0 )
+
+
+
+    if (Model.Count > 0)
     {
         <table class="table table-striped">
             <tr>
@@ -14,23 +41,20 @@
                 <th>Can Accept</th>
                 <th>Can Dispatch</th>
             </tr>
+        </table>
+        <ul class="sortable">
             @foreach (var company in Model)
             {
-            
-                <tr>
-                    <td>
-                        @company.CompanyKey
-                        @Html.Hidden("idKey_" + company.CompanyKey, company.CompanyKey)
-                    </td>
-                    <td>
-                        @Html.CheckBox("acceptKey_" + company.CompanyKey, company.CanAccept)
-                    </td>
-                    <td>
-                        @Html.CheckBox("dispatchKey_" + company.CompanyKey, company.CanDispatch)
-                    </td>
-                </tr>
+
+                <li>
+                    <span class="handle">::</span>
+                    @company.CompanyKey
+                    @Html.Hidden("idKey_" + company.CompanyKey, company.CompanyKey)
+                    @Html.CheckBox("acceptKey_" + company.CompanyKey, company.CanAccept)
+                    @Html.CheckBox("dispatchKey_" + company.CompanyKey, company.CanDispatch)
+                </li>
             }
-        </table>
+        </ul>
 
         <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick=" save()">Save</a>
     }
@@ -39,41 +63,45 @@
         <h4>You don't have any companies within your Network</h4>
     }
 }
+<script>
+    $('.sortable').sortable({
+        handle: '.handle'
+    });
+</script>
 
-        <script type="text/javascript">
+<script type="text/javascript">
 
-
-            function displayValidationMessage(control, message, valid) {
-                var html = ' <button type="button" id="validationClose" class="close" data-dismiss="alert" onclick="this.parentNode.style.display=\'none\'">&times;</button>';
-                if (valid) {
-                    if (control.hasClass("alert-danger")) {
-                        control.removeClass("alert-danger");
-                    }
-                    control.addClass("alert-success");
-                } else {
-                    if (control.hasClass("alert-success")) {
-                        control.removeClass("alert-success");
-                    }
-                    control.addClass("alert-danger");
-                }
-
-                control.html(html + message);
-                control.css("display", "block");
-                setTimeout(function () { control.css("display", "none") }, 2000);
+    function displayValidationMessage(control, message, valid) {
+        var html = ' <button type="button" id="validationClose" class="close" data-dismiss="alert" onclick="this.parentNode.style.display=\'none\'">&times;</button>';
+        if (valid) {
+            if (control.hasClass("alert-danger")) {
+                control.removeClass("alert-danger");
             }
-
-            function save() {
-                var form = $('#taxiHailNetworkForm');
-                var panel = $('#validationPanel');
-
-                $.ajax({
-                    type: "POST",
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function (response) {
-
-                        displayValidationMessage(panel, response.Message, response.Success);
-                    }
-                });
+            control.addClass("alert-success");
+        } else {
+            if (control.hasClass("alert-success")) {
+                control.removeClass("alert-success");
             }
-        </script>
+            control.addClass("alert-danger");
+        }
+
+        control.html(html + message);
+        control.css("display", "block");
+        setTimeout(function () { control.css("display", "none") }, 2000);
+    }
+
+    function save() {
+        var form = $('#taxiHailNetworkForm');
+        var panel = $('#validationPanel');
+
+        $.ajax({
+            type: "POST",
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function (response) {
+
+                displayValidationMessage(panel, response.Message, response.Success);
+            }
+        });
+    }
+</script>
