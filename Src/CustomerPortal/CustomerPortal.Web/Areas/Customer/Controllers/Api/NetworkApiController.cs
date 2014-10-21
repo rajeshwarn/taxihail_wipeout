@@ -53,10 +53,13 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     });
                 }
             }
-            
+            var sortedCompanyPreferences = networkSettings.Preferences
+                .OrderBy(p => p.Order==null)
+                .ThenBy(p => p.Order);
             var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(JsonConvert.SerializeObject(networkSettings.Preferences))
+
+                Content = new StringContent(JsonConvert.SerializeObject(sortedCompanyPreferences))
             };
             return response;
         }
