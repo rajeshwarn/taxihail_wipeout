@@ -30,6 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			var latitude = bestPosition != null ? bestPosition.Latitude : settings.DefaultLatitude;
 			var longitude = bestPosition != null ? bestPosition.Longitude : settings.DefaultLongitude;
 
+
             Map.MapType = GoogleMap.MapTypeNormal;
             Map.MoveCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(latitude, longitude) , 12f));
 
