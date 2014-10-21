@@ -377,11 +377,11 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 {
                     Repository.Update(company);
                 }
-                return PartialView(company);
+                return RedirectToAction("Index", "Home", new { area = "Customer", companyId = id });
             }
             catch
             {
-                return PartialView(company);
+                return RedirectToAction("Index", "Home", new { area = "Customer", companyId = id });
             }
         }
 

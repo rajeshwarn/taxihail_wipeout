@@ -301,14 +301,20 @@
 
 // Show/hide tabbable areas
 .tab-content > .tab-pane,
+
+.tab-content > .tab-pane,
 .pill-content > .pill-pane {
-  display: none;
-}
-.tab-content > .active,
-.pill-content > .active {
-  display: block;
+  visibility:hidden;
+  position:absolute;
+  left: -10000px;
 }
 
+.tab-content > .active,
+.pill-content > .active {
+  visibility:visible !important;
+  position:relative !important;
+  left:0;
+}
 
 // BOTTOM
 // ------
