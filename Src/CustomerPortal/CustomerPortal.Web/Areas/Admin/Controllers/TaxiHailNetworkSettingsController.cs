@@ -46,9 +46,9 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 {
                     foreach (var taxiHailNetworkSettings in Repository)
                     {
-                        if (taxiHailNetworkSettings.Preferences.Any(x => x.CompanyKey == model.CompanyKey))
+                        var preference = taxiHailNetworkSettings.Preferences.FirstOrDefault(x => x.CompanyKey == model.Id);
+                        if (preference!=null)
                         {
-                            var preference = taxiHailNetworkSettings.Preferences.First(x => x.CompanyKey == model.CompanyKey);
                             taxiHailNetworkSettings.Preferences.Remove(preference);
                             Repository.Update(taxiHailNetworkSettings);
                         }
