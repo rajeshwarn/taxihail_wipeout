@@ -1,6 +1,7 @@
 using System;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Common.Configuration.Impl;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -10,7 +11,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
         void SetPaymentFromCache(Guid orderId, double amount);     
 
-		ClientPaymentSettings GetPaymentSettings(bool cleanCache = false);
+		Task<ClientPaymentSettings> GetPaymentSettings(bool cleanCache = false);
 
 		void ClearPaymentSettingsFromCache();
     }

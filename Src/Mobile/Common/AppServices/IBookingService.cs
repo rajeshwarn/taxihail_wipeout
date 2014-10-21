@@ -14,8 +14,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
        
 		string GetFareEstimateDisplay(DirectionInfo direction);
 
-        bool IsCompleted(Guid orderId);
-
         bool IsStatusCompleted(string statusId);
 
         bool IsStatusTimedOut(string statusId);
@@ -42,8 +40,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Task<OrderValidationResult> ValidateOrder (CreateOrder order);
 
-		[Obsolete("Migrate to async/await")]
-		OrderStatusDetail GetOrderStatus(Guid orderId);
 		Task<OrderStatusDetail> GetOrderStatusAsync(Guid orderId);
         
 		Task<OrderStatusDetail> GetLastOrderStatus();

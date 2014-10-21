@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -229,7 +230,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					await _accountService.SignIn(Email, Password);   
                     Password = string.Empty;                    
-					OnLoginSuccess();
+					await OnLoginSuccess();
                 }
                 catch (AuthException e)
                 {
@@ -342,7 +343,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             await loginAction.Retry(TimeSpan.FromSeconds(1), 5); //retry because the account is maybe not yet created server-side
                         }
 
-                        OnLoginSuccess();
+                        await OnLoginSuccess();
                     }
                     catch (Exception ex)
                     {
@@ -364,21 +365,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public void SetServerUrl(string serverUrl)
+        public async void SetServerUrl(string serverUrl)
         {
-			this.Container.Resolve<IAppSettings>().ChangeServerUrl(serverUrl);
-            this.Services().ApplicationInfo.ClearAppInfo();
-			_accountService.ClearReferenceData();
+			using (this.Services().Message.ShowProgress())
+			{
+				await this.Container.Resolve<IAppSettings>().ChangeServerUrl(serverUrl);
+				this.Services().ApplicationInfo.ClearAppInfo();
+				_accountService.ClearReferenceData();
+			}
         }
 
-		private void OnLoginSuccess()
+		private async Task OnLoginSuccess()
         {
             _loginWasSuccesful = true;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
 
-			Action showNextView = () => 
+			Action showNextView = async () => 
             {
-				if (NeedsToNavigateToAddCreditCard ()) {
+				if (await NeedsToNavigateToAddCreditCard ()) {
 					ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel> (new { showInstructions = true, isMandatory = true });
 					return;
 				}
@@ -389,11 +393,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 			};
 
-            // Load and cache company notification settings
-            _accountService.GetNotificationSettings(true, true); 
+            // Load and cache company notification settings/payment settings
+			await Mvx.Resolve<IAccountService>().GetNotificationSettings(true, true); // resolve because the accountService injected in the constructor is not authorized here
+			await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
 
             // Log user session start
-            _accountService.LogApplicationStartUp();
+			Mvx.Resolve<IAccountService>().LogApplicationStartUp();
 
 			if (_viewIsStarted) 
 			{
@@ -405,11 +410,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		private bool NeedsToNavigateToAddCreditCard()
+		private async Task<bool> NeedsToNavigateToAddCreditCard()
 		{
-            // Resolve via TinyIoC because we cannot pass it via the constructor since it the PaymentService needs
+            // Resolve here because we cannot pass it via the constructor since it the PaymentService needs
             // the user to be authenticated and it may not be when the class is initialized
-            var paymentSettings = TinyIoC.TinyIoCContainer.Current.Resolve<IPaymentService>().GetPaymentSettings();
+            var paymentSettings = await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
 
 			if (this.Settings.CreditCardIsMandatory && paymentSettings.IsPayInTaxiEnabled)
 			{
@@ -436,7 +441,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 try
                 {
 					await _accountService.GetFacebookAccount(info.Id);
-					OnLoginSuccess();
+					await OnLoginSuccess();
                 }
                 catch(Exception)
                 {
@@ -459,7 +464,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 try
                 {
 					await _accountService.GetTwitterAccount(info.Id);
-					OnLoginSuccess();
+					await OnLoginSuccess();
                 }
                 catch(Exception)
                 {

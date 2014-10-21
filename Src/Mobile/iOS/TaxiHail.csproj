@@ -557,6 +557,7 @@
     <BundleResource Include="Resources\map_smallicon_background.png" />
     <BundleResource Include="Resources\map_smallicon_background%402x.png" />
     <BundleResource Include="es.lproj\Localizable.strings" />
+    <Compile Include="Views\SplashView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

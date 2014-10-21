@@ -8,7 +8,6 @@ using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
-using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -16,22 +15,21 @@ namespace apcurium.MK.Booking.Mobile
             MvxNavigatingObject,
             IMvxAppStart
     {
-		public void Start (object hint)
+		public async void Start (object hint)
         {
 			var @params = (Dictionary<string, string>)hint;
 
 			JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
 
-			var creditCardIsMandatory = TinyIoCContainer.Current.Resolve<IAppSettings>().Data.CreditCardIsMandatory;
-			var currentAccount = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
+			await Mvx.Resolve<IAppSettings>().Load();
 
-			if (currentAccount == null 
-				|| (creditCardIsMandatory 
-					&& !currentAccount.DefaultCreditCard.HasValue))
+			if (Mvx.Resolve<IAccountService>().CurrentAccount == null 
+				|| (Mvx.Resolve<IAppSettings> ().Data.CreditCardIsMandatory 
+					&& !Mvx.Resolve<IAccountService>().CurrentAccount.DefaultCreditCard.HasValue))
 			{
-				if (currentAccount != null)
+				if (Mvx.Resolve<IAccountService>().CurrentAccount != null)
 				{
-					TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();
+					Mvx.Resolve<IAccountService>().SignOut();
 				}
 
 				ShowViewModel<LoginViewModel>();
@@ -42,14 +40,12 @@ namespace apcurium.MK.Booking.Mobile
                 bool isPairingNotification;
                 bool.TryParse(@params["isPairingNotification"], out isPairingNotification);
 
-				var accountService = Mvx.Resolve<IAccountService> ();
-				var bookingService = Mvx.Resolve<IBookingService> ();
+				// Make sure to reload notification/payment settings even if the user has killed the app
+				await Mvx.Resolve<IAccountService>().GetNotificationSettings(true, true);
+				await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
                 
-                var orderStatus = bookingService.GetOrderStatus (orderId);
-				var order = accountService.GetHistoryOrder(orderId);
-                
-				// Make sure to reload notification settings even if the user has killed the app
-				accountService.GetNotificationSettings(true, true);
+				var orderStatus = await Mvx.Resolve<IBookingService>().GetOrderStatusAsync (orderId);
+				var order = await Mvx.Resolve<IAccountService>().GetHistoryOrderAsync(orderId);
 
 				if (order != null && orderStatus != null) 
                 {
@@ -72,16 +68,17 @@ namespace apcurium.MK.Booking.Mobile
             }
             else
             {
-                // Log user session start
-                TinyIoCContainer.Current.Resolve<IAccountService>().LogApplicationStartUp();
+				// Make sure to reload notification/payment settings even if the user has killed the app
+				await Mvx.Resolve<IAccountService>().GetNotificationSettings(true, true);
+				await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
 
-				// Make sure to reload notification settings even if the user has killed the app
-				TinyIoCContainer.Current.Resolve<IAccountService>().GetNotificationSettings (true, true);
+                // Log user session start
+				Mvx.Resolve<IAccountService>().LogApplicationStartUp();
 
 				ShowViewModel<HomeViewModel>(new { locateUser =  true });
             }
 
-			TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Startup with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().Data.ServiceUrl);
+			Mvx.Resolve<ILogger>().LogMessage("Startup with server {0}", Mvx.Resolve<IAppSettings>().Data.ServiceUrl);
         }
 
         public bool ApplicationCanOpenBookmarks

@@ -72,14 +72,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_phoneCallTask.MakePhoneCall (name, number);
         }
 
-        public OrderStatusDetail GetOrderStatus (Guid orderId)
-        {
-			//TODO: Migrate code to async/await
-			var task = GetOrderStatusAsync(orderId);
-			task.Wait();
-			return task.Result;
-        }
-
 		public Task<OrderStatusDetail> GetOrderStatusAsync (Guid orderId)
 		{
 			return UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.GetOrderStatus(orderId));
@@ -150,13 +142,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			UseServiceClientTask<OrderServiceClient> (service => service.RemoveFromHistory (orderId));
         }
-
-        public bool IsCompleted (Guid orderId)
-        {
-            var status = GetOrderStatus (orderId);
-			return IsStatusCompleted (status.IBSStatusId);
-        }
-
+			
         public bool IsStatusTimedOut(string statusId)
         {
             return statusId != null && statusId.SoftEqual(VehicleStatuses.Common.Timeout);

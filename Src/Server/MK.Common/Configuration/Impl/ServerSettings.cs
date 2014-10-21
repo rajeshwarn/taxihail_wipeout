@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
@@ -56,12 +57,13 @@ namespace apcurium.MK.Common.Configuration.Impl
         public TaxiHailSetting Data { get { return ServerData; } }
         public ServerTaxiHailSetting ServerData { get; private set; }
 
-        public void Load()
+        public Task Load()
         {
             SettingsLoader.InitializeDataObjects(ServerData, GetSettings(), _logger);
+            return Task.FromResult(true);
         }
 
-        public void ChangeServerUrl(string serverUrl)
+        public Task ChangeServerUrl(string serverUrl)
         {
             throw new NotImplementedException();
         }

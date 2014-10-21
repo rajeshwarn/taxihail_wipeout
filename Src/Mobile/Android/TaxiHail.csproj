@@ -35,6 +35,8 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <DebugSymbols>True</DebugSymbols>
     <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <AndroidSupportedAbis>armeabi-v7a;x86</AndroidSupportedAbis>
+    <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -49,7 +51,6 @@
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidSupportedAbis>armeabi,armeabi-v7a</AndroidSupportedAbis>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkSkip>
     </AndroidLinkSkip>
     <AndroidStoreUncompressedFileExtensions>
@@ -58,6 +59,7 @@
     </JavaOptions>
     <MonoDroidExtraArgs>
     </MonoDroidExtraArgs>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cirrious.CrossCore">

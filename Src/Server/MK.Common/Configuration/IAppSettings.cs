@@ -1,4 +1,5 @@
 using MK.Common.Configuration;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Common.Configuration
 {
@@ -6,8 +7,8 @@ namespace apcurium.MK.Common.Configuration
 	{
 		TaxiHailSetting Data { get; }
         
-		void Load();
-        void ChangeServerUrl(string serverUrl);
+		Task Load();
+        Task ChangeServerUrl(string serverUrl);
 	}
 }
 
