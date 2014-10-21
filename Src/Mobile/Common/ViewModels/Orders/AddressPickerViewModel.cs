@@ -172,6 +172,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
                     this.Services().Message.ShowProgressNonModal(false);
 					var detailedAddress = UpdateAddressWithPlaceDetail(vm.Address);
+                    _orderWorkflowService.SetIgnoreNextGeoLocResult(true);
 
 					if(_isInLocationDetail)
 					{

@@ -48,6 +48,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
 
         private bool _isOrderRebooked;
+	    private bool _ignoreNextGeoLocResult;
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -90,15 +91,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		    var position = await _locationService.GetUserPosition();
 		    if (position == null)
 		    {
-                //this.Services().Message.ShowToast("Cant find location, please try again", ToastDuration.Short);
                 _loadingAddressSubject.OnNext(false);
                 return new Address();
 		    }
 
             var address = await SearchAddressForCoordinate(position);
-            await SetAddressToCurrentSelection(address);
 
-            return address;
+		    if (!_ignoreNextGeoLocResult)
+		    {
+                await SetAddressToCurrentSelection(address);
+		        return address;
+		    }
+		    return new Address();
 		}
 
         public async Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken)
@@ -711,6 +715,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	    {
 	        _isOrderRebooked = false;
 	    }
+
+        public void SetIgnoreNextGeoLocResult(bool ignoreNextGeoLocResult)
+        {
+            _ignoreNextGeoLocResult = ignoreNextGeoLocResult;
+        }
     }
 }
 

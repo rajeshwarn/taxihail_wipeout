@@ -31,8 +31,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
                     network = new TaxiHailNetworkSettings
                     {
-                        CompanyKey = company.CompanyKey,
-                        Id = company.Id
+                        Id = company.CompanyKey
                     };
             }
             return PartialView(network);
@@ -43,6 +42,19 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (!model.IsInNetwork)
+                {
+                    foreach (var taxiHailNetworkSettings in Repository)
+                    {
+                        var preference = taxiHailNetworkSettings.Preferences.FirstOrDefault(x => x.CompanyKey == model.Id);
+                        if (preference!=null)
+                        {
+                            taxiHailNetworkSettings.Preferences.Remove(preference);
+                            Repository.Update(taxiHailNetworkSettings);
+                        }
+                    }
+                }
+
                 Repository.Update(model);
                 return Json(new { Success = true, Message = "Changes Saved" });
             }

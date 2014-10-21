@@ -30,7 +30,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
 
             _chrisTaxi = new TaxiHailNetworkSettings()
             {
-                CompanyKey = "ChrisTaxi",
                 Id = "ChrisTaxi",
                 IsInNetwork = true,
                 Region = new MapRegion()
@@ -42,7 +41,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             };
             _chrisTaxiBis = new TaxiHailNetworkSettings()
             {
-                CompanyKey = "ChrisTaxiBis",
                 Id = "ChrisTaxiBis",
                 IsInNetwork = true,
                 Region = new MapRegion()
@@ -55,7 +53,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
 
             _tonyTaxi = new TaxiHailNetworkSettings()
             {
-                CompanyKey = "TonyTaxi",
                 Id = "TonyTaxi",
                 IsInNetwork = true,
                 Region = new MapRegion()
@@ -68,7 +65,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             _tomTaxi = new TaxiHailNetworkSettings()
             {
                 //same Longitude as TonyTaxi
-                CompanyKey = "TomTaxi",
                 Id = "TomTaxi",
                 IsInNetwork = true,
                 Region = new MapRegion()
@@ -81,7 +77,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             _pilouTaxi = new TaxiHailNetworkSettings()
             {
                 //Same Latitude as ChrisTaxi and Chris TaxiBis
-                CompanyKey = "PilouTaxi",
                 Id = "PilouTaxi",
                 IsInNetwork = true,
                 Region = new MapRegion()
@@ -94,7 +89,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             _lastTaxi = new TaxiHailNetworkSettings()
             {
                 //Overlap ChrisTaxi and ChrisTaxiBis
-                CompanyKey = "LastTaxi",
                 Id = "LastTaxi",
                 IsInNetwork = true,
                 Region = new MapRegion()
@@ -186,7 +180,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             var json = response.Content.ReadAsStringAsync().Result;
             var chrisPreferences = JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
 
-            var tony = chrisPreferences.FirstOrDefault(p => p.CompanyKey == _tonyTaxi.CompanyKey);
+            var tony = chrisPreferences.FirstOrDefault(p => p.CompanyKey == _tonyTaxi.Id);
             Assert.NotNull(tony,"Precondition Failed");
             Assert.False(tony.CanAccept, "Precondition Failed");
             Assert.False(tony.CanDispatch, "Precondition Failed");
@@ -201,7 +195,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             json = response.Content.ReadAsStringAsync().Result;
             chrisPreferences = JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
 
-            tony = chrisPreferences.FirstOrDefault(p => p.CompanyKey == _tonyTaxi.CompanyKey);
+            tony = chrisPreferences.FirstOrDefault(p => p.CompanyKey == _tonyTaxi.Id);
             Assert.NotNull(tony);
             Assert.True(tony.CanAccept );
             Assert.True(tony.CanDispatch);
