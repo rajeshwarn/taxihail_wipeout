@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Common.Tests
         public Task Load()
         {
             //done in the ctor
-            return null;
+            return Task.FromResult(true);
         }
 
         public Task ChangeServerUrl(string serverUrl)

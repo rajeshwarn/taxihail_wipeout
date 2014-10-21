@@ -60,7 +60,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         public Task Load()
         {
             SettingsLoader.InitializeDataObjects(ServerData, GetSettings(), _logger);
-            return null;
+            return Task.FromResult(true);
         }
 
         public Task ChangeServerUrl(string serverUrl)
