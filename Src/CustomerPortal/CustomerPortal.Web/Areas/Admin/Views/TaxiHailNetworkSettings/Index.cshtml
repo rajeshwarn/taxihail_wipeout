@@ -1,6 +1,5 @@
 ﻿@model CustomerPortal.Web.Entities.Network.TaxiHailNetworkSettings
 
-<div id="ul-wrapper">
     
     <div id="validationPanel" class="alert-success alert" style="display: none" > </div>
 
@@ -17,13 +16,13 @@
             </legend>
             <div class="editor-coordinate-field">
                 @Html.LabelFor(x => x.Region.CoordinateStart)
-                @Html.TextBoxFor(x => x.Region.CoordinateStart.Latitude, new { id = "StartLatitude", onkeyup = "coordinatesChanged()", placeholder = "Latitude"  })
-                @Html.TextBoxFor(x => x.Region.CoordinateStart.Longitude, new { id = "StartLongitude", onkeyup = "coordinatesChanged()", placeholder = "Longitude" })
+                @Html.TextBoxFor(x => x.Region.CoordinateStart.Latitude, new { id = "StartLatitude", placeholder = "Latitude"  })
+                @Html.TextBoxFor(x => x.Region.CoordinateStart.Longitude, new { id = "StartLongitude", placeholder = "Longitude" })
             </div>
             <div class="editor-coordinate-field">
                 @Html.LabelFor(x => x.Region.CoordinateEnd)
-                @Html.TextBoxFor(x => x.Region.CoordinateEnd.Latitude, new { id = "EndLatitude", onkeyup = "coordinatesChanged()", placeholder = "Latitude" })
-                @Html.TextBoxFor(x => x.Region.CoordinateEnd.Longitude, new { id = "EndLongitude", onkeyup = "coordinatesChanged()", placeholder = "Longitude" })
+                @Html.TextBoxFor(x => x.Region.CoordinateEnd.Latitude, new { id = "EndLatitude", placeholder = "Latitude" })
+                @Html.TextBoxFor(x => x.Region.CoordinateEnd.Longitude, new { id = "EndLongitude",placeholder = "Longitude" })
             </div>
         </fieldset>
 
@@ -41,9 +40,10 @@
 
     <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick="save()">Save</a>
     }
-</div>
+     
+    <div id="map-canvas"  style="height:320px;width: 600px"></div>
 
-<div id="map-canvas" style="height:320px"></div>
+
 
 <script type="text/javascript">
 
@@ -68,6 +68,7 @@
     }
 
     function save() {
+        coordinatesChanged();
         var form = $('#taxiHailNetworkForm');
         var panel = $('#validationPanel');
 
@@ -87,9 +88,9 @@
 
     function initialize() {
         map = new google.maps.Map(document.getElementById('map-canvas'), {
-            zoom: 11,
+            zoom: 10,
             center: new google.maps.LatLng(45.514466, -73.846313),
-            mapTypeId: google.maps.MapTypeId.TERRAIN
+            disableDefaultUI: true
         });
         coordinatesChanged();
     }
@@ -102,26 +103,31 @@
         var startLon = $("#StartLongitude").val();
         var endLat = $("#EndLatitude").val();
         var endLon = $("#EndLongitude").val();
-        
-        var bounds = new google.maps.LatLngBounds(
-            new google.maps.LatLng(startLat, startLon),
-            new google.maps.LatLng(endLat, endLon));
+        var form = $('#taxiHailNetworkForm');
 
-        if (mapRegion) {
-            mapRegion.setBounds(bounds);
-        } else {
-            mapRegion = new google.maps.Rectangle({
-                strokeColor: '#FF0000',
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: '#FF0000',
-                fillOpacity: 0.35,
-                map: map,
-                bounds: bounds
-            });
-        }
+        if (form.valid())
+        {
+
+            var bounds = new google.maps.LatLngBounds(
+                new google.maps.LatLng(startLat, startLon),
+                new google.maps.LatLng(endLat, endLon));
+
+            if (mapRegion) {
+                mapRegion.setBounds(bounds);
+            } else {
+                mapRegion = new google.maps.Rectangle({
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.35,
+                    map: map,
+                    bounds: bounds
+                });
+            }
         
-        map.fitBounds(bounds);
+            map.fitBounds(bounds);
+        }
     }
 
 
