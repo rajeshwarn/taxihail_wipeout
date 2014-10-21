@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -63,50 +64,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 	    private void OnOrderStatusChanged(Guid orderId, OrderStatus status)
 	    {
-            Task.Factory.StartNew(() =>
+            var order = Orders.FirstOrDefault(o => o.Id == orderId);
+            if (order != null)
             {
-                var order = Orders.FirstOrDefault(o => o.Id == orderId);
-                if (order != null)
-                {
-                    order.Status = status;
-                }
-
-                Orders = new ObservableCollection<OrderViewModel>(Orders.Select(x => new OrderViewModel
-                {
-                    IBSOrderId = x.IBSOrderId,
-                    Id = x.Id,
-                    CreatedDate = x.CreatedDate,
-                    PickupAddress = x.PickupAddress,
-                    PickupDate = x.PickupDate,
-                    Status = x.Status,
-                    Title = FormatDateTime(x.PickupDate),
-                    IsFirst = x.Equals(Orders.First()),
-                    IsLast = x.Equals(Orders.Last()),
-                    ShowRightArrow = true
-                }));
-                HasOrders = Orders.Any();
-            });
+                order.Status = status;
+            }
 	    }
 
         private void OnOrderDeleted(Guid orderId)
         {
-            Task.Factory.StartNew(() =>
-            {
-                Orders = new ObservableCollection<OrderViewModel>(Orders.Where(order=>!order.Id.Equals(orderId)).Select(x => new OrderViewModel
-                {
-                    IBSOrderId = x.IBSOrderId,
-                    Id = x.Id,
-                    CreatedDate = x.CreatedDate,
-                    PickupAddress = x.PickupAddress,
-                    PickupDate = x.PickupDate,
-                    Status = x.Status,
-                    Title = FormatDateTime( x.PickupDate ), // piString.Format(titleFormat, x.IBSOrderId.ToString(), x.PickupDate),
-                    IsFirst = x.Equals(Orders.First()),
-                    IsLast = x.Equals(Orders.Last()),
-                    ShowRightArrow = true
-                }));
-                HasOrders = Orders.Any();
-            });
+            Orders.Remove(x => x.Id == orderId);
+            HasOrders = Orders.Any();
         }
 
 		public async override void OnViewLoaded()
