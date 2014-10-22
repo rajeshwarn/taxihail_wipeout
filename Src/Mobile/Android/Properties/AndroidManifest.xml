@@ -25,7 +25,7 @@
 		<activity android:name="io.card.payment.CardIOActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name="io.card.payment.DataEntryActivity" />
 	</application>
-	<uses-sdk android:minSdkVersion="10" android:targetSdkVersion="17" />
+	<uses-sdk android:minSdkVersion="10" />
 	<permission android:name="com.apcurium.MK.TaxiHailDemo.permission.C2D_MESSAGE" android:protectionLevel="signature" />
 	<!-- App receives GCM messages. -->
 	<!-- GCM connects to Google Services. -->
@@ -55,6 +55,8 @@
 	<uses-permission android:name="android.permission.MAPS_RECEIVE" />
 	<!-- card.io -->
 	<uses-permission android:name="android.permission.CAMERA" />
+	<uses-permission android:name="android.permission.READ_LOGS" />
+	<uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
 	<uses-feature android:name="android.hardware.camera" android:required="false" />
 	<uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 	<uses-feature android:name="android.hardware.camera.flash" android:required="false" />

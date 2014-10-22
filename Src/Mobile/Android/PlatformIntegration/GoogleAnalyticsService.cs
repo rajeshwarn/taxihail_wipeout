@@ -8,9 +8,10 @@ using Exception = System.Exception;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
+    // V2
     public class GoogleAnalyticsService : IAnalyticsService
     {
-        #region IAnaliticsService implementation
+        private Tracker Tracker { get; set; }
 
         public GoogleAnalyticsService(Context c, IPackageInfo packageInfo, IAppSettings settings, ILogger logger)
         {
@@ -18,11 +19,14 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 GAServiceManager.Instance.SetDispatchPeriod(20);
 
-                var g = Com.Google.Analytics.Tracking.Android.GoogleAnalytics.GetInstance(c);
-                g.SetDebug(true);
+                var instance = Com.Google.Analytics.Tracking.Android.GoogleAnalytics.GetInstance(c);
 
-                Tracker = g.GetTracker("UA-44714416-1");
+                // Prevent testing/debugging data from being sent to GA
+                #if DEBUG
+                instance.SetDebug(true);
+                #endif
 
+                Tracker = instance.GetTracker("UA-44714416-1");
                 Tracker.SetAppName(settings.Data.TaxiHail.ApplicationName.Replace(' ', '_'));
                 Tracker.SetAppVersion(packageInfo.Version);
             }
@@ -31,8 +35,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 logger.LogError(ex);
             }
         }
-
-        private Tracker Tracker { get; set; }
 
         public void LogViewModel(string name)
         {
@@ -58,11 +60,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             Tracker.TrackException(className + ":" + methodName + ": " + e.Message, isFatal);
         }
-
         public void ReportConversion()
         {
             // nothing to do, android does it for us
         }
-        #endregion
     }
 }
