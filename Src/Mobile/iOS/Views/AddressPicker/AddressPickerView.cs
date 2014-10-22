@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 {
@@ -82,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             AddressEditText.OnKeyDown()
                 .Throttle(TimeSpan.FromMilliseconds(700))
                 .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(text => ViewModel.TextSearchCommand.Execute(text));
+                .Subscribe(text => ViewModel.TextSearchCommand.ExecuteIfPossible(text));
 				
             var set = this.CreateBindingSet<AddressPickerView, AddressPickerViewModel> ();
 

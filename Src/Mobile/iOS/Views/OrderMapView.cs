@@ -349,10 +349,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .Subscribe(ep =>
             {
                 var bounds = GetMapBoundsFromProjection();
-                if (UserMovedMap != null && UserMovedMap.CanExecute(bounds))
-                {
-                    UserMovedMap.Execute(bounds);
-                }
+                
+                UserMovedMap.ExecuteIfPossible(bounds);                
             });
         }
 

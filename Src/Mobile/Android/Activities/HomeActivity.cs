@@ -20,6 +20,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -122,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void PanelMenuSignOutClick(object sender, EventArgs e)
         {
-            ViewModel.Panel.SignOut.Execute(null);
+            ViewModel.Panel.SignOut.ExecuteIfPossible();
             Observable.Return(Unit.Default).Delay(TimeSpan.FromSeconds(1)).Subscribe(x => { Finish(); });
         }
 
@@ -316,7 +317,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 if (_locateUserOnStart)
                 {
                     // this happens ONLY when returning from a ride
-                    ViewModel.AutomaticLocateMeAtPickup.Execute(null);
+                    ViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible(null);
                     _locateUserOnStart = false;
                 }
             }
@@ -365,11 +366,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (requestCode == (int)ActivityEnum.DateTimePicked && resultCode == Result.Ok)
             {             
                 DateTime dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
-                ViewModel.BottomBar.SetPickupDateAndReviewOrder.Execute(dt);
+                ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible(dt);
             }
             else
             {
-                ViewModel.BottomBar.CancelBookLater.Execute(null);
+                ViewModel.BottomBar.CancelBookLater.ExecuteIfPossible(null);
             }
         }
 

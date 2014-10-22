@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -41,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ViewModel.PickupAddress.StreetNumber = streetNumber;
                 ViewModel.PickupAddress.FullAddress = fullAddress;
 
-                ViewModel.SetAddress.Execute(ViewModel.PickupAddress);
+                ViewModel.SetAddress.ExecuteIfPossible(ViewModel.PickupAddress);
             };
 
             viewDestination.AddressUpdated = (streetNumber, fullAddress) =>
@@ -49,12 +50,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ViewModel.DestinationAddress.StreetNumber = streetNumber;
                 ViewModel.DestinationAddress.FullAddress = fullAddress;
 
-                ViewModel.SetAddress.Execute(ViewModel.DestinationAddress);
+                ViewModel.SetAddress.ExecuteIfPossible(ViewModel.DestinationAddress);
             };
 
             viewVehicleType.VehicleSelected = (vehicleType) => 
             {
-                ViewModel.SetVehicleType.Execute(vehicleType);
+                ViewModel.SetVehicleType.ExecuteIfPossible(vehicleType);
             };
 
             var set = this.CreateBindingSet<OrderOptionsControl, OrderOptionsViewModel>();

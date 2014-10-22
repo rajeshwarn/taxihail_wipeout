@@ -14,3 +14,43 @@ label.radio > input.radio + img{ /* IMAGE STYLES */
 label.radio > input.radio:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
   border:2px solid #1069b8;
 }
+.sortable {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    cursor: move;
+}
+
+.handle {
+    cursor: move;
+    margin-right: 10px
+}
+
+.sortable li {
+    list-style: none;
+    border: 1px solid #CCC;
+    background: #F6F6F6;
+    color: #1C94C4;
+    margin: 5px;
+    padding: 5px;
+    height: 22px;
+}
+.company-preference-order-text 
+{
+    width: 50%;
+    display: inline;
+    float: left
+}
+.company-preference-order-table 
+{
+    width: 25%;
+    text-align: center !important;
+}
+    .company-preference-order-checkbox 
+{
+    width: 25%;
+    display: inline;
+    float: left;
+    text-align: center;
+}

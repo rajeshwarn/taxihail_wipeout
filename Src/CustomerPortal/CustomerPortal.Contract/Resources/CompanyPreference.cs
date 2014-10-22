@@ -5,5 +5,6 @@ namespace CustomerPortal.Contract.Resources
         public string CompanyKey { get; set; }
         public bool CanAccept { get; set; }
         public bool CanDispatch { get; set; }
+        public int? Order { get; set; }
     }
 }

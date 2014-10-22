@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), () => ViewModel.PaymentPreferences.Tips, () => ViewModel.PaymentPreferences.Tip,  
                 x => {
                     ViewModel.PaymentPreferences.Tip = (int)x.Id;
-                    ViewModel.ToggleToTipSelector.Execute();
+                     ViewModel.ToggleToTipSelector.ExecuteIfPossible();
                 });
 
             txtTip.TextAlignment = UITextAlignment.Right;

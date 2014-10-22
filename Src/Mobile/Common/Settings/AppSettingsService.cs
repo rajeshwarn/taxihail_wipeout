@@ -12,6 +12,7 @@ using ServiceStack.Text;
 using TinyIoC;
 using System.Globalization;
 using apcurium.MK.Common.Configuration.Helpers;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
@@ -55,7 +56,22 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
 			_cacheService.Clear(SettingsCacheKey);
 
-			await RefreshSettingsFromServer();
+			try
+			{
+				await RefreshSettingsFromServer();
+			}
+			catch
+			{
+				// server url probably not good, revert
+				Mvx.Resolve<IMessageService>().ShowMessage("Error", "Server not found, reverting server url");
+
+				Data = new TaxiHailSetting();
+				LoadSettingsFromFile();
+
+				_cacheService.Clear(SettingsCacheKey);
+
+				RefreshSettingsFromServer();
+			}
 		}
 
 		private void LoadSettingsFromFile()

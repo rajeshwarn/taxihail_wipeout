@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Mobile.Client.Style;
 
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using MonoTouch.MapKit;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -34,8 +35,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             NavigationController.NavigationBar.Hidden = false;
             NavigationItem.Title = Localize.GetValue("View_BookingStatus");
-            NavigationItem.HidesBackButton = true;
-			NavigationItem.SetHidesBackButton (true, true);
 
             ChangeThemeOfBarStyle();
         }
@@ -304,7 +303,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (IsMovingFromParentViewController)
             {
                 // Back button pressed
-                ViewModel.PrepareNewOrder.Execute(null);
+                ViewModel.PrepareNewOrder.ExecuteIfPossible(null);
             }
         }
 

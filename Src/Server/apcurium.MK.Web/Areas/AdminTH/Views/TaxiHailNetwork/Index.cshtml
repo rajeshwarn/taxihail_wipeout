@@ -1,36 +1,37 @@
 ﻿@model List<CustomerPortal.Contract.Resources.CompanyPreference>
-   
-<div id="validationPanel" class="alert-success alert" style="display: none" > </div>
-       
+
+
+<div id="validationPanel" class="alert-success alert" style="display: none"> </div>
+
+
 @using (Html.BeginForm("Index", "TaxiHailNetwork", FormMethod.Post, new { id = "taxiHailNetworkForm" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-    if (Model.Count >0 )
+
+    if (Model.Count > 0)
     {
-        <table class="table table-striped">
+        <table class="table table-striped" style="width: 100%;">
             <tr>
-                <th>Company Name</th>
-                <th>Can Accept</th>
-                <th>Can Dispatch</th>
+                <th style="width: 50%">Company Name</th>
+                <th class="company-preference-order-table ">Can Accept</th>
+                <th class="company-preference-order-table ">Can Dispatch</th>
             </tr>
+        </table>
+        <ul class="sortable">
             @foreach (var company in Model)
             {
-            
-                <tr>
-                    <td>
-                        @company.CompanyKey
-                        @Html.Hidden("idKey_" + company.CompanyKey, company.CompanyKey)
-                    </td>
-                    <td>
-                        @Html.CheckBox("acceptKey_" + company.CompanyKey, company.CanAccept)
-                    </td>
-                    <td>
-                        @Html.CheckBox("dispatchKey_" + company.CompanyKey, company.CanDispatch)
-                    </td>
-                </tr>
+
+                <li>
+                    
+                    <div class="company-preference-order-text"><span class="handle">::</span>@company.CompanyKey</div>
+                    @Html.Hidden("idKey_" + company.CompanyKey, company.CompanyKey)
+                    <div class="company-preference-order-checkbox ">@Html.CheckBox("acceptKey_" + company.CompanyKey, company.CanAccept)</div>
+                    <div class="company-preference-order-checkbox ">@Html.CheckBox("dispatchKey_" + company.CompanyKey, company.CanDispatch)</div>
+                    @Html.Hidden("orderKey_" + company.CompanyKey, company.Order)
+                </li>
             }
-        </table>
+        </ul>
 
         <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick=" save()">Save</a>
     }
@@ -40,40 +41,47 @@
     }
 }
 
-        <script type="text/javascript">
+<script type="text/javascript">
 
+    $('.sortable').sortable().bind('sortupdate', function (e, ui) {
 
-            function displayValidationMessage(control, message, valid) {
-                var html = ' <button type="button" id="validationClose" class="close" data-dismiss="alert" onclick="this.parentNode.style.display=\'none\'">&times;</button>';
-                if (valid) {
-                    if (control.hasClass("alert-danger")) {
-                        control.removeClass("alert-danger");
-                    }
-                    control.addClass("alert-success");
-                } else {
-                    if (control.hasClass("alert-success")) {
-                        control.removeClass("alert-success");
-                    }
-                    control.addClass("alert-danger");
-                }
+        $('.sortable').children('li').each(function () {
+            $(this).find('input')[ui.item.find('input').length - 1].value = $(this).index();
+        });
 
-                control.html(html + message);
-                control.css("display", "block");
-                setTimeout(function () { control.css("display", "none") }, 2000);
+    });
+
+    function displayValidationMessage(control, message, valid) {
+        var html = ' <button type="button" id="validationClose" class="close" data-dismiss="alert" onclick="this.parentNode.style.display=\'none\'">&times;</button>';
+        if (valid) {
+            if (control.hasClass("alert-danger")) {
+                control.removeClass("alert-danger");
             }
-
-            function save() {
-                var form = $('#taxiHailNetworkForm');
-                var panel = $('#validationPanel');
-
-                $.ajax({
-                    type: "POST",
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function (response) {
-
-                        displayValidationMessage(panel, response.Message, response.Success);
-                    }
-                });
+            control.addClass("alert-success");
+        } else {
+            if (control.hasClass("alert-success")) {
+                control.removeClass("alert-success");
             }
-        </script>
+            control.addClass("alert-danger");
+        }
+
+        control.html(html + message);
+        control.css("display", "block");
+        setTimeout(function () { control.css("display", "none") }, 2000);
+    }
+
+    function save() {
+        var form = $('#taxiHailNetworkForm');
+        var panel = $('#validationPanel');
+
+        $.ajax({
+            type: "POST",
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function (response) {
+
+                displayValidationMessage(panel, response.Message, response.Success);
+            }
+        });
+    }
+</script>

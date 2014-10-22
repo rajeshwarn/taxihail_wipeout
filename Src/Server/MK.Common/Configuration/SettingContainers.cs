@@ -215,4 +215,11 @@ namespace apcurium.MK.Common.Configuration
 
         public string Password { get; protected internal set; }
     }
+
+    public class InsightsSettingContainer
+    {
+        public string APIKey { get; protected internal set; }
+
+        public string UnknownUserIdentifier { get; protected internal set; }
+    }
 }

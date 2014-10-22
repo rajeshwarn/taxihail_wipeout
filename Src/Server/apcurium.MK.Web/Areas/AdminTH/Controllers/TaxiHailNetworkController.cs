@@ -42,23 +42,26 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await  _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
+                var companyPreferences = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
 
                 var preferences = new List<CompanyPreference>();
-                foreach (var companyPreference in response)
+                for (var i = 0; i < companyPreferences.Count; i++)
                 {
-                    var canAccept = form["acceptKey_" + companyPreference.CompanyKey].Contains("true");
-                    var canDispatch = form["dispatchKey_" + companyPreference.CompanyKey].Contains("true");
+                    int? order=null;
+                    order = form["orderKey_" + companyPreferences[i].CompanyKey] == string.Empty ? i : int.Parse(form["orderKey_" + companyPreferences[i].CompanyKey]);
+                    var canAccept = form["acceptKey_" + companyPreferences[i].CompanyKey].Contains("true");
+                    var canDispatch = form["dispatchKey_" + companyPreferences[i].CompanyKey].Contains("true");
                     preferences.Add(new CompanyPreference
                     {
-                        CompanyKey = form["idKey_" + companyPreference.CompanyKey], 
+                        CompanyKey = form["idKey_" + companyPreferences[i].CompanyKey], 
                         CanAccept = canAccept, 
-                        CanDispatch = canDispatch
+                        CanDispatch = canDispatch,
+                        Order=order
                     });
 
                 }
 
-                await _taxiHailNetworkService.SetNetworkCompanyPreferences(_applicationKey, preferences.ToArray());
+                await _taxiHailNetworkService.SetNetworkCompanyPreferences(_applicationKey, preferences.OrderBy(x=>x.Order.HasValue).ThenBy(x=>x.Order.GetValueOrDefault()).ToArray());
 
                  return Json(new { Success = true, Message = "Changes Saved" });
             }
