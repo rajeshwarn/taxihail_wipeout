@@ -407,7 +407,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             {
                 // Newer version (2.0 and up) will use the load balanced URL
                 // Version 1.x still uses the old one
-                return string.Format(model.RevisionId.StartsWith("1")
+                return string.Format(model.RevisionId.StartsWith("1.")
                     ? "https://services.taxihail.com/{0}/api/"
                     : "https://api.taxihail.com/{0}/api/", company.CompanyKey);
             }
