@@ -38,10 +38,14 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult Index(TaxiHailNetworkSettings model)
+        public JsonResult Index(TaxiHailNetworkSettings model,string networkId=null)
         {
             if (ModelState.IsValid)
             {
+                if (networkId != null)
+                {
+                    model.Id = networkId;
+                }
                 if (!model.IsInNetwork)
                 {
                     foreach (var taxiHailNetworkSettings in Repository)
