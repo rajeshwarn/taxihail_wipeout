@@ -235,6 +235,31 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
+        public void Void(Guid orderId)
+        {
+            var message = string.Empty;
+            try
+            {
+                var paymentDetail = _orderPaymentDao.FindByOrderId(orderId);
+
+                if (paymentDetail == null)
+                    throw new Exception("Payment not found");
+
+                Void(paymentDetail.TransactionId, message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogMessage("Can't cancel CMT transaction");
+                _logger.LogError(ex);
+                message = message + ex.Message;
+                //can't cancel transaction, send a command to log later
+            }
+            finally
+            {
+                _logger.LogMessage(message);
+            }
+        }
+
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request)
         {
             try

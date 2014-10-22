@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Jobs;
+using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
@@ -25,14 +26,16 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
+        private readonly IPaymentService _paymentService;
 
         public CancelOrderService(ICommandBus commandBus, IBookingWebServiceClient bookingWebServiceClient,
-            IOrderDao orderDao, IAccountDao accountDao, IUpdateOrderStatusJob updateOrderStatusJob)
+            IOrderDao orderDao, IAccountDao accountDao, IUpdateOrderStatusJob updateOrderStatusJob, IPaymentService paymentService)
         {
             _bookingWebServiceClient = bookingWebServiceClient;
             _orderDao = orderDao;
             _accountDao = accountDao;
             _updateOrderStatusJob = updateOrderStatusJob;
+            _paymentService = paymentService;
             _commandBus = commandBus;
         }
 
@@ -56,18 +59,15 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.Unauthorized, "Can't cancel another account's order");
             }
 
-
-
-
-
             //We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up. But we assume the order is completed.
+            Task.Factory.StartNew(() =>
+            {
+                Func<bool> cancelOrder = () => _bookingWebServiceClient.CancelOrder(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
+                cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
+            });
 
-           Task.Factory.StartNew(() =>
-           {
-               Func<bool> cancelOrder = () => _bookingWebServiceClient.CancelOrder(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
-               cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
-           });
-                        
+            // void the preauthorization to prevent misuse fees
+            _paymentService.Void(request.OrderId);
 
             var command = new Commands.CancelOrder { Id = Guid.NewGuid(), OrderId = request.OrderId };
             _commandBus.Send(command);
