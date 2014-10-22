@@ -46,10 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void HandleTouchUpInside (object sender, EventArgs e)
         {
-            if (Command != null && Command.CanExecute(CommandParameter))
-            {
-                Command.Execute(CommandParameter);
-            }
+            Command.ExecuteIfPossible(CommandParameter);
         }
 
         private void HandleCanExecuteChanged(object sender, EventArgs e)

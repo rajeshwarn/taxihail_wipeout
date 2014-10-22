@@ -3,6 +3,7 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -56,8 +57,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             txtPhone.ShowCloseButtonOnKeyboard();
 
-            txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), () => ViewModel.Vehicles, () => ViewModel.VehicleTypeId, x => ViewModel.SetVehiculeType.Execute(x.Id));
-            txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), () => ViewModel.Payments, () => ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.Execute(x.Id));
+            txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), () => ViewModel.Vehicles, () => ViewModel.VehicleTypeId, x => ViewModel.SetVehiculeType.ExecuteIfPossible(x.Id));
+            txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), () => ViewModel.Payments, () => ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.ExecuteIfPossible(x.Id));
             txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), () => ViewModel.PaymentPreferences.Tips, () => ViewModel.PaymentPreferences.Tip, x => ViewModel.PaymentPreferences.Tip = (int)x.Id);
             txtTip.TextAlignment = UITextAlignment.Right;
 

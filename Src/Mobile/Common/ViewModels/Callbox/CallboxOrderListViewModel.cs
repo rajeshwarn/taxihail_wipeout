@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
 			_token = this.Services().MessengerHub.Subscribe<OrderDeleted>(orderId =>
     			{
-    				CancelOrder.Execute(orderId.Content);
+                    CancelOrder.ExecuteIfPossible(orderId.Content);
     			});
 
 			if (_orderToCreate != null )

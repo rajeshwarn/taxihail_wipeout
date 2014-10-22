@@ -92,9 +92,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
         private void ExecuteSearchCommand(string text)
         {
-            if (ViewModel != null && ViewModel.TextSearchCommand != null)
+            if (ViewModel != null)
             {
-                ViewModel.TextSearchCommand.Execute(text);
+                ViewModel.TextSearchCommand.ExecuteIfPossible(text);
             }
         }
 
