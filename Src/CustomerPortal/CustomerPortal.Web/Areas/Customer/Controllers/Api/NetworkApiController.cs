@@ -17,16 +17,17 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
     public class NetworkApiController : ApiController
     {
         private readonly IRepository<TaxiHailNetworkSettings> _networkRepository;
+        private readonly IRepository<Company> _companyRepository;
 
 
-        public NetworkApiController():this(new MongoRepository<TaxiHailNetworkSettings>())
+        public NetworkApiController():this(new MongoRepository<TaxiHailNetworkSettings>(),new MongoRepository<Company>())
         {
-            
         }
 
-        public NetworkApiController(IRepository<TaxiHailNetworkSettings> repository)
+        public NetworkApiController(IRepository<TaxiHailNetworkSettings> networkRepository, IRepository<Company> companyRepository)
         {
-            _networkRepository = repository;
+            _networkRepository = networkRepository;
+            _companyRepository = companyRepository;
         }
 
         [Route("api/customer/{companyId}/network")]
@@ -114,33 +115,40 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 return null;
             }
 
+            var companies = _companyRepository.Select(x => x).ToList();
+
             var otherCompaniesInNetwork = _networkRepository.Where(n => n.IsInNetwork && n.Id != networkSettings.Id)
                 .ToArray();
 
             var overlappingCompanies = otherCompaniesInNetwork.Where(n => n.Region.Contains(networkSettings.Region))
                 .ToArray();
-            
-            var networkFleet = overlappingCompanies.Where(n => n.Region.Contains(coordinate)).Select(n=>new NetworkFleetResponse{CompanyName = n.Id})
+
+            var networkFleet = overlappingCompanies.Where(n => n.Region.Contains(coordinate))
                 .ToArray();
 
-            var companiesRepository = new MongoRepository<Company>();
+
+            var networkFleetResult = new List<NetworkFleetResponse>();
 
             foreach (var networkFleetResponse in networkFleet)
             {
-                var company = companiesRepository.FirstOrDefault(c => c.CompanyKey == networkFleetResponse.CompanyKey);
-
+                var company = companies.FirstOrDefault(c => c.CompanyKey == networkFleetResponse.Id);
                 if (company != null)
                 {
-                    networkFleetResponse.CompanyName = company.CompanyName;
-                    networkFleetResponse.IbsPassword = company.IBS.Password;
-                    networkFleetResponse.IbsUserName = company.IBS.Username;
-                    networkFleetResponse.IbsUrl = company.IBS.ServiceUrl;
+                    var fleet = new NetworkFleetResponse
+                    {
+                        CompanyKey = company.CompanyKey,
+                        CompanyName = company.CompanyName,
+                        IbsPassword = company.IBS.Password,
+                        IbsUserName = company.IBS.Username,
+                        IbsUrl = company.IBS.ServiceUrl
+                    };
+                    networkFleetResult.Add(fleet);
                 }
             }
 
             var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(JsonConvert.SerializeObject(networkFleet))
+                Content = new StringContent(JsonConvert.SerializeObject(networkFleetResult))
             };
             return response;
         }

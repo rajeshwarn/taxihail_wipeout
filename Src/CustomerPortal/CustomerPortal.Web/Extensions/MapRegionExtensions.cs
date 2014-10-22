@@ -38,7 +38,5 @@ namespace CustomerPortal.Web.Extensions
 
             return positionInRegion;
         }
-
-
     }
 }
