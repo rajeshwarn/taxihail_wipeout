@@ -119,7 +119,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
             if (company == null) return HttpNotFound();
 
-
             var model = new DeployCustomerModel {Company = company, CompanyKey = company.CompanyKey};
 
             var revisions = new MongoRepository<Revision>();
@@ -139,7 +138,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
             if (model.DeployOptions == DeployOptions.Both || model.DeployOptions == DeployOptions.MobileApp)
             {
-
                 var job = new AddDeploymentJobModel { Android = true, CallBox = false, CompanyId = model.CompanyKey, CreateType = (int) DeploymentJobType.DeployClient , Database = false, IosAdhoc = true, IosAppStore = true, RevisionId = model.RevisionId , ServerUrlOptions = model.ServerUrlOptions  };                
                 
                 var environments = new MongoRepository<Environment>();
@@ -407,7 +405,11 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
             if (model.ServerUrlOptions == ServerUrlOptions.Production)
             {
-                return string.Format("https://services.taxihail.com/{0}/api/", company.CompanyKey);
+                // Newer version (2.0 and up) will use the load balanced URL
+                // Version 1.x still uses the old one
+                return string.Format(model.RevisionId.StartsWith("1")
+                    ? "https://services.taxihail.com/{0}/api/"
+                    : "https://api.taxihail.com/{0}/api/", company.CompanyKey);
             }
             if (model.ServerUrlOptions == ServerUrlOptions.Staging)
             {
