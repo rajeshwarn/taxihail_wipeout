@@ -23,18 +23,22 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
         public ActionResult Index(string id)
         {
-            var network = Repository.FirstOrDefault(x => x.Id == id);
-            
-            if (network == null)
+            var company = new MongoRepository<Company>().First(x => x.Id == id);
+            if (company != null)
             {
-                var company = new MongoRepository<Company>().First(x => x.Id == id);
+                var network = Repository.FirstOrDefault(x => x.Id == company.CompanyKey);
+
+                if (network == null)
+                {
 
                     network = new TaxiHailNetworkSettings
                     {
                         Id = company.CompanyKey
                     };
+                }
+                return PartialView(network);
             }
-            return PartialView(network);
+            return PartialView(new TaxiHailNetworkSettings {Id = id});
         }
 
         [HttpPost]

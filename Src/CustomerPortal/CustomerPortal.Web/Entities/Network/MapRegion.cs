@@ -1,4 +1,5 @@
 using System.Drawing;
+using CustomerPortal.Contract.Resources;
 using CustomerPortal.Web.Properties;
 using System.ComponentModel.DataAnnotations;
 

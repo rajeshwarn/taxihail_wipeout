@@ -233,7 +233,6 @@
     <Compile Include="Entities\CompanySetting.cs" />
     <Compile Include="Entities\DeploymentJob.cs" />
     <Compile Include="Entities\JobStatusDetails.cs" />
-    <Compile Include="Entities\Network\MapCoordinate.cs" />
     <Compile Include="Entities\Network\MapRegion.cs" />
     <Compile Include="Entities\Network\TaxiHailNetworkSettings.cs" />
     <Compile Include="Entities\Payment.cs" />

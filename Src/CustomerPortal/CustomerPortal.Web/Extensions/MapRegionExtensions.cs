@@ -31,12 +31,14 @@ namespace CustomerPortal.Web.Extensions
             return intersect;
         }
 
-        public static bool Contains(this MapRegion thisRegion, MapPosition position)
+        public static bool Contains(this MapRegion thisRegion, MapCoordinate position)
         {
             var myRect = thisRegion.GetRectangle();
-            var positionInRegion = myRect.Contains((float) position.Latitude, (float) position.Longitude);
+            var positionInRegion = myRect.Contains((float)position.Latitude, (float)position.Longitude);
 
             return positionInRegion;
         }
+
+
     }
 }

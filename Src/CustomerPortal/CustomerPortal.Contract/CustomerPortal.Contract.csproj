@@ -55,7 +55,8 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\CompanyPreference.cs" />
-    <Compile Include="Resources\MapPosition.cs" />
+    <Compile Include="Resources\MapCoordinate.cs" />
+    <Compile Include="Response\CompanyPreferenceResponse.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
