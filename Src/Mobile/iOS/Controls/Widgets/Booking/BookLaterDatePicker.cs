@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             OrderButton.Frame = new RectangleF(width - buttonWidth - buttonHorizontalPadding, buttonVerticalPadding, buttonWidth, 36f);
 
             OrderButton.TouchUpInside += (sender, e) => {
-                Command.Execute(Date);
+                Command.ExecuteIfPossible(Date);
             };
 
             DatePicker.SetY(OrderButton.Frame.Bottom + buttonVerticalPadding);
