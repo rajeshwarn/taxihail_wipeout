@@ -12,13 +12,13 @@ namespace apcurium.MK.Booking.IBS.Impl
     public class AccountWebServiceClient : BaseService<WebAccount3Service>, IAccountWebServiceClient
     {
         public AccountWebServiceClient(IServerSettings serverSettings, ILogger logger)
-            : base(serverSettings, logger)
+            : base(serverSettings.ServerData.IBS, logger)
         {
         }
 
         public int CreateAccount(Guid accountId, string email, string firstName, string lastName, string phone)
         {
-            var password = ServerSettings.ServerData.IBS.DefaultAccountPassword;
+            var password = _ibsSettings.DefaultAccountPassword;
             var isSuccess = false;
             var ibsAcccountId = 0;
             Regex regEx = new Regex(@"\D");

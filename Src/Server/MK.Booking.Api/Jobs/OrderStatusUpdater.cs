@@ -90,6 +90,8 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs);
 
+            RunNetworkPairing(orderFromIbs, orderStatusDetail);
+
             _commandBus.Send(new ChangeOrderStatus
             {
                 Status = orderStatusDetail,
@@ -100,23 +102,25 @@ namespace apcurium.MK.Booking.Api.Jobs
             });
         }
 
+
+
         private void PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
         {
-            orderStatusDetail.IBSStatusId = ibsOrderInfo.Status;
-            orderStatusDetail.DriverInfos.FirstName = ibsOrderInfo.FirstName.GetValue(orderStatusDetail.DriverInfos.FirstName);
-            orderStatusDetail.DriverInfos.LastName = ibsOrderInfo.LastName.GetValue(orderStatusDetail.DriverInfos.LastName);
-            orderStatusDetail.DriverInfos.MobilePhone = ibsOrderInfo.MobilePhone.GetValue(orderStatusDetail.DriverInfos.MobilePhone);
-            orderStatusDetail.DriverInfos.VehicleColor = ibsOrderInfo.VehicleColor.GetValue(orderStatusDetail.DriverInfos.VehicleColor);
-            orderStatusDetail.DriverInfos.VehicleMake = ibsOrderInfo.VehicleMake.GetValue(orderStatusDetail.DriverInfos.VehicleMake);
-            orderStatusDetail.DriverInfos.VehicleModel = ibsOrderInfo.VehicleModel.GetValue(orderStatusDetail.DriverInfos.VehicleModel);
+            orderStatusDetail.IBSStatusId =                     ibsOrderInfo.Status;
+            orderStatusDetail.DriverInfos.FirstName =           ibsOrderInfo.FirstName.GetValue(orderStatusDetail.DriverInfos.FirstName);
+            orderStatusDetail.DriverInfos.LastName =            ibsOrderInfo.LastName.GetValue(orderStatusDetail.DriverInfos.LastName);
+            orderStatusDetail.DriverInfos.MobilePhone =         ibsOrderInfo.MobilePhone.GetValue(orderStatusDetail.DriverInfos.MobilePhone);
+            orderStatusDetail.DriverInfos.VehicleColor =        ibsOrderInfo.VehicleColor.GetValue(orderStatusDetail.DriverInfos.VehicleColor);
+            orderStatusDetail.DriverInfos.VehicleMake =         ibsOrderInfo.VehicleMake.GetValue(orderStatusDetail.DriverInfos.VehicleMake);
+            orderStatusDetail.DriverInfos.VehicleModel =        ibsOrderInfo.VehicleModel.GetValue(orderStatusDetail.DriverInfos.VehicleModel);
             orderStatusDetail.DriverInfos.VehicleRegistration = ibsOrderInfo.VehicleRegistration.GetValue(orderStatusDetail.DriverInfos.VehicleRegistration);
-            orderStatusDetail.DriverInfos.VehicleType = ibsOrderInfo.VehicleType.GetValue(orderStatusDetail.DriverInfos.VehicleType);
-            orderStatusDetail.DriverInfos.DriverId = ibsOrderInfo.DriverId.GetValue(orderStatusDetail.DriverInfos.DriverId);
-            orderStatusDetail.VehicleNumber = ibsOrderInfo.VehicleNumber.GetValue(orderStatusDetail.VehicleNumber);
-            orderStatusDetail.TerminalId = ibsOrderInfo.TerminalId.GetValue(orderStatusDetail.TerminalId);
-            orderStatusDetail.ReferenceNumber = ibsOrderInfo.ReferenceNumber.GetValue(orderStatusDetail.ReferenceNumber);
-            orderStatusDetail.Eta = ibsOrderInfo.Eta ?? orderStatusDetail.Eta;
-
+            orderStatusDetail.DriverInfos.VehicleType =         ibsOrderInfo.VehicleType.GetValue(orderStatusDetail.DriverInfos.VehicleType);
+            orderStatusDetail.DriverInfos.DriverId =            ibsOrderInfo.DriverId.GetValue(orderStatusDetail.DriverInfos.DriverId);
+            orderStatusDetail.VehicleNumber =                   ibsOrderInfo.VehicleNumber.GetValue(orderStatusDetail.VehicleNumber);
+            orderStatusDetail.TerminalId =                      ibsOrderInfo.TerminalId.GetValue(orderStatusDetail.TerminalId);
+            orderStatusDetail.ReferenceNumber =                 ibsOrderInfo.ReferenceNumber.GetValue(orderStatusDetail.ReferenceNumber);
+            orderStatusDetail.Eta =                             ibsOrderInfo.Eta ?? orderStatusDetail.Eta;
+            
             UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
 
             orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo);
@@ -343,10 +347,49 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private bool OrderNeedsUpdate(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
         {
-            return (ibsOrderInfo.Status.HasValue() && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status) // ibs status changed
+            return    (ibsOrderInfo.Status.HasValue() && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status) // ibs status changed
                    || (!orderStatusDetail.FareAvailable && ibsOrderInfo.Fare > 0) // fare was not available and ibs now has the information
-                   || orderStatusDetail.Status == OrderStatus.WaitingForPayment; // special case for pairing
-                   // || _serverSettings.ServerData.Ne
+                   || orderStatusDetail.Status == OrderStatus.WaitingForPayment // special case for pairing
+                   || NetworkNeeedsUpdate(ibsOrderInfo, orderStatusDetail);
+        }
+
+        private bool NetworkNeeedsUpdate(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
+        {
+            return  !ibsOrderInfo.IsAssigned && orderStatusDetail.CompanyKey == orderStatusDetail.RequestedCompanyKey;
+        }
+        private void RunNetworkPairing(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
+        {
+            //how do we know if company is in network? Customer Portal?
+            //todo !isInNetwork return
+
+            if (orderStatusDetail.Status == OrderStatus.TimedOut)
+            {
+                return; //Already done
+            }
+
+            var settings = _serverSettings.ServerData.NetworkSettings;
+            if (!orderStatusDetail.NetworkParingTimeout.HasValue)
+            {
+                orderStatusDetail.NetworkParingTimeout = DateTime.Now.Add(TimeSpan.FromSeconds(settings.FirstOrderTimeout));
+            }
+            
+            if (orderStatusDetail.NetworkParingTimeout.Value > DateTime.Now) return; //Not Timed-out
+            
+            //get companies from customer portal
+            //orderStatusDetail.UserLatitude.GetValueOrDefault()
+
+            //Call Ibs to confirm dispachable return if none
+            var companyName = "Chris Taxi";
+            var companyKey = "ChrisTaxi";
+            //Dont need Ibs
+            //var ibsUrl = "google.com";
+            //var ibsUser = "taxi";
+            //var ibsPass = "qwerty";
+
+            orderStatusDetail.Status = OrderStatus.TimedOut; //set status to timeout
+            orderStatusDetail.RequestedCompanyKey = companyKey;
+            //PUSH PUSH
+       
         }
 
         private string GetDescription(Guid orderId, IBSOrderInformation ibsOrderInfo)
