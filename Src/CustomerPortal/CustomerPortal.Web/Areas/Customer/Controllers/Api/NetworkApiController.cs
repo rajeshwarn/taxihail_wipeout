@@ -44,30 +44,25 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             var overlappingCompanies = otherCompaniesInNetwork.Where(n => n.Region.Contains(networkSettings.Region))
                 .ToArray();
 
-            var result = new List<CompanyPreferenceResponse>();
+            var preferences = new List<CompanyPreferenceResponse>();
 
             foreach (var nearbyCompany in overlappingCompanies)
             {
-                var companyPreference = networkSettings.Preferences.FirstOrDefault(p => p.CompanyKey == nearbyCompany.Id);
 
-                if (companyPreference == null)
-                {
-                    companyPreference = new CompanyPreference
-                    {
-                        CompanyKey = nearbyCompany.Id
-                    };
-                   
-                }
-                result.Add(new CompanyPreferenceResponse
+                var companyPreference = networkSettings.Preferences.FirstOrDefault(p => p.CompanyKey == nearbyCompany.Id) ?? new CompanyPreference{CompanyKey = nearbyCompany.Id};
+
+                var allowDispatch = !nearbyCompany.Preferences.Any()  || nearbyCompany.Preferences.Any(x => x.CompanyKey == companyId && x.CanAccept)  ;
+
+                preferences.Add(new CompanyPreferenceResponse
                 {
                     CompanyPreference = companyPreference,
-                    CompanyAllowDispatch = false
+                    CanDispatchTo = allowDispatch
                 });
             }
             
             var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(JsonConvert.SerializeObject(result))
+                Content = new StringContent(JsonConvert.SerializeObject(preferences))
             };
             return response;
         }
@@ -75,12 +70,27 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         [Route("api/customer/{companyId}/network")]
         public HttpResponseMessage Post(string companyId, CompanyPreference[] preferences)
         {
-            var networkSetting = _networkRepository.FirstOrDefault(n => n.Id == companyId);
+            var taxiHailNetworkSetting = _networkRepository.Select(x => x).ToList();
+            var networkSetting = taxiHailNetworkSetting.FirstOrDefault(x => x.Id==companyId);
+
             if (networkSetting == null)
             {
                 return new HttpResponseMessage(HttpStatusCode.Forbidden); 
             }
-
+            
+            foreach (var companyPreference in preferences.Where(p=>!p.CanAccept))
+            {
+                var company = taxiHailNetworkSetting.FirstOrDefault(x => x.Id == companyPreference.CompanyKey);
+                if (company != null)
+                {
+                   var theirPreference= company.Preferences.FirstOrDefault(p => p.CompanyKey == companyId);
+                    if (theirPreference != null)
+                    {
+                        theirPreference.CanDispatch = false;
+                        _networkRepository.Update(company);
+                    }
+                }
+            }
             networkSetting.Preferences = preferences.ToList();
 
             _networkRepository.Update(networkSetting);

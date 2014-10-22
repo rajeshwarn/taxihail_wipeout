@@ -26,7 +26,7 @@
                         @Html.CheckBox("acceptKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanAccept)
                     </td>
                     <td>
-                        @if (company.CompanyAllowDispatch)
+                        @if (company.CanDispatchTo)
                         {
                             @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch)
                         }
