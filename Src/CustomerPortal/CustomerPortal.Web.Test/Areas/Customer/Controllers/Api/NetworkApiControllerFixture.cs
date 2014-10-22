@@ -175,6 +175,31 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         }
 
         [Test]
+        public void When_Getting_Network_From_Position()
+        {
+            var position = new MapCoordinate
+            {
+                Latitude = 45.463944,
+                Longitude = -73.643234
+            };
+
+            var response = Sut.Get(_chrisTaxi.Id, position);
+            Assert.True(response.IsSuccessStatusCode);
+            var json = response.Content.ReadAsStringAsync().Result;
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json));
+
+            var position2 = new MapCoordinate
+            {
+                Latitude = 46.359854,
+                Longitude = -72.575015
+            };
+            var response2 = Sut.Get(_tonyTaxi.Id, position2);
+            Assert.True(response2.IsSuccessStatusCode);
+            var json2 = response2.Content.ReadAsStringAsync().Result;
+            Assert.IsEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json2));
+        }
+
+        [Test]
         public void Post_Preferences()
         {
             var response = Sut.Get(_chrisTaxi.Id);

@@ -6,6 +6,7 @@ using System.Web.Http;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Areas.Customer.Models.RequestResponse;
+using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Extensions;
 using MongoRepository;
@@ -119,12 +120,26 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             var overlappingCompanies = otherCompaniesInNetwork.Where(n => n.Region.Contains(networkSettings.Region))
                 .ToArray();
             
-            var networkFleet = overlappingCompanies.Where(n => n.Region.Contains(coordinate))
+            var networkFleet = overlappingCompanies.Where(n => n.Region.Contains(coordinate)).Select(n=>new NetworkFleetResponse{CompanyName = n.Id})
                 .ToArray();
+
+            var companiesRepository = new MongoRepository<Company>();
+
+            foreach (var networkFleetResponse in networkFleet)
+            {
+                var company = companiesRepository.FirstOrDefault(c => c.CompanyKey == networkFleetResponse.CompanyKey);
+
+                if (company != null)
+                {
+                    networkFleetResponse.CompanyName = company.CompanyName;
+                    networkFleetResponse.IbsPassword = company.IBS.Password;
+                    networkFleetResponse.IbsUserName = company.IBS.Username;
+                    networkFleetResponse.IbsUrl = company.IBS.ServiceUrl;
+                }
+            }
 
             var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
-
                 Content = new StringContent(JsonConvert.SerializeObject(networkFleet))
             };
             return response;
