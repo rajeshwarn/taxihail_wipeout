@@ -34,13 +34,9 @@
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>None</AndroidLinkMode>
     <DebugSymbols>True</DebugSymbols>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="BeforeBuild" command="" />
-        <Command type="BeforeBuild" command="&quot;../../LocalizationTool/output/LocalizationTool.exe&quot; -t=android -m=&quot;../../Mobile/Common/Localization/Master.resx&quot; -d=&quot;../Android/Resources/Values/String.xml&quot; -s=&quot;../../Mobile/Common/Settings/Settings.json&quot;" />
-      </CustomCommands>
-    </CustomCommands>
     <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <AndroidSupportedAbis>armeabi-v7a;x86</AndroidSupportedAbis>
+    <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -55,7 +51,6 @@
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidSupportedAbis>armeabi,armeabi-v7a</AndroidSupportedAbis>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkSkip>
     </AndroidLinkSkip>
     <AndroidStoreUncompressedFileExtensions>
@@ -64,6 +59,7 @@
     </JavaOptions>
     <MonoDroidExtraArgs>
     </MonoDroidExtraArgs>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cirrious.CrossCore">

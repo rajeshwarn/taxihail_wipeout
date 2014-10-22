@@ -49,10 +49,10 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             });
         }
         
-        public Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit(string cardToken, double amount,
+        public Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount,
             double meterAmount, double tipAmount, Guid orderId)
         {
-			return Client.PostAsync(new PreAuthorizeAndCommitPaymentRequest
+			return Client.PostAsync(new CommitPaymentRequest
             {
                 Amount = (decimal) amount,
                 MeterAmount = (decimal) meterAmount,
@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             }
             catch (ServiceStack.ServiceClient.Web.WebServiceException)
             {
-                return new PairingResponse { IsSuccessfull = false };
+                return new PairingResponse { IsSuccessful = false };
             }   
         }
 

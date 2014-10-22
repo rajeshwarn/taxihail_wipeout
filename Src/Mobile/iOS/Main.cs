@@ -27,6 +27,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social;
 using GoogleConversionTracking;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -78,8 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var setup = new Setup(this, window);
             setup.Initialize();
 
-            var appSettingsService = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            appSettingsService.Load();
+            window.RootViewController = new SplashView();
 
             var paymentService = TinyIoCContainer.Current.Resolve<IPaymentService>();
             paymentService.ClearPaymentSettingsFromCache();
@@ -192,7 +192,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
 			Console.WriteLine(url.ToString());
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            if (url.AbsoluteString.StartsWith("fb" + settings.Data.FacebookAppId + settings.Data.ApplicationName.ToLower().Replace( " ", string.Empty ) ))
+            if (url.AbsoluteString.StartsWith("fb" + settings.Data.FacebookAppId + settings.Data.TaxiHail.ApplicationName.ToLower().Replace( " ", string.Empty ) ))
 			{
                 _callbackFromFb = true;
 				return FBAppCall.HandleOpenURL(url, sourceApplication);

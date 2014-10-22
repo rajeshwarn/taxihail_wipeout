@@ -15,13 +15,13 @@ namespace apcurium.MK.Booking.Email
 {
     public class EmailSender : IEmailSender
     {
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
         private readonly string[] _debugEmails = {"john@taxihail.com"};
         private SmtpConfiguration _configuration;
 
-        public EmailSender(IConfigurationManager configurationManager)
+        public EmailSender(IServerSettings serverSettings)
         {
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
         }
 
         public void Send(MailMessage message)
@@ -37,21 +37,13 @@ namespace apcurium.MK.Booking.Email
                 {
                     _configuration = new SmtpConfiguration
                     {
-                        Host = _configurationManager.GetSetting("Smtp.Host"),
-                        Port =
-                            Convert.ToInt32(_configurationManager.GetSetting("Smtp.Port"), CultureInfo.InvariantCulture),
-                        EnableSsl =
-                            Convert.ToBoolean(_configurationManager.GetSetting("Smtp.EnableSsl"),
-                                CultureInfo.InvariantCulture),
-                        DeliveryMethod =
-                            (SmtpDeliveryMethod)
-                                Enum.Parse(typeof (SmtpDeliveryMethod),
-                                    _configurationManager.GetSetting("Smtp.DeliveryMethod")),
-                        UseDefaultCredentials =
-                            Convert.ToBoolean(_configurationManager.GetSetting("Smtp.UseDefaultCredentials"),
-                                CultureInfo.InvariantCulture),
-                        Username = _configurationManager.GetSetting("Smtp.Credentials.Username"),
-                        Password = _configurationManager.GetSetting("Smtp.Credentials.Password"),
+                        Host = _serverSettings.ServerData.Smtp.Host,
+                        Port = _serverSettings.ServerData.Smtp.Port,
+                        EnableSsl = _serverSettings.ServerData.Smtp.EnableSsl,
+                        DeliveryMethod = _serverSettings.ServerData.Smtp.DeliveryMethod,
+                        UseDefaultCredentials = _serverSettings.ServerData.Smtp.UseDefaultCredentials,
+                        Username = _serverSettings.ServerData.Smtp.Credentials.Username,
+                        Password = _serverSettings.ServerData.Smtp.Credentials.Password,
                     };
                 }
 
@@ -64,7 +56,6 @@ namespace apcurium.MK.Booking.Email
                         client.Send(message);
                     }
                 };
-
 
                 sendAction.Retry(new TimeSpan(0, 0, 0, 15), 10);
             });

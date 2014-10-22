@@ -30,9 +30,14 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var payment = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
-                if (payment == null) throw new InvalidOperationException("Payment not found");
+                if (payment == null)
+                    throw new InvalidOperationException("Payment not found");
+
                 payment.AuthorizationCode = @event.AuthorizationCode;
                 payment.IsCompleted = true;
+                payment.Amount = @event.Amount;
+                payment.Meter = @event.Meter;
+                payment.Tip = @event.Tip;
 
                 var order = context.Set<OrderDetail>().Single(o => o.Id == payment.OrderId);
                 if (!order.Fare.HasValue || order.Fare == 0)
@@ -74,8 +79,14 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var payment = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
-                if (payment == null) throw new InvalidOperationException("Payment not found");
+                if (payment == null)
+                {
+                    throw new InvalidOperationException("Payment not found"); 
+                }
+
+                payment.IsCancelled = true;
                 payment.Error = @event.Reason;
+
                 context.SaveChanges();
             }
         }

@@ -52,9 +52,8 @@ namespace apcurium.MK.Booking.Api
                 new TransientLifetimeManager(),
                 new InjectionFactory(c =>
                 {
-                    var configManager = c.Resolve<IConfigurationManager>();
-                    var mockIbsStatusUpdate = bool.Parse(configManager.GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
-                    if (mockIbsStatusUpdate)
+                    var serverSettings = c.Resolve<IServerSettings>();
+                    if (serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
                     {
                         return new UpdateOrderStatusJobStub();
                     }
@@ -66,29 +65,27 @@ namespace apcurium.MK.Booking.Api
                 new TransientLifetimeManager(),
                 new InjectionFactory(c =>
                 {
-                    var configManager = c.Resolve<IConfigurationManager>();
-                    var appSettings = c.Resolve<IAppSettings>();
+                    var serverSettings = c.Resolve<IServerSettings>();
                     var orderDao = c.Resolve<IOrderDao>();
-                    var mockIbsStatusUpdate = bool.Parse(configManager.GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
-                    return mockIbsStatusUpdate
-                        ? new OrderStatusIbsMock(orderDao, c.Resolve<OrderStatusUpdater>(), configManager, appSettings)
-                        : new OrderStatusHelper(orderDao, configManager, appSettings);
+                    return serverSettings.ServerData.IBS.FakeOrderStatusUpdate
+                        ? new OrderStatusIbsMock(orderDao, c.Resolve<OrderStatusUpdater>(), serverSettings)
+                        : new OrderStatusHelper(orderDao, serverSettings);
                 }));
 
             container.RegisterType<IPaymentService>(
                 new TransientLifetimeManager(),
                 new InjectionFactory(c =>
                 {
-                    var configManager = c.Resolve<IConfigurationManager>();
-                    switch (configManager.GetPaymentSettings().PaymentMode)
+                    var serverSettings = c.Resolve<IServerSettings>();
+                    switch (serverSettings.GetPaymentSettings().PaymentMode)
                     {
                         case PaymentMethod.Braintree:
-                            return new BraintreePaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), configManager, c.Resolve<IPairingService>());
+                            return new BraintreePaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
                         case PaymentMethod.RideLinqCmt:
                         case PaymentMethod.Cmt:
-                            return new CmtPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), configManager, c.Resolve<IPairingService>());
+                            return new CmtPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
                         case PaymentMethod.Moneris:
-                            return new MonerisPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), configManager, c.Resolve<IPairingService>());
+                            return new MonerisPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
                         default:
                             return null;
                     }

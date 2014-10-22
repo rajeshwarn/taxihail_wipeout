@@ -1,0 +1,43 @@
+﻿@model IEnumerable<string>
+@{
+    Layout = null;
+    var rows = Model.Select((Path, Index) => new {Path, Index})
+        .GroupBy(x => x.Index/3);
+}
+<div class="row">
+    <div class="span8">
+        <h4>Graphics</h4>
+        <p>Upload your logo and other graphics files that represents your corporate identity.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="span8">
+        @foreach (var row in rows)
+        {
+            <ul>
+                @foreach (var path in row.Select(x => x.Path))
+                {
+                    <li>
+                        @using (Html.BeginForm("Delete", "Graphics"))
+                        {
+                            <a href='@Url.Action("Image", new {filename = Path.GetFileName(path)})'>@Path.GetFileName(path)</a>
+                            @Html.Hidden("file", Path.GetFileName(path))
+                            ;
+                            <button type="submit" class="btn btn-danger btn-mini pull-right">Delete</button>
+                        }
+                    </li>
+                }
+            </ul>
+        }
+    </div> 
+</div>
+
+
+<form action="@Url.Action("Upload", "Graphics")" method="POST"  enctype="multipart/form-data">
+    
+    <input type="file" name="graphics" multiple />
+    
+    <div class="form-actions">
+        <input type="submit" class="btn btn-primary" value="Upload File(s)"/>
+    </div>
+</form>

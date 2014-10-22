@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            Sut = new AccountDetailsGenerator(() => new BookingDbContext(DbName), new TestConfigurationManager());
+            Sut = new AccountDetailsGenerator(() => new BookingDbContext(DbName), new TestServerSettings());
         }
     }
 
@@ -117,10 +117,9 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual(dto.Settings.Name, dto.Name);
                 Assert.AreEqual(accountRegistered.Phone, dto.Settings.Phone);
 
-                var config = new TestConfigurationManager();
+                var config = new TestServerSettings();
                 Assert.IsNull(dto.Settings.ChargeTypeId);
-                Assert.AreEqual(dto.Settings.Passengers.ToString(CultureInfo.InvariantCulture),
-                    config.GetSetting("DefaultBookingSettings.NbPassenger"));
+                Assert.AreEqual(dto.Settings.Passengers, config.ServerData.DefaultBookingSettings.NbPassenger);
                 Assert.IsNull(dto.Settings.VehicleTypeId);
                 Assert.IsNull(dto.Settings.ProviderId);
             }

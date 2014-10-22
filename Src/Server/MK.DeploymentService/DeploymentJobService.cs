@@ -65,16 +65,16 @@ namespace MK.DeploymentService
             }
         }
 
-        //private ConfigurationManagerDbContext dbContext;
         private void CheckAndRunJobWithBuild()
         {
-            var job = new DeploymentJobServiceClient().GetNext();
-
-            if (job == null) return;
-
-            _job = job;
             try
             {
+                var job = new DeploymentJobServiceClient().GetNext();
+                if (job == null)
+                    return;
+
+                _job = job;
+
                 Log("Starting", JobStatus.Inprogress);
 
                 var sourceDirectory = Path.Combine(Path.GetPathRoot(System.Environment.GetFolderPath(System.Environment.SpecialFolder.System)), "mktaxi");
@@ -434,6 +434,7 @@ namespace MK.DeploymentService
 
                 Log("Getting web theme from cutsomer portal");
                 var service = new CompanyServiceClient();
+
                 using (var zip = new ZipArchive(service.GetCompanyFiles(companyId, "webtheme")))
                 {
                     foreach (var entry in zip.Entries)

@@ -1,0 +1,63 @@
+﻿@using CustomerPortal.Web.Security
+@using CustomerPortal.Web.Extensions
+@model IEnumerable<CustomerPortal.Web.Entities.Company>
+@{
+    ViewBag.Title = "Payment";
+}
+
+<h4>Payment Information</h4>
+
+
+<div class='row'>
+    <p>
+        <a class="btn" href='@Url.Action("Index", new { noCharge =true})'>No Charge</a>        
+        <a class="btn" href='@Url.Action("Index", new { noCharge =false})'>View Chargeable‎</a>                
+    </p>
+
+
+    <div class="span12">
+        <table class="table table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th>Company name</th>
+                    <th>Status</th>
+                    <th>PO</th>
+                    <th>Qty License</th>
+                    <th>Test Link</th>
+                    <th>Store</th>
+                    <th>NoCharge</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            @foreach (var company in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="@Url.Action("Edit",  new {company.Id})">@company.CompanyName</a>
+                    </td>
+
+                    <td>@company.Status</td>
+                    <td>
+                        @company.Payment.PONumber <br />
+                        @company.Payment.PODate.FormatDate()
+                    </td>
+                    <td>@company.Payment.QtyLicense</td>
+                    <td>
+                        @company.Payment.TestLinkInvoiceNumber
+                        <br />
+                        @company.Payment.TestLinkDate.FormatDate()
+                    </td>
+
+                    <td>
+                        @company.Payment.PublishToStoreInvoiceNumber<br />
+                    @company.Payment.PublishToStoreDate.FormatDate()
+                </td>
+                <td>@company.Payment.NoCharge</td>
+                <td>
+                    <a href="@Url.Action("Manage", "Home", new {company.Id})">Details</a>
+                </td>
+            </tr>
+            }
+        </table>
+    </div>
+</div>

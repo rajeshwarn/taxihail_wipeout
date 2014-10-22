@@ -1,0 +1,52 @@
+﻿@model CustomerPortal.Web.Entities.DeploymentJob
+
+@{
+    ViewBag.Title = "Deployment Details";
+    Layout = "~/Views/Shared/_SettingsLayout.cshtml";    
+}
+
+<h3>Deployment Details for @Model.Company.CompanyName  </h3>
+<h4>Version : @Model.Revision.Tag </h4>
+<h5>Server : @Model.Server.Name </h5>
+<h5 id="currentStatus" >Status : @Model.Status</h5>
+<h5>Version : @Model.Action </h5>
+
+<br />
+<h5>Details :</h5>
+<p id="deployDetails">@Html.Raw(Model.Details)</p>
+<br />
+<h6>Last update :</h6>
+<div id="lastUpdate"></div>
+@section Scripts {
+    <script>
+        function refresh() {
+
+            $.get('/Admin/Deployment/DetailsText/@Model.Id', function(result) {
+
+
+                $('#deployDetails').html(result);
+
+
+            });
+
+            $.get('/Admin/Deployment/StatusText/@Model.Id', function(result) {
+
+
+                $('#currentStatus').html("Status : " + result);
+
+                var now = new Date();
+                var datetime = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDay();
+                datetime += ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+
+                $('#lastUpdate').html(datetime);
+
+            });
+        }
+
+        setInterval(refresh, 3000);
+    </script>
+}
+
+
+<br />
+<a href="@Url.Action("Index")" class="btn btn-link">Back to deployment list</a>

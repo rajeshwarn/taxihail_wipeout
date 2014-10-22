@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
         private readonly IAccountDao _accountDao;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _serverSettings;
         private readonly IPairingService _pairingService;
         private readonly ILogger _logger;
         private readonly IIbsOrderService _ibs;
@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             IIbsOrderService ibs,
             IAccountDao accountDao, 
             IOrderPaymentDao orderPaymentDao,
-            IConfigurationManager configManager,
+            IServerSettings serverSettings,
             IPairingService pairingService)
         {
             _commandBus = commandBus;
@@ -62,13 +62,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _ibs = ibs;
             _accountDao = accountDao;
             _orderPaymentDao = orderPaymentDao;
-            _configManager = configManager;
+            _serverSettings = serverSettings;
             _pairingService = pairingService;
 
             _cmtPaymentServiceClient =
-                new CmtPaymentServiceClient(configManager.GetPaymentSettings().CmtPaymentSettings, null, null, logger);
+                new CmtPaymentServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, logger);
             _cmtMobileServiceClient =
-                new CmtMobileServiceClient(configManager.GetPaymentSettings().CmtPaymentSettings, null,  null);
+                new CmtMobileServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null,  null);
         }
 
         private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, PairingForPaymentRequest request)
@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
 
             // send pairing request                                
-            var cmtPaymentSettings = _configManager.GetPaymentSettings().CmtPaymentSettings;
+            var cmtPaymentSettings = _serverSettings.GetPaymentSettings().CmtPaymentSettings;
             var pairingRequest = new PairingRequest
             {
                 AutoTipAmount = request.AutoTipAmount,
@@ -147,7 +147,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             try
             {
-                if (_configManager.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
+                if (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
                 {
                     var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
                     if (orderStatusDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
@@ -171,7 +171,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                     return new PairingResponse
                     {
-                        IsSuccessfull = true,
+                        IsSuccessful = true,
                         Message = "Success",
                         PairingToken = response.PairingToken,
                         PairingCode = response.PairingCode,
@@ -185,7 +185,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 return new PairingResponse
                 {
-                    IsSuccessfull = true,
+                    IsSuccessful = true,
                     Message = "Success"
                 };
             }
@@ -194,7 +194,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 _logger.LogError(e);
                 return new PairingResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     Message = e.Message
                 };
             }
@@ -204,7 +204,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             try
             {
-                if (_configManager.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
+                if (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
                 {
                     var orderPairingDetail = _orderDao.FindOrderPairingById(request.OrderId);
                     if (orderPairingDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
@@ -221,7 +221,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 return new BasePaymentResponse
                 {
-                    IsSuccessfull = true,
+                    IsSuccessful = true,
                     Message = "Success"
                 };
             }
@@ -229,7 +229,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 return new BasePaymentResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     Message = e.Message
                 };
             }
@@ -248,7 +248,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 return new DeleteTokenizedCreditcardResponse
                 {
-                    IsSuccessfull = response.ResponseCode == 1,
+                    IsSuccessful = response.ResponseCode == 1,
                     Message = response.ResponseMessage
                 };
             }
@@ -261,18 +261,27 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 });
                 return new DeleteTokenizedCreditcardResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     Message = ex.InnerExceptions.First().Message,
                 };
             }
         }
 
-        public bool PreAuthorize(string email, string cardToken, decimal amountToPreAuthorize)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
         {
-            return true;
+            return new PreAuthorizePaymentResponse
+            {
+                IsSuccessful = true,
+                Message = string.Empty
+            };
         }
 
-        public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(PreAuthorizeAndCommitPaymentRequest request)
+        public CommitPreauthorizedPaymentResponse CommitPayment(CommitPaymentRequest request)
+        {
+            return PreAuthorizeAndCommitPayment(request);
+        }
+
+        private CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(CommitPaymentRequest request)
         {
             string transactionId = null;
             try
@@ -293,7 +302,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 {
                     return new CommitPreauthorizedPaymentResponse
                     {
-                        IsSuccessfull = false,
+                        IsSuccessful = false,
                         Message = "order already paid or payment currently processing"
                     };
                 }
@@ -306,7 +315,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>(); //?
                 var employeeId = orderStatus.DriverInfos == null ? "" : orderStatus.DriverInfos.DriverId; //?
                 var tripId = orderStatus.IBSOrderId.Value; //?
-                var fleetToken = _configManager.GetPaymentSettings().CmtPaymentSettings.FleetToken;
+                var fleetToken = _serverSettings.GetPaymentSettings().CmtPaymentSettings.FleetToken;
                 var customerReferenceNumber = orderStatus.ReferenceNumber.HasValue() ?
                                                     orderStatus.ReferenceNumber :
                                                     orderDetail.IBSOrderId.ToString();
@@ -347,12 +356,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     {
                         PaymentId = paymentId,
                         TransactionId = transactionId,
-                        Amount = Convert.ToDecimal(request.Amount),
+                        Amount = 0,
                         OrderId = request.OrderId,
-                        Tip = Convert.ToDecimal(request.TipAmount),
-                        Meter = Convert.ToDecimal(request.MeterAmount),
+                        Tip = 0,
+                        Meter = 0,
                         CardToken = request.CardToken,
                         Provider = PaymentProvider.Cmt,
+                        IsNoShowFee = request.IsNoShowFee
                     });
 
                     // wait for OrderPaymentDetail to be created
@@ -361,60 +371,63 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     authorizationCode = authResponse.AuthorizationCode;
 
                     //send information to IBS
-                    try
-                    {
-                        _ibs.ConfirmExternalPayment(orderDetail.Id,
-                            orderDetail.IBSOrderId.Value,
-                            Convert.ToDecimal(request.Amount),
-                            Convert.ToDecimal(request.TipAmount),
-                            Convert.ToDecimal(request.MeterAmount),
-                            PaymentType.CreditCard.ToString(),
-                            PaymentProvider.Cmt.ToString(),
-                            transactionId,
-                            authorizationCode,
-                            request.CardToken,
-                            account.IBSAccountId,
-                            orderDetail.Settings.Name,
-                            orderDetail.Settings.Phone,
-                            account.Email,
-                            orderDetail.UserAgent.GetOperatingSystem(),
-                            orderDetail.UserAgent);
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.LogError(e);
-                        message = e.Message;
-                        isSuccessful = false;
-
-                        //cancel CMT transaction
+                    if (!request.IsNoShowFee)
+                    { 
                         try
                         {
-                            var reverseRequest = new ReverseRequest
-                            {
-                                FleetToken = fleetToken,
-                                DeviceId = deviceId,
-                                TransactionId = authResponse.TransactionId,
-                                DriverId = driverId,
-                                TripId = tripId
-                            };
-
-                            var responseReverseTask = _cmtPaymentServiceClient.PostAsync(reverseRequest);
-                            responseReverseTask.Wait();
-                            var reverseResponse = responseReverseTask.Result;
-                            _logger.LogMessage("CMT reverse response : " + reverseResponse.ResponseMessage);
-
-                            if (reverseResponse.ResponseCode != 1)
-                            {
-                                throw new Exception("Cannot cancel cmt transaction");
-                            }
-
-                            message = message + " The transaction has been cancelled.";
+                            _ibs.ConfirmExternalPayment(orderDetail.Id,
+                                orderDetail.IBSOrderId.Value,
+                                Convert.ToDecimal(request.Amount),
+                                Convert.ToDecimal(request.TipAmount),
+                                Convert.ToDecimal(request.MeterAmount),
+                                PaymentType.CreditCard.ToString(),
+                                PaymentProvider.Cmt.ToString(),
+                                transactionId,
+                                authorizationCode,
+                                request.CardToken,
+                                account.IBSAccountId,
+                                orderDetail.Settings.Name,
+                                orderDetail.Settings.Phone,
+                                account.Email,
+                                orderDetail.UserAgent.GetOperatingSystem(),
+                                orderDetail.UserAgent);
                         }
-                        catch (Exception ex)
+                        catch (Exception e)
                         {
-                            _logger.LogMessage("Can't cancel CMT transaction");
-                            _logger.LogError(ex);
-                            message = message + ex.Message;
+                            _logger.LogError(e);
+                            message = e.Message;
+                            isSuccessful = false;
+
+                            //cancel CMT transaction
+                            try
+                            {
+                                var reverseRequest = new ReverseRequest
+                                {
+                                    FleetToken = fleetToken,
+                                    DeviceId = deviceId,
+                                    TransactionId = authResponse.TransactionId,
+                                    DriverId = driverId,
+                                    TripId = tripId
+                                };
+
+                                var responseReverseTask = _cmtPaymentServiceClient.PostAsync(reverseRequest);
+                                responseReverseTask.Wait();
+                                var reverseResponse = responseReverseTask.Result;
+                                _logger.LogMessage("CMT reverse response : " + reverseResponse.ResponseMessage);
+
+                                if (reverseResponse.ResponseCode != 1)
+                                {
+                                    throw new Exception("Cannot cancel cmt transaction");
+                                }
+
+                                message = message + " The transaction has been cancelled.";
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.LogMessage("Can't cancel CMT transaction");
+                                _logger.LogError(ex);
+                                message = message + ex.Message;
+                            }
                         }
                     }
 
@@ -426,6 +439,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             PaymentId = paymentId,
                             AuthorizationCode = authorizationCode,
                             Provider = PaymentProvider.Cmt,
+                            Amount = Convert.ToDecimal(request.Amount),
+                            MeterAmount = Convert.ToDecimal(request.MeterAmount),
+                            TipAmount = Convert.ToDecimal(request.TipAmount),
+                            IsNoShowFee = request.IsNoShowFee
                         });
                     }
                     else
@@ -441,7 +458,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 return new CommitPreauthorizedPaymentResponse
                 {
-                    IsSuccessfull = isSuccessful,
+                    IsSuccessful = isSuccessful,
                     TransactionId = transactionId,
                     Message = message,
                     AuthorizationCode = authorizationCode,
@@ -456,7 +473,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 });
                 return new CommitPreauthorizedPaymentResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     TransactionId = transactionId,
                     Message = ex.InnerExceptions.First().Message,
                 };
@@ -467,7 +484,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 _logger.LogError(e);
                 return new CommitPreauthorizedPaymentResponse
                 {
-                    IsSuccessfull = false,
+                    IsSuccessful = false,
                     TransactionId = transactionId,
                     Message = e.Message,
                 };

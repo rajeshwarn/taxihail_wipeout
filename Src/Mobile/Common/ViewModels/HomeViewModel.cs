@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -7,14 +6,10 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
-using Cirrious.MvvmCross.ViewModels;
-using ServiceStack.Common.Web;
 using ServiceStack.Text;
-using apcurium.MK.Booking.Mobile.Messages;
 using System.Linq;
 using System.Reactive.Linq;
 using System;
-using System.Threading;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -331,7 +326,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private async void SetMapCenterToUserLocation()
 		{
+            _orderWorkflowService.SetIgnoreNextGeoLocResult(false);
 			var address = await _orderWorkflowService.SetAddressToUserLocation();
+            
 			if(address.HasValidCoordinate())
 			{
 				// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out

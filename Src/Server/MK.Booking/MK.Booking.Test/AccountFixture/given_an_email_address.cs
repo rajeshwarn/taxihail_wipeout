@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
     public class given_an_email_address : given_a_read_model_database
     {
         private const string ApplicationName = "TestApplication";
-        private TestConfigurationManager _configurationManager;
+        private TestServerSettings _serverSettings;
         private Mock<IEmailSender> _emailSenderMock;
         private Mock<IOrderDao> _orderDaoMock;
         private EventSourcingTestHelper<Account> _sut;
@@ -70,15 +70,14 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
             _emailSenderMock = new Mock<IEmailSender>();
             _orderDaoMock = new Mock<IOrderDao>();
-            _configurationManager = new TestConfigurationManager();
-            _configurationManager.SetSetting("TaxiHail.ApplicationName", ApplicationName);
+            _serverSettings = new TestServerSettings();
+            _serverSettings.SetSetting("TaxiHail.ApplicationName", ApplicationName);
             var notificationService = new NotificationService(
                 () => new BookingDbContext(DbName),
                 null,
-                new TemplateService(_configurationManager, _configurationManager),
+                new TemplateService(_serverSettings),
                 _emailSenderMock.Object,
-                _configurationManager,
-                _configurationManager,
+                _serverSettings,
                 new ConfigurationDao(() => new ConfigurationDbContext(DbName)),
                 _orderDaoMock.Object,
                 new StaticMap(),

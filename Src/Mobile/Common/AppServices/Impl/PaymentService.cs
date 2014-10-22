@@ -25,11 +25,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly ConfigurationClientService _serviceClient;
 		private readonly ICacheService _cache;
 		private readonly IPackageInfo _packageInfo;
-		private readonly ILogger _logger;
-		private static ClientPaymentSettings _cachedSettings;
+        private readonly ILogger _logger; 
+        private readonly string _baseUrl;
+        private readonly string _sessionId;
 
-        string _baseUrl;
-        string _sessionId;
+        private IPaymentServiceClient _client;
+
+		private static ClientPaymentSettings _cachedSettings;
+        
         private const string PayedCacheSuffix = "_Payed";
 
 		public PaymentService(string url, string sessionId, ConfigurationClientService serviceClient, ICacheService cache, IPackageInfo packageInfo, ILogger logger)
@@ -42,11 +45,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_serviceClient = serviceClient;
         }
 
-		public ClientPaymentSettings GetPaymentSettings(bool cleanCache = false)
+		public async Task<ClientPaymentSettings> GetPaymentSettings(bool cleanCache = false)
 		{
 			if (_cachedSettings == null || cleanCache)
 			{
-				_cachedSettings = _serviceClient.GetPaymentSettings();
+                _cachedSettings = await _serviceClient.GetPaymentSettings().ConfigureAwait(false);
+                _client = GetClient(_cachedSettings);
 			}
 			return _cachedSettings;
 		}
@@ -56,6 +60,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			// this forces the payment settings to be refreshed at the next call
 			// since we can't them at the same time as the standard settings because we could be not authenticated
 			_cachedSettings = null;
+		    _client = null;
 		}
 
         public double? GetPaymentFromCache(Guid orderId)
@@ -74,22 +79,51 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             _cache.Set(orderId + PayedCacheSuffix, amount.ToString(CultureInfo.InvariantCulture));
         }
+        
+        public async Task ResendConfirmationToDriver(Guid orderId)
+        {
+            await _client.ResendConfirmationToDriver(orderId);
+        }
 
-        public IPaymentServiceClient GetClient()
+        public async Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
+        {
+            return await _client.Tokenize(creditCardNumber, expiryDate, cvv);
+        }
+
+        public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
+        {
+            return await _client.ForgetTokenizedCard(cardToken);
+        }
+
+        public async Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
+        {
+            return await _client.CommitPayment(cardToken, amount, meterAmount, tipAmount, orderId);
+        }
+
+        public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        {
+			return await _client.Pair(orderId, cardToken, autoTipPercentage, autoTipAmount);
+        }
+
+        public async Task<BasePaymentResponse> Unpair(Guid orderId)
+        {
+            return await _client.Unpair(orderId);
+        }
+
+        private IPaymentServiceClient GetClient(ClientPaymentSettings settings)
         {
             const string onErrorMessage = "Payment Method not found or unknown";
 
-            var settings = GetPaymentSettings();
             switch (settings.PaymentMode)
             {
                 case PaymentMethod.Braintree:
-					return new BraintreeServiceClient(_baseUrl, _sessionId, settings.BraintreeClientSettings.ClientKey, _packageInfo);
+                    return new BraintreeServiceClient(_baseUrl, _sessionId, settings.BraintreeClientSettings.ClientKey, _packageInfo);
 
                 case PaymentMethod.RideLinqCmt:
                 case PaymentMethod.Cmt:
-					return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _packageInfo, null);
+                    return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _packageInfo, null);
 
-				case PaymentMethod.Moneris:
+                case PaymentMethod.Moneris:
                     return new MonerisServiceClient(_baseUrl, _sessionId, settings.MonerisPaymentSettings, _packageInfo, _logger);
 
                 case PaymentMethod.Fake:
@@ -98,36 +132,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 default:
                     throw new Exception(onErrorMessage);
             }
-        }
-
-        public Task ResendConfirmationToDriver(Guid orderId)
-        {
-            return GetClient().ResendConfirmationToDriver(orderId);
-        }
-
-        public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
-        {
-            return GetClient().Tokenize(creditCardNumber, expiryDate, cvv);
-        }
-
-        public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
-        {
-            return GetClient().ForgetTokenizedCard(cardToken);
-        }
-
-        public Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
-        {
-            return GetClient().PreAuthorizeAndCommit(cardToken, amount, meterAmount, tipAmount, orderId);
-        }
-
-        public Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
-        {
-            return GetClient().Pair(orderId, cardToken, autoTipPercentage, autoTipAmount);
-        }
-
-        public Task<BasePaymentResponse> Unpair(Guid orderId)
-        {
-            return GetClient().Unpair(orderId);
         }
     }
 }

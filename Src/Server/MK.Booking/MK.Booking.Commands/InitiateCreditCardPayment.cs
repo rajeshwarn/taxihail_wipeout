@@ -28,5 +28,7 @@ namespace apcurium.MK.Booking.Commands
 
         public string CardToken { get; set; }
         public Guid Id { get; private set; }
+
+        public bool IsNoShowFee { get; set; }
     }
 }

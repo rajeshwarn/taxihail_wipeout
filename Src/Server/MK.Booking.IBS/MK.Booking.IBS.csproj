@@ -95,6 +95,7 @@
     <Compile Include="Impl\StaticDataWebServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Impl\GenerateWSDL.bat" />
     <None Include="MK.Booking.IBS.psproj">
       <SubType>Designer</SubType>

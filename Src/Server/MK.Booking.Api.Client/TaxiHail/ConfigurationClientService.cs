@@ -1,11 +1,10 @@
-#region
-
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
-
-#endregion
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Booking.Api.Client.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -16,14 +15,15 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public IDictionary<string, string> GetSettings()
+        public async Task<IDictionary<string, string>> GetSettings()
         {
-            return Client.Get<Dictionary<string, string>>("/settings");
+            return await Client.GetAsync<Dictionary<string, string>>("/settings");
         }
 
-        public ClientPaymentSettings GetPaymentSettings()
+        public async Task<ClientPaymentSettings> GetPaymentSettings()
         {
-            return Client.Get(new PaymentSettingsRequest()).ClientPaymentSettings;
+            var paymentSettings = await Client.GetAsync<PaymentSettingsResponse> (new PaymentSettingsRequest ());
+            return paymentSettings.ClientPaymentSettings;
         }
     }
 }

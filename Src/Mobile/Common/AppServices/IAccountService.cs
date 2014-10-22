@@ -58,8 +58,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<IList<Order>> GetHistoryOrders();
 		OrderStatusDetail[] GetActiveOrdersStatus();
         
-		[Obsolete("Migrate to async/await")]
-		Order GetHistoryOrder(Guid id);
 		Task<Order> GetHistoryOrderAsync(Guid id);
         
         void RefreshCache(bool reload);

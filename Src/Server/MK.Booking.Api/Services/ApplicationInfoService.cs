@@ -12,11 +12,11 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class ApplicationInfoService : Service
     {
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _serverSettings;
 
-        public ApplicationInfoService(IConfigurationManager configManager)
+        public ApplicationInfoService(IServerSettings serverSettings)
         {
-            _configManager = configManager;
+            _serverSettings = serverSettings;
         }
 
         public object Get(ApplicationInfoRequest request)
@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Api.Services
             var info = new ApplicationInfo
             {
                 Version = Assembly.GetAssembly(typeof (ApplicationInfoService)).GetName().Version.ToString(),
-                SiteName = _configManager.GetSetting("TaxiHail.SiteName")
+                SiteName = _serverSettings.ServerData.TaxiHail.SiteName
             };
             return info;
         }

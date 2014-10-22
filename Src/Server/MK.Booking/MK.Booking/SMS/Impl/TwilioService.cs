@@ -9,19 +9,19 @@ namespace apcurium.MK.Booking.SMS.Impl
     public class TwilioService : ISmsService
     {
         private readonly ILogger _logger;
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
 
-        public TwilioService(ILogger logger, IConfigurationManager configurationManager)
+        public TwilioService(ILogger logger, IServerSettings serverSettings)
         {
             _logger = logger;
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
         }
 
         public void Send(string toNumber, string message)
         {
-            var accountSid = _configurationManager.GetSetting("SMSAccountSid");
-            var authToken = _configurationManager.GetSetting("SMSAuthToken");
-            var fromNumber = _configurationManager.GetSetting("SMSFromNumber");
+            var accountSid = _serverSettings.ServerData.SMSAccountSid;
+            var authToken = _serverSettings.ServerData.SMSAuthToken;
+            var fromNumber = _serverSettings.ServerData.SMSFromNumber;
             var twilio = new TwilioRestClient(accountSid, authToken);
             var response = twilio.SendSmsMessage("+" + fromNumber, "+" + toNumber, message, "");
 

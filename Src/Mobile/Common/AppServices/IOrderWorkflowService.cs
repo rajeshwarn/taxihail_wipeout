@@ -75,6 +75,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	    bool IsOrderRebooked();
 
         void CancelRebookOrder();
+
+	    void SetIgnoreNextGeoLocResult(bool ignoreNextGeoLocResult);
     }
 }
 

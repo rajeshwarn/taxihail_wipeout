@@ -13,7 +13,6 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
-using Direction = apcurium.MK.Common.Entity.DirectionSetting;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using System.Globalization;
 
@@ -71,14 +70,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private void CallCompany (string name, string number)
         {
 			_phoneCallTask.MakePhoneCall (name, number);
-        }
-
-        public OrderStatusDetail GetOrderStatus (Guid orderId)
-        {
-			//TODO: Migrate code to async/await
-			var task = GetOrderStatusAsync(orderId);
-			task.Wait();
-			return task.Result;
         }
 
 		public Task<OrderStatusDetail> GetOrderStatusAsync (Guid orderId)
@@ -151,13 +142,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			UseServiceClientTask<OrderServiceClient> (service => service.RemoveFromHistory (orderId));
         }
-
-        public bool IsCompleted (Guid orderId)
-        {
-            var status = GetOrderStatus (orderId);
-			return IsStatusCompleted (status.IBSStatusId);
-        }
-
+			
         public bool IsStatusTimedOut(string statusId)
         {
             return statusId != null && statusId.SoftEqual(VehicleStatuses.Common.Timeout);
@@ -204,7 +189,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<DirectionInfo> GetFareEstimate(CreateOrder order)
         {
-			var tarifMode = _appSettings.Data.TarifMode;
+            var tarifMode = _appSettings.Data.Direction.TarifMode;
 			var validationResult = await UseServiceClientAsync<OrderServiceClient, OrderValidationResult>(service => service.ValidateOrder(order, null, true));
 			if (order.PickupAddress.HasValidCoordinate() 
 				&& order.DropOffAddress.HasValidCoordinate())

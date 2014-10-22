@@ -1,0 +1,18 @@
+﻿@using CustomerPortal.Web
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", new {area = ""}, FormMethod.Post, new {id = "logoutForm"}))
+    {
+        @Html.AntiForgeryToken()
+        <text>
+            Signed in as @Html.ActionLink(User.Identity.Name, "Manage", "Account", new {area = ""}, new {@class = "username", title = "Manage"}) |
+        </text>
+
+        if (User.IsInRole(RoleName.Admin))
+        {
+            <a href="@Url.Action("Index", "Home", new {area = "admin"})">Back to company list</a>
+            <text>|</text>
+        }
+        <a href="javascript:document.getElementById('logoutForm').submit()">Sign out</a>
+    }
+}

@@ -386,6 +386,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								var isSuccess = _bookingService.CancelOrder(OrderId);
 			                    if(isSuccess)
 			                    {
+                                    this.Services().MessengerHub.Publish(new OrderStatusChanged(this, OrderId, OrderStatus.Canceled, null));
 			                        LoadStatus();
 			                    }
 			                    else
