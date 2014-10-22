@@ -39,16 +39,17 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             emailIntent.PutExtra(Intent.ExtraEmail, new[] {supportEmail});
             emailIntent.PutExtra(Intent.ExtraSubject, subject);
 
-            if (File.Exists(LoggerImpl.LogFilename))
+            var logger = TinyIoCContainer.Current.Resolve<ILogger> ();
+            if (File.Exists(logger.GetErrorLogPath()))
             {
-                emailIntent.PutExtra(Intent.ExtraStream,  Uri.FromFile(new Java.IO.File(LoggerImpl.LogFilename)));
+                emailIntent.PutExtra(Intent.ExtraStream,  Uri.FromFile(new Java.IO.File(logger.GetErrorLogPath())));
             }
             try
             {
                 var intent = Intent.CreateChooser(emailIntent, TinyIoCContainer.Current.Resolve<ILocalization>()["SendEmail"]);
                 intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
                 Context.StartActivity(intent);
-                LoggerImpl.FlushNextWrite();
+                logger.FlushNextWrite();
             }
             catch
             {

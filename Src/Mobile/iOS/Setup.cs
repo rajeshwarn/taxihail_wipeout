@@ -19,13 +19,11 @@ using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
-using MonoTouch.FacebookConnect;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Dialog.Touch;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Google;
-using MonoTouch.Foundation;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
 
@@ -80,6 +78,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             container.Register<IAppSettings> (new AppSettingsService (container.Resolve<ICacheService> (), container.Resolve<ILogger> ()));
 
+            ConfigureInsights ();
+
             container.Register<IGeocoder> ((c, p) => new GoogleApiClient (c.Resolve<IAppSettings>(), c.Resolve<ILogger> (), new AppleGeocoder ()));
 			container.Register<IPlaceDataProvider, GoogleApiClient> ();
 
@@ -132,5 +132,25 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			return new TinyIoCProvider (TinyIoCContainer.Current);
 		}
+
+        private void ConfigureInsights()
+        {
+            #if !DEBUG
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
+            var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
+
+            Xamarin.Insights.Initialize(settings.Insights.APIKey);
+            Xamarin.Insights.DisableCollection = false;
+            Xamarin.Insights.DisableDataTransmission = false;
+            Xamarin.Insights.DisableExceptionCatching = false;
+
+            // identify with an unknown user in case an exception occurs before the user can log in
+            Xamarin.Insights.Identify(settings.Insights.UnknownUserIdentifier, new Dictionary<string, string>
+                {
+                    { "ApplicationVersion", packageInfo.Version },
+                    { "Company", settings.TaxiHail.ApplicationName },
+                });
+            #endif
+        }
 	}
 }
