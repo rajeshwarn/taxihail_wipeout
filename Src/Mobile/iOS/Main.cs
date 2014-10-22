@@ -48,13 +48,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
     public partial class AppDelegate : MvxApplicationDelegate
     {
-        private bool _callbackFromFb;
-        private bool _isStarting;
-
         public override bool FinishedLaunching (UIApplication app, NSDictionary options)
         {
-            _isStarting = true;
-
             if (!UIHelper.IsOS7orHigher)
             {
                 UIApplication.SharedApplication.StatusBarHidden = false;
@@ -84,22 +79,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             var paymentService = TinyIoCContainer.Current.Resolve<IPaymentService>();
             paymentService.ClearPaymentSettingsFromCache();
 
-            #if !DEBUG
-                var conversionId = appSettingsService.Data.GoogleAdWordsConversionId;
-                var label = appSettingsService.Data.GoogleAdWordsConversionLabel;
-                if(conversionId.HasValue() && label.HasValue())
-                {
-                    try
-                    {
-                        ACTConversionReporter.ReportWithConversionID(conversionId, label, "1.000000", false);
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.LogError (e);
-                    }
-                }
-            #endif
-
 			var startup = Mvx.Resolve<IMvxAppStart>();
 			startup.Start(@params);
 
@@ -117,20 +96,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			UIApplication.CheckForIllegalCrossThreadCalls=true;
 
-			//Facebook init
-            if (TinyIoCContainer.Current.Resolve<IAppSettings>().Data.FacebookEnabled)
-            {
-				TinyIoCContainer.Current.Resolve<IFacebookService> ().Init ();
-                FBAppCall.HandleDidBecomeActive();
-            }
-
             var locService = TinyIoCContainer.Current.Resolve<ILocationService>();
             if ( locService != null )
             {
                 locService.Start ();
             }
 
-            ThreadHelper.ExecuteInThread (() => Runtime.StartWWAN( new Uri ( Mvx.Resolve<AppSettingsService>().Data.ServiceUrl )));
+            ThreadHelper.ExecuteInThread (() => Runtime.StartWWAN( new Uri ( Mvx.Resolve<IAppSettings>().Data.ServiceUrl )));
 
             Logger.LogMessage("OnActivated");
 
@@ -158,18 +130,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             JsConfig.RegisterTypeForAot<Geometry>();
             JsConfig.RegisterTypeForAot<GeoObj>();
             JsConfig.RegisterTypeForAot<GeoResult>();
-
-			var facebookService = TinyIoCContainer.Current.Resolve<IFacebookService>();
-			if ( facebookService != null )
-			{
-				facebookService.PublishInstall();
-			}
-
-            if (_callbackFromFb)
-            {    
-                _callbackFromFb = false;
-            }
-            _isStarting = false;
         }
 
         public override void DidEnterBackground (UIApplication application)
@@ -194,7 +154,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
             if (url.AbsoluteString.StartsWith("fb" + settings.Data.FacebookAppId + settings.Data.TaxiHail.ApplicationName.ToLower().Replace( " ", string.Empty ) ))
 			{
-                _callbackFromFb = true;
 				return FBAppCall.HandleOpenURL(url, sourceApplication);
 			}
 

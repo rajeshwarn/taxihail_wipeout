@@ -34,6 +34,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private static ClientPaymentSettings _cachedSettings;
         
         private const string PayedCacheSuffix = "_Payed";
+		private const string OnErrorMessage = "Payment Method not found or unknown";
 
 		public PaymentService(string url, string sessionId, ConfigurationClientService serviceClient, ICacheService cache, IPackageInfo packageInfo, ILogger logger)
         {
@@ -82,38 +83,46 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         
         public async Task ResendConfirmationToDriver(Guid orderId)
         {
-            await _client.ResendConfirmationToDriver(orderId);
+			await GetClient().ResendConfirmationToDriver(orderId);
         }
 
         public async Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
         {
-            return await _client.Tokenize(creditCardNumber, expiryDate, cvv);
+			return await GetClient().Tokenize(creditCardNumber, expiryDate, cvv);
         }
 
         public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
-            return await _client.ForgetTokenizedCard(cardToken);
+			return await GetClient().ForgetTokenizedCard(cardToken);
         }
 
         public async Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
         {
-            return await _client.CommitPayment(cardToken, amount, meterAmount, tipAmount, orderId);
+			return await GetClient().CommitPayment(cardToken, amount, meterAmount, tipAmount, orderId);
         }
 
         public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
         {
-			return await _client.Pair(orderId, cardToken, autoTipPercentage, autoTipAmount);
+			return await GetClient().Pair(orderId, cardToken, autoTipPercentage, autoTipAmount);
         }
 
         public async Task<BasePaymentResponse> Unpair(Guid orderId)
         {
-            return await _client.Unpair(orderId);
+			return await GetClient().Unpair(orderId);
         }
+
+		private IPaymentServiceClient GetClient()
+		{
+			if(_client == null)
+			{
+				throw new Exception(OnErrorMessage);
+			}
+
+			return _client;
+		}
 
         private IPaymentServiceClient GetClient(ClientPaymentSettings settings)
         {
-            const string onErrorMessage = "Payment Method not found or unknown";
-
             switch (settings.PaymentMode)
             {
                 case PaymentMethod.Braintree:
@@ -129,8 +138,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 case PaymentMethod.Fake:
                     return new FakePaymentClient();
 
-                default:
-                    throw new Exception(onErrorMessage);
+				default:
+					return null;
             }
         }
     }

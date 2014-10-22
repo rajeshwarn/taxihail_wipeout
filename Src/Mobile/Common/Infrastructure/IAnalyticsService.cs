@@ -9,5 +9,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         void LogCommand (string commandName, string parameter);
         void LogException(string className, string methodName, Exception e, bool isFatal = false);
 		void LogEvent (string @event);
+		void ReportConversion();
     }
 }

@@ -59,6 +59,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             Tracker.TrackException(className + ":" + methodName + ": " + e.Message, isFatal);
         }
 
+        public void ReportConversion()
+        {
+            // nothing to do, android does it for us
+        }
         #endregion
     }
 }

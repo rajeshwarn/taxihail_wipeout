@@ -10,22 +10,23 @@ using Android.Util;
 using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore.Droid.Platform;
 using Android.Content;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 {
 	public class FacebookService: IFacebookService
 	{
-		readonly string _appId;
-		readonly Func<Activity> _mainActivity;
-		readonly MyStatusCallback _statusCallback;
+		private readonly string _appId;
+        private readonly Func<Activity> _mainActivity;
+        private readonly MyStatusCallback _statusCallback;
 
 		public FacebookService()
 		{
-
 			this._mainActivity = () => TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
 			this._appId = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().Data.FacebookAppId;
 			this._statusCallback = new MyStatusCallback();
 		}
+
 		public void Init()
 		{
 
@@ -33,24 +34,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 
 		public void PublishInstall()
 		{
-			Xamarin.FacebookBinding.Settings.PublishInstallAsync(TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity.ApplicationContext , _appId );
+            try
+            {
+                Xamarin.FacebookBinding.Settings.PublishInstallAsync(TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity.ApplicationContext , _appId );
+            }
+            catch(Exception ex)
+            {
+                Logger.LogMessage("Facebook PublishInstall failed");
+                Logger.LogError(ex);
+            }
 		}
 
 		public Task Connect()
 		{
-
- 
 			// If the session state is any of the two "open" states when the button is clicked
 			if (Session.ActiveSession != null 
 				&& (Session.ActiveSession.State == SessionState.Opened
 					|| Session.ActiveSession.State == SessionState.OpenedTokenUpdated))
 			{
-
 				// Close the session and remove the access token from the cache
 				// The session state handler (in the app delegate) will be called automatically
 				Session.ActiveSession.CloseAndClearTokenInformation();
 			}
-
 
 			// Open a session showing the user the login UI
 			// You must ALWAYS ask for basic_info permissions when opening a session
@@ -67,11 +72,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 
 				if (openRequest != null)
 				{
-
 					//Ugly hack until we upgrade the facebook sdk.
-					if (IsFacebookInstalled ()) { 
+					if (IsFacebookInstalled ()) 
+                    { 
 						openRequest.SetPermissions (new [] { "basic_info", "email" });
-					} else {
+					} else 
+                    {
 						openRequest.SetPermissions (new [] { "public_profile", "email"  });
 					}
 					openRequest.SetLoginBehavior(SessionLoginBehavior.SsoWithFallback);
@@ -93,22 +99,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 
 		private bool IsFacebookInstalled()
 		{
-			try{
-
+			try
+            {
 				var dataUri = Android.Net.Uri.Parse("fb://....");
 				var  receiverIntent = new Intent(Intent.ActionView, dataUri);
 				var packageManager =  TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity.PackageManager;
 				var activities = packageManager.QueryIntentActivities(receiverIntent, (PackageInfoFlags) 0);
 
 				return activities.Count  > 0;
-					 
 			}
-				catch
-				{
-					return false;
-				}
+			catch
+			{
+				return false;
 			}
-
+		}
 
 		public void Disconnect()
 		{
@@ -121,7 +125,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 				Session.ActiveSession.CloseAndClearTokenInformation();
 			}
 		}
-
 
 		public Task<FacebookUserInfo> GetUserInfo()
 		{
@@ -148,7 +151,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 			}
 		}
 
-		class MyStatusCallback : Java.Lang.Object, Session.IStatusCallback
+		private class MyStatusCallback : Java.Lang.Object, Session.IStatusCallback
 		{
 			readonly object _gate = new object();
 			private TaskCompletionSource<object> _tcs;
@@ -168,9 +171,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 				{
 					return;
 				}
-
-//				bool connected = status == SessionState.Opened
-//				                 || status == SessionState.OpenedTokenUpdated;
 
 				if (_tcs != null)
 				{
@@ -199,7 +199,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 			}
 		}
 
-		class MyGraphUserCallback: Java.Lang.Object, Request.IGraphUserCallback
+		private class MyGraphUserCallback: Java.Lang.Object, Request.IGraphUserCallback
 		{
 			readonly TaskCompletionSource<FacebookUserInfo> _tcs;
 			public MyGraphUserCallback (TaskCompletionSource<FacebookUserInfo> tcs)
