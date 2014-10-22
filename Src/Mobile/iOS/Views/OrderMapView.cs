@@ -489,7 +489,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var zoomLevel = streetLevelZoomHint.InitialZoom 
                     ? this.Services().Settings.InitialZoomLevel 
                     : MapViewModel.ZoomStreetLevel;
-                this.SetCenterCoordinate(new CLLocationCoordinate2D(streetLevelZoomHint.Latitude, streetLevelZoomHint.Longitude), zoomLevel, true);
+
+                if (this.Services().Settings.DisableAutomaticZoomOnLocation && !streetLevelZoomHint.InitialZoom)
+                {
+                    this.SetCenterCoordinate(new CLLocationCoordinate2D(streetLevelZoomHint.Latitude, streetLevelZoomHint.Longitude), true);
+                }
+                else
+                {
+                    this.SetCenterCoordinate(new CLLocationCoordinate2D(streetLevelZoomHint.Latitude, streetLevelZoomHint.Longitude), zoomLevel, true);
+                }
             }
 
 			var zoomHint = hint as ChangeZoomPresentationHint;

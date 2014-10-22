@@ -284,6 +284,7 @@ namespace MK.Common.Configuration
         public string CallDriverUsingProxyUrl { get; set; }
 
         public int InitialZoomLevel { get; set; }
+        public bool DisableAutomaticZoomOnLocation { get; set; }
     }
 }
 
