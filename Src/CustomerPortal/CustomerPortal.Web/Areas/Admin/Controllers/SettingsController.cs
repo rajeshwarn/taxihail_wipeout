@@ -603,7 +603,10 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
                 foreach (HttpPostedFileBase file in files)
                 {
-                    fileManager.Save(file);
+                    if (file != null)
+                    {
+                        fileManager.Save(file);
+                    }
                 }
             }
 

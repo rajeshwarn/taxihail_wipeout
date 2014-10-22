@@ -67,13 +67,14 @@ namespace MK.DeploymentService
 
         private void CheckAndRunJobWithBuild()
         {
-            var job = new DeploymentJobServiceClient().GetNext();
-
-            if (job == null) return;
-
-            _job = job;
             try
             {
+                var job = new DeploymentJobServiceClient().GetNext();
+                if (job == null)
+                    return;
+
+                _job = job;
+
                 Log("Starting", JobStatus.Inprogress);
 
                 var sourceDirectory = Path.Combine(Path.GetPathRoot(System.Environment.GetFolderPath(System.Environment.SpecialFolder.System)), "mktaxi");
@@ -276,8 +277,6 @@ namespace MK.DeploymentService
 
             Log("Done Deploying Server");
 
-            
-
             appPool.Start();
         }
 
@@ -362,17 +361,6 @@ namespace MK.DeploymentService
 
 
             CopyFiles(sourcePath, targetWeDirectory);
-             
-            if ( !string.IsNullOrEmpty( Settings.Default.ReplicatedWebSitesFolder ) )
-            {
-                Log("Replicated IIS Site set to : " + Settings.Default.ReplicatedWebSitesFolder);
-                var replicatedTargetWeDirectory = Path.Combine(Settings.Default.ReplicatedWebSitesFolder, companyName, subFolder);
-
-                Log("Replicated IIS Site set to : " + replicatedTargetWeDirectory);
-                CopyFiles(sourcePath, replicatedTargetWeDirectory);
-            }
-
-
 
             var website = iisManager.Sites[Settings.Default.SiteName];
             var webApp = website.Applications.FirstOrDefault(x => x.Path == "/" + companyName);
@@ -423,7 +411,12 @@ namespace MK.DeploymentService
 
             iisManager.CommitChanges();
 
+            // Make sure that the changes are commited before replicating the files
+            Thread.Sleep(2000);
+
             Log("Deploying IIS Finished");
+
+            ReplicateSite(companyName, targetWeDirectory, subFolder);
         }
 
         private void DeployTheme(string companyId, string companyName, string targetWeDirectory)
@@ -441,6 +434,7 @@ namespace MK.DeploymentService
 
                 Log("Getting web theme from cutsomer portal");
                 var service = new CompanyServiceClient();
+
                 using (var zip = new ZipArchive(service.GetCompanyFiles(companyId, "webtheme")))
                 {
                     foreach (var entry in zip.Entries)
@@ -471,6 +465,18 @@ namespace MK.DeploymentService
             catch (Exception ex)
             {
                 Log("Warning, cannot copy theme : " + ex.Message);
+            }
+        }
+
+        private void ReplicateSite(string companyName, string targetWeDirectory, string subFolder)
+        {
+            if (!string.IsNullOrEmpty(Settings.Default.ReplicatedWebSitesFolder))
+            {
+                Log("Replicated IIS Site set to : " + Settings.Default.ReplicatedWebSitesFolder);
+                var replicatedTargetWeDirectory = Path.Combine(Settings.Default.ReplicatedWebSitesFolder, companyName, subFolder);
+
+                Log("Replicated IIS Site set to : " + replicatedTargetWeDirectory);
+                CopyFiles(targetWeDirectory, replicatedTargetWeDirectory);
             }
         }
 

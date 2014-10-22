@@ -25,6 +25,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IBookingService _bookingService;
         private readonly IAccountService _accountService;
 
+		private ClientPaymentSettings _paymentSettings;
+
 		public RideSummaryViewModel(IOrderWorkflowService orderWorkflowService,
 			IPaymentService paymentService,
 			IBookingService bookingService,
@@ -43,6 +45,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 
 			CanRate = false;
+
+			_paymentSettings = await _paymentService.GetPaymentSettings ();
 
 			if (Settings.RatingEnabled) 
 			{
@@ -149,12 +153,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				var setting = _paymentService.GetPaymentSettings();
-				return ((setting.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null) // if paypal or user has a credit card
-                        	|| setting.PayPalClientSettings.IsEnabled) 
+				return ((_paymentSettings.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null) // if paypal or user has a credit card
+							|| _paymentSettings.PayPalClientSettings.IsEnabled) 
 						&& !(Settings.RatingEnabled && Settings.RatingRequired && !HasRated)     					 // user must rate before paying
-                        && !_paymentService.GetPaymentSettings().AutomaticPayment									 // payment is processed automatically
-						&& setting.PaymentMode != PaymentMethod.RideLinqCmt 			 // payment is processed automatically
+						&& !_paymentSettings.AutomaticPayment									 // payment is processed automatically
+						&& _paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt 			 // payment is processed automatically
 						&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue	     // not already paid
 						&& (Order.Settings.ChargeTypeId == null 						 // user is paying with a charge account
                             || Order.Settings.ChargeTypeId != ChargeTypes.Account.Id);
@@ -165,12 +168,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        get
 	        {
-				var setting = _paymentService.GetPaymentSettings();
-                var isPayEnabled = setting.IsPayInTaxiEnabled 
-					|| setting.PayPalClientSettings.IsEnabled;
+				var isPayEnabled = _paymentSettings.IsPayInTaxiEnabled 
+					|| _paymentSettings.PayPalClientSettings.IsEnabled;
 				return isPayEnabled 
-					&& setting.PaymentMode != PaymentMethod.RideLinqCmt
-                    && !_paymentService.GetPaymentSettings().AutomaticPayment
+					&& _paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt
+					&& !_paymentSettings.AutomaticPayment
 					&& _paymentService.GetPaymentFromCache(Order.Id).HasValue;
 	        }
 	    }

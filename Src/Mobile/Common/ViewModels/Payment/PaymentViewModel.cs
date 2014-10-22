@@ -11,6 +11,7 @@ using ServiceStack.Text;
 using System.Globalization;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -21,6 +22,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly IPaymentService _paymentService;
 		private readonly ILocalization _localize;
 
+		private ClientPaymentSettings _paymentSettings;
 
 		public PaymentViewModel(IPayPalExpressCheckoutService paypalExpressCheckoutService,
 			IAccountService accountService,
@@ -33,9 +35,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			_localize = localize;
 		}
 
-		public void Init(string order, string orderStatus)
+		public async void Init(string order, string orderStatus)
 		{
-			_paymentService.GetPaymentSettings();
+			_paymentSettings = await _paymentService.GetPaymentSettings();
 
             Order = JsonSerializer.DeserializeFromString<Order>(order); 
             OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
@@ -101,8 +103,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         { 
             get
             {
-				var payPalSettings = _paymentService.GetPaymentSettings().PayPalClientSettings;
-                return payPalSettings.IsEnabled;
+				return _paymentSettings.PayPalClientSettings.IsEnabled;
             }
         }
 
@@ -110,8 +111,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         { 
             get
             {
-				var setting = _paymentService.GetPaymentSettings();
-                return setting.IsPayInTaxiEnabled;
+				return _paymentSettings.IsPayInTaxiEnabled;
             }
         }
 

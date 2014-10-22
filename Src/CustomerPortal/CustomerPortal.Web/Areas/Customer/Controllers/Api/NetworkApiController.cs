@@ -45,11 +45,11 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
             foreach (var nearbyCompany in overlappingCompanies)
             {
-                if (!networkSettings.Preferences.Any(p => p.CompanyKey == nearbyCompany.CompanyKey))
+                if (!networkSettings.Preferences.Any(p => p.CompanyKey == nearbyCompany.Id))
                 {
                     networkSettings.Preferences.Add(new CompanyPreference
                     {
-                        CompanyKey = nearbyCompany.CompanyKey
+                        CompanyKey = nearbyCompany.Id
                     });
                 }
             }

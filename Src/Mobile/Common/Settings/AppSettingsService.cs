@@ -12,6 +12,7 @@ using ServiceStack.Text;
 using TinyIoC;
 using System.Globalization;
 using apcurium.MK.Common.Configuration.Helpers;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
@@ -34,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			LoadSettingsFromFile();
 		}
 
-        public void Load()
+        public async Task Load()
 		{
 			//check if the cache has already something
 			var data = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);
@@ -43,11 +44,10 @@ namespace apcurium.MK.Booking.Mobile.Settings
 				Data = data;
 			}
 
-			//launch async refresh from the server
-			Task.Factory.StartNew(() => RefreshSettingsFromServer());
+			await RefreshSettingsFromServer();
 		}
 
-		public void ChangeServerUrl(string serverUrl)
+		public async Task ChangeServerUrl(string serverUrl)
 		{
 			// Reset cache
 			Data = new TaxiHailSetting();
@@ -55,7 +55,23 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			Data.ServiceUrl = serverUrl;
 
 			_cacheService.Clear(SettingsCacheKey);
-			Task.Factory.StartNew(() => RefreshSettingsFromServer());
+
+			try
+			{
+				await RefreshSettingsFromServer();
+			}
+			catch
+			{
+				// server url probably not good, revert
+				Mvx.Resolve<IMessageService>().ShowMessage("Error", "Server not found, reverting server url");
+
+				Data = new TaxiHailSetting();
+				LoadSettingsFromFile();
+
+				_cacheService.Clear(SettingsCacheKey);
+
+				await RefreshSettingsFromServer();
+			}
 		}
 
 		private void LoadSettingsFromFile()
@@ -77,11 +93,11 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			}
 		}
 
-		private void RefreshSettingsFromServer()
+		private async Task RefreshSettingsFromServer()
 		{
 			_logger.LogMessage("load settings from server");
 
-			var settingsFromServer = TinyIoCContainer.Current.Resolve<ConfigurationClientService>().GetSettings();
+			var settingsFromServer = await TinyIoCContainer.Current.Resolve<ConfigurationClientService>().GetSettings();
             SettingsLoader.InitializeDataObjects(Data, settingsFromServer, _logger, new[] { "ServiceUrl", "CanChangeServiceUrl" });
 
 			SaveSettings();			

@@ -109,39 +109,43 @@ namespace MK.Common.Configuration
         [Display(Name = "Service Url", Description="Url of the TaxiHail Server")]
 		public string ServiceUrl { get; set; }
 
-        [RequiredAtStartup]
+        [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter Enabled", Description="Enable register/log in with Twitter")]
 		public bool TwitterEnabled{ get; protected set; }
 
-        [RequiredAtStartup]
+        [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter Consumer Key", Description="Twitter API settings")]
 		public string TwitterConsumerKey{ get; protected set; }
 
-        [RequiredAtStartup]
+        [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter Consumer Secret", Description = "Twitter API settings")]
         public string TwitterConsumerSecret { get; protected set; }
 
+        [SendToClient]
         [Display(Name = "Twitter CallBack", Description="Twitter API settings")]
 		public string TwitterCallback{ get; protected set; }
-        
+
+        [SendToClient]
         [Display(Name = "Twitter Token Url", Description="Twitter API settings")]
 		public string TwitterRequestTokenUrl{ get; protected set; }
 
+        [SendToClient]
         [Display(Name = "Twitter Access Token Url", Description="Twitter API settings")]
 		public string TwitterAccessTokenUrl{ get; protected set; }
 
+        [SendToClient]
         [Display(Name = "Twitter Authorize Url", Description="Twitter API settings")]
 		public string TwitterAuthorizeUrl { get; protected set; }
 
-        [RequiredAtStartup]
+        [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Facebook Publish Enabled", Description="Facebook Publish Enabled")]
 		public bool FacebookPublishEnabled { get; protected set; }
 
-        [RequiredAtStartup]
+        [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Facebook Enabled", Description="Enable register/log in with Facebook")]
 		public bool FacebookEnabled { get; protected set; }
 
-        [RequiredAtStartup]
+        [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Facebook App Id", Description="Facebook API settings")]
 		public string FacebookAppId{ get; protected set; }
 

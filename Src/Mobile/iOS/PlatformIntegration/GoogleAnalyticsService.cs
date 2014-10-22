@@ -4,16 +4,22 @@ using apcurium.MK.Common.Configuration;
 using GoogleAnalytics;
 using GoogleAnalytics.iOS;
 using MonoTouch.Foundation;
+using GoogleConversionTracking;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     // v3.0.3.4
-	public class GoogleAnalyticsService: IAnalyticsService
+    public class GoogleAnalyticsService: IAnalyticsService
 	{
+        IAppSettings _settings;
 		private IGAITracker Tracker { get; set; }
 
 		public GoogleAnalyticsService (IAppSettings settings, IPackageInfo packageInfo)
 		{
+            _settings = settings;
+
 			GAI.SharedInstance.TrackUncaughtExceptions = true;
 			GAI.SharedInstance.DispatchInterval = 20;
 
@@ -55,6 +61,25 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 //            exception.Set(GAIConstants.ex
 //            Tracker.Send(exception.Build());
 		}
+
+        public void ReportConversion()
+        {
+            #if DEBUG
+            var conversionId = _settings.Data.GoogleAdWordsConversionId;
+            var label = _settings.Data.GoogleAdWordsConversionLabel;
+            if(conversionId.HasValue() && label.HasValue())
+            {
+                try
+                {
+                    ACTConversionReporter.ReportWithConversionID(conversionId, label, "1.000000", false);
+                }
+                catch (Exception e)
+                {
+                    Logger.LogError (e);
+                }
+            }
+            #endif
+        }
 	}
 }
 
