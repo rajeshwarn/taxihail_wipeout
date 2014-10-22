@@ -100,14 +100,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             else
             {
 				imgLogoApcurium.AddGestureRecognizer (new UITapGestureRecognizer (() => {
-					if (ToApcuriumWebsite != null && ToApcuriumWebsite.CanExecute ()) {
-						ToApcuriumWebsite.Execute ();
+					if (ToApcuriumWebsite != null && ToApcuriumWebsite.CanExecute(null)) {
+						ToApcuriumWebsite.Execute (  null);
 					}
 				}));
 
 				imgLogoMobileKnowledge.AddGestureRecognizer (new UITapGestureRecognizer (() => {
-					if (ToMobileKnowledgeWebsite != null && ToMobileKnowledgeWebsite.CanExecute ()) {
-						ToMobileKnowledgeWebsite.Execute ();
+					if (ToMobileKnowledgeWebsite != null && ToMobileKnowledgeWebsite.CanExecute (null)) {
+						ToMobileKnowledgeWebsite.Execute (null);
 					}
 				}));
 			}
