@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CustomerPortal.Contract.Resources;
+using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Areas.Customer.Controllers.Api;
 using CustomerPortal.Web.Areas.Customer.Models.RequestResponse;
 using CustomerPortal.Web.Entities.Network;
@@ -117,12 +118,12 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             var response = Sut.Get(_chrisTaxi.Id);
              Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
 
             var response2 = Sut.Get(_tonyTaxi.Id);
             Assert.True(response2.IsSuccessStatusCode);
             var json2 = response2.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json2));
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json2));
         }
 
 
@@ -133,7 +134,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             var response = Sut.Get(_chrisTaxi.Id);
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
         }
 
         [Test]
@@ -142,7 +143,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             var response = Sut.Get(_lastTaxi.Id);
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
         }
 
         [Test]
@@ -151,7 +152,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             var response = Sut.Get(_pilouTaxi.Id);
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
         }
 
         [Test]
@@ -160,7 +161,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             var response = Sut.Get(_tonyTaxi.Id);
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
         }
 
         [Test]
@@ -170,7 +171,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             var response = Sut.Get(_chrisTaxi.Id);
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreference>>(json));
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
         }
 
         [Test]
@@ -178,27 +179,27 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         {
             var response = Sut.Get(_chrisTaxi.Id);
             var json = response.Content.ReadAsStringAsync().Result;
-            var chrisPreferences = JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
+            var chrisPreferences = JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json);
 
-            var tony = chrisPreferences.FirstOrDefault(p => p.CompanyKey == _tonyTaxi.Id);
+            var tony = chrisPreferences.FirstOrDefault(p => p.CompanyPreference.CompanyKey == _tonyTaxi.Id);
             Assert.NotNull(tony,"Precondition Failed");
-            Assert.False(tony.CanAccept, "Precondition Failed");
-            Assert.False(tony.CanDispatch, "Precondition Failed");
+            Assert.False(tony.CompanyPreference.CanAccept, "Precondition Failed");
+            Assert.False(tony.CompanyPreference.CanDispatch, "Precondition Failed");
 
-            tony.CanAccept = tony.CanDispatch = true;
+            tony.CompanyPreference.CanAccept = tony.CompanyPreference.CanDispatch = true;
 
-            response = Sut.Post(_chrisTaxi.Id, chrisPreferences.ToArray());
+            response = Sut.Post(_chrisTaxi.Id, chrisPreferences.Select(x=>x.CompanyPreference).ToArray());
             Assert.True(response.IsSuccessStatusCode);
 
 
             response = Sut.Get(_chrisTaxi.Id);
             json = response.Content.ReadAsStringAsync().Result;
-            chrisPreferences = JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
+            chrisPreferences = JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json);
 
-            tony = chrisPreferences.FirstOrDefault(p => p.CompanyKey == _tonyTaxi.Id);
+            tony = chrisPreferences.FirstOrDefault(p => p.CompanyPreference.CompanyKey == _tonyTaxi.Id);
             Assert.NotNull(tony);
-            Assert.True(tony.CanAccept );
-            Assert.True(tony.CanDispatch);
+            Assert.True(tony.CompanyPreference.CanAccept);
+            Assert.True(tony.CompanyPreference.CanDispatch);
         }
 
     }

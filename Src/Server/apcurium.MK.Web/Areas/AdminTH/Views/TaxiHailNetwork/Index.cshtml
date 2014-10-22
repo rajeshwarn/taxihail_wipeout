@@ -1,4 +1,4 @@
-﻿@model List<CustomerPortal.Contract.Resources.CompanyPreference>
+﻿@model List<CustomerPortal.Contract.Response.CompanyPreferenceResponse>
    
 <div id="validationPanel" class="alert-success alert" style="display: none" > </div>
        
@@ -19,14 +19,21 @@
             
                 <tr>
                     <td>
-                        @company.CompanyKey
-                        @Html.Hidden("idKey_" + company.CompanyKey, company.CompanyKey)
+                        @company.CompanyPreference.CompanyKey
+                        @Html.Hidden("idKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CompanyKey)
                     </td>
                     <td>
-                        @Html.CheckBox("acceptKey_" + company.CompanyKey, company.CanAccept)
+                        @Html.CheckBox("acceptKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanAccept)
                     </td>
                     <td>
-                        @Html.CheckBox("dispatchKey_" + company.CompanyKey, company.CanDispatch)
+                        @if (company.CompanyAllowDispatch)
+                        {
+                            @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch)
+                        }
+                        else
+                        {
+                            @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch,new { disabled = "disabled" })
+                        }
                     </td>
                 </tr>
             }

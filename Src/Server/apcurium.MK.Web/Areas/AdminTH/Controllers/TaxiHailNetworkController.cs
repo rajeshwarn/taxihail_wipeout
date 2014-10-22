@@ -8,6 +8,7 @@ using apcurium.MK.Common.Configuration;
 using CustomerPortal.Client;
 using CustomerPortal.Client.Impl;
 using CustomerPortal.Contract.Resources;
+using CustomerPortal.Contract.Response;
 using ServiceStack.CacheAccess;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
@@ -47,14 +48,15 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 var preferences = new List<CompanyPreference>();
                 foreach (var companyPreference in response)
                 {
-                    var canAccept = form["acceptKey_" + companyPreference.CompanyKey].Contains("true");
-                    var canDispatch = form["dispatchKey_" + companyPreference.CompanyKey].Contains("true");
+                    var canAccept = form["acceptKey_" + companyPreference.CompanyPreference.CompanyKey].Contains("true");
+                    var canDispatch = form["dispatchKey_" + companyPreference.CompanyPreference.CompanyKey].Contains("true");
                     preferences.Add(new CompanyPreference
                     {
-                        CompanyKey = form["idKey_" + companyPreference.CompanyKey], 
+                        CompanyKey = form["idKey_" + companyPreference.CompanyPreference.CompanyKey], 
                         CanAccept = canAccept, 
                         CanDispatch = canDispatch
                     });
+                    
 
                 }
 
