@@ -124,6 +124,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                         Longitude = (double)dropoffLng
                     };
                 }
+                tbook.VehicleTypeID = -1;
                 double fare;
                 double tolls;
                 double distance;
