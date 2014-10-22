@@ -11,8 +11,7 @@ namespace apcurium.MK.Common.Diagnostic
     public class Logger : ILogger
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Logger));
-
-
+        
         public void LogError(Exception ex)
         {
             Log.Error(ex.Message + " " + ex.StackTrace);
@@ -30,7 +29,6 @@ namespace apcurium.MK.Common.Diagnostic
             }
             Log.Info(message);
         }
-
 
         public void LogStack()
         {
@@ -50,20 +48,6 @@ namespace apcurium.MK.Common.Diagnostic
             }
         }
 
-        public string GetStack(int position)
-        {
-            var stackTrace = new StackTrace(); // get call stack
-            var stackFrames = stackTrace.GetFrames(); // get method calls (frames)
-
-            if (stackFrames != null
-                && position < stackFrames.Length)
-            {
-                return stackFrames[position].GetMethod().Name;
-            }
-            return "no stack";
-        }
-
-
         public IDisposable StartStopwatch(string message)
         {
             var w = new Stopwatch();
@@ -74,6 +58,16 @@ namespace apcurium.MK.Common.Diagnostic
                 w.Stop();
                 LogMessage("Stop:  " + message + " Execution time : " + w.ElapsedMilliseconds + " ms");
             });
+        }
+
+        public string GetErrorLogPath()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FlushNextWrite()
+        {
+            throw new NotImplementedException();
         }
 
         private class Disposable : IDisposable
