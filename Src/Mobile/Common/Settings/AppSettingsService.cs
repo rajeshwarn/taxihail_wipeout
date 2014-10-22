@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
 				_cacheService.Clear(SettingsCacheKey);
 
-				await RefreshSettingsFromServer();
+				RefreshSettingsFromServer();
 			}
 		}
 

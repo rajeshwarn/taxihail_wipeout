@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
     // v3.0.3.4
     public class GoogleAnalyticsService: IAnalyticsService
 	{
-        IAppSettings _settings;
+        private IAppSettings _settings;
 		private IGAITracker Tracker { get; set; }
 
 		public GoogleAnalyticsService (IAppSettings settings, IPackageInfo packageInfo)
@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void ReportConversion()
         {
-            #if DEBUG
+            #if !DEBUG
             var conversionId = _settings.Data.GoogleAdWordsConversionId;
             var label = _settings.Data.GoogleAdWordsConversionLabel;
             if(conversionId.HasValue() && label.HasValue())
