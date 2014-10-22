@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Android.Widget;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -75,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		public override void OnBackPressed ()
 		{
 			base.OnBackPressed ();
-			ViewModel.PrepareNewOrder.Execute(null);
+            ViewModel.PrepareNewOrder.ExecuteIfPossible();
 		}
     }
 }

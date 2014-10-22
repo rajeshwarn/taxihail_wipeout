@@ -311,10 +311,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 Logger.LogMessage(e.Message);
             }
 
-            if (!IsMapTouchDown && (MapMoved != null) && (MapMoved.CanExecute()))
+            if (!IsMapTouchDown)
             {
                 var center = Map.CameraPosition.Target;
-                MapMoved.Execute(new Address
+                MapMoved.ExecuteIfPossible(new Address
                 {
                     Latitude = center.Latitude,
                     Longitude = center.Longitude

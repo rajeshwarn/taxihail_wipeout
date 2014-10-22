@@ -46,11 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             Click += delegate
             {
-                if (SelectedChangedCommand != null
-                 && SelectedChangedCommand.CanExecute())
-                {
-					SelectedChangedCommand.Execute(Tag);
-                }
+                    SelectedChangedCommand.ExecuteIfPossible(Tag);               
             };
 
             if (StyleManager.Current.ButtonFontSize.HasValue)

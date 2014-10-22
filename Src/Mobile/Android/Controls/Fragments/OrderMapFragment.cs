@@ -384,9 +384,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
             var bounds = GetMapBoundsFromProjection();
-            if (UserMovedMap != null && UserMovedMap.CanExecute(bounds) && !lockGeocoding)
+            if (!lockGeocoding)
             {
-                UserMovedMap.Execute(bounds);
+                UserMovedMap.ExecuteIfPossible(bounds);
             }
 
             ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles, bounds)); 
