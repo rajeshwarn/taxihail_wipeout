@@ -17,10 +17,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
         {
             base.RowSelected (tableView, indexPath);
-            if ( SelectedCommand != null && SelectedCommand.CanExecute())
-            {
-                SelectedCommand.Execute(GetItemAt( indexPath ));
-            }
+
+            SelectedCommand.ExecuteIfPossible(GetItemAt( indexPath ));
+
         }
 
         public ICommand SelectedCommand { get; set; }

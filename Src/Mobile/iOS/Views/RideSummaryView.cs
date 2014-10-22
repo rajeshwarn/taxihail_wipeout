@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using System.Drawing;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using apcurium.MK.Booking.Mobile.Client.Order;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -66,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 if (ViewModel.CanUserLeaveScreen ())
                 {
-                    ViewModel.CloseCommand.Execute(null);
+                    ViewModel.CloseCommand.ExecuteIfPossible();
                 }
             });
 
@@ -113,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (IsMovingFromParentViewController)
             {
                 // Back button pressed
-				ViewModel.PrepareNewOrder.Execute(null);
+                ViewModel.PrepareNewOrder.ExecuteIfPossible();
             }
 
             base.ViewWillDisappear(animated);

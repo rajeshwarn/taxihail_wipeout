@@ -70,10 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var button = (Button) layout.FindViewById(Resource.Id.navigateButton);
             button.Click += (sender, e) =>
             {
-                if (NavigateCommand != null)
-                {
-                    NavigateCommand.Execute();
-                }
+                    NavigateCommand.ExecuteIfPossible();                
             };
         }
     }
