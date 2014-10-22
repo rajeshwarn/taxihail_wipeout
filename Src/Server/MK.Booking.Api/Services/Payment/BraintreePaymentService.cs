@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 if (paymentDetail == null)
                     throw new Exception("Payment not found");
 
-                Void(paymentDetail.TransactionId, message);
+                Void(paymentDetail.TransactionId, ref message);
             }
             catch (Exception ex)
             {
@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        private void Void(string transactionId, string message)
+        private void Void(string transactionId, ref string message)
         {
             //see paragraph oops here https://www.braintreepayments.com/docs/dotnet/transactions/submit_for_settlement
 
@@ -300,7 +300,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         //cancel braintree transaction
                         try
                         {
-                            Void(paymentDetail.TransactionId, message);
+                            Void(paymentDetail.TransactionId, ref message);
                         }
                         catch (Exception ex)
                         {

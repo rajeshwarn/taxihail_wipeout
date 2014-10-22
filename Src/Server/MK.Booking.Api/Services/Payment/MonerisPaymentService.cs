@@ -11,6 +11,7 @@ using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -89,6 +90,46 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 IsSuccessful = true,
                 Message = "Success"
             };
+        }
+
+        public void Void(Guid orderId)
+        {
+            var message = string.Empty;
+            try
+            {
+                // TODO call void preauth (if possible with eselect plus?)
+            }
+            catch (Exception ex)
+            {
+                _logger.LogMessage("Can't cancel Moneris transaction");
+                _logger.LogError(ex);
+                message = message + ex.Message;
+                //can't cancel transaction, send a command to log later
+            }
+            finally
+            {
+                _logger.LogMessage(message);
+            }
+        }
+
+        private void Void(Guid orderId, string commitTransactionId, ref string message)
+        {
+            var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
+
+            var correctionCommand = new PurchaseCorrection(orderId.ToString(), commitTransactionId, CryptType_SSLEnabledMerchant);
+            var correctionRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, correctionCommand);
+            var correctionReceipt = correctionRequest.GetReceipt();
+
+            string monerisMessage;
+            var correctionSuccess = RequestSuccesful(correctionReceipt, out monerisMessage);
+
+            if (!correctionSuccess)
+            {
+                message = string.Format("{0} and {1}", message, monerisMessage);
+                throw new Exception("Moneris Purchase Correction failed");
+            }
+
+            message = message + " The transaction has been cancelled.";
         }
 
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request)
@@ -201,8 +242,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 var account = _accountDao.FindById(orderDetail.AccountId);
                 var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
-
-
+                
                 // commit transaction
                 if (!paymentDetail.IsCompleted)
                 {
@@ -247,24 +287,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         //cancel moneris transaction
                         try
                         {
-                            var correctionCommand = new PurchaseCorrection(request.OrderId.ToString(), commitTransactionId, CryptType_SSLEnabledMerchant);
-                            var correctionRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, correctionCommand);
-                            var correctionReceipt = correctionRequest.GetReceipt();
-
-                            string monerisMessage;
-                            var correctionSuccess = RequestSuccesful(correctionReceipt, out monerisMessage);
-
-                            if (!correctionSuccess)
-                            {
-                                message = string.Format("{0} and {1}", message, monerisMessage);
-                                throw new Exception("Moneris Purchase Correction failed");
-                            }
-
-                            message = message + " The transaction has been cancelled.";
+                            Void(request.OrderId, commitTransactionId, ref message);
                         }
                         catch (Exception ex)
                         {
-                            _logger.LogMessage("Can't cancel moneris transaction");
+                            _logger.LogMessage("Can't cancel Moneris transaction");
                             _logger.LogError(ex);
                             message = message + ex.Message;
                         }

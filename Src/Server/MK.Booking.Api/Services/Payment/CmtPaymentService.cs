@@ -237,27 +237,31 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public void Void(Guid orderId)
         {
-            var message = string.Empty;
-            try
-            {
-                var paymentDetail = _orderPaymentDao.FindByOrderId(orderId);
+            // nothing to do for CMT since there's no notion of preauth
+        }
 
-                if (paymentDetail == null)
-                    throw new Exception("Payment not found");
+        private void Void(string fleetToken, string deviceId, long transactionId, int driverId, int tripId, ref string message)
+        {
+            var reverseRequest = new ReverseRequest
+            {
+                FleetToken = fleetToken,
+                DeviceId = deviceId,
+                TransactionId = transactionId,
+                DriverId = driverId,
+                TripId = tripId
+            };
 
-                Void(paymentDetail.TransactionId, message);
-            }
-            catch (Exception ex)
+            var responseReverseTask = _cmtPaymentServiceClient.PostAsync(reverseRequest);
+            responseReverseTask.Wait();
+            var reverseResponse = responseReverseTask.Result;
+            _logger.LogMessage("CMT reverse response : " + reverseResponse.ResponseMessage);
+
+            if (reverseResponse.ResponseCode != 1)
             {
-                _logger.LogMessage("Can't cancel CMT transaction");
-                _logger.LogError(ex);
-                message = message + ex.Message;
-                //can't cancel transaction, send a command to log later
+                throw new Exception("Cannot cancel cmt transaction");
             }
-            finally
-            {
-                _logger.LogMessage(message);
-            }
+
+            message = message + " The transaction has been cancelled.";
         }
 
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request)
@@ -335,11 +339,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var orderStatus = _orderDao.FindOrderStatusById(orderDetail.Id);
                 if (orderStatus == null) throw new HttpError(HttpStatusCode.BadRequest, "Order status not found");
 
-                // TODO verify these!!
-                var deviceId = orderStatus.VehicleNumber; //? previously DeviceName = orderStatus.TerminalId
-                var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>(); //?
-                var employeeId = orderStatus.DriverInfos == null ? "" : orderStatus.DriverInfos.DriverId; //?
-                var tripId = orderStatus.IBSOrderId.Value; //?
+                var deviceId = orderStatus.VehicleNumber;
+                var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>();
+                var employeeId = orderStatus.DriverInfos == null ? "" : orderStatus.DriverInfos.DriverId;
+                var tripId = orderStatus.IBSOrderId.Value;
                 var fleetToken = _serverSettings.GetPaymentSettings().CmtPaymentSettings.FleetToken;
                 var customerReferenceNumber = orderStatus.ReferenceNumber.HasValue() ?
                                                     orderStatus.ReferenceNumber :
@@ -426,26 +429,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             //cancel CMT transaction
                             try
                             {
-                                var reverseRequest = new ReverseRequest
-                                {
-                                    FleetToken = fleetToken,
-                                    DeviceId = deviceId,
-                                    TransactionId = authResponse.TransactionId,
-                                    DriverId = driverId,
-                                    TripId = tripId
-                                };
-
-                                var responseReverseTask = _cmtPaymentServiceClient.PostAsync(reverseRequest);
-                                responseReverseTask.Wait();
-                                var reverseResponse = responseReverseTask.Result;
-                                _logger.LogMessage("CMT reverse response : " + reverseResponse.ResponseMessage);
-
-                                if (reverseResponse.ResponseCode != 1)
-                                {
-                                    throw new Exception("Cannot cancel cmt transaction");
-                                }
-
-                                message = message + " The transaction has been cancelled.";
+                                Void(fleetToken, deviceId, authResponse.TransactionId, driverId, tripId, ref message);
                             }
                             catch (Exception ex)
                             {
