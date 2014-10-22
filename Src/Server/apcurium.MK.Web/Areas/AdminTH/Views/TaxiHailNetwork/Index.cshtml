@@ -24,20 +24,21 @@
 
                 <li>
                     
-                    <div class="company-preference-order-text"><span class="handle">::</span>@company.CompanyKey</div>
-                    @Html.Hidden("idKey_" + company.CompanyKey, company.CompanyKey)
-                    <div class="company-preference-order-checkbox ">@Html.CheckBox("acceptKey_" + company.CompanyKey, company.CanAccept)</div>
-                    <div class="company-preference-order-checkbox ">@Html.CheckBox("dispatchKey_" + company.CompanyKey, company.CanDispatch)</div>
-                    @Html.Hidden("orderKey_" + company.CompanyKey, company.Order)
-                </li>
+                    <div class="company-preference-order-text"><span class="handle">::</span>@company.CompanyPreference.CompanyKey</div>
+                    @Html.Hidden("idKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CompanyKey)
+                    <div class="company-preference-order-checkbox ">@Html.CheckBox("acceptKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanAccept)</div>
+                    <div class="company-preference-order-checkbox ">
                         @if (company.CanDispatchTo)
                         {
-                            @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch)
+                        @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch)
                         }
                         else
                         {
-                            @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch,new { disabled = "disabled" })
+                        @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch,new { disabled = "disabled" })
                         }
+                    </div>
+                    @Html.Hidden("orderKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.Order)
+                </li>
             }
         </ul>
 

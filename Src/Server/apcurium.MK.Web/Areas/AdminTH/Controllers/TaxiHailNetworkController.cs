@@ -49,12 +49,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 for (var i = 0; i < companyPreferences.Count; i++)
                 {
                     int? order=null;
-                    order = form["orderKey_" + companyPreferences[i].CompanyKey] == string.Empty ? i : int.Parse(form["orderKey_" + companyPreferences[i].CompanyKey]);
-                    var canAccept = form["acceptKey_" + companyPreferences[i].CompanyKey].Contains("true");
-                    var canDispatch = form["dispatchKey_" + companyPreferences[i].CompanyKey].Contains("true");
+                    order = form["orderKey_" + companyPreferences[i].CompanyPreference.CompanyKey] == string.Empty ? i : int.Parse(form["orderKey_" + companyPreferences[i].CompanyPreference.CompanyKey]);
+                    var canAccept = form["acceptKey_" + companyPreferences[i].CompanyPreference.CompanyKey].Contains("true");
+                    var canDispatch = form["dispatchKey_" + companyPreferences[i].CompanyPreference.CompanyKey].Contains("true");
                     preferences.Add(new CompanyPreference
                     {
-                        CompanyKey = form["idKey_" + companyPreferences[i].CompanyKey], 
+                        CompanyKey = form["idKey_" + companyPreferences[i].CompanyPreference.CompanyKey], 
                         CanAccept = canAccept, 
                         CanDispatch = canDispatch,
                         Order=order

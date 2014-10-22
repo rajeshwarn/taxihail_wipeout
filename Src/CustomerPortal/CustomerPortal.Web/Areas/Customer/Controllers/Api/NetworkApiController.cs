@@ -59,9 +59,9 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     CanDispatchTo = allowDispatch
                 });
             }
-            var sortedCompanyPreferences = networkSettings.Preferences
-                .OrderBy(p => p.Order==null)
-                .ThenBy(p => p.Order);
+            var sortedCompanyPreferences = preferences
+                .OrderBy(p => p.CompanyPreference.Order==null)
+                .ThenBy(p => p.CompanyPreference.Order);
             var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
 
