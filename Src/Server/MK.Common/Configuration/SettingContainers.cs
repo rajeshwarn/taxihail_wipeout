@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Entity;
@@ -221,5 +222,11 @@ namespace apcurium.MK.Common.Configuration
         public string APIKey { get; protected internal set; }
 
         public string UnknownUserIdentifier { get; protected internal set; }
+    }
+
+    public class NetworkSettingsContainer
+    {
+        public double FirstOrderTimeout { get; protected internal set; }
+        public double OrderTimeout { get; protected internal set; }
     }
 }
