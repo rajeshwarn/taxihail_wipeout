@@ -51,7 +51,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
                 var companyPreference = networkSettings.Preferences.FirstOrDefault(p => p.CompanyKey == nearbyCompany.Id) ?? new CompanyPreference{CompanyKey = nearbyCompany.Id};
 
-                var allowDispatch = !nearbyCompany.Preferences.Any()  || nearbyCompany.Preferences.Any(x => x.CompanyKey == companyId && x.CanAccept)  ;
+                var allowDispatch = nearbyCompany.Preferences.Any(x => x.CompanyKey == companyId && x.CanAccept)  ;
 
                 preferences.Add(new CompanyPreferenceResponse
                 {
