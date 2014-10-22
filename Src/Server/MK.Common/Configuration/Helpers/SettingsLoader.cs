@@ -16,9 +16,9 @@ namespace apcurium.MK.Common.Configuration.Helpers
             {
 				if (excludedKeys == null || !excludedKeys.Any (key => overriddenSetting.Key.Contains (key))) 
 				{
-					try
+                    var propertyName = overriddenSetting.Key;
+                    try
 					{
-						var propertyName = overriddenSetting.Key;
 						var propertyType = GetProperty(typeOfSettings, propertyName);
 
 						if (propertyType == null)
@@ -55,8 +55,8 @@ namespace apcurium.MK.Common.Configuration.Helpers
 					}
 					catch (Exception e)
 					{
-						Console.WriteLine("Warning - can't set value for property {0}, value was {1}", overriddenSetting.Key, overriddenSetting.Value);
-						logger.Maybe(() => logger.LogMessage("Warning - can't set value for property {0}, value was {1}", overriddenSetting.Key, overriddenSetting.Value));
+                        Console.WriteLine("Warning - can't set value for property {0}, value was {1}", propertyName, overriddenSetting.Value);
+                        logger.Maybe(() => logger.LogMessage("Warning - can't set value for property {0}, value was {1}", propertyName, overriddenSetting.Value));
 						logger.Maybe(() => logger.LogError(e));
 					}
 				}
@@ -79,7 +79,7 @@ namespace apcurium.MK.Common.Configuration.Helpers
         {
             if (type.GetProperties().Count(p => p.Name == propertyName.Split('.')[0]) == 0)
             {
-                throw new ArgumentNullException(string.Format("Property {0}, does not exist in type {1}", propertyName, type));
+                return null;
             }
 
             if (propertyName.Split('.').Length == 1)

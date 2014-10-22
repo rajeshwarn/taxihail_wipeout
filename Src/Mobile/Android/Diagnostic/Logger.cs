@@ -9,6 +9,7 @@ using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
 using Environment = Android.OS.Environment;
 using System.Collections.Generic;
+using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 {
@@ -43,7 +44,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
                     Directory.CreateDirectory(BaseDir);
                 }            
 
-                var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
                 var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
                 var account = TinyIoCContainer.Current.CanResolve<IAccountService> () 
                     ? TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount
@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
                 message += string.Format(" by : {0} with version {1} - company {2} - platform {3}",
                     user,
                     packageInfo.Version,
-                    settings.TaxiHail.ApplicationName,
+                    GetCompanyName(),
                     packageInfo.PlatformDetails);
 
                 Console.WriteLine(message);
@@ -84,23 +84,48 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
         protected override void SendToInsights (Exception ex)
         {
             #if !DEBUG
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
             var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
 
             var account = TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount;
+            var settings = GetSettings();
+            var unknownUserIdentifier = settings != null 
+                ? settings.Insights.UnknownUserIdentifier
+                : new TaxiHailSetting().Insights.UnknownUserIdentifier; //default value if we can't load the settings
+
             var email = account != null 
                 ? account.Email 
-                : settings.Insights.UnknownUserIdentifier;
+                : unknownUserIdentifier;
 
             var identification = new Dictionary<string, string>
             {
                 { "ApplicationVersion", packageInfo.Version },
-                { "Company", settings.TaxiHail.ApplicationName },
+                { "Company", GetCompanyName() },
             };
 
             Xamarin.Insights.Identify(email, identification);
             Xamarin.Insights.Report(ex);
             #endif
+        }
+
+        private TaxiHailSetting GetSettings()
+        {
+            try
+            {
+                var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+                return settings.Data;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private string GetCompanyName()
+        {
+            var settings = GetSettings();
+            return settings != null 
+                ? settings.TaxiHail.ApplicationName
+                : "Unknown";
         }
     }
 }
