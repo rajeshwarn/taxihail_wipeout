@@ -235,7 +235,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        public void Void(Guid orderId)
+        public void VoidPreAuthorization(Guid orderId)
         {
             // nothing to do for CMT since there's no notion of preauth
         }

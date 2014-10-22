@@ -92,12 +92,24 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             };
         }
 
-        public void Void(Guid orderId)
+        public void VoidPreAuthorization(Guid orderId)
         {
             var message = string.Empty;
             try
             {
-                // TODO call void preauth (if possible with eselect plus?)
+                // we must do a completion with $0 (see eSELECTplus_DotNet_IG.pdf, Process Flow for PreAuth / Capture Transactions)
+                var paymentDetail = _paymentDao.FindByOrderId(orderId);
+
+                if (paymentDetail == null)
+                    throw new Exception("Payment not found");
+                
+                var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
+
+                var completionCommand = new Completion(orderId.ToString(), 0.ToString("F"), paymentDetail.TransactionId, CryptType_SSLEnabledMerchant);
+                var commitRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, completionCommand);
+                var commitReceipt = commitRequest.GetReceipt();
+
+                RequestSuccesful(commitReceipt, out message);
             }
             catch (Exception ex)
             {

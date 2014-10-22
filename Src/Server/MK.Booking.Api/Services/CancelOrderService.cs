@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Api.Services
             });
 
             // void the preauthorization to prevent misuse fees
-            _paymentService.Void(request.OrderId);
+            _paymentService.VoidPreAuthorization(request.OrderId);
 
             var command = new Commands.CancelOrder { Id = Guid.NewGuid(), OrderId = request.OrderId };
             _commandBus.Send(command);

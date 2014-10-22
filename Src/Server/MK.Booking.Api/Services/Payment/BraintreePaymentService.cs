@@ -100,7 +100,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             };
         }
 
-        public void Void(Guid orderId)
+        public void VoidPreAuthorization(Guid orderId)
         {
             var message = string.Empty;
             try

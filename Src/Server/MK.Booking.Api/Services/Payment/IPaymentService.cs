@@ -11,6 +11,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(DeleteTokenizedCreditcardRequest request);
         PairingResponse Pair(PairingForPaymentRequest request);
         BasePaymentResponse Unpair(UnpairingForPaymentRequest request);
-        void Void(Guid orderId);
+        void VoidPreAuthorization(Guid orderId);
     }
 }
