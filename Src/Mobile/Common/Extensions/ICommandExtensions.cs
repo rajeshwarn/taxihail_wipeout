@@ -2,15 +2,15 @@ namespace System.Windows.Input
 {
 	public static class ICommandExtensions
     {
-		public static void Execute(this ICommand command)
+
+		public static void ExecuteIfPossible(this ICommand command, object parameter = null)
 		{
-			command.Execute(null);
+			if (command != null && command.CanExecute(parameter))
+			{
+				command.Execute(parameter);
+			}
 		}
 
-		public static bool CanExecute(this ICommand command)
-		{
-			return command.CanExecute(null);
-		}
     }
 }
 

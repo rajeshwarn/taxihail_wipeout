@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
                 {
-                    ViewModel.ShowCurrencyCommand.Execute();
+                    ViewModel.ShowCurrencyCommand.ExecuteIfPossible();
                     _meterAmountTextView.HideKeyboard();
                 }
             };
@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
                 {
-                    ViewModel.ShowCurrencyCommand.Execute();
+                        ViewModel.ShowCurrencyCommand.ExecuteIfPossible();
                     _tipAmountTextView.HideKeyboard();
                 }
             };
@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 if (ViewModel.PaymentPreferences.TipListDisabled)
                 {
                     // Clear should be re-written to considere listDisabled
-                    ViewModel.ClearTipCommand.Execute();
+                    ViewModel.ClearTipCommand.ExecuteIfPossible();
                 }
             };
             
@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 if (!e.HasFocus)
                 {
-                    ViewModel.ShowCurrencyCommand.Execute();
+                     ViewModel.ShowCurrencyCommand.ExecuteIfPossible();
                 }
             };
 
@@ -95,29 +95,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 // Should be an End Edit binding on TipAmount EditText:
                 if (!e.HasFocus)
                 {
-                    ViewModel.ShowCurrencyCommand.Execute();
+                    ViewModel.ShowCurrencyCommand.ExecuteIfPossible();
                 }
 
                 // Should be a Start Edit binding on TipAmount EditText:
                 if (e.HasFocus)
                 {
-                    ViewModel.ToggleToTipCustom.Execute();                    
+                    ViewModel.ToggleToTipCustom.ExecuteIfPossible();                    
                 }
             };
 
             // Should be replaced with a click in layout binding
             _tipAmountTextView.Click += (sender, e) =>
             {
-                ViewModel.ClearTipCommand.Execute();
+                ViewModel.ClearTipCommand.ExecuteIfPossible();
             };
 
             // Should be a Click binding on a subcontrol (Behavior: Clicking anywhere on tip picker should trigger the ToggleToTipSelector)
             // Ok, done above
             // Should remove/migrate this code
-            _tipPicker.ItemSelected += (object sender, AdapterView.ItemSelectedEventArgs e) => {
-                ViewModel.ToggleToTipSelector.Execute();
-                //_tipAmountTextView.HideKeyboard();
-            };
+            _tipPicker.ItemSelected += (object sender, AdapterView.ItemSelectedEventArgs e) =>
+                {
+                    ViewModel.ToggleToTipSelector.ExecuteIfPossible();
+                    //_tipAmountTextView.HideKeyboard();
+                };
         }
 
 		protected override void OnViewModelSet()

@@ -242,7 +242,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                         PaymentPreferences.TipListDisabled = true;
 					    RaisePropertyChanged(() => TotalAmount);
                         RaisePropertyChanged(() => PaymentPreferences);
-                        ClearTipCommand.Execute();
+						ClearTipCommand.ExecuteIfPossible();
                     }
 				});
 			}
@@ -264,7 +264,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					TipAmount = RoundToTwoDecimals((MeterAmount.ToDouble() * ((double)PaymentPreferences.Tip / 100)));
                     RaisePropertyChanged(() => TotalAmount);
                     RaisePropertyChanged(() => TipAmountString);
-                    ShowCurrencyCommand.Execute(); 
+					ShowCurrencyCommand.ExecuteIfPossible(); 
                     RaisePropertyChanged(() => PaymentPreferences);
                 });
             }

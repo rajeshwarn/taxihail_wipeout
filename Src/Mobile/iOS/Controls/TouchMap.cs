@@ -117,10 +117,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     InvokeOnMainThread(() =>
                     {
-						if ((MapMoved != null) && (MapMoved.CanExecute()))
-                        {
-                            MapMoved.Execute(new Address { Latitude = CenterCoordinate.Latitude, Longitude = CenterCoordinate.Longitude });
-                        }
+						MapMoved.ExecuteIfPossible(new Address { Latitude = CenterCoordinate.Latitude, Longitude = CenterCoordinate.Longitude });                        
                     });
                 }        
             },_moveMapCommand.Token);

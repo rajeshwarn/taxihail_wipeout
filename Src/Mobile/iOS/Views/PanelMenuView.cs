@@ -43,10 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         public PanelMenuView (IntPtr handle) : base(handle)
         {
-			this.DelayBind (() => {
-				InitializeMenu();
-			});
-
+			this.DelayBind (InitializeMenu);
         }
 
 		public void OnInstantiate ()
@@ -99,17 +96,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			}
             else
             {
-				imgLogoApcurium.AddGestureRecognizer (new UITapGestureRecognizer (() => {
-					if (ToApcuriumWebsite != null && ToApcuriumWebsite.CanExecute ()) {
-						ToApcuriumWebsite.Execute ();
-					}
-				}));
-
-				imgLogoMobileKnowledge.AddGestureRecognizer (new UITapGestureRecognizer (() => {
-					if (ToMobileKnowledgeWebsite != null && ToMobileKnowledgeWebsite.CanExecute ()) {
-						ToMobileKnowledgeWebsite.Execute ();
-					}
-				}));
+				imgLogoApcurium.AddGestureRecognizer (new UITapGestureRecognizer (() => ToApcuriumWebsite.ExecuteIfPossible()));
+                imgLogoMobileKnowledge.AddGestureRecognizer (new UITapGestureRecognizer (() => ToMobileKnowledgeWebsite.ExecuteIfPossible()));
 			}
 
 			menuListView.AlwaysBounceVertical = false;
@@ -119,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             InvokeOnMainThread (() =>
             {
-                var slideAnimation = new SlideViewAnimation (ViewToAnimate, new SizeF ((MenuIsOpen ? menuContainer.Frame.Width : -menuContainer.Frame.Width), 0f), () => AddOrRemoveInvisibleCloseButton());
+                var slideAnimation = new SlideViewAnimation (ViewToAnimate, new SizeF ((MenuIsOpen ? menuContainer.Frame.Width : -menuContainer.Frame.Width), 0f), AddOrRemoveInvisibleCloseButton);
                 slideAnimation.Animate ();
             });
         }

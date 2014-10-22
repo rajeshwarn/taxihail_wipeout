@@ -8,6 +8,8 @@ using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -22,6 +24,17 @@ namespace apcurium.MK.Booking.Mobile
 			JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
 
 			await Mvx.Resolve<IAppSettings>().Load();
+
+			if (Mvx.Resolve<IAppSettings>().Data.FacebookEnabled)
+			{
+				Mvx.Resolve<IFacebookService> ().Init ();
+			}
+			if (Mvx.Resolve<IAppSettings>().Data.FacebookPublishEnabled) 
+			{
+				Mvx.Resolve<IFacebookService>().PublishInstall();
+			}
+
+			Mvx.Resolve<IAnalyticsService>().ReportConversion();
 
 			if (Mvx.Resolve<IAccountService>().CurrentAccount == null 
 				|| (Mvx.Resolve<IAppSettings> ().Data.CreditCardIsMandatory 

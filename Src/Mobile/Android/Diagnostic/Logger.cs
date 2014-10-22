@@ -8,6 +8,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
 using Environment = Android.OS.Environment;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 {
@@ -23,94 +24,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
             new LoggerImpl().LogMessage(message);
         }
     }
+        
+    public class LoggerImpl : BaseLogger
+   {
+        private readonly string BaseDir = Path.Combine (Environment.ExternalStorageDirectory.ToString (), "TaxiHail");
 
-    public class LoggerImpl : ILogger
-    {
-        public static readonly string BaseDir =
-            Path.Combine(Environment.ExternalStorageDirectory.ToString(), "TaxiHail");
-
-        public static string LogFilename;
-        private static bool _flushNextWrite;
-
-        public void LogError(Exception ex)
+        public override string GetErrorLogPath ()
         {
-            LogError(ex, 0);
+            return Path.Combine (BaseDir, "errorlog.txt");
         }
 
-
-        public void LogStack()
-        {
-            var stackTrace = new StackTrace(); // get call stack
-            StackFrame[] stackFrames = stackTrace.GetFrames(); // get method calls (frames)
-
-            // write call stack method names
-            if (stackFrames != null)
-                foreach (var stackFrame in stackFrames)
-                {
-                    if (stackFrame.GetMethod().Name != "LogStack")
-                    {
-                        Write("Stack : " + stackFrame.GetMethod().Name); // write method name
-                    }
-                }
-        }
-
-        public string GetStack(int position)
-        {
-            var stackTrace = new StackTrace(); // get call stack
-            StackFrame[] stackFrames = stackTrace.GetFrames(); // get method calls (frames)
-
-            return stackFrames != null
-                ? stackFrames[position].GetMethod().Name
-                : "stack frame null";
-        }
-
-        public void LogMessage(string message, params object[] args)
-        {
-            if ((args != null) && (args.Length > 0))
-            {
-                message = string.Format(message, args);
-            }
-
-            Write("Message on " + DateTime.Now + " : " + message);
-        }
-
-
-        public IDisposable StartStopwatch(string message)
-        {
-            var w = new Stopwatch();
-            w.Start();
-            LogMessage("Start: " + message);
-            return Disposable.Create(() =>
-            {
-                w.Stop();
-                LogMessage("Stop:  " + message + " Execution time : " + w.ElapsedMilliseconds + " ms");
-            });
-        }
-
-        public void LogError(Exception ex, int indent)
-        {
-            string indentStr = "";
-            for (int i = 0; i < indent; i++)
-            {
-                indentStr += "   ";
-            }
-            if (indent == 0)
-            {
-                Write(indentStr + "Error on " + DateTime.Now);
-            }
-
-
-            Write(indentStr + "Message : " + ex.Message);
-            Write(indentStr + "Stack : " + ex.StackTrace);
-
-            if (ex.InnerException != null)
-            {
-// ReSharper disable once RedundantAssignment
-                LogError(ex.InnerException, indent++);
-            }
-        }
-
-        private static void Write(string message)
+        protected override void Write (string message)
         {
             try
             {
@@ -119,77 +43,64 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
                     Directory.CreateDirectory(BaseDir);
                 }            
 
-                var user = @" N\A ";
-                if(TinyIoCContainer.Current.CanResolve<IAccountService>()
-                    && TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount != null)
-                {
-                    user = TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount.Email;
-                }                 
-                var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
+                var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
                 var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
-
-                
+                var account = TinyIoCContainer.Current.CanResolve<IAccountService> () 
+                    ? TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount
+                    : null;         
+                var user = account == null
+                    ? @" N\A "
+                    : account.Email;
 
                 message += string.Format(" by : {0} with version {1} - company {2} - platform {3}",
                     user,
                     packageInfo.Version,
                     settings.TaxiHail.ApplicationName,
-					packageInfo.PlatformDetails);
+                    packageInfo.PlatformDetails);
 
                 Console.WriteLine(message);
 
-            }
-            catch
-            {
-                return;
-            }
+                DeleteLogIfNecessary();
 
-            LogFilename = "errorlog.txt";
-            if(TinyIoCContainer.Current.CanResolve<IAppSettings>())
-            {
-                LogFilename = Path.Combine(BaseDir, "errorlog.txt");
-            }
-
-            if (File.Exists(LogFilename) && _flushNextWrite)
-            {
-                File.Delete(LogFilename);
-            }
-
-            _flushNextWrite = false;
-
-            try
-            {
-                if (File.Exists(LogFilename))
+                var filePath = GetErrorLogPath ();
+                if (File.Exists(filePath))
                 {
-                    var f = new FileInfo(LogFilename);
+                    var f = new FileInfo(filePath);
                     var lenKb = f.Length/1024;
                     if (lenKb > 375)
                     {
-                        File.Delete(LogFilename);
+                        File.Delete(filePath);
                     }
                 }
 
-                using (var fs = new FileStream(LogFilename, FileMode.OpenOrCreate, FileAccess.ReadWrite))
-                {
-                    using (var w = new StreamWriter(fs))
-                    {
-                        w.BaseStream.Seek(0, SeekOrigin.End);
-                        w.WriteLine(message + "\r\n");
-                        w.Flush();
-                        w.Close();
-                    }
-                    fs.Close();
-                }
+                File.AppendAllLines(filePath, new[] { message });
             }
-// ReSharper disable once EmptyGeneralCatchClause
-            catch
+            catch(Exception e)
             {
+                Console.WriteLine (e.Message);
             }
         }
 
-        internal static void FlushNextWrite()
+        protected override void SendToInsights (Exception ex)
         {
-            _flushNextWrite = true;
+            #if !DEBUG
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
+            var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
+
+            var account = TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount;
+            var email = account != null 
+                ? account.Email 
+                : settings.Insights.UnknownUserIdentifier;
+
+            var identification = new Dictionary<string, string>
+            {
+                { "ApplicationVersion", packageInfo.Version },
+                { "Company", settings.TaxiHail.ApplicationName },
+            };
+
+            Xamarin.Insights.Identify(email, identification);
+            Xamarin.Insights.Report(ex);
+            #endif
         }
     }
 }
