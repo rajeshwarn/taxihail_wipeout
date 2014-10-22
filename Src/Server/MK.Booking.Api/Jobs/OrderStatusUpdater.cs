@@ -346,6 +346,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             return (ibsOrderInfo.Status.HasValue() && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status) // ibs status changed
                    || (!orderStatusDetail.FareAvailable && ibsOrderInfo.Fare > 0) // fare was not available and ibs now has the information
                    || orderStatusDetail.Status == OrderStatus.WaitingForPayment; // special case for pairing
+                   // || _serverSettings.ServerData.Ne
         }
 
         private string GetDescription(Guid orderId, IBSOrderInformation ibsOrderInfo)
