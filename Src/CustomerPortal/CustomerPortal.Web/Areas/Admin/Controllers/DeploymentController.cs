@@ -67,14 +67,15 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         public ActionResult Copy(string id)
         {
             var deploymentJob = Repository.Single(r => r.Id == id);
-            if (deploymentJob.Type == DeploymentJobType.ServerPackage)
+            if (deploymentJob.Type == DeploymentJobType.ServerPackage) 
             {
                 
                 return RedirectToAction("CreateServerPackage", new { serverId = deploymentJob.Server.Id, revisionId = FindRevisionId(deploymentJob.Revision.Tag)  });                
             }
             else if (deploymentJob.Type == DeploymentJobType.DeployClient)
             {
-                bool isProduction = deploymentJob.ServerUrl.Contains("services.taxihail.com");
+                bool isProduction = deploymentJob.ServerUrl.Contains("services.taxihail.com") 
+                    || deploymentJob.ServerUrl.Contains("api.taxihail.com");
                 bool isStaging = deploymentJob.ServerUrl.Contains("staging.taxihail.com");                
                 return RedirectToAction("DeployClient", new { companyId = deploymentJob.Company.CompanyKey, serverId = deploymentJob.Server.Id, revisionId = FindRevisionId(deploymentJob.Revision.Tag),
                                                                 serverUrlIsProduction = isProduction, serverUrlIsStaging = isStaging, android = deploymentJob.Android, callbox = deploymentJob.CallBox, iosAdhoc = deploymentJob.IosAdhoc, iosAppStore = deploymentJob.IosAppStore});
