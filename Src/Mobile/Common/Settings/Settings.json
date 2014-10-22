@@ -1,12 +1,1 @@
-{ 
-	"TaxiHail.ApplicationKey" : "TaxiHail",
-	"TaxiHail.ApplicationName" : "TaxiHail",
-	"FacebookAppId" : "134284363380764",
-	"FacebookEnabled": "true",
-	"FacebookPublishEnabled": "true",
-	"TwitterConsumerKey" : "3nNkJ5EcI7yyi56ifLSAA",
-	"TwitterConsumerSecret" : "Th6nCDTgPiI3JPwHxgm8fQheMaLczUeHHG5liHGZRqs",
-	"TwitterEnabled" : "true",
-	"ServiceUrl" : "http://test.taxihail.biz:8181/Apcurium/api/",
-	"CanChangeServiceUrl": "true"
-}
+{"FacebookAppId":"134284363380764","FacebookEnabled":"true","TwitterAccessTokenUrl":"","TwitterAuthorizeUrl":"","TwitterCallback":"","TwitterConsumerKey":"","TwitterConsumerSecret":"","TwitterEnabled":"false","TwitterRequestTokenUrl":"","CanChangeServiceUrl":"true","ErrorLog":"","ErrorLogEnabled":"false","DefaultPhoneNumber":"18666245330","DefaultPhoneNumberDisplay":"1.866.624.5330","TaxiHail.ApplicationName":"Apcurium","ApplicationName":"Apcurium","AppName":"Apcurium","UseThemeColorForMapIcons":"true","DefaultTypePercentage":"20","DirectionDataProvider":"Google","TomTomMapToolkitKey":"","ServiceUrlTest":"http://services.taxihail.com/taxihaildemo/api/","TaxiHail.Version":"2.0","CreditCardIsMandatory":"false","ServiceUrl":"http://test.taxihail.biz:8181/Apcurium/api/"} 

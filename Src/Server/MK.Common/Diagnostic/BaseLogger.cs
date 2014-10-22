@@ -21,7 +21,7 @@ namespace apcurium.MK.Common.Diagnostic
             } 
             else 
             {            
-                LogError (ex);
+                LogError (ex, 0);
             }
         }
 
