@@ -41,6 +41,7 @@ namespace MK.Common.Configuration
 
             SendDetailedPaymentInfoToDriver = true;
 
+            InitialZoomLevel = 14;
 		}
 
 		[Display(Name = "Application Name", Description="Application name as displayed in message")]
@@ -281,6 +282,8 @@ namespace MK.Common.Configuration
 
         public bool CallDriverUsingProxy { get; private set; }
         public string CallDriverUsingProxyUrl { get; set; }
+
+        public int InitialZoomLevel { get; set; }
     }
 }
 

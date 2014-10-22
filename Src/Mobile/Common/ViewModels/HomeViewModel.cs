@@ -308,7 +308,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					if (_currentState == HomeViewModelState.Initial 
 						&& addressSelectionMode == AddressSelectionMode.PickupSelection)
 					{
-							SetMapCenterToUserLocation();
+							SetMapCenterToUserLocation(true);
 					}									
 				});
 			}
@@ -329,14 +329,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		private async void SetMapCenterToUserLocation()
+		private async void SetMapCenterToUserLocation(bool initialZoom = false)
 		{
 			var address = await _orderWorkflowService.SetAddressToUserLocation();
 			if(address.HasValidCoordinate())
 			{
 				// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
 				// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
-				this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude));
+				this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, initialZoom));
 
 				// do the uber zoom
 				try 
