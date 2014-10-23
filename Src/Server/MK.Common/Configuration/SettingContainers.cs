@@ -223,7 +223,7 @@ namespace apcurium.MK.Common.Configuration
         public string UnknownUserIdentifier { get; protected internal set; }
     }
 
-    public class NetworkSettingsContainer
+    public class NetworkSettingContainer
     {
         [CustomizableByCompany]
         public double FirstOrderTimeout { get; protected internal set; }
