@@ -12,6 +12,9 @@ TaxiHail.loader = {
 
         var deferreds = [];
 
+        // Disable caching to fix an issue on IE where the pages were not always up to date
+        $.ajaxSetup({ cache: false });
+
         $.when.apply(null, deferreds).done(callback);
     }
 
