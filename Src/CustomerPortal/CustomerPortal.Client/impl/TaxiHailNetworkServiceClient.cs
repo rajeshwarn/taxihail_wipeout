@@ -26,6 +26,17 @@ namespace CustomerPortal.Client.Impl
             }
             return new List<CompanyPreferenceResponse>();
         }
+        public async Task<List<NetworkFleetResponse>> GetNetworkFleetFromCoordinate(string companyId,MapCoordinate coordinate)
+        {
+            var response = await Client.GetAsync(@"customer/" + companyId + "/networkfleet");
+            var json = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json);
+            }
+            return new List<NetworkFleetResponse>();
+        }
 
 
         public Task SetNetworkCompanyPreferences(string companyId, CompanyPreference[] preferences)
