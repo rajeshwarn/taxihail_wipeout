@@ -30,6 +30,9 @@ namespace apcurium.MK.Booking.Services.Impl
             if (orderStatusDetail.IBSOrderId == null)
                 throw new Exception("Order has no IBSOrderId");
 
+            var orderPairingDetail = _orderDao.FindOrderPairingById(orderId);
+            if (orderPairingDetail != null) throw new Exception("Order already paired");
+
             // send a message to driver, if it fails we abort the pairing
             _ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
 
