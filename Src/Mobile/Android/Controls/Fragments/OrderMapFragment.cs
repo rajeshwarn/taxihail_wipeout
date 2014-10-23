@@ -472,7 +472,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			var streetLevelZoomHint = hint as ZoomToStreetLevelPresentationHint;
 			if (streetLevelZoomHint != null)
             {
-				Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(streetLevelZoomHint.Latitude, streetLevelZoomHint.Longitude), 15));
+                var zoomLevel = streetLevelZoomHint.InitialZoom 
+                    ? _settings.InitialZoomLevel 
+                    : MapViewModel.ZoomStreetLevel;
+
+                if (_settings.DisableAutomaticZoomOnLocation && !streetLevelZoomHint.InitialZoom)
+                {
+                    Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(streetLevelZoomHint.Latitude, streetLevelZoomHint.Longitude)));
+                }
+                else
+                {
+                    Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(streetLevelZoomHint.Latitude, streetLevelZoomHint.Longitude), zoomLevel + 1));
+                }
             }
 
 			var zoomHint = hint as ChangeZoomPresentationHint;

@@ -31,6 +31,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			this.Observe(_vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
         }
 
+        public static int ZoomStreetLevel = 14;
+
         private Address _pickupAddress;
 		public Address PickupAddress
         {
