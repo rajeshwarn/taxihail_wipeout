@@ -26,18 +26,18 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 			{
 				Start();
 			}
-			return Positions.Where(p => p.Error <= maxAccuracy).Take(timeout).Take(1);
+			return Positions.Where(p => p.IsActive() && p.Error <= maxAccuracy).Take(timeout).Take(1);
 		}
 
         public async Task<Position> GetUserPosition()
         {
             // TODO: Handle when location services are not available
-            if (BestPosition != null)
+			if(  (BestPosition != null) && BestPosition.IsActive() )
             {
                 return BestPosition;
             }
 
-            var position = await GetNextPosition(TimeSpan.FromSeconds(6), 50)
+            var position = await GetNextPosition(TimeSpan.FromSeconds(6), 40)
                 .Take(1)
                 .DefaultIfEmpty() // Will return null in case of a timeout
                 .ToTask();
@@ -70,6 +70,11 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 	public static class PositionExtensions
 	{
 		public static TimeSpan ValidCoordinateTime = new TimeSpan(0, 0, 30);
+
+		public static bool IsActive(this Position postion)
+		{
+			return postion.Time > DateTime.Now.Subtract (ValidCoordinateTime);
+		}
 
 		public static bool IsBetterThan(this Position trueIfBetter, Position falseIfBetter)
 		{

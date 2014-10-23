@@ -24,6 +24,7 @@ namespace DatabaseInitializer.Services
 
         public EventsMigrator(Func<EventStoreDbContext> contextFactory)
         {
+            
             _contextFactory = contextFactory;
             //deserailize without type
             _deserializer = new JsonSerializer();
@@ -36,11 +37,12 @@ namespace DatabaseInitializer.Services
         {
             var skip = 0;
             var hasMore = true;
-            const int pageSize = 10000;
+            const int pageSize = 5000;
             while (hasMore)
             {
                 using (var context = _contextFactory.Invoke())
                 {
+                    context.Database.CommandTimeout = 2000;
                     // order by date then by version in case two events happened at the same time
                     var events = context.Set<Event>()
                         .OrderBy(x => x.EventDate)
