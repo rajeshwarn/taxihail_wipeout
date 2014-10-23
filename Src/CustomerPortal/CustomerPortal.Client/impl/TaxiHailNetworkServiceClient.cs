@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
+using CustomerPortal.Contract.Response;
 using Newtonsoft.Json;
 using apcurium.MK.Common.Configuration;
 
@@ -14,16 +15,16 @@ namespace CustomerPortal.Client.Impl
         { 
 
         }
-        public async Task<List<CompanyPreference>> GetNetworkCompanyPreferences(string companyId)
+        public async Task<List<CompanyPreferenceResponse>> GetNetworkCompanyPreferences(string companyId)
         {
             var response = await Client.GetAsync(@"customer/"+companyId+"/network");
             var json = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)
             {
-               return JsonConvert.DeserializeObject<List<CompanyPreference>>(json);
+                return JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json);
             }
-            return new List<CompanyPreference>();
+            return new List<CompanyPreferenceResponse>();
         }
 
 
