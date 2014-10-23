@@ -51,14 +51,15 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             foreach (var nearbyCompany in overlappingCompanies)
             {
 
-                var companyPreference = networkSettings.Preferences.FirstOrDefault(p => p.CompanyKey == nearbyCompany.Id) ?? new CompanyPreference{CompanyKey = nearbyCompany.Id};
+                var companyPreference = networkSettings.Preferences.FirstOrDefault(p => p.CompanyKey == nearbyCompany.Id) 
+                			?? new CompanyPreference{CompanyKey = nearbyCompany.Id};
 
-                var allowDispatch = nearbyCompany.Preferences.Any(x => x.CompanyKey == companyId && x.CanAccept)  ;
+                var nearbyCompanyAllowUsToDispatch = nearbyCompany.Preferences.Any(x => x.CompanyKey == companyId && x.CanAccept);
 
                 preferences.Add(new CompanyPreferenceResponse
                 {
                     CompanyPreference = companyPreference,
-                    CanDispatchTo = allowDispatch
+                    CanDispatchTo = nearbyCompanyAllowUsToDispatch
                 });
             }
             var sortedCompanyPreferences = preferences
