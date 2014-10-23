@@ -50,7 +50,6 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Name = "Bob",
                 Email = "bob.smith@acpurium.com",
                 Password = new byte[] {1},
-                IbsAcccountId = 666,
                 FacebookId = "FacebookId",
                 TwitterId = "TwitterId",
                 Language = "fr"
@@ -64,7 +63,6 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual("Bob", dto.Name);
                 Assert.AreEqual("bob.smith@acpurium.com", dto.Email);
                 Assert.AreEqual(1, dto.Password.Length);
-                Assert.AreEqual(666, dto.IBSAccountId);
                 Assert.AreEqual("FacebookId", dto.FacebookId);
                 Assert.AreEqual("TwitterId", dto.TwitterId);
                 Assert.AreEqual(false, dto.IsConfirmed);
@@ -104,8 +102,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Name = "Bob",
                 Email = "bob.smith@acpurium.com",
                 Phone = "555.555.2525",
-                Password = new byte[] {1},
-                IbsAcccountId = 666
+                Password = new byte[] {1}
             };
             Sut.Handle(accountRegistered);
 
@@ -135,8 +132,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 SourceId = accountId,
                 Name = "Bob",
                 Email = "bob.smith@acpurium.com",
-                FacebookId = "123456789",
-                IbsAcccountId = 666
+                FacebookId = "123456789"
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -147,7 +143,6 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual("Bob", dto.Name);
                 Assert.AreEqual("bob.smith@acpurium.com", dto.Email);
                 Assert.AreEqual("123456789", dto.FacebookId);
-                Assert.AreEqual(666, dto.IBSAccountId);
             }
         }
 
@@ -161,8 +156,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 SourceId = accountId,
                 Name = "Bob",
                 Email = "bob.smith@acpurium.com",
-                TwitterId = "123456789",
-                IbsAcccountId = 666
+                TwitterId = "123456789"
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -173,7 +167,6 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual("Bob", dto.Name);
                 Assert.AreEqual("bob.smith@acpurium.com", dto.Email);
                 Assert.AreEqual("123456789", dto.TwitterId);
-                Assert.AreEqual(666, dto.IBSAccountId);
             }
         }
     }
@@ -398,6 +391,43 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
                 Assert.NotNull(dto);
                 Assert.AreEqual("Robert", dto.Name);
+            }
+        }
+
+        [Test]
+        public void when_account_linked_to_home_ibs_then_dto_populated()
+        {
+            Sut.Handle(new AccountLinkedToIbs
+            {
+                SourceId = _accountId,
+                IbsAccountId = 122
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<AccountDetail>(_accountId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(122, dto.IBSAccountId);
+            }
+        }
+
+        [Test]
+        public void when_account_linked_to_roaming_ibs_then_dto_populated()
+        {
+            Sut.Handle(new AccountLinkedToIbs
+            {
+                SourceId = _accountId,
+                IbsAccountId = 555,
+                CompanyKey = "test"
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Query<AccountIbsDetail>().FirstOrDefault(x => x.AccountId == _accountId && x.CompanyKey == "test");
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(555, dto.IBSAccountId);
             }
         }
     }

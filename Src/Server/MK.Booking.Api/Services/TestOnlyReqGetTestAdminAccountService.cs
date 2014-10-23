@@ -53,7 +53,6 @@ namespace apcurium.MK.Booking.Api.Services
                 return testAccount;
             }
 
-
             var command = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
@@ -61,7 +60,6 @@ namespace apcurium.MK.Booking.Api.Services
                 Password = TestUserPassword,
                 Name = "Test",
                 Phone = "123456",
-                IbsAccountId = 50860,
                 ConfimationToken = Guid.NewGuid().ToString("N"),
                 Language = "en",
                 IsAdmin = true
