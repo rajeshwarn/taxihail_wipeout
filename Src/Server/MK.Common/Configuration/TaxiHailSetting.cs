@@ -89,6 +89,8 @@ namespace MK.Common.Configuration
             TwitterAuthorizeUrl = "https://api.twitter.com/oauth/authorize";
             TwitterCallback = "http://www.taxihail.com/oauth";
             TwitterRequestTokenUrl = "https://api.twitter.com/oauth/request_token";
+            
+            InitialZoomLevel = 14;
 		}
 
         public TaxiHailSettingContainer TaxiHail { get; protected set; }
@@ -402,6 +404,10 @@ namespace MK.Common.Configuration
         public bool CallDriverUsingProxy { get; protected set; }
         [SendToClient, CustomizableByCompany]
         public string CallDriverUsingProxyUrl { get; protected set; }
+	[SendToClient, CustomizableByCompany]
+        public int InitialZoomLevel { get; set; }
+        [SendToClient, CustomizableByCompany]
+        public bool DisableAutomaticZoomOnLocation { get; set; }
     }
 }
 
