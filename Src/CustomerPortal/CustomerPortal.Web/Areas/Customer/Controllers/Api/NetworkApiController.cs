@@ -109,41 +109,37 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         [Route("api/customer/{companyId}/networkfleet")]
         public HttpResponseMessage Get(string companyId,MapCoordinate coordinate)
         {
-            var networkSettings = _networkRepository.FirstOrDefault(n => n.Id == companyId);
+            var networkSettings = _networkRepository.Select(x => x).ToList();
 
-            if (networkSettings == null || !networkSettings.IsInNetwork)
+            var companies = _companyRepository.Select(x => x).ToList();
+
+            var currentCompanyNetworkSettings = networkSettings.FirstOrDefault(n => n.Id == companyId);
+
+            if (currentCompanyNetworkSettings == null || !currentCompanyNetworkSettings.IsInNetwork)
             {
                 return null;
             }
 
-            var companies = _companyRepository.Select(x => x).ToList();
-
-            var otherCompaniesInNetwork = _networkRepository.Where(n => n.IsInNetwork && n.Id != networkSettings.Id)
-                .ToArray();
-
-            var overlappingCompanies = otherCompaniesInNetwork.Where(n => n.Region.Contains(networkSettings.Region))
-                .ToArray();
-
-            var networkFleet = overlappingCompanies.Where(n => n.Region.Contains(coordinate))
-                .ToArray();
-
-
             var networkFleetResult = new List<NetworkFleetResponse>();
 
-            foreach (var networkFleetResponse in networkFleet)
+            foreach (var currentCompanyPreferences in currentCompanyNetworkSettings.Preferences.Where(n => n.CanDispatch).OrderBy(n=>n.Order))
             {
-                var company = companies.FirstOrDefault(c => c.CompanyKey == networkFleetResponse.Id);
+                var company = companies.FirstOrDefault(c => c.CompanyKey == currentCompanyPreferences.CompanyKey);
                 if (company != null)
                 {
-                    var fleet = new NetworkFleetResponse
+                    var companyNearCoordinate = networkSettings.Any(n => n.Id==currentCompanyPreferences.CompanyKey && n.Region.Contains(coordinate));
+                    if (companyNearCoordinate)
                     {
-                        CompanyKey = company.CompanyKey,
-                        CompanyName = company.CompanyName,
-                        IbsPassword = company.IBS.Password,
-                        IbsUserName = company.IBS.Username,
-                        IbsUrl = company.IBS.ServiceUrl
-                    };
-                    networkFleetResult.Add(fleet);
+                        var fleet = new NetworkFleetResponse
+                        {
+                            CompanyKey = company.CompanyKey,
+                            CompanyName = company.CompanyName,
+                            IbsPassword = company.IBS.Password,
+                            IbsUserName = company.IBS.Username,
+                            IbsUrl = company.IBS.ServiceUrl
+                        };
+                        networkFleetResult.Add(fleet);
+                    }
                 }
             }
 

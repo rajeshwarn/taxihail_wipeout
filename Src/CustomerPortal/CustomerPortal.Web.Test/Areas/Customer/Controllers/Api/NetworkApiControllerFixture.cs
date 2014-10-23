@@ -48,6 +48,12 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 {
                     CoordinateStart = new MapCoordinate() { Latitude = 45.514466, Longitude = -73.846313 }, // MTL Top left 
                     CoordinateEnd = new MapCoordinate() { Latitude = 45.411296, Longitude = -73.513314 } // MTL BTM Right
+                },
+                Preferences = new List<CompanyPreference>
+                {
+                    new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true,Order = 2},
+                    new CompanyPreference{CompanyKey = "TomTaxi",CanAccept = true,CanDispatch = true,Order = 0},
+                    new CompanyPreference{CompanyKey = "Pilou",CanAccept = true,CanDispatch = true,Order = 1},
                 }
             };
            
@@ -60,6 +66,12 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                     CoordinateStart = new MapCoordinate() { Latitude = 45.514466, Longitude = -73.846313 }, // MTL Top left 
                     CoordinateEnd = new MapCoordinate() { Latitude = 45.411296, Longitude = -73.513314 } // MTL BTM Right
 
+                },
+                Preferences = new List<CompanyPreference>
+                {
+                    new CompanyPreference{CompanyKey = "ChrisTaxi",CanAccept = false,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "TomTaxi",CanAccept = true,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "PilouTaxi",CanAccept = true,CanDispatch = true},
                 }
             };
 
@@ -82,7 +94,13 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Region = new MapRegion()
                 {
                     CoordinateStart = new MapCoordinate() { Latitude = 5000000, Longitude = -73.656990 },  
-                    CoordinateEnd = new MapCoordinate() { Latitude = 45.43874, Longitude = -73.584120 } 
+                    CoordinateEnd = new MapCoordinate() { Latitude = 45.43874, Longitude = -73.584120 }
+                },
+                Preferences = new List<CompanyPreference>
+                {
+                    new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "ChrisTaxi",CanAccept = false,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "PilouTaxi",CanAccept = true,CanDispatch = true},
                 }
             };
 
@@ -94,7 +112,13 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Region = new MapRegion()
                 {
                     CoordinateStart = new MapCoordinate() { Latitude = 45.514466, Longitude = -73.889451 },
-                    CoordinateEnd = new MapCoordinate() { Latitude = 45.411296, Longitude = -73.496042 } 
+                    CoordinateEnd = new MapCoordinate() { Latitude = 45.411296, Longitude = -73.496042 }
+                },
+                Preferences = new List<CompanyPreference>
+                {
+                    new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "ChrisTaxi",CanAccept = false,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "TomTaxi",CanAccept = true,CanDispatch = true},
                 }
             };
 
