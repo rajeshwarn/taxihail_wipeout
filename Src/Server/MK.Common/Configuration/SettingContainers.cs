@@ -229,4 +229,13 @@ namespace apcurium.MK.Common.Configuration
         public double FirstOrderTimeout { get; protected internal set; }
         public double OrderTimeout { get; protected internal set; }
     }
+
+    public class NetworkSettingContainer
+    {
+        [CustomizableByCompany]
+        public double FirstOrderTimeout { get; protected internal set; }
+
+        [CustomizableByCompany]
+        public double OrderTimeout { get; protected internal set; }
+    }
 }
