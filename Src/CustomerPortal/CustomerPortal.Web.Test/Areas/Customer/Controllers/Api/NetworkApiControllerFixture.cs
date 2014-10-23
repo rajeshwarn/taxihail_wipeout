@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CustomerPortal.Client.Impl;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Areas.Customer.Controllers.Api;
 using CustomerPortal.Web.Areas.Customer.Models.RequestResponse;
+using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Test.Helpers.Repository;
 using Newtonsoft.Json;
@@ -19,15 +21,24 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         private TaxiHailNetworkSettings _tomTaxi;
         private TaxiHailNetworkSettings _pilouTaxi;
         private TaxiHailNetworkSettings _lastTaxi;
+
+        private Company _chrisTaxiCompany;
+        private Company _chrisTaxiBisCompany;
+        private Company _tonyTaxiCompany;
+        private Company _tomTaxiCompany;
+        private Company _pilouTaxiCompany;
+        private Company _lastTaxiCompany;
+
         const string BaseUrl = "http://localhost/CustomerPortal.Web/";
 
 
         [SetUp]
         public void Setup()
         {
-            Repository = new InMemoryRepository<TaxiHailNetworkSettings>();
+            NetworkRepository = new InMemoryRepository<TaxiHailNetworkSettings>();
+            CompanyRepository = new InMemoryRepository<Company>();
 
-            Sut = new NetworkApiController(Repository);
+            Sut = new NetworkApiController(NetworkRepository, CompanyRepository);
 
             _chrisTaxi = new TaxiHailNetworkSettings()
             {
@@ -37,9 +48,15 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 {
                     CoordinateStart = new MapCoordinate() { Latitude = 45.514466, Longitude = -73.846313 }, // MTL Top left 
                     CoordinateEnd = new MapCoordinate() { Latitude = 45.411296, Longitude = -73.513314 } // MTL BTM Right
-
+                },
+                Preferences = new List<CompanyPreference>
+                {
+                    new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true,Order = 2},
+                    new CompanyPreference{CompanyKey = "TomTaxi",CanAccept = true,CanDispatch = true,Order = 0},
+                    new CompanyPreference{CompanyKey = "Pilou",CanAccept = true,CanDispatch = true,Order = 1},
                 }
             };
+           
             _chrisTaxiBis = new TaxiHailNetworkSettings()
             {
                 Id = "ChrisTaxiBis",
@@ -49,6 +66,12 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                     CoordinateStart = new MapCoordinate() { Latitude = 45.514466, Longitude = -73.846313 }, // MTL Top left 
                     CoordinateEnd = new MapCoordinate() { Latitude = 45.411296, Longitude = -73.513314 } // MTL BTM Right
 
+                },
+                Preferences = new List<CompanyPreference>
+                {
+                    new CompanyPreference{CompanyKey = "ChrisTaxi",CanAccept = false,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "TomTaxi",CanAccept = true,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "PilouTaxi",CanAccept = true,CanDispatch = true},
                 }
             };
 
@@ -71,7 +94,13 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Region = new MapRegion()
                 {
                     CoordinateStart = new MapCoordinate() { Latitude = 5000000, Longitude = -73.656990 },  
-                    CoordinateEnd = new MapCoordinate() { Latitude = 45.43874, Longitude = -73.584120 } 
+                    CoordinateEnd = new MapCoordinate() { Latitude = 45.43874, Longitude = -73.584120 }
+                },
+                Preferences = new List<CompanyPreference>
+                {
+                    new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "ChrisTaxi",CanAccept = false,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "PilouTaxi",CanAccept = true,CanDispatch = true},
                 }
             };
 
@@ -83,7 +112,13 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Region = new MapRegion()
                 {
                     CoordinateStart = new MapCoordinate() { Latitude = 45.514466, Longitude = -73.889451 },
-                    CoordinateEnd = new MapCoordinate() { Latitude = 45.411296, Longitude = -73.496042 } 
+                    CoordinateEnd = new MapCoordinate() { Latitude = 45.411296, Longitude = -73.496042 }
+                },
+                Preferences = new List<CompanyPreference>
+                {
+                    new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "ChrisTaxi",CanAccept = false,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "TomTaxi",CanAccept = true,CanDispatch = true},
                 }
             };
 
@@ -99,16 +134,98 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 }
             };
 
-            Repository.DeleteAll();
-            Repository.Add(_chrisTaxi);
-            Repository.Add(_chrisTaxiBis);
-            Repository.Add(_tonyTaxi);
-            Repository.Add(_tomTaxi);
-            Repository.Add(_pilouTaxi);
-            Repository.Add(_lastTaxi);
+            _chrisTaxiCompany = new Company()
+            {
+                Id = "ChrisTaxi",
+                CompanyKey = "ChrisTaxi",
+                CompanyName = "ChrisTaxi",
+                IBS = new IBSSettings
+                {
+                    Password = "test",
+                    Username = "Taxi",
+                    ServiceUrl = "http://google.com"
+                }
+            };
+            _chrisTaxiBisCompany= new Company()
+            {
+                Id = "ChrisTaxiBis",
+                CompanyKey = "ChrisTaxiBis",
+                CompanyName = "ChrisTaxiBis",
+                IBS = new IBSSettings
+                {
+                    Password = "test",
+                    Username = "Taxi",
+                    ServiceUrl = "http://google.com"
+                }
+            };
+            _lastTaxiCompany = new Company()
+            {
+                Id = "LastTaxi",
+                CompanyKey = "LastTaxi",
+                CompanyName = "LastTaxi",
+                IBS = new IBSSettings
+                {
+                    Password = "test",
+                    Username = "Taxi",
+                    ServiceUrl = "http://google.com"
+                }
+            };
+            _pilouTaxiCompany = new Company()
+            {
+                Id = "PilouTaxi",
+                CompanyKey = "PilouTaxi",
+                CompanyName = "PilouTaxi",
+                IBS = new IBSSettings
+                {
+                    Password = "test",
+                    Username = "Taxi",
+                    ServiceUrl = "http://google.com"
+                }
+            };
+            _tomTaxiCompany = new Company()
+            {
+                Id = "TomTaxi",
+                CompanyKey = "TomTaxi",
+                CompanyName = "TomTaxi",
+                IBS = new IBSSettings
+                {
+                    Password = "test",
+                    Username = "Taxi",
+                    ServiceUrl = "http://google.com"
+                }
+            };
+            _tonyTaxiCompany = new Company()
+            {
+                Id = "TonyTaxi",
+                CompanyKey = "TonyTaxi",
+                CompanyName = "TonyTaxi",
+                IBS = new IBSSettings
+                {
+                    Password = "test",
+                    Username = "Taxi",
+                    ServiceUrl = "http://google.com"
+                }
+            };
+
+            NetworkRepository.DeleteAll();
+            NetworkRepository.Add(_chrisTaxi);
+            NetworkRepository.Add(_chrisTaxiBis);
+            NetworkRepository.Add(_tonyTaxi);
+            NetworkRepository.Add(_tomTaxi);
+            NetworkRepository.Add(_pilouTaxi);
+            NetworkRepository.Add(_lastTaxi);
+
+            CompanyRepository.DeleteAll();
+            CompanyRepository.Add(_chrisTaxiCompany);
+            CompanyRepository.Add(_chrisTaxiBisCompany);
+            CompanyRepository.Add(_tonyTaxiCompany);
+            CompanyRepository.Add(_tomTaxiCompany);
+            CompanyRepository.Add(_pilouTaxiCompany);
+            CompanyRepository.Add(_lastTaxiCompany);
         }
 
-        public InMemoryRepository<TaxiHailNetworkSettings> Repository { get; set; }
+        public InMemoryRepository<TaxiHailNetworkSettings> NetworkRepository { get; set; }
+        public InMemoryRepository<Company> CompanyRepository { get; set; }
         public NetworkApiController Sut { get; set; }
         
         [Test]
@@ -172,6 +289,33 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
+        }
+
+        [Test]
+        public void When_Getting_Network_From_Coordinate()
+        {
+            var position = new MapCoordinate
+            {
+                Latitude = 45.463944,
+                Longitude = -73.643234
+            };
+
+            var response = Sut.Get(_chrisTaxi.Id, position);
+            Assert.True(response.IsSuccessStatusCode);
+            var json = response.Content.ReadAsStringAsync().Result;
+            var result = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json);
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json));
+
+            var position2 = new MapCoordinate
+            {
+                Latitude = 46.359854,
+                Longitude = -72.575015
+            };
+            var response2 = Sut.Get(_tonyTaxi.Id, position2);
+            Assert.True(response2.IsSuccessStatusCode);
+            var json2 = response2.Content.ReadAsStringAsync().Result;
+            Assert.IsEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json2));
+
         }
 
         [Test]

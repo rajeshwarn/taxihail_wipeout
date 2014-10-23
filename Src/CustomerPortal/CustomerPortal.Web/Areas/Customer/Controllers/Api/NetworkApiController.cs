@@ -6,6 +6,7 @@ using System.Web.Http;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Areas.Customer.Models.RequestResponse;
+using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Extensions;
 using MongoRepository;
@@ -16,16 +17,17 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
     public class NetworkApiController : ApiController
     {
         private readonly IRepository<TaxiHailNetworkSettings> _networkRepository;
+        private readonly IRepository<Company> _companyRepository;
 
 
-        public NetworkApiController():this(new MongoRepository<TaxiHailNetworkSettings>())
+        public NetworkApiController():this(new MongoRepository<TaxiHailNetworkSettings>(),new MongoRepository<Company>())
         {
-            
         }
 
-        public NetworkApiController(IRepository<TaxiHailNetworkSettings> repository)
+        public NetworkApiController(IRepository<TaxiHailNetworkSettings> networkRepository, IRepository<Company> companyRepository)
         {
-            _networkRepository = repository;
+            _networkRepository = networkRepository;
+            _companyRepository = companyRepository;
         }
 
         [Route("api/customer/{companyId}/network")]
@@ -49,8 +51,8 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             foreach (var nearbyCompany in overlappingCompanies)
             {
 
-                var companyPreference = networkSettings.Preferences.FirstOrDefault(p => p.CompanyKey == nearbyCompany.Id) ?? 
-                                        new CompanyPreference{CompanyKey = nearbyCompany.Id};
+                var companyPreference = networkSettings.Preferences.FirstOrDefault(p => p.CompanyKey == nearbyCompany.Id) 
+                			?? new CompanyPreference{CompanyKey = nearbyCompany.Id};
 
                 var nearbyCompanyAllowUsToDispatch = nearbyCompany.Preferences.Any(x => x.CompanyKey == companyId && x.CanAccept);
 
@@ -102,6 +104,50 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             return new HttpResponseMessage(HttpStatusCode.OK);
 
 
+        }
+
+        [Route("api/customer/{companyId}/networkfleet")]
+        public HttpResponseMessage Get(string companyId,MapCoordinate coordinate)
+        {
+            var networkSettings = _networkRepository.Select(x => x).ToList();
+
+            var companies = _companyRepository.Select(x => x).ToList();
+
+            var currentCompanyNetworkSettings = networkSettings.FirstOrDefault(n => n.Id == companyId);
+
+            if (currentCompanyNetworkSettings == null || !currentCompanyNetworkSettings.IsInNetwork)
+            {
+                return null;
+            }
+
+            var networkFleetResult = new List<NetworkFleetResponse>();
+
+            foreach (var currentCompanyPreferences in currentCompanyNetworkSettings.Preferences.Where(n => n.CanDispatch).OrderBy(n=>n.Order))
+            {
+                var company = companies.FirstOrDefault(c => c.CompanyKey == currentCompanyPreferences.CompanyKey);
+                if (company != null)
+                {
+                    var companyNearCoordinate = networkSettings.Any(n => n.Id==currentCompanyPreferences.CompanyKey && n.Region.Contains(coordinate));
+                    if (companyNearCoordinate)
+                    {
+                        var fleet = new NetworkFleetResponse
+                        {
+                            CompanyKey = company.CompanyKey,
+                            CompanyName = company.CompanyName,
+                            IbsPassword = company.IBS.Password,
+                            IbsUserName = company.IBS.Username,
+                            IbsUrl = company.IBS.ServiceUrl
+                        };
+                        networkFleetResult.Add(fleet);
+                    }
+                }
+            }
+
+            var response = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(networkFleetResult))
+            };
+            return response;
         }
     }
 }

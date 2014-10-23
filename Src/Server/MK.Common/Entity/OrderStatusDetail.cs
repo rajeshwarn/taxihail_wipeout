@@ -33,6 +33,13 @@ namespace apcurium.MK.Common.Entity
         public DateTime? PairingTimeOut { get; set; }
         public string PairingError { get; set; }
 
+        public string CompanyKey { get; set; }
+        public string RequestedCompanyKey { get; set; }
+        public DateTime? NetworkParingTimeout { get; set; }
+        public double? UserLatitude { get; set; }
+        public double? UserLongitude { get; set; }
+
+
         public override string ToString()
         {
             return Status + " " + Name;

@@ -55,6 +55,12 @@ namespace MK.Common.Configuration
                 UnknownUserIdentifier = "unknown@user.com"
             };
 
+		    NetworkSettings = new NetworkSettingsContainer()
+		    {
+                FirstOrderTimeout = 60*5, //5mins
+                OrderTimeout = 60*2 //2mins
+		    };
+
             ShowEstimateWarning = true;
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;
@@ -102,6 +108,7 @@ namespace MK.Common.Configuration
         public GeoLocSettingContainer GeoLoc { get; protected set; }
         public AvailableVehiclesSettingContainer AvailableVehicles { get; protected set; }
         public InsightsSettingContainer Insights { get; protected set; }
+        public NetworkSettingsContainer NetworkSettings { get; protected set; }
 
         [RequiredAtStartup]
 		[Display(Name = "Can Change Service Url", Description="Display a button on the login page to change the API server url")]
