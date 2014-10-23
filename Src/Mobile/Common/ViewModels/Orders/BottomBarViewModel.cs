@@ -420,7 +420,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 IBSOrderId = order.IBSOrderId,
                 IBSStatusDescription = this.Services().Localize["LoadingMessage"],
-                IBSStatusId = "",
+                IBSStatusId = string.Empty,
                 OrderId = pendingOrderId,
                 Status = OrderStatus.Unknown,
                 VehicleLatitude = null,

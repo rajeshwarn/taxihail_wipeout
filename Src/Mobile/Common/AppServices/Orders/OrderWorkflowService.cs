@@ -200,7 +200,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					CreatedDate = DateTime.Now, 
 					DropOffAddress = order.DropOffAddress, 
 					IBSOrderId = orderStatus.IBSOrderId, 
-					Id = order.Id, PickupAddress = order.PickupAddress,
+					Id = order.Id,
+                    PickupAddress = order.PickupAddress,
 					Note = order.Note, 
 					PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now,
 					Settings = order.Settings
