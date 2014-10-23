@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Entity;
@@ -226,7 +225,10 @@ namespace apcurium.MK.Common.Configuration
 
     public class NetworkSettingsContainer
     {
+        [CustomizableByCompany]
         public double FirstOrderTimeout { get; protected internal set; }
+
+        [CustomizableByCompany]
         public double OrderTimeout { get; protected internal set; }
     }
 }
