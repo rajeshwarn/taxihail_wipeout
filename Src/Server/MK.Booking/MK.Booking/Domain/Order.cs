@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Domain
         private bool _isRated;
         private OrderStatus _status;
         private double? _fare;
+        private bool _isTimedOut; // TODO reset this when dispatching to another company, otherwise time out will never occur again
 
         protected Order(Guid id)
             : base(id)
@@ -32,10 +33,10 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderStatusChanged>(OnOrderStatusChanged);
             Handles<OrderPairedForPayment>(NoAction);
             Handles<OrderUnpairedForPayment>(NoAction);
-            Handles<OrderTimedOut>(NoAction);
+            Handles<OrderTimedOut>(OnOrderTimedOut);
             Handles<OrderDispatchCompanyChanged>(NoAction);
         }
-
+        
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
         {
@@ -138,7 +139,10 @@ namespace apcurium.MK.Booking.Domain
 
         public void NotifyOrderTimedOut()
         {
-            Update(new OrderTimedOut());
+            if (!_isTimedOut)
+            {
+                Update(new OrderTimedOut());  
+            }
         }
 
         public void Pair(string medallion, string driverId, string pairingToken, string pairingCode,
@@ -208,6 +212,11 @@ namespace apcurium.MK.Booking.Domain
         private void OnOrderRated(OrderRated obj)
         {
             _isRated = true;
+        }
+
+        private void OnOrderTimedOut(OrderTimedOut obj)
+        {
+            _isTimedOut = true;
         }
     }
 }

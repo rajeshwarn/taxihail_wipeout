@@ -32,14 +32,15 @@ namespace apcurium.MK.Booking.EventHandlers
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
+        private readonly IServerSettings _serverSettings;
         private readonly Resources.Resources _resources;
-
         public OrderGenerator(Func<BookingDbContext> contextFactory,
             ILogger logger,
             IServerSettings serverSettings)
         {
             _contextFactory = contextFactory;
             _logger = logger;
+            _serverSettings = serverSettings;
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -105,6 +106,9 @@ namespace apcurium.MK.Booking.EventHandlers
                         Status = OrderStatus.Created,
                         IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", @event.ClientLanguageCode),
                         PickupDate = @event.PickupDate,
+                        NetworkPairingTimeout = _serverSettings.ServerData.Network.Enabled 
+                            ? @event.PickupDate.AddSeconds(_serverSettings.ServerData.Network.FirstOrderTimeout)
+                            : (DateTime?) null,
                         Name = @event.Settings != null ? @event.Settings.Name : null
                     });
                 }
