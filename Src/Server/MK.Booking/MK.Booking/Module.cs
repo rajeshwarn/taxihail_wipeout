@@ -166,6 +166,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, MailSender>("MailSender");
             container.RegisterType<IEventHandler, OrderPaymentManager>("OrderPaymentManager");
             container.RegisterType<IEventHandler, OrderPairingManager>("OrderPairingManager");
+            container.RegisterType<IEventHandler, OrderDispatchCompanyManager>("OrderDispatchCompanyManager");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)

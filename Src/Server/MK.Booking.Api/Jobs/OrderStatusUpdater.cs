@@ -347,49 +347,41 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private bool OrderNeedsUpdate(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
         {
-            return    (ibsOrderInfo.Status.HasValue() && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status) // ibs status changed
-                   || (!orderStatusDetail.FareAvailable && ibsOrderInfo.Fare > 0) // fare was not available and ibs now has the information
+            return (ibsOrderInfo.Status.HasValue() && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status)
+                // ibs status changed
+                   || (!orderStatusDetail.FareAvailable && ibsOrderInfo.Fare > 0)
+                // fare was not available and ibs now has the information
                    || orderStatusDetail.Status == OrderStatus.WaitingForPayment // special case for pairing
-                   || NetworkNeeedsUpdate(ibsOrderInfo, orderStatusDetail);
+                   || !ibsOrderInfo.IsAssigned; //NetworkNeedsUpdate(ibsOrderInfo, orderStatusDetail);
         }
 
-        private bool NetworkNeeedsUpdate(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
+        private bool NetworkNeedsUpdate(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
         {
-            return  !ibsOrderInfo.IsAssigned && orderStatusDetail.CompanyKey == orderStatusDetail.RequestedCompanyKey;
+            // TODO: why the second check? Ask Chris.
+            return  !ibsOrderInfo.IsAssigned && orderStatusDetail.CompanyKey == orderStatusDetail.NextDispatchCompanyKey;
         }
         private void RunNetworkPairing(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
         {
-            //how do we know if company is in network? Customer Portal?
-            //todo !isInNetwork return
+            // TODO: check if company is in network. If not, return. (waiting on MKTAXI-2244)
 
             if (orderStatusDetail.Status == OrderStatus.TimedOut)
             {
-                return; //Already done
+                // Order already flagged as timed out
+                return;
             }
 
             var settings = _serverSettings.ServerData.NetworkSettings;
             if (!orderStatusDetail.NetworkParingTimeout.HasValue)
             {
+                // Set server time at which the order will timeout
                 orderStatusDetail.NetworkParingTimeout = DateTime.Now.Add(TimeSpan.FromSeconds(settings.FirstOrderTimeout));
             }
             
-            if (orderStatusDetail.NetworkParingTimeout.Value > DateTime.Now) return; //Not Timed-out
-            
-            //get companies from customer portal
-            //orderStatusDetail.UserLatitude.GetValueOrDefault()
-
-            //Call Ibs to confirm dispachable return if none
-            var companyName = "Chris Taxi";
-            var companyKey = "ChrisTaxi";
-            //Dont need Ibs
-            //var ibsUrl = "google.com";
-            //var ibsUser = "taxi";
-            //var ibsPass = "qwerty";
-
-            orderStatusDetail.Status = OrderStatus.TimedOut; //set status to timeout
-            orderStatusDetail.RequestedCompanyKey = companyKey;
-            //PUSH PUSH
-       
+            if (orderStatusDetail.NetworkParingTimeout.Value <= DateTime.Now)
+            {
+                // Order timed out
+                _commandBus.Send(new NotifyOrderTimedOut { OrderId = orderStatusDetail.OrderId });
+            }
         }
 
         private string GetDescription(Guid orderId, IBSOrderInformation ibsOrderInfo)

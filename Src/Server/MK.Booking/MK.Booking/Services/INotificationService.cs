@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Services
         void SendArrivedPush(OrderStatusDetail orderStatusDetail);
         void SendPairingInquiryPush(OrderStatusDetail orderStatusDetail);
         void SendTimeoutPush(OrderStatusDetail orderStatusDetail);
-
+        void SendChangeDispatchCompanyPush(Guid orderId);
         void SendPaymentCapturePush(Guid orderId, decimal amount);
         void SendTaxiNearbyPush(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude);
         void SendAutomaticPairingPush(Guid orderId, int? autoTipPercentage, string last4Digits, bool success);

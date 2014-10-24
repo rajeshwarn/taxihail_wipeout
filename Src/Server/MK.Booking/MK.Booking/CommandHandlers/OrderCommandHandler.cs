@@ -18,7 +18,9 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<RateOrder>,
         ICommandHandler<ChangeOrderStatus>,
         ICommandHandler<PairForPayment>,
-        ICommandHandler<UnpairForPayment>
+        ICommandHandler<UnpairForPayment>,
+        ICommandHandler<NotifyOrderTimedOut>,
+        ICommandHandler<ChangeOrderDispatchCompany>
     {
         private readonly IEventSourcedRepository<Order> _repository;
 
@@ -38,6 +40,14 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var order = _repository.Find(command.Status.OrderId);
             order.ChangeStatus(command.Status, command.Fare, command.Tip, command.Toll, command.Tax);
+
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(NotifyOrderTimedOut command)
+        {
+            var order = _repository.Find(command.OrderId);
+            order.NotifyOrderTimedOut();
 
             _repository.Save(order, command.Id.ToString());
         }
@@ -82,6 +92,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var order = _repository.Find(command.OrderId);
             order.Unpair();
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(ChangeOrderDispatchCompany command)
+        {
+            var order = _repository.Find(command.OrderId);
+            order.ChangeOrderDispatchCompany(command.DispatchCompanyName, command.DispatchCompanyKey);
             _repository.Save(order, command.Id.ToString());
         }
     }

@@ -3,6 +3,7 @@
 using System;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.SqlTypes;
+using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
@@ -10,6 +11,8 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
+using CustomerPortal.Client;
+using CustomerPortal.Contract.Resources;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Common.Configuration;
 
@@ -24,17 +27,19 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PaymentInformationSet>,
         IEventHandler<OrderStatusChanged>,
         IEventHandler<OrderPairedForPayment>,
-        IEventHandler<OrderUnpairedForPayment>
+        IEventHandler<OrderUnpairedForPayment>,
+        IEventHandler<OrderDispatchCompanyChanged>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
-        public OrderGenerator(Func<BookingDbContext> contextFactory, ILogger logger, IServerSettings serverSettings)
+        public OrderGenerator(Func<BookingDbContext> contextFactory,
+            ILogger logger,
+            IServerSettings serverSettings)
         {
             _contextFactory = contextFactory;
             _logger = logger;
-
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -278,6 +283,19 @@ namespace apcurium.MK.Booking.EventHandlers
                 order.PaymentInformation.TipPercent = @event.TipPercent;
 
                 context.Save(order);
+            }
+        }
+
+        public void Handle(OrderDispatchCompanyChanged @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                details.Status = OrderStatus.TimedOut;
+                details.NextDispatchCompanyName = @event.DispatchCompanyName;
+                details.NextDispatchCompanyKey = @event.DispatchCompanyKey;
+
+                context.Save(details);
             }
         }
     }

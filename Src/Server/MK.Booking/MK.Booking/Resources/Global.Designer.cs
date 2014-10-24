@@ -70,20 +70,20 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The order cannot be create using this version of the app. Please upgrade the app to book a ride..
-        /// </summary>
-        public static string CannotCreateOrderInvalidVersion {
-            get {
-                return ResourceManager.GetString("CannotCreateOrderInvalidVersion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The order cannot be created because your credit card failed the preauthorization check..
         /// </summary>
         public static string CannotCreateOrder_CreditCardWasDeclined {
             get {
                 return ResourceManager.GetString("CannotCreateOrder_CreditCardWasDeclined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The order cannot be created using this version of the app. Please upgrade the app to book a ride..
+        /// </summary>
+        public static string CannotCreateOrderInvalidVersion {
+            get {
+                return ResourceManager.GetString("CannotCreateOrderInvalidVersion", resourceCulture);
             }
         }
         
@@ -795,6 +795,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string PaymentItemDescription {
             get {
                 return ResourceManager.GetString("PaymentItemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Due to high demand, no cars are available right now. Do you want to book with {1} instead?.
+        /// </summary>
+        public static string PushNotification_ChangeNetworkCompany {
+            get {
+                return ResourceManager.GetString("PushNotification_ChangeNetworkCompany", resourceCulture);
             }
         }
         

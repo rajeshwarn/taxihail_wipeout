@@ -26,7 +26,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class PushNotificationSender : IIntegrationEventHandler,
             IEventHandler<OrderStatusChanged>,
-            IEventHandler<CreditCardPaymentCaptured>
+            IEventHandler<CreditCardPaymentCaptured>,
+            IEventHandler<OrderDispatchCompanyChanged>
     {
         private readonly INotificationService _notificationService;
         private static readonly ILog Log = LogManager.GetLogger(typeof(PushNotificationSender));
@@ -52,6 +53,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         _notificationService.SendPairingInquiryPush(@event.Status);
                         break;
                     case VehicleStatuses.Common.Timeout:
+                        // TODO: ignore if order/company is in network (see: MKTAXI-2244)
                         _notificationService.SendTimeoutPush(@event.Status);
                         break;
                     default:
@@ -76,6 +78,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 }
 
                 _notificationService.SendPaymentCapturePush(@event.OrderId, @event.Amount);
+            }
+            catch (Exception e)
+            {
+                Log.Debug(e);
+            }
+        }
+
+        public void Handle(OrderDispatchCompanyChanged @event)
+        {
+            try
+            {
+                _notificationService.SendChangeDispatchCompanyPush(@event.OrderId);
             }
             catch (Exception e)
             {
