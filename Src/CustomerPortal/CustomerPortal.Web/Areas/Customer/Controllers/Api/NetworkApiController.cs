@@ -127,17 +127,24 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 var company = companies.FirstOrDefault(c => c.CompanyKey == currentCompanyPreferences.CompanyKey);
                 if (company != null)
                 {
-                    var companyNearCoordinate = networkSettings.Any(n => n.Id==currentCompanyPreferences.CompanyKey && n.Region.Contains(coordinate));
-                    if (companyNearCoordinate)
+                    var fleet = new NetworkFleetResponse
                     {
-                        var fleet = new NetworkFleetResponse
+                        CompanyKey = company.CompanyKey,
+                        CompanyName = company.CompanyName,
+                        IbsPassword = company.IBS.Password,
+                        IbsUserName = company.IBS.Username,
+                        IbsUrl = company.IBS.ServiceUrl
+                    };
+                    if (coordinate != null)
+                    {
+                        var companyNearCoordinate = networkSettings.Any(n => n.Id == currentCompanyPreferences.CompanyKey && n.Region.Contains(coordinate));
+                        if (companyNearCoordinate)
                         {
-                            CompanyKey = company.CompanyKey,
-                            CompanyName = company.CompanyName,
-                            IbsPassword = company.IBS.Password,
-                            IbsUserName = company.IBS.Username,
-                            IbsUrl = company.IBS.ServiceUrl
-                        };
+                            networkFleetResult.Add(fleet);
+                        }
+                    }
+                    else
+                    {
                         networkFleetResult.Add(fleet);
                     }
                 }

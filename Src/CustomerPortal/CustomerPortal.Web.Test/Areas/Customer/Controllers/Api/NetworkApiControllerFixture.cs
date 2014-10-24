@@ -52,8 +52,8 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Preferences = new List<CompanyPreference>
                 {
                     new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true,Order = 2},
-                    new CompanyPreference{CompanyKey = "TomTaxi",CanAccept = true,CanDispatch = true,Order = 0},
-                    new CompanyPreference{CompanyKey = "Pilou",CanAccept = true,CanDispatch = true,Order = 1},
+                    new CompanyPreference{CompanyKey = "TomTaxi",CanAccept = true,CanDispatch = false,Order = 0},
+                    new CompanyPreference{CompanyKey = "PilouTaxi",CanAccept = true,CanDispatch = true,Order = 1},
                 }
             };
            
@@ -305,6 +305,12 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             var json = response.Content.ReadAsStringAsync().Result;
             var result = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json);
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json));
+
+            var response3 = Sut.Get(_chrisTaxi.Id);
+            Assert.True(response3.IsSuccessStatusCode);
+            var json3 = response.Content.ReadAsStringAsync().Result;
+            var result3 = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json3);
+            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json3));
 
             var position2 = new MapCoordinate
             {
