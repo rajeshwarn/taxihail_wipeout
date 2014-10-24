@@ -82,7 +82,8 @@ namespace MK.Common.Configuration
             Network = new NetworkSettingContainer
             {
                 FirstOrderTimeout = 60 * 5, // 5 mins
-                OrderTimeout = 60 * 2       // 2 mins
+                OrderTimeout = 60 * 2,       // 2 mins
+                Enabled = false
             };
 
             PayPalConversionRate = 1;

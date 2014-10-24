@@ -534,6 +534,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Server\MK.Common\MK.Common.csproj">
+      <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
+      <Name>MK.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cupertino\Cupertino.csproj">
       <Project>{ef63d209-cc8f-4b7d-9e64-2b59395a3cbe}</Project>
       <Name>Cupertino</Name>

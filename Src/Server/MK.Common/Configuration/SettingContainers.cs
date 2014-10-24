@@ -224,12 +224,6 @@ namespace apcurium.MK.Common.Configuration
         public string UnknownUserIdentifier { get; protected internal set; }
     }
 
-    public class NetworkSettingsContainer
-    {
-        public double FirstOrderTimeout { get; protected internal set; }
-        public double OrderTimeout { get; protected internal set; }
-    }
-
     public class NetworkSettingContainer
     {
         [CustomizableByCompany]
@@ -237,5 +231,7 @@ namespace apcurium.MK.Common.Configuration
 
         [CustomizableByCompany]
         public double OrderTimeout { get; protected internal set; }
+
+        public bool Enabled { get;  set; }
     }
 }
