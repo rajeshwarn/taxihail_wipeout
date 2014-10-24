@@ -6,7 +6,6 @@ using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -16,6 +15,12 @@ namespace apcurium.MK.Booking.IBS.Impl
     {
         public StaticDataWebServiceClient(IServerSettings serverSettings, ILogger logger)
             : base(serverSettings.ServerData.IBS, logger)
+        {
+            
+        }
+
+        public StaticDataWebServiceClient(IBSSettingContainer ibsSettings, ILogger logger)
+            : base(ibsSettings, logger)
         {
         }
 

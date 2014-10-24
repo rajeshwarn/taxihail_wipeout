@@ -11,17 +11,11 @@ namespace apcurium.MK.Booking.IBS.Impl
 {
     public class AccountWebServiceClient : BaseService<WebAccount3Service>, IAccountWebServiceClient
     {
-        public AccountWebServiceClient(IServerSettings serverSettings, ILogger logger)
-            : base(serverSettings.ServerData.IBS, logger)
-        {
-        }
-
         public AccountWebServiceClient(IBSSettingContainer ibsSettings, ILogger logger)
-            : base(ibsSettings,logger)
+            : base(ibsSettings, logger)
         {
             
         }
-
 
         public int CreateAccount(Guid accountId, string email, string firstName, string lastName, string phone)
         {
