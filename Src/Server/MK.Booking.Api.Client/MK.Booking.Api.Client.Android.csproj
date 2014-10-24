@@ -96,6 +96,10 @@
   -->
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\CMTPayment\CMTPayment.Android.csproj">
+      <Project>{fd56efb1-2ed8-4a8a-b7ab-80eb36cf03eb}</Project>
+      <Name>CMTPayment.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MK.Common\MK.Common.Android.csproj">
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>

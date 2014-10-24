@@ -331,6 +331,10 @@
     <Compile Include="PresentationHints\ChangeZoomPresentationHint.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.iOS.csproj">
+      <Project>{9fc63422-3472-42be-b3f2-c296f3fa87db}</Project>
+      <Name>CMTPayment.iOS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
       <Project>{52A964D2-F9FE-47CD-9C50-781CCEC560ED}</Project>
       <Name>MK.Booking.Api.Client.iOS</Name>
