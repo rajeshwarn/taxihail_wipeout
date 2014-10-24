@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 
 #endregion
@@ -27,7 +28,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PaymentProfileUpdated>,
         IEventHandler<CreditCardAdded>,
         IEventHandler<CreditCardRemoved>,
-        IEventHandler<AllCreditCardsRemoved>
+        IEventHandler<AllCreditCardsRemoved>,
+        IEventHandler<AccountLinkedToIbs>
     {
         private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -239,6 +241,33 @@ namespace apcurium.MK.Booking.EventHandlers
                 account.DefaultCreditCard = null;
                 account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
                 context.Save(account);
+            }
+        }
+
+        public void Handle(AccountLinkedToIbs @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                if (@event.CompanyKey.HasValue())
+                {
+                    var ibsAccountLink = 
+                        context.Query<AccountIbsDetail>().FirstOrDefault(x => x.AccountId == @event.SourceId && x.CompanyKey == @event.CompanyKey) 
+                            ?? new AccountIbsDetail
+                               {
+                                   AccountId = @event.SourceId,
+                                   CompanyKey = @event.CompanyKey
+                               };
+
+                    ibsAccountLink.IBSAccountId = @event.IbsAccountId;
+
+                    context.Save(ibsAccountLink);
+                }
+                else
+                {
+                    var account = context.Find<AccountDetail>(@event.SourceId);
+                    account.IBSAccountId = @event.IbsAccountId;
+                    context.Save(account);
+                }
             }
         }
     }

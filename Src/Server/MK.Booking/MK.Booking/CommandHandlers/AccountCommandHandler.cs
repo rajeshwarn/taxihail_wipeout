@@ -38,7 +38,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<RemoveFavoriteAddress>,
         ICommandHandler<UpdateFavoriteAddress>,
         ICommandHandler<RemoveAddressFromHistory>,
-        ICommandHandler<LogApplicationStartUp>
+        ICommandHandler<LogApplicationStartUp>,
+        ICommandHandler<LinkAccountToIbs>
     {
         private readonly IPasswordService _passwordService;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -111,8 +112,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var password = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
             var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, password,
-                command.IbsAccountId, command.ConfimationToken, command.Language, command.AccountActivationDisabled,
-                command.IsAdmin);
+                command.ConfimationToken, command.Language, command.AccountActivationDisabled, command.IsAdmin);
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -132,14 +132,14 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(RegisterFacebookAccount command)
         {
             var account = new Account(command.AccountId, command.Name, command.Phone, command.Email,
-                command.IbsAccountId, command.FacebookId, language: command.Language);
+                command.FacebookId, language: command.Language);
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(RegisterTwitterAccount command)
         {
             var account = new Account(command.AccountId, command.Name, command.Phone, command.Email,
-                command.IbsAccountId, twitterId: command.TwitterId, language: command.Language);
+                twitterId: command.TwitterId, language: command.Language);
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -256,6 +256,15 @@ namespace apcurium.MK.Booking.CommandHandlers
 
                 context.Save(log);
             }
+        }
+
+        public void Handle(LinkAccountToIbs command)
+        {
+            var account = _repository.Find(command.AccountId);
+
+            account.LinkToIbs(command.CompanyKey, command.IbsAccountId);
+
+            _repository.Save(account, command.Id.ToString());
         }
     }
 }

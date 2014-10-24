@@ -67,6 +67,7 @@
     <Compile Include="DeleteVehicleType.cs" />
     <Compile Include="InitiateCreditCardPayment.cs" />
     <Compile Include="InitiatePayPalExpressCheckoutPayment.cs" />
+    <Compile Include="LinkAccountToIbs.cs" />
     <Compile Include="LogApplicationStartUp.cs" />
     <Compile Include="LogCancellationFailurePayPalPayment.cs" />
     <Compile Include="LogCreditCardError.cs" />
