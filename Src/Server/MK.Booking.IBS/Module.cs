@@ -23,8 +23,7 @@ namespace apcurium.MK.Booking.IBS
             Mapper.AddProfile(profile);
             Mapper.AssertConfigurationIsValid(profile.ProfileName);
 
-            var thNetworkServiceClient = new TaxiHailNetworkServiceClient(container.Resolve<IServerSettings>());
-            container.RegisterInstance<ITaxiHailNetworkServiceClient>(thNetworkServiceClient);
+            container.RegisterType<ITaxiHailNetworkServiceClient, TaxiHailNetworkServiceClient>();
 
             container.RegisterInstance<IIBSServiceProvider>(
                 new IBSServiceProvider(container.Resolve<IServerSettings>(), container.Resolve<ILogger>(),container.Resolve<ITaxiHailNetworkServiceClient>()));
