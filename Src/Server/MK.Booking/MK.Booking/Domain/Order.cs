@@ -33,6 +33,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderPairedForPayment>(NoAction);
             Handles<OrderUnpairedForPayment>(NoAction);
             Handles<OrderTimedOut>(NoAction);
+            Handles<OrderDispatchCompanyChanged>(NoAction);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)

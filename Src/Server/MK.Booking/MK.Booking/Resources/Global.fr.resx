@@ -397,7 +397,6 @@
     <value>Votre commande ne peut pas être prise en compte, la préauthorisation de votre carte de crédit a échouée.</value>
   </data>
   <data name="PushNotification_ChangeNetworkCompany" xml:space="preserve">
-    <value>En raison d'un grand nombre de demandes , aucun vehicules ne sont disponibles présentement. Voulez vous passez une commande avec {1}?</value>
-    <comment>Due to high demand, no cars from {0} are available right now. Do you want to book with {1} instead?</comment>
+    <value>En raison d'un grand nombre de demandes , aucun vehicule n'est disponible présentement. Désirez-vous passez une commande avec {1}?</value>
   </data>
 </root>

@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs);
 
-            RunNetworkPairing(orderFromIbs, orderStatusDetail);
+            RunNetworkPairing(orderStatusDetail);
 
             _commandBus.Send(new ChangeOrderStatus
             {
@@ -347,20 +347,13 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private bool OrderNeedsUpdate(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
         {
-            return (ibsOrderInfo.Status.HasValue() && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status)
-                // ibs status changed
-                   || (!orderStatusDetail.FareAvailable && ibsOrderInfo.Fare > 0)
-                // fare was not available and ibs now has the information
-                   || orderStatusDetail.Status == OrderStatus.WaitingForPayment // special case for pairing
-                   || !ibsOrderInfo.IsAssigned; //NetworkNeedsUpdate(ibsOrderInfo, orderStatusDetail);
+            return (ibsOrderInfo.Status.HasValue() && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status) // ibs status changed
+                   || (!orderStatusDetail.FareAvailable && ibsOrderInfo.Fare > 0) // fare was not available and ibs now has the information
+                   || orderStatusDetail.Status == OrderStatus.WaitingForPayment   // special case for pairing
+                   || !ibsOrderInfo.IsAssigned;
         }
 
-        private bool NetworkNeedsUpdate(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
-        {
-            // TODO: why the second check? Ask Chris.
-            return  !ibsOrderInfo.IsAssigned && orderStatusDetail.CompanyKey == orderStatusDetail.NextDispatchCompanyKey;
-        }
-        private void RunNetworkPairing(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
+        private void RunNetworkPairing(OrderStatusDetail orderStatusDetail)
         {
             // TODO: check if company is in network. If not, return. (waiting on MKTAXI-2244)
 
@@ -371,13 +364,16 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
 
             var settings = _serverSettings.ServerData.NetworkSettings;
-            if (!orderStatusDetail.NetworkParingTimeout.HasValue)
+            if (!orderStatusDetail.NetworkPairingTimeout.HasValue)
             {
                 // Set server time at which the order will timeout
-                orderStatusDetail.NetworkParingTimeout = DateTime.Now.Add(TimeSpan.FromSeconds(settings.FirstOrderTimeout));
+                orderStatusDetail.NetworkPairingTimeout = DateTime.Now.Add(
+                    TimeSpan.FromSeconds(orderStatusDetail.CompanyKey == null 
+                        ? settings.FirstOrderTimeout
+                        : settings.OrderTimeout));
             }
             
-            if (orderStatusDetail.NetworkParingTimeout.Value <= DateTime.Now)
+            if (orderStatusDetail.NetworkPairingTimeout.Value <= DateTime.Now)
             {
                 // Order timed out
                 _commandBus.Send(new NotifyOrderTimedOut { OrderId = orderStatusDetail.OrderId });

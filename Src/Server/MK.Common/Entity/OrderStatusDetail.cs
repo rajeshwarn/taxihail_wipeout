@@ -37,7 +37,7 @@ namespace apcurium.MK.Common.Entity
         public string NextDispatchCompanyName { get; set; }
         public string NextDispatchCompanyKey { get; set; }
 
-        public DateTime? NetworkParingTimeout { get; set; }
+        public DateTime? NetworkPairingTimeout { get; set; }
         public double? UserLatitude { get; set; }
         public double? UserLongitude { get; set; }
 
