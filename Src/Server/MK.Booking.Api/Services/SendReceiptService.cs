@@ -1,24 +1,18 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.CommandBuilder;
 using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Extensions;
+using CMTPayment;
+using CMTPayment.Pair;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
-using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Pair;
-using apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt;
 using apcurium.MK.Common.Configuration;
-
-#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {

@@ -26,16 +26,14 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
-        private readonly IPaymentService _paymentService;
 
         public CancelOrderService(ICommandBus commandBus, IBookingWebServiceClient bookingWebServiceClient,
-            IOrderDao orderDao, IAccountDao accountDao, IUpdateOrderStatusJob updateOrderStatusJob, IPaymentService paymentService)
+            IOrderDao orderDao, IAccountDao accountDao, IUpdateOrderStatusJob updateOrderStatusJob)
         {
             _bookingWebServiceClient = bookingWebServiceClient;
             _orderDao = orderDao;
             _accountDao = accountDao;
             _updateOrderStatusJob = updateOrderStatusJob;
-            _paymentService = paymentService;
             _commandBus = commandBus;
         }
 
@@ -65,10 +63,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Func<bool> cancelOrder = () => _bookingWebServiceClient.CancelOrder(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
                 cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
             });
-
-            // void the preauthorization to prevent misuse fees
-            _paymentService.VoidPreAuthorization(request.OrderId);
-
+            
             var command = new Commands.CancelOrder { Id = Guid.NewGuid(), OrderId = request.OrderId };
             _commandBus.Send(command);
 

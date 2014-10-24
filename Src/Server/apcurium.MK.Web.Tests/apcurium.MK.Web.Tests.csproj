@@ -158,6 +158,10 @@
       <Project>{26c054f2-4984-4fe5-811c-4d94ef7eae15}</Project>
       <Name>apcurium.MK.Web.SelfHost</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CMTPayment\CMTPayment.csproj">
+      <Project>{5fd750a2-ee19-4a80-9b38-32adbf03765a}</Project>
+      <Name>CMTPayment</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{b5786d07-5888-4df5-b295-3fea593f3bfe}</Project>
       <Name>Infrastructure</Name>

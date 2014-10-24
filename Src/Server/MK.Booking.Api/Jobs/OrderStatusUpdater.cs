@@ -169,15 +169,9 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     try
                     {
-                        var paymentResult = _paymentService.CommitPayment(new CommitPaymentRequest
-                        {
-                            OrderId = orderStatusDetail.OrderId,
-                            CardToken = defaultCreditCard.Token,
-                            MeterAmount = paymentSettings.NoShowFee.Value,
-                            TipAmount = 0,
-                            Amount = paymentSettings.NoShowFee.Value,
-                            IsNoShowFee = true
-                        });
+                        var paymentResult = _paymentService.CommitPayment(
+                            paymentSettings.NoShowFee.Value, paymentSettings.NoShowFee.Value,
+                            0, defaultCreditCard.Token, orderStatusDetail.OrderId, true);
 
                         if (paymentResult.IsSuccessful)
                         {
@@ -287,14 +281,10 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             try
             {
-                var paymentResult = _paymentService.CommitPayment(new CommitPaymentRequest
-                {
-                    OrderId = orderStatusDetail.OrderId,
-                    CardToken = pairingInfo.TokenOfCardToBeUsedForPayment,
-                    MeterAmount = Convert.ToDecimal(meterAmount),
-                    TipAmount = Convert.ToDecimal(tipAmount),
-                    Amount = Convert.ToDecimal(meterAmount + tipAmount)
-                });
+                var paymentResult = _paymentService.CommitPayment(
+                    Convert.ToDecimal(meterAmount + tipAmount), Convert.ToDecimal(meterAmount),
+                    Convert.ToDecimal(tipAmount), pairingInfo.TokenOfCardToBeUsedForPayment,
+                    orderStatusDetail.OrderId, false);
 
                 if (paymentResult.IsSuccessful)
                 {
