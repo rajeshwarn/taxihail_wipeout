@@ -46,8 +46,8 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Region = new MapRegion()
                 {
-                    CoordinateStart = new MapCoordinate(45.514466, -73.846313), // MTL Top left 
-                    CoordinateEnd = new MapCoordinate(45.411296, -73.513314) // MTL BTM Right
+                    CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.846313}, // MTL Top left 
+                    CoordinateEnd = new MapCoordinate{Latitude = 45.411296,Longitude = 73.513314} // MTL BTM Right
                 },
                 Preferences = new List<CompanyPreference>
                 {
@@ -63,8 +63,8 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Region = new MapRegion()
                 {
-                    CoordinateStart = new MapCoordinate(45.514466, -73.846313), // MTL Top left 
-                    CoordinateEnd = new MapCoordinate(45.41129, -73.51331) // MTL BTM Right
+                    CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.846313}, // MTL Top left 
+                    CoordinateEnd = new MapCoordinate{Latitude = 45.41129,Longitude = -73.51331} // MTL BTM Right
 
                 },
                 Preferences = new List<CompanyPreference>
@@ -81,8 +81,8 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Region = new MapRegion()
                 {
-                    CoordinateStart = new MapCoordinate(49994, -73.656990), // Apcuruium 
-                    CoordinateEnd = new MapCoordinate(45.474307, -73.58412) // Home
+                    CoordinateStart = new MapCoordinate{Latitude = 49994,Longitude = -73.656990}, // Apcuruium 
+                    CoordinateEnd = new MapCoordinate{Latitude = 45.474307,Longitude = -73.58412} // Home
                 }
             };
 
@@ -93,8 +93,8 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Region = new MapRegion()
                 {
-                    CoordinateStart = new MapCoordinate(5000000, -73.656990),  
-                    CoordinateEnd = new MapCoordinate(45.43874, -73.58412)
+                    CoordinateStart = new MapCoordinate{Latitude = 5000000,Longitude = -73.656990},  
+                    CoordinateEnd = new MapCoordinate{Latitude = 45.43874,Longitude = -73.58412}
                 },
                 Preferences = new List<CompanyPreference>
                 {
@@ -111,8 +111,8 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Region = new MapRegion()
                 {
-                    CoordinateStart = new MapCoordinate(45.514466, -73.889451),
-                    CoordinateEnd = new MapCoordinate(45.411296, -73.496042)
+                    CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.889451},
+                    CoordinateEnd = new MapCoordinate{Latitude = 45.411296,Longitude = -73.496042}
                 },
                 Preferences = new List<CompanyPreference>
                 {
@@ -129,8 +129,8 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Region = new MapRegion()
                 {
-                    CoordinateStart = new MapCoordinate(45.563135, -73.71953), //College Montmorency Laval
-                    CoordinateEnd = new MapCoordinate(45.498094, -73.62233) //Station cote des neiges
+                    CoordinateStart = new MapCoordinate{Latitude = 45.563135,Longitude = -73.71953}, //College Montmorency Laval
+                    CoordinateEnd = new MapCoordinate{Latitude = 45.498094,Longitude = -73.62233} //Station cote des neiges
                 }
             };
 
@@ -294,23 +294,23 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         [Test]
         public void When_Getting_Network_From_Coordinate()
         {
-            var position = new MapCoordinate(45.463944, -73.643234);
+            var position = new MapCoordinate{Latitude = 45.463944,Longitude = -73.643234};
 
-            var response = Sut.Get(_chrisTaxi.Id, position);
+            var response = Sut.Post(_chrisTaxi.Id, position);
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             var result = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json);
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json));
 
-            var response3 = Sut.Get(_chrisTaxi.Id);
+            var response3 = Sut.Post(_chrisTaxi.Id,new MapCoordinate());
             Assert.True(response3.IsSuccessStatusCode);
             var json3 = response.Content.ReadAsStringAsync().Result;
             var result3 = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json3);
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json3));
 
-            var position2 = new MapCoordinate(46.359854, -72.575015);
+            var position2 = new MapCoordinate{Latitude = 46.359854,Longitude = -72.575015 };
 
-            var response2 = Sut.Get(_tonyTaxi.Id, position2);
+            var response2 = Sut.Post(_tonyTaxi.Id, position2);
             Assert.True(response2.IsSuccessStatusCode);
             var json2 = response2.Content.ReadAsStringAsync().Result;
             Assert.IsEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json2));

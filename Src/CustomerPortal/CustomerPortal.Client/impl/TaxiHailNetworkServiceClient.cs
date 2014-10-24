@@ -26,9 +26,9 @@ namespace CustomerPortal.Client.Impl
             }
             return new List<CompanyPreferenceResponse>();
         }
-        public async Task<List<NetworkFleetResponse>> GetNetworkFleetFromCoordinate(string companyId,MapCoordinate coordinate)
+        public async Task<List<NetworkFleetResponse>> GetNetworkFleet(string companyId,MapCoordinate coordinate)
         {
-            var response = await Client.GetAsync(@"customer/" + companyId + "/networkfleet");
+            var response = await Client.PostAsJsonAsync(@"customer/" + companyId + "/networkfleet",coordinate);
             var json = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)
@@ -41,9 +41,7 @@ namespace CustomerPortal.Client.Impl
 
         public Task SetNetworkCompanyPreferences(string companyId, CompanyPreference[] preferences)
         {
-            var content = new ObjectContent<CompanyPreference[]>(preferences, new JsonMediaTypeFormatter());
-            
-            return Client.PostAsync(@"customer/" + companyId + "/network", content);
+            return Client.PostAsJsonAsync(@"customer/" + companyId + "/network", preferences);
         }
     }
 }

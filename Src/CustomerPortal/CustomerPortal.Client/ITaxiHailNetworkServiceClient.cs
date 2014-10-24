@@ -9,7 +9,7 @@ namespace CustomerPortal.Client
     {
         Task<List<CompanyPreferenceResponse>> GetNetworkCompanyPreferences(string companyId);
         Task SetNetworkCompanyPreferences(string companyId, CompanyPreference[] companyPreferences);
-        Task<List<NetworkFleetResponse>> GetNetworkFleetFromCoordinate(string companyId, MapCoordinate coordinate);
+        Task<List<NetworkFleetResponse>> GetNetworkFleet(string companyId, MapCoordinate coordinate=null);
 
     }
 }

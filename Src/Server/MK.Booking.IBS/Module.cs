@@ -7,6 +7,8 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
+using CustomerPortal.Client;
+using CustomerPortal.Client.Impl;
 using Microsoft.Practices.Unity;
 
 #endregion
@@ -21,8 +23,11 @@ namespace apcurium.MK.Booking.IBS
             Mapper.AddProfile(profile);
             Mapper.AssertConfigurationIsValid(profile.ProfileName);
 
+            var thNetworkServiceClient = new TaxiHailNetworkServiceClient(container.Resolve<IServerSettings>());
+            container.RegisterInstance<ITaxiHailNetworkServiceClient>(thNetworkServiceClient);
+
             container.RegisterInstance<IIBSServiceProvider>(
-                new IBSServiceProvider(container.Resolve<IServerSettings>(), container.Resolve<ILogger>()));
+                new IBSServiceProvider(container.Resolve<IServerSettings>(), container.Resolve<ILogger>(),container.Resolve<ITaxiHailNetworkServiceClient>()));
         }
     }
 }

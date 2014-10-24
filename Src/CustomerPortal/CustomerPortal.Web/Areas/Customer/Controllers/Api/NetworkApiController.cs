@@ -9,6 +9,7 @@ using CustomerPortal.Web.Areas.Customer.Models.RequestResponse;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Extensions;
+using Microsoft.Ajax.Utilities;
 using MongoRepository;
 using Newtonsoft.Json;
 
@@ -107,7 +108,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         }
 
         [Route("api/customer/{companyId}/networkfleet")]
-        public HttpResponseMessage Get(string companyId,MapCoordinate coordinate)
+        public HttpResponseMessage Post(string companyId,MapCoordinate coordinate)
         {
             var networkSettings = _networkRepository.Select(x => x).ToList();
 

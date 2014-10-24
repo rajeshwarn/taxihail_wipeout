@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
+using CustomerPortal.Client;
 
 namespace apcurium.MK.Booking.IBS.Impl
 {
@@ -9,12 +10,14 @@ namespace apcurium.MK.Booking.IBS.Impl
     {
         private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
+        private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkService;
         private IDictionary<string, IBSSettingContainer> _ibsSettings = new Dictionary<string, IBSSettingContainer>();
 
-        public IBSServiceProvider(IServerSettings serverSettings, ILogger logger)
+        public IBSServiceProvider(IServerSettings serverSettings, ILogger logger,ITaxiHailNetworkServiceClient taxiHailNetworkService)
         {
             _serverSettings = serverSettings;
             _logger = logger;
+            _taxiHailNetworkService = taxiHailNetworkService;
         }
 
         public IAccountWebServiceClient Account(string companyKey)
