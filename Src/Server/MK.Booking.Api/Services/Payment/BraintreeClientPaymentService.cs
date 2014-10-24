@@ -3,6 +3,7 @@ using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using Braintree;
 using BraintreeEncryption.Library;
@@ -13,6 +14,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     public class BraintreeClientPaymentService : Service
     {
         private BraintreeGateway BraintreeGateway { get; set; }
+
+        public BraintreeClientPaymentService(IServerSettings serverSettings)
+        {
+            BraintreeGateway = GetBraintreeGateway(serverSettings.GetPaymentSettings().BraintreeServerSettings);
+        }
 
         public TokenizedCreditCardResponse Post(TokenizeCreditCardBraintreeRequest tokenizeRequest)
         {
