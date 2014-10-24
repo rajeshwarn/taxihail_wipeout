@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -8,29 +6,21 @@ using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Api.Payment;
 using apcurium.MK.Booking.Api.Providers;
-using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Booking.Services;
-using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
 using AutoMapper;
-using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
 using CreateOrder = apcurium.MK.Booking.Api.Contract.Requests.CreateOrder;
 using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
 using Tariff = apcurium.MK.Booking.Api.Contract.Requests.Tariff;
-
-#endregion
 
 namespace apcurium.MK.Booking.Api
 {
@@ -72,28 +62,8 @@ namespace apcurium.MK.Booking.Api
                         ? new OrderStatusIbsMock(orderDao, c.Resolve<OrderStatusUpdater>(), serverSettings)
                         : new OrderStatusHelper(orderDao, serverSettings);
                 }));
-
-            container.RegisterType<IPaymentService>(
-                new TransientLifetimeManager(),
-                new InjectionFactory(c =>
-                {
-                    var serverSettings = c.Resolve<IServerSettings>();
-                    switch (serverSettings.GetPaymentSettings().PaymentMode)
-                    {
-                        case PaymentMethod.Braintree:
-                            return new BraintreePaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
-                        case PaymentMethod.RideLinqCmt:
-                        case PaymentMethod.Cmt:
-                            return new CmtPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
-                        case PaymentMethod.Moneris:
-                            return new MonerisPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
-                        default:
-                            return null;
-                    }
-                }));
         }
-
-
+        
         private void RegisterMaps()
         {
             var profile = new BookingApiMapperProfile();

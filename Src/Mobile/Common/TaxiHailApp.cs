@@ -95,10 +95,10 @@ namespace apcurium.MK.Booking.Mobile
 
 			_container.Register<IPaymentService>((c, p) =>
 			{
-					var baseUrl = c.Resolve<IAppSettings>().Data.ServiceUrl;
+				var baseUrl = c.Resolve<IAppSettings>().Data.ServiceUrl;
                 var sessionId = GetSessionId();
 
-                    return new PaymentService(baseUrl, sessionId, c.Resolve<ConfigurationClientService>(), c.Resolve<ICacheService>(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>());
+                return new PaymentService(baseUrl, sessionId, c.Resolve<ConfigurationClientService>(), c.Resolve<ICacheService>(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>());
 			});
             
 			_container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
