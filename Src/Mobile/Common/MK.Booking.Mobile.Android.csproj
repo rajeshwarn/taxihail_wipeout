@@ -339,6 +339,10 @@
     <Compile Include="PresentationHints\ChangeZoomPresentationHint.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">
+      <Project>{fd56efb1-2ed8-4a8a-b7ab-80eb36cf03eb}</Project>
+      <Name>CMTPayment.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
       <Project>{A70ADE42-9492-4247-96DC-0CFE0CB0CC64}</Project>
       <Name>MK.Booking.Api.Client.Android</Name>

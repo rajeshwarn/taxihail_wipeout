@@ -98,12 +98,7 @@
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />
-    <Compile Include="Resources\Payments\BasePaymentResponse.cs" />
-    <Compile Include="Resources\Payments\CommitPreauthoriedPaymentResponse.cs" />
-    <Compile Include="Resources\Payments\DeleteTokenizedCreditcardResponse.cs" />
-    <Compile Include="Resources\Payments\PairingResponse.cs" />
     <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />
-    <Compile Include="Resources\Payments\PreAuthorizePaymentResponse.cs" />
     <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
@@ -138,8 +133,5 @@
       <Name>MK.Booking.MapDataProvider.Android</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\Payments\Braintree\" />
-    <Folder Include="Resources\Payments\Cmt\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

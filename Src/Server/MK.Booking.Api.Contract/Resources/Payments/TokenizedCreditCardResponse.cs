@@ -1,3 +1,5 @@
+﻿using apcurium.MK.Common.Resources;
+
 namespace apcurium.MK.Booking.Api.Contract.Resources.Payments
 {
     public class TokenizedCreditCardResponse : BasePaymentResponse

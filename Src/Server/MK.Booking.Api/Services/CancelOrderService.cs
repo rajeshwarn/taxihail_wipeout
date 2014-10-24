@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Jobs;
+using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
@@ -56,19 +57,13 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.Unauthorized, "Can't cancel another account's order");
             }
 
-
-
-
-
             //We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up. But we assume the order is completed.
-
-           Task.Factory.StartNew(() =>
-           {
-               Func<bool> cancelOrder = () => _bookingWebServiceClient.CancelOrder(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
-               cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
-           });
-                        
-
+            Task.Factory.StartNew(() =>
+            {
+                Func<bool> cancelOrder = () => _bookingWebServiceClient.CancelOrder(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
+                cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
+            });
+            
             var command = new Commands.CancelOrder { Id = Guid.NewGuid(), OrderId = request.OrderId };
             _commandBus.Send(command);
 

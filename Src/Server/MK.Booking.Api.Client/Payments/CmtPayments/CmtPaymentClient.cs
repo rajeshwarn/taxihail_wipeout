@@ -1,19 +1,16 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Globalization;
 using System.Net;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Extensions;
-using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Tokenize;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
-
-#endregion
+using apcurium.MK.Common.Resources;
+using CMTPayment;
+using CMTPayment.Extensions;
+using CMTPayment.Tokenize;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 {

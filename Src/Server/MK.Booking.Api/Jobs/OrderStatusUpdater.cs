@@ -167,24 +167,26 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                 if (defaultCreditCard != null)
                 {
-                    var paymentResult = _paymentService.CommitPayment(new CommitPaymentRequest
+                    try
                     {
-                        OrderId = orderStatusDetail.OrderId,
-                        CardToken = defaultCreditCard.Token,
-                        MeterAmount = paymentSettings.NoShowFee.Value,
-                        TipAmount = 0,
-                        Amount = paymentSettings.NoShowFee.Value,
-                        IsNoShowFee = true
-                    });
+                        var paymentResult = _paymentService.CommitPayment(
+                            paymentSettings.NoShowFee.Value, paymentSettings.NoShowFee.Value,
+                            0, defaultCreditCard.Token, orderStatusDetail.OrderId, true);
 
-                    if (paymentResult.IsSuccessful)
-                    {
-                        Log.DebugFormat("No show fee of amount {0} was charged for order {1}.", paymentSettings.NoShowFee.Value, ibsOrderInfo.IBSOrderId);
+                        if (paymentResult.IsSuccessful)
+                        {
+                            Log.DebugFormat("No show fee of amount {0} was charged for order {1}.", paymentSettings.NoShowFee.Value, ibsOrderInfo.IBSOrderId);
+                        }
+                        else
+                        {
+                            orderStatusDetail.PairingError = paymentResult.Message;
+                            Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, paymentResult.Message);
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        orderStatusDetail.PairingError = paymentResult.Message;
-                        Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, paymentResult.Message);
+                        orderStatusDetail.PairingError = ex.Message;
+                        Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, ex.Message);
                     }
                 }
             }
@@ -277,34 +279,45 @@ namespace apcurium.MK.Booking.Api.Jobs
                 SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, meterAmount + tipAmount, meterAmount, tipAmount);
             }
 
-            var paymentResult = _paymentService.CommitPayment(new CommitPaymentRequest
+            try
             {
-                OrderId = orderStatusDetail.OrderId,
-                CardToken = pairingInfo.TokenOfCardToBeUsedForPayment,
-                MeterAmount = Convert.ToDecimal(meterAmount),
-                TipAmount = Convert.ToDecimal(tipAmount),
-                Amount = Convert.ToDecimal(meterAmount + tipAmount)
-            });
+                var paymentResult = _paymentService.CommitPayment(
+                    Convert.ToDecimal(meterAmount + tipAmount), Convert.ToDecimal(meterAmount),
+                    Convert.ToDecimal(tipAmount), pairingInfo.TokenOfCardToBeUsedForPayment,
+                    orderStatusDetail.OrderId, false);
 
-            // whether there's a success or not, we change the status back to Completed since we can't process the payment again
-            orderStatusDetail.Status = OrderStatus.Completed;
+                if (paymentResult.IsSuccessful)
+                {
+                    Log.DebugFormat("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
+                }
+                else
+                {
+                    if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
+                    {
+                        _ibsOrderService.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+                    }
 
-            if (paymentResult.IsSuccessful)
-            {
-                Log.DebugFormat("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
+                    // set the payment error message in OrderStatusDetail for reporting purpose
+                    orderStatusDetail.PairingError = paymentResult.Message;
+
+                    Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.Message, paymentResult.TransactionId);
+                }
             }
-            else
+            catch (Exception ex)
             {
                 if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
                 {
                     _ibsOrderService.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
                 }
-                
-                // set the payment error message in OrderStatusDetail for reporting purpose
-                orderStatusDetail.PairingError = paymentResult.Message;
 
-                Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.Message, paymentResult.TransactionId);
+                // set the payment error message in OrderStatusDetail for reporting purpose
+                orderStatusDetail.PairingError = ex.Message;
+
+                Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, ex.Message, "UNKNOWN");
             }
+            
+            // whether there's a success or not, we change the status back to Completed since we can't process the payment again
+            orderStatusDetail.Status = OrderStatus.Completed;
         }
         
         private double GetTipAmount(double amount, double percentage)
