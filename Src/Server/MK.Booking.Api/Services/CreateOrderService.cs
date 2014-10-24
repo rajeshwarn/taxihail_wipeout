@@ -42,21 +42,19 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountChargeDao _accountChargeDao;
-        private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
         private readonly ReferenceDataService _referenceDataService;
         private readonly IRuleCalculator _ruleCalculator;
-        private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
         private readonly Resources.Resources _resources;
 
         public CreateOrderService(ICommandBus commandBus,
-            IBookingWebServiceClient bookingWebServiceClient,
             IAccountDao accountDao,
             IServerSettings serverSettings,
             ReferenceDataService referenceDataService,
-            IStaticDataWebServiceClient staticDataWebServiceClient,
+            IIBSServiceProvider ibsServiceProvider,
             IRuleCalculator ruleCalculator,
             IUpdateOrderStatusJob updateOrderStatusJob,
             IAccountChargeDao accountChargeDao,
@@ -66,11 +64,10 @@ namespace apcurium.MK.Booking.Api.Services
         {
             _accountChargeDao = accountChargeDao;
             _commandBus = commandBus;
-            _bookingWebServiceClient = bookingWebServiceClient;
             _accountDao = accountDao;
             _referenceDataService = referenceDataService;
             _serverSettings = serverSettings;
-            _staticDataWebServiceClient = staticDataWebServiceClient;
+            _ibsServiceProvider = ibsServiceProvider;
             _ruleCalculator = ruleCalculator;
             _updateOrderStatusJob = updateOrderStatusJob;
             _orderDao = orderDao;
@@ -116,12 +113,12 @@ namespace apcurium.MK.Booking.Api.Services
                 request.PickupDate.HasValue 
                     ? request.PickupDate.Value 
                     : GetCurrentOffsetedTime(),
-                () => _staticDataWebServiceClient.GetZoneByCoordinate(
+                () => _ibsServiceProvider.StaticData().GetZoneByCoordinate(
                         request.Settings.ProviderId,
                         request.PickupAddress.Latitude, 
                         request.PickupAddress.Longitude),
                 () => request.DropOffAddress != null 
-                    ? _staticDataWebServiceClient.GetZoneByCoordinate(
+                    ? _ibsServiceProvider.StaticData().GetZoneByCoordinate(
                             request.Settings.ProviderId, 
                             request.DropOffAddress.Latitude,
                             request.DropOffAddress.Longitude) 
@@ -313,7 +310,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             if (ChargeTypes.Account.Id == request.Settings.ChargeTypeId)
             {
-                return  _bookingWebServiceClient.SendAccountInformation(orderId, ibsOrderId, "Account", request.Settings.AccountNumber, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, account.Email);                
+                return  _ibsServiceProvider.Booking().SendAccountInformation(orderId, ibsOrderId, "Account", request.Settings.AccountNumber, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, account.Email);                
             }
 
             return null;
@@ -363,7 +360,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 
-            var result = _bookingWebServiceClient.CreateOrder(
+            var result = _ibsServiceProvider.Booking().CreateOrder(
                 request.Settings.ProviderId,
                 account.IBSAccountId,
                 request.Settings.Name,

@@ -34,7 +34,7 @@ namespace apcurium.MK.Web.Tests
             var address = addresses.ElementAt(0);
             Assert.AreEqual(true, address.FullAddress.Contains("Chateaubriand"));
             Assert.AreEqual("5661", address.StreetNumber);
-            Assert.AreEqual("Avenue de Chateaubriand", address.Street);
+            Assert.AreEqual("Chateaubriand Avenue", address.Street);
             Assert.AreEqual("Montreal", address.City);
             StringAssert.Contains("H2S", address.ZipCode);
         }

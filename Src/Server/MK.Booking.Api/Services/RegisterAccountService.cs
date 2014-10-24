@@ -23,16 +23,16 @@ namespace apcurium.MK.Booking.Api.Services
     public class RegisterAccountService : Service
     {
         private readonly IAccountDao _accountDao;
-        private readonly IAccountWebServiceClient _accountWebServiceClient;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
 
-        public RegisterAccountService(ICommandBus commandBus, IAccountWebServiceClient accountWebServiceClient,
+        public RegisterAccountService(ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider,
             IAccountDao accountDao, IServerSettings serverSettings)
         {
             _commandBus = commandBus;
             _accountDao = accountDao;
-            _accountWebServiceClient = accountWebServiceClient;
+            _ibsServiceProvider = ibsServiceProvider;
             _serverSettings = serverSettings;
         }
 
@@ -53,7 +53,8 @@ namespace apcurium.MK.Booking.Api.Services
                 var command = new RegisterFacebookAccount();
                 Mapper.Map(request, command);
                 command.Id = Guid.NewGuid();
-                command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId,
+                command.IbsAccountId = _ibsServiceProvider.Account().CreateAccount(
+                    command.AccountId,
                     command.Email,
                     "",
                     command.Name,
@@ -68,7 +69,8 @@ namespace apcurium.MK.Booking.Api.Services
                 var command = new RegisterTwitterAccount();
                 Mapper.Map(request, command);
                 command.Id = Guid.NewGuid();
-                command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId,
+                command.IbsAccountId = _ibsServiceProvider.Account().CreateAccount(
+                    command.AccountId,
                     command.Email,
                     "",
                     command.Name,
@@ -90,7 +92,8 @@ namespace apcurium.MK.Booking.Api.Services
                 Mapper.Map(request, command);
                 command.Id = Guid.NewGuid();
 
-                command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId,
+                command.IbsAccountId = _ibsServiceProvider.Account().CreateAccount(
+                    command.AccountId,
                     command.Email,
                     "",
                     command.Name,

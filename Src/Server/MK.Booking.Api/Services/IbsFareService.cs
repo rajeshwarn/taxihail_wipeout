@@ -16,20 +16,19 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class IbsFareService : Service
     {
-        private readonly IBookingWebServiceClient _bookingWebServiceClient;
-
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IServerSettings _serverSettings;
 
-        public IbsFareService(IBookingWebServiceClient bookingWebServiceClient, IServerSettings serverSettings)
+        public IbsFareService(IIBSServiceProvider ibsServiceProvider, IServerSettings serverSettings)
         {
-            _bookingWebServiceClient = bookingWebServiceClient;
+            _ibsServiceProvider = ibsServiceProvider;
             _serverSettings = serverSettings;
         }
 
         public DirectionInfo Get(IbsFareRequest request)
         {
             // TODO: Adapt distance format
-            var fare = _bookingWebServiceClient.GetFareEstimate(request.PickupLatitude, request.PickupLongitude,
+            var fare = _ibsServiceProvider.Booking().GetFareEstimate(request.PickupLatitude, request.PickupLongitude,
                 request.DropoffLatitude, request.DropoffLongitude);
             return fare.FareEstimate != null
                 ? new DirectionInfo

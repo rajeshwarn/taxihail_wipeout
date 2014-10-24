@@ -24,6 +24,15 @@ namespace apcurium.MK.Booking.IBS.Impl
             _serverSettings = serverSettings;
         }
 
+        public BookingWebServiceClient(IServerSettings serverSettings, IBSSettingContainer ibsSettings, ILogger logger)
+            : base(ibsSettings, logger)
+        {
+            // for now, server settings is for the home server, so if one day we want a real roaming mode (not network),
+            // this will need to be changed
+
+            _serverSettings = serverSettings;
+        }
+
         public IbsVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int? vehicleTypeId)
         {
             var result = new IbsVehiclePosition[0];

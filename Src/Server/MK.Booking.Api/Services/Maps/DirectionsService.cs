@@ -22,14 +22,14 @@ namespace apcurium.MK.Booking.Api.Services.Maps
     {
         private readonly IDirections _client;
         private readonly IServerSettings _serverSettings;
-        private readonly IBookingWebServiceClient _bookingWebServiceClient;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IOrderDao _orderDao;
 
-        public DirectionsService(IDirections client, IServerSettings serverSettings, IBookingWebServiceClient bookingWebServiceClient, IOrderDao orderDao)
+        public DirectionsService(IDirections client, IServerSettings serverSettings, IIBSServiceProvider ibsServiceProvider, IOrderDao orderDao)
         {
             _client = client;
             _serverSettings = serverSettings;
-            _bookingWebServiceClient = bookingWebServiceClient;
+            _ibsServiceProvider = ibsServiceProvider;
             _orderDao = orderDao;
         }
 
@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 && request.OriginLng.HasValue)
             {
                 // Get available vehicles
-                var availableVehicles = _bookingWebServiceClient.GetAvailableVehicles(request.OriginLat.Value, request.OriginLng.Value, null);
+                var availableVehicles = _ibsServiceProvider.Booking().GetAvailableVehicles(request.OriginLat.Value, request.OriginLng.Value, null);
 
                 // Get nearest available vehicle
                 var nearestAvailableVehicle = GetNearestAvailableVehicle(request.OriginLat.Value,

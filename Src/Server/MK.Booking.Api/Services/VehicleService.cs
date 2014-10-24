@@ -21,14 +21,14 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class VehicleService : Service
     {
-        private readonly IBookingWebServiceClient _bookingWebServiceClient;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IVehicleTypeDao _dao;
         private readonly ICommandBus _commandBus;
         private readonly ReferenceDataService _referenceDataService;
 
-        public VehicleService(IBookingWebServiceClient bookingWebServiceClient, IVehicleTypeDao dao, ICommandBus commandBus, ReferenceDataService referenceDataService)
+        public VehicleService(IIBSServiceProvider ibsServiceProvider, IVehicleTypeDao dao, ICommandBus commandBus, ReferenceDataService referenceDataService)
         {
-            _bookingWebServiceClient = bookingWebServiceClient;
+            _ibsServiceProvider = ibsServiceProvider;
             _dao = dao;
             _commandBus = commandBus;
             _referenceDataService = referenceDataService;
@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public AvailableVehiclesResponse Post(AvailableVehicles request)
         {
-            var vehicles = _bookingWebServiceClient.GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
+            var vehicles = _ibsServiceProvider.Booking().GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
             var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId);
             string logoName = vehicleType != null ? vehicleType.LogoName : null;
 

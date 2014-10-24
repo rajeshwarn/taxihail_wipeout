@@ -387,9 +387,10 @@ namespace DatabaseInitializer
             var confirmationToken = Guid.NewGuid();
             registerAccountCommand.ConfimationToken = confirmationToken.ToString();
 
-            var accountWebServiceClient = container.Resolve<IAccountWebServiceClient>();
+            var ibsServiceProvider = container.Resolve<IIBSServiceProvider>();
             registerAccountCommand.IbsAccountId =
-                accountWebServiceClient.CreateAccount(registerAccountCommand.AccountId,
+                ibsServiceProvider.Account().CreateAccount(
+                    registerAccountCommand.AccountId,
                     registerAccountCommand.Email,
                     string.Empty,
                     registerAccountCommand.Name,
@@ -419,7 +420,8 @@ namespace DatabaseInitializer
             registerAdminAccountCommand.ConfimationToken = confirmationAdminToken.ToString();
 
             registerAdminAccountCommand.IbsAccountId =
-                accountWebServiceClient.CreateAccount(registerAdminAccountCommand.AccountId,
+                ibsServiceProvider.Account().CreateAccount(
+                    registerAdminAccountCommand.AccountId,
                     registerAdminAccountCommand.Email,
                     string.Empty,
                     registerAdminAccountCommand.Name,
@@ -518,20 +520,20 @@ namespace DatabaseInitializer
             var appSettings = new Dictionary<string, string>(); 
             Console.WriteLine("Calling ibs...");
             //Get default settings from IBS
-            var referenceDataService = container.Resolve<IStaticDataWebServiceClient>();
+            var ibsServiceProvider = container.Resolve<IIBSServiceProvider>();
 
-            var defaultCompany = referenceDataService.GetCompaniesList()
+            var defaultCompany = ibsServiceProvider.StaticData().GetCompaniesList()
                 .FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
-                                 ?? referenceDataService.GetCompaniesList().FirstOrDefault();
+                                 ?? ibsServiceProvider.StaticData().GetCompaniesList().FirstOrDefault();
 
             if (defaultCompany != null)
             {
                 appSettings["DefaultBookingSettings.ProviderId"] = defaultCompany.Id.ToString();
 
                 var defaultvehicule =
-                    referenceDataService.GetVehiclesList(defaultCompany)
+                    ibsServiceProvider.StaticData().GetVehiclesList(defaultCompany)
                         .FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value) ??
-                    referenceDataService.GetVehiclesList(defaultCompany).First();
+                    ibsServiceProvider.StaticData().GetVehiclesList(defaultCompany).First();
                 appSettings["DefaultBookingSettings.VehicleTypeId"] = defaultvehicule.Id.ToString();
 
                 appSettings["DefaultBookingSettings.ChargeTypeId"] = ChargeTypes.PaymentInCar.Id.ToString();
